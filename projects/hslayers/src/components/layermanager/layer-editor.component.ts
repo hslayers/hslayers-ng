@@ -82,7 +82,7 @@ export class HsLayerEditorComponent {
   /**
    * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
-   * BoundingBox property of GetCapabalities request (for WMS layer)
+   * BoundingBox property of GetCapabilities request (for WMS layer)
    * @returns a promise
    */
   zoomToLayer(): Promise<any> {
@@ -278,7 +278,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * Test if selected layer has min and max relolution set
+   * Test if selected layer has min and max resolution set
    */
   isScaleVisible(): boolean {
     const layer = this.olLayer();

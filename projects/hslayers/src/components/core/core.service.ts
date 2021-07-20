@@ -15,7 +15,7 @@ export class HsCoreService {
   /**
    * @public
    */
-  embededEnabled = true;
+  embeddedEnabled = true;
   language = 'en';
   config: any;
   _puremapApp = false;
@@ -146,7 +146,7 @@ export class HsCoreService {
   isAuthorized(): boolean {
     if (window['getLRUser'] === undefined && !this.missingLRFunctionsWarned) {
       this.log.warn(
-        'window.getLRUser function needs to be defined, which usually comes from liferay.'
+        'window.getLRUser function needs to be defined, which usually comes from Liferay.'
       );
       this.missingLRFunctionsWarned = true;
     }

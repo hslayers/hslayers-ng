@@ -12,7 +12,7 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../wms/get-capabilities.service';
-import {getPreferedFormat} from '../format-utils';
+import {getPreferredFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsWmtsGetCapabilitiesService {
@@ -70,10 +70,10 @@ export class HsWmtsGetCapabilitiesService {
   }
 
   /**
-   * Parse added service url and sends GetCapabalities request to WMTS service
+   * Parse added service url and sends GetCapabilities request to WMTS service
    *
    * @param service_url - Raw Url localization of service
-   * @returns Promise object -  Response to GetCapabalities request
+   * @returns Promise object -  Response to GetCapabilities request
    */
   async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -133,13 +133,13 @@ export class HsWmtsGetCapabilitiesService {
     const query_formats = caps.Capability.Request.GetFeatureInfo
       ? caps.Capability.Request.GetFeatureInfo.Format
       : [];
-    const image_format = getPreferedFormat(image_formats, [
+    const image_format = getPreferredFormat(image_formats, [
       'image/png; mode=8bit',
       'image/png',
       'image/gif',
       'image/jpeg',
     ]);
-    const query_format = getPreferedFormat(query_formats, [
+    const query_format = getPreferredFormat(query_formats, [
       'application/vnd.esri.wmts_featureinfo_xml',
       'application/vnd.ogc.gml',
       'application/vnd.ogc.wmts_xml',

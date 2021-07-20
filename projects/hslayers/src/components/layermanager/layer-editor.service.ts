@@ -56,8 +56,8 @@ export class HsLayerEditorService {
   /**
    * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
-   * BoundingBox property of GetCapabalities request (for WMS layer)
-   * @param layer - Openlayers layer to zoom to
+   * BoundingBox property of GetCapabilities request (for WMS layer)
+   * @param layer - OpenLayers layer to zoom to
    */
   async zoomToLayer(layer: Layer): Promise<boolean> {
     let extent = null;

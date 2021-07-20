@@ -195,13 +195,13 @@ export class HsDrawService {
       //When metadata dialog window opened. Layer is being added
       if (this.selectedLayer && this.tmpDrawLayer) {
         setWorkspace(this.selectedLayer, endpoint.user);
-        const defition = {
+        const definition = {
           format: this.isAuthorized ? 'hs.format.WFS' : null,
           url: this.isAuthorized
             ? this.HsLaymanService.getLaymanEndpoint().url + '/wfs'
             : null,
         };
-        setDefinition(this.selectedLayer, defition);
+        setDefinition(this.selectedLayer, definition);
       }
     });
 
@@ -399,7 +399,7 @@ export class HsDrawService {
         e.feature.set(key, value);
       }
     }
-    /*Timeout is necessary because features are not imediately
+    /*Timeout is necessary because features are not immediately
      * added to the layer and layer can't be retrieved from the
      * feature, so they don't appear in Info panel */
     if (
@@ -504,9 +504,8 @@ export class HsDrawService {
   }
 
   /**
-   * @function fillDrawableLayers
-   * @description Repopulates drawable layers. In case layman connection exists it also creates
-   * a list of avaliable server possiblities.
+   * Repopulates drawable layers. In case layman connection exists it also creates
+   * a list of available server possibilities.
    */
   async fillDrawableLayers(): Promise<void> {
     const drawables = this.HsMapService.map
@@ -552,7 +551,7 @@ export class HsDrawService {
       return true;
     } else {
       return (
-        //Dont want to change after authChange when layer is being added
+        //Don't want to change after authChange when layer is being added
         (!this.tmpDrawLayer &&
           !drawables.some(
             (layer) =>

@@ -25,7 +25,7 @@ import {
 } from '../../../../common/wms/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getName, getTitle} from '../../../../common/layer-extensions';
-import {getPreferedFormat} from '../../../../common/format-utils';
+import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmsService {
@@ -96,7 +96,7 @@ export class HsAddDataUrlWmsService {
         }
       }
     );
-    //TODO: all dimension related things need to be refactored into seperate module
+    //TODO: all dimension related things need to be refactored into separate module
     this.getDimensionValues = hsDimensionService.getDimensionValues;
   }
 
@@ -199,13 +199,13 @@ export class HsAddDataUrlWmsService {
       this.data.getMapUrl = this.removePortIfProxified(
         caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
       );
-      this.data.image_format = getPreferedFormat(this.data.image_formats, [
+      this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'image/png; mode=8bit',
         'image/png',
         'image/gif',
         'image/jpeg',
       ]);
-      this.data.query_format = getPreferedFormat(this.data.query_formats, [
+      this.data.query_format = getPreferredFormat(this.data.query_formats, [
         'application/vnd.esri.wms_featureinfo_xml',
         'application/vnd.ogc.gml',
         'application/vnd.ogc.wms_xml',

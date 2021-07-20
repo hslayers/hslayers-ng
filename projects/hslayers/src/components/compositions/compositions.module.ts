@@ -6,11 +6,11 @@ import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsLayerParserModule} from './layer-parser/layer-parser.module';
+import {HsCompositionsListItemComponent} from './compositions-list-item.component';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsCompostionsListItemComponent} from './compositions-list-item.component';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +24,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsCompositionsShareDialogComponent,
     HsCompositionsInfoDialogComponent,
     HsCompositionsWarningDialogComponent,
-    HsCompostionsListItemComponent,
+    HsCompositionsListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +44,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsCompositionsDeleteDialogComponent,
     HsCompositionsShareDialogComponent,
     HsCompositionsInfoDialogComponent,
-    HsCompostionsListItemComponent,
+    HsCompositionsListItemComponent,
   ],
 })
 export class HsCompositionsModule {}

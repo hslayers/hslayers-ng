@@ -237,7 +237,7 @@ export class HsLayerManagerComponent
   }
 
   /**
-   * Determines if layer has copyright information avaliable *
+   * Determines if layer has copyright information available *
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {

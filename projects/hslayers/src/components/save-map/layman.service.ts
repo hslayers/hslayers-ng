@@ -36,7 +36,7 @@ export type WfsSyncParams = {
   upd;
   /** Array of features to delete */
   del;
-  /** Openlayers layer which has to have a title attribute */
+  /** OpenLayers layer which has to have a title attribute */
   layer: Layer;
 };
 
@@ -402,7 +402,7 @@ export class HsLaymanService implements HsSaverService {
    * @param endpoint Endpoint description
    * @param layerName Layer name
    * @return Promise which returns layers
-   * description containig name, file, wms, wfs urls etc.
+   * description containing name, file, wms, wfs urls etc.
    */
   async describeLayer(
     endpoint: HsEndpoint,

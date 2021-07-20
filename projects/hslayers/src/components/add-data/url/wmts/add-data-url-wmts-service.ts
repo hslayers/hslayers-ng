@@ -87,7 +87,7 @@ export class HsAddDataUrlWmtsService {
     this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
   /**
-   * Parse information recieved in WMTS getCapabilities respond
+   * Parse information received in WMTS getCapabilities respond
    *
    * @memberof hs.addLayersWMTS
    * @function capabilitiesReceived
@@ -140,52 +140,43 @@ export class HsAddDataUrlWmtsService {
   }
 
   /**
-   * Returns prefered tile format
-   *
-   * @memberof hs.addLayersWMTS
-   * @function getPreferedFormat
-   * @param {object} formats Set of avaliable formats for layer being added
+   * Returns preferred tile format
+   * @param formats - Set of available formats for layer being added
    */
   getPreferredFormat(formats: any) {
-    const prefered = formats.find((format) => format.includes('png'));
-    return prefered ? prefered : formats[0];
+    const preferred = formats.find((format) => format.includes('png'));
+    return preferred ? preferred : formats[0];
   }
 
   /**
-   * Returns prefered tile tileMatrixSet
-   * Looks for the occurence of supported CRS's, if possible picks CRS of current view
+   * Returns preferred tile tileMatrixSet
+   * Looks for the occurrence of supported CRS's, if possible picks CRS of current view
    * otherwise returns 3857 as trial(some services support 3857 matrix set even though its not clear from capabilities )
-   *
-   * @memberof hs.addLayersWMTS
-   * @function getPreferedMatrixSet
-   * @param {object} sets Set of avaliable matrixSets
+   * @param sets - Set of available matrixSets
    */
   getPreferredMatrixSet(sets): string {
     const supportedFormats = ['3857', '4326', '5514'];
-    const prefered = sets.filter((set) =>
+    const preferred = sets.filter((set) =>
       supportedFormats.some((v) => set.TileMatrixSet.includes(v))
     );
-    if (prefered.length != 0) {
-      const preferCurrent = prefered.find((set) =>
+    if (preferred.length != 0) {
+      const preferCurrent = preferred.find((set) =>
         set.TileMatrixSet.includes(
           this.hsMapService.map.getView().getProjection().getCode()
         )
       );
       return preferCurrent
         ? preferCurrent.TileMatrixSet
-        : prefered[0].TileMatrixSet;
+        : preferred[0].TileMatrixSet;
     }
     return 'EPSG:3857';
   }
 
   /**
-   * Returns prefered info format
-   * Looks for the occurence of supported formats (query.wms)
+   * Returns preferred info format
+   * Looks for the occurrence of supported formats (query.wms)
    * if possible picks HTML, otherwise first from the list of supported is selected
-   *
-   * @memberof hs.addLayersWMTS
-   * @function getPreferedInfoFormat
-   * @param {object} response Set of avaliable info formats for layer being added
+   * @param response - Set of available info formats for layer being added
    */
   getPreferredInfoFormat(formats): string {
     if (formats) {
@@ -206,11 +197,8 @@ export class HsAddDataUrlWmtsService {
 
   /**
    * Add WMTS layer to the map
-   * Uses previously recieved capabilities response as a reference for the source
-   *
-   * @memberof hs.addLayersWMTS
-   * @function getPreferedInfoFormat
-   * @param {object} response Set of avaliable info formats for layer being added
+   * Uses previously received capabilities response as a reference for the source
+   * @param response - Set of available info formats for layer being added
    */
   addLayer(layer): void {
     try {

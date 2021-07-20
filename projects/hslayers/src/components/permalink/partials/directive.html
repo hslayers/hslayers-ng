@@ -20,7 +20,7 @@
 
             <fieldset class="form-group">
                 <h4 for="share-link">{{'PERMALINK.linkFor' | translate}}&nbsp;<span
-                        [hidden]="!HsCore.embededEnabled">{{'PERMALINK.embed' | translate}}/</span>{{'PERMALINK.socialShare' | translate}}
+                        [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' | translate}}/</span>{{'PERMALINK.socialShare' | translate}}
                 </h4>
                 <div class="form-check">
                     <label class="form-check-label">
@@ -37,7 +37,7 @@
                     </label>
                 </div>
             </fieldset>
-            <div class="form-group" [hidden]="!HsCore.embededEnabled">
+            <div class="form-group" [hidden]="!HsCore.embeddedEnabled">
                 <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translate}}</label>
                 <textarea class="form-control" style="height: 80px" id="permalink-embed"
                     [(ngModel)]="HsShareService.data.embedCode" [ngModelOptions]="{standalone: true}"></textarea>

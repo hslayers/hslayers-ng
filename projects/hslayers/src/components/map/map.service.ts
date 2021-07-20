@@ -572,7 +572,7 @@ export class HsMapService {
    * Function to add layer to map which also checks if
    * the layer is not already present and also proxifies the layer if needed.
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
-   * and rely on layer manager service to do the proxifiction and also it's shorter than to use HsMapService.map.addLayer.
+   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.map.addLayer.
    *
    * @param lyr Layer to add
    * @param duplicateHandling How to handle duplicate layers (same class and title)

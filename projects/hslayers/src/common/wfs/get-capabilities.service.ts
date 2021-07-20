@@ -62,10 +62,10 @@ export class HsWfsGetCapabilitiesService {
   }
 
   /**
-   * Parse added service url and sends request GetCapabalities to WFS service
+   * Parse added service url and sends request GetCapabilities to WFS service
    *
    * @param service_url - Raw Url localization of service
-   * @returns Promise object - Response to GetCapabalities request
+   * @returns Promise object - Response to GetCapabilities request
    */
   async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');

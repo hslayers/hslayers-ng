@@ -202,7 +202,7 @@ export class HsCompositionsService {
           return;
       }
       if (url) {
-        //Provide save-map comoData workspace property and distinguish between editable and noneditable compositions
+        //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
         this.HsCompositionsParserService.current_composition_workspace =
           record.editable ? record.workspace : null;
         if (this.HsCompositionsParserService.composition_edited == true) {

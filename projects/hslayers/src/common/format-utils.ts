@@ -1,11 +1,11 @@
 /**
  * Loop through list of formats returned by getcapabilities and select first available from the list of available formats
  *
- * @param formats - List of formats avaiable for service
+ * @param formats - List of formats available for service
  * @param preferredFormats - List of preferred formats for output
- * @returns Either one of preferred formats or first avaiable format
+ * @returns Either one of preferred formats or first available format
  */
-export function getPreferedFormat(
+export function getPreferredFormat(
   formats: string[],
   preferredFormats: string[]
 ): string {

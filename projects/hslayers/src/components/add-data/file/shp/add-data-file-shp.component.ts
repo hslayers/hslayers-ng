@@ -38,7 +38,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   advancedPanelVisible = false;
   addUnder: BaseLayer = null;
   dropzoneActive = false;
-  errorOccured = false;
+  errorOccurred = false;
   showDetails = false;
   isAuthorized: boolean;
   access_rights: accessRightsInterface = {
@@ -81,7 +81,7 @@ export class HsAddDataFileShpComponent implements OnInit {
 
   /**
    * @description From available endpoints picks one
-   * - either Layman enpoint if available or any other if not
+   * - either Layman endpoint if available or any other if not
    */
   pickEndpoint(): void {
     const endpoints = this.hsCommonEndpointsService.endpoints;

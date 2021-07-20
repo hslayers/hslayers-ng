@@ -358,7 +358,7 @@ export class HsSaveMapManagerService {
    *
    * @function setUserDetails
    * @memberof HsSaveMapManagerService
-   * @param {object} response Http response containig user data
+   * @param {object} response Http response containing user data
    */
   setUserDetails(response) {
     const user = response.data;

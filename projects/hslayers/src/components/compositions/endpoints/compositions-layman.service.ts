@@ -53,12 +53,12 @@ export class HsCompositionsLaymanService {
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
 
-    const withPermisionOrMine = params.filterByOnlyMine
+    const withPermissionOrMine = params.filterByOnlyMine
       ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
         ? `workspaces/${endpoint.user}/`
         : ''
       : '';
-    const url = `${endpoint.url}/rest/${withPermisionOrMine}maps`;
+    const url = `${endpoint.url}/rest/${withPermissionOrMine}maps`;
 
     endpoint.listLoading = this.$http
       .get(url, {
@@ -139,7 +139,7 @@ export class HsCompositionsLaymanService {
         url: `${endpoint.url}/rest/workspaces/${record.workspace}/maps/${record.name}`,
         endpoint: endpoint,
         workspace: record.workspace,
-        id: `m-${record.uuid}`, //m-* to match mickas id structure.
+        id: `m-${record.uuid}`, //m-* to match micka's id structure.
       };
     });
   }

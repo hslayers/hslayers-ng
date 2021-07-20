@@ -44,7 +44,7 @@ export class HsQueryWmsService {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
       this.HsMapService.map.getLayers().forEach((layer) => {
-        if (getBase(layer) == true || layer.get('queriable') == false) {
+        if (getBase(layer) == true || layer.get('queryable') == false) {
           return;
         }
         if (getQueryFilter(layer) != undefined) {
@@ -302,7 +302,7 @@ export class HsQueryWmsService {
 
   /**
    * @function queryWmsLayer
-   * @description Get FeatureInfo from WMS queriable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
+   * @description Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
    * @param {Ol.Layer} layer Layer to Query
    * @param {Ol.coordinate} coordinate
    */

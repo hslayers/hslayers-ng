@@ -214,7 +214,7 @@ export class HsLayerManagerWmstService {
     const timePoints = Array.isArray(serviceLayerTimeConfig.values)
       ? serviceLayerTimeConfig.values
       : this.parseTimePoints(serviceLayerTimeConfig.values);
-    // Gracefully fallback throught time settings to find the best default value
+    // Gracefully fallback through time settings to find the best default value
     let today = new Date().toISOString();
     today = today.slice(0, today.indexOf('T'));
     let defaultTime;

@@ -18,7 +18,7 @@ export class HsUtilsService {
    * Add path to proxy cgi script (hsproxy.cgi) into URL and encode rest of URL if valid HTTP URL is send and proxy use is allowed.
    * @public
    * @param url - URL to proxify
-   * @param toEncoding - Optional parameter if UTF-8 encoding shouldn´t be used for non-image URLs.
+   * @param toEncoding - Optional parameter if UTF-8 encoding shouldn't be used for non-image URLs.
    * @returns Encoded Url with path to hsproxy.cgi script
    */
   proxify(url: string, toEncoding?: boolean): string {
@@ -277,7 +277,7 @@ export class HsUtilsService {
    */
   rainbow(numOfSteps: number, step: number, opacity: number | string): string {
     // based on http://stackoverflow.com/a/7419630
-    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
+    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
     // Adam Cole, 2011-Sept-14
     // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
     let r, g, b;

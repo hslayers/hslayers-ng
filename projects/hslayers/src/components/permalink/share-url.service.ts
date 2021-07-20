@@ -144,7 +144,7 @@ export class HsShareUrlService {
   }
 
   /**
-   * @returns Embeded url
+   * @returns Embedded url
    * Create Url for PureMap version of map
    */
   getPureMapUrl(): string {

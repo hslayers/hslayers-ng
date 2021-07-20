@@ -79,7 +79,7 @@ export class HsCompositionsComponent implements OnDestroy {
   /**
    * @param composition Composition to highlight
    * @param state Target state of composition ( True - highlighted, False - normal)
-   * Highlight (or dim) composition, toogle visual state of composition extent on map
+   * Highlight (or dim) composition, toggle visual state of composition extent on map
    */
   highlightComposition(composition, state: boolean): void {
     composition.highlighted = state;
@@ -89,7 +89,7 @@ export class HsCompositionsComponent implements OnDestroy {
   /**
    * @param url
    * @param record Composition to be loaded
-   * Load selected composition in map, if current composition was edited display Ovewrite dialog
+   * Load selected composition in map, if current composition was edited display Overwrite dialog
    */
 
   addCompositionUrl(url): void {

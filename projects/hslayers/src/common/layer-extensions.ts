@@ -301,9 +301,9 @@ export function getFeatureInfoLang(layer: Layer): any {
 
 export function setFromComposition(
   layer: Layer,
-  fromCompostion: boolean
+  fromComposition: boolean
 ): void {
-  layer.set(FROM_COMPOSITION, fromCompostion);
+  layer.set(FROM_COMPOSITION, fromComposition);
 }
 
 export function getFromComposition(layer: Layer): boolean {

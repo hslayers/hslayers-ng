@@ -37,7 +37,7 @@ export class HsQueryComponent implements OnDestroy {
       map.addOverlay(this.popup);
     });
 
-    //add current panel queriable - activate/deactivate
+    //add current panel queryable - activate/deactivate
     this.HsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((closed) => {
@@ -82,7 +82,7 @@ export class HsQueryComponent implements OnDestroy {
               invisiblePopup.contentDocument.body.children
             );
             if (bodyElementsFound) {
-              //TODO: dont count style, title, meta towards length
+              //TODO: don't count style, title, meta towards length
               if (this.HsQueryBaseService.popupClassname.length > 0) {
                 this.popup.getElement().className =
                   this.HsQueryBaseService.popupClassname;
