@@ -20,13 +20,13 @@ import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
-import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
-import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
+import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
-} from '../../common/wms/wms-get-capabilities-response.interface';
+} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 
 @Injectable({
   providedIn: 'root',

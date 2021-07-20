@@ -14,7 +14,7 @@ import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
+import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 
 @Injectable({
   providedIn: 'root',

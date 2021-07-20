@@ -9,7 +9,7 @@ import {HsHistoryListService} from '../../../../common/history-list/history-list
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 
 @Component({
   selector: 'hs-add-data-url-wms',

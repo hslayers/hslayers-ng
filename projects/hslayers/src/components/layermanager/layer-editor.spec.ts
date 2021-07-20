@@ -28,9 +28,9 @@ import {HsStylerService} from './../styles/styler.service';
 import {HsStylerServiceMock} from './../styles/styler.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
-import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
+import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {getCluster} from '../../common/layer-extensions';
 
 class HsConfigMock {

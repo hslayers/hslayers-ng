@@ -6,7 +6,7 @@ import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
+import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 
 @Component({
   selector: 'hs-add-data-url-wfs',

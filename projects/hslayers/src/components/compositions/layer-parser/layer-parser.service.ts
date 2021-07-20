@@ -23,8 +23,8 @@ import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
-import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
+import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({

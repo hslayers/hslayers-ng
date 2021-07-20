@@ -3,7 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
+import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsUtilsService} from '../../../utils/utils.service';

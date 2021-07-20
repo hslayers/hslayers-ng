@@ -11,7 +11,7 @@ import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 
 @Injectable({providedIn: 'root'})

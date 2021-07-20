@@ -8,7 +8,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {WmsLayer} from '../../common/wms/wms-get-capabilities-response.interface';
+import {WmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {getDimensions, setDimensions} from '../../common/layer-extensions';
 
 @Injectable({
