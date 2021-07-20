@@ -67,9 +67,10 @@ export class AppComponent {
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      HslayersCesiumComponent
-    );
+    const componentFactory =
+      this.componentFactoryResolver.resolveComponentFactory(
+        HslayersCesiumComponent
+      );
 
     this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
       if (mapSpace) {

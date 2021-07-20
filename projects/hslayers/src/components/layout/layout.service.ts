@@ -417,9 +417,10 @@ export class HsLayoutService {
   }
 
   addMapVisualizer(visualizerComponent: Type<unknown>): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      visualizerComponent
-    );
+    const componentFactory =
+      this.componentFactoryResolver.resolveComponentFactory(
+        visualizerComponent
+      );
 
     this.mapSpaceRef.subscribe((mapSpace) => {
       if (mapSpace) {

@@ -9,6 +9,7 @@ import {Vector} from 'ol/source';
 import {toRadians} from 'ol/math';
 
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './../utils/utils.service';
 
@@ -51,6 +52,7 @@ export class HsGeolocationService {
   constructor(
     public HsMapService: HsMapService,
     public HsLayoutService: HsLayoutService,
+    public hsLog: HsLogService,
     public HsUtilsService: HsUtilsService
   ) {
     this.accuracyFeature = new Feature({
@@ -259,7 +261,7 @@ export class HsGeolocationService {
   }
 
   setRotation(): void {
-   console.error('Device rotation tracking currently not implemented')
+    this.hsLog.error('Device rotation tracking currently not implemented');
   }
   /**
    * @param map

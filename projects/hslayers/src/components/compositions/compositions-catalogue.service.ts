@@ -264,9 +264,8 @@ export class HsCompositionsCatalogueService {
     );
     this.matchedCompositions -=
       endpoint.compositions.length - filteredCompositions.length;
-    this.compositionEntries = this.compositionEntries.concat(
-      filteredCompositions
-    );
+    this.compositionEntries =
+      this.compositionEntries.concat(filteredCompositions);
   }
   /**
    * Clears all list counters regarding paging

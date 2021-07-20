@@ -31,19 +31,17 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     private zone: NgZone
   ) {
-    this.unregisterMapSyncCenterHandlerSubscription = this.HsEventBusService.mapCenterSynchronizations.subscribe(
-      (data) => {
+    this.unregisterMapSyncCenterHandlerSubscription =
+      this.HsEventBusService.mapCenterSynchronizations.subscribe((data) => {
         this.onCenterSync(data);
-      }
-    );
+      });
   }
   ngAfterViewInit(): void {
     this.HsMapService.mapElement = this.map.nativeElement;
 
     if (this.HsPermalinkUrlService.getParamValue('visible_layers')) {
-      const visibleLayersParam = this.HsPermalinkUrlService.getParamValue(
-        'visible_layers'
-      );
+      const visibleLayersParam =
+        this.HsPermalinkUrlService.getParamValue('visible_layers');
       this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
     this.zone.runOutsideAngular(() => this.HsMapService.init());

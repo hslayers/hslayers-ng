@@ -49,7 +49,7 @@ export const light: Theme = {
     //*GREY-800 */
     '--gray-800': 'hsl(210, 10%, 23%)',
     //*GREY-900 */
-    '--gray-900': 'hsl(210, 11%, 15%)', 
+    '--gray-900': 'hsl(210, 11%, 15%)',
     /* WHITE */
     '--white': 'hsl(0, 0%, 100%)',
     '--white-h': '0',

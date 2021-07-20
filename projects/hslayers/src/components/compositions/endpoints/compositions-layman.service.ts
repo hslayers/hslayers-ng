@@ -1,21 +1,22 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {catchError, map, timeout} from 'rxjs/operators';
+import {transformExtent} from 'ol/proj';
+
 import {
   EndpointErrorHandler,
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
-import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
+import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
-import {transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
 })
@@ -81,7 +82,8 @@ export class HsCompositionsLaymanService {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'COMPOSITIONS.errorWhileRequestingCompositions',
-              response.body);
+              response.body
+            );
           }
         }),
         catchError((e) => {

@@ -86,7 +86,9 @@ export class HsCompositionsListItemComponent {
    * @description Display delete dialog of composition
    */
   confirmDelete(composition): void {
-    if(!composition.editable) return
+    if (!composition.editable) {
+      return;
+    }
     this.deleteDialogBootstrap(composition);
   }
   /**

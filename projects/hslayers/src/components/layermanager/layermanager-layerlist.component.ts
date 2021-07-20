@@ -48,12 +48,11 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.layerManagerUpdatesSubscription = this.HsEventBusService.layerManagerUpdates.subscribe(
-      () => {
+    this.layerManagerUpdatesSubscription =
+      this.HsEventBusService.layerManagerUpdates.subscribe(() => {
         this.HsLayerManagerService.updateLayerListPositions();
         this.updateLayers();
-      }
-    );
+      });
   }
   ngOnDestroy(): void {
     this.layerManagerUpdatesSubscription.unsubscribe();

@@ -3,19 +3,19 @@ import {NgModule} from '@angular/core';
 
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {FilterPipe} from './filter.pipe';
-import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
+import {HsUiExtensionsRecursiveDdComponent} from './recursive-dd.component';
 
 @NgModule({
   declarations: [
-    HsUiExtensionsRecursiveDd,
+    HsUiExtensionsRecursiveDdComponent,
     EndpointsWithDatasourcesPipe,
     FilterPipe,
   ],
   imports: [CommonModule],
   providers: [EndpointsWithDatasourcesPipe],
-  entryComponents: [HsUiExtensionsRecursiveDd],
+  entryComponents: [HsUiExtensionsRecursiveDdComponent],
   exports: [
-    HsUiExtensionsRecursiveDd,
+    HsUiExtensionsRecursiveDdComponent,
     EndpointsWithDatasourcesPipe,
     FilterPipe,
   ],

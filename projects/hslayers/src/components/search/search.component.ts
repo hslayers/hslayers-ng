@@ -25,11 +25,10 @@ export class HsSearchComponent implements OnInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     public HsShareUrlService: HsShareUrlService
   ) {
-    this.searchResultsReceivedSubscription = this.HsEventBusService.searchResultsReceived.subscribe(
-      () => {
+    this.searchResultsReceivedSubscription =
+      this.HsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;
-      }
-    );
+      });
   }
   ngOnDestroy(): void {
     this.searchResultsReceivedSubscription.unsubscribe();

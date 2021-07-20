@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'legend-vector-layer-directive',
+  selector: 'hs-legend-vector-layer',
   templateUrl: './partials/layer-vector-directive.html',
 })
 export class HsLegendLayerVectorComponent {
@@ -9,6 +9,4 @@ export class HsLegendLayerVectorComponent {
   @Input('geometry-type') geometryType: any;
 
   constructor() {}
-
-  ngOnInit() {}
 }

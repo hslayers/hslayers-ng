@@ -58,7 +58,7 @@ export class HsSaveMapManagerService {
   preSaveCheckCompleted: Subject<{endpoint}> = new Subject();
   changeTitle: boolean;
   currentUser: boolean;
-  
+
   constructor(
     public HsMapService: HsMapService,
     public HsSaveMapService: HsSaveMapService,
@@ -172,7 +172,7 @@ export class HsSaveMapManagerService {
 
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
-      // Check whether layers were already formated 
+      // Check whether layers were already formatted
       if (this.compoData.layers[0].layer) {
         this.compoData.layers = this.compoData.layers
           .filter((l) => l.checked)

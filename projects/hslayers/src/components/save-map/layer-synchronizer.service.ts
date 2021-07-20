@@ -85,11 +85,12 @@ export class HsLayerSynchronizerService {
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
       //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
-      new RegExp('^(?=.*wfs)(?:(?!external).)*$','i').test(definition?.format?.toLowerCase())
+      new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
+        definition?.format?.toLowerCase()
+      )
     );
   }
 
-  
   /**
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initially also get features from server

@@ -22,18 +22,16 @@ export class HsLegendLayerComponent implements OnInit {
 
     if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
       this.styles = this.HsLegendService.getStyleVectorLayer(olLayer);
-      this.geometryTypes = this.HsLegendService.getVectorFeatureGeometry(
-        olLayer
-      );
+      this.geometryTypes =
+        this.HsLegendService.getVectorFeatureGeometry(olLayer);
     }
     if (olLayer.getSource()) {
       const source = olLayer.getSource();
       const changeHandler = this.HsUtilsService.debounce(
         (e) => {
           this.styles = this.HsLegendService.getStyleVectorLayer(olLayer);
-          this.geometryTypes = this.HsLegendService.getVectorFeatureGeometry(
-            olLayer
-          );
+          this.geometryTypes =
+            this.HsLegendService.getVectorFeatureGeometry(olLayer);
         },
         200,
         false,

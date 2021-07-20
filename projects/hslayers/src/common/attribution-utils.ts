@@ -8,6 +8,7 @@ export function addAnchors(url: string): string {
   if (!url) {
     return null;
   }
-  const exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+  const exp =
+    /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
   return url.replace(exp, "<a href='$1'>$1</a>");
 }
