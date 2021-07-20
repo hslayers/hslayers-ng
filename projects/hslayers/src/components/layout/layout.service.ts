@@ -167,8 +167,6 @@ export class HsLayoutService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayoutService#panelVisible
    * @public
    * @param {string} which Name of panel to test
    * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
@@ -200,8 +198,6 @@ export class HsLayoutService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayoutService#closePanel
    * @public
    * @param {object} which Panel to close (panel scope)
    * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.

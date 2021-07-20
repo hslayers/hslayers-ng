@@ -7,7 +7,6 @@ import {HsSearchService} from './search.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 
 /**
- * @name HsSearchInputComponent
  * Add search input template to page
  */
 @Component({
@@ -44,9 +43,6 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   }
   /**
    * Handler of search input, request search service and display results div
-   *
-   * @memberof HsSearchInputComponent
-   * @function queryChanged
    */
   queryChanged(): void {
     if (this.query.length == 0) {
@@ -57,9 +53,6 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   }
   /**
    * Remove previous search and search results
-   *
-   * @memberof HsSearchInputComponent
-   * @function clear
    */
   clear(): void {
     this.query = '';

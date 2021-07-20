@@ -32,7 +32,6 @@ export class HsMickaBrowserService {
   ) {}
 
   /**
-   * @function queryCatalog
    * @param {object} dataset Configuration of selected datasource (from app config)
    * @param {object} query Container for all query filter values
    * @param data
@@ -153,7 +152,6 @@ export class HsMickaBrowserService {
 
   /**
    * @private
-   * @function datasetsReceived
    * @param {Object} data HTTP response containing all the layers
    * @description Callback for catalogue http query
    */
@@ -185,10 +183,9 @@ export class HsMickaBrowserService {
 
   /**
    * @private
-   * @function param2Query
    * @param {string} which Parameter name to parse
    * @param {object} query
-   * @return {string}
+   * @returns {string}
    * @description Parse query parameter into encoded key value pair.
    */
   private param2Query(which: string, query): string {
@@ -220,9 +217,8 @@ export class HsMickaBrowserService {
 
   /**
    * @private
-   * @function addExtentFeature
    * @param {Object} record Record of one dataset from Get Records response
-   * @return {Feature | undefined}
+   * @returns {Feature | undefined}
    * @description Create extent features for displaying extent of loaded dataset records in map
    */
   private addExtentFeature(record): Feature | undefined {
@@ -288,11 +284,10 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @function getLayerLink
    * @param type
    * @param {object} layer Micka layer for which to get metadata
    * @param {string} type Optional service type specification
-   * @return {string} Url of service or resource
+   * @returns {string} Url of service or resource
    * @description Get first link from records links array or link
    * property of record in older Micka versions
    * in a common format for use in add-layers component
@@ -320,10 +315,9 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @function describeWhatToAdd
    * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
    * @param {object} layer Micka layer for which to get metadata
-   * @return {Promise} promise which describes layer
+   * @returns {Promise} promise which describes layer
    * in a common format for use in add-layers component
    * @description Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component

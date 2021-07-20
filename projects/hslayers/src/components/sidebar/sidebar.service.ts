@@ -21,9 +21,6 @@ export class HsSidebarService {
   /**
    * If buttons with importancy property exist.
    * If not, don't display expansion +/- icon
-   *
-   * @memberof HsSidebarService
-   * @member buttons
    */
   unimportantExist = false;
   visibleButtons: Array<HsButton> = [];
@@ -47,17 +44,11 @@ export class HsSidebarService {
 
     /**
      * List of visible buttons taking into account viewport size
-     *
-     * @memberof HsSidebarService
-     * @member visibleButtons
      */
     this.visibleButtons = [];
 
     /**
      * List of sidebar buttons
-     *
-     * @memberof HsSidebarService
-     * @member buttons
      */
     this.buttons = [
       {
@@ -342,9 +333,6 @@ export class HsSidebarService {
    * should be placed in sidebar rather then in map.
    * It´s necessary for buttons like 'measure' because simple
    * 'config.panelsEnabled = false' would prevent their functionality.
-   *
-   * @memberof HsSidebarService
-   * @function checkConfigurableButtons
    * @param {object} button buttons Buttons object
    */
   checkConfigurableButtons(button: HsButton): boolean {
@@ -358,7 +346,6 @@ export class HsSidebarService {
   }
 
   /**
-   * @name HsSidebarService#fitsSidebar
    * @public
    * @param {string} which Sidear button to be checked (specify panel name)
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel

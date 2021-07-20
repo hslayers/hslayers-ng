@@ -57,8 +57,6 @@ export class HslayersCesiumComponent {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCesiumController#toggleCesiumMap
    * @private
    * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
    */

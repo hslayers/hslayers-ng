@@ -14,11 +14,6 @@ export class HsPanelHeaderComponent {
 
   constructor(public HsLayoutService: HsLayoutService) {}
 
-  /**
-   *
-   * @memberof hs-panel-header.component
-   * @function closePanel
-   */
   closePanel(): void {
     this.HsLayoutService.closePanel(this.name);
   }

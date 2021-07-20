@@ -228,9 +228,6 @@ export class HsTripPlannerService {
 
   /**
    * Load selected trip data from plan4all server and calculate routes
-   *
-   * @memberof HsTripPlannerService
-   * @function loadWaypoints
    * @params {string} uuid Identifier of selected trip
    * @param uuid
    */
@@ -257,9 +254,6 @@ export class HsTripPlannerService {
   }
   /**
    * Add waypoint to waypoint list and recalculate route
-   *
-   * @memberof HsTripPlannerService
-   * @function addWaypoint
    * @param {number} lon Longitude number (part of Ol.coordinate Array)
    * @param {number} lat Latitude number (part of Ol.coordinate Array)
    */
@@ -295,9 +289,7 @@ export class HsTripPlannerService {
 
   /**
    * Handler of adding waypoint in connected service
-   *
-   * @function waypointAdded
-   * @param {object} wp Waypoint ojbect, with lat, lon and routes array
+   * @param wp - Waypoint object, with lat, lon and routes array
    */
   waypointAdded(wp: Waypoint): void {
     this.movable_features.push(wp.feature);
@@ -330,9 +322,7 @@ export class HsTripPlannerService {
 
   /**
    * Remove selected route from source
-   *
-   * @function routeRemoved
-   * @param {object} feature Route feature to remove
+   * @param feature - Route feature to remove
    */
   routeRemoved(feature: Feature): void {
     try {
@@ -346,9 +336,7 @@ export class HsTripPlannerService {
 
   /**
    * (PRIVATE) Remove routes from selected waypoint
-   *
-   * @function removeRoutesForWaypoint
-   * @param {object} wp Waypoint to remove routes
+   * @param wp - Waypoint to remove routes
    */
   removeRoutesForWaypoint(wp: Waypoint): void {
     this.routeRemoved(wp.routes.from);
@@ -358,9 +346,7 @@ export class HsTripPlannerService {
 
   /**
    * Remove selected waypoint from source
-   *
-   * @function waypointRemoved
-   * @param {object} wp Waypoint feature to remove
+   * @param wp - Waypoint feature to remove
    */
   waypointRemoved(wp: Waypoint): void {
     try {
@@ -372,9 +358,6 @@ export class HsTripPlannerService {
 
   /**
    * Store current waypoints on remote Plan4All server if possible
-   *
-   * @memberof HsTripPlannerService
-   * @function storeWaypoints
    */
   storeWaypoints() {
     if (this.HsShareUrlService.getParamValue('trip_editable') === null) {
@@ -414,9 +397,6 @@ export class HsTripPlannerService {
   }
   /**
    * Remove selected waypoint from trip
-   *
-   * @memberof HsTripPlannerService
-   * @function removeWaypoint
    * @param {object} wp Waypoint object to remove
    */
   removeWaypoint(wp) {
@@ -439,8 +419,6 @@ export class HsTripPlannerService {
 
   /**
    * Clear all waypoints from service and layer
-   *
-   * @function clearAll
    */
   clearAll(): void {
     this.waypoints = [];
@@ -450,9 +428,7 @@ export class HsTripPlannerService {
 
   /**
    * Handler of adding computed route to layer
-   *
-   * @function routeAdded
-   * @param {GeoJSON} feature Route to add
+   * @param feature - Route to add
    */
   routeAdded(feature: Feature): void {
     this.routeSource.addFeatures(feature);
@@ -460,9 +436,6 @@ export class HsTripPlannerService {
 
   /**
    * Calculate routes between stored waypoints
-   *
-   * @memberof HsTripPlannerService
-   * @function calculateRoutes
    */
   calculateRoutes() {
     for (let i = 0; i < this.waypoints.length - 1; i++) {
@@ -527,11 +500,9 @@ export class HsTripPlannerService {
 
   /**
    * Format waypoint route distance in a human friendly way
-   *
-   * @function formatDistance
+   * @param wp - Wayoint
    * @param which
-   * @param {float} wp Wayoint
-   * @returns {string} Distance
+   * @returns Distance
    */
   formatDistance(wp: Waypoint, which?: string): string {
     which = which !== undefined ? which : 'from';

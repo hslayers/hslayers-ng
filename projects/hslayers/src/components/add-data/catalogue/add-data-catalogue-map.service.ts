@@ -91,8 +91,6 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @function clearDatasetFeatures
-   * @memberof HsAddDataCatalogueService
    * @param {object} dataset Configuration of selected datasource (from app config)
    * @description Remove layer extent features from map
    */
@@ -111,21 +109,19 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @function isZoomable
-   * @param {unknown} layer TODO
-   * @returns {boolean} Returns if bbox is specified and thus layer is zoomable
-   * @description Test if it possible to zoom to layer overview (bbox has to be defined
+   * Test if it possible to zoom to layer overview (bbox has to be defined
    * in metadata of selected layer)
+   * @param layer TODO
+   * @returns Returns if bbox is specified and thus layer is zoomable
    */
   isZoomable(layer): boolean {
     return layer.bbox !== undefined;
   }
 
   /**
-   * @function addExtentFeature
-   * @param {Feature} extentFeature Openlayers Feature
-   * @description Callback function which gets executed when extent feature
+   * Callback function which gets executed when extent feature
    * is created. It should add the feature to vector layer source
+   * @param extentFeature - OpenLayers Feature
    */
   addExtentFeature(extentFeature: Feature): void {
     this.extentLayer.getSource().addFeatures([extentFeature]);
@@ -138,9 +134,8 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @function zoomTo
-   * @param {string} bbox Bounding box of selected layer
-   * @description ZoomTo / MoveTo to selected layer overview
+   * ZoomTo / MoveTo to selected layer overview
+   * @param bbox - Bounding box of selected layer
    */
   zoomTo(bbox): void {
     if (bbox === undefined) {

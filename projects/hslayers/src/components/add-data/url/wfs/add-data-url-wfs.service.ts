@@ -377,7 +377,6 @@ export class HsAddDataWfsService {
   }
 
   /**
-   * @function addLayers
    * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
    */
@@ -406,7 +405,6 @@ export class HsAddDataWfsService {
   }
 
   /**
-   * @function addLayer
    * @private
    * @description (PRIVATE) Add selected layer to map???
    * @param {object} layer capabilities layer object

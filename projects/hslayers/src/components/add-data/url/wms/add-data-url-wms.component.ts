@@ -90,8 +90,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
   };
 
   /**
-   * @function selectAllLayers
-   * @description Select all layers from service
+   * Select all layers from service
    * @param layers
    */
   selectAllLayers(layers: any[]): void {
@@ -118,7 +117,6 @@ export class HsAddDataWmsComponent implements OnDestroy {
 
   /**
    * @description Connect to service of specified Url
-   * @function setUrlAndConnect
    * @param {string} url Url of requested service
    * @param {string} [layer] Optional layer to select, when
    * getCapabilities arrives

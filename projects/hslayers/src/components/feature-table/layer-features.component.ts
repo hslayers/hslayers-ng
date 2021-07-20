@@ -44,8 +44,6 @@ export class HsLayerFeaturesComponent implements OnInit {
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
   /**
-   * @ngdoc method
-   * @name HsLayerFeaturesComponent#ngOnInit
    * @public
    * @description Activate listeners for any layer source changes to update the html table
    */
@@ -69,8 +67,6 @@ export class HsLayerFeaturesComponent implements OnInit {
   }
   /**
    * @param operation Action for html table
-   * @ngdoc method
-   * @name HsLayerFeaturesComponent#executeOperation
    * @public
    * @description zoom to feature from html table after triggering zoom action
    */

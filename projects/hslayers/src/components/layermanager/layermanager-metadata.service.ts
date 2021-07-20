@@ -46,7 +46,7 @@ export class HsLayerManagerMetadataService {
    * It is used as reference for sublayer structure, metadata
    * @param layerName
    * @param currentLayer
-   * @return Wms layer definition
+   * @returns Wms layer definition
    */
   identifyLayerObject(layerName: string, currentLayer: WmsLayer): WmsLayer {
     // FIXME: Temporary bypass for layer names like 'UTM:evi'

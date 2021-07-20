@@ -25,9 +25,7 @@ export class HsSensorsComponent implements HsPanelComponent, OnInit {
   }
 
   /**
-   * @memberof hs.sensors.component
-   * @function init
-   * @description Init function used to populate list of units and later
+   * Init function used to populate list of units and later
    * create some map functionality
    */
   init(): void {

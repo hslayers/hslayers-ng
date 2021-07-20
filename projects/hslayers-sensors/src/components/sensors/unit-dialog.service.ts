@@ -99,8 +99,6 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
-   * @memberof HsSensorsService
-   * @function getObservationHistory
    * @param {object} unit Object containing
    * {description, is_mobile, sensors, unit_id, unit_type}
    * @param {object} interval Object {amount, unit}. Used to substract time
@@ -145,8 +143,6 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
-   * @memberof HsSensorsService
-   * @function createChart
    * @param {object} unit Unit description
    * @description Create vega chart definition and use it in vegaEmbed
    * chart library. Observations for a specific unit from Senslog come
@@ -262,36 +258,34 @@ export class HsSensorsUnitDialogService {
   private calculateAggregates(unit: any, observations: any): Aggregate[] {
     const aggregates: Aggregate[] = unit.sensors
       .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
-      .map(
-        (sensor): Aggregate => {
-          const tmp: Aggregate = {
-            min: 0,
-            max: 0,
-            avg: 0,
-            sensor_id: sensor.sensor_id,
-            sensor_name: sensor.sensor_name,
-          };
-          const filteredObs = observations
-            .filter((obs) => obs.sensor_id == sensor.sensor_id)
-            .map((obs) => {
-              return {value: obs.value, time: obs.time_stamp};
-            });
-          tmp.max = Math.max(
-            ...filteredObs.map((o) => {
-              return o.value;
-            })
-          );
-          tmp.min = Math.min(
-            ...filteredObs.map((o) => {
-              return o.value;
-            })
-          );
-          tmp.avg =
-            filteredObs.reduce((p, c) => p + c.value, 0) / filteredObs.length;
-          tmp.avg = Math.round(tmp.avg * Math.pow(10, 2)) / Math.pow(10, 2);
-          return tmp;
-        }
-      );
+      .map((sensor): Aggregate => {
+        const tmp: Aggregate = {
+          min: 0,
+          max: 0,
+          avg: 0,
+          sensor_id: sensor.sensor_id,
+          sensor_name: sensor.sensor_name,
+        };
+        const filteredObs = observations
+          .filter((obs) => obs.sensor_id == sensor.sensor_id)
+          .map((obs) => {
+            return {value: obs.value, time: obs.time_stamp};
+          });
+        tmp.max = Math.max(
+          ...filteredObs.map((o) => {
+            return o.value;
+          })
+        );
+        tmp.min = Math.min(
+          ...filteredObs.map((o) => {
+            return o.value;
+          })
+        );
+        tmp.avg =
+          filteredObs.reduce((p, c) => p + c.value, 0) / filteredObs.length;
+        tmp.avg = Math.round(tmp.avg * Math.pow(10, 2)) / Math.pow(10, 2);
+        return tmp;
+      });
     return aggregates;
   }
 

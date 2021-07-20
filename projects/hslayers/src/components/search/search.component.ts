@@ -5,11 +5,6 @@ import {Subscription} from 'rxjs';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
-/**
- * @memberof hs.search
- * @ngdoc component
- * @name HsSearchComponent
- */
 @Component({
   selector: 'hs-search',
   templateUrl: './partials/search.html',
@@ -53,9 +48,6 @@ export class HsSearchComponent implements OnInit, OnDestroy {
 
   // /**
   //  * Set property highlighted of result to state
-  //  *
-  //  * @memberof HsSearcComponent
-  //  * @function highlightResult
   //  * @param {object} result Record to highlight
   //  * @param {string} state To highlight or not to highlight
   //  */

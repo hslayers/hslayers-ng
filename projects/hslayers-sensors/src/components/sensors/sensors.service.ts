@@ -195,9 +195,7 @@ export class HsSensorsService {
   }
 
   /**
-   * @memberof HsSensorsService
-   * @function getUnits
-   * @description Get list of units from Senslog backend
+   * Get list of units from Senslog backend
    */
   getUnits() {
     if (this.layer === null) {

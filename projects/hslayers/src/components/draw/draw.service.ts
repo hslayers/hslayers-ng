@@ -62,7 +62,6 @@ export class HsDrawService {
 
   /**
    * @type {GeometryType}
-   * @memberof HsDrawService
    */
   type: string; //string of type GeometryType
   selectedLayer: Layer;
@@ -332,10 +331,9 @@ export class HsDrawService {
   }
 
   /**
+   * Handles drawing layer selection/change by activating drawing for selected layer.
+   * In case of Layman layer not yet existing in app it pulls the layer first.
    * @param layer
-   * @function selectLayer
-   * @description Handles drawing layer selection/change by activating drawing for selected layer.
-   * In case of layman layer not yet existing in app it pulls the layer first.
    */
   async selectLayer(layer) {
     let lyr = layer;
@@ -366,9 +364,8 @@ export class HsDrawService {
     this.fillDrawableLayers();
   }
   /**
+   * Add draw layer to the map and repopulate list of drawables.
    * @param layer
-   * @function addDrawLayer
-   * @description Add draw layer to the map and repopulate list of drawables.
    */
   addDrawLayer(layer: Layer): void {
     this.HsMapService.map.addLayer(layer);
@@ -376,8 +373,6 @@ export class HsDrawService {
   }
 
   /**
-   * @function updateStyle
-   * @memberof HsDrawService
    * @param {Function} changeStyle controller callback function
    * @description Update draw style without neccessity to reactivate drawing interaction
    */
@@ -428,9 +423,9 @@ export class HsDrawService {
   removeLastPoint(): void {
     this.draw.removeLastPoint();
   }
+
   /**
-   * @function changeDrawSource
-   * @description Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
+   * Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
    */
   changeDrawSource(): void {
     if (this.selectedLayer.getSource === undefined) {
@@ -457,9 +452,8 @@ export class HsDrawService {
   }
 
   /**
-   * @function deactivateDrawing
-   * @return {Promise}
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
+   * @returns {Promise}
    */
   deactivateDrawing(): Promise<undefined> {
     return new Promise((resolve, reject) => {
@@ -564,8 +558,7 @@ export class HsDrawService {
   }
 
   /**
-   * @function removeLayer
-   * @description Removes selected drawing layer from both Layermanager and Layman
+   * Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(): Promise<void> {
     const note = this.isAuthorized
@@ -607,12 +600,12 @@ export class HsDrawService {
       this.removeLastPoint();
     }
   }
+
   /**
-   * @function rightClickCondition
-   * @description Determines whether rightclick should finish the drawing or not
-   * @param typeNum Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
-   * @param vertexCount Number of vertexes the sketch has
-   * @return return boolean value if right mouse button was clicked
+   * Determines whether rightclick should finish the drawing or not
+   * @param typeNum - Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
+   * @param vertexCount - Number of vertexes the sketch has
+   * @returns return boolean value if right mouse button was clicked
    */
   rightClickCondition(typeNum: number, vertexCount: number): boolean {
     const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;
@@ -629,8 +622,6 @@ export class HsDrawService {
     return false;
   }
   /**
-   * @function activateDrawing
-   * @memberof HsDrawService
    * @param {object} options Options object
    * @param {Function} [options.onDrawStart] Callback function called when drawing is started
    * @param {Function} [options.onDrawEnd] Callback function called when drawing is finished

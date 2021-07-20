@@ -65,8 +65,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function switchMultipleMode
    * @public
    * @param {boolean?} mode Optional parameter if multiple shape mode should be enabled
    * @description Enable/disable multiple shape mode for measuring (switch without parameter)
@@ -80,8 +78,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function changeMeasureParams
    * @public
    * @param {string} type Geometry type of measurement ('area' for polygon, 'line' for linestring)
    * @description Change geometry type of measurement without deleting of old ones
@@ -93,8 +89,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function clearMeasurement
    * @public
    * @description Clear all measurements and restart measuring
    */
@@ -107,8 +101,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function activateMeasuring
    * @public
    * @param type
    * @description Start measuring interaction in app
@@ -135,8 +127,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function deactivateMeasuring
    * @public
    * @description Stop measuring interaction in app
    */
@@ -159,8 +149,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function mouseMoveHandler
    * @private
    * @param {object} evt Callback param for mouse move event
    * @description Callback for mouse and touch move event, compute live measurement results
@@ -185,8 +173,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function addMultiple
    * @private
    * @param {Measurement} val1 Output of new object
    * @param {Measurement} val2 Old value
@@ -227,8 +213,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function addInteraction
    * @private
    * @param {string} type Geometry type
    * @description Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
@@ -269,8 +253,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function formatLength
    * @private
    * @param {LineString} line
    * @returns {Measurement} numeric length of line with used units
@@ -304,8 +286,6 @@ export class HsMeasureService {
   }
 
   /**
-   * @memberof HsMeasureService
-   * @function formatArea
    * @private
    * @param {Polygon} polygon
    * @returns {object} area of polygon with used units

@@ -10,7 +10,6 @@ export class HsAddDataFileShpService {
   constructor(private httpClient: HttpClient, public hsLog: HsLogService) {}
 
   /**
-   * @function add
    * @description Load non-wms OWS data and create layer
    * @param {object} endpoint Layman endpoint description (url, name, user)
    * @param {Array} files Array of shp files (shp, dbf, shx)

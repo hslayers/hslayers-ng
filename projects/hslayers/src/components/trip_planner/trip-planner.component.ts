@@ -9,11 +9,6 @@ import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setHighlighted} from '../../common/feature-extensions';
 
-/**
- * @memberof hs.trip_planner
- * @ngdoc component
- * @name HsTripPlannerToolbarButtonComponent
- */
 @Component({
   selector: 'hs-trip-planner',
   templateUrl: './trip_planner.html',
@@ -42,9 +37,6 @@ export class HsTripPlannerComponent implements OnInit {
 
   /**
    * Format waypoint route distance in a human friendly way
-   *
-   * @memberof HsTripPlannerController
-   * @function formatDistance
    * @param {float} wp Wayoint
    * @returns {string} Distance
    */
@@ -54,9 +46,6 @@ export class HsTripPlannerComponent implements OnInit {
 
   /**
    * Get the total distance for all waypoint routes
-   *
-   * @memberof HsTripPlannerController
-   * @function totalDistance
    * @returns {string} Distance
    */
   totalDistance(): string {
@@ -71,9 +60,6 @@ export class HsTripPlannerComponent implements OnInit {
 
   /**
    * Remove selected waypoint from source
-   *
-   * @memberof HsTripPlannerController
-   * @function toggleEdit
    * @param {object} waypoint
    */
   toggleEdit(waypoint: Feature): void {

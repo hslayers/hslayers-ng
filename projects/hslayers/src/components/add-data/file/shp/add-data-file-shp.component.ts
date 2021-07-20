@@ -129,7 +129,6 @@ export class HsAddDataFileShpComponent implements OnInit {
   }
 
   /**
-   * @function add
    * @description Handler for button click to send shape file to layman and wait for
    * answer with wms service url to add to map
    */

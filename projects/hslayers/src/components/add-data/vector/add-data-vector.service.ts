@@ -54,7 +54,6 @@ export class HsAddDataVectorService {
   ) {}
 
   /**
-   * @function addVectorLayer
    * @description Load non-wms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
@@ -112,7 +111,6 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * @function add
    * @description Load non-wms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization

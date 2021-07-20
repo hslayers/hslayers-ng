@@ -7,7 +7,6 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
 
 /**
- * @name HsSearchResultsComponent
  * Add search results template to page
  */
 @Component({

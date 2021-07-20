@@ -11,8 +11,6 @@ export class HsLanguageService {
   }
 
   /**
-   * @memberof HsLanguageService
-   * @function setlanguage
    * @public
    * @param {string} lang Language code
    * @description Set language
@@ -26,8 +24,6 @@ export class HsLanguageService {
   }
 
   /**
-   * @function method
-   * @name HsLanguageService#getCurrentLanguagePrefix
    * @public
    * @returns {string} Returns language code
    * @description Get code of current language
@@ -40,8 +36,6 @@ export class HsLanguageService {
   }
 
   /**
-   * @function listAvailableLanguages
-   * @memberof HsLanguageService
    * @public
    * @returns {Object} Returns available languages
    * @description Get array of available languages based

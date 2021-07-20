@@ -134,7 +134,6 @@ export class HsAddDataArcGisService {
   }
 
   /**
-   * @function addLayers
    * @param checkedOnly
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param {boolean} checked Add all available layers or only checked ones. Checked=false=all
@@ -165,7 +164,6 @@ export class HsAddDataArcGisService {
   }
 
   /**
-   * @function createBasemapName
    * Constructs body of LAYER parameter for getMap request
    * @param layer Optional. layer object received from capabilities. If no layer is provided
    * merge all checked layer ids into one string
@@ -247,7 +245,6 @@ export class HsAddDataArcGisService {
   }
 
   /**
-   * @function addLayer
    * @description Add selected layer to map
    * @param {object} layer capabilities layer object
    * @param {string} layerName layer name in the map
@@ -324,7 +321,6 @@ export class HsAddDataArcGisService {
   }
 
   /**
-   * @function addService
    * @description Add service and its layers to project TODO
    * @param {string} url Service url
    * @param {Group} group Group layer to which add layer to

@@ -157,9 +157,8 @@ export class HsAddDataCatalogueService {
   }
 
   /**
+   * Queries all configured catalogs for datasources (layers)
    * @param suspendLimitCalculation
-   * @function queryCatalogs
-   * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(suspendLimitCalculation?: boolean): void {
     if (this.endpointsWithDatasources.length > 0) {
@@ -297,12 +296,11 @@ export class HsAddDataCatalogueService {
   }
 
   /**
-   * @function queryCatalog
-   * @param {HsEndpoint} catalog Configuration of selected datasource (from app config)
-   * @description Loads datasets metadata from selected source (CSW server).
+   * Loads datasets metadata from selected source (CSW server).
    * Uses pagination set by 'start' attribute of 'dataset' param.
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
+   * @param catalog - Configuration of selected datasource (from app config)
    */
   queryCatalog(catalog: HsEndpoint) {
     this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
@@ -326,11 +324,10 @@ export class HsAddDataCatalogueService {
   }
 
   /**
-   * @function layerDownload
-   * @param {HsEndpoint} ds Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @return {string} Download url of layer if possible
-   * @description Test if layer of selected record is downloadable (KML and JSON files, with direct url) and gives Url.
+   * Test if layer of selected record is downloadable (KML and JSON files, with direct URL) and gives URL.
+   * @param ds - Datasource of selected layer
+   * @param layer - Metadata record of selected layer
+   * @returns Download URL of layer if possible
    */
   layerDownload(ds: HsEndpoint, layer): string {
     if (ds.download == true) {
@@ -345,23 +342,21 @@ export class HsAddDataCatalogueService {
   }
 
   /**
-   * @function layerRDF
-   * @param {HsEndpoint} ds Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @return {string} URL to record file
-   * @description Get URL for RDF-DCAT record of selected layer
+   * Get URL for RDF-DCAT record of selected layer
+   * @param ds - Datasource of selected layer
+   * @param layer - Metadata record of selected layer
+   * @returns URL to record file
    */
   layerRDF(ds: HsEndpoint, layer): string {
     return `${ds.url}?request=GetRecordById&id=${layer.id}&outputschema=http://www.w3.org/ns/dcat%23`;
   }
 
   /**
-   * @function addLayerToMap
-   * @param {HsEndpoint} ds Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
-   * @return {Array<any> | any} Type or array of types in which this layer can be added to map
-   * @description Add selected layer to map (into layer manager) if possible
+   * Add selected layer to map (into layer manager) if possible
+   * @param ds - Datasource of selected layer
+   * @param layer - Metadata record of selected layer
+   * @param type - Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
+   * @returns Type or array of types in which this layer can be added to map
    */
   async addLayerToMap(
     ds: HsEndpoint,
@@ -471,8 +466,7 @@ export class HsAddDataCatalogueService {
   }
 
   /**
-   * @function clear
-   * @description Clear query variable
+   * Clear query variable
    */
   clear(): void {
     this.data.query.textFilter = '';

@@ -43,8 +43,7 @@ export class HsAddDataWfsComponent implements OnDestroy {
   }
 
   /**
-   * @function clear
-   * @description Clear Url and hide detailsWms
+   * Clear URL and hide detailsWms
    */
   clear(): void {
     this.hsAddDataWfsService.url = '';
@@ -62,9 +61,8 @@ export class HsAddDataWfsComponent implements OnDestroy {
   };
 
   /**
-   * @function setUrlAndConnect
-   * @description Connect to service of specified Url
-   * @param {string} url Url of requested service
+   * Connect to service of specified Url
+   * @param url - URL of requested service
    */
   setUrlAndConnect(url: string): void {
     this.hsAddDataWfsService.url = url;
@@ -72,8 +70,7 @@ export class HsAddDataWfsComponent implements OnDestroy {
   }
 
   /**
-   * @function selectAllLayers
-   * @description Select all layers from service.
+   * Select all layers from service.
    * @param layers
    */
   selectAllLayers(layers): void {
@@ -92,9 +89,8 @@ export class HsAddDataWfsComponent implements OnDestroy {
     this.changed();
   }
   /**
-   * @function addLayers
-   * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
+   * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): void {
     this.hsAddDataWfsService.addAll = checkedOnly;

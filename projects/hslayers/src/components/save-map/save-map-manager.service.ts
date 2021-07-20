@@ -255,10 +255,7 @@ export class HsSaveMapManagerService {
 
   /**
    * Initialization of Save map wizard from outside of component
-   *
    * @param composition
-   * @function openPanel
-   * @memberof hs.HsSaveMapManagerService
    */
   openPanel(composition) {
     this.HsLayoutService.setMainPanel('saveMap', true);
@@ -312,10 +309,7 @@ export class HsSaveMapManagerService {
 
   /**
    * Send getGroups request to status manager server and process response
-   *
-   * @function fillGroups
    * @param {Function} cb Callback function
-   * @memberof HsSaveMapManagerService
    */
   async fillGroups(): Promise<void> {
     this.statusData.groups = [];
@@ -342,9 +336,6 @@ export class HsSaveMapManagerService {
 
   /**
    * Get User info from server and call callback (setUserDetail)
-   *
-   * @function loadUserDetails
-   * @memberof HsSaveMapManagerService
    */
   async loadUserDetails() {
     const response: any = await this.http
@@ -355,9 +346,6 @@ export class HsSaveMapManagerService {
 
   /**
    * Process user info into controller model, so they can be used in Save composition forms
-   *
-   * @function setUserDetails
-   * @memberof HsSaveMapManagerService
    * @param {object} response Http response containing user data
    */
   setUserDetails(response) {
@@ -382,9 +370,6 @@ export class HsSaveMapManagerService {
 
   /**
    * Get current extent of map, transform it into EPSG:4326 and save it into controller model
-   *
-   * @function getCurrentExtent
-   * @memberof HsSaveMapManagerService
    * @returns {Array} Extent coordinates
    */
   getCurrentExtent() {
@@ -406,9 +391,6 @@ export class HsSaveMapManagerService {
 
   /**
    * Callback for saving with new title
-   *
-   * @function selectNewTitle
-   * @memberof hs.save-map
    */
   selectNewTitle() {
     this.compoData.title = this.statusData.guessedTitle;
@@ -456,10 +438,6 @@ export class HsSaveMapManagerService {
     this.saveMapResulted.next(this.statusData);
   }
 
-  /**
-   * @function focusTitle
-   * @memberof hs.save-map
-   */
   focusTitle() {
     if (this.statusData.guessedTitle) {
       this.compoData.title = this.statusData.guessedTitle;

@@ -218,8 +218,7 @@ export class HsCompositionsService {
   }
 
   /**
-   * @function parsePermalinkLayers
-   * @description Load layers received through permalink to map
+   * Load layers received through permalink to map
    */
   async parsePermalinkLayers(): Promise<void> {
     await this.HsMapService.loaded();

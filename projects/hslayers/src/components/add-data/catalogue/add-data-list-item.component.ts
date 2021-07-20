@@ -43,10 +43,9 @@ export class HsAddDataListItemComponent {
   ) {}
 
   /**
-   * @function addLayerToMap
-   * @param {object} ds Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
+   * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
+   * @param ds - Datasource of selected layer
+   * @param layer - Metadata record of selected layer
    */
   async addLayerToMap(
     ds: HsEndpoint,
@@ -91,7 +90,7 @@ export class HsAddDataListItemComponent {
    * @param module
    * @param text
    * @param type One of 'WMS', 'WFS'
-   * @return A brief description of a given type with its main advantage and disadvantage notes
+   * @returns A brief description of a given type with its main advantage and disadvantage notes
    */
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
@@ -102,10 +101,9 @@ export class HsAddDataListItemComponent {
   }
 
   /**
-   * @function showMetadata
-   * @param {HsEndpoint} endpoint Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @description Show metadata record dialog window for selected layer.
+   * Show metadata record dialog window for selected layer.
+   * @param endpoint - Datasource of selected layer
+   * @param layer - Metadata record of selected layer
    */
   async showMetadata(
     endpoint: HsEndpoint,
@@ -127,10 +125,8 @@ export class HsAddDataListItemComponent {
   }
 
   /**
-   * @function showMetadata
-   * @param {HsEndpoint} endpoint Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @description Removes selected drawing layer from both Layermanager and Layman
+   * Removes selected drawing layer from both Layermanager and Layman
+   * @param layer - Metadata record of selected layer
    */
   async removeLayer(layer: HsAddDataLayerDescriptor): Promise<void> {
     if (!layer.editable) {

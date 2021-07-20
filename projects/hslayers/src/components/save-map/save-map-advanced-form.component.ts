@@ -95,8 +95,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
 
   /**
    * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
-   *
-   * @function next
    */
   next() {
     const ixCurrent = this.steps.indexOf(this.step);

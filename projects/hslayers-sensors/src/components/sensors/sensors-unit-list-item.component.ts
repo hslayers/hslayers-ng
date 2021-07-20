@@ -21,8 +21,6 @@ export class HsSensorsUnitListItemComponent {
   ) {}
 
   /**
-   * @memberof hs.sensors.unitListItem
-   * @function unitClicked
    * @description When unit is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
    */
@@ -31,8 +29,6 @@ export class HsSensorsUnitListItemComponent {
   }
 
   /**
-   * @memberof hs.sensors.unitListItem
-   * @function sensorClicked
    * @param {object} sensor Clicked sensor
    * @description When sensor is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
@@ -44,8 +40,6 @@ export class HsSensorsUnitListItemComponent {
   }
 
   /**
-   * @memberof hs.sensors.unitListItem
-   * @function sensorToggleSelected
    * @param {object} sensor Clicked to be toggled
    * @description When sensor is toggled, create a dialog window for
    * displaying charts or reopen already existing one.

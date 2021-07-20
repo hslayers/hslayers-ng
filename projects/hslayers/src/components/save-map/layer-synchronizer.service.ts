@@ -70,7 +70,6 @@ export class HsLayerSynchronizerService {
 
   /**
    * Start synchronizing layer to database
-   * @memberof HsLayerSynchronizerService
    * @param {object} layer Layer to add
    */
   addLayer(layer: Layer): void {

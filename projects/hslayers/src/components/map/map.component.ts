@@ -97,7 +97,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   /**
    * @param resolution Resolution
    * Calculates zoom level for a given resolution
-   * @return Zoom level for resolution. If resolution
+   * @returns Zoom level for resolution. If resolution
    * was greater than 156543.03390625 return 0
    */
   zoomForResolution(resolution) {
