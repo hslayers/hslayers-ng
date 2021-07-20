@@ -51,9 +51,10 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   }
 
   loadDialog(dialogItem: HsDialogItem): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      dialogItem.component
-    );
+    const componentFactory =
+      this.componentFactoryResolver.resolveComponentFactory(
+        dialogItem.component
+      );
     const viewContainerRef = this.dialogHost.viewContainerRef;
     //    viewContainerRef.clear();
 

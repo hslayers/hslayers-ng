@@ -36,9 +36,8 @@ export class HsLayerEditorSublayerService {
     }
   }
   hasSubLayers(): boolean {
-    const subLayers = this.HsLayerManagerService.currentLayer.layer.get(
-      'Layer'
-    );
+    const subLayers =
+      this.HsLayerManagerService.currentLayer.layer.get('Layer');
     return subLayers != undefined && subLayers.length > 0;
   }
 

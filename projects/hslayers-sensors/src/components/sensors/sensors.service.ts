@@ -1,6 +1,12 @@
-import dayjs from 'dayjs';
 import VectorLayer from 'ol/layer/Vector';
+import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Vector as VectorSource} from 'ol/source';
+import {WKT} from 'ol/format';
+import {getWidth} from 'ol/extent';
+
 import {
   HsConfig,
   HsLanguageService,
@@ -14,16 +20,12 @@ import {HsDialogContainerService} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
+import {HsUtilsService} from 'hslayers-ng';
+
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
-import {HsUtilsService} from 'hslayers-ng';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 import {SensLogEndpoint} from './senslog-endpoint';
-import {Vector as VectorSource} from 'ol/source';
-import {WKT} from 'ol/format';
-import {getWidth} from 'ol/extent';
 
 @Injectable({
   providedIn: 'root',
@@ -286,9 +288,8 @@ export class HsSensorsService {
         });
         this.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
-            this.HsSensorsUnitDialogService.sensorById[
-              sensor.sensor_id
-            ] = sensor;
+            this.HsSensorsUnitDialogService.sensorById[sensor.sensor_id] =
+              sensor;
             if (sensorValues[sensor.sensor_id]) {
               sensor.lastObservationValue =
                 sensorValues[sensor.sensor_id].value;

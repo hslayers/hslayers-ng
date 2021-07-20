@@ -5,7 +5,7 @@ import {HsAddDataCatalogueMapService} from '../../components/add-data/catalogue/
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.html',
 })
-export class HsUiExtensionsRecursiveDd {
+export class HsUiExtensionsRecursiveDdComponent {
   @Input() value: any;
   entries;
 

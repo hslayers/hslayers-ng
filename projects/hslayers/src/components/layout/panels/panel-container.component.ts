@@ -50,9 +50,10 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   }
 
   loadPanel(panelItem: HsPanelItem): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      panelItem.component
-    );
+    const componentFactory =
+      this.componentFactoryResolver.resolveComponentFactory(
+        panelItem.component
+      );
     const viewContainerRef = this.panelHost.viewContainerRef;
     //    viewContainerRef.clear();
 

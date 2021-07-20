@@ -184,7 +184,7 @@ export class HsQueryWmsService {
     if (infoFormat.includes('json')) {
       const resJSON = JSON.parse(response);
       this.HsQueryBaseService.setData(resJSON.features, 'customFeatures');
-      console.log('jsonquery')
+      console.log('jsonquery');
     }
     this.infoCounter--;
     if (this.infoCounter === 0) {

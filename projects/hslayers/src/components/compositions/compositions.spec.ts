@@ -18,6 +18,7 @@ import {HsCompositionsMickaService} from './endpoints/compositions-micka.service
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
 import {HsConfig} from '../../config.service';
+import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
@@ -36,7 +37,6 @@ import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
-import { HsEventBusServiceMock } from '../core/event-bus.service.mock';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}

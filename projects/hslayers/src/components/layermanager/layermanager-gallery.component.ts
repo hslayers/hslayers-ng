@@ -60,8 +60,7 @@ export class HsLayerManagerGalleryComponent {
       'settings',
       'sublayers'
     );
-    this.HsLayerManagerService.menuExpanded = !this.HsLayerManagerService
-      .menuExpanded;
+    this.HsLayerManagerService.menuExpanded =
+      !this.HsLayerManagerService.menuExpanded;
   }
-
 }

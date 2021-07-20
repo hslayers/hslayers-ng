@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {
   DomSanitizer,
   SafeHtml,
@@ -10,7 +10,7 @@ import {getLegends} from '../../common/layer-extensions';
   selector: 'hs-legend-layer-static',
   templateUrl: './partials/layer-static-directive.html',
 })
-export class HsLegendLayerStaticComponent {
+export class HsLegendLayerStaticComponent implements OnInit {
   @Input() layer: any;
   lastLegendImage: any;
   legendType: string;
@@ -31,9 +31,8 @@ export class HsLegendLayerStaticComponent {
         this.svgContent = this.sanitizer.bypassSecurityTrustHtml(legendImage);
       } else {
         this.legendType = 'image';
-        this.legendImage = this.sanitizer.bypassSecurityTrustResourceUrl(
-          legendImage
-        );
+        this.legendImage =
+          this.sanitizer.bypassSecurityTrustResourceUrl(legendImage);
       }
     }
   }

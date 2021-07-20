@@ -49,9 +49,8 @@ export class HsLayoutComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.HsLayoutService.contentWrapper = this.elementRef.nativeElement.querySelector(
-      '.hs-content-wrapper'
-    );
+    this.HsLayoutService.contentWrapper =
+      this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
     if (this.HsConfig.sidebarPosition === 'left') {
       this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
       this.HsLayoutService.sidebarRight = false;

@@ -80,10 +80,10 @@ export class HsLayerEditorService {
         //Single tile
         url = layer.getSource().getUrl();
       }
-      const capabilities_xml = await this.HsWmsGetCapabilitiesService.requestGetCapabilities(
-        url,
-        {castOwsCapabilitiesReceived: false}
-      );
+      const capabilities_xml =
+        await this.HsWmsGetCapabilitiesService.requestGetCapabilities(url, {
+          castOwsCapabilitiesReceived: false,
+        });
       const parser = new WMSCapabilities();
       const caps = parser.read(capabilities_xml);
       if (Array.isArray(caps.Capability.Layer.Layer)) {

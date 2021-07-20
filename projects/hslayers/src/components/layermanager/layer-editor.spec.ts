@@ -31,7 +31,7 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
-import { getCluster } from '../../common/layer-extensions';
+import {getCluster} from '../../common/layer-extensions';
 
 class HsConfigMock {
   reverseLayerList = true;

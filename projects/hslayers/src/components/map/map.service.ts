@@ -1,3 +1,4 @@
+/* eslint-disable no-eq-null */
 import BaseLayer from 'ol/layer/Base';
 import proj4 from 'proj4';
 import {
@@ -161,8 +162,10 @@ export class HsMapService {
     this.defaultDesktopControls.removeAt(1);
     this.defaultDesktopControls.push(new ScaleLine());
     setTimeout(() => {
-    //make sure translations are loaded
-      if (this.HsConfig.componentsEnabled?.defaultViewButton) this.createDefaultViewButton();
+      //make sure translations are loaded
+      if (this.HsConfig.componentsEnabled?.defaultViewButton) {
+        this.createDefaultViewButton();
+      }
     }, 500);
   }
   /**

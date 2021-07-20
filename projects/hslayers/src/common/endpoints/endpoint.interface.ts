@@ -6,6 +6,7 @@ export enum EndpointErrorHandling {
 }
 
 export interface EndpointErrorHandler {
+  // eslint-disable-next-line no-use-before-define
   handle(endpoint: HsEndpoint, error: any);
 }
 

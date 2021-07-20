@@ -66,13 +66,12 @@ export class HsLaymanService implements HsSaverService {
    * @return {Promise<any>} Promise result of POST
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
-    
     const write =
-    compoData.access_rights['access_rights.write'] == 'private'
+      compoData.access_rights['access_rights.write'] == 'private'
         ? endpoint.user
         : compoData.access_rights['access_rights.write'];
     const read =
-    compoData.access_rights['access_rights.read'] == 'private'
+      compoData.access_rights['access_rights.read'] == 'private'
         ? endpoint.user
         : compoData.access_rights['access_rights.read'];
 
@@ -214,13 +213,17 @@ export class HsLaymanService implements HsSaverService {
     const crsSupported = ['EPSG:4326', 'EPSG:3857'].includes(this.crs);
     let geojson;
     if (!crsSupported) {
-      geojson = f.writeFeaturesObject(layer.getSource().getFeatures().map(f => {
-        const f2 = f.clone();
-        f2.getGeometry().transform(this.crs, 'EPSG:3857');
-        return f2;
-      }));
-    }
-    else {
+      geojson = f.writeFeaturesObject(
+        layer
+          .getSource()
+          .getFeatures()
+          .map((f) => {
+            const f2 = f.clone();
+            f2.getGeometry().transform(this.crs, 'EPSG:3857');
+            return f2;
+          })
+      );
+    } else {
       geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
     }
 
@@ -231,9 +234,7 @@ export class HsLaymanService implements HsSaverService {
     await this.makeUpsertLayerRequest(ep, geojson, {
       title: layerTitle,
       name: layerName,
-      crs: crsSupported
-        ? this.crs
-        : 'EPSG:3857',
+      crs: crsSupported ? this.crs : 'EPSG:3857',
       workspace: getWorkspace(layer),
       access_rights: getAccessRights(layer),
     });

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {HsConfig} from './config.service';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',
   templateUrl: './hslayers.html',
   styles: [],

@@ -1,9 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+
 import {HsEndpoint} from '../endpoints/endpoint.interface';
-import {HsToastService} from '../../components/layout/toast/toast.service';
 import {HsLanguageService} from '../../components/language/language.service';
+import {HsToastService} from '../../components/layout/toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class HsCommonLaymanService {
     private $http: HttpClient,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService
-  ) { }
+  ) {}
 
   /**
    *  Monitor if authorization state has changed and
@@ -72,7 +73,11 @@ export class HsCommonLaymanService {
     }
   }
 
-  displayLaymanError(endpoint: HsEndpoint, errorMsg: string, responseBody: any): void {
+  displayLaymanError(
+    endpoint: HsEndpoint,
+    errorMsg: string,
+    responseBody: any
+  ): void {
     let simplifiedResponse = '';
     if (responseBody.code === undefined) {
       simplifiedResponse = 'COMMON.unknownError';
@@ -92,11 +97,11 @@ export class HsCommonLaymanService {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(errorMsg),
       endpoint.title +
-      ': ' +
-      this.hsLanguageService.getTranslationIgnoreNonExisting(
-        'COMMON',
-        simplifiedResponse
-      ),
+        ': ' +
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          simplifiedResponse
+        ),
       true
     );
   }

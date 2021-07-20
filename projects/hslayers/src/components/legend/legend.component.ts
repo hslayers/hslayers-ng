@@ -36,9 +36,8 @@ export class HsLegendComponent {
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
       layer.on('change:legends', (e) => {
         const oldDescriptor = this.findLayerDescriptor(e.target);
-        this.layerDescriptors[
-          this.layerDescriptors.indexOf(oldDescriptor)
-        ] = this.HsLegendService.getLayerLegendDescriptor(e.target);
+        this.layerDescriptors[this.layerDescriptors.indexOf(oldDescriptor)] =
+          this.HsLegendService.getLayerLegendDescriptor(e.target);
       });
       layer.getSource().on('change', (e) => this.layerSourcePropChanged(e));
     }
@@ -134,9 +133,8 @@ export class HsLegendComponent {
         newDescriptor.subLayerLegends != descriptor.subLayerLegends ||
         newDescriptor.title != descriptor.title
       ) {
-        this.layerDescriptors[
-          this.layerDescriptors.indexOf(descriptor)
-        ] = newDescriptor;
+        this.layerDescriptors[this.layerDescriptors.indexOf(descriptor)] =
+          newDescriptor;
       }
     }
   }

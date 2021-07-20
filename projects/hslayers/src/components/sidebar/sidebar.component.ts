@@ -49,15 +49,15 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant = !this.HsSidebarService
-      .showUnimportant;
+    this.HsSidebarService.showUnimportant =
+      !this.HsSidebarService.showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded = !this.HsLayoutService
-      .sidebarExpanded;
+    this.HsLayoutService.sidebarExpanded =
+      !this.HsLayoutService.sidebarExpanded;
     setTimeout(() => {
       this.HsCoreService.updateMapSize();
     }, 110);

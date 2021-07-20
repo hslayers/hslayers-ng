@@ -69,7 +69,8 @@ export class HsDimensionService {
 
   duration(text: string) {
     //Idea taken from https://github.com/luisfarzati/moment-interval/blob/master/src/moment-interval.js duration function
-    const iso8601 = /^P(?:(\d+(?:[\.,]\d{0,3})?W)|(\d+(?:[\.,]\d{0,3})?Y)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?D)?(?:T(\d+(?:[\.,]\d{0,3})?H)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?S)?)?)$/;
+    const iso8601 =
+      /^P(?:(\d+(?:[\.,]\d{0,3})?W)|(\d+(?:[\.,]\d{0,3})?Y)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?D)?(?:T(\d+(?:[\.,]\d{0,3})?H)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?S)?)?)$/;
     const matches = text.match(iso8601);
     if (matches === null) {
       throw '"' + text + '" is an invalid ISO 8601 duration';

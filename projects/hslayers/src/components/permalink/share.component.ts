@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/require-returns */
 import {Component} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsShareService} from './share.service';
