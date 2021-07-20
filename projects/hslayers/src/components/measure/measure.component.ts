@@ -57,7 +57,7 @@ export class HsMeasureComponent implements OnDestroy {
         }
       });
 
-    //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
+    //Temporary fix when measure panel is loaded as default (e.g. reloading page with parameters in link)
     if (this.HsLayoutService.mainpanel == 'measure') {
       this.HsMeasureService.activateMeasuring(this.type);
     }

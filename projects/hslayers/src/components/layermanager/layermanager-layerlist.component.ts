@@ -130,7 +130,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   };
 
   /**
-   * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
+   * Filters layers, and returns only the ones belonging to folder hierarchy level of directive
    * @private
    * @return {Array<HsLayerDescriptor>} Filtered HsLayerManagerService layers
    */

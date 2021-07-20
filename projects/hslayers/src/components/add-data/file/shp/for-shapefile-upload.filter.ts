@@ -1,4 +1,4 @@
-// Dropable with the rest of AngularJS stuff
+// Droppable with the rest of AngularJS stuff
 // Replaced by endpoints-with-datasources.pipe
 export default () => {
   return (endpoints) => {

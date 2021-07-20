@@ -84,7 +84,7 @@ export class HsLayerSynchronizerService {
     const definition = getDefinition(layer);
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      //Test whether fromat cointains 'wfs' AND does not contian 'external'. Case insensitive
+      //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
       new RegExp('^(?=.*wfs)(?:(?!external).)*$','i').test(definition?.format?.toLowerCase())
     );
   }
@@ -92,7 +92,7 @@ export class HsLayerSynchronizerService {
   
   /**
    * Keep track of synchronized vector layers by listening to
-   * VectorSources change events. Initialy also get features from server
+   * VectorSources change events. Initially also get features from server
    * @param layer Layer to add
    * @returns If layer is synchronizable
    */
@@ -125,9 +125,9 @@ export class HsLayerSynchronizerService {
 
   /**
    * Get features from Layman endpoint as WFS string, parse and add
-   * them to Openlayers VectorSource
+   * them to OpenLayers VectorSource
    * @param layer Layer to get Layman friendly name for
-   * @param source Openlayers VectorSource to store features in
+   * @param source OpenLayers VectorSource to store features in
    */
   async pull(layer: Layer, source: Source): Promise<void> {
     try {

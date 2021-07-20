@@ -78,7 +78,6 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     this.unregisterMapSyncCenterHandlerSubscription.unsubscribe();
   }
   /**
-   * @param event Info about angularjs broadcasted event
    * @param data Coordinates in lon/lat and resolution
    * This gets called from Cesium map, to
    * synchronize center and resolution between Ol and Cesium maps

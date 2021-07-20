@@ -30,7 +30,7 @@ export class HsGeolocationService {
    * @public
    * @type {boolean} false
    * @description Represents geolocalization tracking option (on/off).
-   * Used to deremine state of tracking in directive's html
+   * Used to determine state of tracking in directive's html
    */
   following = false;
   gn = null;
@@ -201,7 +201,7 @@ export class HsGeolocationService {
         this.HsMapService.map.addLayer(this.position_layer);
         this.position_layer.setZIndex(99);
 
-        //stop tracking positon
+        //stop tracking position
         this.geolocation.setTracking(false);
       });
     }
@@ -211,7 +211,7 @@ export class HsGeolocationService {
    * @ngdoc method
    * @name HsGeolocationService#isCentered
    * @public
-   * @description Function which determines whether map is centered on current postion or not
+   * @description Function which determines whether map is centered on current position or not
    */
   isCentered(): any {
     return (

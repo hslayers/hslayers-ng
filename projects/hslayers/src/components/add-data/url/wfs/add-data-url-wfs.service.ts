@@ -254,7 +254,7 @@ export class HsAddDataWfsService {
         return this.srss[0];
       })();
 
-      if (!this.layerToAdd){
+      if (!this.layerToAdd) {
         setTimeout(() => {
           try {
             this.parseFeatureCount();

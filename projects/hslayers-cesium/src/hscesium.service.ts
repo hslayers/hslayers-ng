@@ -138,8 +138,8 @@ export class HsCesiumService {
       }
 
       viewer.scene.debugShowFramesPerSecond = this.HsConfig
-        .cesiumdDebugShowFramesPerSecond
-        ? this.HsConfig.cesiumdDebugShowFramesPerSecond
+        .cesiumDebugShowFramesPerSecond
+        ? this.HsConfig.cesiumDebugShowFramesPerSecond
         : false;
       viewer.scene.globe.enableLighting = this.getShadowMode();
       viewer.scene.globe.shadows = this.getShadowMode();

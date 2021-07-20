@@ -35,7 +35,7 @@ export class HsScaleDenominatorComponent
     }
     Object.assign(this.rule.scaleDenominator, this.scaleDenominator);
  
-    //After assign to keep max inut empty -> prevent 'out of range' warning
+    //After assign to keep max input empty -> prevent 'out of range' warning
     if (
       this.rule.scaleDenominator.max === null &&
       this.rule.scaleDenominator.min !== null

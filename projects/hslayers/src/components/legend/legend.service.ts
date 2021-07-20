@@ -168,7 +168,7 @@ export class HsLegendService {
 
   /**
    * Serialize styles
-   * @param style - Openlayers style
+   * @param style - OpenLayers style
    * @returns Simplified description of style used by template to draw legend
    */
   serializeStyle(style: Style) {
@@ -184,7 +184,7 @@ export class HsLegendService {
   }
 
   /**
-   * Create object of parameters used for creation of svg content for legend using retreived styles
+   * Create object of parameters used for creation of svg content for legend using retrieved styles
    * @param fill - Fill description
    * @param stroke - Stroke description
    * @param image - Image description
@@ -313,7 +313,7 @@ export class HsLegendService {
 
   /**
    * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
-   * @param layer - Openlayers layer
+   * @param layer - OpenLayers layer
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    * @private
    */

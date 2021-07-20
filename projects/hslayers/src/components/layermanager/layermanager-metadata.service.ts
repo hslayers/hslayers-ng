@@ -90,7 +90,7 @@ export class HsLayerManagerMetadataService {
   }
 
   /**
-   * Determines if layer has metadata information avaliable *
+   * Determines if layer has metadata information available *
    * @param layer Current layer
    */
   hasMetadata(layer: HsLayerDescriptor): boolean {
@@ -280,7 +280,7 @@ export class HsLayerManagerMetadataService {
             }
 
             this.fillMetadataUrlsIfNotExist(layer, caps);
-            //Identify max resolution of layer. If layer has sublayers the heighest value is selected
+            //Identify max resolution of layer. If layer has sublayers the highest value is selected
             setTimeout(() => {
               if (getMaxResolutionDenominator(layer)) {
                 layer.set(

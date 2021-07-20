@@ -54,7 +54,7 @@ import {
 })
 export class HsLayerManagerService {
   /**
-   * Containg object for all properties which are shared with controllers.
+   * Containing object for all properties which are shared with controllers.
    */
   data: {
     folders: any;
@@ -68,11 +68,11 @@ export class HsLayerManagerService {
   } = {
     /**
      * Folders object for structure of layers. Each level contain 5 properties:
-     * hsl_path \{String\}: Worded path to folder position in folders hiearchy.
+     * hsl_path \{String\}: Worded path to folder position in folders hierarchy.
      * coded_path \{String\}: Path encoded in numbers
      * layers \{Array\}: List of layers for current folder
      * sub_folders \{Array\}: List of subfolders for current folder
-     * indent \{Number\}: Hiearchy level for current folder
+     * indent \{Number\}: Hierarchy level for current folder
      * name \{String\}: Optional - only from indent 1, base folder is not named
      * @public
      */
@@ -161,13 +161,13 @@ export class HsLayerManagerService {
   /**
    * Function for adding layer added to map into layer manager structure.
    * In service automatically used after layer is added to map.
-   * Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added.
+   * Layers which shouldn't be in layer manager (showInLayerManager property) aren't added.
    * Loading events and legends URLs are created for each layer.
    * Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager).
    * Position is calculated for each layer and for time layers time properties are created.
    * Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
-   * @param e - Event object emited by OL add layer event
+   * @param e - Event object emitted by OL add layer event
    * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted. Otherwise will.
    */
   async layerAdded(e: CollectionEvent, suspendEvents?: boolean): Promise<void> {
@@ -191,7 +191,9 @@ export class HsLayerManagerService {
       );
     }
     /**
-     * Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
+     * Wrapper for layers in layer manager structure.
+     * Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer.
+     * Each layer wrapper is accessible from layer list or folder structure.
      * @private
      */
     const layerDescriptor: HsLayerDescriptor = {
@@ -283,8 +285,8 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Gets the URL provided in the layers's source, if it is not a data blob or undefined
-   * @returns URL provided in the layers's source or 'memory'
+   * Gets the URL provided in the layer's source, if it is not a data blob or undefined
+   * @returns URL provided in the layer's source or 'memory'
    */
   getLayerSourceUrl(layer: Layer): string {
     const url = this.HsLayerUtilsService.getURL(layer)?.split('?')[0]; //better stripe out any URL params
@@ -544,7 +546,7 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Initilaze box layers and their starting active state
+   * Initialize box layers and their starting active state
    * (PRIVATE)
    * @private
    */
@@ -567,7 +569,7 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
+   * Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned invisible
    * @param visibility - Visibility layer should have
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
@@ -1052,7 +1054,7 @@ export class HsLayerManagerService {
       pathLayers = this.data.baselayers;
     } else {
       let path = getPath(layer);
-      //If not set itll be assigned inside populateFolders function as 'other'
+      //If not set it'll be assigned inside populateFolders function as 'other'
       path = path ? path : 'other';
 
       pathLayers = this.data.layers.filter(
@@ -1061,7 +1063,7 @@ export class HsLayerManagerService {
     }
 
     if (pathLayers.length > 0) {
-      //Get max avaialble index value
+      //Get max available index value
       const maxPathZIndex = Math.max(
         ...pathLayers.map((lyr) => lyr.layer.getZIndex() || 0)
       );

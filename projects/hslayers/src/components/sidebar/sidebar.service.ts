@@ -46,7 +46,7 @@ export class HsSidebarService {
     this.extraButtons = [];
 
     /**
-     * List of visible buttons taking into acount viewport size
+     * List of visible buttons taking into account viewport size
      *
      * @memberof HsSidebarService
      * @member visibleButtons
@@ -368,18 +368,18 @@ export class HsSidebarService {
     const dimensionToCheck =
       window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
 
-    let maxNumberofButtons = Math.floor(
+    let maxNumberOfButtons = Math.floor(
       this.HsLayoutService.layoutElement[dimensionToCheck] / 60
     );
-    maxNumberofButtons =
+    maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'
-        ? maxNumberofButtons - 1
-        : maxNumberofButtons;
+        ? maxNumberOfButtons - 1
+        : maxNumberOfButtons;
 
     return (
       this.importantButtons.findIndex((btn) => btn.panel === button.panel) +
         2 <=
-      maxNumberofButtons
+      maxNumberOfButtons
     );
   }
 }

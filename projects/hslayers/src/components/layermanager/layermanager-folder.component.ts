@@ -15,7 +15,7 @@ export class HsLayerManagerFolderComponent {
    * @ngdoc method
    * @name hs.layermanager.folderDirective#folderVisible
    * @public
-   * @param {object} obj Folder object of current hiearchy
+   * @param {object} obj Folder object of current hierarchy
    * @returns {boolean} True if subfolders exists
    * @description Find if current folder has any subfolder
    */

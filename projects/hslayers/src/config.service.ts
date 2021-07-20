@@ -44,7 +44,7 @@ export class HsConfig {
     liteApiPath?: string;
     mapLogApiPath?: string;
   };
-  cesiumdDebugShowFramesPerSecond?: boolean;
+  cesiumDebugShowFramesPerSecond?: boolean;
   cesiumShadows?: number;
   cesiumBase?: string;
   createWorldTerrainOptions?: any;

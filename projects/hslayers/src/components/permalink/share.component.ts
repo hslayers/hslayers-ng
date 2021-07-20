@@ -18,7 +18,7 @@ export class HsShareComponent {
    * @function updateEmbedCode
    * @memberof hs.permalink
    * @returns {string} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
-   * @description Create Iframe tag for embeded map
+   * @description Create Iframe tag for embedded map
    */
   updateEmbedCode(): string {
     return this.HsShareService.getEmbedCode();

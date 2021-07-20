@@ -1,5 +1,5 @@
 /**
- * Replace Urls in text by anchor html tag with url, usefull for attribution to be clickable
+ * Replace Urls in text by anchor html tag with url, useful for attribution to be clickable
  *
  * @param url - String to look for Urls
  * @returns Text with added anchors

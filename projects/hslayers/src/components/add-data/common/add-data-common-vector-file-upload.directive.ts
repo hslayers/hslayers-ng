@@ -10,8 +10,8 @@ export class HsAddDataCommonVectorFileUploadDirective {
   @HostListener('drop', ['$event'])
   onDrop($event): void {
     $event.preventDefault();
-    const trasfer = $event.dataTransfer;
-    this.filesDropped.emit(trasfer.files);
+    const transfer = $event.dataTransfer;
+    this.filesDropped.emit(transfer.files);
     this.filesHovered.emit(false);
   }
 

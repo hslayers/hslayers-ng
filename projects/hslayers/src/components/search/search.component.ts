@@ -16,7 +16,7 @@ import {HsShareUrlService} from './../permalink/share-url.service';
 })
 export class HsSearchComponent implements OnInit, OnDestroy {
   replace = false;
-  clearvisible = false;
+  clearVisible = false;
   searchInputVisible: boolean;
   query = '';
   searchResultsReceivedSubscription: Subscription;
@@ -27,7 +27,7 @@ export class HsSearchComponent implements OnInit, OnDestroy {
   ) {
     this.searchResultsReceivedSubscription = this.HsEventBusService.searchResultsReceived.subscribe(
       () => {
-        this.clearvisible = true;
+        this.clearVisible = true;
       }
     );
   }
@@ -72,7 +72,7 @@ export class HsSearchComponent implements OnInit, OnDestroy {
    */
   clear(): void {
     this.query = '';
-    this.clearvisible = false;
+    this.clearVisible = false;
     this.HsSearchService.cleanResults();
   }
 }

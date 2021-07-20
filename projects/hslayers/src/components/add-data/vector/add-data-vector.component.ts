@@ -34,7 +34,7 @@ export class HsAddDataVectorComponent {
   features: any[] = [];
   featureCount = 0;
   type = '';
-  errorOccured = false;
+  errorOccurred = false;
   addUnder: BaseLayer = null;
   showDetails = false;
   saveToLayman: boolean;
@@ -83,9 +83,7 @@ export class HsAddDataVectorComponent {
   }
 
   /**
-   * Handler for adding nonwms service, file in template.
-   *
-   * @function add
+   * Handler for adding non-wms service, file in template.
    */
   async add() {
     const layer = await this.hsAddDataVectorService.addVectorLayer(

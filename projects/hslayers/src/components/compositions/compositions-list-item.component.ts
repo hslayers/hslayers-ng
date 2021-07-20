@@ -12,7 +12,7 @@ import {HsToastService} from '../layout/toast/toast.service';
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.html',
 })
-export class HsCompostionsListItemComponent {
+export class HsCompositionsListItemComponent {
   @Input() composition;
   @Input() selectedCompId;
   constructor(

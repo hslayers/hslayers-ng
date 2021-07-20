@@ -25,7 +25,7 @@ export class HsLayoutService {
   panel_statuses = {};
   /**
    * @public
-   * @description DEPRACATED?
+   * @description DEPRECATED?
    */
   panel_enabled = {};
   /**
@@ -130,7 +130,7 @@ export class HsLayoutService {
       },
     });
 
-    /* Timeout is needed because Hsconfig can 
+    /* Timeout is needed because HsConfig can 
     be set after this service constructor is executed */
     setTimeout((_) => {
       this.parseConfig();
@@ -188,7 +188,7 @@ export class HsLayoutService {
   }
 
   /**
-   * Close opened panel programmaticaly.
+   * Close opened panel programmatically.
    * If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels.
    * Cannot resolve unpinned panels.
    * @public
@@ -237,7 +237,7 @@ export class HsLayoutService {
 
   /**
    * Get or set panel visibility in sidebar.
-   * When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but its functionality is running.
+   * When panel is disabled it means that it's not displayed in sidebar (it can be opened programmatically) but its functionality is running.
    * Use with status parameter as setter.
    * @public
    * @param which - Selected panel (panel name)
@@ -257,7 +257,7 @@ export class HsLayoutService {
   }
 
   /**
-   * Wrapper for accesing HsConfig.componentsEnabled settings.
+   * Wrapper for accessing HsConfig.componentsEnabled settings.
    * @param which - Name of the GUI component to check
    * @returns true if set to true (default), false otherwise
    */

@@ -14,7 +14,7 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {getPreferedFormat} from '../../../../common/format-utils';
+import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataArcGisService {
@@ -75,7 +75,7 @@ export class HsAddDataArcGisService {
     );
   }
 
-  //TODO: all dimension related things need to be refactored into seperate module
+  //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
 
   throwParsingError(e) {
@@ -108,13 +108,13 @@ export class HsAddDataArcGisService {
         this.data.services,
         'Name'
       );
-      this.data.image_format = getPreferedFormat(this.data.image_formats, [
+      this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'PNG32',
         'PNG',
         'GIF',
         'JPG',
       ]);
-      this.data.query_format = getPreferedFormat(this.data.query_formats, [
+      this.data.query_format = getPreferredFormat(this.data.query_formats, [
         'geoJSON',
         'JSON',
       ]);
@@ -137,7 +137,7 @@ export class HsAddDataArcGisService {
    * @function addLayers
    * @param checkedOnly
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked Add all available layersor ony checked ones. Checked=false=all
+   * @param {boolean} checked Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): void {
     if (this.data.services === undefined) {
@@ -167,7 +167,7 @@ export class HsAddDataArcGisService {
   /**
    * @function createBasemapName
    * Constructs body of LAYER parameter for getMap request
-   * @param layer Optional. layer objec recieved from capabilities. If no layer is provided
+   * @param layer Optional. layer object received from capabilities. If no layer is provided
    * merge all checked layer ids into one string
    * @returns {string}
    */

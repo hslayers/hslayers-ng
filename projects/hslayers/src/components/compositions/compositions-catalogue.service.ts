@@ -169,8 +169,8 @@ export class HsCompositionsCatalogueService {
     });
   }
   /**
-   * Calculates each endpoint compostion request limit, based on the matched compostions ratio
-   * from all endpoint matched compostions
+   * Calculates each endpoint composition request limit, based on the matched compositions ratio
+   * from all endpoint matched compositions
    */
   calculateEndpointLimits(): void {
     this.matchedCompositions = 0;
@@ -251,7 +251,7 @@ export class HsCompositionsCatalogueService {
   }
   /**
    * @param responseArray Array of compositions data
-   *  Filters compositions from responseArray with the same id in already loaded compostionEntries array
+   *  Filters compositions from responseArray with the same id in already loaded compositionEntries array
    * @param endpoint
    */
   filterDuplicates(endpoint: HsEndpoint): void {
@@ -354,7 +354,7 @@ export class HsCompositionsCatalogueService {
     );
   }
   /**
-   * Clears all filters set for compostion list filtering
+   * Clears all filters set for composition list filtering
    */
   clearFilters(): void {
     this.data.query.title = '';

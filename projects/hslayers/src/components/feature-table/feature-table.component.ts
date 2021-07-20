@@ -27,9 +27,9 @@ export class HsFeatureTableComponent implements OnInit {
     });
   }
   addLayerToTable(layer: Layer): void {
-    const layerDiscriptor = this.HsFeatureTableService.addLayer(layer);
-    if (layerDiscriptor) {
-      this.layers.push(layerDiscriptor);
+    const layerDescriptor = this.HsFeatureTableService.addLayer(layer);
+    if (layerDescriptor) {
+      this.layers.push(layerDescriptor);
     }
   }
 }

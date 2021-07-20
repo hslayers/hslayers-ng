@@ -11,7 +11,7 @@ export class HsAddDataFileShpService {
 
   /**
    * @function add
-   * @description Load nonwms OWS data and create layer
+   * @description Load non-wms OWS data and create layer
    * @param {object} endpoint Layman endpoint description (url, name, user)
    * @param {Array} files Array of shp files (shp, dbf, shx)
    * @param {string} name Name of new layer

@@ -7,5 +7,5 @@
     <input [(ngModel)]="query" [hidden]="!searchInputVisible" name="query" 
         class="form-control hs-search-address-input rounded-0 hs-toolbar-button" [placeholder]="'COMMON.search' | translate"
         (ngModelChange)="queryChanged()">
-    <button class="clearSearch" (click)="clear()" *ngIf="clearvisible"><i class="icon-remove-circle align-middle"></i></button>
+    <button class="clearSearch" (click)="clear()" *ngIf="clearVisible"><i class="icon-remove-circle align-middle"></i></button>
 </div>

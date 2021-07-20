@@ -142,7 +142,7 @@ export class HsLegendComponent {
   }
 
   /**
-   * Finds layer descriptor for openlayers layer
+   * Finds layer descriptor for OpenLayers layer
    * @param layer - OpenLayers layer
    * @returns Object describing the legend
    */

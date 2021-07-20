@@ -40,12 +40,12 @@ export class HsLaymanBrowserService {
    */
   queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
-    const withPermisionOrMine = data?.onlyMine
+    const withPermissionOrMine = data?.onlyMine
       ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
         ? `workspaces/${endpoint.user}/`
         : ''
       : '';
-    const url = `${endpoint.url}/rest/${withPermisionOrMine}layers`;
+    const url = `${endpoint.url}/rest/${withPermissionOrMine}layers`;
     endpoint.datasourcePaging.loaded = false;
 
     let query, bbox, sortBy, params;
@@ -97,7 +97,8 @@ export class HsLaymanBrowserService {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'ADDLAYERS.errorWhileRequestingLayers',
-              x.body);
+              x.body
+            );
           }
 
           return x.body;
