@@ -43,7 +43,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "hs",
+            "prefix": ["hs", "hslayers"],
             "style": "kebab-case"
           }
         ],
