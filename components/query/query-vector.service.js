@@ -1,4 +1,5 @@
 import * as extent from 'ol/extent';
+import Feature from 'ol/Feature';
 import {Select} from 'ol/interaction';
 import {Vector} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
@@ -132,12 +133,14 @@ me.selector.getFeatures().on('add', (e) => {
 	e.element,
 	me.selector
 	);
+	addSelectedFeatureLayer(e.element);
 	//deprecated
 	$rootScope.$broadcast('infopanel.feature_selected', e.element, me.selector);
 });
 
 me.selector.getFeatures().on('remove', (e) => {
 	$rootScope.$broadcast('vectorQuery.featureDeselected', e.element);
+	removeSelectedFeatureLayer();
 	//deprecated
 	$rootScope.$broadcast('infopanel.feature_deselected', e.element);
 });
@@ -175,6 +178,24 @@ me.exportData = (clickedFormat, feature) => {
 	return;
 	}
 };
+
+var selectedFeatureSource = new VectorSource();
+var selectedFeatureLayer = new Vector({
+	source: selectedFeatureSource
+});
+
+function addSelectedFeatureLayer(feature) {
+	var clonedFeature = new Feature({});
+	const cloneProperties = feature.getProperties();
+	clonedFeature.setProperties(cloneProperties, true);
+	clonedFeature.setStyle(feature.getLayer().get('selectedStyle'));
+	HsMapService.addLayer(selectedFeatureLayer, true);
+	selectedFeatureSource.addFeature(clonedFeature);
+}
+
+function removeSelectedFeatureLayer(){
+	selectedFeatureSource.clear();
+}
 
 /**
  * @param feature
