@@ -314,6 +314,11 @@ export class HsLayoutService {
     Object.assign(panelWidths, this.HsConfig.panelWidths);
     let tmp = panelWidths[this.mainpanel] || panelWidths.default;
 
+    if (typeof tmp === 'string' && tmp.includes('%')) {
+      const widthRatio = Number(tmp.replace('%', ''));
+      return layoutWidth * (widthRatio / 100);
+    }
+
     if (layoutWidth <= 767 && window.innerWidth <= 767) {
       tmp = layoutWidth;
       this.sidebarToggleable = false;
