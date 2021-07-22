@@ -34,7 +34,7 @@ HsUtilsService
 'ngInject';
 const me = this;
 
-const DEFAULT_STYLES = (() => {
+me.DEFAULT_STYLES = (() => {
 	let styles = [];
 	const white = [255, 255, 255, 1];
 	const blue = [0, 153, 255, 1];
@@ -110,7 +110,7 @@ this.selector = new Select({
 		return typeof selectedStyle === "function"
 			? selectedStyle(feature)
 			: selectedStyle
-			|| DEFAULT_STYLES[feature.getGeometry().getType()]
+			|| me.DEFAULT_STYLES[feature.getGeometry().getType()]
 			|| null;
 	}
 });
