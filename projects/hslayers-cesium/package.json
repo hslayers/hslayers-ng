@@ -1,6 +1,6 @@
 {
   "name": "hslayers-cesium",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "scripts": {},
   "peerDependencies": {
     "@types/cesium": "^1.67.12",
@@ -21,7 +21,7 @@
     "ol": "^6.5.0",
     "cesium": "^1.80.0",
     "dayjs": "^1.10.4",
-    "hslayers-ng": "^4.0.1"
+    "hslayers-ng": "^5.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
