@@ -1,3 +1,173 @@
+# [5.0.0](https://github.com/hslayers/hslayers-ng/compare/4.0.1...5.0.0) (2021-07-23)
+
+
+### Bug Fixes
+
+* **draw:** Undefined wfs layer endpoint ([f7fe98b](https://github.com/hslayers/hslayers-ng/commit/f7fe98b492410e5121763c7caccc6844de3c71e3)), closes [#1996](https://github.com/hslayers/hslayers-ng/issues/1996)
+* Accept JSON in vectorFileInput ([11c3b5e](https://github.com/hslayers/hslayers-ng/commit/11c3b5e9becbb9ba6f77023c7b0e7834c8755342))
+* Apply string function toLowerCase, for uploaded ([46a1245](https://github.com/hslayers/hslayers-ng/commit/46a12455796987ddfa21bcb3693c403e6f2d8411))
+* Change default Layman cookie name so the auth doesn't interfere with other apps ([5b67ecf](https://github.com/hslayers/hslayers-ng/commit/5b67ecf5fe6d8cb92fd634cefbafe18d0942b6b7))
+* Check either for a feature or coordinate to show feature info panel ([3d4de73](https://github.com/hslayers/hslayers-ng/commit/3d4de73cf19339f128a7673356f7cdc8e9dc0001))
+* Check if capabilities_xml is there before reading it for layer metadata ([176477d](https://github.com/hslayers/hslayers-ng/commit/176477d339810a429de4498b0a87f9b2503c106f))
+* Correct ng-bootsrap and cookie versions for ng11 ([7862d90](https://github.com/hslayers/hslayers-ng/commit/7862d90f5977b6c119e2f52ca41f685387374193))
+* Defer bootstrapping of cesium-app ([003bc8d](https://github.com/hslayers/hslayers-ng/commit/003bc8d84e342f8fb981c776923d20a5abfa1053))
+* Differentiate message for routing errors ([54cdf3e](https://github.com/hslayers/hslayers-ng/commit/54cdf3e001b83e6ccd8c02b1b623dc2129bb42ee))
+* Don't overwrite a configured legend with info from getCaps ([d3576d4](https://github.com/hslayers/hslayers-ng/commit/d3576d4c7486eab128a94ac16753d77e7f44b94c)), closes [#1860](https://github.com/hslayers/hslayers-ng/issues/1860)
+* Don't populate invalid undefined layers if any ([75a6721](https://github.com/hslayers/hslayers-ng/commit/75a6721e7e7f5ca878257790e07ff5d26bf96519))
+* Don't show popup if the title is empty ([4501c2d](https://github.com/hslayers/hslayers-ng/commit/4501c2de4b6342aa85547d21e41a76cf1e97c743))
+* Find all CRS definitions in a service ([f1d6d07](https://github.com/hslayers/hslayers-ng/commit/f1d6d07dc1d54edd7bb170306541d2c50a83e36b))
+* Fix invisiblePopup undefined error ([#1855](https://github.com/hslayers/hslayers-ng/issues/1855)) ([47281fd](https://github.com/hslayers/hslayers-ng/commit/47281fd2be8fbce0ae91b6118a88fb22c2797b96))
+* Hide Only mine filter if user is not logged in Layman ([72dc68a](https://github.com/hslayers/hslayers-ng/commit/72dc68ad87b5d3120259da98c4a398b79441176e))
+* Load composition data from cookies only if it is anticipated ([f5ba7b2](https://github.com/hslayers/hslayers-ng/commit/f5ba7b23887ed8d76091d815ba9372857cbf84ee))
+* Make composition&progress info div smaller ([3c7e9ff](https://github.com/hslayers/hslayers-ng/commit/3c7e9ff0595d80592cc81f6b031a4bbda784822d))
+* Make loading progress message disappear on layer load ([ddfe5c0](https://github.com/hslayers/hslayers-ng/commit/ddfe5c05cf10d7f4a0960f3255569e1f1f886887))
+* Minor tweaks and linting ([4dc3964](https://github.com/hslayers/hslayers-ng/commit/4dc39645fd2c731cc65704a53cbf512c85352307))
+* Remove feature from modify interaction when deleting ([5540671](https://github.com/hslayers/hslayers-ng/commit/5540671ae98e9e1429bb20142feab9d464d87cd8)), closes [#1821](https://github.com/hslayers/hslayers-ng/issues/1821)
+* Remove fill-opacity param for mark symbolizer ([a339dbb](https://github.com/hslayers/hslayers-ng/commit/a339dbb4ab3a5f5902a359e27d899aa744f7eb09))
+* Remove private to make method optional ([ec1908d](https://github.com/hslayers/hslayers-ng/commit/ec1908da524bd9b7406c4cb0fd71af48b9063d89))
+* **auth:** Move duplicit Laymen error notification to common service ([016b43a](https://github.com/hslayers/hslayers-ng/commit/016b43a504cc306d178204da7f9d305b3f4f2b9e))
+* **compositions:** Use thumbnail.url ([3ca9a12](https://github.com/hslayers/hslayers-ng/commit/3ca9a12be2bcffb689e67addeff6a641b65f69ef))
+* **draw:** Added addedLayersRemoved property to correctly reset draw layerSelected ([e278c11](https://github.com/hslayers/hslayers-ng/commit/e278c11ce0e1da57b5fc2c35f1ed0da09913a43c))
+* **draw:** Check if any layer is selected before looking for source ([421b464](https://github.com/hslayers/hslayers-ng/commit/421b46431b420f9c22a90ab3a54d968b4d1e1f2a))
+* **draw:** Fill drawable layers on map reset ([082a87c](https://github.com/hslayers/hslayers-ng/commit/082a87c412dec551c44ae4297ca525439b45b823))
+* **draw:** Sync tmp features with already existing layman layer ([a407882](https://github.com/hslayers/hslayers-ng/commit/a4078821a0cc866e74178ee81f781773d76f09e9))
+* **history-list:** Potential fix - do not  add null or undefined url to history list ([443dd39](https://github.com/hslayers/hslayers-ng/commit/443dd39bd6a3a40d6703c0a7afc1a9eb4a543031))
+* **layman:** Throw error if layer description is missing url ([b34528d](https://github.com/hslayers/hslayers-ng/commit/b34528dd3ca5091011a0955eeb15ae9ec95e0e5d))
+* Add default line symbolizer for new layers ([535000e](https://github.com/hslayers/hslayers-ng/commit/535000ed1f0ddc2540e16565ccb14bb737de609c))
+* Added HsStylerPartBaseComponent to styles module ([8a67b52](https://github.com/hslayers/hslayers-ng/commit/8a67b52942f7c42db71baa6f294592b0a01bfdb8))
+* Adding drawing layer fails when auth change ([eae03ad](https://github.com/hslayers/hslayers-ng/commit/eae03ad97aab826b48b4ac725d8f71d741c3098b))
+* Async loading of compositions ([cb340a5](https://github.com/hslayers/hslayers-ng/commit/cb340a502f233670393c980e92cccc8c964d0df4))
+* Backwards compatibility of custom hsl style serialization ([cb414f6](https://github.com/hslayers/hslayers-ng/commit/cb414f60cf98a609e7158c0af4b085ecd198e154))
+* Encode styler colors as rgba instead of hex ([1653e61](https://github.com/hslayers/hslayers-ng/commit/1653e61b8ea98c688e200fc093c93362e80bb73c))
+* Error about undefined symbolizer offset ([eac5db2](https://github.com/hslayers/hslayers-ng/commit/eac5db2e734f4957fbab0e8484ab266b2060ab55))
+* Feature counts for cluster on enabling cluster ([3c309e4](https://github.com/hslayers/hslayers-ng/commit/3c309e443083b879e6a23a12c30ed18fee95ada1))
+* Legend generation for cluster layers with SLD ([e4a61de](https://github.com/hslayers/hslayers-ng/commit/e4a61deacd8a3acf4c7e0da71adbb77fff233c03))
+* Make styler controls smaller ([bac25b5](https://github.com/hslayers/hslayers-ng/commit/bac25b59bc109fe6396c43db97f845924ca01e5a))
+* Remove declutter option ([1987fd9](https://github.com/hslayers/hslayers-ng/commit/1987fd97aa17a459fe993ca76fc432d5038901ce))
+* Update tmp layer properties on authChange ([e48319b](https://github.com/hslayers/hslayers-ng/commit/e48319b236213e86cd480427eaaf00704e2dd916))
+* **layer-editor-vector-layer:** Check geometryFunction feature ([1b6d735](https://github.com/hslayers/hslayers-ng/commit/1b6d735001e2567b44023ebd09d3a75eb6fe906e)), closes [#1955](https://github.com/hslayers/hslayers-ng/issues/1955)
+* **server:** Change token refresh mechanism, logout when auth fails ([fa8803e](https://github.com/hslayers/hslayers-ng/commit/fa8803e466f690be2870e6e5f901c3c54f2c2b53))
+* **Styler:** Refactor symbolizerIcons handling ([7118b44](https://github.com/hslayers/hslayers-ng/commit/7118b4426d0170d7d27d00f41ee60ed4a04d4416))
+* **utils:** Safely check instOf for nullish values ([0c7c72d](https://github.com/hslayers/hslayers-ng/commit/0c7c72dcfa640a009e85f4b9bc887796eea4894e))
+* Add geojson from url ([a8f51b9](https://github.com/hslayers/hslayers-ng/commit/a8f51b9f41a59315c93e37d328f787a2f9bda1e8)), closes [#1946](https://github.com/hslayers/hslayers-ng/issues/1946)
+* Disable individual feature styling in draw panel ([8f8b6ab](https://github.com/hslayers/hslayers-ng/commit/8f8b6ab042cb07361791b793eb038efbe343affd))
+* Make style parsing related functions async ([04c86ec](https://github.com/hslayers/hslayers-ng/commit/04c86ec9d923728861ccba61c748a513269f52fc))
+* Notify about non-working sld atrributes ([f00c725](https://github.com/hslayers/hslayers-ng/commit/f00c7255273e11376e98b88a8576c5ec90e78e9a))
+* Remove most styler icons ([dd74336](https://github.com/hslayers/hslayers-ng/commit/dd74336bc85f5f24b8bf203745616fe71db7d094))
+* Removed scss warnings when building the library ([2e001d2](https://github.com/hslayers/hslayers-ng/commit/2e001d246963108a08b4e31286303b46c60e7247))
+* Removing of style rules and reset to default ([65e73ca](https://github.com/hslayers/hslayers-ng/commit/65e73cad9facc31467982766ac414e8b30cd2d90))
+* Replace 'show' CSS class with [hidden] ([c953b89](https://github.com/hslayers/hslayers-ng/commit/c953b89e9291178a25953a1a0ea86da2c8129fbd))
+* Replaced deprecated TestBed .get with .inject function ([9c91fe7](https://github.com/hslayers/hslayers-ng/commit/9c91fe7cf73860fede4cac7e1b79400d7a26a2a5))
+* Revert wrong dependencies ([26493e9](https://github.com/hslayers/hslayers-ng/commit/26493e9b73a141ff3b62fb6be0cd108057f8bb71))
+* Rework auto cluster style creation ([1bbf058](https://github.com/hslayers/hslayers-ng/commit/1bbf05872bb6e26a5f833931014782bce0dae631))
+* Select all layers from url correctly ([d51231e](https://github.com/hslayers/hslayers-ng/commit/d51231efd31dd3c7c616ef9711dc294854110858))
+* Send correct access rights parameters to layman ([3e504f0](https://github.com/hslayers/hslayers-ng/commit/3e504f0d19140835e1ac8cd49010ad6c6ae67137)), closes [#1842](https://github.com/hslayers/hslayers-ng/issues/1842)
+* Set correct return type for layermanager getLayerByTitle function ([67d1f2e](https://github.com/hslayers/hslayers-ng/commit/67d1f2e79267a44972ad76bb70c969ab33bc0a7b))
+* Set default cesiumBase path if not already set by the user ([06f8879](https://github.com/hslayers/hslayers-ng/commit/06f8879763303b28e266c186ce76df701a2011c5))
+* Set file type filter in open files dialog ([ef085e1](https://github.com/hslayers/hslayers-ng/commit/ef085e12f658d00526bde01ce967656b3a66948d)), closes [#1797](https://github.com/hslayers/hslayers-ng/issues/1797)
+* Set matched results to length of array when x-total-count head is missing for compositions ([e4189ea](https://github.com/hslayers/hslayers-ng/commit/e4189ea75f599691dea876b4856ff4ea8cf3c206))
+* Show feature info panel after drawing new geometries ([1e29100](https://github.com/hslayers/hslayers-ng/commit/1e291007999b0ca2da4c2764741c7e3b94176bc8))
+* Show only last 5 toast error messages ([59d0375](https://github.com/hslayers/hslayers-ng/commit/59d0375c6b672a1ff1600f922f3540c66ae6f7d6)), closes [#1869](https://github.com/hslayers/hslayers-ng/issues/1869)
+* Simplify styling based on geometry types ([5b73640](https://github.com/hslayers/hslayers-ng/commit/5b73640a20547b60202fa6ffa04cb45eadecc845))
+* Styler color unreadable for dark colors ([f15d4f3](https://github.com/hslayers/hslayers-ng/commit/f15d4f3f13bec98169abbf01d88d76fa9873515e)), closes [#1959](https://github.com/hslayers/hslayers-ng/issues/1959)
+* Toast message width ([81a053a](https://github.com/hslayers/hslayers-ng/commit/81a053a50c28dcc06a3f0d75cfba7419853c2ffe))
+* Unreachable side-buttons on small screens ([08f5808](https://github.com/hslayers/hslayers-ng/commit/08f5808b6d60be64f28131da696d45757e54f3bf))
+* Updating style on filter change ([1ab2c19](https://github.com/hslayers/hslayers-ng/commit/1ab2c19ed99d477a24bf064efcbadb19c067d770))
+* **layman:** select proper layer bbox ([4364dcc](https://github.com/hslayers/hslayers-ng/commit/4364dcc3fb606c13f4fd78161101b6ee3eec74df)), closes [#1862](https://github.com/hslayers/hslayers-ng/issues/1862)
+* **routing:** Don't add waypoints on draw and measure ([c84df50](https://github.com/hslayers/hslayers-ng/commit/c84df501c0251ee731e979dfa392ea8f3d1841a8))
+* Trim external source url before data request ([402133a](https://github.com/hslayers/hslayers-ng/commit/402133ad4944da0f11d69595f159bb7a3d52b05d))
+* Unsubscribe all component subs onDestroy ([00eaa2e](https://github.com/hslayers/hslayers-ng/commit/00eaa2e8d2a9bd2a80331793c9b5c16e4f627734))
+* Update checked file extensions when adding vector url ([4117a36](https://github.com/hslayers/hslayers-ng/commit/4117a36d043e220002b7ca702fe5e94043727425))
+* Use the wms legend from selected style instead of hardcoded first one in add-data panel ([244aa62](https://github.com/hslayers/hslayers-ng/commit/244aa626683a096e5617d1abec6c3f4902c1b725)), closes [#1860](https://github.com/hslayers/hslayers-ng/issues/1860)
+
+
+### Build System
+
+* Add geostyler-style and geostyler-sld-parser dependencies ([04fc82a](https://github.com/hslayers/hslayers-ng/commit/04fc82a987c98d4b61aba6a3e8e5df77a849995d)), closes [#1822](https://github.com/hslayers/hslayers-ng/issues/1822)
+* Add ngx-color dependency ([5b701ac](https://github.com/hslayers/hslayers-ng/commit/5b701ac37b33d26ed6232422772ce7e5e9f864a4))
+* Upgrade to Angular 11 ([9dedc4f](https://github.com/hslayers/hslayers-ng/commit/9dedc4f2ff9a4defd30d300ba00f7cb9d3fa4c4e)), closes [#1803](https://github.com/hslayers/hslayers-ng/issues/1803)
+
+
+### Code Refactoring
+
+* Rename newLayerStyleSet event subject to onSet ([96290a3](https://github.com/hslayers/hslayers-ng/commit/96290a382d1ea70554d240af3b104732bfe07803))
+
+
+### Features
+
+* **LayerManager:** Expose layer source type & URL ([13cc39e](https://github.com/hslayers/hslayers-ng/commit/13cc39e850d8f7187eaf38ef26e373c3e83e47d8))
+* **styler:** Add warning to unsupported sliders ([46b6806](https://github.com/hslayers/hslayers-ng/commit/46b6806d14ed7ffee1291830fba85d961fcfc004))
+* Ability to cancel url request from add data ([638e845](https://github.com/hslayers/hslayers-ng/commit/638e845b5724df7ed4adb18af4c77ccc552ef4e2))
+* Add a hack to style cluster layers using SLD ([13e38dd](https://github.com/hslayers/hslayers-ng/commit/13e38ddeaeab27b2167268b48a20534ec71d26a9))
+* Add graphicsFill and graphicStroke sub-symbolizers ([9f98718](https://github.com/hslayers/hslayers-ng/commit/9f98718db4193869886e1ee4a5cba75bf87b6c4e))
+* Add line symbolizer for SLD and minor tweaks ([cf21dcb](https://github.com/hslayers/hslayers-ng/commit/cf21dcb9bce56bfd5f0240ab13e95e3d11cd2663))
+* Add selectors for tripplanner route/waypoint layer ([c9de558](https://github.com/hslayers/hslayers-ng/commit/c9de5586c307caf3301e4579a5e1a54686c30622)), closes [#1927](https://github.com/hslayers/hslayers-ng/issues/1927) [#1925](https://github.com/hslayers/hslayers-ng/issues/1925)
+* Add support for scale denominators in SLD editor ([2e2935b](https://github.com/hslayers/hslayers-ng/commit/2e2935b0a1010915bf6f54984b7b4422b28c6ccf))
+* Add support for SLD filters by attribute values ([e5780ff](https://github.com/hslayers/hslayers-ng/commit/e5780ff66669a5db44c1b4a723acff14dabbf1bd)), closes [#1822](https://github.com/hslayers/hslayers-ng/issues/1822)
+* Add test application project ([3af6c57](https://github.com/hslayers/hslayers-ng/commit/3af6c57ac662ca4b25d1531410f0d8604dce5705))
+* Allow save/overwrite compositon opitons ([2ea4eeb](https://github.com/hslayers/hslayers-ng/commit/2ea4eeb064152084572480077ae50b506ebf07ba)), closes [#1907](https://github.com/hslayers/hslayers-ng/issues/1907)
+* Allow to disable automatic legend ([fb43ecd](https://github.com/hslayers/hslayers-ng/commit/fb43ecd604abf7850d84af0e795110a45ea3f818))
+* Allow to snap to layer features on selection mode ([2d0e030](https://github.com/hslayers/hslayers-ng/commit/2d0e03045f238f10a1cc5bb40aa9fa6cfafc7aaa))
+* Create layman access-rights component ([18d4993](https://github.com/hslayers/hslayers-ng/commit/18d499336ed637e2b6a61cb6a636b8b30a7daabd))
+* Disable snapping when using selection mode in draw panel ([d3af2b7](https://github.com/hslayers/hslayers-ng/commit/d3af2b783933ecb619891863127a28236b2f6f87)), closes [#1820](https://github.com/hslayers/hslayers-ng/issues/1820)
+* Generate SLD from OL style. Improve cluster style ([43403ab](https://github.com/hslayers/hslayers-ng/commit/43403ab5ff3aadf838a6ae9e6fe35f84d86fa052))
+* Provide dash pattern for line symbolizer ([4159c35](https://github.com/hslayers/hslayers-ng/commit/4159c35278f90e29182f33945db0609ac273fded))
+* Provide default style for new layers in SLD ([95eab68](https://github.com/hslayers/hslayers-ng/commit/95eab68df7f7c351ae87aff20ad65e759a38e23b))
+* **styler:** Add dialog to select icon for iconSymbolizer ([6db1622](https://github.com/hslayers/hslayers-ng/commit/6db1622aa8e1b88d6f5250c78c3bb1065896aad0))
+* **test-app:** Add symbolizer icons ([5663a63](https://github.com/hslayers/hslayers-ng/commit/5663a6308a7fe4440fcc1f161f02ece2514ba40a))
+* Add workspace layer property to composition schema ([a640a3c](https://github.com/hslayers/hslayers-ng/commit/a640a3ce98fffc47d1c42ea05fd37dbad5f1fbf7))
+* Parse and fill SLD style for editing ([8508ec5](https://github.com/hslayers/hslayers-ng/commit/8508ec56525da1d4c7a56afe87993dd81f562075))
+* Save external WFS service to composition under hs.format.externalWFS vector format ([c5d6146](https://github.com/hslayers/hslayers-ng/commit/c5d6146ecc32cd58efc344cc6e2e14cdec01e668))
+* Support renaming of SLD rules ([ee0c108](https://github.com/hslayers/hslayers-ng/commit/ee0c108643405bb5edd2fdd826662f525411b440))
+* Support SLD rule and symbolizer editing and serialization ([d71bee9](https://github.com/hslayers/hslayers-ng/commit/d71bee965233cf3a77662e972e78bec297773ddd)), closes [#1822](https://github.com/hslayers/hslayers-ng/issues/1822)
+* Turn off drawing if selected drawing layer turned off ([0afa80d](https://github.com/hslayers/hslayers-ng/commit/0afa80d64000caf45488148d9e74f0ace7cf090f))
+* **layermanager:** Cdk drag and drop for physical list ([20123b3](https://github.com/hslayers/hslayers-ng/commit/20123b3ac66bdf68bd6472cd20899acc3e80c233)), closes [#1906](https://github.com/hslayers/hslayers-ng/issues/1906)
+* **routing:** Change routing provider to OpenRoutingService ([bd98ffd](https://github.com/hslayers/hslayers-ng/commit/bd98ffd62a82517ae4cde91ae26b9effa5254928)), closes [#1904](https://github.com/hslayers/hslayers-ng/issues/1904)
+* **server:** Provide env variable for OpenRoutingService ([80c127b](https://github.com/hslayers/hslayers-ng/commit/80c127b3ea2f698b7e49000a3092443c1fa67d42))
+* **wms:** zoom to joint bbox of layer group ([eeef2ce](https://github.com/hslayers/hslayers-ng/commit/eeef2ce1b774f484a49d4c8a3ce457b8c5c1aa62))
+
+
+### BREAKING CHANGES
+
+* Individual styling of features is removed in draw panel
+* declutter function in HsLayerEditorVectorLayerService is removed
+* Subscribers of HsStylerService.newLayerStyleSet should rename it to
+HsStylerService.onSet
+* **styler:** We don't include styler icons in hslayers lib, but the developer should provide an
+array of icon definitions through HsConfig. This enables more customization (extra icons) and
+reduced hslayers bundle size. Icons should be copied as any other image asset in angular.json. See:
+```
+ Object.assign(this.HsConfig, {
+      symbolizerIcons: [
+        {name: 'bag', url: '/assets/icons/bag1.svg'},
+        {name: 'banking', url: '/assets/icons/banking4.svg'},
+        {name: 'bar', url: '/assets/icons/bar.svg'},
+        {name: 'beach', url: '/assets/icons/beach17.svg'},
+      ]})
+````
+
+Angular.json:
+```
+ "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/test-app/src/assets",
+                "output": "./assets"
+              },
+```
+* Add peerDependency ngx-color
+* Add peerDependencies geostyler-sld-parser and geostyler-style
+* **layermanager:** Added @angular/cdk peerDependency to be able to use drag and drop feature
+* **routing:** Be aware to specify OPENROUTESERVICE_API_KEY in .env of hslayers-server because
+OpenRoutingService requests are routed through our proxy service to not expose the API key.
+* See angular upgrade guide: https://update.angular.io/?l=2&v=10.0-11.0
+
+
+
 ## [4.0.1](https://github.com/hslayers/hslayers-ng/compare/3.1.0...4.0.1) (2021-05-14)
 
 
