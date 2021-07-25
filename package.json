@@ -44,7 +44,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/cesium": "^1.67.12",
     "bootstrap": "^4.6.0",
-    "cesium": "^1.82.1",
+    "cesium": "^1.83.0",
     "dayjs": "^1.10.6",
     "deepmerge": "^4.2.2",
     "geostyler-openlayers-parser": "^2.3.0",
