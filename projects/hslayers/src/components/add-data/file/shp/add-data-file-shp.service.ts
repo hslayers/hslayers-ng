@@ -47,6 +47,7 @@ export class HsAddDataFileShpService {
         );
       }
       formdata.append('name', name);
+      title = title == '' ? name : title;
       formdata.append('title', title);
       formdata.append('abstract', abstract);
       formdata.append('crs', srs);

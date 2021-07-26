@@ -65,7 +65,9 @@
     "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií",
     "SHP": {
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
-      "SLDStyleFile": "Soubor se styly SLD"
+      "SLDStyleFile": "Soubor se styly",
+      "loginRequired": "Před načtením vrstvy je vyžadováno přihlášení",
+      "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!"
     },
     "srs": "SRS",
     "thisIsRequired": "Toto je vyžadováno!",
@@ -84,7 +86,8 @@
       "chooseFiles": "Vyberte soubory...",
       "dragAndDropFiles": "Přetáhněte soubory",
       "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory"
+      "uploadVectorFiles": "Nahrajte vektorové soubory",
+      "addSld": "Přidat soubor SLD"
     },
     "VECTOR": {
       "extractStyles": "Extrahovat styly"
