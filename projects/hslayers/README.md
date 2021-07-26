@@ -13,10 +13,14 @@ HSLayers-NG is a library which extends OpenLayers 6 functionality by providing a
 
 ## Demo
 
-Check out the examples to get an idea:  
+Check out the examples and live projects to get an idea:  
 * http://ng.hslayers.org/examples/
-* http://opentransportnet.eu/create-maps
-* http://sdi4apps.eu/spoi
+* https://groundwater.smartagro.lv/fie/index.html
+* https://www.smartafrihub.com/cs/map1/
+* (Material) https://www.smartafrihub.com/cs/best-practises
+* (Material) https://app.hslayers.org/agroinfo
+* (3D) https://app.hslayers.org/project-agro-climatic/
+* (3D) https://app.hslayers.org/project-rostenice/
 
 ## Installation
 
