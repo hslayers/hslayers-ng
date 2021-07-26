@@ -65,7 +65,7 @@
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
     "SHP": {
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
-      "SLDStyleFile": "SLD stila datne"
+      "SLDStyleFile": "Stila datne"
     },
     "srs": "Ģeodēziskā atskaites sistēma",
     "thisIsRequired": "Šis ir nepieciešams!",

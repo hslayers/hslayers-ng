@@ -45,7 +45,7 @@
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+            <label class="capabilities_label control-label">{{'COMMON.name' | translate}}*</label>
             <input class="form-control" name="name" [(ngModel)]="name" />
         </div>
     
@@ -62,11 +62,15 @@
         </div>
 
         <hs-layman-access-rights *ngIf="isAuthorized" [(access_rights)]="access_rights"></hs-layman-access-rights>    
-        
-        <div class="form-group">
-            <label class="capabilities_label control-label">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}} </label>
-            <input name="file" type="file" (change)="read($event)" id="sld">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <p>{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
+            <label class="dropzone-label">
+                <input name="file" type="file" class="inputfile" (change)="read($event)" id="sld" multiple>
+                <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="sld ? 'bg-success' : 'bg-primary'"> <i class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
+            </label> 
         </div>
+
     
         <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
             (click)="advancedPanelVisible = !advancedPanelVisible">
@@ -85,10 +89,15 @@
             </div>
         </div>
     
-        <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"
-                [hidden]="loading"></i><img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!loading" />
+        <button *ngIf="isAuthorized" class="btn btn-primary btn-block" [disabled]="!name" (click)="add()" title="{{addShpTooltip()}}"><i class="icon-plus" [hidden]="loading"></i><img [src]="hsUtilsService.getAjaxLoaderIcon()"
+                [hidden]="!loading" />
             {{'COMMON.add' | translate}}
         </button>
+
+        <div *ngIf="!isAuthorized" class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
+           <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate}}</p>
+            <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+        </div>
     </div>
 
     <div class="alert alert-danger" [hidden]="resultCode != 'error'">

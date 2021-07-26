@@ -10,6 +10,7 @@ import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.s
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../../core/event-bus.service';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLaymanLayerDescriptor} from '../../../save-map/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLayoutService} from '../../../layout/layout.service';
@@ -56,7 +57,8 @@ export class HsAddDataFileShpComponent implements OnInit {
     public hsUtilsService: HsUtilsService,
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
+    public hsLanguageService: HsLanguageService
   ) {
     const layman = this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type == 'layman'
@@ -197,33 +199,55 @@ export class HsAddDataFileShpComponent implements OnInit {
       promises.push(filePromise);
     }
     Promise.all(promises).then((fileContents) => {
-      if (this.files.length == 3) {
-        this.showDetails = true;
-        this.resultCode = 'success';
-      } else if (this.files.length > 3) {
-        this.showDetails = false;
-        this.resultCode = 'error';
-        this.errorMessage = `Maximum number of 3 files allowed but ${this.files.length} selected`;
-        setTimeout(() => {
-          this.resultCode = '';
-        }, 6000);
+      if (evt.target?.id === 'sld') {
+        this.sld = filesRead[0];
       } else {
-        this.showDetails = false;
-        this.resultCode = 'error';
-        this.errorMessage =
-          'Missing one or more ShapeFile files.. Load files with extensions *.shp, *.shx, *.dbf';
-        setTimeout(() => {
-          this.resultCode = '';
-        }, 6000);
+        if (this.files.length == 3) {
+          this.showDetails = true;
+          this.resultCode = 'success';
+        } else if (this.files.length > 3) {
+          this.showDetails = false;
+          this.resultCode = 'error';
+          this.errorMessage = `Maximum number of 3 files allowed but ${this.files.length} selected`;
+          setTimeout(() => {
+            this.resultCode = '';
+          }, 6000);
+        } else {
+          this.showDetails = false;
+          this.resultCode = 'error';
+          this.errorMessage =
+            'Missing one or more ShapeFile files.. Load files with extensions *.shp, *.shx, *.dbf';
+          setTimeout(() => {
+            this.resultCode = '';
+          }, 6000);
+        }
       }
     });
 
-    if (evt.target?.id === 'sld') {
-      this.sld = filesRead[0];
-    } else {
+    if (evt.target?.id === 'shpdbfshx') {
       this.files = filesRead;
     }
     console.log(this.files);
-    console.log(this.sld);
+  }
+
+  sldTitle(): string {
+    return this.sld
+      ? this.sld.name
+      : this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS.Vector',
+          'addSld'
+        );
+  }
+
+  addShpTooltip(): string {
+    return this.title
+      ? this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'DRAW.drawToolbar',
+          'addLayer'
+        )
+      : this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS.SHP',
+          'nameRequired'
+        );
   }
 }
