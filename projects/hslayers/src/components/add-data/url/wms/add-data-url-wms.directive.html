@@ -109,8 +109,8 @@
         <table class="table table-sm table-striped table-bordered">
             <thead>
                 <th style="width:1em">&nbsp;</th>
-                <th style="width:30%">{{'COMMON.name' | translate}}</th>
                 <th style="width:40%">{{'COMMON.title' | translate}}</th>
+                <th style="width:30%">{{'COMMON.name' | translate}}</th>
                 <th>{{'COMMON.abstract' | translate}}</th>
             </thead>
             <tbody *ngFor="let service of data.services">
@@ -119,9 +119,9 @@
                         [ngClass]="{'align-middle': !hasNestedLayers(service)}"><input type="checkbox"
                             class="checkbox-lg" [(ngModel)]="service.checked" name="service"
                             (change)="searchForChecked(service)" /></td>
-                    <td>{{service.Name}}</td>
-                    <td>{{service.Title}}</td>
-                    <td>{{service.Abstract}}</td>
+                    <td style="max-width: 15.625em" class="text-truncate" [title]="service.Title">{{service.Title}}</td>
+                    <td style="max-width: 13.75em" class="text-truncate" [title]="service.Name">{{service.Name}}</td>
+                    <td style="max-width: 6.875em" class="text-truncate" [title]="service.Abstract" >{{service.Abstract}}</td>
                 </tr>
                 <tr *ngIf="service.Style?.length > 1 && service.checked">
                     <td colspan="4">
