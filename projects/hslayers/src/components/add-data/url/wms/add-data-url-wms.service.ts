@@ -179,6 +179,13 @@ export class HsAddDataUrlWmsService {
 
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
+      //Make sure every service has a title to be displayed in table
+      for (const service of this.data.services) {
+        if (service.Title.length == 0) {
+          service.Title = service.Name;
+        }
+      }
+
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
         const serviceLayer = this.data.services.filter(
