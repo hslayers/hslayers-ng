@@ -17,6 +17,7 @@ Check out the examples and live projects to get an idea:
 * http://ng.hslayers.org/examples/
 * https://groundwater.smartagro.lv/fie/index.html
 * https://www.smartafrihub.com/cs/map1/
+* http://sdi4apps.eu/spoi
 * (Material) https://www.smartafrihub.com/cs/best-practises
 * (Material) https://app.hslayers.org/agroinfo
 * (3D) https://app.hslayers.org/project-agro-climatic/
