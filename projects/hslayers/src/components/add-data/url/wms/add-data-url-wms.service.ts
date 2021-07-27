@@ -100,6 +100,18 @@ export class HsAddDataUrlWmsService {
     this.getDimensionValues = hsDimensionService.getDimensionValues;
   }
 
+  expandTableRow(e) {
+    const action = e.target.className.includes('hs-wms-expandedRow')
+      ? 'remove'
+      : 'add';
+    if (this.hsUtilsService.isOverflown(e.target) || action == 'remove') {
+      const selectedRow = e.target.parentElement;
+      for (const el of selectedRow.children) {
+        el.classList[action]('hs-wms-expandedRow');
+      }
+    }
+  }
+
   throwParsingError(e): void {
     this.url = null;
     this.showDetails = false;
