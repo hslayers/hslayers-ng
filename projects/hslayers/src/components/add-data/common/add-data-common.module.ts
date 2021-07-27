@@ -10,6 +10,7 @@ import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog.component';
 import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';
+import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directive';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -20,6 +21,7 @@ import {HsNestedLayersTableComponent} from './nested-layers-table.component';
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     HsAddDataCommonVectorFileUploadDirective,
+    WmsLayerHighlightDirective,
   ],
   declarations: [
     HsAddDataUrlComponent,
@@ -27,6 +29,7 @@ import {HsNestedLayersTableComponent} from './nested-layers-table.component';
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     HsAddDataCommonVectorFileUploadDirective,
+    WmsLayerHighlightDirective,
   ],
   providers: [],
   entryComponents: [HsGetCapabilitiesErrorComponent],

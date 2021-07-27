@@ -108,6 +108,17 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		}
 	}
 
+	.hs-wms-expandedRow{
+		white-space: break-spaces;
+	}
+
+	.hs-wms-highlighted {
+		cursor: pointer;
+	}
+	.hs-wms-highlighted:hover{
+		background-color: #d2d8dd96;
+	}
+
 	.hs-flex-fill {
 		flex: 1 1 auto
 	}

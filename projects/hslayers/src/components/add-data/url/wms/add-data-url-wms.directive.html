@@ -109,19 +109,20 @@
         <table class="table table-sm table-striped table-bordered">
             <thead class="bg-secondary text-light">
                 <th style="width:1.5em">&nbsp;</th>
-                <th >{{'COMMON.title' | translate}}</th>
+                <th>{{'COMMON.title' | translate}}</th>
                 <!-- <th style="width:30%">{{'COMMON.name' | translate}}</th> -->
                 <th>{{'COMMON.abstract' | translate}}</th>
             </thead>
             <tbody *ngFor="let service of data.services">
-                <tr class="text-center align-middle">
-                    <td [attr.rowspan]="service.Style?.length ? 3 : 2"
-                        [ngClass]="{'align-middle': !hasNestedLayers(service)}"><input type="checkbox"
-                            class="checkbox-lg" [(ngModel)]="service.checked" name="service"
+                <tr class="align-middle">
+                    <td [attr.rowspan]="service.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(service)}">
+                        <input type="checkbox" class="checkbox-lg" [(ngModel)]="service.checked" name="service"
                             (change)="searchForChecked(service)" /></td>
-                    <td style="max-width: 25.375em" class="text-truncate" [title]="service.Title">{{service.Title}}</td>
+                    <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate" [title]="service.Title"
+                        (click)="hsAddDataUrlWmsService.expandTableRow($event)">{{service.Title}}</td>
                     <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="service.Name">{{service.Name}}</td> -->
-                    <td style="max-width: 10.875em; width:30%" class="text-truncate" [title]="service.Abstract" >{{service.Abstract}}</td>
+                    <td hsWmsLayerHighlight style="max-width: 10.875em; width:30%" class="text-truncate" [title]="service.Abstract"
+                        (click)="hsAddDataUrlWmsService.expandTableRow($event)">{{service.Abstract}}</td>
                 </tr>
                 <tr *ngIf="service.Style?.length > 1 && service.checked">
                     <td colspan="3">
@@ -139,7 +140,8 @@
                 </tr>
                 <tr [hidden]="!hasNestedLayers(service)">
                     <td colspan="3" style="padding-left: 1em">
-                        <hs-nested-layers-table style="display: block;" [layers]="service.Layer" (layerChecked)="searchForChecked($event)">
+                        <hs-nested-layers-table style="display: block;" [layers]="service.Layer"
+                            (layerChecked)="searchForChecked($event)">
                         </hs-nested-layers-table>
                     </td>
                 </tr>

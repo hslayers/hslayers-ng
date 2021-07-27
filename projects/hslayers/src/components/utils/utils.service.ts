@@ -492,4 +492,11 @@ export class HsUtilsService {
     }
     return str.trim() != '' ? str : undefined;
   }
+
+  isOverflown(element: Element): boolean {
+    return (
+      element.scrollHeight > element.clientHeight ||
+      element.scrollWidth > element.clientWidth
+    );
+  }
 }
