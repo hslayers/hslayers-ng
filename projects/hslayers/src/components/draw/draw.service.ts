@@ -510,10 +510,14 @@ export class HsDrawService {
    * a list of available server possibilities.
    */
   async fillDrawableLayers(): Promise<void> {
-    const drawables = this.HsMapService.map
-      .getLayers()
-      .getArray()
-      .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
+    let drawables = [];
+    this.HsMapService.loaded().then(() => {
+      drawables = this.HsMapService.map
+        .getLayers()
+        .getArray()
+        .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
+    });
+
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
       this.deactivateDrawing();
