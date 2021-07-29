@@ -80,7 +80,7 @@ export class HsMickaBrowserService {
             default:
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
-                  'ADDLAYERS.errorWhileRequestingLayers'
+                  'ADDLAYERS.ERROR.errorWhileRequestingLayers'
                 ),
                 dataset.title +
                   ': ' +

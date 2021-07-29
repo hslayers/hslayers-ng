@@ -186,7 +186,9 @@ export class HsAddDataVectorComponent {
         this.setToDefault();
 
         this.hsToastService.createToastPopupMessage(
-          this.hsLanguageService.getTranslation('ADDLAYERS.someErrorHappened'),
+          this.hsLanguageService.getTranslation(
+            'ADDLAYERS.ERROR.someErrorHappened'
+          ),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             'couldNotUploadSelectedFile'
