@@ -79,7 +79,7 @@
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@compodoc/compodoc": "^1.1.14",
-    "@types/jasmine": "~3.8.1",
+    "@types/jasmine": "~3.8.2",
     "@types/jasminewd2": "~2.0.10",
     "@typescript-eslint/eslint-plugin": "4.28.5",
     "@typescript-eslint/parser": "4.28.5",
