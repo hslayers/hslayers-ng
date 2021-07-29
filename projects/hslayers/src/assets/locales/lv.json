@@ -44,10 +44,11 @@
     "chooseType": "Izvēlieties tipu",
     "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",
     "couldNotUploadSelectedFile": "Radās problēma mēģinot ielādēt Jūsu izvēlēto failu!",
-    "ERROR":{
+    "ERROR": {
       "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
       "someErrorHappened": "Radās kļūda vai trūkst ievades",
-      "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda"
+      "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
+      "urlInvalid": "Nav pieejama vai ari nav derīga pieprasītā slāņa URL adrese!"
     },
     "externalDataSource": "Ārējais datu avots (hipersaite)",
     "featureCount": "Grafisko objektu skaits",
