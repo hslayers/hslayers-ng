@@ -44,7 +44,11 @@
     "chooseType": "Izvēlieties tipu",
     "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",
     "couldNotUploadSelectedFile": "Radās problēma mēģinot ielādēt Jūsu izvēlēto failu!",
-    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
+    "ERROR":{
+      "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
+      "someErrorHappened": "Radās kļūda vai trūkst ievades",
+      "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda"
+    },
     "externalDataSource": "Ārējais datu avots (hipersaite)",
     "featureCount": "Grafisko objektu skaits",
     "folderName": "Mapes nosaukums",
@@ -62,9 +66,7 @@
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
       "SLDStyleFile": "SLD stila datne"
     },
-    "someErrorHappened": "Radās kļūda vai trūkst ievades",
     "srs": "Ģeodēziskā atskaites sistēma",
-    "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
     "thisIsRequired": "Šis ir nepieciešams!",
     "tileSize": "\"Flīžu\" izmērs",
     "TYPES": {

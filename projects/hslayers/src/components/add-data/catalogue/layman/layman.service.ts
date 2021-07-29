@@ -97,7 +97,7 @@ export class HsLaymanBrowserService {
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
-              'ADDLAYERS.errorWhileRequestingLayers',
+              'ADDLAYERS.ERROR.errorWhileRequestingLayers',
               x.body
             );
           }
@@ -119,7 +119,7 @@ export class HsLaymanBrowserService {
             default:
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
-                  'ADDLAYERS.errorWhileRequestingLayers'
+                  'ADDLAYERS.ERROR.errorWhileRequestingLayers'
                 ),
                 endpoint.title +
                   ': ' +
@@ -157,7 +157,7 @@ export class HsLaymanBrowserService {
     //If response is object, it is an error response
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(
-        'ADDLAYERS.errorWhileRequestingLayers'
+        'ADDLAYERS.ERROR.errorWhileRequestingLayers'
       ),
       endpointTitle +
         ': ' +
@@ -254,15 +254,26 @@ export class HsLaymanBrowserService {
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
     console.log(lyr);
-    return {
-      type: lyr.type,
-      link: lyr.wms.url,
-      layer: lyr.name,
-      name: lyr.name,
-      title: lyr.title,
-      dsType: ds.type,
-      editable: lyr.editable,
-      workspace: lyr.workspace,
-    };
+    if (lyr.wms.url) {
+      return {
+        type: lyr.type,
+        link: lyr.wms.url,
+        layer: lyr.name,
+        name: lyr.name,
+        title: lyr.title,
+        dsType: ds.type,
+        editable: lyr.editable,
+        workspace: lyr.workspace,
+      };
+    } else {
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
+          'ADDLAYERS.ERROR.errorWhileRequestingLayers'
+        ),
+        this.hsLanguageService.getTranslation('ADDLAYERS.ERROR.urlInvalid'),
+        {disableLocalization: true}
+      );
+      return false;
+    }
   }
 }

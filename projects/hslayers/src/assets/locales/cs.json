@@ -44,7 +44,12 @@
     "chooseType": "Vyberte typ",
     "considerUsingTiles": "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrazu.",
     "couldNotUploadSelectedFile": "Při načítání souboru došlo k chybě!",
-    "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru",
+    "ERROR": {
+      "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru",
+      "someErrorHappened": "Nastala nespecifikovaná chyba nebo je chybný vstup",
+      "thereWasErrorWhile": "Nastala chyba při syntaktické analýze odpovědi Capabilities z dané URL",
+      "urlInvalid": "Chybějící nebo neplatná adresa URL požadované vrstvy!"
+    },
     "externalDataSource": "Zdroj externích dat (URL)",
     "featureCount": "Počet prvků",
     "folderName": "Název složky",
@@ -62,9 +67,7 @@
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Soubor se styly SLD"
     },
-    "someErrorHappened": "Nastala nespecifikovaná chyba nebo je chybný vstup",
     "srs": "SRS",
-    "thereWasErrorWhile": "Nastala chyba při syntaktické analýze odpovědi Capabilities z dané URL",
     "thisIsRequired": "Toto je vyžadováno!",
     "tileSize": "Velikost dlaždice",
     "TYPES": {

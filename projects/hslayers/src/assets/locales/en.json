@@ -44,7 +44,12 @@
     "chooseType": "Choose type",
     "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",
     "couldNotUploadSelectedFile": "There was a problem uploading the selected file!",
-    "errorWhileRequestingLayers": "Error while requesting layers",
+    "ERROR": {
+      "errorWhileRequestingLayers": "Error while requesting layers",
+      "someErrorHappened": "Some error happened or input missing",
+      "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
+      "urlInvalid": "Missing or invalid endpoint URL of requested layer!"
+    },
     "externalDataSource": "External data source (URL)",
     "featureCount": "Feature count",
     "folderName": "Folder name",
@@ -62,9 +67,7 @@
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "SLD style file"
     },
-    "someErrorHappened": "Some error happened or input missing",
     "srs": "SRS",
-    "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
     "thisIsRequired": "This is required!",
     "tileSize": "Tile size",
     "TYPES": {
