@@ -42,7 +42,7 @@ export class HsAddDataVectorComponent {
   // Not possible to save KML to layman yet
   saveAvailable: boolean;
   access_rights: accessRightsInterface = {
-    'access_rights.write': 'EVERYONE',
+    'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
   constructor(
