@@ -100,7 +100,10 @@ export class HsAddDataUrlWmsService {
     this.getDimensionValues = hsDimensionService.getDimensionValues;
   }
 
-  expandTableRow(e) {
+  /**
+   * Expands all sibling cells belonging to the same row after overflown cell is clicked
+   */
+  expandTableRow(e): void {
     const action = e.target.className.includes('hs-wms-expandedRow')
       ? 'remove'
       : 'add';
@@ -120,8 +123,7 @@ export class HsAddDataUrlWmsService {
   }
 
   /**
-   * @param caps
-   * @param response
+   * Fills list of available projections
    */
   fillProjections(caps, response): void {
     if (caps.Capability.Layer.CRS !== undefined) {
