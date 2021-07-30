@@ -414,18 +414,7 @@ export class HsMapService {
    * @param template
    */
   cloneView(template: View): View {
-    const view = new View({
-      extent: template.options_.extent,
-      maxZoom: template.getMaxZoom(),
-      minZoom: template.getMinZoom(),
-      center: template.getCenter(),
-      zoom: template.getZoom(),
-      projection: template.getProjection(),
-      rotation: template.getRotation(),
-      constrainOnlyCenter: template.options_.constrainOnlyCenter || false,
-      smoothExtentConstraint: template.options_.smoothExtentConstraint || true,
-      multiWorld: template.options_.multiWorld || false,
-    });
+    const view = new View(template.options_);
     return view;
   }
 
