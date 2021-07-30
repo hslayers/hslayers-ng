@@ -22,6 +22,7 @@ import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getHighlighted} from '../../common/feature-extensions';
 import {getTitle} from '../../common/layer-extensions';
+import {HsLayoutService} from '../layout/layout.service';
 
 export type Waypoint = {
   name: string;
@@ -29,7 +30,7 @@ export type Waypoint = {
   lat: number;
   hash: number;
   routes: {from: Feature; to: Feature};
-  feature;
+  featureId;
   loading: boolean;
 };
 
@@ -106,17 +107,16 @@ export class HsTripPlannerService {
     public HsEventBusService: HsEventBusService,
     private HsToastService: HsToastService,
     public HsLanguageService: HsLanguageService,
-    private HsLayerUtilsService: HsLayerUtilsService
+    private HsLayerUtilsService: HsLayerUtilsService,
+    private HsLayoutService: HsLayoutService
   ) {
-    if (this.HsShareUrlService.getParamValue('trip') !== null) {
-      this.trip = this.HsShareUrlService.getParamValue('trip');
-      this.loadWaypoints(this.trip);
-      this.HsShareUrlService.push('trip', this.trip);
-    }
     this.HsMapService.loaded().then((map) => {
       map.addInteraction(this.modify);
     });
     this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
+      if(this.HsLayoutService.mainpanel != 'tripPlanner') {
+        return;
+      }
       if (!this.waypointLayer) {
         this.createWaypointLayer();
       }
@@ -210,7 +210,32 @@ export class HsTripPlannerService {
       if (this.waypointLayer) {
         this.waypointSource = this.waypointLayer.getSource();
       }
+      this.routeSource.clear();
+      this.waypoints.length = 0;
       this.selectedLayerWrapper.waypoints = layer;
+      for (let feature of this.waypointSource.getFeatures()) {
+        const new_cords = transform(
+          feature.getGeometry().getCoordinates(),
+          this.HsMapService.getCurrentProj().getCode(),
+          'EPSG:4326'
+        );
+        const wp: Waypoint = {
+          lon: new_cords[0],
+          lat: new_cords[1],
+          name: 'Waypoint ' + (this.waypoints.length + 1),
+          hash: this.HsUtilsService.hashCode(
+            JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
+          ),
+          routes: {from: null, to: null},
+          featureId: feature.getId(),
+          loading: false,
+        }
+        this.waypoints.push(wp);
+        if (this.waypointAdded !== undefined) {
+          this.waypointAdded(wp);
+        }
+        this.calculateRoutes();
+      }
     }
   }
 
@@ -227,42 +252,11 @@ export class HsTripPlannerService {
   }
 
   /**
-   * Load selected trip data from plan4all server and calculate routes
-   * @params {string} uuid Identifier of selected trip
-   * @param uuid
-   */
-  loadWaypoints(uuid) {
-    const trip_url = '<http://www.sdi4apps.eu/trips.rdf#' + uuid + '>';
-    const query =
-      'SELECT * FROM <http://www.sdi4apps.eu/trips.rdf> WHERE {' +
-      trip_url +
-      ' ?p ?o}';
-    this.$http
-      .get(
-        '//data.plan4all.eu/sparql?default-graph-uri=&query=' +
-          encodeURIComponent(query) +
-          '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
-      )
-      .subscribe((response: any) => {
-        response.results.bindings.forEach((record: any) => {
-          if (record.p.value == 'http://www.sdi4apps.eu/trips.rdf#waypoints') {
-            this.waypoints = JSON.parse(record.o.value);
-          }
-        });
-        this.calculateRoutes();
-      });
-  }
-  /**
    * Add waypoint to waypoint list and recalculate route
    * @param {number} lon Longitude number (part of Ol.coordinate Array)
    * @param {number} lat Latitude number (part of Ol.coordinate Array)
    */
   addWaypoint({x, y, lon, lat}) {
-    if (this.HsShareUrlService.getParamValue('trip') === null) {
-      this.trip = this.HsUtilsService.generateUuid();
-      this.HsShareUrlService.push('trip', this.trip);
-      this.HsShareUrlService.update();
-    }
     const wp: Waypoint = {
       lon,
       lat,
@@ -271,19 +265,21 @@ export class HsTripPlannerService {
         JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
       ),
       routes: {from: null, to: null},
-      feature: null,
+      featureId: null,
       loading: false,
     };
-    wp.feature = new Feature({
+    const feature = new Feature({
       'wp': wp,
       geometry: new Point([x, y]),
+      id: this.HsUtilsService.generateUuid()
     });
-    this.waypointSource.addFeature(wp.feature);
+    feature.setId(feature.get('id'));
+    wp.featureId = feature.getId();
+    this.waypointSource.addFeature(feature);
     this.waypoints.push(wp);
     if (this.waypointAdded !== undefined) {
       this.waypointAdded(wp);
     }
-    this.storeWaypoints();
     this.calculateRoutes();
   }
 
@@ -292,13 +288,14 @@ export class HsTripPlannerService {
    * @param wp - Waypoint object, with lat, lon and routes array
    */
   waypointAdded(wp: Waypoint): void {
-    this.movable_features.push(wp.feature);
-    wp.feature.getGeometry().on(
+    const feature = this.waypointSource.getFeatureById(wp.featureId);
+    this.movable_features.push(feature);
+    feature.getGeometry().on(
       'change',
       (e) => {
         this.removeRoutesForWaypoint(wp);
         const new_cords = transform(
-          wp.feature.getGeometry().getCoordinates(),
+          feature.getGeometry().getCoordinates(),
           this.HsMapService.getCurrentProj().getCode(),
           'EPSG:4326'
         );
@@ -316,7 +313,7 @@ export class HsTripPlannerService {
           this.calculateRoutes();
         }, 500);
       },
-      wp.feature
+      feature
     );
   }
 
@@ -350,51 +347,14 @@ export class HsTripPlannerService {
    */
   waypointRemoved(wp: Waypoint): void {
     try {
-      this.waypointSource.removeFeature(wp.feature);
+      this.waypointSource.removeFeature(
+        this.waypointSource.getFeatureById(wp.featureId)
+      );
     } catch (ex) {
       throw ex;
     }
   }
 
-  /**
-   * Store current waypoints on remote Plan4All server if possible
-   */
-  storeWaypoints() {
-    if (this.HsShareUrlService.getParamValue('trip_editable') === null) {
-      return;
-    }
-    const waypoints = [];
-    this.waypoints.forEach((wp) => {
-      waypoints.push({
-        name: wp.name,
-        lon: wp.lon,
-        lat: wp.lat,
-        routes: [],
-      });
-    });
-    const trip_url = '<http://www.sdi4apps.eu/trips.rdf#' + this.trip + '>';
-    const waypoints_url = '<http://www.sdi4apps.eu/trips.rdf#waypoints>';
-    const query =
-      'WITH <http://www.sdi4apps.eu/trips.rdf> DELETE {?t ?p ?s} INSERT {' +
-      trip_url +
-      ' ' +
-      waypoints_url +
-      ' "' +
-      JSON.stringify(waypoints).replace(/"/g, '\\"') +
-      '"} WHERE {?t ?p ?s. FILTER(?t = ' +
-      trip_url +
-      '). }';
-    this.$http
-      .post(
-        '//data.plan4all.eu/sparql?default-graph-uri=&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-        {
-          query: query,
-        }
-      )
-      .subscribe((response) => {
-        console.log(response);
-      });
-  }
   /**
    * Remove selected waypoint from trip
    * @param {object} wp Waypoint object to remove
@@ -413,7 +373,6 @@ export class HsTripPlannerService {
     }
     this.waypointRemoved(wp);
     this.waypoints.splice(this.waypoints.indexOf(wp), 1);
-    this.storeWaypoints();
     this.calculateRoutes();
   }
 
