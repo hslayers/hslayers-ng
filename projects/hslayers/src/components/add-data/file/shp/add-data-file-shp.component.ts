@@ -43,7 +43,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   showDetails = false;
   isAuthorized: boolean;
   access_rights: accessRightsInterface = {
-    'access_rights.write': 'EVERYONE',
+    'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
 

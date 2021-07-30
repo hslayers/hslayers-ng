@@ -34,7 +34,7 @@ export class HsDrawLayerMetadataDialogComponent
   type: string;
   endpoint: any;
   access_rights: accessRightsInterface = {
-    'access_rights.write': 'EVERYONE',
+    'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
   onlyMineFilterVisible = false;
