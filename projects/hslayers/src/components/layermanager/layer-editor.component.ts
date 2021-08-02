@@ -8,6 +8,7 @@ import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
+import {HsLayerManagerRemoveLayerDialogComponent} from './remove-layer-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -268,13 +269,10 @@ export class HsLayerEditorComponent {
   }
 
   removeLayer(): void {
-    if (this.HsDrawService.selectedLayer == this.olLayer()) {
-      this.HsDrawService.selectedLayer = null;
-    }
-    this.HsMapService.map.removeLayer(this.olLayer());
-    this.HsDrawService.fillDrawableLayers();
-
-    this.HsEventBusService.layerManagerUpdates.next();
+    this.HsDialogContainerService.create(
+      HsLayerManagerRemoveLayerDialogComponent,
+      {olLayer: this.olLayer()}
+    );
   }
 
   /**

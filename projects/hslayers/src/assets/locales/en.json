@@ -498,7 +498,10 @@
       "syncTimes": "Synchronize times",
       "syncTimesTooltip": "Synchronize time for all layers"
     },
-    "User generated": "User generated"
+    "User generated": "User generated",
+    "dialogRemoveLayer": {
+      "dialogMessage": "Do You really want to remove the selected layer?"
+    }
   },
   "LAYERS": {
     "newLayer": "New layer"

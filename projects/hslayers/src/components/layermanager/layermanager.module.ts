@@ -18,6 +18,7 @@ import {HsLayerManagerFolderComponent} from './layermanager-folder.component';
 import {HsLayerManagerGalleryComponent} from './layermanager-gallery.component';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
+import {HsLayerManagerRemoveLayerDialogComponent} from './remove-layer-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layermanager-time-editor.component';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
@@ -39,6 +40,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
   ],
@@ -62,6 +64,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
   ],
@@ -83,6 +86,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
   ],

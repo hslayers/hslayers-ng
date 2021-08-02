@@ -1,0 +1,20 @@
+<div class="modal hs-remove-layer-dialog in" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{'PANEL_HEADER.LM' | translate}}
+        </h4>
+        <button (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span
+            class="sr-only">{{'COMMON.close' | translate}}</span></button>
+      </div>
+      <div class="modal-body" style="max-height:600px; overflow-y:auto">
+        {{'LAYERMANAGER.dialogRemoveLayer.dialogMessage' | translate}}</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="removeLayer();"
+          data-dismiss="modal">{{'COMMON.removeLayer' | translate}}</button>
+        <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
