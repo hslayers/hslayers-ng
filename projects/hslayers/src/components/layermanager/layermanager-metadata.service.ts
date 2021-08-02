@@ -252,6 +252,7 @@ export class HsLayerManagerMetadataService {
    */
   async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
     const layer = layerDescriptor.layer;
+    let capabilities = '';
     const url = this.HsLayerUtilsService.getURL(layer);
     if (!url) {
       return;
