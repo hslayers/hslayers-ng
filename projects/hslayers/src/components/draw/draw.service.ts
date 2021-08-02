@@ -511,12 +511,11 @@ export class HsDrawService {
    */
   async fillDrawableLayers(): Promise<void> {
     let drawables = [];
-    this.HsMapService.loaded().then(() => {
-      drawables = this.HsMapService.map
-        .getLayers()
-        .getArray()
-        .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
-    });
+    await this.HsMapService.loaded();
+    drawables = this.HsMapService.map
+      .getLayers()
+      .getArray()
+      .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
