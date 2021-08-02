@@ -65,7 +65,9 @@
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
     "SHP": {
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
-      "SLDStyleFile": "Stila datne"
+      "SLDStyleFile": "Stila datne",
+      "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",
+      "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!"
     },
     "srs": "Ģeodēziskā atskaites sistēma",
     "thisIsRequired": "Šis ir nepieciešams!",
@@ -84,7 +86,8 @@
       "chooseFiles": "Izvēlieties failus...",
       "dragAndDropFiles": "Velciet un nometiet failus",
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
-      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus",
+      "addSld": "Pievienot SLD failu"
     },
     "VECTOR": {
       "extractStyles": "Izvilkt stilus"
