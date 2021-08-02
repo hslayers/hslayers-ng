@@ -64,10 +64,10 @@
     "selectAllLayers": "Select All layers",
     "serviceTypeNotMatching": "URL service type does not match selected category",
     "SHP": {
-      "shapeFile": "Shape file (shp+dbf+shx)",
-      "SLDStyleFile": "Style file",
       "loginRequired": "User login is required before layer can be loaded",
-      "nameRequired": "'Name' field required to proceed!"
+      "nameRequired": "'Name' field required to proceed!",
+      "shapeFile": "Shape file (shp+dbf+shx)",
+      "SLDStyleFile": "Style file"
     },
     "srs": "SRS",
     "thisIsRequired": "This is required!",
@@ -83,11 +83,11 @@
     "useProxy": "Use proxy",
     "useTiles": "Use tiles",
     "Vector": {
+      "addSld": "Add SLD file",
       "chooseFiles": "Choose files...",
       "dragAndDropFiles": "Drag and drop files",
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files",
-      "addSld": "Add SLD file"
+      "uploadVectorFiles": "Upload vector files"
     },
     "VECTOR": {
       "extractStyles": "Extract styles"
@@ -438,6 +438,9 @@
       "reloadComposition": "Reload composition",
       "removeAllAdded": "Remove all added layers"
     },
+    "dialogRemoveLayer": {
+      "dialogMessage": "Do You really want to remove the selected layer?"
+    },
     "dimensions": "Dimensions",
     "editorButtons": "Editor buttons",
     "enablePhysicalLayerList": "Enable/Disable physical layer list",
@@ -498,10 +501,7 @@
       "syncTimes": "Synchronize times",
       "syncTimesTooltip": "Synchronize time for all layers"
     },
-    "User generated": "User generated",
-    "dialogRemoveLayer": {
-      "dialogMessage": "Do You really want to remove the selected layer?"
-    }
+    "User generated": "User generated"
   },
   "LAYERS": {
     "newLayer": "New layer"

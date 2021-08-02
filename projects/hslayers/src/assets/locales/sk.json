@@ -64,10 +64,10 @@
     "selectAllLayers": "Vybrať všetky vrstvy",
     "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
     "SHP": {
-      "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
-      "SLDStyleFile": "Súbor so štýlmi",
       "loginRequired": "Pred načítaním vrstvy je potrebné prihlásiť sa ",
-      "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!"
+      "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
+      "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
+      "SLDStyleFile": "Súbor so štýlmi"
     },
     "srs": "SRS",
     "thisIsRequired": "Toto je vyžadované!",
@@ -83,11 +83,11 @@
     "useProxy": "Použíť proxy",
     "useTiles": "Použíť dlaždice",
     "Vector": {
+      "addSld": "Pridať súbor SLD",
       "chooseFiles": "Vyberte súbory...",
       "dragAndDropFiles": "Pretiahnite súbory",
       "note": "*Poznámka: Ak pripojíte súbor so súradnicami v inom systéme než WGS84 (dĺžka/šírka) nastavte prosím SRS v skecií \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové súbory",
-      "addSld": "Pridať súbor SLD"
+      "uploadVectorFiles": "Nahrajte vektorové súbory"
     },
     "VECTOR": {
       "extractStyles": "Extrahovať štýly"
