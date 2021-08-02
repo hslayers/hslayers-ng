@@ -56,6 +56,7 @@ export class HsAddDataUrlWmsService {
       registerMetadata: true,
       tileSize: 512,
       addUnder: null,
+      visible: true,
     };
 
     this.hsEventBusService.olMapLoads.subscribe(() => {
@@ -341,7 +342,7 @@ export class HsAddDataUrlWmsService {
     if (this.data.services === undefined) {
       return;
     }
-
+    this.setAddedLayerVisibility();
     if (this.data.base) {
       this.addLayer(
         {
@@ -364,7 +365,6 @@ export class HsAddDataUrlWmsService {
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager');
   }
-
   createBasemapName(services): string {
     const names = [];
     for (const layer of services.filter((layer) => layer.checked)) {
@@ -373,6 +373,16 @@ export class HsAddDataUrlWmsService {
     return names.join(',');
   }
 
+  setAddedLayerVisibility(): void {
+    const selectedLayersLength = this.data.services.filter(
+      (layer) => layer.checked === true
+    ).length;
+    if (selectedLayersLength > 10) {
+      this.data.visible = false;
+    } else {
+      this.data.visible = true;
+    }
+  }
   /**
    * @param service
    * @returns {Array}
@@ -510,6 +520,7 @@ export class HsAddDataUrlWmsService {
       legends: legends,
       subLayers: subLayers,
       base: this.data.base,
+      visible: this.data.visible,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
     this.hsAddDataService.addLayer(new_layer, this.data.addUnder);
