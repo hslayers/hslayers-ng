@@ -64,10 +64,10 @@
     "selectAllLayers": "Vybrat všechny vrstvy",
     "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií",
     "SHP": {
-      "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
-      "SLDStyleFile": "Soubor se styly",
       "loginRequired": "Před načtením vrstvy je vyžadováno přihlášení",
-      "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!"
+      "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!",
+      "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
+      "SLDStyleFile": "Soubor se styly"
     },
     "srs": "SRS",
     "thisIsRequired": "Toto je vyžadováno!",
@@ -83,11 +83,11 @@
     "useProxy": "Použít proxy",
     "useTiles": "Použít dlaždice",
     "Vector": {
+      "addSld": "Přidat soubor SLD",
       "chooseFiles": "Vyberte soubory...",
       "dragAndDropFiles": "Přetáhněte soubory",
       "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory",
-      "addSld": "Přidat soubor SLD"
+      "uploadVectorFiles": "Nahrajte vektorové soubory"
     },
     "VECTOR": {
       "extractStyles": "Extrahovat styly"
