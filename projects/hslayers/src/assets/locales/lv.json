@@ -495,7 +495,10 @@
       "syncTimes": "Sinhronizēt laikus",
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
-    "User generated": "Lietotāja ģenerēti"
+    "User generated": "Lietotāja ģenerēti",
+    "dialogRemoveLayer": {
+      "dialogMessage": "Vai Jūs tiešām vēlaties noņemt atlasīto slāni?"
+    }
   },
   "LAYERS": {
     "newLayer": "Jauns slānis"
