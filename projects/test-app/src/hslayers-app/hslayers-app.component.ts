@@ -101,6 +101,17 @@ export class HslayersAppComponent {
       ],
     };
     Object.assign(this.HsConfig, {
+      datasources: [
+        {
+          title: "Layman",
+          // url:  `${window.location.protocol}//${window.location.hostname}/layman/client`,
+          // url: 'https://hub.lesprojekt.cz/client',
+          url: 'http://localhost:8087',
+          user: 'anonymous',
+          type: "layman",
+          liferayProtocol: 'https'
+        },
+      ],
       proxyPrefix: window.location.hostname.includes('localhost')
         ? `${window.location.protocol}//${window.location.hostname}:8085/`
         : '/proxy/',
