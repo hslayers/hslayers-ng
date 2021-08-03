@@ -10,7 +10,7 @@
     "@angular/forms": "^9.0.0",
     "@angular/localize": "^9.0.0",
     "@angular/material": "^9.0.0",
-    "ol": "^6.0.0",
+    "ol": ">=6.0.0 <6.6.0",
     "ol-popup": "^4.0.0",
     "hslayers-ng": "^3.0.0"
   },
