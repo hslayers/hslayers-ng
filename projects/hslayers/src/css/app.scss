@@ -58,6 +58,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	@import "~bootstrap/scss/tooltip";
 	@import "~bootstrap/scss/popover";
 	@import "~bootstrap/scss/_utilities";
+	@import "~bootstrap/scss/_custom-forms";
 
 	color: var(--text-color);
 

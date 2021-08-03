@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
 
@@ -8,6 +8,8 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLayerManagerService} from '../../layermanager/layermanager.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -18,7 +20,8 @@ import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
   selector: 'hs-add-data-url-vector',
   templateUrl: './add-data-vector.directive.html',
 })
-export class HsAddDataVectorComponent {
+export class HsAddDataVectorComponent implements OnInit {
+  @Input() dataType: string;
   @ViewChild('vectorFileInput') vectorFileInput: ElementRef;
 
   srs = 'EPSG:4326';
@@ -45,6 +48,12 @@ export class HsAddDataVectorComponent {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
+  uploadType = 'new';
+  sourceLayer = null;
+  vectorLayers;
+
+  acceptedFormats: string;
+
   constructor(
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
@@ -54,7 +63,9 @@ export class HsAddDataVectorComponent {
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
+    public hsLayerManagerService: HsLayerManagerService,
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {
     const layman = this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type == 'layman'
@@ -67,6 +78,11 @@ export class HsAddDataVectorComponent {
       this.isAuthorized =
         layman.user !== 'anonymous' && layman.user !== 'browser';
     }
+  }
+
+  ngOnInit(): void {
+    this.acceptedFormats =
+      this.dataType == 'kml' ? '.kml, .gpx' : '.geojson, .json';
   }
 
   connect = async (): Promise<void> => {
@@ -82,10 +98,32 @@ export class HsAddDataVectorComponent {
     }
   }
 
+  setUploadType(type: string): void {
+    this.uploadType = type;
+    if (type == 'existing') {
+      this.vectorLayers = this.hsLayerManagerService.data.layers.filter(
+        (layer) => {
+          return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
+        }
+      );
+    }
+  }
+
   /**
    * Handler for adding non-wms service, file in template.
    */
   async add() {
+    this.uploadType == 'new' ? this.addNewLayer() : this.updateExistingLayer();
+
+    this.hsLayoutService.setMainPanel('layermanager');
+    this.setToDefault();
+  }
+
+  updateExistingLayer(): void {
+    this.sourceLayer.getSource().addFeatures(this.features);
+  }
+
+  async addNewLayer() {
     const layer = await this.hsAddDataVectorService.addVectorLayer(
       this.type,
       this.url || this.base64url,
@@ -113,10 +151,6 @@ export class HsAddDataVectorComponent {
         layer.getSource().dispatchEvent('addfeature');
       });
     }
-
-    this.hsLayoutService.setMainPanel('layermanager');
-    this.setToDefault();
-    this.showDetails = false;
     return layer;
   }
 
@@ -213,6 +247,9 @@ export class HsAddDataVectorComponent {
     this.featureCount = 0;
     this.type = '';
     this.showDetails = false;
+    this.sourceLayer = null;
+    this.vectorLayers = null;
+    this.uploadType = 'new';
     if (this.vectorFileInput) {
       this.vectorFileInput.nativeElement.value = '';
     }

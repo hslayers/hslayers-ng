@@ -11,82 +11,112 @@
             </div>
             <p class="px-5">{{'COMMON.or' | translate}}</p>
             <label class="dropzone-label">
-                <input #vectorFileInput type="file" accept=".kml, .gpx, .geojson, .json" id="hs-vector-file" class="inputfile" (change)="handleFileUpload($event.target.files)">
-                <label for="hs-vector-file" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i> {{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
-            </label> 
+                <input #vectorFileInput type="file" [accept]="acceptedFormats" id="hs-vector-file"
+                    class="inputfile" (change)="handleFileUpload($event.target.files)">
+                <label for="hs-vector-file" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i>
+                    {{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
+            </label>
 
         </div>
     </div>
 
     <div [hidden]="!showDetails">
-        <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
+        <div *ngIf="type != 'kml'" class="border-bottom d-flex flex-row justify-content-between">
+            <p class="align-self-center m-0">Adding {{features.length}} features into:</p>
+            <ul class="nav nav-tabs justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link text-secondary" [ngClass]="{'active': uploadType == 'new'}" (click)="setUploadType('new')">New layer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-secondary" [ngClass]="{'active': uploadType == 'existing'}"
+                        (click)="setUploadType('existing')">Existing layer</a>
+                </li>
+            </ul>
+        </div>
+            <div [hidden]="uploadType == 'new'">
+                <div class="form-group my-3">
+                    <label class="capabilities_label control-label">Existing layer</label>
+                    <select class="custom-select" name="sourceLayer" [(ngModel)]="sourceLayer">
+                        <option  [ngValue]="null" [disabled]="true" selected hidden>Please choose layer from list...</option>
+                        <option *ngFor="let lyr of vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
+                    </select>
+                </div>
+            </div>
+            <div [hidden]="uploadType == 'existing'">
+                <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
-        <div class="form-group">
-            <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
-            <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translate" class="form-control" name="title" [(ngModel)]="title" />
-        </div>
+                <div class="form-group">
+                    <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+                    <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translate" class="form-control" name="title"
+                        [(ngModel)]="title" />
+                </div>
 
-        <div class="form-group">
-            <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
-            <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate" class="form-control" name="name" [(ngModel)]="name" />
-        </div>
-        <div class="form-group" [hidden]="featureCount == 0">
-            <label class="capabilities_label control-label">{{'ADDLAYERS.featureCount' | translate}}</label>
-            <input class="form-control" name="featureCount" [(ngModel)]="featureCount" readonly />
-        </div>
-        <div class="form-group">
-            <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
-            <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
-                name="abstract" [(ngModel)]="abstract">
-            </textarea>
-        </div>
-        <div  class="d-flex flex-row justify-content-between align-items-baseline mb-1 " *ngIf="isAuthorized && saveAvailable">
-            {{'ADDDATA.saveToDatabase' | translate}}
-            <div class="btn-group ml-2">
-                <button type="button" class="btn btn-light  btn-outline-secondary"
-                    (click)="saveToLayman = true"
-                    [ngClass]="{'active':saveToLayman}">
-                    {{'COMMON.yes' | translate}}
+                <div class="form-group">
+                    <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+                    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate" class="form-control" name="name"
+                        [(ngModel)]="name" />
+                </div>
+                <div class="form-group" [hidden]="featureCount == 0">
+                    <label class="capabilities_label control-label">{{'ADDLAYERS.featureCount' | translate}}</label>
+                    <input class="form-control" name="featureCount" [(ngModel)]="featureCount" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
+                    <textarea class="form-control" id='hs-ows-abstract'
+                        [placeholder]="'COMMON.fillInDescriptive' | translate" name="abstract" [(ngModel)]="abstract">
+                    </textarea>
+                </div>
+                <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 "
+                    *ngIf="isAuthorized && saveAvailable">
+                    {{'ADDDATA.saveToDatabase' | translate}}
+                    <div class="btn-group ml-2">
+                        <button type="button" class="btn btn-light  btn-outline-secondary" (click)="saveToLayman = true"
+                            [ngClass]="{'active':saveToLayman}">
+                            {{'COMMON.yes' | translate}}
+                        </button>
+                        <button type="button" class="btn btn-light  btn-outline-secondary"
+                            (click)="saveToLayman = false" [ngClass]="{'active': !saveToLayman}">
+                            {{'COMMON.no' | translate}}
+                        </button>
+                    </div>
+                </div>
+                <div class="pl-4">
+                    <hs-layman-access-rights *ngIf="saveToLayman" [(access_rights)]="access_rights">
+                    </hs-layman-access-rights>
+                </div>
+
+                <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                    (click)="advancedPanelVisible = !advancedPanelVisible">
+                    {{'COMMON.advancedOptions' | translate}}
                 </button>
-                <button type="button" class="btn btn-light  btn-outline-secondary"
-                    (click)="saveToLayman = false"
-                    [ngClass]="{'active': !saveToLayman}">
-                    {{'COMMON.no' | translate}}
-                </button>
-            </div>
-        </div>
-        <div class="pl-4">
-            <hs-layman-access-rights *ngIf="saveToLayman" [(access_rights)]="access_rights"></hs-layman-access-rights>
-        </div>
 
-        <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-            (click)="advancedPanelVisible = !advancedPanelVisible">
-            {{'COMMON.advancedOptions' | translate}}
-        </button>
+                <div class="hs-ows-vector-advanced" *ngIf="advancedPanelVisible">
+                    <div class="form-group">
+                        <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
+                        <input class="form-control" name="srs" [(ngModel)]="srs" />
+                    </div>
 
-        <div class="hs-ows-vector-advanced" *ngIf="advancedPanelVisible">
-            <div class="form-group">
-                <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
-                <input class="form-control" name="srs" [(ngModel)]="srs" />
-            </div>
+                    <div class="form-group">
+                        <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
+                        <input class="form-control" name="folder" [(ngModel)]="folder_name" />
+                    </div>
 
-            <div class="form-group">
-                <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
-                <input class="form-control" name="folder" [(ngModel)]="folder_name" />
+                    <div class="form-group" *ngIf="isKml()">
+                        <label class="capabilities_label control-label">{{'ADDLAYERS.VECTOR.extractStyles' |
+                            translate}}</label>
+                        <input type="checkbox" name="extractStyles" [(ngModel)]="extract_styles" />
+                    </div>
+
+                    <div class="form-group">
+                        <hs-add-layers-target-position [(addUnder)]="addUnder"></hs-add-layers-target-position>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group" *ngIf="isKml()">
-                <label class="capabilities_label control-label">{{'ADDLAYERS.VECTOR.extractStyles' | translate}}</label>
-                <input type="checkbox" name="extractStyles" [(ngModel)]="extract_styles" />
-            </div>
 
-            <div class="form-group">
-                <hs-add-layers-target-position [(addUnder)]="addUnder"></hs-add-layers-target-position>
-            </div>
-        </div>
+            <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"></i>
+                {{'COMMON.add' | translate}}
+            </button>
 
-        <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"></i>
-            {{'COMMON.add' | translate}}
-        </button>
     </div>
 </form>
