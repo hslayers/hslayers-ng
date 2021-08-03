@@ -1,6 +1,8 @@
 import BaseLayer from 'ol/layer/Base';
 import {GeoJSON} from 'ol/format';
 import {Vector as VectorSource} from 'ol/source';
+import {gpx} from '@tmcw/togeojson';
+import {kml} from '@tmcw/togeojson';
 
 import '../../styles/styles.module';
 import {HsAddDataService} from '../add-data.service';
@@ -239,27 +241,30 @@ export class HsAddDataVectorService {
   }
   async readUploadedFile(file: any): Promise<any> {
     let uploadedData: any = {};
-    if (file.name.toLowerCase().endsWith('kml')) {
-      uploadedData = await this.createVectorObjectFromXml(file, 'kml');
-      return uploadedData;
-    } else if (file.name.toLowerCase().endsWith('gpx')) {
-      uploadedData = await this.createVectorObjectFromXml(file, 'gpx');
-      return uploadedData;
-    } else {
-      try {
-        const fileContents = await this.readUploadedFileAsText(file);
-        const fileToJSON = JSON.parse(<string>fileContents);
-        if (fileToJSON !== undefined) {
-          if (fileToJSON.features.length > 0) {
-            fileToJSON.name = file.name.split('.')[0];
-            uploadedData = this.createVectorObjectFromJson(fileToJSON);
-            return uploadedData;
+    const fileType = this.tryGuessTypeFromName(file.name.toLowerCase());
+    switch (fileType) {
+      case 'kml':
+        uploadedData = await this.createVectorObjectFromXml(file, 'kml');
+        break;
+      case 'gpx':
+        uploadedData = await this.createVectorObjectFromXml(file, 'gpx');
+        break;
+      default:
+        try {
+          const fileContents = await this.readUploadedFileAsText(file);
+          const fileToJSON = JSON.parse(<string>fileContents);
+          if (fileToJSON !== undefined) {
+            if (fileToJSON.features.length > 0) {
+              fileToJSON.name = file.name.split('.')[0];
+              uploadedData = this.createVectorObjectFromJson(fileToJSON);
+              return uploadedData;
+            }
           }
+        } catch (e) {
+          console.log('Uploaded file is not supported!', e);
         }
-      } catch (e) {
-        console.log('Uploaded file is not supported!', e);
-      }
     }
+    return uploadedData;
   }
   async createVectorObjectFromXml(file: File, type: string): Promise<any> {
     try {
@@ -294,5 +299,80 @@ export class HsAddDataVectorService {
       features: features,
     };
     return object;
+  }
+
+  /**
+   * Reads and returns features from uploaded file as objects
+   * @param json - Uploaded file parsed as json object
+   */
+  getFeatureObjects(json: any): any {
+    const format = new GeoJSON();
+    let features = format.readFeatures(json);
+    const projection = format.readProjection(json) || 'EPSG:4326';
+    const mapProjection = this.hsMapService.map
+      ? this.hsMapService.map.getView().getProjection()
+      : 'EPSG:3857';
+    features.forEach((f) => {
+      if (projection != mapProjection) {
+        f.getGeometry().transform(projection, mapProjection);
+      }
+      const id = this.hsUtilsService.generateUuid();
+      f.set('id', id, true);
+      f.setId(id);
+    });
+    features = features.map((f) => format.writeFeatureObject(f));
+    return features;
+  }
+
+  async convertUploadedData(file: any) {
+    const parser = new DOMParser();
+    const uploadedData: any = {};
+    let contentInJSON;
+    try {
+      const uploadedContent: any = await this.readUploadedFileAsText(file);
+      const fileType = this.tryGuessTypeFromName(file.name.toLowerCase());
+      switch (fileType) {
+        case 'kml':
+          contentInJSON = kml(
+            parser.parseFromString(uploadedContent, 'text/xml')
+          );
+          break;
+        case 'gpx':
+          contentInJSON = gpx(
+            parser.parseFromString(uploadedContent, 'text/xml')
+          );
+          break;
+        default:
+          contentInJSON = JSON.parse(<string>uploadedContent);
+      }
+      if (contentInJSON?.features?.length > 0) {
+        uploadedData.features = this.getFeatureObjects(contentInJSON);
+      }
+      uploadedData.title = file.name.split('.')[0].trim();
+      return uploadedData;
+    } catch (e) {
+      // Reason: Uploaded file is not supported' + e,
+    }
+  }
+
+  /**
+   * Tries to guess file type based on the file extension
+   * @param name - Parsed file name from uploaded file
+   */
+  tryGuessTypeFromName(name: string): string {
+    if (name !== undefined) {
+      if (name.toLowerCase().endsWith('kml')) {
+        return 'kml';
+      }
+      if (name.toLowerCase().endsWith('gpx')) {
+        return 'gpx';
+      }
+      if (
+        name.toLowerCase().endsWith('geojson') ||
+        name.toLowerCase().endsWith('json')
+      ) {
+        return 'geojson';
+      }
+    }
   }
 }
