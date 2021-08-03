@@ -244,10 +244,8 @@ export class HsAddDataVectorService {
     const fileType = this.tryGuessTypeFromName(file.name.toLowerCase());
     switch (fileType) {
       case 'kml':
-        uploadedData = await this.createVectorObjectFromXml(file, 'kml');
-        break;
       case 'gpx':
-        uploadedData = await this.createVectorObjectFromXml(file, 'gpx');
+        uploadedData = await this.convertUploadedData(file);
         break;
       default:
         try {
@@ -266,21 +264,7 @@ export class HsAddDataVectorService {
     }
     return uploadedData;
   }
-  async createVectorObjectFromXml(file: File, type: string): Promise<any> {
-    try {
-      const uploadedContent = await this.readUploadedFileAsURL(file);
-      const dataUrl = uploadedContent.toString();
-      const object = {
-        url: dataUrl,
-        name: file.name,
-        title: file.name,
-        type: type,
-      };
-      return object;
-    } catch (e) {
-      console.log('Uploaded file is not supported!');
-    }
-  }
+
   createVectorObjectFromJson(json: any): any {
     const format = new GeoJSON();
     const features = format.readFeatures(json);
@@ -307,7 +291,7 @@ export class HsAddDataVectorService {
    */
   getFeatureObjects(json: any): any {
     const format = new GeoJSON();
-    let features = format.readFeatures(json);
+    const features = format.readFeatures(json);
     const projection = format.readProjection(json) || 'EPSG:4326';
     const mapProjection = this.hsMapService.map
       ? this.hsMapService.map.getView().getProjection()
@@ -316,15 +300,11 @@ export class HsAddDataVectorService {
       if (projection != mapProjection) {
         f.getGeometry().transform(projection, mapProjection);
       }
-      const id = this.hsUtilsService.generateUuid();
-      f.set('id', id, true);
-      f.setId(id);
     });
-    features = features.map((f) => format.writeFeatureObject(f));
     return features;
   }
 
-  async convertUploadedData(file: any) {
+  async convertUploadedData(file: any): Promise<any> {
     const parser = new DOMParser();
     const uploadedData: any = {};
     let contentInJSON;
@@ -349,6 +329,7 @@ export class HsAddDataVectorService {
         uploadedData.features = this.getFeatureObjects(contentInJSON);
       }
       uploadedData.title = file.name.split('.')[0].trim();
+      uploadedData.type = fileType;
       return uploadedData;
     } catch (e) {
       // Reason: Uploaded file is not supported' + e,

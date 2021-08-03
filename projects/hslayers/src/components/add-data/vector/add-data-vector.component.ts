@@ -99,8 +99,6 @@ export class HsAddDataVectorComponent implements OnInit {
   }
 
   setUploadType(type: string): void {
-    console.log(this.vectorFileInput);
-
     this.uploadType = type;
     if (type == 'existing') {
       this.vectorLayers = this.hsLayerManagerService.data.layers.filter(
@@ -124,14 +122,7 @@ export class HsAddDataVectorComponent implements OnInit {
   }
 
   async updateExistingLayer(): Promise<void> {
-    let features = this.features.length > 0 ? this.features : [];
-    if (this.dataType != 'geojson') {
-      const kml = await this.hsAddDataVectorService.convertUploadedData(
-        this.vectorFileInput.nativeElement.files[0]
-      );
-      features = kml.features;
-    }
-    this.sourceLayer.getSource().addFeatures(features);
+    this.sourceLayer.getSource().addFeatures(this.features);
   }
 
   async addNewLayer() {
