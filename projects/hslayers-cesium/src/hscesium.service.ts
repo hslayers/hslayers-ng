@@ -107,7 +107,6 @@ export class HsCesiumService {
             : true,
           terrainProvider: terrain_provider,
           imageryProvider: this.HsConfig.imageryProvider,
-          terrainExaggeration: this.HsConfig.terrainExaggeration || 1.0,
           // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
           skyBox: new SkyBox({
             sources: {
@@ -141,6 +140,7 @@ export class HsCesiumService {
         : false;
       viewer.scene.globe.enableLighting = this.getShadowMode();
       viewer.scene.globe.shadows = this.getShadowMode();
+      viewer.scene.globe.terrainExaggeration = this.HsConfig.terrainExaggeration || 1.0;
       viewer.terrainProvider = terrain_provider;
 
       if (this.HsConfig.cesiumTime) {
