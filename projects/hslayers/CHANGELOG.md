@@ -1,3 +1,35 @@
+# [5.1.0](https://github.com/hslayers/hslayers-ng/compare/5.0.0...5.1.0) (2021-08-03)
+
+This version sets upper bound of OpenLayers peer dependency to ~6.5 which mitigates failing compilation of hslayers-ng using OL 6.6 that could be incorrectly automatically installed with hslayers-ng 5.0 version.
+
+### Bug Fixes
+
+* Move Cesium terrainExaggeration peropery to globe ([7b00cd3](https://github.com/hslayers/hslayers-ng/commit/7b00cd394f8293dc3b0e30a8ef81e3a6eb2770b5))
+* **hslayers-app:** Use update() on HsConfig object ([4dc87af](https://github.com/hslayers/hslayers-ng/commit/4dc87afbf347a62cda41c75900321f1a4e25ff4c))
+* Load trip planner routes sequentially ([25c7f35](https://github.com/hslayers/hslayers-ng/commit/25c7f355bc0fdcd74180ab840939f8ae4fd97d8e))
+* Pass all view options when cloning the view ([5529d15](https://github.com/hslayers/hslayers-ng/commit/5529d158e0a569d97b71b550bfa966ebdbef0175)), closes [#2034](https://github.com/hslayers/hslayers-ng/issues/2034)
+* Read SLD style file for shp ([0164a78](https://github.com/hslayers/hslayers-ng/commit/0164a7896d3011f2d17fc1cc3d1a91c3ca4f3e71))
+* Trip planner feature serialization bug ([2e42cc5](https://github.com/hslayers/hslayers-ng/commit/2e42cc5c4448a647ece309cdbd76d1d1a6cf46a3)), closes [#2036](https://github.com/hslayers/hslayers-ng/issues/2036)
+* Wait for drawables before accessing them ([ccc705c](https://github.com/hslayers/hslayers-ng/commit/ccc705c219be00a450c219b82534142b0b03251f))
+* **compositions-parser:** Check if layers exist before looping through them ([58aed58](https://github.com/hslayers/hslayers-ng/commit/58aed58c75c35c163a87a8e6d7c22b0d24d1e25a))
+* **deps:** Stick ol to version 6.5 for a while ([06e23fa](https://github.com/hslayers/hslayers-ng/commit/06e23faaf81a7ac281859164eabc310fbf03e4e6))
+* **draw:** Get drawables only after map is loaded ([c1f3d00](https://github.com/hslayers/hslayers-ng/commit/c1f3d00d4357b8120690ff879f9a4e7f162fe3f7)), closes [#2030](https://github.com/hslayers/hslayers-ng/issues/2030)
+* **layout:** Hide basemapgallery and deafult view button on guiOverlay false ([f12b0cf](https://github.com/hslayers/hslayers-ng/commit/f12b0cfe90ece8b3e4301582461ef0e4b48d5149))
+* **layout:** Hide sidebar if HsConfig.pureMap is set to true ([9411940](https://github.com/hslayers/hslayers-ng/commit/9411940e9d24483a5145cbb00c0d7b7e2e7026f2))
+* **layout:** Hide toolbar and geolocation button on guiOverlay false ([f744297](https://github.com/hslayers/hslayers-ng/commit/f744297b038855334d4a2819d19ba3b5b4e458f5))
+* **LM:** Change 'unknown source' error to warning ([a50eec3](https://github.com/hslayers/hslayers-ng/commit/a50eec37a7d021a27b2bc604eaa00aea3a3587ef))
+
+
+### Features
+
+* **layer-editor:** Ask confirmation when deleting layer ([3a787a3](https://github.com/hslayers/hslayers-ng/commit/3a787a3d2ded3370f9fa0ff1420c4f1064f1d055)), closes [#2040](https://github.com/hslayers/hslayers-ng/issues/2040)
+* Accept only SLD format as Shp style ([d97ab98](https://github.com/hslayers/hslayers-ng/commit/d97ab983c125ce74580277da2b79a23b7cac7b6f))
+* Inform user about invalid or missing layman endpoint url ([1f043b9](https://github.com/hslayers/hslayers-ng/commit/1f043b9d9248a3373b46848a4f831b01bd538fe2))
+* Make truncated WMS service layer title/abstract expandable ([b292624](https://github.com/hslayers/hslayers-ng/commit/b29262405ddbd6f232e752c292a7f223a562d11e))
+* Switch title and name also in nested WMS layers table ([6113f47](https://github.com/hslayers/hslayers-ng/commit/6113f4733d6a7c5a094a7edb27b4f12b5da42e26))
+
+
+
 # [5.0.0](https://github.com/hslayers/hslayers-ng/compare/4.0.1...5.0.0) (2021-07-23)
 
 
