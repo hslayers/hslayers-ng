@@ -16,13 +16,13 @@ import {transform} from 'ol/proj';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getHighlighted} from '../../common/feature-extensions';
 import {getTitle} from '../../common/layer-extensions';
-import {HsLayoutService} from '../layout/layout.service';
 
 export type Waypoint = {
   name: string;
@@ -114,7 +114,7 @@ export class HsTripPlannerService {
       map.addInteraction(this.modify);
     });
     this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
-      if(this.HsLayoutService.mainpanel != 'tripPlanner') {
+      if (this.HsLayoutService.mainpanel != 'tripPlanner') {
         return;
       }
       if (!this.waypointLayer) {
@@ -194,10 +194,10 @@ export class HsTripPlannerService {
    * @param layer - Wrapper object which contains OL layer and its title
    * @param usage - route or waypoints
    */
-  selectLayer(
+  async selectLayer(
     layer: {layer: VectorLayer; title: string},
     usage: 'route' | 'waypoints'
-  ): void {
+  ): Promise<void> {
     if (usage == 'route') {
       this.routeLayer = layer.layer;
       if (this.routeLayer) {
@@ -213,7 +213,7 @@ export class HsTripPlannerService {
       this.routeSource.clear();
       this.waypoints.length = 0;
       this.selectedLayerWrapper.waypoints = layer;
-      for (let feature of this.waypointSource.getFeatures()) {
+      for (const feature of this.waypointSource.getFeatures()) {
         const new_cords = transform(
           feature.getGeometry().getCoordinates(),
           this.HsMapService.getCurrentProj().getCode(),
@@ -229,12 +229,12 @@ export class HsTripPlannerService {
           routes: {from: null, to: null},
           featureId: feature.getId(),
           loading: false,
-        }
+        };
         this.waypoints.push(wp);
         if (this.waypointAdded !== undefined) {
           this.waypointAdded(wp);
         }
-        this.calculateRoutes();
+        await this.calculateRoutes();
       }
     }
   }
@@ -271,7 +271,7 @@ export class HsTripPlannerService {
     const feature = new Feature({
       'wp': wp,
       geometry: new Point([x, y]),
-      id: this.HsUtilsService.generateUuid()
+      id: this.HsUtilsService.generateUuid(),
     });
     feature.setId(feature.get('id'));
     wp.featureId = feature.getId();
@@ -396,16 +396,16 @@ export class HsTripPlannerService {
   /**
    * Calculate routes between stored waypoints
    */
-  calculateRoutes() {
+  async calculateRoutes(): Promise<void> {
     for (let i = 0; i < this.waypoints.length - 1; i++) {
       const wpf = this.waypoints[i];
-      const wpt = this.waypoints[i + 1];
       if (wpf.routes.from === null) {
+        const wpt = this.waypoints[i + 1];
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
           'https://api.openrouteservice.org/v2/directions/driving-car/geojson'
         );
-        this.$http
+        const response = await this.$http
           .post(url, {
             'coordinates': [
               [wpf.lon, wpf.lat],
@@ -435,24 +435,21 @@ export class HsTripPlannerService {
               return of(null);
             })
           )
-          .subscribe((response: any) => {
-            if (!response) {
-              return;
-            }
-            const wpt = this.waypoints[i + 1];
-            const wpf = this.waypoints[i];
-            wpt.loading = false;
-            const format = new GeoJSON();
-            const features = format.readFeatures(response);
-            features[0]
-              .getGeometry()
-              .transform('EPSG:4326', this.HsMapService.getCurrentProj());
-            wpf.routes.from = features[0];
-            wpt.routes.to = features[0];
-            if (this.routeAdded !== undefined) {
-              this.routeAdded(features);
-            }
-          });
+          .toPromise();
+        if (!response) {
+          return;
+        }
+        wpt.loading = false;
+        const format = new GeoJSON();
+        const features = format.readFeatures(response);
+        features[0]
+          .getGeometry()
+          .transform('EPSG:4326', this.HsMapService.getCurrentProj());
+        wpf.routes.from = features[0];
+        wpt.routes.to = features[0];
+        if (this.routeAdded !== undefined) {
+          this.routeAdded(features);
+        }
       }
     }
   }
