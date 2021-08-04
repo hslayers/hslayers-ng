@@ -39,7 +39,7 @@
             <div [hidden]="uploadType == 'new'">
                 <div class="form-group my-3">
                     <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translate}}</label>
-                    <select class="custom-select" name="sourceLayer" [(ngModel)]="sourceLayer">
+                    <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="sourceLayer" style="flex-grow: 1;">
                         <option  [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' | translate}}</option>
                         <option *ngFor="let lyr of vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
                     </select>

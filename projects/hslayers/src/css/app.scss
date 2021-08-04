@@ -58,7 +58,6 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	@import "~bootstrap/scss/tooltip";
 	@import "~bootstrap/scss/popover";
 	@import "~bootstrap/scss/_utilities";
-	@import "~bootstrap/scss/_custom-forms";
 
 	color: var(--text-color);
 
@@ -712,7 +711,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	@import "../components/search/partials/search.component.scss";
 	@import "../components/info/partials/info.component.scss";
 	@import "../components/toolbar/partials/toolbar.component.scss";
-
+	@import "../components//add-data/common/add-data.component.scss";
 	/* **OPENLAYERS** */
 
 	.ol-attribution {
