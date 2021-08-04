@@ -87,7 +87,9 @@
       "chooseFiles": "Izvēlieties failus...",
       "dragAndDropFiles": "Velciet un nometiet failus",
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
-      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus",
+      "addingFiles": "Pievienot {{featuresCount}} grafiskos objektus iekš",
+      "chooseLayer": "Lūdzu, izvēlieties slāni no saraksta..."
     },
     "VECTOR": {
       "extractStyles": "Izvilkt stilus"
@@ -504,7 +506,8 @@
     "User generated": "Lietotāja ģenerēti"
   },
   "LAYERS": {
-    "newLayer": "Jauns slānis"
+    "newLayer": "Jauns slānis",
+    "existingLayer": "Eksistējošs slānis"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
