@@ -114,7 +114,7 @@ export class HsAddDataVectorComponent implements OnInit {
    */
   async add() {
     this.uploadType == 'new'
-      ? this.addNewLayer()
+      ? await this.addNewLayer()
       : await this.updateExistingLayer();
 
     this.hsLayoutService.setMainPanel('layermanager');
