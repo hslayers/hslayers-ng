@@ -20,24 +20,27 @@
         </div>
     </div>
 
-    <div [hidden]="!showDetails">
-        <div class="border-bottom d-flex flex-row justify-content-between">
-            <p class="align-self-center m-0">Adding {{features.length}} features into:</p>
+    <div *ngIf="showDetails">
+        <div *ngIf="hsAddDataService.typeSelected == 'file'" class="border-bottom d-flex flex-row justify-content-between">
+            <p class="align-self-center m-0">
+                {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:featureCount})}}
+            </p>
             <ul class="nav nav-tabs justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link text-secondary" [ngClass]="{'active': uploadType == 'new'}" (click)="setUploadType('new')">New layer</a>
+                    <a class="nav-link text-secondary" [ngClass]="{'active': uploadType == 'new'}"
+                        (click)="setUploadType('new')">{{'LAYERS.newLayer' | translate}}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-secondary" [ngClass]="{'active': uploadType == 'existing'}"
-                        (click)="setUploadType('existing')">Existing layer</a>
+                        (click)="setUploadType('existing')">{{'LAYERS.existingLayer' | translate}}</a>
                 </li>
             </ul>
         </div>
             <div [hidden]="uploadType == 'new'">
                 <div class="form-group my-3">
-                    <label class="capabilities_label control-label">Existing layer</label>
+                    <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translate}}</label>
                     <select class="custom-select" name="sourceLayer" [(ngModel)]="sourceLayer">
-                        <option  [ngValue]="null" [disabled]="true" selected hidden>Please choose layer from list...</option>
+                        <option  [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' | translate}}</option>
                         <option *ngFor="let lyr of vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
                     </select>
                 </div>
@@ -114,7 +117,7 @@
             </div>
 
 
-            <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"></i>
+            <button class="btn btn-primary btn-block" [disabled]="uploadType == 'new' ? !title : !sourceLayer" (click)="add()"><i class="icon-plus"></i>
                 {{'COMMON.add' | translate}}
             </button>
 
