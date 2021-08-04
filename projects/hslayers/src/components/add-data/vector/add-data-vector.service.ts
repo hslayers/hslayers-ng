@@ -1,8 +1,6 @@
 import BaseLayer from 'ol/layer/Base';
-import {GeoJSON} from 'ol/format';
 import {Vector as VectorSource} from 'ol/source';
-import {gpx} from '@tmcw/togeojson';
-import {kml} from '@tmcw/togeojson';
+import {GPX, GeoJSON, KML} from 'ol/format';
 
 import '../../styles/styles.module';
 import {HsAddDataService} from '../add-data.service';
@@ -296,13 +294,7 @@ export class HsAddDataVectorService {
     const format = new GeoJSON();
     const features = format.readFeatures(json);
     const projection = format.readProjection(json);
-    const mapProjection = this.hsMapService.map.getView().getProjection();
-    if (projection != mapProjection) {
-      features.forEach((f) =>
-        //TODO: Make it parallel using workers or some library
-        f.getGeometry().transform(projection, mapProjection)
-      );
-    }
+    this.transformFeaturesIfNeeded(features, projection);
     const object = {
       name: json.name,
       title: json.name,
@@ -312,8 +304,14 @@ export class HsAddDataVectorService {
     return object;
   }
 
-  getFeatureObjects(json: any): any {
-    return this.createVectorObjectFromJson(json).features;
+  transformFeaturesIfNeeded(features, projection): void {
+    const mapProjection = this.hsMapService.map.getView().getProjection();
+    if (projection != mapProjection) {
+      features.forEach((f) =>
+        //TODO: Make it parallel using workers or some library
+        f.getGeometry().transform(projection, mapProjection)
+      );
+    }
   }
 
   /**
@@ -321,29 +319,28 @@ export class HsAddDataVectorService {
    * @param file - Uploaded  kml, gpx or GeoJSON files
    */
   async convertUploadedData(file: any): Promise<any> {
-    const parser = new DOMParser();
+    let parser;
     const uploadedData: any = {};
-    let contentInJSON;
     try {
       const uploadedContent: any = await this.readUploadedFileAsText(file);
       let fileType = this.tryGuessTypeFromNameOrUrl(file.name.toLowerCase());
       switch (fileType) {
         case 'kml':
-          contentInJSON = kml(
-            parser.parseFromString(uploadedContent, 'text/xml')
-          );
+          parser = new KML();
+          uploadedData.features = parser.readFeatures(uploadedContent);
           break;
         case 'gpx':
-          contentInJSON = gpx(
-            parser.parseFromString(uploadedContent, 'text/xml')
-          );
+          parser = new GPX();
+          uploadedData.features = parser.readFeatures(uploadedContent);
           fileType = 'json';
           break;
         default:
-          contentInJSON = JSON.parse(<string>uploadedContent);
       }
-      if (contentInJSON?.features?.length > 0) {
-        uploadedData.features = this.getFeatureObjects(contentInJSON);
+      if (uploadedData?.features?.length > 0) {
+        this.transformFeaturesIfNeeded(
+          uploadedData.features,
+          parser.readProjection(uploadedContent)
+        );
       }
       uploadedData.title = file.name.split('.')[0].trim();
       uploadedData.name = uploadedData.title;
