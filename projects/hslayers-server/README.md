@@ -11,10 +11,38 @@ All three services are configured using [.env file](https://github.com/motdotla/
 
 ### Proxy
 
-Used to proxify requests made from the map client applications. In case a request to GeoNames API comes, the proxy adds an API key to it. Following env variables can be set:
+Used to proxify requests made from client applications to access map layers or capability descriptions for services residing on other domains.
+CORS headers are added to proxied requests.
+A typical proxied request URL looks like this: `http://localhost:8085/http://google.com`
 
-`PROXY_PORT=8085` - (optional, default port 8085) specify port on which the service will run
-`HS_GEONAMES_API_KEY=*****` - (optional) GeoNames API key that will be used to authorize the GN request
+Proxy is also used for toponym searches (GeoNames) and routing (OpenRoutingService). 
+API keys defined in .env files are added for those on server side to not expose secrets to users of client application. 
+
+Following environment variables can be set:
+
+* `PROXY_PORT=8085` - (optional, default port 8085) specify port on which the service will run
+* `HS_GEONAMES_API_KEY=*****` - (optional) GeoNames API key (username) that will be used to authorize the GeoNames request
+* `OPENROUTESERVICE_API_KEY=*****` - (optional) OpenRoutingService API key to be appended to requests GET parameters
+
+Usually the hslayers-server is put behind another webserver such as Nginx or Apache using mod_proxy to have both the map application and proxy running on the same domain and port. Be careful to not merge double slashes in that case: set `merge_slashes off;` in nginx config.
+
+#### GeoNames
+
+Example GeoNames GET request: 
+`http://localhost:8085/http://api.geonames.org/searchJSON?&name_startsWith=New%20York`
+
+`name_startsWith` GET parameter must be provided. Currently the API doesn't support other GeoNames requests or parameters. 
+
+#### OpenRoutingService
+
+Hslayers-server adds API to authorization header of all requests which contain `api.openrouteservice.org` in the URL.
+
+Example POST request: `http://localhost:8085/https://api.openrouteservice.org/v2/directions/driving-car/geojson` 
+and payload: 
+
+```
+{"coordinates":[[19.55436476896666,30.357609142973132],[20.186078636154157,30.910609695756108]]}
+```
 
 
 ### Share
@@ -54,11 +82,13 @@ Liferay portal is being currently used as an identity provider. Following env va
 The client can be configured for any Layman instance. If your application runs in the same domain as the client, OAuth2 identity provider authorization form will appear in modal window.
 If the application runs in different domain (or localhost), authorization form will open in a new window.
 
+
 ## Installation
 
 ```
 npm i hslayers-server
 ```
+
 
 ## Run
 
