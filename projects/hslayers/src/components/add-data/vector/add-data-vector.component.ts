@@ -122,7 +122,14 @@ export class HsAddDataVectorComponent implements OnInit {
   }
 
   async updateExistingLayer(): Promise<void> {
-    this.sourceLayer.getSource().addFeatures(this.features);
+    let features = this.features.length > 0 ? this.features : [];
+    if (this.dataType != 'geojson') {
+      const kml = await this.hsAddDataVectorService.convertUploadedData(
+        this.vectorFileInput.nativeElement.files[0]
+      );
+      features = kml.features; //proper typing will get rid of this
+    }
+    this.sourceLayer.getSource().addFeatures(features);
   }
 
   async addNewLayer() {
@@ -142,7 +149,7 @@ export class HsAddDataVectorComponent implements OnInit {
           (ep) => ep.type == 'layman'
         )[0]?.user,
         queryCapabilities:
-          this.url && !['json', 'kml'].some((ext) => this.url.endsWith(ext)),
+          this.dataType != 'kml' && !this.url?.endsWith('json'),
       },
       this.addUnder
     );

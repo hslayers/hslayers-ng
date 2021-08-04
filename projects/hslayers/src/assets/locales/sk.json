@@ -87,7 +87,9 @@
       "chooseFiles": "Vyberte súbory...",
       "dragAndDropFiles": "Pretiahnite súbory",
       "note": "*Poznámka: Ak pripojíte súbor so súradnicami v inom systéme než WGS84 (dĺžka/šírka) nastavte prosím SRS v skecií \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové súbory"
+      "uploadVectorFiles": "Nahrajte vektorové súbory",
+      "addingFiles": "Pridávanie {{featuresCount}} prvkov do:",
+      "chooseLayer": "Vyberte vrstvu zo zoznamu ..."
     },
     "VECTOR": {
       "extractStyles": "Extrahovať štýly"
@@ -501,7 +503,8 @@
     "User generated": "Užívateľské"
   },
   "LAYERS": {
-    "newLayer": "Nová vrstva"
+    "newLayer": "Nová vrstva",
+    "existingLayer": "Existujúca vrstva"
   },
   "LEGEND": {
     "noLegendExists": "Žiadna vrstva s legendou neexistuje!"
