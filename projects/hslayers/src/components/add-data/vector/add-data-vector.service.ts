@@ -1,6 +1,6 @@
 import BaseLayer from 'ol/layer/Base';
-import {Vector as VectorSource} from 'ol/source';
 import {GPX, GeoJSON, KML} from 'ol/format';
+import {Vector as VectorSource} from 'ol/source';
 
 import '../../styles/styles.module';
 import {HsAddDataService} from '../add-data.service';
@@ -273,11 +273,9 @@ export class HsAddDataVectorService {
           const fileContents = await this.readUploadedFileAsText(file);
           const fileToJSON = JSON.parse(<string>fileContents);
           if (fileToJSON !== undefined) {
-            if (fileToJSON.features.length > 0) {
-              fileToJSON.name = file.name.split('.')[0];
-              uploadedData = this.createVectorObjectFromJson(fileToJSON);
-              return uploadedData;
-            }
+            fileToJSON.name = file.name.split('.')[0];
+            uploadedData = this.createVectorObjectFromJson(fileToJSON);
+            return uploadedData;
           }
         } catch (e) {
           console.log('Uploaded file is not supported!', e);
@@ -291,10 +289,13 @@ export class HsAddDataVectorService {
    * @param json - Uploaded file parsed as json object
    */
   createVectorObjectFromJson(json: any): any {
+    let features = [];
     const format = new GeoJSON();
-    const features = format.readFeatures(json);
     const projection = format.readProjection(json);
-    this.transformFeaturesIfNeeded(features, projection);
+    if (json.features?.length > 0) {
+      features = format.readFeatures(json);
+      this.transformFeaturesIfNeeded(features, projection);
+    }
     const object = {
       name: json.name,
       title: json.name,
