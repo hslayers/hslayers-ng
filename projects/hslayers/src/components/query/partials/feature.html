@@ -41,7 +41,7 @@
                 aris-haspopup="true" (click)="exportMenuVisible = !exportMenuVisible"><i
                     class="icon-download"></i></button>
             <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
-                <a class="dropdown-item" download="{{format.name}}_file.txt"
+                <a class="dropdown-item" download="{{format.name}}_file.{{format.ext}}"
                     [href]="HsQueryVectorService.exportedFeatureHref" *ngFor="let format of exportFormats"
                     (click)="HsQueryVectorService.exportData(format.name,feature.feature);">{{format.name}}</a>
             </div>
