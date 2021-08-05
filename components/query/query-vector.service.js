@@ -105,14 +105,7 @@ this.selector = new Select({
 			return true;
 		}
 	},
-	style: function (feature) {
-		const selectedStyle = feature.getLayer().get('selectedStyle');
-		return typeof selectedStyle === "function"
-			? selectedStyle(feature)
-			: selectedStyle
-			|| me.DEFAULT_STYLES[feature.getGeometry().getType()]
-			|| null;
-	}
+	style: new Style(null)
 });
 
 $rootScope.$broadcast('vectorSelectorCreated', me.selector);
@@ -187,8 +180,13 @@ var selectedFeatureLayer = new Vector({
 function addSelectedFeatureLayer(feature) {
 	var clonedFeature = new Feature({});
 	const cloneProperties = feature.getProperties();
+	const selectedStyle = feature.getLayer().get('selectedStyle');
 	clonedFeature.setProperties(cloneProperties, true);
-	clonedFeature.setStyle(feature.getLayer().get('selectedStyle'));
+	clonedFeature.setStyle(typeof selectedStyle === "function"
+		? selectedStyle(feature)
+		: selectedStyle
+		|| me.DEFAULT_STYLES[feature.getGeometry().getType()]
+		|| null);
 	HsMapService.addLayer(selectedFeatureLayer, true);
 	selectedFeatureSource.addFeature(clonedFeature);
 }

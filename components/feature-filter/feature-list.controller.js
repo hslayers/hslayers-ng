@@ -130,7 +130,9 @@ export default function (
             null;
     },
     filter: function (feature) {
-      return feature !== HsLayermanagerService.currentLayer.selectedFeature;
+      return !(HsLayermanagerService.currentLayer.selectedFeature)
+        ? true
+        : feature.getGeometry() !== HsLayermanagerService.currentLayer.selectedFeature.getGeometry();
     },
   });
 
