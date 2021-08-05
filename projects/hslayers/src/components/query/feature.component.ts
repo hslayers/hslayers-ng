@@ -12,7 +12,10 @@ export class HsQueryFeatureComponent {
   attributeName = '';
   attributeValue = '';
   newAttribVisible = false;
-  exportFormats = [{name: 'WKT format'}];
+  exportFormats = [
+    {name: 'WKT', ext: 'wkt'},
+    {name: 'GeoJSON', ext: 'geojson'},
+  ];
   exportMenuVisible = false;
   constructor(
     public HsMapService: HsMapService,

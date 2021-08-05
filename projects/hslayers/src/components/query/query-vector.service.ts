@@ -4,9 +4,9 @@ import {Subject} from 'rxjs';
 
 import * as extent from 'ol/extent';
 import Feature from 'ol/Feature';
+import {GeoJSON, WKT} from 'ol/format';
 import {Select} from 'ol/interaction';
 import {Vector as VectorSource} from 'ol/source';
-import {WKT} from 'ol/format';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
@@ -126,20 +126,33 @@ export class HsQueryVectorService {
     this.HsQueryBaseService.getFeatureInfoCollected.next();
   }
 
-  exportData(clickedFormat, feature) {
-    if (clickedFormat == 'WKT format') {
-      const formatWKT = new WKT();
-      const wktRepresentation = formatWKT.writeFeature(feature);
-      const data = new Blob([wktRepresentation], {type: 'text/plain'});
-      const url = URL.createObjectURL(data);
-      if (this.exportedFeatureHref) {
-        URL.revokeObjectURL(this.exportedFeatureHref);
-      }
-      this.exportedFeatureHref =
-        this.DomSanitizer.bypassSecurityTrustResourceUrl(url);
-    } else {
-      return;
+  exportData(clickedFormat: 'WKT' | 'GeoJSON', feature: Feature): void {
+    let fmt;
+    let type;
+    let serializedFeatures;
+    switch (clickedFormat) {
+      case 'WKT':
+        fmt = new WKT();
+        type = 'text/plain';
+        serializedFeatures = fmt.writeFeature(feature);
+        break;
+      case 'GeoJSON':
+      default:
+        fmt = new GeoJSON();
+        type = 'application/json';
+        serializedFeatures = fmt.writeFeatures([feature], {
+          dataProjection: 'EPSG:4326',
+          featureProjection: this.HsMapService.getCurrentProj(),
+        });
+        break;
     }
+    const data = new Blob([serializedFeatures], {type});
+    const url = URL.createObjectURL(data);
+    if (this.exportedFeatureHref) {
+      URL.revokeObjectURL(this.exportedFeatureHref);
+    }
+    this.exportedFeatureHref =
+      this.DomSanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   /**
