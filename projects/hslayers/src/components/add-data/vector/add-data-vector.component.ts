@@ -129,7 +129,9 @@ export class HsAddDataVectorComponent implements OnInit {
       );
       features = kml.features; //proper typing will get rid of this
     }
-    this.sourceLayer.getSource().addFeatures(features);
+    this.hsLayerUtilsService.isLayerClustered(this.sourceLayer)
+      ? this.sourceLayer.getSource().getSource().addFeatures(features)
+      : this.sourceLayer.getSource().addFeatures(features);
   }
 
   async addNewLayer() {
