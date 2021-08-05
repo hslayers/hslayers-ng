@@ -244,7 +244,7 @@ export class HsTripPlannerService {
     const wp: Waypoint = getWaypoint(feature);
     if (wp) {
       tmp = wp.name;
-      if (wp.routes.to) {
+      if (wp?.routes?.to) {
         tmp += ` (${this.formatDistance(wp, 'to')})`;
       }
     }
