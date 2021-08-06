@@ -3,7 +3,10 @@
         <div class="input-group-prepend">
             <span class="input-group-text">{{attribute.name}}</span>
         </div>
-            <input class="form-control" [(ngModel)]="attribute.value" (change)="change()" [readonly]="readonly"
-                [ngModelOptions]="{standalone: true}">
+        <input class="form-control" *ngIf="!isObject" [(ngModel)]="attribute.value" (change)="change()"
+            [readonly]="readonly" [ngModelOptions]="{standalone: true}">
+        <textarea class="form-control" *ngIf="isObject" name="attributeValue" [(ngModel)]="attribute.value"
+            [readonly]="readonly" [ngModelOptions]="{standalone: true}">
+            </textarea>
     </div>
 </div>

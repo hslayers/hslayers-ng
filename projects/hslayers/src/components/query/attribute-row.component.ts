@@ -5,6 +5,7 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './partials/attribute-row.html',
 })
 export class HsQueryAttributeRowComponent implements OnInit {
+  isObject = false;
   @Input() attribute;
   @Input() feature;
   @Input() readonly: boolean;
@@ -25,6 +26,7 @@ export class HsQueryAttributeRowComponent implements OnInit {
       typeof this.attribute.value == 'object' &&
       !Array.isArray(this.attribute.value)
     ) {
+      this.isObject = true;
       this.attribute.value = JSON.stringify(this.attribute.value);
     }
   }
