@@ -8,8 +8,8 @@ import OpenLayersParser from 'geostyler-openlayers-parser';
 import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {Filter, Style as GeoStylerStyle, Rule} from 'geostyler-style';
+import {Icon, Style} from 'ol/style';
 import {StyleFunction} from 'ol/style';
 import {createDefaultStyle} from 'ol/style/Style';
 
@@ -20,6 +20,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {defaultStyle} from './styles';
 import {
   getCluster,
   getSld,
@@ -35,37 +36,9 @@ import {parseStyle} from './backwards-compatibility';
 export class HsStylerService {
   layer: VectorLayer = null;
   onSet: Subject<VectorLayer> = new Subject();
-  measure_style = new Style({
-    fill: new Fill({
-      color: 'rgba(255, 255, 255, 1)',
-    }),
-    stroke: new Stroke({
-      color: '#ffcc33',
-      width: 2,
-    }),
-    image: new Circle({
-      radius: 7,
-      fill: new Fill({
-        color: '#ffcc33',
-      }),
-    }),
-  });
-
-  simple_style = new Style({
-    fill: new Fill({
-      color: 'rgba(255, 255, 255, 1)',
-    }),
-    stroke: new Stroke({
-      color: '#ffcc33',
-      width: 1,
-    }),
-    image: new Circle({
-      radius: 7,
-      fill: new Fill({
-        color: '#ffcc33',
-      }),
-    }),
-  });
+  layerTitle: string;
+  styleObject: GeoStylerStyle;
+  parser = new SLDParser();
 
   pin_white_blue = new Style({
     image: new Icon({
@@ -74,17 +47,6 @@ export class HsStylerService {
       anchor: [0.5, 1],
     }),
   });
-  clusterStyle = new Style({
-    stroke: new Stroke({
-      color: '#fff',
-    }),
-    fill: new Fill({
-      color: '#3399CC',
-    }),
-  });
-  layerTitle: string;
-  styleObject: GeoStylerStyle;
-  parser = new SLDParser();
 
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
@@ -207,8 +169,12 @@ export class HsStylerService {
     if (!this.isVectorLayer(layer)) {
       return;
     }
-    const sld = getSld(layer);
+    let sld = getSld(layer);
     let style = layer.getStyle();
+    if ((!style || style == createDefaultStyle) && !sld) {
+      sld = defaultStyle;
+      setSld(layer, defaultStyle);
+    }
     if (sld && (!style || style == createDefaultStyle)) {
       style = (await this.parseStyle(sld)).style;
       if (style) {
