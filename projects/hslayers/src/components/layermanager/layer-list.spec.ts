@@ -79,9 +79,9 @@ describe('layermanager-layer-list', () => {
         {
           provide: HsWmsGetCapabilitiesService,
           useValue: {
-            requestGetCapabilities: (service_url) =>
+            request: (service_url) =>
               new Promise((resolve, reject) => {
-                resolve(wmsGetCapabilitiesResponse);
+                resolve({response: wmsGetCapabilitiesResponse});
               }),
           },
         },

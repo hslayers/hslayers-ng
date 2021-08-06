@@ -97,7 +97,7 @@ export class HsAddDataWfsService {
         }
         this.addLayers(true, sld);
         this.layerToAdd = null;
-        //this.zoomToBBox(bbox);
+        this.zoomToBBox(bbox);
       }
     } catch (e) {
       if (e.status == 401) {

@@ -119,4 +119,8 @@ export class HsUtilsServiceMock {
   getAjaxLoaderIcon(): string {
     return this.getAssetsPath() + 'img/ajax-loader.gif';
   }
+
+  getParamsFromUrl() {
+    return {};
+  }
 }
