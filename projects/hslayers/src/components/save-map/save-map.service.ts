@@ -446,7 +446,7 @@ export class HsSaveMapService {
   getFeaturesJson(features: Feature[]): any {
     const f = new GeoJSON();
     const featureProjection = this.HsMapService.getCurrentProj().getCode();
-    return f.writeFeatureObject(features, {
+    return f.writeFeaturesObject(features, {
       dataProjection: 'EPSG:4326',
       featureProjection,
     });
