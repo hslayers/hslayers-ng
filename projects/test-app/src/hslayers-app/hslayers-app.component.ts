@@ -104,8 +104,6 @@ export class HslayersAppComponent {
       datasources: [
         {
           title: "Layman",
-          // url:  `${window.location.protocol}//${window.location.hostname}/layman/client`,
-          // url: 'https://hub.lesprojekt.cz/client',
           url: 'http://localhost:8087',
           user: 'anonymous',
           type: "layman",
