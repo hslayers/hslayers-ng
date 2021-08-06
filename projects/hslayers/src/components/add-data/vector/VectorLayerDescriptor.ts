@@ -19,6 +19,7 @@ export class VectorLayerDescriptor {
     workspace: string;
     access_rights: accessRightsInterface;
     queryCapabilities: boolean;
+    sld: string;
   };
 
   constructor(
@@ -48,6 +49,7 @@ export class VectorLayerDescriptor {
       style: options.style,
       removable: true,
       path: options.path,
+      sld: options.sld,
       visible: options.visible,
       workspace: options.workspace,
       access_rights: options.access_rights,

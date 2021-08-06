@@ -59,12 +59,13 @@ export class HsAddDataUrlComponent implements OnDestroy {
     this.typeSelected = '';
 
     this.owsFillingSubscription = this.hsEventBusService.owsFilling.subscribe(
-      ({type, uri, layer}) => {
+      ({type, uri, layer, sld}) => {
         this.typeSelected = type.toLowerCase();
         this.hsEventBusService.owsConnecting.next({
-          type: type,
-          uri: uri,
-          layer: layer,
+          type,
+          uri,
+          layer,
+          sld,
         });
       }
     );
@@ -90,13 +91,14 @@ export class HsAddDataUrlComponent implements OnDestroy {
     if (layers) {
       for (const layer of layers.split(';')) {
         this.hsEventBusService.owsConnecting.next({
-          type: type,
+          type,
           uri: url,
-          layer: layer,
+          layer,
+          sld: undefined,
         });
       }
     } else {
-      this.hsEventBusService.owsConnecting.next({type: type, uri: url});
+      this.hsEventBusService.owsConnecting.next({type, uri: url});
       this.hsLayoutService.setMainPanel('addData');
     }
   }

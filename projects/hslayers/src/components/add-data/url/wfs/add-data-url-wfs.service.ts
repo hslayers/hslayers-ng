@@ -72,7 +72,8 @@ export class HsAddDataWfsService {
   }
 
   async addLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
+    sld?: string
   ): Promise<void> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -94,9 +95,9 @@ export class HsAddDataWfsService {
             layer.checked = true;
           }
         }
-        this.addLayers(true);
+        this.addLayers(true, sld);
         this.layerToAdd = null;
-        this.zoomToBBox(bbox);
+        //this.zoomToBBox(bbox);
       }
     } catch (e) {
       if (e.status == 401) {
@@ -380,26 +381,27 @@ export class HsAddDataWfsService {
    * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean): void {
+  addLayers(checkedOnly: boolean, sld: string): void {
     this.addAll = checkedOnly;
     for (const layer of this.services) {
-      this.addLayersRecursively(layer);
+      this.addLayersRecursively(layer, sld);
     }
   }
 
-  addLayersRecursively(layer): void {
+  addLayersRecursively(layer, sld?: string): void {
     if (!this.addAll || layer.checked) {
       this.addLayer(
         layer,
         layer.Name,
         // layer.Title.replace(/\//g, '&#47;'),
         this.hsUtilsService.undefineEmptyString(this.folderName),
-        this.srs
+        this.srs,
+        sld
       );
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer);
+        this.addLayersRecursively(sublayer, sld);
       }
     }
   }
@@ -412,7 +414,13 @@ export class HsAddDataWfsService {
    * @param {string} folder name
    * @param {OpenLayers.Projection} srs of the layer
    */
-  private addLayer(layer, layerName: string, folder: string, srs): void {
+  private addLayer(
+    layer,
+    layerName: string,
+    folder: string,
+    srs,
+    sld?: string
+  ): void {
     const options = {
       layer: layer,
       url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
@@ -427,6 +435,7 @@ export class HsAddDataWfsService {
       path: folder,
       renderOrder: null,
       removable: true,
+      sld,
       //Used to determine whether its URL WFS service when saving to compositions
       wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
     });

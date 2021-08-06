@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {Observable, of} from 'rxjs';
@@ -253,11 +253,20 @@ export class HsLaymanBrowserService {
     layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
-    console.log(lyr);
+    let sld: string = undefined;
+    if (lyr.sld?.url) {
+      sld = await this.http
+        .get(lyr.sld?.url, {
+          headers: new HttpHeaders().set('Content-Type', 'text'),
+          responseType: 'text',
+        })
+        .toPromise();
+    }
     if (lyr.wms.url) {
       return {
         type: lyr.type,
         link: lyr.wms.url,
+        sld,
         layer: lyr.name,
         name: lyr.name,
         title: lyr.title,
