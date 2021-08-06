@@ -7,6 +7,7 @@ import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
+import {CapabilitiesResponseWrapper} from 'projects/hslayers/src/common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
@@ -68,45 +69,44 @@ export class HsAddDataWfsService {
       this.loadingInfo = false;
       this.showDetails = false;
     });
-    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response, error}) => {
-        if (!response && !error) {
-          return;
-        }
-        if (type === 'WFS') {
-          if (error) {
-            this.throwParsingError(response.message);
-            return;
-          }
-          try {
-            const bbox = await this.parseCapabilities(response);
-            if (this.layerToAdd) {
-              for (const layer of this.services) {
-                //TODO: If Layman allows layers with different casing,
-                // then remove the case lowering
-                if (
-                  layer.Title.toLowerCase() === this.layerToAdd.toLowerCase() ||
-                  layer.Name.toLowerCase() === this.layerToAdd.toLowerCase()
-                ) {
-                  layer.checked = true;
-                }
-              }
-              this.addLayers(true);
-              this.layerToAdd = null;
-              this.zoomToBBox(bbox);
-            }
-          } catch (e) {
-            if (e.status == 401) {
-              this.throwParsingError(
-                'Unauthorized access. You are not authorized to query data from this service'
-              );
-              return;
-            }
-            this.throwParsingError(e);
+  }
+
+  async addLayerFromCapabilities(
+    wrapper: CapabilitiesResponseWrapper
+  ): Promise<void> {
+    if (!wrapper.response && !wrapper.error) {
+      return;
+    }
+    if (wrapper.error) {
+      this.throwParsingError(wrapper.response.message);
+      return;
+    }
+    try {
+      const bbox = await this.parseCapabilities(wrapper.response);
+      if (this.layerToAdd) {
+        for (const layer of this.services) {
+          //TODO: If Layman allows layers with different casing,
+          // then remove the case lowering
+          if (
+            layer.Title.toLowerCase() === this.layerToAdd.toLowerCase() ||
+            layer.Name.toLowerCase() === this.layerToAdd.toLowerCase()
+          ) {
+            layer.checked = true;
           }
         }
+        this.addLayers(true);
+        this.layerToAdd = null;
+        this.zoomToBBox(bbox);
       }
-    );
+    } catch (e) {
+      if (e.status == 401) {
+        this.throwParsingError(
+          'Unauthorized access. You are not authorized to query data from this service'
+        );
+        return;
+      }
+      this.throwParsingError(e);
+    }
   }
 
   throwParsingError(e) {

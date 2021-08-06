@@ -51,20 +51,20 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     this.owsConnectingSubscription.unsubscribe();
   }
 
-  connect = (layerToSelect: string): void => {
+  async connect(layerToSelect?: string): Promise<void> {
     this.hasChecked = false;
-    this.hsHistoryListService.addSourceHistory(
-      'Arcgis',
-      this.hsAddDataArcGisService.url
-    );
-    this.hsArcgisGetCapabilitiesService.requestGetCapabilities(
-      this.hsAddDataArcGisService.url
-    );
+    const url = this.hsAddDataArcGisService.url;
+    this.hsHistoryListService.addSourceHistory('Arcgis', url);
+    Object.assign(this.hsAddDataArcGisService, {
+      layerToSelect,
+      loadingInfo: true,
+      showDetails: true,
+    });
     this.hsAddDataArcGisService.data.getMapUrl =
       this.hsAddDataArcGisService.url;
-    this.hsAddDataArcGisService.loadingInfo = true;
-    this.hsAddDataArcGisService.showDetails = true;
-  };
+    const wrapper = await this.hsArcgisGetCapabilitiesService.request(url);
+    this.hsAddDataArcGisService.addLayerFromCapabilities(wrapper.response);
+  }
 
   /**
    * @param layers

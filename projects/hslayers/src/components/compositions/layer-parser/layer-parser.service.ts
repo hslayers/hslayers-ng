@@ -48,13 +48,14 @@ export class HsCompositionsLayerParserService {
   /**
    * @public
    * @param {object} lyr_def Layer definition object
-   * @description Initiate creation of WFS layer thorugh HsAddDataWfsService
+   * @description Initiate creation of WFS layer thorough HsAddDataWfsService
    */
-  createWFSLayer(lyr_def): void {
+  async createWFSLayer(lyr_def): Promise<void> {
     this.HsAddDataWfsService.layerToAdd = lyr_def.name;
-    this.hsWfsGetCapabilitiesService.requestGetCapabilities(
+    const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );
+    this.HsAddDataWfsService.addLayerFromCapabilities(wrapper);
   }
 
   /**
@@ -63,7 +64,7 @@ export class HsCompositionsLayerParserService {
    * @returns {object} Ol Tile layer
    * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
    */
-  createWMTSLayer(lyr_def): any {
+  async createWMTSLayer(lyr_def): Promise<Tile> {
     const wmts = new Tile({
       title: lyr_def.title,
       info_format: lyr_def.info_format,
@@ -71,36 +72,35 @@ export class HsCompositionsLayerParserService {
     });
 
     // Get WMTS Capabilities and create WMTS source base on it
-    this.HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url).then(
-      (res) => {
-        try {
-          //parse the XML response and create options object...
-          const parser = new WMTSCapabilities();
-          const result = parser.read(res);
-          // ...create WMTS Capabilities based on the parsed options
-          const options = optionsFromCapabilities(result, {
-            layer: lyr_def.layer,
-            matrixSet: lyr_def.matrixSet,
-            format: lyr_def.format,
-          });
-          // WMTS source for raster tiles layer
-          wmts.setSource(new WMTS(options));
-          this.HsMapService.proxifyLayerLoader(wmts, true);
-        } catch (error) {
-          this.HsToastService.createToastPopupMessage(
-            this.HsLanguageService.getTranslation(
-              'ADDLAYERS.capabilitiesParsingProblem'
-            ),
-            this.HsLanguageService.getTranslationIgnoreNonExisting(
-              'ERRORMESSAGES',
-              error
-            ),
-            {disableLocalization: true}
-          );
-          this.HsMapService.map.getLayers().remove(wmts);
-        }
-      }
+    const wrapper = await this.HsWmtsGetCapabilitiesService.request(
+      lyr_def.url
     );
+    try {
+      //parse the XML response and create options object...
+      const parser = new WMTSCapabilities();
+      const result = parser.read(wrapper.response);
+      // ...create WMTS Capabilities based on the parsed options
+      const options = optionsFromCapabilities(result, {
+        layer: lyr_def.layer,
+        matrixSet: lyr_def.matrixSet,
+        format: lyr_def.format,
+      });
+      // WMTS source for raster tiles layer
+      wmts.setSource(new WMTS(options));
+      this.HsMapService.proxifyLayerLoader(wmts, true);
+    } catch (error) {
+      this.HsToastService.createToastPopupMessage(
+        this.HsLanguageService.getTranslation(
+          'ADDLAYERS.capabilitiesParsingProblem'
+        ),
+        this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ERRORMESSAGES',
+          error
+        ),
+        {disableLocalization: true}
+      );
+      this.HsMapService.map.getLayers().remove(wmts);
+    }
 
     wmts.setVisible(lyr_def.visibility);
     return wmts;

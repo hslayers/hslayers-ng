@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
-import {get as getProj, transform, transformExtent} from 'ol/proj';
+import {transformExtent} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -80,12 +80,9 @@ export class HsLayerEditorService {
         //Single tile
         url = layer.getSource().getUrl();
       }
-      const capabilities_xml =
-        await this.HsWmsGetCapabilitiesService.requestGetCapabilities(url, {
-          castOwsCapabilitiesReceived: false,
-        });
+      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       const parser = new WMSCapabilities();
-      const caps = parser.read(capabilities_xml);
+      const caps = parser.read(wrapper.response);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
         const foundDefs = caps.Capability.Layer.Layer.map((lyr) =>
           this.HsLayerManagerMetadataService.identifyLayerObject(

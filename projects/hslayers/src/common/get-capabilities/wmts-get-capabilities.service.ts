@@ -7,6 +7,7 @@ import {Layer, Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
+import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
@@ -75,7 +76,7 @@ export class HsWmtsGetCapabilitiesService {
    * @param service_url - Raw Url localization of service
    * @returns Promise object -  Response to GetCapabilities request
    */
-  async requestGetCapabilities(service_url: string): Promise<any> {
+  async request(service_url: string): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
@@ -103,18 +104,14 @@ export class HsWmtsGetCapabilitiesService {
         .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
 
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WMTS',
+      return {
         response: r,
-      });
-      return r;
+      };
     } catch (error) {
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WMTS',
+      return {
         response: error,
         error: true,
-      });
-      throw error;
+      };
     }
   }
 

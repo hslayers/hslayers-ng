@@ -47,16 +47,18 @@ export class HsAddDataWmtsComponent implements OnDestroy {
     this.owsConnectingSubscription.unsubscribe();
   }
 
-  connect = (layerToSelect: string): void => {
+  async connect(layerToSelect?: string): Promise<void> {
     this.hasChecked = false;
-    this.hsAddDataUrlWmtsService.layerToSelect = layerToSelect;
-
-    this.hsAddDataUrlWmtsService.loadingInfo = true;
-    this.hsWmtsGetCapabilitiesService.requestGetCapabilities(
+    Object.assign(this.hsAddDataUrlWmtsService, {
+      layerToSelect,
+      loadingInfo: true,
+      showDetails: true,
+    });
+    const response = await this.hsWmtsGetCapabilitiesService.request(
       this.hsAddDataUrlWmtsService.url
     );
-    this.hsAddDataUrlWmtsService.showDetails = true;
-  };
+    this.hsAddDataUrlWmtsService.addLayerFromCapabilities(response);
+  }
 
   selectAllLayers(layers: any[]): void {
     for (const layer of layers) {

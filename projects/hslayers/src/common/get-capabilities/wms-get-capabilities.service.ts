@@ -7,6 +7,7 @@ import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 import {takeUntil} from 'rxjs/operators';
 
+import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
@@ -74,16 +75,9 @@ export class HsWmsGetCapabilitiesService {
    *
    * @param service_url Raw Url localization of service
    * @param [options]
-   * @param [options.castOwsCapabilitiesReceived=true] - Whether or not to cast
-   *   next value of owsCapabilitiesReceived subject
    * @returns Promise object - Response to GetCapabilities request
    */
-  async requestGetCapabilities(
-    service_url: string,
-    {castOwsCapabilitiesReceived} = {
-      'castOwsCapabilitiesReceived': true,
-    }
-  ): Promise<any> {
+  async request(service_url: string): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
@@ -116,20 +110,12 @@ export class HsWmsGetCapabilitiesService {
         })
         .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
-      if (castOwsCapabilitiesReceived) {
-        this.hsEventBusService.owsCapabilitiesReceived.next({
-          type: 'WMS',
-          response: r,
-        });
-      }
-      return r;
+      return {response: r};
     } catch (e) {
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WMS',
+      return {
         response: e,
         error: true,
-      });
-      throw e;
+      };
     }
   }
 

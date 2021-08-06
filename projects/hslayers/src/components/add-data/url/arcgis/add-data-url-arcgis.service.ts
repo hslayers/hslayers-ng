@@ -5,6 +5,7 @@ import {Group} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
+import {CapabilitiesResponseWrapper} from 'projects/hslayers/src/common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
@@ -23,6 +24,9 @@ export class HsAddDataArcGisService {
   showDetails: boolean;
   layerToSelect: string;
   loadingInfo = false;
+
+  //TODO: all dimension related things need to be refactored into separate module
+  getDimensionValues = this.hsDimensionService.getDimensionValues;
 
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
@@ -45,38 +49,31 @@ export class HsAddDataArcGisService {
       this.loadingInfo = false;
       this.showDetails = false;
     });
-
-    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response, error}) => {
-        if (type === 'ArcGIS') {
-          if (!response && !error) {
-            return;
-          }
-          if (error) {
-            this.throwParsingError(response.message);
-            return;
-          }
-          try {
-            await this.capabilitiesReceived(response, this.layerToSelect);
-            if (this.layerToSelect) {
-              this.addLayers(true);
-            }
-          } catch (e) {
-            if (e.status == 401) {
-              this.throwParsingError(
-                'Unauthorized access. You are not authorized to query data from this service'
-              );
-              return;
-            }
-            this.throwParsingError(e);
-          }
-        }
-      }
-    );
   }
 
-  //TODO: all dimension related things need to be refactored into separate module
-  getDimensionValues = this.hsDimensionService.getDimensionValues;
+  async addLayerFromCapabilities(wrapper: CapabilitiesResponseWrapper) {
+    if (!wrapper.response && !wrapper.error) {
+      return;
+    }
+    if (wrapper.error) {
+      this.throwParsingError(wrapper.response.message);
+      return;
+    }
+    try {
+      await this.createLayer(wrapper.response, this.layerToSelect);
+      if (this.layerToSelect) {
+        this.addLayers(true);
+      }
+    } catch (e) {
+      if (e.status == 401) {
+        this.throwParsingError(
+          'Unauthorized access. You are not authorized to query data from this service'
+        );
+        return;
+      }
+      this.throwParsingError(e);
+    }
+  }
 
   throwParsingError(e) {
     this.url = null;
@@ -85,7 +82,7 @@ export class HsAddDataArcGisService {
     this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
-  capabilitiesReceived(response, layerToSelect: string): void {
+  createLayer(response, layerToSelect: string): void {
     try {
       const caps = response;
       this.data.mapProjection = this.hsMapService.map
@@ -325,19 +322,17 @@ export class HsAddDataArcGisService {
    * @param {string} url Service url
    * @param {Group} group Group layer to which add layer to
    */
-  addService(url: string, group: Group): void {
-    this.hsArcgisGetCapabilitiesService
-      .requestGetCapabilities(url)
-      .then((resp) => {
-        const ol_layers =
-          this.hsArcgisGetCapabilitiesService.service2layers(resp);
-        ol_layers.forEach((layer) => {
-          if (group !== undefined) {
-            group.addLayer(layer);
-          } else {
-            this.hsMapService.addLayer(layer);
-          }
-        });
-      });
+  async addService(url: string, group: Group): Promise<void> {
+    const wrapper = await this.hsArcgisGetCapabilitiesService.request(url);
+    const ol_layers = this.hsArcgisGetCapabilitiesService.service2layers(
+      wrapper.response
+    );
+    ol_layers.forEach((layer) => {
+      if (group !== undefined) {
+        group.addLayer(layer);
+      } else {
+        this.hsMapService.addLayer(layer);
+      }
+    });
   }
 }
