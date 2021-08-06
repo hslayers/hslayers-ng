@@ -30,12 +30,14 @@ export class HsAddDataWfsComponent implements OnDestroy {
   ) {
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription =
-      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-        if (type == 'wfs') {
-          this.hsAddDataWfsService.layerToAdd = layer;
-          this.setUrlAndConnect(uri);
+      this.hsEventBusService.owsConnecting.subscribe(
+        ({type, uri, layer, sld}) => {
+          if (type == 'wfs') {
+            this.hsAddDataWfsService.layerToAdd = layer;
+            this.setUrlAndConnect(uri, sld);
+          }
         }
-      });
+      );
   }
 
   ngOnDestroy(): void {
@@ -50,23 +52,26 @@ export class HsAddDataWfsComponent implements OnDestroy {
     this.hsAddDataWfsService.showDetails = false;
   }
 
-  connect = (): void => {
+  async connect(sld?: string): Promise<void> {
     this.hasChecked = false;
-    this.hsWfsGetCapabilitiesService.requestGetCapabilities(
+    Object.assign(this.hsAddDataWfsService, {
+      services: [],
+      showDetails: true,
+      loadingInfo: true,
+    });
+    const wrapper = await this.hsWfsGetCapabilitiesService.request(
       this.hsAddDataWfsService.url
     );
-    this.hsAddDataWfsService.services = [];
-    this.hsAddDataWfsService.showDetails = true;
-    this.hsAddDataWfsService.loadingInfo = true;
-  };
+    this.hsAddDataWfsService.addLayerFromCapabilities(wrapper, sld);
+  }
 
   /**
    * Connect to service of specified Url
    * @param url - URL of requested service
    */
-  setUrlAndConnect(url: string): void {
+  setUrlAndConnect(url: string, sld: string): void {
     this.hsAddDataWfsService.url = url;
-    this.connect();
+    this.connect(sld);
   }
 
   /**

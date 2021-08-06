@@ -31,6 +31,7 @@ type WhatToAddDescriptor = {
   extractStyles?;
   editable?: boolean;
   workspace?: string;
+  sld?: string;
 };
 
 @Injectable({
@@ -385,7 +386,6 @@ export class HsAddDataCatalogueService {
     if (Array.isArray(whatToAdd.type)) {
       return whatToAdd.type;
     }
-
     if (whatToAdd.type == 'WMS') {
       whatToAdd.link = Array.isArray(whatToAdd.link)
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
@@ -426,6 +426,7 @@ export class HsAddDataCatalogueService {
             {
               extractStyles: whatToAdd.extractStyles,
               workspace: whatToAdd.workspace,
+              sld: whatToAdd.sld,
             }
           );
           this.hsAddDataVectorService.fitExtent(layer);
@@ -435,6 +436,7 @@ export class HsAddDataCatalogueService {
             this.hsEventBusService.owsFilling.next({
               type: 'wfs',
               uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+              sld: whatToAdd.sld,
               layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
             });
           });

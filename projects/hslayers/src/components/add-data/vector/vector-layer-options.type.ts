@@ -12,4 +12,5 @@ export type HsVectorLayerOptions = {
   workspace?: string;
   access_rights?: accessRightsInterface;
   queryCapabilities?: boolean;
+  sld?: string;
 };
