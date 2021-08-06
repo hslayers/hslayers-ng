@@ -10,7 +10,7 @@ import {transformExtent} from 'ol/proj';
 
 //FIX ME
 //refactor
-import {CapabilitiesResponseWrapper} from 'projects/hslayers/src/common/get-capabilities/capabilities-response-wrapper';
+import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';

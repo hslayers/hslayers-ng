@@ -3,7 +3,7 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Injectable} from '@angular/core';
 import {Tile} from 'ol/layer';
 
-import {CapabilitiesResponseWrapper} from 'projects/hslayers/src/common/get-capabilities/capabilities-response-wrapper';
+import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
