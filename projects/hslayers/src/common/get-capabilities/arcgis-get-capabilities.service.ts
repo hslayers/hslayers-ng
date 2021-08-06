@@ -5,6 +5,7 @@ import {Layer, Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
+import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
@@ -73,7 +74,7 @@ export class HsArcgisGetCapabilitiesService {
    * @param service_url - Raw Url localization of service
    * @returns Promise object - Response to GetCapabilities request
    */
-  async requestGetCapabilities(service_url: string): Promise<any> {
+  async request(service_url: string): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
@@ -88,18 +89,9 @@ export class HsArcgisGetCapabilitiesService {
         })
         .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'ArcGIS',
-        response: r,
-      });
-      return r;
+      return {response: r};
     } catch (e) {
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'ArcGIS',
-        response: e,
-        error: true,
-      });
-      throw e;
+      return {response: e, error: true};
     }
   }
 

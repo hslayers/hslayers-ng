@@ -71,23 +71,22 @@ export class HsAddDataWmsComponent implements OnDestroy {
     );
   }
 
-  connect = (layerToSelect: string): void => {
+  async connect(layerToSelect?: string): Promise<void> {
     try {
       this.hasChecked = false;
       this.checkedLayers = {};
-      this.hsHistoryListService.addSourceHistory(
-        'wms',
-        this.hsAddDataUrlWmsService.url
-      );
-      this.hsAddDataUrlWmsService.layerToSelect = layerToSelect;
-      this.hsWmsGetCapabilitiesService.requestGetCapabilities(
-        this.hsAddDataUrlWmsService.url
-      );
-      this.hsAddDataUrlWmsService.loadingInfo = true;
+      const url = this.hsAddDataUrlWmsService.url;
+      this.hsHistoryListService.addSourceHistory('wms', url);
+      Object.assign(this.hsAddDataUrlWmsService, {
+        layerToSelect,
+        loadingInfo: true,
+      });
+      const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
+      this.hsAddDataUrlWmsService.addLayerFromCapabilities(wrapper);
     } catch (e) {
       this.hsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
     }
-  };
+  }
 
   /**
    * Select all layers from service

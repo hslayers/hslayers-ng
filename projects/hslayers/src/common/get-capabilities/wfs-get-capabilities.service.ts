@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {takeUntil} from 'rxjs/operators';
 
+import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
@@ -67,7 +68,7 @@ export class HsWfsGetCapabilitiesService {
    * @param service_url - Raw Url localization of service
    * @returns Promise object - Response to GetCapabilities request
    */
-  async requestGetCapabilities(service_url: string): Promise<any> {
+  async request(service_url: string): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     this.service_url = service_url;
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
@@ -96,18 +97,9 @@ export class HsWfsGetCapabilitiesService {
         })
         .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WFS',
-        response: r,
-      });
-      return r;
+      return {response: r};
     } catch (e) {
-      this.hsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WFS',
-        response: e,
-        error: true,
-      });
-      throw e;
+      return {response: e, error: true};
     }
   }
 

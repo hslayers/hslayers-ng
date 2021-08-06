@@ -10,6 +10,7 @@ import {transformExtent} from 'ol/proj';
 
 //FIX ME
 //refactor
+import {CapabilitiesResponseWrapper} from 'projects/hslayers/src/common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
@@ -69,35 +70,34 @@ export class HsAddDataUrlWmsService {
       this.showDetails = false;
     });
 
-    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response, error}) => {
-        if (type === 'WMS') {
-          if (!response && !error) {
-            return;
-          }
-          if (error) {
-            this.throwParsingError(response.message);
-            return;
-          }
-          try {
-            await this.capabilitiesReceived(response, this.layerToSelect);
-            if (this.layerToSelect) {
-              this.addLayers(true);
-            }
-          } catch (e) {
-            if (e.status == 401) {
-              this.throwParsingError(
-                'Unauthorized access. You are not authorized to query data from this service'
-              );
-              return;
-            }
-            this.throwParsingError(e);
-          }
-        }
-      }
-    );
     //TODO: all dimension related things need to be refactored into separate module
     this.getDimensionValues = hsDimensionService.getDimensionValues;
+  }
+
+  async addLayerFromCapabilities(
+    wrapper: CapabilitiesResponseWrapper
+  ): Promise<void> {
+    if (!wrapper.response && !wrapper.error) {
+      return;
+    }
+    if (wrapper.error) {
+      this.throwParsingError(wrapper.response.message);
+      return;
+    }
+    try {
+      await this.capabilitiesReceived(wrapper.response, this.layerToSelect);
+      if (this.layerToSelect) {
+        this.addLayers(true);
+      }
+    } catch (e) {
+      if (e.status == 401) {
+        this.throwParsingError(
+          'Unauthorized access. You are not authorized to query data from this service'
+        );
+        return;
+      }
+      this.throwParsingError(e);
+    }
   }
 
   /**
@@ -543,36 +543,34 @@ export class HsAddDataUrlWmsService {
    * @param group - Group layer to which add layer to
    * @param layerName - Name of layer to add. If not specified then all layers are added
    */
-  addService(
+  async addService(
     url: string,
     group: Group,
     layerName: string,
     addUnder?: BaseLayer,
     path?: string
-  ): void {
-    this.hsWmsGetCapabilitiesService
-      .requestGetCapabilities(url)
-      .then((resp) => {
-        let ol_layers = this.hsWmsGetCapabilitiesService.service2layers(
-          resp,
-          path
-        );
-        if (layerName) {
-          ol_layers = ol_layers.filter(
-            (layer) =>
-              getName(layer) == layerName ||
-              (getName(layer) == undefined && //Backwards compatibility with layman when title==name
-                getTitle(layer) == layerName)
-          );
-        }
-        ol_layers.forEach((layer) => {
-          if (group !== undefined) {
-            group.addLayer(layer);
-          } else {
-            this.hsAddDataService.addLayer(layer, addUnder);
-          }
-        });
-      });
+  ): Promise<void> {
+    const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
+
+    let ol_layers = this.hsWmsGetCapabilitiesService.service2layers(
+      wrapper.response,
+      path
+    );
+    if (layerName) {
+      ol_layers = ol_layers.filter(
+        (layer) =>
+          getName(layer) == layerName ||
+          (getName(layer) == undefined && //Backwards compatibility with layman when title==name
+            getTitle(layer) == layerName)
+      );
+    }
+    ol_layers.forEach((layer) => {
+      if (group !== undefined) {
+        group.addLayer(layer);
+      } else {
+        this.hsAddDataService.addLayer(layer, addUnder);
+      }
+    });
   }
 
   private addLayersRecursively(layer, {checkedOnly = true}) {

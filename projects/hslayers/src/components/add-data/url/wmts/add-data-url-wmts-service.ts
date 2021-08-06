@@ -3,6 +3,7 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Injectable} from '@angular/core';
 import {Tile} from 'ol/layer';
 
+import {CapabilitiesResponseWrapper} from 'projects/hslayers/src/common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -47,37 +48,37 @@ export class HsAddDataUrlWmtsService {
       this.loadingInfo = false;
       this.showDetails = false;
     });
+  }
 
-    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response, error}) => {
-        if (type === 'WMTS') {
-          if (!response && !error) {
-            return;
-          }
-          if (error) {
-            this.throwParsingError(response.message);
-            return;
-          }
-          try {
-            //TODO AWAIT and add-layer if layerToSelect
-            await this.capabilitiesReceived(response);
-            if (this.layerToSelect) {
-              for (const layer of this.services) {
-                this.addLayers(true);
-              }
-            }
-          } catch (e) {
-            if (e.status == 401) {
-              this.throwParsingError(
-                'Unauthorized access. You are not authorized to query data from this service'
-              );
-              return;
-            }
-            this.throwParsingError(e);
-          }
+  async addLayerFromCapabilities(
+    wrapper: CapabilitiesResponseWrapper
+  ): Promise<void> {
+    const response = wrapper.response;
+    const error = wrapper.error;
+    if (!response && !error) {
+      return;
+    }
+    if (error) {
+      this.throwParsingError(response.message);
+      return;
+    }
+    try {
+      //TODO AWAIT and add-layer if layerToSelect
+      await this.capabilitiesReceived(response);
+      if (this.layerToSelect) {
+        for (const layer of this.services) {
+          this.addLayers(true);
         }
       }
-    );
+    } catch (e) {
+      if (e.status == 401) {
+        this.throwParsingError(
+          'Unauthorized access. You are not authorized to query data from this service'
+        );
+        return;
+      }
+      this.throwParsingError(e);
+    }
   }
 
   throwParsingError(e: any): void {

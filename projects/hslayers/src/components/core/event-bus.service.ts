@@ -135,7 +135,8 @@ export class HsEventBusService {
   /**
    * replaces 'ows.filling'
    */
-  owsFilling: Subject<{type: any; uri: any; layer: any}> = new Subject();
+  owsFilling: Subject<{type: any; uri: any; layer: any; sld?: string}> =
+    new Subject();
   /**
    * replaces `ows.${type}_connecting`
    */
@@ -143,19 +144,8 @@ export class HsEventBusService {
     type: string;
     uri: string;
     layer?: any;
+    sld?: string;
   }> = new BehaviorSubject({type: '', uri: '', layer: null});
-  /**
-   * replaces 'ows_wmts.capabilities_received'
-   * and
-   * 'ows_wfs.capabilities_received'
-   * and
-   * 'ows.capabilities_received'
-   */
-  owsCapabilitiesReceived: Subject<{
-    type: string;
-    response: any;
-    error?: boolean;
-  }> = new Subject();
   /**
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl

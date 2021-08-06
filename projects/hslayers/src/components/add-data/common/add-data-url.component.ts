@@ -12,12 +12,14 @@ export class HsAddDataUrlComponent {
 
   @Input() url: any;
   @Output() urlChange = new EventEmitter<any>();
-
-  @Input() connect: any; //'=connect'; TODO: comes from another scope
-  //field: '=field'; TODO: some AngularJS stuff?
+  @Output() connect = new EventEmitter<any>();
 
   constructor(private historyListService: HsHistoryListService) {
     this.items = this.historyListService.readSourceHistory(this.what);
+  }
+
+  emitConnect(): void {
+    this.connect.emit();
   }
 
   change(): void {
