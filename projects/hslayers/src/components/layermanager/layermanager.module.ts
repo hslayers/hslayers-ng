@@ -27,6 +27,7 @@ import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayermanagerPhysicalListService} from './layermanager-physical-layerlist.service';
 import {HsLegendModule} from '../legend/legend.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsQueuesModule} from '../../common/queues/queues.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 
 @NgModule({
@@ -54,6 +55,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsUiExtensionsModule,
     NgbModule,
     DragDropModule,
+    HsQueuesModule,
   ],
   exports: [
     HsLayerManagerComponent,

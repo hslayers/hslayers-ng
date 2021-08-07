@@ -30,6 +30,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
+import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -137,7 +138,8 @@ export class HsLayerManagerService {
     public HsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
     private hsLayerEditorService: HsLayerEditorService,
-    private zone: NgZone
+    private zone: NgZone,
+    public HsQueuesService: HsQueuesService
   ) {
     this.HsMapService.loaded().then(() => this.init());
     this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
@@ -223,8 +225,8 @@ export class HsLayerManagerService {
       layerDescriptor.legends = getLegends(layer);
       this.data.layers.push(layerDescriptor);
       if (getQueryCapabilities(layer) !== false) {
-        this.HsUtilsService.createQueue('wmsGetCapabilities', 1);
-        this.HsUtilsService.queues['wmsGetCapabilities'].q.push(async (cb) => {
+        const que = this.HsQueuesService.ensureQueue('wmsGetCapabilities', 1);
+        que.push(async (cb) => {
           try {
             await this.HsLayerManagerMetadata.fillMetadata(layerDescriptor);
             layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);

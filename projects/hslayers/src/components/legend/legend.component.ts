@@ -7,6 +7,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
+import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class HsLegendComponent {
     public HsLegendService: HsLegendService,
     public HsMapService: HsMapService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public hsQueuesService: HsQueuesService
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
   }
@@ -109,8 +111,8 @@ export class HsLegendComponent {
    * @private
    */
   layerAdded(e): void {
-    this.hsUtilsService.createQueue('addLayerToLegends', 3);
-    this.hsUtilsService.queues['addLayerToLegends'].q.push(async (cb) => {
+    const que = this.hsQueuesService.ensureQueue('addLayerToLegends', 3);
+    que.push(async (cb) => {
       this.addLayerToLegends(e.element);
       cb(null);
     });
