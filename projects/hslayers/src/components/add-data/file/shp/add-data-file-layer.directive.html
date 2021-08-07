@@ -17,17 +17,7 @@
         <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
     </div> -->
     <div class="form-group">
-        <div class="d-flex justify-content-center align-items-center w-100 dropzone-container">
-            <div class="dropzone p-4" fileDrop (filesDropped)="read($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
-                    <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
-            </div>
-            <p class="px-5">{{'COMMON.or' | translate}}</p>
-            <label class="dropzone-label">
-                <input name="file" type="file"  accept=".shp, .shx, .dbf, .sbn" class="inputfile" (change)="read($event)" id="shpdbfshx" multiple>
-                <label for="shpdbfshx" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i>{{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
-            </label> 
-
-        </div>
+        <hs-file-upload (uploaded)="read($event)" acceptedFormats=".shp, .shx, .dbf, .sbn" uploader="shpdbfshx"></hs-file-upload>
         <!-- TODO: Replace this with upcomming toast directive -->
         <div class="text-light text-center bg-danger" *ngIf="errorOccurred">
             <p>{{'ADDLAYERS.couldNotUploadSelectedFile' | translate}}</p>
@@ -66,7 +56,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <p>{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
             <label class="dropzone-label">
-                <input name="file" type="file" accept=".sld" class="inputfile" (change)="read($event)" id="sld" multiple>
+                <input name="file" type="file" accept=".sld" class="inputfile" (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
                 <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="sld ? 'bg-success' : 'bg-primary'"> <i class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
             </label> 
         </div>

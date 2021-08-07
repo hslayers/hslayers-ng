@@ -53,4 +53,7 @@ export * from './common/log/log.module';
 export * from './common/log/log.service';
 export * from './common/queues/queues.module';
 export * from './common/queues/queues.service';
+export * from './common/widgets/ui-extensions.module';
+export * from './common/upload/upload.module';
+export * from './common/upload/upload.component';
 export * from './common/get-capabilities/wms-get-capabilities-response.interface';

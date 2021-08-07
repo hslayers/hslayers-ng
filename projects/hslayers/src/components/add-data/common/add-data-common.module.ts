@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataCommonVectorFileUploadDirective} from './add-data-common-vector-file-upload.directive';
 import {HsAddDataTargetPositionComponent} from './add-data-target-position.component';
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog.component';
@@ -20,7 +19,6 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
-    HsAddDataCommonVectorFileUploadDirective,
     WmsLayerHighlightDirective,
   ],
   declarations: [
@@ -28,7 +26,6 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
-    HsAddDataCommonVectorFileUploadDirective,
     WmsLayerHighlightDirective,
   ],
   providers: [],
