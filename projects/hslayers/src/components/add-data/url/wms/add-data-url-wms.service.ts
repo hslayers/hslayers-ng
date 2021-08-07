@@ -342,7 +342,9 @@ export class HsAddDataUrlWmsService {
     if (this.data.services === undefined) {
       return;
     }
-    this.setAddedLayerVisibility();
+    //Limit visible layers to 10 to not freeze accidentally
+    this.data.visible =
+      this.data.services.filter((l) => l.checked === true).length <= 10;
     if (this.data.base) {
       this.addLayer(
         {
@@ -366,23 +368,12 @@ export class HsAddDataUrlWmsService {
     this.hsLayoutService.setMainPanel('layermanager');
   }
   createBasemapName(services): string {
-    const names = [];
-    for (const layer of services.filter((layer) => layer.checked)) {
-      names.push(layer.Name);
-    }
-    return names.join(',');
+    return services
+      .filter((l) => l.checked)
+      .map((l) => l.Name)
+      .join(',');
   }
 
-  setAddedLayerVisibility(): void {
-    const selectedLayersLength = this.data.services.filter(
-      (layer) => layer.checked === true
-    ).length;
-    if (selectedLayersLength > 10) {
-      this.data.visible = false;
-    } else {
-      this.data.visible = true;
-    }
-  }
   /**
    * @param service
    * @returns {Array}
