@@ -1,4 +1,3 @@
-import queue from 'queue';
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
 import {HttpClient} from '@angular/common/http';
@@ -8,11 +7,6 @@ import {isPlatformBrowser} from '@angular/common';
 
 @Injectable()
 export class HsUtilsService {
-  queues: {
-    [usecase: string]: {
-      q: any; // queueObject
-    };
-  } = {};
   constructor(
     public HsConfig: HsConfig,
     private http: HttpClient,
@@ -374,19 +368,7 @@ export class HsUtilsService {
       objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
     );
   }
-  createQueue(useCase: string, customConcurrency?: number): void {
-    if (this.queues[useCase]) {
-      return;
-    }
-    this.queues[useCase] = {
-      q: queue({results: [], concurrency: customConcurrency || 5}),
-    };
-    this.queues[useCase].q.autostart = true;
-    this.queues[useCase].q.on('end', () => {
-      delete this.queues[useCase];
-    });
-  }
-
+ 
   /**
    * Check if object is an instance of a class
    * @param {object} obj

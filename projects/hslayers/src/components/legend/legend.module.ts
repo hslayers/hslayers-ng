@@ -9,6 +9,7 @@ import {HsLegendLayerStaticComponent} from './legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
 import {HsLegendService} from './legend.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsQueuesModule} from '../../common/queues/queues.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -24,6 +25,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsPanelHelpersModule,
     HsUiExtensionsModule,
     TranslateModule,
+    HsQueuesModule,
   ],
   exports: [HsLegendComponent, HsLegendLayerComponent],
   providers: [HsLegendService],
