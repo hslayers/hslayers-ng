@@ -15,6 +15,7 @@ import {HsLaymanLayerDescriptor} from '../../../save-map/layman-layer-descriptor
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
+import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {accessRightsInterface} from '../../common/access-rights.interface';
 
@@ -178,9 +179,9 @@ export class HsAddDataFileShpComponent implements OnInit {
       });
   }
 
-  read(evt): void {
+  read(evt: HsUploadedFiles): void {
     const filesRead = [];
-    const files = evt.target ? evt.target.files : evt;
+    const files = Array.from(evt.fileList);
 
     const promises = [];
     for (const file of files) {
@@ -199,7 +200,7 @@ export class HsAddDataFileShpComponent implements OnInit {
       promises.push(filePromise);
     }
     Promise.all(promises).then((fileContents) => {
-      if (evt.target?.id === 'sld') {
+      if (evt.uploader === 'sld') {
         this.sld = filesRead[0];
       } else {
         if (this.files.length == 3) {
@@ -224,7 +225,7 @@ export class HsAddDataFileShpComponent implements OnInit {
       }
     });
 
-    if (evt.target?.id === 'shpdbfshx') {
+    if (evt.uploader === 'shpdbfshx') {
       this.files = filesRead;
     }
     console.log(this.files);

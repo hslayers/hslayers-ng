@@ -4,7 +4,6 @@ import {NgModule} from '@angular/core';
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {FilterPipe} from './filter.pipe';
 import {HsUiExtensionsRecursiveDdComponent} from './recursive-dd.component';
-
 @NgModule({
   declarations: [
     HsUiExtensionsRecursiveDdComponent,

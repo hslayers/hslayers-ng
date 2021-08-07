@@ -12,6 +12,7 @@ import {HsLayerManagerService} from '../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsToastService} from '../../layout/toast/toast.service';
+import {HsUploadedFiles} from '../../../common/upload/upload.component';
 import {HsUtilsService} from '../../utils/utils.service';
 import {accessRightsInterface} from '../common/access-rights.interface';
 import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
@@ -33,7 +34,6 @@ export class HsAddDataVectorComponent implements OnInit {
   name = '';
   advancedPanelVisible = false;
   folder_name = '';
-  dropzoneActive = false;
   features: any[] = [];
   featureCount = 0;
   type = '';
@@ -172,11 +172,8 @@ export class HsAddDataVectorComponent implements OnInit {
     return true;
   }
 
-  dropZoneState($event: boolean): void {
-    this.dropzoneActive = $event;
-  }
-  handleFileUpload(fileList: FileList): any {
-    Array.from(fileList).forEach(async (f) => {
+  handleFileUpload(evt: HsUploadedFiles): void {
+    Array.from(evt.fileList).forEach(async (f) => {
       const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
         f
       );
@@ -253,7 +250,6 @@ export class HsAddDataVectorComponent implements OnInit {
     this.name = '';
     this.advancedPanelVisible = false;
     this.folder_name = '';
-    this.dropzoneActive = false;
     this.features = [];
     this.featureCount = 0;
     this.type = '';
