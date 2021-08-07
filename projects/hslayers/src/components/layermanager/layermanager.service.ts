@@ -223,10 +223,15 @@ export class HsLayerManagerService {
       layerDescriptor.legends = getLegends(layer);
       this.data.layers.push(layerDescriptor);
       if (getQueryCapabilities(layer) !== false) {
-        this.HsLayerManagerMetadata.fillMetadata(layerDescriptor).then(() => {
-          setTimeout(() => {
+        this.HsUtilsService.createQueue('wmsGetCapabilities', 1);
+        this.HsUtilsService.queues['wmsGetCapabilities'].q.push(async (cb) => {
+          try {
+            await this.HsLayerManagerMetadata.fillMetadata(layerDescriptor);
             layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);
-          }, 50);
+            cb();
+          } catch (err) {
+            cb(err);
+          }
         });
       }
     } else {
