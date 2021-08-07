@@ -30,6 +30,7 @@ import {HsStylerPartBaseComponent} from './style-part-base.component';
 import {HsStylerService} from './styler.service';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component';
+import {HsUploadModule} from '../../common/upload/upload.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -59,6 +60,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     FormsModule,
     NgbModule,
     TranslateModule,
+    HsUploadModule,
   ],
   exports: [
     HsStylerComponent,

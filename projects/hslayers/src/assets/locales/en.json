@@ -751,7 +751,11 @@
     "transform": "Transform",
     "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
-    "width": "Width"
+    "width": "Width",
+    "uploadSld": "Upload style as SLD file",
+    "downloadSld": "Download style as SLD file",
+    "manageStyle": "Manage style",
+    "clear": "Reset to default style"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

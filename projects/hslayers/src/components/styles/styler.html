@@ -33,7 +33,10 @@
             <button ngbDropdownItem (click)="HsStylerService.addRule('Simple')">
               {{'STYLER.simpleRule' | translate}}
             </button>
-            <button ngbDropdownItem (click)="HsStylerService.addRule('Cluster')">
+            <button
+              ngbDropdownItem
+              (click)="HsStylerService.addRule('Cluster')"
+            >
               {{'STYLER.clusterRule' | translate}}
             </button>
           </div>
@@ -47,20 +50,51 @@
     >
       <ngb-panel *ngFor="let rule of HsStylerService.styleObject.rules">
         <ng-template ngbPanelTitle>
-          <span style="display: inline-block;text-align: left; width: 18.2em">{{rule.name || 'untitled rule'}}</span>
+          <span style="display: inline-block; text-align: left; width: 18.2em"
+            >{{rule.name || 'untitled rule'}}</span
+          >
           <button
-          class="btn btn-danger btn-sm"
-          (click)="HsStylerService.removeRule(rule)"
-          data-toggle="tooltip"
-          [title]="'STYLER.removeRule' | translate"
-        >
-          <i class="icon-trash"></i>
-        </button>
+            class="btn btn-danger btn-sm"
+            (click)="HsStylerService.removeRule(rule)"
+            data-toggle="tooltip"
+            [title]="'STYLER.removeRule' | translate"
+          >
+            <i class="icon-trash"></i>
+          </button>
         </ng-template>
         <ng-template ngbPanelContent>
           <hs-rule [rule]="rule" (changes)="HsStylerService.save()"></hs-rule>
         </ng-template>
       </ngb-panel>
     </ngb-accordion>
+  </div>
+  <div class="card-footer">
+    <div class="form-group m-3" *ngIf="uploaderVisible">
+      <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".sld"></hs-file-upload>
+   </div>
+    <div
+      class="btn-group"
+      role="group"
+      [attr.aria-label]="'STYLER.manageStyle' | translate"
+    >
+      <button
+        class="btn btn-secondary"
+        (click)="downloadSld()"
+        data-toggle="tooltip"
+        [title]="'STYLER.downloadSld' | translate"
+      >
+        <i class="icon-download"></i>
+      </button>
+      <button
+        class="btn btn-secondary"
+        (click)="uploadSld()"
+        data-toggle="tooltip"
+        [title]="'STYLER.uploadSld' | translate"
+      >
+        <i class="icon-upload"></i>
+      </button>
+      <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip"
+      [title]="'STYLER.clear' | translate"><i class="icon-trash"></i></button>
+    </div>
   </div>
 </div>
