@@ -46,17 +46,27 @@ export class HsAddDataUrlService {
     layerToSelect: string,
     services,
     selector: 'Title' | 'Name'
-  ): void {
+  ): any {
     if (!layerToSelect) {
       return;
     }
+    let selectedLayer;
     if (Array.isArray(services)) {
       for (const serviceLayer of services) {
-        this.selectSubLayerByName(layerToSelect, serviceLayer, selector);
+        selectedLayer = this.selectSubLayerByName(
+          layerToSelect,
+          serviceLayer,
+          selector
+        );
       }
     } else {
-      this.selectSubLayerByName(layerToSelect, services, selector);
+      selectedLayer = this.selectSubLayerByName(
+        layerToSelect,
+        services,
+        selector
+      );
     }
+    return selectedLayer;
   }
 
   /**
@@ -66,12 +76,22 @@ export class HsAddDataUrlService {
     layerToSelect: string,
     serviceLayer,
     selector: 'Title' | 'Name'
-  ): void {
-    if (serviceLayer.Layer) {
-      this.selectLayerByName(layerToSelect, serviceLayer.Layer, selector);
+  ): any {
+    let selectedLayer;
+    if (serviceLayer.Layer && serviceLayer.Name != layerToSelect) {
+      selectedLayer = this.selectLayerByName(
+        layerToSelect,
+        serviceLayer.Layer,
+        selector
+      );
     } else {
-      this.setLayerCheckedTrue(layerToSelect, serviceLayer, selector);
+      selectedLayer = this.setLayerCheckedTrue(
+        layerToSelect,
+        serviceLayer,
+        selector
+      );
     }
+    return selectedLayer;
   }
 
   /**
@@ -82,11 +102,12 @@ export class HsAddDataUrlService {
     layerToSelect: string,
     serviceLayer,
     selector: 'Title' | 'Name'
-  ): void {
+  ): any {
     if (serviceLayer[selector] == layerToSelect) {
       serviceLayer.checked = true;
       this.scrollToLayer(serviceLayer[selector]);
     }
+    return serviceLayer;
   }
 
   scrollToLayer(name: string): void {

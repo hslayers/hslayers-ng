@@ -200,20 +200,18 @@ export class HsAddDataUrlWmsService {
         }
       }
 
-      //TODO: shalln't we move this logic after the layer is added to map?
-      if (layerToSelect) {
-        const serviceLayer = this.data.services.filter(
-          (el) => el.Name == layerToSelect
-        )[0];
-        this.data.extent = this.getLayerBBox(serviceLayer);
-      } else {
-        this.data.extent = this.calcAllLayersExtent(this.data.services);
-      }
-      this.hsAddDataUrlService.selectLayerByName(
+      const serviceLayer = this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.services,
         'Name'
       );
+
+      //TODO: shalln't we move this logic after the layer is added to map?
+      if (layerToSelect) {
+        this.data.extent = this.getLayerBBox(serviceLayer);
+      } else {
+        this.data.extent = this.calcAllLayersExtent(this.data.services);
+      }
 
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
