@@ -382,4 +382,22 @@ export class HsStylerService {
       return tmp;
     };
   }
+
+  async reset(): Promise<void> {
+    setSld(this.layer, undefined);
+    this.layer.setStyle(createDefaultStyle);
+    await this.initLayerStyle(this.layer);
+    await this.save();
+  }
+
+  async loadSld(sld: string): Promise<void> {
+    try {
+      await this.parser.readStyle(sld);
+      setSld(this.layer, sld);
+      await this.fill(this.layer);
+      await this.save();
+    } catch (err) {
+      console.warn('SLD could not be parsed');
+    }
+  }
 }

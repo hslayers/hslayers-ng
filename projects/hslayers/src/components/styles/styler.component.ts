@@ -10,7 +10,9 @@ import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerService} from '../styles/styler.service';
+import {HsUploadedFiles} from '../../common/upload/upload.component';
 import {HsUtilsService} from '../utils/utils.service';
+import {setSld} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-styles',
@@ -19,6 +21,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsStylerComponent implements OnDestroy {
   layerTitle: string;
   private ngUnsubscribe = new Subject();
+  uploaderVisible = false;
   constructor(
     public HsStylerService: HsStylerService,
     public HsLayoutService: HsLayoutService,
@@ -51,5 +54,41 @@ export class HsStylerComponent implements OnDestroy {
 
   layermanager(): void {
     this.HsLayoutService.setMainPanel('layermanager');
+  }
+
+  uploadSld(): void {
+    this.uploaderVisible = !this.uploaderVisible;
+  }
+
+  downloadSld(): void {}
+
+  async clear(): Promise<void> {
+    await this.HsStylerService.reset();
+  }
+
+  handleFileUpload(evt: HsUploadedFiles): void {
+    const filesRead = [];
+    const files = Array.from(evt.fileList);
+
+    const promises = [];
+    for (const file of files) {
+      const filePromise = new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (loadEvent) => {
+          filesRead.push({
+            name: file.name,
+            type: file.type,
+            content: loadEvent.target.result,
+          });
+          resolve(reader.result);
+        };
+        reader.readAsText(file);
+      });
+      promises.push(filePromise);
+    }
+    Promise.all(promises).then(async (fileContents) => {
+      const sld = fileContents[0];
+      await this.HsStylerService.loadSld(sld);
+    });
   }
 }

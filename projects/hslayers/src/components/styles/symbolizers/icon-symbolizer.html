@@ -81,6 +81,7 @@
         max="1.0"
         [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.offset[0]"
+        *ngIf="symbolizer.offset != undefined"
         (change)="emitChange()"
       />
     </div>
@@ -99,6 +100,7 @@
         max="1.0"
         [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.offset[1]"
+        *ngIf="symbolizer.offset != undefined"
         (change)="emitChange()"
       />
     </div>
