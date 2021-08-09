@@ -17,8 +17,8 @@ import {
   setLegends,
   setMetadata,
 } from '../../common/layer-extensions';
+import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
@@ -37,7 +37,7 @@ export class HsLayerManagerMetadataService {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public HsLayerManagerWmstService: HsLayerManagerWmstService,
+    public HsDimensionTimeService: HsDimensionTimeService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLog: HsLogService
   ) {}
@@ -198,7 +198,7 @@ export class HsLayerManagerMetadataService {
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
       ) {
-        this.HsLayerManagerWmstService.setupTimeLayer(
+        this.HsDimensionTimeService.setupTimeLayer(
           layerDescriptor,
           layerObj
         );

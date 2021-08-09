@@ -203,7 +203,11 @@ export interface Dimension {
   type?: 'datetime' | 'date';
   value?: any;
   default?: any;
-  values?: any[];
+  units?: string;
+  /**
+   * Can be represented either by an array of values or, in case of time, as a ISO8601 time definition
+   */
+  values?: any[] | string;
   availability?(): boolean;
 }
 

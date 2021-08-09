@@ -9,7 +9,7 @@ import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
 import {AddDataUrlType} from '../add-data/add-data-url-type';
-import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
+import {HsDimensionDescriptor} from '../../common/get-capabilities/dimension';
 import {
   HsLayerDescriptor,
   HsLayerLoadProgress,

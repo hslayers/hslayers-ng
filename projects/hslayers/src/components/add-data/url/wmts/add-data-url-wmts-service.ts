@@ -8,7 +8,7 @@ import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
-import {HsDimensionService} from '../../../../common/dimension.service';
+import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUtilsService} from '../../../utils/utils.service';

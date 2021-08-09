@@ -4,9 +4,9 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsConfig} from '../../../config.service';
+import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
-import {HsLayerManagerWmstService} from '../layermanager-wmst.service';
 import {HsLayoutService} from '../../layout/layout.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject();
   constructor(
     public hsEventBusService: HsEventBusService,
-    public hsLayerManagerWmstService: HsLayerManagerWmstService,
+    public hsDimensionTimeService: HsDimensionTimeService,
     public hsLayoutService: HsLayoutService,
     public hsConfig: HsConfig
   ) {
@@ -59,6 +59,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -150,7 +151,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
 
   setLayerTime(): void {
     setTimeout(() => {
-      this.hsLayerManagerWmstService.setLayerTime(this.layer, this.currentTime);
+      this.hsDimensionTimeService.setLayerTime(this.layer, this.currentTime);
     }, 100);
   }
 

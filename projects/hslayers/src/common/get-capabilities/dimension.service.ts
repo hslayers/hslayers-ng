@@ -1,13 +1,15 @@
-import {ImageWMS, TileWMS, XYZ} from 'ol/source';
+import {ImageWMS, Source, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 
-import {HsDimensionDescriptor} from '../components/layermanager/dimensions/dimension.class';
-import {HsEventBusService} from '../components/core/event-bus.service';
-import {HsLayerUtilsService} from '../components/utils/layer-utils.service';
-import {HsLogService} from './log/log.service';
-import {HsMapService} from '../components/map/map.service';
-import {HsUtilsService} from '../components/utils/utils.service';
-import {getDimensions} from './layer-extensions';
+import {HsDimensionDescriptor} from './dimension';
+import {HsDimensionTimeService} from './dimension-time.service';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsLayerUtilsService} from '../../components/utils/layer-utils.service';
+import {HsLogService} from '../log/log.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
+import {getDimensions} from '../layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +17,27 @@ import {getDimensions} from './layer-extensions';
 export class HsDimensionService {
   constructor(
     public $log: HsLogService,
-    private hsEventBusService: HsEventBusService,
-    private hsUtilsService: HsUtilsService,
-    private hsMapService: HsMapService,
-    private hsLayerUtilsService: HsLayerUtilsService
-  ) {}
+    public hsDimensionTimeService: HsDimensionTimeService,
+    public hsEventBusService: HsEventBusService,
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService
+  ) {
+    this.hsEventBusService.layerTimeChanges.subscribe(
+      ({layer: layerDescriptor, time: newTime}) => {
+        const dimensions = getDimensions(layerDescriptor.layer);
+        if (dimensions) {
+          //TODO: Check if dimensions['time'] || dimensions['TIME'] !== undefined
+          const dimensionDesc = new HsDimensionDescriptor(
+            'time',
+            dimensions['time'] || dimensions['TIME']
+          );
+          dimensionDesc.modelValue = newTime;
+          this.dimensionChanged(dimensionDesc);
+        }
+      }
+    );
+  }
 
   prepareTimeSteps(step_string): string[] {
     const step_array = step_string.split(',');
@@ -174,21 +192,22 @@ export class HsDimensionService {
 
   /**
    * Test if layer has dimensions
-   * @param layer -
+   * @param layer
    * @returns true if layer has any dimensions
    */
-  isLayerWithDimensions(layer): boolean {
-    if (layer === undefined) {
+  isLayerWithDimensions(layer: Layer<Source>): boolean {
+    if (!layer) {
       return false;
     }
-
     const dimensions = getDimensions(layer);
     if (dimensions === undefined) {
       return false;
     }
+    console.log(dimensions);
     return (
       Object.keys(dimensions).filter((k) => {
-        return k == 'time' ? dimensions[k].onlyInEditor : true;
+        // eslint-disable-next-line prettier/prettier
+        return k == 'time' ? (dimensions[k].onlyInEditor ?? true) : true;
       }).length > 0
     );
   }

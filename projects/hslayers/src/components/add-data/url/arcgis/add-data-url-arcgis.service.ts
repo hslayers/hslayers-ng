@@ -8,7 +8,7 @@ import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/c
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
-import {HsDimensionService} from '../../../../common/dimension.service';
+import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
@@ -311,6 +311,7 @@ export class HsAddDataArcGisService {
   }
 
   /**
+   * FIXME: UNUSED
    * @description Add service and its layers to project TODO
    * @param {string} url Service url
    * @param {Group} group Group layer to which add layer to

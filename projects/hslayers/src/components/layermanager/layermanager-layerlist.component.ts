@@ -9,11 +9,11 @@ import {
 } from '../../common/layer-extensions';
 
 import {HsConfig} from '../../config.service';
+import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -40,7 +40,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   constructor(
     public HsConfig: HsConfig,
     public HsLayerManagerService: HsLayerManagerService,
-    public hsLayerManagerWmstService: HsLayerManagerWmstService,
+    public hsDimensionTimeService: HsDimensionTimeService,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
@@ -167,7 +167,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
 
   showLayerWmsT(layer: HsLayerDescriptor): boolean {
     return (
-      this.hsLayerManagerWmstService.layerIsWmsT(layer) &&
+      this.hsDimensionTimeService.layerIsWmsT(layer) &&
       !getDimension(layer.layer, 'time')?.onlyInEditor
     );
   }
