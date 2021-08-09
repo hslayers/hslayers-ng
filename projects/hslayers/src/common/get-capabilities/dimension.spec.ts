@@ -3,10 +3,10 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {HsDimensionService} from './dimension.service';
+import {HsDimensionTimeService} from './dimension-time.service';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsEventBusServiceMock} from '../../components/core/event-bus.service.mock';
 import {HsLayerUtilsService} from '../../components/utils/layer-utils.service';
-import {HsMapService} from '../../components/map/map.service';
-import {HsMapServiceMock} from '../../components/map/map.service.mock';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {HsUtilsServiceMock} from '../../components/utils/utils.service.mock';
 import {TestBed} from '@angular/core/testing';
@@ -21,24 +21,24 @@ describe('HsGetCapabilitiesModule', () => {
     );
   });
 
-  let service: HsDimensionService;
+  let service: HsDimensionTimeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [],
       providers: [
-        HsDimensionService,
-        {provide: HsMapService, useValue: new HsMapServiceMock()},
+        HsDimensionTimeService,
+        {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
       ],
     }); //.compileComponents();
-    service = TestBed.get(HsDimensionService);
+    service = TestBed.inject(HsDimensionTimeService);
   });
 
-  it('prepareTimeSteps', () => {
-    const values = service.prepareTimeSteps(
+  it('parseTimePoints', () => {
+    const values = service.parseTimePoints(
       '2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H'
     );
     expect(values).toBeDefined();

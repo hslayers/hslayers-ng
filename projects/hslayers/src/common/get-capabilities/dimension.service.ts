@@ -9,6 +9,10 @@ import {HsLayerUtilsService} from '../../components/utils/layer-utils.service';
 import {HsLogService} from '../log/log.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {
+  WmsDimension,
+  WmsLayer,
+} from './wms-get-capabilities-response.interface';
 import {getDimensions} from '../layer-extensions';
 
 @Injectable({
@@ -26,11 +30,10 @@ export class HsDimensionService {
     this.hsEventBusService.layerTimeChanges.subscribe(
       ({layer: layerDescriptor, time: newTime}) => {
         const dimensions = getDimensions(layerDescriptor.layer);
-        if (dimensions) {
-          //TODO: Check if dimensions['time'] || dimensions['TIME'] !== undefined
+        if (dimensions && (dimensions['time'] || dimensions['TIME'])) {
           const dimensionDesc = new HsDimensionDescriptor(
             'time',
-            dimensions['time'] || dimensions['TIME']
+            dimensions['time'] ?? dimensions['TIME']
           );
           dimensionDesc.modelValue = newTime;
           this.dimensionChanged(dimensionDesc);
@@ -39,83 +42,19 @@ export class HsDimensionService {
     );
   }
 
-  prepareTimeSteps(step_string): string[] {
-    const step_array = step_string.split(',');
-    const steps = [];
-    for (let i = 0; i < step_array.length; i++) {
-      if (step_array[i].indexOf('/') == -1) {
-        steps.push(new Date(step_array[i]).toISOString());
-      } else {
-        const interval_def = step_array[i].split('/');
-        const step =
-          interval_def.length == 3
-            ? this.duration(interval_def[2])
-            : this.duration('P1D');
-        let iterator = new Date(interval_def[0]);
-        const end = new Date(interval_def[1]);
-        while (iterator <= end) {
-          steps.push(iterator.toISOString());
-          iterator = this.addStep(iterator, step);
-        }
-      }
-    }
-    return steps;
-  }
-
-  private addStep(
-    iterator: Date,
-    step: {
-      weeks: number;
-      years: number;
-      months: number;
-      days: number;
-      hours: number;
-      minutes: number;
-      seconds: number;
-      milliseconds: number;
-    }
-  ) {
-    iterator.setUTCFullYear(iterator.getUTCFullYear() + step.years);
-    iterator.setUTCMonth(iterator.getUTCMonth() + step.months);
-    iterator.setUTCDate(iterator.getUTCDate() + step.days);
-    iterator.setUTCHours(iterator.getUTCHours() + step.hours);
-    iterator.setUTCMinutes(iterator.getUTCMinutes() + step.minutes);
-    iterator.setUTCSeconds(iterator.getUTCSeconds() + step.seconds);
-    iterator.setUTCMilliseconds(
-      iterator.getUTCMilliseconds() + step.milliseconds
-    );
-    return iterator;
-  }
-
-  duration(text: string) {
-    //Idea taken from https://github.com/luisfarzati/moment-interval/blob/master/src/moment-interval.js duration function
-    const iso8601 =
-      /^P(?:(\d+(?:[\.,]\d{0,3})?W)|(\d+(?:[\.,]\d{0,3})?Y)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?D)?(?:T(\d+(?:[\.,]\d{0,3})?H)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?S)?)?)$/;
-    const matches = text.match(iso8601);
-    if (matches === null) {
-      throw '"' + text + '" is an invalid ISO 8601 duration';
-    }
-    return {
-      weeks: parseFloat(matches[1]) || 0,
-      years: parseFloat(matches[2]) || 0,
-      months: parseFloat(matches[3]) || 0,
-      days: parseFloat(matches[4]) || 0,
-      hours: parseFloat(matches[5]) || 0,
-      minutes: parseFloat(matches[6]) || 0,
-      seconds: parseFloat(matches[7]) || 0,
-      milliseconds: parseFloat(matches[8]) || 0,
-    };
-  }
-
-  getDimensionValues(dimension) {
+  getDimensionValues(dimension: WmsDimension): Array<string> {
     try {
-      return this.prepareTimeSteps(dimension.values);
+      if (typeof dimension.values === 'string') {
+        return this.hsDimensionTimeService.parseTimePoints(dimension.values);
+      } else {
+        return dimension.values;
+      }
     } catch (ex) {
       this.$log.error(ex);
     }
   }
 
-  hasNestedLayers(layer) {
+  hasNestedLayers(layer: WmsLayer): boolean {
     if (layer == undefined) {
       return false;
     }
@@ -148,15 +87,21 @@ export class HsDimensionService {
    *
    * @param layer - Layer to fill the dimension values
    */
-  fillDimensionValues(layer): void {
-    for (const sublayer of layer.Layer) {
-      if (this.hasNestedLayers(sublayer)) {
+  fillDimensionValues(layer: WmsLayer): void {
+    if (!Array.isArray(layer.Layer)) {
+      return;
+    }
+    if (this.hasNestedLayers(layer) && Array.isArray(layer.Layer)) {
+      for (const sublayer of layer.Layer) {
         this.fillDimensionValues(sublayer);
       }
-      if (layer.Dimension) {
-        for (const dimension of sublayer.Dimension) {
-          dimension.values = this.getDimensionValues(dimension);
-        }
+    }
+    if (layer.Dimension && Array.isArray(layer.Dimension)) {
+      for (const dimension of layer.Dimension) {
+        /* Since we augment the 'values' property here in the WmsLayer definition
+         * it shall not be needed again in the HsDimensionTimeService.setupTimeLayer()
+         */
+        dimension.values = this.getDimensionValues(dimension);
       }
     }
   }
@@ -192,7 +137,7 @@ export class HsDimensionService {
 
   /**
    * Test if layer has dimensions
-   * @param layer
+   * @param layer - OL Layer
    * @returns true if layer has any dimensions
    */
   isLayerWithDimensions(layer: Layer<Source>): boolean {
@@ -203,7 +148,6 @@ export class HsDimensionService {
     if (dimensions === undefined) {
       return false;
     }
-    console.log(dimensions);
     return (
       Object.keys(dimensions).filter((k) => {
         // eslint-disable-next-line prettier/prettier

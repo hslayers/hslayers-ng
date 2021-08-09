@@ -6,6 +6,7 @@ import {Geometry} from 'ol/geom';
 
 export class HsEventBusServiceMock {
   layerAdditions: Subject<any> = new Subject();
+  layerDimensionDefinitionChanges: Subject<any> = new Subject();
   layerSelectedFromUrl: BehaviorSubject<VectorLayer<VectorSource<Geometry>>> =
     new BehaviorSubject(null);
   mainPanelChanges: Subject<any> = new Subject();

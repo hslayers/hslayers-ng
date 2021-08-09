@@ -266,15 +266,15 @@ export class HsDimensionTimeService {
         );
       } else if (timeValues.length == 2) {
         // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00"
-        // TODO: hourly interval is a pure guessing here and will be most like overkill for usual cases
+        // Daily interval is a pure guessing here and might be overkill for common cases
         // TODO: => try better guessing
         return this.timePointsFromInterval(
           timeValues[0],
           timeValues[1],
-          3600000
+          24 * 60 * 60 * 1000
         );
       } else {
-        throw new Error(`Invalid time definition provided: ${values}`);
+        throw new Error(`Invalid ISO8601 time definition provided: ${values}`);
       }
     }
     return values.split(',');
