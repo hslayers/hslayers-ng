@@ -53,6 +53,11 @@ export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
           available = dimension.availability(layer);
         }
         if (available) {
+          if (typeof dimension.values === 'string') {
+            dimension.values = this.hsDimensionTimeService.parseTimePoints(
+              dimension.values
+            );
+          }
           this.dimensions.push(new HsDimensionDescriptor(key, dimension));
         }
       }

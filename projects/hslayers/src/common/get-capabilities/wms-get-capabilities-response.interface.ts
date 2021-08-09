@@ -60,15 +60,6 @@ declare type BoundingBoxType = {
   resx?: number;
   resy?: number;
 };
-declare type DimensionType = {
-  name: string;
-  units: string;
-  unitSymbol?: string;
-  default?: string;
-  multipleValues?: boolean;
-  nearestValue?: boolean;
-  current?: boolean;
-};
 declare type LogoURLType = {
   Format: FormatType;
   OnlineResource: OnlineResourceType;
@@ -108,6 +99,21 @@ declare type StyleType = {
   StyleSheetURL?: StyleSheetURLType;
   StyleURL?: StyleURLType;
 };
+/**
+ * Annex C "Handling multi-dimensional data"
+ * and
+ * https://github.com/openlayers/openlayers/blob/a8b949a802c4d79ce6fbdcbb2fe3828a83e375b3/src/ol/format/WMSCapabilities.js#L502
+ */
+export type WmsDimension = {
+  name: string;
+  units: string;
+  unitSymbol?: string;
+  default?: string;
+  multipleValues?: boolean;
+  nearestValue?: boolean;
+  current?: boolean;
+  values: string | string[];
+};
 export type WmsLayer = {
   Name?: NameType;
   Title: TitleType;
@@ -116,7 +122,7 @@ export type WmsLayer = {
   CRS: CRSType | CRSType[];
   EX_GeographicBoundingBox?: EX_GeographicBoundingBoxType;
   BoundingBox?: BoundingBoxType | BoundingBoxType[];
-  Dimension?: DimensionType | DimensionType[];
+  Dimension?: WmsDimension | WmsDimension[];
   Attribution?: AttributionType;
   AuthorityURL?: AuthorityURLType | AuthorityURLType[];
   Identifier?: IdentifierType | IdentifierType[];
@@ -135,6 +141,9 @@ export type WmsLayer = {
   fixedHeight?: number; // UInt not yet supported by TS
 };
 
+/**
+ * Reference: OpenGIS® Web Map Server Implementation Specification. Version: 1.3.0. OGC® 06-042.
+ */
 export interface WMSGetCapabilitiesResponse {
   Service: {
     Name: 'WMS';

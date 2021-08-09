@@ -479,23 +479,19 @@ export class HsAddDataUrlWmsService {
       }
     }
 
-    let legends = undefined;
-    let styles = undefined;
-    ({styles, legends} = this.getLayerStyles(layer));
+    const {styles, legends} = this.getLayerStyles(layer);
     const sourceOptions = {
       url: this.data.getMapUrl,
       attributions,
       projection: this.data.crs || this.data.srs,
-      params: Object.assign(
-        {
-          LAYERS: layer.Name || layer.Layer[0].Name,
-          INFO_FORMAT: layer.queryable ? queryFormat : undefined,
-          FORMAT: imageFormat,
-          VERSION: this.data.version,
-          STYLES: styles,
-        },
-        this.hsDimensionService.paramsFromDimensions(layer)
-      ),
+      params: {
+        LAYERS: layer.Name || layer.Layer[0].Name,
+        INFO_FORMAT: layer.queryable ? queryFormat : undefined,
+        FORMAT: imageFormat,
+        VERSION: this.data.version,
+        STYLES: styles,
+        ...this.hsDimensionService.paramsFromDimensions(layer),
+      },
       crossOrigin: 'anonymous',
     };
     const source: ImageWMS | TileWMS = !this.data.useTiles
