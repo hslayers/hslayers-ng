@@ -14,6 +14,7 @@ import {Point, Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
+import {HsDownloadModule} from '../../common/download/download.module';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
@@ -83,6 +84,7 @@ describe('HsStyler', () => {
         FormsModule,
         HttpClientTestingModule,
         TranslateModule.forRoot(),
+        HsDownloadModule,
       ],
       declarations: [HsStylerComponent],
       providers: [
