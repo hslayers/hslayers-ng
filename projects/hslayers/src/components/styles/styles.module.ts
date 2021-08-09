@@ -31,6 +31,7 @@ import {HsStylerService} from './styler.service';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component';
 import {HsUploadModule} from '../../common/upload/upload.module';
+import { HsDownloadModule } from '../../common/download/download.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -61,6 +62,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     NgbModule,
     TranslateModule,
     HsUploadModule,
+    HsDownloadModule,
   ],
   exports: [
     HsStylerComponent,
