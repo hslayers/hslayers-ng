@@ -37,9 +37,6 @@ type AttributeValuePair = {
 export class HsQueryVectorService {
   selector: Select;
   featureRemovals: Subject<Feature> = new Subject();
-  serializedFeatures: any;
-  downloadDataType: string;
-  downloadData: any;
 
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
