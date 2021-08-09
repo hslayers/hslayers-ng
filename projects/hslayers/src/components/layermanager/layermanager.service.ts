@@ -18,6 +18,7 @@ import {METERS_PER_UNIT} from 'ol/proj';
 import {HS_PRMS} from '../permalink/get-params';
 import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
 import {HsConfig} from '../../config.service';
+import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -28,7 +29,6 @@ import {
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
-import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -127,23 +127,23 @@ export class HsLayerManagerService {
   layerEditorElement: any;
   constructor(
     public HsConfig: HsConfig,
+    public HsDimensionTimeService: HsDimensionTimeService,
     public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
+    private hsLayerEditorService: HsLayerEditorService,
     public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     public HsLayerManagerMetadata: HsLayerManagerMetadataService,
-    public HsLayermanagerWmstService: HsLayerManagerWmstService,
     public HsLayerSelectorService: HsLayerSelectorService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsLayoutService: HsLayoutService,
     public HsLog: HsLogService,
     public HsMapService: HsMapService,
+    public HsQueuesService: HsQueuesService,
     private HsShareUrlService: HsShareUrlService,
     public HsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
-    private hsLayerEditorService: HsLayerEditorService,
-    private zone: NgZone,
-    public HsQueuesService: HsQueuesService
+    private zone: NgZone
   ) {
     this.HsMapService.loaded().then(() => this.init());
     this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
@@ -153,9 +153,9 @@ export class HsLayerManagerService {
         );
         if (
           layerDescriptor &&
-          this.HsLayermanagerWmstService.layerIsWmsT(layerDescriptor.layer)
+          this.HsDimensionTimeService.layerIsWmsT(layerDescriptor.layer)
         ) {
-          this.HsLayermanagerWmstService.setupTimeLayer(layerDescriptor);
+          this.HsDimensionTimeService.setupTimeLayer(layerDescriptor);
         }
       }
     );

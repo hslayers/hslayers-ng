@@ -4,13 +4,13 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HsDimensionService} from './dimension.service';
-import {HsLayerUtilsService} from '../components/utils/layer-utils.service';
-import {HsMapService} from '../components/map/map.service';
-import {HsMapServiceMock} from '../components/map/map.service.mock';
-import {HsUtilsService} from '../components/utils/utils.service';
-import {HsUtilsServiceMock} from '../components/utils/utils.service.mock';
+import {HsLayerUtilsService} from '../../components/utils/layer-utils.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsMapServiceMock} from '../../components/map/map.service.mock';
+import {HsUtilsService} from '../../components/utils/utils.service';
+import {HsUtilsServiceMock} from '../../components/utils/utils.service.mock';
 import {TestBed} from '@angular/core/testing';
-import {mockLayerUtilsService} from '../components/utils/layer-utils.service.mock';
+import {mockLayerUtilsService} from '../../components/utils/layer-utils.service.mock';
 
 describe('HsGetCapabilitiesModule', () => {
   beforeAll(() => {

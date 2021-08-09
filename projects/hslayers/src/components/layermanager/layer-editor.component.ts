@@ -8,6 +8,7 @@ import {Layer} from 'ol/layer';
 
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
@@ -17,7 +18,6 @@ import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from './remove-layer-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -47,7 +47,7 @@ export class HsLayerEditorComponent {
   getBase = getBase;
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,
-    public HsLayerManagerWmstService: HsLayerManagerWmstService,
+    public HsDimensionTimeService: HsDimensionTimeService,
     public HsStylerService: HsStylerService,
     public HsMapService: HsMapService,
     public HsLayerManagerService: HsLayerManagerService,
@@ -83,7 +83,7 @@ export class HsLayerEditorComponent {
   }
 
   layerIsWmsT(): boolean {
-    return this.HsLayerManagerWmstService.layerIsWmsT(this.currentLayer);
+    return this.HsDimensionTimeService.layerIsWmsT(this.currentLayer);
   }
 
   /**

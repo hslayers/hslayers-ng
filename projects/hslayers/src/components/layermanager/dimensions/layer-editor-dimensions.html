@@ -1,4 +1,4 @@
-<div [hidden]="!hsDimensionService.isLayerWithDimensions(layer)">
+<div *ngIf="hsDimensionService.isLayerWithDimensions(layer)">
     <p style="text-align: center; font-weight: bold;">{{'LAYERMANAGER.dimensions' | translate}}</p>
     <div class="form-inline" *ngFor="let dimension of dimensions">
         <label class="control-label" style="width: 100%; justify-content: left;">{{dimension.label || dimension.name}}:</label>

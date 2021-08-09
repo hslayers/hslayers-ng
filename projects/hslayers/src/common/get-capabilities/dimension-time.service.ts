@@ -3,24 +3,21 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsDimensionDescriptor} from './dimensions/dimension.class';
-import {HsDimensionService} from '../../common/dimension.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLogService} from '../../common/log/log.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {WmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
-import {getDimensions, setDimensions} from '../../common/layer-extensions';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsLayerDescriptor} from '../../components/layermanager/layer-descriptor.interface';
+import {HsLogService} from '../log/log.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
+import {WmsLayer} from './wms-get-capabilities-response.interface';
+import {getDimensions, setDimensions} from '../layer-extensions';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HsLayerManagerWmstService {
+export class HsDimensionTimeService {
   constructor(
     public HsEventBusService: HsEventBusService,
     public hsLog: HsLogService,
-    public HsUtilsService: HsUtilsService,
-    private hsDimensionService: HsDimensionService
+    public HsUtilsService: HsUtilsService
   ) {}
 
   /**
@@ -245,22 +242,18 @@ export class HsLayerManagerWmstService {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
-    const dimensions = getDimensions(currentLayer.layer);
-    if (dimensions) {
-      const dimensionDesc = new HsDimensionDescriptor(
-        'time',
-        dimensions['time'] || dimensions['TIME']
-      );
-      dimensionDesc.modelValue = newTime;
-      this.hsDimensionService.dimensionChanged(dimensionDesc);
-    }
     this.HsEventBusService.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
     });
   }
 
-  private parseTimePoints(values: string): Array<string> {
+  /**
+   * Reads a time dimension definition and transforms it into a canonical form of an array of time points
+   * @param values - Stringified time definition. Either defined by a list of values or by an ISO 8601 duration pattern
+   * @returns Array of time points in ISO 8601 format
+   */
+  parseTimePoints(values: string): Array<string> {
     values = values.trim();
     if (values.includes('/')) {
       const timeValues = values.split('/');

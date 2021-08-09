@@ -1,4 +1,3 @@
-export * from './dimensions/dimension.class';
 export * from './dimensions/layer-editor-dimensions.component';
 export * from './dimensions/layermanager-time-editor.component';
 export * from './base-layer-descriptor.interface';
@@ -15,7 +14,6 @@ export * from './layermanager-layerlist.component';
 export * from './layermanager-metadata.service';
 export * from './layermanager-physical-layerlist.component';
 export * from './layermanager-physical-layerlist.service';
-export * from './layermanager-wmst.service';
 export * from './layermanager.component';
 export * from './layermanager.module';
 export * from './layermanager.service';

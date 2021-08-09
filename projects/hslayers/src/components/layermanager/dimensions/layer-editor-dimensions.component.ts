@@ -5,11 +5,11 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {Dimension, getDimensions} from '../../../common/layer-extensions';
-import {HsDimensionDescriptor} from './dimension.class';
-import {HsDimensionService} from '../../../common/dimension.service';
+import {HsDimensionDescriptor} from '../../../common/get-capabilities/dimension';
+import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
+import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerEditorService} from '../layer-editor.service';
-import {HsLayerManagerWmstService} from '../layermanager-wmst.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
@@ -23,11 +23,11 @@ export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
   layerDimensionDefinitionChangeSubscription: Subscription;
   constructor(
     public hsDimensionService: HsDimensionService,
-    public hsUtilsService: HsUtilsService,
+    public hsDimensionTimeService: HsDimensionTimeService,
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsLayerEditorService: HsLayerEditorService,
-    public hsLayerManagerWmstService: HsLayerManagerWmstService
+    public hsUtilsService: HsUtilsService
   ) {
     this.layerDimensionDefinitionChangeSubscription =
       this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
