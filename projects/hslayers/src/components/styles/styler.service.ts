@@ -39,6 +39,7 @@ export class HsStylerService {
   layerTitle: string;
   styleObject: GeoStylerStyle;
   parser = new SLDParser();
+  sld: string;
 
   pin_white_blue = new Style({
     image: new Icon({
@@ -190,6 +191,7 @@ export class HsStylerService {
         setSld(layer, sld);
       }
     }
+    this.sld = sld;
   }
 
   /**
@@ -349,6 +351,7 @@ export class HsStylerService {
       this.layer.setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
       setSld(this.layer, sld);
+      this.sld = sld;
       this.onSet.next(this.layer);
     } catch (ex) {
       this.HsLogService.error(ex);

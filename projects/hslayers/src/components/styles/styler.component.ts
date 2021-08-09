@@ -12,7 +12,6 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUploadedFiles} from '../../common/upload/upload.component';
 import {HsUtilsService} from '../utils/utils.service';
-import {setSld} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-styles',
@@ -22,6 +21,8 @@ export class HsStylerComponent implements OnDestroy {
   layerTitle: string;
   private ngUnsubscribe = new Subject();
   uploaderVisible = false;
+  downloadData: any;
+
   constructor(
     public HsStylerService: HsStylerService,
     public HsLayoutService: HsLayoutService,
@@ -59,8 +60,6 @@ export class HsStylerComponent implements OnDestroy {
   uploadSld(): void {
     this.uploaderVisible = !this.uploaderVisible;
   }
-
-  downloadSld(): void {}
 
   async clear(): Promise<void> {
     await this.HsStylerService.reset();
