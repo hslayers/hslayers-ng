@@ -66,27 +66,16 @@ export class HsStylerComponent implements OnDestroy {
   }
 
   handleFileUpload(evt: HsUploadedFiles): void {
-    const filesRead = [];
     const files = Array.from(evt.fileList);
-
-    const promises = [];
-    for (const file of files) {
-      const filePromise = new Promise((resolve) => {
+    const promises = files.map((file) => {
+      return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = (loadEvent) => {
-          filesRead.push({
-            name: file.name,
-            type: file.type,
-            content: loadEvent.target.result,
-          });
-          resolve(reader.result);
-        };
+        reader.onload = () => resolve(reader.result);
         reader.readAsText(file);
       });
-      promises.push(filePromise);
-    }
+    });
     Promise.all(promises).then(async (fileContents) => {
-      const sld = fileContents[0];
+      const sld = fileContents[0] as string;
       await this.HsStylerService.loadSld(sld);
     });
   }
