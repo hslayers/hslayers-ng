@@ -35,9 +35,11 @@ type AttributeValuePair = {
   providedIn: 'root',
 })
 export class HsQueryVectorService {
-  exportedFeatureHref: any;
   selector: Select;
   featureRemovals: Subject<Feature> = new Subject();
+  serializedFeatures: any;
+  downloadDataType: string;
+  downloadData: any;
 
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
@@ -126,33 +128,22 @@ export class HsQueryVectorService {
     this.HsQueryBaseService.getFeatureInfoCollected.next();
   }
 
-  exportData(clickedFormat: 'WKT' | 'GeoJSON', feature: Feature): void {
+  exportData(clickedFormat: 'WKT' | 'GeoJSON', feature: Feature): string {
     let fmt;
-    let type;
-    let serializedFeatures;
     switch (clickedFormat) {
       case 'WKT':
         fmt = new WKT();
-        type = 'text/plain';
-        serializedFeatures = fmt.writeFeature(feature);
+        return fmt.writeFeature(feature);
         break;
       case 'GeoJSON':
       default:
         fmt = new GeoJSON();
-        type = 'application/json';
-        serializedFeatures = fmt.writeFeatures([feature], {
+        return fmt.writeFeatures([feature], {
           dataProjection: 'EPSG:4326',
           featureProjection: this.HsMapService.getCurrentProj(),
         });
         break;
     }
-    const data = new Blob([serializedFeatures], {type});
-    const url = URL.createObjectURL(data);
-    if (this.exportedFeatureHref) {
-      URL.revokeObjectURL(this.exportedFeatureHref);
-    }
-    this.exportedFeatureHref =
-      this.DomSanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   /**

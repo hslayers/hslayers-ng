@@ -12,9 +12,20 @@ export class HsQueryFeatureComponent {
   attributeName = '';
   attributeValue = '';
   newAttribVisible = false;
-  exportFormats = [
-    {name: 'WKT', ext: 'wkt'},
-    {name: 'GeoJSON', ext: 'geojson'},
+  exportFormats: {
+    name: 'WKT' | 'GeoJSON';
+    ext: string; //File extension
+    serializedData?: string; //Features as string according to WKT or GeoJSON
+    mimeType: string;
+    downloadData?: any; //Serialized/sanitized data suitable for href
+  }[] = [
+    {name: 'WKT', ext: 'wkt', mimeType: 'text/plain', downloadData: ''},
+    {
+      name: 'GeoJSON',
+      ext: 'geojson',
+      mimeType: 'application/json',
+      downloadData: '',
+    },
   ];
   exportMenuVisible = false;
   constructor(
@@ -60,5 +71,16 @@ export class HsQueryFeatureComponent {
     this.HsMapService.map
       .getView()
       .fit(extent, this.HsMapService.map.getSize());
+  }
+
+  toggleExportMenu(): void {
+    for (const format of this.exportFormats) {
+      format.serializedData = this.HsQueryVectorService.exportData(
+        format.name,
+        this.feature.feature
+      );
+    }
+
+    this.exportMenuVisible = !this.exportMenuVisible;
   }
 }
