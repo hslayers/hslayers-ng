@@ -8,7 +8,7 @@ import {HsAddDataFileShpComponent} from './add-data-file-shp.component';
 import {HsAddDataFileShpService} from './add-data-file-shp.service';
 import {HsLaymanModule} from '../../../../common/layman/layman.module';
 import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.module';
-import {HsUploadModule} from 'projects/hslayers/src/common/upload/upload.module';
+import {HsUploadModule} from '../../../../common/upload/upload.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
