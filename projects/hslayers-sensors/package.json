@@ -20,7 +20,7 @@
     "rxjs": "^6.0.0",
     "vega": "^5.0.0",
     "vega-embed": "^6.0.0",
-    "vega-lite": "~5.0.0" //5.1.0 has some problem because it exports js files with optional chaining targeting es2020. We are not able to load those
+    "vega-lite": "~5.0.0"
   },
   "devDependencies": {
     "ol": "^6.5.0",
