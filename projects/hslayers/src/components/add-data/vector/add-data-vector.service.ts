@@ -10,7 +10,7 @@ import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {Injectable} from '@angular/core';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorLayer} from 'ol/layer';
 import {VectorLayerDescriptor} from './VectorLayerDescriptor';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
 import {setDefinition} from '../../../common/layer-extensions';
@@ -130,7 +130,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions = {}
-  ): Promise<VectorLayer> {
+  ): Promise<VectorLayer<VectorSource<Geometry>>> {
     if (
       type.toLowerCase() != 'sparql' &&
       type.toLowerCase() != 'wfs' &&

@@ -5,6 +5,7 @@ import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Cluster, Source} from 'ol/source';
 import {Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Geometry} from 'ol/geom';
@@ -35,6 +36,12 @@ import {
   getName,
   getTitle,
   setDefinition,
+  setEditor,
+  setPath,
+  setRemovable,
+  setShowInLayerManager,
+  setSld,
+  setTitle,
   setWorkspace,
 } from '../../common/layer-extensions';
 
@@ -62,16 +69,16 @@ export class HsDrawService {
   //Snap interaction
   snap: Snap;
   snapActive = false;
-  snapSource: VectorSource;
-  snapLayer: Layer;
+  snapSource: VectorSource<Geometry>;
+  snapLayer: VectorLayer<VectorSource<Geometry>>;
 
   /**
    * @type {GeometryType}
    */
   type: string; //string of type GeometryType
-  selectedLayer: Layer;
+  selectedLayer: VectorLayer<VectorSource<Geometry>>;
   tmpDrawLayer: any;
-  source: VectorSource;
+  source: VectorSource<Geometry>;
   drawActive = false;
   selectedFeatures: any = new Collection();
   onSelected: any;
@@ -80,7 +87,7 @@ export class HsDrawService {
   onDeselected: any;
   public drawingLayerChanges: Subject<{
     layer: BaseLayer;
-    source: VectorSource;
+    source: VectorSource<Geometry>;
   }> = new Subject();
   laymanEndpoint: any;
   previouslySelected: any;
@@ -234,21 +241,21 @@ export class HsDrawService {
     }
     const layman = this.HsLaymanService.getLaymanEndpoint();
     const drawLayer = new VectorLayer({
-      title: tmpTitle,
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
-      showInLayerManager: true,
       visible: true,
-      removable: true,
-      sld: defaultStyle,
-      editable: true,
-      path: this.HsConfig.defaultDrawLayerPath || 'User generated', //TODO: Translate this
-      definition: {
-        format: this.isAuthorized ? 'hs.format.WFS' : null,
-        url: this.isAuthorized ? layman.url + '/wfs' : null,
-      },
-      workspace: layman?.user,
     });
+    setTitle(drawLayer, tmpTitle);
+    setShowInLayerManager(drawLayer, true);
+    setRemovable(drawLayer, true);
+    setSld(drawLayer, defaultStyle);
+    setEditor(drawLayer, {editable: true});
+    setPath(drawLayer, this.HsConfig.defaultDrawLayerPath || 'User generated'); //TODO: Translate this
+    setDefinition(drawLayer, {
+      format: this.isAuthorized ? 'hs.format.WFS' : null,
+      url: this.isAuthorized ? layman.url + '/wfs' : null,
+    });
+    setWorkspace(drawLayer, layman?.user);
     this.tmpDrawLayer = true;
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
@@ -274,14 +281,17 @@ export class HsDrawService {
     //console.log(this.selectedLayer);
     if (this.drawableLayers.length == 0 && !this.tmpDrawLayer) {
       const drawLayer = new VectorLayer({
-        title: TMP_LAYER_TITLE,
         source: new VectorSource(),
-        showInLayerManager: false,
         visible: true,
-        removable: true,
-        editable: true,
-        path: this.HsConfig.defaultDrawLayerPath || 'User generated',
       });
+      setTitle(drawLayer, TMP_LAYER_TITLE);
+      setShowInLayerManager(drawLayer, false);
+      setRemovable(drawLayer, true);
+      setEditor(drawLayer, {editable: true});
+      setPath(
+        drawLayer,
+        this.HsConfig.defaultDrawLayerPath || 'User generated'
+      );
       this.tmpDrawLayer = true;
       this.selectedLayer = drawLayer;
       this.addDrawLayer(drawLayer);
@@ -291,7 +301,7 @@ export class HsDrawService {
       this.source = this.HsLayerUtilsService.isLayerClustered(
         this.selectedLayer
       )
-        ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
+        ? (this.selectedLayer.getSource() as Cluster).getSource() //Is it clustered vector layer?
         : this.selectedLayer.getSource();
     }
     return true;
@@ -399,7 +409,7 @@ export class HsDrawService {
       return;
     }
     this.source = this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)
-      ? this.selectedLayer.getSource().getSource()
+      ? (this.selectedLayer.getSource() as Cluster).getSource()
       : this.selectedLayer.getSource();
 
     this.drawingLayerChanges.next({
@@ -474,7 +484,9 @@ export class HsDrawService {
     drawables = this.HsMapService.map
       .getLayers()
       .getArray()
-      .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
+      .filter((layer: Layer<Source>) =>
+        this.HsLayerUtilsService.isLayerDrawable(layer)
+      );
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
@@ -640,36 +652,28 @@ export class HsDrawService {
         map.addInteraction(this.draw);
       });
 
-      this.draw.on(
-        'drawstart',
-        (e: DrawEvent) => {
-          this.drawActive = true;
-          this.modify.setActive(false);
-          if (onDrawStart) {
-            onDrawStart(e);
-          }
-          if (this.HsUtilsService.runningInBrowser()) {
-            document.addEventListener('keyup', this.keyUp);
-          }
-        },
-        this
-      );
+      this.draw.on('drawstart', (e: DrawEvent) => {
+        this.drawActive = true;
+        this.modify.setActive(false);
+        if (onDrawStart) {
+          onDrawStart(e);
+        }
+        if (this.HsUtilsService.runningInBrowser()) {
+          document.addEventListener('keyup', this.keyUp);
+        }
+      });
 
-      this.draw.on(
-        'drawend',
-        (e: DrawEvent) => {
-          if (this.type == 'Circle') {
-            e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
-          }
-          if (onDrawEnd) {
-            onDrawEnd(e);
-          }
-          if (this.HsUtilsService.runningInBrowser()) {
-            document.removeEventListener('keyup', this.keyUp);
-          }
-        },
-        this
-      );
+      this.draw.on('drawend', (e: DrawEvent) => {
+        if (this.type == 'Circle') {
+          e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
+        }
+        if (onDrawEnd) {
+          onDrawEnd(e);
+        }
+        if (this.HsUtilsService.runningInBrowser()) {
+          document.removeEventListener('keyup', this.keyUp);
+        }
+      });
 
       //Add snap interaction -  must be added after the Modify and Draw interactions
       const snapSourceToBeUsed = this.snapSource
@@ -701,10 +705,10 @@ export class HsDrawService {
   /**
    * Changes layer source of snap interaction
    */
-  changeSnapSource(layer: Layer<Source>): void {
+  changeSnapSource(layer: VectorLayer<VectorSource<Geometry>>): void {
     //isLayerClustered
     const snapSourceToBeUsed = this.HsLayerUtilsService.isLayerClustered(layer)
-      ? layer.getSource().getSource()
+      ? (layer.getSource() as Cluster).getSource()
       : layer.getSource();
     this.snapLayer = layer;
     this.toggleSnapping(snapSourceToBeUsed);
