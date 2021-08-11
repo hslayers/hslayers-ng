@@ -1,8 +1,16 @@
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Draw, Modify, Snap} from 'ol/interaction';
+import {DrawEvent} from 'ol/interaction/Draw';
+import {Geometry} from 'ol/geom';
+import {Layer} from 'ol/layer';
+import {fromCircle} from 'ol/geom/Polygon';
+
 import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -20,11 +28,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Subject} from 'rxjs';
 import {defaultStyle} from '../styles/styles';
-import {fromCircle} from 'ol/geom/Polygon';
 import {
   getDefinition,
   getEditor,
@@ -330,7 +334,7 @@ export class HsDrawService {
    * Add draw layer to the map and repopulate list of drawables.
    * @param layer
    */
-  addDrawLayer(layer: Layer): void {
+  addDrawLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
     this.HsMapService.map.addLayer(layer);
     this.fillDrawableLayers();
   }
@@ -620,10 +624,10 @@ export class HsDrawService {
           } else if (e.originalEvent.buttons === 2) {
             //right click
             if (this.type == 'Polygon') {
-              const vertexCount = this.draw.sketchLineCoords_?.length;
+              const vertexCount = (this.draw as any).sketchLineCoords_?.length;
               return this.rightClickCondition(4, vertexCount);
             } else if (this.type == 'LineString') {
-              const vertexCount = this.draw.sketchCoords_?.length;
+              const vertexCount = (this.draw as any).sketchCoords_?.length;
               return this.rightClickCondition(2, vertexCount - 1);
             }
           }
@@ -638,7 +642,7 @@ export class HsDrawService {
 
       this.draw.on(
         'drawstart',
-        (e) => {
+        (e: DrawEvent) => {
           this.drawActive = true;
           this.modify.setActive(false);
           if (onDrawStart) {
@@ -653,7 +657,7 @@ export class HsDrawService {
 
       this.draw.on(
         'drawend',
-        (e) => {
+        (e: DrawEvent) => {
           if (this.type == 'Circle') {
             e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
           }
@@ -679,7 +683,7 @@ export class HsDrawService {
    * Handle snap interaction changes
    * Remove snap interaction if it already exists, recreate it if source is provided.
    */
-  toggleSnapping(source?: VectorSource): void {
+  toggleSnapping(source?: VectorSource<Geometry>): void {
     this.HsMapService.loaded().then((map) => {
       this.snapSource = source ? source : this.snapSource;
       if (this.snap) {
@@ -697,7 +701,7 @@ export class HsDrawService {
   /**
    * Changes layer source of snap interaction
    */
-  changeSnapSource(layer: Layer): void {
+  changeSnapSource(layer: Layer<Source>): void {
     //isLayerClustered
     const snapSourceToBeUsed = this.HsLayerUtilsService.isLayerClustered(layer)
       ? layer.getSource().getSource()

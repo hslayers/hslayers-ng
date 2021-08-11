@@ -7,7 +7,9 @@ import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
+import VectorSource from 'ol/source/Vector';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {Geometry} from 'ol/geom';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
@@ -168,7 +170,7 @@ export class HsAddDataWfsService {
               const doc = oDOM.documentElement;
 
               features = me.readFeatures(doc);
-              this.addFeatures(features);
+              (this as VectorSource<Geometry>).addFeatures(features);
               me.loadingFeatures = false;
             }
           },
@@ -422,7 +424,7 @@ export class HsAddDataWfsService {
     sld?: string
   ): void {
     const options = {
-      layer: layer,
+      layer,
       url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       strategy: bbox,
       srs: srs,

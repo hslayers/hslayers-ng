@@ -1,5 +1,9 @@
 import {Injectable} from '@angular/core';
+
+import VectorSource from 'ol/source/Vector';
+import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
@@ -28,11 +32,11 @@ export class HsLayerEditorService {
   layerTitleChange: Subject<{
     newTitle: string;
     oldTitle: string;
-    layer: VectorLayer;
+    layer: VectorLayer<VectorSource<Geometry>>;
   }> = new Subject();
 
   layerDimensionDefinitionChange: Subject<{
-    layer: Layer;
+    layer: Layer<Source>;
   }> = new Subject();
 
   constructor(
@@ -59,7 +63,7 @@ export class HsLayerEditorService {
    * BoundingBox property of GetCapabilities request (for WMS layer)
    * @param layer - OpenLayers layer to zoom to
    */
-  async zoomToLayer(layer: Layer): Promise<boolean> {
+  async zoomToLayer(layer: Layer<Source>): Promise<boolean> {
     let extent = null;
     if (layer.getExtent()) {
       extent = layer.getExtent();
@@ -115,7 +119,7 @@ export class HsLayerEditorService {
    * @param distance - Distance in pixels
    * @returns Current cluster state
    */
-  cluster(layer: Layer, newValue: boolean, distance: number): boolean {
+  cluster(layer: Layer<Source>, newValue: boolean, distance: number): boolean {
     if (layer == undefined) {
       return;
     }
@@ -133,7 +137,7 @@ export class HsLayerEditorService {
    * @param {Extent} extent - Extent in EPSG:4326
    * @param layer
    */
-  fitIfExtentSet(extent: number[], layer: Layer): void {
+  fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
     if (extent !== null) {
       layer.setExtent(extent);
       this.HsMapService.map

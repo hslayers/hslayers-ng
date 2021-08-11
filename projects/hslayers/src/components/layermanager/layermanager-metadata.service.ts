@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 import {
@@ -85,7 +86,7 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  metadataArray(layer: Layer): Array<MetadataUrl> {
+  metadataArray(layer: HsLayerDescriptor): Array<MetadataUrl> {
     return getMetadata(layer.layer)?.urls;
   }
 
@@ -145,11 +146,11 @@ export class HsLayerManagerMetadataService {
    * @param values
    */
   //TODO: TYPES
-  setOrUpdate(layer: Layer, key, values): void {
+  setOrUpdate(layer: Layer<Source>, key, values): void {
     const previousValue = layer.get(key);
     if (previousValue) {
       for (const value of values) {
-        layer.set(previousValue.push(value));
+        layer.set(key, previousValue.push(value));
       }
     } else {
       layer.set(key, values);
@@ -227,7 +228,7 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  parseAttribution(layer: Layer, caps: any) {
+  parseAttribution(layer: Layer<Source>, caps: any) {
     const attr = caps.Attribution;
     if (getAttribution(layer)?.locked || attr == undefined) {
       return;
@@ -252,7 +253,7 @@ export class HsLayerManagerMetadataService {
    */
   async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
     const layer = layerDescriptor.layer;
-    let capabilities = '';
+    const capabilities = '';
     const url = this.HsLayerUtilsService.getURL(layer);
     if (!url) {
       return;

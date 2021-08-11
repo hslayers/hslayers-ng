@@ -3,6 +3,8 @@ import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
 import BaseLayer from 'ol/layer/Base';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {transform, transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -238,13 +240,16 @@ export class HsCompositionsParserService {
     const layers = await this.jsonToLayers(obj);
     if (layers?.length > 0) {
       layers.forEach((lyr) => {
-        this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
+        this.HsMapService.addLayer(
+          lyr as Layer<Source>,
+          DuplicateHandling.RemoveOriginal
+        );
       });
       this.HsLayerManagerService.updateLayerListPositions();
     }
 
     if (obj.current_base_layer) {
-      this.HsMapService.map.getLayers().forEach((lyr) => {
+      this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
         if (
           getTitle(lyr) == obj.current_base_layer.title ||
           getTitle(lyr) == obj.current_base_layer
@@ -366,7 +371,7 @@ export class HsCompositionsParserService {
     }
     return infoDetails;
   }
-  transformExtent(pairs: Array<number>): Array<number> {
+  transformExtent(pairs: number[][]): Array<number> {
     if (!pairs) {
       return;
     }
@@ -471,7 +476,7 @@ export class HsCompositionsParserService {
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(
-          (l) => getTitle(l) == lyr_def.title
+          (l) => getTitle(l as Layer<Source>) == lyr_def.title
         );
         if (existing != undefined) {
           existing.setZIndex(undefined);

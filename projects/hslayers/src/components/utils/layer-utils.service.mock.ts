@@ -6,7 +6,7 @@ export class HsLayerUtilsServiceMock {
   constructor() {}
 
   HsUtilsService = new HsUtilsServiceMock();
-  isLayerVectorLayer(layer: Layer): boolean {
+  isLayerVectorLayer(layer: Layer<Source>): boolean {
     if (
       this.HsUtilsService.instOf(layer, VectorLayer) &&
       (this.HsUtilsService.instOf(layer.getSource(), Cluster) ||
@@ -17,35 +17,35 @@ export class HsLayerUtilsServiceMock {
     return false;
   }
 
-  getLayerTitle(layer: Layer): string {
+  getLayerTitle(layer: Layer<Source>): string {
     return 'test';
   }
 
-  getURL(layer: Layer): string {
+  getURL(layer: Layer<Source>): string {
     return 'http://dummy-layer-url';
   }
 
-  isLayerWMS(layer: Layer): boolean {
+  isLayerWMS(layer: Layer<Source>): boolean {
     return false;
   }
 
-  isLayerWMTS(layer: Layer): boolean {
+  isLayerWMTS(layer: Layer<Source>): boolean {
     return false;
   }
 
-  isLayerGeoJSONSource(layer: Layer): boolean {
+  isLayerGeoJSONSource(layer: Layer<Source>): boolean {
     return false;
   }
 
-  isLayerKMLSource(layer: Layer): boolean {
+  isLayerKMLSource(layer: Layer<Source>): boolean {
     return false;
   }
 
-  isLayerTopoJSONSource(layer: Layer): boolean {
+  isLayerTopoJSONSource(layer: Layer<Source>): boolean {
     return false;
   }
 
-  isLayerXYZ(layer: Layer): boolean {
+  isLayerXYZ(layer: Layer<Source>): boolean {
     return false;
   }
 }

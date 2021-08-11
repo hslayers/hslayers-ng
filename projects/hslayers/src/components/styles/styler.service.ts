@@ -2,7 +2,6 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import BaseLayer from 'ol/layer/Base';
 import Feature from 'ol/Feature';
 import OpenLayersParser from 'geostyler-openlayers-parser';
 import SLDParser from 'geostyler-sld-parser';
@@ -13,6 +12,8 @@ import {Icon, Style} from 'ol/style';
 import {StyleFunction} from 'ol/style';
 import {createDefaultStyle} from 'ol/style/Style';
 
+import {Cluster} from 'ol/source';
+import {Geometry} from 'ol/geom';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
@@ -34,8 +35,8 @@ import {parseStyle} from './backwards-compatibility';
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: VectorLayer = null;
-  onSet: Subject<VectorLayer> = new Subject();
+  layer: VectorLayer<VectorSource<Geometry>> = null;
+  onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
   parser = new SLDParser();
@@ -72,7 +73,10 @@ export class HsStylerService {
     );
   }
 
-  pin_white_blue_highlight = (feature: Feature, resolution): Array<Style> => {
+  pin_white_blue_highlight = (
+    feature: Feature<Geometry>,
+    resolution
+  ): Array<Style> => {
     return [
       new Style({
         image: new Icon({
@@ -100,13 +104,16 @@ export class HsStylerService {
    * @param {VectorLayer} layer Any vector layer
    * @returns {VectorSource} Source of the input layer or source of its cluster's source
    */
-  getLayerSource(layer: VectorLayer, isClustered: boolean): VectorSource {
+  getLayerSource(
+    layer: VectorLayer<VectorSource<Geometry>>,
+    isClustered: boolean
+  ): VectorSource<Geometry> {
     if (!layer) {
       return;
     }
-    let src = [];
+    let src: VectorSource<Geometry>;
     if (isClustered) {
-      src = layer.getSource().getSource();
+      src = (layer.getSource() as Cluster).getSource();
     } else {
       src = layer.getSource();
     }
@@ -116,7 +123,9 @@ export class HsStylerService {
    * Style clustered layer features using cluster style or individual feature style.
    * @param layer - Any vector layer
    */
-  async styleClusteredLayer(layer: VectorLayer): Promise<void> {
+  async styleClusteredLayer(
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): Promise<void> {
     await this.fill(layer);
     //Check if layer already has SLD style for clusters
     if (
@@ -151,7 +160,7 @@ export class HsStylerService {
     }
     let style = layer.getStyle();
     if (
-      this.layer.getSource().getSource &&
+      this.HsUtilsService.instOf(this.layer.getSource(), Cluster) &&
       this.HsUtilsService.isFunction(style)
     ) {
       style = this.wrapStyleForClusters(style);
@@ -166,7 +175,9 @@ export class HsStylerService {
    *
    * @param layer - OL layer to fill the missing style info
    */
-  async initLayerStyle(layer: BaseLayer): Promise<void> {
+  async initLayerStyle(
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
     }
@@ -215,7 +226,7 @@ export class HsStylerService {
    *
    * @param layer - OL layer
    */
-  async fill(layer: VectorLayer): Promise<void> {
+  async fill(layer: VectorLayer<VectorSource<Geometry>>): Promise<void> {
     try {
       if (!layer) {
         return;
@@ -334,7 +345,8 @@ export class HsStylerService {
 
   async save(): Promise<void> {
     try {
-      let style = await this.geoStylerStyleToOlStyle(this.styleObject);
+      let style: Style | Style[] | StyleFunction =
+        await this.geoStylerStyleToOlStyle(this.styleObject);
       if (this.styleObject.rules.length == 0) {
         this.HsLogService.warn('Missing style rules for layer', this.layer);
         style = createDefaultStyle;
@@ -343,7 +355,7 @@ export class HsStylerService {
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
       if (
-        this.layer.getSource().getSource &&
+        this.HsUtilsService.instOf(this.layer.getSource(), Cluster) &&
         this.HsUtilsService.isFunction(style)
       ) {
         style = this.wrapStyleForClusters(style);

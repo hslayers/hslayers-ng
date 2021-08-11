@@ -36,7 +36,7 @@ export class HsQueryBaseService {
   popupClassname = '';
   selector = null;
   currentQuery = null;
-  featuresUnderMouse: Feature[] = [];
+  featuresUnderMouse: Feature<Geometry>[] = [];
   featureLayersUnderMouse = [];
   dataCleared = true;
   queryPoint = new Point([0, 0]);
@@ -191,7 +191,7 @@ export class HsQueryBaseService {
   }
 
   private getFeaturesUnderMouse(map: Map, pixel: any) {
-    return map.getFeaturesAtPixel(pixel).filter((feature: Feature) => {
+    return map.getFeaturesAtPixel(pixel).filter((feature: Feature<Geometry>) => {
       const layer = this.HsMapService.getLayerForFeature(feature);
       return layer && layer != this.queryLayer;
     });
@@ -200,7 +200,7 @@ export class HsQueryBaseService {
   /**
    * @param feature
    */
-  serializeFeatureAttributes(feature: Feature): void {
+  serializeFeatureAttributes(feature: Feature<Geometry>): void {
     feature.attributesForHover = [];
     const layer = this.HsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
@@ -235,7 +235,7 @@ export class HsQueryBaseService {
       if (feature.get(attrName)) {
         feature.attributesForHover.push({
           key: attrLabel,
-          value: feature.get(attrName),
+          value: Feature<Geometry>.get(attrName),
           displayFunction: attrFunction,
         });
       }

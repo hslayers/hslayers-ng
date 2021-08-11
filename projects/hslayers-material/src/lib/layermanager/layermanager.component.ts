@@ -11,15 +11,15 @@ import {
   HsEventBusService,
   HsLanguageService,
   HsLayerDescriptor,
+  HsLayerEditorSublayerService,
+  HsLayerManagerComponent,
   HsLayerManagerService,
+  HsLayerManagerWmstService,
+  HsLayerSynchronizerService,
+  HsLayerUtilsService,
   HsLayoutService,
   HsMapService,
   HsUtilsService,
-  HsLayerEditorSublayerService,
-  HsLayerManagerComponent,
-  HsLayerManagerWmstService,
-  HsLayerSynchronizerService,
-  HsLayerUtilsService
 } from 'hslayers-ng';
 
 class HsLayerNode {

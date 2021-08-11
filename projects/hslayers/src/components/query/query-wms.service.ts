@@ -1,7 +1,10 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
-import {ImageWMS, TileWMS, WMTS} from 'ol/source';
 import {Injectable} from '@angular/core';
+
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
+import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
+import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -43,7 +46,7 @@ export class HsQueryWmsService {
   ) {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
-      this.HsMapService.map.getLayers().forEach((layer) => {
+      this.HsMapService.map.getLayers().forEach((layer: Layer<Source>) => {
         if (getBase(layer) == true || layer.get('queryable') == false) {
           return;
         }
@@ -190,7 +193,7 @@ export class HsQueryWmsService {
     }
   }
 
-  parseGmlResponse(doc, layer: Layer, customInfoTemplate): void {
+  parseGmlResponse(doc, layer: Layer<Source>, customInfoTemplate): void {
     let updated = false;
     let features = doc.querySelectorAll('gml\\:featureMember');
     if (features.length == 0) {
@@ -303,7 +306,7 @@ export class HsQueryWmsService {
    * @param {Ol.Layer} layer Layer to Query
    * @param {Ol.coordinate} coordinate
    */
-  queryWmsLayer(layer: Layer, coordinate) {
+  queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate) {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.HsUtilsService.instOf(layer.getSource(), WMTS)) {
         this.HsQueryWmtsService.parseRequestUrl(layer, coordinate).then(
@@ -333,10 +336,17 @@ export class HsQueryWmsService {
         getFeatureInfoLang(layer) &&
         getFeatureInfoLang(layer)[this.HsLanguageService.language]
       ) {
-        url = url.replace(
-          source.getUrl(),
-          getFeatureInfoLang(layer)[this.HsLanguageService.language]
-        );
+        if (this.HsUtilsService.instOf(source, TileWMS)) {
+          url = url.replace(
+            (source as TileWMS).getUrls()[0],
+            getFeatureInfoLang(layer)[this.HsLanguageService.language]
+          );
+        } else {
+          url = url.replace(
+            (source as ImageWMS).getUrl(),
+            getFeatureInfoLang(layer)[this.HsLanguageService.language]
+          );
+        }
       }
       if (url) {
         this.HsLogService.log(url);

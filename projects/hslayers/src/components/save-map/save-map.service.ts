@@ -1,17 +1,21 @@
 import {Injectable} from '@angular/core';
 
+import VectorSource from 'ol/source/Vector';
 import {Circle, Icon, Style} from 'ol/style';
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
 import {
+  Cluster,
   ImageArcGISRest,
   ImageStatic,
   ImageWMS,
+  Source,
   TileArcGISRest,
   TileWMS,
   WMTS,
   XYZ,
 } from 'ol/source';
+import {Feature} from 'ol';
+import {GeoJSON} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 
@@ -44,7 +48,7 @@ const LCLSTORAGE_EXPIRE = 5000;
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  public internalLayers: Layer[] = [];
+  public internalLayers: Layer<Source>[] = [];
   constructor(
     public hsConfig: HsConfig,
     public HsMapService: HsMapService,
@@ -280,7 +284,7 @@ export class HsSaveMapService {
    * @param layer - Map layer that should be converted
    * @returns JSON object representing the layer
    */
-  layer2json(layer: Layer): any {
+  layer2json(layer: Layer<Source>): any {
     const json: any = {
       metadata: getMetadata(layer) || {},
     };
@@ -386,12 +390,13 @@ export class HsSaveMapService {
       }
 
       if (this.HsUtilsService.instOf(src, WMTS)) {
+        const wmts = src as WMTS;
         json.className = 'HSLayers.Layer.WMTS';
-        json.matrixSet = src.getMatrixSet();
-        json.layer = src.getLayer();
-        json.format = src.getFormat();
+        json.matrixSet = wmts.getMatrixSet();
+        json.layer = wmts.getLayer();
+        json.format = wmts.getFormat();
         json.info_format = layer.get('info_format');
-        json.url = src.getUrls()[0];
+        json.url = wmts.getUrls()[0];
       }
     }
 
@@ -399,7 +404,7 @@ export class HsSaveMapService {
     if (this.HsUtilsService.instOf(layer, VectorLayer)) {
       let src = layer.getSource();
       if (this.HsLayerUtilsService.isLayerClustered(layer)) {
-        src = src.getSource();
+        src = (src as Cluster).getSource();
       }
       json.name = getName(layer);
       json.className = 'Vector';
@@ -430,8 +435,13 @@ export class HsSaveMapService {
       json.projection = 'epsg:4326';
       if (getSld(layer) != undefined) {
         json.style = getSld(layer);
-      } else if (this.HsUtilsService.instOf(layer.getStyle(), Style)) {
-        json.style = this.serializeStyle(layer.getStyle());
+      } else if (
+        this.HsUtilsService.instOf(
+          (layer as VectorLayer<VectorSource<Geometry>>).getStyle(),
+          Style
+        )
+      ) {
+        json.style = this.serializeStyle((layer as VectorLayer).getStyle());
       }
     }
     return json;
@@ -443,7 +453,7 @@ export class HsSaveMapService {
    * @param features - Array of features
    * @returns GeoJSON
    */
-  getFeaturesJson(features: Feature[]): any {
+  getFeaturesJson(features: Feature<Geometry>[]): any {
     const f = new GeoJSON();
     const featureProjection = this.HsMapService.getCurrentProj().getCode();
     return f.writeFeaturesObject(features, {
@@ -522,7 +532,7 @@ export class HsSaveMapService {
         .getLayers()
         .getArray()
         .filter((lyr) => !this.internalLayers.includes(lyr))
-        .map((lyr) => this.layer2json(lyr)),
+        .map((lyr: Layer<Source>) => this.layer2json(lyr)),
     };
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good

@@ -1,17 +1,17 @@
-import * as GeometryType from 'ol/geom/GeometryType';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Draw} from 'ol/interaction';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
+import {Geometry, LineString, Polygon} from 'ol/geom';
 import {Injectable} from '@angular/core';
-import {LineString, Polygon} from 'ol/geom';
 import {getArea, getDistance} from 'ol/sphere';
 import {transform} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {setTitle} from '../../common/layer-extensions';
 
 type Measurement = {
   size: number;
@@ -38,10 +38,9 @@ export class HsMeasureService {
   /**
    * @property {Feature[]} sketches Array of measure sketches
    */
-  sketches: Feature[] = [];
+  sketches: Feature<Geometry>[] = [];
   lastMeasurementId: number;
   measureVector = new VectorLayer({
-    title: 'Measurement sketches',
     source: new VectorSource(),
     style: new Style({
       fill: new Fill({
@@ -59,6 +58,7 @@ export class HsMeasureService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
   ) {
+    setTitle(this.measureVector, 'Measurement sketches');
     HsMapService.loaded().then((m) => {
       this.map = m;
     });

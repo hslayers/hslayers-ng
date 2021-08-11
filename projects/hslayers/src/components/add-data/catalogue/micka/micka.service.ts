@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
+import {Geometry} from 'ol/geom';
 import {catchError, map, timeout} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
@@ -223,7 +224,7 @@ export class HsMickaBrowserService {
    * @returns {Feature | undefined}
    * @description Create extent features for displaying extent of loaded dataset records in map
    */
-  private addExtentFeature(record): Feature | undefined {
+  private addExtentFeature(record): Feature<Geometry> | undefined {
     const attributes = {
       record: record,
       hs_notqueryable: true,

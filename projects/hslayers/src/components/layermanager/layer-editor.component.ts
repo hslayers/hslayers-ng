@@ -1,4 +1,8 @@
 import {Component, Input} from '@angular/core';
+
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawService} from '../draw/draw.service';
@@ -15,7 +19,6 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
-import {Layer} from 'ol/layer';
 import {
   getAbstract,
   getAttribution,
@@ -103,7 +106,7 @@ export class HsLayerEditorComponent {
    * Test if layer is WMS layer
    * @param layer - Selected layer
    */
-  isLayerVectorLayer(layer: Layer): boolean {
+  isLayerVectorLayer(layer: Layer<Source>): boolean {
     return this.HsLayerUtilsService.isLayerVectorLayer(layer);
   }
 

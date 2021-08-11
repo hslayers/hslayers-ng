@@ -19,7 +19,7 @@ import {
   providedIn: 'root',
 })
 export class HsAddDataCatalogueMapService {
-  extentLayer: VectorLayer = new VectorLayer({
+  extentLayer: VectorLayer<VectorSource<Geometry>> = new VectorLayer({
     title: 'Datasources extents',
     showInLayerManager: false,
     source: new Vector(),
@@ -123,7 +123,7 @@ export class HsAddDataCatalogueMapService {
    * is created. It should add the feature to vector layer source
    * @param extentFeature - OpenLayers Feature
    */
-  addExtentFeature(extentFeature: Feature): void {
+  addExtentFeature(extentFeature: Feature<Geometry>): void {
     this.extentLayer.getSource().addFeatures([extentFeature]);
   }
 

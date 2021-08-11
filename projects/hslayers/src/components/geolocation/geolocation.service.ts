@@ -3,7 +3,7 @@ import Geolocation from 'ol/Geolocation';
 import Rotate from 'ol/control/Rotate';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Circle as CircleGeom, Point} from 'ol/geom';
+import {Circle as CircleGeom, Geometry, Point} from 'ol/geom';
 import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
 import {toRadians} from 'ol/math';
@@ -12,6 +12,11 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './../utils/utils.service';
+import {
+  setRemovable,
+  setShowInLayerManager,
+  setTitle,
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -31,13 +36,13 @@ export class HsGeolocationService {
    */
   following = false;
   gn = null;
-  positionFeature: Feature;
+  positionFeature: Feature<Point>;
   /**
    * @public
    * @description Turns off position centering while 'following'.
    */
   centering: boolean;
-  accuracyFeature: Feature;
+  accuracyFeature: Feature<CircleGeom>;
   geolocation: any;
   clicked: any;
   cancelClick: boolean;
@@ -52,11 +57,11 @@ export class HsGeolocationService {
     this.accuracyFeature = new Feature({
       known: false,
       geometry: new CircleGeom([0, 0], 1),
-    });
+    }) as Feature<CircleGeom>;
     this.positionFeature = new Feature({
       known: false,
       geometry: new Point([0, 0]),
-    });
+    }) as Feature<Point>;
     this.style = new Style({
       image: new Circle({
         fill: new Fill({
@@ -261,11 +266,11 @@ export class HsGeolocationService {
     this.positionFeature.setStyle(this.style);
 
     this.position_layer = new VectorLayer({
-      title: 'Position',
-      showInLayerManager: false,
-      removable: false,
       source: new Vector(),
     });
+    setTitle(this.position_layer, 'Position');
+    setShowInLayerManager(this.position_layer, false);
+    setRemovable(this.position_layer, false);
     const src = this.position_layer.getSource();
 
     src.addFeature(this.accuracyFeature);

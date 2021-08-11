@@ -1,5 +1,7 @@
-import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+
+import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {getName, getTitle} from '../../common/layer-extensions';
 
 /**
@@ -26,7 +28,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
  *
  * @param layer Layr to get the name for
  */
-export function getLayerName(layer: Layer): string {
+export function getLayerName(layer: Layer<Source>): string {
   const layerName = getName(layer) || getTitle(layer);
   if (layerName == undefined) {
     this.$log.warn('Layer title/name not set for', layer);

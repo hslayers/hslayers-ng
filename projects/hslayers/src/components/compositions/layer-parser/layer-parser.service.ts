@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
 
+import TileSource from 'ol/source/Tile';
+import VectorSource from 'ol/source/Vector';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
 import {GeoJSON} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {
   ImageArcGISRest,
   ImageStatic,
@@ -64,7 +67,7 @@ export class HsCompositionsLayerParserService {
    * @returns {object} Ol Tile layer
    * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
    */
-  async createWMTSLayer(lyr_def): Promise<Tile> {
+  async createWMTSLayer(lyr_def): Promise<Tile<TileSource>> {
     const wmts = new Tile({
       title: lyr_def.title,
       info_format: lyr_def.info_format,
@@ -324,7 +327,9 @@ export class HsCompositionsLayerParserService {
    * @param {object} lyr_def Layer definition object
    * @description  Parse definition object to create Sparql layer
    */
-  async createSparqlLayer(lyr_def): Promise<VectorLayer> {
+  async createSparqlLayer(
+    lyr_def
+  ): Promise<VectorLayer<VectorSource<Geometry>>> {
     const url = decodeURIComponent(lyr_def.protocol.url);
     const definition: any = {};
     definition.url = url;

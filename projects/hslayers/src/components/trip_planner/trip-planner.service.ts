@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import Collection from 'ol/Collection';
 import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Draw, Modify} from 'ol/interaction';
@@ -29,18 +30,18 @@ export type Waypoint = {
   lon: number;
   lat: number;
   hash: number;
-  routes: {from: Feature; to: Feature};
+  routes: {from: Feature<Geometry>; to: Feature<Geometry>};
   featureId;
   loading: boolean;
 };
 
 const WAYPOINT = 'wp';
 
-export function setWaypoint(feature: Feature, wp: Waypoint): void {
+export function setWaypoint(feature: Feature<Geometry>, wp: Waypoint): void {
   feature.set(WAYPOINT, wp);
 }
 
-export function getWaypoint(feature: Feature): Waypoint {
+export function getWaypoint(feature: Feature<Geometry>): Waypoint {
   return feature.get(WAYPOINT);
 }
 
@@ -54,15 +55,15 @@ export class HsTripPlannerService {
   modify = new Modify({
     features: this.movable_features,
   });
-  waypointSource: VectorSource;
-  waypointLayer: VectorLayer;
-  routeSource: VectorSource;
-  routeLayer: VectorLayer;
+  waypointSource: VectorSource<Geometry>;
+  waypointLayer: VectorLayer<VectorSource<Geometry>>;
+  routeSource: VectorSource<Geometry>;
+  routeLayer: VectorLayer<VectorSource<Geometry>>;
   timer: any;
-  vectorLayers: {layer: VectorLayer; title: string}[];
+  vectorLayers: {layer: VectorLayer<VectorSource<Geometry>>; title: string}[];
   selectedLayerWrapper: {
-    route?: {layer: VectorLayer; title: string};
-    waypoints?: {layer: VectorLayer; title: string};
+    route?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
+    waypoints?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
   } = {};
 
   waypointRouteStyle = (feature, resolution) => {
@@ -195,7 +196,7 @@ export class HsTripPlannerService {
    * @param usage - route or waypoints
    */
   async selectLayer(
-    layer: {layer: VectorLayer; title: string},
+    layer: {layer: VectorLayer<VectorSource<Geometry>>; title: string},
     usage: 'route' | 'waypoints'
   ): Promise<void> {
     if (usage == 'route') {
@@ -239,7 +240,7 @@ export class HsTripPlannerService {
     }
   }
 
-  getTextOnFeature(feature: Feature): string {
+  getTextOnFeature(feature: Feature<Geometry>): string {
     let tmp = '';
     const wp: Waypoint = getWaypoint(feature);
     if (wp) {
@@ -321,7 +322,7 @@ export class HsTripPlannerService {
    * Remove selected route from source
    * @param feature - Route feature to remove
    */
-  routeRemoved(feature: Feature): void {
+  routeRemoved(feature: Feature<Geometry>): void {
     try {
       if (feature) {
         this.routeSource.removeFeature(feature);
@@ -389,7 +390,7 @@ export class HsTripPlannerService {
    * Handler of adding computed route to layer
    * @param feature - Route to add
    */
-  routeAdded(feature: Feature): void {
+  routeAdded(feature: Feature<Geometry>): void {
     this.routeSource.addFeatures(feature);
   }
 

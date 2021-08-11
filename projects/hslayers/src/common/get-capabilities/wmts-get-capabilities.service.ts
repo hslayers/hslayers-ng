@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
 import {Layer, Tile} from 'ol/layer';
-import {WMTS} from 'ol/source';
+import {Source, WMTS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
@@ -121,7 +121,7 @@ export class HsWmtsGetCapabilitiesService {
    * @param capabilities_xml - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml): Layer[] {
+  service2layers(capabilities_xml): Layer<Source>[] {
     const parser = new WMTSCapabilities();
     const caps = parser.read(capabilities_xml);
     const service = caps.Capability.Layer;

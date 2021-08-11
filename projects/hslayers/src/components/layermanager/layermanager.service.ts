@@ -1,6 +1,10 @@
-import {CollectionEvent} from 'ol/Collection';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+
+import VectorSource from 'ol/source/Vector';
+import {Cluster, ImageWMS, Source, TileArcGISRest, TileWMS} from 'ol/source';
+import {CollectionEvent} from 'ol/Collection';
 import {GeoJSON} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {
   Group,
   Image as ImageLayer,
@@ -8,7 +12,6 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {ImageWMS, TileArcGISRest, TileWMS} from 'ol/source';
 import {Injectable, NgZone} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 
@@ -172,7 +175,10 @@ export class HsLayerManagerService {
    * @param e - Event object emitted by OL add layer event
    * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted. Otherwise will.
    */
-  async layerAdded(e: CollectionEvent, suspendEvents?: boolean): Promise<void> {
+  async layerAdded(
+    e: {element: Layer<Source>},
+    suspendEvents?: boolean
+  ): Promise<void> {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
@@ -263,7 +269,7 @@ export class HsLayerManagerService {
    * Only the commonly used values are listed here, it shall be probably extended in the future.
    * @returns Short description of source type: 'WMS', 'XYZ', 'vector (GeoJSON)' etc.
    */
-  getLayerSourceType(layer: Layer): string {
+  getLayerSourceType(layer: Layer<Source>): string {
     if (this.HsLayerUtilsService.isLayerKMLSource(layer)) {
       return `vector (KML)`;
     }
@@ -295,7 +301,7 @@ export class HsLayerManagerService {
    * Gets the URL provided in the layer's source, if it is not a data blob or undefined
    * @returns URL provided in the layer's source or 'memory'
    */
-  getLayerSourceUrl(layer: Layer): string {
+  getLayerSourceUrl(layer: Layer<Source>): string {
     const url = this.HsLayerUtilsService.getURL(layer)?.split('?')[0]; //better stripe out any URL params
     if (!url || url.startsWith('data:')) {
       return 'memory';
@@ -307,7 +313,7 @@ export class HsLayerManagerService {
    * Function for adding baselayer thumbnail visible in basemap gallery.
    * @param layer - Base layer added to map
    */
-  getImage(layer: Layer): string {
+  getImage(layer: Layer<Source>): string {
     const thumbnail = getThumbnail(layer);
     if (thumbnail) {
       if (thumbnail.length > 10) {
@@ -323,7 +329,7 @@ export class HsLayerManagerService {
   /**
    * @param layer
    */
-  checkLayerHealth(layer: Layer): void {
+  checkLayerHealth(layer: Layer<Source>): void {
     if (this.isWms(layer)) {
       const src = layer.getSource();
       if (src.getParams().LAYERS == undefined) {
@@ -405,7 +411,7 @@ export class HsLayerManagerService {
    * @param layer - to get layer title
    * @returns Layer container which is used in layer-list directive
    */
-  getLayerDescriptorForOlLayer(layer: Layer): HsLayerDescriptor {
+  getLayerDescriptorForOlLayer(layer: Layer<Source>): HsLayerDescriptor {
     const tmp = this.data.layers.filter((l) => l.layer == layer);
     if (tmp.length > 0) {
       return tmp[0];
@@ -418,7 +424,7 @@ export class HsLayerManagerService {
    * @private
    * @param lyr - Layer to add into folder structure
    */
-  populateFolders(lyr: Layer): void {
+  populateFolders(lyr: Layer<Source>): void {
     let path = getPath(lyr);
     if (!path) {
       /* Check whether 'other' folder exists.
@@ -479,7 +485,7 @@ export class HsLayerManagerService {
    * @private
    * @param lyr - Layer to remove from layer folder
    */
-  cleanFolders(lyr: Layer): void {
+  cleanFolders(lyr: Layer<Source>): void {
     if (getShowInLayerManager(lyr) == false) {
       return;
     }
@@ -702,7 +708,7 @@ export class HsLayerManagerService {
    */
   removeAllLayers(): void {
     const to_be_removed = [];
-    this.HsMapService.map.getLayers().forEach((lyr) => {
+    this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
       if (getRemovable(lyr) == true) {
         if (getBase(lyr) == undefined || getBase(lyr) == false) {
           if (
@@ -806,7 +812,7 @@ export class HsLayerManagerService {
   }
 
   private changeLoadCounter(
-    layer: Layer,
+    layer: Layer<Source>,
     progress: HsLayerLoadProgress,
     change: number
   ): void {
@@ -851,7 +857,7 @@ export class HsLayerManagerService {
   /**
    * Checks if given layer is a WMS layer
    */
-  isWms(layer: Layer): boolean {
+  isWms(layer: Layer<Source>): boolean {
     return (
       this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
       this.HsUtilsService.instOf(layer.getSource(), ImageWMS) ||
@@ -863,7 +869,7 @@ export class HsLayerManagerService {
    * Test if layer (WMS) resolution is within map resolution interval
    * @param lyr - Selected layer
    */
-  isLayerInResolutionInterval(lyr: Layer): boolean {
+  isLayerInResolutionInterval(lyr: Layer<Source>): boolean {
     let cur_res;
     if (this.isWms(lyr)) {
       const view = this.HsMapService.map.getView();
@@ -951,7 +957,7 @@ export class HsLayerManagerService {
    * Makes layer grayscale
    * @param layer - Selected layer (currentLayer)
    */
-  setGreyscale(layer: Layer): void {
+  setGreyscale(layer: HsLayerDescriptor): void {
     const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
       '.ol-layers > div:first-child'
     );
@@ -982,7 +988,7 @@ export class HsLayerManagerService {
    */
   async init(): Promise<void> {
     this.map = this.HsMapService.map;
-    this.HsMapService.map.getLayers().forEach((lyr) => {
+    this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
       this.applyZIndex(lyr);
       this.layerAdded(
         {
@@ -1055,7 +1061,7 @@ export class HsLayerManagerService {
    * Sets zIndex of layer being added to be the highest among layers in same path
    * @param layer - layer being added
    */
-  private setPathMaxZIndex(layer: Layer): void {
+  private setPathMaxZIndex(layer: Layer<Source>): void {
     let pathLayers;
     if (getBase(layer)) {
       pathLayers = this.data.baselayers;
@@ -1091,7 +1097,7 @@ export class HsLayerManagerService {
    * @param asCallback - Whether the function is called directly or as a callback of add layer event.
    * No need to run each layer through setPathMaxZIndex on init
    */
-  applyZIndex(layer: Layer, asCallback?: boolean): void {
+  applyZIndex(layer: Layer<Source>, asCallback?: boolean): void {
     if (asCallback && getShowInLayerManager(layer) !== false) {
       this.setPathMaxZIndex(layer);
     }
@@ -1100,14 +1106,6 @@ export class HsLayerManagerService {
       layer.setZIndex(this.zIndexValue++);
     } else {
       this.zIndexValue++;
-    }
-  }
-
-  expandLayer(layer: Layer): void {
-    if (layer.expanded == undefined) {
-      layer.expanded = true;
-    } else {
-      layer.expanded = !layer.expanded;
     }
   }
 
@@ -1121,13 +1119,6 @@ export class HsLayerManagerService {
     } else {
       return '';
     }
-  }
-
-  expandSettings(layer: Layer, value): void {
-    if (layer.opacity == undefined) {
-      layer.opacity = layer.layer.getOpacity();
-    }
-    layer.expandSettings = value;
   }
 
   expandFilter(layer: HsLayerDescriptor, value): void {
@@ -1146,8 +1137,12 @@ export class HsLayerManagerService {
   */
   saveGeoJson(): void {
     const geojsonParser = new GeoJSON();
+    const olLayer = this.currentLayer.layer;
     const geojson = geojsonParser.writeFeatures(
-      this.currentLayer.layer.getSource().getFeatures(),
+      (this.HsLayerUtilsService.isLayerClustered(olLayer)
+        ? (olLayer.getSource() as Cluster).getSource()
+        : (olLayer.getSource() as VectorSource<Geometry>)
+      ).getFeatures(),
       {
         dataProjection: 'EPSG:4326',
         featureProjection: this.HsMapService.getCurrentProj(),

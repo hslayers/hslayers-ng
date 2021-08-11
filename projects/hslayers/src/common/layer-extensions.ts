@@ -2,7 +2,9 @@ import Feature from 'ol/Feature';
 import {Group, Layer} from 'ol/layer';
 import {Style} from 'ol/style';
 
+import {Geometry} from 'ol/geom';
 import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
+import {Source} from 'ol/source';
 import {accessRightsInterface} from '../components/add-data/common/access-rights.interface';
 
 const TITLE = 'title';
@@ -84,38 +86,38 @@ export type popUp = {
   attributes?: Array<popUpAttribute | string>;
 };
 
-export function getAccessRights(layer: Layer): accessRightsInterface {
+export function getAccessRights(layer: Layer<Source>): accessRightsInterface {
   return layer.get(ACCESS_RIGHTS);
 }
 
 export function setAccessRights(
-  layer: Layer,
+  layer: Layer<Source>,
   access_rights: accessRightsInterface
 ): void {
   layer.set(ACCESS_RIGHTS, access_rights);
 }
 
-export function setTitle(layer: Layer, title: string): void {
+export function setTitle(layer: Layer<Source>, title: string): void {
   layer.set(TITLE, title);
 }
 
-export function getTitle(layer: Layer): string {
+export function getTitle(layer: Layer<Source>): string {
   return layer.get(TITLE);
 }
 
-export function setName(layer: Layer, name: string): void {
+export function setName(layer: Layer<Source>, name: string): void {
   layer.set(NAME, name);
 }
 
-export function getName(layer: Layer): string {
+export function getName(layer: Layer<Source>): string {
   return layer.get(NAME);
 }
 
-export function setAbstract(layer: Layer, abstract: string): void {
+export function setAbstract(layer: Layer<Source>, abstract: string): void {
   layer.set(ABSTRACT, abstract);
 }
 
-export function getAbstract(layer: Layer): string {
+export function getAbstract(layer: Layer<Source>): string {
   return layer.get(ABSTRACT);
 }
 
@@ -127,62 +129,71 @@ export function getActive(group: Group): boolean {
   return group.get(ACTIVE);
 }
 
-export function setAttribution(layer: Layer, attribution: Attribution): void {
+export function setAttribution(
+  layer: Layer<Source>,
+  attribution: Attribution
+): void {
   layer.set(ATTRIBUTION, attribution);
 }
 
-export function getAttribution(layer: Layer): Attribution {
+export function getAttribution(layer: Layer<Source>): Attribution {
   return layer.get(ATTRIBUTION);
 }
 
-export function setAutoLegend(layer: Layer): void {
-  layer.set(AUTO_LEGEND);
+export function setAutoLegend(layer: Layer<Source>, value: boolean): void {
+  layer.set(AUTO_LEGEND, value);
 }
 
-export function getAutoLegend(layer: Layer): boolean {
+export function getAutoLegend(layer: Layer<Source>): boolean {
   return layer.get(AUTO_LEGEND);
 }
 
-export function getCachedCapabilities(layer: Layer): any {
+export function getCachedCapabilities(layer: Layer<Source>): any {
   return layer.get(CAPABILITIES);
 }
 
-export function setCacheCapabilities(layer: Layer, capabilities: any): void {
+export function setCacheCapabilities(
+  layer: Layer<Source>,
+  capabilities: any
+): void {
   layer.set(CAPABILITIES, capabilities);
 }
 
-export function setBase(layer: Layer, base: boolean): void {
+export function setBase(layer: Layer<Source>, base: boolean): void {
   layer.set(BASE, base);
 }
 
-export function getBase(layer: Layer): boolean {
+export function getBase(layer: Layer<Source>): boolean {
   return layer.get(BASE);
 }
 
-export function setCluster(layer: Layer, clusterActive: boolean): void {
+export function setCluster(layer: Layer<Source>, clusterActive: boolean): void {
   layer.set(CLUSTER, clusterActive);
 }
 
-export function getCluster(layer: Layer): boolean {
+export function getCluster(layer: Layer<Source>): boolean {
   return layer.get(CLUSTER);
 }
 
 export function setCustomInfoTemplate(
-  layer: Layer,
+  layer: Layer<Source>,
   customInfoTemplate: string
 ): void {
   layer.set(CUSTOM_INFO_TEMPLATE, customInfoTemplate);
 }
 
-export function getCustomInfoTemplate(layer: Layer): string {
+export function getCustomInfoTemplate(layer: Layer<Source>): string {
   return layer.get(CUSTOM_INFO_TEMPLATE);
 }
 
-export function setDefinition(layer: Layer, definition: Definition): void {
+export function setDefinition(
+  layer: Layer<Source>,
+  definition: Definition
+): void {
   layer.set(DEFINITION, definition);
 }
 
-export function getDefinition(layer: Layer): Definition {
+export function getDefinition(layer: Layer<Source>): Definition {
   return layer.get(DEFINITION);
 }
 
@@ -217,11 +228,14 @@ export interface DimensionsList {
       \}
     \}
  */
-export function setDimensions(layer: Layer, dimensions: DimensionsList): void {
+export function setDimensions(
+  layer: Layer<Source>,
+  dimensions: DimensionsList
+): void {
   layer.set(DIMENSIONS, dimensions);
 }
 
-export function getDimensions(layer: Layer): DimensionsList {
+export function getDimensions(layer: Layer<Source>): DimensionsList {
   return layer.get(DIMENSIONS);
 }
 
@@ -234,7 +248,7 @@ export function getDimensions(layer: Layer): DimensionsList {
  * @param type - dimension type, e.g. 'time', 'height', etc.
  */
 export function setDimension(
-  layer: Layer,
+  layer: Layer<Source>,
   dimension: Dimension,
   type: string
 ): void {
@@ -252,128 +266,140 @@ export function setDimension(
  * @param type - dimension type, e.g. 'time', 'height', etc.
  * @returns Single dimension object definition
  */
-export function getDimension(layer: Layer, type: string): Dimension {
+export function getDimension(layer: Layer<Source>, type: string): Dimension {
   return layer.get(DIMENSIONS) ? layer.get(DIMENSIONS)[type] : undefined;
 }
 
-export function setEditor(layer: Layer, editor: Editor): void {
+export function setEditor(layer: Layer<Source>, editor: Editor): void {
   layer.set(EDITOR, editor);
 }
 
-export function getEditor(layer: Layer): Editor {
+export function getEditor(layer: Layer<Source>): Editor {
   return layer.get(EDITOR);
 }
 
-export function setEnableProxy(layer: Layer, enableProxy: boolean): void {
+export function setEnableProxy(
+  layer: Layer<Source>,
+  enableProxy: boolean
+): void {
   layer.set(ENABLEPROXY, enableProxy);
 }
 
-export function getEnableProxy(layer: Layer): boolean {
+export function getEnableProxy(layer: Layer<Source>): boolean {
   return layer.get(ENABLEPROXY);
 }
 
 export function setEventsSuspended(
-  layer: Layer,
+  layer: Layer<Source>,
   eventsSuspended: number
 ): void {
   layer.set(EVENTS_SUSPENDED, eventsSuspended);
 }
 
-export function getEventsSuspended(layer: Layer): number {
+export function getEventsSuspended(layer: Layer<Source>): number {
   return layer.get(EVENTS_SUSPENDED);
 }
 
-export function setExclusive(layer: Layer, exclusive: boolean): void {
+export function setExclusive(layer: Layer<Source>, exclusive: boolean): void {
   layer.set(EXCLUSIVE, exclusive);
 }
 
-export function getExclusive(layer: Layer): boolean {
+export function getExclusive(layer: Layer<Source>): boolean {
   return layer.get(EXCLUSIVE);
 }
 
-export function setFeatureInfoLang(layer: Layer, featureInfoLang: any): void {
+export function setFeatureInfoLang(
+  layer: Layer<Source>,
+  featureInfoLang: any
+): void {
   layer.set(FEATURE_INFO_LANG, featureInfoLang);
 }
 
-export function getFeatureInfoLang(layer: Layer): any {
+export function getFeatureInfoLang(layer: Layer<Source>): any {
   return layer.get(FEATURE_INFO_LANG);
 }
 
 export function setFromComposition(
-  layer: Layer,
+  layer: Layer<Source>,
   fromComposition: boolean
 ): void {
   layer.set(FROM_COMPOSITION, fromComposition);
 }
 
-export function getFromComposition(layer: Layer): boolean {
+export function getFromComposition(layer: Layer<Source>): boolean {
   return layer.get(FROM_COMPOSITION);
 }
 
 export function setFeatureInfoTarget(
-  layer: Layer,
+  layer: Layer<Source>,
   featureInfoTarget: string
 ): void {
   layer.set(GET_FEATURE_INFO_TARGET, featureInfoTarget);
 }
 
-export function getFeatureInfoTarget(layer: Layer): string {
+export function getFeatureInfoTarget(layer: Layer<Source>): string {
   return layer.get(GET_FEATURE_INFO_TARGET);
 }
 
-export function getSld(layer: Layer): string {
+export function getSld(layer: Layer<Source>): string {
   return layer.get(HS_SLD);
 }
 
-export function setSld(layer: Layer, sld: string): void {
+export function setSld(layer: Layer<Source>, sld: string): void {
   layer.set(HS_SLD, sld);
 }
 
 export function setHsLaymanSynchronizing(
-  layer: Layer,
+  layer: Layer<Source>,
   hsLaymanSynchronizing: boolean
 ): void {
   layer.set(HS_LAYMAN_SYNCHRONIZING, hsLaymanSynchronizing);
 }
 
-export function getHsLaymanSynchronizing(layer: Layer): boolean {
+export function getHsLaymanSynchronizing(layer: Layer<Source>): boolean {
   return layer.get(HS_LAYMAN_SYNCHRONIZING);
 }
 
-export function setInfoFormat(layer: Layer, infoFormat: string): void {
+export function setInfoFormat(layer: Layer<Source>, infoFormat: string): void {
   layer.set(INFO_FORMAT, infoFormat);
 }
 
-export function getInfoFormat(layer: Layer): string {
+export function getInfoFormat(layer: Layer<Source>): string {
   return layer.get(INFO_FORMAT);
 }
 
-export function setInlineLegend(layer: Layer, inlineLegend: boolean): void {
+export function setInlineLegend(
+  layer: Layer<Source>,
+  inlineLegend: boolean
+): void {
   layer.set(INLINE_LEGEND, inlineLegend);
 }
 
-export function getInlineLegend(layer: Layer): boolean {
+export function getInlineLegend(layer: Layer<Source>): boolean {
   return layer.get(INLINE_LEGEND);
 }
 
 export function setLaymanLayerDescriptor(
-  layer: Layer,
+  layer: Layer<Source>,
   hsLaymanLayerDescriptor: HsLaymanLayerDescriptor
 ): void {
   layer.set(LAYMAN_LAYER_DESCRIPTOR, hsLaymanLayerDescriptor);
 }
 
 export function getLaymanLayerDescriptor(
-  layer: Layer
+  layer: Layer<Source>
 ): HsLaymanLayerDescriptor {
   return layer.get(LAYMAN_LAYER_DESCRIPTOR);
 }
 
-export function setLegends(layer: Layer, path: string | string[]): void {
+export function setLegends(
+  layer: Layer<Source>,
+  path: string | string[]
+): void {
   layer.set(LEGENDS, path);
 }
 
-export function getLegends(layer: Layer): string | string[] {
+export function getLegends(layer: Layer<Source>): string | string[] {
   if (
     layer.get(LEGENDS) == undefined &&
     layer.get('legendImage') !== undefined
@@ -387,13 +413,13 @@ export function getLegends(layer: Layer): string | string[] {
 }
 
 export function setMaxResolutionDenominator(
-  layer: Layer,
+  layer: Layer<Source>,
   maxResolutionDenominator: number
 ): void {
   layer.set(MAX_RESOLUTION_DENOMINATOR, maxResolutionDenominator);
 }
 
-export function getMaxResolutionDenominator(layer: Layer): number {
+export function getMaxResolutionDenominator(layer: Layer<Source>): number {
   return layer.get(MAX_RESOLUTION_DENOMINATOR);
 }
 
@@ -414,107 +440,107 @@ export type Metadata = {
  * @param layer
  * @param metadata
  */
-export function setMetadata(layer: Layer, metadata: Metadata): void {
+export function setMetadata(layer: Layer<Source>, metadata: Metadata): void {
   layer.set(METADATA, metadata);
 }
 
-export function getMetadata(layer: Layer): Metadata {
+export function getMetadata(layer: Layer<Source>): Metadata {
   return layer.get(METADATA);
 }
 
 export function setMinimumTerrainLevel(
-  layer: Layer,
+  layer: Layer<Source>,
   minimumTerrainLevel: number
 ): void {
   layer.set(MINIMUM_TERRAIN_LEVEL, minimumTerrainLevel);
 }
 
-export function getMinimumTerrainLevel(layer: Layer): number {
+export function getMinimumTerrainLevel(layer: Layer<Source>): number {
   return layer.get(MINIMUM_TERRAIN_LEVEL);
 }
 
 interface FeatureSelector {
-  (feature: Feature): void;
+  (feature: Feature<Geometry>): void;
 }
 
 export function setOnFeatureSelected(
-  layer: Layer,
+  layer: Layer<Source>,
   onFeatureSelected: FeatureSelector
 ): void {
   layer.set(ON_FEATURE_SELECTED, onFeatureSelected);
 }
 
-export function getOnFeatureSelected(layer: Layer): FeatureSelector {
+export function getOnFeatureSelected(layer: Layer<Source>): FeatureSelector {
   return layer.get(ON_FEATURE_SELECTED);
 }
 
-export function setPath(layer: Layer, path: string): void {
+export function setPath(layer: Layer<Source>, path: string): void {
   layer.set(PATH, path);
 }
 
-export function getPath(layer: Layer): string {
+export function getPath(layer: Layer<Source>): string {
   return layer.get(PATH);
 }
 
-export function setPopUp(layer: Layer, popUp: popUp): void {
+export function setPopUp(layer: Layer<Source>, popUp: popUp): void {
   layer.set(POPUP, popUp);
 }
 
-export function getPopUp(layer: Layer): popUp {
+export function getPopUp(layer: Layer<Source>): popUp {
   return layer.get(POPUP);
 }
 
-export function setPopupClass(layer: Layer, popupClass: string): void {
+export function setPopupClass(layer: Layer<Source>, popupClass: string): void {
   layer.set(POPUP_CLASS, popupClass);
 }
 
-export function getPopupClass(layer: Layer): string {
+export function getPopupClass(layer: Layer<Source>): string {
   return layer.get(POPUP_CLASS);
 }
 
-export function setQueryable(layer: Layer, queryable: boolean): void {
+export function setQueryable(layer: Layer<Source>, queryable: boolean): void {
   layer.set(QUERYABLE, queryable);
 }
 
-export function getQueryable(layer: Layer): boolean {
+export function getQueryable(layer: Layer<Source>): boolean {
   return layer.get(QUERYABLE);
 }
 
 export function setQueryCapabilities(
-  layer: Layer,
+  layer: Layer<Source>,
   queryCapabilities: boolean
 ): void {
   layer.set(QUERY_CAPABILITIES, queryCapabilities);
 }
 
-export function getQueryCapabilities(layer: Layer): boolean {
+export function getQueryCapabilities(layer: Layer<Source>): boolean {
   return layer.get(QUERY_CAPABILITIES);
 }
 
-export function setQueryFilter(layer: Layer, queryFilter: any): void {
+export function setQueryFilter(layer: Layer<Source>, queryFilter: any): void {
   layer.set(QUERY_FILTER, queryFilter);
 }
 
-export function getQueryFilter(layer: Layer): any {
+export function getQueryFilter(layer: Layer<Source>): any {
   return layer.get(QUERY_FILTER);
 }
 
-export function setRemovable(layer: Layer, removable: boolean): void {
+export function setRemovable(layer: Layer<Source>, removable: boolean): void {
   layer.set(REMOVABLE, removable);
 }
 
-export function getRemovable(layer: Layer): boolean {
+export function getRemovable(layer: Layer<Source>): boolean {
   return layer.get(REMOVABLE);
 }
 
 export function setShowInLayerManager(
-  layer: Layer,
+  layer: Layer<Source>,
   showInLayerManager: boolean
 ): void {
   layer.set(SHOW_IN_LAYER_MANAGER, showInLayerManager);
 }
 
-export function getShowInLayerManager(layer: Layer): boolean {
+export function getShowInLayerManager(layer: Layer<Source>): boolean {
   return layer.get(SHOW_IN_LAYER_MANAGER);
 }
 
@@ -523,7 +549,7 @@ export function getShowInLayerManager(layer: Layer): boolean {
  * @param layer
  * @param sublayers String of all possible WMS layers sub-layer names separated by comma
  */
-export function setSubLayers(layer: Layer, sublayers: string): void {
+export function setSubLayers(layer: Layer<Source>, sublayers: string): void {
   layer.set(SUB_LAYERS, sublayers);
 }
 
@@ -531,42 +557,42 @@ export function setSubLayers(layer: Layer, sublayers: string): void {
  * Get list of all possible sub-layers for WMS
  * @param layer
  */
-export function getSubLayers(layer: Layer): string {
+export function getSubLayers(layer: Layer<Source>): string {
   return layer.get(SUB_LAYERS);
 }
 
-export function setThumbnail(layer: Layer, thumbnail: string): void {
+export function setThumbnail(layer: Layer<Source>, thumbnail: string): void {
   layer.set(THUMBNAIL, thumbnail);
 }
 
-export function getThumbnail(layer: Layer): string {
+export function getThumbnail(layer: Layer<Source>): string {
   return layer.get(THUMBNAIL);
 }
 
 export function setVirtualAttributes(
-  layer: Layer,
+  layer: Layer<Source>,
   virtualAttributes: any
 ): void {
   layer.set(VIRTUAL_ATTRIBUTES, virtualAttributes);
 }
 
-export function getVirtualAttributes(layer: Layer): any {
+export function getVirtualAttributes(layer: Layer<Source>): any {
   return layer.get(VIRTUAL_ATTRIBUTES);
 }
 
-export function getWorkspace(layer: Layer): string {
+export function getWorkspace(layer: Layer<Source>): string {
   return layer.get(WORKSPACE);
 }
 
-export function setWorkspace(layer: Layer, workspace: string): void {
+export function setWorkspace(layer: Layer<Source>, workspace: string): void {
   layer.set(WORKSPACE, workspace);
 }
 
-export function getWfsUrl(layer: Layer): string {
+export function getWfsUrl(layer: Layer<Source>): string {
   return layer.get(WFS_URL);
 }
 
-export function setWfsUrl(layer: Layer, url: string): void {
+export function setWfsUrl(layer: Layer<Source>, url: string): void {
   layer.set(WFS_URL, url);
 }
 

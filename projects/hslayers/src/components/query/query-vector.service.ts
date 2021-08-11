@@ -5,6 +5,7 @@ import {Subject} from 'rxjs';
 import * as extent from 'ol/extent';
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Vector as VectorSource} from 'ol/source';
 import {click} from 'ol/events/condition';
@@ -36,7 +37,7 @@ type AttributeValuePair = {
 })
 export class HsQueryVectorService {
   selector: Select;
-  featureRemovals: Subject<Feature> = new Subject();
+  featureRemovals: Subject<Feature<Geometry>> = new Subject();
 
   constructor(
     public HsQueryBaseService: HsQueryBaseService,

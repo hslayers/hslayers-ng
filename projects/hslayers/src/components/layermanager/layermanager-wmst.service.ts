@@ -148,7 +148,7 @@ export class HsLayerManagerWmstService {
   }
 
   //TODO: just copy-pasted from "layerIsWmsT()", needs clean-up FIXME: delete
-  parseDimensionParam(layer: Layer): void {
+  parseDimensionParam(layer: Layer<Source>): void {
     const dimensions = getDimensions(layer);
     if (dimensions && dimensions['time']) {
       const timedata: any = {};

@@ -2,12 +2,22 @@ import CircleStyle from 'ol/style/Circle';
 import Feature from 'ol/Feature';
 import StyleFunction from 'ol/style/Style';
 import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {
+  Cluster,
+  ImageWMS,
+  Source,
+  ImageStatic as Static,
+  TileWMS,
+  XYZ,
+} from 'ol/source';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
-import {ImageWMS, Source, ImageStatic as Static, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 
+import VectorSource from 'ol/source/Vector';
+import {Geometry} from 'ol/geom';
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -25,6 +35,7 @@ import {
 export class HsLegendService {
   constructor(
     public HsUtilsService: HsUtilsService,
+    private HsLayerUtilsService: HsLayerUtilsService,
     public HsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer
   ) {
@@ -56,17 +67,19 @@ export class HsLegendService {
    * @param currentLayer - Layer of interest
    * @returns Array of simplified lowercase names of geometry types encountered in layer
    */
-  getVectorFeatureGeometry(currentLayer: Layer): Array<string> {
+  getVectorFeatureGeometry(
+    currentLayer: VectorLayer<VectorSource<Geometry> | Cluster>
+  ): Array<string> {
     if (currentLayer === undefined) {
       return;
     }
     const found = this.findFeatureGeomTypes(
       currentLayer.getSource().getFeatures()
     );
-    if (currentLayer.getSource().getSource) {
+    if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
       //Clustered layer?
       const subFeatureTypes = this.findFeatureGeomTypes(
-        currentLayer.getSource().getSource().getFeatures()
+        (currentLayer.getSource() as Cluster).getSource().getFeatures()
       );
       for (const type of Object.keys(subFeatureTypes)) {
         found[type] = subFeatureTypes[type] || found[type];
@@ -77,7 +90,7 @@ export class HsLegendService {
     return tmp;
   }
 
-  findFeatureGeomTypes(features: Array<Feature>): {
+  findFeatureGeomTypes(features: Array<Feature<Geometry>>): {
     line: boolean;
     polygon: boolean;
     point: boolean;
@@ -112,7 +125,9 @@ export class HsLegendService {
    * @param currentLayer - Layer of interest
    * @returns Array of serialized unique style descriptions encountered when looping through first 100 features
    */
-  getStyleVectorLayer(currentLayer: VectorLayer): Array<any> {
+  getStyleVectorLayer(
+    currentLayer: VectorLayer<VectorSource<Geometry>>
+  ): Array<any> {
     if (currentLayer === undefined) {
       return;
     }
@@ -128,11 +143,11 @@ export class HsLegendService {
             layerStyle
           )
         );
-        if (currentLayer.getSource().getSource) {
+        if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
           //Clustered layer?
           styleArray = styleArray.concat(
             this.stylesForFeatures(
-              currentLayer.getSource().getSource().getFeatures(),
+              (currentLayer.getSource() as Cluster).getSource().getFeatures(),
               layerStyle
             )
           );
@@ -153,7 +168,7 @@ export class HsLegendService {
   }
 
   stylesForFeatures(
-    features: Array<Feature>,
+    features: Array<Feature<Geometry>>,
     layerStyle: StyleFunction
   ): Array<Style> {
     let featureStyles = features.map((feature) => layerStyle(feature));
@@ -272,22 +287,27 @@ export class HsLegendService {
    * @param layer - Layer to get legend for
    * @returns Url of the legend graphics
    */
-  getLegendUrl(source: Source, layer_name: string, layer: Layer): string {
+  getLegendUrl(
+    source: Source,
+    layer_name: string,
+    layer: Layer<Source>
+  ): string {
     let source_url = '';
-    if (this.HsUtilsService.instOf(source, TileWMS)) {
-      source_url = source.getUrls()[0];
-    } else if (this.HsUtilsService.instOf(source, ImageWMS)) {
-      source_url = source.getUrl();
+    const isTileWms = this.HsUtilsService.instOf(layer.getSource(), TileWMS);
+    const isImageWms = this.HsUtilsService.instOf(layer.getSource(), ImageWMS);
+    let version = '1.3.0';
+    if (isTileWms) {
+      source_url = (source as TileWMS).getUrls()[0];
+      version = (source as TileWMS).getParams().VERSION;
+    } else if (isImageWms) {
+      source_url = (source as ImageWMS).getUrl();
+      version = (source as ImageWMS).getParams().VERSION;
     } else {
       return '';
     }
     if (source_url.indexOf('proxy4ows') > -1) {
       const params = this.HsUtilsService.getParamsFromUrl(source_url);
       source_url = params.OWSURL;
-    }
-    let version = '1.3.0';
-    if (source.getParams().VERSION) {
-      version = source.getParams().VERSION;
     }
     const legendImage = getLegends(layer);
     if (legendImage !== undefined) {
@@ -317,15 +337,22 @@ export class HsLegendService {
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    * @private
    */
-  getLayerLegendDescriptor(layer: Layer): HsLegendDescriptor | undefined {
+  getLayerLegendDescriptor(
+    layer: Layer<Source>
+  ): HsLegendDescriptor | undefined {
     if (getBase(layer)) {
       return;
     }
-    if (
-      this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
-      this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
-    ) {
-      const subLayerLegends = layer.getSource().getParams().LAYERS.split(',');
+    const isTileWms = this.HsUtilsService.instOf(layer.getSource(), TileWMS);
+    const isImageWms = this.HsUtilsService.instOf(layer.getSource(), ImageWMS);
+    if (isTileWms || isImageWms) {
+      const subLayerLegends = (
+        isTileWms
+          ? (layer.getSource() as TileWMS)
+          : (layer.getSource() as ImageWMS)
+      )
+        .getParams()
+        .LAYERS.split(',');
       for (let i = 0; i < subLayerLegends.length; i++) {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),

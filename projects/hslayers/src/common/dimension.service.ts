@@ -166,7 +166,7 @@ export class HsDimensionService {
           src.refresh();
         }
         this.hsEventBusService.layermanagerDimensionChanges.next({
-          layer: layer,
+          layer,
           dimension: dimension.originalDimension,
         });
       }

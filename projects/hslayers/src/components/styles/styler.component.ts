@@ -4,6 +4,10 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import {Geometry} from 'ol/geom';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
@@ -34,9 +38,11 @@ export class HsStylerComponent implements OnDestroy {
   ) {
     this.HsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: VectorLayer) => {
-        if (layer !== null) {
-          this.HsStylerService.fill(layer);
+      .subscribe((layer: Layer<Source>) => {
+        if (layer !== null && this.HsUtilsService.instOf(layer, VectorLayer)) {
+          this.HsStylerService.fill(
+            layer as VectorLayer<VectorSource<Geometry>>
+          );
         }
       });
     this.HsEventBusService.mainPanelChanges

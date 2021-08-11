@@ -1,4 +1,5 @@
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 export type HsLayerTimeDescriptor = {
   default: string;
@@ -16,8 +17,9 @@ export type HsLayerLoadProgress = {
 };
 
 export interface HsLayerDescriptor {
+  galleryMiniMenu?: boolean;
   loadProgress?: HsLayerLoadProgress;
-  layer: Layer;
+  layer: Layer<Source>;
   abstract?: string;
   legends?: string | string[];
   active?: boolean;

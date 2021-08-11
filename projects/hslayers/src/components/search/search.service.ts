@@ -4,7 +4,8 @@ import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
-import {Point} from 'ol/geom';
+import VectorSource from 'ol/source/Vector';
+import {Geometry, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
@@ -23,7 +24,7 @@ export class HsSearchService {
   };
   formatWKT = new WKT();
   canceler: Subject<any> = new Subject();
-  searchResultsLayer: VectorLayer;
+  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
   constructor(
     private http: HttpClient,
     public HsUtilsService: HsUtilsService,

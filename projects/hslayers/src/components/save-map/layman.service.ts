@@ -1,7 +1,11 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {GeoJSON, WFS} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
@@ -24,11 +28,10 @@ import {
 import {
   getLayerName,
   getLaymanFriendlyLayerName,
+  wfsFailed,
   wfsNotAvailable,
   wfsPendingOrStarting,
-  wfsFailed
 } from './layman-utils';
-import { Subject } from 'rxjs';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -40,7 +43,7 @@ export type WfsSyncParams = {
   /** Array of features to delete */
   del;
   /** OpenLayers layer which has to have a title attribute */
-  layer: Layer;
+  layer: VectorLayer<VectorSource<Geometry>>;
 };
 
 @Injectable({
@@ -207,7 +210,10 @@ export class HsLaymanService implements HsSaverService {
    * @param layer Layer to get Layman friendly name for
    * get features
    */
-  public async upsertLayer(ep: HsEndpoint, layer: Layer): Promise<void> {
+  public async upsertLayer(
+    ep: HsEndpoint,
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): Promise<void> {
     if (layer.getSource().loading) {
       return;
     }
@@ -335,7 +341,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   private cacheLaymanDescriptor(
-    layer: Layer,
+    layer: VectorLayer<VectorSource<Geometry>>,
     desc: HsLaymanLayerDescriptor,
     endpoint: HsEndpoint
   ): void {
@@ -353,7 +359,10 @@ export class HsLaymanService implements HsSaverService {
    * with features for a specified layer
    * Retrieve layers features from server
    */
-  async makeGetLayerRequest(ep: HsEndpoint, layer: Layer): Promise<string> {
+  async makeGetLayerRequest(
+    ep: HsEndpoint,
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized anytime */
@@ -449,7 +458,7 @@ export class HsLaymanService implements HsSaverService {
     }
   }
 
-  private managePendingLayers(layerName){
+  private managePendingLayers(layerName) {
     if (this.pendingLayers.includes(layerName)) {
       this.pendingLayers = this.pendingLayers.filter(
         (layer) => layer != layerName

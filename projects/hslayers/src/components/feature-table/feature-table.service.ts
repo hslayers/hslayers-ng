@@ -1,8 +1,11 @@
 import Feature from 'ol/Feature';
 import VectorSource from 'ol/source/Vector';
 import {Injectable} from '@angular/core';
+
+import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
+import {Cluster, Source} from 'ol/source';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
@@ -15,7 +18,7 @@ import {
 
 type FeatureDescriptor = {
   name: string;
-  feature: Feature;
+  feature: Feature<Geometry>;
   attributes: {
     name;
     value;
@@ -42,7 +45,7 @@ export class HsFeatureTableService {
    * @description Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
    * @returns {any} Returns layer
    */
-  addLayer(layer: Layer): any {
+  addLayer(layer: Layer<Source>): any {
     if (
       !getBase(layer) &&
       this.HsUtilsService.instOf(layer, VectorLayer) &&
@@ -58,7 +61,7 @@ export class HsFeatureTableService {
    * @description Wrap layer object
    * @returns {any} Returns wrapped layer object
    */
-  wrapLayer(layer: Layer): any {
+  wrapLayer(layer: Layer<Source>): any {
     return {
       title: getTitle(layer),
       lyr: layer,
@@ -69,19 +72,18 @@ export class HsFeatureTableService {
    * @param layer Layer from HsConfig.layersInFeatureTable
    * @description Search all layers feature attributes and map them into new objects for html table
    */
-  fillFeatureList(layer: Layer): void {
-    const source: VectorSource = this.HsLayerUtilsService.isLayerClustered(
-      layer
-    )
-      ? layer.getSource().getSource()
-      : layer.getSource();
+  fillFeatureList(layer: Layer<Source>): void {
+    const source: VectorSource<Geometry> =
+      this.HsLayerUtilsService.isLayerClustered(layer)
+        ? (layer.getSource() as Cluster).getSource()
+        : (layer.getSource() as VectorSource<Geometry>);
     this.features = source
       .getFeatures()
       .map((f) => this.describeFeature(f))
       .filter((f) => f?.attributes?.length > 0);
   }
 
-  updateFeatureDescription(feature: Feature): void {
+  updateFeatureDescription(feature: Feature<Geometry>): void {
     const newDescriptor = this.describeFeature(feature);
     const currentIx = this.features.findIndex((f) => f.feature == feature);
     if (newDescriptor && currentIx > -1) {
@@ -89,21 +91,21 @@ export class HsFeatureTableService {
     }
   }
 
-  addFeatureDescription(feature: Feature): void {
+  addFeatureDescription(feature: Feature<Geometry>): void {
     const newDescriptor = this.describeFeature(feature);
     if (newDescriptor) {
       this.features.push(newDescriptor);
     }
   }
 
-  removeFeatureDescription(feature: Feature): void {
+  removeFeatureDescription(feature: Feature<Geometry>): void {
     const currentIx = this.features.findIndex((f) => f.feature == feature);
     if (currentIx > -1) {
       this.features.splice(currentIx, 1);
     }
   }
 
-  describeFeature(feature: Feature): FeatureDescriptor {
+  describeFeature(feature: Feature<Geometry>): FeatureDescriptor {
     const attribWrapper =
       this.HsQueryVectorService.getFeatureAttributes(feature).pop();
     if (!attribWrapper) {

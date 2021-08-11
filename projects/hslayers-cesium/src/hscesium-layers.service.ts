@@ -1,14 +1,18 @@
+import {Injectable} from '@angular/core';
+
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
 import GeoJsonDataSource from 'cesium/Source/DataSources/GeoJsonDataSource';
 import GetFeatureInfoFormat from 'cesium/Source/Scene/GetFeatureInfoFormat';
 import ImageLayer from 'ol/layer/Image';
+import ImageSource from 'ol/source/Image';
 import KmlDataSource from 'cesium/Source/DataSources/KmlDataSource';
 import Layer from 'ol/layer/Layer';
 import OpenStreetMapImageryProvider from 'cesium/Source/Scene/OpenStreetMapImageryProvider';
 import Resource from 'cesium/Source/Core/Resource';
 import TileLayer from 'ol/layer/Tile';
+import TileSource from 'ol/source/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
@@ -18,7 +22,13 @@ import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
 import dayjs from 'dayjs';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {Group} from 'ol/layer';
+import {ImageWMS, Source} from 'ol/source';
+import {OSM, TileWMS} from 'ol/source';
+import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
+import {default as proj4} from 'proj4';
+
 import {
   HsConfig,
   HsEventBusService,
@@ -28,12 +38,8 @@ import {
   getMinimumTerrainLevel,
   getTitle,
 } from 'hslayers-ng';
-import {ImageWMS, Source} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {OSM, TileWMS} from 'ol/source';
-import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
-import {default as proj4} from 'proj4';
+
 /**
  * @param proxy.proxy
  * @param proxy
@@ -182,7 +188,7 @@ export class HsCesiumLayersService {
     }
     //Some layers might be loaded from cookies before cesium service was called
     const map = await this.HsMapService.loaded();
-    map.getLayers().forEach((lyr: Layer) => {
+    map.getLayers().forEach((lyr: Layer<Source>) => {
       const cesiumLayer = this.findCesiumLayer(lyr);
       if (cesiumLayer == undefined) {
         this.processOlLayer(lyr);
@@ -190,7 +196,7 @@ export class HsCesiumLayersService {
     });
   }
 
-  serializeVectorLayerToGeoJson(ol_source: VectorSource): any {
+  serializeVectorLayerToGeoJson(ol_source: VectorSource<Geometry>): any {
     const f = new GeoJSON();
     const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
     //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
@@ -244,7 +250,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  findCesiumLayer(ol: Layer | Source): ImageryLayer | DataSource {
+  findCesiumLayer(ol: Layer<Source> | Source): ImageryLayer | DataSource {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) => m.olObject == ol
     );
@@ -253,7 +259,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  findOlLayer(cs: ImageryLayer | DataSource): Layer {
+  findOlLayer(cs: ImageryLayer | DataSource): Layer<Source> {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
         m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Layer)
@@ -273,7 +279,10 @@ export class HsCesiumLayersService {
     }
   }
 
-  linkOlLayerToCesiumLayer(ol_layer: Layer, cesium_layer: ImageryLayer): void {
+  linkOlLayerToCesiumLayer(
+    ol_layer: Layer<Source>,
+    cesium_layer: ImageryLayer
+  ): void {
     this.ol2CsMappings.push({olObject: ol_layer, csObject: cesium_layer});
     ol_layer.on('change:visible', (e) => {
       const cesiumLayer = this.findCesiumLayer(e.target);
@@ -288,7 +297,7 @@ export class HsCesiumLayersService {
   }
 
   linkOlSourceToCesiumDatasource(
-    ol_source: VectorSource,
+    ol_source: VectorSource<Geometry>,
     cesium_layer: ImageryLayer | DataSource
   ): void {
     this.ol2CsMappings.push({olObject: ol_source, csObject: cesium_layer});
@@ -301,7 +310,7 @@ export class HsCesiumLayersService {
     });
   }
 
-  syncFeatures(ol_source: VectorSource): void {
+  syncFeatures(ol_source: VectorSource<Geometry>): void {
     const tmp_source = new GeoJsonDataSource('tmp');
     GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
       const firstProjection =
@@ -360,21 +369,32 @@ export class HsCesiumLayersService {
       );
       if (this.HsUtilsService.instOf(lyr, ImageLayer)) {
         if (
-          this.HsUtilsService.instOf((<ImageLayer>lyr).getSource(), ImageWMS)
+          this.HsUtilsService.instOf(
+            (lyr as ImageLayer<ImageSource>).getSource(),
+            ImageWMS
+          )
         ) {
           this.HsMapService.proxifyLayerLoader(lyr, false);
         }
       }
 
       if (this.HsUtilsService.instOf(lyr, TileLayer)) {
-        if (this.HsUtilsService.instOf((<TileLayer>lyr).getSource(), TileWMS)) {
+        if (
+          this.HsUtilsService.instOf(
+            (lyr as TileLayer<TileSource>).getSource(),
+            TileWMS
+          )
+        ) {
           this.HsMapService.proxifyLayerLoader(lyr, true);
         }
       }
       const cesium_layer = await this.convertOlToCesiumProvider(<Layer>lyr);
       if (cesium_layer) {
         if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
-          this.linkOlLayerToCesiumLayer(<Layer>lyr, <ImageryLayer>cesium_layer);
+          this.linkOlLayerToCesiumLayer(
+            lyr as Layer<Source>,
+            cesium_layer as ImageryLayer
+          );
           this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
         } else if (
           (this.HsUtilsService.instOf(cesium_layer, GeoJsonDataSource) ||
@@ -384,7 +404,7 @@ export class HsCesiumLayersService {
           this.viewer.dataSources.add(<DataSource>cesium_layer);
           if (getTitle(lyr) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
-              (<VectorLayer>lyr).getSource(),
+              (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
               cesium_layer
             );
           }
@@ -394,7 +414,7 @@ export class HsCesiumLayersService {
   }
 
   async convertOlToCesiumProvider(
-    ol_lyr: Layer
+    ol_lyr: Layer<Source>
   ): Promise<ImageryLayer | DataSource> {
     if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
@@ -404,9 +424,11 @@ export class HsCesiumLayersService {
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), TileWMS)) {
       return this.createTileProvider(ol_lyr);
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), ImageWMS)) {
-      return this.createSingleImageProvider(<ImageLayer>ol_lyr);
+      return this.createSingleImageProvider(ol_lyr as ImageLayer<ImageSource>);
     } else if (this.HsUtilsService.instOf(ol_lyr, VectorLayer)) {
-      const dataSource = await this.createVectorDataSource(<VectorLayer>ol_lyr);
+      const dataSource = await this.createVectorDataSource(
+        ol_lyr as VectorLayer<VectorSource<Geometry>>
+      );
       return dataSource;
     } else {
       if (console) {
@@ -419,7 +441,9 @@ export class HsCesiumLayersService {
     }
   }
 
-  async createVectorDataSource(ol_lyr: VectorLayer): Promise<DataSource> {
+  async createVectorDataSource(
+    ol_lyr: VectorLayer<VectorSource<Geometry>>
+  ): Promise<DataSource> {
     if (
       ol_lyr.getSource().getFormat() &&
       this.HsUtilsService.instOf(ol_lyr.getSource().getFormat(), KML)
@@ -503,7 +527,7 @@ export class HsCesiumLayersService {
   }
 
   //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
-  createSingleImageProvider(ol_lyr: ImageLayer): ImageryLayer {
+  createSingleImageProvider(ol_lyr: ImageLayer<ImageSource>): ImageryLayer {
     const src: ImageWMS = <ImageWMS>ol_lyr.getSource();
     const params = Object.assign({}, src.getParams());
     params.VERSION = params.VERSION || '1.1.1';

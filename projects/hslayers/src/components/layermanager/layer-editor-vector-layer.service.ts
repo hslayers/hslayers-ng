@@ -1,7 +1,8 @@
-import {Cluster} from 'ol/source';
+import VectorSource from 'ol/source/Vector';
+import {Cluster, Source} from 'ol/source';
+import {Geometry, Point} from 'ol/geom';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Point} from 'ol/geom';
 
 import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
@@ -28,7 +29,7 @@ export class HsLayerEditorVectorLayerService {
    */
   async cluster(
     newValue: boolean,
-    layer: Layer,
+    layer: Layer<Source>,
     distance: number
   ): Promise<void> {
     if (newValue == true) {
@@ -38,14 +39,14 @@ export class HsLayerEditorVectorLayerService {
         this.updateFeatureTableLayers(layer);
       }
     } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
-      layer.setSource(layer.getSource().getSource());
+      layer.setSource((layer.getSource() as Cluster).getSource());
     }
   }
 
-  createClusteredSource(layer: Layer, distance: number): Cluster {
+  createClusteredSource(layer: Layer<Source>, distance: number): Cluster {
     return new Cluster({
       distance,
-      source: layer.getSource(),
+      source: layer.getSource() as VectorSource<Geometry>,
       geometryFunction: function (feature) {
         if (!feature) {
           return null;
@@ -65,7 +66,7 @@ export class HsLayerEditorVectorLayerService {
       },
     });
   }
-  updateFeatureTableLayers(layer: Layer): void {
+  updateFeatureTableLayers(layer: Layer<Source>): void {
     const currentLayerIndex = this.HsConfig.layersInFeatureTable?.findIndex(
       (l) => l == layer
     );

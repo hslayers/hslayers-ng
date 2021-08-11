@@ -329,7 +329,7 @@ export class HsAddDataArcGisService {
     );
     ol_layers.forEach((layer) => {
       if (group !== undefined) {
-        group.addLayer(layer);
+        group.getLayers().push(layer);
       } else {
         this.hsMapService.addLayer(layer);
       }
