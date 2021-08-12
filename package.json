@@ -59,7 +59,7 @@
     "queue": "^6.0.2",
     "rxjs": "^6.6.7",
     "share-api-polyfill": "^1.0.21",
-    "tslib": "^2.3.0",
+    "tslib": "^2.3.1",
     "vega": "5.20.2",
     "vega-embed": "6.18.2",
     "vega-lite": "~5.0.0",
