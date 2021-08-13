@@ -8,7 +8,7 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
-import {HsLayerEditorService} from 'hslayers-ng/src/components/layermanager/layer-editor.service';
+import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 
 @Component({
   selector: 'hslayers-app',
@@ -18,7 +18,7 @@ import {HsLayerEditorService} from 'hslayers-ng/src/components/layermanager/laye
 export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
-    private hsLayerEditorService: HsLayerEditorService
+    private HsEventBusService: HsEventBusService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -321,7 +321,7 @@ export class HslayersAppComponent {
     }
     //Simulating ajax
     setTimeout(() => {
-      this.hsLayerEditorService.layerDimensionDefinitionChange.next({
+      this.HsEventBusService.layerDimensionDefinitionChanges.next({
         layer: opticalMap,
       });
     }, 100);
