@@ -27,7 +27,7 @@ export class HsDimensionService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService
   ) {
-    this.hsEventBusService.layerTimeChanges.subscribe(
+    this.hsDimensionTimeService.layerTimeChanges.subscribe(
       ({layer: layerDescriptor, time: newTime}) => {
         const dimensions = getDimensions(layerDescriptor.layer);
         if (dimensions && (dimensions['time'] || dimensions['TIME'])) {
@@ -150,8 +150,7 @@ export class HsDimensionService {
     }
     return (
       Object.keys(dimensions).filter((k) => {
-        // eslint-disable-next-line prettier/prettier
-        return k == 'time' ? (dimensions[k].onlyInEditor ?? true) : true;
+        return k == 'time' ? dimensions[k].onlyInEditor : true;
       }).length > 0
     );
   }

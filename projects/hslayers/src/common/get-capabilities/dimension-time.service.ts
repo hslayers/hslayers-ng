@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLayerDescriptor} from '../../components/layermanager/layer-descriptor.interface';
 import {HsLogService} from '../log/log.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -14,8 +14,13 @@ import {getDimensions, setDimensions} from '../layer-extensions';
   providedIn: 'root',
 })
 export class HsDimensionTimeService {
+  /**
+   * To communicate changes between this service and HsDimensionService
+   */
+  layerTimeChanges: Subject<{layer: HsLayerDescriptor; time: string}> =
+    new Subject();
+
   constructor(
-    public HsEventBusService: HsEventBusService,
     public hsLog: HsLogService,
     public HsUtilsService: HsUtilsService
   ) {}
@@ -192,9 +197,6 @@ export class HsDimensionTimeService {
     const olLayer = currentLayer.layer;
     //parse config set at a Layer level
     const hsLayerTimeConfig = getDimensions(olLayer)?.time;
-    if (hsLayerTimeConfig?.onlyInEditor) {
-      return;
-    }
     //parse parametres available at the WM(T)S level
     let serviceLayerTimeConfig;
     if (serviceLayer) {
@@ -230,6 +232,7 @@ export class HsDimensionTimeService {
       timePoints,
       //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
     };
+    this.polyfillLayerDimensionsValues(currentLayer);
     this.setLayerTime(currentLayer, defaultTime);
   }
 
@@ -242,7 +245,7 @@ export class HsDimensionTimeService {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
-    this.HsEventBusService.layerTimeChanges.next({
+    this.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
     });
@@ -278,6 +281,25 @@ export class HsDimensionTimeService {
       }
     }
     return values.split(',');
+  }
+
+  /**
+   * Because of the way the HsDimension interface is set up,
+   * we need to fill all parsed and currently undefined values
+   * into the "dimensions" property of OL Layer as well.
+   * Nevertheless we are duplicating some information.
+   */
+  private polyfillLayerDimensionsValues(
+    layerDescriptor: HsLayerDescriptor
+  ): void {
+    const dimensionTimeProp = getDimensions(layerDescriptor.layer).time;
+    dimensionTimeProp.label = dimensionTimeProp.label ?? 'time';
+    dimensionTimeProp.default =
+      dimensionTimeProp.default ?? layerDescriptor.time.default;
+    dimensionTimeProp.value =
+      dimensionTimeProp.value ?? layerDescriptor.time.default;
+    dimensionTimeProp.values =
+      dimensionTimeProp.values ?? layerDescriptor.time.timePoints;
   }
 
   private timePointsFromInterval(

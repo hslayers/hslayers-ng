@@ -26,7 +26,6 @@ import {
   HsLayerDescriptor,
   HsLayerLoadProgress,
 } from './layer-descriptor.interface';
-import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
@@ -131,7 +130,6 @@ export class HsLayerManagerService {
     public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
-    private hsLayerEditorService: HsLayerEditorService,
     public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     public HsLayerManagerMetadata: HsLayerManagerMetadataService,
     public HsLayerSelectorService: HsLayerSelectorService,
@@ -146,22 +144,19 @@ export class HsLayerManagerService {
     private zone: NgZone
   ) {
     this.HsMapService.loaded().then(() => this.init());
-    this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
-      ({layer}) => {
-        const layerDescriptor = this.data.layers.find(
-          (ld) => ld.layer == layer
-        );
-        if (
-          layerDescriptor &&
-          this.HsDimensionTimeService.layerIsWmsT(layerDescriptor.layer)
-        ) {
+    this.HsEventBusService.layerManagerUpdates.subscribe((val) => {
+      this.refreshLists();
+    });
+    this.HsEventBusService.layerDimensionDefinitionChanges.subscribe(
+      ({layer: olLayer}) => {
+        if (this.HsDimensionTimeService.layerIsWmsT(olLayer)) {
+          const layerDescriptor = this.data.layers.find(
+            (ld) => ld.layer == olLayer
+          );
           this.HsDimensionTimeService.setupTimeLayer(layerDescriptor);
         }
       }
     );
-    this.HsEventBusService.layerManagerUpdates.subscribe((val) => {
-      this.refreshLists();
-    });
   }
 
   /**

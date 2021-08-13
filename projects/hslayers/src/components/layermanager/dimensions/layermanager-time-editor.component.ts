@@ -38,12 +38,16 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     public hsLayoutService: HsLayoutService,
     public hsConfig: HsConfig
   ) {
-    this.hsEventBusService.layerTimeChanges
+    this.hsDimensionTimeService.layerTimeChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({layer, time}) => {
-        if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
-          this.fillAvailableTimes(layer);
+      .subscribe(({layer: layerDescriptor, time}) => {
+        if (this.layer.uid !== layerDescriptor.uid) {
+          return;
         }
+        if (!this.availableTimes) {
+          this.fillAvailableTimes(layerDescriptor);
+        }
+        this.setCurrentTimeIfAvailable(time);
       });
 
     this.hsEventBusService.layerTimeSynchronizations
