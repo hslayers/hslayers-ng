@@ -16,8 +16,8 @@ export class HsDimensionDescriptor {
     this.value = this.originalDimension.value ?? this.originalDimension.default;
     this.modelValue =
       this.originalDimension.value ?? this.originalDimension.default;
-    if (typeof this.value.getMonth == 'function') {
-      // Duck-type check if the passed value is an instance of Date.
+    // Duck-type check if the passed value is an instance of Date.
+    if (typeof this.value?.getMonth == 'function') {
       if (this.type == 'datetime') {
         this.modelValue = {
           year: this.value.getFullYear(),

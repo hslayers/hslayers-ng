@@ -54,20 +54,27 @@ export class HsEventBusService {
     progress: HsLayerLoadProgress;
   }> = new Subject();
   /**
-   * Fires when time is initially set up in HsLayerDescriptor
-   * Used to set up time correctly in layermanager-time-editor
-   */
-  layerTimeChanges: Subject<{
-    layer: HsLayerDescriptor;
-    time: string;
-  }> = new Subject();
-  /**
    * Fires when user enables layer time synchronization in the UI
    * Used to synchronize time in PARAMS across WM(T)S-t layers
    */
   layerTimeSynchronizations: Subject<{
     sync: boolean;
     time?: string;
+  }> = new Subject();
+  /**
+   * DEPRECATED. Moved into the HsDimensionTimeService for mostly internal usage.
+   * @deprecated Replaced by layerDimensionDefinitionChanges
+   */
+  layerTimeChanges: Subject<{
+    layer: HsLayerDescriptor;
+    time: string;
+  }> = new Subject();
+  /**
+   * Used to listen for changes either in "time" property in HsLayerDescrtiptor
+   * or in "dimensions" property in OL Layer object
+   */
+  layerDimensionDefinitionChanges: Subject<{
+    layer: Layer<Source>;
   }> = new Subject();
   /**
    * Used to listen for changes of dimension settings in layermanager-dimensions component

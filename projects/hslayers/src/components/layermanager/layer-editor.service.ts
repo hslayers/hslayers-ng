@@ -7,6 +7,7 @@ import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
@@ -16,7 +17,6 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
-
 import {
   getCluster,
   getInlineLegend,
@@ -30,10 +30,6 @@ export class HsLayerEditorService {
   layerTitleChange: Subject<{
     newTitle: string;
     oldTitle: string;
-    layer: Layer<Source>;
-  }> = new Subject();
-
-  layerDimensionDefinitionChange: Subject<{
     layer: Layer<Source>;
   }> = new Subject();
 

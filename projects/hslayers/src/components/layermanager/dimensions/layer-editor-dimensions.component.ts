@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -9,7 +10,6 @@ import {HsDimensionDescriptor} from '../../../common/get-capabilities/dimension'
 import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLayerEditorService} from '../layer-editor.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
@@ -20,26 +20,27 @@ import {HsUtilsService} from '../../utils/utils.service';
 export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
   @Input() layer: Layer<Source>;
   dimensions: Array<HsDimensionDescriptor> = [];
-  layerDimensionDefinitionChangeSubscription: Subscription;
+  private ngUnsubscribe = new Subject();
+
   constructor(
     public hsDimensionService: HsDimensionService,
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
-    public hsLayerEditorService: HsLayerEditorService,
     public hsUtilsService: HsUtilsService
   ) {
-    this.layerDimensionDefinitionChangeSubscription =
-      this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
-        ({layer}) => {
-          if (layer == this.layer) {
-            this.ngOnChanges();
-          }
+    this.hsEventBusService.layerDimensionDefinitionChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({layer}) => {
+        if (layer == this.layer) {
+          this.ngOnChanges();
         }
-      );
+      });
   }
+
   ngOnDestroy(): void {
-    this.layerDimensionDefinitionChangeSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnChanges(): void {
