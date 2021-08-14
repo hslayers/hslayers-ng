@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs';
 
 import {Layer} from 'ol/layer';
-import {Subscription} from 'rxjs';
+import {Source} from 'ol/source';
 
 import {Dimension, getDimensions} from '../../../common/layer-extensions';
 import {HsDimensionDescriptor} from './dimension.class';
@@ -17,7 +18,7 @@ import {HsUtilsService} from '../../utils/utils.service';
   templateUrl: './layer-editor-dimensions.html',
 })
 export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
-  @Input() layer: Layer;
+  @Input() layer: Layer<Source>;
   dimensions: Array<HsDimensionDescriptor> = [];
   layerDimensionDefinitionChangeSubscription: Subscription;
   constructor(

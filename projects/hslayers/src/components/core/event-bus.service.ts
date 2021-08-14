@@ -42,7 +42,7 @@ export class HsEventBusService {
    * @event compositionLoads
    */
   compositionLoads: Subject<any> = new Subject();
-  layerRemovals: Subject<any> = new Subject();
+  layerRemovals: Subject<Layer<Source>> = new Subject();
   compositionEdits: Subject<any> = new Subject();
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();

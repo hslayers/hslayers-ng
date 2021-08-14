@@ -53,11 +53,8 @@ export class HsLayerUtilsService {
     if (this.isLayerWMS(layer)) {
       return true;
     }
-    if (
-      layer.getSource().getExtent &&
-      layer.getSource().getExtent() &&
-      !isEmpty(layer.getSource().getExtent())
-    ) {
+    const src: any = layer.getSource();
+    if (src.getExtent && src.getExtent() && !isEmpty(src.getExtent())) {
       return true;
     }
     return false;
@@ -90,21 +87,7 @@ export class HsLayerUtilsService {
    * INFO_FORMAT in params
    */
   isLayerQueryable(layer: Layer<Source>): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, Tile) &&
-      this.HsUtilsService.instOf(layer.getSource(), TileWMS) &&
-      layer.getSource().getParams().INFO_FORMAT
-    ) {
-      return true;
-    }
-    if (
-      this.HsUtilsService.instOf(layer, ImageLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), ImageWMS) &&
-      layer.getSource().getParams().INFO_FORMAT
-    ) {
-      return true;
-    }
-    return false;
+    return this.isLayerWMS(layer) && this.getLayerParams(layer).INFO_FORMAT;
   }
 
   /**
@@ -122,20 +105,13 @@ export class HsLayerUtilsService {
 
   // todo
   getURL(layer: Layer<Source>): string {
-    let url;
-    if (layer.getSource().getUrls) {
-      //Multi tile
-      url = layer.getSource().getUrls();
-      if (url) {
-        //in case WMTS source has not yet been set
-        url = url[0];
-      }
+    const src = layer.getSource();
+    if (this.HsUtilsService.instOf(src, ImageWMS)) {
+      return (src as ImageWMS).getUrl();
     }
-    if (layer.getSource().getUrl) {
-      //Single tile
-      url = layer.getSource().getUrl();
+    if (this.HsUtilsService.instOf(src, TileWMS)) {
+      return (src as TileWMS).getUrls()[0];
     }
-    return url;
   }
 
   /**
@@ -254,6 +230,30 @@ export class HsLayerUtilsService {
       getShowInLayerManager(layer) === undefined ||
       getShowInLayerManager(layer) == true
     );
+  }
+
+  getSourceParams(source: ImageWMS | TileWMS): any {
+    return source.getParams();
+  }
+
+  getLayerParams(layer: Layer<Source>): any {
+    const src = layer.getSource();
+    if (this.HsUtilsService.instOf(src, ImageWMS)) {
+      return this.getSourceParams(src as ImageWMS);
+    }
+    if (this.HsUtilsService.instOf(src, TileWMS)) {
+      return this.getSourceParams(src as TileWMS);
+    }
+  }
+
+  updateLayerParams(layer: Layer<Source>, params: any): void {
+    const src = layer.getSource();
+    if (this.HsUtilsService.instOf(src, ImageWMS)) {
+      (src as ImageWMS).updateParams(params);
+    }
+    if (this.HsUtilsService.instOf(src, TileWMS)) {
+      (src as TileWMS).updateParams(params);
+    }
   }
 
   /**

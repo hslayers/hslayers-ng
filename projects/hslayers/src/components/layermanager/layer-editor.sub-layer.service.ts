@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {getCachedCapabilities} from '../../common/layer-extensions';
 
 export type KeyBooleanDict = {
@@ -20,7 +21,8 @@ export class HsLayerEditorSublayerService {
   checkedSubLayersTmp: KeyBooleanDict = {};
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
-    public HsLayerSelectorService: HsLayerSelectorService
+    public HsLayerSelectorService: HsLayerSelectorService,
+    private HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.resetSublayers(layer);
@@ -92,8 +94,7 @@ export class HsLayerEditorSublayerService {
 
   subLayerSelected(): void {
     const layer = this.HsLayerManagerService.currentLayer;
-    const src = this.HsLayerManagerService.currentLayer.layer.getSource();
-    const params = src.getParams();
+    const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
     params.LAYERS = Object.keys(this.checkedSubLayers)
       .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])
       .join(',');
@@ -104,6 +105,6 @@ export class HsLayerEditorSublayerService {
     if (layer.visible == false) {
       this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
     }
-    src.updateParams(params);
+    this.HsLayerUtilsService.updateLayerParams(layer.layer, params);
   }
 }

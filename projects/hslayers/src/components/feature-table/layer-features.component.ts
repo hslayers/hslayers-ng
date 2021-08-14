@@ -77,9 +77,7 @@ export class HsLayerFeaturesComponent implements OnInit {
     switch (operation.action) {
       case 'zoom to':
         const extent = operation.feature.getGeometry().getExtent();
-        this.HsMapService.map
-          .getView()
-          .fit(extent, this.HsMapService.map.getSize());
+        this.HsMapService.fitExtent(extent);
         break;
       case 'custom action':
         operation.customAction(operation.feature);

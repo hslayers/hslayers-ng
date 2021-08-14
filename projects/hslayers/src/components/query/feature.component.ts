@@ -68,9 +68,7 @@ export class HsQueryFeatureComponent {
 
   zoomToFeature() {
     const extent = this.olFeature().getGeometry().getExtent();
-    this.HsMapService.map
-      .getView()
-      .fit(extent, this.HsMapService.map.getSize());
+    this.HsMapService.fitExtent(extent);
   }
 
   toggleExportMenu(): void {

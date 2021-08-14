@@ -32,7 +32,7 @@ export class HsLayerEditorService {
   layerTitleChange: Subject<{
     newTitle: string;
     oldTitle: string;
-    layer: VectorLayer<VectorSource<Geometry>>;
+    layer: Layer<Source>;
   }> = new Subject();
 
   layerDimensionDefinitionChange: Subject<{
@@ -90,7 +90,7 @@ export class HsLayerEditorService {
       if (Array.isArray(caps.Capability.Layer.Layer)) {
         const foundDefs = caps.Capability.Layer.Layer.map((lyr) =>
           this.HsLayerManagerMetadataService.identifyLayerObject(
-            layer.getSource().getParams().LAYERS,
+            this.HsLayerUtilsService.getLayerParams(layer)?.LAYERS,
             lyr
           )
         ).filter((item) => item);
@@ -140,9 +140,7 @@ export class HsLayerEditorService {
   fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
     if (extent !== null) {
       layer.setExtent(extent);
-      this.HsMapService.map
-        .getView()
-        .fit(extent, this.HsMapService.map.getSize());
+      this.HsMapService.fitExtent(extent);
     }
   }
 

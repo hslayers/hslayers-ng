@@ -27,6 +27,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {
+  getAttribution,
   getBase,
   getDefinition,
   getDimensions,
@@ -139,7 +140,7 @@ export class HsSaveMapService {
 
     // Layers properties
     json.layers = this.layers2json(compoData.layers);
-    json.current_base_layer = this.getCurrentBaseLayer(map);
+    json.current_base_layer = this.getCurrentBaseLayer();
     return json;
   }
   /**
@@ -147,9 +148,9 @@ export class HsSaveMapService {
    * @param {Map} map Selected map object
    * @returns {object} Returns object with current current selected base layers title as attribute
    */
-  getCurrentBaseLayer(map: Map) {
+  getCurrentBaseLayer() {
     let current_base_layer = null;
-    for (const lyr of map.getLayers().getArray()) {
+    for (const lyr of this.HsMapService.getLayersArray()) {
       if (
         (getShowInLayerManager(lyr) == undefined ||
           getShowInLayerManager(lyr) == true) &&
@@ -203,7 +204,7 @@ export class HsSaveMapService {
    * @param s Style to convert
    * @returns {object} Converted JSON object for style
    */
-  serializeStyle(s: Style) {
+  serializeStyle(s: Style | Style[]) {
     const o: any = {};
     if (s.getFill() && s.getFill() !== null) {
       o.fill = s.getFill().getColor();
@@ -355,10 +356,7 @@ export class HsSaveMapService {
         json.className = 'StaticImage';
         json.extent = src.getImageExtent();
       }
-      if (
-        this.HsUtilsService.instOf(src, ImageWMS) ||
-        this.HsUtilsService.instOf(src, TileWMS)
-      ) {
+      if (this.HsLayerUtilsService.isLayerWMS(layer)) {
         json.className = 'HSLayers.Layer.WMS';
         json.singleTile = this.HsUtilsService.instOf(src, ImageWMS);
         if (getLegends(layer)) {
@@ -374,19 +372,13 @@ export class HsSaveMapService {
         if (src.getProjection()) {
           json.projection = src.getProjection().getCode().toLowerCase();
         }
-        json.params = src.getParams();
-        json.ratio = src.get('ratio') || src.ratio_;
+        json.params = this.HsLayerUtilsService.getLayerParams(layer);
         json.subLayers = getSubLayers(layer);
         json.metadata.styles = src.get('styles');
       }
-      if (src.getUrl) {
-        json.url = encodeURIComponent(src.getUrl());
-      }
-      if (src.getUrls) {
-        json.url = encodeURIComponent(src.getUrls()[0]);
-      }
-      if (src.attributions_) {
-        json.attributions = encodeURIComponent(src.attributions_);
+      json.url = encodeURIComponent(this.HsLayerUtilsService.getURL(layer));
+      if (getAttribution(layer)) {
+        json.attributions = getAttribution(layer);
       }
 
       if (this.HsUtilsService.instOf(src, WMTS)) {
@@ -424,7 +416,9 @@ export class HsSaveMapService {
           };
         } else {
           try {
-            json.features = this.getFeaturesJson(src.getFeatures());
+            json.features = this.getFeaturesJson(
+              (src as VectorSource<Geometry>).getFeatures()
+            );
           } catch (ex) {
             //Do nothing
           }
@@ -441,7 +435,9 @@ export class HsSaveMapService {
           Style
         )
       ) {
-        json.style = this.serializeStyle((layer as VectorLayer).getStyle());
+        json.style = this.serializeStyle(
+          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style
+        );
       }
     }
     return json;
@@ -516,7 +512,8 @@ export class HsSaveMapService {
       }
       $element.setAttribute('crossOrigin', 'Anonymous');
 
-      this.HsMapService.map.once('postcompose', rendered, localThis);
+      rendered.bind(localThis);
+      this.HsMapService.map.once('postcompose', rendered);
       if (newRender) {
         this.HsMapService.map.renderSync();
       } else {
@@ -528,9 +525,7 @@ export class HsSaveMapService {
   save2storage(evt): void {
     const data = {
       expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
-      layers: this.HsMapService.map
-        .getLayers()
-        .getArray()
+      layers: this.HsMapService.getLayersArray()
         .filter((lyr) => !this.internalLayers.includes(lyr))
         .map((lyr: Layer<Source>) => this.layer2json(lyr)),
     };

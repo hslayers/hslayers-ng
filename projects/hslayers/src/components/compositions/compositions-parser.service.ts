@@ -231,9 +231,7 @@ export class HsCompositionsParserService {
       ) {
         this.loadWarningBootstrap(extent);
       } else {
-        this.HsMapService.map
-          .getView()
-          .fit(this.transformExtent(extent), this.HsMapService.map.getSize());
+        this.HsMapService.fitExtent(extent);
       }
     }
 

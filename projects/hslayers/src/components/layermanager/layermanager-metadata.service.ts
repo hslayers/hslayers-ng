@@ -266,14 +266,13 @@ export class HsLayerManagerMetadataService {
       }
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(wrapper.response);
-      const src = layer.getSource();
-      const params = src.getParams();
+      const params = this.HsLayerUtilsService.getLayerParams(layer);
       const layerNameInParams: string = params.LAYERS;
 
       this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
       if (getSubLayers(layer)) {
         params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
-        src.updateParams(params);
+        this.HsLayerUtilsService.updateLayerParams(layer, params);
       }
 
       this.fillMetadataUrlsIfNotExist(layer, caps);

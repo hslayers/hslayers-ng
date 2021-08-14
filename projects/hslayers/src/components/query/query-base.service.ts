@@ -2,14 +2,15 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Feature, Map} from 'ol';
+import {Geometry, Point} from 'ol/geom';
 import {Injectable, NgZone} from '@angular/core';
-import {Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
 
+import CircleStyle from 'ol/style/Circle';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -191,10 +192,12 @@ export class HsQueryBaseService {
   }
 
   private getFeaturesUnderMouse(map: Map, pixel: any) {
-    return map.getFeaturesAtPixel(pixel).filter((feature: Feature<Geometry>) => {
-      const layer = this.HsMapService.getLayerForFeature(feature);
-      return layer && layer != this.queryLayer;
-    });
+    return map
+      .getFeaturesAtPixel(pixel)
+      .filter((feature: Feature<Geometry>) => {
+        const layer = this.HsMapService.getLayerForFeature(feature);
+        return layer && layer != this.queryLayer;
+      });
   }
 
   /**
@@ -235,7 +238,7 @@ export class HsQueryBaseService {
       if (feature.get(attrName)) {
         feature.attributesForHover.push({
           key: attrLabel,
-          value: Feature<Geometry>.get(attrName),
+          value: feature.get(attrName),
           displayFunction: attrFunction,
         });
       }
@@ -395,11 +398,12 @@ export class HsQueryBaseService {
       }),
     });
     if (this.HsConfig.queryPoint) {
+      const circle = defaultStyle.getImage() as CircleStyle;
       if (this.HsConfig.queryPoint == 'hidden') {
-        defaultStyle.getImage().setRadius(0);
+        circle.setRadius(0);
       } else if (this.HsConfig.queryPoint == 'notWithin') {
         if (this.selector.getFeatures().getLength() > 0) {
-          defaultStyle.getImage().setRadius(0);
+          circle.setRadius(0);
         }
       }
     }

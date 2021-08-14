@@ -62,7 +62,8 @@ export class HsTripPlannerComponent implements OnInit {
    * @param {object} waypoint
    */
   toggleEdit(waypoint: Waypoint): void {
-    waypoint.name_editing = !waypoint.name_editing;
-    setHighlighted(waypoint.feature, waypoint.name_editing);
+    waypoint.editMode = !waypoint.editMode;
+    const src = this.HsTripPlannerService.waypointLayer.getSource();
+    setHighlighted(src.getFeatureById(waypoint.featureId), waypoint.editMode);
   }
 }

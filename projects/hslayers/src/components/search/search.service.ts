@@ -15,6 +15,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { setShowInLayerManager, setTitle } from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -34,11 +35,11 @@ export class HsSearchService {
     public HsEventBusService: HsEventBusService
   ) {
     this.searchResultsLayer = new VectorLayer({
-      title: 'Search results',
       source: new Vector({}),
       style: this.HsStylerService.pin_white_blue_highlight,
-      showInLayerManager: false,
     });
+    setTitle(this.searchResultsLayer, 'Search results');
+    setShowInLayerManager(this.searchResultsLayer, false);
   }
 
   /**

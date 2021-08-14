@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {HsDimensionDescriptor} from '../components/layermanager/dimensions/dimension.class';
 import {HsEventBusService} from '../components/core/event-bus.service';
+import {HsLayerUtilsService} from '../components/utils/layer-utils.service';
 import {HsLogService} from './log/log.service';
 import {HsMapService} from '../components/map/map.service';
 import {HsUtilsService} from '../components/utils/utils.service';
@@ -16,7 +17,8 @@ export class HsDimensionService {
     public $log: HsLogService,
     private hsEventBusService: HsEventBusService,
     private hsUtilsService: HsUtilsService,
-    private hsMapService: HsMapService
+    private hsMapService: HsMapService,
+    private hsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   prepareTimeSteps(step_string): string[] {
@@ -144,7 +146,7 @@ export class HsDimensionService {
   dimensionChanged(dimension: HsDimensionDescriptor): void {
     dimension.postProcessDimensionValue();
     //Dimension can be linked to multiple layers
-    for (const layer of this.hsMapService.map.getLayers().getArray()) {
+    for (const layer of this.hsMapService.getLayersArray()) {
       const iteratedDimensions = getDimensions(layer);
       if (
         iteratedDimensions &&
@@ -154,14 +156,11 @@ export class HsDimensionService {
         ).length > 0 //Dimension also linked to this layer?
       ) {
         const src = layer.getSource();
-        if (
-          this.hsUtilsService.instOf(src, TileWMS) ||
-          this.hsUtilsService.instOf(src, ImageWMS)
-        ) {
-          const params = src.getParams();
+        if (this.hsLayerUtilsService.isLayerWMS(layer)) {
+          const params = this.hsLayerUtilsService.getLayerParams(layer);
           params[dimension.name == 'time' ? 'TIME' : dimension.name] =
             dimension.value;
-          src.updateParams(params);
+          this.hsLayerUtilsService.updateLayerParams(layer, params);
         } else if (this.hsUtilsService.instOf(src, XYZ)) {
           src.refresh();
         }

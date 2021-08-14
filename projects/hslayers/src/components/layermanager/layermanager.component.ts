@@ -123,7 +123,7 @@ export class HsLayerManagerComponent
 
     this.HsEventBusService.layerRemovals
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: HsLayerDescriptor) => {
+      .subscribe((layer: Layer<Source>) => {
         if (
           this.HsLayerManagerService?.currentLayer?.layer == layer &&
           this.HsUtilsService.runningInBrowser()

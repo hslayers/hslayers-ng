@@ -215,9 +215,7 @@ export class HsAddDataVectorService {
       !isNaN(extent[3]) &&
       this.hsMapService.map
     ) {
-      this.hsMapService.map
-        .getView()
-        .fit(extent, this.hsMapService.map.getSize());
+      this.hsMapService.fitExtent(extent);
       src.un('change', this.changeListener);
     }
   }

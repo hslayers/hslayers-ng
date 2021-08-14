@@ -17,6 +17,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {ObjectEvent} from 'ol/Object';
 import {
   getDefinition,
   getEventsSuspended,
@@ -195,7 +196,9 @@ export class HsLayerSynchronizerService {
         this
       )
     );
-    f.on('propertychange', (e) => this.handleFeaturePropertyChange(e.target));
+    f.on('propertychange', (e: ObjectEvent) =>
+      this.handleFeaturePropertyChange(e.target as Feature<Geometry>)
+    );
   }
 
   /**

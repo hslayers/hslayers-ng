@@ -38,6 +38,7 @@ import {
   getMinimumTerrainLevel,
   getTitle,
 } from 'hslayers-ng';
+import {HsLayerUtilsService} from 'hslayers-ng';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 
 /**
@@ -68,7 +69,8 @@ export class HsCesiumLayersService {
     public HsMapService: HsMapService,
     public HsConfig: HsConfig,
     public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    private HsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   init(viewer: Viewer) {
@@ -474,7 +476,9 @@ export class HsCesiumLayersService {
 
   createTileProvider(ol_lyr): ImageryLayer {
     const src = ol_lyr.getSource();
-    const params = JSON.parse(JSON.stringify(src.getParams()));
+    const params = JSON.parse(
+      JSON.stringify(this.HsLayerUtilsService.getLayerParams(ol_lyr))
+    );
     params.VERSION = params.VERSION || '1.1.1';
     if (params.VERSION.indexOf('1.1.') == 0) {
       params.CRS = 'EPSG:4326';

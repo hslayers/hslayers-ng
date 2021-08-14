@@ -6,6 +6,7 @@ import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 
+import TileSource from 'ol/source/Tile';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -46,18 +47,22 @@ export class HsQueryWmsService {
   ) {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
-      this.HsMapService.map.getLayers().forEach((layer: Layer<Source>) => {
+      this.HsMapService.getLayersArray().forEach((layer: Layer<Source>) => {
         if (getBase(layer) == true || layer.get('queryable') == false) {
           return;
         }
         if (getQueryFilter(layer) != undefined) {
           const filter = getQueryFilter(layer);
-          if (filter(HsMapService.map, layer, evt.pixel)) {
-            this.queryWmsLayer(layer, evt.coordinate);
+          if (!filter(HsMapService.map, layer, evt.pixel)) {
+            return;
           }
-        } else {
-          this.queryWmsLayer(layer, evt.coordinate);
         }
+        this.queryWmsLayer(
+          this.HsUtilsService.instOf(layer, Tile)
+            ? (layer as Layer<TileWMS>)
+            : (layer as Layer<ImageWMS>),
+          evt.coordinate
+        );
       });
     });
   }

@@ -1,8 +1,10 @@
 import {Injectable, NgZone} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
+import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
@@ -14,21 +16,23 @@ import {
   getRecord,
   setHighlighted,
 } from '../../../common/feature-extensions';
+import {
+  setShowInLayerManager,
+  setTitle,
+} from '../../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataCatalogueMapService {
   extentLayer: VectorLayer<VectorSource<Geometry>> = new VectorLayer({
-    title: 'Datasources extents',
-    showInLayerManager: false,
     source: new Vector(),
     style: function (feature, resolution) {
       return [
         new Style({
           stroke: new Stroke({
             color: '#005CB6',
-            width: getHighlighted(feature) ? 4 : 1,
+            width: getHighlighted(feature as Feature<Geometry>) ? 4 : 1,
           }),
           fill: new Fill({
             color: 'rgba(0, 0, 255, 0.01)',
@@ -44,6 +48,8 @@ export class HsAddDataCatalogueMapService {
     private hsSaveMapService: HsSaveMapService,
     private zone: NgZone
   ) {
+    setTitle(this.extentLayer, 'Datasources extents');
+    setShowInLayerManager(this.extentLayer, false);
     this.hsMapService.loaded().then((map) => this.init(map));
   }
 
@@ -173,8 +179,6 @@ export class HsAddDataCatalogueMapService {
       second_pair[0],
       second_pair[1],
     ];
-    this.hsMapService.map
-      .getView()
-      .fit(extent, this.hsMapService.map.getSize());
+    this.hsMapService.fitExtent(extent);
   }
 }

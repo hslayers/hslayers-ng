@@ -34,6 +34,7 @@ export type Waypoint = {
   hash: number;
   routes: {from: Feature<Geometry>; to: Feature<Geometry>};
   featureId;
+  editMode?: boolean;
   loading: boolean;
 };
 

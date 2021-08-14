@@ -511,8 +511,8 @@ export class HsMapService {
       });
   }
 
-  getLayersArray(): BaseLayer[] {
-    return this.map.getLayers().getArray();
+  getLayersArray(): Layer<Source>[] {
+    return this.map.getLayers().getArray() as Layer<Source>[];
   }
 
   /**
@@ -832,6 +832,10 @@ export class HsMapService {
       'EPSG:4326'
     );
     return bbox;
+  }
+
+  fitExtent(extent: number[]): void {
+    this.map.getView().fit(extent, {size: this.map.getSize()});
   }
 
   /**

@@ -39,10 +39,11 @@ export class HsLegendComponent {
       this.layerDescriptors.push(descriptor);
       this.refreshList();
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
-      layer.on('change:legends', (e) => {
-        const oldDescriptor = this.findLayerDescriptor(e.target);
+      layer.on('change', (e) => {
+        const layer: Layer<Source> = e.target as Layer<Source>;
+        const oldDescriptor = this.findLayerDescriptor(layer);
         this.layerDescriptors[this.layerDescriptors.indexOf(oldDescriptor)] =
-          this.HsLegendService.getLayerLegendDescriptor(e.target);
+          this.HsLegendService.getLayerLegendDescriptor(layer);
       });
       layer.getSource().on('change', (e) => this.layerSourcePropChanged(e));
     }

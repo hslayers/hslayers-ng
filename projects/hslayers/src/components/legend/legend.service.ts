@@ -140,7 +140,7 @@ export class HsLegendService {
         styleArray = styleArray.concat(
           this.stylesForFeatures(
             currentLayer.getSource().getFeatures(),
-            layerStyle
+            layerStyle as StyleFunction
           )
         );
         if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
@@ -148,7 +148,7 @@ export class HsLegendService {
           styleArray = styleArray.concat(
             this.stylesForFeatures(
               (currentLayer.getSource() as Cluster).getSource().getFeatures(),
-              layerStyle
+              layerStyle as StyleFunction
             )
           );
         }
@@ -292,19 +292,12 @@ export class HsLegendService {
     layer_name: string,
     layer: Layer<Source>
   ): string {
-    let source_url = '';
-    const isTileWms = this.HsUtilsService.instOf(layer.getSource(), TileWMS);
-    const isImageWms = this.HsUtilsService.instOf(layer.getSource(), ImageWMS);
-    let version = '1.3.0';
-    if (isTileWms) {
-      source_url = (source as TileWMS).getUrls()[0];
-      version = (source as TileWMS).getParams().VERSION;
-    } else if (isImageWms) {
-      source_url = (source as ImageWMS).getUrl();
-      version = (source as ImageWMS).getParams().VERSION;
-    } else {
+    if (!this.HsLayerUtilsService.isLayerWMS(layer)) {
       return '';
     }
+    const params = this.HsLayerUtilsService.getLayerParams(layer);
+    const version = params.VERSION || '1.3.0';
+    let source_url = this.HsLayerUtilsService.getURL(layer);
     if (source_url.indexOf('proxy4ows') > -1) {
       const params = this.HsUtilsService.getParamsFromUrl(source_url);
       source_url = params.OWSURL;
@@ -343,16 +336,9 @@ export class HsLegendService {
     if (getBase(layer)) {
       return;
     }
-    const isTileWms = this.HsUtilsService.instOf(layer.getSource(), TileWMS);
-    const isImageWms = this.HsUtilsService.instOf(layer.getSource(), ImageWMS);
-    if (isTileWms || isImageWms) {
-      const subLayerLegends = (
-        isTileWms
-          ? (layer.getSource() as TileWMS)
-          : (layer.getSource() as ImageWMS)
-      )
-        .getParams()
-        .LAYERS.split(',');
+    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+      const subLayerLegends =
+        this.HsLayerUtilsService.getLayerParams(layer).LAYERS.split(',');
       for (let i = 0; i < subLayerLegends.length; i++) {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),

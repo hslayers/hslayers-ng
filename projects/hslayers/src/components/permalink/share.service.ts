@@ -56,9 +56,7 @@ export class HsShareService {
       if (this.HsLayoutService.mainpanel == 'permalink') {
         this.HsShareUrlService.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl();
-        const layers = this.HsMapService.map
-          .getLayers()
-          .getArray()
+        const layers = this.HsMapService.getLayersArray()
           .filter(
             (l) =>
               getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
@@ -293,10 +291,9 @@ export class HsShareService {
       $element.setAttribute('crossOrigin', 'Anonymous');
 
       if (newRender) {
-        this.HsMapService.map.once(
-          'postcompose',
-          () => this.rendered($element, newRender),
-          this
+        this.rendered.bind(this);
+        this.HsMapService.map.once('postcompose', () =>
+          this.rendered($element, newRender)
         );
         this.HsMapService.map.renderSync();
       } else {

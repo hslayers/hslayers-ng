@@ -466,9 +466,7 @@ export class HsAddDataWfsService {
     }
     const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
     if (extent) {
-      this.hsMapService.map
-        .getView()
-        .fit(extent, this.hsMapService.map.getSize());
+      this.hsMapService.fitExtent(extent);
     }
   }
 }

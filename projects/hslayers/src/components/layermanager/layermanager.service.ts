@@ -331,8 +331,7 @@ export class HsLayerManagerService {
    */
   checkLayerHealth(layer: Layer<Source>): void {
     if (this.isWms(layer)) {
-      const src = layer.getSource();
-      if (src.getParams().LAYERS == undefined) {
+      if (this.HsLayerUtilsService.getLayerParams(layer).LAYERS == undefined) {
         this.HsLog.warn('Layer', layer, 'is missing LAYERS parameter');
       }
     }
@@ -757,7 +756,7 @@ export class HsLayerManagerService {
    */
   loadingEvents(layer: HsLayerDescriptor): void {
     const olLayer = layer.layer;
-    const source = olLayer.getSource();
+    const source: any = olLayer.getSource();
     const loadProgress = {
       loadCounter: 0,
       loadTotal: 0,
