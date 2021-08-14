@@ -354,7 +354,7 @@ export class HsSaveMapService {
       }
       if (this.HsUtilsService.instOf(src, ImageStatic)) {
         json.className = 'StaticImage';
-        json.extent = src.getImageExtent();
+        json.extent = (src as ImageStatic).getImageExtent();
       }
       if (this.HsLayerUtilsService.isLayerWMS(layer)) {
         json.className = 'HSLayers.Layer.WMS';

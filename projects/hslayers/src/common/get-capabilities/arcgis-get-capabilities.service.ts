@@ -130,14 +130,7 @@ export class HsArcgisGetCapabilitiesService {
         let attributions = [];
         if (layer.Attribution) {
           attributions = [
-            new Attribution({
-              html:
-                '<a href="' +
-                layer.Attribution.OnlineResource +
-                '">' +
-                layer.Attribution.Title +
-                '</a>',
-            }),
+            `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
           ];
         }
         const new_layer = new Tile({

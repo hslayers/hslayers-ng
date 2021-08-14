@@ -231,7 +231,7 @@ export class HsCompositionsParserService {
       ) {
         this.loadWarningBootstrap(extent);
       } else {
-        this.HsMapService.fitExtent(extent);
+        this.HsMapService.fitExtent(this.transformExtent(extent));
       }
     }
 
@@ -369,7 +369,7 @@ export class HsCompositionsParserService {
     }
     return infoDetails;
   }
-  transformExtent(pairs: number[][]): Array<number> {
+  transformExtent(pairs: number[][]): number[] {
     if (!pairs) {
       return;
     }
@@ -378,7 +378,7 @@ export class HsCompositionsParserService {
     const second_pair = transform(pairs[1], 'EPSG:4326', currentProj);
     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
   }
-  parseExtent(extent: string | Array<number>): Array<number> {
+  parseExtent(extent: string | Array<number>): number[][] {
     if (!extent) {
       return;
     }

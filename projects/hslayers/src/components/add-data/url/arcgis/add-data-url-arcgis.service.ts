@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 
-import {Attribution} from 'ol/control';
 import {Group} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
@@ -266,17 +265,9 @@ export class HsAddDataArcGisService {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
-        new Attribution({
-          html:
-            '<a href="' +
-            layer.Attribution.OnlineResource +
-            '">' +
-            layer.Attribution.Title +
-            '</a>',
-        }),
+        `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
       ];
     }
-    const layer_class = Tile;
     const dimensions = {};
     if (layer.Dimension) {
       for (const val of layer.Dimension) {
@@ -303,15 +294,17 @@ export class HsAddDataArcGisService {
         {}
       ),
       crossOrigin: 'anonymous',
-      dimensions: dimensions,
     });
-    const new_layer = new layer_class({
-      title: layerTitle,
+    const new_layer = new Tile({
+      properties: {
+        title: layerTitle,
+        removable: true,
+        path,
+        base: this.data.base,
+        dimensions,
+      },
       source,
-      removable: true,
-      path,
       maxResolution: layer.minScale > 0 ? layer.minScale : undefined,
-      base: this.data.base,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
     this.hsMapService.map.addLayer(new_layer);

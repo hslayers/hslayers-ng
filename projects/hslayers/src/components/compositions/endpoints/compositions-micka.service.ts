@@ -119,19 +119,20 @@ export class HsCompositionsMickaService {
       if (record.thumbnail == undefined) {
         record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
       }
-      let extent = this.HsCompositionsParserService.parseExtent(
+      const extent = this.HsCompositionsParserService.parseExtent(
         record.bbox || ['180', '180', '180', '180']
       );
-      extent = this.HsCompositionsParserService.transformExtent(extent);
+      const flatExtent =
+        this.HsCompositionsParserService.transformExtent(extent);
       //Check if height or Width covers the whole screen
       if (
         extent &&
         !(
-          (extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) ||
-          (extent[1] < mapExtent[1] && extent[3] > mapExtent[3])
+          (flatExtent[0] < mapExtent[0] && flatExtent[2] > mapExtent[2]) ||
+          (flatExtent[1] < mapExtent[1] && flatExtent[3] > mapExtent[3])
         )
       ) {
-        attributes.geometry = polygonFromExtent(extent);
+        attributes.geometry = polygonFromExtent(flatExtent);
         const newFeature = new Feature(attributes);
         record.feature = newFeature;
         extentLayer.getSource().addFeatures([newFeature]);

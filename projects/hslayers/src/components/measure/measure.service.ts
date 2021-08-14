@@ -160,9 +160,12 @@ export class HsMeasureService {
       for (const sketch of this.sketches) {
         const geom = sketch.getGeometry();
         if (this.HsUtilsService.instOf(geom, Polygon)) {
-          output = this.addMultiple(this.formatArea(geom), output);
+          output = this.addMultiple(this.formatArea(geom as Polygon), output);
         } else if (this.HsUtilsService.instOf(geom, LineString)) {
-          output = this.addMultiple(this.formatLength(geom), output);
+          output = this.addMultiple(
+            this.formatLength(geom as LineString),
+            output
+          );
         }
       }
       //output.geom = this.sketch;

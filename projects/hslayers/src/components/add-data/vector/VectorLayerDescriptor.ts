@@ -1,4 +1,5 @@
 import VectorSource from 'ol/source/Vector';
+import {Geometry} from 'ol/geom';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {accessRightsInterface} from '../common/access-rights.interface';
 
@@ -12,7 +13,7 @@ export class VectorLayerDescriptor {
     opacity: any;
     fromComposition: boolean;
     style: any;
-    source?: VectorSource;
+    source?: VectorSource<Geometry>;
     removable?: boolean;
     path: string;
     visible: boolean;

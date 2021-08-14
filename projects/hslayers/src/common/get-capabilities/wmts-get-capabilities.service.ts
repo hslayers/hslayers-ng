@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
-import {Attribution} from 'ol/control';
 import {Layer, Tile} from 'ol/layer';
 import {Source, WMTS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
@@ -150,20 +149,17 @@ export class HsWmtsGetCapabilitiesService {
         let attributions = [];
         if (layer.Attribution) {
           attributions = [
-            new Attribution({
-              html:
-                '<a href="' +
-                layer.Attribution.OnlineResource +
-                '">' +
-                layer.Attribution.Title +
-                '</a>',
-            }),
+            `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
           ];
         }
         const metadata =
           this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
         const new_layer = new Tile({
-          title: layer.Title.replace(/\//g, '&#47;'),
+          properties: {
+            title: layer.Title.replace(/\//g, '&#47;'),
+            abstract: layer.Abstract,
+            metadata,
+          },
           source: new WMTS({
             url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
               .OnlineResource,
@@ -179,9 +175,7 @@ export class HsWmtsGetCapabilitiesService {
             },
             crossOrigin: 'anonymous',
           }),
-          abstract: layer.Abstract,
           useInterimTilesOnError: false,
-          metadata,
           extent: layer.BoundingBox,
         });
         tmp.push(new_layer);
