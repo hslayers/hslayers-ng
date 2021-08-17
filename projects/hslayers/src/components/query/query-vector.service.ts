@@ -126,7 +126,10 @@ export class HsQueryVectorService {
     this.HsQueryBaseService.getFeatureInfoCollected.next();
   }
 
-  exportData(clickedFormat: 'WKT' | 'GeoJSON', feature: Feature): string {
+  exportData(
+    clickedFormat: 'WKT' | 'GeoJSON',
+    feature: Feature<Geometry>
+  ): string {
     let fmt;
     switch (clickedFormat) {
       case 'WKT':

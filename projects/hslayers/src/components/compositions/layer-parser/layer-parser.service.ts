@@ -322,12 +322,14 @@ export class HsCompositionsLayerParserService {
     });
 
     const lyr = new VectorLayer({
-      fromComposition: true,
-      definition: definition,
+      properties: {
+        title: lyr_def.title,
+        fromComposition: true,
+        definition,
+      },
       source: src,
       opacity: lyr_def.opacity || 1,
       style: style,
-      title: lyr_def.title,
     });
     lyr.setVisible(lyr_def.visibility);
     return lyr;

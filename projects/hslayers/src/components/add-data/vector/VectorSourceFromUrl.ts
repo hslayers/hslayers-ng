@@ -1,8 +1,10 @@
 import * as loadingStrategy from 'ol/loadingstrategy';
 import VectorSource from 'ol/source/Vector';
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 import {get as getProj} from 'ol/proj';
 
-export class VectorSourceFromUrl extends VectorSource {
+export class VectorSourceFromUrl extends VectorSource<Geometry> {
   featureProjection: any;
   mapProjection: any;
   error: boolean;
@@ -36,7 +38,7 @@ export class VectorSourceFromUrl extends VectorSource {
         super.getFormat().readFeatures(data, {
           dataProjection: this.featureProjection,
           featureProjection: this.mapProjection,
-        })
+        }) as Feature<Geometry>[]
       );
 
       super.set('loaded', true);

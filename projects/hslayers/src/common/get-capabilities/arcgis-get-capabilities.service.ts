@@ -2,7 +2,7 @@ import {Attribution} from 'ol/control';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
-import {TileWMS} from 'ol/source';
+import {Source, TileWMS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
@@ -101,7 +101,7 @@ export class HsArcgisGetCapabilitiesService {
    * @param caps - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(caps): Layer[] {
+  service2layers(caps): Layer<Source>[] {
     const service = caps.layers;
     //onst srss = caps.spatialReference.wkid;
     const image_formats = caps.supportedImageFormatTypes.split(',');

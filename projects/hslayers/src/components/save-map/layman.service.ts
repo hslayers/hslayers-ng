@@ -7,6 +7,7 @@ import VectorSource from 'ol/source/Vector';
 import {GeoJSON, WFS} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
@@ -471,7 +472,7 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer
    */
-  removeLayer(layer: Layer | string) {
+  removeLayer(layer: Layer<Source> | string): void {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {

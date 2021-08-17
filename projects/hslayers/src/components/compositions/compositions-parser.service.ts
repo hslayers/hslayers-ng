@@ -291,7 +291,7 @@ export class HsCompositionsParserService {
    */
   removeCompositionLayers(): void {
     const to_be_removed = [];
-    this.HsMapService.map.getLayers().forEach((lyr) => {
+    this.HsMapService.getLayersArray().forEach((lyr) => {
       if (getFromComposition(lyr)) {
         to_be_removed.push(lyr);
       }
