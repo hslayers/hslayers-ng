@@ -1,5 +1,4 @@
 /* eslint-disable no-eq-null */
-import BaseLayer from 'ol/layer/Base';
 import proj4 from 'proj4';
 import {
   Cluster,
@@ -35,12 +34,7 @@ import {Group, Layer} from 'ol/layer';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {Kinetic, Map, View} from 'ol';
 import {Projection, transform, transformExtent} from 'ol/proj';
-import {
-  always as alwaysCondition,
-  never as neverCondition,
-  platformModifierKeyOnly as platformModifierKeyOnlyCondition,
-} from 'ol/events/condition';
-import {createStringXY} from 'ol/coordinate';
+import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
 import {HsConfig} from '../../config.service';
@@ -54,8 +48,6 @@ import {
   getEnableProxy,
   getTitle,
 } from '../../common/layer-extensions';
-
-import TileState from 'ol/TileState';
 
 export enum DuplicateHandling {
   AddDuplicate = 0,
@@ -121,13 +113,13 @@ export class HsMapService {
       duration: this.duration,
     }),
     'MouseWheelZoom': new MouseWheelZoom({
-      condition: (browserEvent) => {
+      condition: (browserEvent): boolean => {
         if (this.HsConfig.componentsEnabled?.mapControls == false) {
-          return neverCondition;
+          return false;
         }
         return this.HsConfig.zoomWithModifierKeyOnly
           ? platformModifierKeyOnlyCondition(browserEvent)
-          : alwaysCondition;
+          : true;
       },
       duration: this.duration,
     }),
@@ -425,7 +417,7 @@ export class HsMapService {
    * @description Find layer object by title of layer
    */
   findLayerByTitle(title) {
-    const layers = this.map.getLayers().getArray();
+    const layers = this.getLayersArray();
     let tmp = null;
     for (const layer of layers) {
       if (getTitle(layer) == title) {

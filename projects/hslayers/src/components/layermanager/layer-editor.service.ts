@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 
-import VectorSource from 'ol/source/Vector';
-import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
@@ -67,23 +65,15 @@ export class HsLayerEditorService {
     let extent = null;
     if (layer.getExtent()) {
       extent = layer.getExtent();
-    } else if (layer.getSource().getExtent != undefined) {
-      extent = layer.getSource().getExtent();
+    } else if ((<any>layer.getSource()).getExtent != undefined) {
+      extent = (<any>layer.getSource()).getExtent();
     }
     if (extent) {
       this.fitIfExtentSet(extent, layer);
       return true;
     }
     if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
-      let url = null;
-      if (layer.getSource().getUrls) {
-        //Multi tile
-        url = layer.getSource().getUrls()[0];
-      }
-      if (layer.getSource().getUrl) {
-        //Single tile
-        url = layer.getSource().getUrl();
-      }
+      const url = this.HsLayerUtilsService.getURL(layer);
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       const parser = new WMSCapabilities();
       const caps = parser.read(wrapper.response);

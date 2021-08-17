@@ -674,7 +674,8 @@ export class HsLayerManagerService {
     } else {
       for (const baseLayer of this.data.baselayers) {
         if (baseLayer.type != undefined && baseLayer.type == 'terrain') {
-          baseLayer.active = baseLayer.visible = baseLayer == layer;
+          baseLayer.visible = baseLayer == layer;
+          baseLayer.active = baseLayer.visible;
         }
       }
     }
@@ -692,8 +693,9 @@ export class HsLayerManagerService {
         this.data.terrainlayers[i].type != undefined &&
         this.data.terrainlayers[i].type == 'terrain'
       ) {
-        this.data.terrainlayers[i].active = this.data.terrainlayers[i].visible =
+        this.data.terrainlayers[i].visible =
           this.data.terrainlayers[i] == layer;
+        this.data.terrainlayers[i].active = this.data.terrainlayers[i].visible;
       }
     }
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);

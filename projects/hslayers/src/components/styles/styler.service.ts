@@ -9,13 +9,14 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Filter, Style as GeoStylerStyle, Rule} from 'geostyler-style';
 import {Icon, Style} from 'ol/style';
-import {StyleFunction} from 'ol/style';
+import {StyleFunction} from 'ol/style/Style';
 import {createDefaultStyle} from 'ol/style/Style';
 
 import {Cluster} from 'ol/source';
 import {Geometry} from 'ol/geom';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
@@ -53,6 +54,7 @@ export class HsStylerService {
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
     public HsUtilsService: HsUtilsService,
+    private HsLayerUtilsService: HsLayerUtilsService,
     private HsEventBusService: HsEventBusService,
     private HsLogService: HsLogService,
     public sanitizer: DomSanitizer,
@@ -63,12 +65,20 @@ export class HsStylerService {
   }
 
   async init() {
-    for (const layer of this.HsMapService.getLayersArray()) {
-      this.initLayerStyle(layer);
+    for (const layer of this.HsMapService.getLayersArray().filter((layer) =>
+      this.HsLayerUtilsService.isLayerVectorLayer(layer)
+    )) {
+      this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
     }
     this.HsEventBusService.layerAdditions.subscribe(
       (layerDescriptor: HsLayerDescriptor) => {
-        this.initLayerStyle(layerDescriptor.layer);
+        if (
+          this.HsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
+        ) {
+          this.initLayerStyle(
+            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>
+          );
+        }
       }
     );
   }
@@ -163,7 +173,7 @@ export class HsStylerService {
       this.HsUtilsService.instOf(this.layer.getSource(), Cluster) &&
       this.HsUtilsService.isFunction(style)
     ) {
-      style = this.wrapStyleForClusters(style);
+      style = this.wrapStyleForClusters(style as StyleFunction);
       layer.setStyle(style);
     }
   }
@@ -195,8 +205,13 @@ export class HsStylerService {
       if (getCluster(layer)) {
         await this.styleClusteredLayer(layer);
       }
-    } else if (style && !sld && !this.HsUtilsService.isFunction(style)) {
-      const customJson = this.HsSaveMapService.serializeStyle(style);
+    } else if (
+      style &&
+      !sld &&
+      !this.HsUtilsService.isFunction(style) &&
+      !Array.isArray(style)
+    ) {
+      const customJson = this.HsSaveMapService.serializeStyle(style as Style);
       const sld = (await this.parseStyle(customJson)).sld;
       if (sld) {
         setSld(layer, sld);
@@ -358,7 +373,7 @@ export class HsStylerService {
         this.HsUtilsService.instOf(this.layer.getSource(), Cluster) &&
         this.HsUtilsService.isFunction(style)
       ) {
-        style = this.wrapStyleForClusters(style);
+        style = this.wrapStyleForClusters(style as StyleFunction);
       }
       this.layer.setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
@@ -383,15 +398,20 @@ export class HsStylerService {
    */
   wrapStyleForClusters(style: StyleFunction): StyleFunction {
     return (feature, resolution) => {
-      const tmp: Style[] = style(feature, resolution);
-      for (const evaluatedStyle of tmp) {
-        if (
-          evaluatedStyle.getText &&
-          evaluatedStyle.getText()?.getText()?.includes('[object Object]')
-        ) {
-          const featureListSerialized = evaluatedStyle.getText().getText();
-          const fCount = featureListSerialized.split(',').length.toString();
-          evaluatedStyle.getText().setText(fCount);
+      const tmp = style(feature, resolution);
+      if (!tmp) {
+        return;
+      }
+      if (Array.isArray(tmp)) {
+        for (const evaluatedStyle of tmp as Style[]) {
+          if (
+            evaluatedStyle.getText &&
+            evaluatedStyle.getText()?.getText()?.includes('[object Object]')
+          ) {
+            const featureListSerialized = evaluatedStyle.getText().getText();
+            const fCount = featureListSerialized.split(',').length.toString();
+            evaluatedStyle.getText().setText(fCount);
+          }
         }
       }
       return tmp;

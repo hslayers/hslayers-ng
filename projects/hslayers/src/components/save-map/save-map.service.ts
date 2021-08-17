@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import VectorSource from 'ol/source/Vector';
-import {Circle, Icon, Style} from 'ol/style';
+import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
   Cluster,
   ImageArcGISRest,
@@ -9,7 +9,6 @@ import {
   ImageWMS,
   Source,
   TileArcGISRest,
-  TileWMS,
   WMTS,
   XYZ,
 } from 'ol/source';
@@ -17,7 +16,6 @@ import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
-import {Map} from 'ol';
 
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -204,8 +202,10 @@ export class HsSaveMapService {
    * @param s Style to convert
    * @returns {object} Converted JSON object for style
    */
-  serializeStyle(s: Style | Style[]) {
+  serializeStyle(style: Style | Style[]) {
+    const s = Array.isArray(style) ? style[0] : style;
     const o: any = {};
+    const ima: any = {};
     if (s.getFill() && s.getFill() !== null) {
       o.fill = s.getFill().getColor();
     }
@@ -217,42 +217,27 @@ export class HsSaveMapService {
     }
     if (s.getImage() && s.getImage() !== null) {
       const style_img = s.getImage();
-      const ima: any = {};
-      if (
-        style_img.getFill &&
-        style_img.getFill() &&
-        style_img.getFill() !== null
-      ) {
-        ima.fill = style_img.getFill().getColor();
-      }
-
-      if (
-        style_img.getStroke &&
-        style_img.getStroke() &&
-        style_img.getStroke() !== null
-      ) {
-        ima.stroke = {
-          color: style_img.getStroke().getColor(),
-          width: style_img.getStroke().getWidth(),
-        };
-      }
-
-      if (style_img.getRadius) {
-        ima.radius = style_img.getRadius();
-      }
-      if (
-        this.HsUtilsService.isFunction(style_img.getSrc) &&
-        typeof style_img.getSrc() === 'string' &&
-        !style_img.getSrc().startsWith('data:image')
-      ) {
-        ima.src = this.HsUtilsService.proxify(style_img.getSrc());
-      } else if (
-        this.HsUtilsService.isFunction(style_img.getImage) &&
-        style_img.getImage() !== null
-      ) {
-        if (style_img.getImage().src) {
-          ima.src = style_img.getImage().src;
+      if (this.HsUtilsService.instOf(style_img, RegularShape)) {
+        const regShape = style_img as RegularShape;
+        if (regShape.getFill()) {
+          ima.fill = regShape.getFill().getColor();
         }
+
+        if (regShape.getStroke()) {
+          ima.stroke = {
+            color: regShape.getStroke().getColor(),
+            width: regShape.getStroke().getWidth(),
+          };
+        }
+        ima.radius = regShape.getRadius();
+      }
+
+      if (
+        this.HsUtilsService.instOf(style_img, Icon) &&
+        typeof (style_img as Icon).getSrc() === 'string' &&
+        !(style_img as Icon).getSrc().startsWith('data:image')
+      ) {
+        ima.src = this.HsUtilsService.proxify((style_img as Icon).getSrc());
       }
 
       if (this.HsUtilsService.instOf(style_img, Circle)) {

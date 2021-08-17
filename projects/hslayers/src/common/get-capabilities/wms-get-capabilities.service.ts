@@ -1,9 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Attribution} from 'ol/control';
 import {Layer, Tile} from 'ol/layer';
-import {TileWMS} from 'ol/source';
+import {Source, TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 import {takeUntil} from 'rxjs/operators';
 
@@ -133,7 +132,7 @@ export class HsWmsGetCapabilitiesService {
    * @param path
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml, path: string): Layer[] {
+  service2layers(capabilities_xml, path: string): Layer<Source>[] {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;
@@ -170,27 +169,29 @@ export class HsWmsGetCapabilitiesService {
         }
         const metadata: Metadata = this.getMetadataObjectWithUrls(layer);
         const new_layer = new Tile({
-          title: layer.Title.replace(/\//g, '&#47;'),
-          name: layer.Name.replace(/\//g, '&#47;'),
-          path,
+          properties: {
+            title: layer.Title.replace(/\//g, '&#47;'),
+            name: layer.Name.replace(/\//g, '&#47;'),
+            path,
+            abstract: layer.Abstract,
+            metadata,
+          },
           source: new TileWMS({
             url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
               .OnlineResource,
             attributions: attributions,
-            styles:
-              layer.Style && layer.Style.length > 0
-                ? layer.Style[0].Name
-                : undefined,
             params: {
               LAYERS: layer.Name,
               INFO_FORMAT: layer.queryable ? query_format : undefined,
               FORMAT: image_format,
+              styles:
+                layer.Style && layer.Style.length > 0
+                  ? layer.Style[0].Name
+                  : undefined,
             },
             crossOrigin: 'anonymous',
           }),
-          abstract: layer.Abstract,
           useInterimTilesOnError: false,
-          metadata,
           extent: layer.BoundingBox,
         });
         this.hsMapService.proxifyLayerLoader(new_layer, true);

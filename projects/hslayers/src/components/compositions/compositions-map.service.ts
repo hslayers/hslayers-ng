@@ -1,32 +1,39 @@
-import VectorLayer from 'ol/layer/Vector';
-import {Fill, Stroke, Style} from 'ol/style';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsSaveMapService} from '../save-map/save-map.service';
 import {Injectable} from '@angular/core';
+
+import VectorLayer from 'ol/layer/Vector';
+import {Feature} from 'ol';
+import {Fill, Stroke, Style} from 'ol/style';
+import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
+
 import {
   getHighlighted,
   getRecord,
   setHighlighted,
 } from '../../common/feature-extensions';
 
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsMapService {
   extentLayer = new VectorLayer({
-    title: 'Composition extents',
-    showInLayerManager: false,
+    properties: {
+      title: 'Composition extents',
+      showInLayerManager: false,
+      removable: false,
+    },
     source: new Vector(),
-    removable: false,
     style: function (feature, resolution) {
       return [
         new Style({
           stroke: new Stroke({
             color: '#005CB6',
-            width: getHighlighted(feature) ? 4 : 1,
+            width: getHighlighted(feature as Feature<Geometry>) ? 4 : 1,
           }),
           fill: new Fill({
             color: 'rgba(0, 0, 255, 0.01)',

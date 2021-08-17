@@ -134,23 +134,26 @@ export class HsArcgisGetCapabilitiesService {
           ];
         }
         const new_layer = new Tile({
-          title: layer.Title.replace(/\//g, '&#47;'),
+          properties: {
+            title: layer.Title.replace(/\//g, '&#47;'),
+            abstract: layer.Abstract,
+          },
           source: new TileWMS({
             url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
               .OnlineResource,
             attributions: attributions,
-            styles:
-              layer.Style && layer.Style.length > 0
-                ? layer.Style[0].Name
-                : undefined,
+
             params: {
               LAYERS: layer.Name,
               INFO_FORMAT: layer.queryable ? query_format : undefined,
               FORMAT: image_format,
+              styles:
+                layer.Style && layer.Style.length > 0
+                  ? layer.Style[0].Name
+                  : undefined,
             },
             crossOrigin: 'anonymous',
           }),
-          abstract: layer.Abstract,
           useInterimTilesOnError: false,
           extent: layer.BoundingBox,
         });

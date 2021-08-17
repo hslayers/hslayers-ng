@@ -10,7 +10,7 @@ import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {Injectable} from '@angular/core';
-import {Vector as VectorLayer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorLayerDescriptor} from './VectorLayerDescriptor';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
 import {setDefinition} from '../../../common/layer-extensions';
@@ -74,8 +74,8 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-    addUnder?: BaseLayer
-  ): Promise<VectorLayer> {
+    addUnder?: Layer<Source>
+  ): Promise<VectorLayer<VectorSource<Geometry>>> {
     return new Promise(async (resolve, reject) => {
       try {
         const lyr = await this.createVectorLayer(

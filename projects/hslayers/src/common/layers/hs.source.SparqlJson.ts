@@ -1,6 +1,6 @@
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
-import {Point} from 'ol/geom';
+import {Geometry, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
@@ -226,7 +226,7 @@ export type SparqlOptions = {
 /**
  * Provides a source of features from SPARQL endpoint
  */
-export class SparqlJson extends Vector {
+export class SparqlJson extends Vector<Geometry> {
   category_map = {};
   category_id = 0;
   legend_categories;

@@ -164,15 +164,10 @@ export class HsWmtsGetCapabilitiesService {
             url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
               .OnlineResource,
             attributions: attributions,
-            styles:
+            style:
               layer.Style && layer.Style.length > 0
                 ? layer.Style[0].Name
                 : undefined,
-            params: {
-              LAYERS: layer.Name,
-              INFO_FORMAT: layer.queryable ? query_format : undefined,
-              FORMAT: image_format,
-            },
             crossOrigin: 'anonymous',
           }),
           useInterimTilesOnError: false,

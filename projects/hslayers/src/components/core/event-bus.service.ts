@@ -49,7 +49,7 @@ export class HsEventBusService {
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<{
-    layer: Layer;
+    layer: Layer<Source>;
     progress: HsLayerLoadProgress;
   }> = new Subject();
   /**

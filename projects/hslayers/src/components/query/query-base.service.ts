@@ -42,8 +42,12 @@ export class HsQueryBaseService {
   dataCleared = true;
   queryPoint = new Point([0, 0]);
   queryLayer = new VectorLayer({
-    title: 'Point clicked',
-    queryable: false,
+    properties: {
+      title: 'Point clicked',
+      queryable: false,
+      showInLayerManager: false,
+      removable: false,
+    },
     source: new Vector({
       features: [
         new Feature({
@@ -51,8 +55,6 @@ export class HsQueryBaseService {
         }),
       ],
     }),
-    showInLayerManager: false,
-    removable: false,
     style: (feature) => this.pointClickedStyle(feature),
   });
 
@@ -147,11 +149,13 @@ export class HsQueryBaseService {
     const map = e.map;
     const tmpFeatures = this.getFeaturesUnderMouse(map, e.pixel);
     if (
-      tmpFeatures.some((f) => !this.featuresUnderMouse.includes(f)) ||
+      tmpFeatures.some(
+        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>)
+      ) ||
       this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
     ) {
       this.zone.run(() => {
-        this.featuresUnderMouse = tmpFeatures;
+        this.featuresUnderMouse = tmpFeatures as Feature<Geometry>[];
         if (this.featuresUnderMouse.length) {
           this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
             this.HsMapService.getLayerForFeature(f)

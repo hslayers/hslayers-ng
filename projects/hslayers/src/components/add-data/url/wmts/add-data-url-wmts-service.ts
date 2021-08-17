@@ -201,12 +201,14 @@ export class HsAddDataUrlWmtsService {
   addLayer(layer): void {
     try {
       const wmts = new Tile({
-        title: layer.Title,
-        info_format: this.getPreferredInfoFormat(layer.ResourceURL),
+        properties: {
+          title: layer.Title,
+          info_format: this.getPreferredInfoFormat(layer.ResourceURL),
+          queryCapabilities: false,
+          removable: true,
+          base: layer.base,
+        },
         source: new WMTS({}),
-        queryCapabilities: false,
-        removable: true,
-        base: layer.base,
       });
       // Get WMTS Capabilities and create WMTS source base on it
       const options = optionsFromCapabilities(this.caps, {

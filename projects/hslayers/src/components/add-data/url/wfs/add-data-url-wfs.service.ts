@@ -8,8 +8,9 @@ import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
 import VectorSource from 'ol/source/Vector';
-import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {Geometry} from 'ol/geom';
+
+import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
@@ -120,12 +121,12 @@ export class HsAddDataWfsService {
   }
 
   //FIXME: context
-  createWfsSource(options): Vector {
+  createWfsSource(options): Vector<Geometry> {
     const me = this;
     const src = new Vector({
       strategy: bbox,
       loader: function (extent, resolution, projection) {
-        this.loadingFeatures = true;
+        (<any>this).loadingFeatures = true;
         if (typeof me.version == 'undefined') {
           me.version = '1.0.0';
         }

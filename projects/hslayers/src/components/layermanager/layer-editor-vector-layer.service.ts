@@ -35,7 +35,9 @@ export class HsLayerEditorVectorLayerService {
     if (newValue == true) {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
-        await this.HsStylerService.styleClusteredLayer(layer);
+        await this.HsStylerService.styleClusteredLayer(
+          layer as VectorLayer<Cluster>
+        );
         this.updateFeatureTableLayers(layer);
       }
     } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
