@@ -409,7 +409,7 @@ export class HsCompositionsParserService {
    * @returns {Array} Array of created layers
    * @description Parse composition object to extract individual layers and add them to map
    */
-  async jsonToLayers(j): Promise<BaseLayer[]> {
+  async jsonToLayers(j): Promise<Layer<Source>[]> {
     const layers = [];
     if (j.data) {
       j = j.data;

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import BaseLayer from 'ol/layer/Base';
-import {Attribution} from 'ol/control';
-import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+import ImageSource from 'ol/source/Image';
+import TileSource from 'ol/source/Tile';
+import {Group, Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
-import {ImageWMS, TileWMS} from 'ol/source';
+import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
@@ -29,8 +29,6 @@ import {
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';
-import ImageSource from 'ol/source/Image';
-import TileSource from 'ol/source/Tile';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmsService {
@@ -543,7 +541,7 @@ export class HsAddDataUrlWmsService {
     url: string,
     group: Group,
     layerName: string,
-    addUnder?: BaseLayer,
+    addUnder?: Layer<Source>,
     path?: string
   ): Promise<void> {
     const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
