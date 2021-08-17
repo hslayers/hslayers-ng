@@ -79,8 +79,8 @@ export class HsLayerManagerMetadataService {
     await this.queryMetadata(layerDescriptor);
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
-      if (!layer.hasSublayers) {
-        layer.hasSublayers = true;
+      if (!layerDescriptor.hasSublayers) {
+        layerDescriptor.hasSublayers = true;
         //ADD config values
       }
     }

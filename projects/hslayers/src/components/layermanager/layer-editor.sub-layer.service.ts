@@ -30,11 +30,11 @@ export class HsLayerEditorSublayerService {
   }
   resetSublayers(layer: HsLayerDescriptor) {
     if (this.HsLayerManagerService.currentLayer) {
-      this.checkedSubLayers = layer.layer.checkedSubLayers;
-      this.checkedSubLayersTmp = layer.layer.checkedSubLayersTmp;
+      this.checkedSubLayers = layer.checkedSubLayers;
+      this.checkedSubLayersTmp = layer.checkedSubLayersTmp;
 
-      this.withChildren = layer.layer.withChildren;
-      this.withChildrenTmp = layer.layer.withChildrenTmp;
+      this.withChildren = layer.withChildren;
+      this.withChildrenTmp = layer.withChildrenTmp;
     }
   }
   hasSubLayers(): boolean {
@@ -56,7 +56,8 @@ export class HsLayerEditorSublayerService {
   }
 
   populateSubLayers() {
-    const layer = this.HsLayerManagerService.currentLayer.layer;
+    const wrapper = this.HsLayerManagerService.currentLayer;
+    const layer = wrapper.layer;
     if (this.populatedLayers.includes(layer.ol_uid)) {
       return;
     }
@@ -72,17 +73,17 @@ export class HsLayerEditorSublayerService {
       this.populatedLayers.push(layer.ol_uid);
       const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
       const subSubLayers = subLayersWithChild.map((sl) => sl.Layer).flat();
-      layer.withChildren = subLayersWithChild.reduce(toDictionary, {});
+      wrapper.withChildren = subLayersWithChild.reduce(toDictionary, {});
       //List either 3rd level layers or second if no 3rd level layer exists
       const leafs = subSubLayers.length > 0 ? subSubLayers : subLayers;
-      layer.checkedSubLayers = leafs.reduce(toDictionary, {});
+      wrapper.checkedSubLayers = leafs.reduce(toDictionary, {});
 
-      this.checkedSubLayers = layer.checkedSubLayers;
-      this.withChildren = layer.withChildren;
+      this.checkedSubLayers = wrapper.checkedSubLayers;
+      this.withChildren = wrapper.withChildren;
       this.checkedSubLayersTmp = clone(this.checkedSubLayers);
-      layer.checkedSubLayersTmp = this.checkedSubLayersTmp;
+      wrapper.checkedSubLayersTmp = this.checkedSubLayersTmp;
       this.withChildrenTmp = clone(this.withChildren);
-      layer.withChildrenTmp = this.withChildrenTmp;
+      wrapper.withChildrenTmp = this.withChildrenTmp;
 
       if (!this.HsLayerManagerService.currentLayer.visible) {
         for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {

@@ -900,7 +900,7 @@ export class HsLayerManagerService {
     toToggle: string,
     control: string
   ): void {
-    if (toToggle == 'sublayers' && layer.layer.hasSublayers != true) {
+    if (toToggle == 'sublayers' && layer.hasSublayers != true) {
       return;
     }
     if (this.currentLayer != layer) {
@@ -940,9 +940,9 @@ export class HsLayerManagerService {
     this.HsShareUrlService.updateCustomParams({
       'layerSelected': layer.title,
     });
-    if (!layer.layer.checkedSubLayers) {
-      layer.layer.checkedSubLayers = {};
-      layer.layer.withChildren = {};
+    if (!layer.checkedSubLayers) {
+      layer.checkedSubLayers = {};
+      layer.withChildren = {};
     }
     this.HsLayerSelectorService.select(layer);
     if (this.HsUtilsService.runningInBrowser()) {
