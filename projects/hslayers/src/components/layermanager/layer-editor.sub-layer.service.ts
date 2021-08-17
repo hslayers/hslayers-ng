@@ -58,7 +58,7 @@ export class HsLayerEditorSublayerService {
   populateSubLayers() {
     const wrapper = this.HsLayerManagerService.currentLayer;
     const layer = wrapper.layer;
-    if (this.populatedLayers.includes(layer.ol_uid)) {
+    if (this.populatedLayers.includes(wrapper.uid)) {
       return;
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
@@ -70,7 +70,7 @@ export class HsLayerEditorSublayerService {
       //Function which converts list of layers to dictionary of their names and visibility
       const toDictionary = (d, layer) => ((d[layer.Name] = visible), d);
 
-      this.populatedLayers.push(layer.ol_uid);
+      this.populatedLayers.push(wrapper.uid);
       const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
       const subSubLayers = subLayersWithChild.map((sl) => sl.Layer).flat();
       wrapper.withChildren = subLayersWithChild.reduce(toDictionary, {});

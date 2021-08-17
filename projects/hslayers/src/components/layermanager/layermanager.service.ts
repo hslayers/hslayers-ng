@@ -218,7 +218,7 @@ export class HsLayerManagerService {
       source: this.getLayerSourceUrl(layer),
     };
     this.loadingEvents(layerDescriptor);
-    layerDescriptor.trackBy = layer.ol_uid + ' ' + layerDescriptor.position;
+    layerDescriptor.trackBy = `${layerDescriptor.uid} ${layerDescriptor.position}`;
 
     layer.on('propertychange', (event) => {
       if (event.key == 'title') {
@@ -472,7 +472,6 @@ export class HsLayerManagerService {
       }
     }
     curfolder.zIndex = curfolder.zIndex < zIndex ? zIndex : curfolder.zIndex;
-    lyr.coded_path = curfolder.coded_path;
     curfolder.layers.push(lyr);
     // if (this.data.folders.layers.indexOf(lyr) > -1) {
     //   this.data.folders.layers.splice(this.data.folders.layers.indexOf(lyr), 1);
