@@ -497,9 +497,10 @@ export class HsLaymanService implements HsSaverService {
                 'removeLayerError',
                 {
                   error: error.error.message,
-                  layer: (layer as Layer<Source>)
-                    ? (layer as Layer<Source>).get('title')
-                    : layer,
+                  layer:
+                    layer instanceof Layer
+                      ? (layer as Layer<Source>).get('title')
+                      : layer,
                 }
               )
             );
