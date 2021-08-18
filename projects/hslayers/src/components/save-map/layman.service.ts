@@ -321,8 +321,14 @@ export class HsLaymanService implements HsSaverService {
         featurePrefix: ep.user,
         featureType,
         srsName,
+        nativeElements: null,
       };
-      const featureNode = wfsFormat.writeTransaction(add, upd, del, options);
+      const featureNode: any = wfsFormat.writeTransaction(
+        add,
+        upd,
+        del,
+        options
+      );
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/xml');
       headers.append('Accept', 'application/xml');
@@ -489,14 +495,19 @@ export class HsLaymanService implements HsSaverService {
               this.HsLanguageService.getTranslationIgnoreNonExisting(
                 'SAVECOMPOSITION',
                 'removeLayerError',
-                {error: error.error.message, layer: layer.get('title')}
+                {
+                  error: error.error.message,
+                  layer: (layer as Layer<Source>)
+                    ? (layer as Layer<Source>).get('title')
+                    : layer,
+                }
               )
             );
           });
       });
   }
 
-  getLaymanEndpoint() {
+  getLaymanEndpoint(): HsEndpoint {
     return this.HsCommonEndpointsService.endpoints.find(
       (e) => e.type == 'layman'
     );
