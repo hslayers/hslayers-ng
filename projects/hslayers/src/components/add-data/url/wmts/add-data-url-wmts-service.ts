@@ -208,7 +208,7 @@ export class HsAddDataUrlWmtsService {
           removable: true,
           base: layer.base,
         },
-        source: new WMTS({}),
+        source: new WMTS({} as any),
       });
       // Get WMTS Capabilities and create WMTS source base on it
       const options = optionsFromCapabilities(this.caps, {

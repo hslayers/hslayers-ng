@@ -32,7 +32,7 @@ import {
 } from 'ol/interaction';
 import {Group, Layer} from 'ol/layer';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {Kinetic, Map, View} from 'ol';
+import {Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
@@ -327,7 +327,7 @@ export class HsMapService {
       this.HsConfig.zoomWithModifierKeyOnly &&
       this.HsConfig.mapInteractionsEnabled != false
     ) {
-      this.map.on('wheel', (e) => {
+      this.map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&

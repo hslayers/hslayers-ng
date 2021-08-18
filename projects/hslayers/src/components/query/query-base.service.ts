@@ -208,7 +208,7 @@ export class HsQueryBaseService {
    * @param feature
    */
   serializeFeatureAttributes(feature: Feature<Geometry>): void {
-    feature.attributesForHover = [];
+    const attributesForHover = [];
     const layer = this.HsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
       return;
@@ -240,13 +240,14 @@ export class HsQueryBaseService {
         }
       }
       if (feature.get(attrName)) {
-        feature.attributesForHover.push({
+        attributesForHover.push({
           key: attrLabel,
           value: feature.get(attrName),
           displayFunction: attrFunction,
         });
       }
     }
+    feature.set('attributesForHover', attributesForHover);
   }
 
   setData(data: any, type: string, overwrite?: boolean): void {
