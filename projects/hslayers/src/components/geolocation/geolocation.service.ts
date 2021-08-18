@@ -81,7 +81,7 @@ export class HsGeolocationService {
     });
     this.HsMapService.loaded().then((map) => this.init(map));
   }
-  getRotate(): Rotate {
+  getRotate(): any {
     for (const control of this.HsMapService.map.getControls().getArray()) {
       if (control instanceof Rotate) {
         return control;

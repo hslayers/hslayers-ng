@@ -169,7 +169,7 @@ export class HsWmtsGetCapabilitiesService {
                 ? layer.Style[0].Name
                 : undefined,
             crossOrigin: 'anonymous',
-          }),
+          } as any),
           useInterimTilesOnError: false,
           extent: layer.BoundingBox,
         });

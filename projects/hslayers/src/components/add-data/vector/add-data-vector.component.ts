@@ -14,6 +14,8 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUploadedFiles} from '../../../common/upload/upload.component';
 import {HsUtilsService} from '../../utils/utils.service';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {accessRightsInterface} from '../common/access-rights.interface';
 import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
 
@@ -38,7 +40,7 @@ export class HsAddDataVectorComponent implements OnInit {
   featureCount = 0;
   type = '';
   errorOccurred = false;
-  addUnder: BaseLayer = null;
+  addUnder: Layer<Source> = null;
   showDetails = false;
   saveToLayman: boolean;
   isAuthorized = false;

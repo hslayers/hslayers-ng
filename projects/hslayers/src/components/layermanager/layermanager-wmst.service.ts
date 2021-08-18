@@ -114,7 +114,7 @@ export class HsLayerManagerWmstService {
     if (!olLayer) {
       return false;
     }
-    if (layer.time) {
+    if ((layer as HsLayerDescriptor).time) {
       return true;
     }
     /*

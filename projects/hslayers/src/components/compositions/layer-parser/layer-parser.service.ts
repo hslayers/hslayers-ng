@@ -71,7 +71,7 @@ export class HsCompositionsLayerParserService {
    */
   async createWMTSLayer(lyr_def): Promise<Tile<TileSource>> {
     const wmts = new Tile({
-      source: new WMTS({}),
+      source: new WMTS({} as any),
       properties: {
         title: lyr_def.title,
         info_format: lyr_def.info_format,
