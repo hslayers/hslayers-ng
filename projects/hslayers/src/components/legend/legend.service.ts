@@ -1,6 +1,10 @@
+import {DomSanitizer} from '@angular/platform-browser';
+import {Injectable} from '@angular/core';
+
 import CircleStyle from 'ol/style/Circle';
 import Feature from 'ol/Feature';
-import StyleFunction from 'ol/style/Style';
+import RenderFeature from 'ol/render/Feature';
+import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
 import {
   Cluster,
@@ -10,12 +14,9 @@ import {
   TileWMS,
   XYZ,
 } from 'ol/source';
-import {DomSanitizer} from '@angular/platform-browser';
-import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
-import {Injectable} from '@angular/core';
-
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
+import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
@@ -28,6 +29,13 @@ import {
   getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
+
+//Following type-defs are missing in the OL export
+declare type StyleFunction = (
+  feature: Feature<any> | RenderFeature,
+  number?: number
+) => void | Style | Style[];
+declare type StyleLike = Style | Array<Style> | StyleFunction;
 
 @Injectable({
   providedIn: 'root',
@@ -131,10 +139,10 @@ export class HsLegendService {
     if (currentLayer === undefined) {
       return;
     }
-    let styleArray = [];
+    let styleArray: Array<Style | Style[]> = [];
     const layerStyle = currentLayer.getStyle();
     if (!this.HsUtilsService.isFunction(layerStyle)) {
-      styleArray.push(layerStyle);
+      styleArray.push(layerStyle as Style | Style[]);
     } else {
       if (currentLayer.getSource().getFeatures().length > 0) {
         styleArray = styleArray.concat(
@@ -155,7 +163,8 @@ export class HsLegendService {
       }
     }
     const filtered = styleArray.filter(
-      (style) => style.getText == undefined || !style.getText()
+      (style) =>
+        (style as Style).getText === undefined || !(style as Style).getText()
     );
     let serializedStyles = filtered
       .map((style) => this.serializeStyle(style))
@@ -170,15 +179,15 @@ export class HsLegendService {
   stylesForFeatures(
     features: Array<Feature<Geometry>>,
     layerStyle: StyleFunction
-  ): Array<Style> {
+  ): Style[] {
     let featureStyles = features.map((feature) => layerStyle(feature));
     if (featureStyles.length > 1000) {
       featureStyles = featureStyles.slice(0, 100);
     }
-    if (featureStyles[0].length) {
+    if (Array.isArray(featureStyles[0])) {
       featureStyles = [...featureStyles];
     }
-    return featureStyles;
+    return featureStyles as Style[];
   }
 
   /**
@@ -186,9 +195,9 @@ export class HsLegendService {
    * @param style - OpenLayers style
    * @returns Simplified description of style used by template to draw legend
    */
-  serializeStyle(style: Style) {
-    const styleToSerialize = style[0] ? style[0] : style;
-    if (styleToSerialize.getImage == undefined) {
+  serializeStyle(style: Style | Style[]) {
+    const styleToSerialize = style[0] ? (style[0] as Style) : (style as Style);
+    if (styleToSerialize.getImage === undefined) {
       return;
     }
     const image = styleToSerialize.getImage();
@@ -205,19 +214,21 @@ export class HsLegendService {
    * @param image - Image description
    * @returns Simplified description of style used by template to draw legend
    */
-  setUpLegendStyle(fill: Fill, stroke: Stroke, image: any) {
+  setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle) {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.HsUtilsService.instOf(image, Icon)) {
+      const icon = image as Icon;
       row.icon = {
         type: 'icon',
-        src: this.sanitizer.bypassSecurityTrustResourceUrl(image.getSrc()),
+        src: this.sanitizer.bypassSecurityTrustResourceUrl(icon.getSrc()),
       };
     } else if (
       image &&
       (this.HsUtilsService.instOf(image, Circle) ||
         this.HsUtilsService.instOf(image, CircleStyle))
     ) {
+      const circle = image as Circle | CircleStyle;
       row.customCircle = {
         fill: 'white',
         type: 'circle',
@@ -225,16 +236,16 @@ export class HsLegendService {
         cy: '17.5px',
         r: '15px',
       };
-      if (image.getStroke()) {
+      if (circle.getStroke()) {
         Object.assign(row.customCircle, {
-          fill: image.getFill().getColor(),
-          stroke: image.getStroke().getColor(),
-          strokeWidth: image.getStroke().getWidth(),
+          fill: circle.getFill().getColor(),
+          stroke: circle.getStroke().getColor(),
+          strokeWidth: circle.getStroke().getWidth(),
         });
       }
-      if (image.getFill()) {
+      if (circle.getFill()) {
         Object.assign(row.customCircle, {
-          fill: image.getFill().getColor(),
+          fill: circle.getFill().getColor(),
         });
       }
     }
