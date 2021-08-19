@@ -24,6 +24,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
+const layerUtilsMock = mockLayerUtilsService();
 describe('HsLegendComponent', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -53,7 +54,7 @@ describe('HsLegendComponent', () => {
       ],
       providers: [
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
@@ -72,17 +73,21 @@ describe('HsLegendComponent', () => {
   });
 
   it('should generate descriptor', () => {
+    const params = {
+      LAYERS: '2017_yield_corn',
+      FORMAT: 'image/png',
+    };
     const layer = new TileLayer({
       properties: {title: 'Crop stats', showInLayerManager: false},
       source: new TileWMS({
         url: 'http://localhost/ows?',
-        params: {
-          LAYERS: '2017_yield_corn',
-          FORMAT: 'image/png',
-        },
+        params,
       }),
       visible: true,
     });
+    layerUtilsMock.isLayerWMS.and.returnValue(true);
+    layerUtilsMock.getLayerParams.and.returnValue(params);
+    layerUtilsMock.getURL.and.returnValue('http://localhost/ows?');
 
     component.addLayerToLegends(layer);
 
@@ -110,6 +115,7 @@ describe('HsLegendComponent', () => {
     component.addLayerToLegends(layer);
     const layerParams = layer.getSource().getParams();
     layerParams.LAYERS = `2017_damage_tomato`;
+    layerUtilsMock.getLayerParams.and.returnValue(layerParams);
     layer.getSource().updateParams(layerParams);
     expect(component.layerDescriptors[0].subLayerLegends).toEqual([
       '/proxy/http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_damage_tomato&format=image%2Fpng',

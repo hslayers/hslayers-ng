@@ -1,6 +1,5 @@
-export const mockLayerUtilsService = jasmine.createSpyObj(
-  'HsLayerUtilsService',
-  [
+export function mockLayerUtilsService() {
+  return jasmine.createSpyObj('HsLayerUtilsService', [
     'layerIsZoomable',
     'isLayerWMS',
     'layerIsStyleable',
@@ -26,5 +25,5 @@ export const mockLayerUtilsService = jasmine.createSpyObj(
     'translateTitle',
     'layerLoaded',
     'layerInvalid',
-  ]
-);
+  ]);
+}

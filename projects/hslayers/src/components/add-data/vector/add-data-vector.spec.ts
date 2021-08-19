@@ -89,7 +89,7 @@ describe('add-layers-vector', () => {
           provide: HsCommonLaymanService,
           useValue: new HsCommonLaymanServiceMock(),
         },
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),

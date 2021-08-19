@@ -116,6 +116,9 @@ export class HsLayerUtilsService {
     if (this.HsUtilsService.instOf(src, WMTS)) {
       return (src as WMTS).getUrls()[0];
     }
+    if (this.HsUtilsService.instOf(src, XYZ)) {
+      return (src as XYZ).getUrls()[0];
+    }
   }
 
   /**

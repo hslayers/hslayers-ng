@@ -55,6 +55,7 @@ class emptyMock {
 let mockedMapService;
 let CompositionsCatalogueService;
 
+const layerUtilsMock = mockLayerUtilsService();
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
@@ -105,7 +106,7 @@ describe('compositions', () => {
             contentWrapper: document.createElement('div'),
           },
         },
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         HsStylerService,
         HsCompositionsLayerParserService,
         {
@@ -125,7 +126,7 @@ describe('compositions', () => {
             new HsStylerService(
               null,
               mockedUtilsService,
-              mockLayerUtilsService,
+              layerUtilsMock,
               mockedEventBusService,
               null,
               null,

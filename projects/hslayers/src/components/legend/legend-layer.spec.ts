@@ -61,7 +61,7 @@ describe('HsLegendLayerComponent', () => {
       providers: [
         HsLegendService,
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],

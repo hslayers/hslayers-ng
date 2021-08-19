@@ -31,7 +31,7 @@ describe('HsGetCapabilitiesModule', () => {
         HsDimensionService,
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
       ],
     }); //.compileComponents();
     service = TestBed.get(HsDimensionService);

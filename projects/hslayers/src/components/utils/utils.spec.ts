@@ -14,6 +14,7 @@ import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLogService} from './../../common/log/log.service';
 import {HsUtilsService} from './utils.service';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 class EmptyMock {
   constructor() {}
@@ -37,10 +38,7 @@ describe('HsUtilsService', () => {
         HsConfig,
         {
           provide: HsLayerUtilsService,
-          useValue: jasmine.createSpyObj('HsLayerUtilsService', [
-            'isLayerWMS',
-            'getLayerParams',
-          ]),
+          useValue: mockLayerUtilsService(),
         },
 
         {provide: HsLogService, userValue: new EmptyMock()},

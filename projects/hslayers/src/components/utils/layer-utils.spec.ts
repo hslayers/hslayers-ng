@@ -148,6 +148,7 @@ describe('HsLayerUtilsService', () => {
   });
   it('try to get layer single tile url or multiple tile url', () => {
     let layerUrl = hsLayerUtils.getURL(tileWMTSLayer);
+
     expect(layerUrl).toEqual(
       'https://openlayers.org/en/latest/examples/wmts.html'
     );

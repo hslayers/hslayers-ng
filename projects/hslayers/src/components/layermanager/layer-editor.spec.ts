@@ -31,6 +31,7 @@ import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {getCluster} from '../../common/layer-extensions';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class HsConfigMock {
   reverseLayerList = true;
@@ -87,10 +88,7 @@ describe('layermanager', () => {
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayerUtilsService,
-          useValue: jasmine.createSpyObj('HsLayerUtilsService', [
-            'isLayerWMS',
-            'getLayerParams',
-          ]),
+          useValue: mockLayerUtilsService(),
         },
         {provide: HsStylerService, useValue: new HsStylerServiceMock()},
         {provide: HsDrawService, useValue: new emptyMock()},

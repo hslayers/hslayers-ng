@@ -76,7 +76,7 @@ describe('add-data-url', () => {
           useValue: EmptyMock,
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
       ],
     });
     hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);

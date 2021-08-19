@@ -26,6 +26,7 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 import {wmsGetCapabilitiesResponse} from '../../../test/data/wms-capabilities';
 
 class HsConfigMock {
@@ -37,6 +38,7 @@ class emptyMock {
   constructor() {}
 }
 
+const layerUtilsMock = mockLayerUtilsService();
 describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
@@ -46,14 +48,16 @@ describe('layermanager-layer-list', () => {
     source: new VectorSource({}),
   });
 
+  const params = {'LAYERS': 'BSS', 'TILED': true };
   const subLayerContainerLayer = new ImageLayer({
     properties: {title: 'test'},
     source: new ImageWMS({
       url: 'http://geoservices.brgm.fr/geologie',
-      params: {'LAYERS': 'BSS', 'TILED': true},
+      params,
       crossOrigin: 'anonymous',
     }),
   });
+  layerUtilsMock.getLayerParams.and.returnValue(params);
 
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -93,11 +97,7 @@ describe('layermanager-layer-list', () => {
         },
         {
           provide: HsLayerUtilsService,
-          useValue: jasmine.createSpyObj('HsLayerUtilsService', [
-            'isLayerWMS',
-            'getLayerParams',
-            'updateLayerParams',
-          ]),
+          useValue: layerUtilsMock,
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {

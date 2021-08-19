@@ -85,7 +85,7 @@ describe('HsDraw', () => {
         {provide: HsLayoutService, useValue: mockLayoutService},
         {provide: HsLanguageService, useValue: mockLanguageService},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
