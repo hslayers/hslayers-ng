@@ -1,3 +1,26 @@
+<!-- Feature header template -->
+<ng-template #featureHeader let-feature="feature" let-type="type">
+    <div class="d-flex flex-row" style="background-color: aliceblue;">
+        <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
+        <a class="p-1"  *ngIf="HsQueryVectorService.isFeatureRemovable(feature) && type" (click)="removeFeature(feature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.' + type | translate">
+            <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+        </a>
+    </div>
+</ng-template>
+
+<!-- Feature attribute row template -->
+<ng-template #featureAttribute let-attributes="attributes">
+    <div *ngIf="attributes.length > 0">
+        <div *ngFor="let attribute of attributes" class="d-flex flex-row">
+            <div class="p-1 flex-grow-1">
+                {{HsFeatureTableService.translate(attribute.key)}} 
+            </div>
+            <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
+        </div>
+    </div>
+</ng-template>
+
+
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
         <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse; let i = index" style="line-height: 1.2">
@@ -9,41 +32,24 @@
             <br>
             <div *ngFor="let feature of layerDesc.features">
                 <!-- Layout for clustered layers -->
-                <div *ngIf="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
-                    <div *ngFor="let subFeature of getFeatures(feature)" class="d-flex flex-column" class="hs-hover-popup-feature">
-                        <div class="d-flex flex-row">
-                            <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(subFeature)}}</em></div>
-                            <a class="p-1"  *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.removeClusterPart' | translate">
-                                <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
-                            </a>
-                        </div>
-                        <div [hidden]="!(subFeature.attributesForHover.length > 0)">
-                            <div *ngFor="let attribute of subFeature.attributesForHover" class="d-flex flex-row">
-                                <div class="p-1 flex-grow-1">
-                                    {{attribute.key}} 
-                                </div>
-                                <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
+                <div *ngIf="isClustered(feature); else nonClusteredPopUp" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
+                    <div class="d-flex flex-column">
+                        <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature}"></ng-container>
+                        <div [hidden]="!(attributesForHover.length > 0)" class="ml-1 mt-1">
+                            <div *ngFor="let attribute of attributesForHover" class="d-flex flex-column hs-hover-popup-feature">
+                                <ng-container *ngTemplateOutlet="featureHeader;context:{feature: attribute.feature, type: 'removeClusterPart'}"></ng-container>
+                                <ng-container *ngTemplateOutlet="featureAttribute;context:{attributes: attribute.attributes}"></ng-container>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Layout for non-clustered layers -->
-                <div *ngIf="!isClustered(feature)" class="hs-hover-popup-feature">
-                    <div class="d-flex flex-row">
-                        <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
-                        <a class="p-1"  *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.removeFeature' | translate">
-                            <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
-                        </a>
+                <ng-template #nonClusteredPopUp>
+                    <div  class="hs-hover-popup-feature">
+                        <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature, type: 'removeFeature'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="featureAttribute;context:{attributes: attributesForHover}"></ng-container>
                     </div>
-                    <div *ngIf="feature.attributesForHover.length > 0">
-                        <div *ngFor="let attribute of feature.attributesForHover" class="d-flex flex-row">
-                            <div class="p-1 flex-grow-1">
-                                {{HsFeatureTableService.translate(attribute.key)}} 
-                            </div>
-                            <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
-                        </div>
-                    </div>
-                </div>
+                </ng-template>
             </div>
             <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)" *ngIf="HsLayerUtilsService.isLayerEditable(layerDesc.layer)" data-toggle="tooltip" title="Clear layer">
             {{'QUERY.featurePopup.clearLayer' | translate}}

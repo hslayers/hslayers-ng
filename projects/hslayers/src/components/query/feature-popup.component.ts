@@ -27,6 +27,8 @@ import {getPopUp, getTitle} from '../../common/layer-extensions';
 export class HsQueryFeaturePopupComponent implements OnDestroy {
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
+  attributesForHover = [];
+
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
     public HsQueryVectorService: HsQueryVectorService,
@@ -64,13 +66,33 @@ export class HsQueryFeaturePopupComponent implements OnDestroy {
       }
     );
     const featureCount = featuresWithPopup.length;
+
+    if (featureCount > 0) {
+      this.HsQueryBaseService.featuresUnderMouse.forEach((feature) => {
+        this.attributesForHover =
+          this.HsQueryBaseService.serializeFeatureAttributes(feature);
+
+        if (getFeatures(feature)) {
+          getFeatures(feature).forEach((subfeature) => {
+            const subFeatureObj: any = {};
+            subFeatureObj.feature = subfeature;
+            subFeatureObj.attributes =
+              this.HsQueryBaseService.serializeFeatureAttributes(subfeature);
+            this.attributesForHover.push(subFeatureObj);
+          });
+        }
+      });
+    }
+
     return {
       'display': featureCount > 0 ? 'block' : 'none',
     };
   }
+
   closePopup() {
     this.HsQueryBaseService.featuresUnderMouse = [];
   }
+
   isClustered(feature) {
     return getFeatures(feature) && getFeatures(feature).length > 0;
   }
