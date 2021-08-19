@@ -22,7 +22,7 @@
     "geostyler-sld-parser": "^2.0.0",
     "geostyler-style": "^4.0.0",
     "ngx-cookie-service": "^11.0.0",
-    "ol": ">=6.0.0 <6.6.0",
+    "ol": "^6.6.0",
     "ol-popup": "^4.0.0",
     "proj4": "^2.6.0",
     "queue": "^6.0.0",
