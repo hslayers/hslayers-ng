@@ -66,15 +66,15 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
 
-  changeSublayerVisibilityState(layer, state): void {
-    if (layer.layer.checkedSubLayers) {
-      Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
-        layer.layer.checkedSubLayers[key] = state;
+  changeSublayerVisibilityState(layer: HsLayerDescriptor, state): void {
+    if (layer.checkedSubLayers) {
+      Object.keys(layer.checkedSubLayers).forEach((key) => {
+        layer.checkedSubLayers[key] = state;
       });
     }
-    if (layer.layer.withChildren) {
-      Object.keys(layer.layer.withChildren).forEach((key) => {
-        layer.layer.withChildren[key] = state;
+    if (layer.withChildren) {
+      Object.keys(layer.withChildren).forEach((key) => {
+        layer.withChildren[key] = state;
       });
     }
   }
@@ -105,15 +105,14 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
         this.changeSublayerVisibilityState(layer, layer.visible);
       }
     } else {
-      if (layer.layer.checkedSubLayers) {
-        Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
-          layer.layer.checkedSubLayers[key] =
-            layer.layer.checkedSubLayersTmp[key];
+      if (layer.checkedSubLayers) {
+        Object.keys(layer.checkedSubLayers).forEach((key) => {
+          layer.checkedSubLayers[key] = layer.checkedSubLayersTmp[key];
         });
       }
-      if (layer.layer.withChildren) {
-        Object.keys(layer.layer.withChildren).forEach((key) => {
-          layer.layer.withChildren[key] = layer.layer.withChildrenTmp[key];
+      if (layer.withChildren) {
+        Object.keys(layer.withChildren).forEach((key) => {
+          layer.withChildren[key] = layer.withChildrenTmp[key];
         });
       }
     }

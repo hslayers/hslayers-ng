@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsDimensionDescriptor} from './dimensions/dimension.class';
 import {HsDimensionService} from '../../common/dimension.service';
@@ -108,12 +109,12 @@ export class HsLayerManagerWmstService {
    * @param layer - Container object of layer (layerContainer.layer expected)
    * @returns True for WMS layer with time support
    */
-  layerIsWmsT(layer: HsLayerDescriptor | Layer): boolean {
-    const olLayer: Layer = layer.layer ?? layer;
+  layerIsWmsT(layer: HsLayerDescriptor | Layer<Source>): boolean {
+    const olLayer: Layer<Source> = (layer as any).layer ?? layer;
     if (!olLayer) {
       return false;
     }
-    if (layer.time) {
+    if ((layer as HsLayerDescriptor).time) {
       return true;
     }
     /*
@@ -148,7 +149,7 @@ export class HsLayerManagerWmstService {
   }
 
   //TODO: just copy-pasted from "layerIsWmsT()", needs clean-up FIXME: delete
-  parseDimensionParam(layer: Layer): void {
+  parseDimensionParam(layer: Layer<Source>): void {
     const dimensions = getDimensions(layer);
     if (dimensions && dimensions['time']) {
       const timedata: any = {};

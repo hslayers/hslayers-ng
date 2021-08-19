@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
+
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+
 import {HsConfig} from '../../config.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {Layer} from 'ol/layer';
 import {getBase} from '../../common/layer-extensions';
 
 @Component({
@@ -24,11 +28,11 @@ export class HsLayerManagerGalleryComponent {
     this.data = this.HsLayerManagerService.data;
   }
 
-  changeBaseLayerVisibility(toWhat: boolean, layer: Layer): void {
+  changeBaseLayerVisibility(toWhat: boolean, layer: Layer<Source>): void {
     this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
   }
 
-  toggleMiniMenu(layer: Layer): void {
+  toggleMiniMenu(layer: HsLayerDescriptor): void {
     if (layer.galleryMiniMenu) {
       layer.galleryMiniMenu = !layer.galleryMiniMenu;
     } else {
@@ -36,7 +40,7 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  toggleBasemap(layer?: Layer): void {
+  toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {
       if (!layer.active) {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);

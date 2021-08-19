@@ -1,8 +1,13 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {GeoJSON, WFS} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
@@ -24,11 +29,10 @@ import {
 import {
   getLayerName,
   getLaymanFriendlyLayerName,
+  wfsFailed,
   wfsNotAvailable,
   wfsPendingOrStarting,
-  wfsFailed
 } from './layman-utils';
-import { Subject } from 'rxjs';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -40,7 +44,7 @@ export type WfsSyncParams = {
   /** Array of features to delete */
   del;
   /** OpenLayers layer which has to have a title attribute */
-  layer: Layer;
+  layer: VectorLayer<VectorSource<Geometry>>;
 };
 
 @Injectable({
@@ -207,7 +211,10 @@ export class HsLaymanService implements HsSaverService {
    * @param layer Layer to get Layman friendly name for
    * get features
    */
-  public async upsertLayer(ep: HsEndpoint, layer: Layer): Promise<void> {
+  public async upsertLayer(
+    ep: HsEndpoint,
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): Promise<void> {
     if (layer.getSource().loading) {
       return;
     }
@@ -314,8 +321,14 @@ export class HsLaymanService implements HsSaverService {
         featurePrefix: ep.user,
         featureType,
         srsName,
+        nativeElements: null,
       };
-      const featureNode = wfsFormat.writeTransaction(add, upd, del, options);
+      const featureNode: any = wfsFormat.writeTransaction(
+        add,
+        upd,
+        del,
+        options
+      );
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/xml');
       headers.append('Accept', 'application/xml');
@@ -335,7 +348,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   private cacheLaymanDescriptor(
-    layer: Layer,
+    layer: VectorLayer<VectorSource<Geometry>>,
     desc: HsLaymanLayerDescriptor,
     endpoint: HsEndpoint
   ): void {
@@ -353,7 +366,10 @@ export class HsLaymanService implements HsSaverService {
    * with features for a specified layer
    * Retrieve layers features from server
    */
-  async makeGetLayerRequest(ep: HsEndpoint, layer: Layer): Promise<string> {
+  async makeGetLayerRequest(
+    ep: HsEndpoint,
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized anytime */
@@ -449,7 +465,7 @@ export class HsLaymanService implements HsSaverService {
     }
   }
 
-  private managePendingLayers(layerName){
+  private managePendingLayers(layerName) {
     if (this.pendingLayers.includes(layerName)) {
       this.pendingLayers = this.pendingLayers.filter(
         (layer) => layer != layerName
@@ -462,7 +478,7 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer
    */
-  removeLayer(layer: Layer | string) {
+  removeLayer(layer: Layer<Source> | string): void {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
@@ -479,14 +495,20 @@ export class HsLaymanService implements HsSaverService {
               this.HsLanguageService.getTranslationIgnoreNonExisting(
                 'SAVECOMPOSITION',
                 'removeLayerError',
-                {error: error.error.message, layer: layer.get('title')}
+                {
+                  error: error.error.message,
+                  layer:
+                    layer instanceof Layer
+                      ? (layer as Layer<Source>).get('title')
+                      : layer,
+                }
               )
             );
           });
       });
   }
 
-  getLaymanEndpoint() {
+  getLaymanEndpoint(): HsEndpoint {
     return this.HsCommonEndpointsService.endpoints.find(
       (e) => e.type == 'layman'
     );

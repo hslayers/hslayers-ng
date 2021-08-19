@@ -7,6 +7,9 @@ import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
+import VectorSource from 'ol/source/Vector';
+import {Geometry} from 'ol/geom';
+
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -118,12 +121,12 @@ export class HsAddDataWfsService {
   }
 
   //FIXME: context
-  createWfsSource(options): Vector {
+  createWfsSource(options): Vector<Geometry> {
     const me = this;
     const src = new Vector({
       strategy: bbox,
       loader: function (extent, resolution, projection) {
-        this.loadingFeatures = true;
+        (<any>this).loadingFeatures = true;
         if (typeof me.version == 'undefined') {
           me.version = '1.0.0';
         }
@@ -168,7 +171,7 @@ export class HsAddDataWfsService {
               const doc = oDOM.documentElement;
 
               features = me.readFeatures(doc);
-              this.addFeatures(features);
+              (this as VectorSource<Geometry>).addFeatures(features);
               me.loadingFeatures = false;
             }
           },
@@ -422,22 +425,24 @@ export class HsAddDataWfsService {
     sld?: string
   ): void {
     const options = {
-      layer: layer,
+      layer,
       url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       strategy: bbox,
       srs: srs,
     };
 
     const new_layer = new VectorLayer({
-      name: layerName,
-      title: layer.Title.replace(/\//g, '&#47;'),
+      properties: {
+        name: layerName,
+        title: layer.Title.replace(/\//g, '&#47;'),
+        path: folder,
+        removable: true,
+        sld,
+        wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+      },
       source: this.createWfsSource(options),
-      path: folder,
       renderOrder: null,
-      removable: true,
-      sld,
       //Used to determine whether its URL WFS service when saving to compositions
-      wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
     });
     this.hsMapService.map.addLayer(new_layer);
     this.hsLayoutService.setMainPanel('layermanager');
@@ -464,9 +469,7 @@ export class HsAddDataWfsService {
     }
     const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
     if (extent) {
-      this.hsMapService.map
-        .getView()
-        .fit(extent, this.hsMapService.map.getSize());
+      this.hsMapService.fitExtent(extent);
     }
   }
 }

@@ -12,6 +12,8 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {accessRightsInterface} from '../add-data/common/access-rights.interface';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
@@ -291,11 +293,11 @@ export class HsSaveMapManagerService {
       .getLayers()
       .getArray()
       .filter(
-        (lyr) =>
+        (lyr: Layer<Source>) =>
           getShowInLayerManager(lyr) == undefined ||
           getShowInLayerManager(lyr) == true
       )
-      .map((lyr) => {
+      .map((lyr: Layer<Source>) => {
         return {
           title: getTitle(lyr),
           checked: true,

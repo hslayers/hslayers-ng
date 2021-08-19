@@ -1,7 +1,10 @@
 import {Feature} from 'ol';
 import {Injectable, NgZone} from '@angular/core';
+import {forkJoin} from 'rxjs';
 
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
+import {Geometry} from 'ol/geom';
+
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
 import {HsAddDataService} from '../add-data.service';
@@ -16,7 +19,6 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {forkJoin} from 'rxjs';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
@@ -311,7 +313,7 @@ export class HsAddDataCatalogueService {
         query = this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data,
-          (feature: Feature) =>
+          (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature),
           this.data.textField
         );

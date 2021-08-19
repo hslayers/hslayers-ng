@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import Collection from 'ol/Collection';
 import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Draw, Modify} from 'ol/interaction';
@@ -13,6 +14,8 @@ import {catchError, timeout} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {transform} from 'ol/proj';
 
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -22,25 +25,26 @@ import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getHighlighted} from '../../common/feature-extensions';
-import {getTitle} from '../../common/layer-extensions';
+import {getTitle, setTitle} from '../../common/layer-extensions';
 
 export type Waypoint = {
   name: string;
   lon: number;
   lat: number;
   hash: number;
-  routes: {from: Feature; to: Feature};
+  routes: {from: Feature<Geometry>; to: Feature<Geometry>};
   featureId;
+  editMode?: boolean;
   loading: boolean;
 };
 
 const WAYPOINT = 'wp';
 
-export function setWaypoint(feature: Feature, wp: Waypoint): void {
+export function setWaypoint(feature: Feature<Geometry>, wp: Waypoint): void {
   feature.set(WAYPOINT, wp);
 }
 
-export function getWaypoint(feature: Feature): Waypoint {
+export function getWaypoint(feature: Feature<Geometry>): Waypoint {
   return feature.get(WAYPOINT);
 }
 
@@ -50,19 +54,19 @@ export function getWaypoint(feature: Feature): Waypoint {
 export class HsTripPlannerService {
   waypoints: Waypoint[] = [];
   trip: any = {};
-  movable_features = new Collection();
+  movable_features = new Collection<Feature<Geometry>>();
   modify = new Modify({
     features: this.movable_features,
   });
-  waypointSource: VectorSource;
-  waypointLayer: VectorLayer;
-  routeSource: VectorSource;
-  routeLayer: VectorLayer;
+  waypointSource: VectorSource<Point>;
+  waypointLayer: VectorLayer<VectorSource<Point>>;
+  routeSource: VectorSource<Geometry>;
+  routeLayer: VectorLayer<VectorSource<Geometry>>;
   timer: any;
-  vectorLayers: {layer: VectorLayer; title: string}[];
+  vectorLayers: {layer: VectorLayer<VectorSource<Geometry>>; title: string}[];
   selectedLayerWrapper: {
-    route?: {layer: VectorLayer; title: string};
-    waypoints?: {layer: VectorLayer; title: string};
+    route?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
+    waypoints?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
   } = {};
 
   waypointRouteStyle = (feature, resolution) => {
@@ -149,8 +153,10 @@ export class HsTripPlannerService {
           title: 'newLayer',
         },
         ...this.HsMapService.getLayersArray()
-          .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer))
-          .map((layer) => {
+          .filter((layer: Layer<Source>) =>
+            this.HsLayerUtilsService.isLayerDrawable(layer)
+          )
+          .map((layer: VectorLayer<VectorSource<Geometry>>) => {
             return {layer, title: getTitle(layer)};
           }),
       ];
@@ -172,20 +178,26 @@ export class HsTripPlannerService {
   createWaypointLayer(): void {
     this.waypointSource = new VectorSource();
     this.waypointLayer = new VectorLayer({
-      title: this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints'),
       source: this.waypointSource,
       style: this.waypointRouteStyle,
     });
+    setTitle(
+      this.waypointLayer,
+      this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints')
+    );
     this.HsMapService.map.addLayer(this.waypointLayer);
   }
 
   createRouteLayer(): void {
     this.routeSource = new VectorSource();
     this.routeLayer = new VectorLayer({
-      title: this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute'),
       source: this.routeSource,
       style: this.waypointRouteStyle,
     });
+    setTitle(
+      this.routeLayer,
+      this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute')
+    );
     this.HsMapService.map.addLayer(this.routeLayer);
   }
 
@@ -195,7 +207,7 @@ export class HsTripPlannerService {
    * @param usage - route or waypoints
    */
   async selectLayer(
-    layer: {layer: VectorLayer; title: string},
+    layer: {layer: VectorLayer<VectorSource<Geometry>>; title: string},
     usage: 'route' | 'waypoints'
   ): Promise<void> {
     if (usage == 'route') {
@@ -206,7 +218,7 @@ export class HsTripPlannerService {
       this.selectedLayerWrapper.route = layer;
     }
     if (usage == 'waypoints') {
-      this.waypointLayer = layer.layer;
+      this.waypointLayer = layer.layer as VectorLayer<VectorSource<Point>>;
       if (this.waypointLayer) {
         this.waypointSource = this.waypointLayer.getSource();
       }
@@ -239,7 +251,7 @@ export class HsTripPlannerService {
     }
   }
 
-  getTextOnFeature(feature: Feature): string {
+  getTextOnFeature(feature: Feature<Geometry>): string {
     let tmp = '';
     const wp: Waypoint = getWaypoint(feature);
     if (wp) {
@@ -272,7 +284,7 @@ export class HsTripPlannerService {
       'wp': wp,
       geometry: new Point([x, y]),
       id: this.HsUtilsService.generateUuid(),
-    });
+    }) as Feature<Point>;
     feature.setId(feature.get('id'));
     wp.featureId = feature.getId();
     this.waypointSource.addFeature(feature);
@@ -290,38 +302,34 @@ export class HsTripPlannerService {
   waypointAdded(wp: Waypoint): void {
     const feature = this.waypointSource.getFeatureById(wp.featureId);
     this.movable_features.push(feature);
-    feature.getGeometry().on(
-      'change',
-      (e) => {
-        this.removeRoutesForWaypoint(wp);
-        const new_cords = transform(
-          feature.getGeometry().getCoordinates(),
-          this.HsMapService.getCurrentProj().getCode(),
-          'EPSG:4326'
-        );
-        wp.lon = new_cords[0];
-        wp.lat = new_cords[1];
-        const prev_index = this.waypoints.indexOf(wp) - 1;
-        if (prev_index > -1) {
-          this.waypoints[prev_index].routes.from = null;
-          this.routeRemoved(this.waypoints[prev_index].routes.from);
-        }
-        if (this.timer !== null) {
-          clearTimeout(this.timer);
-        }
-        this.timer = setTimeout(() => {
-          this.calculateRoutes();
-        }, 500);
-      },
-      feature
-    );
+    feature.getGeometry().on('change', (e) => {
+      this.removeRoutesForWaypoint(wp);
+      const new_cords = transform(
+        feature.getGeometry().getCoordinates(),
+        this.HsMapService.getCurrentProj().getCode(),
+        'EPSG:4326'
+      );
+      wp.lon = new_cords[0];
+      wp.lat = new_cords[1];
+      const prev_index = this.waypoints.indexOf(wp) - 1;
+      if (prev_index > -1) {
+        this.waypoints[prev_index].routes.from = null;
+        this.routeRemoved(this.waypoints[prev_index].routes.from);
+      }
+      if (this.timer !== null) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(() => {
+        this.calculateRoutes();
+      }, 500);
+    });
   }
 
   /**
    * Remove selected route from source
    * @param feature - Route feature to remove
    */
-  routeRemoved(feature: Feature): void {
+  routeRemoved(feature: Feature<Geometry>): void {
     try {
       if (feature) {
         this.routeSource.removeFeature(feature);
@@ -389,8 +397,8 @@ export class HsTripPlannerService {
    * Handler of adding computed route to layer
    * @param feature - Route to add
    */
-  routeAdded(feature: Feature): void {
-    this.routeSource.addFeatures(feature);
+  routeAdded(features: Feature<Geometry>[]): void {
+    this.routeSource.addFeatures(features);
   }
 
   /**

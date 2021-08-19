@@ -14,7 +14,6 @@ import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsLegendComponent} from './legend.component';
@@ -29,6 +28,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {getCluster, setCluster} from '../../common/layer-extensions';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 describe('HsLegendLayerComponent', () => {
   beforeAll(() => {
@@ -61,7 +61,7 @@ describe('HsLegendLayerComponent', () => {
       providers: [
         HsLegendService,
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
@@ -94,17 +94,19 @@ describe('HsLegendLayerComponent', () => {
       });
     }
     const layer = new VectorLayer({
-      title: 'Bookmarks',
-      cluster: true,
-      inlineLegend: true,
-      editor: {
-        editable: true,
-        defaultAttributes: {
-          name: 'New bookmark',
-          description: 'none',
+      properties: {
+        title: 'Bookmarks',
+        cluster: true,
+        inlineLegend: true,
+        editor: {
+          editable: true,
+          defaultAttributes: {
+            name: 'New bookmark',
+            description: 'none',
+          },
         },
+        path: 'User generated',
       },
-      path: 'User generated',
       source: new VectorSource({features}),
     });
     parentComponent.addLayerToLegends(layer);
@@ -126,17 +128,19 @@ describe('HsLegendLayerComponent', () => {
       });
     }
     const layer = new VectorLayer({
-      title: 'Bookmarks',
-      cluster: true,
-      inlineLegend: true,
-      editor: {
-        editable: true,
-        defaultAttributes: {
-          name: 'New bookmark',
-          description: 'none',
+      properties: {
+        title: 'Bookmarks',
+        cluster: true,
+        inlineLegend: true,
+        editor: {
+          editable: true,
+          defaultAttributes: {
+            name: 'New bookmark',
+            description: 'none',
+          },
         },
+        path: 'User generated',
       },
-      path: 'User generated',
       source: new VectorSource({features}),
     });
     parentComponent.addLayerToLegends(layer);
@@ -162,17 +166,19 @@ describe('HsLegendLayerComponent', () => {
       });
     }
     const layer = new VectorLayer({
-      title: 'Bookmarks',
-      cluster: true,
-      inlineLegend: true,
-      editor: {
-        editable: true,
-        defaultAttributes: {
-          name: 'New bookmark',
-          description: 'none',
+      properties: {
+        title: 'Bookmarks',
+        cluster: true,
+        inlineLegend: true,
+        editor: {
+          editable: true,
+          defaultAttributes: {
+            name: 'New bookmark',
+            description: 'none',
+          },
         },
+        path: 'User generated',
       },
-      path: 'User generated',
       source: new VectorSource({features}),
     });
     parentComponent.addLayerToLegends(layer);

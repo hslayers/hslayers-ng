@@ -12,9 +12,9 @@ import {Point} from 'ol/geom';
 
 import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';
-import {HsLayerUtilsServiceMock} from './layer-utils.service.mock';
 import {HsLogService} from './../../common/log/log.service';
 import {HsUtilsService} from './utils.service';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 class EmptyMock {
   constructor() {}
@@ -36,7 +36,10 @@ describe('HsUtilsService', () => {
       providers: [
         HsUtilsService,
         HsConfig,
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {
+          provide: HsLayerUtilsService,
+          useValue: mockLayerUtilsService(),
+        },
 
         {provide: HsLogService, userValue: new EmptyMock()},
       ],
@@ -82,11 +85,11 @@ describe('HsUtilsService', () => {
 
   it('remove duplicates from an array of OL objects', () => {
     const layers = [
-      new VectorLayer({title: 'villages', features: 10}),
-      new VectorLayer({title: 'villages', features: 10}),
-      new VectorLayer({title: 'cities', features: 50}),
-      new VectorLayer({title: 'villages', features: 100}),
-      new VectorLayer({title: 'cities', features: 5}),
+      new VectorLayer({properties: {title: 'villages', features: 10}}),
+      new VectorLayer({properties: {title: 'villages', features: 10}}),
+      new VectorLayer({properties: {title: 'cities', features: 50}}),
+      new VectorLayer({properties: {title: 'villages', features: 100}}),
+      new VectorLayer({properties: {title: 'cities', features: 5}}),
     ];
     const unique = hsUtilsService.removeDuplicates(layers, 'title');
     expect(unique.length).toBe(2);

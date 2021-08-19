@@ -1,4 +1,11 @@
 import {Component, Input} from '@angular/core';
+
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import {Cluster, Source} from 'ol/source';
+import {Geometry} from 'ol/geom';
+import {Layer} from 'ol/layer';
+
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawService} from '../draw/draw.service';
@@ -15,7 +22,6 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
-import {Layer} from 'ol/layer';
 import {
   getAbstract,
   getAttribution,
@@ -95,7 +101,7 @@ export class HsLayerEditorComponent {
    */
   styleLayer(): void {
     const layer = this.olLayer();
-    this.HsStylerService.layer = layer;
+    this.HsStylerService.layer = layer as VectorLayer<VectorSource<Geometry>>;
     this.HsLayoutService.setMainPanel('styler');
   }
 
@@ -103,7 +109,7 @@ export class HsLayerEditorComponent {
    * Test if layer is WMS layer
    * @param layer - Selected layer
    */
-  isLayerVectorLayer(layer: Layer): boolean {
+  isLayerVectorLayer(layer: Layer<Source>): boolean {
     return this.HsLayerUtilsService.isLayerVectorLayer(layer);
   }
 
@@ -159,10 +165,11 @@ export class HsLayerEditorComponent {
       return;
     }
     const layer = this.olLayer();
-    if (layer.getSource().setDistance == undefined) {
+    const src = layer.getSource() as Cluster;
+    if (src.setDistance == undefined) {
       return;
     }
-    layer.getSource().setDistance(this.distance.value);
+    src.setDistance(this.distance.value);
   }
 
   /**
@@ -286,7 +293,7 @@ export class HsLayerEditorComponent {
     return this.minResolutionValid() || this.maxResolutionValid();
   }
 
-  olLayer(): Layer {
+  olLayer(): Layer<Source> {
     if (!this.currentLayer) {
       return undefined;
     }
@@ -324,7 +331,6 @@ export class HsLayerEditorComponent {
     if (layer == undefined) {
       return;
     }
-    layer.title = newLayerTitle;
     this.HsLayerEditorService.layerTitleChange.next({
       newTitle: newLayerTitle,
       oldTitle: getTitle(layer),

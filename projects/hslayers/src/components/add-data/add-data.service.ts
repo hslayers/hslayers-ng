@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-
-import BaseLayer from 'ol/layer/Base';
 import {Subject} from 'rxjs';
+
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
@@ -26,7 +27,7 @@ export class HsAddDataService {
     public hsConfig: HsConfig
   ) {}
 
-  addLayer(layer: BaseLayer, underLayer?: BaseLayer): void {
+  addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
     if (underLayer) {
       const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();

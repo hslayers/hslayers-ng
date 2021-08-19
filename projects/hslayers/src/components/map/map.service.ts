@@ -1,11 +1,11 @@
 /* eslint-disable no-eq-null */
-import BaseLayer from 'ol/layer/Base';
 import proj4 from 'proj4';
 import {
   Cluster,
   ImageArcGISRest,
   ImageWMS,
   OSM,
+  Source,
   ImageStatic as Static,
   TileArcGISRest,
   TileWMS,
@@ -32,14 +32,9 @@ import {
 } from 'ol/interaction';
 import {Group, Layer} from 'ol/layer';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {Kinetic, Map, View} from 'ol';
+import {Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Projection, transform, transformExtent} from 'ol/proj';
-import {
-  always as alwaysCondition,
-  never as neverCondition,
-  platformModifierKeyOnly as platformModifierKeyOnlyCondition,
-} from 'ol/events/condition';
-import {createStringXY} from 'ol/coordinate';
+import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
 import {HsConfig} from '../../config.service';
@@ -53,8 +48,6 @@ import {
   getEnableProxy,
   getTitle,
 } from '../../common/layer-extensions';
-
-import TileState from 'ol/TileState';
 
 export enum DuplicateHandling {
   AddDuplicate = 0,
@@ -120,19 +113,18 @@ export class HsMapService {
       duration: this.duration,
     }),
     'MouseWheelZoom': new MouseWheelZoom({
-      condition: (browserEvent) => {
+      condition: (browserEvent): boolean => {
         if (this.HsConfig.componentsEnabled?.mapControls == false) {
-          return neverCondition;
+          return false;
         }
         return this.HsConfig.zoomWithModifierKeyOnly
           ? platformModifierKeyOnlyCondition(browserEvent)
-          : alwaysCondition;
+          : true;
       },
       duration: this.duration,
     }),
     'PinchRotate': new PinchRotate(),
     'PinchZoom': new PinchZoom({
-      constrainResolution: true,
       duration: this.duration,
     }),
     'DragPan': new DragPan({
@@ -206,7 +198,7 @@ export class HsMapService {
     };
     this.map.getLayers().forEach((layer) => {
       if (this.HsUtilsService.instOf(layer, Group)) {
-        layer.getLayers().forEach(check);
+        (layer as Group).getLayers().forEach(check);
       } else {
         check(layer);
       }
@@ -335,7 +327,7 @@ export class HsMapService {
       this.HsConfig.zoomWithModifierKeyOnly &&
       this.HsConfig.mapInteractionsEnabled != false
     ) {
-      this.map.on('wheel', (e) => {
+      this.map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
@@ -414,7 +406,7 @@ export class HsMapService {
    * @param template
    */
   cloneView(template: View): View {
-    const view = new View(template.options_);
+    const view = new View((template as any).options_);
     return view;
   }
 
@@ -425,7 +417,7 @@ export class HsMapService {
    * @description Find layer object by title of layer
    */
   findLayerByTitle(title) {
-    const layers = this.map.getLayers().getArray();
+    const layers = this.getLayersArray();
     let tmp = null;
     for (const layer of layers) {
       if (getTitle(layer) == title) {
@@ -511,8 +503,8 @@ export class HsMapService {
       });
   }
 
-  getLayersArray(): BaseLayer[] {
-    return this.map.getLayers().getArray();
+  getLayersArray(): Layer<Source>[] {
+    return this.map.getLayers().getArray() as Layer<Source>[];
   }
 
   /**
@@ -520,7 +512,7 @@ export class HsMapService {
    * @description Proxify layer based on its source object type and if its tiled or not.
    * Each underlying OL source class has its own way to override imagery loading.
    */
-  proxifyLayer(lyr: Layer): void {
+  proxifyLayer(lyr: Layer<Source>): void {
     const source = lyr.getSource();
     if (
       [ImageWMS, ImageArcGISRest].some((typ) =>
@@ -530,7 +522,9 @@ export class HsMapService {
       this.proxifyLayerLoader(lyr, false);
     }
     if (this.HsUtilsService.instOf(source, WMTS)) {
-      source.setTileLoadFunction((i, s) => this.simpleImageryProxy(i, s));
+      (source as WMTS).setTileLoadFunction((i, s) =>
+        this.simpleImageryProxy(i, s)
+      );
     }
     if (
       [TileWMS, TileArcGISRest].some((typ) =>
@@ -542,15 +536,18 @@ export class HsMapService {
     if (
       this.HsUtilsService.instOf(source, XYZ) &&
       !this.HsUtilsService.instOf(source, OSM) &&
-      source.getUrls().filter((url) => url.indexOf('openstreetmap') > -1)
-        .length == 0
+      (source as XYZ)
+        .getUrls()
+        .filter((url) => url.indexOf('openstreetmap') > -1).length == 0
     ) {
       this.proxifyLayerLoader(lyr, true);
     }
 
     if (this.HsUtilsService.instOf(source, Static)) {
       //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
-      source.url_ = this.HsUtilsService.proxify(source.getUrl());
+      (source as any).url_ = this.HsUtilsService.proxify(
+        (source as Static).getUrl()
+      );
     }
   }
 
@@ -565,7 +562,7 @@ export class HsMapService {
    * @param visibleOverride Override the visibility using an array layer titles, which
    */
   addLayer(
-    lyr: Layer,
+    lyr: Layer<Source>,
     duplicateHandling?: DuplicateHandling,
     visibleOverride?: string[]
   ): void {
@@ -592,7 +589,7 @@ export class HsMapService {
     }
     this.proxifyLayer(lyr);
     lyr.on('change:source', (e) => {
-      this.proxifyLayer(e.target);
+      this.proxifyLayer(e.target as Layer<Source>);
     });
     this.map.addLayer(lyr);
   }
@@ -617,7 +614,7 @@ export class HsMapService {
     if (this.HsConfig.default_layers) {
       this.HsConfig.default_layers
         .filter((lyr) => lyr)
-        .forEach((lyr) => {
+        .forEach((lyr: Layer<Source>) => {
           this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
         });
     }
@@ -704,7 +701,6 @@ export class HsMapService {
     return new View({
       center: transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
       zoom: 4,
-      units: 'm',
     });
   }
 
@@ -828,6 +824,10 @@ export class HsMapService {
       'EPSG:4326'
     );
     return bbox;
+  }
+
+  fitExtent(extent: number[]): void {
+    this.map.getView().fit(extent, {size: this.map.getSize()});
   }
 
   /**

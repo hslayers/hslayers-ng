@@ -9,7 +9,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import VectorLayer from 'ol/layer/Vector';
-import {Vector as VectorSource} from 'ol/source';
+import {Cluster, Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
@@ -18,7 +18,6 @@ import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
@@ -32,6 +31,7 @@ import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {getCluster} from '../../common/layer-extensions';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class HsConfigMock {
   reverseLayerList = true;
@@ -48,7 +48,9 @@ describe('layermanager', () => {
   let fixture: ComponentFixture<HsLayerEditorComponent>;
 
   const layerForCluster = new VectorLayer({
-    title: 'Bookmarks',
+    properties: {
+      title: 'Bookmarks',
+    },
     source: new VectorSource({}),
   });
 
@@ -84,7 +86,10 @@ describe('layermanager', () => {
         {provide: HsWmsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {
+          provide: HsLayerUtilsService,
+          useValue: mockLayerUtilsService(),
+        },
         {provide: HsStylerService, useValue: new HsStylerServiceMock()},
         {provide: HsDrawService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
@@ -109,15 +114,15 @@ describe('layermanager', () => {
   it('clusterization', () => {
     component.cluster = true;
     expect(getCluster(layerForCluster)).toBe(true);
-    expect(layerForCluster.getSource().getSource).toBeDefined();
+    expect((layerForCluster.getSource() as Cluster).getSource).toBeDefined();
 
     component.distance.value = 15;
     component.changeDistance();
-    expect(layerForCluster.getSource().getDistance()).toBe(15);
+    expect((layerForCluster.getSource() as Cluster).getDistance()).toBe(15);
 
     //Turn clusterization off
     component.cluster = false;
     expect(getCluster(layerForCluster)).toBe(false);
-    expect(layerForCluster.getSource().getSource).toBeUndefined();
+    expect((layerForCluster.getSource() as Cluster).getSource).toBeUndefined();
   });
 });

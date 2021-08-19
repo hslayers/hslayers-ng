@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {getCachedCapabilities} from '../../common/layer-extensions';
 
 export type KeyBooleanDict = {
@@ -20,7 +21,8 @@ export class HsLayerEditorSublayerService {
   checkedSubLayersTmp: KeyBooleanDict = {};
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
-    public HsLayerSelectorService: HsLayerSelectorService
+    public HsLayerSelectorService: HsLayerSelectorService,
+    private HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.resetSublayers(layer);
@@ -28,11 +30,11 @@ export class HsLayerEditorSublayerService {
   }
   resetSublayers(layer: HsLayerDescriptor) {
     if (this.HsLayerManagerService.currentLayer) {
-      this.checkedSubLayers = layer.layer.checkedSubLayers;
-      this.checkedSubLayersTmp = layer.layer.checkedSubLayersTmp;
+      this.checkedSubLayers = layer.checkedSubLayers;
+      this.checkedSubLayersTmp = layer.checkedSubLayersTmp;
 
-      this.withChildren = layer.layer.withChildren;
-      this.withChildrenTmp = layer.layer.withChildrenTmp;
+      this.withChildren = layer.withChildren;
+      this.withChildrenTmp = layer.withChildrenTmp;
     }
   }
   hasSubLayers(): boolean {
@@ -54,8 +56,9 @@ export class HsLayerEditorSublayerService {
   }
 
   populateSubLayers() {
-    const layer = this.HsLayerManagerService.currentLayer.layer;
-    if (this.populatedLayers.includes(layer.ol_uid)) {
+    const wrapper = this.HsLayerManagerService.currentLayer;
+    const layer = wrapper.layer;
+    if (this.populatedLayers.includes(wrapper.uid)) {
       return;
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
@@ -67,20 +70,20 @@ export class HsLayerEditorSublayerService {
       //Function which converts list of layers to dictionary of their names and visibility
       const toDictionary = (d, layer) => ((d[layer.Name] = visible), d);
 
-      this.populatedLayers.push(layer.ol_uid);
+      this.populatedLayers.push(wrapper.uid);
       const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
       const subSubLayers = subLayersWithChild.map((sl) => sl.Layer).flat();
-      layer.withChildren = subLayersWithChild.reduce(toDictionary, {});
+      wrapper.withChildren = subLayersWithChild.reduce(toDictionary, {});
       //List either 3rd level layers or second if no 3rd level layer exists
       const leafs = subSubLayers.length > 0 ? subSubLayers : subLayers;
-      layer.checkedSubLayers = leafs.reduce(toDictionary, {});
+      wrapper.checkedSubLayers = leafs.reduce(toDictionary, {});
 
-      this.checkedSubLayers = layer.checkedSubLayers;
-      this.withChildren = layer.withChildren;
+      this.checkedSubLayers = wrapper.checkedSubLayers;
+      this.withChildren = wrapper.withChildren;
       this.checkedSubLayersTmp = clone(this.checkedSubLayers);
-      layer.checkedSubLayersTmp = this.checkedSubLayersTmp;
+      wrapper.checkedSubLayersTmp = this.checkedSubLayersTmp;
       this.withChildrenTmp = clone(this.withChildren);
-      layer.withChildrenTmp = this.withChildrenTmp;
+      wrapper.withChildrenTmp = this.withChildrenTmp;
 
       if (!this.HsLayerManagerService.currentLayer.visible) {
         for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {
@@ -92,8 +95,7 @@ export class HsLayerEditorSublayerService {
 
   subLayerSelected(): void {
     const layer = this.HsLayerManagerService.currentLayer;
-    const src = this.HsLayerManagerService.currentLayer.layer.getSource();
-    const params = src.getParams();
+    const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
     params.LAYERS = Object.keys(this.checkedSubLayers)
       .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])
       .join(',');
@@ -104,6 +106,6 @@ export class HsLayerEditorSublayerService {
     if (layer.visible == false) {
       this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
     }
-    src.updateParams(params);
+    this.HsLayerUtilsService.updateLayerParams(layer.layer, params);
   }
 }

@@ -3,6 +3,8 @@ import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
 import BaseLayer from 'ol/layer/Base';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {transform, transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -229,22 +231,23 @@ export class HsCompositionsParserService {
       ) {
         this.loadWarningBootstrap(extent);
       } else {
-        this.HsMapService.map
-          .getView()
-          .fit(this.transformExtent(extent), this.HsMapService.map.getSize());
+        this.HsMapService.fitExtent(this.transformExtent(extent));
       }
     }
 
     const layers = await this.jsonToLayers(obj);
     if (layers?.length > 0) {
       layers.forEach((lyr) => {
-        this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
+        this.HsMapService.addLayer(
+          lyr as Layer<Source>,
+          DuplicateHandling.RemoveOriginal
+        );
       });
       this.HsLayerManagerService.updateLayerListPositions();
     }
 
     if (obj.current_base_layer) {
-      this.HsMapService.map.getLayers().forEach((lyr) => {
+      this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
         if (
           getTitle(lyr) == obj.current_base_layer.title ||
           getTitle(lyr) == obj.current_base_layer
@@ -288,7 +291,7 @@ export class HsCompositionsParserService {
    */
   removeCompositionLayers(): void {
     const to_be_removed = [];
-    this.HsMapService.map.getLayers().forEach((lyr) => {
+    this.HsMapService.getLayersArray().forEach((lyr) => {
       if (getFromComposition(lyr)) {
         to_be_removed.push(lyr);
       }
@@ -366,7 +369,7 @@ export class HsCompositionsParserService {
     }
     return infoDetails;
   }
-  transformExtent(pairs: Array<number>): Array<number> {
+  transformExtent(pairs: number[][]): number[] {
     if (!pairs) {
       return;
     }
@@ -375,7 +378,7 @@ export class HsCompositionsParserService {
     const second_pair = transform(pairs[1], 'EPSG:4326', currentProj);
     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
   }
-  parseExtent(extent: string | Array<number>): Array<number> {
+  parseExtent(extent: string | Array<number>): number[][] {
     if (!extent) {
       return;
     }
@@ -406,7 +409,7 @@ export class HsCompositionsParserService {
    * @returns {Array} Array of created layers
    * @description Parse composition object to extract individual layers and add them to map
    */
-  async jsonToLayers(j): Promise<BaseLayer[]> {
+  async jsonToLayers(j): Promise<Layer<Source>[]> {
     const layers = [];
     if (j.data) {
       j = j.data;
@@ -471,7 +474,7 @@ export class HsCompositionsParserService {
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(
-          (l) => getTitle(l) == lyr_def.title
+          (l) => getTitle(l as Layer<Source>) == lyr_def.title
         );
         if (existing != undefined) {
           existing.setZIndex(undefined);

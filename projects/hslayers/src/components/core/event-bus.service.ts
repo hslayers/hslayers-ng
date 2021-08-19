@@ -2,9 +2,11 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
+import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 import {Select} from 'ol/interaction';
+import {Source} from 'ol/source';
 
 import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
 import {
@@ -40,14 +42,14 @@ export class HsEventBusService {
    * @event compositionLoads
    */
   compositionLoads: Subject<any> = new Subject();
-  layerRemovals: Subject<any> = new Subject();
+  layerRemovals: Subject<Layer<Source>> = new Subject();
   compositionEdits: Subject<any> = new Subject();
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<{
-    layer: Layer;
+    layer: Layer<Source>;
     progress: HsLayerLoadProgress;
   }> = new Subject();
   /**
@@ -70,13 +72,17 @@ export class HsEventBusService {
    * Used to listen for changes of dimension settings in layermanager-dimensions component
    */
   layermanagerDimensionChanges: Subject<{
-    layer: Layer;
+    layer: Layer<Source>;
     dimension: HsDimensionDescriptor;
   }> = new Subject();
-  vectorQueryFeatureSelection: Subject<{feature: Feature; selector: Select}> =
-    new Subject();
-  vectorQueryFeatureDeselection: Subject<{feature: Feature; selector: Select}> =
-    new Subject();
+  vectorQueryFeatureSelection: Subject<{
+    feature: Feature<Geometry>;
+    selector: Select;
+  }> = new Subject();
+  vectorQueryFeatureDeselection: Subject<{
+    feature: Feature<Geometry>;
+    selector: Select;
+  }> = new Subject();
   /**
    * Fires when current mainpanel change - toggle, change of opened panel.
    * replaces 'core.mainpanel_changed'
@@ -150,7 +156,7 @@ export class HsEventBusService {
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl
    */
-  layerSelectedFromUrl: BehaviorSubject<VectorLayer> = new BehaviorSubject(
+  layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null
   );
   constructor() {}

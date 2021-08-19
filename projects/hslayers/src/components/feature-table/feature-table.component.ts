@@ -1,14 +1,19 @@
 import {Component, OnInit} from '@angular/core';
+
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import {Geometry} from 'ol/geom';
+
 import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';
 import {HsMapService} from './../map/map.service';
-import {Layer} from 'ol/layer';
+
 @Component({
   selector: 'hs-feature-table',
   templateUrl: './partials/feature-table.html',
 })
 export class HsFeatureTableComponent implements OnInit {
-  layers: Layer[] = [];
+  layers: VectorLayer<VectorSource<Geometry>>[] = [];
   constructor(
     public HsFeatureTableService: HsFeatureTableService,
     public HsConfig: HsConfig,
@@ -21,7 +26,7 @@ export class HsFeatureTableComponent implements OnInit {
       }
     });
   }
-  addLayerToTable(layer: Layer): void {
+  addLayerToTable(layer: VectorLayer<VectorSource<Geometry>>): void {
     const layerDescriptor = this.HsFeatureTableService.addLayer(layer);
     if (layerDescriptor) {
       this.layers.push(layerDescriptor);

@@ -1,4 +1,6 @@
+import {KeyBooleanDict} from './layer-editor.sub-layer.service';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 export type HsLayerTimeDescriptor = {
   default: string;
@@ -16,8 +18,22 @@ export type HsLayerLoadProgress = {
 };
 
 export interface HsLayerDescriptor {
+  hasSublayers?: boolean;
+  withChildren?: {
+    [key: string]: boolean;
+  };
+  withChildrenTmp?: {
+    [key: string]: boolean;
+  };
+  checkedSubLayersTmp?: {
+    [key: string]: boolean;
+  };
+  checkedSubLayers?: {
+    [key: string]: boolean;
+  };
+  galleryMiniMenu?: boolean;
   loadProgress?: HsLayerLoadProgress;
-  layer: Layer;
+  layer: Layer<Source>;
   abstract?: string;
   legends?: string | string[];
   active?: boolean;

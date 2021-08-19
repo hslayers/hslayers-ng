@@ -1,16 +1,18 @@
-import BaseLayer from 'ol/layer/Base';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {getBase} from '../../common/layer-extensions';
 
-export type PhysicalListItem = {
+export class PhysicalListItem {
   title: string;
-  layer: BaseLayer;
+  layer: Layer<Source>;
   active?: boolean;
-};
+}
 
 @Injectable({
   providedIn: 'root',
@@ -21,16 +23,17 @@ export class HsLayermanagerPhysicalListService {
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
     public HsConfig: HsConfig,
-    public HsMapService: HsMapService
+    public HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService
   ) {}
 
   private get logicalListLayers() {
     return this.HsLayerManagerService.data.layers;
   }
 
-  private get mapLayers(): BaseLayer[] {
+  private get mapLayers(): Layer<Source>[] {
     return this.HsMapService.getLayersArray().filter(
-      (layer) => getBase(layer) != true
+      (layer: Layer<Source>) => getBase(layer) != true
     );
   }
 
@@ -73,7 +76,7 @@ export class HsLayermanagerPhysicalListService {
    * @param indexTo new ZIndex value for the selected layer
    * @param layer Selected layer from physical layer list
    */
-  private setLayerZIndex(indexTo: number, layer: BaseLayer): void {
+  private setLayerZIndex(indexTo: number, layer: Layer<Source>): void {
     const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
@@ -84,14 +87,14 @@ export class HsLayermanagerPhysicalListService {
    * Move the provided layer under all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToBottom(layer: PhysicalListItem | BaseLayer): void {
+  moveToBottom(layer: PhysicalListItem | Layer<Source>): void {
     this.moveAndShift(this.getOlLayer(layer), this.getMinZ());
   }
   /**
    * Move the provided layer over all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToTop(layer: PhysicalListItem | BaseLayer): void {
+  moveToTop(layer: PhysicalListItem | Layer<Source>): void {
     this.moveAndShift(this.getOlLayer(layer), this.getMaxZ());
   }
   /**
@@ -99,17 +102,17 @@ export class HsLayermanagerPhysicalListService {
    * @param layer provided layer
    */
   moveTo(
-    layer: PhysicalListItem | BaseLayer,
-    target: number | PhysicalListItem | BaseLayer
+    layer: PhysicalListItem | Layer<Source>,
+    target: number | PhysicalListItem | Layer<Source>
   ): void {
-    if (target.layer != undefined) {
+    if (this.HsUtilsService.instOf(target, PhysicalListItem)) {
       //Wrapped layer provided
-      target = target.layer.getZIndex();
-    } else if (typeof target != 'number') {
+      target = (target as PhysicalListItem).layer.getZIndex();
+    } else if (this.HsUtilsService.instOf(target, Layer)) {
       //OL layer provided
-      target = target.getZIndex();
+      target = (target as Layer<Source>).getZIndex();
     }
-    this.moveAndShift(this.getOlLayer(layer), target);
+    this.moveAndShift(this.getOlLayer(layer), target as number);
   }
   /**
    * Move and shift layer order to make changes on the map
@@ -117,7 +120,7 @@ export class HsLayermanagerPhysicalListService {
    * @param preferredZIndex ZIndex value to switch to
    */
   private moveAndShift(
-    providedLayer: BaseLayer,
+    providedLayer: Layer<Source>,
     preferredZIndex: number
   ): void {
     if (providedLayer === undefined) {
@@ -145,8 +148,14 @@ export class HsLayermanagerPhysicalListService {
    * @param layer Provided layer
    * @returns Returns ol layer
    */
-  private getOlLayer(providedLayer: PhysicalListItem | BaseLayer): BaseLayer {
-    return providedLayer?.layer ? providedLayer.layer : providedLayer;
+  private getOlLayer(
+    providedLayer: PhysicalListItem | Layer<Source>
+  ): Layer<Source> {
+    if (this.HsUtilsService.instOf(providedLayer, Layer)) {
+      return providedLayer as Layer<Source>;
+    } else {
+      return (providedLayer as PhysicalListItem).layer;
+    }
   }
   /**
    * Gets all layer ZIndex values from the layer list

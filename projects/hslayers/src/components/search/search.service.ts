@@ -4,7 +4,8 @@ import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
-import {Point} from 'ol/geom';
+import VectorSource from 'ol/source/Vector';
+import {Geometry, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
@@ -14,6 +15,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { setShowInLayerManager, setTitle } from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +25,7 @@ export class HsSearchService {
   };
   formatWKT = new WKT();
   canceler: Subject<any> = new Subject();
-  searchResultsLayer: VectorLayer;
+  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
   constructor(
     private http: HttpClient,
     public HsUtilsService: HsUtilsService,
@@ -33,11 +35,11 @@ export class HsSearchService {
     public HsEventBusService: HsEventBusService
   ) {
     this.searchResultsLayer = new VectorLayer({
-      title: 'Search results',
       source: new Vector({}),
       style: this.HsStylerService.pin_white_blue_highlight,
-      showInLayerManager: false,
     });
+    setTitle(this.searchResultsLayer, 'Search results');
+    setShowInLayerManager(this.searchResultsLayer, false);
   }
 
   /**

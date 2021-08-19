@@ -12,14 +12,14 @@
       class="d-flex flex-row"
     >
       <div class="p-1 flex-grow-1">
-        <a (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.name_editing"
+        <a (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.editMode"
           >{{waypoint.name}}</a
         >
         <input
           [(ngModel)]="waypoint.name"
           class="form-control hs-waypoint-name"
           [ngModelOptions]="{standalone: true}"
-          [hidden]="!waypoint.name_editing"
+          [hidden]="!waypoint.editMode"
           (blur)="toggleEdit(waypoint)"
         />
       </div>

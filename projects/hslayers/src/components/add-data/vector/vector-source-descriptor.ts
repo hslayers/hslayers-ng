@@ -1,9 +1,12 @@
 import Feature from 'ol/Feature';
-import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
+import {Geometry} from 'ol/geom';
+
+import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
+
 export class VectorSourceDescriptor {
   mapProjection;
   sourceParams: {
@@ -18,7 +21,7 @@ export class VectorSourceDescriptor {
     projection?: any;
     minResolution?: number;
     maxResolution?: number;
-    features?: Feature[];
+    features?: Feature<Geometry>[];
   };
   sourceClass:
     | typeof VectorSourceFromUrl

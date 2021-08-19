@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 import {
@@ -78,14 +79,14 @@ export class HsLayerManagerMetadataService {
     await this.queryMetadata(layerDescriptor);
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
-      if (!layer.hasSublayers) {
-        layer.hasSublayers = true;
+      if (!layerDescriptor.hasSublayers) {
+        layerDescriptor.hasSublayers = true;
         //ADD config values
       }
     }
   }
 
-  metadataArray(layer: Layer): Array<MetadataUrl> {
+  metadataArray(layer: HsLayerDescriptor): Array<MetadataUrl> {
     return getMetadata(layer.layer)?.urls;
   }
 
@@ -145,11 +146,11 @@ export class HsLayerManagerMetadataService {
    * @param values
    */
   //TODO: TYPES
-  setOrUpdate(layer: Layer, key, values): void {
+  setOrUpdate(layer: Layer<Source>, key, values): void {
     const previousValue = layer.get(key);
     if (previousValue) {
       for (const value of values) {
-        layer.set(previousValue.push(value));
+        layer.set(key, previousValue.push(value));
       }
     } else {
       layer.set(key, values);
@@ -227,7 +228,7 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  parseAttribution(layer: Layer, caps: any) {
+  parseAttribution(layer: Layer<Source>, caps: any) {
     const attr = caps.Attribution;
     if (getAttribution(layer)?.locked || attr == undefined) {
       return;
@@ -252,7 +253,7 @@ export class HsLayerManagerMetadataService {
    */
   async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
     const layer = layerDescriptor.layer;
-    let capabilities = '';
+    const capabilities = '';
     const url = this.HsLayerUtilsService.getURL(layer);
     if (!url) {
       return;
@@ -265,14 +266,13 @@ export class HsLayerManagerMetadataService {
       }
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(wrapper.response);
-      const src = layer.getSource();
-      const params = src.getParams();
+      const params = this.HsLayerUtilsService.getLayerParams(layer);
       const layerNameInParams: string = params.LAYERS;
 
       this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
       if (getSubLayers(layer)) {
         params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
-        src.updateParams(params);
+        this.HsLayerUtilsService.updateLayerParams(layer, params);
       }
 
       this.fillMetadataUrlsIfNotExist(layer, caps);

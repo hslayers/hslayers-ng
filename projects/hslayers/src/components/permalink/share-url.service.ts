@@ -54,10 +54,9 @@ export class HsShareUrlService {
     const view = this.HsMapService.map.getView();
     this.id = this.HsUtilsService.generateUuid();
 
-    const externalLayers = this.HsMapService.map
-      .getLayers()
-      .getArray()
-      .filter((lyr) => !(getShowInLayerManager(lyr) === false));
+    const externalLayers = this.HsMapService.getLayersArray().filter(
+      (lyr) => !(getShowInLayerManager(lyr) === false)
+    );
     const visibleLayers = externalLayers
       .filter((lyr) => lyr.getVisible())
       .map((lyr) => getTitle(lyr));

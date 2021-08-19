@@ -751,7 +751,11 @@
     "transform": "Transformēt",
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
-    "width": "Platums"
+    "width": "Platums",
+    "clear": "Atiestatīt uz noklusēto stilu",
+    "downloadSld": "Lejuplādēt stilu kā SLD failu",
+    "manageStyle": "Pārvaldīt stilu",
+    "uploadSld": "Augšupielādēt stilu kā SLD failu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"

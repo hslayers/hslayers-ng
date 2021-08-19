@@ -1,8 +1,10 @@
 import * as loadingStrategy from 'ol/loadingstrategy';
 import VectorSource from 'ol/source/Vector';
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 import {get as getProj} from 'ol/proj';
 
-export class VectorSourceFromUrl extends VectorSource {
+export class VectorSourceFromUrl extends VectorSource<Geometry> {
   featureProjection: any;
   mapProjection: any;
   error: boolean;
@@ -11,18 +13,18 @@ export class VectorSourceFromUrl extends VectorSource {
     super({
       format: descriptor.sourceParams.format,
       url: descriptor.sourceParams.url,
-      extractStyles: descriptor.sourceParams.extractStyles,
       strategy: loadingStrategy.all,
     });
     this.featureProjection = getProj(descriptor.sourceParams.srs);
     this.mapProjection = descriptor.mapProjection;
+    super.set('extractStyles', descriptor.sourceParams.extractStyles);
     super.setLoader(this.loaderFunction);
   }
 
   async loaderFunction(extent, resolution, projection): Promise<void> {
     try {
       super.set('loaded', false);
-      const response = await fetch(super.getUrl());
+      const response = await fetch(super.getUrl() as any);
 
       let data: any = await response.text();
       if (data.type == 'GeometryCollection') {
@@ -36,7 +38,7 @@ export class VectorSourceFromUrl extends VectorSource {
         super.getFormat().readFeatures(data, {
           dataProjection: this.featureProjection,
           featureProjection: this.mapProjection,
-        })
+        }) as Feature<Geometry>[]
       );
 
       super.set('loaded', true);

@@ -16,12 +16,14 @@ import {HsAddDataWmsComponent} from './add-data-url-wms.component';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../../config.service';
 import {HsGetCapabilitiesModule} from '../../../../common/get-capabilities/get-capabilities.module';
+import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../../layout/panels/panel-helpers.module';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
+import {mockLayerUtilsService} from '../../../utils/layer-utils.service.mock';
 
 class EmptyMock {
   constructor() {}
@@ -74,6 +76,7 @@ describe('add-data-url', () => {
           useValue: EmptyMock,
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
       ],
     });
     hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);

@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import BaseLayer from 'ol/layer/Base';
-import {Attribution} from 'ol/control';
-import {Group, Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS, TileWMS} from 'ol/source';
+import ImageSource from 'ol/source/Image';
+import TileSource from 'ol/source/Tile';
+import {Group, Image as ImageLayer, Layer, Tile} from 'ol/layer';
+import {Options as ImageOptions} from 'ol/layer/BaseImage';
+import {ImageWMS, Source, TileWMS} from 'ol/source';
+import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
@@ -426,22 +428,8 @@ export class HsAddDataUrlWmsService {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
-        new Attribution({
-          html:
-            '<a href="' +
-            layer.Attribution.OnlineResource +
-            '">' +
-            layer.Attribution.Title +
-            '</a>',
-        }),
+        `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
       ];
-    }
-    let layer_class = Tile;
-    let source_class = TileWMS;
-
-    if (!this.data.useTiles) {
-      layer_class = ImageLayer;
-      source_class = ImageWMS;
     }
 
     let boundingbox = layer.BoundingBox;
@@ -476,7 +464,7 @@ export class HsAddDataUrlWmsService {
     let legends = undefined;
     let styles = undefined;
     ({styles, legends} = this.getLayerStyles(layer));
-    const source = new source_class({
+    const sourceOptions = {
       url: this.data.getMapUrl,
       attributions,
       projection: this.data.crs || this.data.srs,
@@ -491,10 +479,13 @@ export class HsAddDataUrlWmsService {
         this.hsDimensionService.paramsFromDimensions(layer)
       ),
       crossOrigin: 'anonymous',
-    });
+    };
+    const source: ImageWMS | TileWMS = !this.data.useTiles
+      ? new ImageWMS(sourceOptions)
+      : new TileWMS(sourceOptions);
     const metadata =
       this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
-    const new_layer = new layer_class({
+    const layerOptions = {
       title: layerName,
       name: layerName,
       source,
@@ -510,7 +501,10 @@ export class HsAddDataUrlWmsService {
       subLayers: subLayers,
       base: this.data.base,
       visible: this.data.visible,
-    });
+    };
+    const new_layer = !this.data.useTiles
+      ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
+      : new Tile(layerOptions as TileOptions<TileSource>);
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
     this.hsAddDataService.addLayer(new_layer, this.data.addUnder);
   }
@@ -547,7 +541,7 @@ export class HsAddDataUrlWmsService {
     url: string,
     group: Group,
     layerName: string,
-    addUnder?: BaseLayer,
+    addUnder?: Layer<Source>,
     path?: string
   ): Promise<void> {
     const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
@@ -566,7 +560,7 @@ export class HsAddDataUrlWmsService {
     }
     ol_layers.forEach((layer) => {
       if (group !== undefined) {
-        group.addLayer(layer);
+        group.getLayers().push(layer);
       } else {
         this.hsAddDataService.addLayer(layer, addUnder);
       }
@@ -616,9 +610,7 @@ export class HsAddDataUrlWmsService {
         this.hsMapService.map.getView().getProjection()
       );
       if (extent) {
-        this.hsMapService.map
-          .getView()
-          .fit(extent, this.hsMapService.map.getSize());
+        this.hsMapService.fitExtent(extent);
       }
     }
   }

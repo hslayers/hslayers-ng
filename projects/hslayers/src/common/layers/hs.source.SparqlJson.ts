@@ -1,6 +1,6 @@
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
-import {Point} from 'ol/geom';
+import {Geometry, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
@@ -110,7 +110,7 @@ function loadFeatures(
       );
       if (!isNaN(x) && !isNaN(y)) {
         const coord = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-        if (typeof occupied_xy[coord] !== 'undefined') {
+        if (typeof occupied_xy[coord.toString()] !== 'undefined') {
           continue;
         }
         objects[key].geometry = new Point(coord);
@@ -122,7 +122,7 @@ function loadFeatures(
           category_map,
           category_id
         );
-        occupied_xy[coord] = true;
+        occupied_xy[coord.toString()] = true;
         features.push(feature);
       }
     }
@@ -135,7 +135,7 @@ function loadFeatures(
       delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
       const coord = objects[key].geometry.getCoordinates();
 
-      if (typeof occupied_xy[coord] !== 'undefined') {
+      if (typeof occupied_xy[coord.toString()] !== 'undefined') {
         continue;
       }
       const feature = new Feature(objects[key]);
@@ -226,13 +226,17 @@ export type SparqlOptions = {
 /**
  * Provides a source of features from SPARQL endpoint
  */
-export class SparqlJson extends Vector {
+export class SparqlJson extends Vector<Geometry> {
   category_map = {};
   category_id = 0;
   legend_categories;
   loadCounter: number;
   loadTotal: number;
   occupied_xy = {};
+  //What is it good for?
+  styleAble: boolean;
+  //What is it good for?
+  hasPoint: boolean;
   /**
    * Only 'projection' and either 'url' or 'endpointUrl' + 'query' are mandatory
    */
@@ -254,7 +258,7 @@ export class SparqlJson extends Vector {
   }: SparqlOptions) {
     super({
       format: new GeoJSON(),
-      loader: async function (extent, resolution, projection) {
+      loader: async (extent, resolution, projection) => {
         this.set('loaded', false);
         if (!url && !endpointUrl) {
           return;
@@ -453,7 +457,6 @@ export class SparqlJson extends Vector {
           }
           return [tmp];
         },
-      projection: projection,
     });
     this.loadCounter = 0;
     this.loadTotal = 0;

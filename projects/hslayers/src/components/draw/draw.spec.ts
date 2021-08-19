@@ -28,6 +28,7 @@ import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class emptyMock {
   constructor() {}
@@ -45,11 +46,6 @@ describe('HsDraw', () => {
     'sidebarBottom',
     'panelVisible',
   ]);
-  const mockLayerUtilsService = jasmine.createSpyObj('HsLayerUtilsService', [
-    'isLayerDrawable',
-    'isLayerClustered',
-    'isLayerWMTS',
-  ]);
   const mockQueryBaseService = jasmine.createSpyObj('HsQueryBaseService', [
     'activateQueries',
     'deactivateQueries',
@@ -63,7 +59,7 @@ describe('HsDraw', () => {
     'getTranslation',
   ]);
   const layer = new VectorLayer({
-    title: 'Point',
+    properties: {title: 'Point'},
     source: new VectorSource({}),
   });
 
@@ -89,7 +85,7 @@ describe('HsDraw', () => {
         {provide: HsLayoutService, useValue: mockLayoutService},
         {provide: HsLanguageService, useValue: mockLanguageService},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},

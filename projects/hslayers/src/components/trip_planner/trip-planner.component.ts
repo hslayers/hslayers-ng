@@ -1,4 +1,3 @@
-import Feature from 'ol/Feature';
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
@@ -40,7 +39,7 @@ export class HsTripPlannerComponent implements OnInit {
    * @param {float} wp Wayoint
    * @returns {string} Distance
    */
-  formatDistance(wp: Feature): string {
+  formatDistance(wp: Waypoint): string {
     return this.HsTripPlannerService.formatDistance(wp);
   }
 
@@ -62,8 +61,9 @@ export class HsTripPlannerComponent implements OnInit {
    * Remove selected waypoint from source
    * @param {object} waypoint
    */
-  toggleEdit(waypoint: Feature): void {
-    waypoint.name_editing = !waypoint.name_editing;
-    setHighlighted(waypoint.feature, waypoint.name_editing);
+  toggleEdit(waypoint: Waypoint): void {
+    waypoint.editMode = !waypoint.editMode;
+    const src = this.HsTripPlannerService.waypointLayer.getSource();
+    setHighlighted(src.getFeatureById(waypoint.featureId), waypoint.editMode);
   }
 }

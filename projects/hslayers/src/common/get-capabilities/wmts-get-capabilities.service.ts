@@ -2,9 +2,8 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
-import {Attribution} from 'ol/control';
 import {Layer, Tile} from 'ol/layer';
-import {WMTS} from 'ol/source';
+import {Source, WMTS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
@@ -121,7 +120,7 @@ export class HsWmtsGetCapabilitiesService {
    * @param capabilities_xml - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml): Layer[] {
+  service2layers(capabilities_xml): Layer<Source>[] {
     const parser = new WMTSCapabilities();
     const caps = parser.read(capabilities_xml);
     const service = caps.Capability.Layer;
@@ -150,38 +149,28 @@ export class HsWmtsGetCapabilitiesService {
         let attributions = [];
         if (layer.Attribution) {
           attributions = [
-            new Attribution({
-              html:
-                '<a href="' +
-                layer.Attribution.OnlineResource +
-                '">' +
-                layer.Attribution.Title +
-                '</a>',
-            }),
+            `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
           ];
         }
         const metadata =
           this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
         const new_layer = new Tile({
-          title: layer.Title.replace(/\//g, '&#47;'),
+          properties: {
+            title: layer.Title.replace(/\//g, '&#47;'),
+            abstract: layer.Abstract,
+            metadata,
+          },
           source: new WMTS({
             url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
               .OnlineResource,
             attributions: attributions,
-            styles:
+            style:
               layer.Style && layer.Style.length > 0
                 ? layer.Style[0].Name
                 : undefined,
-            params: {
-              LAYERS: layer.Name,
-              INFO_FORMAT: layer.queryable ? query_format : undefined,
-              FORMAT: image_format,
-            },
             crossOrigin: 'anonymous',
-          }),
-          abstract: layer.Abstract,
+          } as any),
           useInterimTilesOnError: false,
-          metadata,
           extent: layer.BoundingBox,
         });
         tmp.push(new_layer);

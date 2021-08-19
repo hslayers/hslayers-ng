@@ -13,7 +13,6 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig} from '../../../config.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsMapServiceMock} from '../../map/map.service.mock';
@@ -22,9 +21,11 @@ import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
 import {HttpClientModule} from '@angular/common/http';
 import {Layer} from 'ol/layer';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
 import {getTitle} from '../../../common/layer-extensions';
+import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 class emptyMock {
   constructor() {}
 }
@@ -88,7 +89,7 @@ describe('add-layers-vector', () => {
           provide: HsCommonLaymanService,
           useValue: new HsCommonLaymanServiceMock(),
         },
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),
@@ -119,7 +120,7 @@ describe('add-layers-vector', () => {
     component.srs = '';
     component.extract_styles = false;
 
-    const layer: Layer = await component.addNewLayer();
+    const layer: Layer<Source> = await component.addNewLayer();
     expect(layer).toBeDefined();
     expect(getTitle(layer)).toEqual('Cancer rates');
   });

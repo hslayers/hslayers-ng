@@ -27,6 +27,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 
+import {Source} from 'ol/source';
 import {
   getActive,
   getAttribution,
@@ -122,7 +123,7 @@ export class HsLayerManagerComponent
 
     this.HsEventBusService.layerRemovals
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: HsLayerDescriptor) => {
+      .subscribe((layer: Layer<Source>) => {
         if (
           this.HsLayerManagerService?.currentLayer?.layer == layer &&
           this.HsUtilsService.runningInBrowser()
@@ -173,34 +174,19 @@ export class HsLayerManagerComponent
     this.HsLayerManagerService.layerEditorElement =
       this.layerEditorRef.nativeElement;
   }
-  changeBaseLayerVisibility(e?, layer?: Layer) {
+  changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
     return this.HsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }
 
-  changeTerrainLayerVisibility(e, layer: Layer) {
+  changeTerrainLayerVisibility(e, layer: Layer<Source>) {
     return this.HsLayerManagerService.changeTerrainLayerVisibility(e, layer);
   }
 
-  changeLayerVisibility(toWhat: boolean, layer: Layer) {
+  changeLayerVisibility(toWhat: boolean, layer: HsLayerDescriptor) {
     return this.HsLayerManagerService.changeLayerVisibility(toWhat, layer);
   }
 
-  isLayerType(layer: Layer, type: string): boolean {
-    switch (type) {
-      case 'wms':
-        return this.HsLayerManagerService.isWms(layer);
-      case 'point':
-        return layer.getSource().hasPoint;
-      case 'line':
-        return layer.getSource().hasLine;
-      case 'polygon':
-        return layer.getSource().hasPoly;
-      default:
-        return false;
-    }
-  }
-
-  setProp(layer: Layer, property, value): void {
+  setProp(layer: Layer<Source>, property, value): void {
     layer.set(property, value);
   }
 
@@ -221,7 +207,7 @@ export class HsLayerManagerComponent
    * Removes layer from map object
    * @param layer - Layer to remove
    */
-  removeLayer(layer: Layer): void {
+  removeLayer(layer: Layer<Source>): void {
     this.map.removeLayer(layer);
   }
 
@@ -261,7 +247,7 @@ export class HsLayerManagerComponent
    * Test if layer (WMS) resolution is within map resolution interval
    * @param layer - Selected layer
    */
-  isLayerInResolutionInterval(layer: Layer): boolean {
+  isLayerInResolutionInterval(layer: Layer<Source>): boolean {
     return this.HsLayerManagerService.isLayerInResolutionInterval(layer);
   }
 

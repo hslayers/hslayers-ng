@@ -2,14 +2,15 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Feature, Map} from 'ol';
+import {Geometry, Point} from 'ol/geom';
 import {Injectable, NgZone} from '@angular/core';
-import {Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
 
+import CircleStyle from 'ol/style/Circle';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -36,13 +37,17 @@ export class HsQueryBaseService {
   popupClassname = '';
   selector = null;
   currentQuery = null;
-  featuresUnderMouse: Feature[] = [];
+  featuresUnderMouse: Feature<Geometry>[] = [];
   featureLayersUnderMouse = [];
   dataCleared = true;
   queryPoint = new Point([0, 0]);
   queryLayer = new VectorLayer({
-    title: 'Point clicked',
-    queryable: false,
+    properties: {
+      title: 'Point clicked',
+      queryable: false,
+      showInLayerManager: false,
+      removable: false,
+    },
     source: new Vector({
       features: [
         new Feature({
@@ -50,8 +55,6 @@ export class HsQueryBaseService {
         }),
       ],
     }),
-    showInLayerManager: false,
-    removable: false,
     style: (feature) => this.pointClickedStyle(feature),
   });
 
@@ -146,11 +149,13 @@ export class HsQueryBaseService {
     const map = e.map;
     const tmpFeatures = this.getFeaturesUnderMouse(map, e.pixel);
     if (
-      tmpFeatures.some((f) => !this.featuresUnderMouse.includes(f)) ||
+      tmpFeatures.some(
+        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>)
+      ) ||
       this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
     ) {
       this.zone.run(() => {
-        this.featuresUnderMouse = tmpFeatures;
+        this.featuresUnderMouse = tmpFeatures as Feature<Geometry>[];
         if (this.featuresUnderMouse.length) {
           this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
             this.HsMapService.getLayerForFeature(f)
@@ -191,17 +196,19 @@ export class HsQueryBaseService {
   }
 
   private getFeaturesUnderMouse(map: Map, pixel: any) {
-    return map.getFeaturesAtPixel(pixel).filter((feature: Feature) => {
-      const layer = this.HsMapService.getLayerForFeature(feature);
-      return layer && layer != this.queryLayer;
-    });
+    return map
+      .getFeaturesAtPixel(pixel)
+      .filter((feature: Feature<Geometry>) => {
+        const layer = this.HsMapService.getLayerForFeature(feature);
+        return layer && layer != this.queryLayer;
+      });
   }
 
   /**
    * @param feature
    */
-  serializeFeatureAttributes(feature: Feature): void {
-    feature.attributesForHover = [];
+  serializeFeatureAttributes(feature: Feature<Geometry>): void {
+    const attributesForHover = [];
     const layer = this.HsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
       return;
@@ -233,13 +240,14 @@ export class HsQueryBaseService {
         }
       }
       if (feature.get(attrName)) {
-        feature.attributesForHover.push({
+        attributesForHover.push({
           key: attrLabel,
           value: feature.get(attrName),
           displayFunction: attrFunction,
         });
       }
     }
+    feature.set('attributesForHover', attributesForHover);
   }
 
   setData(data: any, type: string, overwrite?: boolean): void {
@@ -395,11 +403,12 @@ export class HsQueryBaseService {
       }),
     });
     if (this.HsConfig.queryPoint) {
+      const circle = defaultStyle.getImage() as CircleStyle;
       if (this.HsConfig.queryPoint == 'hidden') {
-        defaultStyle.getImage().setRadius(0);
+        circle.setRadius(0);
       } else if (this.HsConfig.queryPoint == 'notWithin') {
         if (this.selector.getFeatures().getLength() > 0) {
-          defaultStyle.getImage().setRadius(0);
+          circle.setRadius(0);
         }
       }
     }

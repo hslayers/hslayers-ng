@@ -23,11 +23,11 @@ import {
 
 describe('HsLayerUtilsService', () => {
   const vectorLayer = new VectorLayer({
-    title: 'vectorLayer',
+    properties: {title: 'vectorLayer'},
     source: new Vector(),
   });
   const tileWMSLayer = new Tile({
-    title: 'tileWMSLayer',
+    properties: {title: 'tileWMSLayer'},
     source: new TileWMS({
       params: {
         INFO_FORMAT: undefined,
@@ -35,23 +35,26 @@ describe('HsLayerUtilsService', () => {
     }),
   });
   const imageWMSLayer = new ImageLayer({
-    title: 'imageWMSLayer',
+    properties: {title: 'imageWMSLayer'},
     source: new ImageWMS({
+      url: 'http://example',
       params: {INFO_FORMAT: 'application/json'},
     }),
   });
   const tileOSMLayer = new Tile({
-    title: 'tileOSMLayer',
+    properties: {title: 'tileOSMLayer'},
     source: new OSM(),
   });
   const tileWMTSLayer = new Tile({
-    title: 'tileWMTSLayer',
+    properties: {
+      title: 'tileWMTSLayer',
+    },
     source: new WMTS({
       url: 'https://openlayers.org/en/latest/examples/wmts.html',
-    }),
+    } as any),
   });
   const imageWMSNoParams = new ImageLayer({
-    source: new ImageWMS({}),
+    source: new ImageWMS({params: {}, url: 'http://example'}),
   });
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -145,6 +148,7 @@ describe('HsLayerUtilsService', () => {
   });
   it('try to get layer single tile url or multiple tile url', () => {
     let layerUrl = hsLayerUtils.getURL(tileWMTSLayer);
+
     expect(layerUrl).toEqual(
       'https://openlayers.org/en/latest/examples/wmts.html'
     );

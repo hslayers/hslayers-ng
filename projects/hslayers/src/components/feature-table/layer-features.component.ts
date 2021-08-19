@@ -1,5 +1,8 @@
-import Feature from 'ol/Feature';
 import {Component, Input, OnInit} from '@angular/core';
+
+import Feature from 'ol/Feature';
+import {Geometry} from 'ol/geom';
+
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -8,7 +11,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 type Operation = {
   action: 'zoom to' | 'delete' | 'custom action';
-  feature: Feature;
+  feature: Feature<Geometry>;
   customActionName?: string;
   customAction?: any;
 };
@@ -74,9 +77,7 @@ export class HsLayerFeaturesComponent implements OnInit {
     switch (operation.action) {
       case 'zoom to':
         const extent = operation.feature.getGeometry().getExtent();
-        this.HsMapService.map
-          .getView()
-          .fit(extent, this.HsMapService.map.getSize());
+        this.HsMapService.fitExtent(extent);
         break;
       case 'custom action':
         operation.customAction(operation.feature);

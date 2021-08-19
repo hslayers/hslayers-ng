@@ -1,5 +1,6 @@
 import Map from 'ol/Map';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 export class HsMapServiceMock {
   map = new Map({
@@ -18,9 +19,10 @@ export class HsMapServiceMock {
     return [0, 0, 100, 100];
   }
 
-  addLayer(layer): Layer {
+  addLayer(layer): Layer<Source> {
     try {
       this.map.addLayer(layer);
+      return layer;
     } catch (ex) {
       //
     }

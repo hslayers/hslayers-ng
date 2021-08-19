@@ -103,11 +103,11 @@ export class HslayersAppComponent {
     Object.assign(this.HsConfig, {
       datasources: [
         {
-          title: "Layman",
+          title: 'Layman',
           url: 'http://localhost:8087',
           user: 'anonymous',
-          type: "layman",
-          liferayProtocol: 'https'
+          type: 'layman',
+          liferayProtocol: 'https',
         },
       ],
       proxyPrefix: window.location.hostname.includes('localhost')
@@ -169,103 +169,109 @@ export class HslayersAppComponent {
       default_layers: [
         new Tile({
           source: new OSM(),
-          title: 'OpenStreetMap',
-          base: true,
           visible: true,
-          removable: false,
+          properties: {
+            title: 'OpenStreetMap',
+            base: true,
+            removable: false,
+          },
         }),
         new VectorLayer({
-          title: 'Points',
-          synchronize: false,
-          cluster: false,
-          inlineLegend: true,
-          popUp: {
-            attributes: ['name'],
-          },
-          editor: {
-            editable: true,
-            defaultAttributes: {
-              name: 'New bookmark',
-              description: 'none',
+          properties: {
+            title: 'Points',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
             },
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New bookmark',
+                description: 'none',
+              },
+            },
+            sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
+            <StyledLayerDescriptor version="1.0.0" 
+                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+                xmlns="http://www.opengis.net/sld" 
+                xmlns:ogc="http://www.opengis.net/ogc" 
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <NamedLayer>
+                <Name>Simple point with stroke</Name>
+                <UserStyle>
+                  <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
+                  <FeatureTypeStyle>
+                    <Rule>
+                      <PointSymbolizer>
+                        <Graphic>
+                          <Mark>
+                            <WellKnownName>circle</WellKnownName>
+                            <Fill>
+                              <CssParameter name="fill">#FF0000</CssParameter>
+                            </Fill>
+                            <Stroke>
+                              <CssParameter name="stroke">#000000</CssParameter>
+                              <CssParameter name="stroke-width">2</CssParameter>
+                            </Stroke>
+                          </Mark>
+                          <Size>6</Size>
+                        </Graphic>
+                      </PointSymbolizer>
+                    </Rule>
+                  </FeatureTypeStyle>
+                </UserStyle>
+              </NamedLayer>
+            </StyledLayerDescriptor>
+            `,
+            path: 'User generated',
           },
-          sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-          <StyledLayerDescriptor version="1.0.0" 
-              xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-              xmlns="http://www.opengis.net/sld" 
-              xmlns:ogc="http://www.opengis.net/ogc" 
-              xmlns:xlink="http://www.w3.org/1999/xlink" 
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <NamedLayer>
-              <Name>Simple point with stroke</Name>
-              <UserStyle>
-                <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
-                <FeatureTypeStyle>
-                  <Rule>
-                    <PointSymbolizer>
-                      <Graphic>
-                        <Mark>
-                          <WellKnownName>circle</WellKnownName>
-                          <Fill>
-                            <CssParameter name="fill">#FF0000</CssParameter>
-                          </Fill>
-                          <Stroke>
-                            <CssParameter name="stroke">#000000</CssParameter>
-                            <CssParameter name="stroke-width">2</CssParameter>
-                          </Stroke>
-                        </Mark>
-                        <Size>6</Size>
-                      </Graphic>
-                    </PointSymbolizer>
-                  </Rule>
-                </FeatureTypeStyle>
-              </UserStyle>
-            </NamedLayer>
-          </StyledLayerDescriptor>
-          `,
-          path: 'User generated',
           source: new VectorSource({features}),
         }),
         new VectorLayer({
-          title: 'Polygons',
-          synchronize: false,
-          cluster: false,
-          inlineLegend: true,
-          popUp: {
-            attributes: ['name'],
-          },
-          editor: {
-            editable: true,
-            defaultAttributes: {
-              name: 'New polygon',
-              description: 'none',
+          properties: {
+            title: 'Polygons',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
             },
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
+              },
+            },
+            sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
+            <StyledLayerDescriptor version="1.0.0" 
+                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+                xmlns="http://www.opengis.net/sld" 
+                xmlns:ogc="http://www.opengis.net/ogc" 
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <NamedLayer>
+                <Name>Simple point with stroke</Name>
+                <UserStyle>
+                  <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
+                  <FeatureTypeStyle>
+                    <Rule>
+                    <PolygonSymbolizer>
+                    <Fill>
+                      <CssParameter name="fill">#000080</CssParameter>
+                    </Fill>
+                  </PolygonSymbolizer>
+                    </Rule>
+                  </FeatureTypeStyle>
+                </UserStyle>
+              </NamedLayer>
+            </StyledLayerDescriptor>
+            `,
+            path: 'User generated',
           },
-          sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-          <StyledLayerDescriptor version="1.0.0" 
-              xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-              xmlns="http://www.opengis.net/sld" 
-              xmlns:ogc="http://www.opengis.net/ogc" 
-              xmlns:xlink="http://www.w3.org/1999/xlink" 
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <NamedLayer>
-              <Name>Simple point with stroke</Name>
-              <UserStyle>
-                <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
-                <FeatureTypeStyle>
-                  <Rule>
-                  <PolygonSymbolizer>
-                  <Fill>
-                    <CssParameter name="fill">#000080</CssParameter>
-                  </Fill>
-                </PolygonSymbolizer>
-                  </Rule>
-                </FeatureTypeStyle>
-              </UserStyle>
-            </NamedLayer>
-          </StyledLayerDescriptor>
-          `,
-          path: 'User generated',
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject),
           }),

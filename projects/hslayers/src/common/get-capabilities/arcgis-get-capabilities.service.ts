@@ -2,7 +2,7 @@ import {Attribution} from 'ol/control';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
-import {TileWMS} from 'ol/source';
+import {Source, TileWMS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
@@ -101,7 +101,7 @@ export class HsArcgisGetCapabilitiesService {
    * @param caps - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(caps): Layer[] {
+  service2layers(caps): Layer<Source>[] {
     const service = caps.layers;
     //onst srss = caps.spatialReference.wkid;
     const image_formats = caps.supportedImageFormatTypes.split(',');
@@ -130,34 +130,30 @@ export class HsArcgisGetCapabilitiesService {
         let attributions = [];
         if (layer.Attribution) {
           attributions = [
-            new Attribution({
-              html:
-                '<a href="' +
-                layer.Attribution.OnlineResource +
-                '">' +
-                layer.Attribution.Title +
-                '</a>',
-            }),
+            `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
           ];
         }
         const new_layer = new Tile({
-          title: layer.Title.replace(/\//g, '&#47;'),
+          properties: {
+            title: layer.Title.replace(/\//g, '&#47;'),
+            abstract: layer.Abstract,
+          },
           source: new TileWMS({
             url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
               .OnlineResource,
             attributions: attributions,
-            styles:
-              layer.Style && layer.Style.length > 0
-                ? layer.Style[0].Name
-                : undefined,
+
             params: {
               LAYERS: layer.Name,
               INFO_FORMAT: layer.queryable ? query_format : undefined,
               FORMAT: image_format,
+              styles:
+                layer.Style && layer.Style.length > 0
+                  ? layer.Style[0].Name
+                  : undefined,
             },
             crossOrigin: 'anonymous',
           }),
-          abstract: layer.Abstract,
           useInterimTilesOnError: false,
           extent: layer.BoundingBox,
         });

@@ -1,19 +1,21 @@
 import {Injectable} from '@angular/core';
 
-import {Circle, Icon, Style} from 'ol/style';
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
+import VectorSource from 'ol/source/Vector';
+import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
+  Cluster,
   ImageArcGISRest,
   ImageStatic,
   ImageWMS,
+  Source,
   TileArcGISRest,
-  TileWMS,
   WMTS,
   XYZ,
 } from 'ol/source';
+import {Feature} from 'ol';
+import {GeoJSON} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
-import {Map} from 'ol';
 
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -23,6 +25,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {
+  getAttribution,
   getBase,
   getDefinition,
   getDimensions,
@@ -44,7 +47,7 @@ const LCLSTORAGE_EXPIRE = 5000;
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  public internalLayers: Layer[] = [];
+  public internalLayers: Layer<Source>[] = [];
   constructor(
     public hsConfig: HsConfig,
     public HsMapService: HsMapService,
@@ -135,7 +138,7 @@ export class HsSaveMapService {
 
     // Layers properties
     json.layers = this.layers2json(compoData.layers);
-    json.current_base_layer = this.getCurrentBaseLayer(map);
+    json.current_base_layer = this.getCurrentBaseLayer();
     return json;
   }
   /**
@@ -143,9 +146,9 @@ export class HsSaveMapService {
    * @param {Map} map Selected map object
    * @returns {object} Returns object with current current selected base layers title as attribute
    */
-  getCurrentBaseLayer(map: Map) {
+  getCurrentBaseLayer() {
     let current_base_layer = null;
-    for (const lyr of map.getLayers().getArray()) {
+    for (const lyr of this.HsMapService.getLayersArray()) {
       if (
         (getShowInLayerManager(lyr) == undefined ||
           getShowInLayerManager(lyr) == true) &&
@@ -199,8 +202,10 @@ export class HsSaveMapService {
    * @param s Style to convert
    * @returns {object} Converted JSON object for style
    */
-  serializeStyle(s: Style) {
+  serializeStyle(style: Style | Style[]) {
+    const s = Array.isArray(style) ? style[0] : style;
     const o: any = {};
+    const ima: any = {};
     if (s.getFill() && s.getFill() !== null) {
       o.fill = s.getFill().getColor();
     }
@@ -212,42 +217,27 @@ export class HsSaveMapService {
     }
     if (s.getImage() && s.getImage() !== null) {
       const style_img = s.getImage();
-      const ima: any = {};
-      if (
-        style_img.getFill &&
-        style_img.getFill() &&
-        style_img.getFill() !== null
-      ) {
-        ima.fill = style_img.getFill().getColor();
-      }
-
-      if (
-        style_img.getStroke &&
-        style_img.getStroke() &&
-        style_img.getStroke() !== null
-      ) {
-        ima.stroke = {
-          color: style_img.getStroke().getColor(),
-          width: style_img.getStroke().getWidth(),
-        };
-      }
-
-      if (style_img.getRadius) {
-        ima.radius = style_img.getRadius();
-      }
-      if (
-        this.HsUtilsService.isFunction(style_img.getSrc) &&
-        typeof style_img.getSrc() === 'string' &&
-        !style_img.getSrc().startsWith('data:image')
-      ) {
-        ima.src = this.HsUtilsService.proxify(style_img.getSrc());
-      } else if (
-        this.HsUtilsService.isFunction(style_img.getImage) &&
-        style_img.getImage() !== null
-      ) {
-        if (style_img.getImage().src) {
-          ima.src = style_img.getImage().src;
+      if (this.HsUtilsService.instOf(style_img, RegularShape)) {
+        const regShape = style_img as RegularShape;
+        if (regShape.getFill()) {
+          ima.fill = regShape.getFill().getColor();
         }
+
+        if (regShape.getStroke()) {
+          ima.stroke = {
+            color: regShape.getStroke().getColor(),
+            width: regShape.getStroke().getWidth(),
+          };
+        }
+        ima.radius = regShape.getRadius();
+      }
+
+      if (
+        this.HsUtilsService.instOf(style_img, Icon) &&
+        typeof (style_img as Icon).getSrc() === 'string' &&
+        !(style_img as Icon).getSrc().startsWith('data:image')
+      ) {
+        ima.src = this.HsUtilsService.proxify((style_img as Icon).getSrc());
       }
 
       if (this.HsUtilsService.instOf(style_img, Circle)) {
@@ -280,7 +270,7 @@ export class HsSaveMapService {
    * @param layer - Map layer that should be converted
    * @returns JSON object representing the layer
    */
-  layer2json(layer: Layer): any {
+  layer2json(layer: Layer<Source>): any {
     const json: any = {
       metadata: getMetadata(layer) || {},
     };
@@ -349,12 +339,9 @@ export class HsSaveMapService {
       }
       if (this.HsUtilsService.instOf(src, ImageStatic)) {
         json.className = 'StaticImage';
-        json.extent = src.getImageExtent();
+        json.extent = (src as ImageStatic).getImageExtent();
       }
-      if (
-        this.HsUtilsService.instOf(src, ImageWMS) ||
-        this.HsUtilsService.instOf(src, TileWMS)
-      ) {
+      if (this.HsLayerUtilsService.isLayerWMS(layer)) {
         json.className = 'HSLayers.Layer.WMS';
         json.singleTile = this.HsUtilsService.instOf(src, ImageWMS);
         if (getLegends(layer)) {
@@ -370,28 +357,23 @@ export class HsSaveMapService {
         if (src.getProjection()) {
           json.projection = src.getProjection().getCode().toLowerCase();
         }
-        json.params = src.getParams();
-        json.ratio = src.get('ratio') || src.ratio_;
+        json.params = this.HsLayerUtilsService.getLayerParams(layer);
         json.subLayers = getSubLayers(layer);
         json.metadata.styles = src.get('styles');
       }
-      if (src.getUrl) {
-        json.url = encodeURIComponent(src.getUrl());
-      }
-      if (src.getUrls) {
-        json.url = encodeURIComponent(src.getUrls()[0]);
-      }
-      if (src.attributions_) {
-        json.attributions = encodeURIComponent(src.attributions_);
+      json.url = encodeURIComponent(this.HsLayerUtilsService.getURL(layer));
+      if (getAttribution(layer)) {
+        json.attributions = getAttribution(layer);
       }
 
       if (this.HsUtilsService.instOf(src, WMTS)) {
+        const wmts = src as WMTS;
         json.className = 'HSLayers.Layer.WMTS';
-        json.matrixSet = src.getMatrixSet();
-        json.layer = src.getLayer();
-        json.format = src.getFormat();
+        json.matrixSet = wmts.getMatrixSet();
+        json.layer = wmts.getLayer();
+        json.format = wmts.getFormat();
         json.info_format = layer.get('info_format');
-        json.url = src.getUrls()[0];
+        json.url = wmts.getUrls()[0];
       }
     }
 
@@ -399,7 +381,7 @@ export class HsSaveMapService {
     if (this.HsUtilsService.instOf(layer, VectorLayer)) {
       let src = layer.getSource();
       if (this.HsLayerUtilsService.isLayerClustered(layer)) {
-        src = src.getSource();
+        src = (src as Cluster).getSource();
       }
       json.name = getName(layer);
       json.className = 'Vector';
@@ -419,7 +401,9 @@ export class HsSaveMapService {
           };
         } else {
           try {
-            json.features = this.getFeaturesJson(src.getFeatures());
+            json.features = this.getFeaturesJson(
+              (src as VectorSource<Geometry>).getFeatures()
+            );
           } catch (ex) {
             //Do nothing
           }
@@ -430,8 +414,15 @@ export class HsSaveMapService {
       json.projection = 'epsg:4326';
       if (getSld(layer) != undefined) {
         json.style = getSld(layer);
-      } else if (this.HsUtilsService.instOf(layer.getStyle(), Style)) {
-        json.style = this.serializeStyle(layer.getStyle());
+      } else if (
+        this.HsUtilsService.instOf(
+          (layer as VectorLayer<VectorSource<Geometry>>).getStyle(),
+          Style
+        )
+      ) {
+        json.style = this.serializeStyle(
+          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style
+        );
       }
     }
     return json;
@@ -443,7 +434,7 @@ export class HsSaveMapService {
    * @param features - Array of features
    * @returns GeoJSON
    */
-  getFeaturesJson(features: Feature[]): any {
+  getFeaturesJson(features: Feature<Geometry>[]): any {
     const f = new GeoJSON();
     const featureProjection = this.HsMapService.getCurrentProj().getCode();
     return f.writeFeaturesObject(features, {
@@ -506,7 +497,8 @@ export class HsSaveMapService {
       }
       $element.setAttribute('crossOrigin', 'Anonymous');
 
-      this.HsMapService.map.once('postcompose', rendered, localThis);
+      rendered.bind(localThis);
+      this.HsMapService.map.once('postcompose', rendered);
       if (newRender) {
         this.HsMapService.map.renderSync();
       } else {
@@ -518,11 +510,9 @@ export class HsSaveMapService {
   save2storage(evt): void {
     const data = {
       expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
-      layers: this.HsMapService.map
-        .getLayers()
-        .getArray()
+      layers: this.HsMapService.getLayersArray()
         .filter((lyr) => !this.internalLayers.includes(lyr))
-        .map((lyr) => this.layer2json(lyr)),
+        .map((lyr: Layer<Source>) => this.layer2json(lyr)),
     };
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good

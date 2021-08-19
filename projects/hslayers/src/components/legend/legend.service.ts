@@ -1,13 +1,24 @@
-import CircleStyle from 'ol/style/Circle';
-import Feature from 'ol/Feature';
-import StyleFunction from 'ol/style/Style';
-import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
-import {ImageWMS, Source, ImageStatic as Static, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 
+import CircleStyle from 'ol/style/Circle';
+import Feature from 'ol/Feature';
+import RenderFeature from 'ol/render/Feature';
+import VectorSource from 'ol/source/Vector';
+import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {
+  Cluster,
+  ImageWMS,
+  Source,
+  ImageStatic as Static,
+  TileWMS,
+  XYZ,
+} from 'ol/source';
+import {Geometry} from 'ol/geom';
+import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -19,12 +30,20 @@ import {
   getTitle,
 } from '../../common/layer-extensions';
 
+//Following type-defs are missing in the OL export
+declare type StyleFunction = (
+  feature: Feature<any> | RenderFeature,
+  number?: number
+) => void | Style | Style[];
+declare type StyleLike = Style | Array<Style> | StyleFunction;
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsLegendService {
   constructor(
     public HsUtilsService: HsUtilsService,
+    private HsLayerUtilsService: HsLayerUtilsService,
     public HsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer
   ) {
@@ -56,17 +75,19 @@ export class HsLegendService {
    * @param currentLayer - Layer of interest
    * @returns Array of simplified lowercase names of geometry types encountered in layer
    */
-  getVectorFeatureGeometry(currentLayer: Layer): Array<string> {
+  getVectorFeatureGeometry(
+    currentLayer: VectorLayer<VectorSource<Geometry> | Cluster>
+  ): Array<string> {
     if (currentLayer === undefined) {
       return;
     }
     const found = this.findFeatureGeomTypes(
       currentLayer.getSource().getFeatures()
     );
-    if (currentLayer.getSource().getSource) {
+    if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
       //Clustered layer?
       const subFeatureTypes = this.findFeatureGeomTypes(
-        currentLayer.getSource().getSource().getFeatures()
+        (currentLayer.getSource() as Cluster).getSource().getFeatures()
       );
       for (const type of Object.keys(subFeatureTypes)) {
         found[type] = subFeatureTypes[type] || found[type];
@@ -77,7 +98,7 @@ export class HsLegendService {
     return tmp;
   }
 
-  findFeatureGeomTypes(features: Array<Feature>): {
+  findFeatureGeomTypes(features: Array<Feature<Geometry>>): {
     line: boolean;
     polygon: boolean;
     point: boolean;
@@ -112,35 +133,38 @@ export class HsLegendService {
    * @param currentLayer - Layer of interest
    * @returns Array of serialized unique style descriptions encountered when looping through first 100 features
    */
-  getStyleVectorLayer(currentLayer: VectorLayer): Array<any> {
+  getStyleVectorLayer(
+    currentLayer: VectorLayer<VectorSource<Geometry>>
+  ): Array<any> {
     if (currentLayer === undefined) {
       return;
     }
-    let styleArray = [];
+    let styleArray: Array<Style | Style[]> = [];
     const layerStyle = currentLayer.getStyle();
     if (!this.HsUtilsService.isFunction(layerStyle)) {
-      styleArray.push(layerStyle);
+      styleArray.push(layerStyle as Style | Style[]);
     } else {
       if (currentLayer.getSource().getFeatures().length > 0) {
         styleArray = styleArray.concat(
           this.stylesForFeatures(
             currentLayer.getSource().getFeatures(),
-            layerStyle
+            layerStyle as StyleFunction
           )
         );
-        if (currentLayer.getSource().getSource) {
+        if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
           //Clustered layer?
           styleArray = styleArray.concat(
             this.stylesForFeatures(
-              currentLayer.getSource().getSource().getFeatures(),
-              layerStyle
+              (currentLayer.getSource() as Cluster).getSource().getFeatures(),
+              layerStyle as StyleFunction
             )
           );
         }
       }
     }
     const filtered = styleArray.filter(
-      (style) => style.getText == undefined || !style.getText()
+      (style) =>
+        (style as Style).getText === undefined || !(style as Style).getText()
     );
     let serializedStyles = filtered
       .map((style) => this.serializeStyle(style))
@@ -153,17 +177,17 @@ export class HsLegendService {
   }
 
   stylesForFeatures(
-    features: Array<Feature>,
+    features: Array<Feature<Geometry>>,
     layerStyle: StyleFunction
-  ): Array<Style> {
+  ): Style[] {
     let featureStyles = features.map((feature) => layerStyle(feature));
     if (featureStyles.length > 1000) {
       featureStyles = featureStyles.slice(0, 100);
     }
-    if (featureStyles[0].length) {
+    if (Array.isArray(featureStyles[0])) {
       featureStyles = [...featureStyles];
     }
-    return featureStyles;
+    return featureStyles as Style[];
   }
 
   /**
@@ -171,9 +195,9 @@ export class HsLegendService {
    * @param style - OpenLayers style
    * @returns Simplified description of style used by template to draw legend
    */
-  serializeStyle(style: Style) {
-    const styleToSerialize = style[0] ? style[0] : style;
-    if (styleToSerialize.getImage == undefined) {
+  serializeStyle(style: Style | Style[]) {
+    const styleToSerialize = style[0] ? (style[0] as Style) : (style as Style);
+    if (styleToSerialize.getImage === undefined) {
       return;
     }
     const image = styleToSerialize.getImage();
@@ -190,19 +214,21 @@ export class HsLegendService {
    * @param image - Image description
    * @returns Simplified description of style used by template to draw legend
    */
-  setUpLegendStyle(fill: Fill, stroke: Stroke, image: any) {
+  setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle) {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.HsUtilsService.instOf(image, Icon)) {
+      const icon = image as Icon;
       row.icon = {
         type: 'icon',
-        src: this.sanitizer.bypassSecurityTrustResourceUrl(image.getSrc()),
+        src: this.sanitizer.bypassSecurityTrustResourceUrl(icon.getSrc()),
       };
     } else if (
       image &&
       (this.HsUtilsService.instOf(image, Circle) ||
         this.HsUtilsService.instOf(image, CircleStyle))
     ) {
+      const circle = image as Circle | CircleStyle;
       row.customCircle = {
         fill: 'white',
         type: 'circle',
@@ -210,16 +236,16 @@ export class HsLegendService {
         cy: '17.5px',
         r: '15px',
       };
-      if (image.getStroke()) {
+      if (circle.getStroke()) {
         Object.assign(row.customCircle, {
-          fill: image.getFill().getColor(),
-          stroke: image.getStroke().getColor(),
-          strokeWidth: image.getStroke().getWidth(),
+          fill: circle.getFill().getColor(),
+          stroke: circle.getStroke().getColor(),
+          strokeWidth: circle.getStroke().getWidth(),
         });
       }
-      if (image.getFill()) {
+      if (circle.getFill()) {
         Object.assign(row.customCircle, {
-          fill: image.getFill().getColor(),
+          fill: circle.getFill().getColor(),
         });
       }
     }
@@ -272,22 +298,20 @@ export class HsLegendService {
    * @param layer - Layer to get legend for
    * @returns Url of the legend graphics
    */
-  getLegendUrl(source: Source, layer_name: string, layer: Layer): string {
-    let source_url = '';
-    if (this.HsUtilsService.instOf(source, TileWMS)) {
-      source_url = source.getUrls()[0];
-    } else if (this.HsUtilsService.instOf(source, ImageWMS)) {
-      source_url = source.getUrl();
-    } else {
+  getLegendUrl(
+    source: Source,
+    layer_name: string,
+    layer: Layer<Source>
+  ): string {
+    if (!this.HsLayerUtilsService.isLayerWMS(layer)) {
       return '';
     }
+    const params = this.HsLayerUtilsService.getLayerParams(layer);
+    const version = params.VERSION || '1.3.0';
+    let source_url = this.HsLayerUtilsService.getURL(layer);
     if (source_url.indexOf('proxy4ows') > -1) {
       const params = this.HsUtilsService.getParamsFromUrl(source_url);
       source_url = params.OWSURL;
-    }
-    let version = '1.3.0';
-    if (source.getParams().VERSION) {
-      version = source.getParams().VERSION;
     }
     const legendImage = getLegends(layer);
     if (legendImage !== undefined) {
@@ -317,15 +341,15 @@ export class HsLegendService {
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    * @private
    */
-  getLayerLegendDescriptor(layer: Layer): HsLegendDescriptor | undefined {
+  getLayerLegendDescriptor(
+    layer: Layer<Source>
+  ): HsLegendDescriptor | undefined {
     if (getBase(layer)) {
       return;
     }
-    if (
-      this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
-      this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
-    ) {
-      const subLayerLegends = layer.getSource().getParams().LAYERS.split(',');
+    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+      const subLayerLegends =
+        this.HsLayerUtilsService.getLayerParams(layer).LAYERS.split(',');
       for (let i = 0; i < subLayerLegends.length; i++) {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),

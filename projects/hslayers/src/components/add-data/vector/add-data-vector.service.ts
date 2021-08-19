@@ -1,8 +1,9 @@
 import BaseLayer from 'ol/layer/Base';
 import {GPX, GeoJSON, KML} from 'ol/format';
-import {Vector as VectorSource} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 
 import '../../styles/styles.module';
+import {Geometry} from 'ol/geom';
 import {HsAddDataService} from '../add-data.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
@@ -73,8 +74,8 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-    addUnder?: BaseLayer
-  ): Promise<VectorLayer> {
+    addUnder?: Layer<Source>
+  ): Promise<VectorLayer<VectorSource<Geometry>>> {
     return new Promise(async (resolve, reject) => {
       try {
         const lyr = await this.createVectorLayer(
@@ -129,7 +130,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions = {}
-  ): Promise<VectorLayer> {
+  ): Promise<VectorLayer<VectorSource<Geometry>>> {
     if (
       type.toLowerCase() != 'sparql' &&
       type.toLowerCase() != 'wfs' &&
@@ -180,7 +181,7 @@ export class HsAddDataVectorService {
     return lyr;
   }
 
-  fitExtent(lyr: Layer): void {
+  fitExtent(lyr: VectorLayer<VectorSource<Geometry>>): void {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
       this.tryFit(src.getExtent(), src);
@@ -214,9 +215,7 @@ export class HsAddDataVectorService {
       !isNaN(extent[3]) &&
       this.hsMapService.map
     ) {
-      this.hsMapService.map
-        .getView()
-        .fit(extent, this.hsMapService.map.getSize());
+      this.hsMapService.fitExtent(extent);
       src.un('change', this.changeListener);
     }
   }
@@ -300,7 +299,7 @@ export class HsAddDataVectorService {
       name: json.name,
       title: json.name,
       srs: projection,
-      features: features,
+      features,
     };
     return object;
   }

@@ -10,7 +10,6 @@ import {TileWMS} from 'ol/source';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsLegendComponent} from './legend.component';
@@ -23,7 +22,9 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
+const layerUtilsMock = mockLayerUtilsService();
 describe('HsLegendComponent', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -53,7 +54,7 @@ describe('HsLegendComponent', () => {
       ],
       providers: [
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
@@ -72,18 +73,21 @@ describe('HsLegendComponent', () => {
   });
 
   it('should generate descriptor', () => {
+    const params = {
+      LAYERS: '2017_yield_corn',
+      FORMAT: 'image/png',
+    };
     const layer = new TileLayer({
-      title: 'Crop stats',
+      properties: {title: 'Crop stats', showInLayerManager: false},
       source: new TileWMS({
         url: 'http://localhost/ows?',
-        params: {
-          LAYERS: '2017_yield_corn',
-          FORMAT: 'image/png',
-        },
+        params,
       }),
-      showInLayerManager: false,
       visible: true,
     });
+    layerUtilsMock.isLayerWMS.and.returnValue(true);
+    layerUtilsMock.getLayerParams.and.returnValue(params);
+    layerUtilsMock.getURL.and.returnValue('http://localhost/ows?');
 
     component.addLayerToLegends(layer);
 
@@ -98,7 +102,7 @@ describe('HsLegendComponent', () => {
 
   it('should follow wms source LAYERS change', () => {
     const layer = new TileLayer({
-      title: 'Crop stats',
+      properties: {title: 'Crop stats', showInLayerManager: false},
       source: new TileWMS({
         url: 'http://localhost/ows?',
         params: {
@@ -106,12 +110,12 @@ describe('HsLegendComponent', () => {
           FORMAT: 'image/png',
         },
       }),
-      showInLayerManager: false,
       visible: true,
     });
     component.addLayerToLegends(layer);
     const layerParams = layer.getSource().getParams();
     layerParams.LAYERS = `2017_damage_tomato`;
+    layerUtilsMock.getLayerParams.and.returnValue(layerParams);
     layer.getSource().updateParams(layerParams);
     expect(component.layerDescriptors[0].subLayerLegends).toEqual([
       '/proxy/http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_damage_tomato&format=image%2Fpng',
