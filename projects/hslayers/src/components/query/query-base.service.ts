@@ -176,14 +176,6 @@ export class HsQueryBaseService {
               return layer;
             }
           );
-          this.featuresUnderMouse.forEach((feature) => {
-            this.serializeFeatureAttributes(feature);
-            if (getFeatures(feature)) {
-              getFeatures(feature).forEach((subfeature) =>
-                this.serializeFeatureAttributes(subfeature)
-              );
-            }
-          });
         } else {
           this.featuresUnderMouse = [];
         }
@@ -207,7 +199,7 @@ export class HsQueryBaseService {
   /**
    * @param feature
    */
-  serializeFeatureAttributes(feature: Feature<Geometry>): void {
+  serializeFeatureAttributes(feature: Feature<Geometry>): any[] {
     const attributesForHover = [];
     const layer = this.HsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
@@ -247,7 +239,7 @@ export class HsQueryBaseService {
         });
       }
     }
-    feature.set('attributesForHover', attributesForHover);
+    return attributesForHover;
   }
 
   setData(data: any, type: string, overwrite?: boolean): void {

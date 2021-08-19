@@ -165,7 +165,7 @@ export class HslayersAppComponent {
         {name: 'warning', url: '/assets/icons/warning.svg'},
         {name: 'wifi', url: '/assets/icons/wifi8.svg'},
       ],
-
+      popUpDisplay: 'hover',
       default_layers: [
         new Tile({
           source: new OSM(),
@@ -183,7 +183,7 @@ export class HslayersAppComponent {
             cluster: false,
             inlineLegend: true,
             popUp: {
-              attributes: ['name'],
+              attributes: ['name', 'population'],
             },
             editor: {
               editable: true,
