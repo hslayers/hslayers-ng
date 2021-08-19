@@ -103,7 +103,7 @@
     "prettier": "^2.3.2",
     "protractor": "~7.0.0",
     "puppeteer": "^10.2.0",
-    "ts-node": "~10.2.0",
+    "ts-node": "~10.2.1",
     "typescript": "~4.1.6"
   },
   "config": {
