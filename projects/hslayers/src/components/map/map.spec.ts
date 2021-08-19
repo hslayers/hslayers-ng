@@ -81,13 +81,13 @@ describe('HsMapService', () => {
   it('should not add duplicate layers', async function () {
     await service.loaded();
     const layer1 = new VectorLayer({
-      title: 'Bookmarks',
+      properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
     });
     service.map.addLayer(layer1);
 
     const layer2 = new VectorLayer({
-      title: 'Bookmarks',
+      properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
     });
     const exists = service.layerAlreadyExists(layer2);
@@ -97,7 +97,7 @@ describe('HsMapService', () => {
   it('find layer for feature', async function () {
     await service.loaded();
     const featureLayer = new VectorLayer({
-      title: 'Feature layer',
+      properties: {title: 'Feature layer'},
       source: new VectorSource({}),
     });
     service.map.addLayer(featureLayer);

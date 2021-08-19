@@ -54,7 +54,7 @@ describe('HsMeasure', () => {
   });
 
   it('format length measurements', () => {
-    service.map = new Map();
+    service.map = new Map({});
     let measuredLine = new LineString([
       //coordinates in the Map's default projection
       [16223, 48456],
@@ -74,7 +74,7 @@ describe('HsMeasure', () => {
   });
 
   it('format area measurements', () => {
-    service.map = new Map();
+    service.map = new Map({});
     let measuredLine = new Polygon([
       //coordinates in the Map's default projection
       [

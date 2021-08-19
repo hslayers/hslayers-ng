@@ -18,6 +18,7 @@ import {Injectable} from '@angular/core';
 import {isEmpty} from 'ol/extent';
 
 import FeatureFormat from 'ol/format/Feature';
+import TileLayer from 'ol/layer/Tile';
 import {Geometry} from 'ol/geom';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
@@ -87,7 +88,7 @@ export class HsLayerUtilsService {
    * INFO_FORMAT in params
    */
   isLayerQueryable(layer: Layer<Source>): boolean {
-    return this.isLayerWMS(layer) && this.getLayerParams(layer).INFO_FORMAT;
+    return this.isLayerWMS(layer) && !!this.getLayerParams(layer).INFO_FORMAT;
   }
 
   /**
@@ -112,6 +113,9 @@ export class HsLayerUtilsService {
     if (this.HsUtilsService.instOf(src, TileWMS)) {
       return (src as TileWMS).getUrls()[0];
     }
+    if (this.HsUtilsService.instOf(src, WMTS)) {
+      return (src as WMTS).getUrls()[0];
+    }
   }
 
   /**
@@ -121,7 +125,7 @@ export class HsLayerUtilsService {
    */
   isLayerWMS(layer: Layer<Source>): boolean {
     if (
-      this.HsUtilsService.instOf(layer, Tile) &&
+      this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), TileWMS)
     ) {
       return true;
@@ -138,7 +142,7 @@ export class HsLayerUtilsService {
   // todo
   isLayerWMTS(layer: Layer<Source>): boolean {
     if (
-      this.HsUtilsService.instOf(layer, Tile) &&
+      this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), WMTS)
     ) {
       return true;
@@ -148,7 +152,7 @@ export class HsLayerUtilsService {
 
   isLayerXYZ(layer: Layer<Source>): boolean {
     if (
-      this.HsUtilsService.instOf(layer, Tile) &&
+      this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), XYZ)
     ) {
       return true;

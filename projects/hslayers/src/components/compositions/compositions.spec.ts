@@ -20,7 +20,6 @@ import {HsCompositionsStatusManagerService} from './endpoints/compositions-statu
 import {HsConfig} from '../../config.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
@@ -37,6 +36,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
@@ -54,6 +54,7 @@ class emptyMock {
 
 let mockedMapService;
 let CompositionsCatalogueService;
+
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
@@ -104,7 +105,7 @@ describe('compositions', () => {
             contentWrapper: document.createElement('div'),
           },
         },
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
         HsStylerService,
         HsCompositionsLayerParserService,
         {
@@ -124,6 +125,7 @@ describe('compositions', () => {
             new HsStylerService(
               null,
               mockedUtilsService,
+              mockLayerUtilsService,
               mockedEventBusService,
               null,
               null,

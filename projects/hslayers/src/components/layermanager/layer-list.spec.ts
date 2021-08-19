@@ -42,17 +42,17 @@ describe('layermanager-layer-list', () => {
   let fixture: ComponentFixture<HsLayerListComponent>;
 
   const layerForCluster = new VectorLayer({
-    title: 'Bookmarks',
+    properties: {title: 'Bookmarks'},
     source: new VectorSource({}),
   });
 
   const subLayerContainerLayer = new ImageLayer({
-    title: 'test',
+    properties: {title: 'test'},
     source: new ImageWMS({
       url: 'http://geoservices.brgm.fr/geologie',
       params: {'LAYERS': 'BSS', 'TILED': true},
+      crossOrigin: 'anonymous',
     }),
-    crossOrigin: 'anonymous',
   });
 
   beforeAll(() => {
@@ -93,17 +93,11 @@ describe('layermanager-layer-list', () => {
         },
         {
           provide: HsLayerUtilsService,
-          useValue: {
-            isLayerVectorLayer: () => false,
-            getLayerTitle: () => '',
-            getURL: () => 'http://dummy-layer-url',
-            isLayerWMS: () => true,
-            isLayerGeoJSONSource: () => false,
-            isLayerKMLSource: () => false,
-            isLayerTopoJSONSource: () => false,
-            isLayerWMTS: () => false,
-            isLayerXYZ: () => false,
-          },
+          useValue: jasmine.createSpyObj('HsLayerUtilsService', [
+            'isLayerWMS',
+            'getLayerParams',
+            'updateLayerParams',
+          ]),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {

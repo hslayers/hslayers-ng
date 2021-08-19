@@ -28,6 +28,7 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import { Style } from 'ol/style';
 
 class emptyMock {
   constructor() {}
@@ -45,7 +46,7 @@ class HsConfigMock {
 
 describe('HsStyler', () => {
   const layer = new VectorLayer({
-    title: 'Point',
+    properties: {title: 'Point'},
     source: new VectorSource({
       features: [
         new Feature({geometry: new Point([0, 0]), name: 'test'}),
@@ -120,7 +121,7 @@ describe('HsStyler', () => {
         ''
       )
     );
-    expect(service.layer.getStyle().getFill()).toBeDefined();
+    expect((service.layer.getStyle() as Style).getFill()).toBeDefined();
   });
   it('should issue onSet event when style changes', async () => {
     const nextSpy = spyOn(service.onSet, 'next');

@@ -10,7 +10,6 @@ import {TileWMS} from 'ol/source';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsLegendComponent} from './legend.component';
@@ -23,6 +22,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 describe('HsLegendComponent', () => {
   beforeAll(() => {
@@ -53,7 +53,7 @@ describe('HsLegendComponent', () => {
       ],
       providers: [
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
@@ -73,7 +73,7 @@ describe('HsLegendComponent', () => {
 
   it('should generate descriptor', () => {
     const layer = new TileLayer({
-      title: 'Crop stats',
+      properties: {title: 'Crop stats', showInLayerManager: false},
       source: new TileWMS({
         url: 'http://localhost/ows?',
         params: {
@@ -81,7 +81,6 @@ describe('HsLegendComponent', () => {
           FORMAT: 'image/png',
         },
       }),
-      showInLayerManager: false,
       visible: true,
     });
 
@@ -98,7 +97,7 @@ describe('HsLegendComponent', () => {
 
   it('should follow wms source LAYERS change', () => {
     const layer = new TileLayer({
-      title: 'Crop stats',
+      properties: {title: 'Crop stats', showInLayerManager: false},
       source: new TileWMS({
         url: 'http://localhost/ows?',
         params: {
@@ -106,7 +105,6 @@ describe('HsLegendComponent', () => {
           FORMAT: 'image/png',
         },
       }),
-      showInLayerManager: false,
       visible: true,
     });
     component.addLayerToLegends(layer);
