@@ -5,6 +5,7 @@ import '../utils/utils.module';
 import 'angular-sanitize';
 import attributeRowComponent from './attribute-row.component';
 import defaultInfoPanelBody from './default-info-panel-body.directive';
+import domainFilter from './domain.filter';
 import featureComponent from './feature.component';
 import featurePopupComponent from './feature-popup.component';
 import queryBaseService from './query-base.service';
@@ -93,6 +94,8 @@ angular
    * @description TODO
    */
   .controller('HsQueryController', queryController)
+
+  .filter('domainFilter', domainFilter)
 
   .component('hs.query.featurePopup', featurePopupComponent)
 
