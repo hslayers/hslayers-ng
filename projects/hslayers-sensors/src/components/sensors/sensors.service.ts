@@ -1,6 +1,8 @@
+import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {Geometry} from 'ol/geom';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
@@ -180,12 +182,14 @@ export class HsSensorsService {
       }),
       this.labelStyle,
     ];
-    this.layer = new VectorLayer({
-      title: 'Sensor units',
-      editor: {
-        editable: false,
+    this.layer = new VectorLayer<VectorSource<Geometry>>({
+      properties: {
+        title: 'Sensor units',
+        editor: {
+          editable: false,
+        },
       },
-      style: function (feature) {
+      style: function (feature: Feature<Geometry>) {
         me.labelStyle.getText().setText(getFeatureName(feature));
         return me.bookmarkStyle;
       },
