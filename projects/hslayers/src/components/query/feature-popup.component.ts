@@ -108,9 +108,9 @@ export class HsQueryFeaturePopupComponent implements OnDestroy {
       return getFeatureLabel(feature);
     }
     if (getFeatures(feature)) {
-      return (
-        'Cluster containing ' + getFeatures(feature).length + ' ' + 'features'
-      );
+      return this.HsLanguageService.getTranslation('QUERY.clusterContaining', {
+        count: getFeatures(feature).length,
+      });
     }
     return this.HsLanguageService.getTranslation('QUERY.untitledFeature');
   }
