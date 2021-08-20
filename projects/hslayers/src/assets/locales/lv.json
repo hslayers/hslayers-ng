@@ -582,7 +582,8 @@
     },
     "reallyDelete": "Vai tiešām vēlaties dzēst šo objektu?",
     "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus objektus no slāņa {0}?",
-    "untitledFeature": "Objekts bez nosaukuma"
+    "untitledFeature": "Objekts bez nosaukuma",
+    "clusterContaining": "Objektu apvienojums, kas satur {{count}} objektus"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {

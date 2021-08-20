@@ -582,7 +582,8 @@
     },
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",
-    "untitledFeature": "Untitled feature"
+    "untitledFeature": "Untitled feature",
+    "clusterContaining": "Cluster containing {{count}} features"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
