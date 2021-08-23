@@ -723,9 +723,11 @@ export class HsDrawService {
    */
   selectAllFeatures() {
     //CLUSTERS?
+    this.HsQueryBaseService.clearData('features');
     this.HsQueryBaseService.selector
       .getFeatures()
       .extend(this.selectedLayer.getSource().getFeatures());
+    this.HsQueryVectorService.createFeatureAttributeList();
   }
 
   toggleBoxSelection() {
