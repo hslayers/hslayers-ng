@@ -585,7 +585,11 @@
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",
     "untitledFeature": "Untitled feature",
-    "clusterContaining": "Cluster containing {{count}} features"
+    "clusterContaining": "Cluster containing {{count}} features",
+    "deleteAllSelected": "Delete all selected features",
+    "featuresSelected": "Features selected: {{featureCount}}",
+    "reallyDeleteAllSelectedLayers": "Really delete all selected features?",
+    "downloadAs": "Download as"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {

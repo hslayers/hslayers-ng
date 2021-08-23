@@ -156,6 +156,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		font-size: x-large !important;
 	}
 
+	.cursor-pointer {
+		cursor: pointer;
+	}
+
 	.hs-info-container {
 		pointer-events: none;
 	}

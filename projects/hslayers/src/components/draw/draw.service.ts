@@ -6,12 +6,9 @@ import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Cluster, Source} from 'ol/source';
-import {Draw, Modify, Snap} from 'ol/interaction';
+import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {fromCircle} from 'ol/geom/Polygon';
-
 import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -29,7 +26,9 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Layer} from 'ol/layer';
 import {defaultStyle} from '../styles/styles';
+import {fromCircle} from 'ol/geom/Polygon';
 import {
   getDefinition,
   getEditor,
@@ -44,6 +43,7 @@ import {
   setTitle,
   setWorkspace,
 } from '../../common/layer-extensions';
+import {platformModifierKeyOnly} from 'ol/events/condition';
 
 type activateParams = {
   onDrawStart?;
@@ -66,6 +66,8 @@ export class HsDrawService {
   draw: Draw;
   modify: Modify;
 
+  boxSelection: DragBox;
+  boxSelectionActive = false;
   //Snap interaction
   snap: Snap;
   snapActive = false;
@@ -712,5 +714,47 @@ export class HsDrawService {
       : layer.getSource();
     this.snapLayer = layer;
     this.toggleSnapping(snapSourceToBeUsed);
+  }
+
+  /**
+   * Selects all features in this.selectedLayer
+   */
+  selectAllFeatures() {
+    console.log(this.HsQueryBaseService.selector);
+    //CLUSTERS?
+    this.HsQueryBaseService.selector
+      .getFeatures()
+      .extend(this.selectedLayer.getSource().getFeatures());
+  }
+
+  toggleBoxSelection() {
+    this.HsMapService.loaded().then((map) => {
+      if (this.boxSelection) {
+        map.removeInteraction(this.boxSelection);
+      }
+      if (this.boxSelectionActive) {
+        this.boxSelection = new DragBox({
+          condition: platformModifierKeyOnly,
+        });
+        map.addInteraction(this.boxSelection);
+
+        this.boxSelection.on('boxend', () => {
+          this.HsQueryBaseService.clearData('features');
+
+          const extent = this.boxSelection.getGeometry().getExtent();
+          this.selectedLayer
+            .getSource()
+            .forEachFeatureIntersectingExtent(extent, (feature) => {
+              this.HsQueryBaseService.selector.getFeatures().push(feature);
+            });
+
+          this.HsQueryVectorService.createFeatureAttributeList();
+        });
+
+        this.boxSelection.on('boxstart' as any, () => {
+          this.HsQueryBaseService.selector.getFeatures().clear();
+        });
+      }
+    });
   }
 }

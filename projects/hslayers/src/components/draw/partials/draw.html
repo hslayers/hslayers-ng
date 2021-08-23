@@ -18,9 +18,9 @@
                 {{'DRAW.disableDrawing' | translate}}
             </button>
         </div>
-        <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
-            [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translate}}</p>
-        <div [hidden]="!HsDrawService.type" class="btn-group w-100  m-auto justify-content-center"
+        <!-- <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
+            [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translate}}</p> -->
+        <div  class="btn-group w-100  m-auto justify-content-center"
             [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
 
             <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
@@ -103,10 +103,29 @@
             (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translate">
             <i class="icon-circleloaderfull"></i>
         </button>
-        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
+        <!-- <button class="btn btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
             (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'STYLER.selection' | translate">
             <i class="icon-cursor"></i>
-        </button>
+        </button> -->
+        <div class="dropdown" >
+            <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
+                class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                (click)="selectionMenuExpanded = !selectionMenuExpanded;" [attr.aria-expanded]="selectionMenuExpanded"
+                style=" font-size: small;">
+                <i class="icon-cursor"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2" [ngClass]="{'d-flex': selectionMenuExpanded}">
+                <div class="d-flex flex-row justify-content-around align-items-baseline">
+                    <label class="ml-1 cursor-pointer" for="draw-boxSelection">Box selection</label>
+                    <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive" (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
+                    id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+                </div>
+                <button class="btn btn-primary btn-sm" [disabled]="!HsDrawService.selectedLayer"
+                    (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;" data-toggle="tooltip" [title]="'STYLER.selection' | translate">
+                    Select all features
+                </button>
+            </div>
+        </div>
     </div>
     <div class="pt-2">
         <div style="font-size: smaller">
@@ -157,6 +176,6 @@
         </div>
     </div>
     <div class="mh-75 pt-2">
-        <hs-query-feature *ngFor="let item of HsQueryBaseService.data.features" [feature]="item"></hs-query-feature>
+        <hs-query-feature-list [features]="HsQueryBaseService.data.features"></hs-query-feature-list>
     </div>
 </div>

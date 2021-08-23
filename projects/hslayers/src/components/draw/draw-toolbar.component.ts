@@ -4,6 +4,7 @@ import {HsDrawService} from './draw.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {getTitle} from '../../common/layer-extensions';
+import {HsConfig} from '../../config.service';
 
 @Component({
   selector: 'hs-draw-toolbar',
@@ -19,7 +20,8 @@ export class HsDrawToolbarComponent {
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
-    public HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsLayerUtilsService: HsLayerUtilsService, //Used in template
+    public HsConfig: HsConfig
   ) {}
 
   toggleDrawToolbar(): void {

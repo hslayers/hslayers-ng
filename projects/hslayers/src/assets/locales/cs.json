@@ -581,7 +581,11 @@
     },
     "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
-    "untitledFeature": "Prvek bez názvu"
+    "untitledFeature": "Prvek bez názvu",
+    "deleteAllSelected": "Odstranit všechny vybrané prvky",
+    "featuresSelected": "Vybrané prvky: {{featureCount}}",
+    "reallyDeleteAllSelectedLayers": "Opravdu odstranit všechny vybrané prvky?",
+    "downloadAs": "Stáhnout jako"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {

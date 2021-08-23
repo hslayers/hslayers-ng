@@ -13,6 +13,7 @@ import {HsQueryBaseService} from './query-base.service';
 import {HsQueryComponent} from './query.component';
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.component';
 import {HsQueryFeatureComponent} from './feature.component';
+import {HsQueryFeatureListComponent} from './feature-list.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
@@ -25,6 +26,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryComponent,
     HsQueryFeaturePopupComponent,
     HsQueryFeatureComponent,
+    HsQueryFeatureListComponent,
     HsQueryDefaultInfoPanelBodyComponent,
     HsQueryAttributeRowComponent,
   ],
@@ -39,6 +41,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryComponent,
     HsQueryFeaturePopupComponent,
     HsQueryFeatureComponent,
+    HsQueryFeatureListComponent,
   ],
   providers: [
     HsQueryBaseService,
