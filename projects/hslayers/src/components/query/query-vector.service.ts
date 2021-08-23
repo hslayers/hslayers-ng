@@ -131,15 +131,16 @@ export class HsQueryVectorService {
     feature: Feature<Geometry>
   ): string {
     let fmt;
+    const featureArray = Array.isArray(feature) ? feature : [feature];
     switch (clickedFormat) {
       case 'WKT':
         fmt = new WKT();
-        return fmt.writeFeature(feature);
+        return fmt.writeFeatures(featureArray);
         break;
       case 'GeoJSON':
       default:
         fmt = new GeoJSON();
-        return fmt.writeFeatures([feature], {
+        return fmt.writeFeatures(featureArray, {
           dataProjection: 'EPSG:4326',
           featureProjection: this.HsMapService.getCurrentProj(),
         });
