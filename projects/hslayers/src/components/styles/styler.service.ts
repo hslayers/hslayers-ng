@@ -7,7 +7,12 @@ import OpenLayersParser from 'geostyler-openlayers-parser';
 import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Filter, Style as GeoStylerStyle, Rule} from 'geostyler-style';
+import {
+  FillSymbolizer,
+  Filter,
+  Style as GeoStylerStyle,
+  Rule,
+} from 'geostyler-style';
 import {Icon, Style} from 'ol/style';
 import {StyleFunction} from 'ol/style/Style';
 import {createDefaultStyle} from 'ol/style/Style';
@@ -254,8 +259,27 @@ export class HsStylerService {
       } else {
         this.styleObject = {name: 'untitled style', rules: []};
       }
+      this.geostylerWorkaround();
     } catch (ex) {
       this.HsLogService.error(ex.message);
+    }
+  }
+
+  /**
+   * Tweak geostyler object attributes to mitigate
+   * some discrepancies between opacity and fillOpacity usage
+   */
+  geostylerWorkaround(): void {
+    if (this.styleObject.rules) {
+      for (const rule of this.styleObject.rules) {
+        if (rule.symbolizers) {
+          for (const symbol of rule.symbolizers.filter(
+            (symb) => symb.kind == 'Fill'
+          ) as FillSymbolizer[]) {
+            symbol.opacity = symbol.fillOpacity;
+          }
+        }
+      }
     }
   }
 

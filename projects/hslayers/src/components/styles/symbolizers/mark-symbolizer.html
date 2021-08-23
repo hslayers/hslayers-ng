@@ -18,6 +18,7 @@
   <hs-symbolizer-color-picker
     [symbolizer]="symbolizer"
     attribute="color"
+    opacityAttribute="opacity"
     (changes)="emitChange()"
     label="{{'STYLER.fillColor' | translate}}"
   ></hs-symbolizer-color-picker>
@@ -30,7 +31,6 @@
     min="0"
     max="1"
     label="{{'STYLER.opacity' | translate}}"
-    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider
@@ -46,6 +46,7 @@
   <hs-symbolizer-color-picker
     [symbolizer]="symbolizer"
     attribute="strokeColor"
+    opacityAttribute="strokeOpacity"
     (changes)="emitChange()"
     label="{{'STYLER.strokeColor' | translate}}"
   ></hs-symbolizer-color-picker>
@@ -58,7 +59,6 @@
     min="0"
     max="1"
     label="{{'STYLER.strokeOpacity' | translate}}"
-    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider

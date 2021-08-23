@@ -14,4 +14,8 @@ export class HsFillSymbolizerComponent extends HsStylerPartBaseComponent {
   addSymbolizer(attribute: string, kind: SymbolizerKind): void {
     this.symbolizer[attribute] = {kind};
   }
+
+  opacityFix(): void {
+    this.symbolizer.fillOpacity = this.symbolizer.opacity;
+  }
 }
