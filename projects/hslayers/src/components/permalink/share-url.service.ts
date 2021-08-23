@@ -4,6 +4,7 @@ import {Location, PlatformLocation} from '@angular/common';
 import {Map} from 'ol';
 import {Subject} from 'rxjs';
 
+import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -44,7 +45,18 @@ export class HsShareUrlService {
     private zone: NgZone,
     private PlatformLocation: PlatformLocation
   ) {
+    this.keepTrackOfGetParams();
     this.HsMapService.loaded().then((map) => this.init(map));
+  }
+
+  private keepTrackOfGetParams() {
+    const params = this.parse(location.search);
+    /* We keep track of most hsl params separately so don't process 
+    them here. Only third party params are interesting */
+    for (const key of Object.keys(HS_PRMS_REGENERATED)) {
+      delete params[HS_PRMS_REGENERATED[key]];
+    }
+    Object.assign(this.customParams, params);
   }
 
   /**
@@ -67,22 +79,18 @@ export class HsShareUrlService {
     //This might become useful, but url size is limited, so we are not using it
     const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
-    if (this.HsLayoutService.mainpanel) {
-      if (this.HsLayoutService.mainpanel == 'permalink') {
-        this.push('hs_panel', 'layermanager');
-      } else {
-        this.push('hs_panel', this.HsLayoutService.mainpanel);
-      }
-    }
-    this.push('hs_x', view.getCenter()[0]);
-    this.push('hs_y', view.getCenter()[1]);
-    this.push('hs_z', view.getZoom());
+    const pnlMain = this.HsLayoutService.mainpanel;
+    this.push(HS_PRMS.panel, pnlMain == 'permalink' ? 'layermanager' : pnlMain);
+
+    this.push(HS_PRMS.x, view.getCenter()[0]);
+    this.push(HS_PRMS.y, view.getCenter()[1]);
+    this.push(HS_PRMS.zoom, view.getZoom());
     if (this.HsLanguageService.language) {
-      this.push('lang', this.HsLanguageService.language);
+      this.push(HS_PRMS.lang, this.HsLanguageService.language);
     }
-    this.push('visible_layers', visibleLayers.join(';'));
+    this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'));
     if (this.HsCore.puremapApp) {
-      this.push('puremap', 'true');
+      this.push(HS_PRMS.pureMap, 'true');
     }
     for (const cP in this.customParams) {
       this.push(cP, this.customParams[cP]);
@@ -124,11 +132,10 @@ export class HsShareUrlService {
           this.pathName(),
           this.HsConfig.permalinkLocation.pathname
         ) +
-        '&permalink=' +
-        encodeURIComponent(this.permalinkRequestUrl)
+        `&${HS_PRMS.permalink}=${encodeURIComponent(this.permalinkRequestUrl)}`
       ).replace(this.pathName(), this.HsConfig.permalinkLocation.pathname);
     } else {
-      return `${this.current_url}&permalink=${encodeURIComponent(
+      return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
         this.permalinkRequestUrl
       )}`;
     }
@@ -246,16 +253,29 @@ export class HsShareUrlService {
    */
   getParamValue(param: string): string {
     const tmp = this.parse(location.search);
+    const key = Object.keys(HS_PRMS).find((k) => HS_PRMS[k] == param);
     if (tmp[param]) {
       return tmp[param];
     } else {
-      return;
+      if (tmp[param] == undefined && HS_PRMS_BACKWARDS[key] != undefined) {
+        return this.getParamValue(HS_PRMS_BACKWARDS[key]);
+      } else {
+        return;
+      }
     }
+  }
+
+  getParamValues(keys: string[]): any {
+    const tmp = {};
+    for (const key of keys) {
+      tmp[key] = this.getParamValue(key);
+    }
+    return tmp;
   }
 
   /**
    * @param params A dictionary of custom parameters which get added to the generated url
-   * Update values for custom parameters which get added to the url and usually are application speciffic
+   * Update values for custom parameters which get added to the url and usually are application specific
    */
   updateCustomParams(params): void {
     for (const param in params) {
@@ -302,10 +322,11 @@ export class HsShareUrlService {
           }, 1000);
         });
       });
-      if (this.getParamValue('lang')) {
-        this.HsLanguageService.setLanguage(this.getParamValue('lang'));
+      const lang = this.getParamValue(HS_PRMS.lang);
+      if (lang) {
+        this.HsLanguageService.setLanguage(lang);
       }
-      const view = this.getParamValue('view');
+      const view = this.getParamValue(HS_PRMS.view);
       // this.HsMapService.visible = !(view == '3d');
     }
   }

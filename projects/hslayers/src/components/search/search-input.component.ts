@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {HS_PRMS} from '../permalink/get-params';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
@@ -33,8 +34,9 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.HsShareUrlService.getParamValue('search')) {
-      this.query = this.HsShareUrlService.getParamValue('search');
+    const query = this.HsShareUrlService.getParamValue(HS_PRMS.search);
+    if (query) {
+      this.query = query;
       this.queryChanged();
     }
     window.innerWidth < 767
@@ -44,7 +46,8 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   /**
    * Handler of search input, request search service and display results div
    */
-  queryChanged(): void {
+  async queryChanged(): Promise<void> {
+    await this.HsSearchService.HsMapService.loaded();
     if (this.query.length == 0) {
       this.clear();
       return;

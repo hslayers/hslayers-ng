@@ -15,7 +15,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import { setShowInLayerManager, setTitle } from '../../common/layer-extensions';
+import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })

@@ -15,6 +15,7 @@ import {
 import {Injectable, NgZone} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 
+import {HS_PRMS} from '../permalink/get-params';
 import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
@@ -925,9 +926,7 @@ export class HsLayerManagerService {
       layer.sublayers = false;
       layer.settings = false;
       this.currentLayer = null;
-      this.HsShareUrlService.updateCustomParams({
-        'layerSelected': undefined,
-      });
+      this.updateGetParam(undefined);
     } else {
       this.setCurrentLayer(layer);
       return false;
@@ -936,9 +935,7 @@ export class HsLayerManagerService {
 
   setCurrentLayer(layer: HsLayerDescriptor): false {
     this.currentLayer = layer;
-    this.HsShareUrlService.updateCustomParams({
-      'layerSelected': layer.title,
-    });
+    this.updateGetParam(layer.title);
     if (!layer.checkedSubLayers) {
       layer.checkedSubLayers = {};
       layer.withChildren = {};
@@ -951,6 +948,12 @@ export class HsLayerManagerService {
       }
     }
     return false;
+  }
+
+  private updateGetParam(title: string) {
+    const t = {};
+    t[HS_PRMS.layerSelected] = title;
+    this.HsShareUrlService.updateCustomParams(t);
   }
 
   /**
@@ -1040,10 +1043,12 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Opens editor for layer specified in 'layerSelected' url parameter
+   * Opens editor for layer specified in 'hs-layer-selected' url parameter
    */
   private toggleEditLayerByUrlParam() {
-    const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
+    const layerTitle = this.HsShareUrlService.getParamValue(
+      HS_PRMS.layerSelected
+    );
     if (layerTitle != undefined) {
       setTimeout(() => {
         const layerFound = this.data.layers.find(
