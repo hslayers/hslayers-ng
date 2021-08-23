@@ -14,7 +14,6 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsToastService} from '../layout/toast/toast.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
@@ -26,6 +25,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {defaultStyle} from '../styles/styles';
@@ -722,7 +722,6 @@ export class HsDrawService {
    * Selects all features in this.selectedLayer
    */
   selectAllFeatures() {
-    console.log(this.HsQueryBaseService.selector);
     //CLUSTERS?
     this.HsQueryBaseService.selector
       .getFeatures()
