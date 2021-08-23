@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {HS_PRMS} from '../permalink/get-params';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -28,11 +29,10 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     if (this.HsCoreService.config.createExtraMenu !== undefined) {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
     }
-    if (this.HsPermalinkUrlService.getParamValue('hs_panel')) {
+    const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
+    if (panel) {
       if (!this.HsLayoutService.minisidebar) {
-        this.HsLayoutService.setMainPanel(
-          this.HsPermalinkUrlService.getParamValue('hs_panel')
-        );
+        this.HsLayoutService.setMainPanel(panel);
       }
     }
     this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);

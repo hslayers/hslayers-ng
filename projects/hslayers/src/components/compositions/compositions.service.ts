@@ -1,4 +1,9 @@
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+
 import {DuplicateHandling, HsMapService} from '../map/map.service';
+import {HS_PRMS} from '../permalink/get-params';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
@@ -14,9 +19,6 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -53,9 +55,7 @@ export class HsCompositionsService {
     }
 
     this.tryParseCompositionFromUrlParam();
-    if (HsPermalinkUrlService.getParamValue('permalink')) {
-      this.parsePermalinkLayers();
-    }
+    this.parsePermalinkLayers();
 
     this.HsEventBusService.mapResets.subscribe(() => {
       this.HsCompositionsParserService.composition_loaded = null;
@@ -222,9 +222,13 @@ export class HsCompositionsService {
    */
   async parsePermalinkLayers(): Promise<void> {
     await this.HsMapService.loaded();
-    const layersUrl = this.HsUtilsService.proxify(
-      this.HsPermalinkUrlService.getParamValue('permalink')
+    const permalink = this.HsPermalinkUrlService.getParamValue(
+      HS_PRMS.permalink
     );
+    if (!permalink) {
+      return;
+    }
+    const layersUrl = this.HsUtilsService.proxify(permalink);
     const response: any = await this.http.get(layersUrl).toPromise();
     if (response.success == true) {
       const data: any = {};
@@ -274,8 +278,8 @@ export class HsCompositionsService {
   }
 
   async tryParseCompositionFromUrlParam(): Promise<void> {
-    if (this.HsPermalinkUrlService.getParamValue('composition')) {
-      let id = this.HsPermalinkUrlService.getParamValue('composition');
+    let id = this.HsPermalinkUrlService.getParamValue(HS_PRMS.composition);
+    if (id) {
       if (
         !id.includes('http') &&
         !id.includes(this.HsConfig.status_manager_url)

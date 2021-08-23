@@ -10,6 +10,7 @@ import {
 import {Subscription} from 'rxjs';
 import {transform} from 'ol/proj';
 
+import {HS_PRMS} from '../permalink/get-params';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -38,33 +39,28 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   }
   ngAfterViewInit(): void {
     this.HsMapService.mapElement = this.map.nativeElement;
-
-    if (this.HsPermalinkUrlService.getParamValue('visible_layers')) {
-      const visibleLayersParam =
-        this.HsPermalinkUrlService.getParamValue('visible_layers');
+    const visibleLayersParam = this.HsPermalinkUrlService.getParamValue(
+      HS_PRMS.visibleLayers
+    );
+    if (visibleLayersParam) {
       this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
     this.zone.runOutsideAngular(() => this.HsMapService.init());
-    const hs_x = this.HsPermalinkUrlService.getParamValue('hs_x');
-    const hs_y = this.HsPermalinkUrlService.getParamValue('hs_y');
-    const hs_z = this.HsPermalinkUrlService.getParamValue('hs_z');
-    if (
-      hs_x &&
-      hs_x != 'NaN' &&
-      hs_y &&
-      hs_y != 'NaN' &&
-      hs_z &&
-      hs_z != 'NaN'
-    ) {
+    const pos = this.HsPermalinkUrlService.getParamValues([
+      HS_PRMS.x,
+      HS_PRMS.y,
+      HS_PRMS.zoom,
+    ]);
+    if (!Object.keys(pos).some((k) => pos[k] == undefined || pos[k] == 'NaN')) {
       this.HsMapService.moveToAndZoom(
-        parseFloat(hs_x),
-        parseFloat(hs_y),
-        parseInt(hs_z)
+        parseFloat(pos[HS_PRMS.x]),
+        parseFloat(pos[HS_PRMS.y]),
+        parseInt(pos[HS_PRMS.zoom])
       );
     }
 
     if (
-      this.HsPermalinkUrlService.getParamValue('puremap') ||
+      this.HsPermalinkUrlService.getParamValue(HS_PRMS.pureMap) ||
       this.HsConfig.pureMap == true
     ) {
       this.HsCoreService.puremapApp = true;

@@ -7,6 +7,7 @@ import {
   HsMapService,
   HsShareUrlService,
   HsSidebarService,
+  HS_PRMS,
 } from 'hslayers-ng';
 @Component({
   selector: 'hs-cesium',
@@ -31,7 +32,7 @@ export class HslayersCesiumComponent {
       this.HsCesiumService.init();
     }, 100);
 
-    const view = this.HsPermalinkUrlService.getParamValue('view');
+    const view = this.HsPermalinkUrlService.getParamValue(HS_PRMS.view);
     if (view != '2d') {
       this.HsPermalinkUrlService.updateCustomParams({view: '3d'});
       this.HsMapService.visible = false;
