@@ -20,10 +20,14 @@
         </div>
         <!-- <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
             [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translate}}</p> -->
-        <div  class="btn-group w-100  m-auto justify-content-center"
+        <div class="btn-group w-100  m-auto justify-content-center"
             [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+            <ng-template #noLayerAvailable>
+                <p class="m-0 text-danger">{{'DRAW.noSuitableLayer' | translate}}</p>
+            </ng-template>
 
-            <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
+            <div *ngIf="HsDrawService.hasSomeDrawables || HsDrawService.tmpDrawLayer; else noLayerAvailable"
+                class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
                 <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.drawingTo' | translate}}</p>
                 <div class="dropdown" style="max-width: 50%;">
                     <button type="button"
@@ -31,7 +35,7 @@
                         data-toggle="dropdown" aria-haspopup="true"
                         (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
                         [attr.aria-expanded]="layersExpanded" [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,
-                        'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
+                            'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
                         [disabled]="!HsDrawService.hasSomeDrawables">
                         <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
                     </button>
@@ -107,21 +111,24 @@
             (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'STYLER.selection' | translate">
             <i class="icon-cursor"></i>
         </button> -->
-        <div class="dropdown" >
+        <div class="dropdown">
             <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
                 class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 (click)="selectionMenuExpanded = !selectionMenuExpanded;" [attr.aria-expanded]="selectionMenuExpanded"
                 style=" font-size: small;">
                 <i class="icon-cursor"></i>
             </button>
-            <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2" [ngClass]="{'d-flex': selectionMenuExpanded}">
+            <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
+                [ngClass]="{'d-flex': selectionMenuExpanded}">
                 <div class="d-flex flex-row justify-content-around align-items-baseline">
                     <label class="ml-1 cursor-pointer" for="draw-boxSelection">Box selection</label>
-                    <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive" (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
-                    id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
+                        (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
+                        id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
                 </div>
                 <button class="btn btn-primary btn-sm" [disabled]="!HsDrawService.selectedLayer"
-                    (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;" data-toggle="tooltip" [title]="'STYLER.selection' | translate">
+                    (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;"
+                    data-toggle="tooltip" [title]="'STYLER.selection' | translate">
                     Select all features
                 </button>
             </div>
@@ -162,7 +169,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="HsDrawService.pendingLayers.length > 0"  class="m-auto w-100 p-3">
+    <div *ngIf="HsDrawService.pendingLayers.length > 0" class="m-auto w-100 p-3">
         <div class="alert alert-warning text-justify">
             <ol>
                 <li *ngFor="let layer of HsDrawService.pendingLayers">
@@ -171,7 +178,7 @@
             </ol>
             {{'DRAW.longerLoading' | translate}}
             <div class="d-flex justify-content-center pt-3">
-                <img [src]="hsUtilsService.getAjaxLoaderIcon()"/>
+                <img [src]="hsUtilsService.getAjaxLoaderIcon()" />
             </div>
         </div>
     </div>

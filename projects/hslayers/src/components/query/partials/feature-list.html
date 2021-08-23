@@ -12,9 +12,13 @@
             [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu()" aris-haspopup="true"><i
                 class="icon-download"></i></button>
         <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
-            <a class="dropdown-item" *ngFor="let format of exportFormats" [hsDownload]="format.serializedData"
-                [mimeType]="format.mimeType" [href]="format.downloadData"
-                (downloadPrepared)="format.downloadData = $event">{{format.name}}</a>
+            <a class="dropdown-item" *ngFor="let format of exportFormats" 
+            download="{{format.name}}_file.{{format.ext}}"
+            [hsDownload]="format.serializedData"
+            [mimeType]="format.mimeType" 
+            [href]="format.downloadData"
+            (downloadPrepared)="format.downloadData = $event">
+            {{format.name}}</a>
         </div>
         <button type="button" class="btn-danger btn btn-sm border-0" [title]="'QUERY.deleteAllSelected' | translate"
             (click)="removeAllSelectedFeatures()">
