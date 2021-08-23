@@ -1,0 +1,31 @@
+<div class="navbar navbar-light bg-light px-1" *ngIf="features.length > 0">
+    <div class="d-flex align-items-baseline" style="flex: 1;">
+        <p class="m-0" [ngStyle]="{'flex' : features.length > 1 ? '' : '1'}">
+            {{hsLanguageService.getTranslationIgnoreNonExisting('QUERY','featuresSelected',{featureCount:features.length})}}
+        </p>
+        <button type="button" class="btn dropdown-toggle border-0 ml-2" [title]="'HISTORY.toggleDropdown' | translate"
+            (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
+        </button>
+    </div>
+    <div class="btn-group" *ngIf="features.length > 1">
+        <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+            [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu()" aris-haspopup="true"><i
+                class="icon-download"></i></button>
+        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
+            <a class="dropdown-item" *ngFor="let format of exportFormats" 
+            download="{{format.name}}_file.{{format.ext}}"
+            [hsDownload]="format.serializedData"
+            [mimeType]="format.mimeType" 
+            [href]="format.downloadData"
+            (downloadPrepared)="format.downloadData = $event">
+            {{format.name}}</a>
+        </div>
+        <button type="button" class="btn-danger btn btn-sm border-0" [title]="'QUERY.deleteAllSelected' | translate"
+            (click)="removeAllSelectedFeatures()">
+            <i class="glyphicon icon-trash"></i>
+        </button>
+    </div>
+</div>
+<div *ngIf="selectedFeaturesVisible">
+    <hs-query-feature *ngFor="let item of features | slice:0:50; trackBy: trackById" [feature]="item"></hs-query-feature>
+</div>

@@ -396,7 +396,10 @@
     "Select layer": "Vybrať vrstvu",
     "serverLayers": "Serverové vrstvy",
     "snapTo": "Prichytávať na vrstvu",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "boxSelectionActivated": "Tu mi nenapadá ako by sme to preložili",
+    "useModifierToSelectWithBox": "Stlačte {{platformModifierKey}} a ťahaním vyznačte oblasť výberu",
+    "noSuitableLayer": "Nie je k dispozícii žiadna vhodná vrstva"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
@@ -579,7 +582,11 @@
     },
     "reallyDelete": "Naozaj zmazať tento prvok?",
     "reallyDeleteAllFeaturesFrom": "Naozaj odstrániť všetky prvky z vrstvy {0}?",
-    "untitledFeature": "Prvok bez názvu"
+    "untitledFeature": "Prvok bez názvu",
+    "deleteAllSelected": "Odstrániť všetky vybraté prvky",
+    "featuresSelected": "Vybraté prvky: {{featureCount}}",
+    "reallyDeleteAllSelectedLayers": "Naozaj odstrániť všetky vybrané prvky?",
+    "downloadAs": "Stiahnuť ako"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {

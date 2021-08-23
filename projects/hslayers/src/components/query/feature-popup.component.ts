@@ -130,6 +130,7 @@ export class HsQueryFeaturePopupComponent implements OnDestroy {
     }
   }
 
+  //Deprecated
   async clearLayer(layer) {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,

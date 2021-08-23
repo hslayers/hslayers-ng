@@ -6,7 +6,7 @@
             </button>
             <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}" *ngFor="let html of HsQueryBaseService.data.featureInfoHtmls" [innerHtml]="html"></div>
         </div>
-        <hs-query-feature *ngFor="let item of HsQueryBaseService.data.features" [feature]="item"></hs-query-feature>
+        <hs-query-feature-list [features]="HsQueryBaseService.data.features"></hs-query-feature-list>
         <table class="table table-striped" style="table-layout:fixed" [hidden]="!(HsQueryBaseService.data.attributes.length > 0)">
             <tbody><tr *ngFor="let attribute of HsQueryBaseService.data.attributes">
                 <td class="first-col">{{attribute.name}}</td>
