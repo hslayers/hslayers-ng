@@ -100,7 +100,7 @@ export class HslayersAppComponent {
         },
       ],
     };
-    Object.assign(this.HsConfig, {
+    this.HsConfig.update({
       datasources: [
         {
           title: 'Layman',
@@ -116,6 +116,7 @@ export class HslayersAppComponent {
       panelsEnabled: {
         tripPlanner: true,
       },
+      assetsPath: 'assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
         {name: 'banking', url: '/assets/icons/banking4.svg'},
