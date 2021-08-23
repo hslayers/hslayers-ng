@@ -399,7 +399,8 @@
     "snapTo": "Snap to features of layer",
     "unsavedDrawing": "Unsaved drawing",
     "boxSelectionActivated": "Box selection activated",
-    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box"
+    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
+    "noSuitableLayer": "No suitable layer available"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",

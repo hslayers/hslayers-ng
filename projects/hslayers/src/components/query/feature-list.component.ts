@@ -33,7 +33,7 @@ export class HsQueryFeatureListComponent {
     },
   ];
 
-  trackById(index, item){
+  trackById(index, item) {
     return item.feature.ol_uid;
   }
 
@@ -76,5 +76,4 @@ export class HsQueryFeatureListComponent {
       }
     }
   }
-  
 }

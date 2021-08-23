@@ -398,7 +398,8 @@
     "snapTo": "Prichytávať na vrstvu",
     "unsavedDrawing": "Neuložená kresba",
     "boxSelectionActivated": "Tu mi nenapadá ako by sme to preložili",
-    "useModifierToSelectWithBox": "Stlačte {{platformModifierKey}} a ťahaním vyznačte oblasť výberu"
+    "useModifierToSelectWithBox": "Stlačte {{platformModifierKey}} a ťahaním vyznačte oblasť výberu",
+    "noSuitableLayer": "Nie je k dispozícii žiadna vhodná vrstva"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",

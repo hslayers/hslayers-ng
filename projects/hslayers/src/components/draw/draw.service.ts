@@ -742,6 +742,9 @@ export class HsDrawService {
         map.addInteraction(this.boxSelection);
 
         this.boxSelection.on('boxend', () => {
+          if (!this.selectedLayer) {
+            return;
+          }
           this.HsQueryBaseService.clearData('features');
 
           const extent = this.boxSelection.getGeometry().getExtent();
