@@ -397,7 +397,9 @@
     "Select layer": "Select layer",
     "serverLayers": "Server layers",
     "snapTo": "Snap to features of layer",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "boxSelectionActivated": "Box selection activated",
+    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",

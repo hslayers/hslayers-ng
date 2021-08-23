@@ -4,6 +4,7 @@ import {Input} from '@angular/core';
 import {HsConfirmDialogComponent} from '../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsQueryVectorService} from './query-vector.service';
 
 @Component({
@@ -13,7 +14,7 @@ import {HsQueryVectorService} from './query-vector.service';
 export class HsQueryFeatureListComponent {
   @Input() features;
   exportMenuVisible;
-  selectedFeaturesVisible = false;
+  selectedFeaturesVisible;
   exportFormats: {
     name: 'WKT' | 'GeoJSON';
     ext: string;
@@ -33,8 +34,11 @@ export class HsQueryFeatureListComponent {
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
     public hsLanguageService: HsLanguageService,
-    public HsDialogContainerService: HsDialogContainerService
-  ) {}
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsLayoutService: HsLayoutService
+  ) {
+    this.selectedFeaturesVisible = this.HsLayoutService.mainpanel == 'info';
+  }
 
   toggleExportMenu(): void {
     for (const format of this.exportFormats) {
@@ -46,7 +50,7 @@ export class HsQueryFeatureListComponent {
     this.exportMenuVisible = !this.exportMenuVisible;
   }
 
- async removeAllSelectedFeatures() {
+  async removeAllSelectedFeatures() {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
