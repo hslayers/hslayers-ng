@@ -396,7 +396,9 @@
     "Select layer": "Vybrat vrstvu",
     "serverLayers": "Servrové vrstvy",
     "snapTo": "Přichytávat na vrstvu",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "boxSelectionActivated": "Tu mi nenapadá ako by sme to preložili",
+    "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",

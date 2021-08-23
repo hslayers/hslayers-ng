@@ -14,6 +14,7 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
@@ -115,7 +116,8 @@ export class HsDrawService {
     public HsLaymanBrowserService: HsLaymanBrowserService,
     public HsAddDataVectorService: HsAddDataVectorService,
     public HsUtilsService: HsUtilsService,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public HsCommonLaymanService: HsCommonLaymanService,
+    public hsToastService: HsToastService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -754,6 +756,18 @@ export class HsDrawService {
         this.boxSelection.on('boxstart' as any, () => {
           this.HsQueryBaseService.selector.getFeatures().clear();
         });
+        this.hsToastService.createToastPopupMessage(
+          this.HsLanguageService.getTranslation('DRAW.boxSelectionActivated'),
+          `${this.HsLanguageService.getTranslation(
+            'DRAW.useModifierToSelectWithBox',
+            {
+              platformModifierKey: 'CTRL/META',
+            }
+          )}`,
+          {
+            toastStyleClasses: 'bg-info text-white',
+          }
+        );
       }
     });
   }
