@@ -758,7 +758,8 @@
     "uploadSld": "Upload style as SLD file",
     "downloadSld": "Download style as SLD file",
     "manageStyle": "Manage style",
-    "clear": "Reset to default style"
+    "clear": "Reset to default style",
+    "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

@@ -12,7 +12,7 @@
     </div>
   </div>
   <color-sketch
-    [color]="symbolizer[attribute]"
+    [color]="addAlpha(symbolizer[attribute], symbolizer[opacityAttribute])"
     *ngIf="pickerVisible && symbolizer[attribute] != undefined"
     (onChangeComplete)="onPick($event)"
   ></color-sketch>

@@ -2,24 +2,25 @@
   <hs-symbolizer-color-picker
     [symbolizer]="symbolizer"
     attribute="color"
-    (changes)="emitChange()"
+    opacityAttribute="opacity"
+    (changes)="opacityFix(); emitChange()"
     label="{{'STYLER.fillColor' | translate}}"
   ></hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider
     [symbolizer]="symbolizer"
-    attribute="fillOpacity"
-    (changes)="emitChange()"
+    attribute="opacity"
+    (changes)="opacityFix(); emitChange()"
     step="0.05"
     min="0"
     max="1"
-    label="{{'STYLER.fillOpacity' | translate}}"
-    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
+    label="{{'STYLER.opacity' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker
     [symbolizer]="symbolizer"
     attribute="outlineColor"
+    opacityAttribute="outlineOpacity"
     (changes)="emitChange()"
     label="{{'STYLER.outlineColor' | translate}}"
   ></hs-symbolizer-color-picker>
@@ -32,7 +33,6 @@
     min="0"
     max="1"
     label="{{'STYLER.outlineOpacity' | translate}}"
-    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider

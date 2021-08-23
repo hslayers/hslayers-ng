@@ -2,6 +2,7 @@
   <hs-symbolizer-color-picker
     [symbolizer]="symbolizer"
     attribute="color"
+    opacityAttribute="opacity"
     (changes)="emitChange()"
     label="{{'STYLER.color' | translate}}"
   ></hs-symbolizer-color-picker>
@@ -14,7 +15,6 @@
     min="0"
     max="1"
     label="{{'STYLER.opacity' | translate}}"
-    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider
