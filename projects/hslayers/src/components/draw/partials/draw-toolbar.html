@@ -53,14 +53,15 @@
             <i class="glyphicon icon-trash"></i>
         </button>
         <div class="btn-group" *ngIf="drawToolbarExpanded">
-            <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary"
-                *ngIf="HsDrawService.drawActive" (click)="HsDrawService.removeLastPoint()" data-toggle="tooltip"
-                [title]="'DRAW.drawToolbar.removeLastPoint' | translate">
-                <i class="icon-remove-circle"></i></button>
-            <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary"
-                *ngIf="HsDrawService.drawActive" (click)="finishDrawing()" data-toggle="tooltip"
-                [title]="'DRAW.drawToolbar.finishFeature' | translate">
-                <i class="icon-check"></i></button>
+            <div style="top: 35vh;" role="group" class="btn-group-vertical position-fixed d-flex flex-column" [ngStyle]="HsConfig.sidebarPosition != 'left' || HsLayoutService.sidebarBottom() ? {'left': 0} : {'right': 0} ">
+                <button class="btn btn-secondary" *ngIf="HsDrawService.drawActive"
+                    (click)="HsDrawService.removeLastPoint()" data-toggle="tooltip"
+                    [title]="'DRAW.drawToolbar.removeLastPoint' | translate">
+                    <i class="icon-remove-circle"></i></button>
+                <button class="btn btn-secondary" *ngIf="HsDrawService.drawActive"
+                    (click)="finishDrawing()" data-toggle="tooltip" [title]="'DRAW.drawToolbar.finishFeature' | translate">
+                    <i class="icon-check"></i></button>
+            </div>
             <button type="button" (click)="drawTypeExpanded = !drawTypeExpanded" style="line-height: 1 !important;"
                 class="btn btn-light dropright rounded-0 btn-outline-secondary dropdown-toggle" aria-haspopup="true">
                 <label *ngIf="!HsDrawService.type" class="m-0">{{'DRAW.drawToolbar.selectType' | translate}}</label>

@@ -156,6 +156,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		font-size: x-large !important;
 	}
 
+	.cursor-pointer {
+		cursor: pointer;
+	}
+
 	.hs-info-container {
 		pointer-events: none;
 	}
@@ -461,9 +465,6 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 			display: none !important;
 		}
 
-		.ol-attribution{
-			right: 3rem !important;
-		}
 		.ol-attribution.ol-uncollapsible{
 			bottom: 0.2em;
 		}
@@ -487,6 +488,9 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		}
 		.dropzone-container{
 			flex-direction: column;
+		}
+		.hs-draw-selectAll{
+			font-size: medium;
 		}
 	}
 
@@ -729,14 +733,14 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	}
 
 	.hs-ol-map .ol-zoom {
-		bottom: 2.1em;
+		bottom: 2.4em;
 		top: auto;
 		right: 5px;
 		left: auto;
 	}
 
 	.hs-ol-map .hs-defaultView {
-		bottom: 6.5em;
+		bottom: 6.65em;
 		top: auto;
 		right: 5px;
 		left: auto;

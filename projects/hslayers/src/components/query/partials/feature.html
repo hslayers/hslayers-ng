@@ -38,7 +38,8 @@
                     class="icon-calcplus"></i></button>
             <button class="btn btn-primary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                aris-haspopup="true" (click)="toggleExportMenu()"><i
+                aris-haspopup="true" (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translate"
+                ><i
                     class="icon-download"></i></button>
             <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
                 <a class="dropdown-item" download="{{format.name}}_file.{{format.ext}}" 

@@ -397,7 +397,10 @@
     "Select layer": "Select layer",
     "serverLayers": "Server layers",
     "snapTo": "Snap to features of layer",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "boxSelectionActivated": "Box selection activated",
+    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
+    "noSuitableLayer": "No suitable layer available"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
@@ -585,7 +588,11 @@
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",
     "untitledFeature": "Untitled feature",
-    "clusterContaining": "Cluster containing {{count}} features"
+    "clusterContaining": "Cluster containing {{count}} features",
+    "deleteAllSelected": "Delete all selected features",
+    "featuresSelected": "Features selected: {{featureCount}}",
+    "reallyDeleteAllSelectedLayers": "Really delete all selected features?",
+    "downloadAs": "Download as"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
