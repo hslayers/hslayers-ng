@@ -403,7 +403,7 @@
     "selectAllFeatures": "Označiť všetky prvky",
     "boxSelection": "Výber polygónom",
     "stylingMissing": "Chýba správny styling",
-    "stylinMissingWarning": "Geometriu {{type}} NIE je možné vizualizovať.Najprv vytvorte symboliku úre {{symbolizer}}. Môžete to urobiť v paneli {{panel}}."
+    "stylingMissingWarning": "Geometriu {{type}} NIE je možné vizualizovať.Najprv vytvorte symboliku úre {{symbolizer}}. Môžete to urobiť v paneli {{panel}}."
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
@@ -588,7 +588,7 @@
     "reallyDeleteAllFeaturesFrom": "Naozaj odstrániť všetky prvky z vrstvy {0}?",
     "untitledFeature": "Prvok bez názvu",
     "deleteAllSelected": "Odstrániť všetky vybraté prvky",
-    "featuresSelected": "Vybraté prvky: {{featureCount}}",
+    "featuresSelected": "Vybraté prvky: ",
     "reallyDeleteAllSelectedLayers": "Naozaj odstrániť všetky vybrané prvky?",
     "downloadAs": "Stiahnuť ako"
   },

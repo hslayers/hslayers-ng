@@ -397,13 +397,13 @@
     "serverLayers": "Servrové vrstvy",
     "snapTo": "Přichytávat na vrstvu",
     "unsavedDrawing": "Neuložená kresba",
-    "boxSelectionActivated": "Tu mi nenapadá ako by sme to preložili",
+    "boxSelectionActivated": "Výběr polygonem aktivní",
     "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru",
     "noSuitableLayer": "Není k dispozici žádná vhodná vrstva",
     "selectAllFeatures": "Označit všechny prvky",
     "boxSelection": "Výběr polygonem",
     "stylingMissing": "Chybí správný styl",
-    "stylinMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}."
+    "stylingMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}."
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
@@ -588,7 +588,7 @@
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
     "untitledFeature": "Prvek bez názvu",
     "deleteAllSelected": "Odstranit všechny vybrané prvky",
-    "featuresSelected": "Vybrané prvky: {{featureCount}}",
+    "featuresSelected": "Vybrané prvky: ",
     "reallyDeleteAllSelectedLayers": "Opravdu odstranit všechny vybrané prvky?",
     "downloadAs": "Stáhnout jako"
   },

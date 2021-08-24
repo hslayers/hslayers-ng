@@ -403,7 +403,7 @@
     "selectAllFeatures": "Select all features",
     "boxSelection": "Box selection",
     "stylingMissing": "Proper styling missing",
-    "stylinMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel."
+    "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel."
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
@@ -592,7 +592,7 @@
     "untitledFeature": "Untitled feature",
     "clusterContaining": "Cluster containing {{count}} features",
     "deleteAllSelected": "Delete all selected features",
-    "featuresSelected": "Features selected: {{featureCount}}",
+    "featuresSelected": "Features selected: ",
     "reallyDeleteAllSelectedLayers": "Really delete all selected features?",
     "downloadAs": "Download as"
   },

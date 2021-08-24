@@ -669,7 +669,7 @@ export class HsDrawService {
           this.hsToastService.createToastPopupMessage(
             this.HsLanguageService.getTranslation('DRAW.stylingMissing'),
             `${this.HsLanguageService.getTranslation(
-              'DRAW.stylinMissingWarning',
+              'DRAW.stylingMissingWarning',
               {
                 type: this.type,
                 symbolizer: this.requiredSymbolizer[this.type].join(' or '),
