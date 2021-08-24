@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {Input} from '@angular/core';
@@ -6,6 +6,7 @@ import {Input} from '@angular/core';
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './partials/feature.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsQueryFeatureComponent {
   @Input() feature;

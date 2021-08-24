@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {HsDrawService} from './draw.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsQueryBaseService} from '../query/query-base.service';
@@ -30,9 +31,14 @@ export class HsDrawComponent {
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsQueryBaseService: HsQueryBaseService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.HsDrawService.init();
+  }
+
+  translateString(module: string, text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   activateDrawing(withStyle?): void {

@@ -57,6 +57,7 @@ describe('HsDraw', () => {
   };
   const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
     'getTranslation',
+    'getTranslationIgnoreNonExisting',
   ]);
   const layer = new VectorLayer({
     properties: {title: 'Point'},
