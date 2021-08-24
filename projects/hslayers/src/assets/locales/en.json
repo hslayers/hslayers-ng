@@ -404,7 +404,8 @@
     "selectAllFeatures": "Select all features",
     "boxSelection": "Box selection",
     "stylingMissing": "Proper styling missing",
-    "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel."
+    "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel.",
+    "deselectAllFeatures": "Deselect all features"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
