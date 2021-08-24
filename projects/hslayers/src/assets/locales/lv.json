@@ -402,7 +402,7 @@
     "serverLayers": "Servera slāņi",
     "snapTo": "Pieķerties slāņa grafiskajam objektam",
     "stylingMissing": "Trūkst pareizais stils",
-    "stylinMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
+    "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
     "unsavedDrawing": "Nesaglabāts zīmējums",
     "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
   },
@@ -589,7 +589,7 @@
       "removeClusterPart": "Noņemt blakusesošo objektu apvienošanu",
       "removeFeature": "Noņemt objektu"
     },
-    "featuresSelected": "Atlasītie grafiskie objekti: {{featureCount}}",
+    "featuresSelected": "Atlasītie grafiskie objekti: ",
     "infoPanel": {
       "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus"
     },
