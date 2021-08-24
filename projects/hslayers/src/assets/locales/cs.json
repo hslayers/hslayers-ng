@@ -385,7 +385,7 @@
       "addLayer": "Přidat vrstvu",
       "finishFeature": "Ukončit prvek",
       "removeLastPoint": "Odebrat poslední bod",
-      "selectType": "Zvolte typ"
+      "selectType": "Typ geometrie"
     },
     "fillOpacity": "Vyplňte neprůhlednost:",
     "loadingLayer": "Načítá se vrstva",
@@ -400,7 +400,9 @@
     "unsavedDrawing": "Neuložená kresba",
     "boxSelectionActivated": "Tu mi nenapadá ako by sme to preložili",
     "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru",
-    "noSuitableLayer": "Není k dispozici žádná vhodná vrstva"
+    "noSuitableLayer": "Není k dispozici žádná vhodná vrstva",
+    "selectAllFeatures": "Označit všechny prvky",
+    "boxSelection": "Výběr polygonem"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",

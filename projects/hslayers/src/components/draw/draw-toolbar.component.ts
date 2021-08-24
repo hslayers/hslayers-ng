@@ -14,6 +14,7 @@ export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
   drawTypeExpanded = false;
+  selectionMenuExpanded = false;
   onlyMineFilterVisible = false;
   getTitle = getTitle;
 

@@ -385,7 +385,7 @@
       "addLayer": "Add layer",
       "finishFeature": "Finish feature",
       "removeLastPoint": "Remove last point",
-      "selectType": "Select type"
+      "selectType": "Geometry type"
     },
     "fillOpacity": "Fill opacity:",
     "loadingLayer": "Loading layer ",
@@ -400,7 +400,9 @@
     "unsavedDrawing": "Unsaved drawing",
     "boxSelectionActivated": "Box selection activated",
     "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
-    "noSuitableLayer": "No suitable layer available"
+    "noSuitableLayer": "No suitable layer available",
+    "selectAllFeatures": "Select all features",
+    "boxSelection": "Box selection"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
