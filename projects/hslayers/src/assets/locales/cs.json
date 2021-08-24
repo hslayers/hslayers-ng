@@ -404,7 +404,8 @@
     "selectAllFeatures": "Označit všechny prvky",
     "boxSelection": "Výběr polygonem",
     "stylingMissing": "Chybí správný styl",
-    "stylingMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}."
+    "stylingMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}.",
+    "deselectAllFeatures": "Odznačit všechny prvky"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
