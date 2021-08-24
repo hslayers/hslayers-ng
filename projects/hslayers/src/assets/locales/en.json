@@ -402,7 +402,9 @@
     "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
     "noSuitableLayer": "No suitable layer available",
     "selectAllFeatures": "Select all features",
-    "boxSelection": "Box selection"
+    "boxSelection": "Box selection",
+    "stylingMissing": "Proper styling missing",
+    "stylinMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel."
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",

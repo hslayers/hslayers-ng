@@ -402,7 +402,9 @@
     "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru",
     "noSuitableLayer": "Není k dispozici žádná vhodná vrstva",
     "selectAllFeatures": "Označit všechny prvky",
-    "boxSelection": "Výběr polygonem"
+    "boxSelection": "Výběr polygonem",
+    "stylingMissing": "Chybí správný styl",
+    "stylinMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}."
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
