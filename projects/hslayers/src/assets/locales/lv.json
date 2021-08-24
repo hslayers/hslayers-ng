@@ -758,7 +758,8 @@
     "clear": "Atiestatīt uz noklusēto stilu",
     "downloadSld": "Lejuplādēt stilu kā SLD failu",
     "manageStyle": "Pārvaldīt stilu",
-    "uploadSld": "Augšupielādēt stilu kā SLD failu"
+    "uploadSld": "Augšupielādēt stilu kā SLD failu",
+    "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
