@@ -8,13 +8,13 @@
     </hs-panel-header>
 
     <div class="d-flex flex-column">
-        <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
-            <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
-                (click)="HsDrawService.saveDrawingLayer()">
+        <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;" >
+            <button type="button" class="btn rounded btn-primary hs-toolbar-button"
+                (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : !HsLayoutService.sidebarBottom()}">
                 {{'COMMON.newDrawingLayer' | translate}}
             </button>
-            <button type="button" (click)="HsDrawService.setType(HsDrawService.type)"
-                class="btn ml-1 btn-sm rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
+            <button type="button" (click)="HsDrawService.setType(HsDrawService.type)" [ngClass]="{'btn-sm' : !HsLayoutService.sidebarBottom()}"
+                class="btn ml-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
                 {{'DRAW.disableDrawing' | translate}}
             </button>
         </div>
@@ -107,17 +107,12 @@
             (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translate">
             <i class="icon-circleloaderfull"></i>
         </button>
-        <!-- <button class="btn btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
-            (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'STYLER.selection' | translate">
+        <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
+            class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            (click)="selectionMenuExpanded = !selectionMenuExpanded;" [attr.aria-expanded]="selectionMenuExpanded">
             <i class="icon-cursor"></i>
-        </button> -->
+        </button>
         <div class="dropdown">
-            <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
-                class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                (click)="selectionMenuExpanded = !selectionMenuExpanded;" [attr.aria-expanded]="selectionMenuExpanded"
-                style=" font-size: small;">
-                <i class="icon-cursor"></i>
-            </button>
             <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
                 [ngClass]="{'d-flex': selectionMenuExpanded}">
                 <div class="d-flex flex-row justify-content-around align-items-baseline">
@@ -126,7 +121,7 @@
                         (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
                         id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
                 </div>
-                <button class="btn btn-primary btn-sm" [disabled]="!HsDrawService.selectedLayer"
+                <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
                     (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;"
                     data-toggle="tooltip" [title]="'STYLER.selection' | translate">
                     Select all features

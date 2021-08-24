@@ -53,7 +53,7 @@
             <i class="glyphicon icon-trash"></i>
         </button>
         <div class="btn-group" *ngIf="drawToolbarExpanded">
-            <div style="top: 40vh;" role="group" class="btn-group-vertical position-fixed d-flex flex-column" [ngStyle]="{'left': HsConfig.sidebarPosition != 'left' ? '0' : '100%'}">
+            <div style="top: 35vh;" role="group" class="btn-group-vertical position-fixed d-flex flex-column" [ngStyle]="HsConfig.sidebarPosition != 'left' || HsLayoutService.sidebarBottom() ? {'left': 0} : {'right': 0} ">
                 <button class="btn btn-secondary" *ngIf="HsDrawService.drawActive"
                     (click)="HsDrawService.removeLastPoint()" data-toggle="tooltip"
                     [title]="'DRAW.drawToolbar.removeLastPoint' | translate">
