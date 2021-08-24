@@ -20,6 +20,7 @@ import {HsMapComponent} from './map.component';
 import {HsMapHostDirective} from './map.directive';
 import {HsMapService} from './map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlServiceMock} from '../permalink/share-url.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 
@@ -30,10 +31,6 @@ class emptyMock {
 class HsConfigMock {
   constructor() {}
 }
-
-const mockHsShareUrlService = jasmine.createSpyObj('HsShareUrlService', [
-  'getParamValue',
-]);
 
 describe('HsMapService', () => {
   let fixture: ComponentFixture<HsMapComponent>;
@@ -53,7 +50,7 @@ describe('HsMapService', () => {
       imports: [CommonModule],
       declarations: [HsMapComponent, HsMapHostDirective],
       providers: [
-        {provide: HsShareUrlService, useValue: mockHsShareUrlService},
+        {provide: HsShareUrlService, useValue: new HsShareUrlServiceMock()},
         {provide: HsCoreService, useValue: new emptyMock()},
         HsMapService,
         {provide: HsLayoutService, useValue: new emptyMock()},
@@ -73,12 +70,12 @@ describe('HsMapService', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create map object', async function () {
+  it('should create map object', async () => {
     const map = await service.loaded();
     expect(map).toBeDefined();
   });
 
-  it('should not add duplicate layers', async function () {
+  it('should not add duplicate layers', async () => {
     await service.loaded();
     const layer1 = new VectorLayer({
       properties: {title: 'Bookmarks'},
@@ -94,7 +91,7 @@ describe('HsMapService', () => {
     expect(exists).toBe(true);
   });
 
-  it('find layer for feature', async function () {
+  it('find layer for feature', async () => {
     await service.loaded();
     const featureLayer = new VectorLayer({
       properties: {title: 'Feature layer'},
