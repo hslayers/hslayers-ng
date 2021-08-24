@@ -385,7 +385,7 @@
       "addLayer": "Add layer",
       "finishFeature": "Finish feature",
       "removeLastPoint": "Remove last point",
-      "selectType": "Select type"
+      "selectType": "Geometry type"
     },
     "fillOpacity": "Fill opacity:",
     "loadingLayer": "Loading layer ",
@@ -400,7 +400,11 @@
     "unsavedDrawing": "Unsaved drawing",
     "boxSelectionActivated": "Box selection activated",
     "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
-    "noSuitableLayer": "No suitable layer available"
+    "noSuitableLayer": "No suitable layer available",
+    "selectAllFeatures": "Select all features",
+    "boxSelection": "Box selection",
+    "stylingMissing": "Proper styling missing",
+    "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel."
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
@@ -590,7 +594,7 @@
     "untitledFeature": "Untitled feature",
     "clusterContaining": "Cluster containing {{count}} features",
     "deleteAllSelected": "Delete all selected features",
-    "featuresSelected": "Features selected: {{featureCount}}",
+    "featuresSelected": "Features selected: ",
     "reallyDeleteAllSelectedLayers": "Really delete all selected features?",
     "downloadAs": "Download as"
   },

@@ -34,6 +34,7 @@ import {
   getDefinition,
   getEditor,
   getName,
+  getSld,
   getTitle,
   setDefinition,
   setEditor,
@@ -78,7 +79,7 @@ export class HsDrawService {
   /**
    * @type {GeometryType}
    */
-  type: string; //string of type GeometryType
+  type: 'Point' | 'Polygon' | 'LineString' | 'Circle'; //string of type GeometryType
   selectedLayer: VectorLayer<VectorSource<Geometry>>;
   tmpDrawLayer: any;
   source: VectorSource<Geometry>;
@@ -100,6 +101,13 @@ export class HsDrawService {
 
   //Layer being loaded from layman (endpoint url pending)
   pendingLayers = [];
+
+  requiredSymbolizer = {
+    Point: ['Point'],
+    Polygon: ['Fill', 'Line'],
+    LineString: ['Line'],
+    Circle: ['Fill', 'Line'],
+  };
 
   constructor(
     public HsMapService: HsMapService,
@@ -657,6 +665,19 @@ export class HsDrawService {
       });
 
       this.draw.on('drawstart', (e: DrawEvent) => {
+        if (!this.hasRequiredSymbolizer()) {
+          this.hsToastService.createToastPopupMessage(
+            this.HsLanguageService.getTranslation('DRAW.stylingMissing'),
+            `${this.HsLanguageService.getTranslation(
+              'DRAW.stylingMissingWarning',
+              {
+                type: this.type,
+                symbolizer: this.requiredSymbolizer[this.type].join(' or '),
+                panel: this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
+              }
+            )}`
+          );
+        }
         this.drawActive = true;
         this.modify.setActive(false);
         if (onDrawStart) {
@@ -684,6 +705,16 @@ export class HsDrawService {
         ? this.snapSource
         : this.source;
       this.toggleSnapping(snapSourceToBeUsed);
+    });
+  }
+
+  /**
+   * Checks whether selected geometry can be properly visualized on selected layer
+   */
+  hasRequiredSymbolizer(): boolean {
+    const sld = getSld(this.selectedLayer);
+    return this.requiredSymbolizer[this.type].some((symbolizer) => {
+      return sld.includes(`${symbolizer}Symbolizer`);
     });
   }
 

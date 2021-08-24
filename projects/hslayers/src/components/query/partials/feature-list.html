@@ -1,7 +1,7 @@
 <div class="navbar navbar-light bg-light px-1" *ngIf="features.length > 0">
     <div class="d-flex align-items-baseline" style="flex: 1;">
         <p class="m-0" [ngStyle]="{'flex' : features.length > 1 ? '' : '1'}">
-            {{hsLanguageService.getTranslationIgnoreNonExisting('QUERY','featuresSelected',{featureCount:features.length})}}
+            {{'QUERY.featuresSelected' | translate}}{{features.length}}
         </p>
         <button type="button" class="btn dropdown-toggle border-0 ml-2" [title]="'HISTORY.toggleDropdown' | translate"
             (click)="selectedFeaturesVisible = !selectedFeaturesVisible">

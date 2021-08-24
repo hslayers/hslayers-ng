@@ -83,13 +83,13 @@
     "useProxy": "Izmantojiet starpniekserveri",
     "useTiles": "Izmantojiet \"flīzes\"",
     "Vector": {
+      "addingFiles": "Pievienot {{featuresCount}} grafiskos objektus iekš",
       "addSld": "Pievienot SLD failu",
       "chooseFiles": "Izvēlieties failus...",
+      "chooseLayer": "Lūdzu, izvēlieties slāni no saraksta...",
       "dragAndDropFiles": "Velciet un nometiet failus",
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
-      "uploadVectorFiles": "Augšuplādēt vektordatu failus",
-      "addingFiles": "Pievienot {{featuresCount}} grafiskos objektus iekš",
-      "chooseLayer": "Lūdzu, izvēlieties slāni no saraksta..."
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
     },
     "VECTOR": {
       "extractStyles": "Izvilkt stilus"
@@ -366,6 +366,8 @@
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties objekta tipu",
     "activeLayers": "Aktīvie slāņi",
     "allowSnapping": "Atļaut pieķeršanos",
+    "boxSelection": "Iezīmēšana ar lodziņu",
+    "boxSelectionActivated": "Iezīmēšana ar lodziņu aktivizēta",
     "definedStyle": "Definētais stils",
     "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
     "disableDrawing": "Atspējot zīmēšanu",
@@ -391,13 +393,18 @@
     "loadingLayer": "Notiek slāņa ielāde",
     "longerLoading": "Izskatās, ka slāņa ielāde notiek ilgāk nekā ierasts. Lūdzu uzgaidiet!",
     "newGPS": "Jauns GPS",
+    "noSuitableLayer": "Nav pieejams piemērots slānis",
     "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "Select layer": "Izvēlieties slāni",
+    "selectAllFeatures": "Atlasīt visus grafiskos objektus",
     "serverLayers": "Servera slāņi",
     "snapTo": "Pieķerties slāņa grafiskajam objektam",
-    "unsavedDrawing": "Nesaglabāts zīmējums"
+    "stylingMissing": "Trūkst pareizais stils",
+    "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
@@ -508,8 +515,8 @@
     "User generated": "Lietotāja ģenerēti"
   },
   "LAYERS": {
-    "newLayer": "Jauns slānis",
-    "existingLayer": "Eksistējošs slānis"
+    "existingLayer": "Eksistējošs slānis",
+    "newLayer": "Jauns slānis"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -565,9 +572,12 @@
     "socialShare": "Sociālās kopīgošanas"
   },
   "QUERY": {
+    "clusterContaining": "Objektu apvienojums, kas satur {{count}} objektus",
     "confirmClear": "Apstiprināt notīrīšanu",
     "confirmDelete": "Apstiprināt dzēšanu",
     "coordinates": "Koordinātes",
+    "deleteAllSelected": "Dzēst visus atlasītos grafiskos objektus",
+    "downloadAs": "Lejupielādēt kā",
     "feature": {
       "attributeName": "Atribūtu nosaukums",
       "attributeValue": "Atribūta vērtība"
@@ -579,13 +589,14 @@
       "removeClusterPart": "Noņemt blakusesošo objektu apvienošanu",
       "removeFeature": "Noņemt objektu"
     },
+    "featuresSelected": "Atlasītie grafiskie objekti: ",
     "infoPanel": {
       "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus"
     },
     "reallyDelete": "Vai tiešām vēlaties dzēst šo objektu?",
     "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus objektus no slāņa {0}?",
-    "untitledFeature": "Objekts bez nosaukuma",
-    "clusterContaining": "Objektu apvienojums, kas satur {{count}} objektus"
+    "reallyDeleteAllSelectedLayers": "Vai tiešām dzēst visus atlasītos grafiskos objektus?",
+    "untitledFeature": "Objekts bez nosaukuma"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
@@ -689,10 +700,12 @@
     "andFilter": "AND",
     "blur": "Aizpludināt",
     "cap": "Limits",
+    "clear": "Atiestatīt uz noklusēto stilu",
     "clusterRule": "Noteikums kopām",
     "color": "Krāsa",
     "comparisonFilter": "SALĪDZINĀT",
     "dashPattern": "Domuzīmes paterns",
+    "downloadSld": "Lejuplādēt stilu kā SLD failu",
     "features": "Objekti",
     "fillColor": "Aizpildīt krāsu",
     "fillOpacity": "Aizpildīt necaurredzamību",
@@ -713,6 +726,7 @@
     "layer": "Slānis",
     "level": "Līmenis",
     "lineSymbolizer": "Līniju simbolizētājs",
+    "manageStyle": "Pārvaldīt stilu",
     "markSymbolizer": "Atzīmju simbolizētājs",
     "maxScale": "Maks. mērogs",
     "minScale": "Min. mērogs",
@@ -752,6 +766,7 @@
     "toggleFilters": "Pārslēgt filtrus",
     "toggleScaleDenominators": "Pārslēgt mēroga saucējus",
     "transform": "Transformēt",
+    "uploadSld": "Augšupielādēt stilu kā SLD failu",
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
     "width": "Platums",
