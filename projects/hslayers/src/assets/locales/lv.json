@@ -101,7 +101,8 @@
     },
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
-    }
+    },
+    "unknownDimesion": "Šis slānis nosaka kādu dimensiju, kuru pašlaik nevar parsēt"
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -501,7 +502,8 @@
     "time": {
       "outOfRange": "Atlasītais laiks ir ārpus diapazona",
       "syncTimes": "Sinhronizēt laikus",
-      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
+      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem",
+      "outOfRangeDescription": "Šis slānis var parādīt dažādus datus, pamatojoties uz izvēlēto laiku. Laiks var nonākt \"ārpus diapazona\", ja tas tiek sinhronizēts ar citu slāni, taču šim slānim nav datu par šo laika periodu. Noklikšķiniet, lai izvēlētos derīgu datumu un laiku. Varat arī atspējot slāņa laika sinhronizāciju."
     },
     "User generated": "Lietotāja ģenerēti"
   },
