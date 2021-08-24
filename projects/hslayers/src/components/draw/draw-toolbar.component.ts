@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 
+import {HsConfig} from '../../config.service';
 import {HsDrawService} from './draw.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {getTitle} from '../../common/layer-extensions';
-import {HsConfig} from '../../config.service';
 
 @Component({
   selector: 'hs-draw-toolbar',
@@ -22,8 +23,13 @@ export class HsDrawToolbarComponent {
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
+    public HsLanguageService: HsLanguageService
   ) {}
+
+  translateString(module: string, text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+  }
 
   toggleDrawToolbar(): void {
     this.HsDrawService.highlightDrawButton = false;

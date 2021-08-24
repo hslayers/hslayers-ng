@@ -71,7 +71,7 @@
                 <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
                     (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;"
                     data-toggle="tooltip" [title]="'STYLER.selection' | translate">
-                    {{'DRAW.selectAllFeatures' | translate}}
+                    {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
                 </button>
             </div>
         </div>

@@ -85,6 +85,7 @@ export class HsDrawService {
   source: VectorSource<Geometry>;
   drawActive = false;
   selectedFeatures: any = new Collection();
+  toggleSelectionString = 'selectAllFeatures';
   onSelected: any;
   currentStyle: any;
   highlightDrawButton = false; // Toggles toolbar button 'Draw' class
@@ -750,18 +751,27 @@ export class HsDrawService {
   }
 
   /**
-   * Selects all features in this.selectedLayer
+   * Selects or deselects all features in this.selectedLayer
    */
-  selectAllFeatures() {
-    //CLUSTERS?
+  selectAllFeatures(): void {
+    const selectFeatures =
+      this.selectedFeatures.getLength() !=
+      this.selectedLayer.getSource().getFeatures().length;
+    this.toggleSelectionString = selectFeatures
+      ? 'deselectAllFeatures'
+      : 'selectAllFeatures';
     this.HsQueryBaseService.clearData('features');
-    this.HsQueryBaseService.selector
-      .getFeatures()
-      .extend(this.selectedLayer.getSource().getFeatures());
+    this.HsQueryBaseService.selector.getFeatures().clear();
+
+    if (selectFeatures) {
+      this.HsQueryBaseService.selector
+        .getFeatures()
+        .extend(this.selectedLayer.getSource().getFeatures());
+    }
     this.HsQueryVectorService.createFeatureAttributeList();
   }
 
-  toggleBoxSelection() {
+  toggleBoxSelection(): void {
     this.HsMapService.loaded().then((map) => {
       if (this.boxSelection) {
         map.removeInteraction(this.boxSelection);
