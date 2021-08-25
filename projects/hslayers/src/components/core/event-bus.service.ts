@@ -8,6 +8,7 @@ import {Map} from 'ol';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
+import {AddDataUrlType} from '../add-data/add-data-url-type';
 import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
 import {
   HsLayerDescriptor,
@@ -147,11 +148,11 @@ export class HsEventBusService {
    * replaces `ows.${type}_connecting`
    */
   owsConnecting: BehaviorSubject<{
-    type: string;
+    type: AddDataUrlType;
     uri: string;
     layer?: any;
     sld?: string;
-  }> = new BehaviorSubject({type: '', uri: '', layer: null});
+  }> = new BehaviorSubject({type: undefined, uri: '', layer: null});
   /**
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl
