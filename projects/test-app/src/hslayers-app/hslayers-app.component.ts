@@ -3,11 +3,12 @@ import {Component} from '@angular/core';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
-import {OSM, Vector as VectorSource} from 'ol/source';
+import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from '../../../hslayers/src/config.service';
+import {HsLayerEditorService} from '../../../hslayers/src/components/layermanager/layer-editor.service';
 
 @Component({
   selector: 'hslayers-app',
@@ -15,7 +16,10 @@ import {HsConfig} from '../../../hslayers/src/config.service';
   styleUrls: [],
 })
 export class HslayersAppComponent {
-  constructor(public HsConfig: HsConfig) {
+  constructor(
+    public HsConfig: HsConfig,
+    private hsLayerEditorService: HsLayerEditorService
+  ) {
     const count = 200;
     const features = new Array(count);
     const e = 4500000;
@@ -100,6 +104,31 @@ export class HslayersAppComponent {
         },
       ],
     };
+    const opticalMap = new Tile({
+      source: new XYZ({
+        attributions:
+          '&copy; <a href="http://www.baltsat.lv/">Baltic Satellite Service</a>, <a href="https://www.esa.int/">European Space Agency - ESA</a>',
+        url: 'https://wms.forestradar.com/tiles-v1/fie-xNFwHfJdIR1dCtA7kJ1K8g/{time}-RGB/{z}/{x}/{y}.png',
+        crossOrigin: 'Anonymous',
+      }),
+      properties: {
+        title: 'Optical satellite basemap',
+        from_composition: true,
+        dimensions: {
+          time: {
+            value: '2020-11-20',
+            name: 'time',
+            values: ['2020-11-20'],
+          },
+        },
+        base: false,
+        editor: {editable: false},
+        path: 'Vegetation indexes and satellite imagery',
+      },
+      maxZoom: 18,
+      visible: false,
+      opacity: 1,
+    });
     this.HsConfig.update({
       datasources: [
         {
@@ -277,8 +306,25 @@ export class HslayersAppComponent {
             features: new GeoJSON().readFeatures(geojsonObject),
           }),
         }),
+        opticalMap,
       ],
     });
+    const dimensions = opticalMap.get('dimensions');
+    if (dimensions) {
+      opticalMap.get('dimensions').time.values = [
+        '2019-02-17',
+        '2019-02-22',
+        '2019-04-03',
+        '2019-04-05',
+        '2019-04-18',
+      ];
+    }
+    //Simulating ajax
+    setTimeout(() => {
+      this.hsLayerEditorService.layerDimensionDefinitionChange.next({
+        layer: opticalMap,
+      });
+    }, 100);
   }
   title = 'hslayers-workspace';
 }
