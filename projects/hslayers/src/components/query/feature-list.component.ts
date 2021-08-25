@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {Input} from '@angular/core';
 
 import {HsConfirmDialogComponent} from '../../common/confirm/confirm-dialog.component';
@@ -10,7 +10,6 @@ import {HsQueryVectorService} from './query-vector.service';
 @Component({
   selector: 'hs-query-feature-list',
   templateUrl: './partials/feature-list.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsQueryFeatureListComponent {
   @Input() features;
