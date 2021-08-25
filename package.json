@@ -83,7 +83,7 @@
     "@types/jasmine": "~3.8.2",
     "@types/jasminewd2": "~2.0.10",
     "@typescript-eslint/eslint-plugin": "4.29.3",
-    "@typescript-eslint/parser": "4.29.2",
+    "@typescript-eslint/parser": "4.29.3",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
