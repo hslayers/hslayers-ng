@@ -14,6 +14,18 @@ export const HS_PRMS = {
   composition: 'hs-composition',
   search: 'hs-search',
   layerSelected: 'hs-layer-selected',
+  hsWmsToConnect: 'hs-wms-to-connect',
+  hsWfsToConnect: 'hs-wfs-to-connect',
+  hsWmtsToConnect: 'hs-wmts-to-connect',
+  hsKmlToConnect: 'hs-kml-to-connect',
+  hsGeojsonToConnect: 'hs-geojson-to-connect',
+  hsArcgisToConnect: 'hs-arcgis-to-connect',
+  hsWmsLayers: 'hs-wms-layers',
+  hsWfsLayers: 'hs-wfs-layers',
+  hsWmtsLayers: 'hs-wmts-layers',
+  hsKmlLayers: 'hs-kml-layers',
+  hsGeojsonLayers: 'hs-geojson-layers',
+  hsArcgisLayers: 'hs-arcgis-layers',
 };
 
 /**
@@ -34,6 +46,12 @@ export const HS_PRMS_BACKWARDS = {
   composition: 'composition',
   search: 'search',
   layerSelected: 'layerSelected',
+  hsWmsToConnect: 'wms_to_connect',
+  hsWfsToConnect: 'wfs_to_connect',
+  hsWmtsToConnect: 'wmts_to_connect',
+  hsWmsLayers: 'wms_layers',
+  hsWfsLayers: 'wfs_layers',
+  hsWmtsLayers: 'wmts_layers',
 };
 
 /**

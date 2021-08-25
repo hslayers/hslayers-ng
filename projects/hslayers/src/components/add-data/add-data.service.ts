@@ -4,19 +4,22 @@ import {Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {AddDataUrlType} from './add-data-url-type';
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getBase} from '../../common/layer-extensions';
 
+export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataService {
-  typeSelected: string;
+  typeSelected: DatasetType;
   //Holds reference to data.url.component type selected
-  urlType: string;
-  datasetSelected: Subject<{type: any}> = new Subject();
+  urlType: AddDataUrlType;
+  datasetSelected: Subject<{type: DatasetType}> = new Subject();
   /**
    * Cancels any external url data request from datasources panel
    */
@@ -44,7 +47,7 @@ export class HsAddDataService {
     }
   }
 
-  selectType(type: string): void {
+  selectType(type: DatasetType): void {
     this.typeSelected = type;
     this.datasetSelected.next({type: type});
   }

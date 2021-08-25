@@ -2,6 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {DatasetType} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataCatalogueService} from './add-data-catalogue.service';
 import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
@@ -132,7 +133,7 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
     );
   }
 
-  datasetSelect(id_selected: string, endpoint?: HsEndpoint): void {
+  datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {
     this.hsAddDataCatalogueService.datasetSelect(id_selected);
     if (endpoint) {
       this.hsAddDataCatalogueService.selectedEndpoint = endpoint;

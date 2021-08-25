@@ -5,9 +5,9 @@ import {forkJoin} from 'rxjs';
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
 import {Geometry} from 'ol/geom';
 
+import {DatasetType, HsAddDataService} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
-import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from '../vector/add-data-vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
@@ -462,7 +462,7 @@ export class HsAddDataCatalogueService {
     return whatToAdd.type;
   }
 
-  datasetSelect(id_selected: string): void {
+  datasetSelect(id_selected: DatasetType): void {
     this.data.wms_connecting = false;
     this.data.id_selected = id_selected;
     this.hsAddDataService.selectType(id_selected);

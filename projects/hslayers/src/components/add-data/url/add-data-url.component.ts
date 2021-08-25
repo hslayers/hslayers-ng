@@ -2,6 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {AddDataUrlType} from '../add-data-url-type';
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -14,8 +15,8 @@ import {HsShareUrlService} from '../../permalink/share-url.service';
   templateUrl: './add-data-url.html',
 })
 export class HsAddDataUrlComponent implements OnDestroy {
-  typeSelected: string;
-  types: any[];
+  typeSelected: AddDataUrlType;
+  types: {id: AddDataUrlType; text: string}[];
   owsFillingSubscription: Subscription;
 
   constructor(
@@ -56,7 +57,6 @@ export class HsAddDataUrlComponent implements OnDestroy {
         },
       ];
     }
-    this.typeSelected = '';
 
     this.owsFillingSubscription = this.hsEventBusService.owsFilling.subscribe(
       ({type, uri, layer, sld}) => {
@@ -69,7 +69,7 @@ export class HsAddDataUrlComponent implements OnDestroy {
         });
       }
     );
-
+    //This component initializes after add-data.component which already set the urlType so *should* be fine to connect now
     if (this.hsAddDataService.urlType) {
       this.selectType(this.hsAddDataService.urlType);
       this.connectServiceFromUrlParam(this.hsAddDataService.urlType);
@@ -79,13 +79,13 @@ export class HsAddDataUrlComponent implements OnDestroy {
     this.owsFillingSubscription.unsubscribe();
   }
 
-  selectType(type: string): void {
+  selectType(type: AddDataUrlType): void {
     this.typeSelected = type;
   }
 
-  connectServiceFromUrlParam(type): void {
-    const layers = this.hsShareUrlService.getParamValue(`${type}_layers`);
-    const url = this.hsShareUrlService.getParamValue(`${type}_to_connect`);
+  connectServiceFromUrlParam(type: AddDataUrlType): void {
+    const layers = this.hsShareUrlService.getParamValue(`hs-${type}-layers`);
+    const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
 
     // const serviceName = `hsAddLayersWmsService`;
     if (layers) {
