@@ -369,6 +369,7 @@
     "boxSelectionActivated": "Iezīmēšana ar lodziņu aktivizēta",
     "definedStyle": "Definētais stils",
     "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
+    "deselectAllFeatures": "Atcelt visu grafisko objektu atlasi",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
     "drawingTo": "Zīmējums uz:",
@@ -403,8 +404,7 @@
     "stylingMissing": "Trūkst pareizais stils",
     "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu",
-    "deselectAllFeatures": "Atcelt visu grafisko objektu atlasi"
+    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
@@ -581,8 +581,8 @@
       "attributeName": "Atribūtu nosaukums",
       "attributeValue": "Atribūta vērtība",
       "copyFeature": "Kopēt grafisko objektu",
-      "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
       "featurecopySucc": "Grafiskais objekts tika veiksmīgi nokopēts slānī:",
+      "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
       "featuremoveSucc": "Grafiskais objekts tika veiksmīgi pārvietots uz slāni:",
       "moveFeature": "Pārvietot grafisko objektu"
     },

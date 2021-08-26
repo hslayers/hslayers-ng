@@ -83,13 +83,13 @@
     "useProxy": "Použít proxy",
     "useTiles": "Použít dlaždice",
     "Vector": {
+      "addingFiles": "Přidávání {{featuresCount}} prvku do:",
       "addSld": "Přidat soubor SLD",
       "chooseFiles": "Vyberte soubory...",
+      "chooseLayer": "Vyberte prosím vrstvu ze seznamu ...",
       "dragAndDropFiles": "Přetáhněte soubory",
       "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory",
-      "addingFiles": "Přidávání {{featuresCount}} prvku do:",
-      "chooseLayer": "Vyberte prosím vrstvu ze seznamu ..."
+      "uploadVectorFiles": "Nahrajte vektorové soubory"
     },
     "VECTOR": {
       "extractStyles": "Extrahovat styly"
@@ -365,8 +365,11 @@
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
     "activeLayers": "Aktivní vrstvy",
     "allowSnapping": "Povolit přichytávání",
+    "boxSelection": "Výběr polygonem",
+    "boxSelectionActivated": "Výběr polygonem aktivní",
     "definedStyle": "Definovaný styl",
     "deleteNote": "*Vrstva bude kompletně vymazána. V případe, že ji chcete vymazat jenom z aktuální kompozice (ne i z databáze) můžete tak udelat v panelu 'Správce vrstev'",
+    "deselectAllFeatures": "Odznačit všechny prvky",
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
     "drawingTo": "Kreslím do:",
@@ -390,21 +393,18 @@
     "loadingLayer": "Načítá se vrstva",
     "longerLoading": "Zdá se, že načítání trvá déle než obvykle. \nPočkejte chvíli, prosím!",
     "newGPS": "Nové GPS",
+    "noSuitableLayer": "Není k dispozici žádná vhodná vrstva",
     "notAuthorized": "Uživatel neautorizován, změny nebudou uloženy",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "saveDrawingToLayer": "Uložit do vrstvy",
     "Select layer": "Vybrat vrstvu",
+    "selectAllFeatures": "Označit všechny prvky",
     "serverLayers": "Servrové vrstvy",
     "snapTo": "Přichytávat na vrstvu",
-    "unsavedDrawing": "Neuložená kresba",
-    "boxSelectionActivated": "Výběr polygonem aktivní",
-    "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru",
-    "noSuitableLayer": "Není k dispozici žádná vhodná vrstva",
-    "selectAllFeatures": "Označit všechny prvky",
-    "boxSelection": "Výběr polygonem",
     "stylingMissing": "Chybí správný styl",
     "stylingMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}.",
-    "deselectAllFeatures": "Odznačit všechny prvky"
+    "unsavedDrawing": "Neuložená kresba",
+    "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
@@ -511,8 +511,8 @@
     "User generated": "Uživatelský"
   },
   "LAYERS": {
-    "newLayer": "Nová vrstva",
-    "existingLayer": "Existující vrstva"
+    "existingLayer": "Existující vrstva",
+    "newLayer": "Nová vrstva"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
@@ -571,14 +571,16 @@
     "confirmClear": "Potvrďte vymazání",
     "confirmDelete": "Potvrďte smazání",
     "coordinates": "Souřadnice",
+    "deleteAllSelected": "Odstranit všechny vybrané prvky",
+    "downloadAs": "Stáhnout jako",
     "feature": {
       "attributeName": "Název atributu",
       "attributeValue": "Hodnota atributu",
       "copyFeature": "Skopírovat prvek",
-      "moveFeature": "Přesunout prvek",
+      "featurecopySucc": "Prvek byl úspěšně skopírován do vrstvy: ",
       "featureEdited": "Změna prvku byla úspěšná",
       "featuremoveSucc": "Prvek byl úspěšně přesunut do vrstvy: ",
-      "featurecopySucc": "Prvek byl úspěšně skopírován do vrstvy: "
+      "moveFeature": "Přesunout prvek"
     },
     "featureInfo": "Informace o prvku",
     "featurePopup": {
@@ -587,16 +589,14 @@
       "removeClusterPart": "Odstranit část shluku",
       "removeFeature": "Odebrat prvek"
     },
+    "featuresSelected": "Vybrané prvky: ",
     "infoPanel": {
       "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu"
     },
     "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
-    "untitledFeature": "Prvek bez názvu",
-    "deleteAllSelected": "Odstranit všechny vybrané prvky",
-    "featuresSelected": "Vybrané prvky: ",
     "reallyDeleteAllSelectedLayers": "Opravdu odstranit všechny vybrané prvky?",
-    "downloadAs": "Stáhnout jako"
+    "untitledFeature": "Prvek bez názvu"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
