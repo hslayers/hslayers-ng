@@ -575,7 +575,12 @@
     "coordinates": "Souřadnice",
     "feature": {
       "attributeName": "Název atributu",
-      "attributeValue": "Hodnota atributu"
+      "attributeValue": "Hodnota atributu",
+      "copyFeature": "Skopírovat prvek",
+      "moveFeature": "Přesunout prvek",
+      "featureEdited": "Změna prvku byla úspěšná",
+      "featuremoveSucc": "Prvek byl úspěšně přesunut do vrstvy: ",
+      "featurecopySucc": "Prvek byl úspěšně skopírován do vrstvy: "
     },
     "featureInfo": "Informace o prvku",
     "featurePopup": {

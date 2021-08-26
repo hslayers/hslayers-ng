@@ -1,25 +1,31 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
+import {Input} from '@angular/core';
+
+import {HsFeatureCommonService} from './feature-common.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
-import {Input} from '@angular/core';
+import {exportFormats} from './feature-common.service';
+import {getTitle} from '../../common/layer-extensions';
+import { Geometry } from 'ol/geom';
+import { Feature } from 'ol';
 
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './partials/feature.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HsQueryFeatureComponent {
+export class HsQueryFeatureComponent implements AfterViewInit {
   @Input() feature;
   attributeName = '';
   attributeValue = '';
   newAttribVisible = false;
-  exportFormats: {
-    name: 'WKT' | 'GeoJSON';
-    ext: string; //File extension
-    serializedData?: string; //Features as string according to WKT or GeoJSON
-    mimeType: string;
-    downloadData?: any; //Serialized/sanitized data suitable for href
-  }[] = [
+  exportFormats: exportFormats[] = [
     {name: 'WKT', ext: 'wkt', mimeType: 'text/plain', downloadData: ''},
     {
       name: 'GeoJSON',
@@ -29,24 +35,49 @@ export class HsQueryFeatureComponent {
     },
   ];
   exportMenuVisible = false;
+  editMenuVisible = false;
+  selectedLayer;
+  editType: string;
+  getTitle = getTitle;
+  availableLayers;
+  availableLayersSubscription: any;
+
   constructor(
     public HsMapService: HsMapService,
-    public HsQueryVectorService: HsQueryVectorService
+    public HsQueryVectorService: HsQueryVectorService,
+    public HsFeatureCommonService: HsFeatureCommonService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public cd: ChangeDetectorRef
   ) {}
 
-  olFeature() {
+  ngAfterViewInit(): void {
+    this.availableLayersSubscription =
+      this.HsFeatureCommonService.availableLayer$.subscribe((layers) => {
+        this.availableLayers = layers.filter((layer) => {
+          return (
+            (layer as any).ol_uid !=
+            this.HsMapService.getLayerForFeature(this.olFeature()).ol_uid
+          );
+        });
+        this.cd.markForCheck();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.availableLayersSubscription.unsubscribe();
+  }
+
+  olFeature(): Feature<Geometry> {
     return this.feature.feature;
   }
 
-  isFeatureRemovable() {
-    if (this.feature.feature) {
-      return this.HsQueryVectorService.isFeatureRemovable(this.olFeature());
-    } else {
-      return false;
-    }
+  isFeatureRemovable(): boolean {
+    return this.olFeature()
+      ? this.HsQueryVectorService.isFeatureRemovable(this.olFeature())
+      : false;
   }
 
-  saveNewAttribute(attributeName, attributeValue) {
+  saveNewAttribute(attributeName, attributeValue): void {
     if (this.feature?.feature) {
       const feature = this.feature.feature;
       const getDuplicates = this.feature.attributes.filter(
@@ -63,23 +94,41 @@ export class HsQueryFeatureComponent {
     this.attributeValue = '';
   }
 
-  removeFeature() {
+  removeFeature(): void {
     this.HsQueryVectorService.removeFeature(this.olFeature());
   }
 
-  zoomToFeature() {
+  zoomToFeature(): void {
     const extent = this.olFeature().getGeometry().getExtent();
     this.HsMapService.fitExtent(extent);
   }
 
   toggleExportMenu(): void {
-    for (const format of this.exportFormats) {
-      format.serializedData = this.HsQueryVectorService.exportData(
-        format.name,
-        this.feature.feature
-      );
-    }
-
+    this.HsFeatureCommonService.toggleExportMenu(
+      this.exportFormats,
+      this.olFeature()
+    );
     this.exportMenuVisible = !this.exportMenuVisible;
+  }
+
+  editTypeSelected(type): void {
+    this.editType = type;
+    this.editMenuVisible = !this.editMenuVisible;
+  }
+
+  toggleEditMenu(): void {
+    if (this.editType) {
+      this.editType = null;
+      return;
+    }
+    this.editMenuVisible = !this.editMenuVisible;
+  }
+
+  moveOrCopyFeature(): void {
+    this.HsFeatureCommonService.moveOrCopyFeature(
+      this.editType,
+      [this.olFeature()],
+      this.selectedLayer
+    );
   }
 }
