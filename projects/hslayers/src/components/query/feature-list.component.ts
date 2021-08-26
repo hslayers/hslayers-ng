@@ -1,28 +1,29 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Input} from '@angular/core';
 
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 import {HsConfirmDialogComponent} from '../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsFeatureCommonService} from './feature-common.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsQueryVectorService} from './query-vector.service';
+import {exportFormats} from './feature-common.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature-list',
   templateUrl: './partials/feature-list.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsQueryFeatureListComponent {
   @Input() features;
 
   exportMenuVisible;
   selectedFeaturesVisible;
-  exportFormats: {
-    name: 'WKT' | 'GeoJSON';
-    ext: string;
-    serializedData?: string;
-    mimeType: string;
-    downloadData?: any;
-  }[] = [
+  exportFormats: exportFormats[] = [
     {name: 'WKT', ext: 'wkt', mimeType: 'text/plain', downloadData: ''},
     {
       name: 'GeoJSON',
@@ -31,6 +32,10 @@ export class HsQueryFeatureListComponent {
       downloadData: '',
     },
   ];
+  editType = null;
+  editMenuVisible = false;
+  selectedLayer = null;
+  getTitle = getTitle;
 
   trackById(index, item) {
     return item.feature.ol_uid;
@@ -40,22 +45,47 @@ export class HsQueryFeatureListComponent {
     public HsQueryVectorService: HsQueryVectorService,
     public hsLanguageService: HsLanguageService,
     public HsDialogContainerService: HsDialogContainerService,
-    public HsLayoutService: HsLayoutService
+    public HsLayoutService: HsLayoutService,
+    public HsFeatureCommonService: HsFeatureCommonService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.selectedFeaturesVisible = this.HsLayoutService.mainpanel == 'info';
   }
 
-  toggleExportMenu(): void {
-    for (const format of this.exportFormats) {
-      format.serializedData = this.HsQueryVectorService.exportData(
-        format.name,
-        this.features.map((feature) => feature.feature)
-      );
+  toggleEditMenu(): void {
+    if (this.editType) {
+      this.editType = null;
+      return;
     }
+    this.editMenuVisible = !this.editMenuVisible;
+  }
+
+  olFeatureArray(): Feature<Geometry>[] {
+    return this.features.map((feature) => feature.feature);
+  }
+
+  toggleExportMenu(): void {
+    this.HsFeatureCommonService.toggleExportMenu(
+      this.exportFormats,
+      this.olFeatureArray()
+    );
     this.exportMenuVisible = !this.exportMenuVisible;
   }
 
-  async removeAllSelectedFeatures() {
+  editTypeSelected(type: string): void {
+    this.editType = type;
+    this.editMenuVisible = !this.editMenuVisible;
+  }
+
+  moveOrCopyFeature(): void {
+    this.HsFeatureCommonService.moveOrCopyFeature(
+      this.editType,
+      this.olFeatureArray(),
+      this.selectedLayer
+    );
+  }
+
+  async removeAllSelectedFeatures(): Promise<void> {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {

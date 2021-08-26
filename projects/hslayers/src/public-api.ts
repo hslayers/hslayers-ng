@@ -71,3 +71,4 @@ export * from './common/widgets/endpoints-with-datasources.pipe';
 export * from './common/widgets/filter.pipe';
 export * from './common/widgets/endpoints-with-datasources.pipe';
 export * from './common/widgets/recursive-dd.component';
+export * from './components/permalink/get-params';

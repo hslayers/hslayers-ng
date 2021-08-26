@@ -128,7 +128,7 @@ export class HsQueryVectorService {
 
   exportData(
     clickedFormat: 'WKT' | 'GeoJSON',
-    feature: Feature<Geometry>
+    feature: Feature<Geometry>[] | Feature<Geometry>
   ): string {
     let fmt;
     const featureArray = Array.isArray(feature) ? feature : [feature];

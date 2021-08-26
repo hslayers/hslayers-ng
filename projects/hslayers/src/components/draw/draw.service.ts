@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -91,7 +90,7 @@ export class HsDrawService {
   highlightDrawButton = false; // Toggles toolbar button 'Draw' class
   onDeselected: any;
   public drawingLayerChanges: Subject<{
-    layer: BaseLayer;
+    layer: Layer<Source>;
     source: VectorSource<Geometry>;
   }> = new Subject();
   laymanEndpoint: any;

@@ -1,4 +1,5 @@
-import BaseLayer from 'ol/layer/Base';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import View from 'ol/View';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
@@ -62,7 +63,7 @@ export class HsConfig {
   cesiumAccessToken?: string;
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
-  default_layers?: Array<BaseLayer>;
+  default_layers?: Array<Layer<Source>>;
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;

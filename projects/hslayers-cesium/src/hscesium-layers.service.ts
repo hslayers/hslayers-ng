@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 
-import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
 import GeoJsonDataSource from 'cesium/Source/DataSources/GeoJsonDataSource';
@@ -354,12 +353,14 @@ export class HsCesiumLayersService {
     });
   }
 
-  async processOlLayer(lyr: BaseLayer): Promise<void> {
+  async processOlLayer(lyr: Layer<Source> | Group): Promise<void> {
     if (!this.viewer) {
       return;
     }
     if (this.HsUtilsService.instOf(lyr, Group)) {
-      for (const sub_lyr of (<Group>lyr).getLayers().getArray()) {
+      for (const sub_lyr of (<Group>lyr)
+        .getLayers()
+        .getArray() as Layer<Source>[]) {
         this.processOlLayer(sub_lyr);
       }
     } else {

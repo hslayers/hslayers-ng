@@ -80,6 +80,7 @@
       "WMS": "Tīmekļa karšu pakalpojums (WMS)"
     },
     "under": "Pievienot zem slāņa",
+    "unknownDimesion": "Šis slānis nosaka kādu dimensiju, kuru pašlaik nevar parsēt",
     "useProxy": "Izmantojiet starpniekserveri",
     "useTiles": "Izmantojiet \"flīzes\"",
     "Vector": {
@@ -101,8 +102,7 @@
     },
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
-    },
-    "unknownDimesion": "Šis slānis nosaka kādu dimensiju, kuru pašlaik nevar parsēt"
+    }
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -217,7 +217,8 @@
     "width": "Platums",
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
     "yes": "Jā",
-    "zoomTo": "pietuvināt"
+    "zoomTo": "pietuvināt",
+    "into": "iekš"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -370,6 +371,7 @@
     "boxSelectionActivated": "Iezīmēšana ar lodziņu aktivizēta",
     "definedStyle": "Definētais stils",
     "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
+    "deselectAllFeatures": "Atcelt visu grafisko objektu atzīmi",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
     "drawingTo": "Zīmējums uz:",
@@ -508,9 +510,9 @@
     "terrains": "Reljefi",
     "time": {
       "outOfRange": "Atlasītais laiks ir ārpus diapazona",
+      "outOfRangeDescription": "Šis slānis var parādīt dažādus datus, pamatojoties uz izvēlēto laiku. Laiks var nonākt \"ārpus diapazona\", ja tas tiek sinhronizēts ar citu slāni, taču šim slānim nav datu par šo laika periodu. Noklikšķiniet, lai izvēlētos derīgu datumu un laiku. Varat arī atspējot slāņa laika sinhronizāciju.",
       "syncTimes": "Sinhronizēt laikus",
-      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem",
-      "outOfRangeDescription": "Šis slānis var parādīt dažādus datus, pamatojoties uz izvēlēto laiku. Laiks var nonākt \"ārpus diapazona\", ja tas tiek sinhronizēts ar citu slāni, taču šim slānim nav datu par šo laika periodu. Noklikšķiniet, lai izvēlētos derīgu datumu un laiku. Varat arī atspējot slāņa laika sinhronizāciju."
+      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
     "User generated": "Lietotāja ģenerēti"
   },
@@ -580,7 +582,14 @@
     "downloadAs": "Lejupielādēt kā",
     "feature": {
       "attributeName": "Atribūtu nosaukums",
-      "attributeValue": "Atribūta vērtība"
+      "attributeValue": "Atribūta vērtība",
+      "copyFeature": "Kopēt grafiskos objektus",
+      "featurecopySucc": "Grafiskais objekts tika veiksmīgi nokopēts slānī:",
+      "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
+      "featuremoveSucc": "Grafiskais objekts tika veiksmīgi pārvietots uz slāni:",
+      "moveFeature": "Pārvietot grafisko objektu",
+      "copyFeatures": "Kopēt grafiskos objektus",
+      "moveFeatures": "Pārvietot grafiskos objektus"
     },
     "featureInfo": "Objektu informācija",
     "featurePopup": {
@@ -770,10 +779,6 @@
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
     "width": "Platums",
-    "clear": "Atiestatīt uz noklusēto stilu",
-    "downloadSld": "Lejuplādēt stilu kā SLD failu",
-    "manageStyle": "Pārvaldīt stilu",
-    "uploadSld": "Augšupielādēt stilu kā SLD failu",
     "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD"
   },
   "TOOLBAR": {
