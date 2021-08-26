@@ -11,7 +11,6 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsToastService} from '../layout/toast/toast.service';
 
-import BaseLayer from 'ol/layer/Base';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {Source} from 'ol/source';
 import {getTitle} from '../../common/layer-extensions';
@@ -29,9 +28,9 @@ export interface exportFormats {
   providedIn: 'root',
 })
 export class HsFeatureCommonService {
-  private listSubject = new BehaviorSubject<BaseLayer[]>([] as BaseLayer[]);
+  private listSubject = new BehaviorSubject<Layer<Source>[]>([] as Layer<Source>[]);
 
-  availableLayer$: Observable<BaseLayer[]> = this.listSubject.asObservable();
+  availableLayer$: Observable<Layer<Source>[]> = this.listSubject.asObservable();
 
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
@@ -52,9 +51,7 @@ export class HsFeatureCommonService {
   }
 
   updateLayerList(): void {
-    const layers = this.HsMapService.map
-      .getLayers()
-      .getArray()
+    const layers = this.HsMapService.getLayersArray()
       .filter((layer: Layer<Source>) => {
         return this.HsLayerUtilsService.isLayerDrawable(layer);
       });

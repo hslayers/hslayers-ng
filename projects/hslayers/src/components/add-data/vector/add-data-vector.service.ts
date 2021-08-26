@@ -1,4 +1,3 @@
-import BaseLayer from 'ol/layer/Base';
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {Source, Vector as VectorSource} from 'ol/source';
 
