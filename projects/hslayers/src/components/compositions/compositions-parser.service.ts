@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
-import BaseLayer from 'ol/layer/Base';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {transform, transformExtent} from 'ol/proj';

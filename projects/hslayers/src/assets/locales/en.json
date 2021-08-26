@@ -80,16 +80,17 @@
       "WMS": "Web map service (WMS)"
     },
     "under": "Add under layer",
+    "unknownDimesion": "This layer defines some dimension, which cannot be currently parsed",
     "useProxy": "Use proxy",
     "useTiles": "Use tiles",
     "Vector": {
+      "addingFiles": "Adding {{featuresCount}} features into:",
       "addSld": "Add SLD file",
       "chooseFiles": "Choose files...",
+      "chooseLayer": "Please, choose a layer from list...",
       "dragAndDropFiles": "Drag and drop files",
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files",
-      "addingFiles": "Adding {{featuresCount}} features into:",
-      "chooseLayer": "Please, choose a layer from list..."
+      "uploadVectorFiles": "Upload vector files"
     },
     "VECTOR": {
       "extractStyles": "Extract styles"
@@ -101,8 +102,7 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    },
-    "unknownDimesion": "This layer defines some dimension, which cannot be currently parsed"
+    }
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -217,7 +217,8 @@
     "width": "Width",
     "wrongCombinationOfParams": "Wrong combination of parameters",
     "yes": "Yes",
-    "zoomTo": "zoom to"
+    "zoomTo": "zoom to",
+    "into": " into"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -366,8 +367,11 @@
     "activateDrawing": "Activate drawing by choosing a feature type",
     "activeLayers": "Active layers",
     "allowSnapping": "Allow snapping",
+    "boxSelection": "Box selection",
+    "boxSelectionActivated": "Box selection activated",
     "definedStyle": "Defined style",
     "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
+    "deselectAllFeatures": "Deselect all features",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
     "drawingTo": "Drawing to:",
@@ -391,21 +395,18 @@
     "loadingLayer": "Loading layer ",
     "longerLoading": "Seems like loading takes longer than usual. Wait a moment please!\n",
     "newGPS": "New GPS",
+    "noSuitableLayer": "No suitable layer available",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
     "saveDrawingToLayer": "Save drawing to layer",
     "Select layer": "Select layer",
+    "selectAllFeatures": "Select all features",
     "serverLayers": "Server layers",
     "snapTo": "Snap to features of layer",
-    "unsavedDrawing": "Unsaved drawing",
-    "boxSelectionActivated": "Box selection activated",
-    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
-    "noSuitableLayer": "No suitable layer available",
-    "selectAllFeatures": "Select all features",
-    "boxSelection": "Box selection",
     "stylingMissing": "Proper styling missing",
     "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel.",
-    "deselectAllFeatures": "Deselect all features"
+    "unsavedDrawing": "Unsaved drawing",
+    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
@@ -509,15 +510,15 @@
     "terrains": "Terrains",
     "time": {
       "outOfRange": "Selected time is out of range",
+      "outOfRangeDescription": "This layer can show different data based on a selected time. The time can get \"out of range\" when it is synchronized with another layer but this layer has no data for that point in time. Click to pick a valid date and time. You can also disable the layer time synchronization.",
       "syncTimes": "Synchronize times",
-      "syncTimesTooltip": "Synchronize time for all layers",
-      "outOfRangeDescription": "This layer can show different data based on a selected time. The time can get \"out of range\" when it is synchronized with another layer but this layer has no data for that point in time. Click to pick a valid date and time. You can also disable the layer time synchronization."
+      "syncTimesTooltip": "Synchronize time for all layers"
     },
     "User generated": "User generated"
   },
   "LAYERS": {
-    "newLayer": "New layer",
-    "existingLayer": "Existing layer"
+    "existingLayer": "Existing layer",
+    "newLayer": "New layer"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
@@ -573,12 +574,22 @@
     "socialShare": "Social share"
   },
   "QUERY": {
+    "clusterContaining": "Cluster containing {{count}} features",
     "confirmClear": "Confirm clear",
     "confirmDelete": "Confirm delete",
     "coordinates": "Coordinates",
+    "deleteAllSelected": "Delete all selected features",
+    "downloadAs": "Download as",
     "feature": {
       "attributeName": "Attribute name",
-      "attributeValue": "Attribute value"
+      "attributeValue": "Attribute value",
+      "copyFeature": "Copy feature",
+      "featurecopySucc": "Feature was successfully copied into layer: ",
+      "featureEdited": "Feature change successfull",
+      "featuremoveSucc": "Feature was successfully moved to layer: ",
+      "moveFeature": "Move feature",
+      "copyFeatures": "Copy features",
+      "moveFeatures": "Move features"
     },
     "featureInfo": "Feature info",
     "featurePopup": {
@@ -587,17 +598,14 @@
       "removeClusterPart": "Remove cluster part",
       "removeFeature": "Remove feature"
     },
+    "featuresSelected": "Features selected: ",
     "infoPanel": {
       "clickOnMap": "Click on map for query results"
     },
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",
-    "untitledFeature": "Untitled feature",
-    "clusterContaining": "Cluster containing {{count}} features",
-    "deleteAllSelected": "Delete all selected features",
-    "featuresSelected": "Features selected: ",
     "reallyDeleteAllSelectedLayers": "Really delete all selected features?",
-    "downloadAs": "Download as"
+    "untitledFeature": "Untitled feature"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
@@ -701,10 +709,12 @@
     "andFilter": "AND",
     "blur": "Blur",
     "cap": "Cap",
+    "clear": "Reset to default style",
     "clusterRule": "Rule for clusters",
     "color": "Color",
     "comparisonFilter": "COMPARE",
     "dashPattern": "Dash pattern",
+    "downloadSld": "Download style as SLD file",
     "features": "Features",
     "fillColor": "Fill color",
     "fillOpacity": "Fill opacity",
@@ -725,6 +735,7 @@
     "layer": "Layer",
     "level": "Level",
     "lineSymbolizer": "Line symbolizer",
+    "manageStyle": "Manage style",
     "markSymbolizer": "Mark symbolizer",
     "maxScale": "Max. scale",
     "minScale": "Min. scale",
@@ -764,13 +775,10 @@
     "toggleFilters": "Toggle filters",
     "toggleScaleDenominators": "Toggle scale denominators",
     "transform": "Transform",
+    "uploadSld": "Upload style as SLD file",
     "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
     "width": "Width",
-    "uploadSld": "Upload style as SLD file",
-    "downloadSld": "Download style as SLD file",
-    "manageStyle": "Manage style",
-    "clear": "Reset to default style",
     "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD"
   },
   "TOOLBAR": {

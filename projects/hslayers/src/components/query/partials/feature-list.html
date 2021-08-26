@@ -1,31 +1,53 @@
 <div class="navbar navbar-light bg-light px-1" *ngIf="features.length > 0">
-    <div class="d-flex align-items-baseline" style="flex: 1;">
-        <p class="m-0" [ngStyle]="{'flex' : features.length > 1 ? '' : '1'}">
-            {{'QUERY.featuresSelected' | translate}}{{features.length}}
-        </p>
-        <button type="button" class="btn dropdown-toggle border-0 ml-2" [title]="'HISTORY.toggleDropdown' | translate"
-            (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
-        </button>
-    </div>
-    <div class="btn-group" *ngIf="features.length > 1">
-        <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-            [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu()" aris-haspopup="true"><i
-                class="icon-download"></i></button>
-        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
-            <a class="dropdown-item" *ngFor="let format of exportFormats" 
-            download="{{format.name}}_file.{{format.ext}}"
-            [hsDownload]="format.serializedData"
-            [mimeType]="format.mimeType" 
-            [href]="format.downloadData"
-            (downloadPrepared)="format.downloadData = $event">
-            {{format.name}}</a>
+    <div class="d-flex align-items-baseline w-100">
+        <div class="d-flex align-items-baseline" style="flex: 1;">
+            <p class="m-0" [ngStyle]="{'flex' : features.length > 1 ? '' : '1'}">
+                {{'QUERY.featuresSelected' | translate}}{{features.length}}
+            </p>
+            <button type="button" class="btn dropdown-toggle border-0 ml-2" [title]="'HISTORY.toggleDropdown' | translate"
+                (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
+            </button>
         </div>
-        <button type="button" class="btn-danger btn btn-sm border-0" [title]="'QUERY.deleteAllSelected' | translate"
-            (click)="removeAllSelectedFeatures()">
-            <i class="glyphicon icon-trash"></i>
-        </button>
+        <div class="btn-group" *ngIf="features.length > 1">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aris-haspopup="true"
+                (click)="toggleEditMenu()"><i
+                    class="icon-settingsthree-gears"></i></button>
+            <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': editMenuVisible}">
+                <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeatures' | translate}}</a>
+                <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeatures' | translate}}</a>
+            </div>
+            <button class="btn btn-secondary btn-sm dropdown-toggle rounded-0" type="button" data-toggle="dropdown"
+                [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu()" aris-haspopup="true"><i
+                    class="icon-download"></i></button>
+            <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
+                <a class="dropdown-item" *ngFor="let format of exportFormats" download="{{format.name}}_file.{{format.ext}}"
+                    [hsDownload]="format.serializedData" [mimeType]="format.mimeType" [href]="format.downloadData"
+                    (downloadPrepared)="format.downloadData = $event">
+                    {{format.name}}</a>
+            </div>
+            <button type="button" class="btn-danger btn btn-sm border-0" [title]="'QUERY.deleteAllSelected' | translate"
+                (click)="removeAllSelectedFeatures()">
+                <i class="glyphicon icon-trash"></i>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="editType" class="d-flex p-2 w-100">
+        <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
+            <div class="input-group-prepend">
+                <label for="selectedLayer" class="px-2">{{HsFeatureCommonService.translateString('QUERY.feature',editType+'Features')}} {{'COMMON.into' | translate}}:</label>
+            </div>
+            <select class="form-control text-truncate" [(ngModel)]="selectedLayer" name="selectedLayer" [title]="'ADDLAYERS.Vector.chooseLayer' | translate">
+                <option  [ngValue]="null" [disabled]="true" selected hidden > {{'ADDLAYERS.Vector.chooseLayer' | translate}}</option>
+                <option *ngFor="let layer of HsFeatureCommonService.availableLayer$ | async" [ngValue]="layer">
+                    {{HsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
+              </div>
+        </div>
     </div>
 </div>
 <div *ngIf="selectedFeaturesVisible">
-    <hs-query-feature *ngFor="let item of features | slice:0:50; trackBy: trackById" [feature]="item"></hs-query-feature>
+    <hs-query-feature *ngFor="let item of features | slice:0:50; trackBy: trackById" [feature]="item">
+    </hs-query-feature>
 </div>

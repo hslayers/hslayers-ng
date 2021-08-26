@@ -1,14 +1,17 @@
 import {Component} from '@angular/core';
-import {HsCesiumService} from './hscesium.service';
+
 import {
+  HS_PRMS,
   HsCoreService,
   HsEventBusService,
   HsLayoutService,
   HsMapService,
   HsShareUrlService,
   HsSidebarService,
-  HS_PRMS,
 } from 'hslayers-ng';
+
+import {HsCesiumService} from './hscesium.service';
+
 @Component({
   selector: 'hs-cesium',
   templateUrl: './hscesium.html',

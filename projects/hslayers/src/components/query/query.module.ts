@@ -7,6 +7,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsDownloadModule} from '../../common/download/download.module';
+import {HsFeatureCommonService} from './feature-common.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row.component';
 import {HsQueryBaseService} from './query-base.service';
@@ -48,6 +49,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryVectorService,
     HsQueryWmsService,
     HsQueryWmtsService,
+    HsFeatureCommonService,
   ],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
