@@ -80,6 +80,7 @@
       "WMS": "Tīmekļa karšu pakalpojums (WMS)"
     },
     "under": "Pievienot zem slāņa",
+    "unknownDimesion": "Šis slānis nosaka kādu dimensiju, kuru pašlaik nevar parsēt",
     "useProxy": "Izmantojiet starpniekserveri",
     "useTiles": "Izmantojiet \"flīzes\"",
     "Vector": {
@@ -101,8 +102,7 @@
     },
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
-    },
-    "unknownDimesion": "Šis slānis nosaka kādu dimensiju, kuru pašlaik nevar parsēt"
+    }
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -370,6 +370,7 @@
     "boxSelectionActivated": "Iezīmēšana ar lodziņu aktivizēta",
     "definedStyle": "Definētais stils",
     "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
+    "deselectAllFeatures": "Atcelt visu grafisko objektu atzīmi",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
     "drawingTo": "Zīmējums uz:",
@@ -404,8 +405,7 @@
     "stylingMissing": "Trūkst pareizais stils",
     "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu",
-    "deselectAllFeatures": "Atcelt visu grafisko objektu atzīmi"
+    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
@@ -509,9 +509,9 @@
     "terrains": "Reljefi",
     "time": {
       "outOfRange": "Atlasītais laiks ir ārpus diapazona",
+      "outOfRangeDescription": "Šis slānis var parādīt dažādus datus, pamatojoties uz izvēlēto laiku. Laiks var nonākt \"ārpus diapazona\", ja tas tiek sinhronizēts ar citu slāni, taču šim slānim nav datu par šo laika periodu. Noklikšķiniet, lai izvēlētos derīgu datumu un laiku. Varat arī atspējot slāņa laika sinhronizāciju.",
       "syncTimes": "Sinhronizēt laikus",
-      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem",
-      "outOfRangeDescription": "Šis slānis var parādīt dažādus datus, pamatojoties uz izvēlēto laiku. Laiks var nonākt \"ārpus diapazona\", ja tas tiek sinhronizēts ar citu slāni, taču šim slānim nav datu par šo laika periodu. Noklikšķiniet, lai izvēlētos derīgu datumu un laiku. Varat arī atspējot slāņa laika sinhronizāciju."
+      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
     "User generated": "Lietotāja ģenerēti"
   },
@@ -583,8 +583,8 @@
       "attributeName": "Atribūtu nosaukums",
       "attributeValue": "Atribūta vērtība",
       "copyFeature": "Kopēt grafiskos objektus",
-      "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
       "featurecopySucc": "Grafiskais objekts tika veiksmīgi nokopēts slānī:",
+      "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
       "featuremoveSucc": "Grafiskais objekts tika veiksmīgi pārvietots uz slāni:",
       "moveFeature": "Pārvietot grafisko objektu"
     },
