@@ -573,7 +573,12 @@
     "coordinates": "Súradnice",
     "feature": {
       "attributeName": "Názov atribútu",
-      "attributeValue": "Hodnota atribútu"
+      "attributeValue": "Hodnota atribútu",
+      "copyFeature": "Okopírovať prvok",
+      "featureEdited": "Zmena prvku bola úspešná",
+      "featuremoveSucc": "Prvok bol úspešne presunutý do vrstvy: ",
+      "featurecopySucc": "Prvok bol úspešne skopírovaný do vrstvy: ",
+      "moveFeature": "Presunúť prvok"
     },
     "featureInfo": "Informácie o funkcii",
     "featurePopup": {

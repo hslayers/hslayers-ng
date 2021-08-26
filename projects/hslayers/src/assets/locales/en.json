@@ -576,7 +576,12 @@
     "coordinates": "Coordinates",
     "feature": {
       "attributeName": "Attribute name",
-      "attributeValue": "Attribute value"
+      "attributeValue": "Attribute value",
+      "featureEdited": "Feature change successfull",
+      "featuremoveSucc": "Feature was successfully moved to layer: ",
+      "featurecopySucc": "Feature was successfully copied into layer: ",
+      "copyFeature": "Copy feature",
+      "moveFeature": "Move feature"
     },
     "featureInfo": "Feature info",
     "featurePopup": {

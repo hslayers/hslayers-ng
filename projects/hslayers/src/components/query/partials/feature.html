@@ -30,13 +30,34 @@
             </div>
         </div>
     </div>
+    
+    <div [hidden]="!editType" class="row p-2 ">
+        <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
+            <div class="input-group-prepend">
+                <label for="selectedLayer" class="px-2">{{HsFeatureCommonService.translateString('QUERY.feature',editType+'Feature')}} into:</label>
+            </div>
+            <select class="form-control" [(ngModel)]="selectedLayer" name="selectedLayer">
+                <option *ngFor="let layer of availableLayers" [ngValue]="layer">
+                    {{HsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
+              </div>
+        </div>
+    </div>
 </div>
-<div class="row" style="padding-left: 10px">
-    <div class="col-6 offset-6 mb-2 text-right">
+<div class="justify-content-end" style="padding-left: 10px">
+    <div class="mx-1 mb-2 text-right">
         <div class="btn-group">
             <button class="btn btn-secondary btn-sm" (click)="newAttribVisible = !newAttribVisible"><i
                     class="icon-calcplus"></i></button>
             <button class="btn btn-primary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
+            <button class="btn btn-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aris-haspopup="true" (click)="toggleEditMenu()"><i
+                class="icon-settingsthree-gears"></i></button>
+            <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': editMenuVisible}">
+                <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' | translate}}</a>
+                <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' | translate}}</a>
+            </div>
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
                 aris-haspopup="true" (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translate"
                 ><i
