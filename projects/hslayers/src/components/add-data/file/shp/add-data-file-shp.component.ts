@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import BaseLayer from 'ol/layer/Base';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {FileDescriptor} from './file-descriptor.type';
 import {HsAddDataFileShpService} from './add-data-file-shp.service';
@@ -38,7 +39,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   title = '';
   folder_name = '';
   advancedPanelVisible = false;
-  addUnder: BaseLayer = null;
+  addUnder: Layer<Source> = null;
   dropzoneActive = false;
   errorOccurred = false;
   showDetails = false;

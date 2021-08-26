@@ -1,4 +1,5 @@
-import BaseLayer from 'ol/layer/Base';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HsLayerManagerService} from '../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
@@ -8,8 +9,8 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
   templateUrl: './add-data-target-position.component.html',
 })
 export class HsAddDataTargetPositionComponent {
-  @Input() addUnder: BaseLayer | null; // @type'; TODO: comes from another scope
-  @Output() addUnderChange = new EventEmitter<BaseLayer | null>();
+  @Input() addUnder: Layer<Source> | null; // @type'; TODO: comes from another scope
+  @Output() addUnderChange = new EventEmitter<Layer<Source> | null>();
 
   constructor(
     public hsLayerUtilsService: HsLayerUtilsService,
