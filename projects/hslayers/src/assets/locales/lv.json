@@ -403,7 +403,8 @@
     "stylingMissing": "Trūkst pareizais stils",
     "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
+    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu",
+    "deselectAllFeatures": "Atcelt visu grafisko objektu atlasi"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
@@ -578,7 +579,12 @@
     "downloadAs": "Lejupielādēt kā",
     "feature": {
       "attributeName": "Atribūtu nosaukums",
-      "attributeValue": "Atribūta vērtība"
+      "attributeValue": "Atribūta vērtība",
+      "copyFeature": "Kopēt grafisko objektu",
+      "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
+      "featurecopySucc": "Grafiskais objekts tika veiksmīgi nokopēts slānī:",
+      "featuremoveSucc": "Grafiskais objekts tika veiksmīgi pārvietots uz slāni:",
+      "moveFeature": "Pārvietot grafisko objektu"
     },
     "featureInfo": "Objektu informācija",
     "featurePopup": {
