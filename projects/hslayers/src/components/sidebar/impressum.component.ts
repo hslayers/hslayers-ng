@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import * as packageJson from '../../package.json';
+import packageJson from '../../package.json';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
