@@ -287,11 +287,11 @@ export class HsCesiumLayersService {
   ): void {
     this.ol2CsMappings.push({olObject: ol_layer, csObject: cesium_layer});
     ol_layer.on('change:visible', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target);
+      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
       cesiumLayer.show = ol_layer.getVisible();
     });
     ol_layer.on('change:opacity', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target);
+      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
       if (this.HsUtilsService.instOf(cesiumLayer, ImageryLayer)) {
         (<ImageryLayer>cesiumLayer).alpha = ol_layer.getOpacity();
       }
@@ -304,10 +304,10 @@ export class HsCesiumLayersService {
   ): void {
     this.ol2CsMappings.push({olObject: ol_source, csObject: cesium_layer});
     this.syncFeatures(ol_source);
-    ol_source.on('features:loaded', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target);
+    (ol_source as any).on('features:loaded', (e) => {
+      const cesiumLayer = this.findCesiumLayer(e.target as Source);
       if (cesiumLayer) {
-        this.syncFeatures(e.target);
+        this.syncFeatures(e.target as VectorSource<Geometry>);
       }
     });
   }
@@ -390,7 +390,9 @@ export class HsCesiumLayersService {
           this.HsMapService.proxifyLayerLoader(lyr, true);
         }
       }
-      const cesium_layer = await this.convertOlToCesiumProvider(<Layer>lyr);
+      const cesium_layer = await this.convertOlToCesiumProvider(
+        lyr as Layer<Source>
+      );
       if (cesium_layer) {
         if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
           this.linkOlLayerToCesiumLayer(
@@ -404,7 +406,7 @@ export class HsCesiumLayersService {
           this.viewer.dataSources
         ) {
           this.viewer.dataSources.add(<DataSource>cesium_layer);
-          if (getTitle(lyr) != 'Point clicked') {
+          if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
               (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
               cesium_layer
@@ -467,7 +469,7 @@ export class HsCesiumLayersService {
       //link to cesium layer will be set also for OL layers source object, when this function returns.
       this.ol2CsMappings.push({olObject: ol_lyr, csObject: new_source});
       ol_lyr.on('change:visible', (e) => {
-        const cesiumLayer = this.findCesiumLayer(e.target);
+        const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
         cesiumLayer.show = ol_lyr.getVisible();
       });
       return new_source;
