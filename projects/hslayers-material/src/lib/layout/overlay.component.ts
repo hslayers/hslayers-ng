@@ -24,13 +24,11 @@ export class HsMatOverlayComponent implements OnInit {
 
   openAttributionDialog(event): void {
     this.dialog.open(HsAttributionDialogComponent, {
-      data: this.HsMapService.map
-        ?.getLayers()
-        .getArray()
+      data: this.HsMapService.getLayersArray()
         .filter((layer) => layer.getVisible())
         .map((layer) => layer.getSource().getAttributions())
         .filter((f) => f)
-        .map((getAttributions) => getAttributions())
+        .map((getAttributions) => getAttributions(undefined))
         .reduce((acc, item) => {
           // if (Array.isArray(item)) return acc.push(...item);
           // return acc.push(item);
@@ -81,7 +79,6 @@ export class HsMatOverlayComponent implements OnInit {
     this.HsMapService.map?.getView().fit(extent, {
       size: this.HsMapService.map.getSize(),
       padding: [50, 50, 50, 50],
-      constrainResolution: true,
       duration: 300,
     });
   }
