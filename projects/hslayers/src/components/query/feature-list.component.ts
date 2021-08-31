@@ -22,7 +22,7 @@ export class HsQueryFeatureListComponent {
   @Input() features;
 
   exportMenuVisible;
-  selectedFeaturesVisible;
+  selectedFeaturesVisible = true;
   exportFormats: exportFormats[] = [
     {name: 'WKT', ext: 'wkt', mimeType: 'text/plain', downloadData: ''},
     {
@@ -48,9 +48,7 @@ export class HsQueryFeatureListComponent {
     public HsLayoutService: HsLayoutService,
     public HsFeatureCommonService: HsFeatureCommonService,
     public HsLayerUtilsService: HsLayerUtilsService
-  ) {
-    this.selectedFeaturesVisible = this.HsLayoutService.mainpanel == 'info';
-  }
+  ) {}
 
   toggleEditMenu(): void {
     if (this.editType) {
