@@ -51,7 +51,7 @@
     "geostyler-sld-parser": "^2.3.0",
     "geostyler-style": "^4.0.2",
     "ngx-color": "^7.2.0",
-    "ngx-cookie-service": "^11.0.2",
+    "ngx-cookie-service": "^12.0.3",
     "ol": "^6.6.0",
     "ol-popup": "^4.0.0",
     "passport-oauth2-middleware": "^1.0.3",
