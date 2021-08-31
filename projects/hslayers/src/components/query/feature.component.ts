@@ -51,14 +51,10 @@ export class HsQueryFeatureComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
+    const featureLayer = this.HsMapService.getLayerForFeature(this.olFeature());
     this.availableLayersSubscription =
       this.HsFeatureCommonService.availableLayer$.subscribe((layers) => {
-        this.availableLayers = layers.filter((layer) => {
-          return (
-            (layer as any).ol_uid !=
-            this.HsMapService.getLayerForFeature(this.olFeature()).ol_uid
-          );
-        });
+        this.availableLayers = layers.filter((layer) => layer != featureLayer);
         this.cd.markForCheck();
       });
   }
