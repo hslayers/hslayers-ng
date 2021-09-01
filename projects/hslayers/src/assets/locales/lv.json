@@ -68,7 +68,7 @@
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
     "SHP": {
       "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",
-      "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
+      "titleRequired": "Lai turpinātu, ir jānorāda lauks 'Virsraksts'!",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
       "SLDStyleFile": "Stila datne"
     },

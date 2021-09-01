@@ -4,6 +4,7 @@ import {Source} from 'ol/source';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {getName, getTitle} from '../../common/layer-extensions';
 
+export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 /**
  * Get Layman friendly name for layer based on its title by
  * replacing spaces with underscores, converting to lowercase, etc.

@@ -29,13 +29,14 @@
     "rxjs": "^6.0.0",
     "share-api-polyfill": "^1.0.0",
     "xml-js": "^1.0.0",
-    "zone.js": "^0.10.2 || ^0.11.3"
+    "zone.js": "^0.10.2 || ^0.11.3",
+    "resumablejs": "^1.1.0"
   },
   "devDependencies": {
+    "@angular/cdk": "^12.2.3",
     "@angular/common": "^12.2.3",
     "@angular/compiler": "^12.2.3",
     "@angular/core": "^12.2.3",
-    "@angular/cdk": "^12.2.3",
     "@angular/forms": "^12.2.3",
     "@angular/localize": "^12.2.3",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
@@ -53,6 +54,7 @@
     "ol-popup": "^4.0.0",
     "proj4": "^2.7.2",
     "queue": "^6.0.2",
+    "resumablejs": "^1.1.0",
     "rxjs": "^6.6.7",
     "share-api-polyfill": "^1.0.18",
     "xml-js": "^1.6.11"

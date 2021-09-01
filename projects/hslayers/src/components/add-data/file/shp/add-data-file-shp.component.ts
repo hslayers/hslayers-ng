@@ -79,6 +79,19 @@ export class HsAddDataFileShpComponent implements OnInit {
     this.pickEndpoint();
   }
 
+  isSRSSupported(): boolean {
+    return ['4326', '3857'].some((epsg) => this.srs.endsWith(epsg));
+  }
+
+  loadingText(): string {
+    return this.loading
+      ? this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          'uploading'
+        )
+      : this.hsLanguageService.getTranslationIgnoreNonExisting('COMMON', 'add');
+  }
+
   dropZoneState($event: boolean): void {
     this.dropzoneActive = $event;
   }
@@ -137,47 +150,72 @@ export class HsAddDataFileShpComponent implements OnInit {
    * answer with wms service url to add to map
    */
   add(): void {
-    this.loading = true;
-    if (!this.endpoint) {
-      this.pickEndpoint();
+    try {
+      this.loading = true;
+      if (!this.endpoint) {
+        this.pickEndpoint();
+      }
+      if (!this.isSRSSupported()) {
+        throw new Error(
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'ADDLAYERS.ERROR',
+            'srsNotSupported'
+          )
+        );
+      }
+      this.hsAddDataFileShpService
+        .add(
+          this.endpoint,
+          this.files,
+          this.name,
+          this.title,
+          this.abstract,
+          this.srs,
+          this.sld,
+          this.access_rights
+        )
+        .then((data) => {
+          this.name = data[0].name; //Name translated to Layman-safe name
+          return this.describeNewLayer(this.endpoint, this.name);
+        })
+        .then((descriptor) => {
+          this.hsLaymanService.totalProgress = 0;
+          this.resultCode = 'success';
+          this.hsAddDataService.selectType('url');
+          setTimeout(() => {
+            this.hsEventBusService.owsFilling.next({
+              type: 'wms',
+              uri: descriptor.wms.url,
+              layer: this.name,
+            });
+          }, 500);
+          this.hsLayoutService.setMainPanel('layermanager');
+        })
+        .catch((err) => {
+          console.error(err);
+          const errorMessage =
+            err?.error?.message ?? err?.message == 'Wrong parameter value'
+              ? `${err?.message} : ${err?.detail.parameter}`
+              : err?.message;
+          const errorDetails = err?.error?.detail.missing_extensions
+            ? Object.values(err.error.detail.missing_extensions)
+            : [];
+          this.showError({message: errorMessage, details: errorDetails});
+        });
+    } catch (err) {
+      this.showError({message: err.message, details: null});
     }
-    this.hsAddDataFileShpService
-      .add(
-        this.endpoint,
-        this.files,
-        this.name,
-        this.title,
-        this.abstract,
-        this.srs,
-        this.sld,
-        this.access_rights
-      )
-      .then((data) => {
-        this.name = data[0].name; //Name translated to Layman-safe name
-        return this.describeNewLayer(this.endpoint, this.name);
-      })
-      .then((descriptor) => {
-        this.resultCode = 'success';
-        this.hsAddDataService.selectType('url');
-        setTimeout(() => {
-          this.hsEventBusService.owsFilling.next({
-            type: 'wms',
-            uri: descriptor.wms.url,
-            layer: this.name,
-          });
-        }, 500);
-        this.hsLayoutService.setMainPanel('layermanager');
-      })
-      .catch((err) => {
-        this.hsLog.error(err);
-        this.loading = false;
+  }
 
-        this.resultCode = 'error';
-        this.errorMessage = err?.error?.message ?? err?.message;
-        this.errorDetails = err?.error?.detail.missing_extensions
-          ? Object.values(err.error.detail.missing_extensions)
-          : [];
-      });
+  showError(e): void {
+    this.loading = false;
+    this.resultCode = 'error';
+    this.errorMessage = e.message;
+    this.errorDetails = e.details;
+    this.hsLaymanService.totalProgress = 0;
+    setTimeout(() => {
+      this.resultCode = null;
+    }, 5000);
   }
 
   read(evt: HsUploadedFiles): void {
@@ -206,6 +244,7 @@ export class HsAddDataFileShpComponent implements OnInit {
       } else {
         if (this.files.length == 3) {
           this.showDetails = true;
+          this.name = this.files[0].name.slice(0, -4);
           this.resultCode = 'success';
         } else if (this.files.length > 3) {
           this.showDetails = false;
@@ -249,7 +288,7 @@ export class HsAddDataFileShpComponent implements OnInit {
         )
       : this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.SHP',
-          'nameRequired'
+          'titleRequired'
         );
   }
 }

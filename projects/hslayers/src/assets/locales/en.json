@@ -51,7 +51,8 @@
       "errorWhileRequestingLayers": "Error while requesting layers",
       "someErrorHappened": "Some error happened or input missing",
       "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
-      "urlInvalid": "Missing or invalid endpoint URL of requested layer!"
+      "urlInvalid": "Missing or invalid endpoint URL of requested layer!",
+      "srsNotSupported": "Selected Coordinate reference systems (CRS/SRS) is not supported. Please provide file in EPSG:3857 or EPSG:4326 to proceed."
     },
     "externalDataSource": "External data source (URL)",
     "featureCount": "Feature count",
@@ -68,7 +69,7 @@
     "serviceTypeNotMatching": "URL service type does not match selected category",
     "SHP": {
       "loginRequired": "User login is required before layer can be loaded",
-      "nameRequired": "'Name' field required to proceed!",
+      "titleRequired": "'Title' field required to proceed!",
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file"
     },
@@ -221,7 +222,8 @@
     "wrongCombinationOfParams": "Wrong combination of parameters",
     "yes": "Yes",
     "zoomTo": "zoom to",
-    "into": " into"
+    "into": " into",
+    "uploading": "Uploading data"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

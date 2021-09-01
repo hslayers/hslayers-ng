@@ -48,7 +48,8 @@
       "errorWhileRequestingLayers": "Chyba pri žiadaní vrstiev zo servera",
       "someErrorHappened": "Nastala nešpecifikovaná chyba alebo je chybný vstup",
       "thereWasErrorWhile": "Nastala chyba pri syntaktickej analýze odpovede Capabilities z danej URL",
-      "urlInvalid": "Chýbajúca alebo neplatná URL požadovanej vrstvy!"
+      "urlInvalid": "Chýbajúca alebo neplatná URL požadovanej vrstvy!",
+      "srsNotSupported": "Vybraný súradnícový systém (CRS/SRS) nie je podporovaný.Ak chete pokračovať, zadajte súbor v systéme EPSG:3857 alebo EPSG:4326."
     },
     "externalDataSource": "Zdroj externých dát (URL)",
     "featureCount": "Počet prvkov",
@@ -65,7 +66,7 @@
     "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
     "SHP": {
       "loginRequired": "Pred načítaním vrstvy je potrebné prihlásiť sa ",
-      "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
+      "titleRequired": "Pre pokračovanie je potrebné pole 'Titulok'!",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi"
     },
@@ -217,7 +218,8 @@
     "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
     "yes": "Áno",
     "zoomTo": "zväčšiť na",
-    "into": " do"
+    "into": " do",
+    "uploading": "Nahrávanie údajov"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
