@@ -26,7 +26,10 @@
         "bbox": "Extent",
         "date": "Date",
         "title": "Title"
-      }
+      },
+      "showNext100": "Next 100",
+      "showAll": "All",
+      "showingSubset": "Currently showing {{limitShown}} of {{total}} services. Show"
     },
     "file": "File",
     "saveToDatabase": "Save to database",

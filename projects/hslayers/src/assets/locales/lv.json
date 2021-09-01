@@ -26,7 +26,10 @@
         "bbox": "Mērogojuma",
         "date": "Datuma",
         "title": "Nosaukuma"
-      }
+      },
+      "showAll": "Visus",
+      "showNext100": "Nākošos 100",
+      "showingSubset": "Pašlaik rādu {{limitShown}} no {total}} servisiem. Rādīt"
     },
     "file": "Fails",
     "saveToDatabase": "Saglabāt datubāzē",

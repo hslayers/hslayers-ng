@@ -27,6 +27,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
   checkedLayers = {};
   hasChecked = false;
   selectAll = true;
+  limitShown = 100;
   constructor(
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsEventBusService: HsEventBusService,
@@ -74,6 +75,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
   async connect(layerToSelect?: string): Promise<void> {
     try {
       this.hasChecked = false;
+      this.limitShown = 100;
       this.checkedLayers = {};
       const url = this.hsAddDataUrlWmsService.url;
       this.hsHistoryListService.addSourceHistory('wms', url);
