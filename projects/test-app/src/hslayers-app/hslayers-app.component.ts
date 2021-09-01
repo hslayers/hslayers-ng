@@ -140,7 +140,7 @@ export class HslayersAppComponent {
         },
       ],
       proxyPrefix: window.location.hostname.includes('localhost')
-        ? `${window.location.protocol}//${window.location.hostname}:38085/`
+        ? `${window.location.protocol}//${window.location.hostname}:8085/`
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: true,
