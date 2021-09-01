@@ -1,3 +1,4 @@
+import Resumable from 'resumablejs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
@@ -19,6 +20,14 @@ import {HsSaverService} from './saver-service.interface';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
+  PREFER_RESUMABLE_SIZE_LIMIT,
+  getLayerName,
+  getLaymanFriendlyLayerName,
+  wfsFailed,
+  wfsNotAvailable,
+  wfsPendingOrStarting,
+} from './layman-utils';
+import {
   getAccessRights,
   getLaymanLayerDescriptor,
   getTitle,
@@ -26,13 +35,7 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
-import {
-  getLayerName,
-  getLaymanFriendlyLayerName,
-  wfsFailed,
-  wfsNotAvailable,
-  wfsPendingOrStarting,
-} from './layman-utils';
+import {relative} from '@angular/compiler-cli/src/ngtsc/file_system';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -54,6 +57,7 @@ export class HsLaymanService implements HsSaverService {
   crs: string;
   pendingLayers: Array<string> = [];
   laymanLayerPending: Subject<any> = new Subject();
+  totalProgress = 0;
   constructor(
     public HsUtilsService: HsUtilsService,
     private http: HttpClient,
@@ -148,6 +152,17 @@ export class HsLaymanService implements HsSaverService {
       new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
       'blob.geojson'
     );
+
+    const files_to_async_upload = [];
+    const sumFileSize = formdata
+      .getAll('file')
+      .filter((f) => (f as File).name)
+      .reduce((prev, f) => prev + (f as File).size, 0);
+    const async_upload = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
+    if (async_upload) {
+      this.switchFormDataToFileNames(formdata, files_to_async_upload);
+    }
+
     formdata.append(
       'sld',
       new Blob([], {type: 'application/octet-stream'}),
@@ -189,19 +204,102 @@ export class HsLaymanService implements HsSaverService {
       } catch (ex) {
         this.HsLogService.log(`Creating layer ${description.name}`);
       }
-      const response: any = await this.http[
-        layerDesc2?.name ? 'patch' : 'post'
-      ](
+      return await this.http[layerDesc2?.name ? 'patch' : 'post'](
         `${endpoint.url}/rest/workspaces/${description.workspace}/layers${
           layerDesc2?.name ? '/' + description.name : ''
         }?${Math.random()}`,
         formdata,
         options
-      ).toPromise();
-      return response;
+      )
+        .toPromise()
+        .then(async (data: any) => {
+          if (data && data.length > 0) {
+            if (async_upload) {
+              const promise = await this.asyncUpload(
+                files_to_async_upload,
+                data,
+                {
+                  url: endpoint.url,
+                  user: description.workspace,
+                }
+              );
+              return promise;
+            } else {
+              return data;
+            }
+          } else {
+            return data;
+          }
+        });
     } catch (err) {
       throw err;
     }
+  }
+
+  /**
+   * Saves files for later upload and switches from files to file names in form data
+   */
+  switchFormDataToFileNames(
+    formdata: FormData,
+    files_to_async_upload: Array<any>
+  ): void {
+    const files = formdata.getAll('file').filter((f) => (f as any).name);
+    files_to_async_upload.push(...files);
+
+    const file_names = files.map((f) => (f as any).name);
+    formdata.delete('file');
+    file_names.forEach((fn) => formdata.append('file', fn));
+  }
+
+  /**
+   * Use resumable to chunk upload data larger than PREFER_RESUMABLE_SIZE_LIMIT(2MB)
+   */
+  asyncUpload(files_to_async_upload, data, endpoint): Promise<any> {
+    return new Promise((resolve, reject) => {
+      files_to_async_upload = files_to_async_upload.filter(
+        (file_to_upload) =>
+          !!data[0]['files_to_upload'].find(
+            (expected_file) => file_to_upload.name === expected_file.file
+          )
+      );
+      const layername = data[0]['name'];
+      const resumable = new Resumable({
+        target: `${endpoint.url}/rest/workspaces/${endpoint.user}/layers/${layername}/chunk`,
+        query: {
+          'layman_original_parameter': 'file',
+        },
+        testChunks: false,
+        maxFiles: 3,
+        withCredentials: true,
+      });
+
+      const chunksProgress = [];
+      resumable.on('complete', () => {
+        this.HsLogService.log(`Async upload finished successfully!`);
+        resolve(data);
+      });
+      resumable.on('fileError', (file, message) => {
+        console.log('fileError', message);
+        reject(message);
+      });
+      resumable.on('fileSuccess', (file, message) => {
+        this.HsLogService.log(message);
+      });
+      resumable.on('fileProgress', (file) => {
+        chunksProgress[file.uniqueIdentifier] = file.progress(false);
+        const sum = Object.values(chunksProgress).reduce((a, b) => a + b);
+        this.totalProgress = sum / files_to_async_upload.length 
+      });
+      resumable.on('filesAdded', (files) => {
+        this.HsLogService.log(
+          `${files.length} files added to Resumable.js, starting async upload.`
+        );
+        resumable.upload();
+      });
+
+      // add files to Resumable.js, it will fire 'filesAdded' event
+      resumable.addFiles(files_to_async_upload);
+    });
   }
 
   /**

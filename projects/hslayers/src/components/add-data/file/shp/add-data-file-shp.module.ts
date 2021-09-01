@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
+
 import {HsAddDataCommonModule} from '../../common/add-data-common.module';
 import {HsAddDataFileShpComponent} from './add-data-file-shp.component';
 import {HsLaymanModule} from '../../../../common/layman/layman.module';
@@ -19,6 +21,7 @@ import {HsUploadModule} from '../../../../common/upload/upload.module';
     HsUploadModule,
     HsAddDataCommonModule,
     HsLaymanModule,
+    NgbProgressbarModule,
   ],
   exports: [HsAddDataFileShpComponent],
   declarations: [HsAddDataFileShpComponent],

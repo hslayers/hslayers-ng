@@ -57,6 +57,7 @@
     "passport-oauth2-middleware": "^1.0.3",
     "proj4": "^2.7.5",
     "queue": "^6.0.2",
+    "resumablejs": "^1.1.0",
     "rxjs": "^6.6.7",
     "share-api-polyfill": "^1.0.21",
     "tslib": "^2.3.0",

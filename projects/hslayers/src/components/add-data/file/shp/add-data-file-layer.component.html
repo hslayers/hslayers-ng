@@ -1,5 +1,4 @@
 <form class="form-horizontal m-3" role="form">
-
     <!-- <div class="form-group">
         <div class="input-group">
             <div class="input-group-prepend">
@@ -17,14 +16,15 @@
         <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
     </div> -->
     <div class="form-group">
-        <hs-file-upload (uploaded)="read($event)" acceptedFormats=".shp, .shx, .dbf, .sbn" uploader="shpdbfshx"></hs-file-upload>
+        <hs-file-upload (uploaded)="read($event)" acceptedFormats=".shp, .shx, .dbf, .sbn" uploader="shpdbfshx">
+        </hs-file-upload>
         <!-- TODO: Replace this with upcomming toast directive -->
         <div class="text-light text-center bg-danger" *ngIf="errorOccurred">
             <p>{{'ADDLAYERS.couldNotUploadSelectedFile' | translate}}</p>
         </div>
     </div>
 
-    <div [hidden]="!showDetails"> 
+    <div [hidden]="!showDetails">
         <div class="d-flex flex-row justify-content-around">
             <div class="d-flex flex-column justify-content-center">
                 <p class="p-2 bg-success rounded" style="color: white;"> {{files.length}} files selected</p>
@@ -33,17 +33,19 @@
                 <p *ngFor="let file of files">{{file.name}}</p>
             </div>
         </div>
+        <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
         <div class="form-group">
             <label class="capabilities_label control-label">{{'COMMON.name' | translate}}*</label>
             <input class="form-control" name="name" [(ngModel)]="name" />
         </div>
-    
+
         <div class="form-group">
             <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
-            <input class="form-control" name="title" [(ngModel)]="title" />
+            <input class="form-control" name="title" placeholder="{{'ADDDATA.URL.submitLayerTitle' | translate}}"
+                [(ngModel)]="title" />
         </div>
-    
+
         <div class="form-group">
             <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
             <textarea class="form-control" id='hs-ows-abstract' name="abstract"
@@ -51,46 +53,52 @@
             </textarea>
         </div>
 
-        <hs-layman-access-rights *ngIf="isAuthorized" [(access_rights)]="access_rights"></hs-layman-access-rights>    
+        <hs-layman-access-rights *ngIf="isAuthorized" [(access_rights)]="access_rights"></hs-layman-access-rights>
 
         <div class="d-flex justify-content-between align-items-center">
             <p>{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
             <label class="dropzone-label">
-                <input name="file" type="file" accept=".sld" class="inputfile" (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
-                <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="sld ? 'bg-success' : 'bg-primary'"> <i class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
-            </label> 
+                <input name="file" type="file" accept=".sld" class="inputfile"
+                    (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
+                <label for="sld" class="p-2 rounded" style="font-size: 1em;"
+                    [ngClass]="sld ? 'bg-success' : 'bg-primary'"> <i
+                        class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
+            </label>
         </div>
 
-    
         <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
             (click)="advancedPanelVisible = !advancedPanelVisible">
             {{'COMMON.advancedOptions' | translate}}
         </button>
-    
+
         <div class="hs-ows-shp-advanced" *ngIf="advancedPanelVisible">
             <div class="form-group">
                 <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
                 <input class="form-control" name="srs" [(ngModel)]="srs" />
             </div>
-    
+
             <div class="form-group">
                 <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
                 <input class="form-control" name="folderName" [(ngModel)]="folder_name" />
             </div>
         </div>
-    
-        <button *ngIf="isAuthorized" class="btn btn-primary btn-block" [disabled]="!name" (click)="add()" title="{{addShpTooltip()}}"><i class="icon-plus" [hidden]="loading"></i><img [src]="hsUtilsService.getAjaxLoaderIcon()"
-                [hidden]="!loading" />
-            {{'COMMON.add' | translate}}
+        <button *ngIf="isAuthorized" class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"
+            title="{{addShpTooltip()}}">
+            <i class="icon-plus" [hidden]="loading"></i>
+            <img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!loading" />
+            {{loadingText()}}
+            <ngb-progressbar *ngIf="loading && hsAddDataFileShpService.asyncLoading" showValue="true"
+                class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
+            </ngb-progressbar>
         </button>
 
         <div *ngIf="!isAuthorized" class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-           <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate}}</p>
+            <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate}}</p>
             <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
         </div>
     </div>
 
-    <div class="alert alert-danger" [hidden]="resultCode != 'error'">
+    <div class="alert alert-danger mt-1" [hidden]="resultCode !== 'error'">
         <div class="alert alert-danger">{{errorMessage}}</div>
         <dl *ngFor="let item of errorDetails">
             <dt>{{item}}</dt>

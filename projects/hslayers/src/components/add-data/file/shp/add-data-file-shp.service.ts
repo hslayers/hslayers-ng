@@ -1,13 +1,23 @@
+import Resumable from 'resumablejs';
 import {FileDescriptor} from './file-descriptor.type';
-import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
-import {HsLogService} from '../../../../common/log/log.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
+import {HsLaymanService} from '../../../save-map/layman.service';
+import {HsLogService} from '../../../../common/log/log.service';
+
+import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../../save-map/layman-utils';
 import {accessRightsInterface} from '../../common/access-rights.interface';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataFileShpService {
-  constructor(private httpClient: HttpClient, public hsLog: HsLogService) {}
+  asyncLoading;
+  constructor(
+    private httpClient: HttpClient,
+    public hsLog: HsLogService,
+    public HsLaymanService: HsLaymanService
+  ) {}
 
   /**
    * @description Load non-wms OWS data and create layer
@@ -39,6 +49,20 @@ export class HsAddDataFileShpService {
           file.name
         );
       });
+
+      const files_to_async_upload = [];
+      const sumFileSize = formdata
+        .getAll('file')
+        .filter((f) => (f as File).name)
+        .reduce((prev, f) => prev + (f as File).size, 0);
+      this.asyncLoading = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
+      if (this.asyncLoading) {
+        this.HsLaymanService.switchFormDataToFileNames(
+          formdata,
+          files_to_async_upload
+        );
+      }
+
       if (sld) {
         formdata.append(
           'sld',
@@ -72,9 +96,19 @@ export class HsAddDataFileShpService {
           {withCredentials: true}
         )
         .toPromise()
-        .then((data: any) => {
-          if (data && data.length > 0) {
-            resolve(data);
+        .then(async (data: any) => {
+          //CHECK IF OK not auth etc.
+          if (data && data.length > 0) {  
+            if (this.asyncLoading) {
+              const promise = await this.HsLaymanService.asyncUpload(
+                files_to_async_upload,
+                data,
+                endpoint
+              );
+              resolve(promise);
+            } else {
+              resolve(data);
+            }
           } else {
             reject(data);
           }
