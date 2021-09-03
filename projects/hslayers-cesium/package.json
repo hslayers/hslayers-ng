@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "ol": "^6.6.0",
-    "cesium": "^1.84.0",
+    "cesium": "^1.85.0",
     "dayjs": "^1.10.4",
     "hslayers-ng": "^5.0.0"
   },
