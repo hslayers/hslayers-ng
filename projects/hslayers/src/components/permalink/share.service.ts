@@ -1,7 +1,7 @@
+import 'share-api-polyfill';
+
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-
-import 'share-api-polyfill';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';

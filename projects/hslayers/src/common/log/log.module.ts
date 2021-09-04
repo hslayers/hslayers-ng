@@ -1,10 +1,9 @@
-import {HsLogService} from './log.service';
+//TODO: Is this module declaration needed at all?
 import {NgModule} from '@angular/core';
 
 @NgModule({
   declarations: [],
   imports: [],
-  providers: [HsLogService],
   bootstrap: [],
 })
 export class HsLogModule {}

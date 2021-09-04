@@ -1,20 +1,9 @@
-import {HsArcgisGetCapabilitiesService} from './arcgis-get-capabilities.service';
-import {HsDimensionService} from '../dimension.service';
-import {HsWfsGetCapabilitiesService} from './wfs-get-capabilities.service';
-import {HsWmsGetCapabilitiesService} from './wms-get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from './wmts-get-capabilities.service';
+//TODO: Is this module declaration necessary at all?
 import {NgModule} from '@angular/core';
 
 @NgModule({
   declarations: [],
   imports: [],
-  providers: [
-    HsWfsGetCapabilitiesService,
-    HsArcgisGetCapabilitiesService,
-    HsWmsGetCapabilitiesService,
-    HsWmtsGetCapabilitiesService,
-    HsDimensionService,
-  ],
   entryComponents: [],
   exports: [],
 })

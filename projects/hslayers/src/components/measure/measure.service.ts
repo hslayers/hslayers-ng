@@ -19,12 +19,6 @@ type Measurement = {
   unit: string;
 };
 
-/**
- * @param $rootScope
- * @param HsMapService
- * @param HsUtilsService
- * @param $timeout
- */
 @Injectable({
   providedIn: 'root',
 })

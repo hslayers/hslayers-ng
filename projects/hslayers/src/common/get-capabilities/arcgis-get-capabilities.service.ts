@@ -1,4 +1,3 @@
-import {Attribution} from 'ol/control';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
@@ -11,7 +10,6 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
-import {Metadata} from '../layer-extensions';
 import {getPreferredFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})

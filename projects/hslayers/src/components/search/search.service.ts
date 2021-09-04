@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
@@ -16,6 +16,7 @@ import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
+
 @Injectable({
   providedIn: 'root',
 })

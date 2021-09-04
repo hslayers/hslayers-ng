@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-
 import queue from 'queue';
+
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',

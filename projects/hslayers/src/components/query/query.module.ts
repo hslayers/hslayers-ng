@@ -7,18 +7,13 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsDownloadModule} from '../../common/download/download.module';
-import {HsFeatureCommonService} from './feature-common.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row.component';
-import {HsQueryBaseService} from './query-base.service';
 import {HsQueryComponent} from './query.component';
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.component';
 import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeatureListComponent} from './feature-list.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
-import {HsQueryVectorService} from './query-vector.service';
-import {HsQueryWmsService} from './query-wms.service';
-import {HsQueryWmtsService} from './query-wmts.service';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -43,13 +38,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryFeaturePopupComponent,
     HsQueryFeatureComponent,
     HsQueryFeatureListComponent,
-  ],
-  providers: [
-    HsQueryBaseService,
-    HsQueryVectorService,
-    HsQueryWmsService,
-    HsQueryWmtsService,
-    HsFeatureCommonService,
   ],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })

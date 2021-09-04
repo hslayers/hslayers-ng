@@ -1,5 +1,5 @@
+//TODO: Is this module declaration needed at all?
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {HsCompositionsLayerParserService} from './layer-parser.service';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -7,7 +7,6 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [],
   imports: [TranslateModule],
   exports: [],
-  providers: [HsCompositionsLayerParserService],
   entryComponents: [],
 })
 export class HsCompositionsLayerParserModule {}

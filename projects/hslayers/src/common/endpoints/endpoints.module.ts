@@ -1,11 +1,10 @@
+//TODO: Is this module declaration needed at all?
 import {CommonModule} from '@angular/common';
-import {HsCommonEndpointsService} from './endpoints.service';
 import {NgModule} from '@angular/core';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule],
-  providers: [HsCommonEndpointsService],
   entryComponents: [],
   exports: [],
 })

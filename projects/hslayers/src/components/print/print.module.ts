@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsPrintComponent} from './print.component';
-import {HsPrintService} from './print.service';
 import {TranslateModule} from '@ngx-translate/core';
+
 /**
  * Add print dialog template to the app
  */
@@ -13,7 +13,6 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [HsPrintComponent],
   imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsPrintComponent],
-  providers: [HsPrintService],
   entryComponents: [HsPrintComponent],
 })
 export class HsPrintModule {}

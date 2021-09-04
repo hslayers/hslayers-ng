@@ -8,6 +8,7 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLogService} from '../../common/log/log.service';
+
 @Injectable({
   providedIn: 'root',
 })

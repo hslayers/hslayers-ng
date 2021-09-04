@@ -8,23 +8,15 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
-import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor.sub-layer-checkboxes.component';
-import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
-import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerListComponent} from './layermanager-layerlist.component';
 import {HsLayerManagerComponent} from './layermanager.component';
 import {HsLayerManagerFolderComponent} from './layermanager-folder.component';
 import {HsLayerManagerGalleryComponent} from './layermanager-gallery.component';
-import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
 import {HsLayerManagerRemoveLayerDialogComponent} from './remove-layer-dialog.component';
-import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layermanager-time-editor.component';
-import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerPhysicalListComponent} from './layermanager-physical-layerlist.component';
-import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayermanagerPhysicalListService} from './layermanager-physical-layerlist.service';
 import {HsLegendModule} from '../legend/legend.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueuesModule} from '../../common/queues/queues.module';
@@ -69,16 +61,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
-  ],
-  providers: [
-    HsLayerEditorSublayerService,
-    HsLayerEditorService,
-    HsLayerEditorVectorLayerService,
-    HsLayerManagerMetadataService,
-    HsLayerManagerService,
-    HsLayerManagerWmstService,
-    HsLayerSelectorService,
-    HsLayermanagerPhysicalListService,
   ],
   entryComponents: [
     HsLayerManagerComponent,
