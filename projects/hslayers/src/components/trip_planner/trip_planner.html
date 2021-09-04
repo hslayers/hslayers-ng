@@ -46,7 +46,7 @@
     <div
       class="alert alert-primary"
       role="alert"
-      *ngIf="HsTripPlannerService.waypoints.length==0"
+      *ngIf="HsTripPlannerService.waypoints.length===0"
     >
       {{'TRIP_PLANNER.waypointDrawingHint' | translate}}
     </div>

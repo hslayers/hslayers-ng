@@ -37,7 +37,7 @@
       [(ngModel)]="symbolizer.dasharray[i]"
       (change)="emitChange()"
     />
-    <div class="btn-group" role="group" aria-label="{{'STYLER.dashPattern' | translate}}">
+    <div class="btn-group" role="group" attr.aria-label="{{'STYLER.dashPattern' | translate}}">
       <button class="btn btn-outline-primary btn-sm" (click)="addDashItem()">
         <span class="icon-plus"></span>
       </button>
@@ -45,7 +45,6 @@
         <span class="icon-minus"></span>
       </button>
     </div>
-   
   </div>
 
   <hs-symbolizer-slider
@@ -179,7 +178,7 @@
   </div>
 
   <hs-symbolizer
-    *ngIf="symbolizer.graphicFill != undefined"
+    *ngIf="symbolizer.graphicFill !== undefined"
     [symbolizer]="symbolizer.graphicFill"
     (changes)="emitChange()"
     (remove)="symbolizer.graphicFill = undefined"
@@ -222,7 +221,7 @@
   </div>
 
   <hs-symbolizer
-    *ngIf="symbolizer.graphicStroke != undefined"
+    *ngIf="symbolizer.graphicStroke !== undefined"
     [symbolizer]="symbolizer.graphicStroke"
     (changes)="emitChange()"
     (remove)="symbolizer.graphicStroke = undefined"

@@ -91,19 +91,19 @@
 
     <div class="btn-block rounded-0 my-1 draw-buttons d-flex justify-content-center"
         [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
-        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type=='Point' }"
+        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Point' }"
             (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translate">
             <i class="icon-pin"></i>
         </button>
-        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type=='Polygon' }"
+        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Polygon' }"
             (click)="setType('Polygon')" data-toggle="tooltip" [title]="'COMMON.polygon' | translate">
             <i class="icon-polygonlasso"></i>
         </button>
-        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type=='LineString' }"
+        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='LineString' }"
             (click)="setType('LineString')" data-toggle="tooltip" [title]="'COMMON.line' | translate">
             <i class="icon-line"></i>
         </button>
-        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type=='Circle' }"
+        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Circle' }"
             (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translate">
             <i class="icon-circleloaderfull"></i>
         </button>

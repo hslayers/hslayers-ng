@@ -4,28 +4,28 @@
     <div class="card-body">
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'btn-primary active': hsAddDataService.typeSelected == 'catalogue'}"
+                <a class="nav-link" [ngClass]="{'btn-primary active': hsAddDataService.typeSelected === 'catalogue'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('catalogue')">
                     {{'ADDDATA.catalogue' | translate}}
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link"
-                    [ngClass]="{'btn-primary active': hsAddDataService.typeSelected == 'url' || hsAddDataService.typeSelected == 'OWS'}"
+                    [ngClass]="{'btn-primary active': hsAddDataService.typeSelected === 'url' || hsAddDataService.typeSelected === 'OWS'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('url')">
                     Url
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'btn-primary active': hsAddDataService.typeSelected == 'file'}"
+                <a class="nav-link" [ngClass]="{'btn-primary active': hsAddDataService.typeSelected === 'file'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('file')">
                     {{'ADDDATA.file' | translate}}
                 </a>
             </li>
         </ul>
-        <hs-add-data-url *ngIf="hsAddDataService.typeSelected == 'url' || hsAddDataService.typeSelected == 'OWS'">
+        <hs-add-data-url *ngIf="hsAddDataService.typeSelected === 'url' || hsAddDataService.typeSelected === 'OWS'">
         </hs-add-data-url>
-        <hs-add-data-file *ngIf="hsAddDataService.typeSelected == 'file'"></hs-add-data-file>
-        <hs-add-data-catalogue *ngIf="hsAddDataService.typeSelected == 'catalogue'"></hs-add-data-catalogue>
+        <hs-add-data-file *ngIf="hsAddDataService.typeSelected === 'file'"></hs-add-data-file>
+        <hs-add-data-catalogue *ngIf="hsAddDataService.typeSelected === 'catalogue'"></hs-add-data-catalogue>
     </div>
 </div>

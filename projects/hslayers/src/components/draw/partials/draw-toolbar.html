@@ -76,7 +76,7 @@
             </div>
         </div>
         <div class="btn-group" *ngIf="drawToolbarExpanded">
-            <div style="top: 35vh;" role="group" class="btn-group-vertical position-fixed d-flex flex-column" [ngStyle]="HsConfig.sidebarPosition != 'left' || HsLayoutService.sidebarBottom() ? {'left': 0} : {'right': 0} ">
+            <div style="top: 35vh;" role="group" class="btn-group-vertical position-fixed d-flex flex-column" [ngStyle]="HsConfig.sidebarPosition !== 'left' || HsLayoutService.sidebarBottom() ? {'left': 0} : {'right': 0} ">
                 <button class="btn btn-secondary" *ngIf="HsDrawService.drawActive"
                     (click)="HsDrawService.removeLastPoint()" data-toggle="tooltip"
                     [title]="'DRAW.drawToolbar.removeLastPoint' | translate">
@@ -90,22 +90,22 @@
                 class="btn  btn-light dropright rounded-0 btn-outline-secondary dropdown-toggle" aria-haspopup="true">
                 <label *ngIf="!HsDrawService.type" class="m-0">{{'DRAW.drawToolbar.selectType' | translate}}</label>
                 <i [ngClass]="{
-                    'icon-pin': HsDrawService.type=='Point',
-                    'icon-polygonlasso': HsDrawService.type=='Polygon',
-                    'icon-line': HsDrawService.type=='LineString'
+                    'icon-pin': HsDrawService.type==='Point',
+                    'icon-polygonlasso': HsDrawService.type==='Polygon',
+                    'icon-line': HsDrawService.type==='LineString'
                 }"></i>
             </button>
             <div  class="dropdown-menu  p-0" style="min-width: unset;" [ngClass]="{'show': drawTypeExpanded}">
                 <div class="btn-group" >
                     <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-                        [ngClass]="{active: HsDrawService.type=='Point' }" (click)="setType('Point');drawTypeExpanded = !drawTypeExpanded" data-toggle="tooltip"
+                        [ngClass]="{active: HsDrawService.type==='Point' }" (click)="setType('Point');drawTypeExpanded = !drawTypeExpanded" data-toggle="tooltip"
                         [title]="'COMMON.point' | translate"><i class="icon-pin"></i></button>
                     <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-                        [ngClass]="{active: HsDrawService.type=='Polygon' }" (click)="setType('Polygon');drawTypeExpanded = !drawTypeExpanded"
+                        [ngClass]="{active: HsDrawService.type==='Polygon' }" (click)="setType('Polygon');drawTypeExpanded = !drawTypeExpanded"
                         data-toggle="tooltip" [title]="'COMMON.polygon' | translate"><i
                             class="icon-polygonlasso"></i></button>
                     <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-                        [ngClass]="{active: HsDrawService.type=='LineString' }" (click)="setType('LineString');drawTypeExpanded = !drawTypeExpanded"
+                        [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString');drawTypeExpanded = !drawTypeExpanded"
                         data-toggle="tooltip" [title]="'COMMON.line' | translate">
                         <i class="icon-line"></i></button>
                 </div>

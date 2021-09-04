@@ -110,7 +110,7 @@
                 <!-- <div *ngIf="endpoint.type == 'micka'">
                         <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
                     </div>
-                     -->
+                -->
                 <ul class="list-group">
                     <li class='list-group-item text-primary text-center py-2'
                         [hidden]="!hsAddDataCatalogueService.layersLoading"><img class="pr-2"
@@ -128,20 +128,20 @@
             </div>
 
             <div class="card-footer"
-                *ngIf="hsAddDataCatalogueService.matchedLayers != 0 && !hsAddDataCatalogueService.layersLoading">
+                *ngIf="hsAddDataCatalogueService.matchedLayers !== 0 && !hsAddDataCatalogueService.layersLoading">
                 <ul class="pagination d-flex justify-content-center">
-                    <li class="page-item" [ngClass]="{'disabled': hsAddDataCatalogueService.listStart == 0 }">
+                    <li class="page-item" [ngClass]="{'disabled': hsAddDataCatalogueService.listStart === 0 }">
                         <a class="page-link" (click)="getPreviousRecords()"><span aria-hidden="true">&laquo;</span></a>
                     </li>
                     <li class="page-item"
-                        *ngIf="resultsVisible() && hsAddDataCatalogueService.listNext != hsAddDataCatalogueService.matchedLayers">
+                        *ngIf="resultsVisible() && hsAddDataCatalogueService.listNext !== hsAddDataCatalogueService.matchedLayers">
                         <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{hsAddDataCatalogueService.listStart + 1}} -
                             {{hsAddDataCatalogueService.listNext}}</span>
                     </li>
                     <li class="page-item"
-                        *ngIf="resultsVisible() && hsAddDataCatalogueService.listNext == hsAddDataCatalogueService.matchedLayers">
+                        *ngIf="resultsVisible() && hsAddDataCatalogueService.listNext === hsAddDataCatalogueService.matchedLayers">
                         <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{hsAddDataCatalogueService.listStart + 1}} -
