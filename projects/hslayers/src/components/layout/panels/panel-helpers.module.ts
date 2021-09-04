@@ -1,5 +1,4 @@
 import {HsPanelContainerComponent} from './panel-container.component';
-import {HsPanelContainerService} from './panel-container.service';
 import {HsPanelHeaderComponent} from './layout-panel-header.component';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {NgModule} from '@angular/core';
@@ -10,7 +9,6 @@ import {NgModule} from '@angular/core';
     HsPanelContainerComponent,
   ],
   imports: [],
-  providers: [HsPanelContainerService],
   entryComponents: [HsPanelHeaderComponent, HsPanelContainerComponent],
   exports: [HsPanelHeaderComponent, HsPanelContainerComponent],
 })

@@ -28,7 +28,6 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
   ],
-  providers: [],
   entryComponents: [HsGetCapabilitiesErrorComponent],
 })
 export class HsAddDataCommonModule {}

@@ -8,7 +8,6 @@ import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
-import {HsCoreService} from './core.service';
 import {HsDragModule} from './../drag/drag.module';
 import {HsDrawModule} from '../draw/draw.module';
 import {HsFeatureTableModule} from './../feature-table/feature-table.module';
@@ -147,7 +146,7 @@ export function getWebpackTranslateLoader(
     HsCommonEndpointsModule,
   ],
   exports: [TranslateModule],
-  providers: [HsCoreService, TranslateStore, TranslateService, HsConfig],
+  providers: [TranslateStore, TranslateService, HsConfig],
   entryComponents: [],
 })
 export class HsCoreModule {

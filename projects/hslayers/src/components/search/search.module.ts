@@ -9,7 +9,6 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
 import {HsSearchResultsComponent} from './search-results.component';
-import {HsSearchService} from './search.service';
 import {TranslateModule} from '@ngx-translate/core';
 import {limitToPipe} from './limitTo.pipe';
 
@@ -27,7 +26,6 @@ import {limitToPipe} from './limitTo.pipe';
     HsSearchResultsComponent,
     HsSearchInputComponent,
   ],
-  providers: [HsSearchService],
   entryComponents: [
     HsSearchComponent,
     HsSearchResultsComponent,

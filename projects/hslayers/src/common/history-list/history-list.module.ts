@@ -7,7 +7,6 @@ import {CommonModule} from '@angular/common';
 import {CookieService} from 'ngx-cookie-service';
 import {FormsModule} from '@angular/forms';
 import {HsHistoryListComponent} from './history-list.component';
-import {HsHistoryListService} from './history-list.service';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -15,7 +14,7 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [HsHistoryListComponent],
   imports: [FormsModule, CommonModule, TranslateModule],
   exports: [HsHistoryListComponent],
-  providers: [HsHistoryListService, CookieService],
+  providers: [CookieService],
   entryComponents: [HsHistoryListComponent],
 })
 export class HsHistoryListModule {}

@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCommonModule} from '../../common/add-data-common.module';
-import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsAddDataWmtsComponent} from './add-data-url-wmts.component';
 
 @NgModule({
@@ -12,6 +11,5 @@ import {HsAddDataWmtsComponent} from './add-data-url-wmts.component';
   imports: [CommonModule, FormsModule, TranslateModule, HsAddDataCommonModule],
   exports: [HsAddDataWmtsComponent],
   declarations: [HsAddDataWmtsComponent],
-  providers: [HsAddDataUrlWmtsService],
 })
 export class HsAddDataWmtsModule {}

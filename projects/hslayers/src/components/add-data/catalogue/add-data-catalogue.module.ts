@@ -5,19 +5,14 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsAddDataCatalogueComponent} from './add-data-catalogue.component';
 import {HsAddDataListItemComponent} from './add-data-list-item.component';
 import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
-import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
-import {TranslateModule} from '@ngx-translate/core';
-
-import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
-import {HsAddDataCatalogueService} from './add-data-catalogue.service';
-import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
-import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
-import {HsMickaBrowserService} from './micka/micka.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -38,13 +33,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsAddDataCatalogueComponent,
     HsAddDataListItemComponent,
     HsAddDataMetadataDialogComponent,
-  ],
-  providers: [
-    HsMickaBrowserService,
-    HsLaymanBrowserService,
-    HsAddDataCatalogueMapService,
-    HsAddDataCatalogueService,
-    HsAddDataMetadataService,
   ],
   entryComponents: [
     HsAddDataCatalogueComponent,

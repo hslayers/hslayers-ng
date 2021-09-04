@@ -7,7 +7,6 @@ import {HsLegendComponent} from './legend.component';
 import {HsLegendLayerComponent} from './legend-layer.component';
 import {HsLegendLayerStaticComponent} from './legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
-import {HsLegendService} from './legend.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueuesModule} from '../../common/queues/queues.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
@@ -28,7 +27,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsQueuesModule,
   ],
   exports: [HsLegendComponent, HsLegendLayerComponent],
-  providers: [HsLegendService],
   entryComponents: [HsLegendComponent, HsLegendLayerComponent],
 })
 export class HsLegendModule {}

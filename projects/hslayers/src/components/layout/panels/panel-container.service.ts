@@ -2,6 +2,7 @@ import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelItem} from './panel-item';
 import {Injectable, Type} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +16,7 @@ export class HsPanelContainerService {
     this.panelObserver.next(new HsPanelItem(component, data));
   }
 
-  destroy(component: HsPanelComponent) {
+  destroy(component: HsPanelComponent): void {
     this.panelDestroyObserver.next(component);
   }
 }

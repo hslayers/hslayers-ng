@@ -13,6 +13,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker.component';
 import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
+import {HsDownloadModule} from '../../common/download/download.module';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer.component';
 import {HsFilterComponent} from './filters/filter.component';
 import {HsFiltersComponent} from './filters/filters.component';
@@ -31,7 +32,6 @@ import {HsStylerService} from './styler.service';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component';
 import {HsUploadModule} from '../../common/upload/upload.module';
-import { HsDownloadModule } from '../../common/download/download.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -82,7 +82,6 @@ import { HsDownloadModule } from '../../common/download/download.module';
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
   ],
-  providers: [HsStylerService, HsFiltersService],
   entryComponents: [
     HsStylerComponent,
     HsRuleComponent,

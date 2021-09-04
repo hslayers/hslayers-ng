@@ -6,7 +6,6 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsGeolocationComponent} from './geolocation.component';
-import {HsGeolocationService} from './geolocation.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -15,7 +14,6 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [HsGeolocationComponent],
   imports: [FormsModule, CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsGeolocationComponent],
-  providers: [HsGeolocationService],
   entryComponents: [HsGeolocationComponent],
 })
 export class HsGeolocationModule {}

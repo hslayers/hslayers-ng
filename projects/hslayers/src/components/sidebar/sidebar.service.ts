@@ -7,10 +7,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-// HsLanguageService not yet refactored
-/**
- * param HsLanguageService
- */
+
 @Injectable({
   providedIn: 'root',
 })

@@ -1,7 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access-rights.component';
-import {HsCommonLaymanService} from './layman.service';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
 import {TranslateModule} from '@ngx-translate/core';
@@ -19,7 +18,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
   ],
-  providers: [HsCommonLaymanService],
   entryComponents: [
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,

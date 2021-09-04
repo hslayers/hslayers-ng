@@ -14,7 +14,6 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [HsInfoComponent],
   imports: [FormsModule, CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsInfoComponent],
-  providers: [],
   entryComponents: [HsInfoComponent],
 })
 export class HsInfoModule {}

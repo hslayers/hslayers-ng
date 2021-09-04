@@ -12,7 +12,6 @@ import {TranslateModule} from '@ngx-translate/core';
 import {FormsModule} from '@angular/forms';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
-import {HsDrawService} from './draw.service';
 import {HsDrawToolbarComponent} from './draw-toolbar.component';
 import {HsQueryModule} from '../query/query.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -39,7 +38,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsDrawLayerMetadataDialogComponent,
     HsDrawToolbarComponent,
   ],
-  providers: [HsDrawService],
   entryComponents: [
     HsDrawComponent,
     HsDrawLayerMetadataDialogComponent,

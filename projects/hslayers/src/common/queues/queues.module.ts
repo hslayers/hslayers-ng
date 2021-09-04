@@ -1,10 +1,9 @@
-import {HsQueuesService} from './queues.service';
+//TODO: Is this module declaration needed at all?
 import {NgModule} from '@angular/core';
 
 @NgModule({
   declarations: [],
   imports: [],
-  providers: [HsQueuesService],
   bootstrap: [],
 })
 export class HsQueuesModule {}

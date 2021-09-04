@@ -6,7 +6,6 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsMeasureComponent} from './measure.component';
-import {HsMeasureService} from './measure.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
@@ -22,7 +21,6 @@ import {TranslateModule} from '@ngx-translate/core';
     TranslateModule,
   ],
   exports: [HsMeasureComponent],
-  providers: [HsMeasureService],
   entryComponents: [HsMeasureComponent],
 })
 export class HsMeasureModule {}
