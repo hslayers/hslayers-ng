@@ -1,8 +1,4 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsImpressumComponent} from './impressum.component';
 import {HsMiniSidebarComponent} from './mini-sidebar.component';
@@ -12,7 +8,7 @@ import {SortByPipe} from './sortBy.pipe';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     HsImpressumComponent,
     HsMiniSidebarComponent,
