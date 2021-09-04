@@ -2,19 +2,19 @@
   <div class="card-header p-1">
     <div class="d-flex flex-row justify-content-end">
       <div class="p-1 flex-grow-1">
-        <span *ngIf="symbolizer.kind == 'Mark'"
+        <span *ngIf="symbolizer.kind === 'Mark'"
           >{{'STYLER.markSymbolizer' | translate}}</span
         >
-        <span *ngIf="symbolizer.kind == 'Fill'"
+        <span *ngIf="symbolizer.kind === 'Fill'"
           >{{'STYLER.fillSymbolizer' | translate}}</span
         >
-        <span *ngIf="symbolizer.kind == 'Line'"
+        <span *ngIf="symbolizer.kind === 'Line'"
           >{{'STYLER.lineSymbolizer' | translate}}</span
         >
-        <span *ngIf="symbolizer.kind == 'Icon'"
+        <span *ngIf="symbolizer.kind === 'Icon'"
           >{{'STYLER.iconSymbolizer' | translate}}</span
         >
-        <span *ngIf="symbolizer.kind == 'Text'"
+        <span *ngIf="symbolizer.kind === 'Text'"
         >{{'STYLER.textSymbolizer' | translate}}</span
       >
       </div>
@@ -34,27 +34,27 @@
     <hs-fill-symbolizer
       [symbolizer]="symbolizer"
       (changes)="emitChange()"
-      *ngIf="symbolizer.kind == 'Fill'"
+      *ngIf="symbolizer.kind === 'Fill'"
     ></hs-fill-symbolizer>
     <hs-line-symbolizer
       [symbolizer]="symbolizer"
       (changes)="emitChange()"
-      *ngIf="symbolizer.kind == 'Line'"
+      *ngIf="symbolizer.kind === 'Line'"
     ></hs-line-symbolizer>
     <hs-mark-symbolizer
       [symbolizer]="symbolizer"
       (changes)="emitChange()"
-      *ngIf="symbolizer.kind == 'Mark'"
+      *ngIf="symbolizer.kind === 'Mark'"
     ></hs-mark-symbolizer>
     <hs-icon-symbolizer
       [symbolizer]="symbolizer"
       (changes)="emitChange()"
-      *ngIf="symbolizer.kind == 'Icon'"
+      *ngIf="symbolizer.kind === 'Icon'"
     ></hs-icon-symbolizer>
     <hs-text-symbolizer
     [symbolizer]="symbolizer"
     (changes)="emitChange()"
-    *ngIf="symbolizer.kind == 'Text'"
+    *ngIf="symbolizer.kind === 'Text'"
   ></hs-text-symbolizer>
   </form>
 </div>

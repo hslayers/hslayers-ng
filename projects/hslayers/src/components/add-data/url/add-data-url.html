@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center flex-column align-items-center m-3">
     <div class="container ">
         <div class="row justify-content-center">
-            <button *ngFor="let type of types" [ngClass]="{'active': type.id == typeSelected }"
+            <button *ngFor="let type of types" [ngClass]="{'active': type.id === typeSelected }"
                 (click)="selectType(type.id)" style="margin: 3px;"
                 class="btn btn-light btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
                 {{type.text}}
@@ -10,10 +10,10 @@
     </div>
 
     <div class="w-100 pt-3">
-        <hs-add-data-url-arcgis *ngIf="typeSelected == 'arcgis'"></hs-add-data-url-arcgis>
-        <hs-add-data-url-wfs *ngIf="typeSelected == 'wfs'"></hs-add-data-url-wfs>
-        <hs-add-data-url-wms *ngIf="typeSelected == 'wms'"></hs-add-data-url-wms>
-        <hs-add-data-url-wmts *ngIf="typeSelected == 'wmts'"></hs-add-data-url-wmts>
-        <hs-add-data-url-vector *ngIf="typeSelected == 'kml' || typeSelected == 'geojson' "></hs-add-data-url-vector>
+        <hs-add-data-url-arcgis *ngIf="typeSelected === 'arcgis'"></hs-add-data-url-arcgis>
+        <hs-add-data-url-wfs *ngIf="typeSelected === 'wfs'"></hs-add-data-url-wfs>
+        <hs-add-data-url-wms *ngIf="typeSelected === 'wms'"></hs-add-data-url-wms>
+        <hs-add-data-url-wmts *ngIf="typeSelected === 'wmts'"></hs-add-data-url-wmts>
+        <hs-add-data-url-vector *ngIf="typeSelected === 'kml' || typeSelected === 'geojson' "></hs-add-data-url-vector>
     </div>
 </div>

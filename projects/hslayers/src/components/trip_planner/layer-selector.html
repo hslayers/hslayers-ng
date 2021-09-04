@@ -20,7 +20,7 @@
       (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
       [attr.aria-expanded]="layersExpanded"
     >
-      <div class="text-truncate" *ngIf="selectedwrapper != undefined">
+      <div class="text-truncate" *ngIf="selectedwrapper !== undefined">
         {{HsLayerUtilsService.translateTitle(selectedwrapper.title)}}
       </div>
     </button>
