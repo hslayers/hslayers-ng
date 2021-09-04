@@ -1,8 +1,4 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +11,7 @@ import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     HsAddDataCatalogueComponent,
     HsAddDataListItemComponent,
