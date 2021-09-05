@@ -141,12 +141,12 @@
           "options": {
             "sourceMap": true,
             "vendorChunk": true,
+            "optimization": false,
             "outputPath": "dist/test-app",
             "index": "projects/test-app/src/index.html",
             "main": "projects/test-app/src/main.ts",
             "polyfills": "projects/test-app/src/polyfills.ts",
             "tsConfig": "projects/test-app/tsconfig.app.json",
-            "aot": true,
             "assets": [
               {
                 "glob": "**/*",
