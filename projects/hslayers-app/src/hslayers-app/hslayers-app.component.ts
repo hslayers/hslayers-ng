@@ -21,8 +21,8 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 
-import SparqlJson from '../../../hslayers/src/common/layers/hs.source.SparqlJson';
-import {HsConfig} from '../../../hslayers/src/config.service';
+import SparqlJson from 'hslayers-ng/src/common/layers/hs.source.SparqlJson';
+import {HsConfig} from 'hslayers-ng/src/config.service';
 
 @Component({
   selector: 'hslayers-app',
