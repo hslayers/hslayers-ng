@@ -7,8 +7,8 @@ import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsConfig} from '../../../hslayers/src/config.service';
-import {HsLayerEditorService} from '../../../hslayers/src/components/layermanager/layer-editor.service';
+import {HsConfig} from 'hslayers-ng/src/config.service';
+import {HsLayerEditorService} from 'hslayers-ng/src/components/layermanager/layer-editor.service';
 
 @Component({
   selector: 'hslayers-app',
