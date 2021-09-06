@@ -3,9 +3,9 @@ import {HsHistoryListService} from '../../../common/history-list/history-list.se
 
 @Component({
   selector: 'hs-add-data-common-url',
-  templateUrl: './add-data-url.directive.html',
+  templateUrl: './add-data-common-url.directive.html',
 })
-export class HsAddDataUrlComponent {
+export class HsAddDataCommonUrlComponent {
   items;
   what;
   @Input() type: any; // @type'; TODO: comes from another scope
