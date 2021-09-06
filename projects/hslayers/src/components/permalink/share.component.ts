@@ -1,17 +1,24 @@
 import {Component} from '@angular/core';
+
 import {HsCoreService} from '../core/core.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareService} from './share.service';
 @Component({
   selector: 'hs-share',
   templateUrl: './partials/share.component.html',
 })
-export class HsShareComponent {
+export class HsShareComponent extends HsPanelBaseComponent {
   new_share = false;
+  name = 'permalink';
 
   constructor(
     public HsShareService: HsShareService,
-    public HsCore: HsCoreService
-  ) {}
+    public HsCore: HsCoreService,
+    HsLayoutService: HsLayoutService
+  ) {
+    super(HsLayoutService);
+  }
 
   /**
    * @returns {string} Iframe tag with src attribute on embed Url and default width and height (1000x700px)

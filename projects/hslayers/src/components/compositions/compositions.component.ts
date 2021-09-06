@@ -10,6 +10,7 @@ import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -17,7 +18,10 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-compositions',
   templateUrl: './compositions.html',
 })
-export class HsCompositionsComponent implements OnDestroy {
+export class HsCompositionsComponent
+  extends HsPanelBaseComponent
+  implements OnDestroy
+{
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -27,6 +31,8 @@ export class HsCompositionsComponent implements OnDestroy {
   selectedCompId: any;
   loadFilteredCompositions: any;
   notSavedCompositionLoadingSubscription: Subscription;
+  name = 'composition_browser';
+
   constructor(
     public hsCompositionsService: HsCompositionsService,
     public hsCompositionsParserService: HsCompositionsParserService,
@@ -38,6 +44,7 @@ export class HsCompositionsComponent implements OnDestroy {
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public hsLaymanService: HsLaymanService
   ) {
+    super(hsLayoutService);
     this.loadFilteredCompositions = () =>
       hsCompositionsCatalogueService.loadFilteredCompositions();
     this.notSavedCompositionLoadingSubscription =

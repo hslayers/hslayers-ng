@@ -27,6 +27,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {Source} from 'ol/source';
 import {
   getActive,
@@ -40,6 +41,7 @@ import {
   templateUrl: './partials/layermanager.html',
 })
 export class HsLayerManagerComponent
+  extends HsPanelBaseComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
   @ViewChild('layerEditor', {static: false, read: ElementRef})
@@ -102,6 +104,7 @@ export class HsLayerManagerComponent
   getActive = getActive;
   getTitle = getTitle;
   getThumbnail = getThumbnail;
+  name = 'layermanager';
   private ngUnsubscribe = new Subject();
   constructor(
     public HsCore: HsCoreService,
@@ -118,6 +121,7 @@ export class HsLayerManagerComponent
     public HsLanguageService: HsLanguageService,
     public HsConfig: HsConfig
   ) {
+    super(HsLayoutService);
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
 

@@ -11,6 +11,7 @@ import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
@@ -19,9 +20,14 @@ import {HsQueryWmsService} from './query-wms.service';
   selector: 'hs-query',
   templateUrl: './partials/infopanel.html',
 })
-export class HsQueryComponent implements OnDestroy {
+export class HsQueryComponent
+  extends HsPanelBaseComponent
+  implements OnDestroy
+{
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
+  name = 'info';
+
   private ngUnsubscribe = new Subject();
   constructor(
     public HsConfig: HsConfig,
@@ -33,6 +39,7 @@ export class HsQueryComponent implements OnDestroy {
     public HsQueryWmsService: HsQueryWmsService,
     public HsDrawService: HsDrawService
   ) {
+    super(HsLayoutService);
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);
     });
