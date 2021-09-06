@@ -4,8 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsAddDataCommonUrlComponent} from './add-data-common-url.component';
 import {HsAddDataTargetPositionComponent} from './add-data-target-position.component';
-import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog.component';
 import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';
@@ -15,14 +15,14 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, FormsModule, TranslateModule, HsHistoryListModule],
   exports: [
-    HsAddDataUrlComponent,
+    HsAddDataCommonUrlComponent,
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
   ],
   declarations: [
-    HsAddDataUrlComponent,
+    HsAddDataCommonUrlComponent,
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,

@@ -17,7 +17,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapComponent} from './map.component';
-import {HsMapHostDirective} from './map.directive';
+import {HsMapDirective} from './map.directive';
 import {HsMapService} from './map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsShareUrlServiceMock} from '../permalink/share-url.service.mock';
@@ -48,7 +48,7 @@ describe('HsMapService', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [CommonModule],
-      declarations: [HsMapComponent, HsMapHostDirective],
+      declarations: [HsMapComponent, HsMapDirective],
       providers: [
         {provide: HsShareUrlService, useValue: new HsShareUrlServiceMock()},
         {provide: HsCoreService, useValue: new emptyMock()},
