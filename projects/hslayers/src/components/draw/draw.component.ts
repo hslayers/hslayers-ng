@@ -5,6 +5,7 @@ import {HsDrawService} from './draw.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
@@ -13,7 +14,7 @@ import {getTitle} from '../../common/layer-extensions';
   selector: 'hs-draw',
   templateUrl: './partials/draw.html',
 })
-export class HsDrawComponent {
+export class HsDrawComponent extends HsPanelBaseComponent {
   onFeatureSelected: any;
   onFeatureDeselected: any;
   layersExpanded: boolean;
@@ -25,15 +26,17 @@ export class HsDrawComponent {
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
   onlyMineFilterVisible = false;
   getTitle = getTitle;
+  name = 'draw';
 
   constructor(
     public HsDrawService: HsDrawService,
-    public HsLayoutService: HsLayoutService,
+    public hsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
     public HsLanguageService: HsLanguageService
   ) {
+    super(hsLayoutService);
     this.HsDrawService.init();
   }
 
@@ -55,7 +58,7 @@ export class HsDrawComponent {
   setType(what): void {
     const type = this.HsDrawService.setType(what);
     if (type) {
-      this.activateDrawing(this.HsLayoutService.panelVisible('draw'));
+      this.activateDrawing(this.hsLayoutService.panelVisible('draw'));
     }
   }
 

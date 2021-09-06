@@ -4,9 +4,11 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -14,17 +16,20 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-legend',
   templateUrl: './partials/legend.html',
 })
-export class HsLegendComponent {
+export class HsLegendComponent extends HsPanelBaseComponent {
   layerDescriptors = [];
   titleSearch = '';
+  name = 'legend';
 
   constructor(
     public HsLegendService: HsLegendService,
     public HsMapService: HsMapService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsUtilsService: HsUtilsService,
-    public hsQueuesService: HsQueuesService
+    public hsQueuesService: HsQueuesService,
+    HsLayoutService: HsLayoutService
   ) {
+    super(HsLayoutService);
     this.HsMapService.loaded().then((map) => this.init(map));
   }
 

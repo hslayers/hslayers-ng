@@ -6,6 +6,8 @@ import {takeUntil} from 'rxjs/operators';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
+import { HsLayoutService } from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 
@@ -13,20 +15,26 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
   selector: 'hs-save-map',
   templateUrl: './partials/panel.html',
 })
-export class HsSaveMapComponent implements OnDestroy {
+export class HsSaveMapComponent
+  extends HsPanelBaseComponent
+  implements OnDestroy
+{
   endpoint = null;
   isAuthorized = false;
   advancedForm: boolean;
+  name = 'saveMap';
   private ngUnsubscribe = new Subject();
   constructor(
     //Used in template
     public HsConfig: HsConfig,
     public HsSaveMapManagerService: HsSaveMapManagerService,
+    HsLayoutService: HsLayoutService,
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsCommonEndpointsService: HsCommonEndpointsService,
     //Running in background and watching observables
     public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService
   ) {
+    super(HsLayoutService);
     this.advancedForm =
       HsConfig.advancedForm == undefined || HsConfig.advancedForm
         ? true
