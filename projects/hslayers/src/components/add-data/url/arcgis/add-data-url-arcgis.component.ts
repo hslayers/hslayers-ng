@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'hs-add-data-url-arcgis',
-  templateUrl: './add-data-url-arcgis.directive.html',
+  templateUrl: './add-data-url-arcgis.component.html',
 })
 export class HsAddDataArcGisComponent implements OnDestroy {
   data;

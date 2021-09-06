@@ -5,7 +5,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-legend-layer-directive',
-  templateUrl: './partials/layer-directive.html',
+  templateUrl: './partials/legend-layer.component.html',
 })
 export class HsLegendLayerComponent implements OnInit {
   @Input() layer: any;

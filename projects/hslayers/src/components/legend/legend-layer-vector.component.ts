@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'hs-legend-vector-layer',
-  templateUrl: './partials/layer-vector-directive.html',
+  templateUrl: './partials/legend-layer-vector.component.html',
 })
 export class HsLegendLayerVectorComponent {
   @Input('layer-style') layerStyle: any;

@@ -22,7 +22,7 @@ import {accessRightsInterface} from '../../common/access-rights.interface';
 
 @Component({
   selector: 'hs-add-data-file-shp',
-  templateUrl: './add-data-file-layer.directive.html',
+  templateUrl: './add-data-file-layer.component.html',
 })
 export class HsAddDataFileShpComponent implements OnInit {
   abstract: string;

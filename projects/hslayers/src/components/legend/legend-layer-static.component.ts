@@ -8,7 +8,7 @@ import {getLegends} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-legend-layer-static',
-  templateUrl: './partials/layer-static-directive.html',
+  templateUrl: './partials/legend-layer-static.component.html',
 })
 export class HsLegendLayerStaticComponent implements OnInit {
   @Input() layer: any;
