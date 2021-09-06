@@ -13,7 +13,7 @@ import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/w
 
 @Component({
   selector: 'hs-add-data-url-wms',
-  templateUrl: './add-data-url-wms.directive.html',
+  templateUrl: './add-data-url-wms.component.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmsComponent implements OnDestroy {

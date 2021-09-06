@@ -19,7 +19,7 @@ import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-add-data-url-vector',
-  templateUrl: './add-data-vector.directive.html',
+  templateUrl: './add-data-vector.component.html',
 })
 export class HsAddDataVectorComponent implements OnInit {
   @Input() dataType: string;

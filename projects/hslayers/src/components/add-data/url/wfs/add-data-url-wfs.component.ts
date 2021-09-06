@@ -10,7 +10,7 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/w
 
 @Component({
   selector: 'hs-add-data-url-wfs',
-  templateUrl: './add-data-wfs-layer.directive.html',
+  templateUrl: './add-data-wfs-layer.component.html',
 })
 export class HsAddDataWfsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
