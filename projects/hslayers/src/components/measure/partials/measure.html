@@ -1,4 +1,4 @@
-<div class="card hs-main-panel">
+<div class="card hs-main-panel" [hidden]="!isVisible()">
   <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translate">
     <extra-title>&nbsp;<span [hidden]="!HsMeasureService.data.multipleShapeMode">{{'MEASURE.multipleShapes' | translate}}</span></extra-title>
   </hs-panel-header>

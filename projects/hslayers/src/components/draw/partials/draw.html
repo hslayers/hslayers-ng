@@ -1,4 +1,4 @@
-<div class="card hs-main-panel">
+<div class="card hs-main-panel" [hidden]="!isVisible()">
     <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translate">
         <extra-buttons>
             <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translate">
@@ -10,10 +10,10 @@
     <div class="d-flex flex-column">
         <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;" >
             <button type="button" class="btn rounded btn-primary hs-toolbar-button"
-                (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : !HsLayoutService.sidebarBottom()}">
+                (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}">
                 {{'COMMON.newDrawingLayer' | translate}}
             </button>
-            <button type="button" (click)="HsDrawService.setType(HsDrawService.type)" [ngClass]="{'btn-sm' : !HsLayoutService.sidebarBottom()}"
+            <button type="button" (click)="HsDrawService.setType(HsDrawService.type)" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}"
                 class="btn ml-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
                 {{'DRAW.disableDrawing' | translate}}
             </button>
@@ -21,7 +21,7 @@
         <!-- <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
             [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translate}}</p> -->
         <div class="btn-group w-100  m-auto justify-content-center"
-            [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+            [ngClass]="hsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
             <ng-template #noLayerAvailable>
                 <p class="m-0 text-danger">{{'DRAW.noSuitableLayer' | translate}}</p>
             </ng-template>

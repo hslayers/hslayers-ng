@@ -12,6 +12,7 @@ import {Source} from 'ol/source';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUploadedFiles} from '../../common/upload/upload.component';
@@ -21,11 +22,15 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-styles',
   templateUrl: './styler.html',
 })
-export class HsStylerComponent implements OnDestroy {
+export class HsStylerComponent
+  extends HsPanelBaseComponent
+  implements OnDestroy
+{
   layerTitle: string;
   private ngUnsubscribe = new Subject();
   uploaderVisible = false;
   downloadData: any;
+  name = 'styler';
 
   constructor(
     public HsStylerService: HsStylerService,
@@ -36,6 +41,7 @@ export class HsStylerComponent implements OnDestroy {
     public HsUtilsService: HsUtilsService,
     public HsSaveMapService: HsSaveMapService
   ) {
+    super(HsLayoutService);
     this.HsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((layer: Layer<Source>) => {

@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
+import {Component, OnInit, ViewRef} from '@angular/core';
+
+import {HsConfig} from './../../config.service';
+import {HsCoreService} from './../core/core.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
+import {HsMapService} from './../map/map.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setHighlighted} from '../../common/feature-extensions';
@@ -12,19 +14,25 @@ import {setHighlighted} from '../../common/feature-extensions';
   selector: 'hs-trip-planner',
   templateUrl: './trip_planner.html',
 })
-export class HsTripPlannerComponent implements OnInit {
+export class HsTripPlannerComponent
+  extends HsPanelBaseComponent
+  implements OnInit
+{
   loaderImage: string;
   timer: any;
+  name = 'tripPlanner';
 
   constructor(
     public HsMapService: HsMapService,
     public HsCoreService: HsCoreService,
     public HsTripPlannerService: HsTripPlannerService,
     public HsConfig: HsConfig,
-    public HsLayoutService: HsLayoutService,
+    hsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
     public HsLayerUtilsService: HsLayerUtilsService
-  ) {}
+  ) {
+    super(hsLayoutService);
+  }
   ngOnInit(): void {
     if (this.HsConfig.default_layers === undefined) {
       this.HsConfig.default_layers = [];

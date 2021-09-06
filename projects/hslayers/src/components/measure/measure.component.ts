@@ -6,15 +6,20 @@ import {takeUntil} from 'rxjs/operators';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-measure',
   templateUrl: './partials/measure.html',
 })
-export class HsMeasureComponent implements OnDestroy {
+export class HsMeasureComponent
+  extends HsPanelBaseComponent
+  implements OnDestroy {
   type: string;
   data;
+  name = 'measure';
+
   private ngUnsubscribe = new Subject();
   constructor(
     public HsEventBusService: HsEventBusService,
@@ -22,6 +27,7 @@ export class HsMeasureComponent implements OnDestroy {
     public HsMeasureService: HsMeasureService,
     private HsUtilsService: HsUtilsService
   ) {
+    super(HsLayoutService);
     this.data = this.HsMeasureService.data;
     this.type = 'distance';
 

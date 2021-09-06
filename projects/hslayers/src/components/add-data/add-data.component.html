@@ -1,4 +1,4 @@
-<div class="card hs-main-panel">
+<div class="card hs-main-panel" [hidden]="!isVisible()">
     <hs-panel-header name="datasource_selector" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translate">
     </hs-panel-header>
     <div class="card-body">
