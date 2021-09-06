@@ -24,6 +24,7 @@
       "ol/*": ["node_modules/ol/*"],
       "hslayers-ng": ["dist/hslayers/*", "dist/hslayers"],
       "hslayers-ng/*": ["projects/hslayers/*", "projects/hslayers"],
+      "@ngx-translate/*": ["node_modules/@ngx-translate/*"],
       "hslayers-material": ["dist/hslayers-material"],
       "hslayers-material/*": ["dist/hslayers-material/*"],
       "hslayers-cesium": ["dist/hslayers-cesium"],
