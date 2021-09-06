@@ -27,7 +27,7 @@ import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsStylerModule} from '../styles/styles.module';
 import {HsToastModule} from './toast/toast.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
-import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
+import {HsTripPlannerModule} from '../trip-planner/trip-planner.module';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({

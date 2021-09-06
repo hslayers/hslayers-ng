@@ -47,7 +47,7 @@ export * from './components/search/public-api';
 export * from './components/sidebar/public-api';
 export * from './components/styles/public-api';
 export * from './components/toolbar/public-api';
-export * from './components/trip_planner/public-api';
+export * from './components/trip-planner/public-api';
 export * from './components/utils/public-api';
 
 export * from './config.service';

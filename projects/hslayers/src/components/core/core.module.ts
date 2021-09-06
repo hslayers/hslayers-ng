@@ -30,7 +30,7 @@ import {HsShareModule} from '../permalink/share.module';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsStylerModule} from '../styles/styles.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
-import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
+import {HsTripPlannerModule} from '../trip-planner/trip-planner.module';
 import {HsUtilsModule} from './../utils/utils.module';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';

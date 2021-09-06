@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {HsConfig} from './../../config.service';
-import {HsCoreService} from './../core/core.service';
+import {HsConfig} from '../../config.service';
+import {HsCoreService} from '../core/core.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from './../map/map.service';
+import {HsMapService} from '../map/map.service';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setHighlighted} from '../../common/feature-extensions';
