@@ -7,12 +7,14 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsConfig} from '../../config.service';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from './query-base.service';
+import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
 
@@ -37,12 +39,15 @@ export class HsQueryComponent
     public HsEventBusService: HsEventBusService,
     public HsQueryVectorService: HsQueryVectorService,
     public HsQueryWmsService: HsQueryWmsService,
-    public HsDrawService: HsDrawService
+    public HsDrawService: HsDrawService,
+    private HsDialogContainerService: HsDialogContainerService
   ) {
     super(HsLayoutService);
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);
     });
+
+    this.HsDialogContainerService.create(HsQueryFeaturePopupComponent, {});
 
     //add current panel queryable - activate/deactivate
     this.HsEventBusService.mainPanelChanges

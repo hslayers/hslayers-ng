@@ -1,10 +1,18 @@
-import {Component, ElementRef, OnDestroy} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewRef,
+} from '@angular/core';
 
 import Overlay from 'ol/Overlay';
 import {Subscription} from 'rxjs';
 
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
+import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsDialogItem} from '../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsFeatureTableService} from '../feature-table/feature-table.service';
 import {HsLanguageService} from './../language/language.service';
@@ -24,10 +32,15 @@ import {getPopUp, getTitle} from '../../common/layer-extensions';
   selector: 'hs-query-feature-popup',
   templateUrl: './partials/feature-popup.html',
 })
-export class HsQueryFeaturePopupComponent implements OnDestroy {
+export class HsQueryFeaturePopupComponent
+  implements OnDestroy, HsDialogComponent, AfterViewInit
+{
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
+  dialogItem?: HsDialogItem;
+  viewRef: ViewRef;
+  data: any;
 
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
@@ -38,17 +51,18 @@ export class HsQueryFeaturePopupComponent implements OnDestroy {
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
     public HsFeatureTableService: HsFeatureTableService,
-    ElementRef: ElementRef
+    private ElementRef: ElementRef
   ) {
-    this.HsQueryBaseService.hoverPopup = new Overlay({
-      element: ElementRef.nativeElement,
-    });
-
     this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
       (map) => {
         map.addOverlay(this.HsQueryBaseService.hoverPopup);
       }
     );
+  }
+  ngAfterViewInit(): void {
+    this.HsQueryBaseService.hoverPopup = new Overlay({
+      element: this.ElementRef.nativeElement,
+    });
   }
   ngOnDestroy(): void {
     this.HsMapService.map.removeOverlay(this.HsQueryBaseService.hoverPopup);
