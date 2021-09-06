@@ -13,7 +13,7 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" (click)="removeAllLayers(false);"
                     data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translate}}</button>
-                <button class="btn btn-primary" *ngIf="HsCompositionsParserService.current_composition" (click)="removeAllLayers(true)"
+                <button class="btn btn-primary" *ngIf="HsEventBusService.currentComposition.value" (click)="removeAllLayers(true)"
                     data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translate}}</button>
                 <button class="btn btn-secondary" (click)="close()"
                     data-dismiss="modal">{{'COMMON.no' | translate}}</button>
