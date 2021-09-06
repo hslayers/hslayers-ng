@@ -49,7 +49,6 @@ export class HsCompositionsParserService {
   current_composition_title = '';
   current_composition_url: string;
   current_composition_workspace: string;
-  current_composition: any;
   constructor(
     public HsMapService: HsMapService,
     public HsConfig: HsConfig,
@@ -219,7 +218,7 @@ export class HsCompositionsParserService {
     if (overwrite == undefined || overwrite == true) {
       this.removeCompositionLayers();
     }
-    this.current_composition = obj;
+    this.HsEventBusService.currentComposition.next(obj);
     this.current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (possibleExtent !== undefined) {

@@ -132,6 +132,7 @@ export class HsEventBusService {
    * @event compositionLoading
    */
   compositionLoading: Subject<any> = new Subject();
+  currentComposition: BehaviorSubject<any> = new BehaviorSubject(null);
   /**
    * replaces 'search.resultsReceived'
    */
