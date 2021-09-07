@@ -28,7 +28,8 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import { Style } from 'ol/style';
+import {Style} from 'ol/style';
+import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 
 class emptyMock {
   constructor() {}
@@ -94,7 +95,7 @@ describe('HsStyler', () => {
         {provide: HsSaveMapService, useValue: new HsSaveMapServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsQueryVectorService, useValue: new emptyMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
