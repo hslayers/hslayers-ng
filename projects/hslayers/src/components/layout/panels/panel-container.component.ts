@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentFactoryResolver,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -10,7 +11,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsPanelComponent} from './panel-component.interface';
-import {HsPanelContainerService} from './panel-container.service';
+import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {HsPanelItem} from './panel-item';
 
@@ -21,23 +22,23 @@ import {HsPanelItem} from './panel-item';
 export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsPanelHostDirective, {static: true})
   panelHost: HsPanelHostDirective;
+  /** Service which manages the list of panels */
+  @Input()
+  service: HsPanelContainerServiceInterface;
   interval: any;
   private ngUnsubscribe = new Subject();
-  constructor(
-    public HsPanelContainerService: HsPanelContainerService,
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
-    this.HsPanelContainerService.panelObserver
+    this.service.panelObserver
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelItem) => {
         this.loadPanel(item);
       });
-    this.HsPanelContainerService.panelDestroyObserver
+    this.service.panelDestroyObserver
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelComponent) => {
         this.destroyPanel(item);

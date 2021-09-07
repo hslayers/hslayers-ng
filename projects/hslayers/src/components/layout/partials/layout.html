@@ -19,7 +19,7 @@
                 <hs-sidebar class="border-0"></hs-sidebar>
                 <div class="hs-panelplace">
                     <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar" [hidden]="!panelVisible('sidebar', this)"></hs-mini-sidebar>
-                    <hs-panel-container class="hs-panelplace" [ngStyle]="{width: (panelSpaceWidth()-50)+'px'}">
+                    <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace" [ngStyle]="{width: (panelSpaceWidth()-50)+'px'}">
                     </hs-panel-container>
                 </div>
             </div>

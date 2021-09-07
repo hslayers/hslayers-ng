@@ -8,6 +8,7 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLogService} from '../../common/log/log.service';
+import {HsPanelContainerService} from './panels/panel-container.service';
 
 @Injectable({
   providedIn: 'root',
@@ -111,7 +112,8 @@ export class HsLayoutService {
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
     public $log: HsLogService,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private hsPanelContainerService: HsPanelContainerService
   ) {
     Object.defineProperty(this, 'panelListElement', {
       get: function () {
@@ -435,5 +437,13 @@ export class HsLayoutService {
         mapSpace.createComponent(componentFactory);
       }
     });
+  }
+
+  createPanel(panelComponent: Type<any>, data?: any): void {
+    this.hsPanelContainerService.create(panelComponent, data || {});
+  }
+
+  createGuiOverlay(panelComponent: Type<any>, data?: any): void {
+    //this.hsToolbarService.create(panelComponent, data || {});
   }
 }
