@@ -6,6 +6,7 @@ import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsThemeService} from '../layout/themes/theme.service';
+import {HsToolbarPanelContainerService} from './toolbar-panel-container.service';
 
 @Component({
   selector: 'hs-toolbar',
@@ -20,7 +21,8 @@ export class HsToolbarComponent implements OnDestroy {
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
-    public HsThemeService: HsThemeService
+    public HsThemeService: HsThemeService,
+    public HsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
       () => {
@@ -35,10 +37,6 @@ export class HsToolbarComponent implements OnDestroy {
     this.mapResetsSubscription.unsubscribe();
   }
 
-  measureButtonClicked(): void {
-    this.HsLayoutService.setMainPanel('measure', true);
-  }
-
   /**
    * Change/read collapsed setting
    *
@@ -50,13 +48,5 @@ export class HsToolbarComponent implements OnDestroy {
       this.collapsed = is;
     }
     return this.collapsed;
-  }
-  // $scope.$emit('scope_loaded', 'Toolbar');
-  toggleTheme(): void {
-    if (this.HsThemeService.isDarkTheme()) {
-      this.HsThemeService.setLightTheme();
-    } else {
-      this.HsThemeService.setDarkTheme();
-    }
   }
 }

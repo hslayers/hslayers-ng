@@ -11,6 +11,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
 import {HsMapHostDirective} from './map-host.directive';
+import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsThemeService} from './themes/theme.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -43,7 +44,8 @@ export class HsLayoutComponent implements AfterViewInit {
     public HsThemeService: HsThemeService,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    public HsPanelContainerService: HsPanelContainerService
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
   }

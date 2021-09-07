@@ -4,6 +4,7 @@ import {HsAddDataComponent} from './components/add-data/add-data.component';
 import {HsCompositionsComponent} from './components/compositions/compositions.component';
 import {HsConfig} from './config.service';
 import {HsDrawComponent} from './components/draw/draw.component';
+import {HsDrawToolbarComponent} from './components/draw/draw-toolbar.component';
 import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
 import {HsLanguageComponent} from './components/language/language.component';
 import {HsLayerManagerComponent} from './components/layermanager/layermanager.component';
@@ -12,13 +13,16 @@ import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsLegendComponent} from './components/legend/legend.component';
 import {HsMeasureComponent} from './components/measure/measure.component';
-import {HsPanelContainerService} from './components/layout/panels/panel-container.service';
+import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
 import {HsPrintComponent} from './components/print/print.component';
 import {HsQueryComponent} from './components/query/query.component';
 import {HsSaveMapComponent} from './components/save-map/save-map.component';
 import {HsSearchComponent} from './components/search/search.component';
+import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
 import {HsShareComponent} from './components/permalink/share.component';
 import {HsStylerComponent} from './components/styles/styler.component';
+import {HsThemeToolbarComponent} from './components/layout/themes/theme-toolbar.component';
+import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -31,9 +35,9 @@ export class HslayersComponent implements OnInit {
   @ViewChild(HsLayoutComponent) layout: HsLayoutComponent;
   constructor(
     public hsConfig: HsConfig,
-    private hsPanelContainerService: HsPanelContainerService,
     private hsLayoutService: HsLayoutService,
-    private HsLayerManagerService: HsLayerManagerService
+    private HsLayerManagerService: HsLayerManagerService,
+    private hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {}
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
     const panelsEnabled = this.hsConfig.panelsEnabled;
@@ -42,7 +46,7 @@ export class HslayersComponent implements OnInit {
       (panelsEnabled[name] == undefined &&
         this.hsLayoutService.panelsEnabledDefaults[name])
     ) {
-      this.hsPanelContainerService.create(panelComponent, data || {});
+      this.hsLayoutService.createPanel(panelComponent, data || {});
     }
   }
   ngOnInit(): void {
@@ -67,6 +71,10 @@ export class HslayersComponent implements OnInit {
       HsLayerManagerComponent,
       this.HsLayerManagerService.data
     );
-    this.hsPanelContainerService.create(HsStylerComponent, {});
+    this.hsLayoutService.createPanel(HsStylerComponent, {});
+    this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
+    this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
+    this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
+    this.hsToolbarPanelContainerService.create(HsThemeToolbarComponent, {});
   }
 }

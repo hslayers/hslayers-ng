@@ -8,9 +8,13 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from '../../../hslayers/src/config.service';
+import {HsDrawToolbarComponent} from '../../../hslayers/src/components/draw/public-api';
 import {HsLayerEditorService} from '../../../hslayers/src/components/layermanager/layer-editor.service';
-import {HsPanelContainerService} from '../../../hslayers/src/components/layout/panels/panel-container.service';
-import { HsQueryComponent } from '../../../hslayers/src/components/query/query.component';
+import {HsLayoutService} from 'hslayers-ng/src/public-api';
+import {HsMeasureToolbarComponent} from 'hslayers-ng/src/components/measure/measure-toolbar.component';
+import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
+import {HsSearchToolbarComponent} from 'hslayers-ng/src/components/search/search-toolbar.component';
+import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
 
 @Component({
   selector: 'hslayers-app',
@@ -21,7 +25,8 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private hsLayerEditorService: HsLayerEditorService,
-    private hsPanelContainerService: HsPanelContainerService
+    hsLayoutService: HsLayoutService,
+    hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -328,7 +333,10 @@ export class HslayersAppComponent {
         layer: opticalMap,
       });
     }, 100);
-    hsPanelContainerService.create(HsQueryComponent, {});
+    hsLayoutService.createPanel(HsQueryComponent, {});
+    hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
+    hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
+    hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
   }
   title = 'hslayers-workspace';
 }

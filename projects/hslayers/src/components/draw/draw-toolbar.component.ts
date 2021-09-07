@@ -5,27 +5,32 @@ import {HsDrawService} from './draw.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsToolbarPanelBaseComponent} from '../toolbar/toolbar-panel-base.component';
 import {getTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-draw-toolbar',
   templateUrl: './partials/draw-toolbar.html',
 })
-export class HsDrawToolbarComponent {
+export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
   drawTypeExpanded = false;
   selectionMenuExpanded = false;
   onlyMineFilterVisible = false;
   getTitle = getTitle;
-
+  isVisible(): boolean {
+    return true;
+  }
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
     public HsConfig: HsConfig,
     public HsLanguageService: HsLanguageService
-  ) {}
+  ) {
+    super(HsLayoutService);
+  }
 
   selectionMenuToggled(): void {
     this.setType(this.HsDrawService.type);
