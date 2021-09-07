@@ -17,10 +17,7 @@ import {HsMeasureComponent} from './measure.component';
 import {HsMeasureService} from './measure.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-
-class emptyMock {
-  constructor() {}
-}
+import { HsLayoutServiceMock } from '../layout/layout.service.mock';
 
 describe('HsMeasure', () => {
   beforeAll(() => {
@@ -42,7 +39,7 @@ describe('HsMeasure', () => {
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
-        {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock(),},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
       ],

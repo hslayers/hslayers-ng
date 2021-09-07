@@ -26,6 +26,7 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {getLayerName, getLaymanFriendlyLayerName} from './layman-utils';
+import { HsLayoutServiceMock } from '../layout/layout.service.mock';
 
 class emptyMock {
   constructor() {}
@@ -96,7 +97,7 @@ describe('HsSaveMap', () => {
           useValue: new emptyMock(),
         },
         {provide: HsDialogContainerService, useValue: new emptyMock()},
-        {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {
           provide: HsCommonLaymanService,
           useValue: new HsCommonLaymanServiceMock(),
