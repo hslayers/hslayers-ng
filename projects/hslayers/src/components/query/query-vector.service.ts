@@ -15,7 +15,6 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
-import {HsMeasureService} from '../measure/measure.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -44,7 +43,6 @@ export class HsQueryVectorService {
     public HsMapService: HsMapService,
     public HsConfig: HsConfig,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public HsMeasureService: HsMeasureService,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     private DomSanitizer: DomSanitizer
@@ -174,14 +172,20 @@ export class HsQueryVectorService {
     const geom = f.getGeometry();
     const type = geom.getType();
     if (type == 'Polygon') {
-      const area = this.HsMeasureService.formatArea(geom);
+      const area = this.HsUtilsService.formatArea(
+        geom,
+        this.HsMapService.getCurrentProj()
+      );
       return [
         {name: `${area.type} in ${area.unit}`, value: area.size},
         {name: 'center', value: toLonLat(this.getCentroid(f))},
       ];
     }
     if (type == 'LineString') {
-      const length = this.HsMeasureService.formatLength(geom);
+      const length = this.HsUtilsService.formatLength(
+        geom,
+        this.HsMapService.getCurrentProj()
+      );
       return [
         {name: `${length.type} in ${length.unit}`, value: length.size},
         {name: 'center', value: toLonLat(this.getCentroid(f))},

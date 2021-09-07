@@ -8,6 +8,7 @@ import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
+import {LineString, Polygon} from 'ol/geom';
 import {Point} from 'ol/geom';
 
 import {HsConfig} from './../../config.service';
@@ -263,5 +264,49 @@ describe('HsUtilsService', () => {
     str = undefined;
     result = hsUtilsService.undefineEmptyString(str);
     expect(result).toEqual(undefined);
+  });
+
+  it('format length measurements', () => {
+    let measuredLine = new LineString([
+      //coordinates in the Map's default projection
+      [16223, 48456],
+      [234, 785],
+    ]);
+    let measurement = hsUtilsService.formatLength(measuredLine, 'EPSG:3857');
+    expect(measurement.unit).toBe('km');
+    expect(measurement.size).toBeGreaterThan(0);
+    measuredLine = new LineString([
+      //coordinates in the Map's default projection
+      [12, 50],
+      [13, 49],
+    ]);
+    measurement = hsUtilsService.formatLength(measuredLine, 'EPSG:3857');
+    expect(measurement.unit).toBe('m');
+    expect(measurement.size).toBeGreaterThan(0);
+  });
+
+  it('format area measurements', () => {
+    let measuredLine = new Polygon([
+      //coordinates in the Map's default projection
+      [
+        [1623, 47627],
+        [234, 785],
+        [-156, -61],
+      ],
+    ]);
+    let measurement = hsUtilsService.formatArea(measuredLine, 'EPSG:3857');
+    //expect(measurement.unit).toBe('km');
+    expect(measurement.size).toBeGreaterThan(0);
+    measuredLine = new Polygon([
+      //coordinates in the Map's default projection
+      [
+        [12, 50],
+        [13, 49],
+        [13, 50],
+      ],
+    ]);
+    measurement = hsUtilsService.formatArea(measuredLine, 'EPSG:4326');
+    expect(measurement.unit).toBe('m');
+    expect(measurement.size).toBeGreaterThan(0);
   });
 });
