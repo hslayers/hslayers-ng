@@ -1,9 +1,20 @@
-import {HsConfig} from './../../config.service';
-import {HsLogService} from './../../common/log/log.service';
 import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
+
+import {LineString, Polygon} from 'ol/geom';
+
+import {HsConfig} from './../../config.service';
+import {HsLogService} from './../../common/log/log.service';
+import {ProjectionLike, transform} from 'ol/proj';
+import {getArea, getDistance} from 'ol/sphere';
+
+export type Measurement = {
+  size: number;
+  type: string;
+  unit: string;
+};
 
 @Injectable()
 export class HsUtilsService {
@@ -368,7 +379,7 @@ export class HsUtilsService {
       objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
     );
   }
- 
+
   /**
    * Check if object is an instance of a class
    * @param {object} obj
@@ -498,5 +509,60 @@ export class HsUtilsService {
       element.scrollHeight > element.clientHeight ||
       element.scrollWidth > element.clientWidth
     );
+  }
+
+  /**
+   * @private
+   * @param {LineString} line
+   * @returns {Measurement} numeric length of line with used units
+   * @description Compute and format line length with correct units (m/km)
+   */
+  formatLength(line: LineString, sourceProj: ProjectionLike): Measurement {
+    let length = 0;
+    const coordinates = line.getCoordinates();
+
+    for (let i = 0; i < coordinates.length - 1; ++i) {
+      const c1 = transform(coordinates[i], sourceProj, 'EPSG:4326');
+      const c2 = transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
+      length += getDistance(c1, c2);
+    }
+
+    const output = {
+      size: length,
+      type: 'Length',
+      unit: 'm',
+    };
+
+    if (length > 100) {
+      output.size = Math.round((length / 1000) * 100) / 100;
+      output.unit = 'km';
+    } else {
+      output.size = Math.round(length * 100) / 100;
+      output.unit = 'm';
+    }
+    return output;
+  }
+
+  /**
+   * @private
+   * @param {Polygon} polygon
+   * @returns {object} area of polygon with used units
+   * @description Compute and format polygon area with correct units (m2/km2)
+   */
+  formatArea(polygon: Polygon, sourceProj: ProjectionLike): Measurement {
+    const area = Math.abs(getArea(polygon));
+    const output = {
+      size: area,
+      type: 'Area',
+      unit: 'm',
+    };
+    if (area > 10000) {
+      output.size = Math.round((area / 1000000) * 100) / 100;
+      output.unit = 'km';
+    } else {
+      output.size = Math.round(area * 100) / 100;
+      output.unit = 'm';
+    }
+    return output;
   }
 }
