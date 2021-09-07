@@ -7,9 +7,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import Map from 'ol/Map';
-import {LineString, Polygon} from 'ol/geom';
-
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
@@ -48,51 +45,5 @@ describe('HsMeasure', () => {
     service = TestBed.inject(HsMeasureService);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('format length measurements', () => {
-    service.map = new Map({});
-    let measuredLine = new LineString([
-      //coordinates in the Map's default projection
-      [16223, 48456],
-      [234, 785],
-    ]);
-    let measurement = service.formatLength(measuredLine);
-    expect(measurement.unit).toBe('km');
-    expect(measurement.size).toBeGreaterThan(0);
-    measuredLine = new LineString([
-      //coordinates in the Map's default projection
-      [12, 50],
-      [13, 49],
-    ]);
-    measurement = service.formatLength(measuredLine);
-    expect(measurement.unit).toBe('m');
-    expect(measurement.size).toBeGreaterThan(0);
-  });
-
-  it('format area measurements', () => {
-    service.map = new Map({});
-    let measuredLine = new Polygon([
-      //coordinates in the Map's default projection
-      [
-        [1623, 47627],
-        [234, 785],
-        [-156, -61],
-      ],
-    ]);
-    let measurement = service.formatArea(measuredLine);
-    //expect(measurement.unit).toBe('km');
-    expect(measurement.size).toBeGreaterThan(0);
-    measuredLine = new Polygon([
-      //coordinates in the Map's default projection
-      [
-        [12, 50],
-        [13, 49],
-        [13, 50],
-      ],
-    ]);
-    measurement = service.formatArea(measuredLine);
-    expect(measurement.unit).toBe('m');
-    expect(measurement.size).toBeGreaterThan(0);
   });
 });

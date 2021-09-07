@@ -5,19 +5,11 @@ import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry, LineString, Polygon} from 'ol/geom';
 import {Injectable} from '@angular/core';
-import {getArea, getDistance} from 'ol/sphere';
-import {transform} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService, Measurement} from '../utils/utils.service';
 import {setTitle} from '../../common/layer-extensions';
-
-type Measurement = {
-  size: number;
-  type: string;
-  unit: string;
-};
 
 @Injectable({
   providedIn: 'root',
@@ -154,10 +146,19 @@ export class HsMeasureService {
       for (const sketch of this.sketches) {
         const geom = sketch.getGeometry();
         if (this.HsUtilsService.instOf(geom, Polygon)) {
-          output = this.addMultiple(this.formatArea(geom as Polygon), output);
+          output = this.addMultiple(
+            this.HsUtilsService.formatArea(
+              geom as Polygon,
+              this.HsMapService.getCurrentProj()
+            ),
+            output
+          );
         } else if (this.HsUtilsService.instOf(geom, LineString)) {
           output = this.addMultiple(
-            this.formatLength(geom as LineString),
+            this.HsUtilsService.formatLength(
+              geom as LineString,
+              this.HsMapService.getCurrentProj()
+            ),
             output
           );
         }
@@ -247,61 +248,5 @@ export class HsMeasureService {
     this.draw.on('drawend', (evt) => {
       this.HsEventBusService.measurementEnds.next();
     });
-  }
-
-  /**
-   * @private
-   * @param {LineString} line
-   * @returns {Measurement} numeric length of line with used units
-   * @description Compute and format line length with correct units (m/km)
-   */
-  formatLength(line: LineString): Measurement {
-    let length = 0;
-    const coordinates = line.getCoordinates();
-    const sourceProj = this.HsMapService.getCurrentProj();
-
-    for (let i = 0; i < coordinates.length - 1; ++i) {
-      const c1 = transform(coordinates[i], sourceProj, 'EPSG:4326');
-      const c2 = transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
-      length += getDistance(c1, c2);
-    }
-
-    const output = {
-      size: length,
-      type: 'Length',
-      unit: 'm',
-    };
-
-    if (length > 100) {
-      output.size = Math.round((length / 1000) * 100) / 100;
-      output.unit = 'km';
-    } else {
-      output.size = Math.round(length * 100) / 100;
-      output.unit = 'm';
-    }
-    return output;
-  }
-
-  /**
-   * @private
-   * @param {Polygon} polygon
-   * @returns {object} area of polygon with used units
-   * @description Compute and format polygon area with correct units (m2/km2)
-   */
-  formatArea(polygon: Polygon): Measurement {
-    const area = Math.abs(getArea(polygon));
-    const output = {
-      size: area,
-      type: 'Area',
-      unit: 'm',
-    };
-    if (area > 10000) {
-      output.size = Math.round((area / 1000000) * 100) / 100;
-      output.unit = 'km';
-    } else {
-      output.size = Math.round(area * 100) / 100;
-      output.unit = 'm';
-    }
-    return output;
   }
 }
