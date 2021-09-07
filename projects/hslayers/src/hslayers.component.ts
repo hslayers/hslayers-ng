@@ -19,7 +19,7 @@ import {HsSaveMapComponent} from './components/save-map/save-map.component';
 import {HsSearchComponent} from './components/search/search.component';
 import {HsShareComponent} from './components/permalink/share.component';
 import {HsStylerComponent} from './components/styles/styler.component';
-import {HsTripPlannerComponent} from './components/trip_planner/trip-planner.component';
+import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',

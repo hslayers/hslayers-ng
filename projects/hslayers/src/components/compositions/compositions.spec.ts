@@ -37,6 +37,7 @@ import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
+import { HsLayoutServiceMock } from '../layout/layout.service.mock';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
@@ -102,9 +103,7 @@ describe('compositions', () => {
         },
         {
           provide: HsLayoutService,
-          useValue: {
-            contentWrapper: document.createElement('div'),
-          },
+          useValue: new HsLayoutServiceMock(),
         },
         {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         HsStylerService,
