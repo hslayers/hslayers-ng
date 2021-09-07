@@ -13,7 +13,10 @@
     <div *ngIf="attributes.length > 0">
         <div *ngFor="let attribute of attributes" class="d-flex flex-row">
             <div class="p-1 flex-grow-1">
-                {{HsFeatureTableService.translate(attribute.key)}} 
+                {{HsLanguageService.getTranslationIgnoreNonExisting(
+                    'FEATURE_TABLE',
+                    attribute.key
+                  )}} 
             </div>
             <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
         </div>

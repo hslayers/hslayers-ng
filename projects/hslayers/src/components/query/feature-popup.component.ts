@@ -14,7 +14,6 @@ import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsFeatureTableService} from '../feature-table/feature-table.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
@@ -50,7 +49,6 @@ export class HsQueryFeaturePopupComponent
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
-    public HsFeatureTableService: HsFeatureTableService,
     private ElementRef: ElementRef
   ) {
     this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
