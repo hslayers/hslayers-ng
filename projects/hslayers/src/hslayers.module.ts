@@ -15,7 +15,8 @@ import {HsSaveMapModule} from './components/save-map/save-map.module';
 import {HsSearchModule} from './components/search/search.module';
 import {HsShareModule} from './components/permalink/share.module';
 import {HsStylerModule} from './components/styles/styles.module';
-import {HsTripPlannerModule} from './components/trip_planner/trip-planner.module';
+import {HsThemesModule} from './components/layout/themes/themes.module';
+import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
 import {HslayersComponent} from './hslayers.component';
 @NgModule({
   declarations: [HslayersComponent],
@@ -36,6 +37,7 @@ import {HslayersComponent} from './hslayers.component';
     HsSearchModule,
     HsCompositionsModule,
     HsStylerModule,
+    HsThemesModule,
   ],
   exports: [HslayersComponent],
 })

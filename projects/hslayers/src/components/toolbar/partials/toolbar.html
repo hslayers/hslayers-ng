@@ -1,24 +1,8 @@
 <div class="hs-toolbar" *ngIf="HsLayoutService.componentEnabled('guiOverlay')">
     <nav class="navbar navbar-expand p-0">
-        <div class="navbar-nav">
-            <div class="nav-item" *ngIf="HsLayoutService.componentEnabled('themeToggle')"> 
-                <button (click)="toggleTheme()" class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary">
-                    <i [ngClass]="HsThemeService.active.name === 'light' ? 'icon-moon-night' : 'icon-sun-day'" ></i></button>
-            </div>
-            <div class="nav-item" *ngIf="HsLayoutService.componentEnabled('searchToolbar')">
-                <div>
-                    <hs-search-input></hs-search-input>
-                    <hs-search-results></hs-search-results>
-                </div>
-            </div>
-            <hs-draw-toolbar class="nav-item hs-toolbar-button" *ngIf="HsLayoutService.componentEnabled('drawToolbar')"></hs-draw-toolbar>
-            <div class="nav-item" *ngIf="HsLayoutService.panelEnabled('measure') && HsLayoutService.componentEnabled('measureToolbar')">
-                <div class="btn-group">
-                    <button class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary" [title]="'TOOLBAR.measureLinesAndPolygon' | translate" (click)="measureButtonClicked()">
-                        <i class="icon-design"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <hs-panel-container 
+            class="navbar-nav"
+            [service]="HsToolbarPanelContainerService">
+        </hs-panel-container >
     </nav>
 </div>
