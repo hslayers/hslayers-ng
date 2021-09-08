@@ -36,7 +36,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   entryComponents: [
     HsDrawComponent,
-    HsDrawLayerMetadataDialogComponent,
     HsDrawToolbarComponent,
   ],
 })

@@ -1,7 +1,6 @@
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {Source, Vector as VectorSource} from 'ol/source';
 
-import '../../styles/styles.module';
 import {Geometry} from 'ol/geom';
 import {HsAddDataService} from '../add-data.service';
 import {HsMapService} from '../../map/map.service';

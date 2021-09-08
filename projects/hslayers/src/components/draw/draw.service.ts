@@ -13,7 +13,6 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -98,6 +97,7 @@ export class HsDrawService {
   isAuthorized: boolean;
   onlyMine = true;
   addedLayersRemoved = false;
+  layerMetadataDialog: Subject<any> = new Subject();
 
   //Layer being loaded from layman (endpoint url pending)
   pendingLayers = [];
@@ -270,10 +270,7 @@ export class HsDrawService {
     setWorkspace(drawLayer, layman?.user);
     this.tmpDrawLayer = true;
     this.selectedLayer = drawLayer;
-    this.HsDialogContainerService.create(
-      HsDrawLayerMetadataDialogComponent,
-      this
-    );
+    this.layerMetadataDialog.next();
   }
 
   setType(what): boolean {
