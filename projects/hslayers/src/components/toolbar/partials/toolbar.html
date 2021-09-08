@@ -1,4 +1,4 @@
-<div class="hs-toolbar" *ngIf="HsLayoutService.componentEnabled('guiOverlay')">
+<div class="hs-toolbar" [hidden]="!isVisible()">
     <nav class="navbar navbar-expand p-0">
         <hs-panel-container 
             class="navbar-nav"

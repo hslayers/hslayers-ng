@@ -14,6 +14,7 @@ import {HsMapHostDirective} from './map-host.directive';
 import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsThemeService} from './themes/theme.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { HsOverlayPanelContainerService } from './overlay-panel-container.service';
 
 @Component({
   selector: 'hs-layout',
@@ -45,7 +46,8 @@ export class HsLayoutComponent implements AfterViewInit {
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private HsUtilsService: HsUtilsService,
-    public HsPanelContainerService: HsPanelContainerService
+    public HsPanelContainerService: HsPanelContainerService,
+    public HsOverlayPanelContainerService: HsOverlayPanelContainerService
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
   }
