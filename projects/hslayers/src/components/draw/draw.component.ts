@@ -9,6 +9,7 @@ import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
+import { HsSidebarService } from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-draw',
@@ -34,9 +35,20 @@ export class HsDrawComponent extends HsPanelBaseComponent {
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'draw',
+      module: 'hs.draw',
+      order: 16,
+      fits: true,
+      title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
+      description: () =>
+        this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
+      icon: 'icon-pencil',
+    });
     this.HsDrawService.init();
   }
 

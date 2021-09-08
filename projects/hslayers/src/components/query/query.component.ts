@@ -10,6 +10,7 @@ import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -17,6 +18,7 @@ import {HsQueryBaseService} from './query-base.service';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-query',
@@ -40,9 +42,21 @@ export class HsQueryComponent
     public HsQueryVectorService: HsQueryVectorService,
     public HsQueryWmsService: HsQueryWmsService,
     public HsDrawService: HsDrawService,
-    private HsDialogContainerService: HsDialogContainerService
+    private HsDialogContainerService: HsDialogContainerService,
+    hsSidebarService: HsSidebarService,
+    hsLanguageService: HsLanguageService
   ) {
     super(HsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'info',
+      module: 'hs.query',
+      order: 7,
+      fits: true,
+      title: () => hsLanguageService.getTranslation('PANEL_HEADER.INFO'),
+      description: () =>
+        hsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
+      icon: 'icon-info-sign',
+    });
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);
     });
