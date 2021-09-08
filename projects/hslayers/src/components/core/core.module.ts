@@ -7,7 +7,6 @@ import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsHistoryListModule} from './../../common/history-list/history-list.module';
-import {HsLayerManagerModule} from '../layermanager/layermanager.module';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsMapModule} from '../map/map.module';
@@ -92,7 +91,6 @@ export function getWebpackTranslateLoader(
     HsLayoutModule,
     HsSidebarModule,
     HsHistoryListModule,
-    HsLayerManagerModule,
     HsLogModule,
     HsUtilsModule,
     TranslateModule.forRoot({
