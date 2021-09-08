@@ -149,6 +149,7 @@ export class HslayersAppComponent {
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: true,
+        info: true,
         compositionLoadingProgress: true,
       },
       componentsEnabled: {

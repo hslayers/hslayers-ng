@@ -25,9 +25,9 @@ import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
-
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Source} from 'ol/source';
 import {
   getActive,
@@ -119,9 +119,20 @@ export class HsLayerManagerComponent
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
+    hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'layermanager',
+      module: 'hs.layermanager',
+      order: 0,
+      fits: true,
+      title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
+      description: () =>
+        this.HsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
+      icon: 'icon-layers',
+    });
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
 

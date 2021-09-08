@@ -7,6 +7,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-add-data',
@@ -18,9 +19,21 @@ export class HsAddDataComponent extends HsPanelBaseComponent {
     public hsLanguageService: HsLanguageService,
     public hsShareUrlService: HsShareUrlService,
     public hsLayoutService: HsLayoutService,
-    public hsEventBusService: HsEventBusService
+    public hsEventBusService: HsEventBusService,
+    hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'addData',
+      module: 'hs.addData',
+      order: 4,
+      fits: true,
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
+      description: () =>
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.ADDLAYERS'),
+      icon: 'icon-database',
+    });
     this.hsAddDataService.typeSelected = 'catalogue';
     servicesSupportedByUrl.forEach((type) =>
       this.connectServiceFromUrlParam(type as AddDataUrlType)

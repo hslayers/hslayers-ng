@@ -6,9 +6,11 @@ import {Geometry} from 'ol/geom';
 
 import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-feature-table',
@@ -24,9 +26,22 @@ export class HsFeatureTableComponent
     public HsFeatureTableService: HsFeatureTableService,
     public HsConfig: HsConfig,
     public HsMapService: HsMapService,
-    hsLayoutService: HsLayoutService
+    hsLayoutService: HsLayoutService,
+    hsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'feature_table',
+      module: 'hs.feature-table',
+      order: 14,
+      fits: true,
+      title: () =>
+        hsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
+      description: () =>
+        hsLanguageService.getTranslation('SIDEBAR.descriptions.FEATURE_TABLE'),
+      icon: 'icon-indexmanager',
+    });
   }
   ngOnInit(): void {
     this.HsMapService.loaded().then(() => {
