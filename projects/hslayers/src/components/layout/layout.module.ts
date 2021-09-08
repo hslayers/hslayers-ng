@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayoutComponent} from './layout.component';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapHostDirective} from './map-host.directive';
@@ -29,7 +28,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsConfirmModule,
     HsMapModule,
     HsSidebarModule,
-    HsLanguageModule,
     HsPanelHelpersModule,
     HsToastModule,
   ],
