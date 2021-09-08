@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 
 import {HsCoreService} from '../core/core.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareService} from './share.service';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 @Component({
   selector: 'hs-share',
   templateUrl: './partials/share.component.html',
@@ -15,9 +17,21 @@ export class HsShareComponent extends HsPanelBaseComponent {
   constructor(
     public HsShareService: HsShareService,
     public HsCore: HsCoreService,
-    HsLayoutService: HsLayoutService
+    HsLayoutService: HsLayoutService,
+    hsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'permalink',
+      module: 'hs.permalink',
+      order: 11,
+      fits: true,
+      title: () => hsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
+      description: () =>
+        hsLanguageService.getTranslation('SIDEBAR.descriptions.PERMALINK'),
+      icon: 'icon-share-alt',
+    });
   }
 
   /**

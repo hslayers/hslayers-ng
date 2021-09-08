@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
@@ -10,6 +11,7 @@ import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueuesService} from '../../common/queues/queues.service';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -27,9 +29,21 @@ export class HsLegendComponent extends HsPanelBaseComponent {
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsUtilsService: HsUtilsService,
     public hsQueuesService: HsQueuesService,
-    HsLayoutService: HsLayoutService
+    hsLayoutService: HsLayoutService,
+    hsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
-    super(HsLayoutService);
+    super(hsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'legend',
+      module: 'hs.legend',
+      order: 1,
+      fits: true,
+      title: () => hsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
+      description: () =>
+        hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
+      icon: 'icon-dotlist',
+    });
     this.HsMapService.loaded().then((map) => this.init(map));
   }
 

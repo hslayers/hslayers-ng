@@ -2,10 +2,12 @@ import {Component, OnInit, ViewRef} from '@angular/core';
 
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setHighlighted} from '../../common/feature-extensions';
@@ -29,9 +31,22 @@ export class HsTripPlannerComponent
     public HsConfig: HsConfig,
     hsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
+    hsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'tripPlanner',
+      module: 'hs-trip-planner',
+      order: 17,
+      fits: true,
+      title: () =>
+        hsLanguageService.getTranslation('PANEL_HEADER.TRIP_PLANNER'),
+      description: () =>
+        hsLanguageService.getTranslation('SIDEBAR.descriptions.TRIP_PLANNER'),
+      icon: 'icon-sextant',
+    });
   }
   ngOnInit(): void {
     if (this.HsConfig.default_layers === undefined) {

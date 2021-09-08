@@ -8,10 +8,12 @@ import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -42,9 +44,24 @@ export class HsCompositionsComponent
     public hsSaveMapManagerService: HsSaveMapManagerService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
-    public hsLaymanService: HsLaymanService
+    public hsLaymanService: HsLaymanService,
+    hsSidebarService: HsSidebarService,
+    hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'composition_browser',
+      module: 'hs.compositions',
+      order: 3,
+      fits: true,
+      title: () =>
+        hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
+      description: () =>
+        hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.MAPCOMPOSITIONS'
+        ),
+      icon: 'icon-map',
+    });
     this.loadFilteredCompositions = () =>
       hsCompositionsCatalogueService.loadFilteredCompositions();
     this.notSavedCompositionLoadingSubscription =

@@ -6,8 +6,10 @@ import {takeUntil} from 'rxjs/operators';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
+import { HsLanguageService } from '../language/language.service';
 import { HsLayoutService } from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import { HsSidebarService } from '../sidebar/sidebar.service';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 
@@ -32,9 +34,25 @@ export class HsSaveMapComponent
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsCommonEndpointsService: HsCommonEndpointsService,
     //Running in background and watching observables
-    public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService
+    public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
+    hsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
+    hsSidebarService.buttons.push({
+      panel: 'saveMap',
+      module: 'hs.save-map',
+      order: 12,
+      fits: true,
+      title: () =>
+        hsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
+      description: () =>
+        hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.SAVECOMPOSITION'
+        ),
+      icon: 'icon-save-floppy',
+    });
+
     this.advancedForm =
       HsConfig.advancedForm == undefined || HsConfig.advancedForm
         ? true

@@ -4,9 +4,11 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -25,11 +27,25 @@ export class HsMeasureComponent
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
     public HsMeasureService: HsMeasureService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    hsLanguageService: HsLanguageService,
+    hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
     this.data = this.HsMeasureService.data;
     this.type = 'distance';
+
+    hsSidebarService.buttons.push({
+      panel: 'measure',
+      module: 'hs.measure',
+      order: 2,
+      fits: true,
+      title: () => hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
+      description: () =>
+        hsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
+      icon: 'icon-design',
+      condition: true,
+    });
 
     if (this.HsUtilsService.runningInBrowser()) {
       document.addEventListener('keyup', (e) => {
