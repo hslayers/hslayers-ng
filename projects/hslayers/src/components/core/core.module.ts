@@ -6,7 +6,6 @@ import sk from '../../assets/locales/sk.json';
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
-import {HsDragModule} from './../drag/drag.module';
 import {HsHistoryListModule} from './../../common/history-list/history-list.module';
 import {HsLanguageModule} from './../language/language.module';
 import {HsLayerManagerModule} from '../layermanager/layermanager.module';
@@ -92,7 +91,6 @@ export function getWebpackTranslateLoader(
   imports: [
     HttpClientModule,
     HsLayoutModule,
-    HsDragModule,
     HsSidebarModule,
     HsHistoryListModule,
     HsLayerManagerModule,
