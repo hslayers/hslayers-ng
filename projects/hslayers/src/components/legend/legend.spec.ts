@@ -9,6 +9,7 @@ import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
@@ -53,6 +54,7 @@ describe('HsLegendComponent', () => {
         HsLegendLayerStaticComponent,
       ],
       providers: [
+        {provide: HsConfig, useValue: {}},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
