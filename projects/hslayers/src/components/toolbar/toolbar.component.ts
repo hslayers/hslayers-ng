@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/public-api';
 import {HsThemeService} from '../layout/themes/theme.service';
 import {HsToolbarPanelContainerService} from './toolbar-panel-container.service';
 
@@ -12,7 +13,9 @@ import {HsToolbarPanelContainerService} from './toolbar-panel-container.service'
   selector: 'hs-toolbar',
   templateUrl: './partials/toolbar.html',
 })
-export class HsToolbarComponent implements OnDestroy {
+export class HsToolbarComponent
+  extends HsPanelBaseComponent
+  implements OnDestroy {
   collapsed = false;
   composition_title: any;
   composition_abstract: any;
@@ -24,6 +27,7 @@ export class HsToolbarComponent implements OnDestroy {
     public HsThemeService: HsThemeService,
     public HsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
+    super(HsLayoutService);
     this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
       () => {
         setTimeout(() => {
@@ -48,5 +52,13 @@ export class HsToolbarComponent implements OnDestroy {
       this.collapsed = is;
     }
     return this.collapsed;
+  }
+
+  isVisible(): boolean {
+    return (
+      this.HsLayoutService.panelEnabled('toolbar') &&
+      this.HsLayoutService.componentEnabled('toolbar') &&
+      this.HsLayoutService.componentEnabled('guiOverlay')
+    );
   }
 }

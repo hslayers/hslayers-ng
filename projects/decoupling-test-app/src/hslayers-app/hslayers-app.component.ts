@@ -8,13 +8,10 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from '../../../hslayers/src/config.service';
-import {HsDrawToolbarComponent} from '../../../hslayers/src/components/draw/public-api';
 import {HsLayerEditorService} from '../../../hslayers/src/components/layermanager/layer-editor.service';
-import {HsLayoutService} from 'hslayers-ng/src/public-api';
-import {HsMeasureToolbarComponent} from 'hslayers-ng/src/components/measure/measure-toolbar.component';
+import {HsLayoutService} from 'hslayers-ng/src/components/layout/public-api';
 import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
-import {HsSearchToolbarComponent} from 'hslayers-ng/src/components/search/search-toolbar.component';
-import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
+//import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
 
 @Component({
   selector: 'hslayers-app',
@@ -25,8 +22,8 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private hsLayerEditorService: HsLayerEditorService,
-    hsLayoutService: HsLayoutService,
-    hsToolbarPanelContainerService: HsToolbarPanelContainerService
+    hsLayoutService: HsLayoutService
+    //hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -152,6 +149,11 @@ export class HslayersAppComponent {
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: true,
+        compositionLoadingProgress: true,
+      },
+      componentsEnabled: {
+        geolocationButton: true,
+        guiOverlay: true,
       },
       assetsPath: 'assets',
       symbolizerIcons: [
@@ -334,9 +336,11 @@ export class HslayersAppComponent {
       });
     }, 100);
     hsLayoutService.createPanel(HsQueryComponent, {});
-    hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
-    hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
-    hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
+    //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
+    //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
+    //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
+    //hsLayoutService.createOverlay(HsInfoComponent, {});
+    //hsLayoutService.createOverlay(HsGeolocationComponent, {});
   }
   title = 'hslayers-workspace';
 }

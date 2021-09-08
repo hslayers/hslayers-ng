@@ -8,13 +8,14 @@ import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {getBase} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-gallery',
   templateUrl: './partials/basemap-gallery.html',
 })
-export class HsLayerManagerGalleryComponent {
+export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   baseLayersExpanded = false;
   menuExpanded = false;
   data: any;
@@ -25,6 +26,7 @@ export class HsLayerManagerGalleryComponent {
     public HsConfig: HsConfig,
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
+    super(HsLayoutService);
     this.data = this.HsLayerManagerService.data;
   }
 
@@ -66,5 +68,12 @@ export class HsLayerManagerGalleryComponent {
     );
     this.HsLayerManagerService.menuExpanded =
       !this.HsLayerManagerService.menuExpanded;
+  }
+
+  isVisible(): boolean {
+    return (
+      this.HsLayoutService.componentEnabled('basemapGallery') &&
+      this.HsLayoutService.componentEnabled('guiOverlay')
+    );
   }
 }

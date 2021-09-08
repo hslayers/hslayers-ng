@@ -2,9 +2,14 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {HsCoreModule} from '../../../hslayers/src/components/core/core.module';
+/* import {
+  HsGeolocationModule,
+  HsInfoModule,
+  HsSearchModule,
+} from 'hslayers-ng/src/public-api'; */
 import {HsLayoutModule} from '../../../hslayers/src/components/layout/layout.module';
-import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
-import {HsSearchModule} from 'hslayers-ng/src/public-api';
+//import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
+import {HsDrawModule} from 'hslayers-ng/src/components/draw/public-api';
 import {HslayersAppComponent} from './hslayers-app.component';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -15,8 +20,11 @@ import {TranslateModule} from '@ngx-translate/core';
     HsCoreModule,
     TranslateModule,
     HsLayoutModule,
-    HsMeasureModule,
-    HsSearchModule,
+    HsDrawModule,
+    //HsMeasureModule,
+    //HsSearchModule,
+    //HsInfoModule,
+    //HsGeolocationModule,
   ],
   providers: [],
   bootstrap: [HslayersAppComponent],

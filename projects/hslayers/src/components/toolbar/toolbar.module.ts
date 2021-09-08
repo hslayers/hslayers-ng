@@ -5,9 +5,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsDrawModule} from '../draw/draw.module';
 import {HsPanelHelpersModule} from '../layout/public-api';
-import {HsSearchModule} from '../search/search.module';
 import {HsToolbarComponent} from './toolbar.component';
 import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
 
@@ -18,8 +16,6 @@ import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
     CommonModule,
     FormsModule,
     NgbModule,
-    HsDrawModule,
-    HsSearchModule,
     TranslateModule,
     HsPanelHelpersModule,
   ],

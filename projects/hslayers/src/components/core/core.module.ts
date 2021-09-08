@@ -7,16 +7,13 @@ import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDragModule} from './../drag/drag.module';
-import {HsGeolocationModule} from './../geolocation/geolocation.module';
 import {HsHistoryListModule} from './../../common/history-list/history-list.module';
-import {HsInfoModule} from './../info/info.module';
 import {HsLanguageModule} from './../language/language.module';
 import {HsLayerManagerModule} from '../layermanager/layermanager.module';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsMapModule} from '../map/map.module';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
-import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsUtilsModule} from './../utils/utils.module';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -93,7 +90,6 @@ export function getWebpackTranslateLoader(
 @NgModule({
   declarations: [],
   imports: [
-    HsGeolocationModule,
     HttpClientModule,
     HsLayoutModule,
     HsDragModule,
@@ -103,7 +99,6 @@ export function getWebpackTranslateLoader(
     HsLanguageModule,
     HsLogModule,
     HsUtilsModule,
-    HsToolbarModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -112,7 +107,6 @@ export function getWebpackTranslateLoader(
         deps: [HsConfig],
       },
     }),
-    HsInfoModule,
     HsConfirmModule,
     HsMapModule,
     HsCommonEndpointsModule,

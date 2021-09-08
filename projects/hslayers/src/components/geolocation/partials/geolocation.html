@@ -1,4 +1,4 @@
-<div class="hs-locate ol-unselectable ol-control hs-locateToggler" [hidden]="!geolocationVisible()"
+<div class="hs-locate ol-unselectable ol-control hs-locateToggler" [hidden]="!isVisible()"
     [ngClass]="{'ol-collapsed': collapsed}">
     <button class="ol-has-tooltip blocate hs-locateToggler" [title]="'GEOLOCATION.locateMe' | translate" *ngIf="!HsGeolocationService.localization"
         type="button" (click)="HsGeolocationService.startLocalization()">
