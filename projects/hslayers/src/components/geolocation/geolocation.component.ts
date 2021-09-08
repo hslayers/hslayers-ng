@@ -1,20 +1,26 @@
 import {Component, OnInit} from '@angular/core';
 import {HsGeolocationService} from './geolocation.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 @Component({
   selector: 'hs-geolocation',
   templateUrl: './partials/geolocation.html',
 })
-export class HsGeolocationComponent implements OnInit {
+export class HsGeolocationComponent
+  extends HsPanelBaseComponent
+  implements OnInit
+{
   collapsed: boolean;
   constructor(
     public HsGeolocationService: HsGeolocationService,
     public HsLayoutService: HsLayoutService
-  ) {}
+  ) {
+    super(HsLayoutService);
+  }
   ngOnInit(): void {
     this.collapsed = true;
   }
-  geolocationVisible(): boolean {
+  isVisible(): boolean {
     return (
       this.HsLayoutService.componentEnabled('geolocationButton') &&
       this.HsLayoutService.componentEnabled('guiOverlay')

@@ -5,6 +5,8 @@ import {HsCompositionsModule} from './components/compositions/compositions.modul
 import {HsCoreModule} from './components/core/core.module';
 import {HsDrawModule} from './components/draw/draw.module';
 import {HsFeatureTableModule} from './components/feature-table/feature-table.module';
+import {HsGeolocationModule} from './components/geolocation/geolocation.module';
+import {HsInfoModule} from './components/info/info.module';
 import {HsLayerManagerModule} from './components/layermanager/layermanager.module';
 import {HsLayoutModule} from './components/layout/layout.module';
 import {HsLegendModule} from './components/legend/legend.module';
@@ -16,6 +18,7 @@ import {HsSearchModule} from './components/search/search.module';
 import {HsShareModule} from './components/permalink/share.module';
 import {HsStylerModule} from './components/styles/styles.module';
 import {HsThemesModule} from './components/layout/themes/themes.module';
+import {HsToolbarModule} from './components/toolbar/toolbar.module';
 import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
 import {HslayersComponent} from './hslayers.component';
 @NgModule({
@@ -27,6 +30,8 @@ import {HslayersComponent} from './hslayers.component';
     HsMeasureModule,
     HsAddDataModule,
     HsDrawModule,
+    HsGeolocationModule,
+    HsInfoModule,
     HsLegendModule,
     HsTripPlannerModule,
     HsSaveMapModule,
@@ -37,6 +42,7 @@ import {HslayersComponent} from './hslayers.component';
     HsSearchModule,
     HsCompositionsModule,
     HsStylerModule,
+    HsToolbarModule,
     HsThemesModule,
   ],
   exports: [HslayersComponent],

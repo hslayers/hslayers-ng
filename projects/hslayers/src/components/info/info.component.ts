@@ -4,6 +4,8 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from './../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsUtilsService} from './../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
 /**
@@ -13,7 +15,7 @@ import {getTitle} from '../../common/layer-extensions';
   selector: 'hs-info',
   templateUrl: './partials/info.html',
 })
-export class HsInfoComponent implements OnDestroy {
+export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   /**
    * @type {boolean} true
    * Store if composition is loaded
@@ -32,8 +34,10 @@ export class HsInfoComponent implements OnDestroy {
   private ngUnsubscribe = new Subject();
   constructor(
     public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService
   ) {
+    super(HsLayoutService);
     this.HsEventBusService.compositionLoading
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
@@ -134,5 +138,8 @@ export class HsInfoComponent implements OnDestroy {
   compositionLoaded(): boolean {
     return this.composition_title !== undefined;
   }
-  //this.$emit('scope_loaded', 'info');
+
+  isVisible(): boolean {
+    return this.HsLayoutService.panelEnabled('compositionLoadingProgress');
+  }
 }

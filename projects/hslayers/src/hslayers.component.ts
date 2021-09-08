@@ -6,8 +6,11 @@ import {HsConfig} from './config.service';
 import {HsDrawComponent} from './components/draw/draw.component';
 import {HsDrawToolbarComponent} from './components/draw/draw-toolbar.component';
 import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
+import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
+import {HsInfoComponent} from './components/info/info.component';
 import {HsLanguageComponent} from './components/language/language.component';
 import {HsLayerManagerComponent} from './components/layermanager/layermanager.component';
+import {HsLayerManagerGalleryComponent} from './components/layermanager/layermanager-gallery.component';
 import {HsLayerManagerService} from './components/layermanager/layermanager.service';
 import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';
@@ -22,6 +25,7 @@ import {HsSearchToolbarComponent} from './components/search/search-toolbar.compo
 import {HsShareComponent} from './components/permalink/share.component';
 import {HsStylerComponent} from './components/styles/styler.component';
 import {HsThemeToolbarComponent} from './components/layout/themes/theme-toolbar.component';
+import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
 @Component({
@@ -76,5 +80,9 @@ export class HslayersComponent implements OnInit {
     this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
     this.hsToolbarPanelContainerService.create(HsThemeToolbarComponent, {});
+    this.hsLayoutService.createOverlay(HsGeolocationComponent, {});
+    this.hsLayoutService.createOverlay(HsInfoComponent, {});
+    this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
+    this.hsLayoutService.createOverlay(HsToolbarComponent, {});
   }
 }

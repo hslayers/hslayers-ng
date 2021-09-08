@@ -1,4 +1,4 @@
-<div class="basemapGallery" style="z-index: 101;" *ngIf="HsLayoutService.componentEnabled('guiOverlay')">
+<div class="basemapGallery" style="z-index: 101;" [hidden]="!isVisible()">
     <div class="btn-group btn-group-sm" role="group">
         <button type="button" (click)="baseLayersExpanded=!baseLayersExpanded"
             class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true"

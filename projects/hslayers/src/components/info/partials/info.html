@@ -1,44 +1,48 @@
-<div class="hs-info-composition hs-main-panel" [hidden]="!!compositionLoaded()">
-    <div class="hs-info-composition-image" [hidden]="!!composition_loaded">
-        <span class="icon-refresh icon-spin"></span>
-        <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
-    </div>
-    <div class="hs-info-composition-container" *ngIf="!composition_edited">
-        <div class="hs-info-composition-title" title="{{'INFOCOMPONENT.viewComposeAndAnalyse' | translate}}">{{'INFOCOMPONENT.newMap' | translate}}</div>
-    </div>
-    <div class="hs-info-composition-container" *ngIf="composition_edited">
-        <div class="hs-info-composition-title">{{'INFOCOMPONENT.unsavedMap' | translate}}</div>
-        <div class="hs-info-composition-abstract" [hidden]="!!(!layer_loading.length && composition_edited)">
-            {{'INFOCOMPONENT.youHaveUnsavedChanges' | translate}}</div>
+<div class="hs-info-container" [hidden]="!isVisible()">
+    <div class="hs-info-area">
+        <div class="hs-info-composition hs-main-panel" [hidden]="!!compositionLoaded()">
+            <div class="hs-info-composition-image" [hidden]="!!composition_loaded">
+                <span class="icon-refresh icon-spin"></span>
+                <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
+            </div>
+            <div class="hs-info-composition-container" *ngIf="!composition_edited">
+                <div class="hs-info-composition-title" title="{{'INFOCOMPONENT.viewComposeAndAnalyse' | translate}}">{{'INFOCOMPONENT.newMap' | translate}}</div>
+            </div>
+            <div class="hs-info-composition-container" *ngIf="composition_edited">
+                <div class="hs-info-composition-title">{{'INFOCOMPONENT.unsavedMap' | translate}}</div>
+                <div class="hs-info-composition-abstract" [hidden]="!!(!layer_loading.length && composition_edited)">
+                    {{'INFOCOMPONENT.youHaveUnsavedChanges' | translate}}</div>
+            </div>
+        </div>
+
+        <div class="hs-info-composition" [hidden]="!compositionLoaded()">
+            <div class="hs-info-composition-image">
+                <span class="icon-refresh icon-spin" [hidden]="!!composition_loaded"></span>
+                <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
+            </div>
+            <div class="hs-info-composition-container">
+                <div class="hs-info-composition-title">{{composition_title}}</div>
+                <div class="hs-info-composition-abstract">{{composition_abstract}}</div>
+            </div>
+        </div>
+
+        <div class="hs-info-layers" [hidden]="!layer_loading.length">
+            <span>{{'COMMON.loading' | translate}}: </span>
+            <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
+        </div>
+
+        <div class="hs-info-composition-edited" [hidden]="!(!layer_loading.length && composition_edited)">
+            <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translate}}</span>
+        </div>
+
+        <update-title title="{{composition_title}}"></update-title>
+        <update-meta property="og:title" content="{{composition_title}}"></update-meta>
+        <update-meta property="twitter:title" content="{{composition_title}}"></update-meta>
+        <update-meta itemprop="title" content="{{composition_title}}"></update-meta>
+
+        <update-meta name="description" content="{{composition_abstract}}"></update-meta>
+        <update-meta property="og:description" content="{{composition_abstract}}"></update-meta>
+        <update-meta property="twitter:description" content="{{composition_abstract}}"></update-meta>
+        <update-meta itemprop="description" content="{{composition_abstract}}"></update-meta>
     </div>
 </div>
-
-<div class="hs-info-composition" [hidden]="!compositionLoaded()">
-    <div class="hs-info-composition-image">
-        <span class="icon-refresh icon-spin" [hidden]="!!composition_loaded"></span>
-        <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
-    </div>
-    <div class="hs-info-composition-container">
-        <div class="hs-info-composition-title">{{composition_title}}</div>
-        <div class="hs-info-composition-abstract">{{composition_abstract}}</div>
-    </div>
-</div>
-
-<div class="hs-info-layers" [hidden]="!layer_loading.length">
-    <span>{{'COMMON.loading' | translate}}: </span>
-    <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
-</div>
-
-<div class="hs-info-composition-edited" [hidden]="!(!layer_loading.length && composition_edited)">
-    <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translate}}</span>
-</div>
-
-<update-title title="{{composition_title}}"></update-title>
-<update-meta property="og:title" content="{{composition_title}}"></update-meta>
-<update-meta property="twitter:title" content="{{composition_title}}"></update-meta>
-<update-meta itemprop="title" content="{{composition_title}}"></update-meta>
-
-<update-meta name="description" content="{{composition_abstract}}"></update-meta>
-<update-meta property="og:description" content="{{composition_abstract}}"></update-meta>
-<update-meta property="twitter:description" content="{{composition_abstract}}"></update-meta>
-<update-meta itemprop="description" content="{{composition_abstract}}"></update-meta>
