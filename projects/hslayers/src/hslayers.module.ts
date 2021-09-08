@@ -7,6 +7,7 @@ import {HsDrawModule} from './components/draw/draw.module';
 import {HsFeatureTableModule} from './components/feature-table/feature-table.module';
 import {HsGeolocationModule} from './components/geolocation/geolocation.module';
 import {HsInfoModule} from './components/info/info.module';
+import {HsLanguageModule} from './components/language/language.module';
 import {HsLayerManagerModule} from './components/layermanager/layermanager.module';
 import {HsLayoutModule} from './components/layout/layout.module';
 import {HsLegendModule} from './components/legend/legend.module';
@@ -32,6 +33,7 @@ import {HslayersComponent} from './hslayers.component';
     HsDrawModule,
     HsGeolocationModule,
     HsInfoModule,
+    HsLanguageModule,
     HsLegendModule,
     HsTripPlannerModule,
     HsSaveMapModule,
