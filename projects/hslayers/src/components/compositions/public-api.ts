@@ -18,5 +18,3 @@ export * from './compositions-parser.service';
 export * from './compositions.component';
 export * from './compositions.module';
 export * from './compositions.service';
-import compositionSchema from './schema.json';
-export {compositionSchema};
