@@ -2,13 +2,10 @@ var webpack = require('webpack');
 
 module.exports = {
   devtool: false,
-  node: {
-    // Resolve node module use of fs
-    fs: "empty",
-    Buffer: false,
-    http: "empty",
-    https: "empty",
-    zlib: "empty",
+  resolve: {
+    fallback: {
+      fs: false
+    },
   },
   module: {
     unknownContextCritical: false,

@@ -28,6 +28,7 @@
       "hslayers-material/*": ["dist/hslayers-material/*"],
       "hslayers-cesium": ["dist/hslayers-cesium"],
       "hslayers-cesium/*": ["dist/hslayers-cesium/*"],
+      "cesium/*": ["node_modules/cesium/*"],
     }
   },
   "angularCompilerOptions": {
