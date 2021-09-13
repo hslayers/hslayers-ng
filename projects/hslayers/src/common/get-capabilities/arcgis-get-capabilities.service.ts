@@ -10,10 +10,11 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {IGetCapabilities} from './get-capabilities.interface';
 import {getPreferredFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsArcgisGetCapabilitiesService {
+export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
   constructor(
     private httpClient: HttpClient,
     public hsEventBusService: HsEventBusService,

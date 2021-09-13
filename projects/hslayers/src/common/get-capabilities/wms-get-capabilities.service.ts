@@ -13,11 +13,12 @@ import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {IGetCapabilities} from './get-capabilities.interface';
 import {Metadata} from '../layer-extensions';
 import {getPreferredFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsWmsGetCapabilitiesService {
+export class HsWmsGetCapabilitiesService implements IGetCapabilities {
   constructor(
     private httpClient: HttpClient,
     public hsEventBusService: HsEventBusService,
