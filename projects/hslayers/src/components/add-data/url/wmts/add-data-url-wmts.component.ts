@@ -1,7 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
 
+import {Subscription} from 'rxjs';
+
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
+import {HsAddDataUrlTabInterface} from '../add-data-url-tab.interface';
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -11,14 +14,13 @@ import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmtsGetCapabilitiesService} from '../../../../common/get-capabilities/wmts-get-capabilities.service';
 
-import {Subscription} from 'rxjs';
-
 @Component({
   selector: 'hs-add-data-url-wmts',
   templateUrl: './add-data-url-wmts.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
-export class HsAddDataWmtsComponent implements OnDestroy {
+export class HsAddDataWmtsComponent
+  implements HsAddDataUrlTabInterface, OnDestroy {
   owsConnectingSubscription: Subscription;
   hasChecked: boolean;
 
@@ -48,26 +50,23 @@ export class HsAddDataWmtsComponent implements OnDestroy {
   }
 
   async connect(layerToSelect?: string): Promise<void> {
+    const url = this.hsAddDataUrlWmtsService.url;
+    if (!url) {
+      return;
+    }
     this.hasChecked = false;
     Object.assign(this.hsAddDataUrlWmtsService, {
       layerToSelect,
       loadingInfo: true,
       showDetails: true,
     });
-    const response = await this.hsWmtsGetCapabilitiesService.request(
-      this.hsAddDataUrlWmtsService.url
-    );
+    const response = await this.hsWmtsGetCapabilitiesService.request(url);
     this.hsAddDataUrlWmtsService.addLayerFromCapabilities(response);
   }
 
-  selectAllLayers(layers: any[]): void {
-    for (const layer of layers) {
-      layer.checked = !layer.checked;
-      if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
-      }
-    }
-    this.changed();
+  setUrlAndConnect(url: string, layer?: string): void {
+    this.updateUrl(url);
+    this.connect(layer);
   }
 
   changed(): void {
@@ -76,14 +75,11 @@ export class HsAddDataWmtsComponent implements OnDestroy {
     );
   }
 
-  setUrlAndConnect(url: string, layer?: string): void {
+  /**
+   * @description For the sake of possible future implementation changes
+   * @param {string} url URL to be set
+   */
+  updateUrl(url: string): void {
     this.hsAddDataUrlWmtsService.url = url;
-    this.connect(layer);
-  }
-
-  addLayers(checkedOnly: boolean): void {
-    this.hsAddDataUrlWmtsService.addLayers(checkedOnly);
-    //FIXME: to implement
-    // this.zoomToLayers();
   }
 }
