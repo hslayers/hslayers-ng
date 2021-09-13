@@ -30,16 +30,15 @@
                 class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
                 <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.drawingTo' | translate}}</p>
                 <div class="dropdown" style="max-width: 50%;">
-                    <button type="button"
-                        class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
+                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
                         data-toggle="dropdown" aria-haspopup="true"
                         (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
                         [attr.aria-expanded]="layersExpanded" [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,
-                            'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
+                                                'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
                         [disabled]="!HsDrawService.hasSomeDrawables">
                         <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': layersExpanded}"
+                    <div class="dropdown-menu dropdown-menu-right"  [ngClass]="{'show': layersExpanded}"
                         style=" transform: translateX(25%); width: 15em;">
                         <div class="d-flex align-items-center w-100 flex-column"
                             *ngIf="HsDrawService.drawableLayers.length > 0">
@@ -109,7 +108,7 @@
         </button>
         <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
             class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            (click)="selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded">
+            (click)="selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded" data-flip="false">
             <i class="icon-cursor"></i>
         </button>
         <div class="dropdown" style="white-space: nowrap;">

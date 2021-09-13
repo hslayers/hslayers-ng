@@ -54,25 +54,27 @@
             [title]="'COMMON.removeLayer' | translate">
             <i class="glyphicon icon-trash"></i>
         </button>
-        <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
-            class="btn btn-light hs-toolbar-button btn-outline-secondary rounded-0 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            (click)="$event.preventDefault(); selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded">
-            <i class="icon-cursor"></i>
-        </button>
-        <div class="dropdown" style="white-space: nowrap;">
-            <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
-                [ngClass]="{'d-flex': selectionMenuExpanded}">
-                <div class="d-flex flex-row justify-content-around align-items-baseline">
-                    <label class="ml-1 cursor-pointer" for="draw-boxSelection"> {{'DRAW.boxSelection' | translate}}</label>
-                    <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-                        (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
-                        id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+        <div class="btn-group">
+            <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
+                class="btn btn-light hs-toolbar-button btn-outline-secondary rounded-0 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                (click)="$event.preventDefault(); selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded">
+                <i class="icon-cursor"></i>
+            </button>
+            <div class="dropdown" style="white-space: nowrap;">
+                <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
+                    [ngClass]="{'d-flex': selectionMenuExpanded}">
+                    <div class="d-flex flex-row justify-content-around align-items-baseline">
+                        <label class="ml-1 cursor-pointer" for="draw-boxSelection"> {{'DRAW.boxSelection' | translate}}</label>
+                        <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
+                            (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
+                            id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+                    </div>
+                    <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
+                        (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;"
+                        data-toggle="tooltip" [title]="'STYLER.selection' | translate">
+                        {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
+                    </button>
                 </div>
-                <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
-                    (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;"
-                    data-toggle="tooltip" [title]="'STYLER.selection' | translate">
-                    {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
-                </button>
             </div>
         </div>
         <div class="btn-group" *ngIf="drawToolbarExpanded">
