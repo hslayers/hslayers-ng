@@ -22,7 +22,7 @@ export * from './common/log/public-api';
 export * from './common/queues/public-api';
 export * from './common/upload/public-api';
 export * from './common/widgets/public-api';
-
+export * from './common/pager/public-api';
 /*
  * COMPONENTS
  */

@@ -1,6 +1,10 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
@@ -10,9 +14,9 @@ import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsLaymanModule} from '../../common/layman/layman.module';
+import {HsPagerModule} from '../../common/pager/pager.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -32,6 +36,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsCompositionsLayerParserModule,
     NgbModule,
     HsLaymanModule,
+    HsPagerModule,
   ],
   exports: [HsCompositionsComponent],
   entryComponents: [
