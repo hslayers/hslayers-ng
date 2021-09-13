@@ -9,3 +9,4 @@ export * from './wfs-get-capabilities.service';
 export * from './wms-get-capabilities-response.interface';
 export * from './wms-get-capabilities.service';
 export * from './wmts-get-capabilities.service';
+export * from './get-capabilities.interface';

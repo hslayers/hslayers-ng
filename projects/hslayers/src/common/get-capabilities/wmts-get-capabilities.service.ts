@@ -12,10 +12,11 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {HsWmsGetCapabilitiesService} from './wms-get-capabilities.service';
+import {IGetCapabilities} from './get-capabilities.interface';
 import {getPreferredFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsWmtsGetCapabilitiesService {
+export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
   service_url: any;
   constructor(
     private httpClient: HttpClient,
