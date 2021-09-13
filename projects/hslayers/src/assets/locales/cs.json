@@ -66,7 +66,7 @@
     "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií",
     "SHP": {
       "loginRequired": "Před načtením vrstvy je vyžadováno přihlášení",
-      "titleRequired": "Pro pokračování je nutné vyplnit pole 'Titulek'!",
+      "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Soubor se styly"
     },

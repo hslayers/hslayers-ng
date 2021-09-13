@@ -245,6 +245,7 @@ export class HsAddDataFileShpComponent implements OnInit {
         if (this.files.length == 3) {
           this.showDetails = true;
           this.name = this.files[0].name.slice(0, -4);
+          this.title = this.files[0].name.slice(0, -4);
           this.resultCode = 'success';
         } else if (this.files.length > 3) {
           this.showDetails = false;
@@ -288,7 +289,7 @@ export class HsAddDataFileShpComponent implements OnInit {
         )
       : this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.SHP',
-          'titleRequired'
+          'nameRequired'
         );
   }
 }

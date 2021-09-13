@@ -109,12 +109,12 @@
         </button>
         <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
             class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            (click)="selectionMenuExpanded = !selectionMenuExpanded;" [attr.aria-expanded]="selectionMenuExpanded">
+            (click)="selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded">
             <i class="icon-cursor"></i>
         </button>
         <div class="dropdown" style="white-space: nowrap;">
             <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
-                [ngClass]="{'d-flex': selectionMenuExpanded}">
+                [ngClass]="{'show':  selectionMenuExpanded}">
                 <div class="d-flex flex-row justify-content-around align-items-baseline">
                     <label class="ml-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' | translate}}</label>
                     <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"

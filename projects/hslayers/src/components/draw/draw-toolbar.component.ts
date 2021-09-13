@@ -27,6 +27,11 @@ export class HsDrawToolbarComponent {
     public HsLanguageService: HsLanguageService
   ) {}
 
+  selectionMenuToggled(): void {
+    this.setType(this.HsDrawService.type);
+    this.selectionMenuExpanded = !this.selectionMenuExpanded;
+  }
+
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
