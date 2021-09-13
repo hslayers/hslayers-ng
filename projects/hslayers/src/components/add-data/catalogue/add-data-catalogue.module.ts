@@ -8,6 +8,7 @@ import {HsAddDataCatalogueComponent} from './add-data-catalogue.component';
 import {HsAddDataListItemComponent} from './add-data-list-item.component';
 import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
+import {HsPagerModule} from './../../../common/pager/pager.module';
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 
 @NgModule({
@@ -24,6 +25,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
     HsUiExtensionsModule,
     HsLaymanModule,
     NgbModule,
+    HsPagerModule,
   ],
   exports: [
     HsAddDataCatalogueComponent,

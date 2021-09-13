@@ -105,34 +105,6 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
     this.hsAddDataCatalogueMapService.highlightLayer(layer, state);
   }
 
-  /**
-   * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
-   */
-  getPreviousRecords(): void {
-    this.hsAddDataCatalogueService.getPreviousRecords();
-  }
-
-  /**
-   * Loads next records of datasets from selected datasource (based on number of results per page and current start)
-   */
-  getNextRecords(): void {
-    this.hsAddDataCatalogueService.getNextRecords();
-  }
-
-  resultsVisible(): boolean {
-    return this.hsAddDataCatalogueService.listNext &&
-      this.hsAddDataCatalogueService.matchedLayers
-      ? true
-      : false;
-  }
-
-  nextPageAvailable(): boolean {
-    return (
-      this.hsAddDataCatalogueService.matchedLayers >
-      this.hsAddDataCatalogueService.listNext
-    );
-  }
-
   datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {
     this.hsAddDataCatalogueService.datasetSelect(id_selected);
     if (endpoint) {

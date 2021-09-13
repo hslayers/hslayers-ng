@@ -46,7 +46,7 @@ export class HsCompositionsCatalogueService {
     themes: INSPIRETHEMES,
   };
   recordsPerPage = 20;
-  matchedCompositions = 0;
+  matchedRecords = 0;
   listStart = 0;
   listNext = this.recordsPerPage;
   /**
@@ -58,7 +58,7 @@ export class HsCompositionsCatalogueService {
    *
    * Store whether filter compositions by current window extent during composition search
    */
-  compositionsLoading: boolean;
+  dataLoading: boolean;
   loadCompositionsQuery: any;
   filteredEndpoints: HsEndpoint[];
   extentChangeSuppressed = false;
@@ -155,7 +155,7 @@ export class HsCompositionsCatalogueService {
       delete this.loadCompositionsQuery;
     }
     this.clearLoadedData();
-    this.compositionsLoading = true;
+    this.dataLoading = true;
     this.hsMapService.loaded().then(() => {
       const observables = [];
       for (const endpoint of this.filteredEndpoints) {
@@ -173,22 +173,22 @@ export class HsCompositionsCatalogueService {
    * from all endpoint matched compositions
    */
   calculateEndpointLimits(): void {
-    this.matchedCompositions = 0;
+    this.matchedRecords = 0;
     this.recordsPerPage = 20;
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep) => ep.compositionsPaging.matched != 0
     );
     if (this.filteredEndpoints.length == 0) {
-      this.compositionsLoading = false;
+      this.dataLoading = false;
       return;
     }
     this.filteredEndpoints.forEach(
-      (ep) => (this.matchedCompositions += ep.compositionsPaging.matched)
+      (ep) => (this.matchedRecords += ep.compositionsPaging.matched)
     );
     let sumLimits = 0;
     this.filteredEndpoints.forEach((ep) => {
       ep.compositionsPaging.limit = Math.floor(
-        (ep.compositionsPaging.matched / this.matchedCompositions) *
+        (ep.compositionsPaging.matched / this.matchedRecords) *
           this.recordsPerPage
       );
       if (ep.compositionsPaging.limit == 0) {
@@ -244,9 +244,9 @@ export class HsCompositionsCatalogueService {
             endpoint.compositions
           ));
     }
-    this.compositionsLoading = false;
-    if (this.matchedCompositions < this.recordsPerPage) {
-      this.listNext = this.matchedCompositions;
+    this.dataLoading = false;
+    if (this.matchedRecords < this.recordsPerPage) {
+      this.listNext = this.matchedRecords;
     }
   }
   /**
@@ -262,7 +262,7 @@ export class HsCompositionsCatalogueService {
       (data) =>
         this.compositionEntries.filter((u) => u.id == data.id).length == 0
     );
-    this.matchedCompositions -=
+    this.matchedRecords -=
       endpoint.compositions.length - filteredCompositions.length;
     this.compositionEntries =
       this.compositionEntries.concat(filteredCompositions);
@@ -296,22 +296,9 @@ export class HsCompositionsCatalogueService {
   }
 
   /**
-   * Checks if next page for pagination is available
-   */
-  nextPageAvailable(): boolean {
-    if (
-      this.listNext == this.matchedCompositions ||
-      this.matchedCompositions == 0
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  /**
    * Load previous list of compositions to display on pager
    */
-  getPreviousCompositions(): void {
+  getPreviousRecords(): void {
     if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
@@ -332,11 +319,11 @@ export class HsCompositionsCatalogueService {
   /**
    * Load next list of compositions to display on pager
    */
-  getNextCompositions(): void {
+  getNextRecords(): void {
     this.listStart += this.recordsPerPage;
     this.listNext += this.recordsPerPage;
-    if (this.listNext > this.matchedCompositions) {
-      this.listNext = this.matchedCompositions;
+    if (this.listNext > this.matchedRecords) {
+      this.listNext = this.matchedRecords;
     }
     this.filteredEndpoints.forEach(
       (ep) => (ep.compositionsPaging.start += ep.compositionsPaging.limit)
