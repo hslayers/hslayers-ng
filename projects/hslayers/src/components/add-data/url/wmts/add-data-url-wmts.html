@@ -2,14 +2,7 @@
     <hs-add-data-common-url type="wmts" [(url)]="hsAddDataUrlWmtsService.url" (connect)="connect()">
     </hs-add-data-common-url>
 
-    <div class="row d-flex justify-content-center btn-group w-75 m-auto">
-        <button [hidden]="!hsAddDataUrlWmtsService.loadingInfo"
-            class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
-                [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
-        <button [hidden]="!hsAddDataUrlWmtsService.loadingInfo" class="btn btn-secondary"
-            (click)="hsAddDataService.cancelUrlRequest.next()">&#10006;
-        </button>
-    </div>
+    <hs-common-url-loading-data [injectedService]="hsAddDataUrlWmtsService"></hs-common-url-loading-data>
     <div *ngIf="hsAddDataUrlWmtsService.showDetails && !hsAddDataUrlWmtsService.loadingInfo" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix" style="background: var(--white);">
@@ -42,14 +35,9 @@
         <li class="list-group-item hs-ows-layerlistheading clearfix" style="position: sticky;
         bottom: 0; background: var(--panel-wrapper-bg-color); z-index:10">
             <div class="d-flex justify-content-center">
-                <div class="d-flex justify-content-between w-100" *ngIf="!hsAddDataUrlWmtsService.loadingInfo">
-                    <button class="btn btn-primary"
-                        (click)="selectAllLayers(hsAddDataUrlWmtsService.services)">{{'ADDDATA.URL.selectAll' |
-                        translate}}</button>
-                    <button class="btn btn-primary pull-right" (click)="addLayers(true)"
-                        title="{{'ADDLAYERS.WFS.addToMap'|translate}}"
-                        [disabled]="!hasChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
-                </div>
+                <hs-common-url-add-to-map [hasChecked]="hasChecked" [injectedService]="hsAddDataUrlWmtsService"
+                    [layers]="hsAddDataUrlWmtsService.services">
+                </hs-common-url-add-to-map>
             </div>
         </li>
     </div>

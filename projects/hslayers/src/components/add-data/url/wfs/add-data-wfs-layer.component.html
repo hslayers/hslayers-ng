@@ -1,14 +1,8 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="wfs" [(url)]="hsAddDataWfsService.url" (connect)="connect()"></hs-add-data-common-url>
 
-    <div class="row d-flex justify-content-center btn-group w-75 m-auto">
-        <button [hidden]="!hsAddDataWfsService.loadingInfo"
-            class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
-                [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
-        <button [hidden]="!hsAddDataWfsService.loadingInfo" class="btn btn-secondary"
-            (click)="hsAddDataService.cancelUrlRequest.next()">&#10006;
-        </button>
-    </div>
+    <hs-common-url-loading-data [injectedService]="hsAddDataWfsService"></hs-common-url-loading-data>
+    
     <div *ngIf="hsAddDataWfsService.showDetails && !hsAddDataWfsService.loadingInfo" class="card">
 
         <!-- FIXME: unused -->
@@ -40,14 +34,9 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix"
                 style="background: var(--panel-wrapper-bg-color);">
                 <div class="d-flex justify-content-center">
-                    <div class="d-flex justify-content-between w-100">
-                        <button class="btn btn-primary"
-                            (click)="selectAllLayers(hsAddDataWfsService.services)">{{'ADDLAYERS.selectAllLayers' |
-                            translate}}</button>
-                        <button class="btn btn-primary pull-right" (click)="addLayers(true)"
-                            [title]="'ADDLAYERS.WFS.addToMap' | translate"
-                            [disabled]="!hasChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
-                    </div>
+                    <hs-common-url-add-to-map [hasChecked]="hasChecked" [injectedService]="hsAddDataWfsService"
+                        [layers]="hsAddDataWfsService.services">
+                    </hs-common-url-add-to-map>
                     <button *ngIf="hsAddDataWfsService.loadingFeatures"
                         class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img
                             class="ml-2" [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>

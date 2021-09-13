@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 
 import ImageSource from 'ol/source/Image';
 import TileSource from 'ol/source/Tile';
@@ -35,7 +34,6 @@ import {getPreferredFormat} from '../../../../common/format-utils';
 export class HsAddDataUrlWmsService {
   getDimensionValues;
   data;
-  getWmsCapabilitiesError: Subject<any> = new Subject();
   showDetails: boolean;
   loadingInfo = false;
   layerToSelect: string;
