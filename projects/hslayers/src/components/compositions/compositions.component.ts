@@ -73,32 +73,6 @@ export class HsCompositionsComponent
   ngOnDestroy(): void {
     this.notSavedCompositionLoadingSubscription.unsubscribe();
   }
-  resultsVisible(): boolean {
-    if (
-      this.hsCompositionsCatalogueService.listNext &&
-      this.hsCompositionsCatalogueService.matchedCompositions
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  nextPageAvailable(): boolean {
-    return this.hsCompositionsCatalogueService.nextPageAvailable();
-  }
-  /**
-   * Load previous list of compositions to display on pager
-   */
-  getPreviousCompositions(): void {
-    this.hsCompositionsCatalogueService.getPreviousCompositions();
-  }
-
-  /**
-   * Load next list of compositions to display on pager
-   */
-  getNextCompositions(): void {
-    this.hsCompositionsCatalogueService.getNextCompositions();
-  }
 
   /**
    * @param composition Composition to highlight
