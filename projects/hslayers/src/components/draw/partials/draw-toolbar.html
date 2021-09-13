@@ -56,7 +56,7 @@
         </button>
         <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
             class="btn btn-light hs-toolbar-button btn-outline-secondary rounded-0 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            (click)="selectionMenuExpanded = !selectionMenuExpanded;" [attr.aria-expanded]="selectionMenuExpanded">
+            (click)="$event.preventDefault(); selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded">
             <i class="icon-cursor"></i>
         </button>
         <div class="dropdown" style="white-space: nowrap;">

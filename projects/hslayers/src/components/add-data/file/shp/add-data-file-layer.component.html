@@ -15,7 +15,7 @@
         <label class="capabilities_label control-label">{{'ADDLAYERS.SHP.shapeFile' | translate}} </label>
         <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
     </div> -->
-    <div class="form-group">
+    <div class="form-group justify-content-center">
         <hs-file-upload (uploaded)="read($event)" acceptedFormats=".shp, .shx, .dbf, .sbn" uploader="shpdbfshx">
         </hs-file-upload>
         <!-- TODO: Replace this with upcomming toast directive -->
@@ -82,7 +82,7 @@
                 <input class="form-control" name="folderName" [(ngModel)]="folder_name" />
             </div>
         </div>
-        <button *ngIf="isAuthorized" class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"
+        <button *ngIf="isAuthorized" class="btn btn-primary btn-block" [disabled]="!name" (click)="add()"
             title="{{addShpTooltip()}}">
             <i class="icon-plus" [hidden]="loading"></i>
             <img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!loading" />
@@ -97,7 +97,6 @@
             <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
         </div>
     </div>
-
     <div class="alert alert-danger mt-1" [hidden]="resultCode !== 'error'">
         <div class="alert alert-danger">{{errorMessage}}</div>
         <dl *ngFor="let item of errorDetails">
