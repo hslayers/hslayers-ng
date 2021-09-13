@@ -13,3 +13,4 @@ export * from './wmts/add-data-url-wmts.module';
 export * from './add-data-url.component';
 export * from './add-data-url.module';
 export * from './add-data-url.service';
+export * from './add-data-url-tab.interface';

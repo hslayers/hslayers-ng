@@ -1,0 +1,8 @@
+<div class="row d-flex justify-content-center btn-group w-75 m-auto">
+  <button [hidden]="!injectedService.loadingInfo"
+    class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
+      [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
+  <button [hidden]="!injectedService.loadingInfo" class="btn btn-secondary"
+    (click)="hsAddDataService.cancelUrlRequest.next()">&#10006;
+  </button>
+</div>
