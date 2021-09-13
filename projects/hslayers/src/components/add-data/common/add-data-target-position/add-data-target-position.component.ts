@@ -1,8 +1,8 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {HsLayerManagerService} from '../../layermanager/layermanager.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
+import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 
 @Component({
   selector: 'hs-add-data-target-position',
