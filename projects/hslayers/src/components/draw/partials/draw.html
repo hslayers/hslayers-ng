@@ -107,8 +107,8 @@
             <i class="icon-circleloaderfull"></i>
         </button>
         <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
-            class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            (click)="selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded" data-flip="false">
+            class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" data-display="static" data-flip="false" aria-haspopup="true"
+            (click)="selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded" >
             <i class="icon-cursor"></i>
         </button>
         <div class="dropdown" style="white-space: nowrap;">
