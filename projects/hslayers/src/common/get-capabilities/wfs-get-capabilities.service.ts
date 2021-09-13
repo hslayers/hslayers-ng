@@ -8,9 +8,10 @@ import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})
-export class HsWfsGetCapabilitiesService {
+export class HsWfsGetCapabilitiesService implements IGetCapabilities {
   service_url: any;
   constructor(
     private httpClient: HttpClient,
