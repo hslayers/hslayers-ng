@@ -630,6 +630,12 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		color:var(--text-color);
 	}
 
+	.selectionMenu {
+		right: 0 !important;
+		top: 100% !important;
+		transform: none !important;
+	}
+
 	.hs-hover-popup{max-height: 20em; min-width: 10em; max-width: 40em; overflow-y: scroll; visibility: visible; background: var(--white);}
 
 	.hs-toolbar-button{height: 2.4em}
