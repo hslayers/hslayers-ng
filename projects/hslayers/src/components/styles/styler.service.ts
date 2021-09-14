@@ -446,6 +446,7 @@ export class HsStylerService {
     setSld(this.layer, undefined);
     this.layer.setStyle(createDefaultStyle);
     await this.initLayerStyle(this.layer);
+    await this.fill(this.layer);
     await this.save();
   }
 
