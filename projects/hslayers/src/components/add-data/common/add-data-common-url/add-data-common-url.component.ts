@@ -1,16 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 
 @Component({
   selector: 'hs-add-data-common-url',
   templateUrl: './add-data-common-url.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsAddDataCommonUrlComponent {
   items;
