@@ -39,7 +39,7 @@ export class HsAddDataArcGisComponent
     if (!url || url === '') {
       return;
     }
-    this.hsHistoryListService.addSourceHistory('Arcgis', url);
+    this.hsHistoryListService.addSourceHistory('arcgis', url);
     Object.assign(this.hsAddDataArcGisService, {
       layerToSelect,
       loadingInfo: true,

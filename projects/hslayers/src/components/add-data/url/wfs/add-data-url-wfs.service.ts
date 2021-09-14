@@ -184,7 +184,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
             }
           },
           (e) => {
-            throw new Error(e);
+            throw new Error(e.message);
           }
         );
       },
