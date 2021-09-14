@@ -26,5 +26,6 @@ export function mockLayerUtilsService() {
     'layerLoaded',
     'layerInvalid',
     'hasNestedLayers',
+    'isLayerArcgis',
   ]);
 }
