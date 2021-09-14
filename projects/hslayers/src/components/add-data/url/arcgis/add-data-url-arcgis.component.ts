@@ -3,7 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
-import {HsAddDataUrlTabInterface} from '../add-data-url-tab.interface';
+import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
@@ -13,7 +13,7 @@ import {HsHistoryListService} from '../../../../common/history-list/history-list
   templateUrl: './add-data-url-arcgis.component.html',
 })
 export class HsAddDataArcGisComponent
-  implements HsAddDataUrlTabInterface, OnDestroy {
+  implements HsAddDataUrlComponentInterface, OnDestroy {
   owsConnectingSubscription: Subscription;
   constructor(
     public hsAddDataArcGisService: HsAddDataArcGisService,
@@ -24,6 +24,7 @@ export class HsAddDataArcGisComponent
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type === 'arcgis') {
+          this.hsAddDataArcGisService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });

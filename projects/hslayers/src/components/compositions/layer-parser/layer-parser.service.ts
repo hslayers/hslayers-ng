@@ -56,7 +56,7 @@ export class HsCompositionsLayerParserService {
    * @description Initiate creation of WFS layer thorough HsAddDataWfsService
    */
   async createWFSLayer(lyr_def): Promise<void> {
-    this.HsAddDataWfsService.layerToAdd = lyr_def.name;
+    this.HsAddDataWfsService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );

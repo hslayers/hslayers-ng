@@ -7,6 +7,7 @@ import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/c
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
+import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -16,21 +17,13 @@ import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/w
 import {addAnchors} from '../../../../common/attribution-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataUrlWmtsService {
+export class HsAddDataUrlWmtsService
+  implements HsAddDataUrlTypeServiceInterface {
   getDimensionValues;
   data;
   loadingInfo = false;
   showDetails = false;
   url: any;
-
-  caps: any;
-  title: any;
-  description: any;
-  version: any;
-  services: any;
-  tileMatrixSet = '';
-  image_format = '';
-  addAll: boolean;
   layerToSelect: any;
 
   constructor(
@@ -44,7 +37,18 @@ export class HsAddDataUrlWmtsService {
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService
   ) {
+    this.data = {
+      caps: null,
+      title: '',
+      description: '',
+      version: '',
+      services: [],
+      tileMatrixSet: '',
+      image_format: '',
+      addAll: null,
+    };
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.url = '';
       this.loadingInfo = false;
       this.showDetails = false;
     });
@@ -66,7 +70,7 @@ export class HsAddDataUrlWmtsService {
       //TODO AWAIT and add-layer if layerToSelect
       await this.capabilitiesReceived(response);
       if (this.layerToSelect) {
-        for (const layer of this.services) {
+        for (const layer of this.data.services) {
           this.addLayers(true);
         }
       }
@@ -95,29 +99,29 @@ export class HsAddDataUrlWmtsService {
     try {
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
-      this.caps = caps;
-      this.title = caps.ServiceIdentification.Title;
+      this.data.caps = caps;
+      this.data.title = caps.ServiceIdentification.Title;
 
-      this.description = addAnchors(caps.ServiceIdentification.Abstract);
-      this.version = caps.Version || caps.version;
-      this.services = caps.Contents.Layer;
+      this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
+      this.data.version = caps.Version || caps.version;
+      this.data.services = caps.Contents.Layer;
 
       this.hsAddDataUrlService.selectLayerByName(
         this.layerToSelect,
-        this.services,
+        this.data.services,
         'Title'
       );
       //TODO Layer to select
 
       this.loadingInfo = false;
-      return this.title;
+      return this.data.title;
     } catch (e) {
       throw new Error(e);
     }
   }
 
   addLayersRecursively(layer): void {
-    if (!this.addAll || layer.checked) {
+    if (!this.data.addAll || layer.checked) {
       this.addLayer(layer);
     }
     if (layer.Layer) {
@@ -128,8 +132,8 @@ export class HsAddDataUrlWmtsService {
   }
 
   addLayers(checkedOnly: boolean): void {
-    this.addAll = checkedOnly;
-    for (const layer of this.services) {
+    this.data.addAll = checkedOnly;
+    for (const layer of this.data.services) {
       this.addLayersRecursively(layer);
     }
     this.hsLayoutService.setMainPanel('layermanager');
@@ -141,7 +145,7 @@ export class HsAddDataUrlWmtsService {
    * Returns preferred tile format
    * @param formats - Set of available formats for layer being added
    */
-  getPreferredFormat(formats: any) {
+  getPreferredFormat(formats: any): any {
     const preferred = formats.find((format) => format.includes('png'));
     return preferred ? preferred : formats[0];
   }
@@ -211,7 +215,7 @@ export class HsAddDataUrlWmtsService {
         source: new WMTS({} as any),
       });
       // Get WMTS Capabilities and create WMTS source base on it
-      const options = optionsFromCapabilities(this.caps, {
+      const options = optionsFromCapabilities(this.data.caps, {
         layer: layer.Identifier,
         matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink),
         format: this.getPreferredFormat(layer.Format),

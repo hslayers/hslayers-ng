@@ -54,13 +54,6 @@ export class HsDimensionService {
     }
   }
 
-  hasNestedLayers(layer: WmsLayer): boolean {
-    if (layer == undefined) {
-      return false;
-    }
-    return layer.Layer !== undefined;
-  }
-
   paramsFromDimensions(layer) {
     if (!layer.Dimension) {
       return;
@@ -91,7 +84,10 @@ export class HsDimensionService {
     if (!Array.isArray(layer.Layer)) {
       return;
     }
-    if (this.hasNestedLayers(layer) && Array.isArray(layer.Layer)) {
+    if (
+      this.hsLayerUtilsService.hasNestedLayers(layer) &&
+      Array.isArray(layer.Layer)
+    ) {
       for (const sublayer of layer.Layer) {
         this.fillDimensionValues(sublayer);
       }

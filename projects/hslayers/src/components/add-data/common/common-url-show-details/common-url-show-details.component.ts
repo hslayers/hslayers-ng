@@ -4,6 +4,7 @@ import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from './../../url/add-data-url.service';
 import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
 import {HsLanguageService} from '../../../../components/language/language.service';
+import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 
 @Component({
@@ -23,13 +24,14 @@ export class HsCommonUrlShowDetailsComponent implements AfterContentInit {
   constructor(
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsUtilsService: HsUtilsService,
+    public hsLayerUtilsService: HsLayerUtilsService,
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService
   ) {}
   ngAfterContentInit(): void {
     this.data = this.injectedService.data;
-    this.hasNestedLayers = this.injectedService.hasNestedLayers;
+    this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
     this.getDimensionValues = this.injectedService.getDimensionValues;
     this.sourceHistory = this.injectedService.sourceHistory;
   }

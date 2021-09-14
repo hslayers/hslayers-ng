@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {HsAddDataUrlTabInterface} from '../add-data-url-tab.interface';
+import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
@@ -13,7 +13,7 @@ import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/w
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmsComponent
-  implements HsAddDataUrlTabInterface, OnDestroy {
+  implements HsAddDataUrlComponentInterface, OnDestroy {
   owsConnectingSubscription: Subscription;
   constructor(
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
@@ -24,6 +24,7 @@ export class HsAddDataWmsComponent
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wms') {
+          this.hsAddDataUrlWmsService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });
@@ -41,6 +42,7 @@ export class HsAddDataWmsComponent
     this.hsHistoryListService.addSourceHistory('wms', url);
     Object.assign(this.hsAddDataUrlWmsService, {
       layerToSelect,
+      showDetails: true,
       loadingInfo: true,
     });
     const wrapper = await this.hsWmsGetCapabilitiesService.request(url);

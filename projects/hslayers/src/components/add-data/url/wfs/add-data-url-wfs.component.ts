@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsAddDataUrlTabInterface} from '../add-data-url-tab.interface';
+import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
 import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -14,12 +14,12 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/w
   templateUrl: './add-data-wfs-layer.component.html',
 })
 export class HsAddDataWfsComponent
-  implements HsAddDataUrlTabInterface, OnDestroy {
+  implements HsAddDataUrlComponentInterface, OnDestroy {
   owsConnectingSubscription: Subscription;
   hasChecked: boolean;
   loadingFeatures: boolean;
   title = ''; //FIXME: unused
-
+  data: any;
   constructor(
     public hsAddDataWfsService: HsAddDataWfsService,
     public hsEventBusService: HsEventBusService,
@@ -28,12 +28,13 @@ export class HsAddDataWfsComponent
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService
   ) {
+    this.data = this.hsAddDataWfsService.data;
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(
         ({type, uri, layer, sld}) => {
           if (type == 'wfs') {
-            this.hsAddDataWfsService.layerToAdd = layer;
+            this.hsAddDataWfsService.layerToSelect = layer;
             this.setUrlAndConnect(uri, sld);
           }
         }
@@ -78,7 +79,7 @@ export class HsAddDataWfsComponent
 
   changed(): void {
     this.hasChecked = this.hsAddDataUrlService.searchForChecked(
-      this.hsAddDataWfsService.services
+      this.data.services
     );
   }
 

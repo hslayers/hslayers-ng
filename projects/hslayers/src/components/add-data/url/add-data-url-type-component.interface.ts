@@ -1,6 +1,6 @@
 import {Subscription} from 'rxjs';
 
-export interface HsAddDataUrlTabInterface {
+export interface HsAddDataUrlComponentInterface {
   owsConnectingSubscription: Subscription;
   hasChecked?: boolean;
   connect(layerToSelect?: string): Promise<void>;
