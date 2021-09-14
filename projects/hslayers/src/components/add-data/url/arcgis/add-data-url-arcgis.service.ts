@@ -56,7 +56,9 @@ export class HsAddDataArcGisService
     });
   }
 
-  async addLayerFromCapabilities(wrapper: CapabilitiesResponseWrapper) {
+  async addLayerFromCapabilities(
+    wrapper: CapabilitiesResponseWrapper
+  ): Promise<void> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -80,50 +82,64 @@ export class HsAddDataArcGisService
     }
   }
 
-  throwParsingError(e) {
+  throwParsingError(e): void {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
     this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
-  createLayer(response, layerToSelect: string): void {
-    try {
-      const caps = response;
-      this.data.mapProjection = this.hsMapService.map
-        .getView()
-        .getProjection()
-        .getCode()
-        .toUpperCase();
-      this.data.title = caps.mapName;
-      this.data.description = addAnchors(caps.description);
-      this.data.version = caps.currentVersion;
-      this.data.image_formats = caps.supportedImageFormatTypes.split(',');
-      this.data.query_formats = caps.supportedQueryFormats
-        ? caps.supportedQueryFormats.split(',')
-        : [];
-      this.data.srss = [caps.spatialReference.wkid];
-      this.data.services = caps.layers;
-
-      this.hsAddDataUrlService.selectLayerByName(
-        layerToSelect,
-        this.data.services,
-        'Name'
-      );
-      this.data.image_format = getPreferredFormat(this.data.image_formats, [
-        'PNG32',
-        'PNG',
-        'GIF',
-        'JPG',
-      ]);
-      this.data.query_format = getPreferredFormat(this.data.query_formats, [
-        'geoJSON',
-        'JSON',
-      ]);
-      this.loadingInfo = false;
-    } catch (e) {
-      throw new Error(e);
-    }
+  createLayer(response, layerToSelect: string): Promise<void> {
+    return new Promise(() => {
+      try {
+        const caps = response;
+        this.data.mapProjection = this.hsMapService.map
+          .getView()
+          .getProjection()
+          .getCode()
+          .toUpperCase();
+        this.data.title = caps.mapName;
+        this.data.description = addAnchors(caps.description);
+        this.data.version = caps.currentVersion;
+        this.data.image_formats = caps.supportedImageFormatTypes
+          ? caps.supportedImageFormatTypes.split(',')
+          : [];
+        this.data.query_formats = caps.supportedQueryFormats
+          ? caps.supportedQueryFormats.split(',')
+          : [];
+        this.data.srss = caps.spatialReference?.wkid
+          ? [caps.spatialReference.wkid.toString()]
+          : [];
+        this.data.services = caps.layers || caps.services;
+        this.data.srs = (() => {
+          for (const srs of this.data.srss) {
+            if (srs.includes('3857')) {
+              return srs;
+            }
+          }
+          return this.data.srss[0];
+        })();
+        this.srsChanged();
+        this.hsAddDataUrlService.selectLayerByName(
+          layerToSelect,
+          this.data.services,
+          'Name'
+        );
+        this.data.image_format = getPreferredFormat(this.data.image_formats, [
+          'PNG32',
+          'PNG',
+          'GIF',
+          'JPG',
+        ]);
+        this.data.query_format = getPreferredFormat(this.data.query_formats, [
+          'geoJSON',
+          'JSON',
+        ]);
+        this.loadingInfo = false;
+      } catch (e) {
+        throw new Error(e);
+      }
+    });
   }
 
   srsChanged(): void {
@@ -149,8 +165,8 @@ export class HsAddDataArcGisService
       this.addLayer(
         {},
         {
-          layerName: this.data.title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          layerTitle: this.data.title.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(this.data.path),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -190,8 +206,8 @@ export class HsAddDataArcGisService
     if (!checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
         this.addLayer(layer, {
-          layerName: layer.name.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          layerTitle: layer.name.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(this.data.path),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -202,8 +218,8 @@ export class HsAddDataArcGisService
         const clone = this.hsUtilsService.structuredClone(layer);
         delete clone.Layer;
         this.addLayer(layer, {
-          layerName: layer.name.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          layerTitle: layer.name.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(this.data.path),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -242,8 +258,7 @@ export class HsAddDataArcGisService
   /**
    * @description Add selected layer to map
    * @param {object} layer capabilities layer object
-   * @param {string} layerName layer name in the map
-   * @param layerTitle
+   * @param {string} layerTitle layer name in the map
    * @param {string} path Path name
    * @param {string} imageFormat Format in which to serve image. Usually: image/png
    * @param {string} queryFormat See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html

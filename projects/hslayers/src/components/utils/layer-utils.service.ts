@@ -6,6 +6,7 @@ import {
   Cluster,
   ImageWMS,
   Source,
+  TileArcGISRest,
   TileWMS,
   Vector as VectorSource,
   WMTS,
@@ -13,12 +14,7 @@ import {
 } from 'ol/source';
 import {GeoJSON, KML, TopoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
-import {
-  Image as ImageLayer,
-  Layer,
-  Tile,
-  Vector as VectorLayer,
-} from 'ol/layer';
+import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from '../language/language.service';
@@ -178,6 +174,16 @@ export class HsLayerUtilsService {
     return false;
   }
 
+  isLayerArcgis(layer: Layer<Source>): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, TileLayer) &&
+      this.HsUtilsService.instOf(layer.getSource(), TileArcGISRest)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   getLayerSourceFormat(layer: Layer<Source>): FeatureFormat {
     if (!this.isLayerVectorLayer(layer)) {
       return;
@@ -254,7 +260,7 @@ export class HsLayerUtilsService {
     );
   }
 
-  getSourceParams(source: ImageWMS | TileWMS): any {
+  getSourceParams(source: ImageWMS | TileWMS | TileArcGISRest): any {
     return source.getParams();
   }
 
@@ -265,6 +271,9 @@ export class HsLayerUtilsService {
     }
     if (this.HsUtilsService.instOf(src, TileWMS)) {
       return this.getSourceParams(src as TileWMS);
+    }
+    if (this.HsUtilsService.instOf(src, TileArcGISRest)) {
+      return this.getSourceParams(src as TileArcGISRest);
     }
   }
 
