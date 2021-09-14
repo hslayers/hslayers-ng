@@ -1,3 +1,7 @@
+import {Injectable} from '@angular/core';
+
+import FeatureFormat from 'ol/format/Feature';
+import TileLayer from 'ol/layer/Tile';
 import {
   Cluster,
   ImageWMS,
@@ -8,21 +12,19 @@ import {
   XYZ,
 } from 'ol/source';
 import {GeoJSON, KML, TopoJSON} from 'ol/format';
+import {Geometry} from 'ol/geom';
 import {
   Image as ImageLayer,
   Layer,
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {Injectable} from '@angular/core';
 import {isEmpty} from 'ol/extent';
 
-import FeatureFormat from 'ol/format/Feature';
-import TileLayer from 'ol/layer/Tile';
-import {Geometry} from 'ol/geom';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsUtilsService} from './utils.service';
+import {WmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {
   getCluster,
   getEditor,
@@ -59,6 +61,19 @@ export class HsLayerUtilsService {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Determines if layer has underlying layers.
+   * @param layer - Selected layer
+   * @returns True for layer with sub layers, for layer type
+   * WMS layer
+   */
+  hasNestedLayers(layer: WmsLayer): boolean {
+    if (layer === undefined) {
+      return false;
+    }
+    return layer.Layer !== undefined;
   }
 
   /**
