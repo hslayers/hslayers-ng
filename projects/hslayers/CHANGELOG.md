@@ -1,3 +1,73 @@
+# [6.0.0](https://github.com/hslayers/hslayers-ng/compare/5.1.0...6.0.0) (2021-09-14)
+
+
+### Bug Fixes
+
+* Assets path in test-app ([522e2a5](https://github.com/hslayers/hslayers-ng/commit/522e2a5a4c309c5d5b6df8a63e3a36767f7383be))
+* Box selection triggering layerlist dropdown ([97d4aff](https://github.com/hslayers/hslayers-ng/commit/97d4aff7b253f31aa497d60f865814a4909becf2))
+* Change how package version is imported ([88e13c4](https://github.com/hslayers/hslayers-ng/commit/88e13c49708800977e40791cf3fe66862ac9c4f9))
+* Clear style using reset style button ([a07e06e](https://github.com/hslayers/hslayers-ng/commit/a07e06eca1e2eeb6178284a9002af75643fa20aa)), closes [#2149](https://github.com/hslayers/hslayers-ng/issues/2149)
+* Disable poperjs dynamic flip  for selection dropdown ([b72fe5d](https://github.com/hslayers/hslayers-ng/commit/b72fe5dee3f0db1d7a334b8f698ef21cdda848e4))
+* Dont clear all GET params and rename hsl ones ([56216a9](https://github.com/hslayers/hslayers-ng/commit/56216a90d68d008534c8c4608d706903425fdf1c)), closes [#2098](https://github.com/hslayers/hslayers-ng/issues/2098) [#2084](https://github.com/hslayers/hslayers-ng/issues/2084)
+* Dont export schema.json ([a716ca1](https://github.com/hslayers/hslayers-ng/commit/a716ca1525361692c445625a1ac7d2636fde8570))
+* Draw layer metadata header size ([cb924f4](https://github.com/hslayers/hslayers-ng/commit/cb924f4a8db51f91282f8ad8676127c3b0438c05))
+* Make draw type 'selection' button act as a toggle ([5a6d491](https://github.com/hslayers/hslayers-ng/commit/5a6d491a9dba14da511bdb3d9299941b3390d68a))
+* **dimensions:** Parse timePoints at all places ([fad6fd3](https://github.com/hslayers/hslayers-ng/commit/fad6fd34d4829d22a92312cd60c86452c228368c)), closes [#2033](https://github.com/hslayers/hslayers-ng/issues/2033)
+* Fix opacity read/write in SLD ([b178cd0](https://github.com/hslayers/hslayers-ng/commit/b178cd080610b6ba1b53d7c02f0fbed9a91a8242)), closes [#2081](https://github.com/hslayers/hslayers-ng/issues/2081) [#1956](https://github.com/hslayers/hslayers-ng/issues/1956)
+* Gen SLD for default style in layers in HsConfig ([05ccc55](https://github.com/hslayers/hslayers-ng/commit/05ccc5528e07901dd5d715888d2f0256a1072757)), closes [#2052](https://github.com/hslayers/hslayers-ng/issues/2052)
+* Limit wms layers shown by default to 100 ([deac56d](https://github.com/hslayers/hslayers-ng/commit/deac56d895e969ec8cd9cdbb54baa587facaf786)), closes [#1870](https://github.com/hslayers/hslayers-ng/issues/1870)
+* Repair potential template problems ([93cbb89](https://github.com/hslayers/hslayers-ng/commit/93cbb89263b65ae6c08bc570624cb1a9c1c89b53))
+* **add-layers:** Hide time-picker when unsupported ([6f16131](https://github.com/hslayers/hslayers-ng/commit/6f161317f5bcb2378f31cd6898172eb360ee41fd)), closes [#1868](https://github.com/hslayers/hslayers-ng/issues/1868)
+* popUp attributes not visible ([73cdab5](https://github.com/hslayers/hslayers-ng/commit/73cdab5c3d29210edc827f9f4ef36cec7cce53f7))
+* Properly select and add layer loaded through url param 'wms_layers' ([252bd09](https://github.com/hslayers/hslayers-ng/commit/252bd09cc7bc19ac5d1dd9b9accf2b65b1161da9))
+* Support OL 6.6 type mappings ([#2082](https://github.com/hslayers/hslayers-ng/issues/2082)) ([b1a98bf](https://github.com/hslayers/hslayers-ng/commit/b1a98bfe67f249563ef46cb9ea11181b17a5ec35))
+* **add-data-vector:** Check is layer clustered before adding features to existing one ([b04e2ef](https://github.com/hslayers/hslayers-ng/commit/b04e2ef13f5f9a2d8658ff82394f5556b1344ca4))
+* **add-data-vector:** Enhance loading of shp,gpx and kml features ([83a4c6f](https://github.com/hslayers/hslayers-ng/commit/83a4c6fcf17698afdbef316db697ed0db38621a7))
+* **add-data-vector-service:** Allow to add layer from geojson/json without any features ([09ae3fa](https://github.com/hslayers/hslayers-ng/commit/09ae3fa7146e35bef1292e0c04bf07e9a8a45e73))
+* **LM:** Add missing icon-move glyph ([6c20447](https://github.com/hslayers/hslayers-ng/commit/6c204478ddba4f2db0eca4834cec6ee09d0c5864))
+* **save-map:** Replace incorrect function that serializes layers features ([3104a91](https://github.com/hslayers/hslayers-ng/commit/3104a9162bb16094c3df656a66512725736ffc09))
+* **trip-planner:** Check if waypoint.routes exists before anything ([bc35d75](https://github.com/hslayers/hslayers-ng/commit/bc35d75db3179fa015f0ab05a0d2da3685029842))
+
+
+### Features
+
+* Add queue library to npm peer dependencies ([58954f8](https://github.com/hslayers/hslayers-ng/commit/58954f830597f40c4e3b5c1395729578f59b8818)), closes [#1886](https://github.com/hslayers/hslayers-ng/issues/1886)
+* Add selection type menu dropdown to draw-toolbar ([eae4cdb](https://github.com/hslayers/hslayers-ng/commit/eae4cdb0960e1c0ce4610ea359262170b095f328))
+* Allow box selection of multiple features and ability to download/remove them at once ([5a1ac95](https://github.com/hslayers/hslayers-ng/commit/5a1ac951a149ce7ca747b44e700f24a086e394cd))
+* Allow uploading of geojson features to existing layer ([7175f5b](https://github.com/hslayers/hslayers-ng/commit/7175f5b2d5a10282e4a031633fad5b8dc470e657))
+* Allow uploading of kml features to existing layer ([475d073](https://github.com/hslayers/hslayers-ng/commit/475d073c11cb8eef726be658e127a527dbf00a65))
+* Cache capabilities between layers from same wms ([d66329a](https://github.com/hslayers/hslayers-ng/commit/d66329a513beaef7c0b2e6ce36b9cfe76660e2e9))
+* Create upload and reset of SLD in styler ([9ac5348](https://github.com/hslayers/hslayers-ng/commit/9ac5348deda1f76e64927edcf020071eccd2c42d))
+* Export everything ([610bd46](https://github.com/hslayers/hslayers-ng/commit/610bd4675b8a69e65a062692ad9b7aa4c70ba709))
+* Load SLD for WFS served by Layman ([7b5d54b](https://github.com/hslayers/hslayers-ng/commit/7b5d54b8ea0a5111b0a86bec49b093ef03c3ff9b)), closes [#2046](https://github.com/hslayers/hslayers-ng/issues/2046)
+* Support download of current layers style in SLD ([011f293](https://github.com/hslayers/hslayers-ng/commit/011f2936d64d3ddbbfca68bc88681c7f5ce04a3a)), closes [#2046](https://github.com/hslayers/hslayers-ng/issues/2046)
+* Use resumablejs to upload data larger than 2mb in chunks ([801834f](https://github.com/hslayers/hslayers-ng/commit/801834fb10a6002f7e1f56854bfed5ca87882eb8))
+* **add-data-url-wms:** Run capabilities/legend requests in queue ([a39ccde](https://github.com/hslayers/hslayers-ng/commit/a39ccdee7392ef026458d9fac1eb2d56ef12e130))
+* **add-data-wms:** Set some CRS even when missing ([e8af9db](https://github.com/hslayers/hslayers-ng/commit/e8af9db3b1bc49af4dafa07c372594325c29c5d3))
+* **attribute-row:** Stringify complex feature object attribute values for display ([d0ccc79](https://github.com/hslayers/hslayers-ng/commit/d0ccc7933afa77fef9badda3c8eabe77bab6e1d4))
+* **layout:** allow percentage values in HsConfig.panelWidths array ([3f4124c](https://github.com/hslayers/hslayers-ng/commit/3f4124c42eca8598586b26fa31f27996f5b3a8ec))
+* **material:** extend LayerManagerComponent ([9e57084](https://github.com/hslayers/hslayers-ng/commit/9e570840a529219e2371add31aadb34c1ff33b28))
+* **time-editor:** Add "out of range" explanation ([452fc71](https://github.com/hslayers/hslayers-ng/commit/452fc714f587725194b7460d69c273d1667dba43)), closes [#1995](https://github.com/hslayers/hslayers-ng/issues/1995)
+* Support downloading of queried feature as GeoJSON ([ac08ac4](https://github.com/hslayers/hslayers-ng/commit/ac08ac40c584a558d97130247dd216fd81011ee0))
+
+
+### Performance Improvements
+
+* fix HMR and improve recompiling test app ([7cf007d](https://github.com/hslayers/hslayers-ng/commit/7cf007ded7624155efbae4bbf284d046dffb0139))
+
+
+### Reverts
+
+* Change back proxy port to 8085 ([62c2cfd](https://github.com/hslayers/hslayers-ng/commit/62c2cfd220ef38e57de03ceb11dfc13a4d2811d4))
+
+
+### BREAKING CHANGES
+
+* Adds resumablejs as a new dependency
+* `npm i queue`
+
+
+
 # [5.1.0](https://github.com/hslayers/hslayers-ng/compare/5.0.0...5.1.0) (2021-08-03)
 
 This version sets upper bound of OpenLayers peer dependency to ~6.5 which mitigates failing compilation of hslayers-ng using OL 6.6 that could be incorrectly automatically installed with hslayers-ng 5.0 version.
