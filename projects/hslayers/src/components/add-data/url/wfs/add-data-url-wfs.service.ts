@@ -13,6 +13,11 @@ import {Geometry} from 'ol/geom';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
+import {
+  HsAddDataUrlTypeServiceInterface,
+  addLayerOptions,
+  addLayersRecursivelyOptions,
+} from '../add-data-url-type-service.interface';
 import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
@@ -23,26 +28,14 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/w
 @Injectable({
   providedIn: 'root',
 })
-export class HsAddDataWfsService {
+export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
   definedProjections: string[];
-  version: any;
-  output_format: any;
-  loadingFeatures: boolean;
-  loadingInfo = false;
-  title: any;
-  layers: any;
-  output_formats: any;
-  bbox: any;
-  services: any;
-  srss: any[];
-  srs: any;
-  addAll: boolean;
+  data: any;
   url: string;
   showDetails: boolean;
-  mapProjection: any;
-  layerToAdd: any;
-  folderName = 'WFS';
-
+  loadingFeatures: boolean;
+  loadingInfo = false;
+  layerToSelect: string;
   constructor(
     public hsConfig: HsConfig,
     private http: HttpClient,
@@ -54,6 +47,20 @@ export class HsAddDataWfsService {
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService
   ) {
+    this.data = {
+      mapProjection: undefined,
+      version: '',
+      output_format: '',
+      title: '',
+      layers: [],
+      output_formats: null,
+      bbox: null,
+      services: [],
+      srss: [],
+      srs: null,
+      addAll: null,
+      folderName: 'WFS',
+    };
     this.definedProjections = [
       'EPSG:3857',
       'EPSG:5514',
@@ -62,13 +69,14 @@ export class HsAddDataWfsService {
     ];
 
     this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.mapProjection = this.hsMapService.map
+      this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
     });
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.url = '';
       this.loadingInfo = false;
       this.showDetails = false;
     });
@@ -87,19 +95,19 @@ export class HsAddDataWfsService {
     }
     try {
       const bbox = await this.parseCapabilities(wrapper.response);
-      if (this.layerToAdd) {
-        for (const layer of this.services) {
+      if (this.layerToSelect) {
+        for (const layer of this.data.services) {
           //TODO: If Layman allows layers with different casing,
           // then remove the case lowering
           if (
-            layer.Title.toLowerCase() === this.layerToAdd.toLowerCase() ||
-            layer.Name.toLowerCase() === this.layerToAdd.toLowerCase()
+            layer.Title.toLowerCase() === this.layerToSelect.toLowerCase() ||
+            layer.Name.toLowerCase() === this.layerToSelect.toLowerCase()
           ) {
             layer.checked = true;
           }
         }
         this.addLayers(true, sld);
-        this.layerToAdd = null;
+        this.layerToSelect = null;
         this.zoomToBBox(bbox);
       }
     } catch (e) {
@@ -113,7 +121,7 @@ export class HsAddDataWfsService {
     }
   }
 
-  throwParsingError(e) {
+  throwParsingError(e): void {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
@@ -127,11 +135,11 @@ export class HsAddDataWfsService {
       strategy: bbox,
       loader: function (extent, resolution, projection) {
         (<any>this).loadingFeatures = true;
-        if (typeof me.version == 'undefined') {
-          me.version = '1.0.0';
+        if (typeof me.data.version == 'undefined') {
+          me.data.version = '1.0.0';
         }
-        if (typeof me.output_format == 'undefined') {
-          me.output_format = me.version == '1.0.0' ? 'GML2' : 'GML3';
+        if (typeof me.data.output_format == 'undefined') {
+          me.data.output_format = me.data.version == '1.0.0' ? 'GML2' : 'GML3';
         }
 
         const srs = options.srs.toUpperCase();
@@ -145,11 +153,11 @@ export class HsAddDataWfsService {
           options.url,
           me.hsUtilsService.paramsToURLWoEncode({
             service: 'wfs',
-            version: me.version, // == '2.0.0' ? '1.1.0' : me.version,
+            version: me.data.version, // == '2.0.0' ? '1.1.0' : me.version,
             request: 'GetFeature',
             typeName: options.layer.Name,
             srsName: srs,
-            output_format: me.output_format,
+            output_format: me.data.output_format,
             // count: options.layer.limitFeatureCount ? 1000 : '',
             BBOX: extent.join(',') + ',' + srs,
           }),
@@ -199,66 +207,68 @@ export class HsAddDataWfsService {
         caps = caps['WFS_Capabilities'];
       }
       this.parseWFSJson(caps);
-      this.title = caps.ServiceIdentification.Title;
+      this.data.title = caps.ServiceIdentification.Title;
       // this.description = addAnchors(caps.ServiceIdentification.Abstract);
-      this.version = caps.ServiceIdentification.ServiceTypeVersion;
+      this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType[0]
         : caps.FeatureTypeList.FeatureType;
-      this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
+      this.data.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType
         : [caps.FeatureTypeList.FeatureType];
-      this.bbox =
+      this.data.bbox =
         layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
 
-      this.output_format = this.getPreferredFormat(this.version);
+      this.data.output_format = this.getPreferredFormat(this.data.version);
 
-      this.services = caps.FeatureTypeList.FeatureType[0]
+      this.data.services = caps.FeatureTypeList.FeatureType[0]
         ? caps.FeatureTypeList.FeatureType
         : [caps.FeatureTypeList.FeatureType];
 
       const srsType = layer.DefaultSRS ? 'SRS' : 'CRS';
       if (layer['Default' + srsType] !== undefined) {
-        this.srss = [layer['Default' + srsType]];
+        this.data.srss = [layer['Default' + srsType]];
       } else {
-        this.srss = [];
-        this.srss.push('EPSG:4326');
+        this.data.srss = [];
+        this.data.srss.push('EPSG:4326');
       }
 
       const otherSRS = layer['Other' + srsType];
       if (otherSRS) {
         if (typeof otherSRS == 'string') {
-          this.srss.push(otherSRS);
+          this.data.srss.push(otherSRS);
         } else {
           for (const srs of layer['Other' + srsType]) {
-            this.srss.push(srs);
+            this.data.srss.push(srs);
           }
         }
       }
 
-      if (this.srss[0] === undefined) {
-        this.srss = [caps.FeatureTypeList.FeatureType[0]['Default' + srsType]];
+      if (this.data.srss[0] === undefined) {
+        this.data.srss = [
+          caps.FeatureTypeList.FeatureType[0]['Default' + srsType],
+        ];
         for (const srs of caps.FeatureTypeList.FeatureType[0][
           'Other' + srsType
         ]) {
-          this.srss.push(srs);
+          this.data.srss.push(srs);
         }
       }
-      this.srss = this.parseEPSG(this.srss);
-      if (this.srss.length == 0) {
-        this.srss = ['EPSG:3857'];
+      this.data.srss = this.parseEPSG(this.data.srss);
+      if (this.data.srss.length == 0) {
+        this.data.srss = ['EPSG:3857'];
       }
 
-      this.srs = (() => {
-        for (const srs of this.srss) {
+      this.data.srs = (() => {
+        for (const srs of this.data.srss) {
           if (srs.includes('3857')) {
             return srs;
           }
         }
-        return this.srss[0];
+        return this.data.srss[0];
       })();
 
-      if (!this.layerToAdd) {
+      if (!this.layerToSelect) {
         setTimeout(() => {
           try {
             this.parseFeatureCount();
@@ -268,7 +278,7 @@ export class HsAddDataWfsService {
         });
       }
       this.loadingInfo = false;
-      return this.bbox;
+      return this.data.bbox;
     } catch (e) {
       throw new Error(e);
     }
@@ -288,12 +298,12 @@ export class HsAddDataWfsService {
   }
 
   parseFeatureCount(): void {
-    for (const service of this.services) {
+    for (const service of this.data.services) {
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
         this.hsUtilsService.paramsToURLWoEncode({
           service: 'wfs',
-          version: this.version, //== '2.0.0' ? '1.1.0' : this.version,
+          version: this.data.version, //== '2.0.0' ? '1.1.0' : this.version,
           request: 'GetFeature',
           typeName: service.Name,
           resultType: 'hits',
@@ -369,11 +379,12 @@ export class HsAddDataWfsService {
   }
 
   readFeatures(doc) {
-    const wfs = new WFS({version: this.version});
+    const wfs = new WFS({version: this.data.version});
     const features = wfs.readFeatures(doc, {
-      dataProjection: this.srs,
+      dataProjection: this.data.srs,
       featureProjection:
-        this.hsMapService.map.getView().getProjection().getCode() == this.srs
+        this.hsMapService.map.getView().getProjection().getCode() ==
+        this.data.srs
           ? ''
           : this.hsMapService.map.getView().getProjection(),
     });
@@ -385,62 +396,53 @@ export class HsAddDataWfsService {
    * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean, sld: string): void {
-    this.addAll = checkedOnly;
-    for (const layer of this.services) {
-      this.addLayersRecursively(layer, sld);
+    this.data.addAll = checkedOnly;
+    for (const layer of this.data.services) {
+      this.addLayersRecursively(layer, {sld});
     }
   }
 
-  addLayersRecursively(layer, sld?: string): void {
-    if (!this.addAll || layer.checked) {
-      this.addLayer(
-        layer,
-        layer.Name,
-        // layer.Title.replace(/\//g, '&#47;'),
-        this.hsUtilsService.undefineEmptyString(this.folderName),
-        this.srs,
-        sld
-      );
+  addLayersRecursively(layer, options: addLayersRecursivelyOptions): void {
+    if (!this.data.addAll || layer.checked) {
+      this.addLayer(layer, {
+        layerName: layer.Name,
+        folder: this.hsUtilsService.undefineEmptyString(this.data.folderName),
+        crs: this.data.srs,
+        sld: options.sld,
+      });
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, sld);
+        this.addLayersRecursively(sublayer, {sld: options.sld});
       }
     }
   }
 
   /**
-   * @private
    * @description (PRIVATE) Add selected layer to map???
    * @param {object} layer capabilities layer object
    * @param {string} layerName layer name in the map
    * @param {string} folder name
    * @param {OpenLayers.Projection} srs of the layer
    */
-  private addLayer(
-    layer,
-    layerName: string,
-    folder: string,
-    srs,
-    sld?: string
-  ): void {
-    const options = {
+  addLayer(layer, options: addLayerOptions): void {
+    const sourceOptions = {
       layer,
       url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       strategy: bbox,
-      srs: srs,
+      srs: options.crs,
     };
 
     const new_layer = new VectorLayer({
       properties: {
-        name: layerName,
+        name: options.layerName,
         title: layer.Title.replace(/\//g, '&#47;'),
-        path: folder,
+        path: options.folder,
         removable: true,
-        sld,
+        sld: options.sld,
         wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       },
-      source: this.createWfsSource(options),
+      source: this.createWfsSource(sourceOptions),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });
@@ -460,14 +462,14 @@ export class HsAddDataWfsService {
         bbox.UpperCorner.split(' ')[1],
       ];
     }
-    if (!this.mapProjection) {
-      this.mapProjection = this.hsMapService.map
+    if (!this.data.mapProjection) {
+      this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
     }
-    const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
+    const extent = transformExtent(bbox, 'EPSG:4326', this.data.mapProjection);
     if (extent) {
       this.hsMapService.fitExtent(extent);
     }
