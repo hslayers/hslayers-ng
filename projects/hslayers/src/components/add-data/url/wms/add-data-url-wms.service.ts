@@ -14,6 +14,10 @@ import {transformExtent} from 'ol/proj';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
+import {
+  HsAddDataUrlTypeServiceInterface,
+  addLayerOptions,
+} from '../add-data-url-type-service.interface';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -31,7 +35,9 @@ import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataUrlWmsService {
+export class HsAddDataUrlWmsService
+  implements HsAddDataUrlTypeServiceInterface
+{
   getDimensionValues;
   data;
   showDetails: boolean;
@@ -69,6 +75,7 @@ export class HsAddDataUrlWmsService {
         .toUpperCase();
     });
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.url = '';
       this.loadingInfo = false;
       this.showDetails = false;
     });
@@ -366,13 +373,15 @@ export class HsAddDataUrlWmsService {
         {
           Name: this.createBasemapName(this.data.services),
         },
-        this.data.title.replace(/\//g, '&#47;'),
-        this.hsUtilsService.undefineEmptyString(this.data.path),
-        this.data.image_format,
-        this.data.query_format,
-        this.data.tile_size,
-        this.data.srs,
-        null
+        {
+          layerName: this.data.title.replace(/\//g, '&#47;'),
+          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          imageFormat: this.data.image_format,
+          queryFormat: this.data.query_format,
+          tileSize: this.data.tile_size,
+          crs: this.data.srs,
+          subLayers: null,
+        }
       );
     } else {
       for (const layer of this.data.services) {
@@ -413,13 +422,6 @@ export class HsAddDataUrlWmsService {
     });
   }
 
-  hasNestedLayers(layer: WmsLayer): boolean {
-    if (layer === undefined) {
-      return false;
-    }
-    return layer.Layer !== undefined;
-  }
-
   /**
    * Add selected layer to map
    * @param layer - capabilities layer object
@@ -431,16 +433,7 @@ export class HsAddDataUrlWmsService {
    * @param {import('ol/proj/Projection')} crs of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(
-    layer,
-    layerName: string,
-    path: string,
-    imageFormat: string,
-    queryFormat: string,
-    tileSize,
-    crs: string,
-    subLayers: any[]
-  ): void {
+  addLayer(layer, options: addLayerOptions): void {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -457,7 +450,7 @@ export class HsAddDataUrlWmsService {
     }
     if (preferred) {
       boundingbox = preferred.extent;
-    } else if (crs !== undefined) {
+    } else if (options.crs !== undefined) {
       if (layer.EX_GeographicBoundingBox !== undefined) {
         boundingbox = transformExtent(
           layer.EX_GeographicBoundingBox,
@@ -466,7 +459,7 @@ export class HsAddDataUrlWmsService {
         );
       }
     } else {
-      if (this.data.mapProjection != crs) {
+      if (this.data.mapProjection != options.crs) {
         boundingbox = layer.LatLonBoundingBox;
       }
     }
@@ -484,8 +477,8 @@ export class HsAddDataUrlWmsService {
       projection: this.data.crs || this.data.srs,
       params: {
         LAYERS: layer.Name || layer.Layer[0].Name,
-        INFO_FORMAT: layer.queryable ? queryFormat : undefined,
-        FORMAT: imageFormat,
+        INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
+        FORMAT: options.imageFormat,
         VERSION: this.data.version,
         STYLES: styles,
         ...this.hsDimensionService.paramsFromDimensions(layer),
@@ -498,8 +491,8 @@ export class HsAddDataUrlWmsService {
     const metadata =
       this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
     const layerOptions = {
-      title: layerName,
-      name: layerName,
+      title: options.layerName,
+      name: options.layerName,
       source,
       minResolution: layer.MinScaleDenominator,
       maxResolution: layer.MaxScaleDenominator,
@@ -507,10 +500,10 @@ export class HsAddDataUrlWmsService {
       abstract: layer.Abstract,
       metadata,
       extent: boundingbox,
-      path,
+      path: options.path,
       dimensions: dimensions,
       legends: legends,
-      subLayers: subLayers,
+      subLayers: options.subLayers,
       base: this.data.base,
       visible: this.data.visible,
     };
@@ -580,32 +573,30 @@ export class HsAddDataUrlWmsService {
     });
   }
 
-  private addLayersRecursively(layer, {checkedOnly = true}) {
+  addLayersRecursively(layer, {checkedOnly = true}): void {
     if (!checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
-        this.addLayer(
-          layer,
-          layer.Title.replace(/\//g, '&#47;'),
-          this.hsUtilsService.undefineEmptyString(this.data.path),
-          this.data.image_format,
-          this.data.query_format,
-          this.data.tile_size,
-          this.data.srs,
-          this.getSublayerNames(layer)
-        );
+        this.addLayer(layer, {
+          layerName: layer.Title.replace(/\//g, '&#47;'),
+          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          imageFormat: this.data.image_format,
+          queryFormat: this.data.query_format,
+          tileSize: this.data.tile_size,
+          crs: this.data.srs,
+          subLayers: this.getSublayerNames(layer),
+        });
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
         delete clone.Layer;
-        this.addLayer(
-          layer,
-          layer.Title.replace(/\//g, '&#47;'),
-          this.hsUtilsService.undefineEmptyString(this.data.path),
-          this.data.image_format,
-          this.data.query_format,
-          this.data.tile_size,
-          this.data.srs,
-          this.getSublayerNames(layer)
-        );
+        this.addLayer(layer, {
+          layerName: layer.Title.replace(/\//g, '&#47;'),
+          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          imageFormat: this.data.image_format,
+          queryFormat: this.data.query_format,
+          tileSize: this.data.tile_size,
+          crs: this.data.srs,
+          subLayers: this.getSublayerNames(layer),
+        });
       }
     }
     if (layer.Layer) {

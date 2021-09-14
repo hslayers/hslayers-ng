@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsAddDataUrlTabInterface} from '../add-data-url-tab.interface';
+import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -20,10 +20,10 @@ import {HsWmtsGetCapabilitiesService} from '../../../../common/get-capabilities/
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmtsComponent
-  implements HsAddDataUrlTabInterface, OnDestroy {
+  implements HsAddDataUrlComponentInterface, OnDestroy {
   owsConnectingSubscription: Subscription;
   hasChecked: boolean;
-
+  data: any;
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
@@ -36,10 +36,12 @@ export class HsAddDataWmtsComponent
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService
   ) {
+    this.data = this.hsAddDataUrlWmtsService.data;
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wmts') {
+          this.hsAddDataUrlWmtsService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });
@@ -71,7 +73,7 @@ export class HsAddDataWmtsComponent
 
   changed(): void {
     this.hasChecked = this.hsAddDataUrlService.searchForChecked(
-      this.hsAddDataUrlWmtsService.services
+      this.data.services
     );
   }
 

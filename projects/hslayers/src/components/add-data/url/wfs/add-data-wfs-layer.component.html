@@ -10,13 +10,13 @@
         <div class="form-group">
             <label class="capabilities_label col-sm-4 control-label">{{'ADDLAYERS.folderName' | translate}}</label>
             <div class="capabilities_input col-sm-8">
-                <input class="form-control" [(ngModel)]="hsAddDataWfsService.folderName"
+                <input class="form-control" [(ngModel)]="data.folderName"
                     [ngModelOptions]="{standalone: true}" />
             </div>
         </div>
         <hr />
         <ul class="list-group">
-            <li *ngFor="let layer of hsAddDataWfsService.services; trackBy:( 'Name' | trackByProperty )" class="list-group-item py-2 clearfix">
+            <li *ngFor="let layer of data.services; trackBy:( 'Name' | trackByProperty )" class="list-group-item py-2 clearfix">
                 <div>
                     <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer" (change)="changed()" />
                     {{layer.Title}}
@@ -35,7 +35,7 @@
                 style="background: var(--panel-wrapper-bg-color);">
                 <div class="d-flex justify-content-center">
                     <hs-common-url-add class="w-100" [hasChecked]="hasChecked" [injectedService]="hsAddDataWfsService"
-                        [layers]="hsAddDataWfsService.services">
+                        [layers]="data.services">
                     </hs-common-url-add>
                     <button *ngIf="hsAddDataWfsService.loadingFeatures"
                         class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img

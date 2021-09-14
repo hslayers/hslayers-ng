@@ -41,7 +41,7 @@ export class HsCommonUrlAddComponent implements OnChanges {
   addLayers(checked: boolean): void {
     this.injectedService.addLayers(checked);
     //FIXME: to implement
-    // this.zoomToLayers();
+    // this.injectedService.zoomToLayers();
   }
 
   changed(): void {
