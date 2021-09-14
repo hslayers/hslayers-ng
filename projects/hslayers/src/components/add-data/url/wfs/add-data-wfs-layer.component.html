@@ -1,7 +1,7 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="wfs" [(url)]="hsAddDataWfsService.url" (connect)="connect()"></hs-add-data-common-url>
 
-    <hs-common-url-loading-data [injectedService]="hsAddDataWfsService"></hs-common-url-loading-data>
+    <hs-common-url-progress [loadingInfo]="hsAddDataWfsService.loadingInfo"></hs-common-url-progress>
     
     <div *ngIf="hsAddDataWfsService.showDetails && !hsAddDataWfsService.loadingInfo" class="card">
 
@@ -16,7 +16,7 @@
         </div>
         <hr />
         <ul class="list-group">
-            <li *ngFor="let layer of hsAddDataWfsService.services" class="list-group-item py-2 clearfix">
+            <li *ngFor="let layer of hsAddDataWfsService.services; trackBy:( 'Name' | trackByProperty )" class="list-group-item py-2 clearfix">
                 <div>
                     <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer" (change)="changed()" />
                     {{layer.Title}}
@@ -34,9 +34,9 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix"
                 style="background: var(--panel-wrapper-bg-color);">
                 <div class="d-flex justify-content-center">
-                    <hs-common-url-add-to-map [hasChecked]="hasChecked" [injectedService]="hsAddDataWfsService"
+                    <hs-common-url-add class="w-100" [hasChecked]="hasChecked" [injectedService]="hsAddDataWfsService"
                         [layers]="hsAddDataWfsService.services">
-                    </hs-common-url-add-to-map>
+                    </hs-common-url-add>
                     <button *ngIf="hsAddDataWfsService.loadingFeatures"
                         class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img
                             class="ml-2" [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>

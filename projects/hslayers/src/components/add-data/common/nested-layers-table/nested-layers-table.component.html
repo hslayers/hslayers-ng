@@ -1,5 +1,5 @@
 <table class="table table-sm table-striped table-bordered" style="width: 100%">
-    <tbody *ngFor="let sub_layer of layers">
+    <tbody *ngFor="let sub_layer of layers; trackBy:( 'Name' | trackByProperty )">
         <tr>
             <td  style="width: 1em"><input type="checkbox" [(ngModel)]="sub_layer.checked" (change)="checked(sub_layer)"
                     [ngModelOptions]="{standalone: true}" /></td>

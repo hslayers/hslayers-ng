@@ -16,7 +16,7 @@ export class HsCommonUrlShowDetailsComponent implements AfterContentInit {
   data;
   sourceHistory;
   hasChecked = false;
-  checkedLayers = {};
+  checkedSubLayers = {};
   hasNestedLayers: any;
   getDimensionValues: any;
   limitShown = 100;
@@ -47,8 +47,8 @@ export class HsCommonUrlShowDetailsComponent implements AfterContentInit {
   }
 
   searchForChecked(service): void {
-    this.checkedLayers[service.Name] = service.checked;
-    this.hasChecked = Object.values(this.checkedLayers).some(
+    this.checkedSubLayers[service.Name] = service.checked;
+    this.hasChecked = Object.values(this.checkedSubLayers).some(
       (value) => value === true
     );
   }
