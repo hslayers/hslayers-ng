@@ -51,7 +51,7 @@ export class HsAddDataWmtsComponent
 
   async connect(layerToSelect?: string): Promise<void> {
     const url = this.hsAddDataUrlWmtsService.url;
-    if (!url) {
+    if (!url || url === '') {
       return;
     }
     this.hasChecked = false;

@@ -54,7 +54,7 @@ export class HsAddDataWfsComponent
 
   async connect(sld?: string): Promise<void> {
     const url = this.hsAddDataWfsService.url;
-    if (!url) {
+    if (!url || url === '') {
       return;
     }
     this.hasChecked = false;
