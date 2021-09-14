@@ -170,16 +170,23 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
    * @returns True if map projection is in list, otherwise false
    */
   currentProjectionSupported(srss: string[]): boolean {
+    if (!srss || srss.length === 0) {
+      return false;
+    }
     let found = false;
     for (const val of srss) {
-      if (
-        this.hsMapService.map
-          .getView()
-          .getProjection()
-          .getCode()
-          .toUpperCase() == val.toUpperCase()
-      ) {
-        found = true;
+      if (!val) {
+        found = false;
+      } else {
+        if (
+          this.hsMapService.map
+            .getView()
+            .getProjection()
+            .getCode()
+            .toUpperCase() == val.toUpperCase()
+        ) {
+          found = true;
+        }
       }
     }
     return found;

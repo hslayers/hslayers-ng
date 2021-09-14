@@ -3,11 +3,12 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsAddDataService} from './../../add-data.service';
-import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
+import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
@@ -34,7 +35,8 @@ export class HsAddDataWmtsComponent
     public hsLanguageService: HsLanguageService,
     public hsAddDataUrlWmtsService: HsAddDataUrlWmtsService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataService: HsAddDataService
+    public hsAddDataService: HsAddDataService,
+    public hsHistoryListService: HsHistoryListService
   ) {
     this.data = this.hsAddDataUrlWmtsService.data;
     //Merge subscriptions in order to easily unsubscribe on destroy
@@ -57,6 +59,7 @@ export class HsAddDataWmtsComponent
       return;
     }
     this.hasChecked = false;
+    this.hsHistoryListService.addSourceHistory('wmts', url);
     Object.assign(this.hsAddDataUrlWmtsService, {
       layerToSelect,
       loadingInfo: true,

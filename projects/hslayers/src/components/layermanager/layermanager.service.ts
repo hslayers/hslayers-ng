@@ -287,6 +287,9 @@ export class HsLayerManagerService {
     if (this.HsLayerUtilsService.isLayerXYZ(layer)) {
       return 'XYZ';
     }
+    if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
+      return 'ARCGIS';
+    }
     this.HsLog.warn(
       `Cannot decide a type of source of layer ${getTitle(layer)}`
     );
