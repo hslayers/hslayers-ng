@@ -35,7 +35,7 @@ export class HsAddDataArcGisComponent
 
   async connect(layerToSelect?: string): Promise<void> {
     const url = this.hsAddDataArcGisService.url;
-    if (!url) {
+    if (!url || url === '') {
       return;
     }
     this.hsHistoryListService.addSourceHistory('Arcgis', url);

@@ -119,7 +119,7 @@
                         class='list-group-item '>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
-                        *ngFor='let layer of hsAddDataCatalogueService.catalogEntries' class="clearfix list-group-item"
+                        *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )" class="clearfix list-group-item"
                         [ngClass]="{'hs-endpoint-item-active': layer.highlighted}" (click)="layerSelected(layer)"
                         (mouseover)="highlightLayer(layer, true)" (mouseleave)="highlightLayer(layer, false)">
                         <hs-add-data-list-item [layer]="layer"></hs-add-data-list-item>

@@ -1,6 +1,6 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="wms" [(url)]="hsAddDataUrlWmsService.url" (connect)="connect()">
     </hs-add-data-common-url>
-    <hs-common-url-loading-data [injectedService]="hsAddDataUrlWmsService"></hs-common-url-loading-data>
+    <hs-common-url-progress [loadingInfo]="hsAddDataUrlWmsService.loadingInfo"></hs-common-url-progress>
     <hs-common-url-show-details [injectedService]="hsAddDataUrlWmsService" type="wms"></hs-common-url-show-details>
 </form>

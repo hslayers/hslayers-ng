@@ -5,6 +5,6 @@ export * from './add-data-common-url/add-data-common-url.component';
 export * from './add-data-wms-layer-highlight-directive';
 export * from './capabilities-error-dialog/capabilities-error-dialog.component';
 export * from './nested-layers-table/nested-layers-table.component';
-export * from './common-url-add-to-map/common-url-add-to-map.component';
+export * from './common-url-add/common-url-add.component';
 export * from './common-url-show-details/common-url-show-details.component';
-export * from './common-url-loading-data/common-url-loading-data.component';
+export * from './common-url-progress/common-url-progress.component';

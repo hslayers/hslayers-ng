@@ -2,13 +2,13 @@
     <hs-add-data-common-url type="wmts" [(url)]="hsAddDataUrlWmtsService.url" (connect)="connect()">
     </hs-add-data-common-url>
 
-    <hs-common-url-loading-data [injectedService]="hsAddDataUrlWmtsService"></hs-common-url-loading-data>
+    <hs-common-url-progress [loadingInfo]="hsAddDataUrlWmtsService.loadingInfo"></hs-common-url-progress>
     <div *ngIf="hsAddDataUrlWmtsService.showDetails && !hsAddDataUrlWmtsService.loadingInfo" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix" style="background: var(--white);">
                 <div>{{hsAddDataUrlWmtsService.title}}</div>
             </li>
-            <li *ngFor="let layer of hsAddDataUrlWmtsService.services; let index = index"
+            <li *ngFor="let layer of hsAddDataUrlWmtsService.services; trackBy:( 'Identifier' | trackByProperty ); let index = index"
                 class="list-group-item clearfix">
                 <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed()"
                     [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}" />
@@ -35,9 +35,9 @@
         <li class="list-group-item hs-ows-layerlistheading clearfix" style="position: sticky;
         bottom: 0; background: var(--panel-wrapper-bg-color); z-index:10">
             <div class="d-flex justify-content-center">
-                <hs-common-url-add-to-map [hasChecked]="hasChecked" [injectedService]="hsAddDataUrlWmtsService"
+                <hs-common-url-add class="w-100" [hasChecked]="hasChecked" [injectedService]="hsAddDataUrlWmtsService"
                     [layers]="hsAddDataUrlWmtsService.services">
-                </hs-common-url-add-to-map>
+                </hs-common-url-add>
             </div>
         </li>
     </div>

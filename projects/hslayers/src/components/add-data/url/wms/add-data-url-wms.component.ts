@@ -35,6 +35,9 @@ export class HsAddDataWmsComponent
 
   async connect(layerToSelect?: string): Promise<void> {
     const url = this.hsAddDataUrlWmsService.url;
+    if (!url || url === '') {
+      return;
+    }
     this.hsHistoryListService.addSourceHistory('wms', url);
     Object.assign(this.hsAddDataUrlWmsService, {
       layerToSelect,

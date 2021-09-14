@@ -109,7 +109,7 @@
         <!-- <th style="width:30%">{{'COMMON.name' | translate}}</th> -->
         <th>{{'COMMON.abstract' | translate}}</th>
       </thead>
-      <tbody *ngFor="let service of data.services | slice:0:limitShown">
+      <tbody *ngFor="let service of data.services | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
         <tr class="align-middle">
           <td [attr.rowspan]="service.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(service)}">
             <input type="checkbox" class="checkbox-lg" [(ngModel)]="service.checked" name="service"
@@ -153,7 +153,7 @@
         <th style="width:1em">&nbsp;</th>
         <th>{{'COMMON.name' | translate}}</th>
       </thead>
-      <tbody *ngFor="let service of data.services">
+      <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
         <tr>
           <td><input class="checkbox-lg" type="checkbox" name="service" (change)="changed()"
               [(ngModel)]="service.checked" /></td>
@@ -163,11 +163,11 @@
     </table>
   </ng-template>
   <ng-container *ngIf="type === 'wms'">
-    <div *ngIf="reachedLimit()"><span [translate]="'ADDDATA.CATALOGUE.showingSubset'"
+    <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span
+        [translate]="'ADDDATA.CATALOGUE.showingSubset'"
         [translateParams]="{limitShown: limitShown, total: data.services.length}"></span>
       <div class="btn-group ml-2">
-        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-          (click)="limitShown = limitShown + 100">
+        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="limitShown = limitShown + 100">
           {{'ADDDATA.CATALOGUE.showNext100' | translate}}
         </button>
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
@@ -177,6 +177,7 @@
       </div>
     </div>
   </ng-container>
-  <hs-common-url-add-to-map [hasChecked]="hasChecked" [injectedService]="injectedService" [layers]="data.services">
-  </hs-common-url-add-to-map>
+  <hs-common-url-add class="w-100" [hasChecked]="hasChecked" [injectedService]="injectedService"
+    [layers]="data.services">
+  </hs-common-url-add>
 </div>
