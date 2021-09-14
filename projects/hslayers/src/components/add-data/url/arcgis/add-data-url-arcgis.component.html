@@ -1,6 +1,6 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="Arcgis" [(url)]="hsAddDataArcGisService.url" (connect)="connect()">
     </hs-add-data-common-url>
-    <hs-common-url-loading-data [loadingInfo]="hsAddDataArcGisService.loadingInfo"></hs-common-url-loading-data>
+    <hs-common-url-progress [loadingInfo]="hsAddDataArcGisService.loadingInfo"></hs-common-url-progress>
     <hs-common-url-show-details [injectedService]="hsAddDataArcGisService" type="Arcgis"></hs-common-url-show-details>
 </form>

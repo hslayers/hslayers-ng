@@ -1,12 +1,12 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
-import {HsAddDataUrlService} from './../../url/add-data-url.service';
+import {HsAddDataUrlService} from '../../url/add-data-url.service';
 
 @Component({
-  selector: 'hs-common-url-add-to-map',
-  templateUrl: './common-url-add-to-map.component.html',
+  selector: 'hs-common-url-add',
+  templateUrl: './common-url-add.component.html',
 })
-export class HsCommonUrlAddToMapComponent implements OnChanges {
+export class HsCommonUrlAddComponent implements OnChanges {
   @Input() layers: any;
   @Input() injectedService: any;
   @Input() hasChecked: boolean;

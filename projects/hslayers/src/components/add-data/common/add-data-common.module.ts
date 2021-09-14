@@ -6,8 +6,8 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCommonUrlComponent} from './add-data-common-url/add-data-common-url.component';
 import {HsAddDataTargetPositionComponent} from './add-data-target-position/add-data-target-position.component';
-import {HsCommonUrlAddToMapComponent} from './common-url-add-to-map/common-url-add-to-map.component';
-import {HsCommonUrlLoadingDataComponent} from './common-url-loading-data/common-url-loading-data.component';
+import {HsCommonUrlAddComponent} from './common-url-add/common-url-add.component';
+import {HsCommonUrlProgressComponent} from './common-url-progress/common-url-progress.component';
 import {HsCommonUrlShowDetailsComponent} from './common-url-show-details/common-url-show-details.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
@@ -25,8 +25,8 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
     HsUiExtensionsModule,
   ],
   exports: [
-    HsCommonUrlAddToMapComponent,
-    HsCommonUrlLoadingDataComponent,
+    HsCommonUrlAddComponent,
+    HsCommonUrlProgressComponent,
     HsAddDataCommonUrlComponent,
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
@@ -35,14 +35,14 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
     HsCommonUrlShowDetailsComponent,
   ],
   declarations: [
-    HsCommonUrlAddToMapComponent,
+    HsCommonUrlAddComponent,
     HsCommonUrlShowDetailsComponent,
     HsAddDataCommonUrlComponent,
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
-    HsCommonUrlLoadingDataComponent,
+    HsCommonUrlProgressComponent,
   ],
   entryComponents: [HsGetCapabilitiesErrorComponent],
 })
