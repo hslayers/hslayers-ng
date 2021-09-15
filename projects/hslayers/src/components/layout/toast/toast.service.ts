@@ -16,6 +16,10 @@ export type customToastOptions = {
    * Sets custom delay for the toast message
    */
   customDelay?: number;
+  /**
+   * Sets service name from where toast was called
+   */
+  serviceCalledFrom?: string;
 };
 
 @Injectable({
@@ -40,7 +44,13 @@ export class HsToastService {
     if (this.toasts.length >= 5) {
       this.toasts = this.toasts.slice(-4);
     }
-    if (!this.toasts.some((toast) => toast.textOrTpl === textOrTpl)) {
+    if (
+      !this.toasts.some(
+        (toast) =>
+          toast.textOrTpl === textOrTpl &&
+          toast?.serviceCalledFrom === options.serviceCalledFrom
+      )
+    ) {
       this.toasts.push({textOrTpl, ...options});
     }
   }
@@ -67,6 +77,7 @@ export class HsToastService {
         delay: options.customDelay || 7000,
         autohide: true,
         classname: options.toastStyleClasses || `bg-danger text-light`,
+        serviceCalledFrom: options.serviceCalledFrom,
       }
     );
   }

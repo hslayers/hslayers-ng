@@ -85,7 +85,8 @@ export class HsAddDataArcGisService
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
 
-        'ADDLAYERS.unauthorizedAccess'
+        'ADDLAYERS.unauthorizedAccess',
+        {serviceCalledFrom: 'hsAddDataArcgisService'}
       );
     } else {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e);
