@@ -53,15 +53,15 @@ export class HsAddDataVectorService {
   ) {}
 
   /**
-   * @description Load non-wms OWS data and create layer
-   * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
-   * @param {string} url Url of data/service localization
-   * @param name
-   * @param {string} title Title of new layer
-   * @param {string} abstract Abstract of new layer
-   * @param addUnder
-   * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
-   * @param {object} options Other options
+   * Load non-wms OWS data and create layer
+   * @param type - Type of data to load (supports Kml, Geojson, Wfs and Sparql)
+   * @param url - Url of data/service localization
+   * @param name -
+   * @param title - Title of new layer
+   * @param abstract - Abstract of new layer
+   * @param addUnder -
+   * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
+   * @param options - Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
   addVectorLayer(
@@ -110,14 +110,14 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * @description Load non-wms OWS data and create layer
-   * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
-   * @param {string} url Url of data/service localization
-   * @param name
-   * @param {string} title Title of new layer
-   * @param {string} abstract Abstract of new layer
-   * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
-   * @param {HsVectorLayerOptions} options Other options
+   * Load non-wms OWS data and create layer
+   * @param type - Type of data to load (supports Kml, Geojson, Wfs and Sparql)
+   * @param url - Url of data/service localization
+   * @param name -
+   * @param title - Title of new layer
+   * @param abstract - Abstract of new layer
+   * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
+   * @param options - Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
   async createVectorLayer(

@@ -1,17 +1,17 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
-import {HsAddDataService} from './../../add-data.service';
-import {HsAddDataUrlService} from './../../url/add-data-url.service';
+import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataUrlService} from '../../url/add-data-url.service';
 import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
-import {HsLanguageService} from '../../../../components/language/language.service';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 
 @Component({
-  selector: 'hs-common-url-show-details',
-  templateUrl: './common-url-show-details.component.html',
+  selector: 'hs-common-url-details',
+  templateUrl: './common-url-details.component.html',
 })
-export class HsCommonUrlShowDetailsComponent implements AfterContentInit {
+export class HsCommonUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: any;
   @Input() type: string;
   data;
@@ -41,7 +41,7 @@ export class HsCommonUrlShowDetailsComponent implements AfterContentInit {
   }
   //NOT BEING USED
   /**
-   * @description Clear Url and hide detailsWms
+   * Clear Url and hide detailsWms
    */
   clear(): void {
     this.injectedService.url = '';

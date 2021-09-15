@@ -8,7 +8,7 @@ import {HsAddDataCommonUrlComponent} from './add-data-common-url/add-data-common
 import {HsAddDataTargetPositionComponent} from './add-data-target-position/add-data-target-position.component';
 import {HsCommonUrlAddComponent} from './common-url-add/common-url-add.component';
 import {HsCommonUrlProgressComponent} from './common-url-progress/common-url-progress.component';
-import {HsCommonUrlShowDetailsComponent} from './common-url-show-details/common-url-show-details.component';
+import {HsCommonUrlDetailsComponent} from './common-url-details/common-url-details.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
@@ -32,11 +32,11 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight-directi
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
-    HsCommonUrlShowDetailsComponent,
+    HsCommonUrlDetailsComponent,
   ],
   declarations: [
     HsCommonUrlAddComponent,
-    HsCommonUrlShowDetailsComponent,
+    HsCommonUrlDetailsComponent,
     HsAddDataCommonUrlComponent,
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,

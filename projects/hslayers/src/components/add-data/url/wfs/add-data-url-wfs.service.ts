@@ -13,29 +13,30 @@ import {Geometry} from 'ol/geom';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {
-  HsAddDataUrlTypeServiceInterface,
-  addLayerOptions,
-  addLayersRecursivelyOptions,
-} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
 import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
+import {
+  addLayerOptions,
+  addLayersRecursivelyOptions,
+  addDataUrlDataObject,
+} from '../add-data-url.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
+  data: addDataUrlDataObject;
   definedProjections: string[];
-  data: any;
-  url: string;
-  showDetails: boolean;
+  layerToSelect: string;
   loadingFeatures: boolean;
   loadingInfo = false;
-  layerToSelect: string;
+  showDetails: boolean;
+  url: string;
   constructor(
     public hsConfig: HsConfig,
     private http: HttpClient,
@@ -48,18 +49,18 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     public hsAddDataService: HsAddDataService
   ) {
     this.data = {
-      mapProjection: undefined,
-      version: '',
-      output_format: '',
-      title: '',
-      layers: [],
-      output_formats: null,
+      add_all: null,
       bbox: null,
+      folder_name: 'WFS',
+      layers: [],
+      map_projection: undefined,
+      output_format: '',
+      output_formats: null,
       services: [],
-      srss: [],
       srs: null,
-      addAll: null,
-      folderName: 'WFS',
+      srss: [],
+      title: '',
+      version: '',
     };
     this.definedProjections = [
       'EPSG:3857',
@@ -69,7 +70,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     ];
 
     this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.data.mapProjection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
@@ -193,7 +194,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
   }
 
   /**
-   * @param {string} response A stringified XML response to getCapabilities request
+   * @param response - A stringified XML response to getCapabilities request
    * @returns {Promise}
    */
   async parseCapabilities(response: string): Promise<any> {
@@ -392,21 +393,21 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
   }
 
   /**
-   * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
+   * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean, sld: string): void {
-    this.data.addAll = checkedOnly;
+    this.data.add_all = checkedOnly;
     for (const layer of this.data.services) {
       this.addLayersRecursively(layer, {sld});
     }
   }
 
   addLayersRecursively(layer, options: addLayersRecursivelyOptions): void {
-    if (!this.data.addAll || layer.checked) {
+    if (!this.data.add_all || layer.checked) {
       this.addLayer(layer, {
         layerName: layer.Name,
-        folder: this.hsUtilsService.undefineEmptyString(this.data.folderName),
+        folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         crs: this.data.srs,
         sld: options.sld,
       });
@@ -419,11 +420,11 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
   }
 
   /**
-   * @description (PRIVATE) Add selected layer to map???
-   * @param {object} layer capabilities layer object
-   * @param {string} layerName layer name in the map
-   * @param {string} folder name
-   * @param {OpenLayers.Projection} srs of the layer
+   * (PRIVATE) Add selected layer to map???
+   * @param layer - capabilities layer object
+   * @param layerName - layer name in the map
+   * @param folder - name
+   * @param srs - of the layer
    */
   addLayer(layer, options: addLayerOptions): void {
     const sourceOptions = {
@@ -462,14 +463,14 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
         bbox.UpperCorner.split(' ')[1],
       ];
     }
-    if (!this.data.mapProjection) {
-      this.data.mapProjection = this.hsMapService.map
+    if (!this.data.map_projection) {
+      this.data.map_projection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
     }
-    const extent = transformExtent(bbox, 'EPSG:4326', this.data.mapProjection);
+    const extent = transformExtent(bbox, 'EPSG:4326', this.data.map_projection);
     if (extent) {
       this.hsMapService.fitExtent(extent);
     }

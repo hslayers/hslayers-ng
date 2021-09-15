@@ -45,15 +45,15 @@ export class HsAddDataArcGisComponent
       loadingInfo: true,
       showDetails: true,
     });
-    this.hsAddDataArcGisService.data.getMapUrl = url;
+    this.hsAddDataArcGisService.data.get_map_url = url;
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(url);
     this.hsAddDataArcGisService.addLayerFromCapabilities(wrapper);
   }
 
   /**
-   * @description Connect to service of specified Url
-   * @param {string} url Url of requested service
-   * @param {string} layer Optional layer to select, when
+   * Connect to service of specified Url
+   * @param url - Url of requested service
+   * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer: string): void {
@@ -62,8 +62,8 @@ export class HsAddDataArcGisComponent
   }
 
   /**
-   * @description For the sake of possible future implementation changes
-   * @param {string} url URL to be set
+   * For the sake of possible future implementation changes
+   * @param url - URL to be set
    */
   updateUrl(url: string): void {
     this.hsAddDataArcGisService.url = url;

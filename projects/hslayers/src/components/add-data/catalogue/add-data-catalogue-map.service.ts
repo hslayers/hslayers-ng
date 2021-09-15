@@ -97,8 +97,8 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @param {object} dataset Configuration of selected datasource (from app config)
-   * @description Remove layer extent features from map
+   * @param dataset - Configuration of selected datasource (from app config)
+   * Remove layer extent features from map
    */
   clearDatasetFeatures(dataset): void {
     if (dataset.layers) {

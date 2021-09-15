@@ -14,6 +14,7 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmtsGetCapabilitiesService} from '../../../../common/get-capabilities/wmts-get-capabilities.service';
+import {addDataUrlDataObject} from '../add-data-url.types';
 
 @Component({
   selector: 'hs-add-data-url-wmts',
@@ -22,9 +23,9 @@ import {HsWmtsGetCapabilitiesService} from '../../../../common/get-capabilities/
 })
 export class HsAddDataWmtsComponent
   implements HsAddDataUrlComponentInterface, OnDestroy {
-  owsConnectingSubscription: Subscription;
+  data: addDataUrlDataObject;
   hasChecked: boolean;
-  data: any;
+  owsConnectingSubscription: Subscription;
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
@@ -81,8 +82,8 @@ export class HsAddDataWmtsComponent
   }
 
   /**
-   * @description For the sake of possible future implementation changes
-   * @param {string} url URL to be set
+   * For the sake of possible future implementation changes
+   * @param url - URL to be set
    */
   updateUrl(url: string): void {
     this.hsAddDataUrlWmtsService.url = url;
