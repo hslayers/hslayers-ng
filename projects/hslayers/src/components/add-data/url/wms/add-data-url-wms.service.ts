@@ -129,7 +129,8 @@ export class HsAddDataUrlWmsService
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
 
-        'ADDLAYERS.unauthorizedAccess'
+        'ADDLAYERS.unauthorizedAccess',
+        {serviceCalledFrom: 'hsAddDataWmsService'}
       );
     } else {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e);
