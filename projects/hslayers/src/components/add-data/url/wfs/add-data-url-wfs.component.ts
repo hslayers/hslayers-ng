@@ -9,6 +9,7 @@ import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
+import {addDataUrlDataObject} from '../add-data-url.types';
 
 @Component({
   selector: 'hs-add-data-url-wfs',
@@ -16,11 +17,11 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/w
 })
 export class HsAddDataWfsComponent
   implements HsAddDataUrlComponentInterface, OnDestroy {
-  owsConnectingSubscription: Subscription;
+  data: addDataUrlDataObject;
   hasChecked: boolean;
   loadingFeatures: boolean;
+  owsConnectingSubscription: Subscription;
   title = ''; //FIXME: unused
-  data: any;
   constructor(
     public hsAddDataWfsService: HsAddDataWfsService,
     public hsEventBusService: HsEventBusService,
@@ -87,8 +88,8 @@ export class HsAddDataWfsComponent
   }
 
   /**
-   * @description For the sake of possible future implementation changes
-   * @param {string} url URL to be set
+   * For the sake of possible future implementation changes
+   * @param url URL to be set
    */
   updateUrl(url: string): void {
     this.hsAddDataWfsService.url = url;

@@ -7,10 +7,7 @@ import {TileArcGISRest} from 'ol/source';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {
-  HsAddDataUrlTypeServiceInterface,
-  addLayerOptions,
-} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -18,16 +15,18 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
+import {addDataUrlDataObject, addLayerOptions} from '../add-data-url.types';
+import {addLayersRecursivelyOptions} from './../add-data-url.types';
 import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataArcGisService
   implements HsAddDataUrlTypeServiceInterface {
-  data;
-  url: string;
-  showDetails: boolean;
+  data: addDataUrlDataObject;
   layerToSelect: string;
   loadingInfo = false;
+  showDetails: boolean;
+  url: string;
 
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
@@ -43,11 +42,11 @@ export class HsAddDataArcGisService
     public hsAddDataService: HsAddDataService
   ) {
     this.data = {
-      useResampling: false,
-      useTiles: true,
-      mapProjection: undefined,
-      registerMetadata: true,
-      tileSize: 512,
+      map_projection: '',
+      register_metadata: true,
+      tile_size: 512,
+      use_resampling: false,
+      use_tiles: true,
     };
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.url = '';
@@ -93,7 +92,7 @@ export class HsAddDataArcGisService
     return new Promise(() => {
       try {
         const caps = response;
-        this.data.mapProjection = this.hsMapService.map
+        this.data.map_projection = this.hsMapService.map
           .getView()
           .getProjection()
           .getCode()
@@ -152,9 +151,9 @@ export class HsAddDataArcGisService
   }
 
   /**
-   * @param checkedOnly
-   * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked Add all available layers or only checked ones. Checked=false=all
+   * @param checkedOnly -
+   * Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
+   * @param checked - Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): void {
     if (this.data.services === undefined) {
@@ -166,7 +165,7 @@ export class HsAddDataArcGisService
         {},
         {
           layerTitle: this.data.title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.path),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -202,12 +201,15 @@ export class HsAddDataArcGisService
     }
   }
 
-  addLayersRecursively(layer, {checkedOnly = true}): void {
-    if (!checkedOnly || layer.checked) {
+  addLayersRecursively(
+    layer: any,
+    options: addLayersRecursivelyOptions = {checkedOnly: true}
+  ): void {
+    if (!options.checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
         this.addLayer(layer, {
           layerTitle: layer.name.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.path),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -219,7 +221,7 @@ export class HsAddDataArcGisService
         delete clone.Layer;
         this.addLayer(layer, {
           layerTitle: layer.name.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.path),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -230,7 +232,7 @@ export class HsAddDataArcGisService
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {checkedOnly: checkedOnly});
+        this.addLayersRecursively(sublayer, {checkedOnly: options.checkedOnly});
       }
     }
   }
@@ -256,15 +258,15 @@ export class HsAddDataArcGisService
   }
 
   /**
-   * @description Add selected layer to map
-   * @param {object} layer capabilities layer object
-   * @param {string} layerTitle layer name in the map
-   * @param {string} path Path name
-   * @param {string} imageFormat Format in which to serve image. Usually: image/png
-   * @param {string} queryFormat See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
-   * @param {OpenLayers.Size} tileSize Tile size in pixels
-   * @param {OpenLayers.Projection} crs of the layer
-   * @param {Array} subLayers Static sub-layers of the layer
+   * Add selected layer to map
+   * @param layer - capabilities layer object
+   * @param layerTitle - layer name in the map
+   * @param path - Path name
+   * @param imageFormat - Format in which to serve image. Usually: image/png
+   * @param queryFormat - See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
+   * @param tileSize - Tile size in pixels
+   * @param crs - of the layer
+   * @param subLayers - Static sub-layers of the layer
    */
   addLayer(layer, options: addLayerOptions): void {
     let attributions = [];
@@ -285,9 +287,9 @@ export class HsAddDataArcGisService
       legends.push(layer.Style[0].LegendURL[0].OnlineResource);
     }
     const source = new TileArcGISRest({
-      url: this.data.getMapUrl,
+      url: this.data.get_map_url,
       attributions,
-      //projection: me.data.crs || me.data.srs,
+      //projection: me.data.srs,
       params: Object.assign(
         {
           LAYERS: this.data.base
@@ -311,15 +313,15 @@ export class HsAddDataArcGisService
       source,
       maxResolution: layer.minScale > 0 ? layer.minScale : undefined,
     });
-    //OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
+    //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     this.hsMapService.map.addLayer(new_layer);
   }
 
   /**
    * FIXME: UNUSED
-   * @description Add service and its layers to project TODO
-   * @param {string} url Service url
-   * @param {Group} group Group layer to which add layer to
+   * Add service and its layers to project TODO
+   * @param url - Service url
+   * @param group - Group layer to which add layer to
    */
   async addService(url: string, group: Group): Promise<void> {
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(url);
