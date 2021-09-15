@@ -49,9 +49,9 @@ export class HsAddDataWmsComponent
     this.hsAddDataUrlWmsService.addLayerFromCapabilities(wrapper);
   }
   /**
-   * @description Connect to service of specified Url
-   * @param {string} url Url of requested service
-   * @param {string} [layer] Optional layer to select, when
+   * Connect to service of specified Url
+   * @param url - Url of requested service
+   * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer?: string): void {
@@ -60,8 +60,8 @@ export class HsAddDataWmsComponent
   }
 
   /**
-   * @description For the sake of possible future implementation changes
-   * @param {string} url URL to be set
+   * For the sake of possible future implementation changes
+   * @param url - URL to be set
    */
   updateUrl(url: string): void {
     this.hsAddDataUrlWmsService.url = url;

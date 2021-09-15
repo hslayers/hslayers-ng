@@ -15,16 +15,17 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {addAnchors} from '../../../../common/attribution-utils';
+import {addDataUrlDataObject} from '../add-data-url.types';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmtsService
   implements HsAddDataUrlTypeServiceInterface {
+  data: addDataUrlDataObject;
   getDimensionValues;
-  data;
+  layerToSelect: any;
   loadingInfo = false;
   showDetails = false;
   url: any;
-  layerToSelect: any;
 
   constructor(
     public hsMapService: HsMapService,
@@ -38,14 +39,13 @@ export class HsAddDataUrlWmtsService
     public hsAddDataUrlService: HsAddDataUrlService
   ) {
     this.data = {
+      add_all: null,
       caps: null,
-      title: '',
       description: '',
-      version: '',
-      services: [],
-      tileMatrixSet: '',
       image_format: '',
-      addAll: null,
+      services: [],
+      title: '',
+      version: '',
     };
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.url = '';
@@ -93,9 +93,9 @@ export class HsAddDataUrlWmtsService
   }
   /**
    * Parse information received in WMTS getCapabilities respond
-   * @param {object} response Url of requested service
+   * @param response - Url of requested service
    */
-  capabilitiesReceived(response: string): Promise<any> {
+  async capabilitiesReceived(response: string): Promise<any> {
     try {
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
@@ -121,7 +121,7 @@ export class HsAddDataUrlWmtsService
   }
 
   addLayersRecursively(layer): void {
-    if (!this.data.addAll || layer.checked) {
+    if (!this.data.add_all || layer.checked) {
       this.addLayer(layer);
     }
     if (layer.Layer) {
@@ -132,7 +132,7 @@ export class HsAddDataUrlWmtsService
   }
 
   addLayers(checkedOnly: boolean): void {
-    this.data.addAll = checkedOnly;
+    this.data.add_all = checkedOnly;
     for (const layer of this.data.services) {
       this.addLayersRecursively(layer);
     }
@@ -145,7 +145,7 @@ export class HsAddDataUrlWmtsService
    * Returns preferred tile format
    * @param formats - Set of available formats for layer being added
    */
-  getPreferredFormat(formats: any): any {
+  getPreferredFormat(formats: any): string {
     const preferred = formats.find((format) => format.includes('png'));
     return preferred ? preferred : formats[0];
   }

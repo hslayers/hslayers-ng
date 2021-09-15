@@ -14,10 +14,7 @@ import {transformExtent} from 'ol/proj';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {
-  HsAddDataUrlTypeServiceInterface,
-  addLayerOptions,
-} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -31,6 +28,11 @@ import {
   WmsLayer,
 } from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
+import {
+  addDataUrlDataObject,
+  addLayerOptions,
+  addLayersRecursivelyOptions,
+} from '../add-data-url.types';
 import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';
 
@@ -38,12 +40,12 @@ import {getPreferredFormat} from '../../../../common/format-utils';
 export class HsAddDataUrlWmsService
   implements HsAddDataUrlTypeServiceInterface
 {
+  data: addDataUrlDataObject;
   getDimensionValues;
-  data;
-  showDetails: boolean;
-  loadingInfo = false;
   layerToSelect: string;
-  url: any;
+  loadingInfo = false;
+  showDetails: boolean;
+  url: string;
   constructor(
     public hsMapService: HsMapService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
@@ -58,17 +60,17 @@ export class HsAddDataUrlWmsService
   ) {
     this.url = '';
     this.data = {
-      useResampling: false,
-      useTiles: true,
-      mapProjection: undefined,
-      registerMetadata: true,
-      tileSize: 512,
-      addUnder: null,
+      add_under: null,
+      map_projection: '',
+      register_metadata: true,
+      tile_size: 512,
+      use_resampling: false,
+      use_tiles: true,
       visible: true,
     };
 
     this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.data.mapProjection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
@@ -174,7 +176,7 @@ export class HsAddDataUrlWmsService
     try {
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(response);
-      this.data.mapProjection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
@@ -182,9 +184,11 @@ export class HsAddDataUrlWmsService
       this.data.title = caps.Service.Title;
       this.data.description = addAnchors(caps.Service.Abstract);
       this.data.version = caps.Version || caps.version;
-      this.data.image_formats = caps.Capability.Request.GetMap.Format;
+      this.data.image_formats = caps.Capability.Request.GetMap.Format
+        ? (caps.Capability.Request.GetMap.Format as Array<string>)
+        : [];
       this.data.query_formats = caps.Capability.Request.GetFeatureInfo
-        ? caps.Capability.Request.GetFeatureInfo.Format
+        ? (caps.Capability.Request.GetFeatureInfo.Format as Array<string>)
         : [];
       this.data.exceptions = caps.Capability.Exception;
       this.data.srss = [];
@@ -241,7 +245,7 @@ export class HsAddDataUrlWmsService
       );
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
-      this.data.getMapUrl = this.removePortIfProxified(
+      this.data.get_map_url = this.removePortIfProxified(
         caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
       );
       this.data.image_format = getPreferredFormat(this.data.image_formats, [
@@ -375,7 +379,9 @@ export class HsAddDataUrlWmsService
         },
         {
           layerName: this.data.title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          layerTitle: this.hsUtilsService.undefineEmptyString(
+            this.data.folder_name
+          ),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -429,8 +435,8 @@ export class HsAddDataUrlWmsService
    * @param path - Path (folder) name
    * @param imageFormat - Format in which to serve image. Usually: image/png
    * @param queryFormat - See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
-   * @param {import('ol/Size')} tileSize Tile size in pixels
-   * @param {import('ol/proj/Projection')} crs of the layer
+   * @param tileSize - Tile size in pixels
+   * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
   addLayer(layer, options: addLayerOptions): void {
@@ -445,7 +451,7 @@ export class HsAddDataUrlWmsService
     let preferred;
     if (Array.isArray(layer.BoundingBox)) {
       preferred = boundingbox.filter((bboxInCrs) => {
-        return bboxInCrs.crs == this.data.mapProjection;
+        return bboxInCrs.crs == this.data.map_projection;
       })[0];
     }
     if (preferred) {
@@ -459,7 +465,7 @@ export class HsAddDataUrlWmsService
         );
       }
     } else {
-      if (this.data.mapProjection != options.crs) {
+      if (this.data.map_projection != options.crs) {
         boundingbox = layer.LatLonBoundingBox;
       }
     }
@@ -472,9 +478,9 @@ export class HsAddDataUrlWmsService
 
     const {styles, legends} = this.getLayerStyles(layer);
     const sourceOptions = {
-      url: this.data.getMapUrl,
+      url: this.data.get_map_url,
       attributions,
-      projection: this.data.crs || this.data.srs,
+      projection: this.data.srs,
       params: {
         LAYERS: layer.Name || layer.Layer[0].Name,
         INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
@@ -485,7 +491,7 @@ export class HsAddDataUrlWmsService
       },
       crossOrigin: 'anonymous',
     };
-    const source: ImageWMS | TileWMS = !this.data.useTiles
+    const source: ImageWMS | TileWMS = !this.data.use_tiles
       ? new ImageWMS(sourceOptions)
       : new TileWMS(sourceOptions);
     const metadata =
@@ -507,11 +513,11 @@ export class HsAddDataUrlWmsService
       base: this.data.base,
       visible: this.data.visible,
     };
-    const new_layer = !this.data.useTiles
+    const new_layer = !this.data.use_tiles
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
       : new Tile(layerOptions as TileOptions<TileSource>);
-    this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
-    this.hsAddDataService.addLayer(new_layer, this.data.addUnder);
+    this.hsMapService.proxifyLayerLoader(new_layer, this.data.use_tiles);
+    this.hsAddDataService.addLayer(new_layer, this.data.add_under);
   }
 
   private getLayerStyles(layer: any): {styles: string[]; legends: string[]} {
@@ -573,12 +579,17 @@ export class HsAddDataUrlWmsService
     });
   }
 
-  addLayersRecursively(layer, {checkedOnly = true}): void {
-    if (!checkedOnly || layer.checked) {
+  addLayersRecursively(
+    layer: any,
+    options: addLayersRecursivelyOptions = {checkedOnly: true}
+  ): void {
+    if (!options.checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
         this.addLayer(layer, {
           layerName: layer.Title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          layerTitle: this.hsUtilsService.undefineEmptyString(
+            this.data.folder_name
+          ),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -590,7 +601,9 @@ export class HsAddDataUrlWmsService
         delete clone.Layer;
         this.addLayer(layer, {
           layerName: layer.Title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(this.data.path),
+          layerTitle: this.hsUtilsService.undefineEmptyString(
+            this.data.folder_name
+          ),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -601,7 +614,7 @@ export class HsAddDataUrlWmsService
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {checkedOnly: checkedOnly});
+        this.addLayersRecursively(sublayer, {checkedOnly: options.checkedOnly});
       }
     }
   }

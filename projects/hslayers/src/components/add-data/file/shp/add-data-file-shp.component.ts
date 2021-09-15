@@ -97,7 +97,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   }
 
   /**
-   * @description From available endpoints picks one
+   * From available endpoints picks one
    * - either Layman endpoint if available or any other if not
    */
   pickEndpoint(): void {
@@ -146,7 +146,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   }
 
   /**
-   * @description Handler for button click to send shape file to layman and wait for
+   * Handler for button click to send shape file to layman and wait for
    * answer with wms service url to add to map
    */
   add(): void {

@@ -20,14 +20,14 @@ export class HsAddDataFileShpService {
   ) {}
 
   /**
-   * @description Load non-wms OWS data and create layer
-   * @param {object} endpoint Layman endpoint description (url, name, user)
-   * @param {Array} files Array of shp files (shp, dbf, shx)
-   * @param {string} name Name of new layer
-   * @param {string} title Title of new layer
-   * @param {string} abstract Abstract of new layer
-   * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
-   * @param {Array} sld Array of sld files
+   * Load non-wms OWS data and create layer
+   * @param endpoint - Layman endpoint description (url, name, user)
+   * @param iles - Array of shp files (shp, dbf, shx)
+   * @param name - Name of new layer
+   * @param title - Title of new layer
+   * @param abstract - Abstract of new layer
+   * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
+   * @param sld - Array of sld files
    * @returns {Promise}
    */
   add(
