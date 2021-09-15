@@ -40,7 +40,9 @@ export class HsToastService {
     if (this.toasts.length >= 5) {
       this.toasts = this.toasts.slice(-4);
     }
-    this.toasts.push({textOrTpl, ...options});
+    if (!this.toasts.some((toast) => toast.textOrTpl === textOrTpl)) {
+      this.toasts.push({textOrTpl, ...options});
+    }
   }
   /**
    * Creates new toast message with custom text and custom styling

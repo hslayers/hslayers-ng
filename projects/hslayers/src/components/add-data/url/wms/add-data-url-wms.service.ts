@@ -19,8 +19,8 @@ import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {
@@ -56,7 +56,7 @@ export class HsAddDataUrlWmsService
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsLog: HsLogService
+    public hsToastService: HsToastService
   ) {
     this.url = '';
     this.data = {
@@ -102,12 +102,6 @@ export class HsAddDataUrlWmsService
         this.addLayers(true);
       }
     } catch (e) {
-      if (e.status == 401) {
-        this.throwParsingError(
-          'Unauthorized access. You are not authorized to query data from this service'
-        );
-        return;
-      }
       this.throwParsingError(e);
     }
   }
@@ -131,7 +125,15 @@ export class HsAddDataUrlWmsService
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    if (e?.status === 401) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+
+        'ADDLAYERS.unauthorizedAccess'
+      );
+    } else {
+      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    }
   }
 
   /**

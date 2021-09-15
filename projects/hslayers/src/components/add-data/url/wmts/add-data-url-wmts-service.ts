@@ -12,6 +12,7 @@ import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
+import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {addAnchors} from '../../../../common/attribution-utils';
@@ -36,7 +37,8 @@ export class HsAddDataUrlWmtsService
     public hsConfig: HsConfig,
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
-    public hsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsToastService: HsToastService
   ) {
     this.data = {
       add_all: null,
@@ -75,21 +77,23 @@ export class HsAddDataUrlWmtsService
         }
       }
     } catch (e) {
-      if (e.status == 401) {
-        this.throwParsingError(
-          'Unauthorized access. You are not authorized to query data from this service'
-        );
-        return;
-      }
       this.throwParsingError(e);
     }
   }
 
-  throwParsingError(e: any): void {
+  throwParsingError(e): void {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    if (e?.status === 401) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+
+        'ADDLAYERS.unauthorizedAccess'
+      );
+    } else {
+      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    }
   }
   /**
    * Parse information received in WMTS getCapabilities respond

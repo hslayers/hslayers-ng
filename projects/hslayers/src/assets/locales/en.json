@@ -106,7 +106,8 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    }
+    },
+    "unauthorizedAccess": "Unauthorized access. You are not authorized to query data from this service"
   },
   "COMMON": {
     "abstract": "Abstract",
