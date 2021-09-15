@@ -126,7 +126,8 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
 
-        'ADDLAYERS.unauthorizedAccess'
+        'ADDLAYERS.unauthorizedAccess',
+        {serviceCalledFrom: 'hsAddDataWfsService'}
       );
     } else {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e);
