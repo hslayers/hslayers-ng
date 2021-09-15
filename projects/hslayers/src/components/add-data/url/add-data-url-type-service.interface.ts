@@ -2,24 +2,10 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../common/get-capabilities/capabilities-response-wrapper';
-
-export type addLayerOptions = {
-  layerName?: string;
-  path?: string;
-  imageFormat?: string;
-  queryFormat?: string;
-  crs?: string;
-  subLayers?: any[];
-  layerTitle?: string;
-  tileSize?;
-  folder?: string;
-  sld?: string;
-};
-
-export type addLayersRecursivelyOptions = {
-  checkedOnly?: boolean;
-  sld?: string;
-};
+import {
+  addLayerOptions,
+  addLayersRecursivelyOptions,
+} from './add-data-url.types';
 
 export interface HsAddDataUrlTypeServiceInterface {
   data: any;

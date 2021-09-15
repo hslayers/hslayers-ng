@@ -35,22 +35,23 @@ export class HsMickaBrowserService {
   ) {}
 
   /**
-   * @param {object} dataset Configuration of selected datasource (from app config)
-   * @param {object} query Container for all query filter values
-   * @param data
-   * @param {Function} extentFeatureCreated Function which gets called
-   * @param {string} textField Name of the field to search in
+   * @param dataset - Configuration of selected datasource (from app config)
+   * @param query - Container for all query filter values
+   * @param data -
+   * @param extentFeatureCreated - Function which gets called
+   * @param textField - Name of the field to search in
    * extent feature is created. Has one parameter: feature
-   * @description Loads datasets metadata from selected source (CSW server).
+   * Loads datasets metadata from selected source (CSW server).
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
+   * @returns
    */
   queryCatalog(
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
     textField: string
-  ) {
+  ): any {
     const url = this.createRequestUrl(dataset, data, textField);
     dataset.datasourcePaging.loaded = false;
 
@@ -155,8 +156,8 @@ export class HsMickaBrowserService {
 
   /**
    * @private
-   * @param {Object} data HTTP response containing all the layers
-   * @description Callback for catalogue http query
+   * @param data - HTTP response containing all the layers
+   * Callback for catalogue http query
    */
   private datasetsReceived(data): boolean {
     if (!data.dataset || !data.extentFeatureCreated) {
@@ -186,10 +187,10 @@ export class HsMickaBrowserService {
 
   /**
    * @private
-   * @param {string} which Parameter name to parse
-   * @param {object} query
+   * @param which - Parameter name to parse
+   * @param query -
    * @returns {string}
-   * @description Parse query parameter into encoded key value pair.
+   * Parse query parameter into encoded key value pair.
    */
   private param2Query(which: string, query): string {
     const dataset =
@@ -220,9 +221,9 @@ export class HsMickaBrowserService {
 
   /**
    * @private
-   * @param {Object} record Record of one dataset from Get Records response
+   * @param record - Record of one dataset from Get Records response
    * @returns {Feature | undefined}
-   * @description Create extent features for displaying extent of loaded dataset records in map
+   * Create extent features for displaying extent of loaded dataset records in map
    */
   private addExtentFeature(record): Feature<Geometry> | undefined {
     const attributes = {
@@ -288,10 +289,10 @@ export class HsMickaBrowserService {
 
   /**
    * @param type
-   * @param {object} layer Micka layer for which to get metadata
-   * @param {string} type Optional service type specification
+   * @param layer - Micka layer for which to get metadata
+   * @param type - Optional service type specification
    * @returns {string} Url of service or resource
-   * @description Get first link from records links array or link
+   * Get first link from records links array or link
    * property of record in older Micka versions
    * in a common format for use in add-layers component
    */
@@ -318,11 +319,11 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
-   * @param {object} layer Micka layer for which to get metadata
+   * @param ds - Configuration of selected datasource (from app config)
+   * @param layer - Micka layer for which to get metadata
    * @returns {Promise} promise which describes layer
    * in a common format for use in add-layers component
-   * @description Gets layer metadata and returns promise which describes layer
+   * Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component
    */
   async describeWhatToAdd(

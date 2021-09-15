@@ -16,7 +16,7 @@ export class HsCommonUrlAddComponent implements OnChanges {
 
   /**
    * @param layers
-   * @description Select all layers from service.
+   * Select all layers from service.
    */
   selectAllLayers(): void {
     this.selectAll = !this.selectAll;

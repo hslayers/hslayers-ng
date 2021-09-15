@@ -75,7 +75,7 @@ export class HsAddDataListItemComponent {
   }
 
   /**
-   * @description Add layer by type click wrapper. Prevents bubbling of DOM event
+   * Add layer by type click wrapper. Prevents bubbling of DOM event
    * @param type One of 'WMS', 'WFS'
    * @param event Mouse click event
    */
@@ -86,7 +86,7 @@ export class HsAddDataListItemComponent {
   }
 
   /**
-   * @description For a stringified type of service, it returns its description
+   * For a stringified type of service, it returns its description
    * @param module
    * @param text
    * @param type One of 'WMS', 'WFS'
