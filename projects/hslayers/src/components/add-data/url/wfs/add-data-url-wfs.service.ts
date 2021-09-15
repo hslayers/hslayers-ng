@@ -18,12 +18,13 @@ import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 import {
+  addDataUrlDataObject,
   addLayerOptions,
   addLayersRecursivelyOptions,
-  addDataUrlDataObject,
 } from '../add-data-url.types';
 
 @Injectable({
@@ -46,7 +47,8 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataService: HsAddDataService
+    public hsAddDataService: HsAddDataService,
+    public hsToastService: HsToastService
   ) {
     this.data = {
       add_all: null,
@@ -112,12 +114,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
         this.zoomToBBox(bbox);
       }
     } catch (e) {
-      if (e.status == 401) {
-        this.throwParsingError(
-          'Unauthorized access. You are not authorized to query data from this service'
-        );
-        return;
-      }
       this.throwParsingError(e);
     }
   }
@@ -126,7 +122,15 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    if (e?.status === 401) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+
+        'ADDLAYERS.unauthorizedAccess'
+      );
+    } else {
+      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    }
   }
 
   //FIXME: context
@@ -329,12 +333,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
               : (service.limitFeatureCount = false);
           },
           (e) => {
-            if (e.status == 401) {
-              this.throwParsingError(
-                'Unauthorized access. You are not authorized to query data from this service'
-              );
-              return;
-            }
             this.throwParsingError(e);
           }
         );

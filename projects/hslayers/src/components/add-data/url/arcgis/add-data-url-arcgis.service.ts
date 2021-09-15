@@ -13,6 +13,7 @@ import {HsDimensionService} from '../../../../common/get-capabilities/dimension.
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addDataUrlDataObject, addLayerOptions} from '../add-data-url.types';
@@ -39,7 +40,8 @@ export class HsAddDataArcGisService
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataService: HsAddDataService
+    public hsAddDataService: HsAddDataService,
+    public hsToastService: HsToastService
   ) {
     this.data = {
       map_projection: '',
@@ -71,12 +73,6 @@ export class HsAddDataArcGisService
         this.addLayers(true);
       }
     } catch (e) {
-      if (e.status == 401) {
-        this.throwParsingError(
-          'Unauthorized access. You are not authorized to query data from this service'
-        );
-        return;
-      }
       this.throwParsingError(e);
     }
   }
@@ -85,7 +81,15 @@ export class HsAddDataArcGisService
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    if (e?.status === 401) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+
+        'ADDLAYERS.unauthorizedAccess'
+      );
+    } else {
+      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+    }
   }
 
   createLayer(response, layerToSelect: string): Promise<void> {
