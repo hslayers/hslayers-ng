@@ -11,14 +11,13 @@ import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
-import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
 import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
-import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 import {
@@ -46,9 +45,8 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService,
-    public hsToastService: HsToastService
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = {
       add_all: null,
@@ -122,16 +120,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    if (e?.status === 401) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-
-        'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'hsAddDataWfsService'}
-      );
-    } else {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
-    }
+    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
 
   //FIXME: context
@@ -213,7 +202,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
         caps = caps['WFS_Capabilities'];
       }
       this.parseWFSJson(caps);
-      this.data.title = caps.ServiceIdentification.Title;
+      this.data.title = caps.ServiceIdentification.Title || 'Wfs layer';
       // this.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)

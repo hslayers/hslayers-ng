@@ -5,16 +5,12 @@ import {Tile} from 'ol/layer';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
-import {HsConfig} from '../../../../config.service';
-import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
-import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addDataUrlDataObject} from '../add-data-url.types';
 
@@ -30,15 +26,11 @@ export class HsAddDataUrlWmtsService
 
   constructor(
     public hsMapService: HsMapService,
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
-    public hsConfig: HsConfig,
     public hsAddDataService: HsAddDataService,
-    public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsToastService: HsToastService
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = {
       add_all: null,
@@ -85,16 +77,7 @@ export class HsAddDataUrlWmtsService
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    if (e?.status === 401) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-
-        'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'hsAddDataWmtsService'}
-      );
-    } else {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
-    }
+    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
   /**
    * Parse information received in WMTS getCapabilities respond
@@ -105,7 +88,7 @@ export class HsAddDataUrlWmtsService
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
       this.data.caps = caps;
-      this.data.title = caps.ServiceIdentification.Title;
+      this.data.title = caps.ServiceIdentification.Title || 'Wmts layer';
 
       this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.Version || caps.version;

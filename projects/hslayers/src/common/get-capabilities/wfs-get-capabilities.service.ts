@@ -104,31 +104,4 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
       return {response: e, error: true};
     }
   }
-
-  /**
-   * Test if current map projection is in supported projection list
-   *
-   * @param srss - List of supported projections
-   * @returns True if map projection is in list, otherwise false
-   */
-  currentProjectionSupported(srss: string[]): boolean {
-    let found = false;
-    for (const val of srss) {
-      if (
-        val
-          .toUpperCase()
-          .indexOf(
-            this.hsMapService.map
-              .getView()
-              .getProjection()
-              .getCode()
-              .toUpperCase()
-              .replace('EPSG:', 'EPSG::')
-          ) > -1
-      ) {
-        found = true;
-      }
-    }
-    return found;
-  }
 }

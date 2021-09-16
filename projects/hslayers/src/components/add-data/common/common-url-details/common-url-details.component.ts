@@ -1,5 +1,6 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
+import {HsAddDataCommonUrlService} from '../add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../../url/add-data-url.service';
 import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
@@ -26,7 +27,8 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
-    public hsAddDataUrlWmsService: HsAddDataUrlWmsService
+    public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {}
   ngAfterContentInit(): void {
     this.hsAddDataUrlService.hasAllChecked = false;
@@ -37,7 +39,9 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
   }
 
   srsChanged(): void {
-    this.injectedService.srsChanged();
+    this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
+      this.data.srs
+    );
   }
   //NOT BEING USED
   /**

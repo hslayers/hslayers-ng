@@ -216,26 +216,4 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
       return metadata;
     }
   }
-
-  /**
-   * Test if current map projection is in supported projection list
-   *
-   * @param srss List of supported projections
-   * @returns True if map projection is in list, otherwise false
-   */
-  currentProjectionSupported(srss: string[]): boolean {
-    let found = false;
-    for (const val of srss) {
-      if (
-        this.hsMapService.map
-          .getView()
-          .getProjection()
-          .getCode()
-          .toUpperCase() == val.toUpperCase()
-      ) {
-        found = true;
-      }
-    }
-    return found;
-  }
 }
