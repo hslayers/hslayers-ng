@@ -178,8 +178,8 @@ export class HsCompositionsLaymanService {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     const info = await this.hsCompositionsParserService.loadInfo(url);
     if (
-      info.thumbnail.status !== undefined &&
-      info.thumbnail.status == 'NOT_AVAILABLE'
+      info.thumbnail?.status !== undefined &&
+      info.thumbnail?.status == 'NOT_AVAILABLE'
     ) {
       delete info.thumbnail;
     }
