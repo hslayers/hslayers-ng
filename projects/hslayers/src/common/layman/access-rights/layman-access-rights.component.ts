@@ -1,19 +1,19 @@
 import {Component, Input, ViewRef} from '@angular/core';
-import {accessRightsInterface} from '../../../components/add-data/common/access-rights.interface';
+import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
 
 @Component({
   selector: 'hs-layman-access-rights',
   templateUrl: './layman-access-rights.html',
 })
 export class HsCommonLaymanAccessRightsComponent {
-  @Input() access_rights: accessRightsInterface;
+  @Input() access_rights: accessRightsModel;
   constructor() {}
 
   accessRightChanged(
-    access_rights: accessRightsInterface,
+    access_rights: accessRightsModel,
     type: string,
     value: string
-  ): accessRightsInterface {
+  ): accessRightsModel {
     access_rights[type] = value;
     if (
       access_rights['access_rights.read'] == 'private' &&

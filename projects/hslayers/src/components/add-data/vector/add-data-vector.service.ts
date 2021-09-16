@@ -9,8 +9,8 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {VectorLayerDescriptor} from './VectorLayerDescriptor';
-import {VectorSourceDescriptor} from './vector-source-descriptor';
+import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
+import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({

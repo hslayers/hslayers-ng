@@ -15,7 +15,7 @@ import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/c
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -28,17 +28,15 @@ import {
   WmsLayer,
 } from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {
-  addDataUrlDataObject,
-  addLayerOptions,
-  addLayersRecursivelyOptions,
-} from '../add-data-url.types';
+import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
+import {addLayerOptions} from '../types/add-data-url-layer-options.type';
+import {addLayersRecursivelyOptions} from '../types/add-data-url-recursive-options.type';
 import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmsService
-  implements HsAddDataUrlTypeServiceInterface
+  implements HsAddDataUrlTypeServiceModel
 {
   data: addDataUrlDataObject;
   getDimensionValues;

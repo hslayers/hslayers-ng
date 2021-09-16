@@ -1,13 +1,11 @@
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {CapabilitiesResponseWrapper} from '../../../common/get-capabilities/capabilities-response-wrapper';
-import {
-  addLayerOptions,
-  addLayersRecursivelyOptions,
-} from './add-data-url.types';
+import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {addLayerOptions} from './../types/add-data-url-layer-options.type';
+import {addLayersRecursivelyOptions} from './../types/add-data-url-recursive-options.type';
 
-export interface HsAddDataUrlTypeServiceInterface {
+export interface HsAddDataUrlTypeServiceModel {
   data: any;
   url: string;
   showDetails: boolean;

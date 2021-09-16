@@ -14,7 +14,7 @@ import {HsUploadedFiles} from '../../../common/upload/upload.component';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {accessRightsInterface} from '../common/access-rights.interface';
+import {accessRightsModel} from '../common/access-rights.model';
 import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
 
 @Component({
@@ -44,7 +44,7 @@ export class HsAddDataVectorComponent implements OnInit {
   isAuthorized = false;
   // Not possible to save KML to layman yet
   saveAvailable: boolean;
-  access_rights: accessRightsInterface = {
+  access_rights: accessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };

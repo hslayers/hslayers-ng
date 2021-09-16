@@ -7,7 +7,7 @@ import {Geometry} from 'ol/geom';
 
 import {DatasetType, HsAddDataService} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
-import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.model';
 import {HsAddDataVectorService} from '../vector/add-data-vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';

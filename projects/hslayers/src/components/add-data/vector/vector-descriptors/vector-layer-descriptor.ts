@@ -1,7 +1,7 @@
 import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
-import {HsVectorLayerOptions} from './vector-layer-options.type';
-import {accessRightsInterface} from '../common/access-rights.interface';
+import {HsVectorLayerOptions} from '../vector-layer-options.type';
+import {accessRightsModel} from '../../common/access-rights.model';
 
 export class VectorLayerDescriptor {
   mapProjection;
@@ -18,7 +18,7 @@ export class VectorLayerDescriptor {
     path: string;
     visible: boolean;
     workspace: string;
-    access_rights: accessRightsInterface;
+    access_rights: accessRightsModel;
     queryCapabilities: boolean;
     sld: string;
   };

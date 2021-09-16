@@ -1,24 +1,6 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-export type addLayerOptions = {
-  crs?: string;
-  folder?: string;
-  imageFormat?: string;
-  layerName?: string;
-  layerTitle?: string;
-  path?: string;
-  queryFormat?: string;
-  sld?: string;
-  subLayers?: any[];
-  tileSize?;
-};
-
-export type addLayersRecursivelyOptions = {
-  checkedOnly?: boolean;
-  sld?: string;
-};
-
 export type addDataUrlDataObject = {
   add_all?: boolean;
   add_under?: Layer<Source>;

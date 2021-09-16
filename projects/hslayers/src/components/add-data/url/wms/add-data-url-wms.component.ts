@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
+import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
@@ -13,7 +13,7 @@ import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/w
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmsComponent
-  implements HsAddDataUrlComponentInterface, OnDestroy {
+  implements HsAddDataUrlComponentModel, OnDestroy {
   owsConnectingSubscription: Subscription;
   constructor(
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService,

@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {DatasetType} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataCatalogueService} from './add-data-catalogue.service';
-import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.model';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../config.service';
 import {HsCoreService} from '../../core/core.service';
@@ -20,7 +20,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-data-catalogue',
-  templateUrl: './add-data-catalogue.html',
+  templateUrl: './add-data-catalogue.component.html',
 })
 export class HsAddDataCatalogueComponent implements OnDestroy {
   typeSelected: string;

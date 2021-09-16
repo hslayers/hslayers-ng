@@ -1,4 +1,4 @@
-import {HsAddDataLayerDescriptor} from '../../components/add-data/catalogue/add-data-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from '../../components/add-data/catalogue/add-data-layer-descriptor.model';
 
 export enum EndpointErrorHandling {
   ignore = 'ignore',

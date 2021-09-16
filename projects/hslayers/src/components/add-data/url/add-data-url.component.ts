@@ -2,7 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {AddDataUrlType} from '../add-data-url-type';
+import {AddDataUrlType} from './types/add-data-url.type';
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -12,7 +12,7 @@ import {HsShareUrlService} from '../../permalink/share-url.service';
 
 @Component({
   selector: 'hs-add-data-url',
-  templateUrl: './add-data-url.html',
+  templateUrl: './add-data-url.component.html',
 })
 export class HsAddDataUrlComponent implements OnDestroy {
   typeSelected: AddDataUrlType;

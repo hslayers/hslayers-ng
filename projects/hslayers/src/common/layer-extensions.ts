@@ -5,7 +5,7 @@ import {Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Source} from 'ol/source';
-import {accessRightsInterface} from '../components/add-data/common/access-rights.interface';
+import {accessRightsModel} from '../components/add-data/common/access-rights.model';
 
 const TITLE = 'title';
 const NAME = 'name';
@@ -86,13 +86,13 @@ export type popUp = {
   attributes?: Array<popUpAttribute | string>;
 };
 
-export function getAccessRights(layer: Layer<Source>): accessRightsInterface {
+export function getAccessRights(layer: Layer<Source>): accessRightsModel {
   return layer.get(ACCESS_RIGHTS);
 }
 
 export function setAccessRights(
   layer: Layer<Source>,
-  access_rights: accessRightsInterface
+  access_rights: accessRightsModel
 ): void {
   layer.set(ACCESS_RIGHTS, access_rights);
 }
