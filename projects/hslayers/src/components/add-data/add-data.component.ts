@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 
-import {AddDataUrlType, servicesSupportedByUrl} from './add-data-url-type';
+import {
+  AddDataUrlType,
+  servicesSupportedByUrl,
+} from './url/types/add-data-url.type';
 import {DatasetType, HsAddDataService} from './add-data.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';

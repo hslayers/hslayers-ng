@@ -5,19 +5,16 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCatalogueComponent} from './add-data-catalogue.component';
-import {HsAddDataListItemComponent} from './add-data-list-item.component';
-import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
+import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
+import {HsCatalogueMetadataComponent} from './catalogue-metadata/catalogue-metadata.component';
+import {HsCatalogueMetadataModule} from './catalogue-metadata/catalogue-metadata.module';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsPagerModule} from './../../../common/pager/pager.module';
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
-    HsAddDataCatalogueComponent,
-    HsAddDataListItemComponent,
-    HsAddDataMetadataDialogComponent,
-  ],
+  declarations: [HsAddDataCatalogueComponent, HsCatalogueListItemComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -26,16 +23,17 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
     HsLaymanModule,
     NgbModule,
     HsPagerModule,
+    HsCatalogueMetadataModule,
   ],
   exports: [
     HsAddDataCatalogueComponent,
-    HsAddDataListItemComponent,
-    HsAddDataMetadataDialogComponent,
+    HsCatalogueListItemComponent,
+    HsCatalogueMetadataComponent,
   ],
   entryComponents: [
     HsAddDataCatalogueComponent,
-    HsAddDataListItemComponent,
-    HsAddDataMetadataDialogComponent,
+    HsCatalogueListItemComponent,
+    HsCatalogueMetadataComponent,
   ],
 })
 export class HsAddDataCatalogueModule {}

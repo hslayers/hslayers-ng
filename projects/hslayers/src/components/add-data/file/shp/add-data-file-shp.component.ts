@@ -18,11 +18,11 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {accessRightsInterface} from '../../common/access-rights.interface';
+import {accessRightsModel} from '../../common/access-rights.model';
 
 @Component({
   selector: 'hs-add-data-file-shp',
-  templateUrl: './add-data-file-layer.component.html',
+  templateUrl: './add-data-file-shp.component.html',
 })
 export class HsAddDataFileShpComponent implements OnInit {
   abstract: string;
@@ -44,7 +44,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   errorOccurred = false;
   showDetails = false;
   isAuthorized: boolean;
-  access_rights: accessRightsInterface = {
+  access_rights: accessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };

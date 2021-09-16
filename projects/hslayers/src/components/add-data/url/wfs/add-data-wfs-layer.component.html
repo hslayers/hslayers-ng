@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-data-common-url type="wfs" [(url)]="hsAddDataWfsService.url" (connect)="connect()"></hs-add-data-common-url>
+    <hs-common-url type="wfs" [(url)]="hsAddDataWfsService.url" (connect)="connect()"></hs-common-url>
 
     <hs-common-url-progress [loadingInfo]="hsAddDataWfsService.loadingInfo"></hs-common-url-progress>
     

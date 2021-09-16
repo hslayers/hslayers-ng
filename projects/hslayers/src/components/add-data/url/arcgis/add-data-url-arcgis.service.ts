@@ -8,20 +8,21 @@ import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/c
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {addDataUrlDataObject, addLayerOptions} from '../add-data-url.types';
-import {addLayersRecursivelyOptions} from './../add-data-url.types';
+import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
+import {addLayerOptions} from '../types/add-data-url-layer-options.type';
+import {addLayersRecursivelyOptions} from '../types/add-data-url-recursive-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataArcGisService
-  implements HsAddDataUrlTypeServiceInterface {
+  implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
   layerToSelect: string;
   loadingInfo = false;

@@ -8,7 +8,7 @@ import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLogService} from '../../../../common/log/log.service';
 
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../../save-map/layman-utils';
-import {accessRightsInterface} from '../../common/access-rights.interface';
+import {accessRightsModel} from '../../common/access-rights.model';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataFileShpService {
@@ -38,7 +38,7 @@ export class HsAddDataFileShpService {
     abstract: string,
     srs: string,
     sld: FileDescriptor,
-    access_rights: accessRightsInterface
+    access_rights: accessRightsModel
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const formdata = new FormData();

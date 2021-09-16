@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Injectable} from '@angular/core';
 
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsUtilsService} from '../../../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataMetadataService {
+export class HsCatalogueMetadataService {
   constructor(public hsUtilsService: HsUtilsService) {}
 
   /**

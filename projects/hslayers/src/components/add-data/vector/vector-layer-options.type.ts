@@ -1,6 +1,6 @@
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
-import {accessRightsInterface} from '../common/access-rights.interface';
+import {accessRightsModel} from '../common/access-rights.model';
 
 export type HsVectorLayerOptions = {
   opacity?: number;
@@ -11,7 +11,7 @@ export type HsVectorLayerOptions = {
   extractStyles?: boolean;
   features?: Feature<Geometry>[];
   workspace?: string;
-  access_rights?: accessRightsInterface;
+  access_rights?: accessRightsModel;
   queryCapabilities?: boolean;
   sld?: string;
 };

@@ -13,23 +13,21 @@ import {Geometry} from 'ol/geom';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
-import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
-import {
-  addDataUrlDataObject,
-  addLayerOptions,
-  addLayersRecursivelyOptions,
-} from '../add-data-url.types';
+import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
+import {addLayerOptions} from '../types/add-data-url-layer-options.type';
+import {addLayersRecursivelyOptions} from '../types/add-data-url-recursive-options.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
+export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
   definedProjections: string[];
   layerToSelect: string;
