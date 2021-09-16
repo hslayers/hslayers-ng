@@ -6,8 +6,8 @@
                     {{data.info.title}} <span>{{'COMPOSITIONS.dialogInfo.details' | translate}}</span>
                 </h4>
                 <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
-                        aria-hidden="true">&times;</span><span
-                        class="sr-only">{{'COMMON.close' | translate}}</span></button>
+                        aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' |
+                        translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row" style="text-align: justify; text-justify: inter-word;">
@@ -16,19 +16,20 @@
                 </div>
                 <div *ngIf="data.info.keywords">
                     <div *ngFor="let keyword of data.info.keywords;let first = first;">
-                          <div class="row" *ngIf="first">
-                        <div class="col-md-3"><b>{{'COMMON.keywords' | translate}}</b></div>
-                        <div class="col-md-9">{{keyword}}</div>
-                    </div>
-                    <div class="row" *ngIf="!first">
-                        <div class="col-md-offset-3 col-md-9">{{keyword}}</div>
-                    </div>
+                        <div class="row" *ngIf="first">
+                            <div class="col-md-3"><b>{{'COMMON.keywords' | translate}}</b></div>
+                            <div class="col-md-9">{{keyword}}</div>
+                        </div>
+                        <div class="row" *ngIf="!first">
+                            <div class="col-md-offset-3 col-md-9">{{keyword}}</div>
+                        </div>
                     </div>
                     <br>
                 </div>
                 <div class="row" *ngIf="data.info.thumbnail">
                     <div class="col-md-3"><b>{{'COMMON.thumbnail' | translate}}</b></div>
-                    <div class="col-md-9"><img src="{{data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail}}"></div>
+                    <div class="col-md-9"><img
+                            src="{{data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail}}"></div>
                 </div>
                 <div class="row" *ngIf="data.info.url && data.info">
                     <div class="col-md-3"><b>{{'COMMON.url' | translate}}</b></div>
@@ -44,15 +45,15 @@
                 </div>
                 <div *ngIf="data.info.layers">
                     <div *ngFor="let layer of data.info.layers;let first = first;">
-                            <div class="row" *ngIf="first">
-                                <div class="col-md-3"><b>{{'COMMON.layers' | translate}}</b></div>
-                                <div class="col-md-9">{{layer.title}}</div>
-                            </div>
-                            <div class="row" *ngIf="!first">
-                                <div class="offset-md-3 col-md-9">{{layer.title}}</div>
-                            </div>
+                        <div class="row" *ngIf="first">
+                            <div class="col-md-3"><b>{{'COMMON.layers' | translate}}</b></div>
+                            <div class="col-md-9">{{layer.title}}</div>
+                        </div>
+                        <div class="row" *ngIf="!first">
+                            <div class="offset-md-3 col-md-9">{{layer.title}}</div>
+                        </div>
                     </div>
-                <br>
+                    <br>
                 </div>
                 <!-- <div *ngIf="data.info.metadata">
                     <div class="row">
@@ -68,27 +69,34 @@
                 <div class="row" *ngIf="data.info.contactAddress || data.info.contactPersonPrimary">
                     <div class="col"><b>{{'COMMON.contactInformation' | translate}}</b></div>
                 </div>
-                 <div *ngIf="data.info.contactAddress">
-                     <div *ngFor="let data of data.info.contactAddress | keyvalue">
-                         <div class="row" *ngIf="data.value">
-                            <div class="col-md-4"><b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b></div>
+                <div *ngIf="data.info.contactAddress">
+                    <div *ngFor="let data of data.info.contactAddress | keyvalue">
+                        <div class="row" *ngIf="data.value">
+                            <div class="col-md-4"><b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form',
+                                    data.key)}}</b></div>
                             <div class="col-md-8">{{data.value}}</div>
-                         </div>
-                     </div>
+                        </div>
+                    </div>
                 </div>
-                  <div *ngIf="data.info.contactPersonPrimary">
-                     <div *ngFor="let data of data.info.contactPersonPrimary | keyvalue">
-                         <div class="row" *ngIf="data.value">
-                            <div class="col-md-4" style="word-break:break-all"><b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b></div>
+                <div *ngIf="data.info.contactPersonPrimary">
+                    <div *ngFor="let data of data.info.contactPersonPrimary | keyvalue">
+                        <div class="row" *ngIf="data.value">
+                            <div class="col-md-4" style="word-break:break-all">
+                                <b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b>
+                            </div>
                             <div class="col-md-8">{{data.value}}</div>
-                         </div>
-                     </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a  target="_blank" [href]="data.info.metadata.record_url" class="btn btn-primary" (click)="close()">See full metadata record <i class="icon icon-opennewwindow" ></i></a>
-                <button class="btn btn-secondary" (click)="close()"
-                    data-dismiss="modal">{{'COMMON.close' | translate}}</button>
+                <ng-container *ngIf="data.info?.metadata?.record_url">
+                    <a target="_blank" [href]="data.info.metadata.record_url" class="btn btn-primary"
+                        (click)="close()">See
+                        full metadata record <i class="icon icon-opennewwindow"></i></a>
+                </ng-container>
+                <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close' |
+                    translate}}</button>
             </div>
         </div>
     </div>
