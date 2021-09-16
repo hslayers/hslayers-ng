@@ -2,6 +2,6 @@
                 bottom: 0; background: var(--panel-wrapper-bg-color)">
   <button class="btn btn-primary" (click)="selectAllLayers()">{{'ADDLAYERS.selectAllLayers' |
     translate}}</button>
-  <button class="btn btn-primary" [disabled]="!hasChecked" [title]="'ADDLAYERS.addSelected' | translate"
+  <button class="btn btn-primary" [disabled]="!hsAddDataUrlService.hasAllChecked" [title]="'ADDLAYERS.addSelected' | translate"
     (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
 </div>

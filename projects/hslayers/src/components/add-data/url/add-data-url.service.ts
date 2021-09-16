@@ -12,7 +12,7 @@ import {HsLogService} from '../../../common/log/log.service';
 })
 export class HsAddDataUrlService {
   addDataCapsParsingError: Subject<{e: any; context: any}> = new Subject();
-
+  hasAllChecked: boolean;
   constructor(
     public hsLog: HsLogService,
     public hsLanguageService: HsLanguageService,
@@ -120,7 +120,7 @@ export class HsAddDataUrlService {
     }, 1000);
   }
 
-  searchForChecked(services: Array<any>): boolean {
-    return services.some((service) => service.checked);
+  searchForChecked(services: Array<any>): void {
+    this.hasAllChecked = services.some((service) => service.checked);
   }
 }
