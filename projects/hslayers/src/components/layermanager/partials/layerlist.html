@@ -1,7 +1,7 @@
 <div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
     <ul class="list-group row">
         <li *ngFor="let layer of filtered_layers | filter:layerFilter" id="{{layer.idString()}}" class="list-group-item hs-lm-item"
-            [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed == true}">
+            [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed === true}">
             <div class="d-flex">
                 <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''">
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
@@ -13,16 +13,16 @@
                 </ng-template>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
-                    style="word-break:break-word" [ngClass]="{'hover': layer.layer.hasSublayers == true}"
+                    style="word-break:break-word;" [ngClass]="{'hover': layer.hasSublayers === true}"
                     [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="HsConfig.layerTooltipDelay || 0">
                     {{HsLayerUtilsService.translateTitle(layer.title)}}
                 </div>
-                <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers"
+                <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.hasSublayers"
                     style="font-size: x-small; flex-grow: 20;"
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer)"></span>
                     <span class="mr-1"
-                        [ngClass]="{'icon-chevron-right':HsLayerManagerService.currentLayer == layer, 'icon-chevron-down': HsLayerManagerService.currentLayer != layer}"
+                        [ngClass]="{'icon-chevron-right':HsLayerManagerService.currentLayer === layer, 'icon-chevron-down': HsLayerManagerService.currentLayer !== layer}"
                         [hidden]="!layerLoaded(layer)"></span>
                 </div>
 
