@@ -13,12 +13,12 @@
                 </select>
             </div>
         </div>
-        <div [hidden]="endpoint?.type != 'layman' || isAuthorized">
+        <div [hidden]="endpoint?.type !== 'layman' || isAuthorized">
             <div class="alert alert-info text-gray" translate>
                 {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translate}} </div>
         </div>
-        <hs-layman-current-user *ngIf="endpoint?.type == 'layman'" [endpoint]="endpoint"></hs-layman-current-user>
-        <hs-save-map-advanced-form *ngIf="advancedForm && (isAuthorized || endpoint?.type != 'layman')">
+        <hs-layman-current-user *ngIf="endpoint?.type === 'layman'" [endpoint]="endpoint"></hs-layman-current-user>
+        <hs-save-map-advanced-form class="d-block pt-5" *ngIf="advancedForm && (isAuthorized || endpoint?.type !== 'layman')">
         </hs-save-map-advanced-form>
         <hs-save-map-simple-form *ngIf="!advancedForm"></hs-save-map-simple-form>
     </div>
