@@ -23,6 +23,9 @@ export class HsCommonUrlAddComponent {
   }
 
   checkAllLayers(layers: any[]): void {
+    if (!layers) {
+      return;
+    }
     for (const layer of layers) {
       layer.checked = false;
       layer.checked = !this.selectAll;

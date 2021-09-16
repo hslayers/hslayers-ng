@@ -8,5 +8,4 @@ export interface IGetCapabilities {
   params2String(obj): string;
   request(service_url: string): Promise<CapabilitiesResponseWrapper>;
   service2layers?(caps: any, path?: string): Layer<Source>[];
-  currentProjectionSupported(srss: string[]): boolean;
 }

@@ -5,15 +5,14 @@ import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
-import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
-import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addDataUrlDataObject, addLayerOptions} from '../add-data-url.types';
@@ -38,10 +37,9 @@ export class HsAddDataArcGisService
     public hsLayoutService: HsLayoutService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService,
-    public hsToastService: HsToastService
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = {
       map_projection: '',
@@ -81,16 +79,7 @@ export class HsAddDataArcGisService
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    if (e?.status === 401) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-
-        'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'hsAddDataArcgisService'}
-      );
-    } else {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
-    }
+    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
 
   createLayer(response, layerToSelect: string): Promise<void> {
@@ -102,7 +91,7 @@ export class HsAddDataArcGisService
           .getProjection()
           .getCode()
           .toUpperCase();
-        this.data.title = caps.mapName;
+        this.data.title = caps.mapName || 'Arcgis layer';
         this.data.description = addAnchors(caps.description);
         this.data.version = caps.currentVersion;
         this.data.image_formats = caps.supportedImageFormatTypes
@@ -123,7 +112,9 @@ export class HsAddDataArcGisService
           }
           return this.data.srss[0];
         })();
-        this.srsChanged();
+        this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
+          this.data.srs
+        );
         this.hsAddDataUrlService.selectLayerByName(
           layerToSelect,
           this.data.services,
@@ -144,15 +135,6 @@ export class HsAddDataArcGisService
         throw new Error(e);
       }
     });
-  }
-
-  srsChanged(): void {
-    setTimeout(() => {
-      this.data.resample_warning =
-        !this.hsArcgisGetCapabilitiesService.currentProjectionSupported([
-          this.data.srs,
-        ]);
-    }, 0);
   }
 
   /**
@@ -187,25 +169,6 @@ export class HsAddDataArcGisService
     this.hsLayoutService.setMainPanel('layermanager');
   }
 
-  /**
-   * Constructs body of LAYER parameter for getMap request
-   * @param layer Optional. layer object received from capabilities. If no layer is provided
-   * merge all checked layer ids into one string
-   * @returns {string}
-   */
-  createBasemapName(layer?): string {
-    if (!layer) {
-      const names = [];
-
-      for (const layer of this.data.services.filter((layer) => layer.checked)) {
-        names.push(layer.id);
-      }
-      return `show:${names.join(',')}`;
-    } else {
-      return `show:${layer.id}`;
-    }
-  }
-
   addLayersRecursively(
     layer: any,
     options: addLayersRecursivelyOptions = {checkedOnly: true}
@@ -219,7 +182,7 @@ export class HsAddDataArcGisService
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
         });
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
@@ -231,7 +194,7 @@ export class HsAddDataArcGisService
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
         });
       }
     }
@@ -239,26 +202,6 @@ export class HsAddDataArcGisService
       for (const sublayer of layer.Layer) {
         this.addLayersRecursively(sublayer, {checkedOnly: options.checkedOnly});
       }
-    }
-  }
-
-  /**
-   * @param service
-   */
-  getSublayerNames(service): any[] {
-    if (service.layerToSelect) {
-      return service.layers.map((l) => {
-        const tmp: any = {};
-        if (l.name) {
-          tmp.name = l.name;
-        }
-        if (l.layer) {
-          tmp.children = this.getSublayerNames(l);
-        }
-        return tmp;
-      });
-    } else {
-      return [];
     }
   }
 
@@ -298,8 +241,11 @@ export class HsAddDataArcGisService
       params: Object.assign(
         {
           LAYERS: this.data.base
-            ? this.createBasemapName()
-            : this.createBasemapName(layer),
+            ? `show:${this.hsAddDataCommonUrlService.createBasemapName(
+                this.data.services,
+                'name'
+              )}`
+            : `show:${layer.name}`,
           INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
           FORMAT: options.imageFormat,
         },
