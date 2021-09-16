@@ -24,7 +24,6 @@ import {addDataUrlDataObject} from '../add-data-url.types';
 export class HsAddDataWmtsComponent
   implements HsAddDataUrlComponentInterface, OnDestroy {
   data: addDataUrlDataObject;
-  hasChecked: boolean;
   owsConnectingSubscription: Subscription;
   constructor(
     public hsMapService: HsMapService,
@@ -59,7 +58,7 @@ export class HsAddDataWmtsComponent
     if (!url || url === '') {
       return;
     }
-    this.hasChecked = false;
+    this.hsAddDataUrlService.hasAllChecked = false;
     this.hsHistoryListService.addSourceHistory('wmts', url);
     Object.assign(this.hsAddDataUrlWmtsService, {
       layerToSelect,
@@ -76,9 +75,7 @@ export class HsAddDataWmtsComponent
   }
 
   changed(): void {
-    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
-      this.data.services
-    );
+    this.hsAddDataUrlService.searchForChecked(this.data.services);
   }
 
   /**

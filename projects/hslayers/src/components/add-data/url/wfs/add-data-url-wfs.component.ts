@@ -18,7 +18,6 @@ import {addDataUrlDataObject} from '../add-data-url.types';
 export class HsAddDataWfsComponent
   implements HsAddDataUrlComponentInterface, OnDestroy {
   data: addDataUrlDataObject;
-  hasChecked: boolean;
   loadingFeatures: boolean;
   owsConnectingSubscription: Subscription;
   title = ''; //FIXME: unused
@@ -61,7 +60,7 @@ export class HsAddDataWfsComponent
     if (!url || url === '') {
       return;
     }
-    this.hasChecked = false;
+    this.hsAddDataUrlService.hasAllChecked = false;
     this.hsHistoryListService.addSourceHistory('wfs', url);
     Object.assign(this.hsAddDataWfsService, {
       services: [],
@@ -82,9 +81,7 @@ export class HsAddDataWfsComponent
   }
 
   changed(): void {
-    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
-      this.data.services
-    );
+    this.hsAddDataUrlService.searchForChecked(this.data.services);
   }
 
   /**
