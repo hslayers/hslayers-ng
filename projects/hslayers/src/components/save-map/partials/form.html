@@ -1,12 +1,12 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
     <li role="presentation" class="nav-item" *ngFor="let s of steps">
-        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" attr.aria-controls="hs-{{s}}" role="tab"
+        <a class="nav-link" [ngClass]="{'btn-primary': step === s}" attr.aria-controls="hs-{{s}}" role="tab"
             data-toggle="tab" (click)="setStep(s)">{{capitalizeFirstLetter(s)}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='context'}" id="hs-context">
+    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step ==='context'}" id="hs-context">
         <form>
             <label class="form-group">
                 {{'COMMON.title' | translate}} *
@@ -79,7 +79,7 @@
             </div>
         </form>
     </div>
-    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='access'}" id="hs-access">
+    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step ==='access'}" id="hs-access">
         <table class="table table-condensed">
             <tbody>
                 <tr>
@@ -97,7 +97,7 @@
             </tbody>
         </table>
     </div>
-    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='author'}" id="hs-author">
+    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step ==='author'}" id="hs-author">
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.person' | translate}}
@@ -168,8 +168,8 @@
 </div>
 <div class="modal-footer w-100">
     <div
-        [hidden]="!(step == 'end' 
-        && HsSaveMapManagerService.currentUser != HsSaveMapManagerService.compoData.workspace 
+        [hidden]="!(step === 'end' 
+        && HsSaveMapManagerService.currentUser !== HsSaveMapManagerService.compoData.workspace 
         && HsSaveMapManagerService.compoData.workspace)">
         <div class="alert alert-info text-gray" >
             {{'SAVECOMPOSITION.saveOrOverwrite' | translate}}
@@ -180,10 +180,10 @@
         <p style="text-align: center;" class="m-1">{{'COMMON.or' | translate}}</p>
     </div>
 
-    <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())"
+    <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step === 'end' && isAllowed())"
         (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
-    <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')"
+    <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step !== 'end')"
         (click)="next()">{{'COMMON.next' | translate}}</button>
     <a class="btn btn-block btn-secondary" (click)="saveCompoJson()" id="stc-download"
-        [hidden]="!(step == 'end')">{{'COMMON.download' | translate}}</a>
+        [hidden]="!(step === 'end')">{{'COMMON.download' | translate}}</a>
 </div>
