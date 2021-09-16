@@ -2,14 +2,9 @@ import * as xml2Json from 'xml-js';
 import VectorLayer from 'ol/layer/Vector';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Vector} from 'ol/source';
-import {WFS} from 'ol/format';
-import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
-import VectorSource from 'ol/source/Vector';
-import {Geometry} from 'ol/geom';
-
+import WfsSource from '../../../../common/layers/hs.source.WfsSource';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
@@ -121,70 +116,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     this.showDetails = false;
     this.loadingInfo = false;
     this.hsAddDataCommonUrlService.displayParsingError(e);
-  }
-
-  //FIXME: context
-  createWfsSource(options): Vector<Geometry> {
-    const me = this;
-    const src = new Vector({
-      strategy: bbox,
-      loader: function (extent, resolution, projection) {
-        (<any>this).loadingFeatures = true;
-        if (typeof me.data.version == 'undefined') {
-          me.data.version = '1.0.0';
-        }
-        if (typeof me.data.output_format == 'undefined') {
-          me.data.output_format = me.data.version == '1.0.0' ? 'GML2' : 'GML3';
-        }
-
-        const srs = options.srs.toUpperCase();
-
-        extent = transformExtent(extent, projection.getCode(), srs);
-        if (srs.includes('4326') || srs.includes('4258')) {
-          extent = [extent[1], extent[0], extent[3], extent[2]];
-        }
-
-        let url = [
-          options.url,
-          me.hsUtilsService.paramsToURLWoEncode({
-            service: 'wfs',
-            version: me.data.version, // == '2.0.0' ? '1.1.0' : me.version,
-            request: 'GetFeature',
-            typeName: options.layer.Name,
-            srsName: srs,
-            output_format: me.data.output_format,
-            // count: options.layer.limitFeatureCount ? 1000 : '',
-            BBOX: extent.join(',') + ',' + srs,
-          }),
-        ].join('?');
-
-        url = me.hsUtilsService.proxify(url);
-        me.http.get(url, {responseType: 'text'}).subscribe(
-          (response: any) => {
-            let featureString, features;
-            if (response) {
-              featureString = response;
-            }
-            if (featureString) {
-              const oParser = new DOMParser();
-              const oDOM = oParser.parseFromString(
-                featureString,
-                'application/xml'
-              );
-              const doc = oDOM.documentElement;
-
-              features = me.readFeatures(doc);
-              (this as VectorSource<Geometry>).addFeatures(features);
-              me.loadingFeatures = false;
-            }
-          },
-          (e) => {
-            throw new Error(e.message);
-          }
-        );
-      },
-    });
-    return src;
   }
 
   /**
@@ -354,7 +285,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     }
   }
 
-  parseEPSG(srss) {
+  parseEPSG(srss): Array<any> {
     srss.forEach((srs, index) => {
       const epsgCode = srs.slice(-4);
       srss[index] = 'EPSG:' + epsgCode;
@@ -365,19 +296,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
     return [...Array.from(new Set(srss))].filter((srs: string) =>
       this.definedProjections.includes(srs)
     );
-  }
-
-  readFeatures(doc) {
-    const wfs = new WFS({version: this.data.version});
-    const features = wfs.readFeatures(doc, {
-      dataProjection: this.data.srs,
-      featureProjection:
-        this.hsMapService.map.getView().getProjection().getCode() ==
-        this.data.srs
-          ? ''
-          : this.hsMapService.map.getView().getProjection(),
-    });
-    return features;
   }
 
   /**
@@ -415,13 +333,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
    * @param srs - of the layer
    */
   addLayer(layer, options: addLayerOptions): void {
-    const sourceOptions = {
-      layer,
-      url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
-      strategy: bbox,
-      srs: options.crs,
-    };
-
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -431,7 +342,16 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceInterface {
         sld: options.sld,
         wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       },
-      source: this.createWfsSource(sourceOptions),
+      source: new WfsSource(this.hsUtilsService, this.http, {
+        data_version: this.data.version,
+        output_format: this.data.output_format,
+        crs: options.crs,
+        provided_url:
+          this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+        layer: layer,
+        layer_name: options.layerName,
+        map_projection: this.hsMapService.map.getView().getProjection(),
+      }),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });
