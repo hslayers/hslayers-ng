@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {HsAddDataUrlService} from '../../url/add-data-url.service';
 
@@ -6,10 +6,9 @@ import {HsAddDataUrlService} from '../../url/add-data-url.service';
   selector: 'hs-common-url-add',
   templateUrl: './common-url-add.component.html',
 })
-export class HsCommonUrlAddComponent implements OnChanges {
+export class HsCommonUrlAddComponent {
   @Input() layers: any;
   @Input() injectedService: any;
-  @Input() hasChecked: boolean;
   selectAll = true;
 
   constructor(public hsAddDataUrlService: HsAddDataUrlService) {}
@@ -21,10 +20,6 @@ export class HsCommonUrlAddComponent implements OnChanges {
   selectAllLayers(): void {
     this.selectAll = !this.selectAll;
     this.checkAllLayers(this.layers);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.hasChecked = changes?.hasChecked?.currentValue;
   }
 
   checkAllLayers(layers: any[]): void {
@@ -45,6 +40,6 @@ export class HsCommonUrlAddComponent implements OnChanges {
   }
 
   changed(): void {
-    this.hasChecked = this.hsAddDataUrlService.searchForChecked(this.layers);
+    this.hsAddDataUrlService.searchForChecked(this.layers);
   }
 }

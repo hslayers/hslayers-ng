@@ -34,7 +34,7 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix"
                 style="background: var(--panel-wrapper-bg-color);">
                 <div class="d-flex justify-content-center">
-                    <hs-common-url-add class="w-100" [hasChecked]="hasChecked" [injectedService]="hsAddDataWfsService"
+                    <hs-common-url-add class="w-100" [injectedService]="hsAddDataWfsService"
                         [layers]="data.services">
                     </hs-common-url-add>
                     <button *ngIf="hsAddDataWfsService.loadingFeatures"

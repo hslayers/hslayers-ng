@@ -16,7 +16,6 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
   @Input() type: string;
   data;
   sourceHistory;
-  hasChecked = false;
   checkedSubLayers = {};
   hasNestedLayers: any;
   getDimensionValues: any;
@@ -30,6 +29,7 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService
   ) {}
   ngAfterContentInit(): void {
+    this.hsAddDataUrlService.hasAllChecked = false;
     this.data = this.injectedService.data;
     this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
     this.getDimensionValues = this.injectedService.getDimensionValues;
@@ -50,9 +50,9 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
 
   searchForChecked(service): void {
     this.checkedSubLayers[service.Name] = service.checked;
-    this.hasChecked = Object.values(this.checkedSubLayers).some(
-      (value) => value === true
-    );
+    this.hsAddDataUrlService.hasAllChecked = Object.values(
+      this.checkedSubLayers
+    ).some((value) => value === true);
   }
 
   reachedLimit(): boolean {
@@ -63,8 +63,6 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
     }
   }
   changed(): void {
-    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
-      this.data.services
-    );
+    this.hsAddDataUrlService.searchForChecked(this.data.services);
   }
 }
