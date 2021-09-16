@@ -1,5 +1,5 @@
 <div class="card panel-default">
-    <div class="card-body" *ngIf="currentLayer != undefined">
+    <div class="card-body" *ngIf="currentLayer">
         <!-- Sublayers-->
         <div [hidden]="!currentLayer.sublayers" class="form-group">
             <div *ngFor="let subLayer of getSubLayers()">
@@ -97,7 +97,7 @@
             </div>
         </div>
     </div>
-    <div class="card-footer" *ngIf="currentLayer != undefined && currentLayer.settings">
+    <div class="card-footer" *ngIf="currentLayer?.settings">
         <div class="form-group" [hidden]="!layer_renamer_visible">
             <label>{{'COMMON.title' | translate}}</label>
             <input type="text" class="form-control" [(ngModel)]="title" name="title">
