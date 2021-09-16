@@ -3,9 +3,9 @@ import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 
-import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsVectorLayerOptions} from './vector-layer-options.type';
-import {VectorSourceFromUrl} from './VectorSourceFromUrl';
+import SparqlJson from '../../../../common/layers/hs.source.SparqlJson';
+import {HsVectorLayerOptions} from '../vector-layer-options.type';
+import {VectorSourceFromUrl} from '../vector-source-from-url';
 
 export class VectorSourceDescriptor {
   mapProjection;

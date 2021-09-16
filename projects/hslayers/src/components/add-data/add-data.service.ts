@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {AddDataUrlType} from './add-data-url-type';
+import {AddDataUrlType} from './url/types/add-data-url.type';
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';

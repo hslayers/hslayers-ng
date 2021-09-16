@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 
 @Component({
-  selector: 'hs-add-data-common-url',
-  templateUrl: './add-data-common-url.component.html',
+  selector: 'hs-common-url',
+  templateUrl: './common-url.component.html',
 })
-export class HsAddDataCommonUrlComponent {
+export class HsCommonUrlComponent {
   items;
   what;
   @Input() type: any; // @type'; TODO: comes from another scope

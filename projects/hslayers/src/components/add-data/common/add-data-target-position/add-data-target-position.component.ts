@@ -1,6 +1,8 @@
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 

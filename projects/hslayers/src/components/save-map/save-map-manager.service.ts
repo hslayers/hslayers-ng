@@ -14,7 +14,7 @@ import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {accessRightsInterface} from '../add-data/common/access-rights.interface';
+import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -39,7 +39,7 @@ export class HsSaveMapManagerService {
     bbox: {east: 0, south: 0, west: 0, north: 0},
     currentCompositionTitle: '',
     currentComposition: undefined,
-    access_rights: <accessRightsInterface>{
+    access_rights: <accessRightsModel>{
       'access_rights.write': 'private',
       'access_rights.read': 'EVERYONE',
     },

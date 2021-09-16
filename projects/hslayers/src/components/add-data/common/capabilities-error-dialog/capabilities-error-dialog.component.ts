@@ -1,10 +1,11 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
+
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 
 @Component({
   selector: 'hs-get-capabilities-error',
-  templateUrl: './capabilities-error-dialog.html',
+  templateUrl: './capabilities-error-dialog.component.html',
 })
 export class HsGetCapabilitiesErrorComponent
   implements HsDialogComponent, OnInit {

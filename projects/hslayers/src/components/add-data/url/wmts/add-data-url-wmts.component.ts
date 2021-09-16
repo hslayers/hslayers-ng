@@ -3,7 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsAddDataService} from './../../add-data.service';
-import {HsAddDataUrlComponentInterface} from '../add-data-url-type-component.interface';
+import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
@@ -14,15 +14,15 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmtsGetCapabilitiesService} from '../../../../common/get-capabilities/wmts-get-capabilities.service';
-import {addDataUrlDataObject} from '../add-data-url.types';
+import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
 
 @Component({
   selector: 'hs-add-data-url-wmts',
-  templateUrl: './add-data-url-wmts.html',
+  templateUrl: './add-data-url-wmts.component.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmtsComponent
-  implements HsAddDataUrlComponentInterface, OnDestroy {
+  implements HsAddDataUrlComponentModel, OnDestroy {
   data: addDataUrlDataObject;
   owsConnectingSubscription: Subscription;
   constructor(

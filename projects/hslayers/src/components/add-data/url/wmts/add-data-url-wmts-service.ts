@@ -8,15 +8,15 @@ import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
+import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {addDataUrlDataObject} from '../add-data-url.types';
+import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmtsService
-  implements HsAddDataUrlTypeServiceInterface {
+  implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
   getDimensionValues;
   layerToSelect: any;

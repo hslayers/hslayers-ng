@@ -1,6 +1,6 @@
 <form class="form-horizontal" role="form">
-    <hs-add-data-common-url *ngIf="hsAddDataService.typeSelected === 'url'" type="vector" [(url)]="url"
-        (connect)="connect()"></hs-add-data-common-url>
+    <hs-common-url *ngIf="hsAddDataService.typeSelected === 'url'" type="vector" [(url)]="url"
+        (connect)="connect()"></hs-common-url>
 
     <div class="form-group m-3" *ngIf="hsAddDataService.typeSelected === 'file'">
        <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-vector-file" [acceptedFormats]="acceptedFormats"></hs-file-upload>

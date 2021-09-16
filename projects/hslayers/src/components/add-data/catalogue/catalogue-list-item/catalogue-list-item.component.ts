@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input} from '@angular/core';
 
-import {HsAddDataCatalogueService} from './add-data-catalogue.service';
-import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
-import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
-import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
-import {HsConfig} from '../../../config.service';
-import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLaymanBrowserService} from './layman/layman.service';
-import {HsLaymanService} from '../../save-map/layman.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsAddDataCatalogueService} from '../add-data-catalogue.service';
+import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.model';
+import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
+import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
+import {HsConfig} from '../../../../config.service';
+import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
+import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../../../language/language.service';
+import {HsLaymanBrowserService} from '../layman/layman.service';
+import {HsLaymanService} from '../../../save-map/layman.service';
+import {HsLogService} from '../../../../common/log/log.service';
+import {HsUtilsService} from '../../../utils/utils.service';
 
 @Component({
-  selector: 'hs-add-data-list-item',
-  templateUrl: 'add-data-list-item.html',
+  selector: 'hs-catalogue-list-item',
+  templateUrl: 'catalogue-list-item.component.html',
 })
-export class HsAddDataListItemComponent {
+export class HsCatalogueListItemComponent {
   @Input() layer;
 
   explanationsVisible: boolean;
@@ -32,7 +32,7 @@ export class HsAddDataListItemComponent {
   loadingInfo = false;
   constructor(
     public hsConfig: HsConfig, //used in template
-    public hsDatasourcesMetadataService: HsAddDataMetadataService,
+    public hsDatasourcesMetadataService: HsCatalogueMetadataService,
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
@@ -118,7 +118,7 @@ export class HsAddDataListItemComponent {
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
 
-    this.hsDialogContainerService.create(HsAddDataMetadataDialogComponent, {
+    this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
       selectedLayer: this.selected_layer,
       selectedDS: this.selected_ds,
     });

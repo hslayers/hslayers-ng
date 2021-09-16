@@ -1,6 +1,6 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-data-common-url type="wmts" [(url)]="hsAddDataUrlWmtsService.url" (connect)="connect()">
-    </hs-add-data-common-url>
+    <hs-common-url type="wmts" [(url)]="hsAddDataUrlWmtsService.url" (connect)="connect()">
+    </hs-common-url>
 
     <hs-common-url-progress [loadingInfo]="hsAddDataUrlWmtsService.loadingInfo"></hs-common-url-progress>
     <div *ngIf="hsAddDataUrlWmtsService.showDetails && !hsAddDataUrlWmtsService.loadingInfo" class="card">
