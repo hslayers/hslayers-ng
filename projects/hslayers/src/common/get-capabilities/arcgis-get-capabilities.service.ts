@@ -162,33 +162,4 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
     }
     return tmp;
   }
-
-  /**
-   * Test if current map projection is in supported projection list
-   *
-   * @param srss - List of supported projections
-   * @returns True if map projection is in list, otherwise false
-   */
-  currentProjectionSupported(srss: string[]): boolean {
-    if (!srss || srss.length === 0) {
-      return false;
-    }
-    let found = false;
-    for (const val of srss) {
-      if (!val) {
-        found = false;
-      } else {
-        if (
-          this.hsMapService.map
-            .getView()
-            .getProjection()
-            .getCode()
-            .toUpperCase() == val.toUpperCase()
-        ) {
-          found = true;
-        }
-      }
-    }
-    return found;
-  }
 }

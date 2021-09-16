@@ -22,9 +22,6 @@ export interface HsAddDataUrlTypeServiceInterface {
   addLayers(checkedOnly: boolean, sld?: string): void;
   addLayer(layer: any, options: addLayerOptions): void;
   addLayersRecursively(layer: any, options: addLayersRecursivelyOptions): void;
-  srsChanged?(): void;
-  createBasemapName?(data: any): string;
-  getSublayerNames?(layer: any): any[];
   addService?(
     url: string,
     group: Group,

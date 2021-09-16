@@ -12,6 +12,7 @@ import {transformExtent} from 'ol/proj';
 //FIX ME
 //refactor
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceInterface} from '../add-data-url-type-service.interface';
@@ -20,7 +21,6 @@ import {HsDimensionService} from '../../../../common/get-capabilities/dimension.
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
-import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {
@@ -56,7 +56,7 @@ export class HsAddDataUrlWmsService
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsToastService: HsToastService
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.url = '';
     this.data = {
@@ -125,16 +125,7 @@ export class HsAddDataUrlWmsService
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    if (e?.status === 401) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-
-        'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'hsAddDataWmsService'}
-      );
-    } else {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
-    }
+    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
 
   /**
@@ -184,7 +175,7 @@ export class HsAddDataUrlWmsService
         .getProjection()
         .getCode()
         .toUpperCase();
-      this.data.title = caps.Service.Title;
+      this.data.title = caps.Service.Title || 'Wms layer';
       this.data.description = addAnchors(caps.Service.Abstract);
       this.data.version = caps.Version || caps.version;
       this.data.image_formats = caps.Capability.Request.GetMap.Format
@@ -201,7 +192,7 @@ export class HsAddDataUrlWmsService
         this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
       }
       if (
-        this.hsWmsGetCapabilitiesService.currentProjectionSupported(
+        this.hsAddDataCommonUrlService.currentProjectionSupported(
           this.data.srss
         )
       ) {
@@ -219,7 +210,9 @@ export class HsAddDataUrlWmsService
       } else {
         this.data.srs = this.data.srss[0];
       }
-      this.srsChanged();
+      this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
+        this.data.srs
+      );
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
       //Make sure every service has a title to be displayed in table
@@ -357,13 +350,6 @@ export class HsAddDataUrlWmsService
     return url;
   }
 
-  srsChanged(): void {
-    this.data.resample_warning =
-      !this.hsWmsGetCapabilitiesService.currentProjectionSupported([
-        this.data.srs,
-      ]);
-  }
-
   /**
    * Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
@@ -377,9 +363,7 @@ export class HsAddDataUrlWmsService
       this.data.services.filter((l) => l.checked === true).length <= 10;
     if (this.data.base) {
       this.addLayer(
-        {
-          Name: this.createBasemapName(this.data.services),
-        },
+        {},
         {
           layerName: this.data.title.replace(/\//g, '&#47;'),
           layerTitle: this.hsUtilsService.undefineEmptyString(
@@ -400,35 +384,6 @@ export class HsAddDataUrlWmsService
     }
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager');
-  }
-  createBasemapName(services): string {
-    return services
-      .filter((l) => l.checked)
-      .map((l) => l.Name)
-      .join(',');
-  }
-
-  /**
-   * @param service
-   * @returns {Array}
-   */
-  getSublayerNames(service): any[] {
-    if (!service.Layer) {
-      return [];
-    }
-    return service.Layer.map((l) => {
-      const tmp: any = {};
-      if (l.Name) {
-        tmp.name = l.Name;
-      }
-      if (l.Title) {
-        tmp.title = l.Title;
-      }
-      if (l.Layer) {
-        tmp.children = this.getSublayerNames(l);
-      }
-      return tmp;
-    });
   }
 
   /**
@@ -485,7 +440,12 @@ export class HsAddDataUrlWmsService
       attributions,
       projection: this.data.srs,
       params: {
-        LAYERS: layer.Name || layer.Layer[0].Name,
+        LAYERS: this.data.base
+          ? this.hsAddDataCommonUrlService.createBasemapName(
+              this.data.services,
+              'Name'
+            )
+          : layer.Name,
         INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
         FORMAT: options.imageFormat,
         VERSION: this.data.version,
@@ -597,7 +557,7 @@ export class HsAddDataUrlWmsService
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
         });
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
@@ -611,7 +571,7 @@ export class HsAddDataUrlWmsService
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
         });
       }
     }
