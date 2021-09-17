@@ -8,6 +8,7 @@ import {takeUntil} from 'rxjs/operators';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
+import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -24,7 +25,8 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsAddDataService: HsAddDataService
+    public hsAddDataService: HsAddDataService,
+    public hsCapabilityCacheService: HsCapabilityCacheService
   ) {}
 
   /**
@@ -95,6 +97,9 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     }
     let url = [path, this.params2String(params)].join('?');
 
+    if (this.hsCapabilityCacheService.get(url)) {
+      return this.hsCapabilityCacheService.get(url);
+    }
     try {
       url = this.hsUtilsService.proxify(url);
       const r = await this.httpClient
@@ -104,9 +109,9 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
         .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
 
-      return {
-        response: r,
-      };
+      const wrap = {response: r};
+      this.hsCapabilityCacheService.set(url, wrap);
+      return wrap;
     } catch (error) {
       return {
         response: error,
