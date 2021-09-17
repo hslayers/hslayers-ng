@@ -48,7 +48,7 @@
     "cesium": "^1.85.0",
     "dayjs": "^1.10.7",
     "deepmerge": "^4.2.2",
-    "geostyler-openlayers-parser": "^2.3.0",
+    "geostyler-openlayers-parser": "^2.4.0",
     "geostyler-sld-parser": "^2.3.0",
     "geostyler-style": "^4.0.2",
     "ngx-color": "^7.2.0",
