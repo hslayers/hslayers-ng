@@ -6,28 +6,18 @@ import {Tile} from 'ol/layer';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
-import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
-  getDimensionValues;
-  layerToSelect: any;
-  loadingInfo = false;
-  showDetails = false;
-  url: any;
-
   constructor(
     public hsMapService: HsMapService,
     public hsLayoutService: HsLayoutService,
-    public hsUtilsService: HsUtilsService,
-    public hsAddDataService: HsAddDataService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
@@ -40,11 +30,6 @@ export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
       title: '',
       version: '',
     };
-    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
-      this.url = '';
-      this.loadingInfo = false;
-      this.showDetails = false;
-    });
   }
 
   async addLayerFromCapabilities(
@@ -56,28 +41,22 @@ export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (error) {
-      this.throwParsingError(response.message);
+      this.hsAddDataCommonUrlService.throwParsingError(response.message);
       return;
     }
     try {
       //TODO AWAIT and add-layer if layerToSelect
       await this.capabilitiesReceived(response);
-      if (this.layerToSelect) {
+      if (this.hsAddDataCommonUrlService.layerToSelect) {
         for (const layer of this.data.services) {
           this.addLayers(true);
         }
       }
     } catch (e) {
-      this.throwParsingError(e);
+      this.hsAddDataCommonUrlService.throwParsingError(e);
     }
   }
 
-  throwParsingError(e): void {
-    this.url = null;
-    this.showDetails = false;
-    this.loadingInfo = false;
-    this.hsAddDataCommonUrlService.displayParsingError(e);
-  }
   /**
    * Parse information received in WMTS getCapabilities respond
    * @param response - Url of requested service
@@ -94,13 +73,13 @@ export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
       this.data.services = caps.Contents.Layer;
 
       this.hsAddDataUrlService.selectLayerByName(
-        this.layerToSelect,
+        this.hsAddDataCommonUrlService.layerToSelect,
         this.data.services,
         'Title'
       );
       //TODO Layer to select
 
-      this.loadingInfo = false;
+      this.hsAddDataCommonUrlService.loadingInfo = false;
       return this.data.title;
     } catch (e) {
       throw new Error(e);

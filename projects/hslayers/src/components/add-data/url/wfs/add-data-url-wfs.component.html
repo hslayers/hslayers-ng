@@ -1,9 +1,9 @@
-<form class="form-horizontal" name="frmConnect" role="form">
-    <hs-common-url type="wfs" [(url)]="hsAddDataWfsService.url" (connect)="connect()"></hs-common-url>
+<form class="form-horizontal" name="frmConnectWfs" role="form">
+    <hs-common-url type="wfs" [(url)]="hsAddDataCommonUrlService.url" (connect)="connect()"></hs-common-url>
 
-    <hs-common-url-progress [loadingInfo]="hsAddDataWfsService.loadingInfo"></hs-common-url-progress>
+    <hs-common-url-progress *ngIf="hsAddDataCommonUrlService.loadingInfo"></hs-common-url-progress>
     
-    <div *ngIf="hsAddDataWfsService.showDetails && !hsAddDataWfsService.loadingInfo" class="card">
+    <div *ngIf="hsAddDataCommonUrlService.showDetails && !hsAddDataCommonUrlService.loadingInfo" class="card">
 
         <!-- FIXME: unused -->
         <div class="card-title text-center font-weight-bold">{{title}}</div>

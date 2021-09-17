@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -13,7 +14,7 @@ import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
 
 @Component({
   selector: 'hs-add-data-url-wfs',
-  templateUrl: './add-data-wfs-layer.component.html',
+  templateUrl: './add-data-url-wfs.component.html',
 })
 export class HsAddDataWfsComponent
   implements HsAddDataUrlComponentModel, OnDestroy {
@@ -28,7 +29,8 @@ export class HsAddDataWfsComponent
     public hsUtilsService: HsUtilsService, //used in template,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService,
-    public hsHistoryListService: HsHistoryListService
+    public hsHistoryListService: HsHistoryListService,
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = this.hsAddDataWfsService.data;
     //Merge subscriptions in order to easily unsubscribe on destroy
@@ -36,7 +38,7 @@ export class HsAddDataWfsComponent
       this.hsEventBusService.owsConnecting.subscribe(
         ({type, uri, layer, sld}) => {
           if (type == 'wfs') {
-            this.hsAddDataWfsService.layerToSelect = layer;
+            this.hsAddDataCommonUrlService.layerToSelect = layer;
             this.setUrlAndConnect(uri, sld);
           }
         }
@@ -46,23 +48,15 @@ export class HsAddDataWfsComponent
   ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
   }
-  //NOT BEING USED
-  /**
-   * Clear URL and hide detailsWms
-   */
-  clear(): void {
-    this.hsAddDataWfsService.url = '';
-    this.hsAddDataWfsService.showDetails = false;
-  }
 
   async connect(sld?: string): Promise<void> {
-    const url = this.hsAddDataWfsService.url;
+    const url = this.hsAddDataCommonUrlService.url;
     if (!url || url === '') {
       return;
     }
     this.hsAddDataUrlService.hasAnyChecked = false;
     this.hsHistoryListService.addSourceHistory('wfs', url);
-    Object.assign(this.hsAddDataWfsService, {
+    Object.assign(this.hsAddDataCommonUrlService, {
       services: [],
       showDetails: true,
       loadingInfo: true,
@@ -76,19 +70,11 @@ export class HsAddDataWfsComponent
    * @param url - URL of requested service
    */
   setUrlAndConnect(url: string, sld: string): void {
-    this.updateUrl(url);
+    this.hsAddDataCommonUrlService.updateUrl(url);
     this.connect(sld);
   }
 
   changed(): void {
     this.hsAddDataUrlService.searchForChecked(this.data.services);
-  }
-
-  /**
-   * For the sake of possible future implementation changes
-   * @param url - URL to be set
-   */
-  updateUrl(url: string): void {
-    this.hsAddDataWfsService.url = url;
   }
 }

@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -19,12 +20,13 @@ export class HsAddDataWmsComponent
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wms') {
-          this.hsAddDataUrlWmsService.layerToSelect = layer;
+          this.hsAddDataCommonUrlService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });
@@ -35,15 +37,15 @@ export class HsAddDataWmsComponent
   }
 
   async connect(layerToSelect?: string): Promise<void> {
-    const url = this.hsAddDataUrlWmsService.url;
+    const url = this.hsAddDataCommonUrlService.url;
     if (!url || url === '') {
       return;
     }
     this.hsHistoryListService.addSourceHistory('wms', url);
-    Object.assign(this.hsAddDataUrlWmsService, {
+    Object.assign(this.hsAddDataCommonUrlService, {
       layerToSelect,
-      showDetails: true,
       loadingInfo: true,
+      showDetails: true,
     });
     const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
     this.hsAddDataUrlWmsService.addLayerFromCapabilities(wrapper);
@@ -55,15 +57,7 @@ export class HsAddDataWmsComponent
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer?: string): void {
-    this.updateUrl(url);
+    this.hsAddDataCommonUrlService.updateUrl(url);
     this.connect(layer);
-  }
-
-  /**
-   * For the sake of possible future implementation changes
-   * @param url - URL to be set
-   */
-  updateUrl(url: string): void {
-    this.hsAddDataUrlWmsService.url = url;
   }
 }

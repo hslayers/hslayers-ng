@@ -6,11 +6,9 @@ import {TileArcGISRest} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
-import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
-import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -21,25 +19,15 @@ import {addLayersRecursivelyOptions} from '../types/add-data-url-recursive-optio
 import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataArcGisService
-  implements HsAddDataUrlTypeServiceModel {
+export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
-  layerToSelect: string;
-  loadingInfo = false;
-  showDetails: boolean;
-  url: string;
-
-  //TODO: all dimension related things need to be refactored into separate module
-  getDimensionValues = this.hsDimensionService.getDimensionValues;
 
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataService: HsAddDataService,
     public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = {
@@ -49,11 +37,6 @@ export class HsAddDataArcGisService
       use_resampling: false,
       use_tiles: true,
     };
-    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
-      this.url = '';
-      this.loadingInfo = false;
-      this.showDetails = false;
-    });
   }
 
   async addLayerFromCapabilities(
@@ -63,24 +46,22 @@ export class HsAddDataArcGisService
       return;
     }
     if (wrapper.error) {
-      this.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonUrlService.throwParsingError(
+        wrapper.response.message
+      );
       return;
     }
     try {
-      await this.createLayer(wrapper.response, this.layerToSelect);
-      if (this.layerToSelect) {
+      await this.createLayer(
+        wrapper.response,
+        this.hsAddDataCommonUrlService.layerToSelect
+      );
+      if (this.hsAddDataCommonUrlService.layerToSelect) {
         this.addLayers(true);
       }
     } catch (e) {
-      this.throwParsingError(e);
+      this.hsAddDataCommonUrlService.throwParsingError(e);
     }
-  }
-
-  throwParsingError(e): void {
-    this.url = null;
-    this.showDetails = false;
-    this.loadingInfo = false;
-    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
 
   createLayer(response, layerToSelect: string): Promise<void> {
@@ -131,7 +112,7 @@ export class HsAddDataArcGisService
           'geoJSON',
           'JSON',
         ]);
-        this.loadingInfo = false;
+        this.hsAddDataCommonUrlService.loadingInfo = false;
       } catch (e) {
         throw new Error(e);
       }

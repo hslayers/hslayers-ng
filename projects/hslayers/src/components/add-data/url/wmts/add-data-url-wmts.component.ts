@@ -2,6 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -36,14 +37,15 @@ export class HsAddDataWmtsComponent
     public hsAddDataUrlWmtsService: HsAddDataUrlWmtsService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService,
-    public hsHistoryListService: HsHistoryListService
+    public hsHistoryListService: HsHistoryListService,
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = this.hsAddDataUrlWmtsService.data;
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wmts') {
-          this.hsAddDataUrlWmtsService.layerToSelect = layer;
+          this.hsAddDataCommonUrlService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });
@@ -54,13 +56,13 @@ export class HsAddDataWmtsComponent
   }
 
   async connect(layerToSelect?: string): Promise<void> {
-    const url = this.hsAddDataUrlWmtsService.url;
+    const url = this.hsAddDataCommonUrlService.url;
     if (!url || url === '') {
       return;
     }
-    this.hsAddDataUrlService.hasAnyChecked= false;
+    this.hsAddDataUrlService.hasAnyChecked = false;
     this.hsHistoryListService.addSourceHistory('wmts', url);
-    Object.assign(this.hsAddDataUrlWmtsService, {
+    Object.assign(this.hsAddDataCommonUrlService, {
       layerToSelect,
       loadingInfo: true,
       showDetails: true,
@@ -70,19 +72,11 @@ export class HsAddDataWmtsComponent
   }
 
   setUrlAndConnect(url: string, layer?: string): void {
-    this.updateUrl(url);
+    this.hsAddDataCommonUrlService.updateUrl(url);
     this.connect(layer);
   }
 
   changed(): void {
     this.hsAddDataUrlService.searchForChecked(this.data.services);
-  }
-
-  /**
-   * For the sake of possible future implementation changes
-   * @param url - URL to be set
-   */
-  updateUrl(url: string): void {
-    this.hsAddDataUrlWmtsService.url = url;
   }
 }
