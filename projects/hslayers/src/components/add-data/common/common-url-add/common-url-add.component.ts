@@ -14,7 +14,6 @@ export class HsCommonUrlAddComponent {
   constructor(public hsAddDataUrlService: HsAddDataUrlService) {}
 
   /**
-   * @param layers
    * Select all layers from service.
    */
   selectAllLayers(): void {

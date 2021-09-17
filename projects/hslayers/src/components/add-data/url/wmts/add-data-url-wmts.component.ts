@@ -58,7 +58,7 @@ export class HsAddDataWmtsComponent
     if (!url || url === '') {
       return;
     }
-    this.hsAddDataUrlService.hasAllChecked = false;
+    this.hsAddDataUrlService.hasAnyChecked= false;
     this.hsHistoryListService.addSourceHistory('wmts', url);
     Object.assign(this.hsAddDataUrlWmtsService, {
       layerToSelect,

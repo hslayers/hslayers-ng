@@ -8,10 +8,10 @@ export class HsCatalogueMetadataService {
   constructor(public hsUtilsService: HsUtilsService) {}
 
   /**
-   * @param input
-   * @param prestring
+   * @param input -
+   * @param prestring -
    */
-  decomposeMetadata(input, prestring?: string) {
+  decomposeMetadata(input, prestring?: string): any {
     console.log(input);
     if (this.hsUtilsService.isPOJO(input)) {
       console.log('Decomposing OBJ');
@@ -25,10 +25,10 @@ export class HsCatalogueMetadataService {
   }
 
   /**
-   * @param obj
-   * @param substring
+   * @param obj -
+   * @param substring -
    */
-  decomposeObject(obj, substring?: string) {
+  decomposeObject(obj, substring?: string): any {
     let decomposed = {};
     let subvalue = undefined;
     Object.entries(obj).forEach((entry) => {
@@ -63,10 +63,10 @@ export class HsCatalogueMetadataService {
   }
 
   /**
-   * @param arr
-   * @param substring
+   * @param arr -
+   * @param substring -
    */
-  decomposeArray(arr: any[], substring: string) {
+  decomposeArray(arr: any[], substring: string): any {
     console.log('decomposing array ', arr, 'with substring ', substring);
     let decomposed = undefined;
     let sub: any = '';

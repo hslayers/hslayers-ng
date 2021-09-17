@@ -112,7 +112,7 @@ export class HsAddDataVectorComponent implements OnInit {
   /**
    * Handler for adding non-wms service, file in template.
    */
-  async add() {
+  async add(): Promise<void> {
     this.uploadType == 'new'
       ? await this.addNewLayer()
       : await this.updateExistingLayer();
@@ -134,7 +134,7 @@ export class HsAddDataVectorComponent implements OnInit {
       : this.sourceLayer.getSource().addFeatures(features);
   }
 
-  async addNewLayer() {
+  async addNewLayer(): Promise<any> {
     const layer = await this.hsAddDataVectorService.addVectorLayer(
       this.type,
       this.url || this.base64url,
