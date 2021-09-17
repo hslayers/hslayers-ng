@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Observable, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
-import {transform, transformExtent} from 'ol/proj';
+import {transformExtent} from 'ol/proj';
 
 import {
   EndpointErrorHandler,
@@ -37,7 +37,7 @@ export class HsLaymanBrowserService {
    * Loads datasets metadata from Layman
    * @param endpoint - Configuration of selected datasource (from app config)
    * extent feature is created. Has one parameter: feature
-   * @param data
+   * @param data -
    */
   queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
@@ -171,7 +171,6 @@ export class HsLaymanBrowserService {
 
   /**
    * (PRIVATE) Callback for catalogue http query
-   * @private
    * @param data - HTTP response containing all the layers
    */
   private datasetsReceived(data): void {
@@ -210,7 +209,7 @@ export class HsLaymanBrowserService {
 
   /**
    * Fills metadata about layer, because Layman layer list API provides just name and UUID
-   * @param dataset - Configuration of selected datasource (from app config)
+   * @param endpoint - Configuration of selected datasource (from app config)
    * @param layer - Layman layer for which to get metadata
    * @returns Promise which is resolved when layer metadata is filled
    */

@@ -187,7 +187,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
 
   /**
    * @param response - A stringified XML response to getCapabilities request
-   * @returns {Promise}
+   * @returns
    */
   async parseCapabilities(response: string): Promise<any> {
     try {
@@ -352,7 +352,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
     }
   }
 
-  parseEPSG(srss) {
+  parseEPSG(srss): Array<any> {
     srss.forEach((srs, index) => {
       const epsgCode = srs.slice(-4);
       srss[index] = 'EPSG:' + epsgCode;

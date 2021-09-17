@@ -161,7 +161,7 @@ export class HsAddDataCatalogueService {
 
   /**
    * Queries all configured catalogs for datasources (layers)
-   * @param suspendLimitCalculation
+   * @param suspendLimitCalculation -
    */
   queryCatalogs(suspendLimitCalculation?: boolean): void {
     if (this.endpointsWithDatasources.length > 0) {
@@ -305,7 +305,7 @@ export class HsAddDataCatalogueService {
    * Use all query params (search text, bbox, params.., sorting, start)
    * @param catalog - Configuration of selected datasource (from app config)
    */
-  queryCatalog(catalog: HsEndpoint) {
+  queryCatalog(catalog: HsEndpoint): any {
     this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {

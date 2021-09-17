@@ -15,8 +15,7 @@ import {addAnchors} from '../../../../common/attribution-utils';
 import {addDataUrlDataObject} from '../types/add-data-url-data-object.type';
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataUrlWmtsService
-  implements HsAddDataUrlTypeServiceModel {
+export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
   getDimensionValues;
   layerToSelect: any;

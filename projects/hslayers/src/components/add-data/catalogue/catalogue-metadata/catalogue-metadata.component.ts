@@ -37,9 +37,9 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
   }
 
   /**
-   * @param ds Datasource (i.e. endpoint)
-   * @param layer Description of a layer to be added
-   * @param type Type in which the layer shall be added (WMS, WFS, etc.)
+   * @param ds - Datasource (i.e. endpoint)
+   * @param layer - Description of a layer to be added
+   * @param type - Type in which the layer shall be added (WMS, WFS, etc.)
    */
   addLayerToMap(
     ds: HsEndpoint,

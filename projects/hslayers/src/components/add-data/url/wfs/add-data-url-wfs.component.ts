@@ -60,7 +60,7 @@ export class HsAddDataWfsComponent
     if (!url || url === '') {
       return;
     }
-    this.hsAddDataUrlService.hasAllChecked = false;
+    this.hsAddDataUrlService.hasAnyChecked = false;
     this.hsHistoryListService.addSourceHistory('wfs', url);
     Object.assign(this.hsAddDataWfsService, {
       services: [],
@@ -86,7 +86,7 @@ export class HsAddDataWfsComponent
 
   /**
    * For the sake of possible future implementation changes
-   * @param url URL to be set
+   * @param url - URL to be set
    */
   updateUrl(url: string): void {
     this.hsAddDataWfsService.url = url;

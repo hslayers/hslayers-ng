@@ -54,7 +54,7 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @param evt
+   * @param evt -
    */
   mapPointerMoved(evt): void {
     const featuresUnderMouse = this.extentLayer
@@ -84,7 +84,7 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @param map
+   * @param map -
    */
   init(map): void {
     map.on('pointermove', (evt) => this.mapPointerMoved(evt));
@@ -117,7 +117,7 @@ export class HsAddDataCatalogueMapService {
   /**
    * Test if it possible to zoom to layer overview (bbox has to be defined
    * in metadata of selected layer)
-   * @param layer TODO
+   * @param layer - TODO
    * @returns Returns if bbox is specified and thus layer is zoomable
    */
   isZoomable(layer): boolean {

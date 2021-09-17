@@ -1,4 +1,3 @@
-import Resumable from 'resumablejs';
 import {FileDescriptor} from './file-descriptor.type';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -22,13 +21,13 @@ export class HsAddDataFileShpService {
   /**
    * Load non-wms OWS data and create layer
    * @param endpoint - Layman endpoint description (url, name, user)
-   * @param iles - Array of shp files (shp, dbf, shx)
+   * @param files - Array of shp files (shp, dbf, shx)
    * @param name - Name of new layer
    * @param title - Title of new layer
    * @param abstract - Abstract of new layer
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param sld - Array of sld files
-   * @returns {Promise}
+   * @returns
    */
   add(
     endpoint: HsEndpoint,
@@ -98,7 +97,7 @@ export class HsAddDataFileShpService {
         .toPromise()
         .then(async (data: any) => {
           //CHECK IF OK not auth etc.
-          if (data && data.length > 0) {  
+          if (data && data.length > 0) {
             if (this.asyncLoading) {
               const promise = await this.HsLaymanService.asyncUpload(
                 files_to_async_upload,

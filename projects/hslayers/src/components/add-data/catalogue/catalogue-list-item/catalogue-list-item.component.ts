@@ -76,8 +76,8 @@ export class HsCatalogueListItemComponent {
 
   /**
    * Add layer by type click wrapper. Prevents bubbling of DOM event
-   * @param type One of 'WMS', 'WFS'
-   * @param event Mouse click event
+   * @param type - One of 'WMS', 'WFS'
+   * @param event - Mouse click event
    */
   selectTypeAndAdd(type: string, event: MouseEvent): void {
     event.preventDefault();
@@ -87,9 +87,8 @@ export class HsCatalogueListItemComponent {
 
   /**
    * For a stringified type of service, it returns its description
-   * @param module
-   * @param text
-   * @param type One of 'WMS', 'WFS'
+   * @param module -
+   * @param text -
    * @returns A brief description of a given type with its main advantage and disadvantage notes
    */
   translateString(module: string, text: string): string {
