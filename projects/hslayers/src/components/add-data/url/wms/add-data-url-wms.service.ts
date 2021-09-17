@@ -35,9 +35,7 @@ import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataUrlWmsService
-  implements HsAddDataUrlTypeServiceModel
-{
+export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
   getDimensionValues;
   layerToSelect: string;
@@ -332,7 +330,6 @@ export class HsAddDataUrlWmsService
    * which is wrong.
    * @param url - URL for which to remove port but only when proxified
    * with port in proxy path.
-   * @private
    * @returns URL without proxy services port added to it.
    */
   removePortIfProxified(url: string): string {

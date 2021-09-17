@@ -62,7 +62,7 @@ export class HsAddDataVectorService {
    * @param addUnder -
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
-   * @returns {Promise} Return Promise which return OpenLayers vector layer
+   * @returns Return Promise which return OpenLayers vector layer
    */
   addVectorLayer(
     type: string,
@@ -118,7 +118,7 @@ export class HsAddDataVectorService {
    * @param abstract - Abstract of new layer
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
-   * @returns {Promise} Return Promise which return OpenLayers vector layer
+   * @returns Return Promise which return OpenLayers vector layer
    */
   async createVectorLayer(
     type: string,
@@ -201,9 +201,8 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * @param extent
-   * @param src
-   * @private
+   * @param extent -
+   * @param src -
    */
   tryFit(extent, src): void {
     if (

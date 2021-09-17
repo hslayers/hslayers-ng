@@ -36,8 +36,7 @@ export class HsMickaBrowserService {
 
   /**
    * @param dataset - Configuration of selected datasource (from app config)
-   * @param query - Container for all query filter values
-   * @param data -
+   * @param data - Query properties
    * @param extentFeatureCreated - Function which gets called
    * @param textField - Name of the field to search in
    * extent feature is created. Has one parameter: feature
@@ -155,7 +154,6 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @private
    * @param data - HTTP response containing all the layers
    * Callback for catalogue http query
    */
@@ -186,10 +184,9 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @private
    * @param which - Parameter name to parse
    * @param query -
-   * @returns {string}
+   * @returns
    * Parse query parameter into encoded key value pair.
    */
   private param2Query(which: string, query): string {
@@ -220,9 +217,8 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @private
    * @param record - Record of one dataset from Get Records response
-   * @returns {Feature | undefined}
+   * @returns
    * Create extent features for displaying extent of loaded dataset records in map
    */
   private addExtentFeature(record): Feature<Geometry> | undefined {
@@ -288,10 +284,10 @@ export class HsMickaBrowserService {
   }
 
   /**
-   * @param type
+   * @param type -
    * @param layer - Micka layer for which to get metadata
    * @param type - Optional service type specification
-   * @returns {string} Url of service or resource
+   * @returns Url of service or resource
    * Get first link from records links array or link
    * property of record in older Micka versions
    * in a common format for use in add-layers component
@@ -321,7 +317,7 @@ export class HsMickaBrowserService {
   /**
    * @param ds - Configuration of selected datasource (from app config)
    * @param layer - Micka layer for which to get metadata
-   * @returns {Promise} promise which describes layer
+   * @returns Promise which describes layer
    * in a common format for use in add-layers component
    * Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component

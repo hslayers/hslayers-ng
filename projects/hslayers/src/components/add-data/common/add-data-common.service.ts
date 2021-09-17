@@ -66,7 +66,7 @@ export class HsAddDataCommonUrlService {
    * @param layerOrLayers - layer object or layers received from capabilities. If no layer is provided
    * merge all checked layer ids into one string
    * @param property - layer property
-   * @returns {string}
+   * @returns
    */
   createBasemapName(layerOrLayers: any | Array<any>, property: string): string {
     let baseName = '';
