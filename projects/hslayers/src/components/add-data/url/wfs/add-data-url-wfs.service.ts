@@ -12,9 +12,7 @@ import {Geometry} from 'ol/geom';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
-import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
-import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
@@ -30,20 +28,15 @@ import {addLayersRecursivelyOptions} from '../types/add-data-url-recursive-optio
 export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
   definedProjections: string[];
-  layerToSelect: string;
   loadingFeatures: boolean;
-  loadingInfo = false;
-  showDetails: boolean;
-  url: string;
+
   constructor(
-    public hsConfig: HsConfig,
     private http: HttpClient,
     public hsUtilsService: HsUtilsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    public hsAddDataService: HsAddDataService,
     public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     this.data = {
@@ -74,11 +67,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
     });
-    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
-      this.url = '';
-      this.loadingInfo = false;
-      this.showDetails = false;
-    });
   }
 
   async addLayerFromCapabilities(
@@ -89,36 +77,33 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonUrlService.throwParsingError(
+        wrapper.response.message
+      );
       return;
     }
     try {
       const bbox = await this.parseCapabilities(wrapper.response);
-      if (this.layerToSelect) {
+      if (this.hsAddDataCommonUrlService.layerToSelect) {
         for (const layer of this.data.services) {
           //TODO: If Layman allows layers with different casing,
           // then remove the case lowering
           if (
-            layer.Title.toLowerCase() === this.layerToSelect.toLowerCase() ||
-            layer.Name.toLowerCase() === this.layerToSelect.toLowerCase()
+            layer.Title.toLowerCase() ===
+              this.hsAddDataCommonUrlService.layerToSelect.toLowerCase() ||
+            layer.Name.toLowerCase() ===
+              this.hsAddDataCommonUrlService.layerToSelect.toLowerCase()
           ) {
             layer.checked = true;
           }
         }
         this.addLayers(true, sld);
-        this.layerToSelect = null;
+        this.hsAddDataCommonUrlService.layerToSelect = null;
         this.zoomToBBox(bbox);
       }
     } catch (e) {
-      this.throwParsingError(e);
+      this.hsAddDataCommonUrlService.throwParsingError(e);
     }
-  }
-
-  throwParsingError(e): void {
-    this.url = null;
-    this.showDetails = false;
-    this.loadingInfo = false;
-    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
 
   //FIXME: context
@@ -261,7 +246,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
         return this.data.srss[0];
       })();
 
-      if (!this.layerToSelect) {
+      if (!this.hsAddDataCommonUrlService.layerToSelect) {
         setTimeout(() => {
           try {
             this.parseFeatureCount();
@@ -270,7 +255,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
           }
         });
       }
-      this.loadingInfo = false;
+      this.hsAddDataCommonUrlService.loadingInfo = false;
       return this.data.bbox;
     } catch (e) {
       throw new Error(e);
@@ -321,7 +306,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
               : (service.limitFeatureCount = false);
           },
           (e) => {
-            this.throwParsingError(e);
+            this.hsAddDataCommonUrlService.throwParsingError(e);
           }
         );
     }

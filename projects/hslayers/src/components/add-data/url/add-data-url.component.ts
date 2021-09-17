@@ -3,6 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {AddDataUrlType} from './types/add-data-url.type';
+import {HsAddDataCommonUrlService} from '../common/add-data-common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -25,7 +26,8 @@ export class HsAddDataUrlComponent implements OnDestroy {
     public hsEventBusService: HsEventBusService,
     public hsShareUrlService: HsShareUrlService,
     public hsAddDataService: HsAddDataService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
@@ -81,6 +83,7 @@ export class HsAddDataUrlComponent implements OnDestroy {
 
   selectType(type: AddDataUrlType): void {
     this.typeSelected = type;
+    this.hsAddDataCommonUrlService.clear();
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {

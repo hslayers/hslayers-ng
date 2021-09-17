@@ -1,9 +1,9 @@
-<form class="form-horizontal" name="frmConnect" role="form">
-    <hs-common-url type="wmts" [(url)]="hsAddDataUrlWmtsService.url" (connect)="connect()">
+<form class="form-horizontal" name="frmConnectWmts" role="form">
+    <hs-common-url type="wmts" [(url)]="hsAddDataCommonUrlService.url" (connect)="connect()">
     </hs-common-url>
 
-    <hs-common-url-progress [loadingInfo]="hsAddDataUrlWmtsService.loadingInfo"></hs-common-url-progress>
-    <div *ngIf="hsAddDataUrlWmtsService.showDetails && !hsAddDataUrlWmtsService.loadingInfo" class="card">
+    <hs-common-url-progress *ngIf="hsAddDataCommonUrlService.loadingInfo"></hs-common-url-progress>
+    <div *ngIf="hsAddDataCommonUrlService.showDetails && !hsAddDataCommonUrlService.loadingInfo" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix" style="background: var(--white);">
                 <div>{{data.title}}</div>

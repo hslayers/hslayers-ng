@@ -1,16 +1,46 @@
 import {Injectable} from '@angular/core';
 
+import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
+import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonUrlService {
+  layerToSelect: string;
+  loadingInfo = false;
+  showDetails = false;
+  url: string;
+
+  //TODO: all dimension related things need to be refactored into separate module
+  getDimensionValues = this.hsDimensionService.getDimensionValues;
+
   constructor(
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsToastService: HsToastService
-  ) {}
+    public hsToastService: HsToastService,
+    public hsAddDataService: HsAddDataService,
+    public hsDimensionService: HsDimensionService
+  ) {
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.clear();
+    });
+  }
+  clear(): void {
+    this.layerToSelect = '';
+    this.loadingInfo = false;
+    this.showDetails = false;
+    this.url = '';
+  }
+
+  /**
+   * For the sake of possible future implementation changes
+   * @param url - URL to be set
+   */
+  updateUrl(url: string): void {
+    this.url = url;
+  }
 
   displayParsingError(e: any): void {
     if (e?.status === 401) {
@@ -23,6 +53,11 @@ export class HsAddDataCommonUrlService {
     } else {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e);
     }
+  }
+
+  throwParsingError(e): void {
+    this.clear();
+    this.displayParsingError(e);
   }
 
   //NOTE* - Is this method even needed?
