@@ -37,11 +37,6 @@ import {getPreferredFormat} from '../../../../common/format-utils';
 @Injectable({providedIn: 'root'})
 export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
   data: addDataUrlDataObject;
-  getDimensionValues;
-  layerToSelect: string;
-  loadingInfo = false;
-  showDetails: boolean;
-  url: string;
   constructor(
     public hsMapService: HsMapService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
@@ -54,7 +49,6 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonUrlService: HsAddDataCommonUrlService
   ) {
-    this.url = '';
     this.data = {
       add_under: null,
       map_projection: '',
@@ -72,14 +66,6 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
     });
-    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
-      this.url = '';
-      this.loadingInfo = false;
-      this.showDetails = false;
-    });
-
-    //TODO: all dimension related things need to be refactored into separate module
-    this.getDimensionValues = hsDimensionService.getDimensionValues;
   }
 
   async addLayerFromCapabilities(
@@ -89,16 +75,21 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonUrlService.throwParsingError(
+        wrapper.response.message
+      );
       return;
     }
     try {
-      await this.capabilitiesReceived(wrapper.response, this.layerToSelect);
-      if (this.layerToSelect) {
+      await this.capabilitiesReceived(
+        wrapper.response,
+        this.hsAddDataCommonUrlService.layerToSelect
+      );
+      if (this.hsAddDataCommonUrlService.layerToSelect) {
         this.addLayers(true);
       }
     } catch (e) {
-      this.throwParsingError(e);
+      this.hsAddDataCommonUrlService.throwParsingError(e);
     }
   }
 
@@ -115,13 +106,6 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
         el.classList[action]('hs-wms-expandedRow');
       }
     }
-  }
-
-  throwParsingError(e): void {
-    this.url = null;
-    this.showDetails = false;
-    this.loadingInfo = false;
-    this.hsAddDataCommonUrlService.displayParsingError(e);
   }
 
   /**
@@ -156,7 +140,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
     }
     if (this.data.srss.length == 0) {
       this.data.srss = ['EPSG:4326'];
-      this.throwParsingError(
+      this.hsAddDataCommonUrlService.throwParsingError(
         "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
       );
     }
@@ -253,9 +237,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
         'text/plain',
         'text/html',
       ]);
-      //FIXME: $rootScope.$broadcast('wmsCapsParsed');
-      this.showDetails = true;
-      this.loadingInfo = false;
+      this.hsAddDataCommonUrlService.loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }

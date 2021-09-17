@@ -16,7 +16,6 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: any;
   @Input() type: string;
   data;
-  sourceHistory;
   checkedSubLayers = {};
   hasNestedLayers: any;
   getDimensionValues: any;
@@ -34,22 +33,13 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
     this.hsAddDataUrlService.hasAnyChecked = false;
     this.data = this.injectedService.data;
     this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
-    this.getDimensionValues = this.injectedService.getDimensionValues;
-    this.sourceHistory = this.injectedService.sourceHistory;
+    this.getDimensionValues = this.hsAddDataCommonUrlService.getDimensionValues;
   }
 
   srsChanged(): void {
     this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
       this.data.srs
     );
-  }
-  //NOT BEING USED
-  /**
-   * Clear Url and hide detailsWms
-   */
-  clear(): void {
-    this.injectedService.url = '';
-    this.injectedService.showDetails = false;
   }
 
   searchForChecked(service): void {

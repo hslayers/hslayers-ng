@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {HsAddDataService} from '../../add-data.service';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -9,8 +9,6 @@ import {HsUtilsService} from '../../../utils/utils.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsCommonUrlProgressComponent {
-  @Input() loadingInfo: boolean;
-
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsUtilsService: HsUtilsService
