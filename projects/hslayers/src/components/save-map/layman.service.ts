@@ -74,11 +74,15 @@ export class HsLaymanService implements HsSaverService {
    * @param compositionJson Json with composition definition
    * @param endpoint Endpoint description
    * @param compoData Additional fields for composition such
-   * @param saveAsNew Save as new composition
-   * as title, name
-   * @returns {Promise<any>} Promise result of POST
+   * @param saveAsNew Save as new composition as title, name
+   * @returns Promise result of POST
    */
-  save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
+  async save(
+    compositionJson,
+    endpoint,
+    compoData,
+    saveAsNew: boolean
+  ): Promise<any> {
     const write =
       compoData.access_rights['access_rights.write'] == 'private'
         ? endpoint.user
@@ -88,47 +92,45 @@ export class HsLaymanService implements HsSaverService {
         ? endpoint.user
         : compoData.access_rights['access_rights.read'];
 
-    return new Promise(async (resolve, reject) => {
-      const formdata = new FormData();
-      formdata.append(
-        'file',
-        new Blob([JSON.stringify(compositionJson)], {
-          type: 'application/json',
-        }),
-        'blob.json'
-      );
-      formdata.append('name', compoData.name);
-      formdata.append('title', compoData.title);
-      formdata.append('abstract', compoData.abstract);
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', null);
-      headers.append('Accept', 'application/json');
-      formdata.append('access_rights.read', read);
-      formdata.append('access_rights.write', write);
+    const formdata = new FormData();
+    formdata.append(
+      'file',
+      new Blob([JSON.stringify(compositionJson)], {
+        type: 'application/json',
+      }),
+      'blob.json'
+    );
+    formdata.append('name', compoData.name);
+    formdata.append('title', compoData.title);
+    formdata.append('abstract', compoData.abstract);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', null);
+    headers.append('Accept', 'application/json');
+    formdata.append('access_rights.read', read);
+    formdata.append('access_rights.write', write);
 
-      const workspace = compoData.workspace
-        ? saveAsNew
-          ? endpoint.user
-          : compoData.workspace
-        : endpoint.user;
+    const workspace = compoData.workspace
+      ? saveAsNew
+        ? endpoint.user
+        : compoData.workspace
+      : endpoint.user;
 
-      const options = {
-        headers: headers,
-        withCredentials: true,
-      };
-      try {
-        const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
-          `${endpoint.url}/rest/workspaces/${workspace}/maps${
-            saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
-          }`,
-          formdata,
-          options
-        ).toPromise();
-        resolve(response);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    const options = {
+      headers: headers,
+      withCredentials: true,
+    };
+    try {
+      const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
+        `${endpoint.url}/rest/workspaces/${workspace}/maps${
+          saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
+        }`,
+        formdata,
+        options
+      ).toPromise();
+      return response;
+    } catch (err) {
+      throw err;
+    }
   }
 
   /**
@@ -288,7 +290,7 @@ export class HsLaymanService implements HsSaverService {
       resumable.on('fileProgress', (file) => {
         chunksProgress[file.uniqueIdentifier] = file.progress(false);
         const sum = Object.values(chunksProgress).reduce((a, b) => a + b);
-        this.totalProgress = sum / files_to_async_upload.length 
+        this.totalProgress = sum / files_to_async_upload.length;
       });
       resumable.on('filesAdded', (files) => {
         this.HsLogService.log(
