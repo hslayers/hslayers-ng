@@ -20,7 +20,7 @@ export type WfsOptions = {
 };
 
 /**
- * Provides a source of features from SPARQL endpoint
+ * Provides a source of features from WFS endpoint
  */
 export class WfsSource extends Vector<Geometry> {
   constructor(
@@ -81,7 +81,7 @@ export class WfsSource extends Vector<Geometry> {
               );
               const doc = oDOM.documentElement;
 
-              features = readFeatures(doc, map_projection);
+              features = readFeatures(doc, map_projection, data_version, srs);
               (this as VectorSource<Geometry>).addFeatures(features);
             }
           },
@@ -95,12 +95,11 @@ export class WfsSource extends Vector<Geometry> {
   }
 }
 
-function readFeatures(doc, map_projection) {
-  const wfs = new WFS({version: this.data.version});
+function readFeatures(doc, map_projection, data_version, srs) {
+  const wfs = new WFS({version: data_version});
   const features = wfs.readFeatures(doc, {
-    dataProjection: this.data.srs,
-    featureProjection:
-      map_projection.getCode() == this.data.srs ? '' : map_projection,
+    dataProjection: srs,
+    featureProjection: map_projection.getCode() == srs ? '' : map_projection,
   });
   return features;
 }
