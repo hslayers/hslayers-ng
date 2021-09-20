@@ -26,6 +26,7 @@ export class WfsSource extends Vector<Geometry> {
   constructor(
     hsUtilsService: HsUtilsService,
     http: HttpClient,
+
     {
       data_version,
       output_format,
@@ -37,7 +38,7 @@ export class WfsSource extends Vector<Geometry> {
     }: WfsOptions
   ) {
     super({
-      loader: function (extent, resolution, projection) {
+      loader: async function (extent, resolution, projection) {
         if (typeof data_version == 'undefined') {
           data_version = '1.0.0';
         }
@@ -67,28 +68,18 @@ export class WfsSource extends Vector<Geometry> {
         ].join('?');
 
         url = hsUtilsService.proxify(url);
-        http.get(url, {responseType: 'text'}).subscribe(
-          (response: any) => {
-            let featureString, features;
-            if (response) {
-              featureString = response;
-            }
-            if (featureString) {
-              const oParser = new DOMParser();
-              const oDOM = oParser.parseFromString(
-                featureString,
-                'application/xml'
-              );
-              const doc = oDOM.documentElement;
-
-              features = readFeatures(doc, map_projection, data_version, srs);
-              (this as VectorSource<Geometry>).addFeatures(features);
-            }
-          },
-          (e) => {
-            throw new Error(e.message);
-          }
-        );
+        const response = await http
+          .get(url, {responseType: 'text'})
+          .toPromise();
+        if (response) {
+          const features = readFeatures(
+            response,
+            map_projection,
+            data_version,
+            srs
+          );
+          (this as VectorSource<Geometry>).addFeatures(features);
+        }
       },
       strategy: bbox,
     });
