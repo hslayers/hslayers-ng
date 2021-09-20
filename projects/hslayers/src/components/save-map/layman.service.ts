@@ -91,42 +91,57 @@ export class HsLaymanService implements HsSaverService {
       compoData.access_rights['access_rights.read'] == 'private'
         ? endpoint.user
         : compoData.access_rights['access_rights.read'];
-
-    const formdata = new FormData();
-    formdata.append(
-      'file',
-      new Blob([JSON.stringify(compositionJson)], {
-        type: 'application/json',
-      }),
-      'blob.json'
-    );
-    formdata.append('name', compoData.name);
-    formdata.append('title', compoData.title);
-    formdata.append('abstract', compoData.abstract);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', null);
-    headers.append('Accept', 'application/json');
-    formdata.append('access_rights.read', read);
-    formdata.append('access_rights.write', write);
-
-    const workspace = compoData.workspace
-      ? saveAsNew
-        ? endpoint.user
-        : compoData.workspace
-      : endpoint.user;
-
-    const options = {
-      headers: headers,
-      withCredentials: true,
-    };
     try {
-      const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
-        `${endpoint.url}/rest/workspaces/${workspace}/maps${
-          saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
-        }`,
-        formdata,
-        options
-      ).toPromise();
+      let response: any;
+      let success = false;
+      //Need safety against infinite loop when fixing errors and retrying
+      let amendmentsApplied = false;
+      //If at First You Don't Succeed, Try, Try Again
+      while (!success) {
+        const formdata = new FormData();
+        formdata.append(
+          'file',
+          new Blob([JSON.stringify(compositionJson)], {
+            type: 'application/json',
+          }),
+          'blob.json'
+        );
+        formdata.append('name', compoData.name);
+        formdata.append('title', compoData.title);
+        formdata.append('abstract', compoData.abstract);
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', null);
+        headers.append('Accept', 'application/json');
+        formdata.append('access_rights.read', read);
+        formdata.append('access_rights.write', write);
+
+        const workspace = compoData.workspace
+          ? saveAsNew
+            ? endpoint.user
+            : compoData.workspace
+          : endpoint.user;
+
+        const options = {
+          headers: headers,
+          withCredentials: true,
+        };
+        response = await this.http[saveAsNew ? 'post' : 'patch'](
+          `${endpoint.url}/rest/workspaces/${workspace}/maps${
+            saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
+          }`,
+          formdata,
+          options
+        ).toPromise();
+        if (response.saved) {
+          success = true;
+        } else {
+          if (amendmentsApplied) {
+            break;
+          }
+          featuresTypeFallback(response, compositionJson);
+          amendmentsApplied = true;
+        }
+      }
       return response;
     } catch (err) {
       throw err;
@@ -617,5 +632,29 @@ export class HsLaymanService implements HsSaverService {
   isLaymanGuest(): boolean {
     const endpoint = this.getLaymanEndpoint();
     return endpoint.user == 'anonymous' || endpoint.user == 'browser';
+  }
+}
+
+/**
+ * Mend error when features are not encoded as string.
+ * They would not need to be encoded in future, but for now Layman
+ * and composition schema requires them to be.
+ * @param response - Check if server response contained error about features
+ * @param compositionJson  - Composition json being sent on first try
+ */
+function featuresTypeFallback(response: any, compositionJson: any) {
+  if (
+    response.code == 2 &&
+    response.detail &&
+    response.detail['validation-errors'] &&
+    response.detail['validation-errors'].some((er) =>
+      er.message.startsWith("{'type': 'FeatureCollection'")
+    )
+  ) {
+    for (const layer of compositionJson.layers.filter(
+      (l) => l.features && typeof l.features !== 'string'
+    )) {
+      layer.features = JSON.stringify(layer.features);
+    }
   }
 }
