@@ -16,7 +16,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-legend',
-  templateUrl: './partials/legend.html',
+  templateUrl: './legend.component.html',
 })
 export class HsLegendComponent extends HsPanelBaseComponent {
   layerDescriptors = [];
@@ -24,9 +24,9 @@ export class HsLegendComponent extends HsPanelBaseComponent {
   name = 'legend';
 
   constructor(
-    public HsLegendService: HsLegendService,
-    public HsMapService: HsMapService,
-    public HsLayerUtilsService: HsLayerUtilsService,
+    public hsLegendService: HsLegendService,
+    public hsMapService: HsMapService,
+    public hsLayerUtilsService: HsLayerUtilsService,
     public hsUtilsService: HsUtilsService,
     public hsQueuesService: HsQueuesService,
     hsLayoutService: HsLayoutService,
@@ -44,7 +44,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
         hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
       icon: 'icon-dotlist',
     });
-    this.HsMapService.loaded().then((map) => this.init(map));
+    this.hsMapService.loaded().then((map) => this.init(map));
   }
 
   /**
@@ -53,7 +53,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
    * @param layer - Layer to add legend for
    */
   addLayerToLegends(layer: Layer<Source>): void {
-    const descriptor = this.HsLegendService.getLayerLegendDescriptor(layer);
+    const descriptor = this.hsLegendService.getLayerLegendDescriptor(layer);
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
       this.refreshList();
@@ -62,7 +62,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
         const layer: Layer<Source> = e.target as Layer<Source>;
         const oldDescriptor = this.findLayerDescriptor(layer);
         this.layerDescriptors[this.layerDescriptors.indexOf(oldDescriptor)] =
-          this.HsLegendService.getLayerLegendDescriptor(layer);
+          this.hsLegendService.getLayerLegendDescriptor(layer);
       });
       layer.getSource().on('change', (e) => this.layerSourcePropChanged(e));
     }
@@ -70,7 +70,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
 
   rebuildLegends(): void {
     this.layerDescriptors = [];
-    this.buildLegendsForLayers(this.HsMapService.map);
+    this.buildLegendsForLayers(this.hsMapService.map);
   }
 
   filterDescriptors(): any[] {
@@ -154,7 +154,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
   layerSourcePropChanged(e): void {
     const descriptor = this.findLayerDescriptorBySource(e.target);
     if (descriptor) {
-      const newDescriptor = this.HsLegendService.getLayerLegendDescriptor(
+      const newDescriptor = this.hsLegendService.getLayerLegendDescriptor(
         descriptor.lyr
       );
 

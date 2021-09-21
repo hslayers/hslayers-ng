@@ -6,7 +6,7 @@ import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({
   selector: 'hs-scale-denominator',
-  templateUrl: './scale-denominator.html',
+  templateUrl: './scale-denominator.component.html',
 })
 export class HsScaleDenominatorComponent
   extends HsStylerPartBaseComponent

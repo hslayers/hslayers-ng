@@ -4,9 +4,9 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsLegendComponent} from './legend.component';
-import {HsLegendLayerComponent} from './legend-layer.component';
-import {HsLegendLayerStaticComponent} from './legend-layer-static.component';
-import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
+import {HsLegendLayerComponent} from './legend-layer/legend-layer.component';
+import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-static.component';
+import {HsLegendLayerVectorComponent} from './legend-layer-vector/legend-layer-vector.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueuesModule} from '../../common/queues/queues.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';

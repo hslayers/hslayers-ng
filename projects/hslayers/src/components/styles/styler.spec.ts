@@ -19,6 +19,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsQueryVectorService} from '../query/query-vector.service';
@@ -29,7 +30,6 @@ import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {Style} from 'ol/style';
-import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 
 class emptyMock {
   constructor() {}
