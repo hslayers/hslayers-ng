@@ -1,0 +1,24 @@
+<li
+  class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center mb-1 mr-3 ml-3"
+  (click)="setSymbolizerVisible()">
+  <div>
+    <button type="button" style="border: none; background-color: transparent;"
+      [ngStyle]="{'cursor': hsStylerService.canReorder ? 'move' : 'not-allowed'}"
+      [disabled]="!hsStylerService.canReorder">
+      <i class="icon-move"></i>
+    </button>
+    <span>{{getSymbolizerName(symbolizer) | translate}}&nbsp;</span>
+  </div>
+  <div>
+    <span class="glyphicon mr-2" [ngClass]="symbolizerVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+    <button class="btn btn-danger btn-sm mr-3" (click)="removeSymbolizer(symbolizer)" data-toggle="tooltip"
+      [title]="'STYLER.removeSymbolizer' | translate">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+</li>
+
+<ng-container *ngIf="symbolizerVisible">
+  <hs-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+  </hs-symbolizer>
+</ng-container>

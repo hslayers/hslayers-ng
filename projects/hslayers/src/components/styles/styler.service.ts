@@ -1,24 +1,24 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
 import OpenLayersParser from 'geostyler-openlayers-parser';
 import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Cluster} from 'ol/source';
 import {
   FillSymbolizer,
   Filter,
   Style as GeoStylerStyle,
   Rule,
 } from 'geostyler-style';
+import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
 import {StyleFunction} from 'ol/style/Style';
+import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
 
-import {Cluster} from 'ol/source';
-import {Geometry} from 'ol/geom';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -41,6 +41,7 @@ import {parseStyle} from './backwards-compatibility';
   providedIn: 'root',
 })
 export class HsStylerService {
+  canReorder = false;
   layer: VectorLayer<VectorSource<Geometry>> = null;
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
@@ -50,35 +51,35 @@ export class HsStylerService {
 
   pin_white_blue = new Style({
     image: new Icon({
-      src: this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
+      src: this.hsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
       crossOrigin: 'anonymous',
       anchor: [0.5, 1],
     }),
   });
 
   constructor(
-    public HsQueryVectorService: HsQueryVectorService,
-    public HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsEventBusService: HsEventBusService,
-    private HsLogService: HsLogService,
+    public hsQueryVectorService: HsQueryVectorService,
+    public hsUtilsService: HsUtilsService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsEventBusService: HsEventBusService,
+    private hsLogService: HsLogService,
     public sanitizer: DomSanitizer,
-    private HsMapService: HsMapService,
-    private HsSaveMapService: HsSaveMapService
+    private hsMapService: HsMapService,
+    private hsSaveMapService: HsSaveMapService
   ) {
-    this.HsMapService.loaded().then(() => this.init());
+    this.hsMapService.loaded().then(() => this.init());
   }
 
   async init() {
-    for (const layer of this.HsMapService.getLayersArray().filter((layer) =>
-      this.HsLayerUtilsService.isLayerVectorLayer(layer)
-    )) {
+    for (const layer of this.hsMapService
+      .getLayersArray()
+      .filter((layer) => this.hsLayerUtilsService.isLayerVectorLayer(layer))) {
       this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
     }
-    this.HsEventBusService.layerAdditions.subscribe(
+    this.hsEventBusService.layerAdditions.subscribe(
       (layerDescriptor: HsLayerDescriptor) => {
         if (
-          this.HsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
+          this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
           this.initLayerStyle(
             layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>
@@ -96,8 +97,8 @@ export class HsStylerService {
       new Style({
         image: new Icon({
           src: getHighlighted(feature)
-            ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
-            : this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
+            ? this.hsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
+            : this.hsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),
@@ -106,7 +107,7 @@ export class HsStylerService {
   };
 
   isVectorLayer(layer: any): boolean {
-    if (this.HsUtilsService.instOf(layer, VectorLayer)) {
+    if (this.hsUtilsService.instOf(layer, VectorLayer)) {
       return true;
     } else {
       return false;
@@ -175,8 +176,8 @@ export class HsStylerService {
     }
     let style = layer.getStyle();
     if (
-      this.HsUtilsService.instOf(this.layer.getSource(), Cluster) &&
-      this.HsUtilsService.isFunction(style)
+      this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
+      this.hsUtilsService.isFunction(style)
     ) {
       style = this.wrapStyleForClusters(style as StyleFunction);
       layer.setStyle(style);
@@ -213,10 +214,10 @@ export class HsStylerService {
     } else if (
       style &&
       !sld &&
-      !this.HsUtilsService.isFunction(style) &&
+      !this.hsUtilsService.isFunction(style) &&
       !Array.isArray(style)
     ) {
-      const customJson = this.HsSaveMapService.serializeStyle(style as Style);
+      const customJson = this.hsSaveMapService.serializeStyle(style as Style);
       const sld = (await this.parseStyle(customJson)).sld;
       if (sld) {
         setSld(layer, sld);
@@ -261,7 +262,7 @@ export class HsStylerService {
       }
       this.geostylerWorkaround();
     } catch (ex) {
-      this.HsLogService.error(ex.message);
+      this.hsLogService.error(ex.message);
     }
   }
 
@@ -291,7 +292,7 @@ export class HsStylerService {
       const sldObject = await this.sldToJson(sld);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
-      this.HsLogService.error(ex);
+      this.hsLogService.error(ex);
     }
   }
 
@@ -359,9 +360,9 @@ export class HsStylerService {
     await this.save();
   }
 
-  removeRule(rule: Rule): void {
+  async removeRule(rule: Rule): Promise<void> {
     this.styleObject.rules.splice(this.styleObject.rules.indexOf(rule), 1);
-    this.save();
+    await this.save();
   }
 
   encodeTob64(str: string): string {
@@ -387,15 +388,15 @@ export class HsStylerService {
       let style: Style | Style[] | StyleFunction =
         await this.geoStylerStyleToOlStyle(this.styleObject);
       if (this.styleObject.rules.length == 0) {
-        this.HsLogService.warn('Missing style rules for layer', this.layer);
+        this.hsLogService.warn('Missing style rules for layer', this.layer);
         style = createDefaultStyle;
       }
       /* style is a function when text symbolizer is used. We need some hacking 
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
       if (
-        this.HsUtilsService.instOf(this.layer.getSource(), Cluster) &&
-        this.HsUtilsService.isFunction(style)
+        this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
+        this.hsUtilsService.isFunction(style)
       ) {
         style = this.wrapStyleForClusters(style as StyleFunction);
       }
@@ -405,7 +406,7 @@ export class HsStylerService {
       this.sld = sld;
       this.onSet.next(this.layer);
     } catch (ex) {
-      this.HsLogService.error(ex);
+      this.hsLogService.error(ex);
     }
   }
 

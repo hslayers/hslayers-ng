@@ -1,13 +1,14 @@
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
@@ -20,7 +21,8 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-styles',
-  templateUrl: './styler.html',
+  templateUrl: './styler.component.html',
+  styleUrls: ['./styler.component.scss'],
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
@@ -31,31 +33,30 @@ export class HsStylerComponent
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';
-
   constructor(
-    public HsStylerService: HsStylerService,
-    public HsLayoutService: HsLayoutService,
-    public HsEventBusService: HsEventBusService,
+    public hsStylerService: HsStylerService,
+    public hsLayoutService: HsLayoutService,
+    public hsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public HsUtilsService: HsUtilsService,
-    public HsSaveMapService: HsSaveMapService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsUtilsService: HsUtilsService,
+    public hsSaveMapService: HsSaveMapService
   ) {
-    super(HsLayoutService);
-    this.HsEventBusService.layerSelectedFromUrl
+    super(hsLayoutService);
+    this.hsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((layer: Layer<Source>) => {
-        if (layer !== null && this.HsUtilsService.instOf(layer, VectorLayer)) {
-          this.HsStylerService.fill(
+        if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
+          this.hsStylerService.fill(
             layer as VectorLayer<VectorSource<Geometry>>
           );
         }
       });
-    this.HsEventBusService.mainPanelChanges
+    this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((e) => {
         if (e == 'styler') {
-          this.HsStylerService.fill(this.HsStylerService.layer);
+          this.hsStylerService.fill(this.hsStylerService.layer);
         }
       });
   }
@@ -66,7 +67,7 @@ export class HsStylerComponent
   }
 
   layermanager(): void {
-    this.HsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager');
   }
 
   uploadSld(): void {
@@ -74,7 +75,15 @@ export class HsStylerComponent
   }
 
   async clear(): Promise<void> {
-    await this.HsStylerService.reset();
+    await this.hsStylerService.reset();
+  }
+
+  drop(event: CdkDragDrop<any[]>): void {
+    moveItemInArray(
+      this.hsStylerService.styleObject.rules,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
   handleFileUpload(evt: HsUploadedFiles): void {
@@ -88,7 +97,7 @@ export class HsStylerComponent
     });
     Promise.all(promises).then(async (fileContents) => {
       const sld = fileContents[0] as string;
-      await this.HsStylerService.loadSld(sld);
+      await this.hsStylerService.loadSld(sld);
     });
   }
 }

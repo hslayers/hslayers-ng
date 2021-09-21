@@ -2,12 +2,8 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.name' | translate}}:</div>
     <div class="p-1 w-75">
-      <input
-        class="form-control"
-        [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="rule.name"
-        (change)="emitChange()"
-      />
+      <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="rule.name"
+        (change)="emitChange()" />
     </div>
   </div>
   <div class="d-flex flex-row justify-content-end">
@@ -16,43 +12,25 @@
     </div>
     <div class="p-1">
       <div class="btn-group" role="group" aria-label="Filters and scales">
-        <button
-          [title]="'STYLER.toggleFilters' | translate"
-          class="btn btn-outline-primary btn-sm"
-          (click)="filtersVisible = !filtersVisible"
-        >
+        <button [title]="'STYLER.toggleFilters' | translate" class="btn btn-outline-primary btn-sm"
+          (click)="filtersVisible = !filtersVisible">
           <span class="icon-filter"></span>
         </button>
-        <button
-          [title]="'STYLER.toggleScaleDenominators' | translate"
-          class="btn btn-outline-primary btn-sm"
-          (click)="scalesVisible = !scalesVisible"
-        >
+        <button [title]="'STYLER.toggleScaleDenominators' | translate" class="btn btn-outline-primary btn-sm"
+          (click)="scalesVisible = !scalesVisible">
           <span class="icon-design"></span>
         </button>
       </div>
     </div>
   </div>
-  <hs-filters
-    (changes)="emitChange()"
-    *ngIf="filtersVisible"
-    [rule]="rule"
-  ></hs-filters>
-  <hs-scale-denominator
-    (changes)="emitChange()"
-    *ngIf="scalesVisible"
-    [rule]="rule"
-  ></hs-scale-denominator>
+  <hs-filters (changes)="emitChange()" *ngIf="filtersVisible" [rule]="rule"></hs-filters>
+  <hs-scale-denominator (changes)="emitChange()" *ngIf="scalesVisible" [rule]="rule"></hs-scale-denominator>
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translate}}:</div>
     <div class="p-1">
       <div ngbDropdown class="d-inline-block" placement="bottom-right">
-        <button
-          class="btn btn-outline-primary btn-sm"
-          [title]="'STYLER.addSymbolizer' | translate"
-          id="dropdownAddSymbolizer"
-          ngbDropdownToggle
-        >
+        <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addSymbolizer' | translate"
+          id="dropdownAddSymbolizer" ngbDropdownToggle>
           <span class="icon-plus"></span>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownAddSymbolizer">
@@ -65,10 +43,13 @@
       </div>
     </div>
   </div>
-  <hs-symbolizer
-    *ngFor="let symbolizer of rule.symbolizers"
-    [symbolizer]="symbolizer"
-    (changes)="emitChange()"
-    (remove)="removeSymbolizer(symbolizer)"
-  ></hs-symbolizer>
+  <ng-container *ngIf="rule.symbolizers.length > 0">
+    <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="rule.symbolizers">
+      <ng-container *ngFor="let symbolizer of rule.symbolizers">
+        <hs-symbolizer-list-item cdkDrag [cdkDragDisabled]="!hsStylerService.canReorder" [rule]="rule"
+          [symbolizer]="symbolizer" (changes)="emitChange()"></hs-symbolizer-list-item>
+      </ng-container>
+    </ul>
+  </ng-container>
 </div>

@@ -1,30 +1,34 @@
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
-import {HsColorPickerComponent} from './symbolizers/color-picker.component';
+import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
 import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
 import {HsDownloadModule} from '../../common/download/download.module';
-import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer.component';
+import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symbolizer.component';
 import {HsFilterComponent} from './filters/filter.component';
 import {HsFiltersComponent} from './filters/filters.component';
-import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer.component';
-import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer.component';
-import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer.component';
+import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
+import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
+import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsRuleComponent} from './rule.component';
+import {HsRuleComponent} from './rule/rule.component';
+import {HsRuleListItemComponent} from './rule/rule-list-item/rule-list-item.component';
 import {HsScaleDenominatorComponent} from './filters/scale-denominator.component';
-import {HsSelectIconDialogComponent} from './symbolizers/select-icon-dialog.component';
-import {HsSliderComponent} from './symbolizers/slider.component';
+import {HsSelectIconDialogComponent} from './symbolizers/select-icon-dialog/select-icon-dialog.component';
+import {HsSliderComponent} from './symbolizers/slider/slider.component';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerPartBaseComponent} from './style-part-base.component';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
-import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component';
+import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
+import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
 import {HsUploadModule} from '../../common/upload/upload.module';
 
 @NgModule({
@@ -47,6 +51,8 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
     HsStylerPartBaseComponent,
+    HsRuleListItemComponent,
+    HsSymbolizerListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -57,6 +63,8 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     TranslateModule,
     HsUploadModule,
     HsDownloadModule,
+    DragDropModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     HsStylerComponent,
@@ -67,6 +75,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsIconSymbolizerComponent,
     HsTextSymbolizerComponent,
     HsLineSymbolizerComponent,
+    HsSymbolizerListItemComponent,
     HsColorPickerComponent,
     HsSliderComponent,
     HsFiltersComponent,
@@ -75,6 +84,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
+    HsRuleListItemComponent,
   ],
   entryComponents: [
     HsStylerComponent,
