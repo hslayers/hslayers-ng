@@ -148,7 +148,7 @@ export class HsCompositionsLaymanService {
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
-    await this.$http.delete(url).toPromise();
+    await this.$http.delete(url, {withCredentials: true}).toPromise();
     this.hsEventBusService.compositionDeletes.next(composition);
   }
 
