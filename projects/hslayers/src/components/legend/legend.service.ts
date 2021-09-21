@@ -6,14 +6,7 @@ import Feature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
-import {
-  Cluster,
-  ImageWMS,
-  Source,
-  ImageStatic as Static,
-  TileWMS,
-  XYZ,
-} from 'ol/source';
+import {Cluster, Source, ImageStatic as Static, XYZ} from 'ol/source';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 
@@ -42,12 +35,12 @@ declare type StyleLike = Style | Array<Style> | StyleFunction;
 })
 export class HsLegendService {
   constructor(
-    public HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    public HsLayerSelectorService: HsLayerSelectorService,
+    public hsUtilsService: HsUtilsService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    public hsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
+    this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.getLayerLegendDescriptor(layer.layer);
     });
   }
@@ -78,13 +71,13 @@ export class HsLegendService {
   getVectorFeatureGeometry(
     currentLayer: VectorLayer<VectorSource<Geometry> | Cluster>
   ): Array<string> {
-    if (currentLayer === undefined) {
+    if (currentLayer === undefined || !currentLayer.getSource().getFeatures) {
       return;
     }
     const found = this.findFeatureGeomTypes(
       currentLayer.getSource().getFeatures()
     );
-    if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
+    if (this.hsLayerUtilsService.isLayerClustered(currentLayer)) {
       //Clustered layer?
       const subFeatureTypes = this.findFeatureGeomTypes(
         (currentLayer.getSource() as Cluster).getSource().getFeatures()
@@ -140,18 +133,21 @@ export class HsLegendService {
       return;
     }
     let styleArray: Array<Style | Style[]> = [];
+    if (!currentLayer.getStyle) {
+      return;
+    }
     const layerStyle = currentLayer.getStyle();
-    if (!this.HsUtilsService.isFunction(layerStyle)) {
+    if (!this.hsUtilsService.isFunction(layerStyle)) {
       styleArray.push(layerStyle as Style | Style[]);
     } else {
-      if (currentLayer.getSource().getFeatures().length > 0) {
+      if (currentLayer.getSource()?.getFeatures()?.length > 0) {
         styleArray = styleArray.concat(
           this.stylesForFeatures(
             currentLayer.getSource().getFeatures(),
             layerStyle as StyleFunction
           )
         );
-        if (this.HsLayerUtilsService.isLayerClustered(currentLayer)) {
+        if (this.hsLayerUtilsService.isLayerClustered(currentLayer)) {
           //Clustered layer?
           styleArray = styleArray.concat(
             this.stylesForFeatures(
@@ -169,7 +165,7 @@ export class HsLegendService {
     let serializedStyles = filtered
       .map((style) => this.serializeStyle(style))
       .filter((style) => style); //We don't want undefined values here, it breaks removeDuplicates
-    serializedStyles = this.HsUtilsService.removeDuplicates(
+    serializedStyles = this.hsUtilsService.removeDuplicates(
       serializedStyles,
       'hashcode'
     );
@@ -196,15 +192,32 @@ export class HsLegendService {
    * @returns Simplified description of style used by template to draw legend
    */
   serializeStyle(style: Style | Style[]) {
-    const styleToSerialize = style[0] ? (style[0] as Style) : (style as Style);
-    if (styleToSerialize.getImage === undefined) {
-      return;
+    let ch: any = {};
+    if (Array.isArray(style)) {
+      for (const s of style) {
+        const tempCh = this.getStyleChildren(s, ch);
+        ch = tempCh;
+      }
+    } else {
+      ch = this.getStyleChildren(style, ch);
     }
-    const image = styleToSerialize.getImage();
-    const stroke = styleToSerialize.getStroke();
-    const fill = styleToSerialize.getFill();
-    const genStyle = this.setUpLegendStyle(fill, stroke, image);
+
+    const genStyle = this.setUpLegendStyle(ch.fill, ch.stroke, ch.image);
     return genStyle;
+  }
+
+  getStyleChildren(style: Style, ch: any): any {
+    const newChildren: any = {};
+    style.getImage && style.getImage()
+      ? (newChildren.image = style.getImage())
+      : (newChildren.image = ch.image);
+    style.getFill && style.getFill()
+      ? (newChildren.fill = style.getFill())
+      : (newChildren.fill = ch.fill);
+    style.getStroke && style.getStroke()
+      ? (newChildren.stroke = style.getStroke())
+      : (newChildren.stroke = ch.stroke);
+    return newChildren;
   }
 
   /**
@@ -217,7 +230,7 @@ export class HsLegendService {
   setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle) {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
-    if (image && this.HsUtilsService.instOf(image, Icon)) {
+    if (image && this.hsUtilsService.instOf(image, Icon)) {
       const icon = image as Icon;
       row.icon = {
         type: 'icon',
@@ -225,8 +238,8 @@ export class HsLegendService {
       };
     } else if (
       image &&
-      (this.HsUtilsService.instOf(image, Circle) ||
-        this.HsUtilsService.instOf(image, CircleStyle))
+      (this.hsUtilsService.instOf(image, Circle) ||
+        this.hsUtilsService.instOf(image, CircleStyle))
     ) {
       const circle = image as Circle | CircleStyle;
       row.customCircle = {
@@ -287,7 +300,7 @@ export class HsLegendService {
         };
       }
     }
-    row.hashcode = this.HsUtilsService.hashCode(JSON.stringify(row));
+    row.hashcode = this.hsUtilsService.hashCode(JSON.stringify(row));
     return row;
   }
 
@@ -303,14 +316,14 @@ export class HsLegendService {
     layer_name: string,
     layer: Layer<Source>
   ): string {
-    if (!this.HsLayerUtilsService.isLayerWMS(layer)) {
+    if (!this.hsLayerUtilsService.isLayerWMS(layer)) {
       return '';
     }
-    const params = this.HsLayerUtilsService.getLayerParams(layer);
+    const params = this.hsLayerUtilsService.getLayerParams(layer);
     const version = params.VERSION || '1.3.0';
-    let source_url = this.HsLayerUtilsService.getURL(layer);
+    let source_url = this.hsLayerUtilsService.getURL(layer);
     if (source_url.indexOf('proxy4ows') > -1) {
-      const params = this.HsUtilsService.getParamsFromUrl(source_url);
+      const params = this.hsUtilsService.getParamsFromUrl(source_url);
       source_url = params.OWSURL;
     }
     const legendImage = getLegends(layer);
@@ -330,7 +343,7 @@ export class HsLegendService {
       layer_name +
       '&format=image%2Fpng';
     if (getEnableProxy(layer) === undefined || getEnableProxy(layer) == true) {
-      source_url = this.HsUtilsService.proxify(source_url, false);
+      source_url = this.hsUtilsService.proxify(source_url, false);
     }
     return source_url;
   }
@@ -347,9 +360,10 @@ export class HsLegendService {
     if (getBase(layer)) {
       return;
     }
-    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
-      const subLayerLegends =
-        this.HsLayerUtilsService.getLayerParams(layer).LAYERS.split(',');
+    if (this.hsLayerUtilsService.isLayerWMS(layer)) {
+      const subLayerLegends = this.hsLayerUtilsService
+        .getLayerParams(layer)
+        .LAYERS.split(',');
       for (let i = 0; i < subLayerLegends.length; i++) {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),
@@ -365,7 +379,7 @@ export class HsLegendService {
         visible: layer.getVisible(),
       };
     } else if (
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      this.hsUtilsService.instOf(layer, VectorLayer) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
     ) {
@@ -377,8 +391,8 @@ export class HsLegendService {
         visible: layer.getVisible(),
       };
     } else if (
-      this.HsUtilsService.instOf(layer, ImageLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), Static)
+      this.hsUtilsService.instOf(layer, ImageLayer) &&
+      this.hsUtilsService.instOf(layer.getSource(), Static)
     ) {
       return {
         title: getTitle(layer),
@@ -386,7 +400,7 @@ export class HsLegendService {
         type: 'static',
         visible: layer.getVisible(),
       };
-    } else if (this.HsUtilsService.instOf(layer.getSource(), XYZ)) {
+    } else if (this.hsUtilsService.instOf(layer.getSource(), XYZ)) {
       return {
         title: getTitle(layer),
         lyr: layer,
