@@ -520,7 +520,8 @@
       "syncTimes": "Synchronize times",
       "syncTimesTooltip": "Synchronize time for all layers"
     },
-    "User generated": "User generated"
+    "User generated": "User generated",
+    "enableStylerRuleAndSymbolizerReordering": "Enable styler rule and symbolizer reordering"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",
@@ -725,6 +726,7 @@
     "fillColor": "Fill color",
     "fillOpacity": "Fill opacity",
     "fillSymbolizer": "Fill symbolizer",
+    "unknownSymbolizer": "Unknown symbolizer",
     "filtersAndScales": "Filters & scales",
     "font": "Font",
     "fontStyle": "Font style",

@@ -520,7 +520,8 @@
       "syncTimes": "Sinhronizēt laikus",
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
-    "User generated": "Lietotāja ģenerēti"
+    "User generated": "Lietotāja ģenerēti",
+    "enableStylerRuleAndSymbolizerReordering": "Iespējot stilizētāja noteikumu un simbolizētāju pārkārtošanu"
   },
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
@@ -785,7 +786,8 @@
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
     "width": "Platums",
-    "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD"
+    "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD",
+    "unknownSymbolizer": "Nezināms simbolizētājs"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
