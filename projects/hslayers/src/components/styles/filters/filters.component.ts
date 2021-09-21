@@ -5,12 +5,12 @@ import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({
   selector: 'hs-filters',
-  templateUrl: './filters.html',
+  templateUrl: './filters.component.html',
 })
 export class HsFiltersComponent extends HsStylerPartBaseComponent {
   @Input() rule;
 
-  constructor(public HsFiltersService: HsFiltersService) {
+  constructor(public hsFiltersService: HsFiltersService) {
     super();
   }
 
@@ -18,7 +18,7 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
     if (this.rule.filter == undefined) {
       this.rule.filter = [];
     }
-    this.HsFiltersService.add(kind, append, this.rule.filter);
+    this.hsFiltersService.add(kind, append, this.rule.filter);
   }
 
   remove(): void {

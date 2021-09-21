@@ -1,0 +1,16 @@
+<div class="d-flex flex-row">
+  <div>
+    <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="filter[1]" (change)="emitChange()" />
+  </div>
+  <div>
+    <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="filter[0]" (change)="emitChange()" />
+  </div>
+  <div>
+    <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="filter[2]" (change)="emitChange()" />
+  </div>
+  <div>
+    <button class="btn btn-outline-danger btn-sm rounded-0" style="height: 100%" (click)="remove()">
+      <span class="icon-trash"></span>
+    </button>
+  </div>
+</div>

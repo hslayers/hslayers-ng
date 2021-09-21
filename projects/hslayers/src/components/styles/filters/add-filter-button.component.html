@@ -1,0 +1,22 @@
+<div class="p-1">
+  <div ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translate" id="dropdownAddFilter"
+      ngbDropdownToggle>
+      <span class="icon-plus"></span>
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownAddFilter">
+      <button ngbDropdownItem (click)="emitClick('AND')">
+        {{'STYLER.andFilter' | translate}}
+      </button>
+      <button ngbDropdownItem (click)="emitClick('OR')">
+        {{'STYLER.orFilter' | translate}}
+      </button>
+      <button ngbDropdownItem (click)="emitClick('NOT')">
+        {{'STYLER.notFilter' | translate}}
+      </button>
+      <button ngbDropdownItem (click)="emitClick('COMPARE')">
+        {{'STYLER.comparisonFilter' | translate}}
+      </button>
+    </div>
+  </div>
+</div>

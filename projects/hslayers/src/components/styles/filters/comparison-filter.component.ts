@@ -1,16 +1,16 @@
 import {Component, Input} from '@angular/core';
 
-import {HsFiltersService} from './filters.service';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
+
 @Component({
   selector: 'hs-comparison-filter',
-  templateUrl: './comparison-filter.html',
+  templateUrl: './comparison-filter.component.html',
 })
 export class HsComparisonFilterComponent extends HsStylerPartBaseComponent {
   @Input() filter;
   @Input() parent;
 
-  constructor(public HsFiltersService: HsFiltersService) {
+  constructor() {
     super();
   }
 
