@@ -26,7 +26,10 @@
         "bbox": "BBOX",
         "date": "Datum",
         "title": "Titulek"
-      }
+      },
+      "showAll": "Všechny",
+      "showNext100": "Dalších 100",
+      "showingSubset": "Aktuálně se zobrazuje {{limitShown}} z {{total}} služeb. Ukázat"
     },
     "file": "Soubor",
     "saveToDatabase": "Uložit do databáze",
@@ -513,7 +516,11 @@
       "syncTimes": "Synchronizovat časy",
       "syncTimesTooltip": "Synchronizovat čas všech vrstev"
     },
-    "User generated": "Uživatelský"
+    "User generated": "Uživatelský",
+    "dialogRemoveLayer": {
+      "dialogMessage": "Opravdu chcete odstranit vybranou vrstvu?"
+    },
+    "enableStylerRuleAndSymbolizerReordering": "Povolit změnu pořadí"
   },
   "LAYERS": {
     "existingLayer": "Existující vrstva",
@@ -603,7 +610,8 @@
     "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
     "reallyDeleteAllSelectedLayers": "Opravdu odstranit všechny vybrané prvky?",
-    "untitledFeature": "Prvek bez názvu"
+    "untitledFeature": "Prvek bez názvu",
+    "clusterContaining": "Klastr obsahující {{count}} prvků"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
@@ -772,7 +780,13 @@
     "transform": "Transformace",
     "warningAttribNotStoredNotVisualized": "Atribut není aktuálně zobrazen správně a není uložen v SLD",
     "warningAttribStoredNotVisualized": "Atribut uložený v SLD, ale aktuálně není zobrazen správně",
-    "width": "Šířka"
+    "width": "Šířka",
+    "clear": "Obnovit výchozí styl",
+    "downloadSld": "Stáhnout styl jako soubor SLD",
+    "manageStyle": "Spravovat styl",
+    "unknownSymbolizer": "Neznámá symbolika",
+    "warningAttribNotStoredVisualized": "Atribut je vizualizován, ale není uložen v SLD",
+    "uploadSld": "Nahrajte styl jako soubor SLD"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
