@@ -128,7 +128,6 @@ export class HsLegendComponent extends HsPanelBaseComponent {
   /**
    * (PRIVATE) Callback function for adding layer to map, add layers legend
    * @param e - Event object, should have element property
-   * @private
    */
   layerAdded(e): void {
     const que = this.hsQueuesService.ensureQueue('addLayerToLegends', 3);
@@ -178,9 +177,9 @@ export class HsLegendComponent extends HsPanelBaseComponent {
   }
 
   /**
-   * @param source
+   * @param source -
    */
-  findLayerDescriptorBySource(source: Source) {
+  findLayerDescriptorBySource(source: Source): any {
     const found = this.layerDescriptors.filter(
       (ld) => ld.lyr.getSource() == source
     );
