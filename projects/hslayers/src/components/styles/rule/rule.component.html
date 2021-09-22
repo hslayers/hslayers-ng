@@ -47,8 +47,8 @@
     <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
       [cdkDropListData]="rule.symbolizers">
       <ng-container *ngFor="let symbolizer of rule.symbolizers">
-        <hs-symbolizer-list-item cdkDrag [cdkDragDisabled]="!hsStylerService.canReorder" [rule]="rule"
-          [symbolizer]="symbolizer" (changes)="emitChange()"></hs-symbolizer-list-item>
+        <hs-symbolizer-list-item cdkDrag [rule]="rule" [symbolizer]="symbolizer" (changes)="emitChange()">
+        </hs-symbolizer-list-item>
       </ng-container>
     </ul>
   </ng-container>

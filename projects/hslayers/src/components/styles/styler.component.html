@@ -4,16 +4,10 @@
       {{'LAYERMANAGER.layerEditor.styleLayer' | translate}}
       {{hsStylerService.layerTitle}}
     </span>
-    <div class="btn-group">
-      <button type="button" class="but-title-sm mr-2" (click)="hsStylerService.canReorder = !hsStylerService.canReorder"
-        [title]="'LAYERMANAGER.enableStylerRuleAndSymbolizerReordering' | translate">
-        <i class="glyphicon icon-edit"></i>
-      </button>
-      <button type="button" class="close" (click)="layermanager()" [title]="'COMMON.close' | translate">
-        <span aria-hidden="true">×</span>
-        <span class="sr-only">{{'COMMON.close' | translate}}</span>
-      </button>
-    </div>
+    <button type="button" class="close" (click)="layermanager()" [title]="'COMMON.close' | translate">
+      <span aria-hidden="true">×</span>
+      <span class="sr-only">{{'COMMON.close' | translate}}</span>
+    </button>
   </div>
   <div class="card-body">
     <input class="form-control" *ngIf="hsStylerService.styleObject" type="text" placeholder="Style name"
@@ -41,7 +35,7 @@
       <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="hsStylerService.styleObject.rules">
         <ng-container *ngFor="let rule of hsStylerService.styleObject.rules">
-          <hs-rule-list-item cdkDrag [cdkDragDisabled]="!hsStylerService.canReorder" [rule]="rule"></hs-rule-list-item>
+          <hs-rule-list-item cdkDrag [rule]="rule"></hs-rule-list-item>
         </ng-container>
       </ul>
     </ng-container>

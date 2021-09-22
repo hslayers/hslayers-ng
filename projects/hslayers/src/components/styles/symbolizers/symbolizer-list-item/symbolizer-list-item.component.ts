@@ -3,7 +3,6 @@ import {Component, Input} from '@angular/core';
 import {Rule, Symbolizer} from 'geostyler-style';
 
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
-import {HsStylerService} from '../../styler.service';
 import {Kinds} from '../symbolizer-kind.enum';
 
 @Component({
@@ -15,9 +14,6 @@ export class HsSymbolizerListItemComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: Symbolizer;
   @Input() rule: Rule;
   symbolizerVisible = false;
-  constructor(public hsStylerService: HsStylerService) {
-    super();
-  }
 
   getSymbolizerName(symbolizer: any): string {
     switch (symbolizer.kind) {
@@ -39,10 +35,5 @@ export class HsSymbolizerListItemComponent extends HsStylerPartBaseComponent {
   removeSymbolizer(symbolizer: Symbolizer): void {
     this.rule.symbolizers.splice(this.rule.symbolizers.indexOf(symbolizer), 1);
     this.emitChange();
-  }
-
-  setSymbolizerVisible(): void {
-    this.symbolizerVisible = !this.symbolizerVisible;
-    this.hsStylerService.canReorder = false;
   }
 }

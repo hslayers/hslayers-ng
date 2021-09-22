@@ -520,8 +520,7 @@
       "syncTimes": "Sinhronizēt laikus",
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
-    "User generated": "Lietotāja ģenerēti",
-    "enableStylerRuleAndSymbolizerReordering": "Iespējot stilizētāja noteikumu un simbolizētāju pārkārtošanu"
+    "User generated": "Lietotāja ģenerēti"
   },
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
