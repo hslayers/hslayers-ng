@@ -520,8 +520,7 @@
       "syncTimes": "Synchronize times",
       "syncTimesTooltip": "Synchronize time for all layers"
     },
-    "User generated": "User generated",
-    "enableStylerRuleAndSymbolizerReordering": "Enable styler rule and symbolizer reordering"
+    "User generated": "User generated"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",

@@ -519,8 +519,7 @@
     "User generated": "Uživatelský",
     "dialogRemoveLayer": {
       "dialogMessage": "Opravdu chcete odstranit vybranou vrstvu?"
-    },
-    "enableStylerRuleAndSymbolizerReordering": "Povolit změnu pořadí"
+    }
   },
   "LAYERS": {
     "existingLayer": "Existující vrstva",

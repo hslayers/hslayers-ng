@@ -41,7 +41,6 @@ import {parseStyle} from './backwards-compatibility';
   providedIn: 'root',
 })
 export class HsStylerService {
-  canReorder = false;
   layer: VectorLayer<VectorSource<Geometry>> = null;
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;

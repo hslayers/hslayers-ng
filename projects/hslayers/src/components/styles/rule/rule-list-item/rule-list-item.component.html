@@ -2,16 +2,14 @@
   class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center mb-1"
   (click)="ruleVisible = !ruleVisible">
   <div>
-    <button type="button" style="border: none; background-color: transparent;"
-      [ngStyle]="{'cursor': hsStylerService.canReorder ? 'move' : 'not-allowed'}"
-      [disabled]="!hsStylerService.canReorder">
-      <i class="icon-move"></i>
+    <button type="button" style="border: none; background-color: transparent; cursor: move">
+      <i class="icon-move text-secondary"></i>
     </button>
     <span>{{rule.name || 'untitled rule'}}&nbsp;</span>
   </div>
   <div>
     <span class="glyphicon mr-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
-    <button class="btn btn-danger btn-sm mr-3" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
+    <button class="btn btn-danger btn-sm mr-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
       [title]="'STYLER.removeRule' | translate">
       <i class="icon-trash"></i>
     </button>
