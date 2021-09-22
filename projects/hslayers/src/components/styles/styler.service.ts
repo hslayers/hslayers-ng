@@ -69,7 +69,7 @@ export class HsStylerService {
     this.hsMapService.loaded().then(() => this.init());
   }
 
-  async init() {
+  async init(): Promise<void> {
     for (const layer of this.hsMapService
       .getLayersArray()
       .filter((layer) => this.hsLayerUtilsService.isLayerVectorLayer(layer))) {
@@ -114,10 +114,10 @@ export class HsStylerService {
   }
 
   /**
-   * @description Get a Source for any vector layer. Both clustered and un-clustered.
-   * @param isClustered
-   * @param {VectorLayer} layer Any vector layer
-   * @returns {VectorSource} Source of the input layer or source of its cluster's source
+   * Get a Source for any vector layer. Both clustered and un-clustered.
+   * @param layer - Any vector layer
+   * @param isClustered -
+   * @returns Source of the input layer or source of its cluster's source
    */
   getLayerSource(
     layer: VectorLayer<VectorSource<Geometry>>,
@@ -228,7 +228,7 @@ export class HsStylerService {
   /**
    * Parse style encoded as custom JSON or SLD and return OL style object.
    * This function is used to support backwards compatibility with custom format.
-   * @param style
+   * @param style -
    * @returns OL style object
    */
   async parseStyle(style: any): Promise<{sld?: string; style: Style}> {
@@ -305,7 +305,7 @@ export class HsStylerService {
 
   /**
    * Convert SLD text to JSON which is easier to edit in Angular.
-   * @param sld
+   * @param sld -
    * @returns
    */
   private async sldToJson(sld: string): Promise<GeoStylerStyle> {
@@ -417,7 +417,7 @@ export class HsStylerService {
    * (which returns the "features" attribute of the parent/cluster feature) and returned
    * '[object Object], [object Object]' the result would become "2".
    * See https://github.com/geostyler/geostyler-openlayers-parser/issues/227
-   * @param style
+   * @param style -
    * @returns
    */
   wrapStyleForClusters(style: StyleFunction): StyleFunction {

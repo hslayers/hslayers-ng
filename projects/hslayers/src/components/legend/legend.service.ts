@@ -191,7 +191,7 @@ export class HsLegendService {
    * @param style - OpenLayers style
    * @returns Simplified description of style used by template to draw legend
    */
-  serializeStyle(style: Style | Style[]) {
+  serializeStyle(style: Style | Style[]): any {
     let ch: any = {};
     if (Array.isArray(style)) {
       for (const s of style) {
@@ -227,7 +227,7 @@ export class HsLegendService {
    * @param image - Image description
    * @returns Simplified description of style used by template to draw legend
    */
-  setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle) {
+  setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle): any {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.hsUtilsService.instOf(image, Icon)) {
@@ -352,7 +352,6 @@ export class HsLegendService {
    * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
    * @param layer - OpenLayers layer
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
-   * @private
    */
   getLayerLegendDescriptor(
     layer: Layer<Source>

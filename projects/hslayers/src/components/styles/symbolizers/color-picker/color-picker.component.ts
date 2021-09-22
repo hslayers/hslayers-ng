@@ -56,7 +56,7 @@ export class HsColorPickerComponent extends HsStylerPartBaseComponent {
     return hsp > 127.5 ? 'black' : 'white';
   }
 
-  colorPickerStyle() {
+  colorPickerStyle(): any {
     return {
       'background-color': this.symbolizer[this.attribute],
       'color': this.fontColor,

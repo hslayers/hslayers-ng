@@ -97,7 +97,7 @@ async function convertHsStyleToSld(json: any): Promise<string> {
 /**
  * Create polygon symbolizer configuration from which the
  * geostyler-sld-parser library will generate SLD xml
- * @param json
+ * @param json -
  * @returns
  */
 function createPolygonSymbol(json: any): FillSymbolizer {
@@ -117,7 +117,7 @@ function createPolygonSymbol(json: any): FillSymbolizer {
 /**
  * Create line symbolizer configuration from which the
  * geostyler-sld-parser library will generate SLD xml
- * @param json
+ * @param json -
  * @returns
  */
 function createLineSymbol(json: any): LineSymbolizer {
@@ -132,7 +132,7 @@ function createLineSymbol(json: any): LineSymbolizer {
 /**
  * Create circle symbolizer configuration from which the
  * geostyler-sld-parser library will generate SLD xml
- * @param json
+ * @param json -
  * @returns
  */
 function createCircleSymbol(json: any): MarkSymbolizer {
@@ -158,7 +158,7 @@ function createCircleSymbol(json: any): MarkSymbolizer {
  * Create icon symbolizer configuration from which the
  * geostyler-sld-parser library will generate SLD xml.
  * It must include embedded base64 encoded svg image
- * @param json
+ * @param json -
  * @returns
  */
 function createIconSymbol(json: any): IconSymbolizer {
