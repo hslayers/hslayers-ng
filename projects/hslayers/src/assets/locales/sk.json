@@ -26,7 +26,10 @@
         "bbox": "BBOX",
         "date": "Dátum",
         "title": "Titulok"
-      }
+      },
+      "showAll": "Všetky",
+      "showNext100": "Dalších 100",
+      "showingSubset": "Aktuálne sa zobrazuje {{limitShown}} z {{total}} služieb. \nŠou"
     },
     "file": "Súbor",
     "saveToDatabase": "Uložit do databázy",
@@ -102,7 +105,8 @@
     },
     "WMTS": {
       "tileMatrix": "Matica dlaždíc"
-    }
+    },
+    "unknownDimesion": "Táto vrstva definuje dimenziu, ktorú nemožno v súčasnosti načítať"
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -509,9 +513,14 @@
     "time": {
       "outOfRange": "Vybraný čas je mimo rozsah",
       "syncTimes": "Synchronizovať časy",
-      "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev"
+      "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev",
+      "outOfRangeDescription": "Táto vrstva môže zobrazovať rôzne údaje na základe vybratého času. Čas sa môže dostať „mimo rozsah“, keď je synchronizovaný s inou vrstvou, ale táto vrstva pre daný časový úsek nemá žiadne údaje. Kliknutím vyberte platný dátum a čas. Môžete tiež vypnúť synchronizáciu času vo vrstve."
     },
-    "User generated": "Užívateľské"
+    "User generated": "Užívateľské",
+    "dialogRemoveLayer": {
+      "dialogMessage": "Naozaj chcete odstrániť vybratú vrstvu?"
+    },
+    "enableStylerRuleAndSymbolizerReordering": "Povoliť zmenu poradia"
   },
   "LAYERS": {
     "existingLayer": "Existujúca vrstva",
@@ -601,7 +610,8 @@
     "reallyDelete": "Naozaj zmazať tento prvok?",
     "reallyDeleteAllFeaturesFrom": "Naozaj odstrániť všetky prvky z vrstvy {0}?",
     "reallyDeleteAllSelectedLayers": "Naozaj odstrániť všetky vybrané prvky?",
-    "untitledFeature": "Prvok bez názvu"
+    "untitledFeature": "Prvok bez názvu",
+    "clusterContaining": "Klaster obsahujúci {{count}} prvkov"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
@@ -770,7 +780,13 @@
     "transform": "Transformácia",
     "warningAttribNotStoredNotVisualized": "Atribút momentálne nie je zorazený správne a nie je uložený v SLD",
     "warningAttribStoredNotVisualized": "Atribút uložený v SLD, ale aktuálne nie je zobrazený správne",
-    "width": "Šírka"
+    "width": "Šírka",
+    "clear": "Obnoviť predvolený štýl",
+    "downloadSld": "Stiahnuť štýl ako súbor SLD",
+    "manageStyle": "Spravovať štýl",
+    "unknownSymbolizer": "Neznáma symboliku",
+    "warningAttribNotStoredVisualized": "Atribút je vizualizovaný, ale nie je uložený v SLD",
+    "uploadSld": "Nahrajte štýl ako súbor SLD"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
