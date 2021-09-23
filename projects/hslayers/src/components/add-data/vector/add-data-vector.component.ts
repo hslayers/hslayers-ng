@@ -136,7 +136,7 @@ export class HsAddDataVectorComponent implements OnInit {
 
   async addNewLayer(): Promise<any> {
     const layer = await this.hsAddDataVectorService.addVectorLayer(
-      this.type,
+      this.features.length != 0 ? this.type : this.dataType,
       this.url || this.base64url,
       this.name,
       this.title,
