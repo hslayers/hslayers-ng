@@ -22,7 +22,7 @@ import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
   templateUrl: './add-data-vector.component.html',
 })
 export class HsAddDataVectorComponent implements OnInit {
-  @Input() dataType: string;
+  @Input() dataType: 'geojson' | 'kml';
   @ViewChild('vectorFileInput') vectorFileInput: ElementRef;
 
   srs = 'EPSG:4326';
@@ -36,7 +36,7 @@ export class HsAddDataVectorComponent implements OnInit {
   folder_name = '';
   features: any[] = [];
   featureCount = 0;
-  type = '';
+  type: 'geojson' | 'kml' | '' = '';
   errorOccurred = false;
   addUnder: Layer<Source> = null;
   showDetails = false;
