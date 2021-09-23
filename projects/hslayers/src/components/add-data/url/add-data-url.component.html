@@ -14,6 +14,6 @@
         <hs-add-data-url-wfs *ngIf="typeSelected === 'wfs'"></hs-add-data-url-wfs>
         <hs-add-data-url-wms *ngIf="typeSelected === 'wms'"></hs-add-data-url-wms>
         <hs-add-data-url-wmts *ngIf="typeSelected === 'wmts'"></hs-add-data-url-wmts>
-        <hs-add-data-url-vector *ngIf="typeSelected === 'kml' || typeSelected === 'geojson' "></hs-add-data-url-vector>
+        <hs-add-data-url-vector *ngIf="typeSelected === 'kml' || typeSelected === 'geojson' " [dataType]="typeSelected"></hs-add-data-url-vector>
     </div>
 </div>

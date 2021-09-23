@@ -112,6 +112,7 @@ describe('add-layers-vector', () => {
 
   it('GeoJSON layer should be added', async () => {
     component.vectorFileInput = viewChild;
+    component.dataType = 'geojson';
     component.url =
       'http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson';
     component.title = 'Cancer rates';
