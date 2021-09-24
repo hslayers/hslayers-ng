@@ -101,6 +101,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
     for (let i = 0; i < this.layerDescriptors.length; i++) {
       if (this.layerDescriptors[i].lyr == layer) {
         this.layerDescriptors.splice(i, 1);
+        this.refreshList();
         break;
       }
     }
