@@ -32,33 +32,6 @@
     "zone.js": "^0.10.2 || ^0.11.3",
     "resumablejs": "^1.1.0"
   },
-  "devDependencies": {
-    "@angular/cdk": "^12.2.7",
-    "@angular/common": "^12.2.7",
-    "@angular/compiler": "^12.2.7",
-    "@angular/core": "^12.2.7",
-    "@angular/forms": "^12.2.7",
-    "@angular/localize": "^12.2.7",
-    "@ng-bootstrap/ng-bootstrap": "^10.0.0",
-    "@ngx-translate/core": "^12.1.2",
-    "@ngx-translate/http-loader": "^6.0.0",
-    "bootstrap": ">=4.6.0",
-    "dayjs": "^1.10.4",
-    "deepmerge": "^4.2.2",
-    "geostyler-openlayers-parser": "^2.3.0",
-    "geostyler-sld-parser": "^2.3.0",
-    "geostyler-style": "^4.0.2",
-    "ngx-color": "^7.2.0",
-    "ngx-cookie-service": "^12.0.0",
-    "ol": "^6.6.0",
-    "ol-popup": "^4.0.0",
-    "proj4": "^2.7.2",
-    "queue": "^6.0.2",
-    "resumablejs": "^1.1.0",
-    "rxjs": "^6.6.7",
-    "share-api-polyfill": "^1.0.18",
-    "xml-js": "^1.6.11"
-  },
   "dependencies": {
     "tslib": "^2.0.0"
   }
