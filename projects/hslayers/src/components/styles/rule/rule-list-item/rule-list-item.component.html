@@ -17,5 +17,5 @@
 </li>
 
 <ng-container *ngIf="ruleVisible">
-  <hs-rule [rule]="rule" (changes)="hsStylerService.save()"></hs-rule>
+  <hs-rule [rule]="rule" (changes)="hsStylerService.save()"  (mousedown)="$event.stopPropagation()"></hs-rule>
 </ng-container>

@@ -73,7 +73,7 @@
     </div>
     <span class="badge badge-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1">
-      <div ngbDropdown class="d-inline-block" placement="top-right">
+      <div ngbDropdown #graphicLineMenu="ngbDropdown"  class="d-inline-block" placement="top-right">
         <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
           <span class="icon-plus"></span>
         </button>
@@ -98,7 +98,7 @@
     </div>
     <span class="badge badge-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1">
-      <div ngbDropdown class="d-inline-block" placement="top-right">
+      <div ngbDropdown #graphicStrokeMenu="ngbDropdown" class="d-inline-block" placement="top-right">
         <button class="btn btn-outline-primary btn-sm" id="dropdownAddStrokeSymbolizer" ngbDropdownToggle>
           <span class="icon-plus"></span>
         </button>
