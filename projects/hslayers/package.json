@@ -33,12 +33,12 @@
     "resumablejs": "^1.1.0"
   },
   "devDependencies": {
-    "@angular/cdk": "^12.2.3",
-    "@angular/common": "^12.2.3",
-    "@angular/compiler": "^12.2.3",
-    "@angular/core": "^12.2.3",
-    "@angular/forms": "^12.2.3",
-    "@angular/localize": "^12.2.3",
+    "@angular/cdk": "^12.2.7",
+    "@angular/common": "^12.2.7",
+    "@angular/compiler": "^12.2.7",
+    "@angular/core": "^12.2.7",
+    "@angular/forms": "^12.2.7",
+    "@angular/localize": "^12.2.7",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^6.0.0",
