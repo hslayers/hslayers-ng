@@ -2,7 +2,7 @@ import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {Geometry} from 'ol/geom';
+import {Geometry, MultiPolygon} from 'ol/geom';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
@@ -38,7 +38,7 @@ export class HsSensorsService {
       let geometry = feature.getGeometry();
       if (geometry.getType() == 'MultiPolygon') {
         // Only render label for the widest polygon of a multipolygon
-        const polygons = geometry.getPolygons();
+        const polygons = (geometry as MultiPolygon).getPolygons();
         let widest = 0;
         for (let i = 0, ii = polygons.length; i < ii; ++i) {
           const polygon = polygons[i];
