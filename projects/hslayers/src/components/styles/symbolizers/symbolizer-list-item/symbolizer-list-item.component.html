@@ -17,6 +17,6 @@
 </li>
 
 <ng-container *ngIf="symbolizerVisible">
-  <hs-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+  <hs-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" (mousedown)="$event.stopPropagation()">
   </hs-symbolizer>
 </ng-container>
