@@ -20,7 +20,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
 import {HttpClientModule} from '@angular/common/http';
 import {Layer} from 'ol/layer';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
@@ -69,7 +69,7 @@ describe('add-layers-vector', () => {
         HttpClientModule,
         FormsModule,
         TranslateModule.forRoot(),
-        NgbModule,
+        NgbDropdownModule,
       ],
       declarations: [HsAddDataVectorComponent],
       providers: [

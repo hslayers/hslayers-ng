@@ -7,7 +7,7 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
@@ -58,7 +58,7 @@ describe('add-data-url', () => {
         HttpClientModule,
         FormsModule,
         TranslateModule.forRoot(),
-        NgbModule,
+        NgbDropdownModule,
       ],
       declarations: [HsAddDataWmsComponent],
       providers: [

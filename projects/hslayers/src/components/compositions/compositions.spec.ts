@@ -21,6 +21,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -31,13 +32,12 @@ import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HttpClientModule} from '@angular/common/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
-import { HsLayoutServiceMock } from '../layout/layout.service.mock';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
@@ -82,7 +82,7 @@ describe('compositions', () => {
         FormsModule,
         TranslateModule.forRoot(),
         HsStylerModule,
-        NgbModule,
+        NgbDropdownModule,
       ],
       declarations: [HsCompositionsComponent],
       providers: [
