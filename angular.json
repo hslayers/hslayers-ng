@@ -41,7 +41,9 @@
               }
             ],
             "styles": [
-              "node_modules/ol/ol.css"
+              "node_modules/ol/ol.css",
+              "projects/hslayers/src/css/hslayers-bootstrap.scss",
+              "projects/hslayers/src/css/whhg-font/css/whhg.css"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -170,7 +172,9 @@
               }
             ],
             "styles": [
-              "node_modules/ol/ol.css"
+              "node_modules/ol/ol.css",
+              "projects/hslayers/src/css/hslayers-bootstrap.scss",
+              "projects/hslayers/src/css/whhg-font/css/whhg.css"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -300,7 +304,9 @@
               }
             ],
             "styles": [
-              "node_modules/ol/ol.css"
+              "node_modules/ol/ol.css",
+              "projects/hslayers/src/css/hslayers-bootstrap.scss",
+              "projects/hslayers/src/css/whhg-font/css/whhg.css"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -437,7 +443,9 @@
             ],
             "styles": [
               "node_modules/ol/ol.css",
-              "node_modules/cesium/Build/Cesium/Widgets/widgets.css"
+              "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
+              "projects/hslayers/src/css/hslayers-bootstrap.scss",
+              "projects/hslayers/src/css/whhg-font/css/whhg.css"
             ],
             "scripts": [],
             "customWebpackConfig": {
