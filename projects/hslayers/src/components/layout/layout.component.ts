@@ -4,23 +4,20 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
 import {HsMapHostDirective} from './map-host.directive';
+import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsThemeService} from './themes/theme.service';
 import {HsUtilsService} from '../utils/utils.service';
-import { HsOverlayPanelContainerService } from './overlay-panel-container.service';
 
 @Component({
   selector: 'hs-layout',
   templateUrl: './partials/layout.html',
-  styleUrls: ['../../css/app.scss', '../../css/whhg-font/css/whhg.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class HsLayoutComponent implements AfterViewInit {
   @ViewChild('hslayout') hslayout: ElementRef;
