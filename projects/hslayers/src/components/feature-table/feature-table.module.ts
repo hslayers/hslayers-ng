@@ -5,7 +5,7 @@ import {HsFeatureFilterPipe} from './feature-filter.pipe';
 import {HsFeatureTableComponent} from './feature-table.component';
 import {HsLayerFeaturesComponent} from './layer-features.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -20,7 +20,7 @@ import {TranslateModule} from '@ngx-translate/core';
     FormsModule,
     HsPanelHelpersModule,
     TranslateModule,
-    NgbModule,
+    NgbDropdownModule,
   ],
   exports: [
     HsFeatureTableComponent,

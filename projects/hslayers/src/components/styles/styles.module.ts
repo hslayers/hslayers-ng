@@ -4,7 +4,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
@@ -58,7 +58,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     ColorSketchModule,
     HsPanelHelpersModule,
     FormsModule,
-    NgbModule,
+    NgbDropdownModule,
     TranslateModule,
     HsUploadModule,
     HsDownloadModule,

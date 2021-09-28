@@ -5,7 +5,7 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import VectorLayer from 'ol/layer/Vector';
@@ -68,7 +68,7 @@ describe('layermanager', () => {
       imports: [
         HsPanelHelpersModule,
         FormsModule,
-        NgbModule,
+        NgbDropdownModule,
         TranslateModule.forRoot(),
       ],
       declarations: [HsLayerEditorComponent],

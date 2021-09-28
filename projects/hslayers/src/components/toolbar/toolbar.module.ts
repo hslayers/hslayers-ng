@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsPanelHelpersModule} from '../layout/public-api';
 import {HsToolbarComponent} from './toolbar.component';
@@ -15,7 +15,7 @@ import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
   imports: [
     CommonModule,
     FormsModule,
-    NgbModule,
+    NgbDropdownModule,
     TranslateModule,
     HsPanelHelpersModule,
   ],

@@ -10,7 +10,7 @@ import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsDrawToolbarComponent} from './draw-toolbar.component';
 import {HsQueryModule} from '../query/query.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -23,7 +23,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     HsPanelHelpersModule,
     FormsModule,
-    NgbModule,
+    NgbDropdownModule,
     HsStylerModule,
     TranslateModule,
     HsQueryModule,
@@ -34,9 +34,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsDrawLayerMetadataDialogComponent,
     HsDrawToolbarComponent,
   ],
-  entryComponents: [
-    HsDrawComponent,
-    HsDrawToolbarComponent,
-  ],
+  entryComponents: [HsDrawComponent, HsDrawToolbarComponent],
 })
 export class HsDrawModule {}

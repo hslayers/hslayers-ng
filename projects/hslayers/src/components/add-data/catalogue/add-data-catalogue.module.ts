@@ -1,7 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCatalogueComponent} from './add-data-catalogue.component';
@@ -21,7 +21,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
     TranslateModule,
     HsUiExtensionsModule,
     HsLaymanModule,
-    NgbModule,
+    NgbDropdownModule,
     HsPagerModule,
     HsCatalogueMetadataModule,
   ],

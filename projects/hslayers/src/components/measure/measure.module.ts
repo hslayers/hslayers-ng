@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {HsMeasureComponent} from './measure.component';
 import {HsMeasureToolbarComponent} from './measure-toolbar.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -14,7 +14,7 @@ import {TranslateModule} from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    NgbModule,
+    NgbDropdownModule,
     TranslateModule,
   ],
   exports: [HsMeasureComponent, HsMeasureToolbarComponent],

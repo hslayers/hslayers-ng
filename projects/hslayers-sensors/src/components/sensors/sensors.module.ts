@@ -12,7 +12,7 @@ import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -26,7 +26,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsPanelHelpersModule,
     HsLogModule,
     FormsModule,
-    NgbModule,
+    NgbDatepickerModule,
     TranslateModule,
   ],
   exports: [
