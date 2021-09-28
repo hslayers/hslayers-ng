@@ -53,7 +53,7 @@
     "geostyler-style": "^4.0.2",
     "ngx-color": "^7.2.0",
     "ngx-cookie-service": "^12.0.3",
-    "ol": "^6.7.0",
+    "ol": "^6.8.1",
     "ol-popup": "^4.0.0",
     "passport-oauth2-middleware": "^1.0.3",
     "proj4": "^2.7.5",
