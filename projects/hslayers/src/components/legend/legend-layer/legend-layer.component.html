@@ -1,6 +1,5 @@
 <div>
-    <hs-legend-vector-layer *ngIf="layer.type === 'vector' && layer.autoLegend" [layer-style]="styles"
-        [geometry-type]="geometryTypes">
+    <hs-legend-vector-layer *ngIf="layer.type === 'vector' && layer.autoLegend" [svg]="svg">
     </hs-legend-vector-layer>
     <div *ngIf="layer.type === 'wms'">
         <img *ngFor="let sublayer of layer.subLayerLegends" [src]="sublayer"

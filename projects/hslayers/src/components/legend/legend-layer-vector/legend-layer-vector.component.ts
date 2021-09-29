@@ -5,8 +5,7 @@ import {Component, Input} from '@angular/core';
   templateUrl: './legend-layer-vector.component.html',
 })
 export class HsLegendLayerVectorComponent {
-  @Input('layer-style') layerStyle: any;
-  @Input('geometry-type') geometryType: any;
+  @Input() svg: string;
 
   constructor() {}
 }
