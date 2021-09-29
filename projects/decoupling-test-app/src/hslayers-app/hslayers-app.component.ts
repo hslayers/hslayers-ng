@@ -243,7 +243,7 @@ export class HslayersAppComponent {
               <NamedLayer>
                 <Name>Simple point with stroke</Name>
                 <UserStyle>
-                  <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
+                  <Title>Default</Title>
                   <FeatureTypeStyle>
                     <Rule>
                       <PointSymbolizer>
@@ -297,7 +297,7 @@ export class HslayersAppComponent {
               <NamedLayer>
                 <Name>Simple point with stroke</Name>
                 <UserStyle>
-                  <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
+                  <Title>Default</Title>
                   <FeatureTypeStyle>
                     <Rule>
                     <PolygonSymbolizer>
