@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -115,7 +116,7 @@ describe('HsLegendLayerComponent', () => {
     expect(parentComponent.layerDescriptors.length).toBeDefined();
     expect(parentComponent.layerDescriptors[0].title).toBe('Bookmarks');
   });
-  it('should create layer feature style and geometry type', () => {
+  it('should create layer feature style and geometry type', async function () {
     const count = 20;
     const features = new Array(count);
     const e = 4500000;
@@ -149,11 +150,10 @@ describe('HsLegendLayerComponent', () => {
     const expectedLayer = parentComponent.layerDescriptors[0];
     component.layer = expectedLayer;
     fixture.detectChanges();
-    component.ngOnInit();
-    expect(component.styles[0].customCircle).toBeDefined();
-    expect(component.geometryTypes[0]).toEqual('point');
+    const svg = await service.getVectorLayerLegendSvg(layer);
+    expect(svg).toBeDefined();
   });
-  it('should turn off clustered features and change layer style', () => {
+  it('should turn off clustered features and change layer style', async function () {
     const count = 20;
     const features = new Array(count);
     const e = 4500000;
@@ -187,7 +187,6 @@ describe('HsLegendLayerComponent', () => {
     const expectedLayer = parentComponent.layerDescriptors[0];
     component.layer = expectedLayer;
     fixture.detectChanges();
-    component.ngOnInit();
     setCluster(component.layer.lyr, false);
     fixture.detectChanges();
     const customStyle = new Style({
@@ -204,17 +203,9 @@ describe('HsLegendLayerComponent', () => {
     });
     component.layer.lyr.setStyle(customStyle);
     fixture.detectChanges();
-    service.setUpLegendStyle(
-      customStyle.getFill(),
-      customStyle.getStroke(),
-      customStyle.getImage()
-    );
-    component.ngOnInit();
+    await component.initLayer(component.layer);
+    const svg = await service.getVectorLayerLegendSvg(layer);
     expect(getCluster(component.layer.lyr)).toBeFalse();
-    expect(component.styles[0].customCircle.fill).toEqual(
-      'rgba(255, 0, 0, 0.4)'
-    );
-    expect(component.styles[0].customCircle.stroke).toEqual('#ff3333');
-    expect(component.geometryTypes[0]).toEqual('point');
+    expect(svg).toContain(`<svg class="geostyler-legend-renderer" `);
   });
 });
