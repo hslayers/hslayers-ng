@@ -1,4 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {SafeHtml} from '@angular/platform-browser';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Subject} from 'rxjs';
@@ -14,8 +15,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLegendLayerComponent implements OnInit, OnDestroy {
   @Input() layer: any;
-  styles = [];
-  geometryTypes = [];
+  svg: SafeHtml;
   private ngUnsubscribe = new Subject();
   constructor(
     public hsUtilsService: HsUtilsService,
@@ -24,37 +24,23 @@ export class HsLegendLayerComponent implements OnInit, OnDestroy {
   ) {
     this.hsStylerService.onSet
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((_) => {
-        this.styles = this.hsLegendService.getStyleVectorLayer(this.layer.lyr);
-        this.geometryTypes = this.hsLegendService.getVectorFeatureGeometry(
-          this.layer.lyr
-        );
+      .subscribe(async (layer) => {
+        if (this.layer.lyr == layer) {
+          this.svg = await this.hsLegendService.getVectorLayerLegendSvg(
+            this.layer.lyr
+          );
+        }
       });
   }
 
   ngOnInit(): void {
     const olLayer = this.layer.lyr;
+    this.initLayer(olLayer);
+  }
 
+  private async initLayer(olLayer: any) {
     if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
-      this.styles = this.hsLegendService.getStyleVectorLayer(olLayer);
-      this.geometryTypes =
-        this.hsLegendService.getVectorFeatureGeometry(olLayer);
-    }
-    if (olLayer.getSource()) {
-      const source = olLayer.getSource();
-      const changeHandler = this.hsUtilsService.debounce(
-        (e) => {
-          this.styles = this.hsLegendService.getStyleVectorLayer(olLayer);
-          this.geometryTypes =
-            this.hsLegendService.getVectorFeatureGeometry(olLayer);
-        },
-        200,
-        false,
-        this
-      );
-      source.on('changefeature', changeHandler);
-      source.on('addfeature', changeHandler);
-      source.on('removefeature', changeHandler);
+      this.svg = await this.hsLegendService.getVectorLayerLegendSvg(olLayer);
     }
   }
 
