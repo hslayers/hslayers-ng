@@ -1,4 +1,4 @@
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
@@ -40,8 +40,7 @@ export class HsLegendService {
   constructor(
     public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayerSelectorService: HsLayerSelectorService,
-    private sanitizer: DomSanitizer
+    public hsLayerSelectorService: HsLayerSelectorService
   ) {
     this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.getLayerLegendDescriptor(layer.layer);
@@ -73,7 +72,7 @@ export class HsLegendService {
    */
   async getVectorLayerLegendSvg(
     currentLayer: VectorLayer<VectorSource<Geometry>>
-  ): Promise<any> {
+  ): Promise<string> {
     try {
       if (currentLayer === undefined) {
         return;
@@ -86,7 +85,10 @@ export class HsLegendService {
       const sld = getSld(currentLayer);
       let sldObject;
       if (!sld) {
-        const layerStyle = currentLayer.getStyle();
+        let layerStyle = currentLayer.getStyle();
+        if (typeof layerStyle == 'function') {
+          layerStyle = <Style | Style[]>layerStyle(new Feature(), 1);
+        }
         const symbolizers = new OlStyleParser().getSymbolizersFromOlStyle(
           Array.isArray(layerStyle) ? layerStyle : [layerStyle]
         );
@@ -108,8 +110,7 @@ export class HsLegendService {
       });
       const el = document.createElement('div');
       await legendRenderer.render(el);
-      const safeHtml = this.sanitizer.bypassSecurityTrustHtml(el.innerHTML);
-      return safeHtml;
+      return el.innerHTML;
     } catch (ex) {
       throw ex;
     }
