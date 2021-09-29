@@ -67,9 +67,9 @@ export class HsLegendService {
   }
 
   /**
-   * Get vector layer styles for first 100 features
+   * Get legend graphics for a vector layer based on sld attribute. If no SLD exists, try to generate it from OL style.
    * @param currentLayer - Layer of interest
-   * @returns Array of serialized unique style descriptions encountered when looping through first 100 features
+   * @returns Image as SVG string
    */
   async getVectorLayerLegendSvg(
     currentLayer: VectorLayer<VectorSource<Geometry>>
