@@ -8,9 +8,9 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from '../../../hslayers/src/config.service';
-import {HsLayerEditorService} from '../../../hslayers/src/components/layermanager/layer-editor.service';
+import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 import {HsLayoutService} from 'hslayers-ng/src/components/layout/public-api';
-import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
+//import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
 //import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
 
 @Component({
@@ -21,7 +21,7 @@ import {HsQueryComponent} from '../../../hslayers/src/components/query/query.com
 export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
-    private hsLayerEditorService: HsLayerEditorService,
+    private HsEventBusService: HsEventBusService,
     hsLayoutService: HsLayoutService
     //hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
@@ -332,11 +332,11 @@ export class HslayersAppComponent {
     }
     //Simulating ajax
     setTimeout(() => {
-      this.hsLayerEditorService.layerDimensionDefinitionChange.next({
+      this.HsEventBusService.layerDimensionDefinitionChanges.next({
         layer: opticalMap,
       });
     }, 100);
-    hsLayoutService.createPanel(HsQueryComponent, {});
+    //hsLayoutService.createPanel(HsQueryComponent, {});
     //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
