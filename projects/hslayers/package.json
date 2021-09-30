@@ -22,7 +22,7 @@
     "geostyler-openlayers-parser": "^2.0.0",
     "geostyler-sld-parser": "^2.0.0",
     "geostyler-style": "^4.0.0",
-    "geostyler-legend": "^2.0.0",
+    "geostyler-legend": ">=2.0.1",
     "ngx-cookie-service": "^12.0.0",
     "ol": "^6.7.0",
     "ol-popup": "^4.0.0",
