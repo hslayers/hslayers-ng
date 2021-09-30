@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {SafeHtml} from '@angular/platform-browser';
 
-import VectorLayer from 'ol/layer/Vector';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
@@ -13,38 +12,22 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-legend-layer-directive',
   templateUrl: './legend-layer.component.html',
 })
-export class HsLegendLayerComponent implements OnInit, OnDestroy {
+export class HsLegendLayerComponent implements OnDestroy {
   @Input() layer: any;
   svg: SafeHtml;
   private ngUnsubscribe = new Subject();
   constructor(
     public hsUtilsService: HsUtilsService,
     public hsLegendService: HsLegendService,
-    public hsStylerService: HsStylerService,
-    private sanitizer: DomSanitizer
+    public hsStylerService: HsStylerService
   ) {
     this.hsStylerService.onSet
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (layer) => {
         if (this.layer.lyr == layer) {
-          this.svg = this.sanitizer.bypassSecurityTrustHtml(
-            await this.hsLegendService.getVectorLayerLegendSvg(this.layer.lyr)
-          );
+          this.layer.svg = await this.hsLegendService.setSvg(layer);
         }
       });
-  }
-
-  ngOnInit(): void {
-    const olLayer = this.layer.lyr;
-    this.initLayer(olLayer);
-  }
-
-  async initLayer(olLayer: any): Promise<void> {
-    if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
-      this.svg = this.sanitizer.bypassSecurityTrustHtml(
-        await this.hsLegendService.getVectorLayerLegendSvg(olLayer)
-      );
-    }
   }
 
   ngOnDestroy(): void {
