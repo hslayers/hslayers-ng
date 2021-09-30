@@ -1,11 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
+
+import {HsLegendService} from '../legend.service';
 
 @Component({
   selector: 'hs-legend-vector-layer',
   templateUrl: './legend-layer-vector.component.html',
 })
 export class HsLegendLayerVectorComponent {
-  @Input() svg: string;
-
-  constructor() {}
+  constructor(public hsLegendService: HsLegendService) {}
 }

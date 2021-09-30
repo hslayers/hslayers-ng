@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {SafeHtml} from '@angular/platform-browser';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Subject} from 'rxjs';
@@ -15,21 +15,17 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLegendLayerComponent implements OnInit, OnDestroy {
   @Input() layer: any;
-  svg: SafeHtml;
   private ngUnsubscribe = new Subject();
   constructor(
     public hsUtilsService: HsUtilsService,
     public hsLegendService: HsLegendService,
-    public hsStylerService: HsStylerService,
-    private sanitizer: DomSanitizer
+    public hsStylerService: HsStylerService
   ) {
     this.hsStylerService.onSet
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (layer) => {
         if (this.layer.lyr == layer) {
-          this.svg = this.sanitizer.bypassSecurityTrustHtml(
-            await this.hsLegendService.getVectorLayerLegendSvg(this.layer.lyr)
-          );
+          this.hsLegendService.setSvg(layer);
         }
       });
   }
@@ -41,9 +37,7 @@ export class HsLegendLayerComponent implements OnInit, OnDestroy {
 
   async initLayer(olLayer: any): Promise<void> {
     if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
-      this.svg = this.sanitizer.bypassSecurityTrustHtml(
-        await this.hsLegendService.getVectorLayerLegendSvg(olLayer)
-      );
+      this.hsLegendService.setSvg(olLayer);
     }
   }
 

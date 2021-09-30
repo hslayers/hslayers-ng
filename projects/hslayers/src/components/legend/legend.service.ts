@@ -37,14 +37,26 @@ declare type StyleLike = Style | Array<Style> | StyleFunction;
   providedIn: 'root',
 })
 export class HsLegendService {
+  svg: SafeHtml;
+
   constructor(
     public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayerSelectorService: HsLayerSelectorService
+    public hsLayerSelectorService: HsLayerSelectorService,
+    private sanitizer: DomSanitizer
   ) {
     this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.getLayerLegendDescriptor(layer.layer);
+      if (this.hsLayerUtilsService.isLayerVectorLayer(layer.layer)) {
+        this.setSvg(layer.layer as VectorLayer<VectorSource<Geometry>>);
+      }
     });
+  }
+
+  async setSvg(layer: VectorLayer<VectorSource<Geometry>>): Promise<void> {
+    this.svg = this.sanitizer.bypassSecurityTrustHtml(
+      await this.getVectorLayerLegendSvg(layer)
+    );
   }
 
   /**
