@@ -40,10 +40,11 @@ export class HsLegendService {
   constructor(
     public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayerSelectorService: HsLayerSelectorService
+    public hsLayerSelectorService: HsLayerSelectorService,
+    private sanitizer: DomSanitizer
   ) {
-    this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
-      this.getLayerLegendDescriptor(layer.layer);
+    this.hsLayerSelectorService.layerSelected.subscribe(async (layer) => {
+      await this.getLayerLegendDescriptor(layer.layer);
     });
   }
 
@@ -160,14 +161,22 @@ export class HsLegendService {
     return source_url;
   }
 
+  async setSvg(layer: Layer<Source>): Promise<SafeHtml> {
+    return this.sanitizer.bypassSecurityTrustHtml(
+      await this.getVectorLayerLegendSvg(
+        layer as VectorLayer<VectorSource<Geometry>>
+      )
+    );
+  }
+
   /**
    * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
    * @param layer - OpenLayers layer
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    */
-  getLayerLegendDescriptor(
+  async getLayerLegendDescriptor(
     layer: Layer<Source>
-  ): HsLegendDescriptor | undefined {
+  ): Promise<HsLegendDescriptor | undefined> {
     if (getBase(layer)) {
       return;
     }
@@ -200,6 +209,7 @@ export class HsLegendService {
         lyr: layer,
         type: 'vector',
         visible: layer.getVisible(),
+        svg: await this.setSvg(layer),
       };
     } else if (
       this.hsUtilsService.instOf(layer, ImageLayer) &&

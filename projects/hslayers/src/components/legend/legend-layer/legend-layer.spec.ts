@@ -82,7 +82,7 @@ describe('HsLegendLayerComponent', () => {
   it('should create', () => {
     expect(parentComponent).toBeTruthy();
   });
-  it('should generate vector layer', () => {
+  it('should generate vector layer', async () => {
     const count = 20;
     const features = new Array(count);
     const e = 4500000;
@@ -112,7 +112,7 @@ describe('HsLegendLayerComponent', () => {
       },
       source: new VectorSource({features}),
     });
-    parentComponent.addLayerToLegends(layer);
+    await parentComponent.addLayerToLegends(layer);
     expect(parentComponent.layerDescriptors.length).toBeDefined();
     expect(parentComponent.layerDescriptors[0].title).toBe('Bookmarks');
   });
@@ -146,7 +146,7 @@ describe('HsLegendLayerComponent', () => {
       },
       source: new VectorSource({features}),
     });
-    parentComponent.addLayerToLegends(layer);
+    await parentComponent.addLayerToLegends(layer);
     const expectedLayer = parentComponent.layerDescriptors[0];
     component.layer = expectedLayer;
     fixture.detectChanges();
@@ -183,7 +183,7 @@ describe('HsLegendLayerComponent', () => {
       },
       source: new VectorSource({features}),
     });
-    parentComponent.addLayerToLegends(layer);
+    await parentComponent.addLayerToLegends(layer);
     const expectedLayer = parentComponent.layerDescriptors[0];
     component.layer = expectedLayer;
     fixture.detectChanges();
@@ -203,7 +203,6 @@ describe('HsLegendLayerComponent', () => {
     });
     component.layer.lyr.setStyle(customStyle);
     fixture.detectChanges();
-    await component.initLayer(component.layer);
     const svg = await service.getVectorLayerLegendSvg(layer);
     expect(getCluster(component.layer.lyr)).toBeFalse();
     expect(svg).toContain(`<svg class="geostyler-legend-renderer" `);

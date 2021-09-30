@@ -3,7 +3,12 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
@@ -74,7 +79,7 @@ describe('HsLegendComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should generate descriptor', () => {
+  it('should generate descriptor', async () => {
     const params = {
       LAYERS: '2017_yield_corn',
       FORMAT: 'image/png',
@@ -91,7 +96,7 @@ describe('HsLegendComponent', () => {
     layerUtilsMock.getLayerParams.and.returnValue(params);
     layerUtilsMock.getURL.and.returnValue('http://localhost/ows?');
 
-    component.addLayerToLegends(layer);
+    await component.addLayerToLegends(layer);
 
     expect(component.layerDescriptors.length).toBeDefined();
 
@@ -102,7 +107,7 @@ describe('HsLegendComponent', () => {
     ]);
   });
 
-  it('should follow wms source LAYERS change', () => {
+  it('should follow wms source LAYERS change', fakeAsync(async () => {
     const layer = new TileLayer({
       properties: {title: 'Crop stats', showInLayerManager: false},
       source: new TileWMS({
@@ -114,13 +119,14 @@ describe('HsLegendComponent', () => {
       }),
       visible: true,
     });
-    component.addLayerToLegends(layer);
+    await component.addLayerToLegends(layer);
     const layerParams = layer.getSource().getParams();
     layerParams.LAYERS = `2017_damage_tomato`;
     layerUtilsMock.getLayerParams.and.returnValue(layerParams);
     layer.getSource().updateParams(layerParams);
+    tick();
     expect(component.layerDescriptors[0].subLayerLegends).toEqual([
       '/proxy/http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_damage_tomato&format=image%2Fpng',
     ]);
-  });
+  }));
 });

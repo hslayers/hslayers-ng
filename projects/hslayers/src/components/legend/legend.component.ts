@@ -52,8 +52,10 @@ export class HsLegendComponent extends HsPanelBaseComponent {
    * to display/hide legend item when layer visibility change)
    * @param layer - Layer to add legend for
    */
-  addLayerToLegends(layer: Layer<Source>): void {
-    const descriptor = this.hsLegendService.getLayerLegendDescriptor(layer);
+  async addLayerToLegends(layer: Layer<Source>): Promise<void> {
+    const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
+      layer
+    );
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
       this.refreshList();
@@ -61,9 +63,15 @@ export class HsLegendComponent extends HsPanelBaseComponent {
       layer.on('change', (e) => {
         const layer: Layer<Source> = e.target as Layer<Source>;
         const oldDescriptor = this.findLayerDescriptor(layer);
-        this.layerDescriptors[this.layerDescriptors.indexOf(oldDescriptor)] =
-          this.hsLegendService.getLayerLegendDescriptor(layer);
+        this.hsLegendService
+          .getLayerLegendDescriptor(layer)
+          .then((newDescriptor) => {
+            this.layerDescriptors[
+              this.layerDescriptors.indexOf(oldDescriptor)
+            ] = newDescriptor;
+          });
       });
+
       layer.getSource().on('change', (e) => this.layerSourcePropChanged(e));
     }
   }
@@ -133,7 +141,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
   layerAdded(e): void {
     const que = this.hsQueuesService.ensureQueue('addLayerToLegends', 3);
     que.push(async (cb) => {
-      this.addLayerToLegends(e.element);
+      await this.addLayerToLegends(e.element);
       cb(null);
     });
   }
@@ -154,17 +162,17 @@ export class HsLegendComponent extends HsPanelBaseComponent {
   layerSourcePropChanged(e): void {
     const descriptor = this.findLayerDescriptorBySource(e.target);
     if (descriptor) {
-      const newDescriptor = this.hsLegendService.getLayerLegendDescriptor(
-        descriptor.lyr
-      );
-
-      if (
-        newDescriptor.subLayerLegends != descriptor.subLayerLegends ||
-        newDescriptor.title != descriptor.title
-      ) {
-        this.layerDescriptors[this.layerDescriptors.indexOf(descriptor)] =
-          newDescriptor;
-      }
+      this.hsLegendService
+        .getLayerLegendDescriptor(descriptor.lyr)
+        .then((newDescriptor) => {
+          if (
+            newDescriptor.subLayerLegends != descriptor.subLayerLegends ||
+            newDescriptor.title != descriptor.title
+          ) {
+            this.layerDescriptors[this.layerDescriptors.indexOf(descriptor)] =
+              newDescriptor;
+          }
+        });
     }
   }
 
