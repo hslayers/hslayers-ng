@@ -1,3 +1,41 @@
+# [6.1.0](https://github.com/hslayers/hslayers-ng/compare/6.0.2...6.1.0) (2021-09-30)
+
+
+### Bug Fixes
+
+* Set correct add url vector type ([03592a9](https://github.com/hslayers/hslayers-ng/commit/03592a9c84e29939b4b1d36f49994307afb857ea))
+* **legend:** Legend doesn't refresh ([09dd1a8](https://github.com/hslayers/hslayers-ng/commit/09dd1a82e3554b20d27f2edd51d452754b45e238))
+* **sensors:** Type check for multipolygon ([ecb82c4](https://github.com/hslayers/hslayers-ng/commit/ecb82c4a30c844f7d997eb92413920d411470231))
+* Close dropdown menus ([d9c43e2](https://github.com/hslayers/hslayers-ng/commit/d9c43e281cb276da93112988031785eda2894824))
+* **styler:** Stop dragging event propagation ([6e0e53b](https://github.com/hslayers/hslayers-ng/commit/6e0e53bddbe82f8986fe427104fc26b8cfbfec16))
+* Added missing exports to public-api files ([8c8ee7a](https://github.com/hslayers/hslayers-ng/commit/8c8ee7ab665e875200204aeba78e8087850ea784))
+* Check all styles for fill, image or stroke ([082f822](https://github.com/hslayers/hslayers-ng/commit/082f822146e1afb444f47ada8eef3d8e881e166f))
+* composition metadata dialog if missing some properties ([5e77106](https://github.com/hslayers/hslayers-ng/commit/5e77106f14f1542064495266aaa50e6d62f3126e))
+* Context or Author tabs refresh the page ([7ed549c](https://github.com/hslayers/hslayers-ng/commit/7ed549c36b48e66303cd41ec0b343c6dc6a8ea5a))
+* Fix connecting to url for vector types ([55d2b22](https://github.com/hslayers/hslayers-ng/commit/55d2b22e8e91a508c0bb31dd7378e0b27c9c9aed))
+* layer sublayer tooltip not visible in layerEditor ([7cc9529](https://github.com/hslayers/hslayers-ng/commit/7cc9529f5b90f68e4c6affa89beecaa529b89fbe))
+* Provide correct params to readFeatures method ([8f0d5fa](https://github.com/hslayers/hslayers-ng/commit/8f0d5fab9da73144357fd82dac4bff1e11003610))
+* Read features from composition in EPSG:4326 ([ab78f6e](https://github.com/hslayers/hslayers-ng/commit/ab78f6e315d5b670fc5f6bae287d7cadacc106cd))
+* Retry with serialized features if composition saving fails ([92f8781](https://github.com/hslayers/hslayers-ng/commit/92f8781dcad0f41cc277ac461aeccd74f6512bbf)), closes [#2187](https://github.com/hslayers/hslayers-ng/issues/2187)
+* Use credentials for composition DEL request ([c5f3c6a](https://github.com/hslayers/hslayers-ng/commit/c5f3c6a901a54d9b5543bf4e336d74573a82d93c))
+* **toast:** add serviceCalledFrom option to toast ([1922392](https://github.com/hslayers/hslayers-ng/commit/1922392be8e1a9927b9759e4feeb71f0fb01b281))
+* Url history component not saving last used urls for some services ([0fdca21](https://github.com/hslayers/hslayers-ng/commit/0fdca211afb619fa4701197a467bdaea14c2498f))
+
+
+### Features
+
+* **styler:** Add drag and drop to styler ([edcfd0c](https://github.com/hslayers/hslayers-ng/commit/edcfd0cc144da33ffe6edea8e7693aa27831a5bf))
+* Listen for style changes also ([7440440](https://github.com/hslayers/hslayers-ng/commit/74404401f1de924071014fbb706c5dde9a4c5d97))
+* Make map overlay panels dynamically added ([29881d7](https://github.com/hslayers/hslayers-ng/commit/29881d78cdb4301bd7cd385986bc341dcaf50065))
+* Make toolbar panels dynamic and extendable ([21a8761](https://github.com/hslayers/hslayers-ng/commit/21a8761a7a14aaa7be21d17c5f1b713909873cd2)), closes [#2111](https://github.com/hslayers/hslayers-ng/issues/2111)
+
+
+### Performance Improvements
+
+* Skip DOMParser intermediary step for WFS ([c0c2f4a](https://github.com/hslayers/hslayers-ng/commit/c0c2f4a7389346480aeb31c3a0b288438bfa761d))
+
+
+
 # [6.0.0](https://github.com/hslayers/hslayers-ng/compare/5.1.0...6.0.0) (2021-09-14)
 
 
