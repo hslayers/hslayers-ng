@@ -7,7 +7,6 @@ import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
@@ -44,10 +43,9 @@ export class HsLayerEditorService {
     public HsLayerSelectorService: HsLayerSelectorService,
     public HsLayerManagerMetadataService: HsLayerManagerMetadataService
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
-      this.legendDescriptor = this.HsLegendService.getLayerLegendDescriptor(
-        layer.layer
-      );
+    this.HsLayerSelectorService.layerSelected.subscribe(async (layer) => {
+      this.legendDescriptor =
+        await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
     });
   }
 
