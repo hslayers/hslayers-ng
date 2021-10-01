@@ -75,6 +75,7 @@ export class HsConfig {
     draw?: boolean;
     datasource_selector?: boolean;
     layermanager?: boolean;
+    feature_table?: boolean;
     feature_crossfilter?: boolean;
     print?: boolean;
     saveMap?: boolean;
