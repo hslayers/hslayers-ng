@@ -3,7 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
-import {HsAddDataCommonUrlService} from '../../public-api';
+import {HsAddDataCommonService} from '../../public-api';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -18,7 +18,7 @@ export class HsAddDataArcGisComponent
   owsConnectingSubscription: Subscription;
   constructor(
     public hsAddDataArcGisService: HsAddDataArcGisService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService,
+    public hsAddDataCommonService: HsAddDataCommonService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService
@@ -26,7 +26,7 @@ export class HsAddDataArcGisComponent
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type === 'arcgis') {
-          this.hsAddDataCommonUrlService.layerToSelect = layer;
+          this.hsAddDataCommonService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });
@@ -37,12 +37,12 @@ export class HsAddDataArcGisComponent
   }
 
   async connect(layerToSelect?: string): Promise<void> {
-    const url = this.hsAddDataCommonUrlService.url;
+    const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
       return;
     }
     this.hsHistoryListService.addSourceHistory('arcgis', url);
-    Object.assign(this.hsAddDataCommonUrlService, {
+    Object.assign(this.hsAddDataCommonService, {
       layerToSelect,
       loadingInfo: true,
       showDetails: true,
@@ -59,7 +59,7 @@ export class HsAddDataArcGisComponent
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer: string): void {
-    this.hsAddDataCommonUrlService.updateUrl(url);
+    this.hsAddDataCommonService.updateUrl(url);
     this.connect(layer);
   }
 }

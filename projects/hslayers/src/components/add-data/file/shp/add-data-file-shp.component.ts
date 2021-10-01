@@ -1,14 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-
-import {FileDescriptor} from './file-descriptor.type';
 import {HsAddDataFileShpService} from './add-data-file-shp.service';
 import {HsAddDataService} from '../../add-data.service';
-import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
+
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLanguageService} from '../../../language/language.service';
@@ -19,31 +14,17 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {accessRightsModel} from '../../common/access-rights.model';
+import {addDataFileShpDataObject} from './add-data-file-shp-data.type';
 
 @Component({
   selector: 'hs-add-data-file-shp',
   templateUrl: './add-data-file-shp.component.html',
 })
 export class HsAddDataFileShpComponent implements OnInit {
-  abstract: string;
+  data: addDataFileShpDataObject;
   endpoint: HsEndpoint = null;
-  errorDetails = [];
-  errorMessage: any;
-  extract_styles = false;
-  files: FileDescriptor[] = [];
-  loading: boolean;
-  name: string;
-  resultCode: string;
-  sld: FileDescriptor = null;
-  srs = 'EPSG:4326';
-  title = '';
-  folder_name = '';
-  advancedPanelVisible = false;
-  addUnder: Layer<Source> = null;
   dropzoneActive = false;
-  errorOccurred = false;
-  showDetails = false;
-  isAuthorized: boolean;
+  loading = false;
   access_rights: accessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
@@ -54,33 +35,36 @@ export class HsAddDataFileShpComponent implements OnInit {
     public hsLayoutService: HsLayoutService,
     public hsLaymanService: HsLaymanService,
     public hsLog: HsLogService,
-    public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService,
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
-    public hsCommonLaymanService: HsCommonLaymanService,
     public hsLanguageService: HsLanguageService
   ) {
-    const layman = this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.type == 'layman'
-    )[0];
-    if (layman) {
-      this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
-        this.isAuthorized =
-          endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
-      });
-      this.isAuthorized =
-        layman.user !== 'anonymous' && layman.user !== 'browser';
-    }
+    this.data = this.hsAddDataFileShpService.data;
   }
 
   ngOnInit(): void {
+    this.setToDefault();
     this.pickEndpoint();
   }
 
+  setToDefault(): void {
+    this.hsAddDataFileShpService.setToDefaultData();
+    this.dropzoneActive = false;
+    this.loading = false;
+  }
+
+  isAuthorized(): boolean {
+    return this.hsAddDataService.isAuthorized;
+  }
+
   isSRSSupported(): boolean {
-    return ['4326', '3857'].some((epsg) => this.srs.endsWith(epsg));
+    return ['4326', '3857'].some((epsg) => this.data.srs.endsWith(epsg));
+  }
+
+  read(evt: HsUploadedFiles): void {
+    this.hsAddDataFileShpService.read(evt);
   }
 
   loadingText(): string {
@@ -166,30 +150,31 @@ export class HsAddDataFileShpComponent implements OnInit {
       this.hsAddDataFileShpService
         .add(
           this.endpoint,
-          this.files,
-          this.name,
-          this.title,
-          this.abstract,
-          this.srs,
-          this.sld,
+          this.data.files,
+          this.data.name,
+          this.data.title,
+          this.data.abstract,
+          this.data.srs,
+          this.data.sld,
           this.access_rights
         )
         .then((data) => {
-          this.name = data[0].name; //Name translated to Layman-safe name
-          return this.describeNewLayer(this.endpoint, this.name);
+          this.data.name = data[0].name; //Name translated to Layman-safe name
+          return this.describeNewLayer(this.endpoint, this.data.name);
         })
         .then((descriptor) => {
           this.hsLaymanService.totalProgress = 0;
-          this.resultCode = 'success';
+          this.data.resultCode = 'success';
           this.hsAddDataService.selectType('url');
           setTimeout(() => {
             this.hsEventBusService.owsFilling.next({
               type: 'wms',
               uri: descriptor.wms.url,
-              layer: this.name,
+              layer: this.data.name,
             });
           }, 500);
           this.hsLayoutService.setMainPanel('layermanager');
+          this.setToDefault();
         })
         .catch((err) => {
           console.error(err);
@@ -209,80 +194,17 @@ export class HsAddDataFileShpComponent implements OnInit {
 
   showError(e): void {
     this.loading = false;
-    this.resultCode = 'error';
-    this.errorMessage = e.message;
-    this.errorDetails = e.details;
+    this.data.resultCode = 'error';
+    this.data.errorMessage = e.message;
+    this.data.errorDetails = e.details;
     this.hsLaymanService.totalProgress = 0;
     setTimeout(() => {
-      this.resultCode = null;
+      this.data.resultCode = null;
     }, 5000);
   }
 
-  read(evt: HsUploadedFiles): void {
-    const filesRead = [];
-    const files = Array.from(evt.fileList);
-
-    const promises = [];
-    for (const file of files) {
-      const filePromise = new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (loadEvent) => {
-          filesRead.push({
-            name: file.name,
-            type: file.type,
-            content: loadEvent.target.result,
-          });
-          resolve(reader.result);
-        };
-        reader.readAsArrayBuffer(file);
-      });
-      promises.push(filePromise);
-    }
-    Promise.all(promises).then((fileContents) => {
-      if (evt.uploader === 'sld') {
-        this.sld = filesRead[0];
-      } else {
-        if (this.files.length == 3) {
-          this.showDetails = true;
-          this.name = this.files[0].name.slice(0, -4);
-          this.title = this.files[0].name.slice(0, -4);
-          this.resultCode = 'success';
-        } else if (this.files.length > 3) {
-          this.showDetails = false;
-          this.resultCode = 'error';
-          this.errorMessage = `Maximum number of 3 files allowed but ${this.files.length} selected`;
-          setTimeout(() => {
-            this.resultCode = '';
-          }, 6000);
-        } else {
-          this.showDetails = false;
-          this.resultCode = 'error';
-          this.errorMessage =
-            'Missing one or more ShapeFile files.. Load files with extensions *.shp, *.shx, *.dbf';
-          setTimeout(() => {
-            this.resultCode = '';
-          }, 6000);
-        }
-      }
-    });
-
-    if (evt.uploader === 'shpdbfshx') {
-      this.files = filesRead;
-    }
-    console.log(this.files);
-  }
-
-  sldTitle(): string {
-    return this.sld
-      ? this.sld.name
-      : this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS.Vector',
-          'addSld'
-        );
-  }
-
   addShpTooltip(): string {
-    return this.title
+    return this.data.title
       ? this.hsLanguageService.getTranslationIgnoreNonExisting(
           'DRAW.drawToolbar',
           'addLayer'

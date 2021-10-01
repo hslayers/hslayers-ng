@@ -6,7 +6,7 @@ import {get, transformExtent} from 'ol/proj';
 
 import WfsSource from '../../../../common/layers/hs.source.WfsSource';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../common/add-data-common.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
@@ -32,7 +32,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {
     this.data = {
       add_all: null,
@@ -72,32 +72,32 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonUrlService.throwParsingError(
+      this.hsAddDataCommonService.throwParsingError(
         wrapper.response.message
       );
       return;
     }
     try {
       const bbox = await this.parseCapabilities(wrapper.response);
-      if (this.hsAddDataCommonUrlService.layerToSelect) {
+      if (this.hsAddDataCommonService.layerToSelect) {
         for (const layer of this.data.services) {
           //TODO: If Layman allows layers with different casing,
           // then remove the case lowering
           if (
             layer.Title.toLowerCase() ===
-              this.hsAddDataCommonUrlService.layerToSelect.toLowerCase() ||
+              this.hsAddDataCommonService.layerToSelect.toLowerCase() ||
             layer.Name.toLowerCase() ===
-              this.hsAddDataCommonUrlService.layerToSelect.toLowerCase()
+              this.hsAddDataCommonService.layerToSelect.toLowerCase()
           ) {
             layer.checked = true;
           }
         }
         this.addLayers(true, sld);
-        this.hsAddDataCommonUrlService.layerToSelect = null;
+        this.hsAddDataCommonService.layerToSelect = null;
         this.zoomToBBox(bbox);
       }
     } catch (e) {
-      this.hsAddDataCommonUrlService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e);
     }
   }
 
@@ -177,7 +177,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
         return this.data.srss[0];
       })();
 
-      if (!this.hsAddDataCommonUrlService.layerToSelect) {
+      if (!this.hsAddDataCommonService.layerToSelect) {
         setTimeout(() => {
           try {
             this.parseFeatureCount();
@@ -186,7 +186,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
           }
         });
       }
-      this.hsAddDataCommonUrlService.loadingInfo = false;
+      this.hsAddDataCommonService.loadingInfo = false;
       return this.data.bbox;
     } catch (e) {
       throw new Error(e);
@@ -237,7 +237,7 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
               : (service.limitFeatureCount = false);
           },
           (e) => {
-            this.hsAddDataCommonUrlService.throwParsingError(e);
+            this.hsAddDataCommonService.throwParsingError(e);
           }
         );
     }

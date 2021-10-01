@@ -5,7 +5,7 @@ import {Tile} from 'ol/layer';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
-import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../common/add-data-common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsLayoutService} from '../../../layout/layout.service';
@@ -19,7 +19,7 @@ export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsLayoutService: HsLayoutService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {
     this.data = {
       add_all: null,
@@ -41,19 +41,19 @@ export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (error) {
-      this.hsAddDataCommonUrlService.throwParsingError(response.message);
+      this.hsAddDataCommonService.throwParsingError(response.message);
       return;
     }
     try {
       //TODO AWAIT and add-layer if layerToSelect
       await this.capabilitiesReceived(response);
-      if (this.hsAddDataCommonUrlService.layerToSelect) {
+      if (this.hsAddDataCommonService.layerToSelect) {
         for (const layer of this.data.services) {
           this.addLayers(true);
         }
       }
     } catch (e) {
-      this.hsAddDataCommonUrlService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e);
     }
   }
 
@@ -73,13 +73,13 @@ export class HsAddDataUrlWmtsService implements HsAddDataUrlTypeServiceModel {
       this.data.services = caps.Contents.Layer;
 
       this.hsAddDataUrlService.selectLayerByName(
-        this.hsAddDataCommonUrlService.layerToSelect,
+        this.hsAddDataCommonService.layerToSelect,
         this.data.services,
         'Title'
       );
       //TODO Layer to select
 
-      this.hsAddDataCommonUrlService.loadingInfo = false;
+      this.hsAddDataCommonService.loadingInfo = false;
       return this.data.title;
     } catch (e) {
       throw new Error(e);

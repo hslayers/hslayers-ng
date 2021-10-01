@@ -1,17 +1,22 @@
+import {Injectable} from '@angular/core';
+
 import {GPX, GeoJSON, KML} from 'ol/format';
+import {Geometry} from 'ol/geom';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 
-import {Geometry} from 'ol/geom';
 import {HsAddDataService} from '../add-data.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
-import {Injectable} from '@angular/core';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
 import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
-import {setDefinition} from '../../../common/layer-extensions';
+import {
+  getHsLaymanSynchronizing,
+  setDefinition,
+} from '../../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +54,8 @@ export class HsAddDataVectorService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsStylerService: HsStylerService,
-    private hsAddDataService: HsAddDataService
+    public hsAddDataService: HsAddDataService,
+    public hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   /**
@@ -89,7 +95,7 @@ export class HsAddDataVectorService {
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
         */
-        if (url !== undefined) {
+        if (!this.hsUtilsService.undefineEmptyString(url) === undefined) {
           setDefinition(lyr, {
             format: 'hs.format.WFS',
             url: url,
@@ -130,8 +136,8 @@ export class HsAddDataVectorService {
     options: HsVectorLayerOptions = {}
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     if (
-      type.toLowerCase() != 'sparql' &&
-      type.toLowerCase() != 'wfs' &&
+      type?.toLowerCase() != 'sparql' &&
+      type?.toLowerCase() != 'wfs' &&
       url !== undefined
     ) {
       url = this.hsUtilsService.proxify(url);
@@ -197,6 +203,54 @@ export class HsAddDataVectorService {
         const extent = src.getExtent();
         this.tryFit(extent, src);
       }, 1000);
+    }
+  }
+
+  async awaitLayerSync(layer): Promise<any> {
+    while (getHsLaymanSynchronizing(layer)) {
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    return true;
+  }
+
+  async addNewLayer(data: any): Promise<any> {
+    const layer = await this.addVectorLayer(
+      data.features.length != 0 ? data.type : data.dataType,
+      data.url || data.base64url,
+      data.name,
+      data.title,
+      data.abstract,
+      data.srs,
+      {
+        extractStyles: data.extract_styles,
+        features: data.features,
+        path: this.hsUtilsService.undefineEmptyString(data.folder_name),
+        access_rights: data.access_rights,
+        workspace: this.hsCommonEndpointsService.endpoints.filter(
+          (ep) => ep.type == 'layman'
+        )[0]?.user,
+        queryCapabilities:
+          data.dataType != 'kml' &&
+          data.dataType != 'gpx' &&
+          !data.url?.endsWith('json'),
+      },
+      data.addUnder
+    );
+    this.fitExtent(layer);
+
+    if (data.saveToLayman) {
+      this.awaitLayerSync(layer).then(() => {
+        layer.getSource().dispatchEvent('addfeature');
+      });
+    }
+    return layer;
+  }
+
+  isKml(dataType: string, url: string): boolean {
+    if (dataType == 'kml' || url?.endsWith('kml')) {
+      return true;
+    } else {
+      return false;
     }
   }
 

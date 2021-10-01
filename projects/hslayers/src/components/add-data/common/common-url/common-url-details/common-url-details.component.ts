@@ -1,6 +1,6 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
-import {HsAddDataCommonUrlService} from '../common-url.service';
+import {HsAddDataCommonService} from '../../add-data-common.service';
 import {HsAddDataService} from '../../../add-data.service';
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
 import {HsAddDataUrlWmsService} from '../../../url/wms/add-data-url-wms.service';
@@ -27,17 +27,17 @@ export class HsCommonUrlDetailsComponent implements AfterContentInit {
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
     public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {}
   ngAfterContentInit(): void {
     this.hsAddDataUrlService.hasAnyChecked = false;
     this.data = this.injectedService.data;
     this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
-    this.getDimensionValues = this.hsAddDataCommonUrlService.getDimensionValues;
+    this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
   }
 
   srsChanged(): void {
-    this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
+    this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
       this.data.srs
     );
   }

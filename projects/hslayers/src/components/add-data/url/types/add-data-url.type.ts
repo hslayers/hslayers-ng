@@ -3,6 +3,7 @@ export const servicesSupportedByUrl = [
   'wfs',
   'wmts',
   'kml',
+  'gpx',
   'geojson',
   'arcgis',
 ] as const;

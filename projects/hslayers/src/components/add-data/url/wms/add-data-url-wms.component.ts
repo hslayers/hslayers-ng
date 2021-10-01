@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../common/add-data-common.service';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -21,12 +21,12 @@ export class HsAddDataWmsComponent
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {
     this.owsConnectingSubscription =
       this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wms') {
-          this.hsAddDataCommonUrlService.layerToSelect = layer;
+          this.hsAddDataCommonService.layerToSelect = layer;
           this.setUrlAndConnect(uri, layer);
         }
       });
@@ -37,12 +37,12 @@ export class HsAddDataWmsComponent
   }
 
   async connect(layerToSelect?: string): Promise<void> {
-    const url = this.hsAddDataCommonUrlService.url;
+    const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
       return;
     }
     this.hsHistoryListService.addSourceHistory('wms', url);
-    Object.assign(this.hsAddDataCommonUrlService, {
+    Object.assign(this.hsAddDataCommonService, {
       layerToSelect,
       loadingInfo: true,
       showDetails: true,
@@ -57,7 +57,7 @@ export class HsAddDataWmsComponent
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer?: string): void {
-    this.hsAddDataCommonUrlService.updateUrl(url);
+    this.hsAddDataCommonService.updateUrl(url);
     this.connect(layer);
   }
 }

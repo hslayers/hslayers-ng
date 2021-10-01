@@ -5,7 +5,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsAddDataCommonModule} from '../../common/add-data-common.module';
+import {HsAddDataCommonComponentsModule} from '../../common/common-components/common-components.module';
 import {HsAddDataFileShpComponent} from './add-data-file-shp.component';
 import {HsLaymanModule} from '../../../../common/layman/layman.module';
 import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.module';
@@ -19,7 +19,7 @@ import {HsUploadModule} from '../../../../common/upload/upload.module';
     TranslateModule,
     HsUiExtensionsModule,
     HsUploadModule,
-    HsAddDataCommonModule,
+    HsAddDataCommonComponentsModule,
     HsLaymanModule,
     NgbProgressbarModule,
   ],

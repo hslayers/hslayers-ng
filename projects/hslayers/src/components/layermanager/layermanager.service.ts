@@ -271,7 +271,7 @@ export class HsLayerManagerService {
     if (this.HsLayerUtilsService.isLayerKMLSource(layer)) {
       return `vector (KML)`;
     }
-    if (this.HsLayerUtilsService.isLayerGpxSource(layer)) {
+    if (this.HsLayerUtilsService.isLayerGPXSource(layer)) {
       return `vector (GPX)`;
     }
     if (this.HsLayerUtilsService.isLayerGeoJSONSource(layer)) {

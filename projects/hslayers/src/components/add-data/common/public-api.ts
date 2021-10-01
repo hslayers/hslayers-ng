@@ -4,6 +4,6 @@ export * from './common-url/common-url-details/common-url-details.component';
 export * from './common-url/common-url-progress/common-url-progress.component';
 export * from './common-url/common-url.component';
 export * from './add-data-common.module';
-export * from './common-url/common-url.service';
+export * from './add-data-common.service';
 export * from './common-url/nested-layers-table/nested-layers-table.component';
 export * from './common-components/public-api';

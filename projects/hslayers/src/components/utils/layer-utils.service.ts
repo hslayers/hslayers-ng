@@ -252,7 +252,7 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the GPX format is explicitly specified in the source. False otherwise.
    */
-  isLayerGpxSource(layer: Layer<Source>): boolean {
+  isLayerGPXSource(layer: Layer<Source>): boolean {
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GPX)) {
       return true;
     }

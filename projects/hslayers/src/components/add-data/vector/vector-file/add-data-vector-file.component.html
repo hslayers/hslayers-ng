@@ -1,0 +1,40 @@
+<form class="form-horizontal" role="form">
+  <div class="form-group m-3">
+    <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-vector-file" [acceptedFormats]="acceptedFormats">
+    </hs-file-upload>
+  </div>
+  <div *ngIf="data.showDetails">
+    <div class="border-bottom d-flex flex-row justify-content-between">
+      <p class="align-self-center m-0">
+        {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount})}}
+      </p>
+      <ul class="nav nav-tabs justify-content-end">
+        <li class="nav-item">
+          <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'new'}"
+            (click)="setUploadType('new')">{{'LAYERS.newLayer' | translate}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'existing'}"
+            (click)="setUploadType('existing')">{{'LAYERS.existingLayer' | translate}}</a>
+        </li>
+      </ul>
+    </div>
+    <div [hidden]="uploadType === 'new'">
+      <div class="form-group my-3">
+        <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translate}}</label>
+        <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="sourceLayer" style="flex-grow: 1;">
+          <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
+            translate}}</option>
+          <option *ngFor="let lyr of vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
+        </select>
+      </div>
+    </div>
+    <div [hidden]="uploadType === 'existing'">
+      <hs-new-layer-form [data]="data"></hs-new-layer-form>
+    </div>
+    <button class="btn btn-primary btn-block" [disabled]="uploadType === 'new' ? !data.title : !sourceLayer"
+      (click)="add()"><i class="icon-plus"></i>
+      {{'COMMON.add' | translate}}
+    </button>
+  </div>
+</form>

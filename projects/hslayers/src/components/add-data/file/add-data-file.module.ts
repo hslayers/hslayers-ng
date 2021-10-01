@@ -6,7 +6,6 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataFileComponent} from './add-data-file.component';
 import {HsAddDataFileShpModule} from './shp/add-data-file-shp.module';
-import {HsAddDataGeotiffModule} from '../geotiff/add-data-geotiff.module';
 import {HsAddDataVectorModule} from '../vector/add-data-vector.module';
 
 @NgModule({
@@ -19,7 +18,6 @@ import {HsAddDataVectorModule} from '../vector/add-data-vector.module';
     //
     HsAddDataFileShpModule,
     HsAddDataVectorModule,
-    HsAddDataGeotiffModule,
   ],
   exports: [HsAddDataFileComponent],
   entryComponents: [HsAddDataFileComponent],

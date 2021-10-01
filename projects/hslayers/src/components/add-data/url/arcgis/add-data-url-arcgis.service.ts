@@ -5,7 +5,7 @@ import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../common/add-data-common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
@@ -28,7 +28,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {
     this.data = {
       map_projection: '',
@@ -46,7 +46,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonUrlService.throwParsingError(
+      this.hsAddDataCommonService.throwParsingError(
         wrapper.response.message
       );
       return;
@@ -54,13 +54,13 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
     try {
       await this.createLayer(
         wrapper.response,
-        this.hsAddDataCommonUrlService.layerToSelect
+        this.hsAddDataCommonService.layerToSelect
       );
-      if (this.hsAddDataCommonUrlService.layerToSelect) {
+      if (this.hsAddDataCommonService.layerToSelect) {
         this.addLayers(true);
       }
     } catch (e) {
-      this.hsAddDataCommonUrlService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e);
     }
   }
 
@@ -94,7 +94,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
           }
           return this.data.srss[0];
         })();
-        this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
+        this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
           this.data.srs
         );
         this.hsAddDataUrlService.selectLayerByName(
@@ -112,7 +112,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
           'geoJSON',
           'JSON',
         ]);
-        this.hsAddDataCommonUrlService.loadingInfo = false;
+        this.hsAddDataCommonService.loadingInfo = false;
       } catch (e) {
         throw new Error(e);
       }
@@ -164,7 +164,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
         });
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
@@ -176,7 +176,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
         });
       }
     }
@@ -223,7 +223,7 @@ export class HsAddDataArcGisService implements HsAddDataUrlTypeServiceModel {
       params: Object.assign(
         {
           LAYERS: this.data.base
-            ? `show:${this.hsAddDataCommonUrlService.createBasemapName(
+            ? `show:${this.hsAddDataCommonService.createBasemapName(
                 this.data.services,
                 'name'
               )}`

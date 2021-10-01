@@ -20,7 +20,7 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import ImageSource from 'ol/source/Image';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsAddDataCommonUrlService} from '../../add-data/common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../add-data/common/add-data-common.service';
 import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
 import {HsAddDataWfsService} from '../../add-data/url/wfs/add-data-url-wfs.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -49,7 +49,7 @@ export class HsCompositionsLayerParserService {
     public HsEventBusService: HsEventBusService,
     public HsAddDataWfsService: HsAddDataWfsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {}
 
   /**
@@ -58,7 +58,7 @@ export class HsCompositionsLayerParserService {
    * @description Initiate creation of WFS layer thorough HsAddDataWfsService
    */
   async createWFSLayer(lyr_def): Promise<void> {
-    this.hsAddDataCommonUrlService.layerToSelect = lyr_def.name;
+    this.hsAddDataCommonService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );

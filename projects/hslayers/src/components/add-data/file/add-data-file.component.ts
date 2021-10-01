@@ -36,10 +36,6 @@ export class HsAddDataFileComponent {
           id: 'shp',
           text: 'Shapefile',
         },
-        {
-          id: 'geotiff',
-          text: 'GeoTIFF',
-        },
       ];
     }
     this.typeSelected = '';

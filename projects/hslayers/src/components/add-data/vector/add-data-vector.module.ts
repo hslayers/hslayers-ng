@@ -4,7 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCommonModule} from '../common/add-data-common.module';
-import {HsAddDataVectorComponent} from './add-data-vector.component';
+import {HsAddDataVectorFileComponent} from './vector-file/add-data-vector-file.component';
+import {HsAddDataVectorUrlComponent} from './vector-url/add-data-vector-url.component';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsUploadModule} from '../../../common/upload/upload.module';
 
@@ -18,7 +19,7 @@ import {HsUploadModule} from '../../../common/upload/upload.module';
     HsLaymanModule,
     HsUploadModule,
   ],
-  exports: [HsAddDataVectorComponent],
-  declarations: [HsAddDataVectorComponent],
+  exports: [HsAddDataVectorFileComponent, HsAddDataVectorUrlComponent],
+  declarations: [HsAddDataVectorFileComponent, HsAddDataVectorUrlComponent],
 })
 export class HsAddDataVectorModule {}

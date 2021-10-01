@@ -1,22 +1,29 @@
-import {FileDescriptor} from './file-descriptor.type';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import Layer from 'ol/layer/Layer';
+import {Source} from 'ol/source';
+
+import {FileDescriptor} from './file-descriptor.type';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLogService} from '../../../../common/log/log.service';
-
+import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../../save-map/layman-utils';
 import {accessRightsModel} from '../../common/access-rights.model';
+import {addDataFileShpDataObject} from './add-data-file-shp-data.type';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataFileShpService {
   asyncLoading;
+  data: addDataFileShpDataObject;
   constructor(
     private httpClient: HttpClient,
     public hsLog: HsLogService,
     public HsLaymanService: HsLaymanService
-  ) {}
+  ) {
+    this.setToDefaultData();
+  }
 
   /**
    * Load non-wms OWS data and create layer
@@ -117,5 +124,78 @@ export class HsAddDataFileShpService {
           reject(err);
         });
     });
+  }
+
+  setToDefaultData(): void {
+    this.data = {
+      abstract: '',
+      addUnder: null as Layer<Source>,
+      errorDetails: [],
+      errorMessage: null,
+      errorOccurred: false,
+      extract_styles: false,
+      files: [] as FileDescriptor[],
+      folder_name: '',
+      name: '',
+      resultCode: '',
+      showDetails: false,
+      sld: null as FileDescriptor,
+      srs: 'EPSG:4326',
+      title: '',
+      type: 'shp',
+    };
+  }
+
+  read(evt: HsUploadedFiles): void {
+    const filesRead = [];
+    const files = Array.from(evt.fileList);
+
+    const promises = [];
+    for (const file of files) {
+      const filePromise = new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (loadEvent) => {
+          filesRead.push({
+            name: file.name,
+            type: file.type,
+            content: loadEvent.target.result,
+          });
+          resolve(reader.result);
+        };
+        reader.readAsArrayBuffer(file);
+      });
+      promises.push(filePromise);
+    }
+    Promise.all(promises).then((fileContents) => {
+      if (evt.uploader === 'sld') {
+        this.data.sld = filesRead[0];
+      } else {
+        if (this.data.files.length == 3) {
+          this.data.showDetails = true;
+          this.data.name = this.data.files[0].name.slice(0, -4);
+          this.data.title = this.data.files[0].name.slice(0, -4);
+          this.data.resultCode = 'success';
+        } else if (this.data.files.length > 3) {
+          this.data.showDetails = false;
+          this.data.resultCode = 'error';
+          this.data.errorMessage = `Maximum number of 3 files allowed but ${this.data.files.length} selected`;
+          setTimeout(() => {
+            this.data.resultCode = '';
+          }, 6000);
+        } else {
+          this.data.showDetails = false;
+          this.data.resultCode = 'error';
+          this.data.errorMessage =
+            'Missing one or more ShapeFile files.. Load files with extensions *.shp, *.shx, *.dbf';
+          setTimeout(() => {
+            this.data.resultCode = '';
+          }, 6000);
+        }
+      }
+    });
+
+    if (evt.uploader === 'shpdbfshx') {
+      this.data.files = filesRead;
+    }
   }
 }

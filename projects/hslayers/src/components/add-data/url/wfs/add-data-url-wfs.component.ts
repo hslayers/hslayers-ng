@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../common/add-data-common.service';
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -30,7 +30,7 @@ export class HsAddDataWfsComponent
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataService: HsAddDataService,
     public hsHistoryListService: HsHistoryListService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {
     this.data = this.hsAddDataWfsService.data;
     //Merge subscriptions in order to easily unsubscribe on destroy
@@ -38,7 +38,7 @@ export class HsAddDataWfsComponent
       this.hsEventBusService.owsConnecting.subscribe(
         ({type, uri, layer, sld}) => {
           if (type == 'wfs') {
-            this.hsAddDataCommonUrlService.layerToSelect = layer;
+            this.hsAddDataCommonService.layerToSelect = layer;
             this.setUrlAndConnect(uri, sld);
           }
         }
@@ -50,13 +50,13 @@ export class HsAddDataWfsComponent
   }
 
   async connect(sld?: string): Promise<void> {
-    const url = this.hsAddDataCommonUrlService.url;
+    const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
       return;
     }
     this.hsAddDataUrlService.hasAnyChecked = false;
     this.hsHistoryListService.addSourceHistory('wfs', url);
-    Object.assign(this.hsAddDataCommonUrlService, {
+    Object.assign(this.hsAddDataCommonService, {
       services: [],
       showDetails: true,
       loadingInfo: true,
@@ -70,7 +70,7 @@ export class HsAddDataWfsComponent
    * @param url - URL of requested service
    */
   setUrlAndConnect(url: string, sld: string): void {
-    this.hsAddDataCommonUrlService.updateUrl(url);
+    this.hsAddDataCommonService.updateUrl(url);
     this.connect(sld);
   }
 

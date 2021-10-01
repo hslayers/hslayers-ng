@@ -12,7 +12,7 @@ import {transformExtent} from 'ol/proj';
 //FIX ME
 //refactor
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
+import {HsAddDataCommonService} from '../../common/add-data-common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
@@ -47,7 +47,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {
     this.data = {
       add_under: null,
@@ -75,7 +75,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonUrlService.throwParsingError(
+      this.hsAddDataCommonService.throwParsingError(
         wrapper.response.message
       );
       return;
@@ -83,13 +83,13 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
     try {
       await this.capabilitiesReceived(
         wrapper.response,
-        this.hsAddDataCommonUrlService.layerToSelect
+        this.hsAddDataCommonService.layerToSelect
       );
-      if (this.hsAddDataCommonUrlService.layerToSelect) {
+      if (this.hsAddDataCommonService.layerToSelect) {
         this.addLayers(true);
       }
     } catch (e) {
-      this.hsAddDataCommonUrlService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e);
     }
   }
 
@@ -140,7 +140,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
     }
     if (this.data.srss.length == 0) {
       this.data.srss = ['EPSG:4326'];
-      this.hsAddDataCommonUrlService.throwParsingError(
+      this.hsAddDataCommonService.throwParsingError(
         "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
       );
     }
@@ -172,7 +172,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
         this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
       }
       if (
-        this.hsAddDataCommonUrlService.currentProjectionSupported(
+        this.hsAddDataCommonService.currentProjectionSupported(
           this.data.srss
         )
       ) {
@@ -190,7 +190,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
       } else {
         this.data.srs = this.data.srss[0];
       }
-      this.data.resample_warning = this.hsAddDataCommonUrlService.srsChanged(
+      this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
         this.data.srs
       );
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
@@ -237,7 +237,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
         'text/plain',
         'text/html',
       ]);
-      this.hsAddDataCommonUrlService.loadingInfo = false;
+      this.hsAddDataCommonService.loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }
@@ -418,7 +418,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
       projection: this.data.srs,
       params: {
         LAYERS: this.data.base
-          ? this.hsAddDataCommonUrlService.createBasemapName(
+          ? this.hsAddDataCommonService.createBasemapName(
               this.data.services,
               'Name'
             )
@@ -534,7 +534,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
         });
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
@@ -548,7 +548,7 @@ export class HsAddDataUrlWmsService implements HsAddDataUrlTypeServiceModel {
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: this.hsAddDataCommonUrlService.getSublayerNames(layer),
+          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
         });
       }
     }
