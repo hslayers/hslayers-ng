@@ -29,6 +29,12 @@ class EmptyMock {
   constructor() {}
 }
 
+class HsCommonEndpointsServiceMock {
+  constructor() {}
+
+  endpoints = [];
+}
+
 let httpClient;
 let hsWmsGetCapabilitiesService;
 describe('add-data-url', () => {
@@ -73,7 +79,7 @@ describe('add-data-url', () => {
         },
         {
           provide: HsCommonEndpointsService,
-          useValue: EmptyMock,
+          useValue: new HsCommonEndpointsServiceMock(),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},

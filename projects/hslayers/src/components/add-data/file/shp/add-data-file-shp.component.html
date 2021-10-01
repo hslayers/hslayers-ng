@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div [hidden]="!data.showDetails">
+    <div *ngIf="data.showDetails">
         <div class="d-flex flex-row justify-content-around">
             <div class="d-flex flex-column justify-content-center">
                 <p class="p-2 bg-success rounded" style="color: white;"> {{data.files.length}} files selected</p>

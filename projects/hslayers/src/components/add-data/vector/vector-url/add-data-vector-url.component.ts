@@ -23,7 +23,7 @@ export class HsAddDataVectorUrlComponent {
     this.setToDefault();
   }
   connect = async (): Promise<void> => {
-    this.hsHistoryListService.addSourceHistory('vector', this.data.url);
+    this.hsHistoryListService.addSourceHistory(this.dataType, this.data.url);
     this.data.showDetails = true;
   };
 

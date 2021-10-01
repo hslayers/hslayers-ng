@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import Layer from 'ol/layer/Layer';
 import {Source} from 'ol/source';
+import {Subject} from 'rxjs';
 
 import {FileDescriptor} from './file-descriptor.type';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
@@ -17,6 +18,7 @@ import {addDataFileShpDataObject} from './add-data-file-shp-data.type';
 export class HsAddDataFileShpService {
   asyncLoading;
   data: addDataFileShpDataObject;
+  shpDataObjectChanged: Subject<addDataFileShpDataObject> = new Subject();
   constructor(
     private httpClient: HttpClient,
     public hsLog: HsLogService,
@@ -144,6 +146,8 @@ export class HsAddDataFileShpService {
       title: '',
       type: 'shp',
     };
+
+    this.shpDataObjectChanged.next(this.data);
   }
 
   read(evt: HsUploadedFiles): void {
@@ -192,6 +196,8 @@ export class HsAddDataFileShpService {
           }, 6000);
         }
       }
+
+      this.shpDataObjectChanged.next(this.data);
     });
 
     if (evt.uploader === 'shpdbfshx') {

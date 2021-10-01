@@ -1,4 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {takeUntil} from 'rxjs/operators';
+
+import {Subject} from 'rxjs';
 
 import {HsAddDataFileShpService} from './add-data-file-shp.service';
 import {HsAddDataService} from '../../add-data.service';
@@ -11,7 +21,10 @@ import {HsLaymanLayerDescriptor} from '../../../save-map/layman-layer-descriptor
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
-import {HsUploadedFiles} from '../../../../common/upload/upload.component';
+import {
+  HsUploadComponent,
+  HsUploadedFiles,
+} from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {accessRightsModel} from '../../common/access-rights.model';
 import {addDataFileShpDataObject} from './add-data-file-shp-data.type';
@@ -20,16 +33,19 @@ import {addDataFileShpDataObject} from './add-data-file-shp-data.type';
   selector: 'hs-add-data-file-shp',
   templateUrl: './add-data-file-shp.component.html',
 })
-export class HsAddDataFileShpComponent implements OnInit {
+export class HsAddDataFileShpComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   data: addDataFileShpDataObject;
   endpoint: HsEndpoint = null;
   dropzoneActive = false;
   loading = false;
+  fileInput: ElementRef;
   access_rights: accessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
-
+  @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
+  private ngUnsubscribe = new Subject();
   constructor(
     public hsAddDataFileShpService: HsAddDataFileShpService,
     public hsLayoutService: HsLayoutService,
@@ -41,7 +57,15 @@ export class HsAddDataFileShpComponent implements OnInit {
     public hsEventBusService: HsEventBusService,
     public hsLanguageService: HsLanguageService
   ) {
-    this.data = this.hsAddDataFileShpService.data;
+    this.hsAddDataFileShpService.shpDataObjectChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
+        this.data = data;
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.fileInput = this.hsUploadComponent.getVectorFileInput();
   }
 
   ngOnInit(): void {
@@ -49,8 +73,16 @@ export class HsAddDataFileShpComponent implements OnInit {
     this.pickEndpoint();
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   setToDefault(): void {
     this.hsAddDataFileShpService.setToDefaultData();
+    if (this.fileInput?.nativeElement?.value) {
+      this.fileInput.nativeElement.value = '';
+    }
     this.dropzoneActive = false;
     this.loading = false;
   }
@@ -182,8 +214,8 @@ export class HsAddDataFileShpComponent implements OnInit {
             err?.error?.message ?? err?.message == 'Wrong parameter value'
               ? `${err?.message} : ${err?.detail.parameter}`
               : err?.message;
-          const errorDetails = err?.error?.detail.missing_extensions
-            ? Object.values(err.error.detail.missing_extensions)
+          const errorDetails = err?.error?.detail?.missing_extensions
+            ? Object.values(err.error.detail?.missing_extensions)
             : [];
           this.showError({message: errorMessage, details: errorDetails});
         });
