@@ -25,12 +25,20 @@ export class HsAddDataFileComponent {
           text: 'KML',
         },
         {
+          id: 'gpx',
+          text: 'GPX',
+        },
+        {
           id: 'geojson',
           text: 'GeoJSON',
         },
         {
           id: 'shp',
           text: 'Shapefile',
+        },
+        {
+          id: 'geotiff',
+          text: 'GeoTIFF',
         },
       ];
     }
@@ -39,5 +47,13 @@ export class HsAddDataFileComponent {
 
   selectType(type: string): void {
     this.typeSelected = type;
+  }
+
+  isVectorType(): boolean {
+    return (
+      this.typeSelected == 'kml' ||
+      // this.typeSelected == 'gpx' ||
+      this.typeSelected == 'geojson'
+    );
   }
 }

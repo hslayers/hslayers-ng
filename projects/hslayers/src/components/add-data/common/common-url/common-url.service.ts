@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 
-import {HsAddDataService} from '../add-data.service';
-import {HsAddDataUrlService} from '../url/add-data-url.service';
-import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
-import {HsMapService} from '../../map/map.service';
-import {HsToastService} from '../../layout/toast/toast.service';
+import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataUrlService} from '../../url/add-data-url.service';
+import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
+import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../layout/toast/toast.service';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonUrlService {
@@ -12,7 +12,6 @@ export class HsAddDataCommonUrlService {
   loadingInfo = false;
   showDetails = false;
   url: string;
-
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
 

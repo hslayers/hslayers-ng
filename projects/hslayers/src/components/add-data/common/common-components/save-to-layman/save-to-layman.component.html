@@ -1,0 +1,19 @@
+<ng-container *ngIf="data.type !== 'shp'">
+<div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ">
+  {{'ADDDATA.saveToDatabase' | translate}}
+  <div class="btn-group ml-2">
+    <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.saveToLayman = true"
+      [ngClass]="{'active':data.saveToLayman}">
+      {{'COMMON.yes' | translate}}
+    </button>
+    <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.saveToLayman = false"
+      [ngClass]="{'active': !data.saveToLayman}">
+      {{'COMMON.no' | translate}}
+    </button>
+  </div>
+</div>
+</ng-container>
+<div class="pl-4">
+  <hs-layman-access-rights *ngIf="data.saveToLayman" [(access_rights)]="data.access_rights">
+  </hs-layman-access-rights>
+</div>

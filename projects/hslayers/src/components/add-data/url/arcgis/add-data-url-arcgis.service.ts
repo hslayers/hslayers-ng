@@ -5,7 +5,7 @@ import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
+import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';

@@ -5,6 +5,8 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {AddDataUrlType} from './url/types/add-data-url.type';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -16,6 +18,7 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
   providedIn: 'root',
 })
 export class HsAddDataService {
+  isAuthorized = false;
   typeSelected: DatasetType;
   //Holds reference to data.url.component type selected
   urlType: AddDataUrlType;
@@ -27,8 +30,22 @@ export class HsAddDataService {
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public hsConfig: HsConfig
-  ) {}
+    public hsConfig: HsConfig,
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsCommonLaymanService: HsCommonLaymanService
+  ) {
+    const layman = this.hsCommonEndpointsService.endpoints.filter(
+      (ep) => ep.type == 'layman'
+    )[0];
+    if (layman) {
+      this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+        this.isAuthorized =
+          endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+      });
+      this.isAuthorized =
+        layman.user !== 'anonymous' && layman.user !== 'browser';
+    }
+  }
 
   addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
     if (underLayer) {

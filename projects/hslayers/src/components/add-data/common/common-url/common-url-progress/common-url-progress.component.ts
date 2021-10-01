@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
-import {HsAddDataService} from '../../add-data.service';
-import {HsUtilsService} from '../../../utils/utils.service';
+import {HsAddDataService} from '../../../add-data.service';
+import {HsUtilsService} from '../../../../utils/utils.service';
 
 @Component({
   selector: 'hs-common-url-progress',

@@ -5,7 +5,7 @@ import {Tile} from 'ol/layer';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
-import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
+import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsLayoutService} from '../../../layout/layout.service';

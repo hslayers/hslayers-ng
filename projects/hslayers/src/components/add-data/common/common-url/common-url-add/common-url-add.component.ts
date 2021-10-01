@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 
-import {HsAddDataUrlService} from '../../url/add-data-url.service';
+import {HsAddDataUrlService} from '../../../url/add-data-url.service';
 
 @Component({
   selector: 'hs-common-url-add',

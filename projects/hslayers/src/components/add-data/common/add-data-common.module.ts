@@ -2,18 +2,19 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
+
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataTargetPositionComponent} from './add-data-target-position/add-data-target-position.component';
-import {HsCommonUrlAddComponent} from './common-url-add/common-url-add.component';
+import {HsAddDataCommonComponentsModule} from './common-components/common-components.module';
+import {HsCommonUrlAddComponent} from './common-url/common-url-add/common-url-add.component';
 import {HsCommonUrlComponent} from './common-url/common-url.component';
-import {HsCommonUrlDetailsComponent} from './common-url-details/common-url-details.component';
-import {HsCommonUrlProgressComponent} from './common-url-progress/common-url-progress.component';
-import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
-import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
-import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
-import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight.directive';
+import {HsCommonUrlDetailsComponent} from './common-url/common-url-details/common-url-details.component';
+import {HsCommonUrlProgressComponent} from './common-url/common-url-progress/common-url-progress.component';
+import {HsHistoryListModule} from './../../../common/history-list/history-list.module';
+import {HsNestedLayersTableComponent} from './common-url/nested-layers-table/nested-layers-table.component';
+import {HsNewLayerFormComponent} from './common-components/new-layer-form/new-layer-form.component';
+import {HsUiExtensionsModule} from './../../../common/widgets/ui-extensions.module';
+import {WmsLayerHighlightDirective} from './common-url/add-data-wms-layer-highlight.directive';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -21,6 +22,7 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight.directi
     CommonModule,
     FormsModule,
     TranslateModule,
+    HsAddDataCommonComponentsModule,
     HsHistoryListModule,
     HsUiExtensionsModule,
   ],
@@ -28,22 +30,18 @@ import {WmsLayerHighlightDirective} from './add-data-wms-layer-highlight.directi
     HsCommonUrlAddComponent,
     HsCommonUrlProgressComponent,
     HsCommonUrlComponent,
-    HsAddDataTargetPositionComponent,
-    HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
     HsCommonUrlDetailsComponent,
+    HsNewLayerFormComponent,
   ],
   declarations: [
     HsCommonUrlAddComponent,
-    HsCommonUrlDetailsComponent,
+    HsCommonUrlProgressComponent,
     HsCommonUrlComponent,
-    HsAddDataTargetPositionComponent,
-    HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
-    HsCommonUrlProgressComponent,
+    HsCommonUrlDetailsComponent,
   ],
-  entryComponents: [HsGetCapabilitiesErrorComponent],
 })
 export class HsAddDataCommonModule {}

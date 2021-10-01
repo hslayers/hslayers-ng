@@ -6,7 +6,7 @@ import {get, transformExtent} from 'ol/proj';
 
 import WfsSource from '../../../../common/layers/hs.source.WfsSource';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
+import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';

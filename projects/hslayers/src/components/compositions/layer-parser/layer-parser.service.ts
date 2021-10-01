@@ -20,7 +20,7 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import ImageSource from 'ol/source/Image';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsAddDataCommonUrlService} from '../../add-data/common/add-data-common.service';
+import {HsAddDataCommonUrlService} from '../../add-data/common/common-url/common-url.service';
 import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
 import {HsAddDataWfsService} from '../../add-data/url/wfs/add-data-url-wfs.service';
 import {HsEventBusService} from '../../core/event-bus.service';

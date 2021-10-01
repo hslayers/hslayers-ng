@@ -1,12 +1,12 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
-import {HsAddDataCommonUrlService} from '../add-data-common.service';
-import {HsAddDataService} from '../../add-data.service';
-import {HsAddDataUrlService} from '../../url/add-data-url.service';
-import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsUtilsService} from '../../../utils/utils.service';
+import {HsAddDataCommonUrlService} from '../common-url.service';
+import {HsAddDataService} from '../../../add-data.service';
+import {HsAddDataUrlService} from '../../../url/add-data-url.service';
+import {HsAddDataUrlWmsService} from '../../../url/wms/add-data-url-wms.service';
+import {HsLanguageService} from '../../../../language/language.service';
+import {HsLayerUtilsService} from '../../../../utils/layer-utils.service';
+import {HsUtilsService} from '../../../../utils/utils.service';
 
 @Component({
   selector: 'hs-common-url-details',

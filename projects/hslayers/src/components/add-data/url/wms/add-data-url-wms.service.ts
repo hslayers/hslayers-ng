@@ -12,7 +12,7 @@ import {transformExtent} from 'ol/proj';
 //FIX ME
 //refactor
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
+import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlTypeServiceModel} from '../models/add-data-url-type-service.model';

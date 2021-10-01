@@ -1,5 +1,5 @@
 import {Directive, ElementRef, HostBinding} from '@angular/core';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsUtilsService} from '../../../utils/utils.service';
 
 @Directive({
   selector: '[hsWmsLayerHighlight]',

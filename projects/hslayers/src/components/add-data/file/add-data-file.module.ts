@@ -1,10 +1,13 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsAddDataFileComponent} from './add-data-file.component';
 import {HsAddDataFileShpModule} from './shp/add-data-file-shp.module';
+import {HsAddDataGeotiffModule} from '../geotiff/add-data-geotiff.module';
 import {HsAddDataVectorModule} from '../vector/add-data-vector.module';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -16,6 +19,7 @@ import {TranslateModule} from '@ngx-translate/core';
     //
     HsAddDataFileShpModule,
     HsAddDataVectorModule,
+    HsAddDataGeotiffModule,
   ],
   exports: [HsAddDataFileComponent],
   entryComponents: [HsAddDataFileComponent],

@@ -1,0 +1,46 @@
+<div>
+
+  <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
+
+  <div class="form-group">
+    <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+    <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translate" class="form-control" name="title"
+      [(ngModel)]="data.title" />
+  </div>
+
+  <div class="form-group">
+    <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate" class="form-control" name="name"
+      [(ngModel)]="data.name" />
+  </div>
+  <div class="form-group">
+    <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
+    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
+      name="abstract" [(ngModel)]="data.abstract">
+                              </textarea>
+  </div>
+  <ng-container *ngIf="isAuthorized() && data.saveAvailable">
+    <hs-save-to-layman [data]="data"></hs-save-to-layman>
+  </ng-container>
+  <ng-container *ngIf="data.type === 'shp'">
+    <div class="d-flex justify-content-between align-items-center">
+      <p>{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
+      <label class="dropzone-label">
+        <input name="file" type="file" accept=".sld" class="inputfile"
+          (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
+        <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="data.sld ? 'bg-success' : 'bg-primary'"> <i
+            class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
+      </label>
+    </div>
+  </ng-container>
+
+
+  <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+    (click)="advancedPanelVisible = !advancedPanelVisible">
+    {{'COMMON.advancedOptions' | translate}}
+  </button>
+  <ng-container *ngIf="advancedPanelVisible">
+    <hs-advanced-options [data]="data"></hs-advanced-options>
+  </ng-container>
+
+</div>

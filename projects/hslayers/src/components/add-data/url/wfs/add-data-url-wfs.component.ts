@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {HsAddDataCommonUrlService} from '../../common/add-data-common.service';
+import {HsAddDataCommonUrlService} from '../../common/common-url/common-url.service';
 import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlComponentModel} from '../models/add-data-url-type-component.model';
 import {HsAddDataUrlService} from '../add-data-url.service';
