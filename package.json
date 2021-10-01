@@ -78,7 +78,7 @@
     "@angular-eslint/schematics": "12.5.0",
     "@angular-eslint/template-parser": "^12.5.0",
     "@angular/cli": "~12.2.7",
-    "@angular/compiler-cli": "~12.2.7",
+    "@angular/compiler-cli": "~12.2.8",
     "@commitlint/cli": "^13.2.0",
     "@commitlint/config-conventional": "^13.2.0",
     "@compodoc/compodoc": "^1.1.15",
