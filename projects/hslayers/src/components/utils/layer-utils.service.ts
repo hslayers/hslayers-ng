@@ -12,7 +12,7 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {GeoJSON, KML, TopoJSON} from 'ol/format';
+import {GPX, GeoJSON, KML, TopoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
@@ -242,6 +242,18 @@ export class HsLayerUtilsService {
    */
   isLayerKMLSource(layer: Layer<Source>): boolean {
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), KML)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if the features in the vector layer come from a KML source
+   * @param layer - an OL vector layer
+   * @returns true only if the GPX format is explicitly specified in the source. False otherwise.
+   */
+  isLayerGpxSource(layer: Layer<Source>): boolean {
+    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GPX)) {
       return true;
     }
     return false;
