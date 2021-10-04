@@ -24,7 +24,6 @@ import {HsSearchComponent} from './components/search/search.component';
 import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
 import {HsShareComponent} from './components/permalink/share.component';
 import {HsStylerComponent} from './components/styles/styler.component';
-import {HsThemeToolbarComponent} from './components/layout/themes/theme-toolbar.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
@@ -80,7 +79,6 @@ export class HslayersComponent implements OnInit {
       this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
       this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
       this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-      this.hsToolbarPanelContainerService.create(HsThemeToolbarComponent, {});
       this.hsLayoutService.createOverlay(HsGeolocationComponent, {});
       this.hsLayoutService.createOverlay(HsInfoComponent, {});
       this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});

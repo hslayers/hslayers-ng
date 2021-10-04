@@ -12,7 +12,6 @@ import {HsLayoutService} from './layout.service';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
-import {HsThemeService} from './themes/theme.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -39,7 +38,6 @@ export class HsLayoutComponent implements AfterViewInit {
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
-    public HsThemeService: HsThemeService,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private HsUtilsService: HsUtilsService,
@@ -66,16 +64,6 @@ export class HsLayoutComponent implements AfterViewInit {
       );
     }
     //this.$emit('scope_loaded', 'Layout');
-
-    switch (this.HsConfig.theme) {
-      case 'dark':
-        this.HsThemeService.setDarkTheme();
-        break;
-
-      default:
-        this.HsThemeService.setLightTheme();
-        break;
-    }
   }
 
   ngAfterViewInit() {

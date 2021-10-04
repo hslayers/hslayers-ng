@@ -6,7 +6,6 @@ import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/public-api';
-import {HsThemeService} from '../layout/themes/theme.service';
 import {HsToolbarPanelContainerService} from './toolbar-panel-container.service';
 
 @Component({
@@ -24,7 +23,6 @@ export class HsToolbarComponent
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
-    public HsThemeService: HsThemeService,
     public HsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     super(HsLayoutService);

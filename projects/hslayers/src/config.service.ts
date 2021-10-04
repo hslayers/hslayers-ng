@@ -3,7 +3,6 @@ import {Source} from 'ol/source';
 import View from 'ol/View';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {Themes} from './components/layout/themes/theme';
 
 export type SymbolizerIcon = {
   name: string;
@@ -30,7 +29,6 @@ export class HsConfig {
     defaultViewButton: true,
     mapControls: true,
     basemapGallery: false,
-    themeToggle: false,
   };
   mapInteractionsEnabled?: boolean;
   allowAddExternalDatasets?: boolean;
@@ -114,7 +112,6 @@ export class HsConfig {
   open_lm_after_comp_loaded?: any;
   draggable_windows?: boolean;
   connectTypes?: any;
-  theme?: Themes;
   datasources?: any;
   panelWidths?: any;
   sidebarToggleable?: any;

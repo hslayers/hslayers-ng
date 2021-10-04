@@ -18,7 +18,6 @@ import {HsSaveMapModule} from './components/save-map/save-map.module';
 import {HsSearchModule} from './components/search/search.module';
 import {HsShareModule} from './components/permalink/share.module';
 import {HsStylerModule} from './components/styles/styles.module';
-import {HsThemesModule} from './components/layout/themes/themes.module';
 import {HsToolbarModule} from './components/toolbar/toolbar.module';
 import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
 import {HslayersComponent} from './hslayers.component';
@@ -45,7 +44,6 @@ import {HslayersComponent} from './hslayers.component';
     HsCompositionsModule,
     HsStylerModule,
     HsToolbarModule,
-    HsThemesModule,
   ],
   exports: [HslayersComponent],
 })

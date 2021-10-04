@@ -12,8 +12,6 @@ export * from './panels/panel-container.service';
 export * from './panels/panel-helpers.module';
 export * from './panels/panel-host.directive';
 export * from './panels/panel-item';
-export * from './themes/theme';
-export * from './themes/theme.service';
 export * from './toast/toast.component';
 export * from './toast/toast.module';
 export * from './toast/toast.service';
