@@ -1,6 +1,6 @@
 .hs-sidebar-item {
-    color: var(--sidebar-item-color);
-    background-color: var(--sidebar-bg-color);
+    color: $primary;
+    background-color:white;
     cursor: pointer;
 }
 
@@ -12,15 +12,15 @@ hs-sidebar {
     bottom: 0;
     position: absolute;
     top: 0;
-    background: var(--sidebar-bg-color);
+    background: hs-styler-content-list;
     transition: width 100ms ease-out;
     z-index: 2;
 }
 
-hs-sidebar div.hs-sidebar-list a:not(.active){
-    background-color: transparent ;
-    color: var(--sidebar-item-color);
-}
+// hs-sidebar div.hs-sidebar-list a:not(.active){
+//     background-color: transparent ;
+//     color: var(--sidebar-item-color);
+// }
 
 .hs-content-wrapper.hs-open .hs-panelspace:not(.labels) hs-sidebar {
     border-right: 1px solid hsl(0, 0%, 87%);
@@ -34,13 +34,13 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 }
 
 .hs-content-wrapper.hs-sb-left:not(.hs-open) hs-sidebar {
-    background-color: var(--sidebar-bg-color);
+    background-color:white;
     right: auto;
     width: 48px;
 }
 
 .hs-content-wrapper.hs-sb-right:not(.hs-open) hs-sidebar {
-    background-color: var(--sidebar-bg-color);
+    background-color:white;
     left: auto;
     width: 48px;
 }

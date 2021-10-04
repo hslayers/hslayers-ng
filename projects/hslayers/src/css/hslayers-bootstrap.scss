@@ -15,47 +15,9 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 }
 
 .hsl{
+	@import "~bootstrap/scss/bootstrap";
 
-	@import "~bootstrap/scss/functions";
-	@import "~bootstrap/scss/_mixins";
-
-	// override bootstrap functions to comply with --vars
-	@import 'functions-override';
-
-	// Override Boostrap variables
-	@import 'bootstrap-variables';
-
-	@import "~bootstrap/scss/_variables";
-
-	@import "~bootstrap/scss/root";
-	@import "~bootstrap/scss/reboot";
-	@import "~bootstrap/scss/type";
-	@import "~bootstrap/scss/images";
-	@import "~bootstrap/scss/code";
-	@import "~bootstrap/scss/grid";
-	@import "~bootstrap/scss/tables";
-	@import "~bootstrap/scss/forms";
-	@import "~bootstrap/scss/buttons";
-	@import "~bootstrap/scss/dropdown";
-	@import "~bootstrap/scss/button-group";
-	@import "~bootstrap/scss/input-group";
-	@import "~bootstrap/scss/nav";
-	@import "~bootstrap/scss/navbar";
-	@import "~bootstrap/scss/card";
-	@import "~bootstrap/scss/pagination";
-	@import "~bootstrap/scss/badge";
-	@import "~bootstrap/scss/alert";
-	@import "~bootstrap/scss/progress";
-	@import "~bootstrap/scss/media";
-	@import "~bootstrap/scss/list-group";
-	@import "~bootstrap/scss/close";
-	@import "~bootstrap/scss/toasts";
-	@import "~bootstrap/scss/modal";
-	@import "~bootstrap/scss/tooltip";
-	@import "~bootstrap/scss/popover";
-	@import "~bootstrap/scss/_utilities";
-
-	color: var(--text-color);
+	color: white;
 
 	/*Overwrite cascading of style from liferay */
 	.navbar-expand .nav-item{
@@ -305,9 +267,9 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		color: #fff;
 	}
 	.list-group-item.active {
-		background-color: var(--sidebar-bg-color-active);
-		border-color:  var(--sidebar-bg-color-active);
-		color: var(--sidebar-item-color-active);
+		background-color: $primary;
+		border-color:  $primary;
+		color: white;
 	}
 
 	.btn .close {
@@ -400,18 +362,8 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		font-size: 14px;
 	}
 
-	@each $color, $value in $theme-colors {
-		$hsl: to-hsl($value);
-		$light: map-get(to-hsl(var(--light)), l);
-		$l: calc(#{$light} - 5%);
-		.list-group-item-#{$color} {
-			background-color: hsl( map-get($hsl, h), 65%, $l);
-			color: var(--text-color);
-		}
-	}
-
 	hs-panel-header {
-		background-color: var(--sidebar-bg-color);
+		background-color:white;
 	}
 
 	/**********************************/
@@ -619,14 +571,14 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	}
 
 	.hs-background-alfa {
-		background-color: var(--light);
+		background-color: $light;
 	}
 
 	hs-draw-layer-metadata .alert-danger{
-		color:var(--text-color);
+		color:white;
 	}
 
-	.hs-hover-popup{max-height: 20em; min-width: 10em; max-width: 40em; overflow-y: scroll; visibility: visible; background: var(--white);}
+	.hs-hover-popup{max-height: 20em; min-width: 10em; max-width: 40em; overflow-y: scroll; visibility: visible; background: white;}
 
 	.hs-toolbar-button{height: 2.4em}
 	.dropdown-menu.datetime-picker-menu {min-width: 22rem;}
@@ -659,13 +611,13 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		font-size: 1.25em;
 		font-weight: 700;
 		color: white;
-		background-color: var(--primary);
+		background-color: $primary;
 		display: inline-block;
 		cursor: pointer;
 	}
 	
 	.inputfile + label:hover {
-		background-color: var(--secondary);
+		background-color: $secondary;
 	}
 
 	input[type="checkbox"].checkbox-lg {
@@ -833,7 +785,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		background-color: $primary;
 	}
 	.ol-control button {
-		background-color: var(--map-controls-bg);
+		background-color: var(#003c8a80);
 		font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
 	}
 

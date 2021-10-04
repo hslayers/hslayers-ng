@@ -5,7 +5,6 @@ ul.hs-lm-baselayerlist {
 ul.hs-lm-mapcontentlist {
     margin-top: 0;
     margin-bottom: 0;
-    border-bottom: 1px solid var(--panel-wrapper-bg-color);
 }
 ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
     padding: 0.3em;
@@ -76,11 +75,6 @@ li.hs-lm-header {
     border-left: 0;
     border-right: 0;
     padding-left: 2em;
-
-    $hsl: to-hsl($primary);
-    $l: calc(#{$light} - 10%);
-
-    background-color: hsl( map-get($hsl, h), 65%, $l);
 }
 .hs-lm-map-content-header {
     height: 2.56em;
