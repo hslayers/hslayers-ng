@@ -86,7 +86,7 @@
     </div>
   </div>
   <ng-container *ngIf="type === 'wms'">
-    <hs-add-layers-target-position [(addUnder)]="data.add_under"></hs-add-layers-target-position>
+    <hs-add-data-target-position [(addUnder)]="data.add_under"></hs-add-data-target-position>
   </ng-container>
   <hr />
   <ng-container *ngIf="type === 'wms'; else simpleTable">
