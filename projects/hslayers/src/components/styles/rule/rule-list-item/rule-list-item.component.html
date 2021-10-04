@@ -8,8 +8,8 @@
     <span>{{rule.name || 'untitled rule'}}&nbsp;</span>
   </div>
   <div>
-    <span class="glyphicon mr-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
-    <button class="btn btn-danger btn-sm mr-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
+    <span class="glyphicon me-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+    <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
       [title]="'STYLER.removeRule' | translate">
       <i class="icon-trash"></i>
     </button>

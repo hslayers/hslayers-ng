@@ -38,7 +38,7 @@
                 <div *ngIf="isClustered(feature); else nonClusteredPopUp" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
                     <div class="d-flex flex-column">
                         <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature}"></ng-container>
-                        <div [hidden]="!(attributesForHover.length > 0)" class="ml-1 mt-1">
+                        <div [hidden]="!(attributesForHover.length > 0)" class="ms-1 mt-1">
                             <div *ngFor="let attribute of attributesForHover" class="d-flex flex-column hs-hover-popup-feature">
                                 <ng-container *ngTemplateOutlet="featureHeader;context:{feature: attribute.feature, type: 'removeClusterPart'}"></ng-container>
                                 <ng-container *ngTemplateOutlet="featureAttribute;context:{attributes: attribute.attributes}"></ng-container>

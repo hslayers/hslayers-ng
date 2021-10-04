@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="subLayer.Layer" class="collapse ml-4" [hidden]="!expanded">
+        <div *ngIf="subLayer.Layer" class="collapse ms-4" [hidden]="!expanded">
             <div *ngFor="let subLayer of subLayer.Layer">
                 <div *ngIf="subLayerIsString(subLayer)">
                     <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer]"

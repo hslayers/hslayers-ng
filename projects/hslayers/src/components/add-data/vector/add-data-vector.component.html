@@ -54,7 +54,7 @@
                 <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 "
                     *ngIf="isAuthorized && saveAvailable">
                     {{'ADDDATA.saveToDatabase' | translate}}
-                    <div class="btn-group ml-2">
+                    <div class="btn-group ms-2">
                         <button type="button" class="btn btn-light  btn-outline-secondary" (click)="saveToLayman = true"
                             [ngClass]="{'active':saveToLayman}">
                             {{'COMMON.yes' | translate}}
@@ -65,7 +65,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="pl-4">
+                <div class="ps-4">
                     <hs-layman-access-rights *ngIf="saveToLayman" [(access_rights)]="access_rights">
                     </hs-layman-access-rights>
                 </div>

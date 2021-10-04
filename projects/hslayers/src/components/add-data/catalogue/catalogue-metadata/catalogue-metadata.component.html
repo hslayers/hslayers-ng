@@ -30,7 +30,7 @@
                     [hidden]="!hsAddDataCatalogueMapService.isZoomable(selectedLayer)"
                     (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' | translate}}</button>
                 <div *ngIf="selectedDS.type === 'layman'">
-                    <button type="button" class="btn btn-primary ml-2" *ngFor="let type of selectedLayer.type"
+                    <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
                         <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translate}}
                             {{type}}</span>

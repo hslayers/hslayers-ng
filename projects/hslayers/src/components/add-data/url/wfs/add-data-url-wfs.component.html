@@ -6,7 +6,7 @@
     <div *ngIf="hsAddDataCommonUrlService.showDetails && !hsAddDataCommonUrlService.loadingInfo" class="card">
 
         <!-- FIXME: unused -->
-        <div class="card-title text-center font-weight-bold">{{title}}</div>
+        <div class="card-title text-center fw-bold">{{title}}</div>
         <div class="form-group">
             <label class="capabilities_label col-sm-4 control-label">{{'ADDLAYERS.folderName' | translate}}</label>
             <div class="capabilities_input col-sm-8">
@@ -38,7 +38,7 @@
                     </hs-common-url-add>
                     <button *ngIf="hsAddDataWfsService.loadingFeatures"
                         class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img
-                            class="ml-2" [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
+                            class="ms-2" [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
                 </div>
             </li>
 

@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="row" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
-        <div class="col-6 mb-2 text-left">
+        <div class="col-6 mb-2 text-start">
             <div class="btn-group">
                 <button class="btn btn-primary btn-sm" (click)="saveNewAttribute(attributeName,attributeValue)"><i
                         class="icon-save-floppy"></i></button>
@@ -48,7 +48,7 @@
     </div>
 </div>
 <div class="justify-content-end" style="padding-left: 10px">
-    <div class="mx-1 mb-2 text-right">
+    <div class="mx-1 mb-2 text-end">
         <div class="btn-group">
             <button class="btn btn-secondary btn-sm" (click)="newAttribVisible = !newAttribVisible"><i
                     class="icon-calcplus"></i></button>

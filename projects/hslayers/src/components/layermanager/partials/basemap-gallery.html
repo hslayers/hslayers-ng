@@ -16,14 +16,14 @@
                 </div>
                 <div class="hs-miniMenu" [hidden]="!(layer.galleryMiniMenu == true && layer.active)"
                     [ngStyle]="{'position':'absolute'}" [ngClass]="{'expanded': HsLayerManagerService.menuExpanded}">
-                    <div class="pl-1 w-100" *ngIf="!HsLayerManagerService.menuExpanded"
+                    <div class="ps-1 w-100" *ngIf="!HsLayerManagerService.menuExpanded"
                         (click)="HsLayerManagerService.setGreyscale(layer)">
                         <label class="form-check-label m-0"
                             [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
-                        <p class="ml-1 mb-0">
+                        <p class="ms-1 mb-0">
                             {{'LAYERMANAGER.baseMapGallery.grayscale' | translate}}</p>
                     </div>
-                    <label class="pl-2 mb-0 w-100" [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}"
+                    <label class="ps-2 mb-0 w-100" [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}"
                         (click)="expandMenu(layer)">
 
                         {{HsLayerManagerService.menuExpanded ? 'Less ': 'More'}}</label>

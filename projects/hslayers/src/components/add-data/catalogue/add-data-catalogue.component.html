@@ -1,10 +1,10 @@
 <div class="card hs-main-panel">
-    <div class="mt-3 mx-3 pl-1 d-flex justify-content-between">
+    <div class="mt-3 mx-3 ps-1 d-flex justify-content-between">
         <div class="input-group w-50">
             <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translate" name="search"
                 [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
             <div class="input-group-append">
-                <button class="btn input-group-text text-secondary hs-light-background border-left-0"
+                <button class="btn input-group-text text-secondary hs-light-background border-start-0"
                     (click)="queryByFilter()">
                     <i class="icon-search icon-primary"></i>
                 </button>
@@ -12,17 +12,17 @@
         </div>
         <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
-    <div class="d-flex ml-4 mr-3 justify-content-between py-1 ">
+    <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
-            <div class="input-group-text border-0 pl-0">
+            <div class="input-group-text border-0 ps-0">
                 <input type="checkbox" [(ngModel)]="data.filterByExtent" (change)="queryByFilter()"
                     name="filterByExtent">
-                <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
+                <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
             <div class="input-group-text border-0"
                 *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
                 <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
-                <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
+                <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
                 ngbDropdownToggle>{{translateString('COMMON',optionsButtonLabel)}}</button>
             <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1"
                 style="min-width: 23rem; max-width: 23rem;  overflow: visible" aria-labelledby="filtersDropdown">
-                <table class="p-1 pl-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
+                <table class="p-1 ps-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
                     <tbody>
                         <tr>
                             <td class="tdbreak">
@@ -40,15 +40,15 @@
                             <td ngbDropdown display="dynamic" placement="bottom-right"
                                 #searchTypeDropdown="ngbDropdown">
                                 <button type="button" ngbDropdownToggle
-                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 ps-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                     {{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
                                     data.textField)}}
                                 </button>
-                                <ul ngbDropdownMenu aria-labelledby="searchType" class="pl-2"
+                                <ul ngbDropdownMenu aria-labelledby="searchType" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                     <li *ngFor="let searchType of textFieldTypes; let index = index">
-                                        <label style="cursor: pointer;"><input class="mr-2" type="radio"
+                                        <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="searchType-index" [checked]="(index === 0)"
                                                 (change)="selectType(searchType);searchTypeDropdown.close()">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
                                             searchType)}}</label>
@@ -62,15 +62,15 @@
                             </td>
                             <td ngbDropdown display="dynamic" placement="bottom-right" #resourceType="ngbDropdown">
                                 <button type="button" ngbDropdownToggle
-                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 ps-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                     {{translateString('ADDDATA.CATALOGUE.queryDataTypes',
                                     data.query.type)}}
                                 </button>
-                                <ul ngbDropdownMenu aria-labelledby="type" class="pl-2"
+                                <ul ngbDropdownMenu aria-labelledby="type" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                     <li *ngFor="let type of dataTypes; let index = index">
-                                        <label style="cursor: pointer;"><input class="mr-2" type="radio"
+                                        <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="type-index" [checked]="(index === 1)"
                                                 (change)="selectQueryType(type, 'type');resourceType.close()">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
                                             type)}}</label>
@@ -84,14 +84,14 @@
                             </td>
                             <td ngbDropdown display="dynamic" placement="bottom-right" #sortByDrop="ngbDropdown">
                                 <button type="button" ngbDropdownToggle
-                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 ps-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                     {{translateString('ADDDATA.CATALOGUE.sortbyTypes', data.query.sortby)}}
                                 </button>
-                                <ul ngbDropdownMenu aria-labelledby="sortBy" class="pl-2"
+                                <ul ngbDropdownMenu aria-labelledby="sortBy" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                     <li *ngFor="let sortType of sortbyTypes, let index = index;">
-                                        <label style="cursor: pointer;"><input class="mr-2" type="radio"
+                                        <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="sort-index" [checked]="(index === 0)"
                                                 (change)="selectQueryType(sortType, 'sortby');sortByDrop.close()">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
                                             sortType)}}</label>
@@ -113,7 +113,7 @@
                 -->
                 <ul class="list-group">
                     <li class='list-group-item text-primary text-center py-2'
-                        [hidden]="!hsAddDataCatalogueService.dataLoading"><img class="pr-2"
+                        [hidden]="!hsAddDataCatalogueService.dataLoading"><img class="pe-2"
                             [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
                     <li [hidden]='hsAddDataCatalogueService.catalogEntries.length > 0 || hsAddDataCatalogueService.dataLoading'
                         class='list-group-item '>

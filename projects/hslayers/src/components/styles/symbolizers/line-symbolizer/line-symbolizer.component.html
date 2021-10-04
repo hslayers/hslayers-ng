@@ -10,7 +10,7 @@
 
   <div class="d-flex flex-row flex-wrap">
     <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translate}}:</div>
-    <input class="form-control mr-1 form-control-sm" style="width: 3em"
+    <input class="form-control me-1 form-control-sm" style="width: 3em"
       *ngFor="let dash of symbolizer.dasharray; let i = index" [ngModelOptions]="{standalone: true}"
       [(ngModel)]="symbolizer.dasharray[i]" (change)="emitChange()" />
     <div class="btn-group" role="group" attr.aria-label="{{'STYLER.dashPattern' | translate}}">

@@ -50,13 +50,13 @@
   <div class="form-group">
     <div class="capabilities_input d-flex flex-column">
       <ng-container *ngIf="type === 'wms'">
-        <label class="capabilities_label control-label"> <input type="checkbox" class="mr-1 checkbox-lg" name="useTiles"
+        <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
             [(ngModel)]="data.use_tiles" />
           {{'ADDLAYERS.useTiles' | translate}}
         </label>
       </ng-container>
 
-      <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
+      <label class="capabilities_label control-label"> <input type="checkbox" class="me-2 checkbox-lg"
           [(ngModel)]="data.register_metadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' |
         translate}}</label>
     </div>
@@ -79,7 +79,7 @@
   <div class="d-flex flex-column my-3">
     <div class="d-flex flex-row justify-content-start align-items-baseline mb-1">
       {{'ADDDATA.CATALOGUE.addAs' | translate}}
-      <div class="btn-group ml-2">
+      <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = true"
           [ngClass]="{'active':data.base}">
           {{'COMPOSITONKEYWORDS.Basemap' | translate}}
@@ -166,7 +166,7 @@
     <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span
         [translate]="'ADDDATA.CATALOGUE.showingSubset'"
         [translateParams]="{limitShown: limitShown, total: data.services.length}"></span>
-      <div class="btn-group ml-2">
+      <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="limitShown = limitShown + 100">
           {{'ADDDATA.CATALOGUE.showNext100' | translate}}
         </button>

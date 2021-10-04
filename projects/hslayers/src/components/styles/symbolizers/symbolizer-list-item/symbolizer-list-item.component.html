@@ -1,5 +1,5 @@
 <li
-  class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center mb-1 mr-3 ml-3"
+  class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center mb-1 me-3 ms-3"
   (click)="symbolizerVisible = !symbolizerVisible;">
   <div>
     <button type="button" style="border: none; background-color: transparent; cursor: move">
@@ -8,7 +8,7 @@
     <span>{{getSymbolizerName(symbolizer) | translate}}&nbsp;</span>
   </div>
   <div>
-    <span class="glyphicon mr-2" [ngClass]="symbolizerVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+    <span class="glyphicon me-2" [ngClass]="symbolizerVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
     <button class="btn btn-danger btn-sm" (click)="removeSymbolizer(symbolizer)" data-toggle="tooltip"
       [title]="'STYLER.removeSymbolizer' | translate">
       <i class="icon-trash"></i>

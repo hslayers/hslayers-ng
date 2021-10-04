@@ -14,7 +14,7 @@
                                 <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name, 'SENSORNAMES')}}</b></a>
                             
                             <a *ngIf="viewMode == 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
-                                <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name)}}</b><span class="ml-1">{{'SENSORS.measure' | translate}}</span> {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
+                                <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name)}}</b><span class="ms-1">{{'SENSORS.measure' | translate}}</span> {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
                             <a *ngIf="viewMode == 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
                         </div>

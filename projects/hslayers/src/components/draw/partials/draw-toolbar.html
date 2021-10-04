@@ -12,7 +12,7 @@
             (click)="controlLayerListAction(); HsDrawService.fillDrawableLayers() " [attr.aria-expanded]="layersExpanded"
             style="max-width: 125px; overflow: hidden; font-size: smaller; z-index: 2;"
             [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
-            <div class="text-truncate pr-1">{{HsDrawService.selectedLayerString()}}</div>
+            <div class="text-truncate pe-1">{{HsDrawService.selectedLayerString()}}</div>
         </button>
         <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
             <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLayers.length > 0">
@@ -64,7 +64,7 @@
                 <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
                     [ngClass]="{'d-flex': selectionMenuExpanded}">
                     <div class="d-flex flex-row justify-content-around align-items-baseline">
-                        <label class="ml-1 cursor-pointer" for="draw-boxSelection"> {{'DRAW.boxSelection' | translate}}</label>
+                        <label class="ms-1 cursor-pointer" for="draw-boxSelection"> {{'DRAW.boxSelection' | translate}}</label>
                         <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
                             (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
                             id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">

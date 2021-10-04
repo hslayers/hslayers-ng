@@ -14,7 +14,7 @@
                 {{'COMMON.newDrawingLayer' | translate}}
             </button>
             <button type="button" (click)="HsDrawService.setType(HsDrawService.type)" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}"
-                class="btn ml-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
+                class="btn ms-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
                 {{'DRAW.disableDrawing' | translate}}
             </button>
         </div>
@@ -115,7 +115,7 @@
             <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
                 [ngClass]="{'show':  selectionMenuExpanded}">
                 <div class="d-flex flex-row justify-content-around align-items-baseline">
-                    <label class="ml-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' | translate}}</label>
+                    <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' | translate}}</label>
                     <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
                         (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
                         id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">

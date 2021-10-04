@@ -12,14 +12,14 @@
                 class="list-group-item clearfix">
                 <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed()"
                     [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}" />
-                <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
+                <label class="form-check-label m-0 ps-4 mw-100 d-flex align-items-center"
                     [attr.for]="'wmtslayer-'+index"
-                    [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ml-2"
+                    [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ms-2"
                         style="max-width: 90%;">{{layer.Title}}</span></label>
 
                 <div *ngIf="layer.checked" class="d-flex flex-row justify-content-end align-items-baseline">
                     {{'ADDDATA.CATALOGUE.addAs' | translate}}
-                    <div class="btn-group ml-2">
+                    <div class="btn-group ms-2">
                         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
                             (click)="layer.base = true" [ngClass]="{'active':layer.base}">
                             {{'COMPOSITONKEYWORDS.Basemap' | translate}}
