@@ -27,8 +27,8 @@
             </ng-template>
 
             <div *ngIf="HsDrawService.hasSomeDrawables || HsDrawService.tmpDrawLayer; else noLayerAvailable"
-                class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
-                <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.drawingTo' | translate}}</p>
+                class="flex-row w-100 m-auto justify-content-center align-items-center text-primary" style="display: flex;">
+                <p class="m-0 p-0">{{'DRAW.drawingTo' | translate}}</p>
                 <div class="dropdown" style="max-width: 50%;">
                     <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
                         data-toggle="dropdown" aria-haspopup="true"
@@ -139,8 +139,8 @@
                         | translate}}</label>
                 </div>
                 <div *ngIf="HsDrawService.snapActive && HsDrawService.drawableLayers.length > 1"
-                    class="d-flex align-items-center card flex-row justify-content-around mx-3">
-                    <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.snapTo' | translate}}:</p>
+                    class="d-flex align-items-center card flex-row justify-content-around mx-3 text-primary">
+                    <p class="m-0 p-0">{{'DRAW.snapTo' | translate}}:</p>
                     <div class="dropdown w-50 d-flex justify-content-center">
                         <button type="button"
                             class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
