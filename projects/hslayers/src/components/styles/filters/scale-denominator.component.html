@@ -3,9 +3,7 @@
     <div class="p-2 w-50">{{'STYLER.minScale' | translate}}:</div>
     <div class="p-1 w-50">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">1:</div>
-        </div>
+        <div class="input-group-text">1:</div>
         <input class="form-control" type="number" [ngModelOptions]="{standalone: true}"
           [(ngModel)]="scaleDenominator.min" (change)="emitChange()" />
       </div>
@@ -15,9 +13,7 @@
     <div class="p-2 w-50">{{'STYLER.maxScale' | translate}}:</div>
     <div class="p-1 w-50">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">1:</div>
-        </div>
+        <div class="input-group-text">1:</div>
         <input class="form-control" type="number" [ngModelOptions]="{standalone: true}"
           [(ngModel)]="scaleDenominator.max" (change)="emitChange()" />
       </div>

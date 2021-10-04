@@ -2,9 +2,7 @@
   <ng-container *ngIf="type !== 'arcgis'">
     <div class="form-group">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
-        </div>
+        <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
         <select class="form-control" name="imageFormat" [(ngModel)]="data.image_format">
           <option *ngFor="let format of data.image_formats">{{format}}</option>
         </select>
@@ -13,9 +11,7 @@
 
     <div class="form-group">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate}}</span>
-        </div>
+        <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate}}</span>
         <select class="form-control" name="queryFormat" [(ngModel)]="data.query_format">
           <option *ngFor="let format of data.query_formats">{{format}}</option>
         </select>
@@ -24,9 +20,7 @@
 
     <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
-        </div>
+        <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
         <select class="form-control" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
           <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
         </select>
@@ -36,9 +30,7 @@
 
   <div class="form-group" [hidden]="data.base === true">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate}}</span>
-      </div>
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate}}</span>
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
@@ -69,9 +61,7 @@
   <ng-container *ngIf="type === 'wms'">
     <div class="form-group">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translate}}</span>
-        </div>
+        <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translate}}</span>
         <input class="form-control" name="tileSize" [(ngModel)]="data.tile_size" />
       </div>
     </div>
@@ -91,9 +81,7 @@
       </div>
     </div>
     <div [hidden]="!data.base" class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
-      </div>
+      <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
   </div>

@@ -57,6 +57,11 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //th
   // Utilities
   @import "~bootstrap/scss/utilities/api";
 
+  //Dropped in b5. suggested to use utilities mb-*. Might refactor later
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
   .navbar-expand .nav-item {
     align-items: flex-start;
   }

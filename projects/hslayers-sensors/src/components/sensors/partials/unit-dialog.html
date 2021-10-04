@@ -7,7 +7,7 @@
                 <h4 class="modal-title">
                     {{'SENSORS.sensorUnit' | translate}} {{HsSensorsUnitDialogService.unit.description}}
                 </h4>
-                <button type="button" class="close" (click)="close()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
+                <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height: 260px; overflow-y: auto">
                 <div class="container-fluid">
@@ -37,17 +37,13 @@
                     <div class="m-1">
                         <div class="input-group">
                             <input type="text" style="width: 6em;" ngbDatepicker [placeholder]="'COMMON.from' | translate" #d="ngbDatepicker" [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()"/>
-                            <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
-                            </div>
                         </div>
                     </div>
                     <div class="m-1">
                         <div class="input-group">
                             <input type="text" style="width: 6em;" ngbDatepicker [placeholder]="'COMMON.until' | translate" #d2="ngbDatepicker" [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()"/>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i class="icon-calendarthree"></i></button>
-                            </div>
+                            <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i class="icon-calendarthree"></i></button>
                         </div>
                     </div>
                 </div>

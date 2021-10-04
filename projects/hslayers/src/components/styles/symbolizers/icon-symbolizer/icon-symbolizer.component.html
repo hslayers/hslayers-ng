@@ -5,11 +5,9 @@
       <div class="input-group mb-3">
         <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.image"
           (change)="emitChange()" />
-        <div class="input-group-append">
           <button class="btn btn-outline-secondary" (click)="showIconSelector()" type="button">
             ...
           </button>
-        </div>
       </div>
     </div>
   </div>

@@ -33,17 +33,13 @@
     
     <div [hidden]="!editType" class="row p-2 ">
         <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
-            <div class="input-group-prepend">
-                <label for="selectedLayer" class="px-2">{{HsFeatureCommonService.translateString('QUERY.feature',editType+'Feature')}} {{'COMMON.into' | translate}}:</label>
-            </div>
+            <label for="selectedLayer" class="px-2">{{HsFeatureCommonService.translateString('QUERY.feature',editType+'Feature')}} {{'COMMON.into' | translate}}:</label>
             <select class="form-control text-truncate"  [title]="'ADDLAYERS.Vector.chooseLayer' | translate" [(ngModel)]="selectedLayer" name="selectedLayer">
                 <option  [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' | translate}}</option>
                 <option *ngFor="let layer of availableLayers" [ngValue]="layer">
                     {{HsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
             </select>
-            <div class="input-group-append">
-                <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
-              </div>
+            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
         </div>
     </div>
 </div>

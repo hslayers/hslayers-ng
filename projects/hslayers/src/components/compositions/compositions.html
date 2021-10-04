@@ -23,10 +23,8 @@
         <div class="input-group mb-2" [hidden]="!addCompositionUrlVisible">
             <input type="text" class="form-control" [placeholder]="'COMPOSITIONS.Address'|translate"
                 [(ngModel)]="urlToAdd" [ngModelOptions]="{standalone: true}">
-            <div class="input-group-append">
                 <button type="button" class="btn btn-secondary" (click)="addCompositionUrl(urlToAdd)"><i
                         class="icon-link"></i></button>
-            </div>
         </div>
     </div>
     <div class="mx-3 ps-1 d-flex justify-content-between">
@@ -34,12 +32,10 @@
             <input type="search" class="form-control border-end-0" [placeholder]="'COMMON.search'|translate"
                 name="search" [(ngModel)]="hsCompositionsCatalogueService.data.query.title"
                 (ngModelChange)="loadFilteredCompositions()">
-            <div class="input-group-append">
-                <button class="btn input-group-text text-secondary hs-light-background border-start-0"
+                <button class="input-group-text text-secondary border-start-0"
                     (click)="loadFilteredCompositions()">
                     <i class="icon-search icon-primary"></i>
                 </button>
-            </div>
         </div>
         <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>

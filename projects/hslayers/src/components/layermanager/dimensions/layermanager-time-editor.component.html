@@ -24,9 +24,9 @@
 </div>
 <div class="p-0">
   <button type="button" class="btn btn-sm px-0"
-    [ngClass]="{'btn-info': timesInSync, 'text-secondary': !timesInSync}"
+    [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}"
     (click)="synchronizeTimes()" title="{{'LAYERMANAGER.time.syncTimesTooltip' | translate}}">
     <i class="glyphicon icon-timeline"></i>
-    <span class="sr-only">{{'LAYERMANAGER.time.syncTimes' | translate}}</span>
+    <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translate}}</span>
   </button>
 </div>

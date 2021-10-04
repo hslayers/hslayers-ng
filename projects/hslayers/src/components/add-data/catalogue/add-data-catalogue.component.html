@@ -3,12 +3,9 @@
         <div class="input-group w-50">
             <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translate" name="search"
                 [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
-            <div class="input-group-append">
-                <button class="btn input-group-text text-secondary hs-light-background border-start-0"
-                    (click)="queryByFilter()">
-                    <i class="icon-search icon-primary"></i>
-                </button>
-            </div>
+            <button class="input-group-text text-secondary border-start-0" (click)="queryByFilter()">
+                <i class="icon-search icon-primary"></i>
+            </button>
         </div>
         <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
