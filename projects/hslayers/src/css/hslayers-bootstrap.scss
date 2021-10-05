@@ -374,6 +374,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //th
     margin-top: 10px;
   }
 
+  #stc-layerlist .list-group-item {
+    padding: 0.5rem;
+  }
+
   .hs-stc-footer button {
     width: 100px;
   }
@@ -481,6 +485,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //th
     }
     .hs-draw-selectAll {
       font-size: medium;
+    }
+
+    #stc-layerlist .list-group-item {
+      padding: 1rem;
     }
   }
 

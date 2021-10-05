@@ -11,7 +11,10 @@
                 <!-- Layer type info -->
                 <div class="form-group">
                     <small class="text-secondary ">
-                        {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor', currentLayer.type)}} {{'LAYERMANAGER.layerEditor.layerFrom' | translate}} {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor', currentLayer.source)}}
+                        {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor',
+                        currentLayer.type)}} {{'LAYERMANAGER.layerEditor.layerFrom' | translate}}
+                        {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor',
+                        currentLayer.source)}}
                     </small>
                 </div>
                 <!-- Metadata/Copyright -->
@@ -90,10 +93,15 @@
                 <!-- Footer -->
             </form>
             <div class="btn-group m-auto d-flex w-75" *ngIf="currentLayer.visible && getBase(currentLayer.layer)">
-                <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currentLayer)" [ngClass]="{'active' : !currentLayer.grayscale}"
-                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate">{{'COMMON.color' | translate}}</button>
-                <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currentLayer)" [ngClass]="{'active' : currentLayer.grayscale}"
-                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate">{{'LAYERMANAGER.baseMapGallery.grayscale' | translate}}</button>
+                <button class="btn btn-sm btn-outline-primary  w-50"
+                    (click)="HsLayerManagerService.setGreyscale(currentLayer)"
+                    [ngClass]="{'active' : !currentLayer.grayscale}" data-toggle="tooltip"
+                    [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate">{{'COMMON.color' | translate}}</button>
+                <button class="btn btn-sm btn-outline-primary  w-50"
+                    (click)="HsLayerManagerService.setGreyscale(currentLayer)"
+                    [ngClass]="{'active' : currentLayer.grayscale}" data-toggle="tooltip"
+                    [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate">{{'LAYERMANAGER.baseMapGallery.grayscale'
+                    | translate}}</button>
             </div>
         </div>
     </div>
@@ -107,7 +115,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form">
                 <br>
                 <label>{{'COMMON.scale' | translate}}</label>
@@ -134,8 +142,9 @@
                     class="icon-brush"></i></button>
             <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
                 [title]="'COMMON.renameLayer' | translate"><i class="icon-textfield"></i></button>
-            <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip" *ngIf="isLayerVectorLayer(currentLayer.layer)"
-            [title]="'LAYERMANAGER.layerEditor.savegeojson' | translate"><i class="icon-save-floppy"></i></button>
+            <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip"
+                *ngIf="isLayerVectorLayer(currentLayer.layer)"
+                [title]="'LAYERMANAGER.layerEditor.savegeojson' | translate"><i class="icon-save-floppy"></i></button>
             <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip"
                 [title]="'COMMON.removeLayer' | translate"><i class="icon-trash"></i></button>
         </div>
