@@ -66,7 +66,7 @@
             </label>
         </div>
 
-        <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+        <button type="button" class="btn w-100 mt-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
             (click)="advancedPanelVisible = !advancedPanelVisible">
             {{'COMMON.advancedOptions' | translate}}
         </button>
@@ -82,7 +82,7 @@
                 <input class="form-control" name="folderName" [(ngModel)]="folder_name" />
             </div>
         </div>
-        <button *ngIf="isAuthorized" class="btn btn-primary btn-block" [disabled]="!name" (click)="add()"
+        <button *ngIf="isAuthorized" class="btn btn-primary w-100 mt-2" [disabled]="!name" (click)="add()"
             title="{{addShpTooltip()}}">
             <i class="icon-plus" [hidden]="loading"></i>
             <img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!loading" />

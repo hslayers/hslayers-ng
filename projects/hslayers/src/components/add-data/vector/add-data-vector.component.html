@@ -70,7 +70,7 @@
                     </hs-layman-access-rights>
                 </div>
 
-                <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                <button type="button" class="btn w-100 mb-1 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
                     (click)="advancedPanelVisible = !advancedPanelVisible">
                     {{'COMMON.advancedOptions' | translate}}
                 </button>
@@ -98,7 +98,7 @@
             </div>
 
 
-            <button class="btn btn-primary btn-block" [disabled]="uploadType === 'new' ? !title : !sourceLayer" (click)="add()"><i class="icon-plus"></i>
+            <button class="btn btn-primary w-100" [disabled]="uploadType === 'new' ? !title : !sourceLayer" (click)="add()"><i class="icon-plus"></i>
                 {{'COMMON.add' | translate}}
             </button>
 

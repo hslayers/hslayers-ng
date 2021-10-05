@@ -3,18 +3,14 @@
 
     <hs-common-url-progress *ngIf="hsAddDataCommonUrlService.loadingInfo"></hs-common-url-progress>
     
-    <div *ngIf="hsAddDataCommonUrlService.showDetails && !hsAddDataCommonUrlService.loadingInfo" class="card">
+    <div *ngIf="hsAddDataCommonUrlService.showDetails && !hsAddDataCommonUrlService.loadingInfo" class="card p-2">
 
         <!-- FIXME: unused -->
         <div class="card-title text-center fw-bold">{{title}}</div>
-        <div class="form-group">
-            <label class="capabilities_label col-sm-4 control-label">{{'ADDLAYERS.folderName' | translate}}</label>
-            <div class="capabilities_input col-sm-8">
-                <input class="form-control" [(ngModel)]="data.folder_name"
-                    [ngModelOptions]="{standalone: true}" />
-            </div>
+        <div class="form-floating mb-2">
+            <input class="form-control" [(ngModel)]="data.folder_name" name="hs-addData-wfs-folder" placeholder="'ADDLAYERS.folderName' | translate" />
+            <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translate}}</label>
         </div>
-        <hr />
         <ul class="list-group">
             <li *ngFor="let layer of data.services; trackBy:( 'Name' | trackByProperty )" class="list-group-item py-2 clearfix">
                 <div>
@@ -37,7 +33,7 @@
                         [layers]="data.services">
                     </hs-common-url-add>
                     <button *ngIf="hsAddDataWfsService.loadingFeatures"
-                        class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img
+                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img
                             class="ms-2" [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
                 </div>
             </li>

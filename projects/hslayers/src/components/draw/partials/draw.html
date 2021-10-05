@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    <div class="btn-block rounded-0 my-1 draw-buttons d-flex justify-content-center"
+    <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center"
         [ngClass]="hsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
         <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Point' }"
             (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translate">

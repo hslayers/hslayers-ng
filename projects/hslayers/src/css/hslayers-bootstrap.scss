@@ -621,11 +621,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //th
   }
 
   .hs-background-alfa {
-    background-color: $light;
-  }
-
-  hs-draw-layer-metadata .alert-danger {
-    color: white;
+    background-color: #edf0f2;
   }
 
   .hs-hover-popup {
