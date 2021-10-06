@@ -188,10 +188,12 @@ export class HsLayerManagerService {
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer)
     ) {
+      this.HsLayerEditorVectorLayerService.layersClusteredFromStart.push(layer);
       await this.HsLayerEditorVectorLayerService.cluster(
         true,
         layer,
-        this.HsConfig.clusteringDistance || 40
+        this.HsConfig.clusteringDistance || 40,
+        false
       );
     }
     /**
@@ -540,18 +542,29 @@ export class HsLayerManagerService {
         this.data.layers.splice(i, 1);
       }
     }
-
     for (let i = 0; i < this.data.baselayers.length; i++) {
       if (this.data.baselayers[i].layer == e.element) {
         this.data.baselayers.splice(i, 1);
       }
     }
+    this.removeFromArray(
+      this.HsLayerEditorVectorLayerService.layersClusteredFromStart,
+      e.element
+    );
     this.HsEventBusService.layerManagerUpdates.next(e.element);
     this.HsEventBusService.layerRemovals.next(e.element);
     this.HsEventBusService.compositionEdits.next();
     const layers = this.HsMapService.map.getLayers().getArray();
     if (this.zIndexValue > layers.length) {
       this.zIndexValue--;
+    }
+  }
+
+  removeFromArray(arrayToSearch: Layer<Source>[], layer: Layer<Source>) {
+    for (let i = 0; i < arrayToSearch.length; i++) {
+      if (arrayToSearch[i] == layer) {
+        arrayToSearch.splice(i, 1);
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
+import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -258,6 +259,32 @@ export class HslayersAppComponent {
             `,
             path: 'User generated',
           },
+          source: new VectorSource({features}),
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'Clusters without SLD',
+            synchronize: false,
+            cluster: true,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name', 'population'],
+            },
+            editor: {editable: false},
+            path: 'User generated',
+          },
+          style: new Style({
+            image: new Circle({
+              fill: new Fill({
+                color: 'rgba(0, 157, 87, 0.5)',
+              }),
+              stroke: new Stroke({
+                color: 'rgb(0, 157, 87)',
+                width: 2,
+              }),
+              radius: 5,
+            }),
+          }),
           source: new VectorSource({features}),
         }),
         new VectorLayer({
