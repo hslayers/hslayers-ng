@@ -13,6 +13,7 @@ import {HsUtilsService} from '../utils/utils.service';
   providedIn: 'root',
 })
 export class HsLayerEditorVectorLayerService {
+  layersClusteredFromStart = [];
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
@@ -30,14 +31,17 @@ export class HsLayerEditorVectorLayerService {
   async cluster(
     newValue: boolean,
     layer: Layer<Source>,
-    distance: number
+    distance: number,
+    generateStyle: boolean
   ): Promise<void> {
     if (newValue == true) {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
-        await this.HsStylerService.styleClusteredLayer(
-          layer as VectorLayer<Cluster>
-        );
+        if (generateStyle) {
+          await this.HsStylerService.styleClusteredLayer(
+            layer as VectorLayer<Cluster>
+          );
+        }
         this.updateFeatureTableLayers(layer);
       }
     } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {

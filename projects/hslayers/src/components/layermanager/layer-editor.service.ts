@@ -111,7 +111,14 @@ export class HsLayerEditorService {
     }
     if (newValue != undefined) {
       setCluster(layer, newValue);
-      this.HsLayerEditorVectorLayerService.cluster(newValue, layer, distance);
+      this.HsLayerEditorVectorLayerService.cluster(
+        newValue,
+        layer,
+        distance,
+        !this.HsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
+          layer
+        )
+      );
       this.HsEventBusService.compositionEdits.next();
     } else {
       return getCluster(layer);
