@@ -30,7 +30,6 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^12.2.7",
     "@angular/cdk": "^12.2.7",
     "@angular/common": "^12.2.7",
     "@angular/compiler": "^12.2.7",
@@ -44,7 +43,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/cesium": "^1.67.14",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^5.1.2",
     "cesium": "^1.85.0",
     "dayjs": "^1.10.7",
     "deepmerge": "^4.2.2",
