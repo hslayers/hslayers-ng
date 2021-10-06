@@ -57,32 +57,35 @@ export class HslayersComponent implements OnInit {
     if (this.config) {
       this.hsConfig.update(this.config);
     }
-    this.createPanel('tripPlanner', HsTripPlannerComponent);
-    this.createPanel('addData', HsAddDataComponent);
-    this.createPanel('draw', HsDrawComponent);
-    this.createPanel('search', HsSearchComponent);
-    this.createPanel('feature_table', HsFeatureTableComponent);
-    this.createPanel('saveMap', HsSaveMapComponent);
-    this.createPanel('language', HsLanguageComponent);
-    this.createPanel('info', HsQueryComponent);
-    this.createPanel('permalink', HsShareComponent);
-    this.createPanel('print', HsPrintComponent);
-    this.createPanel('measure', HsMeasureComponent);
-    this.createPanel('composition_browser', HsCompositionsComponent);
-    this.createPanel('legend', HsLegendComponent);
-    this.createPanel(
-      'layermanager',
-      HsLayerManagerComponent,
-      this.HsLayerManagerService.data
-    );
-    this.hsLayoutService.createPanel(HsStylerComponent, {});
-    this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
-    this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
-    this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    this.hsToolbarPanelContainerService.create(HsThemeToolbarComponent, {});
-    this.hsLayoutService.createOverlay(HsGeolocationComponent, {});
-    this.hsLayoutService.createOverlay(HsInfoComponent, {});
-    this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
-    this.hsLayoutService.createOverlay(HsToolbarComponent, {});
+    if (!this.hsLayoutService.initializedOnce) {
+      this.createPanel('tripPlanner', HsTripPlannerComponent);
+      this.createPanel('addData', HsAddDataComponent);
+      this.createPanel('draw', HsDrawComponent);
+      this.createPanel('search', HsSearchComponent);
+      this.createPanel('feature_table', HsFeatureTableComponent);
+      this.createPanel('saveMap', HsSaveMapComponent);
+      this.createPanel('language', HsLanguageComponent);
+      this.createPanel('info', HsQueryComponent);
+      this.createPanel('permalink', HsShareComponent);
+      this.createPanel('print', HsPrintComponent);
+      this.createPanel('measure', HsMeasureComponent);
+      this.createPanel('composition_browser', HsCompositionsComponent);
+      this.createPanel('legend', HsLegendComponent);
+      this.createPanel(
+        'layermanager',
+        HsLayerManagerComponent,
+        this.HsLayerManagerService.data
+      );
+      this.hsLayoutService.createPanel(HsStylerComponent, {});
+      this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
+      this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
+      this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
+      this.hsToolbarPanelContainerService.create(HsThemeToolbarComponent, {});
+      this.hsLayoutService.createOverlay(HsGeolocationComponent, {});
+      this.hsLayoutService.createOverlay(HsInfoComponent, {});
+      this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
+      this.hsLayoutService.createOverlay(HsToolbarComponent, {});
+      this.hsLayoutService.initializedOnce = true;
+    }
   }
 }

@@ -83,6 +83,12 @@ export class HsLayoutService {
    * @public
    * @default false
    */
+  initializedOnce = false;
+  /**
+   * Whether the app has been initialized already once.
+   * @public
+   * @default false
+   */
   minisidebar = false;
   contentWrapper: any;
   layoutElement: any;
