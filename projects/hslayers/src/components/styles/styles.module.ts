@@ -1,4 +1,3 @@
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -64,7 +63,6 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsUploadModule,
     HsDownloadModule,
     DragDropModule,
-    BrowserAnimationsModule,
   ],
   exports: [
     HsStylerComponent,
