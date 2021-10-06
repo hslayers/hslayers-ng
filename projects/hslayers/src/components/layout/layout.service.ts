@@ -85,7 +85,8 @@ export class HsLayoutService {
    */
   initializedOnce = false;
   /**
-   * Whether the app has been initialized already once.
+   * Whether the app has been initialized already once. 
+   * Need this to not add panels wtice when NgRouter is used
    * @public
    * @default false
    */
