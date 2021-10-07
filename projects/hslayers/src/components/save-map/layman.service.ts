@@ -132,7 +132,8 @@ export class HsLaymanService implements HsSaverService {
           formdata,
           options
         ).toPromise();
-        if (response.saved) {
+        //Unsuccessfull request response contains code,detail and message properties
+        if (!response.code) {
           success = true;
         } else {
           if (amendmentsApplied) {
