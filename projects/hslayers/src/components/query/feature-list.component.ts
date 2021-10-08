@@ -50,16 +50,18 @@ export class HsQueryFeatureListComponent {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {}
 
-  toggleEditMenu(): void {
-    if (this.editType) {
-      this.editType = null;
-      return;
-    }
-    this.editMenuVisible = !this.editMenuVisible;
-  }
-
   olFeatureArray(): Feature<Geometry>[] {
     return this.features.map((feature) => feature.feature);
+  }
+
+  /**
+   * Toggle dropdown menus
+   * @param beingToggled Menu being toggled
+   * @param other Other menu to be clsoed if opened
+   */
+  toggleMenus(beingToggled: string, other: string): void {
+    this[other] = this[other] ? !this[other] : this[other];
+    this[beingToggled] = !this[beingToggled];
   }
 
   toggleExportMenu(): void {
@@ -67,7 +69,15 @@ export class HsQueryFeatureListComponent {
       this.exportFormats,
       this.olFeatureArray()
     );
-    this.exportMenuVisible = !this.exportMenuVisible;
+    this.toggleMenus('exportMenuVisible', 'editMenuVisible');
+  }
+
+  toggleEditMenu(): void {
+    if (this.editType) {
+      this.editType = null;
+      return;
+    }
+    this.toggleMenus('editMenuVisible', 'exportMenuVisible');
   }
 
   editTypeSelected(type: string): void {
