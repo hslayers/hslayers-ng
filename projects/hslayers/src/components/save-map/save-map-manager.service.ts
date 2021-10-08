@@ -174,19 +174,21 @@ export class HsSaveMapManagerService {
 
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
+      const tempCompoData: any = {};
+      Object.assign(tempCompoData, this.compoData);
       // Check whether layers were already formatted
-      if (this.compoData.layers[0].layer) {
-        this.compoData.layers = this.compoData.layers
+      if (tempCompoData.layers[0].layer) {
+        tempCompoData.layers = tempCompoData.layers
           .filter((l) => l.checked)
           .map((l) => l.layer);
       }
-      const compositionJson = this.generateCompositionJson();
+      const compositionJson = this.generateCompositionJson(tempCompoData);
       let saver: HsSaverService = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {
         saver = this.HsLaymanService;
       }
       saver
-        .save(compositionJson, endpoint, this.compoData, saveAsNew)
+        .save(compositionJson, endpoint, tempCompoData, saveAsNew)
         .then((response) => {
           const compInfo: any = {};
           const j = response;
@@ -232,24 +234,24 @@ export class HsSaveMapManagerService {
   }
 
   /**
-   * @param download Used when generating json for download
+   * @param download Used when generating json for catalogue save
    * @returns composition JSON
    */
-  generateCompositionJson(download?): any {
+  generateCompositionJson(compoData?): any {
     /*TODO: REFACTOR
       Workaround for composition JSON generated for download. 
       Should be handled differently and generated only once. Task for upcoming component rework
     */
-    const compoData: any = {...this.compoData};
-    if (download) {
-      compoData.layers = compoData.layers
+    const tempCompoData: any = {...(compoData ?? this.compoData)};
+    if (!compoData) {
+      tempCompoData.layers = tempCompoData.layers
         .filter((l) => l.checked)
         .map((l) => l.layer);
     }
 
     return this.HsSaveMapService.map2json(
       this.HsMapService.map,
-      compoData,
+      tempCompoData,
       this.userData,
       this.statusData
     );
