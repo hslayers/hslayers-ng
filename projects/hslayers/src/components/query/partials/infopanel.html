@@ -14,7 +14,7 @@
     </div>
     <div class="row">
         <div class="input-group m-1">
-            <select class="form-control" [(ngModel)]="HsQueryBaseService.data.selectedProj" [ngModelOptions]="{standalone: true}" *ngIf="HsQueryBaseService.data.coordinates.length>0">
+            <select class="form-control form-select" [(ngModel)]="HsQueryBaseService.data.selectedProj" [ngModelOptions]="{standalone: true}" *ngIf="HsQueryBaseService.data.coordinates.length>0">
                 <option *ngFor="let projection of HsQueryBaseService.data.coordinates[0].projections"  [ngValue]="projection">{{projection.name}}</option>
             </select>
             <input class="form-control" [value]="HsQueryBaseService.data.selectedProj.value" readonly="">

@@ -2,7 +2,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.template' | translate}}:</div>
     <div class="p-1 w-75">
-      <input class="form-control form-control-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.label"
+      <input class="form-control form-select-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.label"
         (change)="emitChange()" />
     </div>
   </div>
@@ -13,7 +13,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.font' | translate}}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font"
+      <select class="form-control form-select-sm form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font"
         multiple>
         <option *ngFor="let font of fonts" [ngValue]="font">{{font}}</option>
       </select>
@@ -23,7 +23,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.textSize' | translate}}:</div>
     <div class="p-1 w-75">
-      <input class="form-control form-control-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.size"
+      <input class="form-control form-select-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.size"
         (change)="emitChange()" />
     </div>
   </div>
@@ -32,7 +32,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.justify' | translate}}:</div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}">!</span>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.justify" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.justify" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let justify of justifications">{{justify}}</option>
       </select>
@@ -43,7 +43,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.transform' | translate}}:</div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}">!</span>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.transform" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.transform" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let transform of transforms">{{transform}}</option>
       </select>
@@ -54,7 +54,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.fontStyle' | translate}}:</div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.fontStyle" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontStyle" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let fontStyle of fontStyles">{{fontStyle}}</option>
       </select>
@@ -65,7 +65,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.fontWeight' | translate}}:</div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.fontWeight" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontWeight" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let fontWeight of fontWeights">{{fontWeight}}</option>
       </select>
@@ -107,7 +107,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translate}}:</div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let anchor of anchors">{{anchor}}</option>
       </select>

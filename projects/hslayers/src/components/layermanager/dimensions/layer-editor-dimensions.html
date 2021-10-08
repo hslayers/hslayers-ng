@@ -4,7 +4,7 @@
         <label class="control-label" style="width: 100%; justify-content: left;">{{dimension.label ||
             dimension.name}}:</label>
 
-        <select class="form-control" style="width: 100%" [(ngModel)]="dimension.modelValue"
+        <select class="form-control form-select" style="width: 100%" [(ngModel)]="dimension.modelValue"
             [ngModelOptions]="{standalone: true}" *ngIf="dimension.type === null"
             (change)="hsDimensionService.dimensionChanged(dimension)">
             <option [ngValue]="dimension_value" *ngFor="let dimension_value of dimension.values">

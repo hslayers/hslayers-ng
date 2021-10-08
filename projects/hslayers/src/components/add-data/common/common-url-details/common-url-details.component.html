@@ -3,7 +3,7 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
-        <select class="form-control" name="imageFormat" [(ngModel)]="data.image_format">
+        <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
           <option *ngFor="let format of data.image_formats">{{format}}</option>
         </select>
       </div>
@@ -12,7 +12,7 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate}}</span>
-        <select class="form-control" name="queryFormat" [(ngModel)]="data.query_format">
+        <select class="form-control form-select" name="queryFormat" [(ngModel)]="data.query_format">
           <option *ngFor="let format of data.query_formats">{{format}}</option>
         </select>
       </div>
@@ -21,7 +21,7 @@
     <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
       <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
-        <select class="form-control" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
+        <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
           <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
         </select>
       </div>
@@ -116,7 +116,7 @@
             <div class="d-flex align-items-baseline px-2 w-100">
               <div class="d-flex align-items-baseline" style="flex-grow: 1;">
                 <label class="control-label">{{'COMMON.style' | translate}}:</label>
-                <select class="form-control form-control-sm" [(ngModel)]="service.styleSelected"
+                <select class="form-control form-select-sm form-select" [(ngModel)]="service.styleSelected"
                   [ngModelOptions]="{standalone: true}">
                   <option *ngFor="let style of service.Style" [ngValue]="style">{{style.Name}}
                   </option>

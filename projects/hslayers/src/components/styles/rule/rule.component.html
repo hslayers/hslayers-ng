@@ -2,7 +2,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.name' | translate}}:</div>
     <div class="p-1 w-75">
-      <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="rule.name"
+      <input class="form-control form-control-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="rule.name"
         (change)="emitChange()" />
     </div>
   </div>

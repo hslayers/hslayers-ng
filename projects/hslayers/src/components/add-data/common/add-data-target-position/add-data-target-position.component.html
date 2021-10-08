@@ -1,7 +1,7 @@
 <div class="form-group">
     <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.under' | translate}}</span>
-        <select class="form-control" [(ngModel)]="addUnder" (ngModelChange)="updateChanges()" name="addUnder">
+        <select class="form-control form-select" [(ngModel)]="addUnder" (ngModelChange)="updateChanges()" name="addUnder">
             <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translate}}</option>
             <option [ngValue]="layer.layer" *ngFor="let layer of hsLayerManagerService.data.layers">{{hsLayerUtilsService.translateTitle(layer.title)}}</option>
         </select>

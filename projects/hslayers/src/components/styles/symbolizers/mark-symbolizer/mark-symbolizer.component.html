@@ -2,7 +2,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.symbol' | translate}}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.wellKnownName" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.wellKnownName" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let wellKnownName of wellKnownNames">
           {{wellKnownName}}

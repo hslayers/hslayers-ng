@@ -15,7 +15,7 @@
                 <div class="d-flex align-items-baseline px-2 w-100">
                     <div class="d-flex align-items-baseline" style="flex-grow: 1;">
                         <label class="control-label">{{'COMMON.style' | translate}}:</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="sub_layer.styleSelected"
+                        <select class="form-control form-select-sm form-select" [(ngModel)]="sub_layer.styleSelected"
                             [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let style of sub_layer.Style">{{style.Name}}</option>
                         </select>
@@ -30,7 +30,7 @@
                         <ng-container *ngIf="isArray(dimension.values); else unsupported_dim_format">
                             <label class="control-label">{{dimension.name}}:</label>
                             <div>
-                                <select class="form-control" [(ngModel)]="dimension.value" [ngModelOptions]="{standalone: true}">
+                                <select class="form-control form-select" [(ngModel)]="dimension.value" [ngModelOptions]="{standalone: true}">
                                     <option [value]="dimension_value" *ngFor="let dimension_value of dimension.values">
                                         {{dimension_value}}</option>
                                 </select>

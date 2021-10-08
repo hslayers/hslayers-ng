@@ -10,7 +10,7 @@
 
   <div class="d-flex flex-row flex-wrap">
     <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translate}}:</div>
-    <input class="form-control me-1 form-control-sm" style="width: 3em"
+    <input class="form-control me-1 form-select-sm" style="width: 3em"
       *ngFor="let dash of symbolizer.dasharray; let i = index" [ngModelOptions]="{standalone: true}"
       [(ngModel)]="symbolizer.dasharray[i]" (change)="emitChange()" />
     <div class="btn-group" role="group" attr.aria-label="{{'STYLER.dashPattern' | translate}}">
@@ -30,7 +30,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.cap' | translate}}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.cap" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.cap" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let cap of caps">{{cap}}</option>
       </select>
@@ -44,7 +44,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.join' | translate}}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-control-sm" [(ngModel)]="symbolizer.join" (change)="emitChange()"
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.join" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let join of joins">{{join}}</option>
       </select>

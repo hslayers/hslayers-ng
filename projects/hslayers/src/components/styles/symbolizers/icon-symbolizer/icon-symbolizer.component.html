@@ -16,7 +16,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translate}}:</div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}">!</span>
     <div class="p-1 w-75">
-      <select class="form-control" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
+      <select class="form-control form-select form-select-sm" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
         <option *ngFor="let anchor of anchors">{{anchor}}</option>
       </select>
