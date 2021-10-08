@@ -57,7 +57,7 @@ export class HsQueryFeatureListComponent {
   /**
    * Toggle dropdown menus
    * @param beingToggled Menu being toggled
-   * @param other Other menu to be clsoed if opened
+   * @param other Other menu to be closed if opened
    */
   toggleMenus(beingToggled: string, other: string): void {
     this[other] = this[other] ? !this[other] : this[other];
