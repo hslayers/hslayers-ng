@@ -30,13 +30,12 @@ import {
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
+  getSld,
   getTitle,
   getWorkspace,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
-import {relative} from '@angular/compiler-cli/src/ngtsc/file_system';
-import { getSld } from 'hslayers-ng';
 
 export type WfsSyncParams = {
   /** Endpoint description */
