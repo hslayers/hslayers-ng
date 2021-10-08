@@ -38,7 +38,16 @@ import {
   templateUrl: './partials/layer-editor.html',
 })
 export class HsLayerEditorComponent {
-  @Input('current-layer') currentLayer: HsLayerDescriptor;
+  _currentLayer: HsLayerDescriptor;
+  @Input('current-layer') set currentLayer(value: HsLayerDescriptor) {
+    this._currentLayer = value;
+    this.tmpTitle = undefined;
+    this.layer_renamer_visible = false;
+  }
+
+  get currentLayer(): HsLayerDescriptor {
+    return this._currentLayer;
+  }
   distance = {
     value: 40,
   };
@@ -177,6 +186,7 @@ export class HsLayerEditorComponent {
    * Toogle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename(): void {
+    this.tmpTitle = undefined;
     this.layer_renamer_visible = !this.layer_renamer_visible;
   }
 

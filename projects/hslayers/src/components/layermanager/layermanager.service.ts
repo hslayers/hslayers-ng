@@ -944,21 +944,25 @@ export class HsLayerManagerService {
     }
   }
 
-  setCurrentLayer(layer: HsLayerDescriptor): false {
-    this.currentLayer = layer;
-    this.updateGetParam(layer.title);
-    if (!layer.checkedSubLayers) {
-      layer.checkedSubLayers = {};
-      layer.withChildren = {};
-    }
-    this.HsLayerSelectorService.select(layer);
-    if (this.HsUtilsService.runningInBrowser()) {
-      const layerNode = document.getElementById(layer.idString());
-      if (layerNode && this.layerEditorElement) {
-        this.HsUtilsService.insertAfter(this.layerEditorElement, layerNode);
+  setCurrentLayer(layer: HsLayerDescriptor): boolean {
+    try {
+      this.currentLayer = layer;
+      this.updateGetParam(layer.title);
+      if (!layer.checkedSubLayers) {
+        layer.checkedSubLayers = {};
+        layer.withChildren = {};
       }
+      this.HsLayerSelectorService.select(layer);
+      if (this.HsUtilsService.runningInBrowser()) {
+        const layerNode = document.getElementById(layer.idString());
+        if (layerNode && this.layerEditorElement) {
+          this.HsUtilsService.insertAfter(this.layerEditorElement, layerNode);
+        }
+      }
+      return false;
+    } catch (ex) {
+      console.error(ex);
     }
-    return false;
   }
 
   private updateGetParam(title: string) {
