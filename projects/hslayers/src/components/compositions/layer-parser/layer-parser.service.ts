@@ -106,7 +106,10 @@ export class HsCompositionsLayerParserService {
           'ERRORMESSAGES',
           error
         ),
-        {disableLocalization: true}
+        {
+          disableLocalization: true,
+          serviceCalledFrom: 'HsCompositionsLayerParserService',
+        }
       );
       this.HsMapService.map.getLayers().remove(wmts);
     }

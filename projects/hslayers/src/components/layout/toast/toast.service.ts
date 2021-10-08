@@ -58,7 +58,7 @@ export class HsToastService {
    * Creates new toast message with custom text and custom styling
    * @param header Header text to display
    * @param text Toast body text to display
-   * @param options Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number)
+   * @param options Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number, serviceCalledFrom: string)
    */
 
   createToastPopupMessage(

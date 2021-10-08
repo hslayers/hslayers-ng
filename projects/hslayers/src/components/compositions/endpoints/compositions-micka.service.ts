@@ -88,7 +88,11 @@ export class HsCompositionsMickaService {
         endpoint.title +
           ': ' +
           this.HsLanguageService.getTranslation('COMMON.noDataReceived'),
-        {disableLocalization: true, toastStyleClasses: 'bg-warning text-light'}
+        {
+          disableLocalization: true,
+          toastStyleClasses: 'bg-warning text-light',
+          serviceCalledFrom: 'HsCompositionsMickaService',
+        }
       );
       return;
     }
@@ -148,7 +152,10 @@ export class HsCompositionsMickaService {
                 e.status ? e.status.toString() : e.message,
                 {url: url}
               ),
-            {disableLocalization: true}
+            {
+              disableLocalization: true,
+              serviceCalledFrom: 'HsCompositionsMickaService',
+            }
           );
           return of(e);
         })

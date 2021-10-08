@@ -103,7 +103,7 @@ export class HsCommonLaymanService {
           'COMMON',
           simplifiedResponse
         ),
-      {disableLocalization: true}
+      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}
     );
   }
 }
