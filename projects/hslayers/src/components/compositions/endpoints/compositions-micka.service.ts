@@ -114,6 +114,7 @@ export class HsCompositionsMickaService {
         const mapProjection = this.HsMapService.getCurrentProj();
         const extentFeature = addExtentFeature(record, mapProjection);
         if (extentFeature) {
+          record.feature = extentFeature;
           response.extentFeatureCreated(extentFeature);
         }
       }
