@@ -105,6 +105,14 @@ export class HsLayerSynchronizerService {
   ): Promise<boolean> {
     const layerSource = layer.getSource();
     await this.pull(layer, layerSource);
+    layer.on('propertychange', (e) => {
+      if (e.key == 'sld' || e.key == 'title') {
+        this.HsLaymanService.upsertLayer(
+          this.findLaymanForWfsLayer(layer),
+          layer
+        );
+      }
+    });
     layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
       this.sync(
