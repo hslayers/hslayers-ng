@@ -36,6 +36,7 @@ import {
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
 import {relative} from '@angular/compiler-cli/src/ngtsc/file_system';
+import { getSld } from 'hslayers-ng';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -183,24 +184,26 @@ export class HsLaymanService implements HsSaverService {
 
     formdata.append(
       'sld',
-      new Blob([], {type: 'application/octet-stream'}),
-      ''
+      new Blob([description.sld], {type: 'application/octet-stream'}),
+      'file.sld'
     );
     formdata.append('name', description.name);
     formdata.append('title', description.title);
     formdata.append('crs', description.crs);
 
-    const write =
-      description.access_rights['access_rights.write'] == 'private'
-        ? endpoint.user
-        : description.access_rights['access_rights.write'] ?? 'EVERYONE';
-    const read =
-      description.access_rights['access_rights.read'] == 'private'
-        ? endpoint.user
-        : description.access_rights['access_rights.read'] ?? 'EVERYONE';
+    if (description.access_rights) {
+      const write =
+        description.access_rights['access_rights.write'] == 'private'
+          ? endpoint.user
+          : description.access_rights['access_rights.write'] ?? 'EVERYONE';
+      const read =
+        description.access_rights['access_rights.read'] == 'private'
+          ? endpoint.user
+          : description.access_rights['access_rights.read'] ?? 'EVERYONE';
 
-    formdata.append('access_rights.write', write);
-    formdata.append('access_rights.read', read);
+      formdata.append('access_rights.write', write);
+      formdata.append('access_rights.read', read);
+    }
 
     const headers = new HttpHeaders();
     headers.append('Content-Type', null);
@@ -216,7 +219,7 @@ export class HsLaymanService implements HsSaverService {
           layerDesc2 = await this.describeLayer(
             endpoint,
             description.name,
-            getWorkspace(description)
+            description.workspace
           );
         }
       } catch (ex) {
@@ -365,6 +368,7 @@ export class HsLaymanService implements HsSaverService {
       crs: crsSupported ? this.crs : 'EPSG:3857',
       workspace: getWorkspace(layer),
       access_rights: getAccessRights(layer),
+      sld: getSld(layer),
     });
     setTimeout(async () => {
       await this.makeGetLayerRequest(ep, layer);
