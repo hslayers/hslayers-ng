@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
@@ -47,7 +47,8 @@ export class HsCompositionsMapService {
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
     public HsLayoutService: HsLayoutService,
-    private HsSaveMapService: HsSaveMapService
+    private HsSaveMapService: HsSaveMapService,
+    private zone: NgZone
   ) {
     this.HsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));
@@ -73,27 +74,29 @@ export class HsCompositionsMapService {
    * @param evt
    */
   mapPointerMoved(evt) {
-    const features = this.extentLayer
+    const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    let somethingDone = false;
-    for (const feature of this.extentLayer.getSource().getFeatures()) {
-      if (getRecord(feature).highlighted) {
-        getRecord(feature).highlighted = false;
-        somethingDone = true;
-      }
-    }
-    if (features.length) {
-      for (const feature of features) {
-        if (!getRecord(feature).highlighted) {
+    const highlightedFeatures = this.extentLayer
+      .getSource()
+      .getFeatures()
+      .filter((feature) => getRecord(feature).highlighted);
+
+    const dontHighlight = highlightedFeatures.filter(
+      (feature) => !featuresUnderMouse.includes(feature)
+    );
+    const highlight = featuresUnderMouse.filter(
+      (feature) => !highlightedFeatures.includes(feature)
+    );
+    if (dontHighlight.length > 0 || highlight.length > 0) {
+      this.zone.run(() => {
+        for (const feature of highlight) {
           getRecord(feature).highlighted = true;
-          somethingDone = true;
         }
-      }
-    }
-    if (somethingDone) {
-      //NOTE: Probably not needed in ng9
-      //$timeout(() => {}, 0);
+        for (const feature of dontHighlight) {
+          getRecord(feature).highlighted = false;
+        }
+      });
     }
   }
 
