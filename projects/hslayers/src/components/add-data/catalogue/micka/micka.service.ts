@@ -181,6 +181,7 @@ export class HsMickaBrowserService {
             this.hsMapService.getCurrentProj()
           );
           if (extentFeature) {
+            lyr.feature = extentFeature;
             data.extentFeatureCreated(extentFeature);
           }
         }
