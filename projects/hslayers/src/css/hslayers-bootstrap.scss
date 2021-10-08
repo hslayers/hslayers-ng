@@ -564,9 +564,9 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //th
   .input-group-btn .btn {
     height: 34px;
   }
-  .badge-warning {
-    height: 2.3em;
-    width: 2em;
+  .badge.bg-warning {
+    height: 100%;
+    width: 1.75em;
     line-height: inherit;
   }
 

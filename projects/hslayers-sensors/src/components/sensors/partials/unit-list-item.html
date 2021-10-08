@@ -10,16 +10,16 @@
                             <button type="button" class="btn btn-sm" (click)="sensorToggleSelected(sensor)" [ngClass]="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                         </div>
                         <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
-                            <a *ngIf="viewMode == 'sensornames'" class="hs-sensor" (click)="sensorClicked(sensor)">
+                            <a *ngIf="viewMode === 'sensornames'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name, 'SENSORNAMES')}}</b></a>
                             
-                            <a *ngIf="viewMode == 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
+                            <a *ngIf="viewMode === 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name)}}</b><span class="ms-1">{{'SENSORS.measure' | translate}}</span> {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
-                            <a *ngIf="viewMode == 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
+                            <a *ngIf="viewMode === 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
                         </div>
                         <div class="p-0">
-                            <span class="badge badge-light badge-pill">{{sensor.lastObservationValue}} {{sensor.uom}} <br><small>{{'SENSORS.at' | translate}} {{sensor.lastObservationTimestamp}}</small></span>
+                            <span class="badge bg-light rounded-pill">{{sensor.lastObservationValue}} {{sensor.uom}} <br><small>{{'SENSORS.at' | translate}} {{sensor.lastObservationTimestamp}}</small></span>
                         </div>
                     </div>
                 </li>
