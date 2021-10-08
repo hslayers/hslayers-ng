@@ -570,7 +570,10 @@ export class HsLaymanService implements HsSaverService {
       if (response?.code == 15 || response?.code == 15 || wfsFailed(response)) {
         return null;
       }
-      if (wfsPendingOrStarting(response)) {
+      if (
+        wfsPendingOrStarting(response) ||
+        (response.wfs.status == 'SUCCESS' && response.wfs.url == undefined)
+      ) {
         if (!this.pendingLayers.includes(layerName)) {
           this.pendingLayers.push(layerName);
           this.laymanLayerPending.next(this.pendingLayers);
