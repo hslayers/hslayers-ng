@@ -145,7 +145,7 @@ export class HsCompositionsLaymanService {
         name: record.name,
         title: record.title,
         access_rights: record.access_rights,
-        feature: record.feature,
+        feature: undefined,
         highlighted: false,
         editable: record.access_rights.write.some((user) => {
           return [endpoint.user, 'EVERYONE'].includes(user);
