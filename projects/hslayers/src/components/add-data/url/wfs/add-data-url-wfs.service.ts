@@ -286,7 +286,6 @@ export class HsAddDataWfsService implements HsAddDataUrlTypeServiceModel {
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean, sld: string): void {
-    debugger;
     this.data.add_all = checkedOnly;
     for (const layer of this.data.services) {
       this.addLayersRecursively(layer, {sld});

@@ -15,10 +15,11 @@ export const defaultStyle = `<?xml version="1.0" encoding="UTF-8" standalone="ye
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">rgba(255, 255, 255, 0.41)</CssParameter>
+                  <CssParameter name="fill">#FFFFFF</CssParameter>
+                  <CssParameter name="fill-opacity">0.41</CssParameter>
                 </Fill>
                 <Stroke>
-                  <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+                  <CssParameter name="stroke">#0099ff</CssParameter>
                   <CssParameter name="stroke-width">1.25</CssParameter>
                 </Stroke>
               </Mark>
@@ -30,14 +31,14 @@ export const defaultStyle = `<?xml version="1.0" encoding="UTF-8" standalone="ye
               <CssParameter name="fill-opacity">0.45</CssParameter>
             </Fill>
             <Stroke>
-              <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+              <CssParameter name="stroke">#0099ff</CssParameter>
               <CssParameter name="stroke-width">1.25</CssParameter>
               <CssParameter name="stroke-opacity">0.3</CssParameter>
             </Stroke>
           </PolygonSymbolizer>
           <LineSymbolizer>
             <Stroke>
-              <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+              <CssParameter name="stroke">#0099ff</CssParameter>
               <CssParameter name="stroke-width">1.25</CssParameter>
             </Stroke>
           </LineSymbolizer>
