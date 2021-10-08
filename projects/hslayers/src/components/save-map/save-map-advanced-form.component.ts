@@ -72,7 +72,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
 
   saveCompoJson(): void {
     const compositionJSON =
-      this.HsSaveMapManagerService.generateCompositionJson(true);
+      this.HsSaveMapManagerService.generateCompositionJson();
     const file = new Blob([JSON.stringify(compositionJSON)], {
       type: 'application/json',
     });
