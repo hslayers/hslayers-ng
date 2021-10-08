@@ -141,17 +141,12 @@ export class HsCompositionsLaymanService {
       : response.body.length;
 
     endpoint.compositions = response.body.map((record) => {
-      if (response.body.extentFeatureCreated) {
-        const mapProjection = this.hsMapService.getCurrentProj();
-        const extentFeature = addExtentFeature(record, mapProjection);
-        if (extentFeature) {
-          response.body.extentFeatureCreated(extentFeature);
-        }
-      }
-      return {
+      const tmp = {
         name: record.name,
         title: record.title,
         access_rights: record.access_rights,
+        feature: record.feature,
+        highlighted: false,
         editable: record.access_rights.write.some((user) => {
           return [endpoint.user, 'EVERYONE'].includes(user);
         }),
@@ -160,6 +155,17 @@ export class HsCompositionsLaymanService {
         workspace: record.workspace,
         id: `m-${record.uuid}`, //m-* to match micka's id structure.
       };
+      if (response.body.extentFeatureCreated) {
+        const mapProjection = this.hsMapService.getCurrentProj();
+        const extentFeature = addExtentFeature(record, mapProjection);
+        if (extentFeature) {
+          tmp.feature = extentFeature;
+          extentFeature.set('record', tmp);
+          response.body.extentFeatureCreated(extentFeature);
+        }
+      }
+
+      return tmp;
     });
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
