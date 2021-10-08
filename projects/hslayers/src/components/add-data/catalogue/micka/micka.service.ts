@@ -1,12 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
-import {Geometry} from 'ol/geom';
 import {catchError, map, timeout} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
-import {transform, transformExtent} from 'ol/proj';
+import {transformExtent} from 'ol/proj';
 
 import {
   EndpointErrorHandler,
@@ -20,6 +17,7 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {addExtentFeature} from '../../../../common/extent-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {
@@ -175,8 +173,13 @@ export class HsMickaBrowserService {
       for (const lyr of data.records) {
         dataset.layers.push(lyr);
         if (data.extentFeatureCreated) {
-          const extentFeature = this.addExtentFeature(lyr);
-          data.extentFeatureCreated(extentFeature);
+          const extentFeature = addExtentFeature(
+            lyr,
+            this.hsMapService.getCurrentProj()
+          );
+          if (extentFeature) {
+            data.extentFeatureCreated(extentFeature);
+          }
         }
       }
       return true;
@@ -214,73 +217,6 @@ export class HsMickaBrowserService {
         return '';
       }
     }
-  }
-
-  /**
-   * @param record - Record of one dataset from Get Records response
-   * @returns
-   * Create extent features for displaying extent of loaded dataset records in map
-   */
-  private addExtentFeature(record): Feature<Geometry> | undefined {
-    const attributes = {
-      record: record,
-      hs_notqueryable: true,
-      highlighted: false,
-      title: record.title || record.name,
-      geometry: null,
-    };
-    let b = null;
-    if (typeof record.bbox === 'string') {
-      b = record.bbox.split(' ');
-    } else if (Array.isArray(record.bbox)) {
-      b = record.bbox;
-    }
-    let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-    let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-    const mapProjectionExtent = this.hsMapService.map
-      .getView()
-      .getProjection()
-      .getExtent();
-    first_pair = transform(
-      first_pair,
-      'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
-    );
-    second_pair = transform(
-      second_pair,
-      'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
-    );
-    if (!isFinite(first_pair[0])) {
-      first_pair[0] = mapProjectionExtent[0];
-    }
-    if (!isFinite(first_pair[1])) {
-      first_pair[1] = mapProjectionExtent[1];
-    }
-    if (!isFinite(second_pair[0])) {
-      second_pair[0] = mapProjectionExtent[2];
-    }
-    if (!isFinite(second_pair[1])) {
-      second_pair[1] = mapProjectionExtent[3];
-    }
-    if (
-      isNaN(first_pair[0]) ||
-      isNaN(first_pair[1]) ||
-      isNaN(second_pair[0]) ||
-      isNaN(second_pair[1])
-    ) {
-      return;
-    }
-    const extent = [
-      first_pair[0],
-      first_pair[1],
-      second_pair[0],
-      second_pair[1],
-    ];
-    attributes.geometry = polygonFromExtent(extent);
-    const new_feature = new Feature(attributes);
-    record.feature = new_feature;
-    return new_feature;
   }
 
   /**
