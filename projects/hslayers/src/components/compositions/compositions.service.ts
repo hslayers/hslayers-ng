@@ -1,5 +1,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import Feature from 'ol/Feature';
+import {Geometry} from 'ol/geom';
 import {Observable, Subject} from 'rxjs';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -86,7 +89,13 @@ export class HsCompositionsService {
   loadCompositions(ds: HsEndpoint, params): Observable<any> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
-    const Observable = this.managerByType(ds).loadList(ds, params, bbox);
+    const Observable = this.managerByType(ds).loadList(
+      ds,
+      params,
+      (feature: Feature<Geometry>) =>
+        this.HsCompositionsMapService.addExtentFeature(feature),
+      bbox
+    );
     return Observable;
   }
 

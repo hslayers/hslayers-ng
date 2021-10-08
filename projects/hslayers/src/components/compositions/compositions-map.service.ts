@@ -107,6 +107,15 @@ export class HsCompositionsMapService {
     this.extentLayer.getSource().clear();
   }
 
+  /**
+   * Callback function which gets executed when extent feature
+   * is created. It should add the feature to vector layer source
+   * @param extentFeature - OpenLayers Feature
+   */
+  addExtentFeature(extentFeature: Feature<Geometry>): void {
+    this.extentLayer.getSource().addFeatures([extentFeature]);
+  }
+
   getFeatureRecordAndUnhighlight(feature, selector) {
     if (
       this.HsMapService.getLayerForFeature(feature) == this.extentLayer &&

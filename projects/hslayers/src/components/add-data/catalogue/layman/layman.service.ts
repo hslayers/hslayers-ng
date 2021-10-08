@@ -18,6 +18,7 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {addExtentFeature} from '../../../../common/extent-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
@@ -39,7 +40,11 @@ export class HsLaymanBrowserService {
    * extent feature is created. Has one parameter: feature
    * @param data -
    */
-  queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
+  queryCatalog(
+    endpoint: HsEndpoint,
+    data?: any,
+    extentFeatureCreated?
+  ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     const withPermissionOrMine = data?.onlyMine
       ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
@@ -90,6 +95,7 @@ export class HsLaymanBrowserService {
         map((x: any) => {
           if (Array.isArray(x.body)) {
             x.body.dataset = endpoint;
+            x.body.extentFeatureCreated = extentFeatureCreated;
             x.body.matched = x.headers.get('x-total-count')
               ? x.headers.get('x-total-count')
               : x.body.length;
@@ -193,6 +199,15 @@ export class HsLaymanBrowserService {
     } else {
       dataset.datasourcePaging.matched = parseInt(data.matched);
       dataset.layers = data.map((layer) => {
+        if (data.extentFeatureCreated) {
+          const extentFeature = addExtentFeature(
+            layer,
+            this.hsMapService.getCurrentProj()
+          );
+          if (extentFeature) {
+            data.extentFeatureCreated(extentFeature);
+          }
+        }
         return {
           title: layer.title,
           type: ['WMS', 'WFS'],
