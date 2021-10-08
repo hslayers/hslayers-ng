@@ -24,6 +24,7 @@ import {
   getTitle,
   setMetadata,
 } from '../../common/layer-extensions';
+import {parseExtent, transformExtentValue} from '../../common/extent-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -222,14 +223,16 @@ export class HsCompositionsParserService {
     this.current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (possibleExtent !== undefined) {
-      const extent = this.parseExtent(possibleExtent);
+      const extent = parseExtent(possibleExtent);
       if (
         (extent[0][0] < -90 && extent[0][1] < -180) ||
         (extent[1][0] > 90 && extent[1][1] > 180)
       ) {
         this.loadWarningBootstrap(extent);
       } else {
-        this.HsMapService.fitExtent(this.transformExtent(extent));
+        this.HsMapService.fitExtent(
+          transformExtentValue(extent, this.HsMapService.getCurrentProj())
+        );
       }
     }
 
@@ -367,30 +370,7 @@ export class HsCompositionsParserService {
     }
     return infoDetails;
   }
-  transformExtent(pairs: number[][]): number[] {
-    if (!pairs) {
-      return;
-    }
-    const currentProj = this.HsMapService.getCurrentProj();
-    const first_pair = transform(pairs[0], 'EPSG:4326', currentProj);
-    const second_pair = transform(pairs[1], 'EPSG:4326', currentProj);
-    return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-  }
-  parseExtent(extent: string | Array<number>): number[][] {
-    if (!extent) {
-      return;
-    }
-    let boundArray;
-    const pairs = [];
-    if (typeof extent == 'string') {
-      boundArray = extent.split(' ');
-    } else {
-      boundArray = extent;
-    }
-    pairs.push([parseFloat(boundArray[0]), parseFloat(boundArray[1])]);
-    pairs.push([parseFloat(boundArray[2]), parseFloat(boundArray[3])]);
-    return pairs;
-  }
+
   loadWarningBootstrap(extent): void {
     this.HsDialogContainerService.create(HsCompositionsWarningDialogComponent, {
       extent: extent,
