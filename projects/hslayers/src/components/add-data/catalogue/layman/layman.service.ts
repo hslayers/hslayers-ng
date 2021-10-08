@@ -206,25 +206,30 @@ export class HsLaymanBrowserService {
     } else {
       dataset.datasourcePaging.matched = parseInt(data.matched);
       dataset.layers = data.map((layer) => {
+        const tmp = {
+          title: layer.title,
+          type: ['WMS', 'WFS'],
+          name: layer.name,
+          id: layer.uuid,
+          feature: layer.feature,
+          highlighted: false,
+          workspace: layer.workspace,
+          editable: layer.access_rights.write.some((user) => {
+            return [dataset.user, 'EVERYONE'].includes(user);
+          }),
+        };
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             layer,
             this.hsMapService.getCurrentProj()
           );
           if (extentFeature) {
+            tmp.feature = extentFeature;
+            extentFeature.set('record', tmp);
             data.extentFeatureCreated(extentFeature);
           }
         }
-        return {
-          title: layer.title,
-          type: ['WMS', 'WFS'],
-          name: layer.name,
-          id: layer.uuid,
-          workspace: layer.workspace,
-          editable: layer.access_rights.write.some((user) => {
-            return [dataset.user, 'EVERYONE'].includes(user);
-          }),
-        };
+        return tmp;
       });
     }
   }

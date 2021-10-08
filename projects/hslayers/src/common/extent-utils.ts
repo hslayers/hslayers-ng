@@ -13,7 +13,7 @@ export function addExtentFeature(
   mapProjection
 ): Feature<Geometry> | undefined {
   const attributes = {
-    record: record,
+    record,
     hs_notqueryable: true,
     highlighted: false,
     title: record.title || record.name,
@@ -34,9 +34,7 @@ export function addExtentFeature(
     return;
   }
   attributes.geometry = polygonFromExtent(extent);
-  const new_feature = new Feature(attributes);
-  record.feature = new_feature;
-  return new_feature;
+  return new Feature(attributes);
 }
 
 export function transformExtentValue(
