@@ -42,12 +42,17 @@ export class HsCompositionsStatusManagerMickaJointService {
    * @param params
    * @param bbox
    */
-  loadList(ds: HsEndpoint, params, bbox): Observable<any> {
+  loadList(
+    ds: HsEndpoint,
+    params,
+    extentFeatureCreated,
+    bbox
+  ): Observable<any> {
     const Observable = this.HsCompositionsMickaService.loadList(
       ds,
       params,
-      bbox,
-      this.HsCompositionsMapService.extentLayer
+      extentFeatureCreated,
+      bbox
     ).pipe(
       map((response: any) => {
         this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);

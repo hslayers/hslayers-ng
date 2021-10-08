@@ -17,6 +17,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {addExtentFeature} from '../../../common/extent-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,11 @@ export class HsCompositionsLaymanService {
     public hsMapService: HsMapService
   ) {}
 
-  loadList(endpoint: HsEndpoint, params): Observable<any> {
+  loadList(
+    endpoint: HsEndpoint,
+    params,
+    extentFeatureCreated
+  ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
 
@@ -50,7 +55,7 @@ export class HsCompositionsLaymanService {
       this.hsMapService.map
         .getView()
         .calculateExtent(this.hsMapService.map.getSize()),
-      this.hsMapService.map.getView().getProjection(),
+      this.hsMapService.getCurrentProj(),
       'EPSG:3857'
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
@@ -78,6 +83,7 @@ export class HsCompositionsLaymanService {
         timeout(5000),
         map((response: any) => {
           if (Array.isArray(response.body)) {
+            response.body.extentFeatureCreated = extentFeatureCreated;
             this.compositionsReceived(endpoint, response);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
@@ -132,6 +138,13 @@ export class HsCompositionsLaymanService {
       : response.body.length;
 
     endpoint.compositions = response.body.map((record) => {
+      if (response.body.extentFeatureCreated) {
+        const mapProjection = this.hsMapService.getCurrentProj();
+        const extentFeature = addExtentFeature(record, mapProjection);
+        if (extentFeature) {
+          response.body.extentFeatureCreated(extentFeature);
+        }
+      }
       return {
         name: record.name,
         title: record.title,

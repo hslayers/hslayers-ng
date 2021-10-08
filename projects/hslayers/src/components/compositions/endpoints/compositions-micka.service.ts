@@ -1,10 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
 import {Observable, Subscription, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
-import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from './../../../common/endpoints/endpoint.interface';
@@ -12,6 +10,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {addExtentFeature} from '../../../common/extent-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -82,11 +81,7 @@ export class HsCompositionsMickaService {
     tmp = this.HsUtilsService.proxify(tmp);
     return tmp;
   }
-  compositionsReceived(
-    endpoint: HsEndpoint,
-    extentLayer: any,
-    response: any
-  ): void {
+  compositionsReceived(endpoint: HsEndpoint, response: any): void {
     if (!response.records) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation('COMMON.warning'),
@@ -104,40 +99,19 @@ export class HsCompositionsMickaService {
     } else {
       endpoint.compositionsPaging.matched = 0;
     }
-    //TODO: Needs refactoring
     endpoint.compositionsPaging.next = response.next;
-    const mapExtent = this.HsMapService.getMapExtent();
     for (const record of endpoint.compositions) {
-      const attributes: any = {
-        record: record,
-        hs_notqueryable: true,
-        highlighted: false,
-        title: record.title || record.name,
-      };
       record.editable = false;
       record.endpoint = endpoint;
       if (record.thumbnail == undefined) {
         record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
       }
-      const extent = this.HsCompositionsParserService.parseExtent(
-        record.bbox || ['180', '180', '180', '180']
-      );
-      const flatExtent =
-        this.HsCompositionsParserService.transformExtent(extent);
-      //Check if height or Width covers the whole screen
-      if (
-        extent &&
-        !(
-          (flatExtent[0] < mapExtent[0] && flatExtent[2] > mapExtent[2]) ||
-          (flatExtent[1] < mapExtent[1] && flatExtent[3] > mapExtent[3])
-        )
-      ) {
-        attributes.geometry = polygonFromExtent(flatExtent);
-        const newFeature = new Feature(attributes);
-        record.feature = newFeature;
-        extentLayer.getSource().addFeatures([newFeature]);
-      } else {
-        //Composition not in extent
+      if (response.extentFeatureCreated) {
+        const mapProjection = this.HsMapService.getCurrentProj();
+        const extentFeature = addExtentFeature(record, mapProjection);
+        if (extentFeature) {
+          response.extentFeatureCreated(extentFeature);
+        }
       }
     }
   }
@@ -145,8 +119,8 @@ export class HsCompositionsMickaService {
   loadList(
     endpoint: HsEndpoint,
     params: any,
-    bbox: any,
-    extentLayer: any
+    extentFeatureCreated,
+    bbox: any
   ): Observable<any> {
     params = this.checkForParams(endpoint, params);
     const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
@@ -159,7 +133,8 @@ export class HsCompositionsMickaService {
       .pipe(
         timeout(5000),
         map((response: any) => {
-          this.compositionsReceived(endpoint, extentLayer, response);
+          response.extentFeatureCreated = extentFeatureCreated;
+          this.compositionsReceived(endpoint, response);
         }),
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(

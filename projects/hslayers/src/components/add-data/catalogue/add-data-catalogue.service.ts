@@ -1,9 +1,9 @@
-import {Feature} from 'ol';
 import {Injectable, NgZone} from '@angular/core';
-import {forkJoin} from 'rxjs';
 
+import Feature from 'ol/Feature';
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
 import {Geometry} from 'ol/geom';
+import {forkJoin} from 'rxjs';
 
 import {DatasetType, HsAddDataService} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
@@ -319,7 +319,12 @@ export class HsAddDataCatalogueService {
         );
         return query;
       case 'layman':
-        query = this.hsLaymanBrowserService.queryCatalog(catalog, this.data);
+        query = this.hsLaymanBrowserService.queryCatalog(
+          catalog,
+          this.data,
+          (feature: Feature<Geometry>) =>
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature)
+        );
         return query;
       default:
         break;
