@@ -23,3 +23,4 @@ stats.json
 bundle
 *.d.ts
 hslayers-server.db
+projects/hslayers-server/data/hsl-share.db
