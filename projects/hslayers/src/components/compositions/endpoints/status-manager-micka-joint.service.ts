@@ -78,7 +78,11 @@ export class HsCompositionsStatusManagerMickaJointService {
                   e.status ? e.status.toString() : e.message,
                   {url: ds.url}
                 ),
-              {disableLocalization: true}
+              {
+                disableLocalization: true,
+                serviceCalledFrom:
+                  'HsCompositionsStatusManagerMickaJointService',
+              }
             );
         }
         return of(e);
@@ -115,7 +119,10 @@ export class HsCompositionsStatusManagerMickaJointService {
           e.status ? e.status.toString() : e.message,
           {url: url}
         ),
-        {disableLocalization: true}
+        {
+          disableLocalization: true,
+          serviceCalledFrom: 'HsCompositionsStatusManagerMickaJointService',
+        }
       );
     }
   }

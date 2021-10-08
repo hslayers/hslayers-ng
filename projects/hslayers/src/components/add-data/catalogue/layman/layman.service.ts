@@ -134,7 +134,10 @@ export class HsLaymanBrowserService {
                     e.status ? e.status.toString() : e.message,
                     {url: url}
                   ),
-                {disableLocalization: true}
+                {
+                  disableLocalization: true,
+                  serviceCalledFrom: 'HsLaymanBrowserService',
+                }
               );
           }
           endpoint.datasourcePaging.loaded = true;
@@ -171,7 +174,7 @@ export class HsLaymanBrowserService {
           'COMMON',
           simplifiedResponse
         ),
-      {disableLocalization: true}
+      {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
     );
   }
 
@@ -186,7 +189,11 @@ export class HsLaymanBrowserService {
         data.dataset.title +
           ': ' +
           this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
-        {disableLocalization: true, toastStyleClasses: 'bg-warning text-light'}
+        {
+          disableLocalization: true,
+          toastStyleClasses: 'bg-warning text-light',
+          serviceCalledFrom: 'HsLaymanBrowserService',
+        }
       );
       return;
     }
@@ -294,7 +301,7 @@ export class HsLaymanBrowserService {
           'ADDLAYERS.ERROR.errorWhileRequestingLayers'
         ),
         this.hsLanguageService.getTranslation('ADDLAYERS.ERROR.urlInvalid'),
-        {disableLocalization: true}
+        {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
       );
       return false;
     }

@@ -438,7 +438,10 @@ export class HsTripPlannerService {
                   e.message,
                   {url: url}
                 ),
-                {disableLocalization: true}
+                {
+                  disableLocalization: true,
+                  serviceCalledFrom: 'HsTripPlannerService',
+                }
               );
               return of(null);
             })

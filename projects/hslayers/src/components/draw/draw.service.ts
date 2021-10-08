@@ -672,7 +672,10 @@ export class HsDrawService {
                 symbolizer: this.requiredSymbolizer[this.type].join(' or '),
                 panel: this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
               }
-            )}`
+            )}`,
+            {
+              serviceCalledFrom: 'HsDrawService',
+            }
           );
         }
         this.drawActive = true;
@@ -807,6 +810,7 @@ export class HsDrawService {
           )}`,
           {
             toastStyleClasses: 'bg-info text-white',
+            serviceCalledFrom: 'HsDrawService',
           }
         );
       }

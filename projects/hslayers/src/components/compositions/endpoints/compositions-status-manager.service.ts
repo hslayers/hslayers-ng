@@ -85,7 +85,10 @@ export class HsCompositionsStatusManagerService {
                   e.status ? e.status.toString() : e.message,
                   {url: url}
                 ),
-              {disableLocalization: true}
+              {
+                disableLocalization: true,
+                serviceCalledFrom: 'HsCompositionsStatusManagerService',
+              }
             );
         }
         return of(e);

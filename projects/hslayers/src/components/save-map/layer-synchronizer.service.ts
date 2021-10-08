@@ -266,7 +266,10 @@ export class HsLayerSynchronizerService {
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
-      {disableLocalization: true}
+      {
+        disableLocalization: true,
+        serviceCalledFrom: 'HsLayerSynchronizerService',
+      }
     );
   }
 

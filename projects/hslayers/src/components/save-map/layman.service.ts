@@ -618,7 +618,8 @@ export class HsLaymanService implements HsSaverService {
                       ? (layer as Layer<Source>).get('title')
                       : layer,
                 }
-              )
+              ),
+              {serviceCalledFrom: 'HsLaymanService'}
             );
           });
       });

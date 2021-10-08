@@ -88,7 +88,10 @@ export class HsMickaBrowserService {
                     e.status ? e.status.toString() : e.message,
                     {url: url}
                   ),
-                {disableLocalization: true}
+                {
+                  disableLocalization: true,
+                  serviceCalledFrom: 'HsMickaBrowserService',
+                }
               );
           }
           dataset.datasourcePaging.loaded = true;

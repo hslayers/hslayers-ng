@@ -267,7 +267,7 @@ export class HsShareService {
             'ERRORMESSAGES',
             error
           ),
-          {disableLocalization: true}
+          {disableLocalization: true, serviceCalledFrom: 'HsShareService'}
         );
       });
   }

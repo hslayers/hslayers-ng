@@ -48,7 +48,7 @@ export class HsAddDataCommonUrlService {
         'ADDLAYERS.capabilitiesParsingProblem',
 
         'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'hsAddDataArcgisService'}
+        {serviceCalledFrom: 'HsAddDataCommonUrlService'}
       );
     } else {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e);
