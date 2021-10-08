@@ -165,11 +165,13 @@ export class HsLaymanService implements HsSaverService {
     layerDesc?
   ): Promise<string> {
     const formdata = new FormData();
-    formdata.append(
-      'file',
-      new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
-      'blob.geojson'
-    );
+    if (geojson) {
+      formdata.append(
+        'file',
+        new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
+        'blob.geojson'
+      );
+    }
 
     const files_to_async_upload = [];
     const sumFileSize = formdata
@@ -331,7 +333,8 @@ export class HsLaymanService implements HsSaverService {
    */
   public async upsertLayer(
     ep: HsEndpoint,
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
+    withFeatures: boolean
   ): Promise<void> {
     if (layer.getSource().loading) {
       return;
@@ -342,19 +345,21 @@ export class HsLaymanService implements HsSaverService {
     const f = new GeoJSON();
     const crsSupported = ['EPSG:4326', 'EPSG:3857'].includes(this.crs);
     let geojson;
-    if (!crsSupported) {
-      geojson = f.writeFeaturesObject(
-        layer
-          .getSource()
-          .getFeatures()
-          .map((f) => {
-            const f2 = f.clone();
-            f2.getGeometry().transform(this.crs, 'EPSG:3857');
-            return f2;
-          })
-      );
-    } else {
-      geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+    if (withFeatures) {
+      if (!crsSupported) {
+        geojson = f.writeFeaturesObject(
+          layer
+            .getSource()
+            .getFeatures()
+            .map((f) => {
+              const f2 = f.clone();
+              f2.getGeometry().transform(this.crs, 'EPSG:3857');
+              return f2;
+            })
+        );
+      } else {
+        geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+      }
     }
 
     if ((ep?.version?.split('.').join() as unknown as number) < 171) {
@@ -403,7 +408,7 @@ export class HsLaymanService implements HsSaverService {
         }
       } catch (ex) {
         this.HsLogService.warn(`Layer ${name} didn't exist. Creating..`);
-        this.upsertLayer(ep, layer);
+        this.upsertLayer(ep, layer, true);
         return;
       }
       desc.wfs.url = desc.wfs.url;

@@ -109,7 +109,8 @@ export class HsLayerSynchronizerService {
       if (e.key == 'sld' || e.key == 'title') {
         this.HsLaymanService.upsertLayer(
           this.findLaymanForWfsLayer(layer),
-          layer
+          layer,
+          false
         );
       }
     });
