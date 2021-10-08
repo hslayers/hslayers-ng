@@ -45,6 +45,7 @@ export class HsLayerEditorComponent {
   layer_renamer_visible = false;
   getAttribution = getAttribution;
   getBase = getBase;
+  tmpTitle: string = undefined;
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsDimensionTimeService: HsDimensionTimeService,
@@ -326,18 +327,7 @@ export class HsLayerEditorComponent {
    * @param newTitle - New title to set
    */
   set title(newTitle: string) {
-    const newLayerTitle = newTitle.trim();
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return;
-    }
-    this.HsLayerEditorService.layerTitleChange.next({
-      newTitle: newLayerTitle,
-      oldTitle: getTitle(layer),
-      layer,
-    });
-    setTitle(layer, newLayerTitle);
-    this.HsEventBusService.layerManagerUpdates.next();
+    this.tmpTitle = newTitle.trim();
   }
 
   get title(): string {
@@ -345,7 +335,29 @@ export class HsLayerEditorComponent {
     if (layer == undefined) {
       return;
     }
-    return getTitle(layer);
+    if (this.tmpTitle == undefined) {
+      this.tmpTitle = getTitle(layer);
+    }
+    return this.tmpTitle;
+  }
+
+  saveTitle(): void {
+    const layer = this.olLayer();
+    if (layer == undefined) {
+      return;
+    }
+    this.HsLayerEditorService.layerTitleChange.next({
+      newTitle: this.tmpTitle,
+      oldTitle: getTitle(layer),
+      layer,
+    });
+    setTitle(layer, this.tmpTitle);
+    this.HsEventBusService.layerManagerUpdates.next();
+    this.toggleLayerRename();
+  }
+
+  titleUnsaved(): boolean {
+    return this.tmpTitle != getTitle(this.olLayer());
   }
 
   set abstract(newAbstract: string) {

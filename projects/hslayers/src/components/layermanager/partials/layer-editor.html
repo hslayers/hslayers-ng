@@ -100,7 +100,14 @@
     <div class="card-footer" *ngIf="currentLayer?.settings">
         <div class="form-group" [hidden]="!layer_renamer_visible">
             <label>{{'COMMON.title' | translate}}</label>
-            <input type="text" class="form-control" [(ngModel)]="title" name="title">
+            <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="title" name="title">
+                <div class="input-group-append" [hidden]="!titleUnsaved()" (click)="saveTitle()">
+                    <button class="btn btn-outline-secondary" type="button"><i class="icon-save-floppy"></i></button>
+                </div>
+            </div>
+
+            
             <div class="form">
                 <br>
                 <label>{{'COMMON.scale' | translate}}</label>
