@@ -260,6 +260,9 @@ export class HsLaymanBrowserService {
           responseType: 'text',
         })
         .toPromise();
+      if (!sld?.includes('StyledLayerDescriptor')) {
+        sld = undefined;
+      }
     }
     if (lyr.wms.url) {
       return {
