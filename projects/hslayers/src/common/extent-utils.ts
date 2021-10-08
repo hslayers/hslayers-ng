@@ -13,7 +13,6 @@ export function addExtentFeature(
   mapProjection
 ): Feature<Geometry> | undefined {
   const attributes = {
-    record,
     hs_notqueryable: true,
     highlighted: false,
     title: record.title || record.name,
