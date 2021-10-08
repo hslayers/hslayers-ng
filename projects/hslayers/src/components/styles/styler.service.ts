@@ -333,8 +333,9 @@ export class HsStylerService {
           symbolizers: [
             {
               kind: 'Mark',
-              color: 'rgba(255, 255, 255, 0.41)',
-              strokeColor: 'rgba(0, 153, 255, 1)',
+              color: '#FFFFFF',
+              strokeOpacity: 0.41,
+              strokeColor: '#0099ff',
               strokeWidth: 2,
               wellKnownName: 'circle',
               radius: 10,
