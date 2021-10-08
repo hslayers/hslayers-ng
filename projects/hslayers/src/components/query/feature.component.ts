@@ -12,8 +12,8 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {exportFormats} from './feature-common.service';
 import {getTitle} from '../../common/layer-extensions';
-import { Geometry } from 'ol/geom';
-import { Feature } from 'ol';
+import {Geometry} from 'ol/geom';
+import {Feature} from 'ol';
 
 @Component({
   selector: 'hs-query-feature',
@@ -99,12 +99,22 @@ export class HsQueryFeatureComponent implements AfterViewInit {
     this.HsMapService.fitExtent(extent);
   }
 
+  /**
+   * Toggle dropdown menus
+   * @param beingToggled Menu being toggled
+   * @param other Other menu to be clsoed if opened
+   */
+  toggleMenus(beingToggled: string, other: string): void {
+    this[other] = this[other] ? !this[other] : this[other];
+    this[beingToggled] = !this[beingToggled];
+  }
+
   toggleExportMenu(): void {
     this.HsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
       this.olFeature()
     );
-    this.exportMenuVisible = !this.exportMenuVisible;
+    this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
 
   editTypeSelected(type): void {
@@ -117,7 +127,7 @@ export class HsQueryFeatureComponent implements AfterViewInit {
       this.editType = null;
       return;
     }
-    this.editMenuVisible = !this.editMenuVisible;
+    this.toggleMenus('editMenuVisible', 'exportMenuVisible');
   }
 
   moveOrCopyFeature(): void {
