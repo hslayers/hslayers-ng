@@ -80,20 +80,22 @@ export class HsQueryFeaturePopupComponent
     const featureCount = featuresWithPopup.length;
 
     if (featureCount > 0) {
+      let tmpForHover: any[] = [];
       this.HsQueryBaseService.featuresUnderMouse.forEach((feature) => {
-        this.attributesForHover =
-          this.HsQueryBaseService.serializeFeatureAttributes(feature);
-
+        tmpForHover = tmpForHover.concat(
+          this.HsQueryBaseService.serializeFeatureAttributes(feature)
+        );
         if (getFeatures(feature)) {
           getFeatures(feature).forEach((subfeature) => {
             const subFeatureObj: any = {};
             subFeatureObj.feature = subfeature;
             subFeatureObj.attributes =
               this.HsQueryBaseService.serializeFeatureAttributes(subfeature);
-            this.attributesForHover.push(subFeatureObj);
+            tmpForHover.push(subFeatureObj);
           });
         }
       });
+      this.attributesForHover = tmpForHover.filter((f) => f);
     }
 
     return {
@@ -101,15 +103,22 @@ export class HsQueryFeaturePopupComponent
     };
   }
 
-  closePopup() {
+  closePopup(): void {
     this.HsQueryBaseService.featuresUnderMouse = [];
   }
 
-  isClustered(feature) {
+  isClustered(feature): boolean {
     return getFeatures(feature) && getFeatures(feature).length > 0;
   }
 
-  serializeFeatureName(feature) {
+  hasMultipleSubFeatures(feature): boolean {
+    return getFeatures(feature).length > 1;
+  }
+
+  serializeFeatureName(feature): string {
+    if (!feature) {
+      return;
+    }
     if (getFeatureName(feature)) {
       return getFeatureName(feature);
     }
@@ -127,7 +136,7 @@ export class HsQueryFeaturePopupComponent
     return this.HsLanguageService.getTranslation('QUERY.untitledFeature');
   }
 
-  async removeFeature(feature) {
+  async removeFeature(feature): Promise<void> {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -143,7 +152,7 @@ export class HsQueryFeaturePopupComponent
   }
 
   //Deprecated
-  async clearLayer(layer) {
+  async clearLayer(layer): Promise<void> {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
