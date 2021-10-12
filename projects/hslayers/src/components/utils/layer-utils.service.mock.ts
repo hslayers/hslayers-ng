@@ -13,7 +13,7 @@ export function mockLayerUtilsService() {
     'isLayerGeoJSONSource',
     'isLayerTopoJSONSource',
     'isLayerKMLSource',
-    'isLayerGpxSource',
+    'isLayerGPXSource',
     'isLayerInManager',
     'getSourceParams',
     'getLayerParams',
