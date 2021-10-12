@@ -1,4 +1,4 @@
-<div class="btn-group">
+<div class="btn-group" [hidden]="!isVisible()">
     <button class="btn rounded-0 btn-light hs-toolbar-button"
         [ngClass]="HsDrawService.highlightDrawButton ? 'btn-outline-danger' : 'btn-outline-secondary'"
         (click)="toggleDrawToolbar()">

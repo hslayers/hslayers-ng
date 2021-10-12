@@ -15,10 +15,8 @@ import {getTitle} from '../../common/layer-extensions';
 export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   drawToolbarExpanded = false;
   onlyMineFilterVisible = false;
+  name = 'drawToolbar';
   getTitle = getTitle;
-  isVisible(): boolean {
-    return true;
-  }
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
