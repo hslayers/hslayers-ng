@@ -67,6 +67,7 @@ export class HsMeasureComponent
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.HsLayoutService.panelEnabled('toolbar', true);
+        this.data = this.HsMeasureService.data;
       });
 
     this.HsEventBusService.mainPanelChanges
