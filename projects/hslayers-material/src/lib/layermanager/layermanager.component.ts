@@ -14,12 +14,13 @@ import {
   HsLayerEditorSublayerService,
   HsLayerManagerComponent,
   HsLayerManagerService,
-  HsLayerManagerWmstService,
+  HsDimensionTimeService,
   HsLayerSynchronizerService,
   HsLayerUtilsService,
   HsLayoutService,
   HsMapService,
   HsUtilsService,
+  HsSidebarService
 } from 'hslayers-ng';
 
 class HsLayerNode {
@@ -123,14 +124,15 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
     HsUtilsService: HsUtilsService,
     HsLayerUtilsService: HsLayerUtilsService,
     HsMapService: HsMapService,
-    HsLayermanagerWmstService: HsLayerManagerWmstService,
+    HsDimensionTimeService: HsDimensionTimeService,
     HsLayoutService: HsLayoutService,
     HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     HsLayerSynchronizerService: HsLayerSynchronizerService,
     HsEventBusService: HsEventBusService,
     HsDialogContainerService: HsDialogContainerService,
     HsLanguageService: HsLanguageService,
-    HsConfig: HsConfig
+    HsConfig: HsConfig,
+    HsSidebarService: HsSidebarService
   ) {
     super(
       HsCore,
@@ -138,14 +140,15 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
       HsLayerUtilsService,
       HsMapService,
       HsLayerManagerService,
-      HsLayermanagerWmstService,
+      HsDimensionTimeService,
       HsLayoutService,
       HsLayerEditorSublayerService,
       HsLayerSynchronizerService,
       HsEventBusService,
       HsDialogContainerService,
       HsLanguageService,
-      HsConfig
+      HsConfig,
+      HsSidebarService
     );
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
