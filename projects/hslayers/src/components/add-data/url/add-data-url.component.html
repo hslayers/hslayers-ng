@@ -10,14 +10,14 @@
     </div>
 
     <div class="w-100 pt-3">
-        <hs-add-data-url-arcgis *ngIf="typeSelected === 'arcgis'"></hs-add-data-url-arcgis>
-        <hs-add-data-url-wfs *ngIf="typeSelected === 'wfs'"></hs-add-data-url-wfs>
-        <hs-add-data-url-wms *ngIf="typeSelected === 'wms'"></hs-add-data-url-wms>
-        <hs-add-data-url-wmts *ngIf="typeSelected === 'wmts'"></hs-add-data-url-wmts>
-        <hs-add-data-vector-url *ngIf="typeSelected === 'geojson'" [dataType]="typeSelected"></hs-add-data-vector-url>
-        <hs-add-data-vector-url *ngIf="typeSelected === 'kml'" [dataType]="typeSelected">
-        </hs-add-data-vector-url>
-        <hs-add-data-vector-url *ngIf="typeSelected === 'gpx'" [dataType]="typeSelected">
-        </hs-add-data-vector-url>
+        <hs-url-arcgis *ngIf="typeSelected === 'arcgis'"></hs-url-arcgis>
+        <hs-url-wfs *ngIf="typeSelected === 'wfs'"></hs-url-wfs>
+        <hs-url-wms *ngIf="typeSelected === 'wms'"></hs-url-wms>
+        <hs-url-wmts *ngIf="typeSelected === 'wmts'"></hs-url-wmts>
+        <hs-url-vector *ngIf="typeSelected === 'geojson'" [dataType]="typeSelected"></hs-url-vector>
+        <hs-url-vector *ngIf="typeSelected === 'kml'" [dataType]="typeSelected">
+        </hs-url-vector>
+        <hs-url-vector *ngIf="typeSelected === 'gpx'" [dataType]="typeSelected">
+        </hs-url-vector>
     </div>
 </div>

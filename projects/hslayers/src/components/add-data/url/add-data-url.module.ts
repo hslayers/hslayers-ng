@@ -4,12 +4,12 @@ import {FormsModule} from '@angular/forms';
 
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataArcGisModule} from './arcgis/add-data-url-arcgis.module';
 import {HsAddDataUrlComponent} from './add-data-url.component';
-import {HsAddDataUrlWmsModule} from './wms/add-data-url-wms.module';
-import {HsAddDataVectorModule} from '../vector/add-data-vector.module';
-import {HsAddDataWfsModule} from './wfs/add-data-url-wfs.module';
-import {HsAddDataWmtsModule} from './wmts/add-data-url-wmts.module';
+import {HsAddDataVectorModule} from '../vector/vector.module';
+import {HsUrlArcGisModule} from './arcgis/arcgis.module';
+import {HsUrlWfsModule} from './wfs/wfs.module';
+import {HsUrlWmsModule} from './wms/wms.module';
+import {HsUrlWmtsModule} from './wmts/wmts.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -19,11 +19,11 @@ import {HsAddDataWmtsModule} from './wmts/add-data-url-wmts.module';
     FormsModule,
     TranslateModule,
     //
-    HsAddDataUrlWmsModule,
-    HsAddDataArcGisModule,
-    HsAddDataWfsModule,
+    HsUrlWmsModule,
+    HsUrlArcGisModule,
+    HsUrlWfsModule,
     HsAddDataVectorModule,
-    HsAddDataWmtsModule,
+    HsUrlWmtsModule,
   ],
   exports: [HsAddDataUrlComponent],
   entryComponents: [HsAddDataUrlComponent],

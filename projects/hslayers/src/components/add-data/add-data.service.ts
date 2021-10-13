@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Subject} from 'rxjs';
 
-import {AddDataUrlType} from './url/types/add-data-url.type';
+import {AddDataUrlType} from './url/types/url.type';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';

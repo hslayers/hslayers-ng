@@ -2,8 +2,8 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {AddDataUrlType} from './types/add-data-url.type';
-import {HsAddDataCommonService} from '../common/add-data-common.service';
+import {AddDataUrlType} from './types/url.type';
+import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';

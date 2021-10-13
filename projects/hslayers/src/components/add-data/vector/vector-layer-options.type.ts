@@ -1,5 +1,6 @@
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
+
 import {accessRightsModel} from '../common/access-rights.model';
 
 export type HsVectorLayerOptions = {

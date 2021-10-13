@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input} from '@angular/core';
 
-import {HsAddDataCatalogueService} from '../add-data-catalogue.service';
-import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.model';
+import {HsAddDataCatalogueService} from '../catalogue.service';
+import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsConfig} from '../../../../config.service';
