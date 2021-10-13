@@ -64,8 +64,8 @@
                     </div>
                     <div class="form-group flex-fill" *ngIf="cluster">
                         <label>{{'COMMON.distance' | translate}}</label>
-                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1" [(ngModel)]="distance.value"
-                            (change)="changeDistance()" style="width: 100%;height: 21px;">
+                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1"
+                            [(ngModel)]="distance.value" (change)="changeDistance()" style="width: 100%;height: 21px;">
                     </div>
                 </div>
 
@@ -85,8 +85,8 @@
                 <!-- Opacity slider -->
                 <div class="form-group">
                     <label>{{'LAYERMANAGER.layerEditor.opacity' | translate}}</label>
-                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1" style="width: 100%;height: 21px;"
-                        [(ngModel)]="opacity">
+                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1"
+                        style="width: 100%;height: 21px;" [(ngModel)]="opacity">
                 </div>
 
                 <!-- Footer -->
@@ -109,11 +109,9 @@
             <label>{{'COMMON.title' | translate}}</label>
             <div class="input-group">
                 <input type="text" class="form-control" [(ngModel)]="title" name="title">
-                <div class="input-group-append" [hidden]="!titleUnsaved()" (click)="saveTitle()">
-                    <button class="btn btn-outline-secondary" type="button"><i class="icon-save-floppy"></i></button>
-                </div>
+                <button [hidden]="!titleUnsaved()" (click)="saveTitle()" class="btn btn-outline-secondary"
+                    type="button"><i class="icon-save-floppy"></i></button>
             </div>
-
 
             <div class="form">
                 <br>
