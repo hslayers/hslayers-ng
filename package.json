@@ -42,7 +42,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "@types/cesium": "^1.67.14",
+    "@types/cesium": "^1.70.0",
     "bootstrap": "^4.6.0",
     "cesium": "^1.86.0",
     "d3": "^6.7.0",
