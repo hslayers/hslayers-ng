@@ -29,6 +29,7 @@ import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 class emptyMock {
   constructor() {}
@@ -79,7 +80,7 @@ describe('HsDraw', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule, TranslateModule.forRoot(), NgbDropdownModule],
       declarations: [HsDrawComponent],
       providers: [
         HsDrawService,
