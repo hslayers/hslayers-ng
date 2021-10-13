@@ -1,6 +1,7 @@
 import {Injectable, TemplateRef} from '@angular/core';
 
 import {HsLanguageService} from '../../language/language.service';
+import {HsLayoutService} from './../layout.service';
 
 export type customToastOptions = {
   /**
@@ -26,7 +27,10 @@ export type customToastOptions = {
   providedIn: 'root',
 })
 export class HsToastService {
-  constructor(public HsLanguageService: HsLanguageService) {}
+  constructor(
+    public HsLanguageService: HsLanguageService,
+    private HsLayoutService: HsLayoutService
+  ) {}
   toasts: any[] = [];
   /**
    * @param toast Toast pop up
@@ -80,5 +84,16 @@ export class HsToastService {
         serviceCalledFrom: options.serviceCalledFrom,
       }
     );
+  }
+
+  shown() {
+    //** Following hack is needed until ngBootstrap supports bootstrap5 fully */
+    for (const toastElement of this.HsLayoutService.contentWrapper.querySelectorAll(
+      '.toast-header .close'
+    )) {
+      const classList = toastElement.classList;
+      classList.add('btn-close');
+      classList.remove('close');
+    }
   }
 }
