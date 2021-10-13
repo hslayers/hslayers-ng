@@ -14,9 +14,6 @@ import {getTitle} from '../../common/layer-extensions';
 })
 export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   drawToolbarExpanded = false;
-  layersExpanded: boolean;
-  drawTypeExpanded = false;
-  selectionMenuExpanded = false;
   onlyMineFilterVisible = false;
   getTitle = getTitle;
   isVisible(): boolean {
@@ -34,7 +31,6 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
 
   selectionMenuToggled(): void {
     this.setType(this.HsDrawService.type);
-    this.selectionMenuExpanded = !this.selectionMenuExpanded;
   }
 
   translateString(module: string, text: string): string {
@@ -58,7 +54,6 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   }
   selectLayer(layer): void {
     this.HsDrawService.selectLayer(layer);
-    this.layersExpanded = false;
   }
 
   controlLayerListAction() {
@@ -67,8 +62,6 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
       this.HsDrawService.tmpDrawLayer
     ) {
       this.HsDrawService.saveDrawingLayer();
-    } else {
-      this.layersExpanded = !this.layersExpanded;
     }
   }
 

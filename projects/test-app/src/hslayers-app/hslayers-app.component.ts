@@ -146,6 +146,9 @@ export class HslayersAppComponent {
       panelsEnabled: {
         tripPlanner: true,
       },
+      componentsEnabled: {
+        basemapGallery: true
+      },
       assetsPath: 'assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},

@@ -15,7 +15,6 @@ import {HsHistoryListService} from './history-list.service';
 export class HsHistoryListComponent implements OnChanges {
   @Input() what: string; //input
   @Output() historyUrlSelected = new EventEmitter<string>(); //output
-  historyDropdownVisible = false;
   items: Array<string>;
   constructor(public HsHistoryListService: HsHistoryListService) {}
   ngOnChanges(changes: SimpleChanges): void {

@@ -20,10 +20,7 @@ import {getTitle} from '../../common/layer-extensions';
 export class HsDrawComponent extends HsPanelBaseComponent {
   onFeatureSelected: any;
   onFeatureDeselected: any;
-  layersExpanded: boolean;
-  snapLayersExpanded: boolean;
   drawToolbarExpanded: any;
-  selectionMenuExpanded = false;
   opacity = 0.2;
   linewidth = 1;
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
@@ -61,11 +58,6 @@ export class HsDrawComponent extends HsPanelBaseComponent {
     });
   }
 
-  selectionMenuToggled(): void {
-    this.setType(this.HsDrawService.type);
-    this.selectionMenuExpanded = !this.selectionMenuExpanded;
-  }
-
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
@@ -85,12 +77,10 @@ export class HsDrawComponent extends HsPanelBaseComponent {
 
   selectLayer(layer): void {
     this.HsDrawService.selectLayer(layer);
-    this.layersExpanded = false;
   }
 
   changeSnapSource(layer): void {
     this.HsDrawService.changeSnapSource(layer);
-    this.snapLayersExpanded = false;
   }
 
   updateStyle(): void {

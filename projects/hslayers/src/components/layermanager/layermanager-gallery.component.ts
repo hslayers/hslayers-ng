@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -9,6 +9,7 @@ import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 import {getBase} from '../../common/layer-extensions';
 
 @Component({
@@ -16,9 +17,8 @@ import {getBase} from '../../common/layer-extensions';
   templateUrl: './partials/basemap-gallery.html',
 })
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
-  baseLayersExpanded = false;
   menuExpanded = false;
-  data: any;
+  @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
 
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -27,11 +27,6 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     super(HsLayoutService);
-    this.data = this.HsLayerManagerService.data;
-  }
-
-  changeBaseLayerVisibility(toWhat: boolean, layer: Layer<Source>): void {
-    this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
   }
 
   toggleMiniMenu(layer: HsLayerDescriptor): void {
@@ -46,7 +41,7 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
     if (layer) {
       if (!layer.active) {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
-        this.baseLayersExpanded = false;
+        this.dropdown.close();
         this.HsLayerManagerService.menuExpanded = false;
         const olLayer = this.HsLayerManagerService.currentLayer?.layer;
         if (!olLayer || getBase(olLayer)) {
@@ -54,7 +49,7 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
         }
       }
     } else {
-      this.baseLayersExpanded = false;
+      this.dropdown.close();
       this.HsLayerManagerService.currentLayer = null;
 
       this.HsLayerManagerService.changeBaseLayerVisibility();

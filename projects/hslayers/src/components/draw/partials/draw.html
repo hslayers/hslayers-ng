@@ -8,12 +8,13 @@
     </hs-panel-header>
 
     <div class="d-flex flex-column">
-        <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;" >
+        <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
             <button type="button" class="btn rounded btn-primary hs-toolbar-button"
                 (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}">
                 {{'COMMON.newDrawingLayer' | translate}}
             </button>
-            <button type="button" (click)="HsDrawService.setType(HsDrawService.type)" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}"
+            <button type="button" (click)="HsDrawService.setType(HsDrawService.type)"
+                [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}"
                 class="btn ms-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
                 {{'DRAW.disableDrawing' | translate}}
             </button>
@@ -27,19 +28,18 @@
             </ng-template>
 
             <div *ngIf="HsDrawService.hasSomeDrawables || HsDrawService.tmpDrawLayer; else noLayerAvailable"
-                class="flex-row w-100 m-auto justify-content-center align-items-center text-primary" style="display: flex;">
+                class="flex-row w-100 m-auto justify-content-center align-items-center text-primary"
+                style="display: flex;">
                 <p class="m-0 p-0">{{'DRAW.drawingTo' | translate}}</p>
-                <div class="dropdown" style="max-width: 50%;">
-                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
-                        data-toggle="dropdown" aria-haspopup="true"
-                        (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
-                        [attr.aria-expanded]="layersExpanded" [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,
-                                                'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
+                <div ngbDropdown style="max-width: 50%;">
+                    <button type="button"
+                        class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
+                        ngbDropdownToggle (click)="HsDrawService.fillDrawableLayers()"
+                        [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
                         [disabled]="!HsDrawService.hasSomeDrawables">
                         <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right"  [ngClass]="{'show': layersExpanded}"
-                        style=" transform: translateX(25%); width: 15em;">
+                    <div ngbDropdownMenu placement="bottom" style="max-width: 15em;">
                         <div class="d-flex align-items-center w-100 flex-column"
                             *ngIf="HsDrawService.drawableLayers.length > 0">
                             <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' |
@@ -106,25 +106,27 @@
             (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translate">
             <i class="icon-circleloaderfull"></i>
         </button>
-        <button type="button" [ngClass]="{active: !HsDrawService.type }" [title]="'STYLER.selection' | translate"
-            class="btn btn-light btn-outline-primary  dropdown-toggle" data-toggle="dropdown" data-display="static" data-flip="false" aria-haspopup="true"
-            (click)="selectionMenuToggled()" [attr.aria-expanded]="selectionMenuExpanded" >
-            <i class="icon-cursor"></i>
-        </button>
-        <div class="dropdown" style="white-space: nowrap;">
-            <div class="dropdown-menu dropdown-menu-right flex-column px-1 py-2"
-                [ngClass]="{'show':  selectionMenuExpanded}">
-                <div class="d-flex flex-row justify-content-around align-items-baseline">
-                    <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' | translate}}</label>
-                    <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-                        (change)="HsDrawService.toggleBoxSelection();selectionMenuExpanded = !selectionMenuExpanded;"
-                        id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+        <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
+            #selectionTypeDropdown="ngbDropdown">
+            <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"
+                [title]="'STYLER.selection' | translate" class="btn btn-light btn-outline-primary">
+                <i class="icon-cursor"></i>
+            </button>
+            <div ngbDropdownMenu style="white-space: nowrap;">
+                <div class="flex-column px-1 py-2">
+                    <div class="d-flex flex-row justify-content-around align-items-baseline">
+                        <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
+                            translate}}</label>
+                        <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
+                            (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
+                            id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+                    </div>
+                    <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
+                        (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()" data-toggle="tooltip"
+                        [title]="'DRAW.deselectAllFeatures' | translate">
+                        {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
+                    </button>
                 </div>
-                <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
-                    (click)="HsDrawService.selectAllFeatures();selectionMenuExpanded = !selectionMenuExpanded;"
-                    data-toggle="tooltip" [title]="'DRAW.deselectAllFeatures' | translate">
-                    {{translateString('DRAW',HsDrawService.toggleSelectionString)}} 
-                </button>
             </div>
         </div>
     </div>
@@ -141,16 +143,13 @@
                 <div *ngIf="HsDrawService.snapActive && HsDrawService.drawableLayers.length > 1"
                     class="d-flex align-items-center card flex-row justify-content-around mx-3 text-primary">
                     <p class="m-0 p-0">{{'DRAW.snapTo' | translate}}:</p>
-                    <div class="dropdown w-50 d-flex justify-content-center">
-                        <button type="button"
-                            class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
-                            data-toggle="dropdown" aria-haspopup="true"
-                            (click)="snapLayersExpanded = !snapLayersExpanded; HsDrawService.fillDrawableLayers() "
-                            [attr.aria-expanded]="snapLayersExpanded" style=" font-size: small;">
+                    <div ngbDropdown placement="bottom" class="w-50 d-flex justify-content-center">
+                        <button ngbDropdownToggle type="button"
+                            class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
+                            (click)=" HsDrawService.fillDrawableLayers() " style=" font-size: small;">
                             <div class="mw-100 text-truncate">{{HsDrawService.snapLayerString()}}</div>
                         </button>
-                        <div class="dropdown-menu  dropdown-menu-right" [ngClass]="{'show': snapLayersExpanded}"
-                            style="max-width: 150%;">
+                        <div ngbDropdownMenu style="max-width: 150%;">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item text-truncate"
                                     *ngFor="let layer of HsDrawService.drawableLayers" data-toggle="tooltip"
