@@ -3,19 +3,18 @@
   style="display: flex"
 >
   <p class="m-0 p-0 flex-fill text-primary">{{label}}:</p>
-  <div class="dropdown" style="max-width: 50%">
+  <div ngbDropdown placement="bottom" style="max-width: 50%">
     <button
       type="button"
+      ngbDropdownToggle
       class="
         btn btn-sm
         rounded-0
         hs-toolbar-button
-        dropdown-toggle
         d-flex
         align-items-center
         mw-100
       "
-      data-toggle="dropdown"
       aria-haspopup="true"
       (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
       [attr.aria-expanded]="layersExpanded"
@@ -25,7 +24,7 @@
       </div>
     </button>
     <div
-      class="dropdown-menu dropdown-menu-right"
+      ngbDropdownMenu
       [ngClass]="{'show': layersExpanded}"
       style="transform: translateX(25%); width: 15em"
     >

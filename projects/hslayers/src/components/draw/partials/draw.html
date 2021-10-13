@@ -33,7 +33,7 @@
                 <p class="m-0 p-0">{{'DRAW.drawingTo' | translate}}</p>
                 <div ngbDropdown style="max-width: 50%;">
                     <button type="button"
-                        class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
+                        class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
                         ngbDropdownToggle (click)="HsDrawService.fillDrawableLayers()"
                         [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
                         [disabled]="!HsDrawService.hasSomeDrawables">

@@ -6,11 +6,18 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerLayerSelectorComponent} from './layer-selector.component';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [HsTripPlannerComponent, HsTripPlannerLayerSelectorComponent],
-  imports: [FormsModule, CommonModule, TranslateModule, HsPanelHelpersModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    TranslateModule,
+    HsPanelHelpersModule,
+    NgbDropdownModule,
+  ],
   exports: [HsTripPlannerComponent, HsTripPlannerLayerSelectorComponent],
   entryComponents: [
     HsTripPlannerComponent,

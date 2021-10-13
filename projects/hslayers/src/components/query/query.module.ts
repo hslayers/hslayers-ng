@@ -10,6 +10,7 @@ import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.co
 import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeatureListComponent} from './feature-list.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -28,6 +29,7 @@ import {TranslateModule} from '@ngx-translate/core';
     FormsModule,
     TranslateModule,
     HsDownloadModule,
+    NgbDropdownModule,
   ],
   exports: [
     HsQueryComponent,
