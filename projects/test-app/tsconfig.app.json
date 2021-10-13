@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [],
-    "target": "ES5"
+    "target": "ES5",
+    "skipLibCheck": true,
   },
   "files": [
     "src/main.ts",
