@@ -44,7 +44,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/cesium": "^1.67.14",
     "bootstrap": "^4.6.0",
-    "cesium": "^1.85.0",
+    "cesium": "^1.86.0",
     "d3": "^6.7.0",
     "dayjs": "^1.10.7",
     "deepmerge": "^4.2.2",
