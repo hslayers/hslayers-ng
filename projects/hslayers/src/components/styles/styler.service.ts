@@ -15,7 +15,7 @@ import {
 } from 'geostyler-style';
 import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
-import {StyleFunction} from 'ol/style/Style';
+import {StyleFunction, StyleLike} from 'ol/style/Style';
 import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
 
@@ -231,7 +231,7 @@ export class HsStylerService {
    * @param style -
    * @returns OL style object
    */
-  async parseStyle(style: any): Promise<{sld?: string; style: Style}> {
+  async parseStyle(style: any): Promise<{sld?: string; style: StyleLike}> {
     if (typeof style == 'string') {
       return {sld: style, style: await this.sldToOlStyle(style)};
     } else if (typeof style == 'object') {
@@ -286,7 +286,7 @@ export class HsStylerService {
   /**
    * Convert SLD to OL style object
    */
-  async sldToOlStyle(sld: string): Promise<Style> {
+  async sldToOlStyle(sld: string): Promise<StyleLike> {
     try {
       const sldObject = await this.sldToJson(sld);
       return await this.geoStylerStyleToOlStyle(sldObject);
@@ -297,7 +297,7 @@ export class HsStylerService {
 
   public async geoStylerStyleToOlStyle(
     sldObject: GeoStylerStyle
-  ): Promise<Style> {
+  ): Promise<StyleLike> {
     const olConverter = new OpenLayersParser();
     const { output: style } = await olConverter.writeStyle(sldObject);
     return style;
