@@ -44,7 +44,7 @@ export class HslayersComponent implements OnInit {
   ) {}
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
     let panelsEnabled = this.hsConfig.panelsEnabled;
-    if (panelsEnabled == undefined) {
+    if (panelsEnabled == undefined || panelsEnabled[name] == undefined) {
       panelsEnabled = this.hsLayoutService.panelsEnabledDefaults
     }
     if (panelsEnabled[name]) {
