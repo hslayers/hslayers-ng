@@ -13,7 +13,7 @@
     "@angular/platform-browser-dynamic": "^12.0.0",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "ngx-color": "^7.0.0",
-    "@ngx-translate/core": "^12.0.0",
+    "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "d3": "^6.0.0",
     "bootstrap": "^5.0.0",
