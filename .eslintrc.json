@@ -3,12 +3,7 @@
     "browser": true,
     "es6": true
   },
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly",
-    "stmPath": "readonly",
-    "hslMin": "readonly"
-  },
+  "globals": {},
   "overrides": [
     {
       "files": [
@@ -95,7 +90,7 @@
     },
     {
       "files": [
-        "**/*.spec.js"
+        "**/*.spec.ts"
       ],
       "env": {
         "jasmine": true
