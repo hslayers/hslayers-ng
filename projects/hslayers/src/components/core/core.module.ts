@@ -1,4 +1,16 @@
+import {NgModule} from '@angular/core';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {Observable, forkJoin, from} from 'rxjs';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+  TranslateStore,
+} from '@ngx-translate/core';
+import {map} from 'rxjs/operators';
+
 import * as merge from 'deepmerge';
+
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
@@ -8,17 +20,6 @@ import {HsLogModule} from '../../common/log/log.module';
 import {HsMapModule} from '../map/map.module';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsUtilsModule} from './../utils/utils.module';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
-import {Observable, forkJoin, from} from 'rxjs';
-
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-  TranslateStore,
-} from '@ngx-translate/core';
-import {map} from 'rxjs/operators';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   constructor(public HsConfig: HsConfig, private HttpClient: HttpClient) {}
