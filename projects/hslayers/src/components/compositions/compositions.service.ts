@@ -163,7 +163,7 @@ export class HsCompositionsService {
           this.shareId
       );
     } catch (ex) {
-      this.$log.log('Error creating short Url');
+      this.$log.log('Error creating short URL');
     }
   }
   async getCompositionInfo(composition): Promise<any> {
