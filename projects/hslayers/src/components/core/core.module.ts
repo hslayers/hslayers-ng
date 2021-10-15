@@ -10,6 +10,7 @@ import {
 import {map} from 'rxjs/operators';
 
 import * as merge from 'deepmerge';
+import en from '../../assets/locales/en.json';
 
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
@@ -28,13 +29,12 @@ export class WebpackTranslateLoader implements TranslateLoader {
     const hsConfig = this.HsConfig;
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
+      //these translations are loaded as promises in order, where next one overwrites previous loaders values
+      from(new Promise((resolve) => resolve(en))),
       from(
-        new Promise(async (resolve) => {
-          const res = await this.HttpClient.get(
-            `${this.HsConfig.assetsPath}/locales/${lang}.json`
-            ).toPromise();
-          resolve(res);
-        })
+        this.HttpClient.get(
+          `${this.HsConfig.assetsPath}/locales/${lang}.json`
+          ).toPromise()
       ),
       from(
         new Promise((resolve) => {
