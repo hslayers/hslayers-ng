@@ -108,6 +108,7 @@ export class HsLegendService {
       const legendRenderer = new LegendRenderer({
         styles: [sldObject],
         size: [300, 200],
+        hideRect: true
       });
       const el = document.createElement('div');
       await legendRenderer.render(el);
