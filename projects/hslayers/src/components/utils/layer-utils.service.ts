@@ -248,7 +248,7 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * Test if the features in the vector layer come from a KML source
+   * Test if the features in the vector layer come from a GPX source
    * @param layer - an OL vector layer
    * @returns true only if the GPX format is explicitly specified in the source. False otherwise.
    */
