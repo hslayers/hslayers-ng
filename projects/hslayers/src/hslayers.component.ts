@@ -43,12 +43,11 @@ export class HslayersComponent implements OnInit {
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {}
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
-    const panelsEnabled = this.hsConfig.panelsEnabled;
-    if (
-      panelsEnabled[name] ||
-      (panelsEnabled[name] == undefined &&
-        this.hsLayoutService.panelsEnabledDefaults[name])
-    ) {
+    let panelsEnabled = this.hsConfig.panelsEnabled;
+    if (panelsEnabled == undefined) {
+      panelsEnabled = this.hsLayoutService.panelsEnabledDefaults
+    }
+    if (panelsEnabled[name]) {
       this.hsLayoutService.createPanel(panelComponent, data || {});
     }
   }
