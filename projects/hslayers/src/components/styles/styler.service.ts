@@ -299,7 +299,7 @@ export class HsStylerService {
     sldObject: GeoStylerStyle
   ): Promise<Style> {
     const olConverter = new OpenLayersParser();
-    const style = await olConverter.writeStyle(sldObject);
+    const { output: style } = await olConverter.writeStyle(sldObject);
     return style;
   }
 
@@ -309,12 +309,12 @@ export class HsStylerService {
    * @returns
    */
   private async sldToJson(sld: string): Promise<GeoStylerStyle> {
-    const sldObject = await this.parser.readStyle(sld);
+    const { output: sldObject } = await this.parser.readStyle(sld);
     return sldObject;
   }
 
   private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
-    const sld = await this.parser.writeStyle(styleObject);
+    const { output: sld} = await this.parser.writeStyle(styleObject);
     return sld;
   }
 

@@ -103,7 +103,7 @@ export class HsLegendService {
           ],
         };
       } else {
-        sldObject = await parser.readStyle(sld);
+        sldObject = (await parser.readStyle(sld)).output;
       }
       const legendRenderer = new LegendRenderer({
         styles: [sldObject],

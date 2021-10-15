@@ -90,7 +90,7 @@ async function convertHsStyleToSld(json: any): Promise<string> {
       rules: [{name, symbolizers}],
     };
     const parser = new SLDParser();
-    return await parser.writeStyle(sldModel);
+    return (await parser.writeStyle(sldModel)).output;
   }
 }
 
