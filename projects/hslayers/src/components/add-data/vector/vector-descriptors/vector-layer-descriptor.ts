@@ -1,5 +1,6 @@
 import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
+
 import {HsVectorLayerOptions} from '../vector-layer-options.type';
 import {accessRightsModel} from '../../common/access-rights.model';
 

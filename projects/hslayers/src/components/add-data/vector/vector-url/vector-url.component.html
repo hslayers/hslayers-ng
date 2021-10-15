@@ -1,0 +1,13 @@
+<form class="form-horizontal" role="form">
+  <hs-common-url [type]="dataType" [(url)]="data.url" (connect)="connect()">
+  </hs-common-url>
+
+  <div *ngIf="data.showDetails">
+    <hs-new-layer-form [data]="data"></hs-new-layer-form>
+
+    <button class="btn btn-primary w-100 mt-2" [disabled]="!data.title" (click)="add()"><i class="icon-plus"></i>
+      {{'COMMON.add' | translate}}
+    </button>
+  </div>
+
+</form>

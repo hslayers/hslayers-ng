@@ -1,6 +1,0 @@
-<form class="form-horizontal" name="frmConnectArcgis" role="form">
-    <hs-common-url type="arcgis" [(url)]="hsAddDataCommonUrlService.url" (connect)="connect()">
-    </hs-common-url>
-    <hs-common-url-progress *ngIf="hsAddDataCommonUrlService.loadingInfo"></hs-common-url-progress>
-    <hs-common-url-details [injectedService]="hsAddDataArcGisService" type="arcgis"></hs-common-url-details>
-</form>

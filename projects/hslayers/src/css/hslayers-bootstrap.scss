@@ -393,11 +393,7 @@ $table-group-separator-color: white;
     min-height: 100px;
   }
 
-  .hs-ows-shp-advanced {
-    margin-top: 10px;
-  }
-
-  .hs-ows-vector-advanced {
+  .hs-advanced-options {
     margin-top: 10px;
   }
 
@@ -739,8 +735,8 @@ $table-group-separator-color: white;
   }
 
   @import "../components/layout/partials/layout.component.scss";
-  @import "../components//layermanager/partials/layermanager.component.scss";
-  @import "../components//layermanager/partials/layerlist.component.scss";
+  @import "../components/layermanager/partials/layermanager.component.scss";
+  @import "../components/layermanager/partials/layerlist.component.scss";
   @import "../components/layermanager/partials/gallery.component.scss";
   @import "../components/sidebar/partials/sidebar.component.scss";
   @import "../components/geolocation/partials/geolocation.component.scss";
@@ -748,7 +744,7 @@ $table-group-separator-color: white;
   @import "../components/search/partials/search.component.scss";
   @import "../components/info/partials/info.component.scss";
   @import "../components/toolbar/partials/toolbar.component.scss";
-  @import "../components//add-data/common/add-data-common.component.scss";
+  @import "../components/add-data/common/common.component.scss";
   /* **OPENLAYERS** */
 
   .ol-attribution {

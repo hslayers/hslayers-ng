@@ -133,7 +133,7 @@ export class HsLayerSynchronizerService {
     const layerDefinition = getDefinition(layer);
     return (this.HsCommonEndpointsService.endpoints || [])
       .filter(
-        (ds) => ds.type == 'layman' && layerDefinition?.url.includes(ds.url)
+        (ds) => ds.type == 'layman' && layerDefinition?.url?.includes(ds.url)
       )
       .pop();
   }

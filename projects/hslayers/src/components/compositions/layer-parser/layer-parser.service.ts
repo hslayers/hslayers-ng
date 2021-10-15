@@ -20,9 +20,9 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import ImageSource from 'ol/source/Image';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsAddDataCommonUrlService} from '../../add-data/common/add-data-common.service';
-import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
-import {HsAddDataWfsService} from '../../add-data/url/wfs/add-data-url-wfs.service';
+import {HsAddDataCommonService} from '../../add-data/common/common.service';
+import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsUrlWfsService} from '../../add-data/url/wfs/wfs.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
@@ -47,22 +47,22 @@ export class HsCompositionsLayerParserService {
     public HsLanguageService: HsLanguageService,
     public HsToastService: HsToastService,
     public HsEventBusService: HsEventBusService,
-    public HsAddDataWfsService: HsAddDataWfsService,
+    public HsUrlWfsService: HsUrlWfsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsAddDataCommonUrlService: HsAddDataCommonUrlService
+    public hsAddDataCommonService: HsAddDataCommonService
   ) {}
 
   /**
    * @public
    * @param {object} lyr_def Layer definition object
-   * @description Initiate creation of WFS layer thorough HsAddDataWfsService
+   * @description Initiate creation of WFS layer thorough HsUrlWfsService
    */
   async createWFSLayer(lyr_def): Promise<void> {
-    this.hsAddDataCommonUrlService.layerToSelect = lyr_def.name;
+    this.hsAddDataCommonService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );
-    this.HsAddDataWfsService.addLayerFromCapabilities(wrapper);
+    this.HsUrlWfsService.addLayerFromCapabilities(wrapper);
   }
 
   /**

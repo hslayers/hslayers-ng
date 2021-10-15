@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 
-import {HsAddDataCatalogueMapService} from '../../components/add-data/catalogue/add-data-catalogue-map.service';
+import {HsAddDataCatalogueMapService} from '../../components/add-data/catalogue/catalogue-map.service';
 @Component({
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.html',

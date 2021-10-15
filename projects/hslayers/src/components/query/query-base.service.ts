@@ -184,7 +184,9 @@ export class HsQueryBaseService {
     const pixel = e.pixel;
     pixel[0] += 2;
     pixel[1] += 4;
-    this.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+    if (this.hoverPopup) {
+      this.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+    }
   }
 
   private getFeaturesUnderMouse(map: Map, pixel: any) {

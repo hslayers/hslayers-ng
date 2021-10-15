@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 export type HsUploadedFiles = {
   fileList: FileList;
@@ -14,7 +21,7 @@ export class HsUploadComponent {
   @Output() uploaded = new EventEmitter<HsUploadedFiles>();
   @Input() acceptedFormats: string;
   @Input() uploader?: string;
-
+  @ViewChild('vectorFileInput') vectorFileInput: ElementRef;
   dropzoneActive = false;
 
   emitHandleUpload(fileList: FileList, dropped: boolean): void {
@@ -23,6 +30,9 @@ export class HsUploadComponent {
 
   dropZoneState($event: boolean): void {
     this.dropzoneActive = $event;
+  }
+  getVectorFileInput(): ElementRef {
+    return this.vectorFileInput;
   }
 
   constructor() {}

@@ -8,7 +8,7 @@ import {Cluster, Source} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Geometry} from 'ol/geom';
-import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
+import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';

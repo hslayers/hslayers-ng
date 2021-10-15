@@ -1,59 +1,75 @@
 <!-- Feature header template -->
 <ng-template #featureHeader let-feature="feature" let-type="type">
-    <div class="d-flex flex-row" style="background-color: aliceblue;">
-        <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
-        <a class="p-1"  *ngIf="HsQueryVectorService.isFeatureRemovable(feature) && type" (click)="removeFeature(feature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.' + type | translate">
-            <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
-        </a>
-    </div>
+        <div class="d-flex flex-row" style="background-color: aliceblue;">
+            <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
+            <a class="p-1" *ngIf="HsQueryVectorService.isFeatureRemovable(feature) && type"
+                (click)="removeFeature(feature)" data-toggle="tooltip"
+                [title]="'QUERY.featurePopup.' + type | translate">
+                <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+            </a>
+        </div>
 </ng-template>
 
 <!-- Feature attribute row template -->
 <ng-template #featureAttribute let-attributes="attributes">
-    <div *ngIf="attributes.length > 0">
         <div *ngFor="let attribute of attributes" class="d-flex flex-row">
-            <div class="p-1 flex-grow-1">
-                {{HsLanguageService.getTranslationIgnoreNonExisting(
+            <ng-container *ngIf="attribute.key">
+                <div class="p-1 flex-grow-1">
+                    {{HsLanguageService.getTranslationIgnoreNonExisting(
                     'FEATURE_TABLE',
                     attribute.key
-                  )}} 
-            </div>
-            <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
+                    )}} 
+                </div>
+            </ng-container>
+            <ng-container *ngIf="attribute.displayFunction">
+                <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
+            </ng-container>
         </div>
-    </div>
 </ng-template>
 
 
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
-        <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse; let i = index" style="line-height: 1.2">
-            <a class="p-1"  (click)="closePopup()" data-toggle="tooltip" [hidden]="i !== 0"
+        <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse; let i = index"
+            style="line-height: 1.2">
+            <a class="p-1" (click)="closePopup()" data-toggle="tooltip" [hidden]="i !== 0"
                 [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
             <strong style="font-size: small;">{{HsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
             <br>
-            <div *ngFor="let feature of layerDesc.features">
+            <ng-container *ngFor="let feature of layerDesc.features">
                 <!-- Layout for clustered layers -->
-                <div *ngIf="isClustered(feature); else nonClusteredPopUp" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
+                <div *ngIf="isClustered(feature); else nonClusteredPopUp"
+                    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
                     <div class="d-flex flex-column">
                         <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature}"></ng-container>
                         <div [hidden]="!(attributesForHover.length > 0)" class="ms-1 mt-1">
-                            <div *ngFor="let attribute of attributesForHover" class="d-flex flex-column hs-hover-popup-feature">
-                                <ng-container *ngTemplateOutlet="featureHeader;context:{feature: attribute.feature, type: 'removeClusterPart'}"></ng-container>
-                                <ng-container *ngTemplateOutlet="featureAttribute;context:{attributes: attribute.attributes}"></ng-container>
-                            </div>
+                            <ng-container *ngFor="let attribute of attributesForHover">
+                                <div *ngIf="attribute.feature"
+                                    [ngClass]="{'d-flex flex-column hs-hover-popup-feature' : hasMultipleSubFeatures(feature)}">
+                                    <ng-container
+                                        *ngTemplateOutlet="featureHeader;context:{feature: attribute.feature, type: 'removeClusterPart'}">
+                                    </ng-container>
+                                    <ng-container
+                                        *ngTemplateOutlet="featureAttribute;context:{attributes: attribute.attributes}">
+                                    </ng-container>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
                 <!-- Layout for non-clustered layers -->
                 <ng-template #nonClusteredPopUp>
-                    <div  class="hs-hover-popup-feature">
-                        <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature, type: 'removeFeature'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="featureAttribute;context:{attributes: attributesForHover}"></ng-container>
+                    <div class="hs-hover-popup-feature">
+                        <ng-container
+                            *ngTemplateOutlet="featureHeader;context:{feature: feature, type: 'removeFeature'}">
+                        </ng-container>
+                        <ng-container *ngTemplateOutlet="featureAttribute;context:{attributes: HsQueryBaseService.serializeFeatureAttributes(feature)}">
+                        </ng-container>
                     </div>
                 </ng-template>
-            </div>
+            </ng-container>
         </div>
     </div>
 </div>

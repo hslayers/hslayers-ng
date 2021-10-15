@@ -12,7 +12,7 @@ import VectorLayer from 'ol/layer/Vector';
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
+import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';

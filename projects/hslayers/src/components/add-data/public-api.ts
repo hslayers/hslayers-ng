@@ -3,7 +3,7 @@ export * from './common/public-api';
 export * from './file/public-api';
 export * from './url/public-api';
 export * from './vector/public-api';
-export * from './url/types/add-data-url.type';
+export * from './url/types/url.type';
 export * from './add-data.component';
 export * from './add-data.module';
 export * from './add-data.service';

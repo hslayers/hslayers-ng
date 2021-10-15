@@ -11,7 +11,7 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../../common/endpoints/endpoint.interface';
-import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.model';
+import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';

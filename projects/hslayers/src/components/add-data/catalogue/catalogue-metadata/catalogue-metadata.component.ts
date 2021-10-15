@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataCatalogueMapService} from '../add-data-catalogue-map.service';
-import {HsAddDataCatalogueService} from '../add-data-catalogue.service';
-import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.model';
+import {HsAddDataCatalogueMapService} from '../catalogue-map.service';
+import {HsAddDataCatalogueService} from '../catalogue.service';
+import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsConfig} from '../../../../config.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';

@@ -1,0 +1,17 @@
+<div class="d-flex justify-content-center flex-column align-items-center m-3">
+    <div class="container ">
+        <div class="row justify-content-center">
+            <button *ngFor="let type of types" [ngClass]="{'active': type.id === typeSelected }"
+                (click)="selectType(type.id)" style="margin: 3px;"
+                class="btn btn-light btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
+                {{type.text}}
+            </button>
+        </div>
+    </div>
+    <div class="w-100 pt-3">
+        <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'geojson'"></hs-file-vector>
+        <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'gpx'"></hs-file-vector>
+        <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'kml'"></hs-file-vector>
+        <hs-file-shp *ngIf="typeSelected === 'shp'"></hs-file-shp>
+    </div>
+</div>
