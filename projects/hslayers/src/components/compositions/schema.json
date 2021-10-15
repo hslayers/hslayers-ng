@@ -334,7 +334,7 @@
               "OnlineResource": {
                 "$id": "#/properties/layers/items/properties/attribution/properties/OnlineResource",
                 "type": "string",
-                "title": "Url of layer attribution",
+                "title": "URL of layer attribution",
                 "examples": [
                   "https://www.openstreetmap.org/copyright"
                 ]
@@ -382,7 +382,7 @@
           "url": {
             "$id": "#/properties/layers/items/properties/url",
             "type": "string",
-            "title": "Url of WMS service",
+            "title": "URL of WMS service",
             "description": "WMS service URL. Vector layers which are loaded from file, see #/properties/layers/items/properties/protocol/properties/url property",
             "default": "",
             "examples": [

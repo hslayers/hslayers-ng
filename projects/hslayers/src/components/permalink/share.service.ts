@@ -106,7 +106,7 @@ export class HsShareService {
           );
           this.getEmbedCode();
         } catch (ex) {
-          this.HsLogService.log('Error creating short Url', ex);
+          this.HsLogService.log('Error creating short URL', ex);
           this.data.pureMapUrl = this.HsShareUrlService.getPureMapUrl();
           this.data.permalinkUrl = this.HsShareUrlService.getPermalinkUrl();
         }
@@ -237,7 +237,7 @@ export class HsShareService {
         this.openInShareApi(this.data.title, this.data.abstract, shareUrl);
         this.data.shareUrlValid = true;
       } catch (ex) {
-        this.HsLogService.log('Error creating short Url', ex);
+        this.HsLogService.log('Error creating short URL', ex);
       }
     } else {
       this.openInShareApi(
