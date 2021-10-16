@@ -2,22 +2,25 @@
 
   <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
-  <div class="form-group">
-    <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+  <div class="form-floating mb-3">
     <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translate" class="form-control" name="title"
       [(ngModel)]="data.title" />
+    <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+
   </div>
 
-  <div class="form-group">
-    <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+  <div class="form-floating mb-3">
     <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate" class="form-control" name="name"
       [(ngModel)]="data.name" />
+    <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+
   </div>
-  <div class="form-group">
-    <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
+  <div class="form-floating mb-3">
     <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
       name="abstract" [(ngModel)]="data.abstract">
                               </textarea>
+    <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
+
   </div>
   <ng-container *ngIf="isAuthorized() && data.saveAvailable">
     <hs-save-to-layman [data]="data"></hs-save-to-layman>
@@ -28,8 +31,8 @@
       <label class="dropzone-label">
         <input name="file" type="file" accept=".sld" class="inputfile"
           (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
-        <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="data.sld ? 'bg-success' : 'bg-primary'"> <i
-            class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
+        <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="data.sld ? 'bg-success' : 'bg-primary'">
+          <i class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
       </label>
     </div>
   </ng-container>

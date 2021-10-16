@@ -2,9 +2,10 @@
     <hs-panel-header name="print" [title]="'PANEL_HEADER.PRINT' | translate"></hs-panel-header>
     <div class="card-body">
         <div class="card-body">
-            <div class="form-group">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="print-title" [(ngModel)]="title"
+                    placeholder="'COMMON.title' | translate" />
                 <label for="print-title" class="control-label">{{'COMMON.title' | translate}}</label>
-                <input type="text" class="form-control" id="print-title" [(ngModel)]="title" />
             </div>
             <button type="button" class="btn btn-primary" (click)="print()">{{'COMMON.print' | translate}}</button>
         </div>

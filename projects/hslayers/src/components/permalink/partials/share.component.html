@@ -12,7 +12,7 @@
             <br>
             <div class="form-group">
                 <label for="permalink-link" class="control-label">{{'PERMALINK.permalink' | translate}}</label><br />
-                <a [href]="HsShareService.data.permalinkUrl" target="_blank"  style="overflow-x: hidden;"
+                <a [href]="HsShareService.data.permalinkUrl" target="_blank" style="overflow-x: hidden;"
                     id="permalink-link">{{HsShareService.data.permalinkUrl}}</a>
                 <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translate}}</sub></p>
             </div>
@@ -20,7 +20,8 @@
 
             <fieldset class="form-group">
                 <h4 for="share-link">{{'PERMALINK.linkFor' | translate}}&nbsp;<span
-                        [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' | translate}}/</span>{{'PERMALINK.socialShare' | translate}}
+                        [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
+                        translate}}/</span>{{'PERMALINK.socialShare' | translate}}
                 </h4>
                 <div class="form-check">
                     <label class="form-check-label">
@@ -37,10 +38,11 @@
                     </label>
                 </div>
             </fieldset>
-            <div class="form-group" [hidden]="!HsCore.embeddedEnabled">
-                <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translate}}</label>
+            <div class="form-floating mb-3" [hidden]="!HsCore.embeddedEnabled">
                 <textarea class="form-control" style="height: 80px" id="permalink-embed"
-                    [(ngModel)]="HsShareService.data.embedCode" [ngModelOptions]="{standalone: true}"></textarea>
+                    placeholder="'PERMALINK.embedCode' | translate" [(ngModel)]="HsShareService.data.embedCode"
+                    [ngModelOptions]="{standalone: true}"></textarea>
+                <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translate}}</label>
                 <br>
             </div>
 
@@ -48,24 +50,24 @@
 
             <fieldset>
                 <h4>{{'PERMALINK.shareOnSocialNetwork' | translate}}</h4>
-                <div class="form-group">
-                    <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translate}}</label>
+                <div class="form-floating mb-3" [title]="'COMMON.fillInName' | translate">
                     <input type="text" class="form-control" id="hs-prmlnk-title"
-                        [placeholder]="'COMMON.fillInName' | translate" (change)="invalidateShareUrl()"
+                        [placeholder]="'COMMON.name' | translate" (change)="invalidateShareUrl()"
                         [(ngModel)]="HsShareService.data.title" [ngModelOptions]="{standalone: true}">
+                    <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translate}}</label>
                 </div>
-                <div class="form-group">
+                <div class="form-floating mb-3" [title]="'COMMON.fillInDescriptive' | translate">
+                    <textarea class="form-control" id="hs-prmlnk-abstract" [placeholder]="'COMMON.abstract' | translate"
+                        (change)="invalidateShareUrl()" [(ngModel)]="HsShareService.data.abstract"
+                        [ngModelOptions]="{standalone: true}">                    </textarea>
                     <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translate}}</label>
-
-                    <textarea class="form-control" id="hs-prmlnk-abstract"
-                        [placeholder]="'COMMON.fillInDescriptive' | translate" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.data.abstract" [ngModelOptions]="{standalone: true}">                    </textarea>
                 </div>
 
                 <div class="form-group">
                     <div class="form-group">
-                        <label class="control-label"><input type="checkbox" [(ngModel)]="new_share" [ngModelOptions]="{standalone: true}" /><span
-                                class="ng-scope">{{'PERMALINK.newShare' | translate}}</span></label>
+                        <label class="control-label"><input type="checkbox" class="me-2" [(ngModel)]="new_share"
+                                [ngModelOptions]="{standalone: true}" /><span class="ng-scope">{{'PERMALINK.newShare' |
+                                translate}}</span></label>
                     </div>
                     <div class="btn-group" role="group">
                         <button class="btn btn-secondary" (click)="shareOnSocial()">
@@ -75,7 +77,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">{{'COMMON.thumbnail'   | translate}}</label>
+                    <label class="control-label">{{'COMMON.thumbnail' | translate}}</label>
                     <img class="img-thumbnail hs-permalink-thumbnail" alt="Thumbnail" width="256" height="256">
                 </div>
             </fieldset>
