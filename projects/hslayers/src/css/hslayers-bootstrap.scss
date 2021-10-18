@@ -4,16 +4,17 @@
 $mobile-layout-breakpoint-value: 767 !default; //will be used in TS files
 $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //this will be used in hsl styles
 
-@import "~ol/ol";
+@import "ol/ol";
+@import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
 
 $table-group-separator-color: white;
 
-@import "~bootstrap/scss/_mixins";
-@import "~bootstrap/scss/_utilities";
-@import "~bootstrap/scss/root";
+@import "bootstrap/scss/_mixins";
+@import "bootstrap/scss/_utilities";
+@import "bootstrap/scss/root";
 
 .hsl,
 .hsl::before,
@@ -24,41 +25,41 @@ $table-group-separator-color: white;
 }
 
 .hsl {
-  @import "~bootstrap/scss/reboot";
-  @import "~bootstrap/scss/type";
-  @import "~bootstrap/scss/images";
-  @import "~bootstrap/scss/containers";
-  @import "~bootstrap/scss/grid";
-  @import "~bootstrap/scss/tables";
-  @import "~bootstrap/scss/_forms";
-  @import "~bootstrap/scss/buttons";
-  @import "~bootstrap/scss/transitions";
-  @import "~bootstrap/scss/dropdown";
-  @import "~bootstrap/scss/button-group";
-  @import "~bootstrap/scss/nav";
-  @import "~bootstrap/scss/navbar";
-  @import "~bootstrap/scss/card";
-  @import "~bootstrap/scss/accordion";
-  @import "~bootstrap/scss/breadcrumb";
-  @import "~bootstrap/scss/pagination";
-  @import "~bootstrap/scss/badge";
-  @import "~bootstrap/scss/alert";
-  @import "~bootstrap/scss/progress";
-  @import "~bootstrap/scss/list-group";
-  @import "~bootstrap/scss/close";
-  @import "~bootstrap/scss/toasts";
-  @import "~bootstrap/scss/modal";
-  @import "~bootstrap/scss/tooltip";
-  @import "~bootstrap/scss/popover";
-  // @import "~bootstrap/scss/carousel";
-  @import "~bootstrap/scss/spinners";
-  // @import "~bootstrap/scss/offcanvas";
+  @import "bootstrap/scss/reboot";
+  @import "bootstrap/scss/type";
+  @import "bootstrap/scss/images";
+  @import "bootstrap/scss/containers";
+  @import "bootstrap/scss/grid";
+  @import "bootstrap/scss/tables";
+  @import "bootstrap/scss/_forms";
+  @import "bootstrap/scss/buttons";
+  @import "bootstrap/scss/transitions";
+  @import "bootstrap/scss/dropdown";
+  @import "bootstrap/scss/button-group";
+  @import "bootstrap/scss/nav";
+  @import "bootstrap/scss/navbar";
+  @import "bootstrap/scss/card";
+  @import "bootstrap/scss/accordion";
+  @import "bootstrap/scss/breadcrumb";
+  @import "bootstrap/scss/pagination";
+  @import "bootstrap/scss/badge";
+  @import "bootstrap/scss/alert";
+  @import "bootstrap/scss/progress";
+  @import "bootstrap/scss/list-group";
+  @import "bootstrap/scss/close";
+  @import "bootstrap/scss/toasts";
+  @import "bootstrap/scss/modal";
+  @import "bootstrap/scss/tooltip";
+  @import "bootstrap/scss/popover";
+  // @import "bootstrap/scss/carousel";
+  @import "bootstrap/scss/spinners";
+  // @import "bootstrap/scss/offcanvas";
 
   // Helpers
-  @import "~bootstrap/scss/_helpers";
+  @import "bootstrap/scss/_helpers";
 
   // Utilities
-  @import "~bootstrap/scss/utilities/api";
+  @import "bootstrap/scss/utilities/api";
 
   //Dropped in b5. suggested to use utilities mb-*. Might refactor later
   .form-group {
