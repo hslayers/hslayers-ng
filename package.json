@@ -50,7 +50,7 @@
     "deepmerge": "^4.2.2",
     "geostyler-legend": ">=2.1.0",
     "geostyler-openlayers-parser": "^3.0.0",
-    "geostyler-sld-parser": "^3.0.0",
+    "geostyler-sld-parser": "^3.0.1",
     "geostyler-style": "^5.0.0",
     "ngx-color": "^7.2.0",
     "ngx-cookie-service": "^12.0.3",
