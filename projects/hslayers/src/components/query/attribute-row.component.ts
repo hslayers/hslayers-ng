@@ -10,14 +10,14 @@ export class HsQueryAttributeRowComponent implements OnInit {
   @Input() feature;
   @Input() readonly: boolean;
   @Input() template;
-
+  tmpObjectValue: any;
   ngOnInit(): void {
     this.checkAttributeValue();
   }
   change(): void {
     if (this.feature?.feature) {
       const feature = this.feature.feature;
-      feature.set(this.attribute.name, this.attribute.value);
+      feature.set(this.attribute.name, JSON.parse(this.tmpObjectValue));
     }
   }
 
@@ -27,7 +27,7 @@ export class HsQueryAttributeRowComponent implements OnInit {
       !Array.isArray(this.attribute.value)
     ) {
       this.isObject = true;
-      this.attribute.value = JSON.stringify(this.attribute.value);
+      this.tmpObjectValue = JSON.stringify(this.attribute.value);
     }
   }
 }
