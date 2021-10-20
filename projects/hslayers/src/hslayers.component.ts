@@ -44,9 +44,9 @@ export class HslayersComponent implements OnInit {
   ) {}
 
   /**
-   * 
-   * @param name Check if panel is configured to be visible in hsConfig.panelsEnabled 
+   * Check if panel is configured to be visible in hsConfig.panelsEnabled 
    * or hsLayoutService.panelsEnabledDefaults and create one if so.
+   * @param name Name of panel used in panelsEnabled config 
    * @param panelComponent Class defining panel
    * @param data Extra misc data object to be stored in panel
    */
