@@ -4,7 +4,7 @@
         (click)="openAttributionDialog($event)"
         color="primary"
         matTooltip="Attributions"
-        matTooltipPosition="top"
+        matTooltipPosition="above"
         aria-label="Attributions button">
         <mat-icon>info</mat-icon>
     </button>
@@ -16,7 +16,7 @@
         [class.mat-accent]="false"
         [disabled]="!canZoomOut()"
         matTooltip="Zoom out"
-        matTooltipPosition="bottom"
+        matTooltipPosition="below"
         aria-label="Zoom out button">
         –
     </button>
@@ -26,7 +26,7 @@
         [class.mat-accent]="false"
         [disabled]="!canZoomIn()"
         matTooltip="Zoom in"
-        matTooltipPosition="bottom"
+        matTooltipPosition="below"
         aria-label="Zoom in button">
         +
     </button>
@@ -35,7 +35,7 @@
         (click)="defaultView()"
         color="primary"
         matTooltip="Default view"
-        matTooltipPosition="bottom"
+        matTooltipPosition="below"
         aria-label="Go to the default view">
         <mat-icon>home</mat-icon>
     </button>
@@ -44,7 +44,7 @@
         (click)="maxView()"
         color="primary"
         matTooltip="Display all"
-        matTooltipPosition="bottom"
+        matTooltipPosition="below"
         aria-label="Display all features">
         <mat-icon>language</mat-icon>
     </button>
