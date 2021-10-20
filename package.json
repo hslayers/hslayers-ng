@@ -89,7 +89,7 @@
     "ajv-errors": "^1.0.1",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.0.0",
+    "eslint": "^8.0.1",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-config-openlayers": "14.0.0",
     "eslint-plugin-import": "2.25.2",
