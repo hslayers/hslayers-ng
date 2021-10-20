@@ -1,0 +1,62 @@
+@import '~@angular/material/theming';
+$padding: 1em;
+
+hs-mat-slideshow {
+    display: block;
+    color: white;
+
+    button {
+        &.mat-icon-button {
+            position: absolute;
+        }
+
+        &.top {
+            top: $padding;
+        }
+
+        &.left {
+            left: $padding;
+        }
+
+        &.right {
+            right: $padding;
+        }
+
+        &.bottom {
+            bottom: $padding;
+        }
+
+        &.v-center {
+            top: 0;
+            bottom: 0;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+    }
+
+    .slide {
+        display: flex;
+        flex-direction: column;
+
+        img {
+            @include mat-elevation(6);
+            max-width: calc(100vw - 8em);
+            max-height: calc(100vh - 8em);
+        }
+
+        .title {
+            margin-top: .5em;
+        }
+
+        .text {
+            align-self: center;
+        }
+    }
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    &.hs-mat-backdrop {
+        background: black;
+        opacity: 0.6;
+    }
+}

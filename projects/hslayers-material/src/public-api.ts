@@ -2,8 +2,8 @@
  * Public API Surface of hslayers-material
  */
 
-export * from './lib/hslayers-material.service';
 export * from './lib/hslayers-material.component';
+export * from './lib/hslayers-material.service';
 export * from './lib/hslayers-material.module';
 export * from './lib/layermanager/layermanager.component';
 export * from './lib/layermanager/layermanager.module';
@@ -12,3 +12,7 @@ export * from './lib/layout/layout.component';
 export * from './lib/layout/layout.module';
 export * from './lib/layout/overlay.component';
 export * from './lib/layout/attribution-dialog.component';
+export * from './lib/slideshow/slideshow.component';
+export * from './lib/slideshow/slideshow.module';
+export * from './lib/slideshow/slideshow.service';
+export * from './lib/slideshow/slideshow-ref';

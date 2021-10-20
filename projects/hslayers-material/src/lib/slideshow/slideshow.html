@@ -1,0 +1,40 @@
+<button mat-icon-button 
+    class="top right"
+    (click)="dialogRef.close()"
+    matTooltip="Close"
+    aria-label="Close slideshow"
+>
+    <mat-icon>close</mat-icon>
+</button>
+
+<button mat-icon-button 
+    class="left v-center"
+    (click)="prevSlide()"
+    matTooltip="Previous slide"
+    aria-label="Previous slide"
+>
+    <mat-icon>keyboard_arrow_left</mat-icon>
+</button>
+
+<button mat-icon-button
+    class="right v-center"
+    (click)="nextSlide()"
+    matTooltip="Next slide"
+    aria-label="Next slide"
+>
+    <mat-icon>keyboard_arrow_right</mat-icon>
+</button>
+
+<div class="slide">
+    <img
+        [src]="'https://db.atlasbestpractices.com' + gallery[currentSlide].url"
+        (click)="nextSlide()"
+    >
+
+    <h2 *ngIf="gallery[currentSlide].title?.length > 0" class="title text">
+        {{ gallery[currentSlide].title }}
+    </h2>
+    <p *ngIf="gallery[currentSlide].description?.length > 0" class="text">
+        {{ gallery[currentSlide].description }}
+    </p>
+</div>
