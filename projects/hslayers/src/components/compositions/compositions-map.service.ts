@@ -45,23 +45,23 @@ export class HsCompositionsMapService {
   });
 
   constructor(
-    public HsEventBusService: HsEventBusService,
-    public HsMapService: HsMapService,
-    public HsLayoutService: HsLayoutService,
-    private HsSaveMapService: HsSaveMapService,
+    public hsEventBusService: HsEventBusService,
+    public hsMapService: HsMapService,
+    public hsLayoutService: HsLayoutService,
+    private hsSaveMapService: HsSaveMapService,
     public hsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));
       map.addLayer(this.extentLayer);
-      this.HsSaveMapService.internalLayers.push(this.extentLayer);
+      this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.hsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.extentLayer) {
         if (
-          this.HsLayoutService.mainpanel === 'composition_browser' ||
-          this.HsLayoutService.mainpanel === 'composition'
+          this.hsLayoutService.mainpanel === 'composition_browser' ||
+          this.hsLayoutService.mainpanel === 'composition'
         ) {
           this.extentLayer.setVisible(true);
         } else {
@@ -105,7 +105,7 @@ export class HsCompositionsMapService {
 
   getFeatureRecordAndUnhighlight(feature, selector) {
     if (
-      this.HsMapService.getLayerForFeature(feature) == this.extentLayer &&
+      this.hsMapService.getLayerForFeature(feature) == this.extentLayer &&
       getRecord(feature)
     ) {
       const record = getRecord(feature);
