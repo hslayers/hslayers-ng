@@ -14,7 +14,7 @@ import {setHighlighted} from '../../common/feature-extensions';
  */
 @Component({
   selector: 'hs-search-results',
-  templateUrl: './partials/searchresults.html',
+  templateUrl: './partials/search-results.component.html',
 })
 export class HsSearchResultsComponent implements OnDestroy {
   searchResultsVisible: boolean;
