@@ -52,8 +52,8 @@ export class HsSearchService {
 
   /**
    * @public
-   * @param {string} query Place name or part of it
-   * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
+   * @param query - Place name or part of it
+   * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
   request(query: string): void {
     let url = null;
@@ -117,9 +117,9 @@ export class HsSearchService {
   }
   /**
    * @public
-   * @param {object} response Response object of Geolocation request
-   * @param {string} providerName Name of request provider
-   * @description Maintain inner results object and parse response with correct provider parser
+   * @param response - Response object of Geolocation request
+   * @param providerName - Name of request provider
+   * Maintain inner results object and parse response with correct provider parser
    */
   searchResultsReceived(response: any, providerName: string): void {
     if (this.data.providers[providerName] === undefined) {
@@ -143,14 +143,14 @@ export class HsSearchService {
   }
   /**
    * @public
-   * @description Remove results layer from map
+   * Remove results layer from map
    */
   hideResultsLayer(): void {
     this.hsMapService.map.removeLayer(this.searchResultsLayer);
   }
   /**
    * @public
-   * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
+   * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
   showResultsLayer(): void {
     this.hideResultsLayer();
@@ -158,7 +158,7 @@ export class HsSearchService {
   }
   /**
    * @public
-   * @description Clean all search results from results variable and results layer
+   * Clean all search results from results variable and results layer
    */
   cleanResults(): void {
     if (this.data.providers !== undefined) {
@@ -191,9 +191,9 @@ export class HsSearchService {
   }
   /**
    * @public
-   * @param {object} result Entity of selected result
-   * @param {number} zoomLevel Zoom level to zoom on
-   * @description Move map and zoom on selected search result
+   * @param result - Entity of selected result
+   * @param zoomLevel - Zoom level to zoom on
+   * Move map and zoom on selected search result
    */
   selectResult(result: any, zoomLevel: number): void {
     const coordinate = this.getResultCoordinate(result);
@@ -213,9 +213,9 @@ export class HsSearchService {
   }
   /**
    * @public
-   * @param {object} result Entity of selected result
-   * @returns {object} Ol.coordinate of selected result
-   * @description Parse coordinate of selected result
+   * @param result - Entity of selected result
+   * @returns Ol.coordinate of selected result
+   * Parse coordinate of selected result
    */
   getResultCoordinate(result: any): any {
     const currentProj = this.hsMapService.getCurrentProj();
@@ -240,17 +240,16 @@ export class HsSearchService {
   }
 
   /**
-   * @private
-   * @param {object} response Result of search request
-   * @param {object} provider Which provider sent the search results
-   * @description Result parser of results from Geonames service
+   * @param response - Result of search request
+   * @param provider - Which provider sent the search results
+   * Result parser of results from Geonames service
    */
   parseGeonamesResults(response: any, provider: any): void {
     provider.results = response.geonames;
     this.generateGeonamesFeatures(provider);
   }
   /**
-   * @param provider
+   * @param provider -
    */
   generateGeonamesFeatures(provider: any): void {
     const src = this.searchResultsLayer.getSource();
@@ -268,22 +267,20 @@ export class HsSearchService {
   }
 
   /**
-   * @private
-   * @param {object} response Result of search request
-   * @param {object} provider Which provider sent the search results
-   * @description Result parser of results from OpenApi service
+   * @param response - Result of search request
+   * @param provider - Which provider sent the search results
+   * Result parser of results from OpenApi service
    */
   parseOpenApiResults(response: any, provider: any): void {
     provider.results = response.data;
     this.generateOpenApiFeatures(provider);
   }
   /**
-   * @param provider
+   * @param provider -
    */
   generateOpenApiFeatures(provider: any): void {
     const src = this.searchResultsLayer.getSource();
     for (const result of provider.results) {
-      // angular.forEach(provider.results, (result) => {
       result.provider_name = provider.name;
       const feature = new Feature({
         geometry: new Point(this.getResultCoordinate(result)),

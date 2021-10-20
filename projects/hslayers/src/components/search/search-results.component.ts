@@ -53,12 +53,20 @@ export class HsSearchResultsComponent implements OnDestroy {
     this.searchResultsVisible = false;
   }
 
+  /**
+   * @param featureId - feature id
+   * Finds feature from search result layer based on featureId
+   */
   findFeature(featureId: string): Feature<Geometry> {
     return this.HsSearchService.searchResultsLayer
       .getSource()
       .getFeatureById(featureId);
   }
-
+  /**
+   * @param result - Search result record
+   * @param highlight - Feature highlight state
+   * Highlights feature, when hovering search list
+   */
   highlightResult(result, highlight: boolean): void {
     const found = this.findFeature(result.featureId);
     if (found) {
@@ -68,7 +76,7 @@ export class HsSearchResultsComponent implements OnDestroy {
   /**
    * Zoom map to selected result from results list
    *
-   * @param result Selected result
+   * @param result - Selected result
    */
   zoomTo(result: any): void {
     this.fcode_zoom_map = {
