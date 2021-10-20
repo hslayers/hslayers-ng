@@ -1,10 +1,13 @@
 import {Component, OnDestroy} from '@angular/core';
 
+import Feature from 'ol/Feature';
+import {Geometry} from 'ol/geom';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
+import {setHighlighted} from '../../common/feature-extensions';
 
 /**
  * Add search results template to page
@@ -48,6 +51,19 @@ export class HsSearchResultsComponent implements OnDestroy {
   }
   clear(): void {
     this.searchResultsVisible = false;
+  }
+
+  findFeature(featureId: string): Feature<Geometry> {
+    return this.HsSearchService.searchResultsLayer
+      .getSource()
+      .getFeatureById(featureId);
+  }
+
+  highlightResult(result, highlight: boolean): void {
+    const found = this.findFeature(result.featureId);
+    if (found) {
+      setHighlighted(found, highlight);
+    }
   }
   /**
    * Zoom map to selected result from results list

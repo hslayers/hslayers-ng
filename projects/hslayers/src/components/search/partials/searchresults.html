@@ -2,8 +2,8 @@
     <div *ngFor="let provider of data | keyvalue ">
         <div *ngFor="let item of provider.value | keyvalue ">
         <a class="list-group-item active" [hidden]="!(item.value.results.length > 0)">Provider: {{item.value.name}}</a>
-        <a  *ngFor="let result of item.value.results | limitTo: 10" class="list-group-item hsl-search-result"
-            (click)="zoomTo(result)"
+        <a  *ngFor="let result of item.value.results | limitTo: 10" class="list-group-item hsl-search-result" [ngClass]="{'active': result.highlighted}"
+            (click)="zoomTo(result)" (mouseover)="highlightResult(result, true)" (mouseleave)="highlightResult(result, false)"
             [attr.title]="result.DisplayDescription">{{result.name || result.DisplayTitle}}<small
                 style="color: rgb(148, 143, 143)"><br>{{result.fcodeName}}</small></a>
             </div>

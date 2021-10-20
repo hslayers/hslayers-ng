@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
@@ -15,6 +15,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getRecord} from '../../common/feature-extensions';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -33,7 +34,8 @@ export class HsSearchService {
     public HsConfig: HsConfig,
     public HsMapService: HsMapService,
     public HsStylerService: HsStylerService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    private zone: NgZone
   ) {
     this.searchResultsLayer = new VectorLayer({
       source: new Vector({}),
@@ -41,6 +43,11 @@ export class HsSearchService {
     });
     setTitle(this.searchResultsLayer, 'Search results');
     setShowInLayerManager(this.searchResultsLayer, false);
+    this.HsMapService.loaded().then((map) => {
+      this.HsMapService.map.on('pointermove', (evt) =>
+        this.mapPointerMoved(evt)
+      );
+    });
   }
 
   /**
@@ -165,6 +172,40 @@ export class HsSearchService {
       this.hideResultsLayer();
     }
   }
+
+  /**
+   * @param evt -
+   * Highlight in the search list result, that corresponds with the nearest found feature under the pointer over the map
+   */
+  mapPointerMoved(evt): void {
+    const featuresUnderMouse = this.hsMapService.map
+      .getFeaturesAtPixel(evt.pixel)
+      .filter((feature: Feature<Geometry>) => {
+        const layer = this.hsMapService.getLayerForFeature(feature);
+        return layer && layer == this.searchResultsLayer;
+      });
+    const highlightedFeatures = this.searchResultsLayer
+      .getSource()
+      .getFeatures()
+      .filter((feature) => getRecord(feature).highlighted);
+
+    const dontHighlight = highlightedFeatures.filter(
+      (feature) => !featuresUnderMouse.includes(feature)
+    );
+    const highlight = featuresUnderMouse.filter(
+      (feature) => !highlightedFeatures.includes(feature as Feature<Geometry>)
+    );
+    if (dontHighlight.length > 0 || highlight.length > 0) {
+      this.zone.run(() => {
+        for (const feature of highlight) {
+          getRecord(feature as Feature<Geometry>).highlighted = true;
+        }
+        for (const feature of dontHighlight) {
+          getRecord(feature).highlighted = false;
+        }
+      });
+    }
+  }
   /**
    * @public
    * @param {object} result Entity of selected result
@@ -231,14 +272,15 @@ export class HsSearchService {
   generateGeonamesFeatures(provider: any): void {
     const src = this.searchResultsLayer.getSource();
     for (const result of provider.results) {
-      //angular.forEach(provider.results, (result) =>
       result.provider_name = provider.name;
       const feature = new Feature({
         geometry: new Point(this.getResultCoordinate(result)),
         record: result,
+        id: this.HsUtilsService.generateUuid(),
       });
+      feature.setId(feature.get('id'));
       src.addFeature(feature);
-      result.feature = feature;
+      result.featureId = feature.getId();
     }
   }
 
