@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
@@ -12,10 +12,10 @@ import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getRecord} from '../../common/feature-extensions';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -30,21 +30,21 @@ export class HsSearchService {
   searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
   constructor(
     private http: HttpClient,
-    public HsUtilsService: HsUtilsService,
-    public HsConfig: HsConfig,
-    public HsMapService: HsMapService,
-    public HsStylerService: HsStylerService,
-    public HsEventBusService: HsEventBusService,
-    private zone: NgZone
+    public hsUtilsService: HsUtilsService,
+    public hsConfig: HsConfig,
+    public hsMapService: HsMapService,
+    public hsStylerService: HsStylerService,
+    public hsEventBusService: HsEventBusService,
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {
     this.searchResultsLayer = new VectorLayer({
       source: new Vector({}),
-      style: this.HsStylerService.pin_white_blue_highlight,
+      style: this.hsStylerService.pin_white_blue_highlight,
     });
     setTitle(this.searchResultsLayer, 'Search results');
     setShowInLayerManager(this.searchResultsLayer, false);
-    this.HsMapService.loaded().then((map) => {
-      this.HsMapService.map.on('pointermove', (evt) =>
+    this.hsMapService.loaded().then((map) => {
+      this.hsMapService.map.on('pointermove', (evt) =>
         this.mapPointerMoved(evt)
       );
     });
@@ -59,36 +59,36 @@ export class HsSearchService {
     let url = null;
     let providers = [];
     if (
-      this.HsConfig.search_provider !== undefined &&
-      this.HsConfig.searchProvider === undefined
+      this.hsConfig.search_provider !== undefined &&
+      this.hsConfig.searchProvider === undefined
     ) {
-      this.HsConfig.searchProvider = this.HsConfig.search_provider;
+      this.hsConfig.searchProvider = this.hsConfig.search_provider;
     }
 
-    if (this.HsConfig.searchProvider === undefined) {
+    if (this.hsConfig.searchProvider === undefined) {
       providers = ['geonames'];
     } else if (
-      typeof this.HsConfig.searchProvider === 'string' ||
-      typeof this.HsConfig.searchProvider === 'function'
+      typeof this.hsConfig.searchProvider === 'string' ||
+      typeof this.hsConfig.searchProvider === 'function'
     ) {
-      providers = [this.HsConfig.searchProvider];
-    } else if (typeof this.HsConfig.searchProvider === 'object') {
-      providers = this.HsConfig.searchProvider;
+      providers = [this.hsConfig.searchProvider];
+    } else if (typeof this.hsConfig.searchProvider === 'object') {
+      providers = this.hsConfig.searchProvider;
     }
     this.cleanResults();
     for (const provider of providers) {
       let providerId = provider;
       if (provider == 'geonames') {
-        if (this.HsConfig.geonamesUser !== undefined) {
-          url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${this.HsConfig.geonamesUser}`;
+        if (this.hsConfig.geonamesUser !== undefined) {
+          url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${this.hsConfig.geonamesUser}`;
         } else {
           //Username will have to be set in proxy
-          url = this.HsUtilsService.proxify(
+          url = this.hsUtilsService.proxify(
             `http://api.geonames.org/searchJSON?&name_startsWith=${query}`
           );
         }
         if (window.location.protocol == 'https:') {
-          url = this.HsUtilsService.proxify(url);
+          url = this.hsUtilsService.proxify(url);
         }
       } else if (provider == 'sdi4apps_openapi') {
         url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
@@ -136,7 +136,7 @@ export class HsSearchService {
     } else {
       this.parseGeonamesResults(response, provider);
     }
-    this.HsEventBusService.searchResultsReceived.next({
+    this.hsEventBusService.searchResultsReceived.next({
       layer: this.searchResultsLayer,
       providers: this.data.providers,
     });
@@ -146,7 +146,7 @@ export class HsSearchService {
    * @description Remove results layer from map
    */
   hideResultsLayer(): void {
-    this.HsMapService.map.removeLayer(this.searchResultsLayer);
+    this.hsMapService.map.removeLayer(this.searchResultsLayer);
   }
   /**
    * @public
@@ -154,7 +154,7 @@ export class HsSearchService {
    */
   showResultsLayer(): void {
     this.hideResultsLayer();
-    this.HsMapService.map.addLayer(this.searchResultsLayer);
+    this.hsMapService.map.addLayer(this.searchResultsLayer);
   }
   /**
    * @public
@@ -184,27 +184,10 @@ export class HsSearchService {
         const layer = this.hsMapService.getLayerForFeature(feature);
         return layer && layer == this.searchResultsLayer;
       });
-    const highlightedFeatures = this.searchResultsLayer
-      .getSource()
-      .getFeatures()
-      .filter((feature) => getRecord(feature).highlighted);
-
-    const dontHighlight = highlightedFeatures.filter(
-      (feature) => !featuresUnderMouse.includes(feature)
+    this.hsLayerUtilsService.highlightFeatures(
+      featuresUnderMouse as Feature<Geometry>[],
+      this.searchResultsLayer
     );
-    const highlight = featuresUnderMouse.filter(
-      (feature) => !highlightedFeatures.includes(feature as Feature<Geometry>)
-    );
-    if (dontHighlight.length > 0 || highlight.length > 0) {
-      this.zone.run(() => {
-        for (const feature of highlight) {
-          getRecord(feature as Feature<Geometry>).highlighted = true;
-        }
-        for (const feature of dontHighlight) {
-          getRecord(feature).highlighted = false;
-        }
-      });
-    }
   }
   /**
    * @public
@@ -214,15 +197,15 @@ export class HsSearchService {
    */
   selectResult(result: any, zoomLevel: number): void {
     const coordinate = this.getResultCoordinate(result);
-    this.HsMapService.map.getView().setCenter(coordinate);
+    this.hsMapService.map.getView().setCenter(coordinate);
     if (zoomLevel === undefined) {
       zoomLevel = 10;
     }
-    this.HsMapService.map.getView().setZoom(zoomLevel);
-    this.HsEventBusService.searchZoomTo.next({
+    this.hsMapService.map.getView().setZoom(zoomLevel);
+    this.hsEventBusService.searchZoomTo.next({
       coordinate: transform(
         coordinate,
-        this.HsMapService.getCurrentProj(),
+        this.hsMapService.getCurrentProj(),
         'EPSG:4326'
       ),
       zoom: zoomLevel,
@@ -235,7 +218,7 @@ export class HsSearchService {
    * @description Parse coordinate of selected result
    */
   getResultCoordinate(result: any): any {
-    const currentProj = this.HsMapService.getCurrentProj();
+    const currentProj = this.hsMapService.getCurrentProj();
     if (
       result.provider_name.indexOf('geonames') > -1 ||
       result.provider_name == 'searchFunctionsearchProvider'
@@ -276,7 +259,7 @@ export class HsSearchService {
       const feature = new Feature({
         geometry: new Point(this.getResultCoordinate(result)),
         record: result,
-        id: this.HsUtilsService.generateUuid(),
+        id: this.hsUtilsService.generateUuid(),
       });
       feature.setId(feature.get('id'));
       src.addFeature(feature);

@@ -28,5 +28,6 @@ export function mockLayerUtilsService() {
     'layerInvalid',
     'hasNestedLayers',
     'isLayerArcgis',
+    'highlightFeatures',
   ]);
 }

@@ -8,12 +8,12 @@ import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsSaveMapService} from '../../save-map/save-map.service';
 import {
   getHighlighted,
-  getRecord,
   setHighlighted,
 } from '../../../common/feature-extensions';
 import {
@@ -46,7 +46,7 @@ export class HsAddDataCatalogueMapService {
     public hsMapService: HsMapService,
     public hsLogService: HsLogService,
     private hsSaveMapService: HsSaveMapService,
-    private zone: NgZone
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {
     setTitle(this.extentLayer, 'Datasources extents');
     setShowInLayerManager(this.extentLayer, false);
@@ -60,27 +60,10 @@ export class HsAddDataCatalogueMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    const highlightedFeatures = this.extentLayer
-      .getSource()
-      .getFeatures()
-      .filter((feature) => getRecord(feature).highlighted);
-
-    const dontHighlight = highlightedFeatures.filter(
-      (feature) => !featuresUnderMouse.includes(feature)
+    this.hsLayerUtilsService.highlightFeatures(
+      featuresUnderMouse,
+      this.extentLayer
     );
-    const highlight = featuresUnderMouse.filter(
-      (feature) => !highlightedFeatures.includes(feature)
-    );
-    if (dontHighlight.length > 0 || highlight.length > 0) {
-      this.zone.run(() => {
-        for (const feature of highlight) {
-          getRecord(feature).highlighted = true;
-        }
-        for (const feature of dontHighlight) {
-          getRecord(feature).highlighted = false;
-        }
-      });
-    }
   }
 
   /**

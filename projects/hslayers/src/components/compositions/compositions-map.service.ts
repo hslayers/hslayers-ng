@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
@@ -13,6 +13,7 @@ import {
 } from '../../common/feature-extensions';
 
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
@@ -48,7 +49,7 @@ export class HsCompositionsMapService {
     public HsMapService: HsMapService,
     public HsLayoutService: HsLayoutService,
     private HsSaveMapService: HsSaveMapService,
-    private zone: NgZone
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));
@@ -77,27 +78,10 @@ export class HsCompositionsMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    const highlightedFeatures = this.extentLayer
-      .getSource()
-      .getFeatures()
-      .filter((feature) => getRecord(feature).highlighted);
-
-    const dontHighlight = highlightedFeatures.filter(
-      (feature) => !featuresUnderMouse.includes(feature)
+    this.hsLayerUtilsService.highlightFeatures(
+      featuresUnderMouse,
+      this.extentLayer
     );
-    const highlight = featuresUnderMouse.filter(
-      (feature) => !highlightedFeatures.includes(feature)
-    );
-    if (dontHighlight.length > 0 || highlight.length > 0) {
-      this.zone.run(() => {
-        for (const feature of highlight) {
-          getRecord(feature).highlighted = true;
-        }
-        for (const feature of dontHighlight) {
-          getRecord(feature).highlighted = false;
-        }
-      });
-    }
   }
 
   highlightComposition(composition, state) {
