@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
+import Feature from 'ol/Feature';
 import FeatureFormat from 'ol/format/Feature';
 import TileLayer from 'ol/layer/Tile';
 import {
@@ -28,12 +29,14 @@ import {
   getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
+import {getRecord} from '../../common/feature-extensions';
 
 @Injectable()
 export class HsLayerUtilsService {
   constructor(
     public HsUtilsService: HsUtilsService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    private zone: NgZone
   ) {}
 
   /**
@@ -341,6 +344,38 @@ export class HsLayerUtilsService {
     } else {
       const layerName = getTitle(layer) || getName(layer);
       return layerName;
+    }
+  }
+
+  /**
+   * Highlight feature corresponding records inside a list
+   * @param featuresUnder - Features under the cursor
+   * @param layer - Layer to get features from
+   */
+  highlightFeatures(
+    featuresUnder: Feature<Geometry>[],
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): void {
+    const highlightedFeatures = layer
+      .getSource()
+      .getFeatures()
+      .filter((feature) => getRecord(feature).highlighted);
+
+    const dontHighlight = highlightedFeatures.filter(
+      (feature) => !featuresUnder.includes(feature)
+    );
+    const highlight = featuresUnder.filter(
+      (feature) => !highlightedFeatures.includes(feature)
+    );
+    if (dontHighlight.length > 0 || highlight.length > 0) {
+      this.zone.run(() => {
+        for (const feature of highlight) {
+          getRecord(feature).highlighted = true;
+        }
+        for (const feature of dontHighlight) {
+          getRecord(feature).highlighted = false;
+        }
+      });
     }
   }
 
