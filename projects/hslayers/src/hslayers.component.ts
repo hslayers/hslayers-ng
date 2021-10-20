@@ -42,6 +42,14 @@ export class HslayersComponent implements OnInit {
     private HsLayerManagerService: HsLayerManagerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {}
+
+  /**
+   * 
+   * @param name Check if panel is configured to be visible in hsConfig.panelsEnabled 
+   * or hsLayoutService.panelsEnabledDefaults and create one if so.
+   * @param panelComponent Class defining panel
+   * @param data Extra misc data object to be stored in panel
+   */
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
     let panelsEnabled = this.hsConfig.panelsEnabled;
     if (panelsEnabled == undefined || panelsEnabled[name] == undefined) {

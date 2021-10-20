@@ -99,6 +99,7 @@ export class HsLayoutService {
     info: true,
     composition_browser: true,
     toolbar: true,
+    measure: true,
     mobile_settings: false,
     draw: true,
     layermanager: true,
