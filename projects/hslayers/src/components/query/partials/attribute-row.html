@@ -3,8 +3,8 @@
         <span class="input-group-text">{{attribute.name}}</span>
         <input class="form-control" *ngIf="!isObject" [(ngModel)]="attribute.value" (change)="change()"
             [readonly]="readonly" [ngModelOptions]="{standalone: true}">
-        <textarea class="form-control" *ngIf="isObject" name="attributeValue" [(ngModel)]="attribute.value"
-            [readonly]="readonly" [ngModelOptions]="{standalone: true}">
+        <textarea class="form-control" *ngIf="isObject" name="attributeValue" [(ngModel)]="tmpObjectValue"
+            [readonly]="readonly" (change)="change()" [ngModelOptions]="{standalone: true}">
             </textarea>
     </div>
 </div>
