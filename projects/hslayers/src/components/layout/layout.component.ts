@@ -77,7 +77,7 @@ export class HsLayoutComponent implements AfterViewInit {
     if (getComputedStyle(hsapp).display == 'inline') {
       hsapp.style.display = 'block';
       console.warn(
-        'Main element (#hs-app) needs display property to be defined...fallback value added'
+        'Main element (<hslayers>) needs display property to be defined...fallback value added'
       );
     }
     //Minimal value expected for clientHeight of hsapp element at the initiation in case of WINDOWED mode
@@ -94,7 +94,7 @@ export class HsLayoutComponent implements AfterViewInit {
         hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
       }
       console.warn(
-        'Main element (#hs-app) needs height property to be defined...fallback value added'
+        'Main element (<hslayers>) needs height property to be defined...fallback value added'
       );
     }
     this.HsEventBusService.layoutLoads.next({
