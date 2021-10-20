@@ -20,12 +20,12 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   clearVisible = false;
   searchResultsReceivedSubscription: Subscription;
   constructor(
-    public HsSearchService: HsSearchService,
-    public HsEventBusService: HsEventBusService,
-    public HsShareUrlService: HsShareUrlService
+    private hsSearchService: HsSearchService,
+    private hsEventBusService: HsEventBusService,
+    private hsShareUrlService: HsShareUrlService
   ) {
     this.searchResultsReceivedSubscription =
-      this.HsEventBusService.searchResultsReceived.subscribe((_) => {
+      this.hsEventBusService.searchResultsReceived.subscribe((_) => {
         this.clearVisible = true;
       });
   }
@@ -34,7 +34,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const query = this.HsShareUrlService.getParamValue(HS_PRMS.search);
+    const query = this.hsShareUrlService.getParamValue(HS_PRMS.search);
     if (query) {
       this.query = query;
       this.queryChanged();
@@ -47,12 +47,12 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
    * Handler of search input, request search service and display results div
    */
   async queryChanged(): Promise<void> {
-    await this.HsSearchService.HsMapService.loaded();
+    await this.hsSearchService.hsMapService.loaded();
     if (this.query.length == 0) {
       this.clear();
       return;
     }
-    this.HsSearchService.request(this.query);
+    this.hsSearchService.request(this.query);
   }
   /**
    * Remove previous search and search results
@@ -60,8 +60,8 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   clear(): void {
     this.query = '';
     this.clearVisible = false;
-    this.HsSearchService.cleanResults();
-    this.HsEventBusService.clearSearchResults.next();
+    this.hsSearchService.cleanResults();
+    this.hsEventBusService.clearSearchResults.next();
   }
   toggleSearchInput(): void {
     this.searchInputVisible = !this.searchInputVisible;

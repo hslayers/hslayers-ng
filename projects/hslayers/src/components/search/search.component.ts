@@ -6,9 +6,8 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSearchService} from './search.service';
-import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
+
 @Component({
   selector: 'hs-search',
   templateUrl: './partials/search.html',
@@ -24,9 +23,7 @@ export class HsSearchComponent
   name = 'search';
 
   constructor(
-    public HsSearchService: HsSearchService,
-    public HsEventBusService: HsEventBusService,
-    public HsShareUrlService: HsShareUrlService,
+    private hsEventBusService: HsEventBusService,
     hsLayoutService: HsLayoutService,
     hsLanguageService: HsLanguageService,
     hsSidebarService: HsSidebarService
@@ -43,7 +40,7 @@ export class HsSearchComponent
       icon: 'icon-search',
     });
     this.searchResultsReceivedSubscription =
-      this.HsEventBusService.searchResultsReceived.subscribe(() => {
+      this.hsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;
       });
   }

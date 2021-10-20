@@ -22,16 +22,16 @@ export class HsSearchResultsComponent implements OnDestroy {
   fcode_zoom_map: any;
   private ngUnsubscribe = new Subject();
   constructor(
-    public HsEventBusService: HsEventBusService,
-    public HsSearchService: HsSearchService
+    private hsEventBusService: HsEventBusService,
+    private hsSearchService: HsSearchService
   ) {
-    this.HsEventBusService.searchResultsReceived
+    this.hsEventBusService.searchResultsReceived
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((_) => {
         this.searchResultsReceived();
       });
 
-    this.HsEventBusService.clearSearchResults
+    this.hsEventBusService.clearSearchResults
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((_) => {
         this.clear();
@@ -45,9 +45,9 @@ export class HsSearchResultsComponent implements OnDestroy {
    * Handler for receiving results of search request, sends results to correct parser
    */
   searchResultsReceived(): void {
-    this.data = this.HsSearchService.data;
+    this.data = this.hsSearchService.data;
     this.searchResultsVisible = true;
-    this.HsSearchService.showResultsLayer();
+    this.hsSearchService.showResultsLayer();
   }
   clear(): void {
     this.searchResultsVisible = false;
@@ -58,7 +58,7 @@ export class HsSearchResultsComponent implements OnDestroy {
    * Finds feature from search result layer based on featureId
    */
   findFeature(featureId: string): Feature<Geometry> {
-    return this.HsSearchService.searchResultsLayer
+    return this.hsSearchService.searchResultsLayer
       .getSource()
       .getFeatureById(featureId);
   }
@@ -102,6 +102,6 @@ export class HsSearchResultsComponent implements OnDestroy {
     ) {
       zoom_level = this.fcode_zoom_map[result.fcode];
     }
-    this.HsSearchService.selectResult(result, zoom_level);
+    this.hsSearchService.selectResult(result, zoom_level);
   }
 }
