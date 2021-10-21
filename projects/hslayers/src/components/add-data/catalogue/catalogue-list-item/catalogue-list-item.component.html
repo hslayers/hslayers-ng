@@ -7,7 +7,7 @@
         <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
             <!-- <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
-                            <button type="button" class="btn btn-sm btn-primary align-middle" (click)="addLayerToMap(layer.endpoint, layer)"
+                            <button type="button" class="btn btn-sm btn-primary align-middle" (click)="addLayerToMap(layer.endpointId, layer)"
                                 data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translate"
                                 [ngClass]="{' btn-light text-primary' : layer.highlighted }">
                                 <i class="icon-plus"></i>
@@ -15,7 +15,7 @@
                             <span class="ms-2">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translate}}</span>
                         </div> -->
             <a class="btn btn-sm" [hidden]="selectTypeToAddLayerVisible"
-                (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
+                (click)="$event.stopPropagation();addLayerToMap(layer.endpointId, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
                 <img [hidden]="!loadingInfo" [src]="hsUtilsService.getAjaxLoaderIcon()" />
                 <span class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
@@ -27,7 +27,7 @@
                     class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' |
                     translate}}</span>
             </a>
-            <a class="btn btn-sm" (click)="showMetadata(layer.endpoint, layer)">
+            <a class="btn btn-sm" (click)="showMetadata(layer.endpointId, layer)">
                 <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
                     translate}}</span>
             </a>
@@ -40,12 +40,12 @@
         </div>
     </div>
     <div class="d-none">
-        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
+        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpointId,layer) === "#"'>
+            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpointId, layer)'
                 data-toggle="tooltip" [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
         </div>
-        <!-- <div class="p-0" [hidden]='layer.endpoint.type != "micka" || hsAddDataCatalogueService.layerRDF(layer.endpoint, layer) == "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerRDF(layer.endpoint, layer)'
+        <!-- <div class="p-0" [hidden]='getEndpoint(layer.endpointId).type != "micka" || layerRDF(layer.endpointId, layer) == "#"'>
+            <a class="btn btn-sm btn-secondary" [href]='layerRDF(layer.endpointId, layer)'
                 data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
         </div> -->
     </div>

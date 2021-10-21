@@ -6,17 +6,17 @@ import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 
-import {
-  getHighlighted,
-  getRecord,
-  setHighlighted,
-} from '../../common/feature-extensions';
-
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {
+  getHighlighted,
+  getRecord,
+  setHighlighted,
+} from '../../common/feature-extensions';
+import {getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -72,7 +72,7 @@ export class HsCompositionsMapService {
   }
 
   /**
-   * @param evt
+   * @param evt -
    */
   mapPointerMoved(evt) {
     const featuresUnderMouse = this.extentLayer
@@ -85,8 +85,13 @@ export class HsCompositionsMapService {
   }
 
   highlightComposition(composition, state) {
-    if (composition.feature) {
-      setHighlighted(composition.feature, state);
+    if (composition.featureId !== undefined) {
+      const found = this.extentLayer
+        .getSource()
+        .getFeatureById(composition.featureId);
+      if (found) {
+        setHighlighted(found, state);
+      }
     }
   }
 

@@ -106,15 +106,18 @@ export class HsCompositionsMickaService {
     endpoint.compositionsPaging.next = response.next;
     for (const record of endpoint.compositions) {
       record.editable = false;
-      record.endpoint = endpoint;
+      record.endpointId = endpoint.id;
       if (record.thumbnail == undefined) {
         record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
       }
       if (response.extentFeatureCreated) {
-        const mapProjection = this.HsMapService.getCurrentProj();
-        const extentFeature = addExtentFeature(record, mapProjection);
+        const extentFeature = addExtentFeature(
+          record,
+          this.HsMapService.getCurrentProj(),
+          this.HsUtilsService.generateUuid()
+        );
         if (extentFeature) {
-          record.feature = extentFeature;
+          record.featureId = extentFeature.getId();
           response.extentFeatureCreated(extentFeature);
         }
       }

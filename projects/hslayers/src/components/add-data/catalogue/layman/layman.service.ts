@@ -211,7 +211,7 @@ export class HsLaymanBrowserService {
           type: ['WMS', 'WFS'],
           name: layer.name,
           id: layer.uuid,
-          feature: layer.feature,
+          featureId: layer.featureId,
           highlighted: false,
           workspace: layer.workspace,
           editable: layer.access_rights.write.some((user) => {
@@ -221,10 +221,11 @@ export class HsLaymanBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             layer,
-            this.hsMapService.getCurrentProj()
+            this.hsMapService.getCurrentProj(),
+            this.hsUtilsService.generateUuid()
           );
           if (extentFeature) {
-            tmp.feature = extentFeature;
+            tmp.featureId = extentFeature.getId();
             extentFeature.set('record', tmp);
             data.extentFeatureCreated(extentFeature);
           }

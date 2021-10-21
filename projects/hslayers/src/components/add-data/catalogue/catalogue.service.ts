@@ -227,7 +227,7 @@ export class HsAddDataCatalogueService {
       if (!this.data.onlyMine || endpoint.type == 'layman') {
         if (endpoint.layers) {
           endpoint.layers.forEach((layer) => {
-            layer.endpoint = endpoint;
+            layer.endpointId = endpoint.id;
             // this.catalogEntries.push(layer);
           });
 
@@ -333,11 +333,12 @@ export class HsAddDataCatalogueService {
 
   /**
    * Test if layer of selected record is downloadable (KML and JSON files, with direct URL) and gives URL.
-   * @param ds - Datasource of selected layer
+   * @param endpointId - Datasource id of selected layer
    * @param layer - Metadata record of selected layer
    * @returns Download URL of layer if possible
    */
-  layerDownload(ds: HsEndpoint, layer): string {
+  layerDownload(endpointId: string, layer): string {
+    const ds = this.hsCommonEndpointsService.getEndpointFromId(endpointId);
     if (ds.download == true) {
       if (
         ['kml', 'geojson', 'json'].includes(layer.formats[0].toLowerCase()) &&

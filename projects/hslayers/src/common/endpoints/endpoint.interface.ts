@@ -15,6 +15,7 @@ export interface HsEndpoint {
   type: string;
   title: string;
   url: string;
+  id: string;
   download?: boolean;
   language?;
   listLoading?;
