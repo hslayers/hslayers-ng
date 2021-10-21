@@ -41,11 +41,12 @@
     </div>
     <div class="d-none">
         <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
-                data-toggle="tooltip" [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
+            <a class="btn btn-sm btn-secondary"
+                [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)' data-toggle="tooltip"
+                [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
         </div>
-        <!-- <div class="p-0" [hidden]='layer.endpoint.type != "micka" || hsAddDataCatalogueService.layerRDF(layer.endpoint, layer) == "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerRDF(layer.endpoint, layer)'
+        <!-- <div class="p-0" [hidden]='getEndpoint(layer.endpoint).type != "micka" || layerRDF(layer.endpoint, layer) == "#"'>
+            <a class="btn btn-sm btn-secondary" [href]='layerRDF(layer.endpoint, layer)'
                 data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
         </div> -->
     </div>

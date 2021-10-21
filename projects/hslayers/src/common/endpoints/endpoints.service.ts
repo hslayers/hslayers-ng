@@ -1,8 +1,11 @@
+import {Injectable} from '@angular/core';
+
 import {BehaviorSubject} from 'rxjs';
+
 import {EndpointErrorHandling, HsEndpoint} from './endpoint.interface';
 import {HsCommonLaymanService} from '../layman/layman.service';
 import {HsConfig} from '../../config.service';
-import {Injectable} from '@angular/core';
+import {HsUtilsService} from '../../components/utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsCommonEndpointsService {
@@ -11,7 +14,8 @@ export class HsCommonEndpointsService {
 
   constructor(
     public hsConfig: HsConfig,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
+    public hsUtilsService: HsUtilsService
   ) {
     this.fillEndpoints();
     this.hsConfig.configChanges.subscribe(() => this.fillEndpoints());
@@ -32,6 +36,7 @@ export class HsCommonEndpointsService {
       ...(this.hsConfig.datasources || []).map((ds) => {
         const tmp = {
           url: ds.url,
+          id: this.hsUtilsService.generateUuid(),
           type: ds.type,
           title: ds.title,
           onError: ds.onError,
@@ -64,7 +69,6 @@ export class HsCommonEndpointsService {
 
     this.endpointsFilled.next(this.endpoints);
   }
-
   getItemsPerPageConfig(endpoint): number {
     return endpoint.paging !== undefined &&
       endpoint.paging.itemsPerPage !== undefined

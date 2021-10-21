@@ -16,10 +16,6 @@ import {
   getHighlighted,
   setHighlighted,
 } from '../../../common/feature-extensions';
-import {
-  setShowInLayerManager,
-  setTitle,
-} from '../../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +23,11 @@ import {
 export class HsAddDataCatalogueMapService {
   extentLayer: VectorLayer<VectorSource<Geometry>> = new VectorLayer({
     source: new Vector(),
+    properties: {
+      title: 'Datasources extents',
+      showInLayerManager: false,
+      removable: false,
+    },
     style: function (feature, resolution) {
       return [
         new Style({
@@ -48,8 +49,6 @@ export class HsAddDataCatalogueMapService {
     private hsSaveMapService: HsSaveMapService,
     public hsLayerUtilsService: HsLayerUtilsService
   ) {
-    setTitle(this.extentLayer, 'Datasources extents');
-    setShowInLayerManager(this.extentLayer, false);
     this.hsMapService.loaded().then((map) => this.init(map));
   }
 
@@ -117,8 +116,13 @@ export class HsAddDataCatalogueMapService {
   }
 
   highlightLayer(composition, state): void {
-    if (composition.feature !== undefined) {
-      setHighlighted(composition.feature, state);
+    if (composition.featureId !== undefined) {
+      const found = this.extentLayer
+        .getSource()
+        .getFeatureById(composition.featureId);
+      if (found) {
+        setHighlighted(found, state);
+      }
     }
   }
 

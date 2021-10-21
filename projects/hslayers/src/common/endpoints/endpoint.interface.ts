@@ -11,7 +11,7 @@ export interface EndpointErrorHandler {
 }
 
 export interface HsEndpoint {
-  httpCall: any;
+  httpCall?: any;
   type: string;
   title: string;
   url: string;

@@ -9,6 +9,7 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
@@ -16,7 +17,6 @@ import {HsCompositionsStatusManagerService} from './compositions-status-manager.
 import {HsLanguageService} from '../../language/language.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +28,8 @@ export class HsCompositionsStatusManagerMickaJointService {
     public HsCompositionsParserService: HsCompositionsParserService,
     public HsUtilsService: HsUtilsService,
     public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
   /**
    * @public
@@ -105,8 +106,7 @@ export class HsCompositionsStatusManagerMickaJointService {
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {
         record_url:
-          composition.endpoint.url.replace('csw', 'record/basic/') +
-          composition.id,
+        composition.endpoint.url.replace('csw', 'record/basic/') + composition.id,
       };
       return info;
     } catch (e) {
