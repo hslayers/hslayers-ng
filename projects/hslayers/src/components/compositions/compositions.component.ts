@@ -85,8 +85,7 @@ export class HsCompositionsComponent
   }
 
   /**
-   * @param url
-   * @param record Composition to be loaded
+   * @param url -
    * Load selected composition in map, if current composition was edited display Overwrite dialog
    */
 
@@ -117,8 +116,8 @@ export class HsCompositionsComponent
     }
   }
   /**
-   * @param url
-   * @param title
+   * @param url -
+   * @param title -
    */
   loadUnsavedDialogBootstrap(url, title): void {
     this.hsDialogContainerService.create(

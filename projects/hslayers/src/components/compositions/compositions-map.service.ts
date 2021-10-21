@@ -16,7 +16,6 @@ import {
   getRecord,
   setHighlighted,
 } from '../../common/feature-extensions';
-import {getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
