@@ -46,6 +46,7 @@ import {
   getBase,
   getDimensions,
   getEnableProxy,
+  getRemovable,
   getTitle,
 } from '../../common/layer-extensions';
 
@@ -841,9 +842,13 @@ export class HsMapService {
 
   removeAllLayers() {
     const to_be_removed = [];
-    this.map.getLayers().forEach((lyr) => {
-      to_be_removed.push(lyr);
-    });
+    this.map
+      .getLayers()
+      .getArray()
+      .filter((layer) => getRemovable(layer as Layer<Source>) !== false)
+      .forEach((lyr) => {
+        to_be_removed.push(lyr);
+      });
     while (to_be_removed.length > 0) {
       this.map.removeLayer(to_be_removed.shift());
     }
