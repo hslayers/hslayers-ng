@@ -69,6 +69,10 @@ export class HsCatalogueListItemComponent {
     this.explanationsVisible = false;
   }
 
+  /**
+   * Get selected layers endpoint
+   * @param endpointId - Datasource id of selected layer
+   */
   getEndpoint(endpointId: string): HsEndpoint {
     return this.hsCommonEndpointsService.getEndpointFromId(endpointId);
   }

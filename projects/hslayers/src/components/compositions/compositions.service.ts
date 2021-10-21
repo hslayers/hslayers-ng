@@ -34,23 +34,23 @@ export class HsCompositionsService {
   shareId: string;
   constructor(
     private http: HttpClient,
-    public HsMapService: HsMapService,
-    public HsCore: HsCoreService,
-    public HsCompositionsParserService: HsCompositionsParserService,
-    public HsConfig: HsConfig,
-    public HsPermalinkUrlService: HsShareUrlService,
-    public HsUtilsService: HsUtilsService,
-    public HsStatusManagerService: HsStatusManagerService,
-    public HsCompositionsMickaService: HsCompositionsMickaService,
-    public HsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
-    public HsCompositionsLaymanService: HsCompositionsLaymanService,
-    public HsLanguageService: HsLanguageService,
+    public hsMapService: HsMapService,
+    public hsCore: HsCoreService,
+    public hsCompositionsParserService: HsCompositionsParserService,
+    public hsConfig: HsConfig,
+    public hsPermalinkUrlService: HsShareUrlService,
+    public hsUtilsService: HsUtilsService,
+    public hsStatusManagerService: HsStatusManagerService,
+    public hsCompositionsMickaService: HsCompositionsMickaService,
+    public hsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
+    public hsCompositionsLaymanService: HsCompositionsLaymanService,
+    public hsLanguageService: HsLanguageService,
     public $log: HsLogService,
-    public HsCommonEndpointsService: HsCommonEndpointsService,
-    public HsCompositionsMapService: HsCompositionsMapService,
-    public HsEventBusService: HsEventBusService
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsCompositionsMapService: HsCompositionsMapService,
+    public hsEventBusService: HsEventBusService
   ) {
-    if (HsConfig.saveMapStateOnReload) {
+    if (hsConfig.saveMapStateOnReload) {
       //Load composition data from cookies only if it is anticipated
       setTimeout(() => {
         this.tryParseCompositionFromCookie();
@@ -60,23 +60,23 @@ export class HsCompositionsService {
     this.tryParseCompositionFromUrlParam();
     this.parsePermalinkLayers();
 
-    this.HsEventBusService.mapResets.subscribe(() => {
-      this.HsCompositionsParserService.composition_loaded = null;
-      this.HsCompositionsParserService.composition_edited = false;
+    this.hsEventBusService.mapResets.subscribe(() => {
+      this.hsCompositionsParserService.composition_loaded = null;
+      this.hsCompositionsParserService.composition_edited = false;
     });
 
-    this.HsEventBusService.compositionEdits.subscribe(() => {
-      this.HsCompositionsParserService.composition_edited = true;
+    this.hsEventBusService.compositionEdits.subscribe(() => {
+      this.hsCompositionsParserService.composition_edited = true;
     });
 
-    this.HsEventBusService.compositionLoadStarts.subscribe((id) => {
-      id = `${this.HsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
-      this.HsCompositionsParserService.loadUrl(id);
+    this.hsEventBusService.compositionLoadStarts.subscribe((id) => {
+      id = `${this.hsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
+      this.hsCompositionsParserService.loadUrl(id);
     });
 
-    this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
+    this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       const record =
-        this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
+        this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
           e.feature,
           e.selector
         );
@@ -87,25 +87,25 @@ export class HsCompositionsService {
   }
 
   loadCompositions(ds: HsEndpoint, params): Observable<any> {
-    this.HsCompositionsMapService.clearExtentLayer();
-    const bbox = this.HsMapService.getMapExtentInEpsg4326();
+    this.hsCompositionsMapService.clearExtentLayer();
+    const bbox = this.hsMapService.getMapExtentInEpsg4326();
     const Observable = this.managerByType(ds).loadList(
       ds,
       params,
       (feature: Feature<Geometry>) =>
-        this.HsCompositionsMapService.addExtentFeature(feature),
+        this.hsCompositionsMapService.addExtentFeature(feature),
       bbox
     );
     return Observable;
   }
 
   resetCompositionCounter(): void {
-    this.HsCommonEndpointsService.endpoints.forEach((ep) => {
+    this.hsCommonEndpointsService.endpoints.forEach((ep) => {
       switch (ep.type) {
         case 'micka':
-          return this.HsCompositionsMickaService.resetCompositionCounter(ep);
+          return this.hsCompositionsMickaService.resetCompositionCounter(ep);
         case 'layman':
-          return this.HsCompositionsLaymanService.resetCompositionCounter(ep);
+          return this.hsCompositionsLaymanService.resetCompositionCounter(ep);
         default:
           this.$log.warn(`Endpoint type '${ep.type} not supported`);
       }
@@ -115,15 +115,15 @@ export class HsCompositionsService {
   managerByType(endpoint): any {
     switch (endpoint.type) {
       case 'micka':
-        return this.HsCompositionsStatusManagerMickaJointService;
+        return this.hsCompositionsStatusManagerMickaJointService;
       case 'layman':
-        return this.HsCompositionsLaymanService;
+        return this.hsCompositionsLaymanService;
       default:
         this.$log.warn(`Endpoint type '${endpoint.type} not supported`);
     }
   }
   getEndpoint(endpointId: string): HsEndpoint {
-    return this.HsCommonEndpointsService.getEndpointFromId(endpointId);
+    return this.hsCommonEndpointsService.getEndpointFromId(endpointId);
   }
 
   deleteComposition(composition): void {
@@ -133,19 +133,19 @@ export class HsCompositionsService {
 
   async shareComposition(record): Promise<any> {
     const recordLink = encodeURIComponent(this.getRecordLink(record));
-    const permalinkOverride = this.HsConfig.permalinkLocation;
+    const permalinkOverride = this.hsConfig.permalinkLocation;
     const compositionUrl =
-      this.HsCore.isMobile() && permalinkOverride
+      this.hsCore.isMobile() && permalinkOverride
         ? permalinkOverride.origin + permalinkOverride.pathname
         : `${location.origin}${location.pathname}?composition=${recordLink}`;
-    this.shareId = this.HsUtilsService.generateUuid();
+    this.shareId = this.hsUtilsService.generateUuid();
     const headers = new HttpHeaders().set(
       'Content-Type',
       'text/plain; charset=utf-8'
     );
     return await this.http
       .post(
-        this.HsStatusManagerService.endpointUrl(),
+        this.hsStatusManagerService.endpointUrl(),
         JSON.stringify({
           request: 'socialShare',
           id: this.shareId,
@@ -160,8 +160,8 @@ export class HsCompositionsService {
   }
   async getShareUrl(): Promise<string> {
     try {
-      return await this.HsUtilsService.shortUrl(
-        this.HsStatusManagerService.endpointUrl() +
+      return await this.hsUtilsService.shortUrl(
+        this.hsStatusManagerService.endpointUrl() +
           '?request=socialshare&id=' +
           this.shareId
       );
@@ -214,9 +214,9 @@ export class HsCompositionsService {
       }
       if (url) {
         //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
-        this.HsCompositionsParserService.current_composition_workspace =
+        this.hsCompositionsParserService.current_composition_workspace =
           record.editable ? record.workspace : null;
-        if (this.HsCompositionsParserService.composition_edited == true) {
+        if (this.hsCompositionsParserService.composition_edited == true) {
           this.notSavedCompositionLoading.next(url);
           reject();
         } else {
@@ -232,14 +232,14 @@ export class HsCompositionsService {
    * Load layers received through permalink to map
    */
   async parsePermalinkLayers(): Promise<void> {
-    await this.HsMapService.loaded();
-    const permalink = this.HsPermalinkUrlService.getParamValue(
+    await this.hsMapService.loaded();
+    const permalink = this.hsPermalinkUrlService.getParamValue(
       HS_PRMS.permalink
     );
     if (!permalink) {
       return;
     }
-    const layersUrl = this.HsUtilsService.proxify(permalink);
+    const layersUrl = this.hsUtilsService.proxify(permalink);
     const response: any = await this.http.get(layersUrl).toPromise();
     if (response.success == true) {
       const data: any = {};
@@ -250,10 +250,10 @@ export class HsCompositionsService {
         //Some old structure, where layers are stored in data
         data.data.layers = response.data;
       }
-      this.HsCompositionsParserService.removeCompositionLayers();
-      const layers = await this.HsCompositionsParserService.jsonToLayers(data);
+      this.hsCompositionsParserService.removeCompositionLayers();
+      const layers = await this.hsCompositionsParserService.jsonToLayers(data);
       for (let i = 0; i < layers.length; i++) {
-        this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
+        this.hsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
     } else {
       this.$log.log('Error loading permalink layers');
@@ -261,7 +261,7 @@ export class HsCompositionsService {
   }
 
   loadComposition(url, overwrite?: boolean): Promise<void> {
-    return this.HsCompositionsParserService.loadUrl(url, overwrite);
+    return this.hsCompositionsParserService.loadUrl(url, overwrite);
   }
 
   async tryParseCompositionFromCookie(): Promise<void> {
@@ -269,7 +269,7 @@ export class HsCompositionsService {
       localStorage.getItem('hs_layers') &&
       (<any>window).permalinkApp != true
     ) {
-      await this.HsMapService.loaded();
+      await this.hsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
       if (!data) {
         return;
@@ -278,28 +278,28 @@ export class HsCompositionsService {
       if (parsed.expires && parsed.expires < new Date().getTime()) {
         return;
       }
-      const layers = await this.HsCompositionsParserService.jsonToLayers(
+      const layers = await this.hsCompositionsParserService.jsonToLayers(
         parsed
       );
       for (let i = 0; i < layers.length; i++) {
-        this.HsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
+        this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }
       localStorage.removeItem('hs_layers');
     }
   }
 
   async tryParseCompositionFromUrlParam(): Promise<void> {
-    let id = this.HsPermalinkUrlService.getParamValue(HS_PRMS.composition);
+    let id = this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
     if (id) {
       if (
         !id.includes('http') &&
-        !id.includes(this.HsConfig.status_manager_url)
+        !id.includes(this.hsConfig.status_manager_url)
       ) {
         id =
-          this.HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
+          this.hsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
       try {
-        await this.HsCompositionsParserService.loadUrl(id);
+        await this.hsCompositionsParserService.loadUrl(id);
       } catch (e) {
         this.compositionNotFoundAtUrl.next(e);
         this.$log.warn(e);
@@ -314,6 +314,6 @@ export class HsCompositionsService {
   }
 
   translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 }

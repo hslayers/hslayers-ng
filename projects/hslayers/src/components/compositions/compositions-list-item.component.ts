@@ -17,12 +17,12 @@ export class HsCompositionsListItemComponent {
   @Input() composition;
   @Input() selectedCompId;
   constructor(
-    public HsCompositionsService: HsCompositionsService,
-    public HsLayoutService: HsLayoutService,
-    public HsToastService: HsToastService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService
+    public hsCompositionsService: HsCompositionsService,
+    public hsLayoutService: HsLayoutService,
+    public hsToastService: HsToastService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsConfig: HsConfig,
+    public hsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -30,11 +30,12 @@ export class HsCompositionsListItemComponent {
    * @param composition - Selected composition
    */
   openComposition(composition): void {
-    this.HsCompositionsService.loadCompositionParser(composition)
+    this.hsCompositionsService
+      .loadCompositionParser(composition)
       .then(() => {
         //This should not be needed, as for that is the save map button created
         // this.HsSaveMapManagerService.openPanel(composition);
-        this.HsLayoutService.setMainPanel('layermanager');
+        this.hsLayoutService.setMainPanel('layermanager');
       })
       .catch(() => {
         //Do nothing
@@ -45,7 +46,7 @@ export class HsCompositionsListItemComponent {
    * Load info about composition through service and display composition info dialog
    */
   async detailComposition(record): Promise<void> {
-    const info = await this.HsCompositionsService.getCompositionInfo(record);
+    const info = await this.hsCompositionsService.getCompositionInfo(record);
     if (info !== undefined) {
       this.infoDialogBootstrap(info);
     }
@@ -57,22 +58,22 @@ export class HsCompositionsListItemComponent {
   async shareComposition(record): Promise<void> {
     let url: string;
     try {
-      await this.HsCompositionsService.shareComposition(record).then(
-        async () => {
-          url = await this.HsCompositionsService.getShareUrl();
+      await this.hsCompositionsService
+        .shareComposition(record)
+        .then(async () => {
+          url = await this.hsCompositionsService.getShareUrl();
           if (url !== undefined) {
             this.shareDialogBootstrap(record, url);
           } else {
             throw new Error('COMPOSITIONS.sharingUrlIsNotAvailable');
           }
-        }
-      );
+        });
     } catch (e) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation(
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileSharingOnSocialNetwork'
         ),
-        this.HsLanguageService.getTranslationIgnoreNonExisting(
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.message,
           {url: url}
@@ -95,7 +96,7 @@ export class HsCompositionsListItemComponent {
    * @param composition
    */
   deleteDialogBootstrap(composition): void {
-    this.HsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
+    this.hsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
       compositionToDelete: composition,
     });
   }
@@ -104,18 +105,18 @@ export class HsCompositionsListItemComponent {
    * @param url
    */
   shareDialogBootstrap(record, url): void {
-    this.HsDialogContainerService.create(HsCompositionsShareDialogComponent, {
+    this.hsDialogContainerService.create(HsCompositionsShareDialogComponent, {
       url,
       title:
-        this.HsConfig.social_hashtag &&
-        !record.title.includes(this.HsConfig.social_hashtag)
-          ? record.title + ' ' + this.HsConfig.social_hashtag
+        this.hsConfig.social_hashtag &&
+        !record.title.includes(this.hsConfig.social_hashtag)
+          ? record.title + ' ' + this.hsConfig.social_hashtag
           : record.title,
       abstract: record.abstract,
     });
   }
   infoDialogBootstrap(info): void {
-    this.HsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
+    this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
       info,
     });
   }

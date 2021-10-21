@@ -23,8 +23,8 @@
         <div class="input-group mb-2" [hidden]="!addCompositionUrlVisible">
             <input type="text" class="form-control" [placeholder]="'COMPOSITIONS.Address'|translate"
                 [(ngModel)]="urlToAdd" [ngModelOptions]="{standalone: true}">
-                <button type="button" class="btn btn-secondary" (click)="addCompositionUrl(urlToAdd)"><i
-                        class="icon-link"></i></button>
+            <button type="button" class="btn btn-secondary" (click)="addCompositionUrl(urlToAdd)"><i
+                    class="icon-link"></i></button>
         </div>
     </div>
     <div class="mx-3 ps-1 d-flex justify-content-between">
@@ -32,10 +32,9 @@
             <input type="search" class="form-control border-end-0" [placeholder]="'COMMON.search'|translate"
                 name="search" [(ngModel)]="hsCompositionsCatalogueService.data.query.title"
                 (ngModelChange)="loadFilteredCompositions()">
-                <button class="input-group-text text-secondary border-start-0"
-                    (click)="loadFilteredCompositions()">
-                    <i class="icon-search icon-primary"></i>
-                </button>
+            <button class="input-group-text text-secondary border-start-0" (click)="loadFilteredCompositions()">
+                <i class="icon-search icon-primary"></i>
+            </button>
         </div>
         <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
@@ -146,8 +145,8 @@
                         </tr>
                         <tr>
                             <td colspan="2" style="text-align: center; vertical-align: middle;">
-                                <button class="btn w-100 btn-light hs-background-alfa"
-                                    style="border-radius: 0.25rem;" (click)="clearFilters()">
+                                <button class="btn w-100 btn-light hs-background-alfa" style="border-radius: 0.25rem;"
+                                    (click)="clearFilters()">
                                     {{'COMPOSITIONS.clearFilters' | translate}}</button>
                             </td>
                         </tr>
