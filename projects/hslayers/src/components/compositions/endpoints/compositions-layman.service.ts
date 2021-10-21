@@ -10,6 +10,7 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -32,7 +33,8 @@ export class HsCompositionsLaymanService {
     public hsEventBusService: HsEventBusService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService
+    public hsMapService: HsMapService,
+    public hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   loadList(
@@ -145,21 +147,24 @@ export class HsCompositionsLaymanService {
         name: record.name,
         title: record.title,
         access_rights: record.access_rights,
-        feature: undefined,
+        featureId: undefined,
         highlighted: false,
         editable: record.access_rights.write.some((user) => {
           return [endpoint.user, 'EVERYONE'].includes(user);
         }),
         url: `${endpoint.url}/rest/workspaces/${record.workspace}/maps/${record.name}`,
-        endpoint: endpoint,
+        endpoint,
         workspace: record.workspace,
         id: `m-${record.uuid}`, //m-* to match micka's id structure.
       };
       if (response.body.extentFeatureCreated) {
-        const mapProjection = this.hsMapService.getCurrentProj();
-        const extentFeature = addExtentFeature(record, mapProjection);
+        const extentFeature = addExtentFeature(
+          record,
+          this.hsMapService.getCurrentProj(),
+          this.hsUtilsService.generateUuid()
+        );
         if (extentFeature) {
-          tmp.feature = extentFeature;
+          tmp.featureId = extentFeature.getId();
           extentFeature.set('record', tmp);
           response.body.extentFeatureCreated(extentFeature);
         }
@@ -175,7 +180,7 @@ export class HsCompositionsLaymanService {
   }
 
   async getInfo(composition: any): Promise<any> {
-    const endpoint = composition.endpoint;
+    const endpoint = composition.endpoint
     if (composition.name == undefined) {
       this.displayWarningToast(
         endpoint,

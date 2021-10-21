@@ -10,13 +10,15 @@ import {transform} from 'ol/proj';
  */
 export function addExtentFeature(
   record,
-  mapProjection
+  mapProjection,
+  id: string
 ): Feature<Geometry> | undefined {
   const attributes = {
     hs_notqueryable: true,
     highlighted: false,
     title: record.title || record.name,
     geometry: null,
+    id,
   };
   const mapExtent = mapProjection.getExtent();
   const recordBBox = record.bbox || record.bounding_box;
@@ -33,7 +35,9 @@ export function addExtentFeature(
     return;
   }
   attributes.geometry = polygonFromExtent(extent);
-  return new Feature(attributes);
+  const extentFeature = new Feature(attributes);
+  extentFeature.setId(extentFeature.get('id'));
+  return extentFeature;
 }
 
 export function transformExtentValue(

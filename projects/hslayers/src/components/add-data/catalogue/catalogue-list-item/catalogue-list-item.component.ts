@@ -5,6 +5,7 @@ import {HsAddDataCatalogueService} from '../catalogue.service';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
+import {HsCommonEndpointsService} from './../../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../../config.service';
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
@@ -14,7 +15,6 @@ import {HsLaymanBrowserService} from '../layman/layman.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-
 @Component({
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
@@ -39,21 +39,22 @@ export class HsCatalogueListItemComponent {
     public hsLogService: HsLogService,
     public hsLanguageService: HsLanguageService,
     public hsLaymanService: HsLaymanService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
-   * @param ds - Datasource of selected layer
+   * @param endpoint - Datasource id of selected layer
    * @param layer - Metadata record of selected layer
    */
   async addLayerToMap(
-    ds: HsEndpoint,
+    endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
     this.loadingInfo = true;
     const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
-      ds,
+      endpoint,
       layer,
       this.selectedType
     );
@@ -101,7 +102,7 @@ export class HsCatalogueListItemComponent {
 
   /**
    * Show metadata record dialog window for selected layer.
-   * @param endpoint - Datasource of selected layer
+   * @param endpoint - Datasource id of selected layer
    * @param layer - Metadata record of selected layer
    */
   async showMetadata(
@@ -121,6 +122,16 @@ export class HsCatalogueListItemComponent {
       selectedLayer: this.selected_layer,
       selectedDS: this.selected_ds,
     });
+  }
+
+  /**
+   * @param endpoint - Datasource id of selected layer
+   * @param layer - Metadata record of selected layer
+   * @returns URL to record file
+   */
+
+  layerRDF(endpoint: HsEndpoint, layer): string {
+    return this.hsAddDataCatalogueService.layerRDF(endpoint, layer);
   }
 
   /**
