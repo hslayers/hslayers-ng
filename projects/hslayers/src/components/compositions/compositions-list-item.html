@@ -1,5 +1,5 @@
 <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
-<div class="mt-2" [ngClass]="{'d-none': HsCompositionsService.commonId(composition) !== selectedCompId}">
+<div class="mt-2" [ngClass]="{'d-none': hsCompositionsService.commonId(composition) !== selectedCompId}">
     <hr class="hs-dotted-line">
     <div class="btn-group w-100" role="group">
         <a class="btn btn-sm"

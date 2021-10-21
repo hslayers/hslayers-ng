@@ -1,5 +1,4 @@
-<div class="modal in hs-datasource_selector-metadata-dialog" tabindex="-1"
-    role="dialog" aria-hidden="true">
+<div class="modal in hs-datasource_selector-metadata-dialog" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -28,7 +27,8 @@
                 </a>
                 <button type="button" class="btn btn-success"
                     [hidden]="!hsAddDataCatalogueMapService.isZoomable(selectedLayer)"
-                    (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' | translate}}</button>
+                    (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' |
+                    translate}}</button>
                 <div *ngIf="selectedDS.type === 'layman'">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">

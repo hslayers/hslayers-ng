@@ -146,8 +146,7 @@ export class HsCompositionsCatalogueService {
   }
   /**
    * Load list of compositions for all endpoints
-   * @param createRequestLimits If true, create request limits for endpoints
-   * @param suspendLimitCalculation
+   * @param suspendLimitCalculation -
    */
   loadCompositions(suspendLimitCalculation?: boolean): void {
     if (this.loadCompositionsQuery) {
@@ -202,7 +201,7 @@ export class HsCompositionsCatalogueService {
   /**
    * Load list of compositions according to current filter values and pager position
    * (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
-   * @param ep
+   * @param ep -
    */
   loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
     return this.hsCompositionsService.loadCompositions(ep, {
@@ -250,9 +249,8 @@ export class HsCompositionsCatalogueService {
     }
   }
   /**
-   * @param responseArray Array of compositions data
    *  Filters compositions from responseArray with the same id in already loaded compositionEntries array
-   * @param endpoint
+   * @param endpoint -
    */
   filterDuplicates(endpoint: HsEndpoint): void {
     if (!this.arrayContainsData(endpoint.compositions)) {
@@ -285,7 +283,7 @@ export class HsCompositionsCatalogueService {
   /**
    
    * Evaluates if array is defined and contains any data
-   * @param arr
+   * @param arr -
    */
   arrayContainsData(arr: any[]): boolean {
     if (arr !== undefined && arr.length > 0) {
