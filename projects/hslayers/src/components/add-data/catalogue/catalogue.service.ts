@@ -333,7 +333,7 @@ export class HsAddDataCatalogueService {
 
   /**
    * Test if layer of selected record is downloadable (KML and JSON files, with direct URL) and gives URL.
-   * @param ds - Datasource id of selected layer
+   * @param ds - Datasource of selected layer
    * @param layer - Metadata record of selected layer
    * @returns Download URL of layer if possible
    */

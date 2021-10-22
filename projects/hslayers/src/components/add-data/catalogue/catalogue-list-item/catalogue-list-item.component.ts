@@ -45,7 +45,7 @@ export class HsCatalogueListItemComponent {
 
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
-   * @param endpoint - Datasource id of selected layer
+   * @param endpoint - Datasource of selected layer
    * @param layer - Metadata record of selected layer
    */
   async addLayerToMap(
@@ -102,7 +102,7 @@ export class HsCatalogueListItemComponent {
 
   /**
    * Show metadata record dialog window for selected layer.
-   * @param endpoint - Datasource id of selected layer
+   * @param endpoint - Datasource of selected layer
    * @param layer - Metadata record of selected layer
    */
   async showMetadata(
@@ -125,7 +125,7 @@ export class HsCatalogueListItemComponent {
   }
 
   /**
-   * @param endpoint - Datasource id of selected layer
+   * @param endpoint - Datasource of selected layer
    * @param layer - Metadata record of selected layer
    * @returns URL to record file
    */
