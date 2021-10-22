@@ -11,7 +11,7 @@
     "build-cesium-app": "ng build hslayers-cesium-app --configuration production",
     "build-sensors": "ng build hslayers-sensors --configuration production",
     "prebuild-watch": "node projects/hslayers/prebuild.js",
-    "postbuild": "node_modules/.bin/sass -I ./node_modules projects/hslayers/src/css/hslayers-bootstrap.scss dist/hslayers/css/hslayers-ng.css",
+    "postbuild": "npx sass --load-path=node_modules projects/hslayers/src/css/hslayers-bootstrap.scss dist/hslayers/css/hslayers-ng.css",
     "start-test-app": "ng serve test-app --hmr",
     "build-watch": "ng build hslayers --watch",
     "release": "dotenv -- release-it",
