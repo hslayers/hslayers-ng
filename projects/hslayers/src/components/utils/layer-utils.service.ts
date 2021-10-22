@@ -29,7 +29,6 @@ import {
   getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
-import {getRecord} from '../../common/feature-extensions';
 
 @Injectable()
 export class HsLayerUtilsService {
@@ -354,26 +353,30 @@ export class HsLayerUtilsService {
    */
   highlightFeatures(
     featuresUnder: Feature<Geometry>[],
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
+    list: {featureId?: string; highlighted?: boolean}[]
   ): void {
-    const highlightedFeatures = layer
-      .getSource()
-      .getFeatures()
-      .filter((feature) => getRecord(feature).highlighted);
-
+    const highlightedFeatures = list
+    .filter((record) => record.highlighted)
+    .map(record => 
+      layer.getSource().getFeatureById(record.featureId)
+    )
+    
     const dontHighlight = highlightedFeatures.filter(
       (feature) => !featuresUnder.includes(feature)
-    );
+    ).map(f => f.getId());;
     const highlight = featuresUnder.filter(
       (feature) => !highlightedFeatures.includes(feature)
-    );
+    ).map(f => f.getId());
     if (dontHighlight.length > 0 || highlight.length > 0) {
       this.zone.run(() => {
-        for (const feature of highlight) {
-          getRecord(feature).highlighted = true;
-        }
-        for (const feature of dontHighlight) {
-          getRecord(feature).highlighted = false;
+        for(let record of list) {
+          if (highlight.includes(record.featureId)) {
+            record.highlighted = true;
+          }
+          if (dontHighlight.includes(record.featureId)) {
+            record.highlighted = false;
+          }
         }
       });
     }

@@ -18,4 +18,6 @@ export interface HsAddDataLayerDescriptor {
   sld?: {
     url: string;
   };
+  featureId?: string;
+  highlighted?: boolean
 }

@@ -225,7 +225,6 @@ export class HsLaymanBrowserService {
           );
           if (extentFeature) {
             tmp.featureId = extentFeature.getId();
-            extentFeature.set('record', tmp);
             data.extentFeatureCreated(extentFeature);
           }
         }
