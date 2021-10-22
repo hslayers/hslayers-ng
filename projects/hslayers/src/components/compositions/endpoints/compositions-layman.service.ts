@@ -164,7 +164,6 @@ export class HsCompositionsLaymanService {
         );
         if (extentFeature) {
           tmp.featureId = extentFeature.getId();
-          extentFeature.set('record', tmp);
           response.body.extentFeatureCreated(extentFeature);
         }
       }

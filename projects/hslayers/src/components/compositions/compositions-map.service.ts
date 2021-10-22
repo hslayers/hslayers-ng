@@ -13,9 +13,9 @@ import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {
   getHighlighted,
-  getRecord,
   setHighlighted,
 } from '../../common/feature-extensions';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +48,8 @@ export class HsCompositionsMapService {
     public hsMapService: HsMapService,
     public hsLayoutService: HsLayoutService,
     private hsSaveMapService: HsSaveMapService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
     this.hsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));
@@ -77,10 +78,14 @@ export class HsCompositionsMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    this.hsLayerUtilsService.highlightFeatures(
-      featuresUnderMouse,
-      this.extentLayer
-    );
+    for(let endpoint of this.hsCommonEndpointsService.endpoints
+      .filter(ep => ep.compositions)) {
+      this.hsLayerUtilsService.highlightFeatures(
+        featuresUnderMouse,
+        this.extentLayer,
+        endpoint.compositions
+      );
+    }
   }
 
   highlightComposition(composition, state) {
@@ -107,12 +112,12 @@ export class HsCompositionsMapService {
     this.extentLayer.getSource().addFeatures([extentFeature]);
   }
 
-  getFeatureRecordAndUnhighlight(feature, selector) {
+  getFeatureRecordAndUnhighlight(feature, selector, list: any[]) {
+    const record = list.find(record => record.featureId == feature.getId());
     if (
       this.hsMapService.getLayerForFeature(feature) == this.extentLayer &&
-      getRecord(feature)
+      record
     ) {
-      const record = getRecord(feature);
       setHighlighted(feature, false);
       selector.getFeatures().clear();
       return record;

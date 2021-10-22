@@ -50,14 +50,6 @@ export function getFeatureName(feature: Feature<Geometry>): string {
   return feature.get(NAME);
 }
 
-export function setRecord(feature: Feature<Geometry>, record: any): void {
-  feature.set(RECORD, record);
-}
-
-export function getRecord(feature: Feature<Geometry>): any {
-  return feature.get(RECORD);
-}
-
 export function setFeatures(
   feature: Feature<Geometry>,
   features: Array<Feature<Geometry>>
@@ -91,8 +83,6 @@ export const HsFeatureExt = {
   getFeatureLabel,
   setFeatureName,
   getFeatureName,
-  setRecord,
-  getRecord,
   setFeatures,
   getFeatures,
   setUnitId,

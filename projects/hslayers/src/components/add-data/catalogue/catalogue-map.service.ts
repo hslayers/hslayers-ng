@@ -8,6 +8,7 @@ import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
@@ -47,7 +48,8 @@ export class HsAddDataCatalogueMapService {
     public hsMapService: HsMapService,
     public hsLogService: HsLogService,
     private hsSaveMapService: HsSaveMapService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
     this.hsMapService.loaded().then((map) => this.init(map));
   }
@@ -59,10 +61,14 @@ export class HsAddDataCatalogueMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    this.hsLayerUtilsService.highlightFeatures(
-      featuresUnderMouse,
-      this.extentLayer
-    );
+    for(let endpoint of this.hsCommonEndpointsService.endpoints
+      .filter(ep => ep.layers)) {
+      this.hsLayerUtilsService.highlightFeatures(
+        featuresUnderMouse,
+        this.extentLayer,
+        endpoint.layers
+      );
+    }
   }
 
   /**

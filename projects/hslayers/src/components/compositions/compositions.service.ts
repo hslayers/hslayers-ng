@@ -75,13 +75,16 @@ export class HsCompositionsService {
     });
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      const record =
-        this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
-          e.feature,
-          e.selector
-        );
-      if (record) {
-        this.loadComposition(this.getRecordLink(record));
+      for(let endpoint of this.hsCommonEndpointsService.endpoints) {
+        const record =
+          this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
+            e.feature,
+            e.selector,
+            endpoint.compositions
+          );
+        if (record) {
+          this.loadComposition(this.getRecordLink(record));
+        }
       }
     });
   }
