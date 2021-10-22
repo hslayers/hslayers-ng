@@ -15,7 +15,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from './query-base.service';
-import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
@@ -60,8 +59,6 @@ export class HsQueryComponent
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);
     });
-
-    this.HsDialogContainerService.create(HsQueryFeaturePopupComponent, {});
 
     //add current panel queryable - activate/deactivate
     this.HsEventBusService.mainPanelChanges
