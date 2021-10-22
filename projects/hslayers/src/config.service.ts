@@ -1,8 +1,12 @@
+import {Injectable} from '@angular/core';
+
+import View from 'ol/View';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import View from 'ol/View';
-import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+
+import {AddDataFileType} from './components/add-data/file/file.type';
+import {AddDataUrlType} from './components/add-data/url/types/url.type';
 
 export type SymbolizerIcon = {
   name: string;
@@ -111,7 +115,8 @@ export class HsConfig {
   layersInFeatureTable?: any;
   open_lm_after_comp_loaded?: any;
   draggable_windows?: boolean;
-  connectTypes?: any;
+  connectTypes?: AddDataUrlType[];
+  uploadTypes?: AddDataFileType[];
   datasources?: any;
   panelWidths?: any;
   sidebarToggleable?: any;
