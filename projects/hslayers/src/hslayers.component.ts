@@ -27,6 +27,7 @@ import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
+import {HsQueryFeaturePopupComponent} from './components/query/feature-popup.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',
@@ -90,6 +91,7 @@ export class HslayersComponent implements OnInit {
       this.hsLayoutService.createOverlay(HsInfoComponent, {});
       this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
       this.hsLayoutService.createOverlay(HsToolbarComponent, {});
+      this.hsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {});
       this.hsLayoutService.initializedOnce = true;
     }
   }
