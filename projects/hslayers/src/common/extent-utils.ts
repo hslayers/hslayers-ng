@@ -2,6 +2,7 @@ import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform} from 'ol/proj';
+import {generateUuid} from '../components/utils/utils.service';
 
 /**
  * @param record - Record of one dataset from Get Records response
@@ -10,15 +11,14 @@ import {transform} from 'ol/proj';
  */
 export function addExtentFeature(
   record,
-  mapProjection,
-  id: string
+  mapProjection
 ): Feature<Geometry> | undefined {
   const attributes = {
     hs_notqueryable: true,
     highlighted: false,
     title: record.title || record.name,
     geometry: null,
-    id,
+    id: generateUuid(),
   };
   const mapExtent = mapProjection.getExtent();
   const recordBBox = record.bbox || record.bounding_box;

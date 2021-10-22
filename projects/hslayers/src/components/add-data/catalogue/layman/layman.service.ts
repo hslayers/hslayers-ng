@@ -221,8 +221,7 @@ export class HsLaymanBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             layer,
-            this.hsMapService.getCurrentProj(),
-            this.hsUtilsService.generateUuid()
+            this.hsMapService.getCurrentProj()
           );
           if (extentFeature) {
             tmp.featureId = extentFeature.getId();
