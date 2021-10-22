@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 
+import {AddDataFileType, filesSupported} from './file.type';
+import {AddDataFileValues} from './file-type-values';
 import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
 
@@ -10,39 +12,23 @@ import {HsLanguageService} from '../../language/language.service';
   templateUrl: './file.component.html',
 })
 export class HsAddDataFileComponent {
-  typeSelected: string;
-  types: any[];
+  typeSelected: AddDataFileType;
+  types: {id: AddDataFileType; text: string}[];
 
   constructor(
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService
   ) {
-    if (Array.isArray(this.hsConfig.connectTypes)) {
-      this.types = this.hsConfig.connectTypes;
+    if (Array.isArray(this.hsConfig.uploadTypes)) {
+      this.types = this.hsConfig.uploadTypes
+        .filter((type) => filesSupported.includes(type))
+        .map((type) => AddDataFileValues.find((v) => v.id == type));
     } else {
-      this.types = [
-        {
-          id: 'kml',
-          text: 'KML',
-        },
-        {
-          id: 'gpx',
-          text: 'GPX',
-        },
-        {
-          id: 'geojson',
-          text: 'GeoJSON',
-        },
-        {
-          id: 'shp',
-          text: 'Shapefile',
-        },
-      ];
+      this.types = AddDataFileValues;
     }
-    this.typeSelected = '';
   }
 
-  selectType(type: string): void {
+  selectType(type: AddDataFileType): void {
     this.typeSelected = type;
   }
 
