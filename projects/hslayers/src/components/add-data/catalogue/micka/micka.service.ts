@@ -178,8 +178,7 @@ export class HsMickaBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             lyr,
-            this.hsMapService.getCurrentProj(),
-            this.hsUtilsService.generateUuid()
+            this.hsMapService.getCurrentProj()
           );
           if (extentFeature) {
             lyr.featureId = extentFeature.getId();

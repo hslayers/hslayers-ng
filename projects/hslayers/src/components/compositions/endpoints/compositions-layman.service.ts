@@ -160,8 +160,7 @@ export class HsCompositionsLaymanService {
       if (response.body.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj(),
-          this.hsUtilsService.generateUuid()
+          this.hsMapService.getCurrentProj()
         );
         if (extentFeature) {
           tmp.featureId = extentFeature.getId();
