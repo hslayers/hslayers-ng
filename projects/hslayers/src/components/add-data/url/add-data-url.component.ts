@@ -2,7 +2,8 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {AddDataUrlType} from './types/url.type';
+import {AddDataUrlType, servicesSupportedByUrl} from './types/url.type';
+import {AddDataUrlValues} from './add-data-url-values';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
@@ -30,38 +31,11 @@ export class HsAddDataUrlComponent implements OnDestroy {
     public hsAddDataCommonService: HsAddDataCommonService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
-      this.types = this.hsConfig.connectTypes;
+      this.types = this.hsConfig.connectTypes
+        .filter((type) => servicesSupportedByUrl.includes(type))
+        .map((type) => AddDataUrlValues.find((v) => v.id == type));
     } else {
-      this.types = [
-        {
-          id: 'wms',
-          text: 'WMS',
-        },
-        {
-          id: 'wmts',
-          text: 'WMTS',
-        },
-        {
-          id: 'wfs',
-          text: 'WFS',
-        },
-        {
-          id: 'kml',
-          text: 'KML',
-        },
-        {
-          id: 'gpx',
-          text: 'GPX',
-        },
-        {
-          id: 'geojson',
-          text: 'GeoJSON',
-        },
-        {
-          id: 'arcgis',
-          text: 'ArcGIS Map Server',
-        },
-      ];
+      this.types = AddDataUrlValues;
     }
 
     this.owsFillingSubscription = this.hsEventBusService.owsFilling.subscribe(
