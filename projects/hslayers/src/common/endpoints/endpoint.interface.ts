@@ -11,11 +11,10 @@ export interface EndpointErrorHandler {
 }
 
 export interface HsEndpoint {
-  httpCall: any;
+  httpCall?: any;
   type: string;
   title: string;
   url: string;
-  id: string;
   download?: boolean;
   language?;
   listLoading?;

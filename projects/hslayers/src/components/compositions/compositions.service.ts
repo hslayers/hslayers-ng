@@ -122,13 +122,9 @@ export class HsCompositionsService {
         this.$log.warn(`Endpoint type '${endpoint.type} not supported`);
     }
   }
-  getEndpoint(endpointId: string): HsEndpoint {
-    return this.hsCommonEndpointsService.getEndpointFromId(endpointId);
-  }
-
+  
   deleteComposition(composition): void {
-    const endpoint = this.getEndpoint(composition.endpointId);
-    this.managerByType(endpoint)?.delete(endpoint, composition);
+    this.managerByType(composition.endpoint)?.delete(composition.endpoint, composition);
   }
 
   async shareComposition(record): Promise<any> {
@@ -170,9 +166,7 @@ export class HsCompositionsService {
     }
   }
   async getCompositionInfo(composition): Promise<any> {
-    const info = await this.managerByType(
-      this.getEndpoint(composition.endpointId)
-    ).getInfo(composition);
+    const info = await this.managerByType(composition.endpoint).getInfo(composition);
     this.data.info = info;
     return info;
   }
@@ -187,7 +181,7 @@ export class HsCompositionsService {
           (l) => l.url.includes('/file') || l.url.endsWith('.wmc')
         )[0].url;
       }
-      if (this.getEndpoint(record.endpointId)?.type == 'layman') {
+      if (record.endpoint?.type == 'layman') {
         url = record.url + '/file' + '?timestamp=' + Date.now();
       }
       return url;
@@ -197,7 +191,7 @@ export class HsCompositionsService {
   }
 
   loadCompositionParser(record): Promise<void> {
-    const recordEndpoint = this.getEndpoint(record.endpointId);
+    const recordEndpoint = record.endpoint;
     return new Promise((resolve, reject) => {
       let url;
       switch (recordEndpoint.type) {

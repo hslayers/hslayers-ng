@@ -96,9 +96,6 @@ export class HsCompositionsStatusManagerMickaJointService {
     if (compLinks === undefined) {
       return;
     }
-    const endpoint = this.HsCommonEndpointsService.getEndpointFromId(
-      composition.endpointId
-    );
     const compUrls = this.getCompositionUrls(compLinks);
     let info: any = {};
     let url = '';
@@ -109,7 +106,7 @@ export class HsCompositionsStatusManagerMickaJointService {
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {
         record_url:
-          endpoint.url.replace('csw', 'record/basic/') + composition.id,
+        composition.endpoint.url.replace('csw', 'record/basic/') + composition.id,
       };
       return info;
     } catch (e) {

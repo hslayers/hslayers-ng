@@ -45,16 +45,16 @@ export class HsCatalogueListItemComponent {
 
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
-   * @param endpointId - Datasource id of selected layer
+   * @param endpoint - Datasource id of selected layer
    * @param layer - Metadata record of selected layer
    */
   async addLayerToMap(
-    endpointId: string,
+    endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
     this.loadingInfo = true;
     const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
-      this.getEndpoint(endpointId),
+      endpoint,
       layer,
       this.selectedType
     );
@@ -67,14 +67,6 @@ export class HsCatalogueListItemComponent {
       this.selectedType = null;
     }
     this.explanationsVisible = false;
-  }
-
-  /**
-   * Get selected layers endpoint
-   * @param endpointId - Datasource id of selected layer
-   */
-  getEndpoint(endpointId: string): HsEndpoint {
-    return this.hsCommonEndpointsService.getEndpointFromId(endpointId);
   }
 
   abortAdd(): void {
@@ -91,7 +83,7 @@ export class HsCatalogueListItemComponent {
   selectTypeAndAdd(type: string, event: MouseEvent): void {
     event.preventDefault();
     this.selectedType = type;
-    this.addLayerToMap(this.layer.endpointId, this.layer);
+    this.addLayerToMap(this.layer.endpoint, this.layer);
   }
 
   /**
@@ -110,14 +102,13 @@ export class HsCatalogueListItemComponent {
 
   /**
    * Show metadata record dialog window for selected layer.
-   * @param endpointId - Datasource id of selected layer
+   * @param endpoint - Datasource id of selected layer
    * @param layer - Metadata record of selected layer
    */
   async showMetadata(
-    endpointId: string,
+    endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
-    const endpoint = this.getEndpoint(endpointId);
     this.selected_layer = layer;
     this.selected_ds = endpoint;
 
@@ -134,14 +125,12 @@ export class HsCatalogueListItemComponent {
   }
 
   /**
-   * @param endpointId - Datasource id of selected layer
+   * @param endpoint - Datasource id of selected layer
    * @param layer - Metadata record of selected layer
    * @returns URL to record file
    */
 
-  layerRDF(endpointId: string, layer): string {
-    const endpoint =
-      this.hsCommonEndpointsService.getEndpointFromId(endpointId);
+  layerRDF(endpoint: HsEndpoint, layer): string {
     return this.hsAddDataCatalogueService.layerRDF(endpoint, layer);
   }
 

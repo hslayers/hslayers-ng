@@ -106,7 +106,7 @@ export class HsCompositionsMickaService {
     endpoint.compositionsPaging.next = response.next;
     for (const record of endpoint.compositions) {
       record.editable = false;
-      record.endpointId = endpoint.id;
+      record.endpoint = endpoint;
       if (record.thumbnail == undefined) {
         record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
       }

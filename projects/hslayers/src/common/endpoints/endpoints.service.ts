@@ -69,9 +69,6 @@ export class HsCommonEndpointsService {
 
     this.endpointsFilled.next(this.endpoints);
   }
-  getEndpointFromId(endpointId: string): HsEndpoint {
-    return this.endpoints.find((ds) => ds.id == endpointId);
-  }
   getItemsPerPageConfig(endpoint): number {
     return endpoint.paging !== undefined &&
       endpoint.paging.itemsPerPage !== undefined

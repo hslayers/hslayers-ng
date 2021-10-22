@@ -153,7 +153,7 @@ export class HsCompositionsLaymanService {
           return [endpoint.user, 'EVERYONE'].includes(user);
         }),
         url: `${endpoint.url}/rest/workspaces/${record.workspace}/maps/${record.name}`,
-        endpointId: endpoint.id,
+        endpoint,
         workspace: record.workspace,
         id: `m-${record.uuid}`, //m-* to match micka's id structure.
       };
@@ -180,9 +180,7 @@ export class HsCompositionsLaymanService {
   }
 
   async getInfo(composition: any): Promise<any> {
-    const endpoint = this.hsCommonEndpointsService.getEndpointFromId(
-      composition.endpointId
-    );
+    const endpoint = composition.endpoint
     if (composition.name == undefined) {
       this.displayWarningToast(
         endpoint,

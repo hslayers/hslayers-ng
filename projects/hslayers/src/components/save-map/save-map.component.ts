@@ -59,10 +59,8 @@ export class HsSaveMapComponent
     this.HsSaveMapManagerService.panelOpened
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((composition) => {
-        if (composition && composition.endpointId) {
-          const openedType = this.HsCommonEndpointsService.getEndpointFromId(
-            composition.endpointId
-          ).type;
+        if (composition && composition.endpoint) {
+          const openedType = composition.endpoint.type;
           const found = this.HsCommonEndpointsService.endpoints.filter(
             (ep) => ep.type == openedType
           );
