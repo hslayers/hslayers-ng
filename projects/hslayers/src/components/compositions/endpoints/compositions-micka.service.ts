@@ -113,8 +113,7 @@ export class HsCompositionsMickaService {
       if (response.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.HsMapService.getCurrentProj(),
-          this.HsUtilsService.generateUuid()
+          this.HsMapService.getCurrentProj()
         );
         if (extentFeature) {
           record.featureId = extentFeature.getId();
