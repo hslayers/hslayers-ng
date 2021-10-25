@@ -184,16 +184,15 @@ export class HsSearchService {
         const layer = this.hsMapService.getLayerForFeature(feature);
         return layer && layer == this.searchResultsLayer;
       });
-    for(let provider of Object.keys(this.data.providers)
-      .map(key => this.data.providers[key])
-      .filter(provider => provider?.results)) {
+    for (const provider of Object.keys(this.data.providers)
+      .map((key) => this.data.providers[key])
+      .filter((provider) => provider?.results)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse as Feature<Geometry>[],
         this.searchResultsLayer,
         provider.results
       );
-    }  
-    
+    }
   }
   /**
    * @public

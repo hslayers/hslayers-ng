@@ -270,8 +270,8 @@ export class HsUtilsService {
    * @public
    * @returns Random uuid
    */
-  generateUuid(): string  {
-    return generateUuid()
+  generateUuid(): string {
+    return generateUuid();
   }
 
   /**

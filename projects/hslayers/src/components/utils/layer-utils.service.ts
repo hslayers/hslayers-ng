@@ -357,20 +357,18 @@ export class HsLayerUtilsService {
     list: {featureId?: string; highlighted?: boolean}[]
   ): void {
     const highlightedFeatures = list
-    .filter((record) => record.highlighted)
-    .map(record => 
-      layer.getSource().getFeatureById(record.featureId)
-    )
-    
-    const dontHighlight = highlightedFeatures.filter(
-      (feature) => !featuresUnder.includes(feature)
-    ).map(f => f.getId());;
-    const highlight = featuresUnder.filter(
-      (feature) => !highlightedFeatures.includes(feature)
-    ).map(f => f.getId());
+      .filter((record) => record.highlighted)
+      .map((record) => layer.getSource().getFeatureById(record.featureId));
+
+    const dontHighlight = highlightedFeatures
+      .filter((feature) => !featuresUnder.includes(feature))
+      .map((f) => f.getId());
+    const highlight = featuresUnder
+      .filter((feature) => !highlightedFeatures.includes(feature))
+      .map((f) => f.getId());
     if (dontHighlight.length > 0 || highlight.length > 0) {
       this.zone.run(() => {
-        for(let record of list) {
+        for (const record of list) {
           if (highlight.includes(record.featureId)) {
             record.highlighted = true;
           }

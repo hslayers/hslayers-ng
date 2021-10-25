@@ -6,16 +6,13 @@ import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
-import {
-  getHighlighted,
-  setHighlighted,
-} from '../../common/feature-extensions';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -78,8 +75,9 @@ export class HsCompositionsMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    for(let endpoint of this.hsCommonEndpointsService.endpoints
-      .filter(ep => ep.compositions)) {
+    for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
+      (ep) => ep.compositions
+    )) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
         this.extentLayer,
@@ -113,7 +111,7 @@ export class HsCompositionsMapService {
   }
 
   getFeatureRecordAndUnhighlight(feature, selector, list: any[]) {
-    const record = list.find(record => record.featureId == feature.getId());
+    const record = list.find((record) => record.featureId == feature.getId());
     if (
       this.hsMapService.getLayerForFeature(feature) == this.extentLayer &&
       record

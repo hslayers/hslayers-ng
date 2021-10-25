@@ -106,7 +106,8 @@ export class HsCompositionsStatusManagerMickaJointService {
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {
         record_url:
-        composition.endpoint.url.replace('csw', 'record/basic/') + composition.id,
+          composition.endpoint.url.replace('csw', 'record/basic/') +
+          composition.id,
       };
       return info;
     } catch (e) {

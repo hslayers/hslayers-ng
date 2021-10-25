@@ -19,5 +19,5 @@ export interface HsAddDataLayerDescriptor {
     url: string;
   };
   featureId?: string;
-  highlighted?: boolean
+  highlighted?: boolean;
 }
