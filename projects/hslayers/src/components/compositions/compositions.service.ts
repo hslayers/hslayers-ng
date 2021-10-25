@@ -75,7 +75,7 @@ export class HsCompositionsService {
     });
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      for(let endpoint of this.hsCommonEndpointsService.endpoints) {
+      for (const endpoint of this.hsCommonEndpointsService.endpoints) {
         const record =
           this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
             e.feature,
@@ -125,9 +125,12 @@ export class HsCompositionsService {
         this.$log.warn(`Endpoint type '${endpoint.type} not supported`);
     }
   }
-  
+
   deleteComposition(composition): void {
-    this.managerByType(composition.endpoint)?.delete(composition.endpoint, composition);
+    this.managerByType(composition.endpoint)?.delete(
+      composition.endpoint,
+      composition
+    );
   }
 
   async shareComposition(record): Promise<any> {
@@ -169,7 +172,9 @@ export class HsCompositionsService {
     }
   }
   async getCompositionInfo(composition): Promise<any> {
-    const info = await this.managerByType(composition.endpoint).getInfo(composition);
+    const info = await this.managerByType(composition.endpoint).getInfo(
+      composition
+    );
     this.data.info = info;
     return info;
   }

@@ -42,7 +42,9 @@ export class HsLayerEditorVectorLayerService {
             layer as VectorLayer<Cluster>
           );
         }
-        this.updateFeatureTableLayers(layer);
+        this.updateFeatureTableLayers(
+          layer as VectorLayer<VectorSource<Geometry>>
+        );
       }
     } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
       layer.setSource((layer.getSource() as Cluster).getSource());
@@ -72,7 +74,7 @@ export class HsLayerEditorVectorLayerService {
       },
     });
   }
-  updateFeatureTableLayers(layer: Layer<Source>): void {
+  updateFeatureTableLayers(layer: VectorLayer<VectorSource<Geometry>>): void {
     const currentLayerIndex = this.HsConfig.layersInFeatureTable?.findIndex(
       (l) => l == layer
     );

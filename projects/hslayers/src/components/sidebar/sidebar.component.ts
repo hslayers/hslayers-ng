@@ -26,9 +26,6 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     this.configChangesSubscription.unsubscribe();
   }
   ngOnInit(): void {
-    if (this.HsCoreService.config.createExtraMenu !== undefined) {
-      this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
-    }
     const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
     if (panel) {
       if (!this.HsLayoutService.minisidebar) {

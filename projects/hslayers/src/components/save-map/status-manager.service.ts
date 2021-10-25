@@ -18,22 +18,16 @@ export class HsStatusManagerService implements HsSaverService {
 
   endpointUrl() {
     let hostName = location.protocol + '//' + location.host;
-    if (this.HsConfig.hostname) {
-      if (
-        this.HsConfig.hostname.status_manager &&
-        this.HsConfig.hostname.status_manager.url
-      ) {
-        return this.HsConfig.hostname.status_manager.url;
-      }
-      if (this.HsConfig.hostname.user && this.HsConfig.hostname.user.url) {
-        hostName = this.HsConfig.hostname.user.url;
-      } else if (
-        this.HsConfig.hostname.default &&
-        this.HsConfig.hostname.default.url
-      ) {
-        hostName = this.HsConfig.hostname.default.url;
-      }
+
+    if (this.HsConfig.hostname?.status_manager?.url) {
+      return this.HsConfig.hostname.status_manager.url;
     }
+    if (this.HsConfig.hostname?.user?.url) {
+      hostName = this.HsConfig.hostname.user.url;
+    } else if (this.HsConfig.hostname?.default?.url) {
+      hostName = this.HsConfig.hostname.default.url;
+    }
+
     if (this.HsConfig.status_manager_url?.includes('://')) {
       //Full url specified
       return this.HsConfig.status_manager_url;
