@@ -73,6 +73,6 @@ export class HsCommonEndpointsService {
     return endpoint.paging !== undefined &&
       endpoint.paging.itemsPerPage !== undefined
       ? endpoint.paging.itemsPerPage
-      : this.hsConfig.dsPaging || 10;
+      : 10;
   }
 }

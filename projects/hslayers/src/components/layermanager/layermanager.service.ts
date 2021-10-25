@@ -67,7 +67,7 @@ export class HsLayerManagerService {
     terrainlayers: any[];
     baselayersVisible: boolean;
     baselayer?: string;
-    box_layers?: any[];
+    box_layers?: Group[];
     filter: string;
   } = {
     /**

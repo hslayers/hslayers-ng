@@ -89,10 +89,6 @@ export class HsAddDataCatalogueService {
       // this.hsMickaFilterService.fillCodesets();
     }
 
-    if (this.hsConfig.allowAddExternalDatasets === undefined) {
-      this.hsConfig.allowAddExternalDatasets = true;
-    }
-
     this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
       this.hsCommonEndpointsService.endpoints
     );

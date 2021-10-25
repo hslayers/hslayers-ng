@@ -1,7 +1,11 @@
 import {Injectable} from '@angular/core';
 
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
-import {Layer} from 'ol/layer';
+import {Geometry} from 'ol/geom';
+import {Group, Layer} from 'ol/layer';
+import {ImageryProvider, JulianDate, TerrainProvider} from 'cesium';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 
@@ -21,7 +25,7 @@ export class HsConfig {
     {name: 'information', url: 'img/icons/information78.svg'},
     {name: 'wifi', url: 'img/icons/wifi8.svg'},
   ];
-  cesiumTime?: any;
+  cesiumTime?: JulianDate;
   componentsEnabled?: any = {
     guiOverlay: true,
     sidebar: true,
@@ -35,10 +39,9 @@ export class HsConfig {
     basemapGallery: false,
   };
   mapInteractionsEnabled?: boolean;
-  allowAddExternalDatasets?: boolean;
   sidebarClosed?: boolean;
   sidebarPosition?: string;
-  box_layers?: Array<any>;
+  box_layers?: Group[];
   senslog?: {
     url: string;
     user_id: number;
@@ -54,18 +57,18 @@ export class HsConfig {
   terrain_provider?: any;
   cesiumTimeline?: boolean;
   cesiumAnimation?: boolean;
-  creditContainer?: any;
-  cesiumInfoBox?: any;
+  creditContainer?: Element | string;
+  cesiumInfoBox?: boolean;
   clusteringDistance?: number;
-  imageryProvider?: any;
+  imageryProvider?: ImageryProvider;
   terrainExaggeration?: number;
   cesiumBingKey?: string;
   newTerrainProviderOptions?: any;
-  terrain_providers?: any;
+  terrain_providers?: TerrainProvider[];
   cesiumAccessToken?: string;
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
-  default_layers?: Array<Layer<Source>>;
+  default_layers?: Layer<Source>[];
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;
@@ -92,34 +95,42 @@ export class HsConfig {
   };
   advancedForm?: boolean;
   project_name?: string;
-  hostname?: any;
+  hostname?: {
+    status_manager?: {
+      url: string;
+    };
+    user?: {
+      url: string;
+    };
+    default?: {
+      url: string;
+    };
+  };
   status_manager_url?: string;
-  dsPaging?: number;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
   useProxy?: boolean;
-  shortenUrl?: any;
   layerTooltipDelay?: number;
-  search_provider?: any;
-  geonamesUser?: any;
+  search_provider?: string;
+  geonamesUser?: string;
   searchProvider?: any;
   language?: string;
   enabledLanguages?: string;
-  query?: any;
+  query?: {multi: boolean};
   queryPoint?: string;
   popUpDisplay?: string;
   preserveLastSketchPoint?: boolean;
   zoomWithModifierKeyOnly?: boolean;
   pureMap?: boolean;
   translationOverrides?: any;
-  layersInFeatureTable?: any;
-  open_lm_after_comp_loaded?: any;
+  layersInFeatureTable?: VectorLayer<VectorSource<Geometry>>[];
+  open_lm_after_comp_loaded?: boolean;
   draggable_windows?: boolean;
   connectTypes?: AddDataUrlType[];
   uploadTypes?: AddDataFileType[];
   datasources?: any;
   panelWidths?: any;
-  sidebarToggleable?: any;
+  sidebarToggleable?: boolean;
   sizeMode?: string;
   symbolizerIcons?: SymbolizerIcon[];
   openQueryPanelOnDrawEnd?: boolean;
@@ -130,7 +141,7 @@ export class HsConfig {
    * on page reload, loaded when it starts and deleted afterwards.
    * Otherwise, nothing is stored to localStorage and only default_layers are loaded
    * after page reloads.
-   * @default true
+   * Default: true
    */
   saveMapStateOnReload?: boolean;
   /**
@@ -177,4 +188,6 @@ export class HsConfig {
       return val;
     });
   }
+
+  shortenUrl?(url: string): any;
 }

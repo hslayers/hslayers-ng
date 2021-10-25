@@ -606,7 +606,7 @@ export class HsMapService {
   repopulateLayers(visibilityOverrides) {
     if (this.HsConfig.box_layers) {
       this.HsConfig.box_layers.forEach((box) => {
-        for (const lyr of box.getLayers().getArray()) {
+        for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
           this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
         }
       });
