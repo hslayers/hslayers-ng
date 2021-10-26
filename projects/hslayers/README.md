@@ -67,17 +67,23 @@ Use HsConfig service injected in your component to set applications layers, look
       })
     })
 ```        
-### Node.js proxy
-First option is to use Node.js proxy (based on [cors-anywhere](https://github.com/Rob--W/cors-anywhere)) that you can find in `lib/proxy.js` file. Simply run it as any other Node.js script in terminal by 
+### Proxy
+We provide a Node.js based server application [hslayers-server](https://www.npmjs.com/package/hslayers-server) for proxy based on [cors-anywhere](https://github.com/Rob--W/cors-anywhere) that you can install by:
+```
+npm i hslayers-server
+```
+To run:
+`cd node_modules/hslayers-server && npm start`
 
-`node proxy.js`
-
-or deploy it as a service for production use. To use this proxy in HSLayers-NG application, you have to set the proxyPrefix parameter in the config 
+To use this proxy in HSLayers-NG application, you have to set the proxyPrefix parameter in the config 
 which specifies the proxy url, eg.
 
 ```
-proxyPrefix: '/proxy/'
+ proxyPrefix: window.location.hostname.includes('localhost')
+        ? `${window.location.protocol}//${window.location.hostname}:8085/`
+        : '/proxy/'
 ```
+This will check if the hslayers-ng based application is running in development mode i.e on http://localhost:4200 and use proxy server address http://localhost:8085 in that case OR in production with the same domain but different directory for porxy application. You can configure the proxy URL to your setup (ports, domains, paths) of course. 
 
 # Library development 
 
