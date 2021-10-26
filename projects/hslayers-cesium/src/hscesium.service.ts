@@ -1,3 +1,5 @@
+import {Injectable} from '@angular/core';
+
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
 import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
@@ -20,14 +22,14 @@ import when from 'cesium/Source/ThirdParty/when';
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
-import {HsConfig} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
 import {HsLayerManagerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
 import {HsUtilsService} from 'hslayers-ng';
-import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+
+import {HsCesiumConfig} from './hscesium-config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +40,6 @@ export class HsCesiumService {
   cesiumPositionClicked: Subject<any> = new Subject();
 
   constructor(
-    public HsConfig: HsConfig,
     public HsMapService: HsMapService,
     public HsLayermanagerService: HsLayerManagerService,
     public HsLayoutService: HsLayoutService,
@@ -46,34 +47,36 @@ export class HsCesiumService {
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsCesiumTimeService: HsCesiumTimeService,
     public HsEventBusService: HsEventBusService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public HsCesiumConfig: HsCesiumConfig
   ) {
-    if (this.HsConfig.cesiumBingKey) {
-      this.BING_KEY = this.HsConfig.cesiumBingKey;
-    }
+    this.checkForBingKey();
+    this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
+      this.checkForBingKey();
+    });
   }
 
   /**
    * @public
-   * @description Initializes Cesium map
+   * Initializes Cesium map
    */
   init() {
     try {
       Ion.defaultAccessToken =
-        this.HsConfig.cesiumAccessToken ||
+        this.HsCesiumConfig.cesiumAccessToken ||
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
-      if (!this.HsConfig.cesiumBase) {
+      if (!this.HsCesiumConfig.cesiumBase) {
         console.error(
-          'Please set HsConfig.cesiumBase to the directory where cesium assets will be copied to'
+          'Please set HsCesiumConfig.cesiumBase to the directory where cesium assets will be copied to'
         );
       }
-      (<any>window).CESIUM_BASE_URL = this.HsConfig.cesiumBase;
+      (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.cesiumBase;
       let terrain_provider =
-        this.HsConfig.terrain_provider ||
-        createWorldTerrain(this.HsConfig.createWorldTerrainOptions);
-      if (this.HsConfig.newTerrainProviderOptions) {
+        this.HsCesiumConfig.terrain_provider ||
+        createWorldTerrain(this.HsCesiumConfig.createWorldTerrainOptions);
+      if (this.HsCesiumConfig.newTerrainProviderOptions) {
         terrain_provider = new CesiumTerrainProvider(
-          this.HsConfig.newTerrainProviderOptions
+          this.HsCesiumConfig.newTerrainProviderOptions
         );
       }
 
@@ -93,20 +96,20 @@ export class HsCesiumService {
           '.hs-cesium-container'
         ),
         {
-          timeline: this.HsConfig.cesiumTimeline
-            ? this.HsConfig.cesiumTimeline
+          timeline: this.HsCesiumConfig.cesiumTimeline
+            ? this.HsCesiumConfig.cesiumTimeline
             : false,
-          animation: this.HsConfig.cesiumAnimation
-            ? this.HsConfig.cesiumAnimation
+          animation: this.HsCesiumConfig.cesiumAnimation
+            ? this.HsCesiumConfig.cesiumAnimation
             : false,
-          creditContainer: this.HsConfig.creditContainer
-            ? this.HsConfig.creditContainer
+          creditContainer: this.HsCesiumConfig.creditContainer
+            ? this.HsCesiumConfig.creditContainer
             : undefined,
-          infoBox: this.HsConfig.cesiumInfoBox
-            ? this.HsConfig.cesiumInfoBox
+          infoBox: this.HsCesiumConfig.cesiumInfoBox
+            ? this.HsCesiumConfig.cesiumInfoBox
             : true,
           terrainProvider: terrain_provider,
-          imageryProvider: this.HsConfig.imageryProvider,
+          imageryProvider: this.HsCesiumConfig.imageryProvider,
           // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
           skyBox: new SkyBox({
             sources: {
@@ -134,17 +137,18 @@ export class HsCesiumService {
         return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
       }
 
-      viewer.scene.debugShowFramesPerSecond = this.HsConfig
+      viewer.scene.debugShowFramesPerSecond = this.HsCesiumConfig
         .cesiumDebugShowFramesPerSecond
-        ? this.HsConfig.cesiumDebugShowFramesPerSecond
+        ? this.HsCesiumConfig.cesiumDebugShowFramesPerSecond
         : false;
       viewer.scene.globe.enableLighting = this.getShadowMode();
       viewer.scene.globe.shadows = this.getShadowMode();
-      viewer.scene.globe.terrainExaggeration = this.HsConfig.terrainExaggeration || 1.0;
+      viewer.scene.globe.terrainExaggeration =
+        this.HsCesiumConfig.terrainExaggeration || 1.0;
       viewer.terrainProvider = terrain_provider;
 
-      if (this.HsConfig.cesiumTime) {
-        viewer.clockViewModel.currentTime = this.HsConfig.cesiumTime;
+      if (this.HsCesiumConfig.cesiumTime) {
+        viewer.clockViewModel.currentTime = this.HsCesiumConfig.cesiumTime;
       }
 
       this.viewer = viewer;
@@ -181,8 +185,8 @@ export class HsCesiumService {
       });
 
       this.HsLayermanagerService.data.terrainlayers = [];
-      if (this.HsConfig.terrain_providers) {
-        for (const provider of this.HsConfig.terrain_providers) {
+      if (this.HsCesiumConfig.terrain_providers) {
+        for (const provider of this.HsCesiumConfig.terrain_providers) {
           provider.type = 'terrain';
           this.HsLayermanagerService.data.terrainlayers.push(provider);
         }
@@ -301,11 +305,15 @@ export class HsCesiumService {
   }
 
   private getShadowMode(): any {
-    return this.HsConfig.cesiumShadows == undefined
+    return this.HsCesiumConfig.cesiumShadows == undefined
       ? ShadowMode.DISABLED
-      : this.HsConfig.cesiumShadows;
+      : this.HsCesiumConfig.cesiumShadows;
   }
-
+  checkForBingKey(): void {
+    if (this.HsCesiumConfig.cesiumBingKey) {
+      this.BING_KEY = this.HsCesiumConfig.cesiumBingKey;
+    }
+  }
   getCameraCenterInLngLat() {
     return this.HsCesiumCameraService.getCameraCenterInLngLat();
   }

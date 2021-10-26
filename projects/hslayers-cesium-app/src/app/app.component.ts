@@ -1,14 +1,15 @@
+import {Component, ComponentFactoryResolver} from '@angular/core';
+
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import View from 'ol/View';
 import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Component, ComponentFactoryResolver} from '@angular/core';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
-import {HslayersCesiumComponent} from 'hslayers-cesium';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
 import {Vector} from 'ol/source';
 
@@ -20,6 +21,7 @@ import {Vector} from 'ol/source';
 export class AppComponent {
   constructor(
     public HsConfig: HsConfig,
+    private HsCesiumConfig: HsCesiumConfig,
     private HsLayoutService: HsLayoutService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {
@@ -57,10 +59,15 @@ export class AppComponent {
     };
 
     if (w.hslayersNgConfig) {
-      Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
+      this.HsConfig.update(w.hslayersNgConfig(w.ol));
     }
-    if (!this.HsConfig.cesiumBase) {
-      this.HsConfig.cesiumBase =
+
+    if (w.hslayersCesiumConfig) {
+      this.HsCesiumConfig.update(w.hslayersCesiumConfig());
+    }
+
+    if (!this.HsCesiumConfig.cesiumBase) {
+      this.HsCesiumConfig.cesiumBase =
         'node_modules/hslayers-cesium-app/assets/cesium/';
     }
   }

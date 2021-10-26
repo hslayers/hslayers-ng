@@ -1,7 +1,13 @@
-import {AppComponent} from './app.component';
-import {HsConfig} from 'hslayers-ng';
 import {TestBed, waitForAsync} from '@angular/core/testing';
+
+import {HsCesiumConfig} from 'hslayers-cesium';
+import {HsConfig} from 'hslayers-ng';
+
+import {AppComponent} from './app.component';
 class HsConfigMock {
+  constructor() {}
+}
+class HsCesiumConfigMock {
   constructor() {}
 }
 describe('AppComponent', () => {
@@ -9,7 +15,10 @@ describe('AppComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AppComponent],
-        providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
+        providers: [
+          {provide: HsConfig, useValue: new HsConfigMock()},
+          {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
+        ],
       }).compileComponents();
     })
   );

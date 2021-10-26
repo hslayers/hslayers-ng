@@ -5,7 +5,6 @@ import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
 import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
-import {ImageryProvider, JulianDate, TerrainProvider} from 'cesium';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 
@@ -25,7 +24,6 @@ export class HsConfig {
     {name: 'information', url: 'img/icons/information78.svg'},
     {name: 'wifi', url: 'img/icons/wifi8.svg'},
   ];
-  cesiumTime?: JulianDate;
   componentsEnabled?: any = {
     guiOverlay: true,
     sidebar: true,
@@ -38,6 +36,7 @@ export class HsConfig {
     mapControls: true,
     basemapGallery: false,
   };
+  clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
   sidebarPosition?: string;
@@ -50,22 +49,6 @@ export class HsConfig {
     liteApiPath?: string;
     mapLogApiPath?: string;
   };
-  cesiumDebugShowFramesPerSecond?: boolean;
-  cesiumShadows?: number;
-  cesiumBase?: string;
-  createWorldTerrainOptions?: any;
-  terrain_provider?: any;
-  cesiumTimeline?: boolean;
-  cesiumAnimation?: boolean;
-  creditContainer?: Element | string;
-  cesiumInfoBox?: boolean;
-  clusteringDistance?: number;
-  imageryProvider?: ImageryProvider;
-  terrainExaggeration?: number;
-  cesiumBingKey?: string;
-  newTerrainProviderOptions?: any;
-  terrain_providers?: TerrainProvider[];
-  cesiumAccessToken?: string;
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
   default_layers?: Layer<Source>[];

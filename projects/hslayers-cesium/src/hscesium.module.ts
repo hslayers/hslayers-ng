@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsCesiumCameraService} from './hscesium-camera.service';
+import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumService} from './hscesium.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
@@ -18,6 +19,7 @@ import {HslayersModule} from 'hslayers-ng';
   exports: [HslayersCesiumComponent],
   providers: [
     HsCesiumService,
+    HsCesiumConfig,
     HsCesiumCameraService,
     HsCesiumLayersService,
     HsCesiumTimeService,

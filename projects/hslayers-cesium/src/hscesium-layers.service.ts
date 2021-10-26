@@ -23,11 +23,6 @@ import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Group} from 'ol/layer';
-import {ImageWMS, Source} from 'ol/source';
-import {OSM, TileWMS} from 'ol/source';
-import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
-import {default as proj4} from 'proj4';
-
 import {
   HsConfig,
   HsEventBusService,
@@ -38,6 +33,12 @@ import {
   getTitle,
 } from 'hslayers-ng';
 import {HsLayerUtilsService} from 'hslayers-ng';
+import {ImageWMS, Source} from 'ol/source';
+import {OSM, TileWMS} from 'ol/source';
+import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
+import {default as proj4} from 'proj4';
+
+import {HsCesiumConfig} from './hscesium-config.service';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 
 /**
@@ -69,6 +70,7 @@ export class HsCesiumLayersService {
     public HsConfig: HsConfig,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
+    public HsCesiumConfig: HsCesiumConfig,
     private HsLayerUtilsService: HsLayerUtilsService
   ) {}
 
@@ -80,11 +82,6 @@ export class HsCesiumLayersService {
     this.setupEvents();
   }
 
-  /**
-   * @param HsConfig
-   * @param $location
-   * @param HsCesiumLayersService
-   */
   defineProxy() {
     MyProxy.prototype.getURL = function (resource) {
       const blank_url = `${this.proxy}${window.location.protocol}//${window.location.host}${window.location.pathname}img/blank.png`;
@@ -153,7 +150,7 @@ export class HsCesiumLayersService {
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
           ) {
             const terrain_provider = createWorldTerrain(
-              this.HsConfig.createWorldTerrainOptions
+              this.HsCesiumConfig.createWorldTerrainOptions
             );
             this.viewer.terrainProvider = terrain_provider;
           } else {

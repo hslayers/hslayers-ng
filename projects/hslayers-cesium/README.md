@@ -26,8 +26,8 @@ In your component attach the HslayersCesiumComponent to HSlayers-NG:
 
 ```
  constructor(
-    public HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
+    public hsCesiumConfig: HsCesiumConfig,
+    private hsLayoutService: HsLayoutService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {
     ...  
@@ -36,7 +36,7 @@ ngOnInit(): void {
       HslayersCesiumComponent
     );
 
-    this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
+    this.hsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
       if (mapSpace) {
         mapSpace.createComponent(componentFactory);
       }
@@ -44,10 +44,10 @@ ngOnInit(): void {
   }
 ```
 
-Set path to cesium assets in HsConfig service:
+Set path to cesium assets in hsCesiumConfig:
 
 ```
-    this.HsConfig.update({
+    this.hsCesiumConfig.update({
       cesiumBase: 'assets/cesium/',
 ```
 
