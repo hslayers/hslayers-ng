@@ -3,16 +3,16 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsConfig} from './../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsConfig} from '../../../config.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLayerManagerService} from '../layermanager.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayermanagerPhysicalListService} from './layermanager-physical-layerlist.service';
 
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
-  templateUrl: './partials/physical-layerlist.html',
-  styleUrls: ['./partials/physical-layerlist.component.scss'],
+  templateUrl: './physical-layerlist.html',
+  styleUrls: ['./physical-layerlist.component.scss'],
 })
 export class HsLayerPhysicalListComponent implements OnDestroy {
   layerManagerUpdatesSubscription: Subscription;

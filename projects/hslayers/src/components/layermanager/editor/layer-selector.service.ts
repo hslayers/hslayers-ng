@@ -1,4 +1,4 @@
-import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 

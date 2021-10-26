@@ -6,22 +6,22 @@ import {Cluster, Source} from 'ol/source';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
-import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
-import {HsDrawService} from '../draw/draw.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
+import {HsDrawService} from '../../draw/draw.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLanguageService} from './../../language/language.service';
+import {HsLayerDescriptor} from './../layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
-import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
-import {HsLayerManagerRemoveLayerDialogComponent} from './remove-layer-dialog.component';
-import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsStylerService} from '../styles/styler.service';
+import {HsLayerManagerMetadataService} from './../layermanager-metadata.service';
+import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
+import {HsLayerManagerService} from '../layermanager.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsMapService} from '../../map/map.service';
+import {HsStylerService} from '../../styles/styler.service';
 import {
   getAbstract,
   getAttribution,
@@ -31,11 +31,11 @@ import {
   getTitle,
   setAbstract,
   setTitle,
-} from '../../common/layer-extensions';
+} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layer-editor',
-  templateUrl: './partials/layer-editor.html',
+  templateUrl: './layer-editor.html',
 })
 export class HsLayerEditorComponent {
   _currentLayer: HsLayerDescriptor;

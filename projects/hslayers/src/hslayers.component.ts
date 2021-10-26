@@ -10,7 +10,7 @@ import {HsGeolocationComponent} from './components/geolocation/geolocation.compo
 import {HsInfoComponent} from './components/info/info.component';
 import {HsLanguageComponent} from './components/language/language.component';
 import {HsLayerManagerComponent} from './components/layermanager/layermanager.component';
-import {HsLayerManagerGalleryComponent} from './components/layermanager/layermanager-gallery.component';
+import {HsLayerManagerGalleryComponent} from './components/layermanager/gallery/layermanager-gallery.component';
 import {HsLayerManagerService} from './components/layermanager/layermanager.service';
 import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';

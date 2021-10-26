@@ -3,18 +3,18 @@ import {Component, ViewChild} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsConfig} from '../../config.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsConfig} from '../../../config.service';
+import {HsLayerDescriptor} from '../layer-descriptor.interface';
+import {HsLayerManagerService} from '../layermanager.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsPanelBaseComponent} from '../../layout/panels/panel-base.component';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
-import {getBase} from '../../common/layer-extensions';
+import {getBase} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-gallery',
-  templateUrl: './partials/basemap-gallery.html',
+  templateUrl: './basemap-gallery.html',
 })
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   menuExpanded = false;

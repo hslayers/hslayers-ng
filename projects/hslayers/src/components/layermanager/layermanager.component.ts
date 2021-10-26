@@ -18,8 +18,8 @@ import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-ti
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
-import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
+import {HsLayerEditorSublayerService} from './editor/layer-editor.sub-layer.service';
+import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -38,7 +38,7 @@ import {
 
 @Component({
   selector: 'hs-layer-manager',
-  templateUrl: './partials/layermanager.html',
+  templateUrl: './layermanager.html',
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent

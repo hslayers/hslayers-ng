@@ -736,9 +736,9 @@ $table-group-separator-color: white;
   }
 
   @import "../components/layout/partials/layout.component.scss";
-  @import "../components/layermanager/partials/layermanager.component.scss";
-  @import "../components/layermanager/partials/layerlist.component.scss";
-  @import "../components/layermanager/partials/gallery.component.scss";
+  @import "../components/layermanager/layermanager.component.scss";
+  @import "../components/layermanager/logical-list/layerlist.component.scss";
+  @import "../components/layermanager/gallery/gallery.component.scss";
   @import "../components/sidebar/partials/sidebar.component.scss";
   @import "../components/geolocation/partials/geolocation.component.scss";
   @import "../components/sidebar/partials/impressum.component.scss";

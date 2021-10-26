@@ -26,9 +26,9 @@ import {
   HsLayerDescriptor,
   HsLayerLoadProgress,
 } from './layer-descriptor.interface';
-import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerEditorVectorLayerService} from './editor/layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
-import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLayerSelectorService} from './editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';

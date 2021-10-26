@@ -4,10 +4,10 @@ import {Geometry, Point} from 'ol/geom';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
-import {HsConfig} from './../../config.service';
-import {HsMapService} from '../map/map.service';
-import {HsStylerService} from './../styles/styler.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsConfig} from './../../../config.service';
+import {HsMapService} from '../../map/map.service';
+import {HsStylerService} from './../../styles/styler.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Injectable({
   providedIn: 'root',

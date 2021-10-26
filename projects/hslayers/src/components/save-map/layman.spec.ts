@@ -15,9 +15,9 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsSaveMapComponent} from './save-map.component';
@@ -26,7 +26,6 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {getLayerName, getLaymanFriendlyLayerName} from './layman-utils';
-import { HsLayoutServiceMock } from '../layout/layout.service.mock';
 
 class emptyMock {
   constructor() {}

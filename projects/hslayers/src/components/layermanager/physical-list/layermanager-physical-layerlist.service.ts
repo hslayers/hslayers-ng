@@ -1,12 +1,12 @@
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerManagerService} from './layermanager.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsConfig} from '../../../config.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLayerManagerService} from '../layermanager.service';
+import {HsMapService} from '../../map/map.service';
+import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {getBase} from '../../common/layer-extensions';
+import {getBase} from '../../../common/layer-extensions';
 
 export class PhysicalListItem {
   title: string;

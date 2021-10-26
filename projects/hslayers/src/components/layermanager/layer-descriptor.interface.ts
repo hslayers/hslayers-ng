@@ -1,4 +1,3 @@
-import {KeyBooleanDict} from './layer-editor.sub-layer.service';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 

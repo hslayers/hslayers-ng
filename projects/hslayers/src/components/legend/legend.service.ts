@@ -12,7 +12,7 @@ import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {Source, ImageStatic as Static, XYZ} from 'ol/source';
 import {Style} from 'ol/style';
 
-import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
+import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';

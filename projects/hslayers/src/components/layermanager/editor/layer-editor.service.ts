@@ -6,21 +6,21 @@ import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {HsEventBusService} from '../core/event-bus.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
-import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
+import {HsLayerManagerMetadataService} from '../layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
-import {HsLegendService} from '../legend/legend.service';
-import {HsMapService} from '../map/map.service';
-import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsLegendDescriptor} from '../../legend/legend-descriptor.interface';
+import {HsLegendService} from '../../legend/legend.service';
+import {HsMapService} from '../../map/map.service';
+import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
 import {
   getCluster,
   getInlineLegend,
   setCluster,
-} from '../../common/layer-extensions';
+} from '../../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })

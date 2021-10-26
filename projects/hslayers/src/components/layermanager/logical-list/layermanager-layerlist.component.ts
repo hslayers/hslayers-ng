@@ -6,22 +6,22 @@ import {
   getExclusive,
   getHsLaymanSynchronizing,
   getPath,
-} from '../../common/layer-extensions';
+} from '../../../common/layer-extensions';
 
-import {HsConfig} from '../../config.service';
-import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
-import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsConfig} from '../../../config.service';
+import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLayerDescriptor} from '../layer-descriptor.interface';
+import {HsLayerEditorSublayerService} from '../editor/layer-editor.sub-layer.service';
+import {HsLayerManagerService} from '../layermanager.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsMapService} from '../../map/map.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
-  templateUrl: './partials/layerlist.html',
+  templateUrl: './layerlist.html',
 })
 export class HsLayerListComponent implements OnInit, OnDestroy {
   @Input() folder: any;
