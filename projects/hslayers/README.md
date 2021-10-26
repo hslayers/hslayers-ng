@@ -73,7 +73,7 @@ We provide a Node.js based server application [hslayers-server](https://www.npmj
 npm i hslayers-server
 ```
 To run:
-`cd node_modules/hslayers-server && npm start`
+`./node_modules/.bin/hslayers-server`
 
 To use this proxy in HSLayers-NG application, you have to set the proxyPrefix parameter in the config 
 which specifies the proxy url, eg.
