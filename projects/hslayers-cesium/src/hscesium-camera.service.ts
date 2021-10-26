@@ -1,3 +1,5 @@
+import {Injectable} from '@angular/core';
+
 import Cartesian2 from 'cesium/Source/Core/Cartesian2';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import Cartographic from 'cesium/Source/Core/Cartographic';
@@ -7,7 +9,6 @@ import Rectangle from 'cesium/Source/Core/Rectangle';
 import SceneMode from 'cesium/Source/Scene/SceneMode';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import {HsConfig, HsMapService} from 'hslayers-ng';
-import {Injectable} from '@angular/core';
 import {PerspectiveFrustum} from 'cesium';
 import {get as getProj, transformExtent} from 'ol/proj';
 
@@ -27,10 +28,9 @@ export class HsCesiumCameraService {
   }
 
   /**
-   * @param distance
-   * @param latitude
-   * @private
-   * @description Calculates the resolution for a given distance from the ground and latitude
+   * @param distance -
+   * @param latitude -
+   * Calculates the resolution for a given distance from the ground and latitude
    */
   calcResolutionForDistance(distance, latitude) {
     // See the reverse calculation (calcDistanceForResolution_) for details
@@ -47,8 +47,7 @@ export class HsCesiumCameraService {
   }
 
   /**
-   * @private
-   * @description Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
+   * Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
    */
   getCameraCenterInLngLat() {
     if (
@@ -94,8 +93,7 @@ export class HsCesiumCameraService {
   }
 
   /**
-   * @private
-   * @description Gets the position the camera is pointing to in cartesian coordinates and resolution as the third array element
+   * Gets the position the camera is pointing to in cartesian coordinates and resolution as the third array element
    */
   getCameraCenterInCartesian() {
     const ray = this.viewer.camera.getPickRay(
@@ -117,7 +115,7 @@ export class HsCesiumCameraService {
 
   getViewportPolygon() {
     /**
-     * @param d
+     * @param d -
      */
     function cornerToDegrees(d) {
       try {
@@ -178,7 +176,7 @@ export class HsCesiumCameraService {
     );
 
     /**
-     * @param p
+     * @param p -
      */
     function clamp(p) {
       const max_dist = 0.23;
@@ -315,11 +313,10 @@ export class HsCesiumCameraService {
   }
 
   /**
-   * @param resolution
-   * @param latitude
-   * @private
+   * @param resolution -
+   * @param latitude -
    * @deprecated
-   * @description Calculates the distance from the ground based on resolution and latitude
+   * Calculates the distance from the ground based on resolution and latitude
    */
   calcDistanceForResolution(resolution, latitude) {
     const canvas = this.viewer.scene.canvas;

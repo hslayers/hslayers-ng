@@ -131,7 +131,7 @@ export class HsCesiumService {
       );
 
       /**
-       * @param file
+       * @param file -
        */
       function loadSkyBoxSide(file) {
         return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
@@ -262,7 +262,7 @@ export class HsCesiumService {
       }, ScreenSpaceEventType.LEFT_UP);
 
       /**
-       * @param movement
+       * @param movement -
        */
       function rightClickLeftDoubleClick(movement) {
         const pickRay = this.viewer.camera.getPickRay(movement.position);
