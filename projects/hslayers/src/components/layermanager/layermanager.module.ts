@@ -15,6 +15,7 @@ import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabil
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor.sub-layer-checkboxes.component';
+import {HsLayerEditorWidgetBaseComponent} from './widgets/layer-editor-widget-base.component';
 import {HsLayerListComponent} from './logical-list/layermanager-layerlist.component';
 import {HsLayerManagerComponent} from './layermanager.component';
 import {HsLayerManagerFolderComponent} from './logical-list/layermanager-folder.component';
@@ -46,6 +47,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerRemoveAllDialogComponent,
     HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
+    HsLayerEditorWidgetBaseComponent,
     HsLayerPhysicalListComponent,
     HsTypeWidgetComponent,
     HsMetadataWidgetComponent,

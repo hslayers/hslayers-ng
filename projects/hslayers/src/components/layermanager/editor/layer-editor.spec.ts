@@ -32,6 +32,7 @@ import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
 import {getCluster} from '../../../common/layer-extensions';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
+import { HsClusterWidgetComponent } from 'hslayers-ng/src/public-api';
 
 class HsConfigMock {
   reverseLayerList = true;
@@ -46,6 +47,8 @@ class emptyMock {
 describe('layermanager', () => {
   let component: HsLayerEditorComponent;
   let fixture: ComponentFixture<HsLayerEditorComponent>;
+  let clusterWidgetComponent: HsClusterWidgetComponent;
+  let clusterWidgetFixture: ComponentFixture<HsClusterWidgetComponent>;
 
   const layerForCluster = new VectorLayer({
     properties: {
@@ -71,7 +74,7 @@ describe('layermanager', () => {
         NgbDropdownModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [HsLayerEditorComponent],
+      declarations: [HsLayerEditorComponent, HsClusterWidgetComponent],
       providers: [
         HsLayerEditorSublayerService,
         HsLayerEditorService,
@@ -103,8 +106,11 @@ describe('layermanager', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerEditorComponent);
     component = fixture.componentInstance;
+    clusterWidgetFixture = TestBed.createComponent(HsClusterWidgetComponent);
+    clusterWidgetComponent = clusterWidgetFixture.componentInstance;
     fixture.detectChanges();
     component.currentLayer = {layer: layerForCluster};
+    clusterWidgetComponent.currentLayer = {layer: layerForCluster};
   });
 
   it('should create', () => {
@@ -112,16 +118,16 @@ describe('layermanager', () => {
   });
 
   it('clusterization', () => {
-    component.cluster = true;
+    clusterWidgetComponent.cluster = true;
     expect(getCluster(layerForCluster)).toBe(true);
     expect((layerForCluster.getSource() as Cluster).getSource).toBeDefined();
 
-    component.distance.value = 15;
-    component.changeDistance();
+    clusterWidgetComponent.distance.value = 15;
+    clusterWidgetComponent.changeDistance();
     expect((layerForCluster.getSource() as Cluster).getDistance()).toBe(15);
 
     //Turn clusterization off
-    component.cluster = false;
+    clusterWidgetComponent.cluster = false;
     expect(getCluster(layerForCluster)).toBe(false);
     expect((layerForCluster.getSource() as Cluster).getSource).toBeUndefined();
   });
