@@ -8,7 +8,7 @@ import {GeoJSON, WKT} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Vector as VectorSource} from 'ol/source';
-import {click} from 'ol/events/condition';
+import {click, pointerMove} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
@@ -36,6 +36,7 @@ type AttributeValuePair = {
 })
 export class HsQueryVectorService {
   selector: Select;
+  highlighter: Select;
   featureRemovals: Subject<Feature<Geometry>> = new Subject();
 
   constructor(
@@ -47,6 +48,20 @@ export class HsQueryVectorService {
     public HsEventBusService: HsEventBusService,
     private DomSanitizer: DomSanitizer
   ) {
+    this.highlighter = new Select({
+      condition: pointerMove,
+      style: function (feature) {
+        const highlightedStyle = HsConfig.layersInFeatureTable[0].get('highlightedStyle');
+        return typeof highlightedStyle === "function"
+          ? highlightedStyle(feature)
+          : highlightedStyle
+          || null;
+      },
+      filter: function (feature) {
+        return feature !== HsQueryBaseService.selector.getFeatures().getArray()[0];
+      }
+    });
+
     this.selector = new Select({
       condition: click,
       multi: this.HsConfig.query?.multi ? this.HsConfig.query.multi : false,
@@ -60,11 +75,19 @@ export class HsQueryVectorService {
           return true;
         }
       },
+      style: function (feature) {
+        const selectedStyle = HsConfig.layersInFeatureTable[0].get('selectedStyle');
+        return typeof selectedStyle === "function"
+    			? selectedStyle(feature)
+    			: selectedStyle
+    			|| null;
+      },
     });
     this.HsQueryBaseService.vectorSelectorCreated.next(this.selector);
 
     this.HsEventBusService.olMapLoads.subscribe((map) => {
       map.addInteraction(this.selector);
+      map.addInteraction(this.highlighter);
     });
 
     this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
