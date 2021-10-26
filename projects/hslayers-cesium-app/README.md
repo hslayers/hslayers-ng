@@ -22,14 +22,13 @@ Include hslayers-cesium-app bundle scripts after `<hslayers-cesium-app>`:
 
 ## Configuration
 
-A global hslayersNgConfig function, which returns a configuration object, NEEDS TO BE CREATED BEFORE loading the main.js script. It returns a JSON object that describes the application's looks, behavior and data to display. See [Configuration options](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) for the list of available config options. HSLayers-ng exposes OpenLayers as global 'ol' variable, which is used in defining layers and configuration. [Example](https://github.com/hslayers/examples/blob/master/cesium/appexternal.js)
+A global hslayersNgConfig function and cesium specific hslayersCesiumConfig, which return a configuration objects, NEED TO BE CREATED BEFORE loading the main.js script. Functions return a JSON objects that describes the application's look, behavior and data to display. See [Hslayers configuration options](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) and [Cesium configuration options](https://github.com/hslayers/hslayers-ng/wiki/Cesium-config-parameters) for the list of available config options. HSLayers-ng exposes OpenLayers as global 'ol' variable, which is used in defining layers and configuration. [Example](https://github.com/hslayers/examples/blob/master/cesium/appexternal.js)
 
 ```
 <script>
     function hslayersNgConfig(ol) {
       return {
         assetsPath: 'node_modules/hslayers-cesium-app/assets/',
-        cesiumBase: 'node_modules/hslayers-cesium-app/assets/cesium/',
         default_layers: [],
 
         default_view: new ol.View({
@@ -39,5 +38,11 @@ A global hslayersNgConfig function, which returns a configuration object, NEEDS 
         })
       }
     } 
+
+    function hslayersCesiumConfig() {
+        return {
+          cesiumBase: 'node_modules/hslayers-cesium-app/assets/cesium/',
+        };
+      }
   </script>
   ```

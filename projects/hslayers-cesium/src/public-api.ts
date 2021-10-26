@@ -8,3 +8,4 @@ export * from './hscesium.service';
 export * from './hscesium-time.service';
 export * from './hscesium-layers.service';
 export * from './hscesium-camera.service';
+export * from './hscesium-config.service';
