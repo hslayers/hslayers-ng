@@ -42,12 +42,10 @@ import {HsCesiumConfig} from './hscesium-config.service';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 
 /**
- * @param proxy.proxy
- * @param proxy
- * @param maxResolution
- * @param proxy.maxResolution
- * @param proxy.HsUtilsService
- * @param proxy.projection
+ * @param proxy -
+ * @param maxResolution -
+ * @param HsUtilsService -
+ * @param projection -
  */
 function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
   this.proxy = proxy;
@@ -128,9 +126,9 @@ export class HsCesiumLayersService {
   }
 
   /**
-   * @param version
-   * @param srs
-   * @param crs
+   * @param version -
+   * @param srs -
+   * @param crs -
    */
   getProjectFromVersion(version, srs, crs) {
     if (version == '1.1.1') {
@@ -172,7 +170,7 @@ export class HsCesiumLayersService {
 
   /**
    * @public
-   * @description Add all layers from app HsConfig (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+   * Add all layers from app HsConfig (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
    */
   async repopulateLayers() {
     if (this.viewer.isDestroyed()) {

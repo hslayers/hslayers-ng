@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 
 import {
   HS_PRMS,
@@ -16,7 +16,7 @@ import {HsCesiumService} from './hscesium.service';
   selector: 'hs-cesium',
   templateUrl: './hscesium.html',
 })
-export class HslayersCesiumComponent {
+export class HslayersCesiumComponent implements AfterViewInit {
   visible = true;
   constructor(
     public HsCesiumService: HsCesiumService,
@@ -61,8 +61,7 @@ export class HslayersCesiumComponent {
   }
 
   /**
-   * @private
-   * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
+   * Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
    */
   toggleCesiumMap() {
     this.HsMapService.visible = !this.HsMapService.visible;
