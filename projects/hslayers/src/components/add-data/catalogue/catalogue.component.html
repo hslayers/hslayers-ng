@@ -11,12 +11,12 @@
     </div>
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
-            <div class="input-group-text border-0 ps-0">
+            <div class="input-group-text border-0">
                 <input type="checkbox" [(ngModel)]="data.filterByExtent" (change)="queryByFilter()"
                     name="filterByExtent">
                 <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
-            <div class="input-group-text border-0"
+            <div class="input-group-text border-0 ms-1"
                 *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
                 <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
                 <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
@@ -109,18 +109,19 @@
                     </div>
                 -->
                 <ul class="list-group">
+                    <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
+                        *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )"
+                        class="clearfix list-group-item" [ngClass]="{'hs-endpoint-item-active': layer.highlighted}"
+                        (click)="layerSelected(layer)" (mouseover)="highlightLayer(layer, true)"
+                        (mouseleave)="highlightLayer(layer, false)">
+                        <hs-catalogue-list-item [layer]="layer"></hs-catalogue-list-item>
+                    </li>
                     <li class='list-group-item text-primary text-center py-2'
                         [hidden]="!hsAddDataCatalogueService.dataLoading"><img class="pe-2"
                             [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
                     <li [hidden]='hsAddDataCatalogueService.catalogEntries.length > 0 || hsAddDataCatalogueService.dataLoading'
                         class='list-group-item '>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                    <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
-                        *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )" class="clearfix list-group-item"
-                        [ngClass]="{'hs-endpoint-item-active': layer.highlighted}" (click)="layerSelected(layer)"
-                        (mouseover)="highlightLayer(layer, true)" (mouseleave)="highlightLayer(layer, false)">
-                        <hs-catalogue-list-item [layer]="layer"></hs-catalogue-list-item>
-                    </li>
                 </ul>
             </div>
             <hs-pager [pagerService]="hsAddDataCatalogueService"></hs-pager>

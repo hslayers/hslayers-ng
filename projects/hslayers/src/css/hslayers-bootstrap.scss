@@ -11,6 +11,8 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value + "px" !default; //th
 @import "bootstrap/scss/variables";
 
 $table-group-separator-color: white;
+$list-group-item-padding-y: 0.75rem ;
+$list-group-item-padding-x: 1.25rem;
 
 @import "bootstrap/scss/_mixins";
 @import "bootstrap/scss/_utilities";
@@ -74,6 +76,9 @@ $table-group-separator-color: white;
   }
   hs-add-data-catalogue .dropdown-menu {
     max-width: revert;
+  }
+  .list-group-item+.list-group-item{
+    border-top-width: 0px;
   }
 
   /* app css stylesheet */
@@ -379,7 +384,7 @@ $table-group-separator-color: white;
   }
 
   #stc-layerlist .list-group-item {
-    padding: 0.5rem;
+    padding: 0.25rem;
   }
 
   .hs-stc-footer button {
