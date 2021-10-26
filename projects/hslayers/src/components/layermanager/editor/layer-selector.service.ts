@@ -7,6 +7,7 @@ import {Subject} from 'rxjs';
 })
 export class HsLayerSelectorService {
   layerSelected: Subject<HsLayerDescriptor> = new Subject();
+  currentLayer: HsLayerDescriptor;
   constructor() {}
 
   /**
@@ -14,6 +15,7 @@ export class HsLayerSelectorService {
    * @param hsLayer - Selected layer (HsLayerManagerService.currentLayer)
    */
   select(hsLayer: HsLayerDescriptor): void {
+    this.currentLayer = hsLayer;
     this.layerSelected.next(hsLayer);
   }
 }

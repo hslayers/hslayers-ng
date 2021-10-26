@@ -10,6 +10,8 @@ import {HsDimensionDescriptor} from '../../../common/get-capabilities/dimension'
 import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
+import {HsLayerSelectorService} from '../editor/layer-selector.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
@@ -17,8 +19,11 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.html',
 })
-export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
-  @Input() layer: Layer<Source>;
+export class HsLayerEditorDimensionsComponent
+  extends HsLayerEditorWidgetBaseComponent
+  implements OnDestroy, OnChanges
+{
+  name: 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private ngUnsubscribe = new Subject();
 
@@ -27,12 +32,14 @@ export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    private hsLayerSelectorService: HsLayerSelectorService
   ) {
+    super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({layer}) => {
-        if (layer == this.layer) {
+        if (layer == this.olLayer()) {
           this.ngOnChanges();
         }
       });
@@ -44,14 +51,14 @@ export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(): void {
-    const layer = this.layer;
+    const layer = this.olLayer();
     this.dimensions = [];
-    const dimensions = getDimensions(layer);
+    const dimensions = getDimensions(this.olLayer());
     if (dimensions && Object.entries(dimensions)) {
       for (const [key, dimension] of <[any, any]>Object.entries(dimensions)) {
         let available = true;
         if (this.hsUtilsService.isFunction(dimension.availability)) {
-          available = dimension.availability(layer);
+          available = dimension.availability(this.olLayer());
         }
         if (available) {
           if (typeof dimension.values === 'string') {
@@ -66,7 +73,7 @@ export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
   }
 
   dimensionIsTime(dimension: Dimension): boolean {
-    const dimensions = getDimensions(this.layer);
+    const dimensions = getDimensions(this.olLayer());
     const type = Object.keys(dimensions).find(
       (key) => dimensions[key] === dimension
     );

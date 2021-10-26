@@ -153,4 +153,12 @@ export class HsLayerEditorService {
         !this.HsLayoutService.panelEnabled('legend'))
     );
   }
+
+  /**
+   * Test if layer is Vector layer
+   * @param layer - Selected layer
+   */
+  isLayerVectorLayer(layer: Layer<Source>): boolean {
+    return this.HsLayerUtilsService.isLayerVectorLayer(layer);
+  }
 }

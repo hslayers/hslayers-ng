@@ -8,88 +8,9 @@
         </div>
         <div *ngIf="currentLayer.settings">
             <form>
-                <!-- Layer type info -->
-                <div class="form-group">
-                    <small class="text-secondary ">
-                        {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor',
-                        currentLayer.type)}} {{'LAYERMANAGER.layerEditor.layerFrom' | translate}}
-                        {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor',
-                        currentLayer.source)}}
-                    </small>
-                </div>
-                <!-- Metadata/Copyright -->
-                <div class="form-group" *ngIf="HsLayerManagerMetadataService.hasMetadata(currentLayer)">
-                    <!-- Metadata -->
-                    <div class="pt-2">
-                        <a class="card-href"
-                            *ngFor="let metadataUrl of HsLayerManagerMetadataService.metadataArray(currentLayer)"
-                            href="{{metadataUrl.onlineResource}}" target="_blank"
-                            [title]="'COMMON.metadata' | translate">
-                            <span [hidden]="!metadataUrl.type">
-                                {{'LAYERMANAGER.layerEditor.metadataOfLayer' | translate}} {{metadataUrl.type}}
-                            </span>
-                            <span [hidden]="metadataUrl.type">
-                                {{'LAYERMANAGER.layerEditor.metadataOfService' | translate}}
-                            </span>
-                        </a>
-                    </div>
-                    <!-- Copyright -->
-                    <div *ngIf="hasCopyright(currentLayer)">
-                        <a class="card-href" href="{{getAttribution(currentLayer.layer).onlineResource}}"
-                            target="_blank" [title]="'LAYERMANAGER.layerEditor.copyright' | translate">
-                            {{'LAYERMANAGER.layerEditor.copyright' | translate}}</a>
-                    </div>
-                </div>
-
-                <!-- Abstract -->
-                <div class="form-group" [hidden]="!abstract">
-                    <label>{{'COMMON.abstract' | translate}}</label>
-                    <p [innerHtml]="HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)">
-                    </p>
-                </div>
-
-                <!-- Scale -->
-                <div class="form-group" [hidden]="!isScaleVisible()">
-                    <label>{{'COMMON.scale' | translate}}</label>
-                    <span *ngIf="minResolutionValid()"><span class="ms-1">{{'COMMON.from' | translate}}</span>
-                        1:{{minResolution}}</span>
-                    <span *ngIf="maxResolutionValid()"><span class="ms-1">{{'COMMON.to' | translate}}</span>
-                        1:{{maxResolution}}</span>
-                </div>
-                <div class="d-flex flex-row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125)">
-                    <!-- Cluster features checkbox  -->
-                    <div *ngIf="isVectorLayer()" class="form-check flex-fill ">
-                        <input name="layer-cluster" class="form-check-input" type="checkbox" [(ngModel)]="cluster">
-                        <label class="form-check-label">{{'LAYERMANAGER.layerEditor.cluster' | translate}}</label>
-                    </div>
-                    <div class="form-group flex-fill" *ngIf="cluster">
-                        <label>{{'COMMON.distance' | translate}}</label>
-                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1"
-                            [(ngModel)]="distance.value" (change)="changeDistance()" style="width: 100%;height: 21px;">
-                    </div>
-                </div>
-
-                <!-- Legends -->
-                <div *ngIf="olLayer()">
-                    <div *ngIf="HsLayerEditorService.legendVisible()">
-                        <p style="text-align: center;font-weight: bold;">
-                            {{'COMMON.legend' | translate}}</p>
-                        <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor">
-                        </hs-legend-layer-directive>
-                        <hr />
-                    </div>
-                </div>
-                <!-- Dimensions -->
-                <hs-layer-editor-dimensions [layer]="olLayer()"></hs-layer-editor-dimensions>
-
-                <!-- Opacity slider -->
-                <div class="form-group">
-                    <label>{{'LAYERMANAGER.layerEditor.opacity' | translate}}</label>
-                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1"
-                        style="width: 100%;height: 21px;" [(ngModel)]="opacity">
-                </div>
-
-                <!-- Footer -->
+                <hs-panel-container 
+                    [service]="hsLayerEditorWidgetContainerService">
+                </hs-panel-container >
             </form>
             <div class="btn-group m-auto d-flex w-75" *ngIf="currentLayer.visible && getBase(currentLayer.layer)">
                 <button class="btn btn-sm btn-outline-primary  w-50"
@@ -112,23 +33,6 @@
                 <button [hidden]="!titleUnsaved()" (click)="saveTitle()" class="btn btn-outline-secondary"
                     type="button"><i class="icon-save-floppy"></i></button>
             </div>
-
-            <div class="form">
-                <br>
-                <label>{{'COMMON.scale' | translate}}</label>
-                <div *ngIf="minResolutionValid()">
-                    <div class="input-group">
-                        <span class="input-group-text"><span>{{'COMMON.from' | translate}}</span>&nbsp;1</span>
-                        <input class="form-control" style="width:65px" [(ngModel)]="minResolution" name="minResolution">
-                    </div>
-                </div>
-                <div *ngIf="maxResolutionValid()">
-                    <div class="input-group">
-                        <span class="input-group-text"> <span>{{'COMMON.to' | translate}}</span>&nbsp;1</span>
-                        <input class="form-control" style="width:65px" [(ngModel)]="maxResolution" name="maxResolution">
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="btn-group" role="group" [attr.aria-label]="'LAYERMANAGER.editorButtons' | translate">
             <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()"
@@ -140,7 +44,7 @@
             <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
                 [title]="'COMMON.renameLayer' | translate"><i class="icon-textfield"></i></button>
             <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip"
-                *ngIf="isLayerVectorLayer(currentLayer.layer)"
+                *ngIf="HsLayerEditorService.isLayerVectorLayer(currentLayer.layer)"
                 [title]="'LAYERMANAGER.layerEditor.savegeojson' | translate"><i class="icon-save-floppy"></i></button>
             <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip"
                 [title]="'COMMON.removeLayer' | translate"><i class="icon-trash"></i></button>
