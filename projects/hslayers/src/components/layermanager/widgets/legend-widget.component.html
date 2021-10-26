@@ -1,0 +1,10 @@
+<div *ngIf="olLayer()">
+  <div *ngIf="HsLayerEditorService.legendVisible()">
+    <p style="text-align: center; font-weight: bold">
+      {{ "COMMON.legend" | translate }}
+    </p>
+    <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor">
+    </hs-legend-layer-directive>
+    <hr />
+  </div>
+</div>

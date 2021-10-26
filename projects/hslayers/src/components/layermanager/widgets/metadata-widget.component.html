@@ -1,0 +1,34 @@
+<div
+  class="form-group"
+  *ngIf="currentLayer && metadataService.hasMetadata(currentLayer)"
+>
+  <!-- Metadata -->
+  <div class="pt-2">
+    <a
+      class="card-href"
+      *ngFor="let metadataUrl of metadataService.metadataArray(currentLayer)"
+      href="{{ metadataUrl.onlineResource }}"
+      target="_blank"
+      [title]="'COMMON.metadata' | translate"
+    >
+      <span [hidden]="!metadataUrl.type">
+        {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translate }}
+        {{ metadataUrl.type }}
+      </span>
+      <span [hidden]="metadataUrl.type">
+        {{ "LAYERMANAGER.layerEditor.metadataOfService" | translate }}
+      </span>
+    </a>
+  </div>
+  <!-- Copyright -->
+  <div *ngIf="hasCopyright(currentLayer)">
+    <a
+      class="card-href"
+      href="{{ getAttribution(currentLayer.layer).onlineResource }}"
+      target="_blank"
+      [title]="'LAYERMANAGER.layerEditor.copyright' | translate"
+    >
+      {{ "LAYERMANAGER.layerEditor.copyright" | translate }}</a
+    >
+  </div>
+</div>

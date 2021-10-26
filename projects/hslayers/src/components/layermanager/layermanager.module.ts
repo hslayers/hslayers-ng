@@ -9,6 +9,8 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsAbstractWidgetComponent} from './widgets/abstract-widget.component';
+import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
@@ -22,8 +24,13 @@ import {HsLayerManagerRemoveLayerDialogComponent} from './dialogs/remove-layer-d
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layermanager-time-editor.component';
 import {HsLayerPhysicalListComponent} from './physical-list/layermanager-physical-layerlist.component';
 import {HsLegendModule} from '../legend/legend.module';
+import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
+import {HsMetadataWidgetComponent} from './widgets/metadata-widget.component';
+import {HsOpacityWidgetComponent} from './widgets/opacity-widget.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueuesModule} from '../../common/queues/queues.module';
+import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
+import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 
 @NgModule({
@@ -40,6 +47,13 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
+    HsTypeWidgetComponent,
+    HsMetadataWidgetComponent,
+    HsAbstractWidgetComponent,
+    HsScaleWidgetComponent,
+    HsClusterWidgetComponent,
+    HsLegendWidgetComponent,
+    HsOpacityWidgetComponent,
   ],
   imports: [
     TranslateModule,
@@ -67,6 +81,13 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
+    HsTypeWidgetComponent,
+    HsMetadataWidgetComponent,
+    HsAbstractWidgetComponent,
+    HsScaleWidgetComponent,
+    HsClusterWidgetComponent,
+    HsLegendWidgetComponent,
+    HsOpacityWidgetComponent,
   ],
   entryComponents: [
     HsLayerManagerComponent,

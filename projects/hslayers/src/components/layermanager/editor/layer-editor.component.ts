@@ -2,10 +2,11 @@ import {Component, Input} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Cluster, Source} from 'ol/source';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
+import {HsAbstractWidgetComponent} from '../widgets/abstract-widget.component';
 import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
@@ -13,23 +14,26 @@ import {HsDrawService} from '../../draw/draw.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from './../../language/language.service';
 import {HsLayerDescriptor} from './../layer-descriptor.interface';
+import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
-import {HsLayerManagerMetadataService} from './../layermanager-metadata.service';
+import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
 import {HsMapService} from '../../map/map.service';
+import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
+import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
+import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from '../../styles/styler.service';
+import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {
-  getAbstract,
-  getAttribution,
   getBase,
   getCachedCapabilities,
   getRemovable,
   getTitle,
-  setAbstract,
   setTitle,
 } from '../../../common/layer-extensions';
 
@@ -48,11 +52,8 @@ export class HsLayerEditorComponent {
   get currentLayer(): HsLayerDescriptor {
     return this._currentLayer;
   }
-  distance = {
-    value: 40,
-  };
+
   layer_renamer_visible = false;
-  getAttribution = getAttribution;
   getBase = getBase;
   tmpTitle: string = undefined;
   constructor(
@@ -66,10 +67,33 @@ export class HsLayerEditorComponent {
     public HsLayerEditorService: HsLayerEditorService,
     public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
-    public HsLayerManagerMetadataService: HsLayerManagerMetadataService, // Used in template
     public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService
-  ) {}
+    public HsLanguageService: HsLanguageService,
+    public hsLayerEditorWidgetContainerService: HsLayerEditorWidgetContainerService
+  ) {
+    this.hsLayerEditorWidgetContainerService.create(HsTypeWidgetComponent, {});
+    this.hsLayerEditorWidgetContainerService.create(
+      HsMetadataWidgetComponent,
+      {}
+    );
+    this.hsLayerEditorWidgetContainerService.create(
+      HsAbstractWidgetComponent,
+      {}
+    );
+    this.hsLayerEditorWidgetContainerService.create(HsScaleWidgetComponent, {});
+    this.hsLayerEditorWidgetContainerService.create(
+      HsLegendWidgetComponent,
+      {}
+    );
+    this.hsLayerEditorWidgetContainerService.create(
+      HsLayerEditorDimensionsComponent,
+      {}
+    );
+    this.hsLayerEditorWidgetContainerService.create(
+      HsOpacityWidgetComponent,
+      {}
+    );
+  }
 
   /**
    * Confirm saving a vector layer content as a geoJSON
@@ -116,94 +140,11 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * Test if layer is WMS layer
-   * @param layer - Selected layer
-   */
-  isLayerVectorLayer(layer: Layer<Source>): boolean {
-    return this.HsLayerUtilsService.isLayerVectorLayer(layer);
-  }
-
-  /**
-   * Test if layer is WMS layer
-   */
-  isVectorLayer(): boolean | undefined {
-    if (!this.currentLayer) {
-      return;
-    }
-    const layer = this.olLayer();
-    if (!this.isLayerVectorLayer(layer)) {
-      return;
-    } else {
-      return true;
-    }
-  }
-
-  /**
-   * Set cluster for layer
-   * @param newValue - To cluster or not to cluster
-   */
-  set cluster(newValue: boolean) {
-    if (!this.currentLayer) {
-      return;
-    }
-    this.HsLayerEditorService.cluster(
-      this.olLayer(),
-      newValue,
-      this.distance.value
-    );
-  }
-
-  /**
-   * @returns Current cluster state
-   */
-  get cluster(): boolean | undefined {
-    if (!this.currentLayer) {
-      return;
-    }
-    return this.HsLayerEditorService.cluster(
-      this.olLayer(),
-      undefined,
-      this.distance.value
-    );
-  }
-
-  /**
-   * Set distance between cluster features;
-   */
-  changeDistance(): void {
-    if (!this.currentLayer) {
-      return;
-    }
-    const layer = this.olLayer();
-    const src = layer.getSource() as Cluster;
-    if (src.setDistance == undefined) {
-      return;
-    }
-    src.setDistance(this.distance.value);
-  }
-
-  /**
    * Toogle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename(): void {
     this.tmpTitle = undefined;
     this.layer_renamer_visible = !this.layer_renamer_visible;
-  }
-
-  /**
-   * Set selected layer's opacity and emits "compositionchanged"
-   * @param newValue
-   */
-  set opacity(newValue) {
-    if (!this.currentLayer) {
-      return;
-    }
-    this.olLayer().setOpacity(newValue);
-    this.HsEventBusService.compositionEdits.next();
-  }
-
-  get opacity() {
-    return this.olLayer().getOpacity();
   }
 
   /**
@@ -224,58 +165,6 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * Determines if layer has copyright information available
-   * @param layer - Selected layer (HsLayerManagerService.currentLayer)
-   */
-  hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
-    if (!this.currentLayer) {
-      return;
-    } else {
-      return getAttribution(layer.layer)?.onlineResource != undefined;
-    }
-  }
-
-  /**
-   * Set min resolution for selected layer
-   * @param newValue
-   */
-  set minResolution(newValue) {
-    if (!this.currentLayer) {
-      return;
-    }
-    const layer = this.olLayer();
-    layer.setMinResolution(newValue);
-  }
-
-  get minResolution() {
-    if (!this.currentLayer) {
-      return;
-    }
-    const layer = this.olLayer();
-    return layer.getMinResolution();
-  }
-
-  /**
-   * Set max resolution for selected layer
-   * @param newValue
-   */
-  set maxResolution(newValue) {
-    if (!this.currentLayer) {
-      return;
-    }
-    const layer = this.olLayer();
-    layer.setMaxResolution(newValue);
-  }
-
-  get maxResolution() {
-    if (!this.currentLayer) {
-      return;
-    }
-    const layer = this.olLayer();
-    return layer.getMaxResolution();
-  }
-
-  /**
    * Check if layer can be removed based on 'removable'
    * layer attribute
    */
@@ -293,43 +182,11 @@ export class HsLayerEditorComponent {
     );
   }
 
-  /**
-   * Test if selected layer has min and max resolution set
-   */
-  isScaleVisible(): boolean {
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return false;
-    }
-    return this.minResolutionValid() || this.maxResolutionValid();
-  }
-
   olLayer(): Layer<Source> {
     if (!this.currentLayer) {
       return undefined;
     }
     return this.currentLayer.layer;
-  }
-
-  minResolutionValid(): boolean {
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return false;
-    }
-    return (
-      layer.getMinResolution() != undefined && layer.getMinResolution() != 0
-    );
-  }
-
-  maxResolutionValid(): boolean {
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return false;
-    }
-    return (
-      layer.getMaxResolution() != undefined &&
-      layer.getMaxResolution() != Infinity
-    );
   }
 
   /**
@@ -368,22 +225,6 @@ export class HsLayerEditorComponent {
 
   titleUnsaved(): boolean {
     return this.tmpTitle != getTitle(this.olLayer());
-  }
-
-  set abstract(newAbstract: string) {
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return;
-    }
-    setAbstract(layer, newAbstract);
-  }
-
-  get abstract(): string {
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return;
-    }
-    return getAbstract(layer);
   }
 
   hasSubLayers(): boolean | undefined {
