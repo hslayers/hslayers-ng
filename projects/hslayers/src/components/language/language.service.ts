@@ -6,9 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class HsLanguageService {
   language: string;
-  constructor(private TranslateService: TranslateService) {
-    this.getCurrentLanguageCode();
-  }
+  constructor(private TranslateService: TranslateService) {}
 
   /**
    * @public

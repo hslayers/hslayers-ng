@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
+import {HsConfig} from '../../config.service';
 import {HsLanguageService} from './language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -16,6 +17,7 @@ export class HsLanguageComponent
   name = 'language';
   constructor(
     public HsLanguageService: HsLanguageService,
+    public hsConfig: HsConfig,
     HsLayoutService: HsLayoutService,
     hsSidebarService: HsSidebarService
   ) {
@@ -37,6 +39,7 @@ export class HsLanguageComponent
 
   ngOnInit(): void {
     this.available_languages = this.HsLanguageService.listAvailableLanguages();
+    this.HsLanguageService.language = this.hsConfig.language ?? 'en';
   }
   //$scope.$emit('scope_loaded', 'Language');
 }
