@@ -19,7 +19,6 @@ export * from './layermanager.module';
 export * from './layermanager.service';
 export * from './dialogs/remove-all-dialog.component';
 export * from './dialogs/remove-layer-dialog.component';
-export * from './widgets/abstract-widget.component';
 export * from './widgets/cluster-widget.component';
 export * from './widgets/layer-editor-widget-base.component';
 export * from './widgets/layer-editor-widget-container.service';

@@ -9,7 +9,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAbstractWidgetComponent} from './widgets/abstract-widget.component';
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
@@ -51,7 +50,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerPhysicalListComponent,
     HsTypeWidgetComponent,
     HsMetadataWidgetComponent,
-    HsAbstractWidgetComponent,
     HsScaleWidgetComponent,
     HsClusterWidgetComponent,
     HsLegendWidgetComponent,
@@ -85,7 +83,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerPhysicalListComponent,
     HsTypeWidgetComponent,
     HsMetadataWidgetComponent,
-    HsAbstractWidgetComponent,
     HsScaleWidgetComponent,
     HsClusterWidgetComponent,
     HsLegendWidgetComponent,
