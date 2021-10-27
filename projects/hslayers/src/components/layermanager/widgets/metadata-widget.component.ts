@@ -4,7 +4,9 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLayerDescriptor} from './../layer-descriptor.interface';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerManagerMetadataService} from './../layermanager-metadata.service';
+import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
+import {getAbstract, setAbstract} from '../../../common/layer-extensions';
 import {getAttribution} from '../../../common/layer-extensions';
 
 @Component({
@@ -18,7 +20,8 @@ export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent 
   constructor(
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
-    public metadataService: HsLayerManagerMetadataService // Used in template
+    public metadataService: HsLayerManagerMetadataService, // Used in template
+    public HsLayerManagerService: HsLayerManagerService
   ) {
     super(hsLayerSelectorService);
   }
@@ -33,5 +36,21 @@ export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent 
     } else {
       return getAttribution(layer.layer)?.onlineResource != undefined;
     }
+  }
+
+  set abstract(newAbstract: string) {
+    const layer = this.olLayer();
+    if (layer == undefined) {
+      return;
+    }
+    setAbstract(layer, newAbstract);
+  }
+
+  get abstract(): string {
+    const layer = this.olLayer();
+    if (layer == undefined) {
+      return;
+    }
+    return getAbstract(layer);
   }
 }
