@@ -1,6 +1,5 @@
 import Feature from 'ol/Feature';
 import {Group, Layer} from 'ol/layer';
-import {Style} from 'ol/style';
 
 import {Geometry} from 'ol/geom';
 import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
@@ -27,7 +26,6 @@ const EXCLUSIVE = 'exclusive';
 const FEATURE_INFO_LANG = 'featureInfoLang';
 const FROM_COMPOSITION = 'fromComposition';
 const GET_FEATURE_INFO_TARGET = 'getFeatureInfoTarget';
-const HS_ORIGINAL_STYLE = 'hsOriginalStyle';
 const HS_LAYMAN_SYNCHRONIZING = 'hsLaymanSynchronizing';
 const INFO_FORMAT = 'infoFormat';
 const INLINE_LEGEND = 'inlineLegend';
@@ -441,8 +439,8 @@ export type Metadata = {
 
 /**
  * Store metadata which were parsed from layer definition in composition json.
- * @param layer
- * @param metadata
+ * @param layer -
+ * @param metadata -
  */
 export function setMetadata(layer: Layer<Source>, metadata: Metadata): void {
   layer.set(METADATA, metadata);
@@ -550,8 +548,8 @@ export function getShowInLayerManager(layer: Layer<Source>): boolean {
 
 /**
  * Set list of all possible sub-layers for WMS
- * @param layer
- * @param sublayers String of all possible WMS layers sub-layer names separated by comma
+ * @param layer -
+ * @param sublayers - String of all possible WMS layers sub-layer names separated by comma
  */
 export function setSubLayers(layer: Layer<Source>, sublayers: string): void {
   layer.set(SUB_LAYERS, sublayers);
@@ -559,7 +557,7 @@ export function setSubLayers(layer: Layer<Source>, sublayers: string): void {
 
 /**
  * Get list of all possible sub-layers for WMS
- * @param layer
+ * @param layer -
  */
 export function getSubLayers(layer: Layer<Source>): string {
   return layer.get(SUB_LAYERS);
