@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
 import {Observable, forkJoin, from} from 'rxjs';
 import {
   TranslateLoader,
@@ -32,9 +32,32 @@ export class WebpackTranslateLoader implements TranslateLoader {
       //these translations are loaded as promises in order, where next one overwrites previous loaders values
       from(new Promise((resolve) => resolve(en))),
       from(
-        this.HttpClient.get(
-          `${this.HsConfig.assetsPath}/locales/${lang}.json`
-          ).toPromise()
+        new Promise(async (resolve) => {
+          (async () => {
+            if (hsConfig.assetsPath == undefined) {
+              console.warn('HsConfig.assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
+              let counter = 0;
+              const MAX_CONFIG_POLLS = 10;
+              while (!hsConfig.assetsPath && counter++ < MAX_CONFIG_POLLS) {
+                await new Promise((resolve2) => setTimeout(resolve2, 100));
+              }
+              if (counter >= MAX_CONFIG_POLLS) {
+                resolve(en); //This is needed to display English if assetsPath will never be set.
+                if (lang != 'en') {
+                  console.error(
+                    'Please set HsConfig.assetsPath so translations can be loaded'
+                  );
+                }
+                return;
+              }
+              console.log('assetsPath OK');
+            }
+            const res = await this.HttpClient.get(
+              `${hsConfig.assetsPath}/locales/${lang}.json`
+            ).toPromise();
+            resolve(res);
+          })();
+        })
       ),
       from(
         new Promise((resolve) => {
