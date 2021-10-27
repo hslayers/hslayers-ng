@@ -5,7 +5,6 @@ const TITLE = 'title';
 const HIGHLIGHTED = 'highlighted';
 const LABEL = 'label';
 const NAME = 'name';
-const RECORD = 'record';
 const FEATURES = 'features';
 const UNITID = 'unitId';
 
