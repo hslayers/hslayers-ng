@@ -147,6 +147,17 @@
             "main": "projects/test-app/src/main.ts",
             "polyfills": "projects/test-app/src/polyfills.ts",
             "tsConfig": "projects/test-app/tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "xml-utils/find-tags-by-name",
+              "lru-cache",
+              "pbf",
+              "queue",
+              "xml-js",
+              "geostyler-legend",
+              "ol-popup",
+              "geostyler-openlayers-parser",
+              "geostyler-sld-parser"
+            ],
             "assets": [
               {
                 "glob": "**/*",
