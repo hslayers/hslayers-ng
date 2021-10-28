@@ -146,7 +146,7 @@ export class HsConfig {
     });
   }
 
-  checkDeprecatedCesiumConfig(newConfig: any) {
+  checkDeprecatedCesiumConfig?(newConfig: any) {
     for (const prop of [
       'cesiumDebugShowFramesPerSecond',
       'cesiumShadows',
