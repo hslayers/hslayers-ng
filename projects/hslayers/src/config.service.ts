@@ -146,7 +146,35 @@ export class HsConfig {
     });
   }
 
+  checkDeprecatedCesiumConfig(newConfig: any) {
+    for (const prop of [
+      'cesiumDebugShowFramesPerSecond',
+      'cesiumShadows',
+      'cesiumBase',
+      'createWorldTerrainOptions',
+      'terrain_provider',
+      'cesiumTimeline',
+      'cesiumAnimation',
+      'creditContainer',
+      'cesiumInfoBox',
+      'imageryProvider',
+      'terrainExaggeration',
+      'cesiumBingKey',
+      'newTerrainProviderOptions',
+      'terrain_providers',
+      'cesiumAccessToken',
+      'cesiumTime',
+    ]) {
+      if (newConfig[prop] != undefined) {
+        console.error(
+          `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
+        );
+      }
+    }
+  }
+
   update?(newConfig: HsConfig): void {
+    this.checkDeprecatedCesiumConfig(newConfig);
     Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
     delete newConfig.componentsEnabled;
     this.symbolizerIcons = [
