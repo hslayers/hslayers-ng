@@ -6,6 +6,7 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
@@ -76,6 +77,10 @@ export class HsLayerEditorComponent {
       {}
     );
     this.hsLayerEditorWidgetContainerService.create(HsScaleWidgetComponent, {});
+    this.hsLayerEditorWidgetContainerService.create(
+      HsClusterWidgetComponent,
+      {}
+    );
     this.hsLayerEditorWidgetContainerService.create(
       HsLegendWidgetComponent,
       {}
