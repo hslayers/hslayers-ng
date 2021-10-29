@@ -1,6 +1,6 @@
 <!-- Feature header template -->
 <ng-template #featureHeader let-feature="feature" let-type="type">
-        <div class="d-flex flex-row" style="background-color: aliceblue;">
+        <div class="d-flex flex-row">
             <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
             <a class="p-1" *ngIf="HsQueryVectorService.isFeatureRemovable(feature) && type"
                 (click)="removeFeature(feature)" data-toggle="tooltip"
