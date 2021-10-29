@@ -9,7 +9,7 @@ import {
   ImageStatic as Static,
   TileArcGISRest,
   TileWMS,
-  Vector,
+  Vector as VectorSource,
   WMTS,
   XYZ,
 } from 'ol/source';
@@ -190,7 +190,7 @@ export class HsMapService {
           layer,
           source: source.getSource(),
         });
-      } else if (this.HsUtilsService.instOf(source, Vector)) {
+      } else if (this.HsUtilsService.instOf(source, VectorSource)) {
         layersToLookFor.push({
           layer,
           source,
@@ -585,7 +585,7 @@ export class HsMapService {
       lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
     }
     const source = lyr.getSource();
-    if (this.HsUtilsService.instOf(source, Vector)) {
+    if (this.HsUtilsService.instOf(source, VectorSource)) {
       this.getVectorType(lyr);
     }
     this.proxifyLayer(lyr);
