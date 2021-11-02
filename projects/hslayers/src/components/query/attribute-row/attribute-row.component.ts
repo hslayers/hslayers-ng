@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'hs-query-attribute-row',
-  templateUrl: './partials/attribute-row.html',
+  templateUrl: './attribute-row.component.html',
 })
 export class HsQueryAttributeRowComponent implements OnInit {
   isObject = false;

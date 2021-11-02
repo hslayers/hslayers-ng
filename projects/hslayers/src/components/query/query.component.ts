@@ -21,7 +21,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-query',
-  templateUrl: './partials/infopanel.html',
+  templateUrl: './query.component.html',
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent

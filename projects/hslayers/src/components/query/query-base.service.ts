@@ -18,7 +18,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getFeatures} from '../../common/feature-extensions';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -38,7 +37,6 @@ export class HsQueryBaseService {
   selector = null;
   currentQuery = null;
   featuresUnderMouse: Feature<Geometry>[] = [];
-  featureLayersUnderMouse = [];
   dataCleared = true;
   queryPoint = new Point([0, 0]);
   queryLayer = new VectorLayer({
@@ -57,7 +55,7 @@ export class HsQueryBaseService {
     }),
     style: (feature) => this.pointClickedStyle(feature),
   });
-
+  featureLayersUnderMouse = [];
   nonQueryablePanels = [
     'measure',
     'composition_browser',
@@ -157,25 +155,22 @@ export class HsQueryBaseService {
       this.zone.run(() => {
         this.featuresUnderMouse = tmpFeatures as Feature<Geometry>[];
         if (this.featuresUnderMouse.length) {
-          this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
-            this.HsMapService.getLayerForFeature(f)
-          );
-          this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
-            this.featureLayersUnderMouse,
+          const layersFound = this.HsUtilsService.removeDuplicates(
+            this.featuresUnderMouse.map((f) =>
+              this.HsMapService.getLayerForFeature(f)
+            ),
             'title'
           );
-          this.featureLayersUnderMouse = this.featureLayersUnderMouse.map(
-            (l) => {
-              const layer = {
-                title: getTitle(l),
-                layer: l,
-                features: this.featuresUnderMouse.filter(
-                  (f) => this.HsMapService.getLayerForFeature(f) == l
-                ),
-              };
-              return layer;
-            }
-          );
+          this.featureLayersUnderMouse = layersFound.map((l) => {
+            const layer = {
+              title: getTitle(l),
+              layer: l,
+              features: this.featuresUnderMouse.filter(
+                (f) => this.HsMapService.getLayerForFeature(f) == l
+              ),
+            };
+            return layer;
+          });
         } else {
           this.featuresUnderMouse = [];
         }
