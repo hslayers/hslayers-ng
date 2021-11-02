@@ -81,8 +81,12 @@ export class HsCesiumService {
       }
 
       const defaultViewport = this.HsCesiumCameraService.getDefaultViewport();
-      Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
-      Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
+      if (defaultViewport) {
+        Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
+        Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
+      } else {
+        console.error('Please set HsConfig.default_view');
+      }
 
       //TODO: research if this must be used or ignored
       const bing = new BingMapsImageryProvider({

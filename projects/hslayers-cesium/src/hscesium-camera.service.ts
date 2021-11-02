@@ -384,7 +384,7 @@ export class HsCesiumCameraService {
     let trans_ext;
     if (this.lastSyncedExtentFromOl) {
       trans_ext = this.lastSyncedExtentFromOl;
-    } else {
+    } else if (this.HsConfig.default_view) {
       const view = this.HsConfig.default_view;
       let winWidth = window.innerWidth;
       let winHeight = window.innerHeight;
@@ -397,14 +397,14 @@ export class HsCesiumCameraService {
       const ol_ext = view.calculateExtent([winWidth, winHeight]);
       trans_ext = transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
     }
-    const rectangle = Rectangle.fromDegrees(
-      trans_ext[0],
-      trans_ext[1],
-      trans_ext[2],
-      trans_ext[3]
-    );
     const tmp = {rectangle: undefined, viewFactor: 0};
     if (trans_ext && !isNaN(trans_ext[0])) {
+      const rectangle = Rectangle.fromDegrees(
+        trans_ext[0],
+        trans_ext[1],
+        trans_ext[2],
+        trans_ext[3]
+      );
       tmp.rectangle = rectangle;
     }
     return tmp;
