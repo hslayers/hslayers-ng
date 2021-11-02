@@ -546,6 +546,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "sourceMap": true,
+            "vendorChunk": true,
+            "optimization": false,
             "outputPath": "dist/cesium-test-app",
             "index": "projects/cesium-test-app/src/index.html",
             "main": "projects/cesium-test-app/src/main.ts",
