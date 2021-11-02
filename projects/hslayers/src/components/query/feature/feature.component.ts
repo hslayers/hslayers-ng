@@ -6,18 +6,18 @@ import {
 } from '@angular/core';
 import {Input} from '@angular/core';
 
-import {HsFeatureCommonService} from './feature-common.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsMapService} from '../map/map.service';
-import {HsQueryVectorService} from './query-vector.service';
-import {exportFormats} from './feature-common.service';
-import {getTitle} from '../../common/layer-extensions';
+import {HsFeatureCommonService} from '../feature-common.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsMapService} from '../../map/map.service';
+import {HsQueryVectorService} from '../query-vector.service';
+import {exportFormats} from '../feature-common.service';
+import {getTitle} from '../../../common/layer-extensions';
 import {Geometry} from 'ol/geom';
 import {Feature} from 'ol';
 
 @Component({
   selector: 'hs-query-feature',
-  templateUrl: './partials/feature.html',
+  templateUrl: './feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsQueryFeatureComponent implements AfterViewInit {

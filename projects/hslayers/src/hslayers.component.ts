@@ -27,7 +27,7 @@ import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
-import {HsQueryFeaturePopupComponent} from './components/query/feature-popup.component';
+import {HsQueryFeaturePopupComponent} from './components/query/feature-popup/feature-popup.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',

@@ -3,19 +3,19 @@ import {Input} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {HsConfirmDialogComponent} from '../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsFeatureCommonService} from './feature-common.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsQueryVectorService} from './query-vector.service';
-import {exportFormats} from './feature-common.service';
-import {getTitle} from '../../common/layer-extensions';
+import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsFeatureCommonService} from '../feature-common.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsQueryVectorService} from '../query-vector.service';
+import {exportFormats} from '../feature-common.service';
+import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature-list',
-  templateUrl: './partials/feature-list.html',
+  templateUrl: './feature-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsQueryFeatureListComponent {
