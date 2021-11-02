@@ -130,13 +130,6 @@ export class HsCesiumService {
         }
       );
 
-      /**
-       * @param file -
-       */
-      function loadSkyBoxSide(file) {
-        return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
-      }
-
       viewer.scene.debugShowFramesPerSecond = this.HsCesiumConfig
         .cesiumDebugShowFramesPerSecond
         ? this.HsCesiumConfig.cesiumDebugShowFramesPerSecond
@@ -261,34 +254,6 @@ export class HsCesiumService {
         }
       }, ScreenSpaceEventType.LEFT_UP);
 
-      /**
-       * @param movement -
-       */
-      function rightClickLeftDoubleClick(movement) {
-        const pickRay = this.viewer.camera.getPickRay(movement.position);
-        const pickedObject = this.viewer.scene.pick(movement.position);
-
-        if (this.viewer.scene.pickPositionSupported) {
-          if (this.viewer.scene.mode === SceneMode.SCENE3D) {
-            const cartesian = this.viewer.scene.pickPosition(movement.position);
-            if (defined(cartesian)) {
-              const cartographic = Cartographic.fromCartesian(cartesian);
-              const longitudeString = Math.toDegrees(cartographic.longitude);
-              const latitudeString = Math.toDegrees(cartographic.latitude);
-              //TODO rewrite to subject
-              this.cesiumPositionClicked.next([
-                longitudeString,
-                latitudeString,
-              ]);
-            }
-          }
-        }
-        if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
-          pickedObject.id.onRightClick(pickedObject.id);
-          return;
-        }
-      }
-
       handler.setInputAction(
         rightClickLeftDoubleClick,
         ScreenSpaceEventType.RIGHT_DOWN
@@ -376,5 +341,37 @@ export class HsCesiumService {
       viewer: this.viewer,
       service: this,
     });
+  }
+}
+
+/**
+ * @param file -
+ */
+function loadSkyBoxSide(file) {
+  return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
+}
+
+/**
+ * @param movement -
+ */
+function rightClickLeftDoubleClick(movement) {
+  const pickRay = this.viewer.camera.getPickRay(movement.position);
+  const pickedObject = this.viewer.scene.pick(movement.position);
+
+  if (this.viewer.scene.pickPositionSupported) {
+    if (this.viewer.scene.mode === SceneMode.SCENE3D) {
+      const cartesian = this.viewer.scene.pickPosition(movement.position);
+      if (defined(cartesian)) {
+        const cartographic = Cartographic.fromCartesian(cartesian);
+        const longitudeString = Math.toDegrees(cartographic.longitude);
+        const latitudeString = Math.toDegrees(cartographic.latitude);
+        //TODO rewrite to subject
+        this.cesiumPositionClicked.next([longitudeString, latitudeString]);
+      }
+    }
+  }
+  if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
+    pickedObject.id.onRightClick(pickedObject.id);
+    return;
   }
 }

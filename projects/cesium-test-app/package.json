@@ -1,0 +1,28 @@
+{
+  "name": "hslayers-cesium-app",
+  "version": "6.0.0",
+  "description": "A bundle of HSLayers-NG library + angular + OL which includes Cesium for 3D maps",
+  "main": "karma.conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hslayers/hslayers-ng.git"
+  },
+  "keywords": [
+    "map",
+    "hslayers-ng",
+    "ol",
+    "angular"
+  ],
+  "author": "Plan4All",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hslayers/hslayers-ng/issues"
+  },
+  "homepage": "https://github.com/hslayers/hslayers-ng/blob/develop/projects/hslayers-cesium-app/README.md"
+}

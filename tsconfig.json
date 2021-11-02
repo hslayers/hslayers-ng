@@ -28,7 +28,7 @@
       "hslayers-material": ["dist/hslayers-material"],
       "hslayers-material/*": ["dist/hslayers-material/*"],
       "hslayers-cesium": ["dist/hslayers-cesium"],
-      "hslayers-cesium/*": ["dist/hslayers-cesium/*"],
+      "hslayers-cesium/*": ["projects/hslayers-cesium/*", "projects/hslayers-cesium"],
       "cesium/*": ["node_modules/cesium/*"],
     }
   },

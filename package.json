@@ -16,6 +16,8 @@
     "build-css-wo-bootstrap": "npx sass --load-path=node_modules projects/hslayers/src/css/hslayers-wo-bootstrap.scss dist/hslayers/css/hslayers-ng-wo-bootstrap.css",
     "build-css-colors": "npx sass --load-path=node_modules projects/hslayers/src/css/hslayers-colors.scss dist/hslayers/css/hslayers-ng-colors.css",
     "start-test-app": "ng serve test-app --hmr",
+    "start-decoupling-test-app": "ng serve decoupling-test-app --hmr",
+    "start-cesium-test-app": "ng serve cesium-test-app --hmr",
     "build-watch": "ng build hslayers --watch",
     "release": "dotenv -- release-it",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
