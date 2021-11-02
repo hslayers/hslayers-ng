@@ -885,17 +885,7 @@ export class HsLayerManagerService {
    * @param lyr - Selected layer
    */
   isLayerInResolutionInterval(lyr: Layer<Source>): boolean {
-    let cur_res;
-    if (this.isWms(lyr)) {
-      const view = this.HsMapService.map.getView();
-      const resolution = view.getResolution();
-      const units = view.getProjection().getUnits();
-      const dpi = 25.4 / 0.28;
-      const mpu = METERS_PER_UNIT[units];
-      cur_res = resolution * mpu * 39.37 * dpi;
-    } else {
-      cur_res = this.HsMapService.map.getView().getResolution();
-    }
+    const cur_res = this.HsMapService.map.getView().getResolution();
     this.currentResolution = cur_res;
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()

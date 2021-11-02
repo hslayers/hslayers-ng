@@ -18,6 +18,7 @@ import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
+import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
@@ -47,7 +48,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService
+    public hsAddDataCommonService: HsAddDataCommonService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.data = {
       add_under: null,
@@ -436,8 +438,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       title: options.layerName,
       name: options.layerName,
       source,
-      minResolution: layer.MinScaleDenominator,
-      maxResolution: layer.MaxScaleDenominator,
+      minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
+        layer.MinScaleDenominator
+      ),
+      maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
+        layer.MaxScaleDenominatorview
+      ),
       removable: true,
       abstract: layer.Abstract,
       metadata,

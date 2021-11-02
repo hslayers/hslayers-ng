@@ -28,7 +28,6 @@ import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
 } from '../../common/get-capabilities/wms-get-capabilities-response.interface';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -102,10 +101,6 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  private roundToHundreds(num: number): number {
-    return Math.ceil(num / 100) * 100;
-  }
-
   /**
    * @param properties
    * @returns {any}
@@ -113,7 +108,9 @@ export class HsLayerManagerMetadataService {
    */
   searchForScaleDenominator(properties: any) {
     let maxScale = properties.MaxScaleDenominator
-      ? properties.MaxScaleDenominator
+      ? this.HsLayerUtilsService.calculateResolutionFromScale(
+          properties.MaxScaleDenominator
+        )
       : null;
 
     const layers = properties.Layer;
@@ -124,9 +121,15 @@ export class HsLayerManagerMetadataService {
           maxScale = subScale > maxScale ? subScale : maxScale;
         } else {
           if (sublayer.MaxScaleDenominator) {
-            sublayer.maxResolution = sublayer.MaxScaleDenominator;
+            sublayer.maxResolution =
+              this.HsLayerUtilsService.calculateResolutionFromScale(
+                sublayer.MaxScaleDenominator
+              );
             if (maxScale < sublayer.MaxScaleDenominator) {
-              maxScale = sublayer.MaxScaleDenominator;
+              maxScale =
+                this.HsLayerUtilsService.calculateResolutionFromScale(
+                  sublayer.MaxScaleDenominator
+                );
             }
           } else if (!sublayer.maxResolution) {
             sublayer.maxResolution = maxScale;
@@ -194,6 +197,7 @@ export class HsLayerManagerMetadataService {
       if (layerObj == undefined) {
         return;
       }
+      olLayer.setProperties(layerObj);
       if (
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
@@ -276,15 +280,12 @@ export class HsLayerManagerMetadataService {
       //Identify max resolution of layer. If layer has sublayers the highest value is selected
       setTimeout(() => {
         if (getMaxResolutionDenominator(layer)) {
-          layer.set(
-            'maxResolution',
-            this.roundToHundreds(getMaxResolutionDenominator(layer))
-          );
+          layer.set('maxResolution', getMaxResolutionDenominator(layer));
           return;
         }
         const maxScale = this.searchForScaleDenominator(layer.getProperties());
         if (maxScale) {
-          layer.set('maxResolution', this.roundToHundreds(maxScale));
+          layer.set('maxResolution', maxScale);
         }
       });
       return true;

@@ -8,6 +8,7 @@ import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/c
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
+import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
@@ -28,7 +29,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService
+    public hsAddDataCommonService: HsAddDataCommonService,
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {
     this.data = {
       map_projection: '',
@@ -242,7 +244,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         dimensions,
       },
       source,
-      maxResolution: layer.minScale > 0 ? layer.minScale : undefined,
+      maxResolution:
+        layer.minScale > 0
+          ? this.hsLayerUtilsService.calculateResolutionFromScale(
+              layer.minScale
+            )
+          : undefined,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     this.hsMapService.map.addLayer(new_layer);
