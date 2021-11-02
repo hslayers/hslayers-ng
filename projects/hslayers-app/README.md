@@ -42,7 +42,6 @@ A global hslayersNgConfig function, which returns a configuration object, NEEDS 
         default_view: new ol.View({
           center: ol.proj.fromLonLat([17.474129, 52.574000]),
           zoom: 4,
-          units: "m"
         })
       }
     } 

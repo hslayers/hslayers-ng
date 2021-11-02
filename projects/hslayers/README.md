@@ -63,7 +63,6 @@ Use HsConfig service injected in your component to set applications layers, look
       default_view: new View({
         center: transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
         zoom: 4,
-        units: 'm',
       })
     })
 ```        

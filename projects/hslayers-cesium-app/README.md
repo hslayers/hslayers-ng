@@ -34,7 +34,6 @@ A global hslayersNgConfig function and cesium specific hslayersCesiumConfig, whi
         default_view: new ol.View({
           center: ol.proj.fromLonLat([17.474129, 52.574000]),
           zoom: 4,
-          units: "m"
         })
       }
     } 
