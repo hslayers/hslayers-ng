@@ -20,7 +20,9 @@ import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './utils.service';
+import {METERS_PER_UNIT} from 'ol/proj';
 import {WmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {
   getCluster,
@@ -35,6 +37,7 @@ export class HsLayerUtilsService {
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsLanguageService: HsLanguageService,
+    public hsMapService: HsMapService,
     private zone: NgZone
   ) {}
 
@@ -433,5 +436,16 @@ export class HsLayerUtilsService {
    */
   layerInvalid(layer: HsLayerDescriptor): boolean {
     return layer.loadProgress?.error;
+  }
+
+  calculateResolutionFromScale(denominator: number) {
+    if (!denominator) {
+      return denominator;
+    }
+    const view = this.hsMapService.map.getView();
+    const units = view.getProjection().getUnits();
+    const dpi = 25.4 / 0.28;
+    const mpu = METERS_PER_UNIT[units];
+    return denominator / (mpu * 39.37 * dpi);
   }
 }

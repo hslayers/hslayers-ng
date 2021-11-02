@@ -1,19 +1,24 @@
-import {Component} from '@angular/core';
-
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsMapService} from '../../map/map.service';
+import {METERS_PER_UNIT} from 'ol/proj';
 
 @Component({
   selector: 'hs-scale-widget',
   templateUrl: './scale-widget.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'scale-widget';
 
-  constructor(hsLayerSelectorService: HsLayerSelectorService) {
+  constructor(
+    hsLayerSelectorService: HsLayerSelectorService,
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsMapService: HsMapService
+  ) {
     super(hsLayerSelectorService);
   }
 
@@ -37,7 +42,9 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     const layer = this.olLayer();
-    layer.setMinResolution(newValue);
+    layer.setMinResolution(
+      this.hsLayerUtilsService.calculateResolutionFromScale(newValue)
+    );
   }
 
   get minResolution() {
@@ -45,7 +52,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     const layer = this.olLayer();
-    return layer.getMinResolution();
+    return this.resolutionToScale(layer.getMinResolution());
   }
 
   /**
@@ -57,7 +64,9 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     const layer = this.olLayer();
-    layer.setMaxResolution(newValue);
+    layer.setMaxResolution(
+      this.hsLayerUtilsService.calculateResolutionFromScale(newValue)
+    );
   }
 
   get maxResolution() {
@@ -65,7 +74,15 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     const layer = this.olLayer();
-    return layer.getMaxResolution();
+    return this.resolutionToScale(layer.getMaxResolution());
+  }
+
+  resolutionToScale(resolution) {
+    const view = this.hsMapService.map.getView();
+    const units = view.getProjection().getUnits();
+    const dpi = 25.4 / 0.28;
+    const mpu = METERS_PER_UNIT[units];
+    return Math.round(resolution * mpu * 39.37 * dpi);
   }
 
   minResolutionValid(): boolean {
