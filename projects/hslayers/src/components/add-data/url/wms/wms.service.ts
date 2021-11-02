@@ -165,10 +165,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.data.exceptions = caps.Capability.Exception;
       this.data.srss = [];
       this.fillProjections(caps, response);
-      //TODO: WHY?
-      if (this.data.srss.includes('CRS:84')) {
-        this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
-      }
+      // //TODO: WHY?
+      // if (this.data.srss.includes('CRS:84')) {
+      //   this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
+      // }
       if (
         this.hsAddDataCommonService.currentProjectionSupported(this.data.srss)
       ) {
