@@ -30,9 +30,10 @@ import {
   PinchRotate,
   PinchZoom,
 } from 'ol/interaction';
+import {Feature, Kinetic, Map, MapBrowserEvent, View} from 'ol';
+import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
@@ -179,6 +180,37 @@ export class HsMapService {
     }
     let layer_;
     const layersToLookFor = [];
+    this.getVectorLayers(layersToLookFor);
+    for (const obj of layersToLookFor) {
+      let found = false;
+      if (obj.source.getFeatureById) {
+        //For ordinary vector layers we can search by Id
+        found = obj.source.getFeatureById(fid);
+      } else {
+        //For cluster layers we need to loop through features
+        found = obj.source.getFeatures().some((layer_feature) => {
+          return layer_feature === feature;
+        });
+      }
+
+      if (found) {
+        layer_ = obj.layer;
+        break;
+      }
+    }
+    if (layer_ && !this.featureLayerMapping[fid]) {
+      //TODO: Will have to delete the mapping at some point when layer is cleared or feature removed
+      this.featureLayerMapping[fid] = layer_;
+    }
+    return layer_;
+  }
+
+  getVectorLayers(
+    layersToLookFor: {
+      source: VectorSource<Geometry> | Cluster;
+      layer: Layer<Source>;
+    }[]
+  ): void {
     const check = (layer) => {
       const source = layer.getSource();
       if (this.HsUtilsService.instOf(source, Cluster)) {
@@ -204,29 +236,24 @@ export class HsMapService {
         check(layer);
       }
     });
-    for (const obj of layersToLookFor) {
-      let found = false;
-      if (obj.source.getFeatureById) {
-        //For ordinary vector layers we can search by Id
-        found = obj.source.getFeatureById(fid);
-      } else {
-        //For cluster layers we need to loop through features
-        found = obj.source.getFeatures().some((layer_feature) => {
-          return layer_feature === feature;
-        });
-      }
-
-      if (found) {
-        layer_ = obj.layer;
-        break;
-      }
-    }
-    if (layer_ && !this.featureLayerMapping[fid]) {
-      //TODO: Will have to delete the mapping at some point when layer is cleared or feature removed
-      this.featureLayerMapping[fid] = layer_;
-    }
-    return layer_;
   }
+
+  getFeatureById(fid: string): Feature<Geometry> {
+    if (this.featureLayerMapping[fid]) {
+      return this.featureLayerMapping[fid].getSource().getFeatureById(fid);
+    } else {
+      const layersToLookFor: {
+        source: VectorSource<Geometry> | Cluster;
+        layer: Layer<Source>;
+      }[] = [];
+      this.getVectorLayers(layersToLookFor);
+      const obj = layersToLookFor.find((obj) => obj.source.getFeatureById(fid));
+      if (obj) {
+        return obj.source.getFeatureById(fid);
+      }
+    }
+  }
+
   createDefaultViewButton() {
     const button = this.renderer.createElement('button');
     button.addEventListener(
