@@ -19,6 +19,8 @@ import {HsMeasureComponent} from './components/measure/measure.component';
 import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
 import {HsPrintComponent} from './components/print/print.component';
 import {HsQueryComponent} from './components/query/query.component';
+import {HsQueryFeaturePopupComponent} from './components/query/feature-popup.component';
+import {HsQueryPopupService} from './public-api';
 import {HsSaveMapComponent} from './components/save-map/save-map.component';
 import {HsSearchComponent} from './components/search/search.component';
 import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
@@ -27,7 +29,6 @@ import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
-import {HsQueryFeaturePopupComponent} from './components/query/feature-popup/feature-popup.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',
@@ -41,20 +42,21 @@ export class HslayersComponent implements OnInit {
     public hsConfig: HsConfig,
     private hsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
-    private hsToolbarPanelContainerService: HsToolbarPanelContainerService
+    private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
+    private hsQueryPopupService: HsQueryPopupService
   ) {}
 
   /**
-   * Check if panel is configured to be visible in hsConfig.panelsEnabled 
+   * Check if panel is configured to be visible in hsConfig.panelsEnabled
    * or hsLayoutService.panelsEnabledDefaults and create one if so.
-   * @param name Name of panel used in panelsEnabled config 
+   * @param name Name of panel used in panelsEnabled config
    * @param panelComponent Class defining panel
    * @param data Extra misc data object to be stored in panel
    */
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
     let panelsEnabled = this.hsConfig.panelsEnabled;
     if (panelsEnabled == undefined || panelsEnabled[name] == undefined) {
-      panelsEnabled = this.hsLayoutService.panelsEnabledDefaults
+      panelsEnabled = this.hsLayoutService.panelsEnabledDefaults;
     }
     if (panelsEnabled[name]) {
       this.hsLayoutService.createPanel(panelComponent, data || {});
@@ -91,7 +93,9 @@ export class HslayersComponent implements OnInit {
       this.hsLayoutService.createOverlay(HsInfoComponent, {});
       this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
       this.hsLayoutService.createOverlay(HsToolbarComponent, {});
-      this.hsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {});
+      this.hsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {
+        service: this.hsQueryPopupService,
+      });
       this.hsLayoutService.initializedOnce = true;
     }
   }

@@ -18,7 +18,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getPopUp, getTitle} from '../../common/layer-extensions';
+import {getPopUp} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +36,6 @@ export class HsQueryBaseService {
   popupClassname = '';
   selector = null;
   currentQuery = null;
-  featuresUnderMouse: Feature<Geometry>[] = [];
   dataCleared = true;
   queryPoint = new Point([0, 0]);
   queryLayer = new VectorLayer({
@@ -65,7 +64,6 @@ export class HsQueryBaseService {
     'tripPlanner',
   ];
   last_coordinate_clicked: any;
-  hoverPopup: any;
   getFeatureInfoStarted: Subject<any> = new Subject();
   getFeatureInfoCollected: Subject<any> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
@@ -116,75 +114,9 @@ export class HsQueryBaseService {
         this.getFeatureInfoStarted.next(evt);
       });
     });
-
-    if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
-      this.map.on(
-        'pointermove',
-        this.HsUtilsService.debounce(this.showPopUp, 200, false, this)
-      );
-    } else if (
-      this.HsConfig.popUpDisplay &&
-      this.HsConfig.popUpDisplay === 'click'
-    ) {
-      this.map.on(
-        'singleclick',
-        this.HsUtilsService.debounce(this.showPopUp, 200, false, this)
-      );
-    } /* else none */
   }
 
-  /**
-   * @param e Event, which triggered this function
-   */
-  showPopUp(e): void {
-    // The latter case happens when hovering over the pop-up itself
-    if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
-      return;
-    }
-    if (!this.queryActive) {
-      return;
-    }
-    const map = e.map;
-    const tmpFeatures = this.getFeaturesUnderMouse(map, e.pixel);
-    if (
-      tmpFeatures.some(
-        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>)
-      ) ||
-      this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
-    ) {
-      this.zone.run(() => {
-        this.featuresUnderMouse = tmpFeatures as Feature<Geometry>[];
-        if (this.featuresUnderMouse.length) {
-          const layersFound = this.HsUtilsService.removeDuplicates(
-            this.featuresUnderMouse.map((f) =>
-              this.HsMapService.getLayerForFeature(f)
-            ),
-            'title'
-          );
-          this.featureLayersUnderMouse = layersFound.map((l) => {
-            const layer = {
-              title: getTitle(l),
-              layer: l,
-              features: this.featuresUnderMouse.filter(
-                (f) => this.HsMapService.getLayerForFeature(f) == l
-              ),
-            };
-            return layer;
-          });
-        } else {
-          this.featuresUnderMouse = [];
-        }
-      });
-    }
-    const pixel = e.pixel;
-    pixel[0] += 2;
-    pixel[1] += 4;
-    if (this.hoverPopup) {
-      this.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
-    }
-  }
-
-  private getFeaturesUnderMouse(map: Map, pixel: any) {
+  getFeaturesUnderMouse(map: Map, pixel: any) {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
