@@ -17,6 +17,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Map} from 'ol';
 import {
   getCustomInfoTemplate,
   getOnFeatureSelected,
@@ -103,6 +104,14 @@ export class HsQueryVectorService {
       }
       this.createFeatureAttributeList();
     });
+  }
+  getFeaturesUnderMouse(map: Map, pixel: any) {
+    return map
+      .getFeaturesAtPixel(pixel)
+      .filter((feature: Feature<Geometry>) => {
+        const layer = this.HsMapService.getLayerForFeature(feature);
+        return layer && layer != this.HsQueryBaseService.queryLayer;
+      });
   }
   getSelectedFeature(feature: any): any {
     let original = feature;
