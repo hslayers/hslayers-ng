@@ -24,7 +24,7 @@ import {HsUtilsService} from 'hslayers-ng';
 import {Subject} from 'rxjs';
 
 import {HsCesiumConfig} from './hscesium-config.service';
-import {init as pickerInit} from './picking';
+import {HsCesiumPicker} from './picker.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +43,8 @@ export class HsCesiumService {
     public HsCesiumTimeService: HsCesiumTimeService,
     public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService,
-    public HsCesiumConfig: HsCesiumConfig
+    public HsCesiumConfig: HsCesiumConfig,
+    private HsCesiumPicker: HsCesiumPicker
   ) {
     this.checkForBingKey();
     this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
@@ -201,7 +202,10 @@ export class HsCesiumService {
         });
       });
 
-      pickerInit(this.viewer);
+      this.HsCesiumPicker.init(this.viewer);
+      this.HsCesiumPicker.cesiumPositionClicked.subscribe((position) => {
+        this.cesiumPositionClicked.next(position);
+      });
       this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
     } catch (ex) {
       console.error(ex);

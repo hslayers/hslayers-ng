@@ -35,6 +35,7 @@ export class AppComponent {
       'features': [
         {
           'type': 'Feature',
+          'properties': {'name': 'test'},
           'geometry': {
             'type': 'Polygon',
             'coordinates': [
