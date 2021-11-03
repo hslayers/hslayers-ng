@@ -82,8 +82,12 @@ $list-group-item-padding-x: 1.25rem;
     border-top-width: 0px;
   }
   
-  .hs-url-table tr td {
-    display: table-cell;
+  .hs-url-table {
+    tr td { display: table-cell;}
+
+    .text-light th {
+      color: $light;
+   }
   }
 
 

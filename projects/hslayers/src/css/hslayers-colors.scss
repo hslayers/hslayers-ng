@@ -4,6 +4,11 @@
 $table-group-separator-color: white;
 
 .hsl {
+
+  .hs-url-table .text-light th {
+     color: $light;
+  }
+
   div.hs-info-area {
     background-color: hsla(214, 50%, 37%, 0.4);
     color: hsl(0, 0%, 100%);
