@@ -16,6 +16,7 @@ import {HsDialogItem} from '../../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from './../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayerWidgetContainerService} from '../feature-popup-layer/layer-widgets/layer-widget-container.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryBaseService} from '../query-base.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
@@ -26,15 +27,14 @@ import {
   getFeatureTitle,
   getFeatures,
 } from '../../../common/feature-extensions';
-import {getPopUp, getTitle} from '../../../common/layer-extensions';
+import {getPopUp} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature-popup',
   templateUrl: './feature-popup.component.html',
 })
 export class HsQueryFeaturePopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit
-{
+  implements OnDestroy, HsDialogComponent, AfterViewInit {
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -52,7 +52,8 @@ export class HsQueryFeaturePopupComponent
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
-    private ElementRef: ElementRef
+    private ElementRef: ElementRef,
+    private HsLayerWidgetContainerService: HsLayerWidgetContainerService
   ) {
     this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
       (map) => {

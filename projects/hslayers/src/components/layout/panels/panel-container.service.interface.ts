@@ -4,7 +4,7 @@ import {ReplaySubject, Subject} from 'rxjs';
 import {Type} from '@angular/core';
 
 export interface HsPanelContainerServiceInterface {
-  panels: Array<any>;
+  panels: HsPanelComponent[];
   panelObserver: ReplaySubject<HsPanelItem>;
   panelDestroyObserver: Subject<any>;
 
