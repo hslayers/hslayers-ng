@@ -1,5 +1,8 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
+
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../../../language/language.service';
@@ -20,11 +23,12 @@ import {
 })
 export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit {
-  feature: any;
+  implements OnInit
+{
+  feature: Feature<Geometry>;
   attributesForHover: any[] = [];
   @Input() data: {
-    feature: any;
+    feature: Feature<Geometry>;
     attributesForHover: any[];
     service: HsQueryPopupServiceModel;
   };

@@ -1,12 +1,9 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 
-import TileSource from 'ol/source/Tile';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -68,10 +65,10 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @param updated
-   * @param customInfoTemplate
-   * @param Base
-   * @param group
+   * @param updated -
+   * @param customInfoTemplate -
+   * @param Base -
+   * @param group -
    */
   updateFeatureList(updated, customInfoTemplate, Base, group): void {
     if (updated) {
@@ -98,7 +95,7 @@ export class HsQueryWmsService {
       if (reqHash != this.HsQueryBaseService.currentQuery) {
         return;
       }
-      this.featureInfoReceived(response, infoFormat, url, coordinate, layer);
+      this.featureInfoReceived(response, infoFormat, coordinate, layer);
     } catch (exception) {
       if (reqHash != this.HsQueryBaseService.currentQuery) {
         return;
@@ -109,8 +106,8 @@ export class HsQueryWmsService {
 
   /**
    * Error callback to decrease infoCounter
-   * @param exception
-   * @param coordinate
+   * @param exception -
+   * @param coordinate -
    */
   featureInfoError(coordinate, exception): void {
     this.infoCounter--;
@@ -121,20 +118,13 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @description Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
-   * @param {Object} response Response of GetFeatureInfoRequest
-   * @param {string} infoFormat Format of GetFeatureInfoResponse
-   * @param {string} url Url of request
-   * @param {Ol.coordinate object} coordinate Coordinate of request
-   * @param layer
+   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
+   * @param response - Response of GetFeatureInfoRequest
+   * @param infoFormat - Format of GetFeatureInfoResponse
+   * @param coordinate - Coordinate of request
+   * @param layer -
    */
-  featureInfoReceived(
-    response,
-    infoFormat: string,
-    url,
-    coordinate,
-    layer
-  ): void {
+  featureInfoReceived(response, infoFormat: string, coordinate, layer): void {
     /* Maybe this will work in future OL versions
      * var format = new GML();
      *  console.log(format.readFeatures(response, {}));
@@ -294,7 +284,7 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @param coordinate
+   * @param coordinate -
    */
   queriesCollected(coordinate): void {
     const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
@@ -307,9 +297,9 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @description Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
-   * @param {Ol.Layer} layer Layer to Query
-   * @param {Ol.coordinate} coordinate
+   * Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
+   * @param layer - Layer to Query
+   * @param coordinate -
    */
   queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate) {
     if (this.isLayerWmsQueryable(layer)) {
@@ -370,7 +360,7 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @param layer
+   * @param layer - Selected layer
    */
   isLayerWmsQueryable(layer): boolean {
     if (!layer.getVisible()) {

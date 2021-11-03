@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import VectorSource from 'ol/source/Vector';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -11,8 +13,6 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsToastService} from '../layout/toast/toast.service';
 
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {Source} from 'ol/source';
 import {getTitle} from '../../common/layer-extensions';
 
 export interface exportFormats {

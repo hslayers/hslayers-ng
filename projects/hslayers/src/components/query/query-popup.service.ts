@@ -60,7 +60,7 @@ export class HsQueryPopupService
   /**
    * Get features dependent on mouse position.
    * For cesium the features will be filled differently.
-   * @param e
+   * @param e -
    * @returns
    */
   preparePopup(e: {
@@ -93,7 +93,7 @@ export class HsQueryPopupService
 
   /**
    * Set popups position according to pixel where mouse is
-   * @param e Event, which triggered this function
+   * @param e - Event, which triggered this function
    */
   showPopup(e: any): void {
     const map = e.map;
