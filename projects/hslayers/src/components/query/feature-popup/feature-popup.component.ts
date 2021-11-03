@@ -147,26 +147,4 @@ export class HsQueryFeaturePopupComponent
       this.data.service.featuresUnderMouse = [];
     }
   }
-
-  //Deprecated
-  async clearLayer(layer): Promise<void> {
-    const dialog = this.HsDialogContainerService.create(
-      HsConfirmDialogComponent,
-      {
-        message: this.HsLanguageService.getTranslation(
-          'QUERY.reallyDeleteAllFeaturesFrom'
-        ).replace('{0}', getTitle(layer)),
-        title: this.HsLanguageService.getTranslation('QUERY.confirmClear'),
-      }
-    );
-    const confirmed = await dialog.waitResult();
-    if (confirmed == 'yes') {
-      if (layer.getSource().getSource) {
-        //Clear clustered?
-        layer.getSource().getSource().clear();
-      }
-      layer.getSource().clear();
-      this.data.service.featuresUnderMouse = [];
-    }
-  }
 }
