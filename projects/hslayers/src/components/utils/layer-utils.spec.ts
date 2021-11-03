@@ -10,6 +10,8 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
+import {HsMapService} from '../map/map.service';
+import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {
@@ -69,6 +71,7 @@ describe('HsLayerUtilsService', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
+        {provide: HsMapService, useValue: new HsMapServiceMock()},
         HsLayerUtilsService,
         {
           provide: HsUtilsService,
