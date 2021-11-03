@@ -7,6 +7,7 @@ import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayerWidgetContainerService} from './layer-widget-container.service';
 import {HsQueryBaseService} from '../../query-base.service';
+import {HsQueryPopupServiceModel} from '../../query-popup.service.model';
 import {getTitle} from '../../../../common/layer-extensions';
 
 @Component({
@@ -16,9 +17,11 @@ import {getTitle} from '../../../../common/layer-extensions';
 })
 export class HsClearLayerComponent
   extends HsFeaturePopupWidgetBaseComponent
-  implements OnInit
-{
-  @Input() data;
+  implements OnInit {
+  @Input() data: {
+    layerDesc: any;
+    service: HsQueryPopupServiceModel;
+  };
 
   layerDesc: any;
   constructor(
@@ -51,7 +54,7 @@ export class HsClearLayerComponent
         layer.getSource().getSource().clear();
       }
       layer.getSource().clear();
-      this.hsQueryBaseService.featuresUnderMouse = [];
+      this.data.service.featuresUnderMouse = [];
     }
   }
 }

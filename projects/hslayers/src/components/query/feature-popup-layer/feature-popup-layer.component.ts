@@ -1,5 +1,7 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
+import {HsQueryPopupServiceModel} from '../query-popup.service.model';
+
 import {HsClearLayerComponent} from './layer-widgets/clear-layer.component';
 import {HsLayerWidgetContainerService} from './layer-widgets/layer-widget-container.service';
 
@@ -9,6 +11,7 @@ import {HsLayerWidgetContainerService} from './layer-widgets/layer-widget-contai
 })
 export class HsFeaturePopupLayerComponent implements AfterContentInit {
   @Input() layerDescriptor: any;
+  @Input() service: HsQueryPopupServiceModel;
   constructor(
     public hsLayerWidgetContainerService: HsLayerWidgetContainerService
   ) {}
@@ -16,6 +19,7 @@ export class HsFeaturePopupLayerComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     this.hsLayerWidgetContainerService.create(HsClearLayerComponent, {
       layerDesc: this.layerDescriptor,
+      service: this.service,
     });
   }
 }
