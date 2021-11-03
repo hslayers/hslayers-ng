@@ -40,6 +40,7 @@ import {default as proj4} from 'proj4';
 
 import {HsCesiumConfig} from './hscesium-config.service';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
+import {generateUuid} from 'hslayers-ng';
 
 /**
  * @param proxy -
@@ -200,6 +201,9 @@ export class HsCesiumLayersService {
     features.forEach((feature) => {
       const featureId = feature.getId();
       if (featureId == undefined) {
+        const id = generateUuid();
+        feature.setId(id);
+        feature.set('HsCesiumFeatureId', id);
         return;
       }
       if (
