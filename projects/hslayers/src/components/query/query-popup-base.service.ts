@@ -17,8 +17,8 @@ export class HsQueryPopupBaseService {
   hoverPopup: any;
 
   constructor(
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
     public zone: NgZone
   ) {}
 
@@ -26,9 +26,9 @@ export class HsQueryPopupBaseService {
     this.zone.run(() => {
       this.featuresUnderMouse = features;
       if (this.featuresUnderMouse.length) {
-        const layersFound = this.HsUtilsService.removeDuplicates(
+        const layersFound = this.hsUtilsService.removeDuplicates(
           this.featuresUnderMouse.map((f) =>
-            this.HsMapService.getLayerForFeature(f)
+            this.hsMapService.getLayerForFeature(f)
           ),
           'title'
         );
@@ -37,7 +37,7 @@ export class HsQueryPopupBaseService {
             title: getTitle(l),
             layer: l,
             features: this.featuresUnderMouse.filter(
-              (f) => this.HsMapService.getLayerForFeature(f) == l
+              (f) => this.hsMapService.getLayerForFeature(f) == l
             ),
           };
           return layer;
@@ -57,7 +57,7 @@ export class HsQueryPopupBaseService {
    */
   serializeFeatureAttributes(feature: Feature<Geometry>): any[] {
     const attributesForHover = [];
-    const layer = this.HsMapService.getLayerForFeature(feature);
+    const layer = this.hsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
       return;
     }

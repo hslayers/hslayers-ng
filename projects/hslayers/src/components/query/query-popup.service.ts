@@ -23,14 +23,14 @@ export class HsQueryPopupService
   hoverPopup: any;
 
   constructor(
-    HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    HsUtilsService: HsUtilsService,
+    hsMapService: HsMapService,
+    private hsConfig: HsConfig,
+    hsUtilsService: HsUtilsService,
     zone: NgZone,
     private HsQueryBaseService: HsQueryBaseService
   ) {
-    super(HsMapService, HsUtilsService, zone);
-    this.HsMapService.loaded().then(() => this.init());
+    super(hsMapService, hsUtilsService, zone);
+    this.hsMapService.loaded().then(() => this.init());
   }
 
   registerPopup(nativeElement: any) {
@@ -40,19 +40,19 @@ export class HsQueryPopupService
   }
 
   init() {
-    this.map = this.HsMapService.map;
-    if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
+    this.map = this.hsMapService.map;
+    if (this.hsConfig.popUpDisplay && this.hsConfig.popUpDisplay === 'hover') {
       this.map.on(
         'pointermove',
-        this.HsUtilsService.debounce(this.preparePopup, 200, false, this)
+        this.hsUtilsService.debounce(this.preparePopup, 200, false, this)
       );
     } else if (
-      this.HsConfig.popUpDisplay &&
-      this.HsConfig.popUpDisplay === 'click'
+      this.hsConfig.popUpDisplay &&
+      this.hsConfig.popUpDisplay === 'click'
     ) {
       this.map.on(
         'singleclick',
-        this.HsUtilsService.debounce(this.preparePopup, 200, false, this)
+        this.hsUtilsService.debounce(this.preparePopup, 200, false, this)
       );
     } /* else none */
   }

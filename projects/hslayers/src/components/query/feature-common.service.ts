@@ -36,13 +36,13 @@ export class HsFeatureCommonService {
     this.listSubject.asObservable();
 
   constructor(
-    public HsQueryVectorService: HsQueryVectorService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService,
-    public HsMapService: HsMapService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public hsQueryVectorService: HsQueryVectorService,
+    public hsToastService: HsToastService,
+    public hsLanguageService: HsLanguageService,
+    public hsMapService: HsMapService,
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       map.getLayers().on('change:length', () => {
         this.updateLayerList();
       });
@@ -50,13 +50,13 @@ export class HsFeatureCommonService {
   }
 
   translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   updateLayerList(): void {
-    const layers = this.HsMapService.getLayersArray().filter(
+    const layers = this.hsMapService.getLayersArray().filter(
       (layer: Layer<Source>) => {
-        return this.HsLayerUtilsService.isLayerDrawable(layer);
+        return this.hsLayerUtilsService.isLayerDrawable(layer);
       }
     );
     this.listSubject.next(layers);
@@ -67,7 +67,7 @@ export class HsFeatureCommonService {
     features: Feature<Geometry>[] | Feature<Geometry>
   ): void {
     for (const format of exportFormats) {
-      format.serializedData = this.HsQueryVectorService.exportData(
+      format.serializedData = this.hsQueryVectorService.exportData(
         format.name,
         features
       );
@@ -83,13 +83,13 @@ export class HsFeatureCommonService {
       feature.setStyle(null); //To prevent feature from getting individual style
       toLayer.getSource().addFeature(feature.clone());
       if (type == 'move') {
-        this.HsQueryVectorService.removeFeature(feature);
+        this.hsQueryVectorService.removeFeature(feature);
       }
     });
 
-    this.HsToastService.createToastPopupMessage(
-      this.HsLanguageService.getTranslation('QUERY.feature.featureEdited'),
-      this.HsLanguageService.getTranslation(
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation('QUERY.feature.featureEdited'),
+      this.hsLanguageService.getTranslation(
         `QUERY.feature.feature${type}Succ`
       ) + getTitle(toLayer),
       {

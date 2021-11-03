@@ -70,31 +70,31 @@ export class HsQueryBaseService {
   vectorSelectorCreated: Subject<Select> = new Subject();
 
   constructor(
-    public HsMapService: HsMapService,
-    public HsConfig: HsConfig,
-    public HsLayoutService: HsLayoutService,
+    public hsMapService: HsMapService,
+    public hsConfig: HsConfig,
+    public hsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    private HsSaveMapService: HsSaveMapService,
-    private DomSanitizer: DomSanitizer,
+    public hsUtilsService: HsUtilsService,
+    public hsEventBusService: HsEventBusService,
+    private hsSaveMapService: HsSaveMapService,
+    private domSanitizer: DomSanitizer,
     private zone: NgZone
   ) {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
     });
 
-    this.HsMapService.loaded().then(() => this.init());
+    this.hsMapService.loaded().then(() => this.init());
   }
   /**
    *
    */
   init(): void {
-    this.map = this.HsMapService.map;
+    this.map = this.hsMapService.map;
     this.activateQueries();
     this.map.on('singleclick', (evt) => {
       this.zone.run(() => {
-        this.HsEventBusService.mapClicked.next(
+        this.hsEventBusService.mapClicked.next(
           Object.assign(evt, {
             coordinates: this.getCoordinate(evt.coordinate),
           })
@@ -120,7 +120,7 @@ export class HsQueryBaseService {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
-        const layer = this.HsMapService.getLayerForFeature(feature);
+        const layer = this.hsMapService.getLayerForFeature(feature);
         return layer && layer != this.queryLayer;
       });
   }
@@ -135,7 +135,7 @@ export class HsQueryBaseService {
       } else {
         this.data[type].push(data);
       }
-      this.HsEventBusService.queryDataUpdated.next(this.data);
+      this.hsEventBusService.queryDataUpdated.next(this.data);
     } else if (console) {
       console.log('Query.BaseService.setData type not passed');
     }
@@ -161,14 +161,14 @@ export class HsQueryBaseService {
   }
 
   getInvisiblePopup(): HTMLIFrameElement {
-    if (this.HsUtilsService.runningInBrowser()) {
+    if (this.hsUtilsService.runningInBrowser()) {
       return <HTMLIFrameElement>document.getElementById('invisible_popup');
     }
   }
 
   pushFeatureInfoHtml(html): void {
     this.data.featureInfoHtmls.push(
-      this.DomSanitizer.bypassSecurityTrustHtml(html)
+      this.domSanitizer.bypassSecurityTrustHtml(html)
     );
     this.dataCleared = false;
   }
@@ -183,12 +183,12 @@ export class HsQueryBaseService {
     let tmp_width = iframe.contentWindow.innerWidth;
     if (
       tmp_width >
-      this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+      this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
         .clientWidth -
         60
     ) {
       tmp_width =
-        this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+        this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
           .clientWidth - 60;
     }
     iframe.style.width = tmp_width + 'px';
@@ -206,7 +206,7 @@ export class HsQueryBaseService {
     this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
-      this.HsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(),
       'EPSG:4326'
     );
     const coords = {
@@ -223,7 +223,7 @@ export class HsQueryBaseService {
           value: createStringXY(7)(epsg4326Coordinate),
         },
         {
-          name: this.HsMapService.getCurrentProj().getCode(),
+          name: this.hsMapService.getCurrentProj().getCode(),
           value: createStringXY(7)(coordinate),
         },
       ],
@@ -236,9 +236,9 @@ export class HsQueryBaseService {
       return;
     }
     this.queryActive = true;
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       map.addLayer(this.queryLayer);
-      this.HsSaveMapService.internalLayers.push(this.queryLayer);
+      this.hsSaveMapService.internalLayers.push(this.queryLayer);
       this.queryStatusChanges.next(true);
     });
   }
@@ -248,7 +248,7 @@ export class HsQueryBaseService {
       return;
     }
     this.queryActive = false;
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       map.removeLayer(this.queryLayer);
       this.queryStatusChanges.next(false);
     });
@@ -256,7 +256,7 @@ export class HsQueryBaseService {
 
   currentPanelQueryable(): boolean {
     return (
-      !this.nonQueryablePanels.includes(this.HsLayoutService.mainpanel) &&
+      !this.nonQueryablePanels.includes(this.hsLayoutService.mainpanel) &&
       !this.nonQueryablePanels.includes('*')
     );
   }
@@ -274,11 +274,11 @@ export class HsQueryBaseService {
         radius: 5,
       }),
     });
-    if (this.HsConfig.queryPoint) {
+    if (this.hsConfig.queryPoint) {
       const circle = defaultStyle.getImage() as CircleStyle;
-      if (this.HsConfig.queryPoint == 'hidden') {
+      if (this.hsConfig.queryPoint == 'hidden') {
         circle.setRadius(0);
-      } else if (this.HsConfig.queryPoint == 'notWithin') {
+      } else if (this.hsConfig.queryPoint == 'notWithin') {
         if (this.selector.getFeatures().getLength() > 0) {
           circle.setRadius(0);
         }

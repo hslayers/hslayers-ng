@@ -43,12 +43,12 @@ export class HsQueryFeatureListComponent {
   }
 
   constructor(
-    public HsQueryVectorService: HsQueryVectorService,
+    public hsQueryVectorService: HsQueryVectorService,
     public hsLanguageService: HsLanguageService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLayoutService: HsLayoutService,
-    public HsFeatureCommonService: HsFeatureCommonService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLayoutService: HsLayoutService,
+    public hsFeatureCommonService: HsFeatureCommonService,
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   olFeatureArray(): Feature<Geometry>[] {
@@ -66,7 +66,7 @@ export class HsQueryFeatureListComponent {
   }
 
   toggleExportMenu(): void {
-    this.HsFeatureCommonService.toggleExportMenu(
+    this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
       this.olFeatureArray()
     );
@@ -87,7 +87,7 @@ export class HsQueryFeatureListComponent {
   }
 
   moveOrCopyFeature(): void {
-    this.HsFeatureCommonService.moveOrCopyFeature(
+    this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       this.olFeatureArray(),
       this.selectedLayer
@@ -95,7 +95,7 @@ export class HsQueryFeatureListComponent {
   }
 
   async removeAllSelectedFeatures(): Promise<void> {
-    const dialog = this.HsDialogContainerService.create(
+    const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
@@ -109,7 +109,7 @@ export class HsQueryFeatureListComponent {
       for (const feature of this.features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
-          this.HsQueryVectorService.removeFeature(feature.feature);
+          this.hsQueryVectorService.removeFeature(feature.feature);
         }, 250);
       }
     }

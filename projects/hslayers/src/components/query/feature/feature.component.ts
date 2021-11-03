@@ -44,17 +44,17 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   availableLayersSubscription: any;
 
   constructor(
-    public HsMapService: HsMapService,
-    public HsQueryVectorService: HsQueryVectorService,
-    public HsFeatureCommonService: HsFeatureCommonService,
-    public HsLayerUtilsService: HsLayerUtilsService,
+    public hsMapService: HsMapService,
+    public hsQueryVectorService: HsQueryVectorService,
+    public hsFeatureCommonService: HsFeatureCommonService,
+    public hsLayerUtilsService: HsLayerUtilsService,
     public cd: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
-    const featureLayer = this.HsMapService.getLayerForFeature(this.olFeature());
+    const featureLayer = this.hsMapService.getLayerForFeature(this.olFeature());
     this.availableLayersSubscription =
-      this.HsFeatureCommonService.availableLayer$.subscribe((layers) => {
+      this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
         this.availableLayers = layers.filter((layer) => layer != featureLayer);
         this.cd.markForCheck();
       });
@@ -70,7 +70,7 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
 
   isFeatureRemovable(): boolean {
     return this.olFeature()
-      ? this.HsQueryVectorService.isFeatureRemovable(this.olFeature())
+      ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature())
       : false;
   }
 
@@ -92,12 +92,12 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   }
 
   removeFeature(): void {
-    this.HsQueryVectorService.removeFeature(this.olFeature());
+    this.hsQueryVectorService.removeFeature(this.olFeature());
   }
 
   zoomToFeature(): void {
     const extent = this.olFeature().getGeometry().getExtent();
-    this.HsMapService.fitExtent(extent);
+    this.hsMapService.fitExtent(extent);
   }
 
   /**
@@ -111,7 +111,7 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleExportMenu(): void {
-    this.HsFeatureCommonService.toggleExportMenu(
+    this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
       this.olFeature()
     );
@@ -132,7 +132,7 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   }
 
   moveOrCopyFeature(): void {
-    this.HsFeatureCommonService.moveOrCopyFeature(
+    this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       [this.olFeature()],
       this.selectedLayer

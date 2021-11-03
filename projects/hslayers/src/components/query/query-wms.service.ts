@@ -31,31 +31,31 @@ import {
 export class HsQueryWmsService {
   infoCounter = 0;
   constructor(
-    public HsQueryBaseService: HsQueryBaseService,
-    public HsMapService: HsMapService,
-    public HsConfig: HsConfig,
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public HsLanguageService: HsLanguageService,
-    public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    private HttpClient: HttpClient,
-    public HsLogService: HsLogService,
-    public HsQueryWmtsService: HsQueryWmtsService
+    public hsQueryBaseService: HsQueryBaseService,
+    public hsMapService: HsMapService,
+    public hsConfig: HsConfig,
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsLanguageService: HsLanguageService,
+    public hsUtilsService: HsUtilsService,
+    public hsEventBusService: HsEventBusService,
+    private httpClient: HttpClient,
+    public hsLogService: HsLogService,
+    public hsQueryWmtsService: HsQueryWmtsService
   ) {
-    this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
+    this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
-      this.HsMapService.getLayersArray().forEach((layer: Layer<Source>) => {
+      this.hsMapService.getLayersArray().forEach((layer: Layer<Source>) => {
         if (getBase(layer) == true || layer.get('queryable') == false) {
           return;
         }
         if (getQueryFilter(layer) != undefined) {
           const filter = getQueryFilter(layer);
-          if (!filter(HsMapService.map, layer, evt.pixel)) {
+          if (!filter(hsMapService.map, layer, evt.pixel)) {
             return;
           }
         }
         this.queryWmsLayer(
-          this.HsUtilsService.instOf(layer, Tile)
+          this.hsUtilsService.instOf(layer, Tile)
             ? (layer as Layer<TileWMS>)
             : (layer as Layer<ImageWMS>),
           evt.coordinate
@@ -82,22 +82,22 @@ export class HsQueryWmsService {
   }
 
   async request(url, infoFormat, coordinate, layer): Promise<void> {
-    const req_url = this.HsUtilsService.proxify(url, true);
-    const reqHash = this.HsQueryBaseService.currentQuery;
+    const req_url = this.hsUtilsService.proxify(url, true);
+    const reqHash = this.hsQueryBaseService.currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});
       headers.set('Accept', 'text');
-      const response = await this.HttpClient.get(req_url, {
+      const response = await this.httpClient.get(req_url, {
         headers: new HttpHeaders().set('Content-Type', 'text'),
         responseType: 'text',
       }).toPromise();
 
-      if (reqHash != this.HsQueryBaseService.currentQuery) {
+      if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;
       }
       this.featureInfoReceived(response, infoFormat, coordinate, layer);
     } catch (exception) {
-      if (reqHash != this.HsQueryBaseService.currentQuery) {
+      if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;
       }
       this.featureInfoError(coordinate, exception);
@@ -111,7 +111,7 @@ export class HsQueryWmsService {
    */
   featureInfoError(coordinate, exception): void {
     this.infoCounter--;
-    this.HsLogService.warn(exception);
+    this.hsLogService.warn(exception);
     if (this.infoCounter === 0) {
       this.queriesCollected(coordinate);
     }
@@ -138,7 +138,7 @@ export class HsQueryWmsService {
 
       if (
         infoFormat.includes('gml') ||
-        this.HsUtilsService.instOf(layer.getSource(), WMTS)
+        this.hsUtilsService.instOf(layer.getSource(), WMTS)
       ) {
         this.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
@@ -153,10 +153,10 @@ export class HsQueryWmsService {
             customInfoTemplate: customInfoTemplate,
           };
           if (customInfoTemplate) {
-            this.HsQueryBaseService.setData(group, 'customFeatures');
-            this.HsQueryBaseService.dataCleared = false;
+            this.hsQueryBaseService.setData(group, 'customFeatures');
+            this.hsQueryBaseService.dataCleared = false;
           } else {
-            this.HsQueryBaseService.setData(group, 'features');
+            this.hsQueryBaseService.setData(group, 'features');
           }
         } else {
           return;
@@ -168,18 +168,18 @@ export class HsQueryWmsService {
         return;
       }
       if (getFeatureInfoTarget(layer) == 'info-panel') {
-        this.HsQueryBaseService.pushFeatureInfoHtml(response);
+        this.hsQueryBaseService.pushFeatureInfoHtml(response);
       } else {
-        this.HsQueryBaseService.fillIframeAndResize(response, true);
+        this.hsQueryBaseService.fillIframeAndResize(response, true);
         if (getPopupClass(layer) != undefined) {
-          this.HsQueryBaseService.popupClassname =
+          this.hsQueryBaseService.popupClassname =
             'ol-popup ' + getPopupClass(layer);
         }
       }
     }
     if (infoFormat.includes('json')) {
       const resJSON = JSON.parse(response);
-      this.HsQueryBaseService.setData(resJSON.features, 'customFeatures');
+      this.hsQueryBaseService.setData(resJSON.features, 'customFeatures');
       console.log('jsonquery');
     }
     this.infoCounter--;
@@ -216,14 +216,14 @@ export class HsQueryWmsService {
         this.updateFeatureList(
           updated,
           customInfoTemplate,
-          this.HsQueryBaseService,
+          this.hsQueryBaseService,
           group
         );
       }
       const featureNode = feature.firstChild;
       const group = {
         name: 'Feature',
-        layer: this.HsLayerUtilsService.getLayerName(layer),
+        layer: this.hsLayerUtilsService.getLayerName(layer),
         attributes: [],
       };
       for (const attribute in featureNode.children) {
@@ -238,7 +238,7 @@ export class HsQueryWmsService {
       this.updateFeatureList(
         updated,
         customInfoTemplate,
-        this.HsQueryBaseService,
+        this.hsQueryBaseService,
         group
       );
     }
@@ -274,7 +274,7 @@ export class HsQueryWmsService {
             this.updateFeatureList(
               updated,
               customInfoTemplate,
-              this.HsQueryBaseService,
+              this.hsQueryBaseService,
               group
             );
           }
@@ -287,12 +287,12 @@ export class HsQueryWmsService {
    * @param coordinate -
    */
   queriesCollected(coordinate): void {
-    const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
+    const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
     if (
-      this.HsQueryBaseService.data.features.length > 0 ||
+      this.hsQueryBaseService.data.features.length > 0 ||
       invisiblePopup.contentDocument.body.innerHTML.length > 30
     ) {
-      this.HsQueryBaseService.getFeatureInfoCollected.next(coordinate);
+      this.hsQueryBaseService.getFeatureInfoCollected.next(coordinate);
     }
   }
 
@@ -303,8 +303,8 @@ export class HsQueryWmsService {
    */
   queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate) {
     if (this.isLayerWmsQueryable(layer)) {
-      if (this.HsUtilsService.instOf(layer.getSource(), WMTS)) {
-        this.HsQueryWmtsService.parseRequestUrl(layer, coordinate).then(
+      if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
+        this.hsQueryWmtsService.parseRequestUrl(layer, coordinate).then(
           (res) => {
             console.log(res);
             this.infoCounter++;
@@ -315,36 +315,36 @@ export class HsQueryWmsService {
       }
 
       const source = layer.getSource();
-      const map = this.HsMapService.map;
+      const map = this.hsMapService.map;
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
         coordinate,
         viewResolution,
         source.getProjection()
           ? source.getProjection()
-          : this.HsMapService.getCurrentProj(),
+          : this.hsMapService.getCurrentProj(),
         {
           INFO_FORMAT: source.getParams().INFO_FORMAT,
         }
       );
       if (
         getFeatureInfoLang(layer) &&
-        getFeatureInfoLang(layer)[this.HsLanguageService.language]
+        getFeatureInfoLang(layer)[this.hsLanguageService.language]
       ) {
-        if (this.HsUtilsService.instOf(source, TileWMS)) {
+        if (this.hsUtilsService.instOf(source, TileWMS)) {
           url = url.replace(
             (source as TileWMS).getUrls()[0],
-            getFeatureInfoLang(layer)[this.HsLanguageService.language]
+            getFeatureInfoLang(layer)[this.hsLanguageService.language]
           );
         } else {
           url = url.replace(
             (source as ImageWMS).getUrl(),
-            getFeatureInfoLang(layer)[this.HsLanguageService.language]
+            getFeatureInfoLang(layer)[this.hsLanguageService.language]
           );
         }
       }
       if (url) {
-        this.HsLogService.log(url);
+        this.hsLogService.log(url);
 
         if (
           source.getParams().INFO_FORMAT.includes('xml') ||
@@ -366,23 +366,23 @@ export class HsQueryWmsService {
     if (!layer.getVisible()) {
       return false;
     }
-    if (this.HsUtilsService.instOf(layer, Tile)) {
+    if (this.hsUtilsService.instOf(layer, Tile)) {
       if (
-        this.HsUtilsService.instOf(layer.getSource(), TileWMS) &&
+        this.hsUtilsService.instOf(layer.getSource(), TileWMS) &&
         layer.getSource().getParams().INFO_FORMAT
       ) {
         return true;
       }
       if (
-        this.HsUtilsService.instOf(layer.getSource(), WMTS) &&
+        this.hsUtilsService.instOf(layer.getSource(), WMTS) &&
         getInfoFormat(layer)
       ) {
         return true;
       }
     }
     if (
-      this.HsUtilsService.instOf(layer, ImageLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), ImageWMS) &&
+      this.hsUtilsService.instOf(layer, ImageLayer) &&
+      this.hsUtilsService.instOf(layer.getSource(), ImageWMS) &&
       layer.getSource().getParams().INFO_FORMAT
     ) {
       return true;
