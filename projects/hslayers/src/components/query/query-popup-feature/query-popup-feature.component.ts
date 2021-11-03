@@ -1,5 +1,9 @@
 import {AfterContentInit, Component, Input, OnDestroy} from '@angular/core';
 
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
+
+import {HsFeatureInfoComponent} from './feature-widgets/feature-info.component';
 import {HsFeatureWidgetContainerService} from './feature-widgets/feature-widget-container.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 
@@ -10,7 +14,8 @@ import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 export class HsQueryPopupFeatureComponent
   implements AfterContentInit, OnDestroy
 {
-  @Input() feature: any;
+  @Input() feature: Feature<Geometry>;
+  @Input() attributesForHover: any;
   @Input() service: HsQueryPopupServiceModel;
   constructor(
     public hsFeatureWidgetContainerService: HsFeatureWidgetContainerService
@@ -22,6 +27,7 @@ export class HsQueryPopupFeatureComponent
       HsFeatureInfoComponent,
       {
         feature: this.feature,
+        attributesForHover: this.attributesForHover,
         service: this.service,
       }
     );
