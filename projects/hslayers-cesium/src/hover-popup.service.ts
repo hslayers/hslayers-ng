@@ -30,5 +30,9 @@ export class HsCesiumQueryPopupService
     super(HsMapService, HsUtilsService, zone);
   }
 
+  registerPopup(nativeElement: any) {
+    this.hoverPopup = nativeElement;
+  }
+
   showPopup(e: any): void {}
 }

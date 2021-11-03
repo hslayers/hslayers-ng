@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 
-import {Feature, Map} from 'ol';
+import {Feature, Map, Overlay} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfig} from '../../config.service';
@@ -15,7 +15,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel {
+  implements HsQueryPopupServiceModel
+{
   map: Map;
   featuresUnderMouse: Feature<Geometry>[] = [];
   featureLayersUnderMouse = [];
@@ -30,6 +31,12 @@ export class HsQueryPopupService
   ) {
     super(HsMapService, HsUtilsService, zone);
     this.HsMapService.loaded().then(() => this.init());
+  }
+
+  registerPopup(nativeElement: any) {
+    this.hoverPopup = new Overlay({
+      element: nativeElement,
+    });
   }
 
   init() {
@@ -53,8 +60,8 @@ export class HsQueryPopupService
   /**
    * Get features dependent on mouse position.
    * For cesium the features will be filled differently.
-   * @param e 
-   * @returns 
+   * @param e
+   * @returns
    */
   preparePopup(e: {
     map: Map;

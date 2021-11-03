@@ -4,6 +4,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 export interface HsQueryPopupServiceModel {
+  registerPopup(nativeElement: any);
   featuresUnderMouse: Feature<Geometry>[];
   featureLayersUnderMouse: VectorLayer<VectorSource<Geometry>>[];
   hoverPopup: any;
