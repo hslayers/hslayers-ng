@@ -71,6 +71,7 @@ $list-group-item-padding-x: 1.25rem;
   .navbar-expand .nav-item {
     align-items: flex-start;
   }
+
   .basemapGallery .dropdown-menu {
     overflow: visible;
   }
@@ -80,6 +81,11 @@ $list-group-item-padding-x: 1.25rem;
   .list-group-item+.list-group-item{
     border-top-width: 0px;
   }
+  
+  .hs-url-table tr td {
+    display: table-cell;
+  }
+
 
   /* app css stylesheet */
   .icon-spin {

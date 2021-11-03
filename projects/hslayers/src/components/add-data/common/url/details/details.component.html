@@ -90,7 +90,7 @@
   </ng-container>
   <hr />
   <ng-container *ngIf="type === 'wms'; else simpleTable">
-    <table class="table table-sm table-striped table-bordered">
+    <table class="table table-sm table-striped table-bordered hs-url-table">
       <thead class="bg-secondary text-light">
         <th style="width:1.5em">&nbsp;</th>
         <th>{{'COMMON.title' | translate}}</th>
@@ -155,7 +155,8 @@
         [translate]="'ADDDATA.CATALOGUE.showingSubset'"
         [translateParams]="{limitShown: limitShown, total: data.services.length}"></span>
       <div class="btn-group ms-2">
-        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="limitShown = limitShown + 100">
+        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+          (click)="limitShown = limitShown + 100">
           {{'ADDDATA.CATALOGUE.showNext100' | translate}}
         </button>
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
@@ -165,7 +166,6 @@
       </div>
     </div>
   </ng-container>
-  <hs-url-add class="w-100" [injectedService]="injectedService"
-    [layers]="data.services">
+  <hs-url-add class="w-100" [injectedService]="injectedService" [layers]="data.services">
   </hs-url-add>
 </div>
