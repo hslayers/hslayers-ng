@@ -11,8 +11,8 @@ import {getInfoFormat} from '../../common/layer-extensions';
 })
 export class HsQueryWmtsService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService
+    private hsMapService: HsMapService,
+    private hsUtilsService: HsUtilsService
   ) {}
 
   async parseRequestUrl(layer, coordinate) {
@@ -20,14 +20,14 @@ export class HsQueryWmtsService {
 
     coordinate = transform(
       coordinate,
-      this.HsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(),
       source.getProjection()
     );
 
     const tileGrid = source.getTileGrid();
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
-      this.HsMapService.map.getView().getResolution()
+      this.hsMapService.map.getView().getResolution()
     );
 
     const tileExtent = tileGrid.getTileCoordExtent(tileCoord);
@@ -58,7 +58,7 @@ export class HsQueryWmtsService {
       TileMatrix: tileMatrix,
     };
 
-    const url = [urls, this.HsUtilsService.paramsToURLWoEncode(params)].join(
+    const url = [urls, this.hsUtilsService.paramsToURLWoEncode(params)].join(
       ''
     );
     return {

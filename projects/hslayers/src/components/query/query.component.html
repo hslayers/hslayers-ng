@@ -6,18 +6,18 @@
         <p class="small">{{'QUERY.infoPanel.clickOnMap' | translate}}</p>
     </div>
 </div>
-<hs-query-default-info-panel-body *ngIf="HsLayoutService.mainpanel === 'info'" [hidden]="!isVisible()"></hs-query-default-info-panel-body>
+<hs-query-default-info-panel-body *ngIf="hsLayoutService.mainpanel === 'info'" [hidden]="!isVisible()"></hs-query-default-info-panel-body>
 <hs-custom-info-panel-body [hidden]="!isVisible()"></hs-custom-info-panel-body>
-<div class="container-fluid" [hidden]="!isVisible()" *ngIf="HsQueryBaseService.data.coordinates !== undefined && HsQueryBaseService.data.coordinates.length > 0">
+<div class="container-fluid" [hidden]="!isVisible()" *ngIf="hsQueryBaseService.data.coordinates !== undefined && hsQueryBaseService.data.coordinates.length > 0">
     <div class="row">
-        <div class="col-12 m-2"><strong>{{HsQueryBaseService.data.coordinates[0].name}}</strong></div>
+        <div class="col-12 m-2"><strong>{{hsQueryBaseService.data.coordinates[0].name}}</strong></div>
     </div>
     <div class="row">
         <div class="input-group m-1">
-            <select class="form-control form-select" [(ngModel)]="HsQueryBaseService.data.selectedProj" [ngModelOptions]="{standalone: true}" *ngIf="HsQueryBaseService.data.coordinates.length>0">
-                <option *ngFor="let projection of HsQueryBaseService.data.coordinates[0].projections"  [ngValue]="projection">{{projection.name}}</option>
+            <select class="form-control form-select" [(ngModel)]="hsQueryBaseService.data.selectedProj" [ngModelOptions]="{standalone: true}" *ngIf="hsQueryBaseService.data.coordinates.length>0">
+                <option *ngFor="let projection of hsQueryBaseService.data.coordinates[0].projections"  [ngValue]="projection">{{projection.name}}</option>
             </select>
-            <input class="form-control" [value]="HsQueryBaseService.data.selectedProj.value" readonly="">
+            <input class="form-control" [value]="hsQueryBaseService.data.selectedProj.value" readonly="">
         </div>
     </div>
 </div>

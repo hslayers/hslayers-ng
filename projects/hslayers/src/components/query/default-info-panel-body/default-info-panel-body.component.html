@@ -1,14 +1,14 @@
-<div *ngIf="(HsQueryBaseService.data.features.length > 0) || (HsQueryBaseService.data.coordinates.length > 0)" class="card hs-main-panel">
+<div *ngIf="(hsQueryBaseService.data.features.length > 0) || (hsQueryBaseService.data.coordinates.length > 0)" class="card hs-main-panel">
     <div class="card-body">
-        <div class="dropdown" [hidden]="!(HsQueryBaseService.data.featureInfoHtmls.length > 0)">
+        <div class="dropdown" [hidden]="!(hsQueryBaseService.data.featureInfoHtmls.length > 0)">
             <button class="btn btn-light w-100 dropdown-toggle rounded-0" data-toggle="dropdown" [attr.aria-expanded]="featureInfoExpanded" (click)="featureInfoExpanded = !featureInfoExpanded">
                 {{'QUERY.featureInfo' | translate}}
             </button>
-            <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}" *ngFor="let html of HsQueryBaseService.data.featureInfoHtmls" [innerHtml]="html"></div>
+            <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}" *ngFor="let html of hsQueryBaseService.data.featureInfoHtmls" [innerHtml]="html"></div>
         </div>
-        <hs-query-feature-list [features]="HsQueryBaseService.data.features"></hs-query-feature-list>
-        <table class="table table-striped" style="table-layout:fixed" [hidden]="!(HsQueryBaseService.data.attributes.length > 0)">
-            <tbody><tr *ngFor="let attribute of HsQueryBaseService.data.attributes">
+        <hs-query-feature-list [features]="hsQueryBaseService.data.features"></hs-query-feature-list>
+        <table class="table table-striped" style="table-layout:fixed" [hidden]="!(hsQueryBaseService.data.attributes.length > 0)">
+            <tbody><tr *ngFor="let attribute of hsQueryBaseService.data.attributes">
                 <td class="first-col">{{attribute.name}}</td>
                 <td class="second-col" [innerHtml]="attribute.value"></td>
             </tr>

@@ -6,7 +6,7 @@
                 [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
-            <strong style="font-size: small;">{{HsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
+            <strong style="font-size: small;">{{hsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
             <hs-query-popup-layer [layerDescriptor]="layerDesc" [service]="data.service"></hs-query-popup-layer>
             <ng-container *ngFor="let feature of layerDesc.features">
                 <hs-query-popup-feature [feature]="feature" [attributesForHover]="attributesForHover" [service]="data.service"></hs-query-popup-feature>

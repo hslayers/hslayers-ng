@@ -35,13 +35,13 @@ export class HsQueryPopupComponent
   };
 
   constructor(
-    public HsEventBusService: HsEventBusService,
-    public HsLanguageService: HsLanguageService,
-    public HsLayerUtilsService: HsLayerUtilsService, //Used in template
-    public HsMapService: HsMapService,
+    public hsEventBusService: HsEventBusService,
+    public hsLanguageService: HsLanguageService,
+    public hsLayerUtilsService: HsLayerUtilsService, //Used in template
+    public hsMapService: HsMapService,
     private ElementRef: ElementRef
   ) {
-    this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
+    this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
       (map) => {
         map.addOverlay(this.data.service.hoverPopup);
       }
@@ -53,14 +53,14 @@ export class HsQueryPopupComponent
   }
 
   ngOnDestroy(): void {
-    this.HsMapService.map.removeOverlay(this.data.service.hoverPopup);
+    this.hsMapService.map.removeOverlay(this.data.service.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
   popupVisible(): any {
     const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
       (f) => {
-        const layer = this.HsMapService.getLayerForFeature(f);
+        const layer = this.hsMapService.getLayerForFeature(f);
         if (!layer) {
           return false;
         }
