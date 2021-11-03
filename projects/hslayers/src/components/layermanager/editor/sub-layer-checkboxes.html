@@ -9,10 +9,12 @@
     <div *ngIf="!subLayerIsString(subLayer)" class="w-100">
         <div class="d-flex">
             <div class="p-0 form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer.Name]" [ngModelOptions]="{standalone: true}"
+                <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer.Name]"
+                    [ngModelOptions]="{standalone: true}"
                     (change)="subLayerSelected(subLayer,checkedSubLayers[subLayer.Name])"
                     [attr.id]="'hs-sublayers-'+subLayer.Name" *ngIf="!subLayer.Layer">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="withChildren[subLayer.Name]" [ngModelOptions]="{standalone: true}"
+                <input class="form-check-input" type="checkbox" [(ngModel)]="withChildren[subLayer.Name]"
+                    [ngModelOptions]="{standalone: true}"
                     (change)="subLayerSelected(subLayer, withChildren[subLayer.Name])"
                     [attr.id]="'hs-sublayers-'+subLayer.Name" *ngIf="subLayer.Layer">
 
@@ -20,7 +22,8 @@
                     <label class="form-check-label m-0"
                         [ngClass]="{'hs-checkmark':withChildren[subLayer.Name],'hs-uncheckmark':!withChildren[subLayer.Name]}"
                         [attr.for]="'hs-sublayers-'+subLayer.Name"></label>
-                    <div (click)="toggleExpanded()" [ngStyle]="{'cursor':'pointer'}" [ngClass]="{'grayed': HsLayerManagerService.currentResolution >= subLayer.maxResolution}">
+                    <div (click)="toggleExpanded()" [ngStyle]="{'cursor':'pointer'}"
+                        [ngClass]="{'grayed': HsLayerManagerService.currentResolution >= subLayer.maxResolution}">
                         {{subLayer.Title || subLayer.Name}}
                         <button type="button" class="btn btn-sm p-0" [ngStyle]="{'font-size':'x-small'}">
                             <i [ngClass]="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i>
@@ -34,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="subLayer.Layer" class="collapse ms-4" [hidden]="!expanded">
+        <div *ngIf="subLayer.Layer" class="ms-4" [hidden]="!expanded">
             <div *ngFor="let subLayer of subLayer.Layer">
                 <div *ngIf="subLayerIsString(subLayer)">
                     <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer]"
