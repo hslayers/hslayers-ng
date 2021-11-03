@@ -10,7 +10,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import { View } from 'ol';
+import {View} from 'ol';
 
 @Component({
   selector: 'hslayers-app',
@@ -141,11 +141,11 @@ export class HslayersAppComponent {
           liferayProtocol: 'https',
         },
         {
-          title: "Micka",
-          url: "https://hub.sieusoil.eu/cat/csw",
+          title: 'Micka',
+          url: 'https://hub.sieusoil.eu/cat/csw',
           language: 'eng',
-          type: "micka"
-        }
+          type: 'micka',
+        },
       ],
       proxyPrefix: window.location.hostname.includes('localhost')
         ? `${window.location.protocol}//${window.location.hostname}:8085/`
@@ -154,14 +154,8 @@ export class HslayersAppComponent {
         tripPlanner: true,
       },
       componentsEnabled: {
-        basemapGallery: true
+        basemapGallery: true,
       },
-      default_view: new View({
-        projection: 'CRS:84',
-        center: [15.628, 49.864249],
-        multiWorld: false,
-        zoom: 8,
-      }),
       assetsPath: 'assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
