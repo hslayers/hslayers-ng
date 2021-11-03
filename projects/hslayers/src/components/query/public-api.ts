@@ -2,7 +2,7 @@ export * from './attribute-row/attribute-row.component';
 export * from './default-info-panel-body/default-info-panel-body.component';
 export * from './feature-common.service';
 export * from './feature-list/feature-list.component';
-export * from './feature-popup/feature-popup.component';
+export * from './query-popup/query-popup.component';
 export * from './feature/feature.component';
 export * from './query-base.service';
 export * from './query-vector.service';

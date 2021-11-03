@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   ViewRef,
 } from '@angular/core';
@@ -14,9 +13,8 @@ import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLanguageService} from './../../language/language.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayerWidgetContainerService} from '../feature-popup-layer/layer-widgets/layer-widget-container.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryBaseService} from '../query-base.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
@@ -30,10 +28,10 @@ import {
 import {getPopUp} from '../../../common/layer-extensions';
 
 @Component({
-  selector: 'hs-query-feature-popup',
-  templateUrl: './feature-popup.component.html',
+  selector: 'hs-query-popup',
+  templateUrl: './query-popup.component.html',
 })
-export class HsQueryFeaturePopupComponent
+export class HsQueryPopupComponent
   implements OnDestroy, HsDialogComponent, AfterViewInit {
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
@@ -52,8 +50,7 @@ export class HsQueryFeaturePopupComponent
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
-    private ElementRef: ElementRef,
-    private HsLayerWidgetContainerService: HsLayerWidgetContainerService
+    private ElementRef: ElementRef
   ) {
     this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
       (map) => {

@@ -10,7 +10,8 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {HsConfig} from '../../../hslayers/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 import {HsLayoutService} from 'hslayers-ng/src/components/layout/public-api';
-import {HsQueryFeaturePopupComponent} from 'hslayers-ng/src/components/query/feature-popup/feature-popup.component';
+import {HsQueryPopupComponent} from 'hslayers-ng/src/components/query/query-popup/query-popup.component';
+import {HsQueryPopupService} from 'hslayers-ng/src/components/query/query-popup.service';
 //import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
 //import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
 
@@ -23,7 +24,8 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
-    hsLayoutService: HsLayoutService
+    hsLayoutService: HsLayoutService,
+    hsQueryPopupService: HsQueryPopupService
     //hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     const count = 200;
@@ -341,7 +343,9 @@ export class HslayersAppComponent {
     //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    hsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {});
+    hsLayoutService.createOverlay(HsQueryPopupComponent, {
+      service: hsQueryPopupService,
+    });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});
   }
   title = 'hslayers-workspace';

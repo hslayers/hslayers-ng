@@ -26,14 +26,13 @@ export class HsQueryPopupBaseService {
     this.zone.run(() => {
       this.featuresUnderMouse = features;
       if (this.featuresUnderMouse.length) {
-        this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
-          this.HsMapService.getLayerForFeature(f)
-        );
-        this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
-          this.featureLayersUnderMouse,
+        const layersFound = this.HsUtilsService.removeDuplicates(
+          this.featuresUnderMouse.map((f) =>
+            this.HsMapService.getLayerForFeature(f)
+          ),
           'title'
         );
-        this.featureLayersUnderMouse = this.featureLayersUnderMouse.map((l) => {
+        this.featureLayersUnderMouse = layersFound.map((l) => {
           const layer = {
             title: getTitle(l),
             layer: l,
