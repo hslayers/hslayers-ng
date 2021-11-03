@@ -19,7 +19,6 @@ import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
-import {HsQueryPopupService} from './query-popup.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryVectorService} from './query-vector.service';
 import {
@@ -35,7 +34,8 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './feature-popup.component.html',
 })
 export class HsQueryFeaturePopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit {
+  implements OnDestroy, HsDialogComponent, AfterViewInit
+{
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -47,7 +47,6 @@ export class HsQueryFeaturePopupComponent
 
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
-    public HsQueryPopupService: HsQueryPopupService,
     public HsQueryVectorService: HsQueryVectorService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
@@ -58,34 +57,33 @@ export class HsQueryFeaturePopupComponent
   ) {
     this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
       (map) => {
-        map.addOverlay(this.HsQueryPopupService.hoverPopup);
+        map.addOverlay(this.data.service.hoverPopup);
       }
     );
   }
   ngAfterViewInit(): void {
-    this.HsQueryPopupService.hoverPopup = new Overlay({
-      element: this.ElementRef.nativeElement,
-    });
+    this.data.service.registerPopup(this.ElementRef.nativeElement);
   }
   ngOnDestroy(): void {
-    this.HsMapService.map.removeOverlay(this.HsQueryPopupService.hoverPopup);
+    this.HsMapService.map.removeOverlay(this.data.service.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
   popupVisible(): any {
-    const featuresWithPopup =
-      this.HsQueryPopupService.featuresUnderMouse.filter((f) => {
+    const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
+      (f) => {
         const layer = this.HsMapService.getLayerForFeature(f);
         if (!layer) {
           return false;
         }
         return getPopUp(layer) != undefined;
-      });
+      }
+    );
     const featureCount = featuresWithPopup.length;
 
     if (featureCount > 0) {
       let tmpForHover: any[] = [];
-      this.HsQueryPopupService.featuresUnderMouse.forEach((feature) => {
+      this.data.service.featuresUnderMouse.forEach((feature) => {
         tmpForHover = tmpForHover.concat(
           this.HsQueryBaseService.serializeFeatureAttributes(feature)
         );
@@ -147,7 +145,29 @@ export class HsQueryFeaturePopupComponent
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsQueryVectorService.removeFeature(feature);
-      this.HsQueryPopupService.featuresUnderMouse = [];
+      this.data.service.featuresUnderMouse = [];
+    }
+  }
+
+  //Deprecated
+  async clearLayer(layer): Promise<void> {
+    const dialog = this.HsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.HsLanguageService.getTranslation(
+          'QUERY.reallyDeleteAllFeaturesFrom'
+        ).replace('{0}', getTitle(layer)),
+        title: this.HsLanguageService.getTranslation('QUERY.confirmClear'),
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      if (layer.getSource().getSource) {
+        //Clear clustered?
+        layer.getSource().getSource().clear();
+      }
+      layer.getSource().clear();
+      this.data.service.featuresUnderMouse = [];
     }
   }
 }

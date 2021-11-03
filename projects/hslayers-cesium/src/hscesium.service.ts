@@ -25,6 +25,8 @@ import {Subject} from 'rxjs';
 
 import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumPicker} from './picker.service';
+import {HsCesiumQueryPopupService} from './hover-popup.service';
+import {HsQueryFeaturePopupComponent} from 'hslayers-ng';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +46,8 @@ export class HsCesiumService {
     public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService,
     public HsCesiumConfig: HsCesiumConfig,
-    private HsCesiumPicker: HsCesiumPicker
+    private HsCesiumPicker: HsCesiumPicker,
+    private hsCesiumQueryPopupService: HsCesiumQueryPopupService
   ) {
     this.checkForBingKey();
     this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
@@ -206,6 +209,11 @@ export class HsCesiumService {
       this.HsCesiumPicker.cesiumPositionClicked.subscribe((position) => {
         this.cesiumPositionClicked.next(position);
       });
+
+      this.HsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {
+        service: this.hsCesiumQueryPopupService,
+      });
+
       this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
     } catch (ex) {
       console.error(ex);
