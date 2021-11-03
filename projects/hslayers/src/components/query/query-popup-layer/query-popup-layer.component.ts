@@ -1,9 +1,8 @@
 import {AfterContentInit, Component, Input, OnDestroy} from '@angular/core';
 
-import {HsQueryPopupServiceModel} from '../query-popup.service.model';
-
 import {HsClearLayerComponent} from './layer-widgets/clear-layer.component';
 import {HsLayerWidgetContainerService} from './layer-widgets/layer-widget-container.service';
+import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 
 @Component({
   selector: 'hs-query-popup-layer',

@@ -3,6 +3,7 @@ import {Input} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
+
 import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsFeatureCommonService} from '../feature-common.service';
@@ -56,8 +57,8 @@ export class HsQueryFeatureListComponent {
 
   /**
    * Toggle dropdown menus
-   * @param beingToggled Menu being toggled
-   * @param other Other menu to be closed if opened
+   * @param beingToggled - Menu being toggled
+   * @param other - Other menu to be closed if opened
    */
   toggleMenus(beingToggled: string, other: string): void {
     this[other] = this[other] ? !this[other] : this[other];

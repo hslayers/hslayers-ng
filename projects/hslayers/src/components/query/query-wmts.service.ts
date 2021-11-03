@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {getInfoFormat} from '../../common/layer-extensions';
+
 import {transform} from 'ol/proj';
 
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getInfoFormat} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',

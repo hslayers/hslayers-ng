@@ -9,7 +9,6 @@ import {
 import {Subscription} from 'rxjs';
 
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-
 import {HsDialogItem} from '../../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';

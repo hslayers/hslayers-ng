@@ -1,16 +1,17 @@
+import {DomSanitizer} from '@angular/platform-browser';
+import {Injectable, NgZone} from '@angular/core';
+
+import CircleStyle from 'ol/style/Circle';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {DomSanitizer} from '@angular/platform-browser';
 import {Feature, Map} from 'ol';
 import {Geometry, Point} from 'ol/geom';
-import {Injectable, NgZone} from '@angular/core';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
 
-import CircleStyle from 'ol/style/Circle';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -51,7 +52,7 @@ export class HsQueryBaseService {
         }),
       ],
     }),
-    style: (feature) => this.pointClickedStyle(feature),
+    style: () => this.pointClickedStyle(),
   });
   featureLayersUnderMouse = [];
   nonQueryablePanels = [
@@ -199,7 +200,7 @@ export class HsQueryBaseService {
   }
 
   /**
-   * @param coordinate
+   * @param coordinate -
    */
   getCoordinate(coordinate) {
     this.queryPoint.setCoordinates(coordinate, 'XY');
@@ -260,10 +261,7 @@ export class HsQueryBaseService {
     );
   }
 
-  /**
-   * @param feature
-   */
-  pointClickedStyle(feature): Style {
+  pointClickedStyle(): Style {
     const defaultStyle = new Style({
       image: new Circle({
         fill: new Fill({

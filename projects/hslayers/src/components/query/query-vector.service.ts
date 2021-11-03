@@ -1,12 +1,13 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 
 import * as extent from 'ol/extent';
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry} from 'ol/geom';
+import {Map} from 'ol';
 import {Select} from 'ol/interaction';
+import {Subject} from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
@@ -17,7 +18,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Map} from 'ol';
+
 import {
   getCustomInfoTemplate,
   getOnFeatureSelected,
@@ -156,7 +157,7 @@ export class HsQueryVectorService {
   }
 
   /**
-   * @param feature
+   * @param feature -
    */
   getFeatureLayerName(feature) {
     const layer = this.HsMapService.getLayerForFeature(feature);
@@ -164,7 +165,7 @@ export class HsQueryVectorService {
   }
 
   /**
-   * @param feature
+   * @param feature - Selected feature from map
    */
   getCentroid(feature) {
     if (feature == undefined) {
@@ -175,7 +176,7 @@ export class HsQueryVectorService {
   }
   /**
    * (PRIVATE) Adding a default stats to query based on feature geom type
-   * @param f Selected feature from map
+   * @param f - Selected feature from map
    */
   addDefaultStats(f) {
     const geom = f.getGeometry();
@@ -206,8 +207,8 @@ export class HsQueryVectorService {
   }
 
   /**
-   * @param {ol/Feature} feature
-   * @returns {ol/source/Source}
+   * @param feature - Selected feature from map
+   * @returns
    */
   olSource(feature) {
     const layer = this.HsMapService.getLayerForFeature(feature);
@@ -221,8 +222,8 @@ export class HsQueryVectorService {
   }
 
   /**
-   * @param {ol/Feature} feature
-   * @returns {boolean}
+   * @param feature - Selected feature from map
+   * @returns
    */
   isFeatureRemovable(feature) {
     const source = this.olSource(feature);
@@ -237,7 +238,7 @@ export class HsQueryVectorService {
   }
 
   /**
-   * @param {ol/Feature} feature
+   * @param feature - Selected feature from map
    */
   removeFeature(feature) {
     const source = this.olSource(feature);
@@ -250,7 +251,7 @@ export class HsQueryVectorService {
 
   /**
    * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
-   * @param feature Selected feature from map
+   * @param feature - Selected feature from map
    */
   getFeatureAttributes(feature) {
     const attributes = [];

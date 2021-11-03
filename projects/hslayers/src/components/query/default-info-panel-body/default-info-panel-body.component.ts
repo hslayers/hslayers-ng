@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+
 import {HsQueryBaseService} from '../query-base.service';
 
 @Component({
