@@ -26,7 +26,7 @@ import {Subject} from 'rxjs';
 import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumPicker} from './picker.service';
 import {HsCesiumQueryPopupService} from './hover-popup.service';
-import {HsQueryFeaturePopupComponent} from 'hslayers-ng';
+import {HsQueryPopupComponent} from 'hslayers-ng';
 
 @Injectable({
   providedIn: 'root',
@@ -210,7 +210,7 @@ export class HsCesiumService {
         this.cesiumPositionClicked.next(position);
       });
 
-      this.HsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {
+      this.HsLayoutService.createOverlay(HsQueryPopupComponent, {
         service: this.hsCesiumQueryPopupService,
       });
 

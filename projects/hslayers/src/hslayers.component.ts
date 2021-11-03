@@ -19,7 +19,7 @@ import {HsMeasureComponent} from './components/measure/measure.component';
 import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
 import {HsPrintComponent} from './components/print/print.component';
 import {HsQueryComponent} from './components/query/query.component';
-import {HsQueryFeaturePopupComponent} from './components/query/feature-popup/feature-popup.component';
+import {HsQueryPopupComponent} from './components/query/query-popup/query-popup.component';
 import {HsQueryPopupService} from './public-api';
 import {HsSaveMapComponent} from './components/save-map/save-map.component';
 import {HsSearchComponent} from './components/search/search.component';
@@ -93,7 +93,7 @@ export class HslayersComponent implements OnInit {
       this.hsLayoutService.createOverlay(HsInfoComponent, {});
       this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
       this.hsLayoutService.createOverlay(HsToolbarComponent, {});
-      this.hsLayoutService.createOverlay(HsQueryFeaturePopupComponent, {
+      this.hsLayoutService.createOverlay(HsQueryPopupComponent, {
         service: this.hsQueryPopupService,
       });
       this.hsLayoutService.initializedOnce = true;

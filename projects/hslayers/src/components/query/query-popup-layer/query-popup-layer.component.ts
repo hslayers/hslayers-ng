@@ -6,11 +6,10 @@ import {HsClearLayerComponent} from './layer-widgets/clear-layer.component';
 import {HsLayerWidgetContainerService} from './layer-widgets/layer-widget-container.service';
 
 @Component({
-  selector: 'hs-feature-popup-layer',
-  templateUrl: './feature-popup-layer.component.html',
+  selector: 'hs-query-popup-layer',
+  templateUrl: './query-popup-layer.component.html',
 })
-export class HsFeaturePopupLayerComponent
-  implements AfterContentInit, OnDestroy {
+export class HsQueryPopupLayerComponent implements AfterContentInit, OnDestroy {
   @Input() layerDescriptor: any;
   @Input() service: HsQueryPopupServiceModel;
   constructor(

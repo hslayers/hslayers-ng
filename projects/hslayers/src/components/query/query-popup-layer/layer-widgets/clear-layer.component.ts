@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsFeaturePopupWidgetBaseComponent} from '../../feature-popup-widget-base.component';
+import {HsQueryPopupWidgetBaseComponent} from '../../query-popup-widget-base.component';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayerWidgetContainerService} from './layer-widget-container.service';
@@ -16,7 +16,7 @@ import {getTitle} from '../../../../common/layer-extensions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsClearLayerComponent
-  extends HsFeaturePopupWidgetBaseComponent
+  extends HsQueryPopupWidgetBaseComponent
   implements OnInit {
   @Input() data: {
     layerDesc: any;

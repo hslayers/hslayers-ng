@@ -5,30 +5,32 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsClearLayerComponent} from './feature-popup-layer/layer-widgets/clear-layer.component';
+import {HsClearLayerComponent} from './query-popup-layer/layer-widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
-import {HsFeaturePopupLayerComponent} from './feature-popup-layer/feature-popup-layer.component';
-import {HsFeaturePopupWidgetBaseComponent} from './feature-popup-widget-base.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row/attribute-row.component';
 import {HsQueryComponent} from './query.component';
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body/default-info-panel-body.component';
 import {HsQueryFeatureComponent} from './feature/feature.component';
 import {HsQueryFeatureListComponent} from './feature-list/feature-list.component';
-import {HsQueryFeaturePopupComponent} from './feature-popup/feature-popup.component';
+import {HsQueryPopupComponent} from './query-popup/query-popup.component';
+import {HsQueryPopupFeatureComponent} from './query-popup-feature/query-popup-feature.component';
+import {HsQueryPopupLayerComponent} from './query-popup-layer/query-popup-layer.component';
+import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     HsQueryComponent,
-    HsQueryFeaturePopupComponent,
+    HsQueryPopupComponent,
     HsQueryFeatureComponent,
     HsQueryFeatureListComponent,
     HsQueryDefaultInfoPanelBodyComponent,
     HsQueryAttributeRowComponent,
     HsClearLayerComponent,
-    HsFeaturePopupWidgetBaseComponent,
-    HsFeaturePopupLayerComponent,
+    HsQueryPopupWidgetBaseComponent,
+    HsQueryPopupLayerComponent,
+    HsQueryPopupFeatureComponent,
   ],
   imports: [
     CommonModule,
@@ -40,13 +42,14 @@ import {HsQueryFeaturePopupComponent} from './feature-popup/feature-popup.compon
   ],
   exports: [
     HsQueryComponent,
-    HsQueryFeaturePopupComponent,
+    HsQueryPopupComponent,
     HsQueryFeatureComponent,
     HsQueryFeatureListComponent,
     HsClearLayerComponent,
-    HsFeaturePopupWidgetBaseComponent,
-    HsFeaturePopupLayerComponent,
+    HsQueryPopupWidgetBaseComponent,
+    HsQueryPopupLayerComponent,
+    HsQueryPopupFeatureComponent,
   ],
-  entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
+  entryComponents: [HsQueryComponent, HsQueryPopupComponent],
 })
 export class HsQueryModule {}
