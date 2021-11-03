@@ -7,27 +7,26 @@ import {
   ViewRef,
 } from '@angular/core';
 
-import Overlay from 'ol/Overlay';
 import {Subscription} from 'rxjs';
 
-import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
-import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../layout/dialogs/dialog-item';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayerUtilsService} from './../utils/layer-utils.service';
-import {HsMapService} from '../map/map.service';
-import {HsQueryBaseService} from './query-base.service';
-import {HsQueryPopupServiceModel} from './query-popup.service.model';
-import {HsQueryVectorService} from './query-vector.service';
+import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
+import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsDialogItem} from '../../layout/dialogs/dialog-item';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLanguageService} from './../../language/language.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsMapService} from '../../map/map.service';
+import {HsQueryBaseService} from '../query-base.service';
+import {HsQueryPopupServiceModel} from '../query-popup.service.model';
+import {HsQueryVectorService} from '../query-vector.service';
 import {
   getFeatureLabel,
   getFeatureName,
   getFeatureTitle,
   getFeatures,
 } from '../../../common/feature-extensions';
-import {getPopUp} from '../../../common/layer-extensions';
+import {getPopUp, getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature-popup',
