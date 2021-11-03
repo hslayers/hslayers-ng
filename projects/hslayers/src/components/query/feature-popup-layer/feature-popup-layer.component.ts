@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Input} from '@angular/core';
+import {AfterContentInit, Component, Input, OnDestroy} from '@angular/core';
 
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 
@@ -9,7 +9,8 @@ import {HsLayerWidgetContainerService} from './layer-widgets/layer-widget-contai
   selector: 'hs-feature-popup-layer',
   templateUrl: './feature-popup-layer.component.html',
 })
-export class HsFeaturePopupLayerComponent implements AfterContentInit {
+export class HsFeaturePopupLayerComponent
+  implements AfterContentInit, OnDestroy {
   @Input() layerDescriptor: any;
   @Input() service: HsQueryPopupServiceModel;
   constructor(
@@ -17,9 +18,21 @@ export class HsFeaturePopupLayerComponent implements AfterContentInit {
   ) {}
 
   ngAfterContentInit(): void {
-    this.hsLayerWidgetContainerService.create(HsClearLayerComponent, {
-      layerDesc: this.layerDescriptor,
-      service: this.service,
-    });
+    this.hsLayerWidgetContainerService.createWithOwner(
+      this,
+      HsClearLayerComponent,
+      {
+        layerDesc: this.layerDescriptor,
+        service: this.service,
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    for (const panel of this.hsLayerWidgetContainerService.panels.filter(
+      (panel) => panel.data?.layerDesc == this.layerDescriptor
+    )) {
+      this.hsLayerWidgetContainerService.destroy(panel);
+    }
   }
 }

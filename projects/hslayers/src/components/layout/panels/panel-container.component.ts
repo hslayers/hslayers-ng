@@ -25,6 +25,8 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   /** Service which manages the list of panels */
   @Input()
   service: HsPanelContainerServiceInterface;
+  @Input()
+  ownerComponent?: any;
   interval: any;
   private ngUnsubscribe = new Subject();
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
@@ -36,7 +38,12 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     this.service.panelObserver
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelItem) => {
-        this.loadPanel(item);
+        if (
+          item.ownerComponent == undefined ||
+          this.ownerComponent == item.ownerComponent
+        ) {
+          this.loadPanel(item);
+        }
       });
     this.service.panelDestroyObserver
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -47,7 +54,10 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
 
   destroyPanel(panel: HsPanelComponent): void {
     const viewContainerRef = this.panelHost.viewContainerRef;
-    viewContainerRef.remove(viewContainerRef.indexOf(panel.viewRef));
+    const index = viewContainerRef.indexOf(panel.viewRef);
+    if (index > -1) {
+      viewContainerRef.remove(index);
+    }
   }
 
   loadPanel(panelItem: HsPanelItem): void {
@@ -56,10 +66,10 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
         panelItem.component
       );
     const viewContainerRef = this.panelHost.viewContainerRef;
-    //    viewContainerRef.clear();
-
     const componentRef = viewContainerRef.createComponent(componentFactory);
-    (<HsPanelComponent>componentRef.instance).viewRef = componentRef.hostView;
-    (<HsPanelComponent>componentRef.instance).data = panelItem.data;
+    const componentRefInstance = <HsPanelComponent>componentRef.instance;
+    componentRefInstance.viewRef = componentRef.hostView;
+    componentRefInstance.data = panelItem.data;
+    this.service.panels.push(componentRefInstance);
   }
 }
