@@ -7,6 +7,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsClearLayerComponent} from './query-popup-layer/layer-widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
+import {HsFeatureInfoComponent} from './query-popup-feature/feature-widgets/feature-info/feature-info.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row/attribute-row.component';
 import {HsQueryComponent} from './query.component';
@@ -31,6 +32,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsQueryPopupWidgetBaseComponent,
     HsQueryPopupLayerComponent,
     HsQueryPopupFeatureComponent,
+    HsFeatureInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +51,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsQueryPopupWidgetBaseComponent,
     HsQueryPopupLayerComponent,
     HsQueryPopupFeatureComponent,
+    HsFeatureInfoComponent,
   ],
   entryComponents: [HsQueryComponent, HsQueryPopupComponent],
 })
