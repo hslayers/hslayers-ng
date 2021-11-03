@@ -30,9 +30,9 @@
 
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
-        <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse; let i = index"
+        <div *ngFor="let layerDesc of data.service.featureLayersUnderMouse; let i = index"
             style="line-height: 1.2">
-            <a class="p-1" (click)="closePopup()" data-toggle="tooltip" [hidden]="i !== 0"
+            <a class="p-1" (click)="data.service.closePopup()" data-toggle="tooltip" [hidden]="i !== 0"
                 [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>

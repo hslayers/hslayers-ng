@@ -10,3 +10,6 @@ export * from './query-wms.service';
 export * from './query-wmts.service';
 export * from './query.component';
 export * from './query.module';
+export * from './query-popup.service';
+export * from './query-popup.service.model';
+export * from './query-popup-base.service';
