@@ -6,11 +6,16 @@
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
             <strong style="font-size: small;">{{hsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
-            <ng-container *ngFor="let feature of layerDesc.features">
-                <hs-query-popup-feature [feature]="feature" [attributesForHover]="attributesForHover"
-                    [service]="data.service"></hs-query-popup-feature>
-            </ng-container>
-            <hs-query-popup-layer [layerDescriptor]="layerDesc" [service]="data.service"></hs-query-popup-layer>
+            <form class="d-flex justify-content-center">
+                <hs-panel-container [service]="hsFeatureWidgetContainerService"
+                    [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service}">
+                </hs-panel-container>
+            </form>
+            <form>
+                <hs-panel-container [service]="hsLayerWidgetContainerService"
+                    [data]="{layerDescriptor: layerDesc, service: data.service}">
+                </hs-panel-container>
+            </form>
         </div>
     </div>
 </div>

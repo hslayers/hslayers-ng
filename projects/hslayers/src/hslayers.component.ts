@@ -1,21 +1,20 @@
 import {Component, Input, OnInit, Type, ViewChild} from '@angular/core';
 
 import {HsAddDataComponent} from './components/add-data/add-data.component';
-import {HsClearLayerComponent} from './components/query/query-popup-layer/layer-widgets/clear-layer.component';
+import {HsClearLayerComponent} from './components/query/feature-widgets/clear-layer.component';
 import {HsCompositionsComponent} from './components/compositions/compositions.component';
 import {HsConfig} from './config.service';
 import {HsDrawComponent} from './components/draw/draw.component';
 import {HsDrawToolbarComponent} from './components/draw/draw-toolbar.component';
-import {HsFeatureInfoComponent} from './components/query/query-popup-feature/feature-widgets/feature-info.component';
+import {HsFeatureInfoComponent} from './components/query/feature-widgets/feature-info.component';
 import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
-import {HsFeatureWidgetContainerService} from './components/query/query-popup-feature/feature-widgets/feature-widget-container.service';
+import {HsFeatureWidgetContainerService} from './components/query/feature-widgets/feature-widget-container.service';
 import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
 import {HsInfoComponent} from './components/info/info.component';
 import {HsLanguageComponent} from './components/language/language.component';
 import {HsLayerManagerComponent} from './components/layermanager/layermanager.component';
 import {HsLayerManagerGalleryComponent} from './components/layermanager/gallery/layermanager-gallery.component';
 import {HsLayerManagerService} from './components/layermanager/layermanager.service';
-import {HsLayerWidgetContainerService} from './components/query/query-popup-layer/layer-widgets/layer-widget-container.service';
 import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsLegendComponent} from './components/legend/legend.component';
@@ -48,8 +47,7 @@ export class HslayersComponent implements OnInit {
     private HsLayerManagerService: HsLayerManagerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     private hsQueryPopupService: HsQueryPopupService,
-    private hsFeatureWidgetContainerService: HsFeatureWidgetContainerService,
-    private hsLayerWidgetContainerService: HsLayerWidgetContainerService
+    private hsFeatureWidgetContainerService: HsFeatureWidgetContainerService
   ) {}
 
   /**
@@ -108,7 +106,7 @@ export class HslayersComponent implements OnInit {
         undefined
       );
 
-      this.hsLayerWidgetContainerService.create(
+      this.hsFeatureWidgetContainerService.create(
         HsClearLayerComponent,
         undefined
       );

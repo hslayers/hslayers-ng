@@ -1,0 +1,7 @@
+<div class="d-flex justify-content-center">
+  <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDescriptor.layer)"
+    *ngIf="hsLayerUtilsService.isLayerEditable(layerDescriptor.layer)" data-toggle="tooltip"
+    [title]="'QUERY.featurePopup.clearLayer'| translate">
+    {{'QUERY.featurePopup.clearLayer' | translate}}
+  </button>
+</div>

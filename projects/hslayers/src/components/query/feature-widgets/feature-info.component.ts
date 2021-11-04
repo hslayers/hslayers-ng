@@ -3,18 +3,18 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsQueryPopupServiceModel} from '../../query-popup.service.model';
-import {HsQueryPopupWidgetBaseComponent} from '../../query-popup-widget-base.component';
-import {HsQueryVectorService} from '../../query-vector.service';
+import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsQueryPopupServiceModel} from '../query-popup.service.model';
+import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
+import {HsQueryVectorService} from '../query-vector.service';
 import {
   getFeatureLabel,
   getFeatureName,
   getFeatureTitle,
   getFeatures,
-} from '../../../../common/feature-extensions';
+} from '../../../common/feature-extensions';
 
 @Component({
   selector: 'hs-feature-info',
@@ -25,10 +25,10 @@ export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
   implements OnInit
 {
-  feature: Feature<Geometry>;
+  layerDescriptor: any;
   attributesForHover: any[] = [];
   @Input() data: {
-    feature: Feature<Geometry>;
+    layerDescriptor: any;
     attributesForHover: any[];
     service: HsQueryPopupServiceModel;
   };
@@ -41,7 +41,7 @@ export class HsFeatureInfoComponent
     super();
   }
   ngOnInit(): void {
-    this.feature = this.data.feature;
+    this.layerDescriptor = this.data.layerDescriptor;
     this.attributesForHover = this.data.attributesForHover;
   }
 

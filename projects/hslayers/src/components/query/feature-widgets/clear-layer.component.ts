@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
-import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsLayerWidgetContainerService} from './layer-widget-container.service';
-import {HsQueryBaseService} from '../../query-base.service';
-import {HsQueryPopupServiceModel} from '../../query-popup.service.model';
-import {HsQueryPopupWidgetBaseComponent} from '../../query-popup-widget-base.component';
-import {getTitle} from '../../../../common/layer-extensions';
+import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayerWidgetContainerService} from '../layer-widgets/layer-widget-container.service';
+import {HsQueryBaseService} from '../query-base.service';
+import {HsQueryPopupServiceModel} from '../query-popup.service.model';
+import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
+import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-clear-layer',
@@ -20,11 +20,11 @@ export class HsClearLayerComponent
   implements OnInit
 {
   @Input() data: {
-    layerDesc: any;
+    layerDescriptor: any;
     service: HsQueryPopupServiceModel;
   };
 
-  layerDesc: any;
+  layerDescriptor: any;
   constructor(
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsDialogContainerService: HsDialogContainerService,
@@ -35,7 +35,7 @@ export class HsClearLayerComponent
     super();
   }
   ngOnInit(): void {
-    this.layerDesc = this.data.layerDesc;
+    this.layerDescriptor = this.data.layerDescriptor;
   }
 
   async clearLayer(layer): Promise<void> {
