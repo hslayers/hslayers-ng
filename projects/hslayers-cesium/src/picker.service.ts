@@ -9,10 +9,9 @@ import ScreenSpaceEventHandler from 'cesium/Source/Core/ScreenSpaceEventHandler'
 import ScreenSpaceEventType from 'cesium/Source/Core/ScreenSpaceEventType';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import defined from 'cesium/Source/Core/defined';
-import when from 'cesium/Source/ThirdParty/when';
 
 import {HsCesiumQueryPopupService} from './query-popup.service';
-import {HsLayoutService, HsMapService} from 'hslayers-ng';
+import {HsConfig, HsMapService, HsUtilsService} from 'hslayers-ng';
 
 @Injectable({
   providedIn: 'root',
@@ -22,54 +21,15 @@ export class HsCesiumPickerService {
   cesiumPositionClicked: Subject<any> = new Subject();
 
   constructor(
-    private HsLayoutService: HsLayoutService,
     private HsCesiumQueryPopupService: HsCesiumQueryPopupService,
-    private HsMapService: HsMapService
+    private HsMapService: HsMapService,
+    private hsConfig: HsConfig,
+    private hsUtilsService: HsUtilsService
   ) {}
 
   init(viewer: Viewer) {
     this.viewer = viewer;
     const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
-    handler.setInputAction((movement) => {
-      const pickRay = this.viewer.camera.getPickRay(movement.position);
-      const pickedObject = this.viewer.scene.pick(movement.position);
-      const featuresPromise =
-        this.viewer.imageryLayers.pickImageryLayerFeatures(
-          pickRay,
-          this.viewer.scene
-        );
-      if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
-        pickedObject.id.onclick(pickedObject.id);
-        return;
-      }
-      if (!defined(featuresPromise)) {
-        if (console) {
-          console.log('No features picked.');
-        }
-      } else {
-        when(featuresPromise, (features) => {
-          let s = '';
-          if (features.length > 0) {
-            for (let i = 0; i < features.length; i++) {
-              s = s + features[i].data + '\n';
-            }
-          }
-          const iframe: any = this.HsLayoutService.layoutElement.querySelector(
-            '.cesium-infoBox-iframe'
-          );
-          if (iframe) {
-            setTimeout(() => {
-              const innerDoc = iframe.contentDocument
-                ? iframe.contentDocument
-                : iframe.contentWindow.document;
-              innerDoc.querySelector('.cesium-infoBox-description').innerHTML =
-                s.replace(/\n/gm, '<br/>');
-              iframe.style.height = 200 + 'px';
-            }, 1000);
-          }
-        });
-      }
-    }, ScreenSpaceEventType.LEFT_DOWN);
 
     handler.setInputAction((movement) => {
       const pickedObject = this.viewer.scene.pick(movement.position);
@@ -80,18 +40,32 @@ export class HsCesiumPickerService {
     }, ScreenSpaceEventType.LEFT_UP);
 
     handler.setInputAction(
-      (movement) => this.rightClickLeftDoubleClick(movement),
+      (movement) => this.handleScreenInteraction(movement, 'left'),
+      ScreenSpaceEventType.LEFT_DOWN || ScreenSpaceEventType.RIGHT_DOWN
+    );
+    handler.setInputAction(
+      (movement) => this.handleScreenInteraction(movement, 'right'),
       ScreenSpaceEventType.RIGHT_DOWN
     );
     handler.setInputAction(
-      (movement) => this.rightClickLeftDoubleClick(movement),
+      (movement) => this.handleScreenInteraction(movement, 'left'),
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
+    handler.setInputAction((movement) => {
+      if (this.hsConfig.popUpDisplay === 'hover') {
+        this.hsUtilsService.debounce(
+          this.handleScreenInteraction,
+          200,
+          false,
+          this
+        )({position: movement.endPosition}, 'none');
+      }
+    }, ScreenSpaceEventType.MOUSE_MOVE);
   }
   /**
    * @param movement -
    */
-  rightClickLeftDoubleClick(movement) {
+  handleScreenInteraction(movement, button: 'left' | 'right' | 'none') {
     const pickRay = this.viewer.camera.getPickRay(movement.position);
     const pickedObject = this.viewer.scene.pick(movement.position);
 
@@ -103,13 +77,18 @@ export class HsCesiumPickerService {
           const longitudeString = Math.toDegrees(cartographic.longitude);
           const latitudeString = Math.toDegrees(cartographic.latitude);
           //TODO rewrite to subject
-          this.cesiumPositionClicked.next([longitudeString, latitudeString]);
+          if (button == 'left' || 'right') {
+            this.cesiumPositionClicked.next([longitudeString, latitudeString]);
+          }
         }
       }
     }
-    if (pickedObject && pickedObject.id) {
-      if (pickedObject.id.onclick) {
+    if (pickedObject?.id && this.hsConfig.popUpDisplay !== 'none') {
+      if (button == 'right' && pickedObject?.id?.onRightClick) {
         pickedObject.id.onRightClick(pickedObject.id);
+      }
+      if (button == 'left' && pickedObject?.id?.onclick) {
+        pickedObject.id.onclick(pickedObject.id);
       }
       this.HsCesiumQueryPopupService.fillFeatures([
         this.HsMapService.getFeatureById(

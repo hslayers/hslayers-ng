@@ -101,7 +101,7 @@ export class HsConfig {
   enabledLanguages?: string;
   query?: {multi: boolean};
   queryPoint?: string;
-  popUpDisplay?: string;
+  popUpDisplay?: 'none' | 'click' | 'hover';
   preserveLastSketchPoint?: boolean;
   zoomWithModifierKeyOnly?: boolean;
   pureMap?: boolean;

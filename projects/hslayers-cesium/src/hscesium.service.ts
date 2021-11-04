@@ -110,7 +110,7 @@ export class HsCesiumService {
             : undefined,
           infoBox: this.HsCesiumConfig.cesiumInfoBox
             ? this.HsCesiumConfig.cesiumInfoBox
-            : true,
+            : false,
           terrainProvider: terrain_provider,
           imageryProvider: this.HsCesiumConfig.imageryProvider,
           // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
