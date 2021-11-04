@@ -15,7 +15,8 @@ import {
 })
 export class HsCesiumQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel {
+  implements HsQueryPopupServiceModel
+{
   featuresUnderMouse: Feature<Geometry>[] = [];
   featureLayersUnderMouse = [];
   hoverPopup: any;
@@ -35,7 +36,7 @@ export class HsCesiumQueryPopupService
   }
 
   showPopup(e: any): void {
-    this.hoverPopup.style.left = e.pixel.x + 'px';
-    this.hoverPopup.style.top = e.pixel.y + 'px';
+    this.hoverPopup.style.left = e.pixel.x + 4 + 'px';
+    this.hoverPopup.style.top = e.pixel.y + 4 + 'px';
   }
 }
