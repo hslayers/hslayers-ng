@@ -11,13 +11,13 @@ import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import defined from 'cesium/Source/Core/defined';
 import when from 'cesium/Source/ThirdParty/when';
 
-import {HsCesiumQueryPopupService} from './hover-popup.service';
+import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsLayoutService, HsMapService} from 'hslayers-ng';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HsCesiumPicker {
+export class HsCesiumPickerService {
   viewer: Viewer;
   cesiumPositionClicked: Subject<any> = new Subject();
 
