@@ -1,16 +1,16 @@
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
-        <div *ngFor="let layerDesc of data.service.featureLayersUnderMouse; let i = index"
-            style="line-height: 1.2">
+        <div *ngFor="let layerDesc of data.service.featureLayersUnderMouse; let i = index" style="line-height: 1.2">
             <a class="p-1" (click)="data.service.closePopup()" data-toggle="tooltip" [hidden]="i !== 0"
                 [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
             <strong style="font-size: small;">{{hsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
-            <hs-query-popup-layer [layerDescriptor]="layerDesc" [service]="data.service"></hs-query-popup-layer>
             <ng-container *ngFor="let feature of layerDesc.features">
-                <hs-query-popup-feature [feature]="feature" [attributesForHover]="attributesForHover" [service]="data.service"></hs-query-popup-feature>
+                <hs-query-popup-feature [feature]="feature" [attributesForHover]="attributesForHover"
+                    [service]="data.service"></hs-query-popup-feature>
             </ng-container>
+            <hs-query-popup-layer [layerDescriptor]="layerDesc" [service]="data.service"></hs-query-popup-layer>
         </div>
     </div>
 </div>
