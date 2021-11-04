@@ -23,10 +23,11 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsPanelHostDirective, {static: true})
   panelHost: HsPanelHostDirective;
   /** Service which manages the list of panels */
-  @Input()
-  service: HsPanelContainerServiceInterface;
-  @Input()
-  ownerComponent?: any;
+  @Input() service: HsPanelContainerServiceInterface;
+  /** Miscellaneous data object to set to each of the panels inside this container.
+   * This is used if undefined value is passed to the create functions data parameter. */
+  @Input() data: any;
+  @Input() ownerComponent?: any;
   interval: any;
   private ngUnsubscribe = new Subject();
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
@@ -69,7 +70,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
-    componentRefInstance.data = panelItem.data;
+    componentRefInstance.data = panelItem.data || this.data;
     this.service.panels.push(componentRefInstance);
   }
 }

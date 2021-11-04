@@ -8,9 +8,12 @@ import {ReplaySubject, Subject} from 'rxjs';
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface {
+  implements HsPanelContainerServiceInterface
+{
   panels: Array<any> = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
+  panelCreated: Subject<{panelRefInstance: HsPanelComponent; host: any}> =
+    new Subject();
   panelDestroyObserver: Subject<any> = new Subject();
 
   constructor() {}
