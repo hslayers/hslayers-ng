@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -10,21 +10,11 @@ import {HsQueryPopupServiceModel} from '../query-popup.service.model';
   selector: 'hs-query-popup-feature',
   templateUrl: './query-popup-feature.component.html',
 })
-export class HsQueryPopupFeatureComponent
-  implements OnDestroy
-{
+export class HsQueryPopupFeatureComponent {
   @Input() feature: Feature<Geometry>;
   @Input() attributesForHover: any;
   @Input() service: HsQueryPopupServiceModel;
   constructor(
     public hsFeatureWidgetContainerService: HsFeatureWidgetContainerService
   ) {}
-
-  ngOnDestroy(): void {
-    for (const panel of this.hsFeatureWidgetContainerService.panels.filter(
-      (panel) => panel.data?.feature == this.feature
-    )) {
-      this.hsFeatureWidgetContainerService.destroy(panel);
-    }
-  }
 }
