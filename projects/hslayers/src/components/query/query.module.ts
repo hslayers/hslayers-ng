@@ -5,9 +5,9 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsClearLayerComponent} from './query-popup-layer/layer-widgets/clear-layer.component';
+import {HsClearLayerComponent} from './feature-widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
-import {HsFeatureInfoComponent} from './query-popup-feature/feature-widgets/feature-info.component';
+import {HsFeatureInfoComponent} from './feature-widgets/feature-info.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row/attribute-row.component';
 import {HsQueryComponent} from './query.component';
@@ -15,8 +15,6 @@ import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body/de
 import {HsQueryFeatureComponent} from './feature/feature.component';
 import {HsQueryFeatureListComponent} from './feature-list/feature-list.component';
 import {HsQueryPopupComponent} from './query-popup/query-popup.component';
-import {HsQueryPopupFeatureComponent} from './query-popup-feature/query-popup-feature.component';
-import {HsQueryPopupLayerComponent} from './query-popup-layer/query-popup-layer.component';
 import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.component';
 
 @NgModule({
@@ -30,8 +28,6 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsQueryAttributeRowComponent,
     HsClearLayerComponent,
     HsQueryPopupWidgetBaseComponent,
-    HsQueryPopupLayerComponent,
-    HsQueryPopupFeatureComponent,
     HsFeatureInfoComponent,
   ],
   imports: [
@@ -49,8 +45,6 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsQueryFeatureListComponent,
     HsClearLayerComponent,
     HsQueryPopupWidgetBaseComponent,
-    HsQueryPopupLayerComponent,
-    HsQueryPopupFeatureComponent,
     HsFeatureInfoComponent,
   ],
   entryComponents: [HsQueryComponent, HsQueryPopupComponent],
