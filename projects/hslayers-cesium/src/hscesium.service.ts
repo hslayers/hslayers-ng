@@ -24,8 +24,8 @@ import {HsUtilsService} from 'hslayers-ng';
 import {Subject} from 'rxjs';
 
 import {HsCesiumConfig} from './hscesium-config.service';
-import {HsCesiumPicker} from './picker.service';
-import {HsCesiumQueryPopupService} from './hover-popup.service';
+import {HsCesiumPickerService} from './picker.service';
+import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsQueryPopupComponent} from 'hslayers-ng';
 
 @Injectable({
@@ -46,7 +46,7 @@ export class HsCesiumService {
     public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService,
     public HsCesiumConfig: HsCesiumConfig,
-    private HsCesiumPicker: HsCesiumPicker,
+    private HsCesiumPicker: HsCesiumPickerService,
     private hsCesiumQueryPopupService: HsCesiumQueryPopupService
   ) {
     this.checkForBingKey();
