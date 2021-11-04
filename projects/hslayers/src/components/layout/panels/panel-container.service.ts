@@ -12,8 +12,6 @@ export class HsPanelContainerService
 {
   panels: Array<any> = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
-  panelCreated: Subject<{panelRefInstance: HsPanelComponent; host: any}> =
-    new Subject();
   panelDestroyObserver: Subject<any> = new Subject();
 
   constructor() {}
@@ -27,19 +25,6 @@ export class HsPanelContainerService
    */
   create(component: Type<any>, data: any): void {
     this.panelObserver.next(new HsPanelItem(component, data));
-  }
-
-  /**
-   * Crate panels for inside a specific element (owner) which might
-   * be recreated and destroyed in ngFor loop for example.
-   * @param owner Instance of component where to place the panel container. This is needed because
-   * all the container share the same angular HsPanelContainerService with only one ReplaySubject. Example:
-   * <hs-panel-container [service]="hsLayerWidgetContainerService" [containerComponent]="this">
-   * @param component PanelComponent class
-   * @param data Extra data to give the new panel
-   */
-  createWithOwner(owner, component: Type<any>, data: any): void {
-    this.panelObserver.next(new HsPanelItem(component, data, owner));
   }
 
   destroy(component: HsPanelComponent): void {
