@@ -27,7 +27,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   /** Miscellaneous data object to set to each of the panels inside this container.
    * This is used if undefined value is passed to the create functions data parameter. */
   @Input() data: any;
-  @Input() ownerComponent?: any;
   interval: any;
   private ngUnsubscribe = new Subject();
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
@@ -39,12 +38,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     this.service.panelObserver
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelItem) => {
-        if (
-          item.ownerComponent == undefined ||
-          this.ownerComponent == item.ownerComponent
-        ) {
-          this.loadPanel(item);
-        }
+        this.loadPanel(item);
       });
     this.service.panelDestroyObserver
       .pipe(takeUntil(this.ngUnsubscribe))
