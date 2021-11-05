@@ -107,7 +107,11 @@ export class HsConfig {
   /**
    * Configures query popup widgets, the order in which they are generated, and visibility
    */
-  queryPopupWidgets?: QueryPopupWidgetsType[] | string[];
+  queryPopupWidgets?: QueryPopupWidgetsType[] | string[] = [
+    'layer-name',
+    'feature-info',
+    'clear-layer',
+  ];
   /**
    * Allows the user to add custom widgets to query popup
    */

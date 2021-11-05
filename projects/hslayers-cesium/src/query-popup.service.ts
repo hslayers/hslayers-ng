@@ -5,8 +5,10 @@ import {Geometry} from 'ol/geom';
 import {
   HsConfig,
   HsMapService,
+  HsQueryBaseService,
   HsQueryPopupBaseService,
   HsQueryPopupServiceModel,
+  HsQueryPopupWidgetContainerService,
   HsUtilsService,
 } from 'hslayers-ng';
 
@@ -25,9 +27,17 @@ export class HsCesiumQueryPopupService
     HsMapService: HsMapService,
     private HsConfig: HsConfig,
     HsUtilsService: HsUtilsService,
-    zone: NgZone
+    zone: NgZone,
+    private HsQueryBaseService: HsQueryBaseService,
+    hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
-    super(HsMapService, HsUtilsService, zone);
+    super(
+      HsMapService,
+      HsUtilsService,
+      zone,
+      HsConfig,
+      hsQueryPopupWidgetContainerService
+    );
   }
 
   registerPopup(nativeElement: any) {
