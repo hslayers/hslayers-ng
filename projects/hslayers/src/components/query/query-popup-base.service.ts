@@ -4,16 +4,12 @@ import {ReplaySubject} from 'rxjs';
 import {Feature, Map} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsClearLayerComponent} from './widgets/clear-layer.component';
 import {HsConfig} from '../../config.service';
-import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsFeatureLayer} from './query-popup.service.model';
-import {HsLayerNameComponent} from './widgets/layer-name.component';
 import {HsMapService} from '../map/map.service';
 import {HsPanelItem} from '../layout/panels/panel-item';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {WidgetItem} from './widgets/widget-item.type';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -24,11 +20,6 @@ export class HsQueryPopupBaseService {
   featuresUnderMouse: Feature<Geometry>[] = [];
   featureLayersUnderMouse: HsFeatureLayer[] = [];
   hoverPopup: any;
-  queryPopupWidgets: WidgetItem[] = [
-    {name: 'layer-name', component: HsLayerNameComponent},
-    {name: 'feature-info', component: HsFeatureInfoComponent},
-    {name: 'clear-layer', component: HsClearLayerComponent},
-  ];
 
   constructor(
     public hsMapService: HsMapService,
@@ -36,9 +27,7 @@ export class HsQueryPopupBaseService {
     public zone: NgZone,
     public hsConfig: HsConfig,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
-  ) {
-    this.initWidgets(this.hsConfig.queryPopupWidgets);
-  }
+  ) {}
 
   fillFeatures(features: Feature<Geometry>[]) {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
@@ -66,7 +55,7 @@ export class HsQueryPopupBaseService {
         });
         for (const layer of this.featureLayersUnderMouse) {
           if (layer.panelObserver) {
-            this.initWidgets(
+            this.hsQueryPopupWidgetContainerService.initWidgets(
               getPopUp(layer.layer)?.widgets,
               layer.panelObserver
             );
@@ -76,30 +65,6 @@ export class HsQueryPopupBaseService {
         this.featuresUnderMouse = [];
       }
     });
-  }
-
-  initWidgets(
-    widgetNames: string[],
-    panelObserver?: ReplaySubject<HsPanelItem>
-  ) {
-    if (widgetNames?.length > 0) {
-      for (const widgetName of widgetNames) {
-        let widgetFound = this.queryPopupWidgets.find(
-          (widget) => widget.name == widgetName
-        );
-
-        if (!widgetFound && this.hsConfig.customQueryPopupWidgets?.length > 0) {
-          widgetFound = this.hsConfig.customQueryPopupWidgets.find(
-            (widget) => widget.name == widgetName
-          );
-        }
-        this.hsQueryPopupWidgetContainerService.create(
-          widgetFound.component,
-          undefined,
-          panelObserver
-        );
-      }
-    }
   }
 
   closePopup(): void {
