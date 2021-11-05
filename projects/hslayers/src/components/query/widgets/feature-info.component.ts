@@ -27,6 +27,7 @@ export class HsFeatureInfoComponent
 {
   layerDescriptor: any;
   attributesForHover: any[] = [];
+  name = 'feature-info';
   @Input() data: {
     layerDescriptor: any;
     attributesForHover: any[];

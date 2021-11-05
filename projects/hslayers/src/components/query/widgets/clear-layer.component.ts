@@ -4,7 +4,6 @@ import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.c
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayerWidgetContainerService} from '../layer-widgets/layer-widget-container.service';
 import {HsQueryBaseService} from '../query-base.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
@@ -23,14 +22,13 @@ export class HsClearLayerComponent
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;
   };
-
+  name = 'clear-layer';
   layerDescriptor: any;
   constructor(
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLanguageService: HsLanguageService,
-    public hsQueryBaseService: HsQueryBaseService,
-    public hsLayerWidgetContainerService: HsLayerWidgetContainerService
+    public hsQueryBaseService: HsQueryBaseService
   ) {
     super();
   }
