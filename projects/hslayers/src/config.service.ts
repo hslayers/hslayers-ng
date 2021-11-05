@@ -10,6 +10,8 @@ import {Subject} from 'rxjs';
 
 import {AddDataFileType} from './components/add-data/file/file.type';
 import {AddDataUrlType} from './components/add-data/url/types/url.type';
+import {QueryPopupWidgetsType} from './components/query/widgets/widgets.type';
+import {WidgetItem} from './components/query/widgets/widget-item.type';
 
 export type SymbolizerIcon = {
   name: string;
@@ -102,6 +104,14 @@ export class HsConfig {
   query?: {multi: boolean};
   queryPoint?: string;
   popUpDisplay?: 'none' | 'click' | 'hover';
+  /**
+   * Configures query popup widgets, the order in which they are generated, and visibility
+   */
+  queryPopupWidgets?: QueryPopupWidgetsType[] | string[];
+  /**
+   * Allows the user to add custom widgets to query popup
+   */
+  customQueryPopupWidgets?: WidgetItem[];
   preserveLastSketchPoint?: boolean;
   zoomWithModifierKeyOnly?: boolean;
   pureMap?: boolean;
