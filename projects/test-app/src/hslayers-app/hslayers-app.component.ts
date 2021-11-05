@@ -132,6 +132,7 @@ export class HslayersAppComponent {
       opacity: 1,
     });
     this.HsConfig.update({
+      queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
       datasources: [
         {
           title: 'Layman',
@@ -305,6 +306,7 @@ export class HslayersAppComponent {
             inlineLegend: true,
             popUp: {
               attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'],
             },
             editor: {
               editable: true,
