@@ -10,7 +10,6 @@ import {ReplaySubject, Subject} from 'rxjs';
 export class HsPanelContainerService
   implements HsPanelContainerServiceInterface
 {
-  panels: Array<any> = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
   panelDestroyObserver: Subject<any> = new Subject();
 
@@ -22,13 +21,19 @@ export class HsPanelContainerService
    * container component is even added to the dom.
    * @param component PanelComponent class
    * @param data Extra data to give the new panel
+   * @package panelObserver ReplaySubject to which you need to add the panel components. This is used when panels in this service are used only sometimes (for particular layers)
    */
-  create(component: Type<any>, data: any): void {
-    this.panelObserver.next(new HsPanelItem(component, data));
+  create(
+    component: Type<any>,
+    data: any,
+    panelObserver?: ReplaySubject<HsPanelItem>
+  ): void {
+    (panelObserver ?? this.panelObserver).next(
+      new HsPanelItem(component, data)
+    );
   }
 
   destroy(component: HsPanelComponent): void {
     this.panelDestroyObserver.next(component);
-    this.panels.splice(this.panels.indexOf(component), 1);
   }
 }

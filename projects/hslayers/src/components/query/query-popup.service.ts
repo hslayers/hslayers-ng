@@ -4,10 +4,12 @@ import {Feature, Map, Overlay} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfig} from '../../config.service';
+import {HsFeatureLayer} from './query-popup.service.model';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
+import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Injectable({
@@ -19,17 +21,24 @@ export class HsQueryPopupService
 {
   map: Map;
   featuresUnderMouse: Feature<Geometry>[] = [];
-  featureLayersUnderMouse = [];
+  featureLayersUnderMouse: HsFeatureLayer[] = [];
   hoverPopup: any;
 
   constructor(
     hsMapService: HsMapService,
-    private hsConfig: HsConfig,
+    public hsConfig: HsConfig,
     hsUtilsService: HsUtilsService,
     zone: NgZone,
-    private HsQueryBaseService: HsQueryBaseService
+    private HsQueryBaseService: HsQueryBaseService,
+    hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
-    super(hsMapService, hsUtilsService, zone);
+    super(
+      hsMapService,
+      hsUtilsService,
+      zone,
+      hsConfig,
+      hsQueryPopupWidgetContainerService
+    );
     this.hsMapService.loaded().then(() => this.init());
   }
 

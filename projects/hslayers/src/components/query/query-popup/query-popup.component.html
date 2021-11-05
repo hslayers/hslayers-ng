@@ -5,7 +5,7 @@
                 [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
-                <hs-panel-container [service]="hsQueryPopupWidgetContainerService"
+                <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [panelObserver]="layerDesc.panelObserver"
                     [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service}">
                 </hs-panel-container>
         </div>
