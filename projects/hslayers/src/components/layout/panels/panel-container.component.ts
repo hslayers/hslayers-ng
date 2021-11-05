@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import {Subject} from 'rxjs';
+import {ReplaySubject, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsPanelComponent} from './panel-component.interface';
@@ -27,6 +27,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   /** Miscellaneous data object to set to each of the panels inside this container.
    * This is used if undefined value is passed to the create functions data parameter. */
   @Input() data: any;
+  @Input() panelObserver?: ReplaySubject<HsPanelItem>;
   interval: any;
   private ngUnsubscribe = new Subject();
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
@@ -35,7 +36,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
-    this.service.panelObserver
+    (this.panelObserver ?? this.service.panelObserver)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelItem) => {
         this.loadPanel(item);
@@ -65,6 +66,5 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
     componentRefInstance.data = panelItem.data || this.data;
-    this.service.panels.push(componentRefInstance);
   }
 }

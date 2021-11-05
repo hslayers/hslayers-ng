@@ -1,12 +1,10 @@
 import {Component, Input, OnInit, Type, ViewChild} from '@angular/core';
 
 import {HsAddDataComponent} from './components/add-data/add-data.component';
-import {HsClearLayerComponent} from './components/query/widgets/clear-layer.component';
 import {HsCompositionsComponent} from './components/compositions/compositions.component';
 import {HsConfig} from './config.service';
 import {HsDrawComponent} from './components/draw/draw.component';
 import {HsDrawToolbarComponent} from './components/draw/draw-toolbar.component';
-import {HsFeatureInfoComponent} from './components/query/widgets/feature-info.component';
 import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
 import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
 import {HsInfoComponent} from './components/info/info.component';
@@ -14,7 +12,6 @@ import {HsLanguageComponent} from './components/language/language.component';
 import {HsLayerManagerComponent} from './components/layermanager/layermanager.component';
 import {HsLayerManagerGalleryComponent} from './components/layermanager/gallery/layermanager-gallery.component';
 import {HsLayerManagerService} from './components/layermanager/layermanager.service';
-import {HsLayerNameComponent} from './components/query/widgets/layer-name.component';
 import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsLegendComponent} from './components/legend/legend.component';
@@ -33,7 +30,6 @@ import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
-import {WidgetItem} from './components/query/widgets/widget-item.type';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -44,11 +40,7 @@ import {WidgetItem} from './components/query/widgets/widget-item.type';
 export class HslayersComponent implements OnInit {
   @Input() config: HsConfig;
   @ViewChild(HsLayoutComponent) layout: HsLayoutComponent;
-  queryPopupWidgets: WidgetItem[] = [
-    {name: 'layer-name', component: HsLayerNameComponent},
-    {name: 'feature-info', component: HsFeatureInfoComponent},
-    {name: 'clear-layer', component: HsClearLayerComponent},
-  ];
+
   constructor(
     public hsConfig: HsConfig,
     private hsLayoutService: HsLayoutService,
@@ -108,28 +100,6 @@ export class HslayersComponent implements OnInit {
       this.hsLayoutService.createOverlay(HsQueryPopupComponent, {
         service: this.hsQueryPopupService,
       });
-
-      if (this.hsConfig.queryPopupWidgets?.length > 0) {
-        for (const widgetName of this.hsConfig.queryPopupWidgets) {
-          let widgetFound = this.queryPopupWidgets.find(
-            (widget) => widget.name == widgetName
-          );
-
-          if (
-            !widgetFound &&
-            this.hsConfig.customQueryPopupWidgets?.length > 0
-          ) {
-            widgetFound = this.hsConfig.customQueryPopupWidgets.find(
-              (widget) => widget.name == widgetName
-            );
-          } else {
-            this.hsQueryPopupWidgetContainerService.create(
-              widgetFound.component,
-              undefined
-            );
-          }
-        }
-      }
 
       this.hsLayoutService.initializedOnce = true;
     }
