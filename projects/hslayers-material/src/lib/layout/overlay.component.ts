@@ -1,9 +1,16 @@
 import * as olExtent from 'ol/extent';
 import {Component, OnInit} from '@angular/core';
 import {HsAttributionDialogComponent} from './attribution-dialog.component';
-import {HsConfig, HsLayerManagerService, HsMapService} from 'hslayers-ng';
+import {
+  HsConfig,
+  HsEventBusService,
+  HsLayerManagerService,
+  HsMapService
+} from 'hslayers-ng';
 import {MatDialog} from '@angular/material/dialog';
 import {Vector as VectorLayer} from 'ol/layer';
+import {MouseWheelZoom} from 'ol/interaction';
+import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 
 @Component({
   selector: 'hs-mat-overlay',
@@ -12,12 +19,27 @@ import {Vector as VectorLayer} from 'ol/layer';
 export class HsMatOverlayComponent implements OnInit {
   constructor(
     public HsConfig: HsConfig,
+    private HsEventBusService: HsEventBusService,
     private HsMapService: HsMapService,
     private HsLayerManagerService: HsLayerManagerService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    const mapControls = this.HsConfig.componentsEnabled.mapControls;
+    this.HsEventBusService.olMapLoads.subscribe(map => {
+      map.addInteraction(new MouseWheelZoom({
+        condition: (browserEvent): boolean => {
+          if (mapControls == false) {
+            return false;
+          }
+          return this.HsConfig.zoomWithModifierKeyOnly
+            ? platformModifierKeyOnlyCondition(browserEvent)
+            : true;
+        },
+      }));
+    });
+
     this.HsConfig.componentsEnabled.mapControls = false;
     this.HsConfig.componentsEnabled.defaultViewButton = false;
   }
