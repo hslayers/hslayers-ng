@@ -5,9 +5,10 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsClearLayerComponent} from './feature-widgets/clear-layer.component';
+import {HsClearLayerComponent} from './widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
-import {HsFeatureInfoComponent} from './feature-widgets/feature-info.component';
+import {HsFeatureInfoComponent} from './widgets/feature-info.component';
+import {HsLayerNameComponent} from './widgets/layer-name.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row/attribute-row.component';
 import {HsQueryComponent} from './query.component';
@@ -29,6 +30,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsClearLayerComponent,
     HsQueryPopupWidgetBaseComponent,
     HsFeatureInfoComponent,
+    HsLayerNameComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsClearLayerComponent,
     HsQueryPopupWidgetBaseComponent,
     HsFeatureInfoComponent,
+    HsLayerNameComponent,
   ],
   entryComponents: [HsQueryComponent, HsQueryPopupComponent],
 })
