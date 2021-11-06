@@ -10,7 +10,8 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import {View} from 'ol';
+import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/public-api';
+import {PopupWidgetComponent} from './popup-widget.component';
 
 @Component({
   selector: 'hslayers-app',
@@ -20,7 +21,8 @@ import {View} from 'ol';
 export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -364,6 +366,11 @@ export class HslayersAppComponent {
         layer: opticalMap,
       });
     }, 100);
+
+    this.HsQueryPopupWidgetContainerService.create(
+      PopupWidgetComponent,
+      undefined
+    );
   }
   title = 'hslayers-workspace';
 }
