@@ -4,18 +4,20 @@
             <p class="m-0" [ngStyle]="{'flex' : features.length > 1 ? '' : '1'}">
                 {{'QUERY.featuresSelected' | translate}}{{features.length}}
             </p>
-            <button type="button" class="btn dropdown-toggle border-0 ms-2" [title]="'HISTORY.toggleDropdown' | translate"
+            <button type="button" class="btn dropdown-toggle border-0 ms-2"
+                [title]="'HISTORY.toggleDropdown' | translate"
                 (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
             </button>
         </div>
-        <div class="btn-group" *ngIf="features.length > 1" >
+        <div class="btn-group" *ngIf="features.length > 1">
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
-                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button"
-                    (click)="toggleEditMenu()"><i
+                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
                         class="icon-settingsthree-gears"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
-                    <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeatures' | translate}}</a>
-                    <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeatures' | translate}}</a>
+                    <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeatures' |
+                        translate}}</a>
+                    <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeatures' |
+                        translate}}</a>
                 </div>
             </div>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
@@ -23,8 +25,9 @@
                     [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu()"><i
                         class="icon-download"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
-                    <a class="dropdown-item" *ngFor="let format of exportFormats" download="{{format.name}}_file.{{format.ext}}"
-                        [hsDownload]="format.serializedData" [mimeType]="format.mimeType" [href]="format.downloadData"
+                    <a class="dropdown-item" *ngFor="let format of exportFormats"
+                        download="{{format.name}}_file.{{format.ext}}" [hsDownload]="format.serializedData"
+                        [mimeType]="format.mimeType" [href]="format.downloadData"
                         (downloadPrepared)="format.downloadData = $event">
                         {{format.name}}</a>
                 </div>
@@ -37,13 +40,18 @@
     </div>
     <div *ngIf="editType" class="d-flex p-2 w-100">
         <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
-            <label for="selectedLayer" class="px-2">{{hsFeatureCommonService.translateString('QUERY.feature',editType+'Features')}} {{'COMMON.into' | translate}}:</label>
-            <select class="form-control text-truncate" [(ngModel)]="selectedLayer" name="selectedLayer" [title]="'ADDLAYERS.Vector.chooseLayer' | translate">
-                <option  [ngValue]="null" [disabled]="true" selected hidden > {{'ADDLAYERS.Vector.chooseLayer' | translate}}</option>
+            <label for="selectedLayer"
+                class="px-2">{{hsFeatureCommonService.translateString('QUERY.feature',editType+'Features')}}
+                {{'COMMON.into' | translate}}:</label>
+            <select class="form-control text-truncate" [(ngModel)]="selectedLayer" name="selectedLayer"
+                [title]="'ADDLAYERS.Vector.chooseLayer' | translate">
+                <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
+                    translate}}</option>
                 <option *ngFor="let layer of hsFeatureCommonService.availableLayer$ | async" [ngValue]="layer">
                     {{hsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
             </select>
-            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
+            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
+                    class="icon-save-floppy"></i></button>
         </div>
     </div>
 </div>

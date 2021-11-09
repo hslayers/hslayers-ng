@@ -655,7 +655,6 @@ export class HsDrawService {
       });
 
       this.draw.setActive(drawState);
-
       this.HsMapService.loaded().then((map) => {
         map.addInteraction(this.draw);
       });

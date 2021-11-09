@@ -1,0 +1,63 @@
+<div class="alert alert-info w-75 m-auto mt-3 text-center" role="alert"
+    *ngIf="HsQueryBaseService.data.features.length === 0; else editOptionsTemplate">
+    {{'DRAW.featureEditor.selectFeatureToEdit' | translate}}
+</div>
+<ng-template #editOptionsTemplate>
+    <span class="w-75 text-center bg-primary text-white p-2 rounded mb-2" style="--bs-bg-opacity: .8;"><span
+            class="text-decoration-underline">{{'DRAW.featureEditor.selectedFeature' | translate}}</span>
+        {{'DRAW.featureEditor.featureCanBeEditedbyOptions' | translate}}:</span>
+
+    <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center">
+        <button *ngFor="let option of editOptions" class="btn btn-sm btn-light btn-outline-primary"
+            [ngClass]="{active: selectedType === option }" (click)="selectModification(option)">
+            {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',option)}}
+        </button>
+    </div>
+
+    <div *ngIf="selectedType" class="d-flex flex-column align-items-center my-3 w-75 bg-secondary"
+        style="--bs-bg-opacity: .02;">
+        <div class="d-flex flex-column align-items-center border border-start-0 border-end-0 py-3 w-100">
+            {{'DRAW.featureEditor.drawNewFeature' | translate}}
+            <button *ngIf="selectedType !== 'split'" class="w-50 btn btn-sm btn-light btn-outline-primary"
+                (click)="setType('Polygon')" [ngClass]="{active: HsDrawService.type==='Polygon' }"
+                [title]="'COMMON.polygon' | translate">
+                <i class="icon-polygonlasso"></i>
+            </button>
+            <button *ngIf="selectedType === 'split'" class="w-50 btn btn-sm btn-light btn-outline-primary"
+                [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString')"
+                data-toggle="tooltip" [title]="'COMMON.line' | translate">
+                <i class="icon-line"></i>
+            </button>
+            <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translate}}
+            </span>
+            <div ngbDropdown placement="bottom-center" class=" w-50 btn-group btn-group-sm" role="group"
+                #selectionTypeDropdown="ngbDropdown">
+                <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"
+                    [title]="'STYLER.selection' | translate" class="btn btn-light btn-outline-primary"
+                    (click)="$event.preventDefault(); selectionMenuToggled()">
+                    <i class="icon-cursor"></i>
+                </button>
+                <div ngbDropdownMenu style="white-space: nowrap;">
+                    <div class="d-flex flex-column px-1 py-2">
+                        <div class="d-flex flex-row justify-content-around align-items-baseline">
+                            <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
+                                translate}}</label>
+                            <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
+                                (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
+                                id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
+                        </div>
+                        <button class="btn btn-primary btn-sm hs-draw-selectAll"
+                            [disabled]="!HsDrawService.selectedLayer"
+                            (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()"
+                            data-toggle="tooltip" [title]="'DRAW.deselectAllFeatures' | translate">
+                            {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)"
+            [disabled]="HsQueryBaseService.data.features.length < 2">{{'COMMON.edit' | translate}}</button>
+    </div>
+</ng-template>

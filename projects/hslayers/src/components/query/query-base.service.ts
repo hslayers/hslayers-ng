@@ -32,6 +32,7 @@ export class HsQueryBaseService {
     customFeatures: [],
     coordinates: [],
   };
+
   queryActive = false;
   popupClassname = '';
   selector = null;
