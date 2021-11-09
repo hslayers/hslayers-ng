@@ -75,6 +75,7 @@ export class HsQueryVectorService {
     });
 
     this.selector.getFeatures().on('add', (e) => {
+      console.log('selection',e,e.element.getId())
       this.hsEventBusService.vectorQueryFeatureSelection.next({
         feature: e.element,
         selector: this.selector,
@@ -82,6 +83,7 @@ export class HsQueryVectorService {
     });
 
     this.selector.getFeatures().on('remove', (e) => {
+      console.log('deselection',e.element.getId())
       this.hsEventBusService.vectorQueryFeatureDeselection.next({
         feature: e.element,
         selector: this.selector,
@@ -130,6 +132,7 @@ export class HsQueryVectorService {
         this.getFeatureAttributes(feature)
       );
     }
+    console.log('features')
     this.hsQueryBaseService.setData(featureDescriptions, 'features');
     this.hsQueryBaseService.getFeatureInfoCollected.next();
   }

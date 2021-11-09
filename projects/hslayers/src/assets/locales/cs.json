@@ -229,7 +229,8 @@
     "yes": "Ano",
     "zoomTo": "zvětšit na",
     "into": " do",
-    "uploading": "Odesílání dat"
+    "uploading": "Odesílání dat",
+    "edit": "Upravit"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -417,7 +418,23 @@
     "stylingMissing": "Chybí správný styl",
     "stylingMissingWarning": "Geometrii {{type}} NELZE vizualizovat.Nejprve vytvořte symboliku pro {{symbolizer}}. Můžete to udělat v panelu {{panel}}.",
     "unsavedDrawing": "Neuložená kresba",
-    "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru"
+    "useModifierToSelectWithBox": "Stiskněte {{platformModifierKey}} a potažením označte oblast výběru",
+    "featureEditor": {
+      "featureEditor": "Editor prvků",
+      "noIntersection": "Pro vybrané prvky nebyl nalezena žádný překryv",
+      "onlyOneSplitLine": "Je povolena pouze jedna dělicí linie",
+      "selectFeatureToEdit": "Vyberte prvek, který chcete upravit!",
+      "selectedFeature": "Vybraný prvek",
+      "featureCanBeEditedbyOptions": "lze upravit jednou z dostupných možností",
+      "editOptions": {
+        "split": "Rozdelení",
+        "intersection": "Intersection",
+        "union": "Union",
+        "difference": "Difference"
+      },
+      "drawNewFeature": "Nakreslete nový prvek",
+      "orSelectOne": "nebo označne (shift + klik)"
+    }
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
