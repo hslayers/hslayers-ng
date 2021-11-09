@@ -83,6 +83,7 @@ export type popUpAttribute = {
 export type popUp = {
   attributes?: Array<popUpAttribute | string>;
   widgets?: string[];
+  displayFunction?: any;
 };
 
 export function getAccessRights(layer: Layer<Source>): accessRightsModel {

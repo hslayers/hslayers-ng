@@ -41,13 +41,15 @@ export class HsQueryPopupBaseService {
           'title'
         );
         this.featureLayersUnderMouse = layersFound.map((l) => {
+          const needSpecialWidgets =
+            getPopUp(l)?.widgets || getPopUp(l).displayFunction;
           const layer = {
             title: getTitle(l),
             layer: l,
             features: this.featuresUnderMouse.filter(
               (f) => this.hsMapService.getLayerForFeature(f) == l
             ),
-            panelObserver: getPopUp(l)?.widgets
+            panelObserver: needSpecialWidgets
               ? new ReplaySubject<HsPanelItem>()
               : undefined,
           };
@@ -55,8 +57,13 @@ export class HsQueryPopupBaseService {
         });
         for (const layer of this.featureLayersUnderMouse) {
           if (layer.panelObserver) {
+            const popupDef = getPopUp(layer.layer);
+            let widgets = popupDef?.widgets;
+            if (popupDef.displayFunction) {
+              widgets = ['dynamic-text'];
+            }
             this.hsQueryPopupWidgetContainerService.initWidgets(
-              getPopUp(layer.layer)?.widgets,
+              widgets,
               layer.panelObserver
             );
           }
