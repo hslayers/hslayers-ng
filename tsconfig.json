@@ -15,21 +15,46 @@
     "importHelpers": true,
     "target": "es2015",
     "lib": [
-      "es2018",
+      "es2019",
       "dom"
     ],
     "paths": {
-      "@angular/*": [ "node_modules/@angular/*" ],
-      "rxjs/*": [ "node_modules/rxjs/*" ],
-      "ol/*": ["node_modules/ol/*"],
-      "hslayers-ng": ["dist/hslayers/*", "dist/hslayers"],
-      "hslayers-ng/*": ["projects/hslayers/*", "projects/hslayers"],
-      "@ngx-translate/*": ["node_modules/@ngx-translate/*"],
-      "hslayers-material": ["dist/hslayers-material"],
-      "hslayers-material/*": ["dist/hslayers-material/*"],
-      "hslayers-cesium": ["dist/hslayers-cesium"],
-      "hslayers-cesium/*": ["projects/hslayers-cesium/*", "projects/hslayers-cesium"],
-      "cesium/*": ["node_modules/cesium/*"],
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
+      "rxjs/*": [
+        "node_modules/rxjs/*"
+      ],
+      "ol/*": [
+        "node_modules/ol/*"
+      ],
+      "hslayers-ng": [
+        "dist/hslayers/*",
+        "dist/hslayers"
+      ],
+      "hslayers-ng/*": [
+        "projects/hslayers/*",
+        "projects/hslayers"
+      ],
+      "@ngx-translate/*": [
+        "node_modules/@ngx-translate/*"
+      ],
+      "hslayers-material": [
+        "dist/hslayers-material"
+      ],
+      "hslayers-material/*": [
+        "dist/hslayers-material/*"
+      ],
+      "hslayers-cesium": [
+        "dist/hslayers-cesium"
+      ],
+      "hslayers-cesium/*": [
+        "projects/hslayers-cesium/*",
+        "projects/hslayers-cesium"
+      ],
+      "cesium/*": [
+        "node_modules/cesium/*"
+      ],
     }
   },
   "angularCompilerOptions": {

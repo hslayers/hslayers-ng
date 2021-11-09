@@ -54,11 +54,11 @@ export class HsFeatureCommonService {
   }
 
   updateLayerList(): void {
-    const layers = this.hsMapService.getLayersArray().filter(
-      (layer: Layer<Source>) => {
+    const layers = this.hsMapService
+      .getLayersArray()
+      .filter((layer: Layer<Source>) => {
         return this.hsLayerUtilsService.isLayerDrawable(layer);
-      }
-    );
+      });
     this.listSubject.next(layers);
   }
 

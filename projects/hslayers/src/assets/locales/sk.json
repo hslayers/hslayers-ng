@@ -411,7 +411,17 @@
     "stylingMissing": "Chýba správny styling",
     "stylingMissingWarning": "Geometriu {{type}} NIE je možné vizualizovať.Najprv vytvorte symboliku úre {{symbolizer}}. Môžete to urobiť v paneli {{panel}}.",
     "unsavedDrawing": "Neuložená kresba",
-    "useModifierToSelectWithBox": "Stlačte {{platformModifierKey}} a ťahaním vyznačte oblasť výberu"
+    "useModifierToSelectWithBox": "Stlačte {{platformModifierKey}} a ťahaním vyznačte oblasť výberu",
+    "featureEditor": {
+      "featureEditor": "Editor prvkov",
+      "noIntersection": "Pre vybrané prvky sa nenašiel žiadny prekryv",
+      "onlyOneSplitLine": "Povolená je len jedna deliaca línia",
+      "selectFeatureToEdit": "Vyberte prvok, ktorý chcete upraviť!",
+      "selectedFeature": "Vybraný prvok",
+      "featureCanBeEditedbyOptions": "možno upraviť jednou z dostupných možností",
+      "drawNewFeature": "Nakreslite nový prvok",
+      "orSelectOne": "alebo označte (shift + klik)"
+    }
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",

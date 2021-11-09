@@ -5,7 +5,7 @@ import {HsCompositionsComponent} from './components/compositions/compositions.co
 import {HsConfig} from './config.service';
 import {HsDrawComponent} from './components/draw/draw.component';
 import {HsDrawToolbarComponent} from './components/draw/draw-toolbar/draw-toolbar.component';
-import {HsFeatureInfoComponent} from './components/query/query-popup-feature/feature-widgets/feature-info.component';
+// import {HsFeatureInfoComponent} from './components/query/query-popup-feature/feature-widgets/feature-info.component';
 import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
 import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
 import {HsInfoComponent} from './components/info/info.component';

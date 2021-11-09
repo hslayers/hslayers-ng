@@ -229,7 +229,8 @@
     "yes": "Yes",
     "zoomTo": "zoom to",
     "into": " into",
-    "uploading": "Uploading data"
+    "uploading": "Uploading data",
+    "edit": "Edit"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -417,7 +418,23 @@
     "stylingMissing": "Proper styling missing",
     "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel.",
     "unsavedDrawing": "Unsaved drawing",
-    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box"
+    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
+    "featureEditor": {
+      "featureEditor": "Feature editor",
+      "noIntersection": "No intersection found for selected features",
+      "onlyOneSplitLine": "Only one splitting line allowed",
+      "selectFeatureToEdit": "Select a feature you want to edit!",
+      "selectedFeature": "Selected feature",
+      "featureCanBeEditedbyOptions": "can be edited by one of the avaliable options",
+      "editOptions": {
+        "split": "Split",
+        "intersection": "Intersection",
+        "union": "Union",
+        "difference": "Difference"
+      },
+      "drawNewFeature": "Draw new feature",
+      "orSelectOne": "or select one (shift + click)"
+    }
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
