@@ -7,6 +7,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsClearLayerComponent} from './widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
+import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -31,6 +32,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsQueryPopupWidgetBaseComponent,
     HsFeatureInfoComponent,
     HsLayerNameComponent,
+    HsDynamicTextComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +51,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsQueryPopupWidgetBaseComponent,
     HsFeatureInfoComponent,
     HsLayerNameComponent,
+    HsDynamicTextComponent,
   ],
   entryComponents: [HsQueryComponent, HsQueryPopupComponent],
 })

@@ -61,6 +61,10 @@ export class HslayersAppComponent {
               ],
             ],
           },
+          'properties': {
+            'name': 'Poly 3',
+            'population': Math.floor(Math.random() * 100000),
+          },
         },
         {
           'type': 'Feature',
@@ -75,6 +79,10 @@ export class HslayersAppComponent {
                 [-2e6, 6e6],
               ],
             ],
+          },
+          'properties': {
+            'name': 'Poly 2',
+            'population': Math.floor(Math.random() * 100000),
           },
         },
         {
@@ -91,6 +99,10 @@ export class HslayersAppComponent {
               ],
             ],
           },
+          'properties': {
+            'name': 'Poly 4',
+            'population': Math.floor(Math.random() * 100000),
+          },
         },
         {
           'type': 'Feature',
@@ -104,6 +116,10 @@ export class HslayersAppComponent {
                 [-2e6, -1e6],
               ],
             ],
+          },
+          'properties': {
+            'name': 'Poly 1',
+            'population': Math.floor(Math.random() * 100000),
           },
         },
       ],
@@ -133,6 +149,30 @@ export class HslayersAppComponent {
       visible: false,
       opacity: 1,
     });
+    const polygonSld = `<?xml version="1.0" encoding="ISO-8859-1"?>
+            <StyledLayerDescriptor version="1.0.0" 
+                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+                xmlns="http://www.opengis.net/sld" 
+                xmlns:ogc="http://www.opengis.net/ogc" 
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <NamedLayer>
+                <Name>Simple point with stroke</Name>
+                <UserStyle>
+                  <Title>Default</Title>
+                  <FeatureTypeStyle>
+                    <Rule>
+                    <PolygonSymbolizer>
+                    <Fill>
+                      <CssParameter name="fill">#000080</CssParameter>
+                    </Fill>
+                  </PolygonSymbolizer>
+                    </Rule>
+                  </FeatureTypeStyle>
+                </UserStyle>
+              </NamedLayer>
+            </StyledLayerDescriptor>
+            `;
     this.HsConfig.update({
       queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
       datasources: [
@@ -317,30 +357,36 @@ export class HslayersAppComponent {
                 description: 'none',
               },
             },
-            sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-            <StyledLayerDescriptor version="1.0.0" 
-                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-                xmlns="http://www.opengis.net/sld" 
-                xmlns:ogc="http://www.opengis.net/ogc" 
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-              <NamedLayer>
-                <Name>Simple point with stroke</Name>
-                <UserStyle>
-                  <Title>Default</Title>
-                  <FeatureTypeStyle>
-                    <Rule>
-                    <PolygonSymbolizer>
-                    <Fill>
-                      <CssParameter name="fill">#000080</CssParameter>
-                    </Fill>
-                  </PolygonSymbolizer>
-                    </Rule>
-                  </FeatureTypeStyle>
-                </UserStyle>
-              </NamedLayer>
-            </StyledLayerDescriptor>
-            `,
+            sld: polygonSld,
+            path: 'User generated',
+          },
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
+          }),
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'Polygons with display f-n',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'], //Will be ignored due to display function
+              displayFunction: function (feature) {
+                return `<a>${feature.get(
+                  'name'
+                )} with population of ${feature.get('population')}</a>`;
+              },
+            },
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
+              },
+            },
+            sld: polygonSld,
             path: 'User generated',
           },
           source: new VectorSource({
