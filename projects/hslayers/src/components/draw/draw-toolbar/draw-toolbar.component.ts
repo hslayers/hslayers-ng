@@ -1,16 +1,16 @@
 import {Component} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
-import {HsDrawService} from './draw.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsToolbarPanelBaseComponent} from '../toolbar/toolbar-panel-base.component';
-import {getTitle} from '../../common/layer-extensions';
+import {HsConfig} from '../../../config.service';
+import {HsDrawService} from '../draw.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsToolbarPanelBaseComponent} from '../../toolbar/toolbar-panel-base.component';
+import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-draw-toolbar',
-  templateUrl: './partials/draw-toolbar.html',
+  templateUrl: './draw-toolbar.html',
 })
 export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   drawToolbarExpanded = false;
