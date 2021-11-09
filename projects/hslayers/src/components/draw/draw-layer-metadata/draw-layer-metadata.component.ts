@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
-import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
-import {HsMapService} from '../map/map.service';
-import {accessRightsModel} from '../add-data/common/access-rights.model';
+import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsMapService} from '../../map/map.service';
+import {accessRightsModel} from '../../add-data/common/access-rights.model';
 import {
   getEditor,
   getHsLaymanSynchronizing,
@@ -13,12 +13,12 @@ import {
   setName,
   setPath,
   setTitle,
-} from '../../common/layer-extensions';
-import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
+} from '../../../common/layer-extensions';
+import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
-  templateUrl: './partials/draw-layer-metadata.html',
+  templateUrl: './draw-layer-metadata.html',
 })
 export class HsDrawLayerMetadataDialogComponent
   implements HsDialogComponent, OnInit

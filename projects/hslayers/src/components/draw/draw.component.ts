@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {HsDialogContainerService} from '../layout/public-api';
-import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
+import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
