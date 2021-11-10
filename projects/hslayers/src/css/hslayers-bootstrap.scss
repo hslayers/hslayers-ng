@@ -643,7 +643,7 @@ $list-group-item-padding-x: 1.25rem;
     max-height: 20em;
     min-width: 10em;
     max-width: 40em;
-    overflow-y: scroll;
+    overflow-y: auto;
     visibility: visible;
     background: white;
   }
@@ -748,6 +748,17 @@ $list-group-item-padding-x: 1.25rem;
 
   .hs-endpoint-item-active {
     background-color: hsla(0, 0%, 0%, 0.2);
+  }
+
+  .hs-popup-layer {
+    line-height: 1.2; border-top: 1px solid rgba(200, 200, 200, 0.5)
+  }
+
+  .hs-hover-popup .icon-remove-circle {color: rgb(73, 80, 87); float: right}
+
+  .hs-hover-popup .card {
+    padding: 5px;
+    overflow-y: auto;
   }
 
   @import "../components/layout/partials/layout.component.scss";
