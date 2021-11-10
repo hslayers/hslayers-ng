@@ -5,9 +5,9 @@
             <i class="icon-remove-circle"></i>
         </a>
         <div *ngFor="let layerDesc of data.service.featureLayersUnderMouse; let i = index" class="hs-popup-layer">
-                <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [panelObserver]="layerDesc.panelObserver"
-                    [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service}">
-                </hs-panel-container>
+            <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [panelObserver]="layerDesc.panelObserver"
+                [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service}">
+            </hs-panel-container>
         </div>
     </div>
 </div>
