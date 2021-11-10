@@ -97,7 +97,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.0.0",
     "eslint-config-openlayers": "14.0.0",
-    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-import": "2.25.3",
     "eslint-plugin-jsdoc": "37.0.3",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-prettier": "4.0.0",
