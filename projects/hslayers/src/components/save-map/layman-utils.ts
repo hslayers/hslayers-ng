@@ -27,7 +27,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
  * Get layman friendly name of layer based primary on name
  * and secondary on title attributes.
  *
- * @param layer Layr to get the name for
+ * @param layer - Layer to get the name for
  */
 export function getLayerName(layer: Layer<Source>): string {
   const layerName = getName(layer) || getTitle(layer);
@@ -38,13 +38,13 @@ export function getLayerName(layer: Layer<Source>): string {
 }
 
 export function wfsNotAvailable(descr: HsLaymanLayerDescriptor) {
-  return descr.wfs.status == 'NOT_AVAILABLE';
+  return descr.wfs?.status == 'NOT_AVAILABLE';
 }
 
 export function wfsPendingOrStarting(descr: HsLaymanLayerDescriptor) {
-  return descr.wfs.status == 'PENDING' || descr.wfs.status == 'STARTED';
+  return descr.wfs?.status == 'PENDING' || descr.wfs?.status == 'STARTED';
 }
 
 export function wfsFailed(descr: HsLaymanLayerDescriptor) {
-  return descr.wfs.status == 'FAILURE';
+  return descr.wfs?.status == 'FAILURE';
 }
