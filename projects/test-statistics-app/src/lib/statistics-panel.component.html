@@ -1,0 +1,9 @@
+<div class="card hs-main-panel" [hidden]="!isVisible()">
+    <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
+    <div class="card-body">
+        <div>
+            <button type="button" class="btn btn-primary" (click)="correlate()">{{'STATISTICS.CORRELATE' |
+                translate}}</button>
+        </div>
+    </div>
+</div>

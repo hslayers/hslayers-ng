@@ -8,14 +8,18 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import vidzeme from '../assets/vidzeme.json';
-import {HsConfig} from '../../../hslayers/src/config.service';
-import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import {HsLayoutService} from 'hslayers-ng/src/components/layout/public-api';
-import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
-import {HsQueryPopupComponent} from 'hslayers-ng/src/components/query/query-popup/query-popup.component';
-import {HsQueryPopupService} from 'hslayers-ng/src/components/query/query-popup.service';
-import {HsSearchToolbarComponent} from 'hslayers-ng/src/components/search/search-toolbar.component';
-import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
+import {
+  HsConfig,
+  HsEventBusService,
+  HsLayoutService,
+  HsQueryComponent,
+  HsQueryPopupComponent,
+  HsQueryPopupService,
+  HsSearchToolbarComponent,
+  HsToolbarPanelContainerService,
+} from 'hslayers-ng';
+import {HsStatisticsPanelComponent} from '../lib/statistics-panel.component';
+import {HsStatisticsUploadPanelComponent} from '../lib/upload-panel';
 
 @Component({
   selector: 'hslayers-app',
@@ -125,6 +129,8 @@ export class HslayersAppComponent {
       ],
     });
     hsLayoutService.createPanel(HsQueryComponent, {});
+    hsLayoutService.createPanel(HsStatisticsUploadPanelComponent, {});
+    hsLayoutService.createPanel(HsStatisticsPanelComponent, {});
     hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     hsLayoutService.createOverlay(HsQueryPopupComponent, {
       service: hsQueryPopupService,
