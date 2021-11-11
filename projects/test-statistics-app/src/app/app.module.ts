@@ -11,7 +11,7 @@ import {HsLayoutModule} from '../../../hslayers/src/components/layout/layout.mod
 //import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
 //import {HsDrawModule} from 'hslayers-ng/src/components/draw/public-api';
 import {HsQueryModule} from 'hslayers-ng/src/components/query/query.module';
-import {HslayersAppComponent} from './hslayers-app.component';
+import {HslayersAppComponent} from './app.component';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({

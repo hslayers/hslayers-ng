@@ -19,7 +19,7 @@ import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar
 
 @Component({
   selector: 'hslayers-app',
-  templateUrl: './hslayers-app.component.html',
+  templateUrl: './app.component.html',
   styleUrls: [],
 })
 export class HslayersAppComponent {
