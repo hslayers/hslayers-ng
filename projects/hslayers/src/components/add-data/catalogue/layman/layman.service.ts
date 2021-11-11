@@ -278,23 +278,34 @@ export class HsLaymanBrowserService {
     layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
-    let sld: string = undefined;
-    if (lyr.sld?.url) {
-      sld = await this.http
-        .get(lyr.sld?.url, {
-          headers: new HttpHeaders().set('Content-Type', 'text'),
-          responseType: 'text',
-        })
-        .toPromise();
-      if (!sld?.includes('StyledLayerDescriptor')) {
-        sld = undefined;
+    let style: string = undefined;
+    if (lyr.style?.url) {
+      try {
+        style = await (this.http
+          .get(lyr.style?.url, {
+            headers: new HttpHeaders().set('Content-Type', 'text'),
+            responseType: 'text',
+          })
+          .toPromise());
+      } catch (ex) {
+        console.error(ex);
+      }
+    }
+    if (lyr.style.type == 'sld') {
+      if (!style?.includes('StyledLayerDescriptor')) {
+        style = undefined;
+      }
+    }
+    if (lyr.style.type == 'qml') {
+      if (!style?.includes('<qgis')) {
+        style = undefined;
       }
     }
     if (lyr.wms.url) {
       return {
         type: lyr.type,
         link: lyr.wms.url,
-        sld,
+        style,
         layer: lyr.name,
         name: lyr.name,
         title: lyr.title,

@@ -7,6 +7,7 @@ export type addLayerOptions = {
   path?: string;
   queryFormat?: string;
   sld?: string;
+  qml?: string;
   subLayers?: any[];
   tileSize?;
 };

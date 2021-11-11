@@ -43,6 +43,7 @@ const QUERY_FILTER = 'queryFilter';
 const REMOVABLE = 'removable';
 const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
 const HS_SLD = 'sld';
+const HS_QML = 'qml';
 const THUMBNAIL = 'thumbnail';
 const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
@@ -347,6 +348,10 @@ export function getFeatureInfoTarget(layer: Layer<Source>): string {
 
 export function getSld(layer: Layer<Source>): string {
   return layer.get(HS_SLD);
+}
+
+export function getQml(layer: Layer<Source>): string {
+  return layer.get(HS_QML);
 }
 
 export function setSld(layer: Layer<Source>, sld: string): void {

@@ -71,7 +71,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
   async addLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    sld?: string
+    style?: string
   ): Promise<void> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -95,7 +95,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
             layer.checked = true;
           }
         }
-        this.addLayers(true, sld);
+        this.addLayers(true, style);
         this.hsAddDataCommonService.layerToSelect = null;
         this.zoomToBBox(bbox);
       }
@@ -288,10 +288,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean, sld: string): void {
+  addLayers(checkedOnly: boolean, style: string): void {
     this.data.add_all = checkedOnly;
     for (const layer of this.data.services) {
-      this.addLayersRecursively(layer, {sld});
+      this.addLayersRecursively(layer, {style});
     }
   }
 
@@ -301,12 +301,15 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         layerName: layer.Name,
         folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         crs: this.data.srs,
-        sld: options.sld,
+        sld: options.style?.includes('StyledLayerDescriptor')
+          ? options.style
+          : undefined,
+        qml: options.style?.includes('qgis') ? options.style : undefined,
       });
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {sld: options.sld});
+        this.addLayersRecursively(sublayer, {style: options.style});
       }
     }
   }
@@ -326,6 +329,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         path: options.folder,
         removable: true,
         sld: options.sld,
+        qml: options.qml,
         wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       },
       source: new WfsSource(this.hsUtilsService, this.http, {

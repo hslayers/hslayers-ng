@@ -15,8 +15,9 @@ export interface HsAddDataLayerDescriptor {
   id?;
   workspace?: string;
   editable?: boolean;
-  sld?: {
+  style?: {
     url: string;
+    type: string;
   };
   featureId?: string;
   highlighted?: boolean;

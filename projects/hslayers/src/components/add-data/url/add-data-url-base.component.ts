@@ -54,15 +54,15 @@ export class HsAddDataUrlBaseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.hsEventBusService.owsConnecting
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({type, uri, layer}) => {
+      .subscribe(({type, uri, layer, style}) => {
         if (type === this.baseDataType) {
           this.hsAddDataCommonService.layerToSelect = layer;
-          this.setUrlAndConnect(uri, layer);
+          this.setUrlAndConnect(uri, style);
         }
       });
   }
 
-  async connect(layerToSelect?: string): Promise<void> {
+  async connect(style?: string): Promise<void> {
     const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
       return;
@@ -74,12 +74,11 @@ export class HsAddDataUrlBaseComponent implements OnInit, OnDestroy {
     this.hsAddDataUrlService.hasAnyChecked = false;
     this.hsHistoryListService.addSourceHistory(this.baseDataType, url);
     Object.assign(this.hsAddDataCommonService, {
-      layerToSelect,
       loadingInfo: true,
       showDetails: true,
     });
     const wrapper = await this.typeCapabilitiesService.request(url);
-    this.typeService.addLayerFromCapabilities(wrapper);
+    this.typeService.addLayerFromCapabilities(wrapper, style);
   }
 
   /**
@@ -88,9 +87,9 @@ export class HsAddDataUrlBaseComponent implements OnInit, OnDestroy {
    * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
-  setUrlAndConnect(url: string, layer: string): void {
+  setUrlAndConnect(url: string, style?: string): void {
     this.hsAddDataCommonService.updateUrl(url);
-    this.connect(layer);
+    this.connect(style);
   }
 
   changed(data: urlDataObject): void {

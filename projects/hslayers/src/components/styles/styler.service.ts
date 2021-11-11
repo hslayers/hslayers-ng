@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import OpenLayersParser from 'geostyler-openlayers-parser';
+import QGISStyleParser from 'geostyler-qgis-parser';
 import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -30,6 +31,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {defaultStyle} from './styles';
 import {
   getCluster,
+  getQml,
   getSld,
   getTitle,
   setSld,
@@ -45,7 +47,8 @@ export class HsStylerService {
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
-  parser = new SLDParser();
+  sldParser = new SLDParser();
+  qmlParser = new QGISStyleParser();
   sld: string;
 
   pin_white_blue = new Style({
@@ -197,13 +200,14 @@ export class HsStylerService {
       return;
     }
     let sld = getSld(layer);
+    const qml = getQml(layer);
     let style = layer.getStyle();
-    if ((!style || style == createDefaultStyle) && !sld) {
+    if ((!style || style == createDefaultStyle) && !sld && !qml) {
       sld = defaultStyle;
       setSld(layer, defaultStyle);
     }
-    if (sld && (!style || style == createDefaultStyle)) {
-      style = (await this.parseStyle(sld)).style;
+    if ((sld || qml) && (!style || style == createDefaultStyle)) {
+      style = (await this.parseStyle(sld ?? qml)).style;
       if (style) {
         layer.setStyle(style);
       }
@@ -213,6 +217,7 @@ export class HsStylerService {
     } else if (
       style &&
       !sld &&
+      !qml &&
       !this.hsUtilsService.isFunction(style) &&
       !Array.isArray(style)
     ) {
@@ -231,9 +236,17 @@ export class HsStylerService {
    * @param style -
    * @returns OL style object
    */
-  async parseStyle(style: any): Promise<{sld?: string; style: StyleLike}> {
-    if (typeof style == 'string') {
+  async parseStyle(
+    style: any
+  ): Promise<{sld?: string; qml?: string; style: StyleLike}> {
+    if (
+      typeof style == 'string' &&
+      (style as string).includes('StyledLayerDescriptor')
+    ) {
       return {sld: style, style: await this.sldToOlStyle(style)};
+    }
+    if (typeof style == 'string' && (style as string).includes('<qgis')) {
+      return {qml: style, style: await this.qmlToOlStyle(style)};
     } else if (typeof style == 'object') {
       //Backwards compatibility with style encoded in custom JSON object
       return parseStyle(style);
@@ -295,11 +308,23 @@ export class HsStylerService {
     }
   }
 
+  /**
+   * Convert QML to OL style object
+   */
+  async qmlToOlStyle(qml: string): Promise<StyleLike> {
+    try {
+      const styleObject = await this.qmlToJson(qml);
+      return await this.geoStylerStyleToOlStyle(styleObject);
+    } catch (ex) {
+      this.hsLogService.error(ex);
+    }
+  }
+
   public async geoStylerStyleToOlStyle(
     sldObject: GeoStylerStyle
   ): Promise<StyleLike> {
     const olConverter = new OpenLayersParser();
-    const { output: style } = await olConverter.writeStyle(sldObject);
+    const {output: style} = await olConverter.writeStyle(sldObject);
     return style;
   }
 
@@ -309,12 +334,26 @@ export class HsStylerService {
    * @returns
    */
   private async sldToJson(sld: string): Promise<GeoStylerStyle> {
-    const { output: sldObject } = await this.parser.readStyle(sld);
+    const {output: sldObject} = await this.sldParser.readStyle(sld);
     return sldObject;
   }
 
+  /**
+   * Convert QML text to JSON which is easier to edit in Angular.
+   * @param qml -
+   * @returns
+   */
+  private async qmlToJson(qml: string): Promise<GeoStylerStyle> {
+    const result = await this.qmlParser.readStyle(qml);
+    if (result.output) {
+      return result.output;
+    } else {
+      this.hsLogService.error(result.errors);
+    }
+  }
+
   private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
-    const { output: sld} = await this.parser.writeStyle(styleObject);
+    const {output: sld} = await this.sldParser.writeStyle(styleObject);
     return sld;
   }
 
@@ -453,7 +492,7 @@ export class HsStylerService {
 
   async loadSld(sld: string): Promise<void> {
     try {
-      await this.parser.readStyle(sld);
+      await this.sldParser.readStyle(sld);
       setSld(this.layer, sld);
       await this.fill(this.layer);
       await this.save();
