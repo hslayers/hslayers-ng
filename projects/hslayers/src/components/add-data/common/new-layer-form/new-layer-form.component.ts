@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 
-import {HsAddDataService} from './../../add-data.service';
+import {HsAddDataCommonFileService} from '../common-file.service';
+import {HsAddDataCommonService} from '../common.service';
 import {HsFileShpService} from '../../file/shp/shp.service';
 import {HsLanguageService} from './../../../../components/language/language.service';
 import {HsUploadedFiles} from './../../../../common/upload/upload.component';
@@ -13,14 +14,11 @@ export class HsNewLayerFormComponent {
   advancedPanelVisible = false;
   @Input() data: any;
   constructor(
-    public hsAddDataService: HsAddDataService,
+    public hsAddDataCommonService: HsAddDataCommonService,
+    public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLanguageService: HsLanguageService,
     public hsFileShpService: HsFileShpService
   ) {}
-
-  isAuthorized(): boolean {
-    return this.hsAddDataService.isAuthorized;
-  }
 
   sldTitle(): string {
     return this.data.sld
@@ -31,7 +29,7 @@ export class HsNewLayerFormComponent {
         );
   }
 
-  read(evt: HsUploadedFiles): void {
-    this.hsFileShpService.read(evt);
+  async read(evt: HsUploadedFiles): Promise<void> {
+    await this.hsFileShpService.read(evt);
   }
 }

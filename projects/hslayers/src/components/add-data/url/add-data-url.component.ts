@@ -61,7 +61,7 @@ export class HsAddDataUrlComponent implements OnDestroy {
 
   selectType(type: AddDataUrlType): void {
     this.typeSelected = type;
-    this.hsAddDataCommonService.clear();
+    this.hsAddDataCommonService.clearParams();
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {

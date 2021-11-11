@@ -60,13 +60,21 @@ export class HsLanguageService {
   }
 
   /**
-   * @param {string} str  Identifier of the string to be translated
-   * @param params
-   * @returns {string} Translation
+   * @param  str - Identifier of the string to be translated
+   * @param params -
+   * @returns Translation
    */
   getTranslation(str: string, params?: any): string {
     return this.TranslateService.instant(str, params);
   }
+
+  /**
+   * @param module - Module to look for inside the locales json
+   * @param text - Text that represents the translation
+   * @param params - Dynamic params included in the translation, for example,
+   * "translation": "This is my {{nr}} translation" - params: {nr: 'first'}
+   * @returns Translation
+   */
 
   getTranslationIgnoreNonExisting(
     module: string,

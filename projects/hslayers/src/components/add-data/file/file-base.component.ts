@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 
@@ -21,7 +22,9 @@ import {fileDataObject} from './types/file-data-object.type';
 @Component({
   template: '<div></div>',
 })
-export class HsAddDataFileBaseComponent implements AfterViewInit, OnDestroy {
+export class HsAddDataFileBaseComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   data: fileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
@@ -62,6 +65,11 @@ export class HsAddDataFileBaseComponent implements AfterViewInit, OnDestroy {
     if (this.hsUploadComponent) {
       this.fileInput = this.hsUploadComponent.getVectorFileInput();
     }
+  }
+
+  ngOnInit(): void {
+    this.hsAddDataCommonFileService.pickEndpoint();
+    this.setToDefaultData();
   }
 
   setToDefaultData(): void {
