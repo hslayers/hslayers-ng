@@ -98,7 +98,7 @@
         <th>{{'COMMON.abstract' | translate}}</th>
       </thead>
       <tbody *ngFor="let service of data.services | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
-        <tr class="align-middle">
+        <tr>
           <td [attr.rowspan]="service.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(service)}">
             <input type="checkbox" class="checkbox-lg" [(ngModel)]="service.checked" name="service"
               (change)="searchForChecked(service)" />
