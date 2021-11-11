@@ -11,7 +11,7 @@ import {HsToastService} from '../../components/layout/toast/toast.service';
   providedIn: 'root',
 })
 export class HsCommonLaymanService {
-  authChange = new Subject();
+  authChange: Subject<HsEndpoint> = new Subject();
   constructor(
     private $http: HttpClient,
     public hsToastService: HsToastService,
@@ -21,7 +21,7 @@ export class HsCommonLaymanService {
   /**
    *  Monitor if authorization state has changed and
    * return true and broadcast authChange event if so .
-   * @param endpoint Endpoint definition - usually Layman
+   * @param endpoint - Endpoint definition - usually Layman
    * @returns Promise<boolean> true if authorization state changed (user logged in or out)
    */
   async detectAuthChange(endpoint): Promise<boolean> {
@@ -32,9 +32,14 @@ export class HsCommonLaymanService {
         .toPromise();
 
       let somethingChanged = false;
+      if (res.code === 32) {
+        endpoint.authenticated = false;
+        endpoint.user = endpoint.originalConfiguredUser;
+      }
       if (res.username) {
         if (endpoint.user != res.username) {
           endpoint.user = res.username;
+          endpoint.authenticated = res.authenticated;
           somethingChanged = true;
           this.authChange.next(endpoint);
         }
@@ -70,6 +75,7 @@ export class HsCommonLaymanService {
       console.warn(ex);
     } finally {
       endpoint.user = 'anonymous';
+      endpoint.authenticated = false;
       this.authChange.next(endpoint);
     }
   }

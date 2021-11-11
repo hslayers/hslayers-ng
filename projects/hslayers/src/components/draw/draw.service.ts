@@ -171,8 +171,7 @@ export class HsDrawService {
 
     this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
       this.fillDrawableLayers();
-      this.isAuthorized =
-        endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+      this.isAuthorized = endpoint.authenticated;
       //When metadata dialog window opened. Layer is being added
       if (this.selectedLayer && this.tmpDrawLayer) {
         setWorkspace(this.selectedLayer, endpoint.user);

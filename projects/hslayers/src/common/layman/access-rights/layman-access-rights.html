@@ -5,12 +5,12 @@
     <div class="btn-group">
         <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
         (click)="accessRightChanged(access_rights,'access_rights.read','EVERYONE')"
-        [ngClass]="{'active':access_rights['access_rights.read'] == 'EVERYONE'}">
+        [ngClass]="{'active':access_rights['access_rights.read'] === 'EVERYONE'}">
         {{'SAVECOMPOSITION.public' | translate}}
     </button>
     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
         (click)="accessRightChanged(access_rights,'access_rights.read','private')"
-        [ngClass]="{'active':access_rights['access_rights.read'] == 'private'}">
+        [ngClass]="{'active':access_rights['access_rights.read'] === 'private'}">
         {{'SAVECOMPOSITION.private' | translate}}
     </button>
     </div>
@@ -21,14 +21,14 @@
     </label>
     <div class="btn-group">
         <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-        [disabled]="access_rights['access_rights.read'] == 'private'"
+        [disabled]="access_rights['access_rights.read'] === 'private'"
         (click)="accessRightChanged(access_rights,'access_rights.write','EVERYONE')"
-            [ngClass]="{'active':access_rights['access_rights.write'] == 'EVERYONE'}">
+            [ngClass]="{'active':access_rights['access_rights.write'] === 'EVERYONE'}">
             {{'SAVECOMPOSITION.public' | translate}}
         </button>
         <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
         (click)="accessRightChanged(access_rights,'access_rights.write','private')"
-            [ngClass]="{'active':access_rights['access_rights.write'] == 'private'}">
+            [ngClass]="{'active':access_rights['access_rights.write'] === 'private'}">
             {{'SAVECOMPOSITION.private' | translate}}
         </button>
     </div>

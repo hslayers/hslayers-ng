@@ -39,8 +39,7 @@ export class HsAddDataService {
     )[0];
     if (layman) {
       this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
-        this.isAuthorized =
-          endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+        this.isAuthorized = endpoint.authenticated;
       });
       this.isAuthorized =
         layman.user !== 'anonymous' && layman.user !== 'browser';

@@ -21,6 +21,7 @@ export interface HsEndpoint {
   layers?: HsAddDataLayerDescriptor[];
   originalConfiguredUser?;
   user?;
+  authenticated?: boolean;
   code_list_url?: string;
   code_lists?;
   version?: string;
