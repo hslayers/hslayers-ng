@@ -24,7 +24,7 @@ export class HsLaymanLoginComponent
     private sanitizer: DomSanitizer
   ) {
     this.authChangeSubscription =
-      this.HsCommonLaymanService.authChange.subscribe((endpoint) => {
+      this.HsCommonLaymanService.authChange.subscribe(() => {
         this.close();
       });
   }
