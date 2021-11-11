@@ -7,14 +7,12 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Cluster} from 'ol/source';
 
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsLanguageService} from '../../../language/language.service';
-import {HsLayerDescriptor} from '../../../layermanager/layer-descriptor.interface';
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
@@ -24,7 +22,6 @@ import {
   HsUploadedFiles,
 } from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {accessRightsModel} from '../../common/access-rights.model';
 import {vectorDataObject} from '../vector-data.type';
 
 @Component({
@@ -36,14 +33,9 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';
-  sourceLayer = null;
-  vectorLayers: HsLayerDescriptor[];
   data: vectorDataObject;
   vectorFileInput: ElementRef;
-  access_rights: accessRightsModel = {
-    'access_rights.write': 'private',
-    'access_rights.read': 'EVERYONE',
-  };
+
   constructor(
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsToastService: HsToastService,
@@ -97,9 +89,11 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       );
       features = nonJson.features; //proper typing will get rid of this
     }
-    this.hsLayerUtilsService.isLayerClustered(this.sourceLayer)
-      ? this.sourceLayer.getSource().getSource().addFeatures(features)
-      : this.sourceLayer.getSource().addFeatures(features);
+    this.hsLayerUtilsService.isLayerClustered(this.data.sourceLayer)
+      ? (this.data.sourceLayer.getSource() as Cluster)
+          .getSource()
+          .addFeatures(features)
+      : this.data.sourceLayer.getSource().addFeatures(features);
   }
 
   handleFileUpload(evt: HsUploadedFiles): void {
@@ -174,7 +168,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   setUploadType(type: string): void {
     this.uploadType = type;
     if (type == 'existing') {
-      this.vectorLayers = this.hsLayerManagerService.data.layers.filter(
+      this.data.vectorLayers = this.hsLayerManagerService.data.layers.filter(
         (layer) => {
           return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
         }
@@ -185,8 +179,6 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   setToDefault(): void {
     this.setToDefaultData();
     this.data.showDetails = false;
-    this.sourceLayer = null;
-    this.vectorLayers = null;
     this.uploadType = 'new';
     if (this.vectorFileInput) {
       this.vectorFileInput.nativeElement.value = '';
@@ -197,10 +189,9 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     this.data = {
       // Not possible to save KML to layman yet
       abstract: '',
-      addUnder: null as Layer<Source>,
+      addUnder: null,
       base64url: '',
       dataType: this.dataType,
-      errorOccurred: false,
       extract_styles: false,
       featureCount: 0,
       features: [],
@@ -213,6 +204,12 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       title: '',
       type: '',
       url: undefined,
+      access_rights: {
+        'access_rights.write': 'private',
+        'access_rights.read': 'EVERYONE',
+      },
+      sourceLayer: null,
+      vectorLayers: null,
     };
   }
 }

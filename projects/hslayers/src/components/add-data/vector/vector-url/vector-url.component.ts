@@ -43,7 +43,6 @@ export class HsAddDataVectorUrlComponent {
       addUnder: null as Layer<Source>,
       base64url: '',
       dataType: this.dataType,
-      errorOccurred: false,
       extract_styles: false,
       featureCount: 0,
       features: [],

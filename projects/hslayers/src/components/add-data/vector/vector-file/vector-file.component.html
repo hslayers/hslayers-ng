@@ -22,17 +22,17 @@
     <div [hidden]="uploadType === 'new'">
       <div class="form-group my-3">
         <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translate}}</label>
-        <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="sourceLayer" style="flex-grow: 1;">
+        <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="data.sourceLayer" style="flex-grow: 1;">
           <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
             translate}}</option>
-          <option *ngFor="let lyr of vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
+          <option *ngFor="let lyr of data.vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
         </select>
       </div>
     </div>
     <div [hidden]="uploadType === 'existing'">
       <hs-new-layer-form [data]="data"></hs-new-layer-form>
     </div>
-    <button class="btn btn-primary w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !sourceLayer"
+    <button class="btn btn-primary w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !data.sourceLayer"
       (click)="add()"><i class="icon-plus"></i>
       {{'COMMON.add' | translate}}
     </button>
