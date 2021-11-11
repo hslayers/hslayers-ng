@@ -23,10 +23,10 @@ export class HsAddDataCommonService {
     public hsDimensionService: HsDimensionService
   ) {
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
-      this.clear();
+      this.clearParams();
     });
   }
-  clear(): void {
+  clearParams(): void {
     this.layerToSelect = '';
     this.loadingInfo = false;
     this.showDetails = false;
@@ -55,7 +55,7 @@ export class HsAddDataCommonService {
   }
 
   throwParsingError(e): void {
-    this.clear();
+    this.clearParams();
     this.displayParsingError(e);
   }
 

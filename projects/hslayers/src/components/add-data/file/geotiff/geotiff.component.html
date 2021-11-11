@@ -1,0 +1,11 @@
+<form class="form-horizontal" role="form" name="frmGeotiff">
+  <div class="form-group m-3">
+    <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-geotiff-file"
+      [acceptedFormats]="acceptedFormats">
+    </hs-file-upload>
+  </div>
+  <div *ngIf="hsAddDataCommonService.showDetails">
+    <hs-new-layer-form [data]="data"></hs-new-layer-form>
+    <hs-add-layer-authorized [data]="data"></hs-add-layer-authorized>
+  </div>
+</form>

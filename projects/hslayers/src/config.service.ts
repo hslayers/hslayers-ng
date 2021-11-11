@@ -8,7 +8,7 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 
-import {AddDataFileType} from './components/add-data/file/file.type';
+import {AddDataFileType} from './components/add-data/file/types/file.type';
 import {AddDataUrlType} from './components/add-data/url/types/url.type';
 import {QueryPopupWidgetsType} from './components/query/widgets/widgets.type';
 import {WidgetItem} from './components/query/widgets/widget-item.type';

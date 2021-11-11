@@ -2,6 +2,10 @@
 
   <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
+  <div *ngIf="data.type === 'geotiff'" class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
+    <p class="m-0"> {{'ADDLAYERS.onlyGeoTIFFimages' | translate}}</p>
+  </div>
+
   <div class="form-floating mb-3">
     <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translate" class="form-control" name="title"
       [(ngModel)]="data.title" />
@@ -22,12 +26,12 @@
     <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
 
   </div>
-  <ng-container *ngIf="isAuthorized() && data.saveAvailable">
+  <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable">
     <hs-save-to-layman [data]="data"></hs-save-to-layman>
   </ng-container>
   <ng-container *ngIf="data.type === 'shp'">
     <div class="d-flex justify-content-between align-items-center">
-      <p>{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
+      <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
       <label class="dropzone-label">
         <input name="file" type="file" accept=".sld" class="inputfile"
           (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
