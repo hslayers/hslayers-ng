@@ -21,6 +21,10 @@ export type customToastOptions = {
    * Sets service name from where toast was called
    */
   serviceCalledFrom?: string;
+  /**
+   * Error details
+   */
+  details?: string[];
 };
 
 @Injectable({
@@ -33,15 +37,15 @@ export class HsToastService {
   ) {}
   toasts: any[] = [];
   /**
-   * @param toast Toast pop up
+   * @param toast - Toast pop up
    * Callback method to remove Toast DOM element from view
    */
   remove(toast): void {
     this.toasts = this.toasts.filter((t) => t !== toast);
   }
   /**
-   * @param textOrTpl Text or a template message to display
-   * @param options Toast window options
+   * @param textOrTpl - Text or a template message to display
+   * @param options - Toast window options
    * Pushes new Toasts to array with content and options
    */
   show(textOrTpl: string | TemplateRef<any>, options: any = {}): void {
@@ -60,9 +64,9 @@ export class HsToastService {
   }
   /**
    * Creates new toast message with custom text and custom styling
-   * @param header Header text to display
-   * @param text Toast body text to display
-   * @param options Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number, serviceCalledFrom: string)
+   * @param header - Header text to display
+   * @param text - Toast body text to display
+   * @param options - Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number, serviceCalledFrom: string)
    */
 
   createToastPopupMessage(
@@ -82,6 +86,7 @@ export class HsToastService {
         autohide: true,
         classname: options.toastStyleClasses || `bg-danger text-light`,
         serviceCalledFrom: options.serviceCalledFrom,
+        details: options.details || [],
       }
     );
   }
