@@ -414,7 +414,7 @@
     "useModifierToSelectWithBox": "Stlačte {{platformModifierKey}} a ťahaním vyznačte oblasť výberu",
     "featureEditor": {
       "featureEditor": "Editor prvkov",
-      "noIntersection": "Pre vybrané prvky sa nenašiel žiadny prekryv",
+      "noIntersection": "Pre vybrané prvky sa nenašiel žiadny spoločný prekryv",
       "onlyOneSplitLine": "Povolená je len jedna deliaca línia",
       "selectFeatureToEdit": "Vyberte prvok, ktorý chcete upraviť!",
       "selectedFeature": "Vybraný prvok",
