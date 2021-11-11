@@ -1,6 +1,6 @@
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
-import {AppModule} from './hslayers-app/hslayers-app.module';
+import {AppModule} from './app/app.module';
 
 setTimeout(() => {
   const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
