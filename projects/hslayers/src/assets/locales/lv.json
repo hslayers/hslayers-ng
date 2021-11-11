@@ -71,7 +71,9 @@
       "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",
       "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
-      "SLDStyleFile": "Stila datne"
+      "SLDStyleFile": "Stila datne",
+      "missingOneOrMore": "Trūkst viena vai vairāku ShapeFile failu. Ielādējiet failus ar paplašinājumiem *.shp, *.shx, *.dbf",
+      "maximumNumberOf": "Maksimālais atļautais failu skaits ir 3, taču tika atlasīti {{lenght}}"
     },
     "srs": "Ģeodēziskā atskaites sistēma",
     "thisIsRequired": "Šis ir nepieciešams!",
@@ -107,7 +109,10 @@
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
     },
-    "unauthorizedAccess": "Neatļauta piekļuve. Jūs neesat pilnvarots pieprasīt datus no šī pakalpojuma"
+    "unauthorizedAccess": "Neatļauta piekļuve. Jūs neesat pilnvarots pieprasīt datus no šī pakalpojuma",
+    "filesSelected": "Faili atlasīti",
+    "geotiffParsingProblem": "Ģeotifa parsēšanas problēma",
+    "onlyGeoTIFFimages": "Uz doto brīdi tiek atbalstīti tikai GeoTIFF attēli EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai šīs prasības tiek ievērotas."
   },
   "COMMON": {
     "abstract": "Apraksts",

@@ -71,7 +71,9 @@
       "loginRequired": "User login is required before layer can be loaded",
       "nameRequired": "'Name' field required to proceed!",
       "shapeFile": "Shape file (shp+dbf+shx)",
-      "SLDStyleFile": "Style file"
+      "SLDStyleFile": "Style file",
+      "maximumNumberOf": "Maximum number of 3 files allowed, but {{lenght}} selected",
+      "missingOneOrMore": "Missing one or more ShapeFile files.. Load files with extensions *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",
     "thisIsRequired": "This is required!",
@@ -107,7 +109,10 @@
     "WMTS": {
       "tileMatrix": "Tile matrix"
     },
-    "unauthorizedAccess": "Unauthorized access. You are not authorized to query data from this service"
+    "unauthorizedAccess": "Unauthorized access. You are not authorized to query data from this service",
+    "geotiffParsingProblem": "Geotiff parsing problem",
+    "filesSelected": "Files selected",
+    "onlyGeoTIFFimages": "Only GeoTIFF images in EPSG: 4326 and EPSG: 3857 coordinate systems are currently supported. Please make sure you meet these requirements before uploading."
   },
   "COMMON": {
     "abstract": "Abstract",
