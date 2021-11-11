@@ -39,13 +39,13 @@ export class HsAddDataUrlComponent implements OnDestroy {
     }
 
     this.owsFillingSubscription = this.hsEventBusService.owsFilling.subscribe(
-      ({type, uri, layer, sld}) => {
+      ({type, uri, layer, style}) => {
         this.typeSelected = type.toLowerCase();
         this.hsEventBusService.owsConnecting.next({
           type,
           uri,
           layer,
-          sld,
+          style,
         });
       }
     );
@@ -75,7 +75,7 @@ export class HsAddDataUrlComponent implements OnDestroy {
           type,
           uri: url,
           layer,
-          sld: undefined,
+          style: undefined,
         });
       }
     } else {

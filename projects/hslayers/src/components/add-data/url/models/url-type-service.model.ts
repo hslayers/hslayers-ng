@@ -13,7 +13,7 @@ export interface HsUrlTypeServiceModel {
     wrapper: CapabilitiesResponseWrapper,
     sld?: string
   ): Promise<void>;
-  addLayers(checkedOnly: boolean, sld?: string): void;
+  addLayers(checkedOnly: boolean, style?: string): void;
   addLayer(layer: any, options: addLayerOptions): void;
   addLayersRecursively(layer: any, options: addLayersRecursivelyOptions): void;
   addService?(

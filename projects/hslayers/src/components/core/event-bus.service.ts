@@ -150,7 +150,7 @@ export class HsEventBusService {
   /**
    * replaces 'ows.filling'
    */
-  owsFilling: Subject<{type: any; uri: any; layer: any; sld?: string}> =
+  owsFilling: Subject<{type: any; uri: any; layer: any; style?: string}> =
     new Subject();
   /**
    * replaces `ows.${type}_connecting`
@@ -159,7 +159,7 @@ export class HsEventBusService {
     type: AddDataUrlType;
     uri: string;
     layer?: any;
-    sld?: string;
+    style?: string;
   }> = new BehaviorSubject({type: undefined, uri: '', layer: null});
   /**
    * Fires when layerSelected parameter is found in the URL
