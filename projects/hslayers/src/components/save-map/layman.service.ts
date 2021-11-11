@@ -572,7 +572,7 @@ export class HsLaymanService implements HsSaverService {
       }
       if (
         wfsPendingOrStarting(response) ||
-        (response.wfs.status == 'SUCCESS' && response.wfs.url == undefined)
+        (response.wfs?.status == 'SUCCESS' && response.wfs?.url == undefined)
       ) {
         if (!this.pendingLayers.includes(layerName)) {
           this.pendingLayers.push(layerName);
@@ -603,7 +603,7 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Removes selected layer from layman.
-   * @param layer
+   * @param layer -
    */
   removeLayer(layer: Layer<Source> | string): void {
     (this.HsCommonEndpointsService.endpoints || [])
