@@ -58,6 +58,7 @@
     "geostyler-openlayers-parser": "^3.0.0",
     "geostyler-sld-parser": "^3.0.1",
     "geostyler-style": "^5.0.0",
+    "geotiff": "^1.0.8",
     "ngx-color": "^7.2.0",
     "ngx-cookie-service": "^12.0.3",
     "ol": "^6.9.0",
