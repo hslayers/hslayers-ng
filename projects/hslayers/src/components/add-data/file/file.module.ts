@@ -4,22 +4,24 @@ import {FormsModule} from '@angular/forms';
 
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsAddDataFileBaseComponent} from './file-base.component';
 import {HsAddDataFileComponent} from './file.component';
+import {HsAddDataGeotiffModule} from './geotiff/geotiff.module';
 import {HsAddDataVectorModule} from '../vector/vector.module';
 import {HsFileShpModule} from './shp/shp.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsAddDataFileComponent],
+  declarations: [HsAddDataFileComponent, HsAddDataFileBaseComponent],
   imports: [
     CommonModule,
     FormsModule,
     TranslateModule,
-    //
     HsFileShpModule,
     HsAddDataVectorModule,
+    HsAddDataGeotiffModule,
   ],
-  exports: [HsAddDataFileComponent],
+  exports: [HsAddDataFileComponent, HsAddDataFileBaseComponent],
   entryComponents: [HsAddDataFileComponent],
 })
 export class HsAddDataFileModule {}
