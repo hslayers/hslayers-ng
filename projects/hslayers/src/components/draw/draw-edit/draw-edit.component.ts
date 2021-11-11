@@ -4,6 +4,7 @@ import * as polygonClipping from 'polygon-clipping';
 import lineOffset from '@turf/line-offset';
 
 import Feature from 'ol/Feature';
+import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import VectorLayer from 'ol/layer/Vector';
 import {GeoJSON} from 'ol/format';
@@ -95,14 +96,15 @@ export class DrawEditComponent {
         if (features.length > 1) {
           this.HsQueryVectorService.removeFeature(features[0]);
         }
-        
+
         this.hsToastService.createToastPopupMessage(
           this.HsLanguageService.getTranslation(
             'DRAW.featureEditor.featureEditor'
           ),
           this.HsLanguageService.getTranslation(
             'DRAW.featureEditor.onlyOneSplitLine'
-          ),          {
+          ),
+          {
             toastStyleClasses: 'bg-info text-light',
           }
         );
@@ -140,6 +142,7 @@ export class DrawEditComponent {
     this.HsQueryBaseService.data.features[0].feature
       .getGeometry()
       .setCoordinates(coords[0], 'XY');
+    console.log(this.HsQueryBaseService.data.features[0]);
   }
 
   modify(type): void | boolean {
@@ -203,11 +206,11 @@ export class DrawEditComponent {
     this.setCoordinatesToFirstFeature(newGeom);
     for (const index in this.HsQueryBaseService.data.features) {
       //Remove all but the first (edited) features
-      if (parseInt(index) > 0) {
-        this.HsQueryVectorService.removeFeature(
-          this.HsQueryBaseService.data.features[index].feature
-        );
-      }
+      // if (parseInt(index) > 0) {
+      //   this.HsQueryVectorService.removeFeature(
+      //     this.HsQueryBaseService.data.features[index].feature
+      //   );
+      // }
     }
     this.resetState();
   }
@@ -228,8 +231,25 @@ export class DrawEditComponent {
     this.resetState();
   }
 
-  difference(newGeom): void {
-    this.setCoordinatesToFirstFeature(newGeom);
+  difference(newGeom: Array<any>): void {
+    if (newGeom.length === 1) {
+      this.setCoordinatesToFirstFeature(newGeom);
+    } else {
+      const layer = this.hsMapService.getLayerForFeature(
+        this.HsQueryBaseService.data.features[0].feature
+      );
+
+      for (const geom of newGeom) {
+        const polygon = new Polygon(geom);
+        const feature = new Feature(polygon);
+
+        layer.getSource().addFeature(feature);
+      }
+
+      for (const feature of this.HsQueryBaseService.data.features) {
+        this.HsQueryVectorService.removeFeature(feature.feature);
+      }
+    }
     this.resetState();
   }
 
