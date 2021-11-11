@@ -1,0 +1,35 @@
+<div class="card hs-main-panel" [hidden]="!isVisible()">
+    <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
+    <div class="card-body">
+        <div class="card-body">
+            <div class="form-group m-3">
+                <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".csv">
+                </hs-file-upload>
+            </div>
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <th *ngFor="let col of columns">
+                        <select class="form-control form-select" [(ngModel)]="uses[col]">
+                            <option value="ignore">Ignore</option>
+                            <option value="location">Location</option>
+                            <option value="time">Time</option>
+                            <option value="variable">Variable</option>
+                        </select>
+                    </th>
+                </thead>
+                <thead>
+                    <th *ngFor="let col of columns">{{col}}</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of rows">
+                        <td *ngFor="let col of columns">{{row[col]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary" (click)="hsStatisticsService.store(rows, columns, uses)">{{'STATISTICS.STORE' |
+                translate}}</button>
+            <button type="button" class="btn btn-primary" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
+                translate}}</button>
+        </div>
+    </div>
+</div>

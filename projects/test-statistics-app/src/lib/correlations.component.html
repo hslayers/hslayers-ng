@@ -1,0 +1,27 @@
+<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{'STATISTICS.CORRELATIONS' | translate}}
+                </h4>
+                <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
+                        class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                <thead>
+                    <th>Variable 1</th>
+                    <th>Variable 2</th>
+                    <th>Correlation</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let result of data">
+                        <td>{{result.var1}}</td>
+                        <td>{{result.var2}}</td>
+                        <td>{{result.coefficient | number: '1.2-2'}}</td>
+                    </tr>
+                </tbody>
+            </div>
+        </div>
+    </div>
+</div>
