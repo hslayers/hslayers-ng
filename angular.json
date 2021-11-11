@@ -435,7 +435,8 @@
               }
             ],
             "styles": [
-              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+              "projects/hslayers/src/css/hslayers-bootstrap.scss",
+              "projects/test-statistics-app/src/styles.sass"
             ],
             "scripts": [],
             "customWebpackConfig": {
