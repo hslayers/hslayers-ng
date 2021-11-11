@@ -42,7 +42,7 @@ export class HsQueryPopupBaseService {
         );
         this.featureLayersUnderMouse = layersFound.map((l) => {
           const needSpecialWidgets =
-            getPopUp(l)?.widgets || getPopUp(l).displayFunction;
+            getPopUp(l)?.widgets || getPopUp(l)?.displayFunction;
           const layer = {
             title: getTitle(l),
             layer: l,
@@ -59,7 +59,7 @@ export class HsQueryPopupBaseService {
           if (layer.panelObserver) {
             const popupDef = getPopUp(layer.layer);
             let widgets = popupDef?.widgets;
-            if (popupDef.displayFunction) {
+            if (popupDef?.displayFunction) {
               widgets = ['dynamic-text'];
             }
             this.hsQueryPopupWidgetContainerService.initWidgets(
