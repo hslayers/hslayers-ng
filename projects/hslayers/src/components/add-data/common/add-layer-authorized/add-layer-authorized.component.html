@@ -1,0 +1,15 @@
+<button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100 mt-2" [disabled]="!data.name"
+  (click)="hsAddDataCommonFileService.addAsWms(data)" title="{{hsAddDataCommonFileService.addTooltip(data.name)}}">
+  <i class="icon-plus" [hidden]="hsAddDataCommonFileService.loadingToLayman"></i>
+  <img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!hsAddDataCommonFileService.loadingToLayman" />
+  {{hsAddDataCommonFileService.getLoadingText()}}
+  <ngb-progressbar *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.asyncLoading" showValue="true"
+    class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
+  </ngb-progressbar>
+</button>
+
+<div *ngIf="!hsAddDataCommonFileService.isAuthorized()"
+  class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
+  <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate}}</p>
+  <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+</div>
