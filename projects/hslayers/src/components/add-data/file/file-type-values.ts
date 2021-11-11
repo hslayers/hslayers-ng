@@ -1,4 +1,4 @@
-import {AddDataFileType} from './file.type';
+import {AddDataFileType} from './types/file.type';
 
 export const AddDataFileValues: Array<{id: AddDataFileType; text: string}> = [
   {
@@ -16,5 +16,9 @@ export const AddDataFileValues: Array<{id: AddDataFileType; text: string}> = [
   {
     id: 'shp',
     text: 'Shapefile',
+  },
+  {
+    id: 'geotiff',
+    text: 'GeoTIFF',
   },
 ];
