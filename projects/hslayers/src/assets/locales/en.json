@@ -421,7 +421,7 @@
     "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
     "featureEditor": {
       "featureEditor": "Feature editor",
-      "noIntersection": "No intersection found for selected features",
+      "noIntersection": "No common intersection found for selected features",
       "onlyOneSplitLine": "Only one splitting line allowed",
       "selectFeatureToEdit": "Select a feature you want to edit!",
       "selectedFeature": "Selected feature",
