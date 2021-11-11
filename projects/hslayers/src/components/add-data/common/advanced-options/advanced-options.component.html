@@ -10,12 +10,10 @@
     <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
   </div>
 
-  <div class="form-floating mb-3" *ngIf="hsAddDataVectorService.isKml(data.type, data.url)">
-    <input type="checkbox" name="extractStyles" [(ngModel)]="data.extract_styles" placeholder="ADDLAYERS.VECTOR.extractStyles' |
-    translate" />
-    <label for="extractStyles" class="capabilities_label control-label">{{'ADDLAYERS.VECTOR.extractStyles' |
+  <div class="form-group" *ngIf="hsAddDataVectorService.isKml(data.type, data.url)">
+    <input type="checkbox" name="extractStyles" [(ngModel)]="data.extract_styles" />
+    <label class="capabilities_label control-label ms-1">{{'ADDLAYERS.VECTOR.extractStyles' |
       translate}}</label>
   </div>
-
   <hs-target-position [(addUnder)]="data.addUnder"></hs-target-position>
 </div>
