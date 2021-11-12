@@ -2,7 +2,29 @@
     <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
     <div class="card-body">
         <div>
-            <button type="button" class="btn btn-primary" (click)="correlate()">{{'STATISTICS.CORRELATE' |
+            {{'STATISTICS.CURRENT_VARIABLES' |
+            translate}}: {{this.hsStatisticsService.variables.length}}
+
+            <ng-container *ngIf="this.hsStatisticsService.variables.length > 0">
+                <ul class="list-group hs-styler-content-list">
+                    <ng-container *ngFor="let variable of this.hsStatisticsService.variables">
+                        <li
+                            class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center">
+                            <div>
+                                {{variable}}
+                            </div>
+                            <div>
+                                <button class="btn btn-danger btn-sm me-0" (click)="removeVariable()" data-toggle="tooltip"
+                                    [title]="'STATISTICS.removeVariable' | translate">
+                                    <i class="icon-trash"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ng-container>
+                </ul>
+            </ng-container>
+
+            <button type="button" class="btn btn-primary m-1" (click)="correlate()">{{'STATISTICS.CORRELATE' |
                 translate}}</button>
         </div>
     </div>
