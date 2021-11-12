@@ -177,7 +177,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   }
 
   setToDefault(): void {
-    this.setToDefaultData();
+    this.setDataToDefault();
     this.data.showDetails = false;
     this.uploadType = 'new';
     if (this.vectorFileInput) {
@@ -185,7 +185,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setToDefaultData(): void {
+  setDataToDefault(): void {
     this.data = {
       // Not possible to save KML to layman yet
       abstract: '',

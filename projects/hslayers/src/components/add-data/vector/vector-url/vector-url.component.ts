@@ -20,7 +20,7 @@ export class HsAddDataVectorUrlComponent {
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsLayoutService: HsLayoutService
   ) {
-    this.setToDefault();
+    this.setDataToDefault();
   }
   connect = async (): Promise<void> => {
     this.hsHistoryListService.addSourceHistory(this.dataType, this.data.url);
@@ -33,10 +33,10 @@ export class HsAddDataVectorUrlComponent {
   async add(): Promise<void> {
     await this.hsAddDataVectorService.addNewLayer(this.data);
     this.hsLayoutService.setMainPanel('layermanager');
-    this.setToDefault();
+    this.setDataToDefault();
   }
 
-  setToDefault(): void {
+  setDataToDefault(): void {
     this.data = {
       // Not possible to save KML to layman yet
       abstract: '',

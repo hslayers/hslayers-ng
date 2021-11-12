@@ -51,6 +51,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     public hsAddDataCommonService: HsAddDataCommonService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
+    this.setDataToDefault();
+    this.hsEventBusService.olMapLoads.subscribe(() => {
+      this.data.map_projection = this.hsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+    });
+  }
+
+  setDataToDefault(): void {
     this.data = {
       add_under: null,
       map_projection: '',
@@ -60,14 +71,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       use_tiles: true,
       visible: true,
     };
-
-    this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.data.map_projection = this.hsMapService.map
-        .getView()
-        .getProjection()
-        .getCode()
-        .toUpperCase();
-    });
   }
 
   async addLayerFromCapabilities(
