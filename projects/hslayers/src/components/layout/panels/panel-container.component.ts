@@ -65,6 +65,8 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
-    componentRefInstance.data = panelItem.data || this.data;
+    if (componentRefInstance.data == undefined) {
+      componentRefInstance.data = panelItem.data || this.data;
+    }
   }
 }
