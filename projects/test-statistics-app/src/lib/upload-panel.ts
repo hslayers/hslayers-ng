@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import Papa from 'papaparse';
 import {
   HsConfig,
+  HsDialogContainerService,
   HsLanguageService,
   HsLayoutService,
   HsPanelBaseComponent,
@@ -10,6 +11,7 @@ import {
   HsUploadedFiles,
 } from 'hslayers-ng';
 import {HsStatisticsService, Usage} from './statistics.service';
+import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 
 @Component({
   selector: 'hs-statistics-upload',
@@ -27,7 +29,8 @@ export class HsStatisticsUploadPanelComponent extends HsPanelBaseComponent {
     public hsConfig: HsConfig,
     hsLayoutService: HsLayoutService,
     hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    hsSidebarService: HsSidebarService,
+    private hsDialogContainerService: HsDialogContainerService
   ) {
     super(hsLayoutService);
     hsSidebarService.buttons.push({
@@ -42,7 +45,13 @@ export class HsStatisticsUploadPanelComponent extends HsPanelBaseComponent {
     });
   }
 
-  visualizeInMap(): void {}
+  visualizeInMap(): void {
+    this.hsDialogContainerService.create(HsStatisticsToMapDialogComponent, {
+      rows: this.rows,
+      columns: this.columns,
+      uses: this.uses,
+    });
+  }
 
   handleFileUpload(evt: HsUploadedFiles): void {
     const files = Array.from(evt.fileList);
