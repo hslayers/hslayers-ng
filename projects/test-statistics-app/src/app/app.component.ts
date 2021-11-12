@@ -67,6 +67,25 @@ export class HslayersAppComponent {
         {name: 'bus', url: '/assets/icons/bus4.svg'},
       ],
       popUpDisplay: 'hover',
+      panelWidths: {statistics: 600, 'statistics-upload': 700},
+      translationOverrides: {
+        en: {
+          SIDEBAR: {
+            descriptions: {
+              UPLOAD: 'Upload tabular data',
+              STATISTICS: 'Calculate statistics',
+            },
+          },
+          PANEL_HEADER: {
+            STATISTICS: 'Statistics',
+          },
+          STATISTICS: {
+            STORE: 'Store',
+            VISUALIZE_MAP: 'To map',
+            CORRELATE: 'Correlate',
+          },
+        },
+      },
       default_layers: [
         new Tile({
           source: new OSM(),
