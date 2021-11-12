@@ -22,6 +22,10 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonService: HsAddDataCommonService
   ) {
+    this.setDataToDefault();
+  }
+
+  setDataToDefault(): void {
     this.data = {
       add_all: null,
       caps: null,

@@ -32,6 +32,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsLayerUtilsService: HsLayerUtilsService
   ) {
+    this.setDataToDefault();
+  }
+
+  setDataToDefault(): void {
     this.data = {
       map_projection: '',
       register_metadata: true,

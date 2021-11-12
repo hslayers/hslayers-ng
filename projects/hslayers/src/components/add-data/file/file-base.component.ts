@@ -50,7 +50,7 @@ export class HsAddDataFileBaseComponent
         if (success) {
           this.hsLayoutService.setMainPanel('layermanager');
         }
-        this.setToDefaultData();
+        this.setDataToDefault();
         this.clearInput();
       });
   }
@@ -69,10 +69,10 @@ export class HsAddDataFileBaseComponent
 
   ngOnInit(): void {
     this.hsAddDataCommonFileService.pickEndpoint();
-    this.setToDefaultData();
+    this.setDataToDefault();
   }
 
-  setToDefaultData(): void {
+  setDataToDefault(): void {
     this.data = {
       abstract: '',
       access_rights: {

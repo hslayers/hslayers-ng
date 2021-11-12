@@ -35,20 +35,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService
   ) {
-    this.data = {
-      add_all: null,
-      bbox: null,
-      folder_name: 'WFS',
-      layers: [],
-      map_projection: undefined,
-      output_format: '',
-      output_formats: null,
-      services: [],
-      srs: null,
-      srss: [],
-      title: '',
-      version: '',
-    };
+    this.setDataToDefault();
     this.definedProjections = [
       'EPSG:3857',
       'EPSG:5514',
@@ -63,6 +50,23 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
     });
+  }
+
+  setDataToDefault(): void {
+    this.data = {
+      add_all: null,
+      bbox: null,
+      folder_name: 'WFS',
+      layers: [],
+      map_projection: undefined,
+      output_format: '',
+      output_formats: null,
+      services: [],
+      srs: null,
+      srss: [],
+      title: '',
+      version: '',
+    };
   }
 
   async addLayerFromCapabilities(

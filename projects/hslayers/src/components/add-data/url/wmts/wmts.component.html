@@ -10,7 +10,7 @@
             </li>
             <li *ngFor="let layer of data.services; trackBy:( 'Identifier' | trackByProperty ); let index = index"
                 class="list-group-item clearfix">
-                <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed()"
+                <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed(data)"
                     [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}" />
                 <label class="form-check-label m-0 ps-4 mw-100 d-flex align-items-center"
                     [attr.for]="'wmtslayer-'+index"
