@@ -51,7 +51,7 @@ export class HsFileShpService {
             message: this.hsLanguageService.getTranslationIgnoreNonExisting(
               'ADDLAYERS.SHP',
               'maximumNumberOf',
-              {lenght: data.files.length}
+              {length: data.files.length}
             ),
             header: this.fileUploadErrorHeader,
           });

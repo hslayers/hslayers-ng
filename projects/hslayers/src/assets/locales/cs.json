@@ -71,7 +71,9 @@
       "loginRequired": "Před načtením vrstvy je vyžadováno přihlášení",
       "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
-      "SLDStyleFile": "Soubor se styly"
+      "SLDStyleFile": "Soubor se styly",
+      "maximumNumberOf": "Povoleny maximálně 3 soubory, ale bylo vybráno {{length}}",
+      "missingOneOrMore": "Chybí jeden nebo více souborů Shapefile. Nahrajte soubory s příponami *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",
     "thisIsRequired": "Toto je vyžadováno!",
@@ -106,7 +108,11 @@
     },
     "WMTS": {
       "tileMatrix": "Matice dlaždic"
-    }
+    },
+    "filesSelected": "souborů vybráno",
+    "geotiffParsingProblem": "Problém při syntaktické analýze souboru GeoTiff",
+    "onlyGeoTIFFimages": "Pouze obrázky GeoTIFF v souřadnicových systémech EPSG:4326 a EPSG:3857 jsou aktuálně podporovány. Ujistěte se, prosím, že splňují tyto požadavky před načtením.",
+    "unauthorizedAccess": "Neoprávněný přístup. Nemáte oprávnění dotazovat se na data z této služby"
   },
   "COMMON": {
     "abstract": "Abstrakt",
