@@ -6,7 +6,7 @@ import {HsLayoutModule} from 'hslayers-ng';
 import {HsSearchModule} from 'hslayers-ng';
 //import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
 //import {HsDrawModule} from 'hslayers-ng/src/components/draw/public-api';
-import {HsQueryModule} from 'hslayers-ng';
+import {HsLayerManagerModule, HsQueryModule, HsStylerModule} from 'hslayers-ng';
 import {HsStatisticsModule} from '../lib/statistics.module';
 import {HslayersAppComponent} from './app.component';
 import {TranslateModule} from '@ngx-translate/core';
@@ -24,6 +24,8 @@ import {TranslateModule} from '@ngx-translate/core';
     //HsInfoModule,
     //HsGeolocationModule,
     HsQueryModule,
+    HsLayerManagerModule,
+    HsStylerModule,
     HsStatisticsModule,
   ],
   providers: [],

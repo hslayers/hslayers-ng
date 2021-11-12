@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 
-import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
-import Point from 'ol/geom/Point';
 import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -11,11 +9,13 @@ import vidzeme from '../assets/vidzeme.json';
 import {
   HsConfig,
   HsEventBusService,
+  HsLayerManagerComponent,
   HsLayoutService,
   HsQueryComponent,
   HsQueryPopupComponent,
   HsQueryPopupService,
   HsSearchToolbarComponent,
+  HsStylerComponent,
   HsToolbarPanelContainerService,
 } from 'hslayers-ng';
 import {HsStatisticsPanelComponent} from '../lib/statistics-panel.component';
@@ -82,7 +82,15 @@ export class HslayersAppComponent {
           STATISTICS: {
             STORE: 'Store',
             VISUALIZE_MAP: 'To map',
+            VISUALIZE: 'Visualize',
             CORRELATE: 'Correlate',
+            CORRELATIONS: 'Correlations',
+            VARIABLE: 'Variable',
+            TIME_FILTER: 'Filter by time',
+            MINIMUM: 'Minimum',
+            MAXIMUM: 'Maximum',
+            CURRENT_VARIABLES: 'Current variables',
+            removeVariable: 'Remove variable',
           },
         },
       },
@@ -103,7 +111,7 @@ export class HslayersAppComponent {
             cluster: false,
             inlineLegend: true,
             popUp: {
-              attributes: ['LABEL'],
+              attributes: ['LABEL', 'value'],
             },
             editor: {
               editable: true,
@@ -150,6 +158,8 @@ export class HslayersAppComponent {
     hsLayoutService.createPanel(HsQueryComponent, {});
     hsLayoutService.createPanel(HsStatisticsUploadPanelComponent, {});
     hsLayoutService.createPanel(HsStatisticsPanelComponent, {});
+    hsLayoutService.createPanel(HsLayerManagerComponent, {});
+    hsLayoutService.createPanel(HsStylerComponent, {});
     hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     hsLayoutService.createOverlay(HsQueryPopupComponent, {
       service: hsQueryPopupService,
