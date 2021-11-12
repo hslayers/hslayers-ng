@@ -14,7 +14,7 @@
         <ul class="list-group">
             <li *ngFor="let layer of data.services; trackBy:( 'Name' | trackByProperty )" class="list-group-item py-2 clearfix">
                 <div>
-                    <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer" (change)="changed()" />
+                    <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer" (change)="changed(data)" />
                     {{layer.Title}}
                 </div>
                 <div class="alert alert-primary d-flex m-1" role="alert"

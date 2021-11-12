@@ -13,7 +13,7 @@ export * from './wmts/wmts.module';
 export * from './add-data-url.component';
 export * from './add-data-url.module';
 export * from './add-data-url.service';
-export * from './models/url-type-component.model';
 export * from './models/url-type-service.model';
 export * from './types/data-object.type';
 export * from './add-data-url-values';
+export * from './add-data-url-base.component';
