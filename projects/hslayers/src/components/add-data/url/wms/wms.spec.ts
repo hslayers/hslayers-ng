@@ -11,8 +11,6 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
-import {HsUrlWmsService} from './wms.service';
-import {HsUrlWmsComponent} from './wms.component';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../../config.service';
 import {HsGetCapabilitiesModule} from '../../../../common/get-capabilities/get-capabilities.module';
@@ -20,6 +18,8 @@ import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../../layout/panels/panel-helpers.module';
+import {HsUrlWmsComponent} from './wms.component';
+import {HsUrlWmsService} from './wms.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
@@ -53,7 +53,7 @@ describe('add-data-url', () => {
   beforeEach(() => {
     //It is possible to change timeout interval for async tests (using 'done' argument)
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -119,9 +119,7 @@ describe('add-data-url', () => {
             component.hsUrlWmsService
               .capabilitiesReceived(capabilities, '')
               .then(() => {
-                expect(
-                  component.hsUrlWmsService.data.srss
-                ).toBeDefined();
+                expect(component.hsUrlWmsService.data.srss).toBeDefined();
                 done();
               })
               .catch((e) => {

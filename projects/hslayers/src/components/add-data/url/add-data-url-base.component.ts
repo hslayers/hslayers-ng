@@ -41,9 +41,9 @@ export class HsAddDataUrlBaseComponent implements OnInit, OnDestroy {
     public hsHistoryListService: HsHistoryListService,
     public hsAddDataUrlService: HsAddDataUrlService,
     @Inject(BASE_DATA_TOKEN) private baseDataType: string,
-    @Inject(TYPE_SERVICE_TOKEN) private typeService: any,
+    @Inject(TYPE_SERVICE_TOKEN) private typeService: HsUrlTypeServiceModel,
     @Inject(TYPE_CAPABILITIES_SERVICE_TOKEN)
-    private typeCapabilitiesService: any
+    private typeCapabilitiesService: IGetCapabilities
   ) {}
 
   ngOnDestroy(): void {
