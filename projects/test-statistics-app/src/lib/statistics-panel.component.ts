@@ -45,4 +45,8 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
       this.hsStatisticsService.correlate()
     );
   }
+
+  removeVariable(){
+    
+  }
 }
