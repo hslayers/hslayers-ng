@@ -10,7 +10,8 @@ import {
 } from 'hslayers-ng';
 import {HsStatisticsCorrelationsComponent} from './correlations.component';
 import {HsStatisticsService} from './statistics.service';
-import { HsStatisticsToMapDialogComponent } from './to-map-dialog.component';
+import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
+import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 @Component({
   selector: 'hs-statistics',
   templateUrl: './statistics-panel.component.html',
@@ -55,7 +56,16 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
     });
   }
 
-  removeVariable(){
-    
+  timeSeries(): void {
+    this.hsDialogContainerService.create(
+      HsStatisticsTimeSeriesChartDialogComponent,
+      {
+        rows: this.hsStatisticsService.corpus.dict,
+        columns: this.hsStatisticsService.corpus.variables,
+        uses: this.hsStatisticsService.corpus.uses,
+      }
+    );
   }
+
+  removeVariable() {}
 }

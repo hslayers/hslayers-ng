@@ -25,7 +25,7 @@ export class HsStatisticsService {
   constructor() {
     const savedCorpus = localStorage.getItem('hs_statistics_corpus');
     if (savedCorpus) {
-      //this.corpus = JSON.parse(savedCorpus);
+      this.corpus = JSON.parse(savedCorpus);
     }
   }
 
