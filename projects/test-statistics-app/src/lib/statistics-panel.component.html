@@ -3,11 +3,11 @@
     <div class="card-body">
         <div>
             {{'STATISTICS.CURRENT_VARIABLES' |
-            translate}}: {{this.hsStatisticsService.variables.length}}
+            translate}}: {{this.hsStatisticsService.corpus.variables.length}}
 
-            <ng-container *ngIf="this.hsStatisticsService.variables.length > 0">
+            <ng-container *ngIf="this.hsStatisticsService.corpus.variables.length > 0">
                 <ul class="list-group hs-styler-content-list">
-                    <ng-container *ngFor="let variable of this.hsStatisticsService.variables">
+                    <ng-container *ngFor="let variable of this.hsStatisticsService.corpus.variables">
                         <li
                             class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center">
                             <div>
@@ -26,6 +26,8 @@
 
             <button type="button" class="btn btn-primary m-1" (click)="correlate()">{{'STATISTICS.CORRELATE' |
                 translate}}</button>
+            <button type="button" class="btn m-1 btn-secondary" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
+                    translate}}</button>
         </div>
     </div>
 </div>

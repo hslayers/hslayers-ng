@@ -78,6 +78,7 @@ export class HslayersAppComponent {
           },
           PANEL_HEADER: {
             STATISTICS: 'Statistics',
+            UPLOAD: 'Upload tabular data',
           },
           STATISTICS: {
             STORE: 'Store',
