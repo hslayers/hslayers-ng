@@ -9,6 +9,7 @@ import {
   HsSidebarService,
 } from 'hslayers-ng';
 import {HsStatisticsCorrelationsComponent} from './correlations.component';
+import {HsStatisticsRegressionDialogComponent} from './regression-dialog.component';
 import {HsStatisticsService} from './statistics.service';
 import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
 import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
@@ -64,6 +65,13 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
         columns: this.hsStatisticsService.corpus.variables,
         uses: this.hsStatisticsService.corpus.uses,
       }
+    );
+  }
+
+  regression(): void {
+    this.hsDialogContainerService.create(
+      HsStatisticsRegressionDialogComponent,
+      {}
     );
   }
 

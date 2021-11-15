@@ -95,6 +95,7 @@ export class HslayersAppComponent {
             removeVariable: 'Remove variable',
             LOCATION_FILTER: 'Location',
             VARIABLES: 'Variables',
+            REGRESSION: 'Regression',
           },
         },
       },
