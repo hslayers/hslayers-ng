@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {sampleCorrelation} from 'simple-statistics';
+import {sampleCorrelation, sampleVariance} from 'simple-statistics';
 
 export interface Usage {
   [key: string]: 'location' | 'ignore' | 'time' | 'variable';
@@ -21,7 +21,16 @@ export class HsStatisticsService {
   /** Main hash table of time+location keys and values which are populated from columns marked as 'variable'*/
   dataCorpus: CorpusItems = {};
   variables: string[] = [];
-  constructor() {}
+  constructor() {
+    const savedCorpus = localStorage.getItem('hs_statistics_corpus');
+    if (savedCorpus) {
+      this.dataCorpus = JSON.parse(savedCorpus);
+    }
+    const savedVars = localStorage.getItem('hs_statistics_variables');
+    if (savedCorpus) {
+      this.variables = JSON.parse(savedVars);
+    }
+  }
 
   store(rows, columns, uses): void {
     for (const row of rows) {
@@ -50,6 +59,14 @@ export class HsStatisticsService {
         }
       }
     }
+    localStorage.setItem(
+      'hs_statistics_corpus',
+      JSON.stringify(this.dataCorpus)
+    );
+    localStorage.setItem(
+      'hs_statistics_variables',
+      JSON.stringify(this.variables)
+    );
   }
 
   correlate(): {
