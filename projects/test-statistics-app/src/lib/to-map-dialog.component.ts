@@ -18,12 +18,18 @@ import {
 } from 'hslayers-ng';
 import {max, min} from 'simple-statistics';
 
+/**
+ * Dialog window to choose variables and filters to visualize data on map.
+ * Can be used both for uploaded, but not yet stored data or
+ * data from stored corpus.
+ */
 @Component({
   selector: 'hs-to-map',
   templateUrl: './to-map-dialog.component.html',
 })
 export class HsStatisticsToMapDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: {
     rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
@@ -67,7 +73,7 @@ export class HsStatisticsToMapDialogComponent
         .filter((value) => value != undefined);
     } else {
       this.locationColumn = 'location';
-      this.locationColumn = 'time';
+      this.timeColumn = 'time';
       tmpTimeValues = Object.keys(this.data.rows)
         .map((key) => this.data.rows[key])
         .map((row) => row.time);
@@ -153,7 +159,14 @@ export class HsStatisticsToMapDialogComponent
         (feature) => feature.get('LABEL') == row[this.locationColumn]
       );
       if (feature) {
-        feature.set('value', parseFloat(row[this.selectedVariable]));
+        feature.set(
+          'value',
+          parseFloat(
+            Array.isArray(this.data.rows)
+              ? row[this.selectedVariable]
+              : row.values[this.selectedVariable]
+          )
+        );
       }
     }
 
