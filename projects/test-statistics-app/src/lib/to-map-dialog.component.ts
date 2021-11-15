@@ -6,6 +6,7 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {CorpusItemValues, Usage} from './statistics.service';
 import {
   HsDialogComponent,
   HsDialogContainerService,
@@ -15,7 +16,6 @@ import {
   getTitle,
   setSld,
 } from 'hslayers-ng';
-import {Usage} from './statistics.service';
 import {max, min} from 'simple-statistics';
 
 @Component({
@@ -25,7 +25,7 @@ import {max, min} from 'simple-statistics';
 export class HsStatisticsToMapDialogComponent
   implements HsDialogComponent, OnInit {
   @Input() data: {
-    rows: any[];
+    rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
     uses: Usage;
   };
@@ -41,7 +41,7 @@ export class HsStatisticsToMapDialogComponent
   timeColumn: string;
   min: number;
   max: number;
-  filteredRows: number[];
+  filteredRows: any[];
   locationColumn: string;
 
   constructor(
@@ -52,20 +52,32 @@ export class HsStatisticsToMapDialogComponent
   ) {
     this.fillVectorLayers();
   }
+
   ngOnInit(): void {
-    this.timeColumn = this.data.columns.find(
-      (col) => this.data.uses[col] == 'time'
-    );
-    this.locationColumn = this.data.columns.find(
-      (col) => this.data.uses[col] == 'location'
-    );
-    this.timeValues = this.data.rows
-      .map((row) => row[this.timeColumn])
-      .filter((value) => value != undefined)
-      .filter((value, index, self) => {
-        //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-        return self.indexOf(value) === index;
-      });
+    let tmpTimeValues = [];
+    if (Array.isArray(this.data.rows)) {
+      this.locationColumn = this.data.columns.find(
+        (col) => this.data.uses[col] == 'location'
+      );
+      this.timeColumn = this.data.columns.find(
+        (col) => this.data.uses[col] == 'time'
+      );
+      tmpTimeValues = this.data.rows
+        .map((row) => row[this.timeColumn])
+        .filter((value) => value != undefined);
+    } else {
+      this.locationColumn = 'location';
+      this.locationColumn = 'time';
+      tmpTimeValues = Object.keys(this.data.rows)
+        .map((key) => this.data.rows[key])
+        .map((row) => row.time);
+    }
+
+    this.timeValues = tmpTimeValues.filter((value, index, self) => {
+      //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+      return self.indexOf(value) === index;
+    });
+
     this.selectVariable(
       this.data.columns.find((col) => this.data.uses[col] == 'variable')
     );
@@ -113,12 +125,23 @@ export class HsStatisticsToMapDialogComponent
   }
 
   applyFilters() {
-    this.filteredRows = this.data.rows.filter(
-      (row) => row[this.timeColumn] == this.selectedTimeValue
-    );
-    const filteredValues = this.filteredRows.map((row) =>
-      parseFloat(row[this.selectedVariable])
-    );
+    let filteredValues;
+    if (Array.isArray(this.data.rows)) {
+      this.filteredRows = this.data.rows.filter(
+        (row) => row[this.timeColumn] == this.selectedTimeValue
+      );
+      filteredValues = this.filteredRows.map((row) =>
+        parseFloat(row[this.selectedVariable])
+      );
+    } else {
+      this.filteredRows = Object.keys(this.data.rows)
+        .map((key) => this.data.rows[key])
+        .filter((row) => row.time == this.selectedTimeValue);
+      filteredValues = this.filteredRows
+        .map((row) => row.values)
+        .map((row) => parseFloat(row[this.selectedVariable]));
+    }
+
     this.min = min(filteredValues);
     this.max = max(filteredValues);
   }
