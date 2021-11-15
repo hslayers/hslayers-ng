@@ -11,7 +11,9 @@ export interface CorpusItemValues {
 }
 
 export interface CorpusItems {
-  dict: {[key: string]: {values: CorpusItemValues}};
+  dict: {
+    [key: string]: {values: CorpusItemValues; location?: string; time?: string};
+  };
   variables: string[];
   uses: Usage;
 }
