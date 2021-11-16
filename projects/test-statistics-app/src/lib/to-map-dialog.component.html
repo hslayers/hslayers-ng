@@ -96,7 +96,7 @@
 
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary" (click)="visualize();" data-dismiss="modal">{{'STATISTICS.VISUALIZE'
+                    <button class="btn btn-primary" (click)="visualize();" [disabled]="!filteredRows"data-dismiss="modal">{{'STATISTICS.VISUALIZE'
                         | translate}}</button>
                 </div>
             </div>

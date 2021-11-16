@@ -60,35 +60,45 @@ export class HsStatisticsToMapDialogComponent
   }
 
   ngOnInit(): void {
-    let tmpTimeValues = [];
-    if (Array.isArray(this.data.rows)) {
-      this.locationColumn = this.data.columns.find(
-        (col) => this.data.uses[col] == 'location'
+    if (this.isDataLoaded()) {
+      let tmpTimeValues = [];
+      if (Array.isArray(this.data.rows)) {
+        this.locationColumn = this.data.columns.find(
+          (col) => this.data.uses[col] == 'location'
+        );
+        this.timeColumn = this.data.columns.find(
+          (col) => this.data.uses[col] == 'time'
+        );
+        tmpTimeValues = this.data.rows
+          .map((row) => row[this.timeColumn])
+          .filter((value) => value != undefined);
+      } else {
+        this.locationColumn = 'location';
+        this.timeColumn = 'time';
+        tmpTimeValues = Object.keys(this.data.rows)
+          .map((key) => this.data.rows[key])
+          .map((row) => row.time);
+      }
+
+      this.timeValues = tmpTimeValues.filter((value, index, self) => {
+        //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+        return self.indexOf(value) === index;
+      });
+
+      this.selectVariable(
+        this.data.columns.find((col) => this.data.uses[col] == 'variable')
       );
-      this.timeColumn = this.data.columns.find(
-        (col) => this.data.uses[col] == 'time'
-      );
-      tmpTimeValues = this.data.rows
-        .map((row) => row[this.timeColumn])
-        .filter((value) => value != undefined);
-    } else {
-      this.locationColumn = 'location';
-      this.timeColumn = 'time';
-      tmpTimeValues = Object.keys(this.data.rows)
-        .map((key) => this.data.rows[key])
-        .map((row) => row.time);
+      if (this.timeValues?.length > 0) {
+        this.selectFilter(this.timeValues[this.timeValues.length - 1]);
+      }
     }
+  }
 
-    this.timeValues = tmpTimeValues.filter((value, index, self) => {
-      //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-      return self.indexOf(value) === index;
-    });
-
-    this.selectVariable(
-      this.data.columns.find((col) => this.data.uses[col] == 'variable')
-    );
-    if (this.timeValues?.length > 0) {
-      this.selectFilter(this.timeValues[this.timeValues.length - 1]);
+  isDataLoaded(): boolean {
+    if (this.data.rows?.length > 0 && this.data.columns?.length > 0) {
+      return true;
+    } else {
+      return false;
     }
   }
 

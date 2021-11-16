@@ -32,6 +32,9 @@ export class HsStatisticsService {
   }
 
   store(rows: any[], columns: string[], uses: Usage): void {
+    if (!rows || !columns) {
+      return;
+    }
     for (const row of rows) {
       /** Example '2010Kentucky' */
       let key = '';
