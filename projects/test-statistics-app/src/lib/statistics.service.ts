@@ -52,9 +52,10 @@ export class HsStatisticsService {
         corpusItem = this.corpus.dict[key];
       }
       for (const col of columns.filter((col) => uses[col] == 'variable')) {
-        corpusItem.values[col] = parseFloat(row[col]);
-        if (!this.corpus.variables.some((v) => v == col)) {
-          this.corpus.variables.push(col);
+        const escapedCol = col.replace(/\./g, '');
+        corpusItem.values[escapedCol] = parseFloat(row[col]);
+        if (!this.corpus.variables.some((v) => v == escapedCol)) {
+          this.corpus.variables.push(escapedCol);
         }
       }
     }
