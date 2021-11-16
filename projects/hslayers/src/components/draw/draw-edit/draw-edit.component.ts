@@ -110,9 +110,7 @@ export class DrawEditComponent {
         );
       }
 
-      this.HsQueryBaseService.clearData('features');
-      this.HsQueryBaseService.selector.getFeatures().push(e.feature);
-      this.HsQueryVectorService.createFeatureAttributeList();
+      this.HsDrawService.addFeatureToSelector(e.feature);
     });
   }
 
