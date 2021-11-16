@@ -218,6 +218,20 @@ export class HsAddDataCommonFileService {
           return this.describeNewLayer(this.endpoint, response[0].name);
         })
         .then((descriptor) => {
+          if (descriptor?.file.error) {
+            this.hsToastService.createToastPopupMessage(
+              'ADDLAYERS.ERROR.someErrorHappened',
+              this.hsLanguageService.getTranslationIgnoreNonExisting(
+                'LAYMAN.ERROR',
+                descriptor.file.error.code.toString()
+              ),
+              {
+                serviceCalledFrom: 'HsAddDataCommonFileService',
+                disableLocalization: true,
+              }
+            );
+            return;
+          }
           this.hsLaymanService.totalProgress = 0;
           this.hsAddDataService.selectType('url');
           this.layerAddedAsWms.next(true);

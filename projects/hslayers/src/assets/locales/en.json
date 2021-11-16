@@ -534,6 +534,11 @@
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
   },
+  "LAYMAN": {
+    "ERROR": {
+      "50": "Error when normalizing raster file"
+    }
+  },
   "MAP": {
     "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map",
     "zoomToInitialWindow": "Zoom to initial window"

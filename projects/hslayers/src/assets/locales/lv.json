@@ -807,5 +807,10 @@
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
     "waypointLayer": "Galapunktu slānis",
     "waypoints": "Pieturas punkti"
+  },
+  "LAYMAN": {
+    "ERROR": {
+      "50": "Kļūda, normalizējot rastra failu"
+    }
   }
 }
