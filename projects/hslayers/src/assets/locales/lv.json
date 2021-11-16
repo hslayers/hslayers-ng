@@ -418,7 +418,24 @@
     "stylingMissing": "Trūkst pareizais stils",
     "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
+    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu",
+    "featureEditor": {
+      "drawNewFeature": "Zīmēt jaunu objektu",
+      "editOptions": {
+        "intersection": "Krustošanās",
+        "difference": "Starpība",
+        "split": "Sadalīt",
+        "union": "Apvienojums"
+      },
+      "featureCanBeEditedbyOptions": "var rediģēt, izmantojot kādu no pieejamajām opcijām",
+      "featureEditor": "Objektu redaktors",
+      "noIntersection": "Atlasītajiem objektiem nav atrasts kopīgs krustošanās punkts",
+      "onlyOneSplitLine": "Atļauta tikai viena sadalīšanas līnija",
+      "orSelectOne": "vai atlasiet vienu (shift + klikšķis)",
+      "selectFeatureToEdit": "Atlasiet objektu, kuru vēlaties rediģēt!",
+      "selectedFeature": "Izvēlētais objekts",
+      "onlyOneFeatureToEdit": "Vienlaicīgi var rediģēt (sadalīt) tikai vienu objektu!"
+    }
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
