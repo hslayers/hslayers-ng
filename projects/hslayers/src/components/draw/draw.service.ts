@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Collection from 'ol/Collection';
@@ -125,7 +125,8 @@ export class HsDrawService {
     public HsAddDataVectorService: HsAddDataVectorService,
     public HsUtilsService: HsUtilsService,
     public HsCommonLaymanService: HsCommonLaymanService,
-    public hsToastService: HsToastService
+    public hsToastService: HsToastService,
+    private zone: NgZone
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -389,8 +390,18 @@ export class HsDrawService {
       this.HsLayoutService.setMainPanel('info');
     }
     setTimeout(() => {
+      this.addFeatureToSelector(e.feature);
+    });
+  }
+
+  /**
+   * Adds drawn feature to selection
+   */
+  addFeatureToSelector(feature) {
+    //Zone is used to ensure change detection updates the view
+    this.zone.run(() => {
       this.HsQueryBaseService.clearData('features');
-      this.HsQueryVectorService.selector.getFeatures().push(e.feature);
+      this.HsQueryVectorService.selector.getFeatures().push(feature);
       this.HsQueryVectorService.createFeatureAttributeList();
     });
   }

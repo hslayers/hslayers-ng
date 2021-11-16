@@ -42,10 +42,6 @@ export class HsQueryFeatureListComponent {
     return item.feature.ol_uid;
   }
 
-  ngOnChanges(change){
-    console.log('change',change);
-  }
-
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
     public hsLanguageService: HsLanguageService,
