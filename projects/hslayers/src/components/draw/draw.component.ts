@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 
 import {HsDialogContainerService} from '../layout/public-api';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
@@ -24,6 +24,7 @@ export class HsDrawComponent extends HsPanelBaseComponent {
     public HsLanguageService: HsLanguageService,
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
+    public cd: ChangeDetectorRef,
     hsSidebarService: HsSidebarService,
     HsDialogContainerService: HsDialogContainerService
   ) {
