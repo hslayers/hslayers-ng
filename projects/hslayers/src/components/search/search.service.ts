@@ -17,6 +17,7 @@ import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
+import {unByKey} from 'ol/Observable';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,7 @@ export class HsSearchService {
   formatWKT = new WKT();
   canceler: Subject<any> = new Subject();
   searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
+  pointerMoveEventKey;
   constructor(
     private http: HttpClient,
     public hsUtilsService: HsUtilsService,
@@ -43,11 +45,6 @@ export class HsSearchService {
     });
     setTitle(this.searchResultsLayer, 'Search results');
     setShowInLayerManager(this.searchResultsLayer, false);
-    this.hsMapService.loaded().then((map) => {
-      this.hsMapService.map.on('pointermove', (evt) =>
-        this.mapPointerMoved(evt)
-      );
-    });
   }
 
   /**
@@ -136,6 +133,9 @@ export class HsSearchService {
     } else {
       this.parseGeonamesResults(response, provider);
     }
+    this.pointerMoveEventKey = this.hsMapService.map.on('pointermove', (e) =>
+      this.mapPointerMoved(e)
+    );
     this.hsEventBusService.searchResultsReceived.next({
       layer: this.searchResultsLayer,
       providers: this.data.providers,
@@ -170,6 +170,7 @@ export class HsSearchService {
       }
       this.searchResultsLayer.getSource().clear();
       this.hideResultsLayer();
+      unByKey(this.pointerMoveEventKey);
     }
   }
 
@@ -178,6 +179,7 @@ export class HsSearchService {
    * Highlight in the search list result, that corresponds with the nearest found feature under the pointer over the map
    */
   mapPointerMoved(evt): void {
+    console.log('searchlistener');
     const featuresUnderMouse = this.hsMapService.map
       .getFeaturesAtPixel(evt.pixel)
       .filter((feature: Feature<Geometry>) => {
