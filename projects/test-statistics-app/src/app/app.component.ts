@@ -98,6 +98,7 @@ export class HslayersAppComponent {
             REGRESSION: 'Regression',
             PREDICT: 'Predict',
             BY: 'by',
+            COLLAPSEROWS: 'Collapse rows',
           },
         },
       },
