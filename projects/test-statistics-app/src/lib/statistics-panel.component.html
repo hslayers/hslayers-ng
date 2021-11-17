@@ -3,9 +3,9 @@
     <div class="card-body">
         <div>
             {{'STATISTICS.CURRENT_VARIABLES' |
-            translate}}: {{hsStatisticsService.corpus.variables.length}}
+            translate}}: {{hsStatisticsService.corpus?.variables?.length ?? '0'}}
 
-            <ng-container *ngIf="hsStatisticsService.corpus.variables.length > 0">
+            <ng-container *ngIf="hsStatisticsService.corpus?.variables?.length > 0">
                 <ul class="list-group hs-styler-content-list">
                     <ng-container *ngFor="let variable of hsStatisticsService.corpus.variables">
                         <li
@@ -14,8 +14,8 @@
                                 {{variable}}
                             </div>
                             <div>
-                                <button class="btn btn-danger btn-sm me-0" (click)="removeVariable(variable)" data-toggle="tooltip"
-                                    [title]="'STATISTICS.removeVariable' | translate">
+                                <button class="btn btn-danger btn-sm me-0" (click)="removeVariable(variable)"
+                                    data-toggle="tooltip" [title]="'STATISTICS.removeVariable' | translate">
                                     <i class="icon-trash"></i>
                                 </button>
                             </div>
@@ -23,15 +23,19 @@
                     </ng-container>
                 </ul>
             </ng-container>
-
-            <button type="button" class="btn btn-primary m-1" (click)="correlate()">{{'STATISTICS.CORRELATE' |
-                translate}}</button>
-            <button type="button" class="btn btn-primary m-1" (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
+            <div class="btn-group mt-2 align-items-center d-flex justify-content-between" data-toggle="buttons">
+                <button type="button" class="btn btn-sm btn-primary m-1" (click)="correlate()">{{'STATISTICS.CORRELATE' |
                     translate}}</button>
-            <button type="button" class="btn btn-primary m-1" (click)="regression()">{{'STATISTICS.REGRESSION' |
-                        translate}}</button>
-            <button type="button" class="btn m-1 btn-secondary" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
+                <button type="button" class="btn btn-sm btn-primary m-1" (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
                     translate}}</button>
+                <button type="button" class="btn btn-sm btn-primary m-1" (click)="regression()">{{'STATISTICS.REGRESSION'
+                    |
+                    translate}}</button>
+                <button type="button" class="btn btn-sm btn-secondary m-1" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
+                    translate}}</button>
+                <button type="button" class="btn btn-sm btn-danger m-1" (click)="clearAll()">{{'STATISTICS.CLEAR_ALL_DATA' |
+                    translate}}</button>
+            </div>
         </div>
     </div>
 </div>
