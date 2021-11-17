@@ -420,7 +420,8 @@
       "selectedFeature": "Vybraný prvok",
       "featureCanBeEditedbyOptions": "možno upraviť jednou z dostupných možností",
       "drawNewFeature": "Nakreslite nový prvok",
-      "orSelectOne": "alebo označte (shift + klik)"
+      "orSelectOne": "alebo označte (shift + klik)",
+      "onlyOneFeatureToEdit": "Naraz je možné upravovať (split) iba jeden prvok!"
     }
   },
   "ERRORMESSAGES": {
