@@ -75,5 +75,12 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
     );
   }
 
-  removeVariable() {}
+  removeVariable(varSelected: string) {
+    if (varSelected) {
+      this.hsStatisticsService.corpus.variables =
+        this.hsStatisticsService.corpus.variables.filter(
+          (variable) => variable != varSelected
+        );
+    }
+  }
 }
