@@ -1,5 +1,10 @@
 import {Injectable} from '@angular/core';
 
+import {
+  HsConfirmDialogComponent,
+  HsDialogContainerService,
+  HsLanguageService,
+} from 'hslayers-ng';
 import {sampleCorrelation, sampleVariance} from 'simple-statistics';
 
 export interface Usage {
@@ -24,7 +29,10 @@ export interface CorpusItems {
 export class HsStatisticsService {
   /** Main hash table of time+location keys and values which are populated from columns marked as 'variable'*/
   corpus: CorpusItems = {dict: {}, variables: [], uses: {}};
-  constructor() {
+  constructor(
+    public hsLanguageService: HsLanguageService,
+    public hsDialogContainerService: HsDialogContainerService
+  ) {
     const savedCorpus = localStorage.getItem('hs_statistics_corpus');
     if (savedCorpus) {
       this.corpus = JSON.parse(savedCorpus);
@@ -93,5 +101,24 @@ export class HsStatisticsService {
       }
     }
     return results;
+  }
+
+  async clear(): Promise<void> {
+    const dialog = this.hsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.hsLanguageService.getTranslation(
+          'STATISTICS.CLEAR_ALL_STATISTICS_DATA'
+        ),
+        title: this.hsLanguageService.getTranslation('COMMON.confirm'),
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      this.corpus.dict = {};
+      this.corpus.variables = [];
+      this.corpus.uses = {};
+      localStorage.removeItem('hs_statistics_corpus');
+    }
   }
 }

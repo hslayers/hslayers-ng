@@ -83,4 +83,8 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
         );
     }
   }
+
+  clearAll(): void {
+    this.hsStatisticsService.clear();
+  }
 }

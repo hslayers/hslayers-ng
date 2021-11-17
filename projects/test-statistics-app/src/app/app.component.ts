@@ -98,7 +98,10 @@ export class HslayersAppComponent {
             REGRESSION: 'Regression',
             PREDICT: 'Predict',
             BY: 'by',
-            COLLAPSEROWS: 'Collapse rows',
+            COLLAPSE_ROWS: 'Collapse rows',
+            CLEAR_ALL_DATA: 'Clear all data',
+            CLEAR_ALL_STATISTICS_DATA:
+              'Do you really want to clear all statistics data?',
           },
         },
       },

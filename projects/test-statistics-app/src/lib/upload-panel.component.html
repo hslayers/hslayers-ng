@@ -7,11 +7,11 @@
                 </hs-file-upload>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn m-1 btn-secondary"
-                    (click)="rowsCollapsed = !rowsCollapsed" *ngIf="rows || columns">{{'STATISTICS.COLLAPSEROWS' |
+                <button type="button" class="btn m-1 btn-secondary" (click)="rowsCollapsed = !rowsCollapsed"
+                    *ngIf="rows || columns">{{'STATISTICS.COLLAPSE_ROWS' |
                     translate}}</button>
             </div>
-            <ng-container >
+            <ng-container>
                 <table class="table table-sm table-striped table-bordered" style="table-layout: fixed;">
                     <thead>
                         <th *ngFor="let col of columns">
@@ -33,12 +33,17 @@
                     </tbody>
                 </table>
             </ng-container>
-            <button type="button" class="btn m-1 btn-primary"
-                (click)="hsStatisticsService.store(rows, columns, uses)">{{'STATISTICS.STORE' |
-                translate}}</button>
-            <button type="button" class="btn m-1 btn-secondary" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP'
-                |
-                translate}}</button>
+
+            <div class="btn-group align-items-center" data-toggle="buttons">
+                <button type="button" class="btn m-1 btn-primary"
+                    (click)="hsStatisticsService.store(rows, columns, uses)">{{'STATISTICS.STORE' |
+                    translate}}</button>
+                <button type="button" class="btn m-1 btn-secondary"
+                    (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP'
+                    |
+                    translate}}</button>
+            </div>
+
         </div>
     </div>
 </div>
