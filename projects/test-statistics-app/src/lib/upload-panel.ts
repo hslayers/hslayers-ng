@@ -23,7 +23,7 @@ export class HsStatisticsUploadPanelComponent extends HsPanelBaseComponent {
   columns: string[];
   uses: Usage;
   rows: any[];
-
+  rowsCollapsed = false;
   constructor(
     public hsStatisticsService: HsStatisticsService,
     public hsConfig: HsConfig,
@@ -63,6 +63,10 @@ export class HsStatisticsUploadPanelComponent extends HsPanelBaseComponent {
       });
     });
     Promise.all(promises).then(async (fileContents) => {
+      if (!fileContents) {
+        console.error('Something went wrong');
+        return;
+      }
       const records = Papa.parse(fileContents[0] as string, {header: true});
       this.columns = Object.keys(records.data[0]);
       this.uses = {};
