@@ -120,11 +120,12 @@ describe('HsLegendComponent', () => {
       visible: true,
     });
     await component.addLayerToLegends(layer);
+    console.log('test');
     const layerParams = layer.getSource().getParams();
     layerParams.LAYERS = `2017_damage_tomato`;
     layerUtilsMock.getLayerParams.and.returnValue(layerParams);
     layer.getSource().updateParams(layerParams);
-    tick();
+    tick(250);
     expect(component.layerDescriptors[0].subLayerLegends).toEqual([
       '/proxy/http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_damage_tomato&format=image%2Fpng',
     ]);
