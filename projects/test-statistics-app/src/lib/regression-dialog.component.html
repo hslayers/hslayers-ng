@@ -12,7 +12,7 @@
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
                     <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translate}}:</p>
-                    <div ngbDropdown placement="bottom" style="max-width: 50%">
+                    <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
                       rounded-0
@@ -27,7 +27,7 @@
                         </button>
                         <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
                             <div class="d-flex align-items-center w-100 flex-column">
-                                <a class="dropdown-item text-truncate" *ngFor="let col of HsStatisticsService.corpus.variables"
+                                <a class="dropdown-item text-truncate" *ngFor="let col of hsStatisticsService.corpus.variables"
                                     data-toggle="tooltip" (click)="selectVariable(col)">{{col}}</a>
                             </div>
                         </div>
@@ -52,11 +52,15 @@
                                         <div class="hs-statistics-regression-{{colWrappers.indexOf(col)}}" [ngStyle]="col.checked ? {'min-width': '400px', 'min-height': '300px'} : {}"></div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
+                                <div class="row" *ngIf="col.regressionOutput">
+                                    <div class="col-9">
                                         Y - {{selectedVariable}} <br/>
                                         X - {{col.name}} <br/>
                                         Y = X * {{col.regressionOutput.m}} + {{col.regressionOutput.b}}
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" class="btn btn-primary m-1" (click)="openPredictionDialog(selectedVariable, col)">{{'STATISTICS.PREDICT' |
+                                            translate}}</button>
                                     </div>
                                 </div>
                             </div>

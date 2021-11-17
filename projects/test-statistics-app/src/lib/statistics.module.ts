@@ -6,6 +6,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsPanelHelpersModule, HsUploadModule} from 'hslayers-ng';
 import {HsStatisticsCorrelationsComponent} from './correlations.component';
 import {HsStatisticsPanelComponent} from './statistics-panel.component';
+import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {HsStatisticsRegressionDialogComponent} from './regression-dialog.component';
 import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
 import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
@@ -21,6 +22,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     HsStatisticsToMapDialogComponent,
     HsStatisticsTimeSeriesChartDialogComponent,
     HsStatisticsRegressionDialogComponent,
+    HsStatisticsPredictionChartDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     HsStatisticsToMapDialogComponent,
     HsStatisticsTimeSeriesChartDialogComponent,
     HsStatisticsRegressionDialogComponent,
+    HsStatisticsPredictionChartDialogComponent,
   ],
   entryComponents: [HsStatisticsPanelComponent],
 })

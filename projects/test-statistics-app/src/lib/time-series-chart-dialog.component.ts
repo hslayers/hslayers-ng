@@ -24,8 +24,7 @@ const CHART_DIV = '.hs-statistics-timeseries';
   templateUrl: './time-series-chart-dialog.component.html',
 })
 export class HsStatisticsTimeSeriesChartDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   @Input() data: {
     rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
@@ -172,42 +171,50 @@ export class HsStatisticsTimeSeriesChartDialogComponent
       'datasets': {
         'data-062c25e80e0ff23df3803082d5c6f7e7': observations,
       },
-      'encoding': {
-        'color': {
-          'field': 'name',
-          'legend': {
-            'title': this.HsLanguageService.getTranslation(
-              'STATISTICS.variables'
-            ),
+      'transform': [{type: 'formula', expr: 'datum.value * 2', 'as': 'val2'}],
+      'layer': [
+        {
+          'mark': {
+            'type': 'line',
+            'tooltip': {'content': 'data'},
           },
-          'type': 'nominal',
-          'sort': 'name',
-        },
-        'x': {
-          'axis': {
-            'title': 'Timestamp',
-            'labelOverlap': true,
+          'encoding': {
+            'color': {
+              'field': 'name',
+              'legend': {
+                'title': this.HsLanguageService.getTranslation(
+                  'STATISTICS.VARIABLES'
+                ),
+              },
+              'type': 'nominal',
+              'sort': 'name',
+            },
+            'x': {
+              'axis': {
+                'title': 'Timestamp',
+                'labelOverlap': true,
+              },
+              'field': 'time',
+              'sort': false,
+              'type': 'temporal',
+            },
+            'y': {
+              'axis': {
+                'title': `Value`,
+              },
+              'field': 'value',
+              'type': 'quantitative',
+            },
           },
-          'field': 'time',
-          'sort': false,
-          'type': 'temporal',
         },
-        'y': {
-          'axis': {
-            'title': `Value`,
+        {
+          'mark': {'type': 'point', 'color': 'yellow'},
+          'encoding': {
+            'x': {'field': 'time', 'type': 'temporal', 'sort': false},
+            'y': {'field': 'val2', 'type': 'quantitative'},
           },
-          'field': 'value',
-          'type': 'quantitative',
         },
-      },
-      'mark': {'type': 'line', 'tooltip': {'content': 'data'}},
-      'selection': {
-        'selector016': {
-          'bind': 'scales',
-          'encodings': ['x', 'y'],
-          'type': 'interval',
-        },
-      },
+      ],
     };
     try {
       vegaEmbed(

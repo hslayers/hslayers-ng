@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import {default as vegaEmbed} from 'vega-embed';
 
+import {ColumnWrapper} from './column-wrapper.type';
 import {
   CorpusItemValues,
   HsStatisticsService,
@@ -15,6 +16,7 @@ import {
   HsLanguageService,
   HsLayerUtilsService,
 } from 'hslayers-ng';
+import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {linearRegression} from 'simple-statistics';
 
 dayjs.extend(utc);
@@ -39,14 +41,15 @@ export class HsStatisticsRegressionDialogComponent
   filteredRows: any[];
   locationColumn: string;
   locationValues: string[];
-  colWrappers: {checked: boolean; name: string}[];
+  colWrappers: ColumnWrapper[];
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public HsStatisticsService: HsStatisticsService,
+    public hsStatisticsService: HsStatisticsService,
     private HsLanguageService: HsLanguageService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private hsDialogContainerService: HsDialogContainerService
   ) {}
 
   ngOnInit(): void {
@@ -55,11 +58,11 @@ export class HsStatisticsRegressionDialogComponent
 
     this.locationColumn = 'location';
     this.timeColumn = 'time';
-    tmpTimeValues = Object.keys(this.HsStatisticsService.corpus.dict)
-      .map((key) => this.HsStatisticsService.corpus.dict[key])
+    tmpTimeValues = Object.keys(this.hsStatisticsService.corpus.dict)
+      .map((key) => this.hsStatisticsService.corpus.dict[key])
       .map((row) => row.time);
-    tmpLocValues = Object.keys(this.HsStatisticsService.corpus.dict)
-      .map((key) => this.HsStatisticsService.corpus.dict[key])
+    tmpLocValues = Object.keys(this.hsStatisticsService.corpus.dict)
+      .map((key) => this.hsStatisticsService.corpus.dict[key])
       .map((row) => row.location);
 
     this.timeValues = tmpTimeValues.filter((value, index, self) => {
@@ -70,7 +73,7 @@ export class HsStatisticsRegressionDialogComponent
     this.locationValues = tmpLocValues.filter((value, index, self) => {
       return self.indexOf(value) === index;
     });
-    this.colWrappers = this.HsStatisticsService.corpus.variables.map((col) => {
+    this.colWrappers = this.hsStatisticsService.corpus.variables.map((col) => {
       return {checked: true, name: col};
     });
   }
@@ -93,12 +96,12 @@ export class HsStatisticsRegressionDialogComponent
   }
 
   applyFilters() {
-    this.filteredRows = Object.keys(this.HsStatisticsService.corpus.dict).map(
-      (key) => this.HsStatisticsService.corpus.dict[key]
+    this.filteredRows = Object.keys(this.hsStatisticsService.corpus.dict).map(
+      (key) => this.hsStatisticsService.corpus.dict[key]
     );
   }
 
-  async visualize(col): Promise<void> {
+  async visualize(col: ColumnWrapper): Promise<void> {
     setTimeout((_) => {
       const $index = this.colWrappers.indexOf(col);
       const factor = col.name;
@@ -199,5 +202,15 @@ export class HsStatisticsRegressionDialogComponent
         console.warn('Could not create vega chart:', ex);
       }
     }, 0);
+  }
+
+  openPredictionDialog(predictedVariable: string, factor: ColumnWrapper): void {
+    this.hsDialogContainerService.create(
+      HsStatisticsPredictionChartDialogComponent,
+      {
+        predictedVariable,
+        factor,
+      }
+    );
   }
 }
