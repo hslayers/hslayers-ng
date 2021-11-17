@@ -87,7 +87,7 @@
     "@angular/cli": "~12.2.13",
     "@angular/compiler-cli": "~12.2.12",
     "@commitlint/cli": "^14.1.0",
-    "@commitlint/config-conventional": "^14.1.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "@compodoc/compodoc": "^1.1.15",
     "@types/jasmine": "~3.10.2",
     "@types/jasminewd2": "~2.0.10",
