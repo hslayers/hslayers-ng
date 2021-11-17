@@ -433,7 +433,8 @@
         "difference": "Difference"
       },
       "drawNewFeature": "Nakreslete nový prvek",
-      "orSelectOne": "nebo označne (shift + klik)"
+      "orSelectOne": "nebo označne (shift + klik)",
+      "onlyOneFeatureToEdit": "V daný okamžik lze upravit (split) pouze jeden prvek!"
     }
   },
   "ERRORMESSAGES": {

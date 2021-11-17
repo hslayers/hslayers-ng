@@ -1,16 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import * as polygonClipping from 'polygon-clipping';
 import lineOffset from '@turf/line-offset';
 
 import Feature from 'ol/Feature';
-import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import VectorLayer from 'ol/layer/Vector';
 import {GeoJSON} from 'ol/format';
 import {Vector} from 'ol/source';
 
 import {HsDrawService} from '../draw.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryBaseService} from './../../query/query-base.service';
@@ -23,7 +23,7 @@ import {defaultStyle} from '../../styles/styles';
   templateUrl: './draw-edit.component.html',
   styleUrls: ['./draw-edit.component.scss'],
 })
-export class DrawEditComponent {
+export class DrawEditComponent implements OnDestroy {
   editOptions = ['difference', 'union', 'intersection', 'split'];
   selectedType: 'difference' | 'union' | 'intersection' | 'split';
 
@@ -45,10 +45,21 @@ export class DrawEditComponent {
     public HsQueryVectorService: HsQueryVectorService,
     public HsLanguageService: HsLanguageService,
     public hsMapService: HsMapService,
-    public hsToastService: HsToastService
+    public hsToastService: HsToastService,
+    public hsEventBusService: HsEventBusService
   ) {
     this.hsMapService.loaded().then((map) => {
       map.addLayer(this.editLayer);
+    });
+
+    this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
+      if (
+        data.selector.getFeatures().getLength() > 1 &&
+        this.editLayer != this.hsMapService.getLayerForFeature(data.feature) &&
+        this.selectedType == 'split'
+      ) {
+        this.deselectMultiple();
+      }
     });
   }
 
@@ -73,14 +84,27 @@ export class DrawEditComponent {
       if (this.editLayer.getSource().getFeatures().length > 0) {
         this.editLayer.getSource().clear();
       }
-      this.deselectMultiple();
+      if (this.HsQueryBaseService.selector.getFeatures().getLength() > 1) {
+        this.deselectMultiple();
+      }
     }
   }
 
   //Deselects multi selection. Only one feature can be edited at the time
   deselectMultiple(): void {
+    this.hsToastService.createToastPopupMessage(
+      this.HsLanguageService.getTranslation('DRAW.featureEditor.featureEditor'),
+      this.HsLanguageService.getTranslation(
+        'DRAW.featureEditor.onlyOneFeatureToEdit'
+      ),
+      {
+        toastStyleClasses: 'bg-info text-light',
+      }
+    );
     setTimeout(() => {
-      const feature = this.HsQueryBaseService.data.features[0].feature;
+      const feature = this.HsQueryBaseService.selector
+        .getFeatures()
+        .getArray()[1];
       this.HsQueryBaseService.clearData('features');
       this.HsQueryBaseService.selector.getFeatures().clear();
       this.HsQueryBaseService.selector.getFeatures().push(feature);
@@ -116,6 +140,7 @@ export class DrawEditComponent {
 
   selectionMenuToggled(): void {
     this.setType(this.HsDrawService.type);
+    this.editLayer.getSource().clear();
   }
 
   setType(what): void {

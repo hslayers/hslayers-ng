@@ -433,7 +433,8 @@
         "difference": "Difference"
       },
       "drawNewFeature": "Draw new feature",
-      "orSelectOne": "or select one (shift + click)"
+      "orSelectOne": "or select one (shift + click)",
+      "onlyOneFeatureToEdit": "Only one feature can be edited (split) at the time!"
     }
   },
   "ERRORMESSAGES": {
