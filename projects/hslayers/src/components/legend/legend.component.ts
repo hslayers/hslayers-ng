@@ -67,7 +67,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
 
       layer.getSource().on('change', (e) => {
         this.hsUtilsService.debounce(
-          this.layerSourcePropChanged,
+          this.layerSourcePropChanged(e),
           100,
           false,
           this
