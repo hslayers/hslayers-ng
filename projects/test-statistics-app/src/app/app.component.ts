@@ -96,6 +96,8 @@ export class HslayersAppComponent {
             LOCATION_FILTER: 'Location',
             VARIABLES: 'Variables',
             REGRESSION: 'Regression',
+            PREDICT: 'Predict',
+            BY: 'by',
           },
         },
       },
