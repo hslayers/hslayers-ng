@@ -67,6 +67,7 @@ export class DrawEditComponent implements OnDestroy {
     this.hsMapService.loaded().then((map) => {
       map.removeLayer(this.editLayer);
       this.setType(this.HsDrawService.type);
+      this.HsDrawService.selectedLayer = null;
     });
   }
 
