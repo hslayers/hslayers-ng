@@ -38,6 +38,7 @@ class HsConfigMock {
 class HsCommonLaymanServiceMock {
   constructor() {}
   authChange: Subject<any> = new Subject();
+  sessionExpired: Subject<void> = new Subject();
 }
 
 class CommonEndpointsServiceMock {

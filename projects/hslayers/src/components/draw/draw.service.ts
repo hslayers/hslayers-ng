@@ -185,6 +185,10 @@ export class HsDrawService {
       }
     });
 
+    this.HsCommonLaymanService.sessionExpired.subscribe(() => {
+      this.fillDrawableLayers();
+    });
+
     this.HsEventBusService.LayerManagerLayerVisibilityChanges.subscribe(
       (event) => {
         if (this.draw && event.layer == this.selectedLayer) {

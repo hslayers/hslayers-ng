@@ -6,10 +6,11 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+
+import VectorLayer from 'ol/layer/Vector';
 import {Subject} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
 
-import VectorLayer from 'ol/layer/Vector';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -39,6 +40,7 @@ class HsSaveMapManagerServiceMock {
 class HsCommonLaymanServiceMock {
   constructor() {}
   authChange: Subject<any> = new Subject();
+  sessionExpired: Subject<void> = new Subject();
 }
 
 class HsEventBusServiceMock {

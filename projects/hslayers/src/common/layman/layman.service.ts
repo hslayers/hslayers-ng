@@ -12,6 +12,7 @@ import {HsToastService} from '../../components/layout/toast/toast.service';
 })
 export class HsCommonLaymanService {
   authChange: Subject<HsEndpoint> = new Subject();
+  sessionExpired: Subject<void> = new Subject();
   constructor(
     private $http: HttpClient,
     public hsToastService: HsToastService,
@@ -35,6 +36,7 @@ export class HsCommonLaymanService {
       if (res.code === 32) {
         endpoint.authenticated = false;
         endpoint.user = endpoint.originalConfiguredUser;
+        this.sessionExpired.next();
       }
       if (res.username) {
         if (endpoint.user != res.username) {

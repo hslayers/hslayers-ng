@@ -5,12 +5,13 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
-import {of} from 'rxjs';
 
 import VectorLayer from 'ol/layer/Vector';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Polygon} from 'ol/geom';
+import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
+import {of} from 'rxjs';
 
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -29,7 +30,6 @@ import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 class emptyMock {
   constructor() {}
@@ -99,6 +99,7 @@ describe('HsDraw', () => {
           provide: HsCommonLaymanService,
           useValue: {
             authChange: of('endpoint'),
+            sessionExpired: of(),
           },
         },
       ],

@@ -19,7 +19,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   endpoint = null;
   isAuthorized = false;
   advancedForm: boolean;
@@ -103,6 +104,13 @@ export class HsSaveMapComponent
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
         this.HsSaveMapManagerService.currentUser = endpoint.user;
+      });
+
+    this.HsCommonLaymanService.sessionExpired
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.isAuthorized = false;
+        this.HsSaveMapManagerService.currentUser = false;
       });
   }
   ngOnDestroy(): void {
