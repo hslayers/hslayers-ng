@@ -285,6 +285,7 @@ export class HsLaymanBrowserService {
           .get(lyr.style?.url, {
             headers: new HttpHeaders().set('Content-Type', 'text'),
             responseType: 'text',
+            withCredentials: true
           })
           .toPromise());
       } catch (ex) {
