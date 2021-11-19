@@ -9,7 +9,6 @@ import {
 
 import {Cluster} from 'ol/source';
 
-import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsLanguageService} from '../../../language/language.service';
@@ -44,8 +43,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
-    public hsUtilsService: HsUtilsService,
-    public hsAddDataService: HsAddDataService
+    public hsUtilsService: HsUtilsService
   ) {}
   ngAfterViewInit(): void {
     this.vectorFileInput = this.hsUploadComponent.getVectorFileInput();
@@ -139,7 +137,10 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
           this.data.saveAvailable = false;
         } else {
           this.data.saveAvailable = true;
-          this.data.saveToLayman = this.hsAddDataService.isAuthorized;
+          this.data.saveToLayman =
+            this.hsCommonEndpointsService.endpoints.filter(
+              (ep) => ep.type == 'layman'
+            )[0].authenticated;
         }
         //add layman endpoint url as url to allow sync
         if (this.data.url == '' && this.data.saveToLayman) {

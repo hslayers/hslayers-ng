@@ -315,6 +315,6 @@ export class HsAddDataCommonFileService {
   }
 
   isAuthorized(): boolean {
-    return this.hsAddDataService.isAuthorized;
+    return this.hsLaymanService.getLaymanEndpoint().authenticated;
   }
 }
