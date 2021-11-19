@@ -18,7 +18,6 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
   providedIn: 'root',
 })
 export class HsAddDataService {
-  isAuthorized = false;
   typeSelected: DatasetType;
   //Holds reference to data.url.component type selected
   urlType: AddDataUrlType;
@@ -33,18 +32,7 @@ export class HsAddDataService {
     public hsConfig: HsConfig,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsCommonLaymanService: HsCommonLaymanService
-  ) {
-    const layman = this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.type == 'layman'
-    )[0];
-    if (layman) {
-      this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
-        this.isAuthorized = endpoint.authenticated;
-      });
-      this.isAuthorized =
-        layman.user !== 'anonymous' && layman.user !== 'browser';
-    }
-  }
+  ) {}
 
   addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
     if (underLayer) {
