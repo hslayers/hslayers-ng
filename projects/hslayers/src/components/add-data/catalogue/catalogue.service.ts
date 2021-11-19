@@ -414,6 +414,7 @@ export class HsAddDataCatalogueService {
             type: whatToAdd.type.toLowerCase(),
             uri: decodeURIComponent(whatToAdd.link),
             layer: undefined, //layer.title || layer.name ||
+            style: whatToAdd.style,
           });
         });
       } else {
