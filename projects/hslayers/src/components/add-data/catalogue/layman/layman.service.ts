@@ -281,13 +281,13 @@ export class HsLaymanBrowserService {
     let style: string = undefined;
     if (lyr.style?.url) {
       try {
-        style = await (this.http
+        style = await this.http
           .get(lyr.style?.url, {
             headers: new HttpHeaders().set('Content-Type', 'text'),
             responseType: 'text',
-            withCredentials: true
+            withCredentials: true,
           })
-          .toPromise());
+          .toPromise();
       } catch (ex) {
         console.error(ex);
       }
