@@ -2,24 +2,55 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">
+                <!-- <h4 class="modal-title">
                     {{'STATISTICS.CORRELATIONS' | translate}}
-                </h4>
+                </h4> -->
+                <ul class="nav flex-column flex-sm-row justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'btn-primary active': tabSelected === tabs.varList}" role="tab"
+                            data-toggle="tab" (click)="tabSelect(tabs.varList)">
+                            {{'STATISTICS.VARIABLE_LIST' | translate}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'btn-primary active': tabSelected === tabs.corrMatrix}"
+                            role="tab" data-toggle="tab" (click)="tabSelect(tabs.corrMatrix)">
+                            {{'STATISTICS.CORRELATION_MATRIX' | translate}}
+                        </a>
+                    </li>
+                </ul>
                 <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
                         class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th *ngFor="let item of data | keyvalue">{{item.key}}</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let item of data | keyvalue">
-                    <tr>{{item.key}}
-                        <td *ngFor="let result of item.value">{{result}}</td>
-                    </tr>
-                </tbody>
+                <ng-container *ngIf="tabSelected === tabs.varList">
+                                    <thead>
+                                        <th>Variable 1</th>
+                                        <th>Variable 2</th>
+                                        <th>Correlation</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let result of data.list">
+                                            <td>{{result.var1}}</td>
+                                            <td>{{result.var2}}</td>
+                                            <td>{{result.coefficient | number: '1.2-2'}}</td>
+                                        </tr>
+                                    </tbody>
+                </ng-container>
+                <ng-container *ngIf="tabSelected === tabs.corrMatrix">
+                                    <thead>
+                                        <tr>
+                                            <th style="border: none;"></th>
+                                            <th *ngFor="let item of data.matrix | keyvalue">{{item.key}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let item of data.matrix | keyvalue">
+                                        <tr>
+                                            <td>{{item.key}}</td>
+                                            <td *ngFor="let result of item.value">{{result | number: '1.2-2'}}</td>
+                                        </tr>
+                                    </tbody>
+                </ng-container>
             </div>
         </div>
     </div>
