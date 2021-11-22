@@ -25,6 +25,10 @@ export class HsFileShpComponent
     super(hsAddDataCommonService, hsAddDataCommonFileService, hsLayoutService);
   }
 
+  ngAfterViewInit(): void {
+    this.fileInput = this.hsUploadComponent.getFileInput();
+  }
+
   ngOnInit(): void {
     this.acceptedFormats = '.shp, .shx, .dbf, .sbn, .zip';
     this.baseDataType = this.dataType;

@@ -33,8 +33,11 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   acceptedFormats: string;
   uploadType = 'new';
   data: vectorDataObject;
-  vectorFileInput: ElementRef;
-
+  fileInput: ElementRef;
+  access_rights: accessRightsModel = {
+    'access_rights.write': 'private',
+    'access_rights.read': 'EVERYONE',
+  };
   constructor(
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsToastService: HsToastService,
@@ -46,7 +49,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     public hsUtilsService: HsUtilsService
   ) {}
   ngAfterViewInit(): void {
-    this.vectorFileInput = this.hsUploadComponent.getVectorFileInput();
+    this.fileInput = this.hsUploadComponent.getFileInput();
   }
 
   ngOnInit(): void {
@@ -83,7 +86,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     let features = this.data.features.length > 0 ? this.data.features : [];
     if (this.dataType != 'geojson') {
       const nonJson = await this.hsAddDataVectorService.convertUploadedData(
-        this.vectorFileInput.nativeElement.files[0]
+        this.fileInput.nativeElement.files[0]
       );
       features = nonJson.features; //proper typing will get rid of this
     }
@@ -181,8 +184,8 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     this.setDataToDefault();
     this.data.showDetails = false;
     this.uploadType = 'new';
-    if (this.vectorFileInput) {
-      this.vectorFileInput.nativeElement.value = '';
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
     }
   }
 

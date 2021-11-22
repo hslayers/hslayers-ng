@@ -112,7 +112,7 @@ describe('add-layers-vector', () => {
   });
 
   it('GeoJSON layer should be added', async () => {
-    spyOn(component.hsUploadComponent, 'getVectorFileInput');
+    spyOn(component.hsUploadComponent, 'getFileInput');
     component.dataType = 'geojson';
     component.data.url =
       'http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson';
