@@ -427,14 +427,14 @@
       "selectedFeature": "Vybraný prvek",
       "featureCanBeEditedbyOptions": "lze upravit jednou z dostupných možností",
       "editOptions": {
-        "split": "Rozdelení",
-        "intersection": "Intersection",
-        "union": "Union",
-        "difference": "Difference"
+        "split": "Rozdělení",
+        "intersection": "Protnutí",
+        "union": "Sjednocení",
+        "difference": "Rozdíl"
       },
       "drawNewFeature": "Nakreslete nový prvek",
       "orSelectOne": "nebo označne (shift + klik)",
-      "onlyOneFeatureToEdit": "V daný okamžik lze upravit (split) pouze jeden prvek!"
+      "onlyOneFeatureToEdit": "V daný okamžik lze upravit (rozdělit) pouze jeden prvek!"
     }
   },
   "ERRORMESSAGES": {
