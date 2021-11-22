@@ -21,7 +21,7 @@ export class HsUploadComponent {
   @Output() uploaded = new EventEmitter<HsUploadedFiles>();
   @Input() acceptedFormats: string;
   @Input() uploader?: string;
-  @ViewChild('vectorFileInput') vectorFileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
   dropzoneActive = false;
 
   emitHandleUpload(fileList: FileList, dropped: boolean): void {
@@ -31,8 +31,8 @@ export class HsUploadComponent {
   dropZoneState($event: boolean): void {
     this.dropzoneActive = $event;
   }
-  getVectorFileInput(): ElementRef {
-    return this.vectorFileInput;
+  getFileInput(): ElementRef {
+    return this.fileInput;
   }
 
   constructor() {}

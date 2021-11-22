@@ -5,7 +5,7 @@
     </div>
     <p class="px-5">{{'COMMON.or' | translate}}</p>
     <label class="dropzone-label">
-        <input #vectorFileInput type="file" [accept]="acceptedFormats" [id]="uploader"
+        <input #fileInput type="file" [accept]="acceptedFormats" [id]="uploader"
             class="inputfile" (change)="emitHandleUpload($event.target.files, false)" multiple>
         <label [for]="uploader" class="p-2 rounded"> <i class="icon-uploadalt pe-2"></i>
             {{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
