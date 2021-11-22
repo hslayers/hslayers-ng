@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import JSZip from 'jszip';
 import {Subject} from 'rxjs/internal/Subject';
 
 import {FileDescriptor} from '../file/types/file-descriptor.type';
@@ -18,7 +19,6 @@ import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {fileDataObject} from '../file/types/file-data-object.type';
-
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonFileService {
   loadingToLayman = false;
@@ -105,16 +105,14 @@ export class HsAddDataCommonFileService {
     sld: FileDescriptor,
     access_rights: accessRightsModel
   ): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
+      const zip = new JSZip();
       files.forEach((file) => {
-        formdata.append(
-          'file',
-          new Blob([file.content], {type: file.type}),
-          file.name
-        );
+        zip.file(file.name + file.type, file.content);
       });
-
+      const zipContent = await zip.generateAsync({type: 'blob'});
+      formdata.append('file', zipContent);
       const files_to_async_upload = [];
       const sumFileSize = formdata
         .getAll('file')
