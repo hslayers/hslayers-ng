@@ -8,7 +8,7 @@
             </div>
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn m-1 btn-secondary" (click)="rowsCollapsed = !rowsCollapsed"
-                    *ngIf="rows || columns">{{'STATISTICS.COLLAPSE_ROWS' |
+                    *ngIf="dataAvailable()">{{'STATISTICS.COLLAPSE_ROWS' |
                     translate}}</button>
             </div>
             <ng-container>

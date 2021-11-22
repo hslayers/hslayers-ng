@@ -5,6 +5,7 @@ import {
   HsDialogContainerService,
   HsLanguageService,
 } from 'hslayers-ng';
+import {Subject} from 'rxjs';
 import {sampleCorrelation, sampleVariance} from 'simple-statistics';
 
 export interface Usage {
@@ -29,6 +30,7 @@ export interface CorpusItems {
 export class HsStatisticsService {
   /** Main hash table of time+location keys and values which are populated from columns marked as 'variable'*/
   corpus: CorpusItems = {dict: {}, variables: [], uses: {}};
+  clearData$: Subject<void> = new Subject();
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsDialogContainerService: HsDialogContainerService
@@ -72,6 +74,10 @@ export class HsStatisticsService {
     }
     Object.assign(this.corpus.uses, uses);
     localStorage.setItem('hs_statistics_corpus', JSON.stringify(this.corpus));
+    localStorage.setItem(
+      'hs_statistics_table',
+      JSON.stringify({rows: rows, columns: columns})
+    );
   }
 
   correlate(): {
@@ -121,6 +127,8 @@ export class HsStatisticsService {
       this.corpus.variables = [];
       this.corpus.uses = {};
       localStorage.removeItem('hs_statistics_corpus');
+      localStorage.removeItem('hs_statistics_table');
+      this.clearData$.next();
     }
   }
 }
