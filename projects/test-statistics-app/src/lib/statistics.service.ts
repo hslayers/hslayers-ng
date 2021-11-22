@@ -75,13 +75,14 @@ export class HsStatisticsService {
   }
 
   correlate(): {
-    var1: string;
-    var2: string;
-    coefficient: number;
-  }[] {
-    const results = [];
+    [var1: string]: {
+      coeficients: number[];
+    };
+  } {
+    const results = {};
     for (const var1 of this.corpus.variables) {
-      for (const var2 of this.corpus.variables.filter((v) => v != var1)) {
+      results[var1] = [];
+      for (const var2 of this.corpus.variables) {
         const keys = Object.keys(this.corpus.dict).filter(
           (key) =>
             !isNaN(this.corpus.dict[key].values[var1]) &&
@@ -93,11 +94,12 @@ export class HsStatisticsService {
         const sample2: number[] = keys.map(
           (key) => this.corpus.dict[key].values[var2]
         );
-        results.push({
-          var1,
-          var2,
-          coefficient: sampleCorrelation(sample1, sample2),
-        });
+        const corr = sampleCorrelation(sample1, sample2);
+        results[var1].push(
+          Number(corr.toFixed(4)) > 0.9999
+            ? Math.round(corr)
+            : Number(corr.toFixed(4))
+        );
       }
     }
     return results;

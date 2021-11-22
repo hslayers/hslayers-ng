@@ -10,15 +10,14 @@
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <thead>
-                    <th>Variable 1</th>
-                    <th>Variable 2</th>
-                    <th>Correlation</th>
+                    <tr>
+                        <th></th>
+                        <th *ngFor="let item of data | keyvalue">{{item.key}}</th>
+                    </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let result of data">
-                        <td>{{result.var1}}</td>
-                        <td>{{result.var2}}</td>
-                        <td>{{result.coefficient | number: '1.2-2'}}</td>
+                <tbody *ngFor="let item of data | keyvalue">
+                    <tr>{{item.key}}
+                        <td *ngFor="let result of item.value">{{result}}</td>
                     </tr>
                 </tbody>
             </div>
