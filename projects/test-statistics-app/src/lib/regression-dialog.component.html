@@ -2,9 +2,32 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">
-                    {{'STATISTICS.REGRESSION' | translate}}
-                </h4>
+                <div class="modal-title">
+                    <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
+                        <div ngbDropdown placement="bottom-right">
+                            <button type="button" ngbDropdownToggle class="
+                      btn btn-sm
+                      rounded-0
+                      hs-toolbar-button
+                      d-flex
+                      align-items-center
+                      mw-100
+                    " aria-haspopup="true">
+                                <div class="text-truncate" *ngIf="selectedRegressionType !== undefined">
+                                    {{selectedRegressionType.title}}
+                                </div>
+                            </button>
+                            <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
+                                <div class="d-flex align-items-center w-100 flex-column">
+                                    <a class="dropdown-item text-truncate" *ngFor="let regType of regressionTypes"
+                                        data-toggle="tooltip"
+                                        (click)="selectRegressionType(regType)">{{regType.title}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {{'STATISTICS.REGRESSION' | translate}}
+                    </div>
+                </div>
                 <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
                         class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
             </div>
@@ -27,8 +50,9 @@
                         </button>
                         <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
                             <div class="d-flex align-items-center w-100 flex-column">
-                                <a class="dropdown-item text-truncate" *ngFor="let col of hsStatisticsService.corpus.variables"
-                                    data-toggle="tooltip" (click)="selectVariable(col)">{{col}}</a>
+                                <a class="dropdown-item text-truncate"
+                                    *ngFor="let col of hsStatisticsService.corpus.variables" data-toggle="tooltip"
+                                    (click)="selectVariable(col)">{{col}}</a>
                             </div>
                         </div>
                     </div>
@@ -36,30 +60,35 @@
 
                 <ul class="list-group hs-styler-content-list">
                     <ng-container *ngFor="let col of colWrappers">
-                        <li
-                            class="list-group-item hs-list-item-header list-group-item-primary">
+                        <li class="list-group-item hs-list-item-header list-group-item-primary"
+                            *ngIf="col.name !== selectedVariable">
                             <div d-flex flex-row justify-content-between align-items-center>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" (change)="visualize(col)" [(ngModel)]="col.checked" id="hs-time-series-col-{{colWrappers.indexOf(col)}}">
+                                    <input class="form-check-input" type="checkbox" (change)="visualizeSimpleReg(col)"
+                                        [(ngModel)]="col.checked" id="hs-time-series-col-{{colWrappers.indexOf(col)}}">
                                     <label class="form-check-label" for="{{colWrappers.indexOf(col)}}">
                                         {{col.name}}
                                     </label>
                                 </div>
                             </div>
-                            <div class="container-fluid" [hidden]="!col.checked || !selectedVariable">
+                            <div class="container-fluid" [hidden]="!col.checked || !selectedVariable || selectedRegressionType.name === 'multi-linear'">
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="hs-statistics-regression-{{colWrappers.indexOf(col)}}" [ngStyle]="col.checked ? {'min-width': '400px', 'min-height': '300px'} : {}"></div>
+                                        <div class="hs-statistics-regression-{{colWrappers.indexOf(col)}}"
+                                            [ngStyle]="col.checked ? {'min-width': '400px', 'min-height': '300px'} : {}">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row" *ngIf="col.regressionOutput">
                                     <div class="col-9">
-                                        Y - {{selectedVariable}} <br/>
-                                        X - {{col.name}} <br/>
+                                        Y - {{selectedVariable}} <br />
+                                        X - {{col.name}} <br />
                                         Y = X * {{col.regressionOutput.m}} + {{col.regressionOutput.b}}
                                     </div>
                                     <div class="col-3">
-                                        <button type="button" class="btn btn-primary m-1" (click)="openPredictionDialog(selectedVariable, col)">{{'STATISTICS.PREDICT' |
+                                        <button type="button" class="btn btn-primary m-1"
+                                            (click)="openPredictionDialog(selectedVariable, col)">{{'STATISTICS.PREDICT'
+                                            |
                                             translate}}</button>
                                     </div>
                                 </div>
@@ -67,6 +96,30 @@
                         </li>
                     </ng-container>
                 </ul>
+                <div class="container-fluid" *ngIf="multipleRegressionOutput && selectedRegressionType.name === 'multi-linear'">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hs-statistics-multi-regression"
+                                [ngStyle]="{'min-width': '400px', 'min-height': '300px'}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-9">
+                            Y - {{selectedVariable}} <br />
+                            <span *ngFor="let col of multipleRegressionOutput.variables">
+                                X{{multipleRegressionOutput.variables.indexOf(col)}} - {{col.name}} <br />
+                            </span>
+                            Y = <span *ngFor="let col of multipleRegressionOutput.variables">X{{multipleRegressionOutput.variables.indexOf(col)}}  * {{col.coefficient}}</span> + {{multipleRegressionOutput.constant}}
+                        </div>
+                        <div class="col-3">
+                            <button type="button" class="btn btn-primary m-1"
+                                (click)="openPredictionDialog(selectedVariable, multipleRegressionOutput)">{{'STATISTICS.PREDICT'
+                                |
+                                translate}}</button>
+                        </div>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

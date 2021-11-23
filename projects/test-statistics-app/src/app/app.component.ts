@@ -104,6 +104,7 @@ export class HslayersAppComponent {
             VARIABLES: 'Variables',
             VISUALIZE_MAP: 'To map',
             VISUALIZE: 'Visualize',
+            REGRESSION_TYPE: 'Type',
           },
         },
       },
