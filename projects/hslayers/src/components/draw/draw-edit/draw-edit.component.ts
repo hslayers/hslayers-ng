@@ -120,19 +120,19 @@ export class DrawEditComponent implements OnDestroy {
         const features = this.editLayer.getSource().getFeatures();
         if (features.length > 1) {
           this.HsQueryVectorService.removeFeature(features[0]);
-        }
 
-        this.hsToastService.createToastPopupMessage(
-          this.HsLanguageService.getTranslation(
-            'DRAW.featureEditor.featureEditor'
-          ),
-          this.HsLanguageService.getTranslation(
-            'DRAW.featureEditor.onlyOneSplitLine'
-          ),
-          {
-            toastStyleClasses: 'bg-info text-light',
-          }
-        );
+          this.hsToastService.createToastPopupMessage(
+            this.HsLanguageService.getTranslation(
+              'DRAW.featureEditor.featureEditor'
+            ),
+            this.HsLanguageService.getTranslation(
+              'DRAW.featureEditor.onlyOneSplitLine'
+            ),
+            {
+              toastStyleClasses: 'bg-info text-light',
+            }
+          );
+        }
       }
 
       this.HsDrawService.addFeatureToSelector(e.feature);
