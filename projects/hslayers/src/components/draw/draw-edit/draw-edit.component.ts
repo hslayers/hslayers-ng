@@ -227,15 +227,17 @@ export class DrawEditComponent implements OnDestroy {
   }
 
   union(newGeom): void {
-    this.setCoordinatesToFirstFeature(newGeom);
-    for (const index in this.HsQueryBaseService.data.features) {
+    const features = this.HsQueryBaseService.data.features;
+    const featuresLength = features.length;
+    for (let i = 0; i <= featuresLength; i++) {
       //Remove all but the first (edited) features
-      // if (parseInt(index) > 0) {
-      //   this.HsQueryVectorService.removeFeature(
-      //     this.HsQueryBaseService.data.features[index].feature
-      //   );
-      // }
+      if (features.length != 1) {
+        this.HsQueryVectorService.removeFeature(
+          features[features.length - 1].feature
+        );
+      }
     }
+    this.setCoordinatesToFirstFeature(newGeom);
     this.resetState();
   }
 
