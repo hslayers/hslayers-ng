@@ -24,6 +24,7 @@ import {defaultStyle} from '../../styles/styles';
   styleUrls: ['./draw-edit.component.scss'],
 })
 export class DrawEditComponent implements OnDestroy {
+  vectorQueryFeatureSubscription;
   editOptions = ['difference', 'union', 'intersection', 'split'];
   selectedType: 'difference' | 'union' | 'intersection' | 'split';
 
@@ -48,19 +49,54 @@ export class DrawEditComponent implements OnDestroy {
     public hsToastService: HsToastService,
     public hsEventBusService: HsEventBusService
   ) {
+    this.checkFeatureGeometryType(
+      this.HsQueryVectorService.selector.getFeatures().getArray()[0]
+    );
     this.hsMapService.loaded().then((map) => {
       map.addLayer(this.editLayer);
     });
 
-    this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
-      if (
-        data.selector.getFeatures().getLength() > 1 &&
-        this.editLayer != this.hsMapService.getLayerForFeature(data.feature) &&
-        this.selectedType == 'split'
-      ) {
-        this.deselectMultiple();
-      }
-    });
+    this.vectorQueryFeatureSubscription =
+      this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
+        const selectorFeatures = data.selector.getFeatures().getArray();
+        if (!this.checkFeatureGeometryType(selectorFeatures[0])) {
+          return;
+        }
+        if (
+          selectorFeatures.length > 1 &&
+          this.editLayer !=
+            this.hsMapService.getLayerForFeature(data.feature) &&
+          this.selectedType == 'split'
+        ) {
+          if (selectorFeatures.length == 3) {
+            //Switch between two splitting lines
+            if (selectorFeatures[2].getGeometry().getType() == 'LineString') {
+              data.selector.getFeatures().remove(selectorFeatures[1]);
+              this.hsToastService.createToastPopupMessage(
+                this.HsLanguageService.getTranslation(
+                  'DRAW.featureEditor.featureEditor'
+                ),
+                this.HsLanguageService.getTranslation(
+                  'DRAW.featureEditor.onlyOneSplitLine'
+                ),
+                {
+                  toastStyleClasses: 'bg-info text-light',
+                }
+              );
+            } else {
+              //Remove lastly selected feature.
+              //TODO: Feature is removed from selector properly but its style is not refreshed(looks like its still selected)
+              data.selector.getFeatures().pop();
+            }
+          }
+          if (
+            selectorFeatures.length == 2 &&
+            selectorFeatures[1].getGeometry().getType() != 'LineString'
+          ) {
+            this.deselectMultiple();
+          }
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -68,10 +104,35 @@ export class DrawEditComponent implements OnDestroy {
       map.removeLayer(this.editLayer);
       this.setType(this.HsDrawService.type);
       this.HsDrawService.selectedLayer = null;
+      this.vectorQueryFeatureSubscription.unsubscribe();
     });
   }
 
-  selectModification(option): void {
+  /**
+   * Check whether selected feature geometry type is valid
+   * (Geometry operations work on polygon only)
+   */
+  checkFeatureGeometryType(feature) {
+    if (!feature) {
+      return false;
+    }
+    const isValidType = feature.getGeometry().getType() == 'Polygon';
+    if (!isValidType) {
+      this.hsToastService.createToastPopupMessage(
+        this.HsLanguageService.getTranslation(
+          'DRAW.featureEditor.featureEditor'
+        ),
+        'Only polygon geometry can be edited'
+      );
+      this.resetState();
+    }
+    return isValidType;
+  }
+
+  /**
+   * Selects geometry operation (one of editOptions)
+   */
+  selectGeomOperation(option): void {
     this.selectedType = option;
 
     if (this.HsDrawService.draw) {
@@ -92,7 +153,8 @@ export class DrawEditComponent implements OnDestroy {
   }
 
   //Deselects multi selection. Only one feature can be edited at the time
-  deselectMultiple(): void {
+  //Index can specify whitch feature to preserve in selection
+  deselectMultiple(index = 1): void {
     this.hsToastService.createToastPopupMessage(
       this.HsLanguageService.getTranslation('DRAW.featureEditor.featureEditor'),
       this.HsLanguageService.getTranslation(
@@ -103,13 +165,17 @@ export class DrawEditComponent implements OnDestroy {
       }
     );
     setTimeout(() => {
-      const feature = this.HsQueryBaseService.selector
-        .getFeatures()
-        .getArray()[1];
-      this.HsQueryBaseService.clearData('features');
-      this.HsQueryBaseService.selector.getFeatures().clear();
-      this.HsQueryBaseService.selector.getFeatures().push(feature);
-      this.HsQueryVectorService.createFeatureAttributeList();
+      try {
+        const feature = this.HsQueryBaseService.selector
+          .getFeatures()
+          .getArray()[index];
+        this.HsQueryBaseService.clearData('features');
+        this.HsQueryBaseService.selector.getFeatures().clear();
+        this.HsQueryBaseService.selector.getFeatures().push(feature);
+        this.HsQueryVectorService.createFeatureAttributeList();
+      } catch (error) {
+        console.error(error);
+      }
     });
   }
 
@@ -155,6 +221,12 @@ export class DrawEditComponent implements OnDestroy {
       this.HsQueryBaseService.selector.setActive(false);
       this.HsDrawService.activateDrawing({onDrawEnd: (e) => this.onDrawEnd(e)});
     }
+    if (
+      this.selectedType == 'split' &&
+      this.HsQueryBaseService.data.features.length > 1
+    ) {
+      this.deselectMultiple(0);
+    }
   }
 
   translateString(module: string, text: string): string {
@@ -185,7 +257,10 @@ export class DrawEditComponent implements OnDestroy {
 
     if (type === 'split') {
       const thickLine = [];
-      const splittingLine = this.editLayer.getSource().getFeatures()[0];
+      const splittingLine =
+        this.HsQueryBaseService.data.features.length > 1
+          ? this.HsQueryBaseService.data.features[1].feature
+          : this.editLayer.getSource().getFeatures()[0];
       const parser = new GeoJSON();
       const GeoJSONline = parser.writeFeatureObject(splittingLine);
       thickLine[0] = lineOffset(GeoJSONline, 0.1, {units: 'degrees'});

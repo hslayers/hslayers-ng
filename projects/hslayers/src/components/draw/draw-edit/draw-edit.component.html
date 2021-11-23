@@ -9,7 +9,7 @@
 
     <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center">
         <button *ngFor="let option of editOptions" class="btn btn-sm btn-light btn-outline-primary"
-            [ngClass]="{active: selectedType === option }" (click)="selectModification(option)">
+            [ngClass]="{active: selectedType === option }" (click)="selectGeomOperation(option)">
             {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',option)}}
         </button>
     </div>
