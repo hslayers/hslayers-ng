@@ -423,7 +423,7 @@
       "featureEditor": "Editor prvkov",
       "noIntersection": "Pre vybrané prvky sa nenašiel žiadny spoločný prekryv",
       "onlyOneSplitLine": "Povolená je len jedna deliaca línia",
-      "selectFeatureToEdit": "Vyberte prvok, ktorý chcete upraviť!",
+      "selectFeatureToEdit": "Vyberte polygon, ktorý chcete upraviť!",
       "selectedFeature": "Vybraný prvok",
       "featureCanBeEditedbyOptions": "možno upraviť jednou z dostupných možností",
       "drawNewFeature": "Nakreslite nový prvok",

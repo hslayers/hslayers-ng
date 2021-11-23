@@ -423,7 +423,7 @@
       "featureEditor": "Feature editor",
       "noIntersection": "No common intersection found for selected features",
       "onlyOneSplitLine": "Only one splitting line allowed",
-      "selectFeatureToEdit": "Select a feature you want to edit!",
+      "selectFeatureToEdit": "Select a polygon feature you want to edit!",
       "selectedFeature": "Selected feature",
       "featureCanBeEditedbyOptions": "can be edited by one of the avaliable options",
       "editOptions": {
