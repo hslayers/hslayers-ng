@@ -825,5 +825,10 @@
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypointLayer": "Vrstva s body trasy",
     "waypoints": "Body trasy"
+  },
+  "LAYMAN": {
+    "ERROR": {
+      "50": "Chyba při normalizaci rastrového souboru"
+    }
   }
 }
