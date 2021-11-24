@@ -13,7 +13,8 @@ import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 })
 export class HsFileGeotiffComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   dataType = 'geotiff';
   constructor(
     public hsFileGeotiffService: HsFileGeotiffService,
@@ -25,7 +26,7 @@ export class HsFileGeotiffComponent
   }
   ngOnInit(): void {
     this.baseDataType = this.dataType;
-    this.acceptedFormats = '.tif, .tiff, .gtiff';
+    this.acceptedFormats = '.tif, .tiff, .gtiff, .zip';
     super.ngOnInit();
   }
 

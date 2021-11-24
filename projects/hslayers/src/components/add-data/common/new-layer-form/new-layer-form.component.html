@@ -29,7 +29,7 @@
   <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable">
     <hs-save-to-layman [data]="data"></hs-save-to-layman>
   </ng-container>
-  <ng-container *ngIf="data.type === 'shp'">
+  <ng-container *ngIf="data.type === 'shp' || data.type === 'geotiff'">
     <div class="d-flex justify-content-between align-items-center">
       <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
       <label class="dropzone-label">

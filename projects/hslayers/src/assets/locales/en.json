@@ -536,6 +536,8 @@
   },
   "LAYMAN": {
     "ERROR": {
+      "2": "Unable to open raster file",
+      "18": "Missing one or more Shape files",
       "50": "Error when normalizing raster file"
     }
   },
