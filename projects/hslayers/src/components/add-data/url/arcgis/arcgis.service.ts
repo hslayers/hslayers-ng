@@ -56,19 +56,18 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       return;
     }
     try {
-      await this.createLayer(
-        wrapper.response,
-        this.hsAddDataCommonService.layerToSelect
-      );
+      await this.createLayer(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         this.addLayers(true);
+        this.hsAddDataCommonService.layerToSelect = null;
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
     }
   }
 
-  createLayer(response, layerToSelect: string): Promise<void> {
+  createLayer(response): Promise<void> {
     return new Promise(() => {
       try {
         const caps = response;
@@ -100,11 +99,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         })();
         this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
           this.data.srs
-        );
-        this.hsAddDataUrlService.selectLayerByName(
-          layerToSelect,
-          this.data.services,
-          'Name'
         );
         this.data.image_format = getPreferredFormat(this.data.image_formats, [
           'PNG32',
