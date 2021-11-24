@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsAddDataCommonService} from '../common.service';
-import {HsFileShpService} from '../../file/shp/shp.service';
+import {HsFileService} from '../../file/file.service';
 import {HsLanguageService} from './../../../../components/language/language.service';
 import {HsUploadedFiles} from './../../../../common/upload/upload.component';
 
@@ -17,7 +17,7 @@ export class HsNewLayerFormComponent {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLanguageService: HsLanguageService,
-    public hsFileShpService: HsFileShpService
+    public hsFileService: HsFileService
   ) {}
 
   sldTitle(): string {
@@ -30,6 +30,6 @@ export class HsNewLayerFormComponent {
   }
 
   async read(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileShpService.read(evt);
+    await this.hsFileService.read(evt);
   }
 }

@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
-import {HsFileShpService} from './shp.service';
+import {HsFileService} from '../file.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 
@@ -13,12 +13,11 @@ import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 })
 export class HsFileShpComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   dataType = 'shp';
 
   constructor(
-    public hsFileShpService: HsFileShpService,
+    public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLayoutService: HsLayoutService
@@ -33,6 +32,6 @@ export class HsFileShpComponent
   }
 
   async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileShpService.read(evt);
+    await this.hsFileService.read(evt);
   }
 }

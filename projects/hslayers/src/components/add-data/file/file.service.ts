@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 
-import {HsAddDataCommonFileService} from '../../common/common-file.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsUploadedFiles} from '../../../../common/upload/upload.component';
-import {fileDataObject} from '../types/file-data-object.type';
+import {HsAddDataCommonFileService} from './../common/common-file.service';
+import {HsLanguageService} from './../../language/language.service';
+import {HsUploadedFiles} from './../../../common/upload/upload.component';
+import {fileDataObject} from './types/file-data-object.type';
 
 @Injectable({providedIn: 'root'})
-export class HsFileShpService {
+export class HsFileService {
   fileUploadErrorHeader = 'ADDLAYERS.couldNotUploadSelectedFile';
   constructor(
     public hsLanguageService: HsLanguageService,
@@ -45,6 +45,10 @@ export class HsFileShpService {
       if (evt.uploader === 'sld') {
         data.sld = filesRead[0];
         this.hsAddDataCommonFileService.dataObjectChanged.next(data);
+      }
+      if (evt.uploader === 'hs-geotiff-file') {
+        data.files = filesRead;
+        this.hsAddDataCommonFileService.setDataName(data);
       }
     } catch (e) {
       this.hsAddDataCommonFileService.catchError({

@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
-import {HsFileGeotiffService} from './geotiff.service';
+import {HsFileService} from '../file.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 
@@ -13,11 +13,10 @@ import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 })
 export class HsFileGeotiffComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   dataType = 'geotiff';
   constructor(
-    public hsFileGeotiffService: HsFileGeotiffService,
+    public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLayoutService: HsLayoutService
@@ -31,6 +30,6 @@ export class HsFileGeotiffComponent
   }
 
   async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileGeotiffService.read(evt);
+    await this.hsFileService.read(evt);
   }
 }
