@@ -19,25 +19,38 @@ export class HsFileGeotiffService {
     const data: fileDataObject = {};
     const files = Array.from(datasource.fileList);
     try {
+      if (!this.hsAddDataCommonFileService.filesValid(files)) {
+        return;
+      }
       for (const file of files) {
         const filePromise = new Promise(async (resolve) => {
-          const tiff = await fromBlob(file);
-          filesRead.push({
-            name: tiff.source.file.name,
-            type: tiff.source.file.type,
-            content: await tiff.source.file,
-          });
-          resolve(tiff);
+          if (this.hsAddDataCommonFileService.isZip(file.type)) {
+            const reader = new FileReader();
+            reader.onload = (loadEvent) => {
+              filesRead.push({
+                name: file.name,
+                type: file.type,
+                content: loadEvent.target.result,
+              });
+              resolve(reader.result);
+            };
+            reader.readAsArrayBuffer(file);
+          } else {
+            const tiff = await fromBlob(file);
+            filesRead.push({
+              name: tiff.source.file.name,
+              type: tiff.source.file.type,
+              content: await tiff.source.file,
+            });
+            resolve(tiff);
+          }
         });
         promises.push(filePromise);
       }
-      if (datasource.uploader === 'hs-geotiff-file') {
-        data.files = filesRead;
-      }
       await Promise.all(promises);
-      data.name = data.files[0].name.slice(0, -4);
-      data.title = data.files[0].name.slice(0, -4);
-      this.hsAddDataCommonFileService.dataObjectChanged.next(data);
+
+      data.files = filesRead;
+      this.hsAddDataCommonFileService.setDataName(data);
     } catch (error) {
       this.hsAddDataCommonFileService.catchError({message: error.message});
     }

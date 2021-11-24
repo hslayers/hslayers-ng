@@ -27,7 +27,7 @@ export class HsFileShpComponent
   }
 
   ngOnInit(): void {
-    this.acceptedFormats = '.shp, .shx, .dbf, .sbn';
+    this.acceptedFormats = '.shp, .shx, .dbf, .sbn, .zip';
     this.baseDataType = this.dataType;
     super.ngOnInit();
   }

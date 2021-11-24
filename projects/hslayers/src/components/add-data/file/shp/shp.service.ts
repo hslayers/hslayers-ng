@@ -19,6 +19,9 @@ export class HsFileShpService {
     const promises = [];
     const data: fileDataObject = {};
     try {
+      if (!this.hsAddDataCommonFileService.filesValid(files)) {
+        return;
+      }
       for (const file of files) {
         const filePromise = new Promise((resolve) => {
           const reader = new FileReader();
@@ -37,34 +40,37 @@ export class HsFileShpService {
       await Promise.all(promises);
       if (evt.uploader === 'shpdbfshx') {
         data.files = filesRead;
+        this.checkShpFiles(data);
       }
-
       if (evt.uploader === 'sld') {
         data.sld = filesRead[0];
-      } else {
-        if (data.files.length == 3) {
-          data.name = data.files[0].name.slice(0, -4);
-          data.title = data.files[0].name.slice(0, -4);
-          this.hsAddDataCommonFileService.dataObjectChanged.next(data);
-        } else if (data.files.length > 3) {
-          this.hsAddDataCommonFileService.catchError({
-            message: this.hsLanguageService.getTranslationIgnoreNonExisting(
-              'ADDLAYERS.SHP',
-              'maximumNumberOf',
-              {length: data.files.length}
-            ),
-            header: this.fileUploadErrorHeader,
-          });
-        } else {
-          this.hsAddDataCommonFileService.catchError({
-            message: 'ADDLAYERS.SHP.missingOneOrMore',
-            header: this.fileUploadErrorHeader,
-          });
-        }
+        this.hsAddDataCommonFileService.dataObjectChanged.next(data);
       }
     } catch (e) {
       this.hsAddDataCommonFileService.catchError({
         message: e.message,
+        header: this.fileUploadErrorHeader,
+      });
+    }
+  }
+  checkShpFiles(data: fileDataObject): void {
+    if (
+      data.files.length == 3 ||
+      this.hsAddDataCommonFileService.isZip(data.files[0].type)
+    ) {
+      this.hsAddDataCommonFileService.setDataName(data);
+    } else if (data.files.length > 3) {
+      this.hsAddDataCommonFileService.catchError({
+        message: this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS.SHP',
+          'maximumNumberOf',
+          {length: data.files.length}
+        ),
+        header: this.fileUploadErrorHeader,
+      });
+    } else {
+      this.hsAddDataCommonFileService.catchError({
+        message: 'ADDLAYERS.SHP.missingOneOrMore',
         header: this.fileUploadErrorHeader,
       });
     }

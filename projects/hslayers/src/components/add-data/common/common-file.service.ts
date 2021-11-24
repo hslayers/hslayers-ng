@@ -84,6 +84,28 @@ export class HsAddDataCommonFileService {
         );
   }
 
+  filesValid(files: File[]): boolean {
+    let isValid = true;
+    const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
+    if (zipFilesCount === 1 && files.length > 1) {
+      this.catchError({message: 'Mixed zip with simple files'});
+      isValid = false;
+    }
+    if (zipFilesCount > 1) {
+      isValid = false;
+      this.catchError({message: 'Please upload only one zip folder!'});
+    }
+    return isValid;
+  }
+
+  isZip(type: string): boolean {
+    return [
+      'application/zip',
+      'application/x-zip',
+      'application/x-zip-compressed',
+    ].includes(type);
+  }
+
   /**
    * Load non-wms OWS data and create layer
    * @param endpoint - Layman endpoint description (url, name, user)
@@ -107,12 +129,17 @@ export class HsAddDataCommonFileService {
   ): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
-      const zip = new JSZip();
-      files.forEach((file) => {
-        zip.file(file.name + file.type, file.content);
-      });
-      const zipContent = await zip.generateAsync({type: 'blob'});
-      formdata.append('file', zipContent, 'data.zip');
+      let zipContent;
+      if (this.isZip(files[0].type)) {
+        zipContent = new Blob([files[0].content], {type: files[0].type});
+      } else {
+        const zip = new JSZip();
+        files.forEach((file) => {
+          zip.file(file.name, file.content);
+        });
+        zipContent = await zip.generateAsync({type: 'blob'});
+      }
+      formdata.append('file', zipContent, files[0].name.split('.')[0] + '.zip');
       const files_to_async_upload = [];
       const sumFileSize = formdata
         .getAll('file')
@@ -218,7 +245,9 @@ export class HsAddDataCommonFileService {
         .then((descriptor) => {
           if (descriptor?.file.error) {
             this.hsToastService.createToastPopupMessage(
-              'ADDLAYERS.ERROR.someErrorHappened',
+              this.hsLanguageService.getTranslation(
+                'ADDLAYERS.ERROR.someErrorHappened'
+              ),
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'LAYMAN.ERROR',
                 descriptor.file.error.code.toString()
@@ -228,6 +257,7 @@ export class HsAddDataCommonFileService {
                 disableLocalization: true,
               }
             );
+            this.layerAddedAsWms.next(false);
             return;
           }
           this.hsLaymanService.totalProgress = 0;
@@ -247,8 +277,8 @@ export class HsAddDataCommonFileService {
             err?.error?.message ?? err?.message == 'Wrong parameter value'
               ? `${err?.message} : ${err?.detail.parameter}`
               : err?.message;
-          const errorDetails = err?.error?.detail?.missing_extensions
-            ? Object.values(err.error.detail?.missing_extensions)
+          const errorDetails = err?.detail?.missing_extensions
+            ? Object.values(err.detail?.missing_extensions)
             : [];
           this.catchError({message: errorMessage, details: errorDetails});
         });
@@ -314,5 +344,11 @@ export class HsAddDataCommonFileService {
 
   isAuthorized(): boolean {
     return this.hsLaymanService.getLaymanEndpoint().authenticated;
+  }
+
+  setDataName(data: fileDataObject): void {
+    data.name = data.files[0].name.slice(0, -4);
+    data.title = data.files[0].name.slice(0, -4);
+    this.dataObjectChanged.next(data);
   }
 }

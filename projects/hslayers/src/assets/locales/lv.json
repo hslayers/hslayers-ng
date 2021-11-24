@@ -810,6 +810,8 @@
   },
   "LAYMAN": {
     "ERROR": {
+      "2": "Nevar atvērt rastra failu",
+      "18": "Trūkst viena vai vairāku Shape failu",
       "50": "Kļūda, normalizējot rastra failu"
     }
   }
