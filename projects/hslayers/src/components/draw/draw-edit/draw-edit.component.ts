@@ -133,6 +133,7 @@ export class DrawEditComponent implements OnDestroy {
    * Selects geometry operation (one of editOptions)
    */
   selectGeomOperation(option): void {
+    const features = this.HsQueryVectorService.selector.getFeatures();
     this.selectedType = option;
 
     if (this.HsDrawService.draw) {
@@ -146,8 +147,18 @@ export class DrawEditComponent implements OnDestroy {
       if (this.editLayer.getSource().getFeatures().length > 0) {
         this.editLayer.getSource().clear();
       }
-      if (this.HsQueryBaseService.selector.getFeatures().getLength() > 1) {
+      if (features.getLength() > 1) {
         this.deselectMultiple();
+      }
+    } else {
+      if (features.getLength() > 1) {
+        //Remove non polygon features from selection
+        const featuresToRemove = features
+          .getArray()
+          .filter((feature) => feature.getGeometry().getType() != 'Polygon');
+        for (const feature of featuresToRemove) {
+          features.remove(feature);
+        }
       }
     }
   }
@@ -308,7 +319,7 @@ export class DrawEditComponent implements OnDestroy {
       //Remove all but the first (edited) features
       if (features.length != 1) {
         this.HsQueryVectorService.removeFeature(
-          features[features.length - 1].feature
+          features[features.length - 1].feature //pop() ??
         );
       }
     }
