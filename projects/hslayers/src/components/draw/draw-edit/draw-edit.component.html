@@ -30,31 +30,10 @@
             </button>
             <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translate}}
             </span>
-            <div ngbDropdown placement="bottom-center" class=" w-50 btn-group btn-group-sm" role="group"
-                #selectionTypeDropdown="ngbDropdown">
-                <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"
-                    [title]="'STYLER.selection' | translate" class="btn btn-light btn-outline-primary"
-                    (click)="$event.preventDefault(); selectionMenuToggled()">
-                    <i class="icon-cursor"></i>
-                </button>
-                <div ngbDropdownMenu style="white-space: nowrap;">
-                    <div class="d-flex flex-column px-1 py-2">
-                        <div class="d-flex flex-row justify-content-around align-items-baseline">
-                            <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
-                                translate}}</label>
-                            <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-                                (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
-                                id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
-                        </div>
-                        <button class="btn btn-primary btn-sm hs-draw-selectAll"
-                            [disabled]="!HsDrawService.selectedLayer"
-                            (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()"
-                            data-toggle="tooltip" [title]="'DRAW.deselectAllFeatures' | translate">
-                            {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
+                (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translate">
+                <i class="icon-cursor"></i>
+            </button>
         </div>
 
         <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)"
