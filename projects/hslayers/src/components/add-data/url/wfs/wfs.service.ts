@@ -83,18 +83,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     try {
       const bbox = await this.parseCapabilities(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
-        for (const layer of this.data.services) {
-          //TODO: If Layman allows layers with different casing,
-          // then remove the case lowering
-          if (
-            layer.Title.toLowerCase() ===
-              this.hsAddDataCommonService.layerToSelect.toLowerCase() ||
-            layer.Name.toLowerCase() ===
-              this.hsAddDataCommonService.layerToSelect.toLowerCase()
-          ) {
-            layer.checked = true;
-          }
-        }
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         this.addLayers(true, style);
         this.hsAddDataCommonService.layerToSelect = null;
         this.zoomToBBox(bbox);

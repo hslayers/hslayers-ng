@@ -41,6 +41,16 @@ export class HsAddDataCommonService {
     this.url = url;
   }
 
+  checkTheSelectedLayer(services: any) {
+    for (const layer of services) {
+      //TODO: If Layman allows layers with different casing,
+      // then remove the case lowering
+      if (layer.Name.toLowerCase() === this.layerToSelect.toLowerCase()) {
+        layer.checked = true;
+      }
+    }
+  }
+
   displayParsingError(e: any): void {
     if (e?.status === 401) {
       this.hsToastService.createToastPopupMessage(

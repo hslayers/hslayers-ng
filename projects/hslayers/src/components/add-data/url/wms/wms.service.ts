@@ -89,7 +89,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.hsAddDataCommonService.layerToSelect
       );
       if (this.hsAddDataCommonService.layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         this.addLayers(true);
+        this.hsAddDataCommonService.layerToSelect = null;
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -215,11 +217,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       } else {
         this.data.extent = this.calcAllLayersExtent(this.data.services);
       }
-      this.hsAddDataUrlService.selectLayerByName(
-        layerToSelect,
-        this.data.services,
-        'Name'
-      );
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
       this.data.get_map_url = this.removePortIfProxified(

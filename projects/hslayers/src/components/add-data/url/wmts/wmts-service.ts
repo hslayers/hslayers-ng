@@ -53,9 +53,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       //TODO AWAIT and add-layer if layerToSelect
       await this.capabilitiesReceived(response);
       if (this.hsAddDataCommonService.layerToSelect) {
-        for (const layer of this.data.services) {
-          this.addLayers(true);
-        }
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
+        this.addLayers(true);
+        this.hsAddDataCommonService.layerToSelect = null;
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -76,14 +76,6 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.Version || caps.version;
       this.data.services = caps.Contents.Layer;
-
-      this.hsAddDataUrlService.selectLayerByName(
-        this.hsAddDataCommonService.layerToSelect,
-        this.data.services,
-        'Title'
-      );
-      //TODO Layer to select
-
       this.hsAddDataCommonService.loadingInfo = false;
       return this.data.title;
     } catch (e) {
