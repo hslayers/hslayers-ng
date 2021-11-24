@@ -303,7 +303,7 @@ export class HsAddDataCommonFileService {
         endpoint.user
       );
       if (
-        ['UPDATING'].includes(descriptor.layman_metadata.publication_status)
+        ['UPDATING'].includes(descriptor.layman_metadata?.publication_status)
       ) {
         return new Promise((resolve) => {
           setTimeout(() => {

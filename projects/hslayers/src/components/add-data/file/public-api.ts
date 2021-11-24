@@ -8,3 +8,4 @@ export * from './geotiff/public-api';
 export * from './shp/public-api';
 export * from './file-base.component';
 export * from './types/file-data-object.type';
+export * from './file.service';
