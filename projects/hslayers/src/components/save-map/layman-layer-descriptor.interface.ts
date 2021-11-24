@@ -10,4 +10,7 @@ export interface HsLaymanLayerDescriptor {
   };
   code?: any;
   exists?: boolean;
+  layman_metadata?: {
+    publication_status: string;
+  };
 }

@@ -269,7 +269,7 @@ export class HsAddDataCommonFileService {
               uri: descriptor.wms.url,
               layer: data.name,
             });
-          }, 500);
+          }, 1000);
           return;
         })
         .catch((err) => {
@@ -302,7 +302,9 @@ export class HsAddDataCommonFileService {
         layerName,
         endpoint.user
       );
-      if (['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)) {
+      if (
+        ['UPDATING'].includes(descriptor.layman_metadata.publication_status)
+      ) {
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(this.describeNewLayer(endpoint, layerName));
