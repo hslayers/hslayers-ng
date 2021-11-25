@@ -28,8 +28,7 @@ import {max, min} from 'simple-statistics';
   templateUrl: './to-map-dialog.component.html',
 })
 export class HsStatisticsToMapDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   @Input() data: {
     rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
@@ -95,7 +94,10 @@ export class HsStatisticsToMapDialogComponent
   }
 
   isDataLoaded(): boolean {
-    if (this.data.rows?.length > 0 && this.data.columns?.length > 0) {
+    if (
+      Object.keys(this.data.rows)?.length > 0 &&
+      this.data.columns?.length > 0
+    ) {
       return true;
     } else {
       return false;
@@ -158,8 +160,8 @@ export class HsStatisticsToMapDialogComponent
         .map((row) => parseFloat(row[this.selectedVariable]));
     }
 
-    this.min = min(filteredValues);
-    this.max = max(filteredValues);
+    this.min = min(filteredValues) || 0;
+    this.max = max(filteredValues) || 0;
   }
 
   async visualize(): Promise<void> {
