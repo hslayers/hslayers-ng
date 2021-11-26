@@ -123,7 +123,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       // this.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
-        ? caps.FeatureTypeList.FeatureType[0]
+        ? caps.FeatureTypeList.FeatureType.find(
+            (layer) => layer.Name == this.hsAddDataCommonService.layerToSelect
+          )
         : caps.FeatureTypeList.FeatureType;
       this.data.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType
