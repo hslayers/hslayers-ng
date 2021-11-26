@@ -267,8 +267,11 @@ export class HsStylerService {
       this.layer = layer;
       this.layerTitle = getTitle(layer);
       const sld = getSld(layer);
+      const qml = getQml(layer);
       if (sld != undefined) {
         this.styleObject = await this.sldToJson(sld);
+      } else if (qml != undefined) {
+        this.styleObject = await this.qmlToJson(qml);
       } else {
         this.styleObject = {name: 'untitled style', rules: []};
       }
