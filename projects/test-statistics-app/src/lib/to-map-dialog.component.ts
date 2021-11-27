@@ -3,10 +3,6 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-
-import {CorpusItemValues, Usage} from './statistics.service';
 import {
   HsDialogComponent,
   HsDialogContainerService,
@@ -16,7 +12,12 @@ import {
   getTitle,
   setSld,
 } from 'hslayers-ng';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {max, min} from 'simple-statistics';
+
+import {CorpusItemValues, Usage} from './statistics.service';
+import {HsStatisticsHistogramComponent} from './histogram-chart-dialog.component';
 
 /**
  * Dialog window to choose variables and filters to visualize data on map.
@@ -48,7 +49,7 @@ export class HsStatisticsToMapDialogComponent
   max: number;
   filteredRows: any[];
   locationColumn: string;
-
+  filteredValues: number[];
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -79,10 +80,12 @@ export class HsStatisticsToMapDialogComponent
           .map((row) => row.time);
       }
 
-      this.timeValues = tmpTimeValues.filter((value, index, self) => {
-        //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-        return self.indexOf(value) === index;
-      });
+      this.timeValues = tmpTimeValues
+        .filter((value, index, self) => {
+          //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+          return self.indexOf(value) === index;
+        })
+        .filter((val) => val);
 
       this.selectVariable(
         this.data.columns.find((col) => this.data.uses[col] == 'variable')
@@ -102,6 +105,16 @@ export class HsStatisticsToMapDialogComponent
     } else {
       return false;
     }
+  }
+
+  visualizeHistogram(): void {
+    this.HsDialogContainerService.create(HsStatisticsHistogramComponent, {
+      filteredValues: this.filteredValues,
+      selectedTime: this.selectedTimeValue,
+      min: this.min,
+      max: this.max,
+      selectedVariable: this.selectedVariable,
+    });
   }
 
   async fillVectorLayers(): Promise<void> {
@@ -132,6 +145,15 @@ export class HsStatisticsToMapDialogComponent
     this.selectedLayer = layer;
   }
 
+  histogramDisabled(): boolean {
+    return (
+      !this.filteredRows ||
+      !this.selectedVariable ||
+      !this.selectedTimeValue ||
+      !(this.min > 0 && this.max > 0)
+    );
+  }
+
   selectVariable(variable): void {
     this.selectedVariable = variable;
     this.applyFilters();
@@ -143,25 +165,24 @@ export class HsStatisticsToMapDialogComponent
   }
 
   applyFilters() {
-    let filteredValues;
     if (Array.isArray(this.data.rows)) {
       this.filteredRows = this.data.rows.filter(
         (row) => row[this.timeColumn] == this.selectedTimeValue
       );
-      filteredValues = this.filteredRows.map((row) =>
+      this.filteredValues = this.filteredRows.map((row) =>
         parseFloat(row[this.selectedVariable])
       );
     } else {
       this.filteredRows = Object.keys(this.data.rows)
         .map((key) => this.data.rows[key])
         .filter((row) => row.time == this.selectedTimeValue);
-      filteredValues = this.filteredRows
+      this.filteredValues = this.filteredRows
         .map((row) => row.values)
         .map((row) => parseFloat(row[this.selectedVariable]));
     }
 
-    this.min = min(filteredValues) || 0;
-    this.max = max(filteredValues) || 0;
+    this.min = min(this.filteredValues) || 0;
+    this.max = max(this.filteredValues) || 0;
   }
 
   async visualize(): Promise<void> {

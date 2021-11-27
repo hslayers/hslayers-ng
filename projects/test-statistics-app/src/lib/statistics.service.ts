@@ -65,10 +65,11 @@ export class HsStatisticsService {
         corpusItem = this.corpus.dict[key];
       }
       for (const col of columns.filter((col) => uses[col] == 'variable')) {
-        const escapedCol = col.replace(/\./g, '');
-        corpusItem.values[escapedCol] = parseFloat(row[col]);
-        if (!this.corpus.variables.some((v) => v == escapedCol)) {
-          this.corpus.variables.push(escapedCol);
+        //Why is this here? It breaks key comparisons between columns and usages
+        //const escapedCol = col.replace(/\./g, '');
+        corpusItem.values[col] = parseFloat(row[col]);
+        if (!this.corpus.variables.some((v) => v == col)) {
+          this.corpus.variables.push(col);
         }
       }
     }

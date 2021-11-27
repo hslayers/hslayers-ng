@@ -1,10 +1,12 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsPanelHelpersModule, HsUploadModule} from 'hslayers-ng';
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsStatisticsCorrelationsComponent} from './correlations.component';
+import {HsStatisticsHistogramComponent} from './histogram-chart-dialog.component';
 import {HsStatisticsPanelComponent} from './statistics-panel.component';
 import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {HsStatisticsRegressionDialogComponent} from './regression-dialog.component';
@@ -22,6 +24,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     HsStatisticsToMapDialogComponent,
     HsStatisticsTimeSeriesChartDialogComponent,
     HsStatisticsRegressionDialogComponent,
+    HsStatisticsHistogramComponent,
     HsStatisticsPredictionChartDialogComponent,
   ],
   imports: [
@@ -40,6 +43,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     HsStatisticsTimeSeriesChartDialogComponent,
     HsStatisticsRegressionDialogComponent,
     HsStatisticsPredictionChartDialogComponent,
+    HsStatisticsHistogramComponent,
   ],
   entryComponents: [HsStatisticsPanelComponent],
 })
