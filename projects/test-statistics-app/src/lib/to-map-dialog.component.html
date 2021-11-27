@@ -96,7 +96,10 @@
 
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary" (click)="visualize();" [disabled]="!filteredRows"data-dismiss="modal">{{'STATISTICS.VISUALIZE'
+                    <button class="btn btn-primary" (click)="visualizeHistogram();" [disabled]="histogramDisabled()"
+                        data-dismiss="modal">{{'STATISTICS.DESCRIPTIVE_STATISTICS'
+                        | translate}}</button>
+                    <button class="btn btn-primary" (click)="visualize();" [disabled]="!filteredRows" data-dismiss="modal">{{'STATISTICS.VISUALIZE'
                         | translate}}</button>
                 </div>
             </div>
