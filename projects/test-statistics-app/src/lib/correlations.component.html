@@ -24,32 +24,32 @@
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <ng-container *ngIf="tabSelected === tabs.varList">
-                                    <thead>
-                                        <th>Variable 1</th>
-                                        <th>Variable 2</th>
-                                        <th>Correlation</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let result of data.list">
-                                            <td>{{result.var1}}</td>
-                                            <td>{{result.var2}}</td>
-                                            <td>{{result.coefficient | number: '1.2-2'}}</td>
-                                        </tr>
-                                    </tbody>
+                    <thead>
+                        <th>Variable 1</th>
+                        <th>Variable 2</th>
+                        <th>Correlation</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let result of data.list">
+                            <td>{{result.var1}}</td>
+                            <td>{{result.var2}}</td>
+                            <td>{{result.coefficient | number: '1.2-2'}}</td>
+                        </tr>
+                    </tbody>
                 </ng-container>
                 <ng-container *ngIf="tabSelected === tabs.corrMatrix">
-                                    <thead>
-                                        <tr>
-                                            <th style="border: none;"></th>
-                                            <th *ngFor="let item of data.matrix | keyvalue">{{item.key}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody *ngFor="let item of data.matrix | keyvalue">
-                                        <tr>
-                                            <td>{{item.key}}</td>
-                                            <td *ngFor="let result of item.value">{{result | number: '1.2-2'}}</td>
-                                        </tr>
-                                    </tbody>
+                    <thead>
+                        <tr>
+                            <th style="border: none;"></th>
+                            <th *ngFor="let item of data.matrix | keyvalue">{{item.key}}</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of data.matrix | keyvalue">
+                        <tr>
+                            <td>{{item.key}}</td>
+                            <td *ngFor="let result of item.value">{{result | number: '1.2-2'}}</td>
+                        </tr>
+                    </tbody>
                 </ng-container>
             </div>
         </div>
