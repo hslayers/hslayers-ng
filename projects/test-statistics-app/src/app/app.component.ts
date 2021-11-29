@@ -99,7 +99,7 @@ export class HslayersAppComponent {
             MEAN: 'Mean',
             MEDIAN: 'Median',
             MINIMUM: 'Minimum',
-            MODES: 'Modes',
+            MODE: 'Mode',
             PEARSONS_OFFSET_COEFFICIENT: "Pearson's offset coefficient",
             PREDICT: 'Predict',
             REGRESSION_TYPE: 'Type',
