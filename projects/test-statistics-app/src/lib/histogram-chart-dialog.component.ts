@@ -127,7 +127,6 @@ export class HsStatisticsHistogramComponent
           'name': 'xscale',
           'type': 'band',
           'range': 'width',
-          'title': 'Intervals',
           'domain': {'data': 'table', 'field': 'interval'},
           'round': true,
           'padding': 0.1,
@@ -189,7 +188,7 @@ export class HsStatisticsHistogramComponent
               'align': {'value': 'center'},
               'baseline': {'value': 'top'},
               'fill': {'value': 'black'},
-              'fontSize': {'value': 16},
+              'fontSize': {'value': 12},
               'fontWeight': {'value': '600'},
             },
             'update': {
