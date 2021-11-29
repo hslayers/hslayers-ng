@@ -1,6 +1,7 @@
 import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsDialogComponent, HsDialogContainerService} from 'hslayers-ng';
+import {HsStatisticsService, ShiftBy} from './statistics.service';
 
 export enum Tabs {
   varList = 'variableList',
@@ -26,11 +27,20 @@ export class HsStatisticsCorrelationsComponent implements HsDialogComponent {
   viewRef: ViewRef;
   tabs = Tabs;
   tabSelected = Tabs.varList;
+  shifts: ShiftBy = {};
 
-  constructor(public HsDialogContainerService: HsDialogContainerService) {}
+  constructor(
+    public HsDialogContainerService: HsDialogContainerService,
+    private HsStatisticsService: HsStatisticsService
+  ) {}
 
   close(): void {
     this.HsDialogContainerService.destroy(this);
+  }
+
+  updateShifting(variable: string, shiftBy: number) {
+    this.shifts[variable] = shiftBy;
+    this.data = this.HsStatisticsService.correlate(this.shifts);
   }
 
   tabSelect(tabTitle: Tabs): void {

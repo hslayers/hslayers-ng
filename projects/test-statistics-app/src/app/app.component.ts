@@ -115,6 +115,8 @@ export class HslayersAppComponent {
             VARIANCE: 'Variance',
             VISUALIZE_MAP: 'To map',
             VISUALIZE: 'Visualize',
+            SHIFT: 'Shift',
+            YEARS: 'years',
           },
         },
       },

@@ -45,7 +45,7 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
   correlate(): void {
     this.hsDialogContainerService.create(
       HsStatisticsCorrelationsComponent,
-      this.hsStatisticsService.correlate()
+      this.hsStatisticsService.correlate({})
     );
   }
 

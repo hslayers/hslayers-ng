@@ -16,6 +16,10 @@ export interface CorpusItemValues {
   [key: string]: number;
 }
 
+export interface ShiftBy {
+  [key: string]: number;
+}
+
 export interface CorpusItems {
   dict: {
     [key: string]: {values: CorpusItemValues; location?: string; time?: string};
@@ -47,17 +51,16 @@ export class HsStatisticsService {
     }
     for (const row of rows) {
       /** Example '2010Kentucky' */
-      let key = '';
       /** Used to later filter records by location/time since key string is hard to
        * use if only location is provided and not time or vice versa */
       const keyObject = {location: undefined, time: undefined};
       for (const col of columns
         .sort()
         .filter((col) => ['location', 'time'].includes(uses[col]))) {
-        key += row[col];
         keyObject[uses[col]] = row[col];
       }
       let corpusItem: {values: CorpusItemValues};
+      const key = keyObject.location + '::' + keyObject.time;
       if (this.corpus.dict[key] === undefined) {
         corpusItem = {values: {}, ...keyObject};
         this.corpus.dict[key] = corpusItem;
@@ -81,7 +84,7 @@ export class HsStatisticsService {
     );
   }
 
-  correlate(): {
+  correlate(variableShifts: ShiftBy): {
     matrix: {
       [var1: string]: number[];
     };
@@ -95,21 +98,37 @@ export class HsStatisticsService {
     for (const var1 of this.corpus.variables) {
       results.matrix[var1] = [];
       for (const var2 of this.corpus.variables) {
-        const keys = Object.keys(this.corpus.dict).filter(
-          (key) =>
-            !isNaN(this.corpus.dict[key].values[var1]) &&
-            !isNaN(this.corpus.dict[key].values[var2])
+        const dict = this.corpus.dict;
+        const keys1 = Object.keys(dict).map((key) =>
+          this.adjustDictionaryKey(key, var1, variableShifts)
         );
-        const sample1: number[] = keys.map(
-          (key) => this.corpus.dict[key].values[var1]
+        const keys2 = Object.keys(dict).map((key) =>
+          this.adjustDictionaryKey(key, var2, variableShifts)
         );
-        const sample2: number[] = keys.map(
-          (key) => this.corpus.dict[key].values[var2]
+        const tmpSample1: number[] = keys1.map((key) =>
+          dict[key] ? dict[key].values[var1] : undefined
         );
+        const tmpSample2: number[] = keys2.map((key) =>
+          dict[key] ? dict[key].values[var2] : undefined
+        );
+        const sample1 = [],
+          sample2 = [];
+        for (let i = 0; i < tmpSample1.length; i++) {
+          if (
+            tmpSample1[i] &&
+            tmpSample2[i] &&
+            !isNaN(tmpSample1[i]) &&
+            !isNaN(tmpSample2[i])
+          ) {
+            sample1.push(tmpSample1[i]);
+            sample2.push(tmpSample2[i]);
+          }
+        }
         const coefficient = sampleCorrelation(sample1, sample2);
         results.matrix[var1].push(coefficient);
         if (var1 !== var2) {
           results.list.push({
+            shift: variableShifts[var1] ?? 0,
             var1,
             var2,
             coefficient,
@@ -118,6 +137,35 @@ export class HsStatisticsService {
       }
     }
     return results;
+  }
+
+  /**
+   * Take data dictionary item key and return the same item, but from another year
+   * @param key
+   * @param variable
+   * @returns
+   */
+  private adjustDictionaryKey(
+    key: string,
+    variable: string,
+    variableShifts: ShiftBy
+  ): string {
+    const origEntry = this.corpus.dict[key];
+    return (
+      origEntry.location +
+      '::' +
+      this.shiftTime(variable, origEntry.time, variableShifts)
+    );
+  }
+
+  /**
+   * Lookup time shifting amount
+   * @param variable
+   * @param time
+   * @returns
+   */
+  shiftTime(variable: string, time: string, variableShifts: ShiftBy) {
+    return parseInt(time) - (variableShifts[variable] ?? 0);
   }
 
   async clear(): Promise<void> {
