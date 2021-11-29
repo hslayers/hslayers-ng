@@ -69,10 +69,11 @@ export class HsStatisticsService {
       }
       for (const col of columns.filter((col) => uses[col] == 'variable')) {
         //Why is this here? It breaks key comparisons between columns and usages
-        //const escapedCol = col.replace(/\./g, '');
-        corpusItem.values[col] = parseFloat(row[col]);
-        if (!this.corpus.variables.some((v) => v == col)) {
-          this.corpus.variables.push(col);
+        //Answer: Its needed because vega treats everything after dot as a hierarchical sub-variable
+        const escapedCol = col.replace(/\./g, '');
+        corpusItem.values[escapedCol] = parseFloat(row[col]);
+        if (!this.corpus.variables.some((v) => v == escapedCol)) {
+          this.corpus.variables.push(escapedCol);
         }
       }
     }
@@ -124,11 +125,13 @@ export class HsStatisticsService {
             sample2.push(tmpSample2[i]);
           }
         }
-        const coefficient = sampleCorrelation(sample1, sample2);
+        const coefficient =
+          sample1.length > 1 ? sampleCorrelation(sample1, sample2) : 0;
         results.matrix[var1].push(coefficient);
         if (var1 !== var2) {
           results.list.push({
             shift: variableShifts[var1] ?? 0,
+            samplePairs: sample1.length,
             var1,
             var2,
             coefficient,
