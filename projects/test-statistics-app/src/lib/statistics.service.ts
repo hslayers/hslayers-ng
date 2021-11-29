@@ -75,6 +75,9 @@ export class HsStatisticsService {
         if (!this.corpus.variables.some((v) => v == escapedCol)) {
           this.corpus.variables.push(escapedCol);
         }
+        if (escapedCol != col) {
+          uses[escapedCol] = uses[col];
+        }
       }
     }
     Object.assign(this.corpus.uses, uses);
