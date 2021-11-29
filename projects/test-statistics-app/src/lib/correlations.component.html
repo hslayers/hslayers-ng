@@ -28,6 +28,7 @@
                         <th>Variable 1</th>
                         <th>Variable 2</th>
                         <th>Correlation</th>
+                        <th>N pairs</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let result of data.list">
@@ -43,6 +44,7 @@
                             </td>
                             <td>{{result.var2}}</td>
                             <td>{{result.coefficient | number: '1.2-2'}}</td>
+                            <td>{{result.samplePairs}}</td>
                         </tr>
                     </tbody>
                 </ng-container>
