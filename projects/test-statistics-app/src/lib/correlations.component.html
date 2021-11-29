@@ -31,7 +31,16 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let result of data.list">
-                            <td>{{result.var1}}</td>
+                            <td>{{result.var1}}
+                                <div class="form-group">
+                                    <label>{{ "STATISTICS.SHIFT" | translate }} {{result.shift}} {{ "STATISTICS.YEARS" |
+                                        translate }}</label>
+                                    <input type="range" [name]="result.var1+'shift'" step="1" min="-20" max="0"
+                                        style="width: 100%; height: 21px"
+                                        (change)="updateShifting(result.var1, result.shift)"
+                                        [(ngModel)]="result.shift" />
+                                </div>
+                            </td>
                             <td>{{result.var2}}</td>
                             <td>{{result.coefficient | number: '1.2-2'}}</td>
                         </tr>
