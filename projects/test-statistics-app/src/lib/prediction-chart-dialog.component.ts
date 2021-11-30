@@ -11,7 +11,7 @@ import {
   HsLanguageService,
   HsLayerUtilsService,
 } from 'hslayers-ng';
-import {HsStatisticsService} from './statistics.service';
+import {HsStatisticsService, ShiftBy} from './statistics.service';
 import {max} from 'simple-statistics';
 
 dayjs.extend(utc);
@@ -26,10 +26,12 @@ const CHART_DIV = '.hs-statistics-prediction';
   templateUrl: './prediction-chart-dialog.component.html',
 })
 export class HsStatisticsPredictionChartDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: {
     predictedVariable: string;
     factor: ColumnWrapper;
+    shifts: ShiftBy;
   };
   viewRef: ViewRef;
   selectedLocation: any;
@@ -139,21 +141,61 @@ export class HsStatisticsPredictionChartDialogComponent
       },
       'data': [
         {
-          'name': 'table',
-          'values': observations,
+          'name': 'realX',
+          'values': observations.filter(
+            (obs) => obs.name == this.data.factor.name
+          ),
           'transform': [{'type': 'filter', 'expr': 'isValid(datum.value)'}],
+        },
+        {
+          'name': 'realY',
+          'values': observations.filter(
+            (obs) => obs.name == this.data.predictedVariable
+          ),
+          'transform': [{'type': 'filter', 'expr': 'isValid(datum.value)'}],
+        },
+        {
+          'name': 'inputs',
+          'values': [],
+          'on': [
+            {'trigger': 'shift && clear', 'remove': true},
+            {'trigger': '!shift && clicked', 'insert': 'clicked'},
+          ],
         },
         {
           'name': 'predictions',
           'values': [],
           'on': [
             {'trigger': 'shift && clear', 'remove': true},
-            {'trigger': '!shift && clicked', 'insert': 'clicked'},
+            {'trigger': '!shift && clicked2', 'insert': 'clicked2'},
           ],
           'transform': [
             {
               'type': 'formula',
-              'expr': `datum.value * ${this.data.factor.regressionOutput.m} + ${this.data.factor.regressionOutput.b}`,
+              'expr': `datum.time  ${
+                this.data.shifts[this.data.factor.name] ?? ''
+              }`,
+              'as': 'shifted_year',
+            },
+            {
+              'type': 'lookup',
+              'from': 'realX',
+              'key': 'time',
+              'fields': ['shifted_year'],
+              'values': ['value'],
+              'as': ['shiftedRealX'],
+            },
+            {
+              'type': 'lookup',
+              'from': 'inputs',
+              'key': 'time',
+              'fields': ['shifted_year'],
+              'values': ['value'],
+              'as': ['shiftedInput'],
+            },
+            {
+              'type': 'formula',
+              'expr': `(datum.shiftedRealX || datum.shiftedInput) * ${this.data.factor.regressionOutput.m} + ${this.data.factor.regressionOutput.b}`,
               'as': 'predicted_value',
             },
           ],
@@ -193,6 +235,17 @@ export class HsStatisticsPredictionChartDialogComponent
           'on': [
             {
               'events': 'click',
+              'update': "{time: toString(year), name: 'Input', value: mouseY}",
+              'force': true,
+            },
+          ],
+        },
+        {
+          'name': 'clicked2',
+          'value': null,
+          'on': [
+            {
+              'events': 'click',
               'update':
                 "{time: toString(year), name: 'Prediction', value: mouseY}",
               'force': true,
@@ -215,7 +268,9 @@ export class HsStatisticsPredictionChartDialogComponent
           'padding': 1,
           'domain': {
             'fields': [
-              {'data': 'table', 'field': 'time'},
+              {'data': 'realX', 'field': 'time'},
+              {'data': 'realY', 'field': 'time'},
+              {'data': 'inputs', 'field': 'time'},
               {'data': 'predictions', 'field': 'time'},
             ],
           },
@@ -228,8 +283,10 @@ export class HsStatisticsPredictionChartDialogComponent
           'zero': true,
           'domain': {
             'fields': [
-              {'data': 'table', 'field': 'value'},
+              {'data': 'realX', 'field': 'value'},
+              {'data': 'realY', 'field': 'value'},
               {'data': 'predictions', 'field': 'value'},
+              {'data': 'inputs', 'field': 'value'},
               {'data': 'predictions', 'field': 'predicted_value'},
             ],
           },
@@ -240,7 +297,9 @@ export class HsStatisticsPredictionChartDialogComponent
           'range': 'category',
           'domain': {
             'fields': [
-              {'data': 'table', 'field': 'name'},
+              {'data': 'realX', 'field': 'name'},
+              {'data': 'realY', 'field': 'name'},
+              {'data': 'inputs', 'field': 'name'},
               {'data': 'predictions', 'field': 'name'},
             ],
           },
@@ -254,7 +313,31 @@ export class HsStatisticsPredictionChartDialogComponent
         {
           'type': 'group',
           'from': {
-            'facet': {'name': 'series', 'data': 'table', 'groupby': 'name'},
+            'facet': {'name': 'series', 'data': 'realX', 'groupby': 'name'},
+          },
+          'marks': [
+            {
+              'type': 'line',
+              'from': {'data': 'series'},
+              'encode': {
+                'enter': {
+                  'stroke': {'scale': 'color', 'field': 'name'},
+                  'strokeWidth': {'value': 2},
+                },
+                'update': {
+                  'strokeOpacity': {'value': 1},
+                  'x': {'scale': 'x', 'field': 'time'},
+                  'y': {'scale': 'y', 'field': 'value'},
+                },
+                'hover': {'strokeOpacity': {'value': 0.5}},
+              },
+            },
+          ],
+        },
+        {
+          'type': 'group',
+          'from': {
+            'facet': {'name': 'series', 'data': 'realY', 'groupby': 'name'},
           },
           'marks': [
             {
@@ -279,15 +362,15 @@ export class HsStatisticsPredictionChartDialogComponent
           'type': 'group',
           'from': {
             'facet': {
-              'name': 'predictive_series',
-              'data': 'predictions',
+              'name': 'input_series',
+              'data': 'inputs',
               'groupby': 'name',
             },
           },
           'marks': [
             {
               'type': 'symbol',
-              'from': {'data': 'predictive_series'},
+              'from': {'data': 'input_series'},
               'encode': {
                 'enter': {
                   'stroke': {'scale': 'color', 'field': 'name'},
@@ -301,6 +384,18 @@ export class HsStatisticsPredictionChartDialogComponent
                 'hover': {'strokeOpacity': {'value': 0.5}},
               },
             },
+          ],
+        },
+        {
+          'type': 'group',
+          'from': {
+            'facet': {
+              'name': 'predictive_series',
+              'data': 'predictions',
+              'groupby': 'name',
+            },
+          },
+          'marks': [
             {
               'type': 'line',
               'from': {'data': 'predictive_series'},
