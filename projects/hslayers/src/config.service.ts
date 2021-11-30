@@ -153,6 +153,7 @@ export class HsConfig {
    *  If set to true, only layers with same path are affected by exclusivity
    */
   pathExclusivity?: boolean = false;
+  ngRouter?: boolean;
   constructor() {
     this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
       val.url = (this.assetsPath ?? '') + val.url;
