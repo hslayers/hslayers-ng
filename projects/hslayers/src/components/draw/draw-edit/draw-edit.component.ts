@@ -223,13 +223,14 @@ export class DrawEditComponent implements OnDestroy {
 
   setType(what): void {
     this.HsDrawService.selectedLayer = this.editLayer;
-    if (what === this.HsDrawService.type) {
-      this.HsQueryBaseService.selector.setActive(true);
-    }
+
+    this.HsQueryBaseService.selector.setActive(
+      what === this.HsDrawService.type
+    );
+    this.HsDrawService.modify.setActive(what === this.HsDrawService.type);
+
     const type = this.HsDrawService.setType(what);
     if (type) {
-      this.selectedFeature = this.HsQueryBaseService.data.features[0].feature; //store feature selected for modification, might not be neecessary
-      this.HsQueryBaseService.selector.setActive(false);
       this.HsDrawService.activateDrawing({onDrawEnd: (e) => this.onDrawEnd(e)});
     }
     if (
@@ -274,8 +275,8 @@ export class DrawEditComponent implements OnDestroy {
           : this.editLayer.getSource().getFeatures()[0];
       const parser = new GeoJSON();
       const GeoJSONline = parser.writeFeatureObject(splittingLine);
-      thickLine[0] = lineOffset(GeoJSONline, 0.1, {units: 'degrees'});
-      thickLine[1] = lineOffset(GeoJSONline, -0.1, {units: 'degrees'});
+      thickLine[0] = lineOffset(GeoJSONline, 0.001, {units: 'meters'});
+      thickLine[1] = lineOffset(GeoJSONline, -0.001, {units: 'meters'});
 
       const polyCoords = [
         ...thickLine[0].geometry.coordinates,
