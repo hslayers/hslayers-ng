@@ -102,32 +102,11 @@ export class HsStatisticsService {
     for (const var1 of this.corpus.variables) {
       results.matrix[var1] = [];
       for (const var2 of this.corpus.variables) {
-        const dict = this.corpus.dict;
-        const keys1 = Object.keys(dict).map((key) =>
-          this.adjustDictionaryKey(key, var1, variableShifts)
+        const {sample1, sample2} = this.createShiftedSamples(
+          var1,
+          variableShifts,
+          var2
         );
-        const keys2 = Object.keys(dict).map((key) =>
-          this.adjustDictionaryKey(key, var2, variableShifts)
-        );
-        const tmpSample1: number[] = keys1.map((key) =>
-          dict[key] ? dict[key].values[var1] : undefined
-        );
-        const tmpSample2: number[] = keys2.map((key) =>
-          dict[key] ? dict[key].values[var2] : undefined
-        );
-        const sample1 = [],
-          sample2 = [];
-        for (let i = 0; i < tmpSample1.length; i++) {
-          if (
-            tmpSample1[i] &&
-            tmpSample2[i] &&
-            !isNaN(tmpSample1[i]) &&
-            !isNaN(tmpSample2[i])
-          ) {
-            sample1.push(tmpSample1[i]);
-            sample2.push(tmpSample2[i]);
-          }
-        }
         const coefficient =
           sample1.length > 1 ? sampleCorrelation(sample1, sample2) : 0;
         results.matrix[var1].push(coefficient);
@@ -143,6 +122,36 @@ export class HsStatisticsService {
       }
     }
     return results;
+  }
+
+  createShiftedSamples(var1: string, variableShifts: ShiftBy, var2: string) {
+    const dict = this.corpus.dict;
+    const keys1 = Object.keys(dict).map((key) =>
+      this.adjustDictionaryKey(key, var1, variableShifts)
+    );
+    const keys2 = Object.keys(dict).map((key) =>
+      this.adjustDictionaryKey(key, var2, variableShifts)
+    );
+    const tmpSample1: number[] = keys1.map((key) =>
+      dict[key] ? dict[key].values[var1] : undefined
+    );
+    const tmpSample2: number[] = keys2.map((key) =>
+      dict[key] ? dict[key].values[var2] : undefined
+    );
+    const sample1 = [],
+      sample2 = [];
+    for (let i = 0; i < tmpSample1.length; i++) {
+      if (
+        tmpSample1[i] &&
+        tmpSample2[i] &&
+        !isNaN(tmpSample1[i]) &&
+        !isNaN(tmpSample2[i])
+      ) {
+        sample1.push(tmpSample1[i]);
+        sample2.push(tmpSample2[i]);
+      }
+    }
+    return {sample1, sample2};
   }
 
   /**

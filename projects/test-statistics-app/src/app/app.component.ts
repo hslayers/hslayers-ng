@@ -117,6 +117,7 @@ export class HslayersAppComponent {
             VISUALIZE: 'Visualize',
             SHIFT: 'Shift',
             YEARS: 'years',
+            AGO: 'ago',
           },
         },
       },

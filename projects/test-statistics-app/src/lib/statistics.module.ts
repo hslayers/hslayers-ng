@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {HsPanelHelpersModule, HsUploadModule} from 'hslayers-ng';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {AbsPipe} from './abs.pipe';
 import {HsStatisticsCorrelationsComponent} from './correlations.component';
 import {HsStatisticsHistogramComponent} from './histogram-chart-dialog.component';
 import {HsStatisticsPanelComponent} from './statistics-panel.component';
@@ -26,6 +27,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     HsStatisticsRegressionDialogComponent,
     HsStatisticsHistogramComponent,
     HsStatisticsPredictionChartDialogComponent,
+    AbsPipe,
   ],
   imports: [
     CommonModule,

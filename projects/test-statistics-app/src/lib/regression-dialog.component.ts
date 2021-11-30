@@ -7,17 +7,13 @@ import {default as vegaEmbed} from 'vega-embed';
 
 import {ColumnWrapper} from './column-wrapper.type';
 import {
-  CorpusItemValues,
-  HsStatisticsService,
-  Usage,
-} from './statistics.service';
-import {
   HsDialogComponent,
   HsDialogContainerService,
   HsLanguageService,
   HsLayerUtilsService,
 } from 'hslayers-ng';
 import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
+import {HsStatisticsService, ShiftBy} from './statistics.service';
 import {linearRegression} from 'simple-statistics';
 
 dayjs.extend(utc);
@@ -49,6 +45,7 @@ export class HsStatisticsRegressionDialogComponent
   ];
   selectedRegressionType = this.regressionTypes[0];
   multipleRegressionOutput;
+  shifts: ShiftBy = {};
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
@@ -81,8 +78,13 @@ export class HsStatisticsRegressionDialogComponent
       return self.indexOf(value) === index;
     });
     this.colWrappers = this.hsStatisticsService.corpus.variables.map((col) => {
-      return {checked: true, name: col};
+      return {checked: true, name: col, shift: 0};
     });
+  }
+
+  updateShifting(variable: string, shiftBy: number) {
+    this.shifts[variable] = shiftBy;
+    this.visualize();
   }
 
   close(): void {
@@ -91,7 +93,6 @@ export class HsStatisticsRegressionDialogComponent
 
   selectVariable(variable): void {
     this.selectedVariable = variable;
-    this.applyFilters();
     this.visualize();
   }
 
@@ -334,26 +335,29 @@ export class HsStatisticsRegressionDialogComponent
 
   selectFilter(value: any): void {
     this.selectedLocation = value;
-    this.applyFilters();
+    this.visualize();
   }
 
   selectRegressionType(type) {
     this.selectedRegressionType = type;
   }
 
-  applyFilters() {
-    this.filteredRows = Object.keys(this.hsStatisticsService.corpus.dict).map(
-      (key) => this.hsStatisticsService.corpus.dict[key]
-    );
-  }
-
   async visualizeSimpleReg(col: ColumnWrapper): Promise<void> {
     setTimeout((_) => {
       const $index = this.colWrappers.indexOf(col);
       const factor = col.name;
-      const observations = this.filteredRows
-        .map((row) => row.values)
-        .filter((row) => row[factor] && row[this.selectedVariable]);
+      const {sample1, sample2} = this.hsStatisticsService.createShiftedSamples(
+        factor,
+        this.shifts,
+        this.selectedVariable
+      );
+      const observations = [];
+      for (let i = 0; i < sample1.length; i++) {
+        const tmp = {};
+        tmp[factor] = sample1[i];
+        tmp[this.selectedVariable] = sample2[i];
+        observations.push(tmp);
+      }
       const inputData = observations.map((row) => {
         return [row[factor], row[this.selectedVariable]];
       });
