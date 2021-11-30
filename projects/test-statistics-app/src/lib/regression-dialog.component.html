@@ -124,12 +124,12 @@
                             </span>
                             Y = <span *ngFor="let col of multipleRegressionOutput.variables">X{{multipleRegressionOutput.variables.indexOf(col)}}  * {{col.coefficient}}</span> + {{multipleRegressionOutput.constant}}
                         </div>
-                        <div class="col-3">
+                       <!-- <div class="col-3">
                             <button type="button" class="btn btn-primary m-1"
                                 (click)="openPredictionDialog(selectedVariable, multipleRegressionOutput)">{{'STATISTICS.PREDICT'
                                 |
                                 translate}}</button>
-                        </div>
+                        </div>-->
                     </div>
                 </div>                
             </div>
