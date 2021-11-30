@@ -17,8 +17,7 @@ export type HistogramData = {
   templateUrl: './histogram-chart-dialog.component.html',
 })
 export class HsStatisticsHistogramComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   viewRef: ViewRef;
   descStat: {
     median: number;
@@ -176,8 +175,19 @@ export class HsStatisticsHistogramComponent
               'fill': {'value': 'steelblue'},
               'fillOpacity': {'value': 0.4},
             },
-            'hover': {
-              'fill': {'value': 'red'},
+            'hover': {'fill': {'value': 'red'}},
+          },
+        },
+        {
+          'type': 'line',
+          'from': {'data': 'table'},
+          'encode': {
+            'enter': {
+              'interpolate': {'value': 'monotone'},
+              'x': {'scale': 'xscale', 'field': 'interval', 'offset': 30},
+              'y': {'scale': 'yscale', 'field': 'frequency'},
+              'stroke': {'value': 'goldenrod'},
+              'strokeWidth': {'value': 2},
             },
           },
         },
