@@ -418,6 +418,9 @@ export class HsStatisticsRegressionDialogComponent
   }
 
   async visualizeSimpleReg(col: ColumnWrapper): Promise<void> {
+    if (!this.selectedVariable) {
+      return;
+    }
     setTimeout((_) => {
       const $index = this.colWrappers.indexOf(col);
       const factor = col.name;
