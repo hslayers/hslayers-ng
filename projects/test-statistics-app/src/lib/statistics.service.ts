@@ -102,18 +102,14 @@ export class HsStatisticsService {
     for (const var1 of this.corpus.variables) {
       results.matrix[var1] = [];
       for (const var2 of this.corpus.variables) {
-        const {sample1, sample2} = this.createShiftedSamples(
-          var1,
-          variableShifts,
-          var2
-        );
+        const {samples} = this.createShiftedSamples([var1, var2], variableShifts);
         const coefficient =
-          sample1.length > 1 ? sampleCorrelation(sample1, sample2) : 0;
+          samples[0].length > 1 ? sampleCorrelation(samples[0], samples[1]) : 0;
         results.matrix[var1].push(coefficient);
         if (var1 !== var2) {
           results.list.push({
             shift: variableShifts[var1] ?? 0,
-            samplePairs: sample1.length,
+            samplePairs: samples[0].length,
             var1,
             var2,
             coefficient,
@@ -124,34 +120,43 @@ export class HsStatisticsService {
     return results;
   }
 
-  createShiftedSamples(var1: string, variableShifts: ShiftBy, var2: string) {
+  createShiftedSamples(
+    variables: string[],
+    variableShifts: ShiftBy
+  ): {samples: number[][]; sampleKeys: string[][]} {
     const dict = this.corpus.dict;
-    const keys1 = Object.keys(dict).map((key) =>
-      this.adjustDictionaryKey(key, var1, variableShifts)
-    );
-    const keys2 = Object.keys(dict).map((key) =>
-      this.adjustDictionaryKey(key, var2, variableShifts)
-    );
-    const tmpSample1: number[] = keys1.map((key) =>
-      dict[key] ? dict[key].values[var1] : undefined
-    );
-    const tmpSample2: number[] = keys2.map((key) =>
-      dict[key] ? dict[key].values[var2] : undefined
-    );
-    const sample1 = [],
-      sample2 = [];
-    for (let i = 0; i < tmpSample1.length; i++) {
+    const tmpSamples = variables.map((variable) => {
+      const keys = Object.keys(dict).map((key) =>
+        this.adjustDictionaryKey(key, variable, variableShifts)
+      );
+      return {
+        values: keys.map((key) =>
+          dict[key] ? dict[key].values[variable] : undefined
+        ),
+        keys,
+      };
+    });
+
+    const samples = variables.map((_) => []);
+    const sampleKeys = variables.map((_) => []);
+    for (let i = 0; i < tmpSamples[0].values.length; i++) {
       if (
-        tmpSample1[i] &&
-        tmpSample2[i] &&
-        !isNaN(tmpSample1[i]) &&
-        !isNaN(tmpSample2[i])
+        tmpSamples.some(
+          (sample) =>
+            sample.values[i] === null ||
+            sample.values[i] === undefined ||
+            isNaN[sample.values[i]]
+        )
       ) {
-        sample1.push(tmpSample1[i]);
-        sample2.push(tmpSample2[i]);
+        continue;
+      } else {
+        for (let varIx = 0; varIx < variables.length; varIx++) {
+          samples[varIx].push(tmpSamples[varIx].values[i]);
+          sampleKeys[varIx].push(tmpSamples[varIx].keys[i]);
+        }
       }
     }
-    return {sample1, sample2};
+    return {samples, sampleKeys};
   }
 
   /**

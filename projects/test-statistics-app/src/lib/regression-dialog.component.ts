@@ -35,7 +35,6 @@ export class HsStatisticsRegressionDialogComponent
   selectedLocation: any;
   timeValues: any[];
   timeColumn: string;
-  filteredRows: any[];
   locationColumn: string;
   locationValues: string[];
   colWrappers: ColumnWrapper[];
@@ -109,46 +108,74 @@ export class HsStatisticsRegressionDialogComponent
       default:
     }
   }
+  clone(observations) {
+    return observations.map((o) => {
+      const tmp = {};
+      Object.assign(tmp, o);
+      return tmp;
+    });
+  }
   visualizeMulti() {
     const factors = this.colWrappers
       .filter((col) => col.checked && col.name !== this.selectedVariable)
       .map((col) => col.name);
 
-    const observations = this.filteredRows
-      .map((row) => {
-        const tmp = {};
+    //Get temporal shifted observations where all values present in a specific year even after shifting
+    const {samples, sampleKeys} = this.hsStatisticsService.createShiftedSamples(
+      [...factors, this.selectedVariable],
+      this.shifts
+    );
+
+    let coefficients;
+    if (samples[0].length == 0) {
+      coefficients = [0, ...factors.map((_) => 0)];
+    } else {
+      coefficients = regression(
+        [...Array(samples[0].length).keys()].map(
+          (
+            i // Loop & map from 0 to sample length - 1
+          ) =>
+            factors
+              .map((factor) => samples[factors.indexOf(factor)][i]) // Factors
+              .concat([samples[samples.length - 1][i]]) // Predictor
+        )
+      ); //result : [const, coefficient_1, coefficient_2, ... coefficient_n] for function f(X) = 0.5X0 - 0.5X1 + constant
+    }
+
+    const observations = Object.keys(this.hsStatisticsService.corpus.dict)
+      .map((key) => {
+        const tmp: any = {};
+        const row = this.hsStatisticsService.corpus.dict[key];
         Object.assign(tmp, row.values);
-        Object.assign(tmp, {time: row.location + row.time});
-        for (const col of factors) {
-          tmp[`X${factors.indexOf(col)}`] = row.values[col];
-          tmp[`Y`] = row.values[this.selectedVariable];
+        tmp.key = row.location + row.time;
+        //Key is a composite of location and time, thus we need to store also the parts separated to calculate shift
+        tmp.location = row.location;
+        tmp.time = row.time;
+        tmp[`Y`] = tmp[this.selectedVariable];
+        for (const variable of factors) {
+          if (
+            tmp[variable] === null ||
+            tmp[variable] == undefined ||
+            isNaN(tmp[variable])
+          ) {
+            return;
+          }
+          tmp[`X${factors.indexOf(variable)}`] = tmp[variable];
         }
         return tmp;
       })
-      //Each factor and also the predicted variable needs to have value to calculate anything
-      .filter(
-        (row) =>
-          factors.reduce(
-            (accumulator, factor) => row[factor] && accumulator,
-            true
-          ) && row[this.selectedVariable]
-      );
+      .filter((o) => o); //Only valid ones
 
     observations.sort((a: any, b: any) => {
-      if (a.time > b.time) {
+      if (a.key > b.key) {
         return 1;
       }
-      if (b.time > a.time) {
+      if (b.key > a.key) {
         return -1;
       }
       return 0;
     });
 
-    const inputs = observations.map((row) =>
-      factors.map((factor) => row[factor]).concat([row[this.selectedVariable]])
-    );
-
-    const coefficients = regression(inputs); //result : [const, coefficient_1, coefficient_2, ... coefficient_n] for function f(X) = 0.5X0 - 0.5X1 + contant
     this.multipleRegressionOutput = {
       variables: factors.map((factor) => {
         return {
@@ -165,6 +192,7 @@ export class HsStatisticsRegressionDialogComponent
         '.hs-statistics-multi-regression'
       );
       const chartHeight = chartDiv.parentElement.offsetHeight - 40;
+      const regressionVars = this.multipleRegressionOutput.variables;
       const chartData: any = {
         '$schema': 'https://vega.github.io/schema/vega/v5.json',
         'config': {'mark': {'tooltip': null}},
@@ -175,20 +203,55 @@ export class HsStatisticsRegressionDialogComponent
           'contains': 'padding',
         },
         'data': [
+          ...this.multipleRegressionOutput.variables.map((col) => {
+            return {
+              'name': 'real' + col.factorName,
+              'values': this.clone(observations),
+            };
+          }),
           {
-            'name': 'table',
-            'values': observations,
+            'name': 'realY',
+            'values': this.clone(observations),
           },
           {
             'name': 'predictions',
-            'values': observations,
+            'values': this.clone(observations),
             'transform': [
+              ...regressionVars.map((col) => {
+                return {
+                  type: 'formula',
+                  expr: `datum.time ${
+                    this.shifts[col.name] < 0 ? this.shifts[col.name] : ''
+                  }`,
+                  as: 'shifted_year' + col.factorName,
+                };
+              }),
+              ...regressionVars.map((col) => {
+                return {
+                  type: 'formula',
+                  expr: `datum.location + datum.${
+                    'shifted_year' + col.factorName
+                  }`,
+                  as: 'shifted_key' + col.factorName,
+                };
+              }),
+              ...regressionVars.map((col) => {
+                return {
+                  'type': 'lookup',
+                  'from': 'real' + col.factorName,
+                  'key': 'key',
+                  'fields': ['shifted_key' + col.factorName],
+                  'values': [col.factorName],
+                  'as': ['shiftedReal' + col.factorName],
+                };
+              }),
               {
                 'type': 'formula',
                 'expr':
-                  this.multipleRegressionOutput.variables
+                  regressionVars
                     .map(
-                      (col) => `datum.${col.factorName} * ${col.coefficient}`
+                      (col) =>
+                        `datum.shiftedReal${col.factorName} * ${col.coefficient}`
                     )
                     .join('') + ` + ${this.multipleRegressionOutput.constant}`,
                 'as': 'predicted_value',
@@ -204,8 +267,13 @@ export class HsStatisticsRegressionDialogComponent
             'padding': 1,
             'domain': {
               'fields': [
-                {'data': 'table', 'field': 'time'},
-                {'data': 'predictions', 'field': 'time'},
+                ...regressionVars.map((col) => {
+                  return {
+                    'data': 'real' + col.factorName,
+                    'field': 'key',
+                  };
+                }),
+                {'data': 'predictions', 'field': 'key'},
               ],
             },
           },
@@ -217,10 +285,13 @@ export class HsStatisticsRegressionDialogComponent
             'zero': true,
             'domain': {
               'fields': [
-                ...this.multipleRegressionOutput.variables.map((col) => {
-                  return {'data': 'table', 'field': col.factorName};
+                ...regressionVars.map((col) => {
+                  return {
+                    'data': 'real' + col.factorName,
+                    'field': col.factorName,
+                  };
                 }),
-                {'data': 'table', 'field': 'Y'}, //Dependant (predicted) variable from real dataset
+                {'data': 'realY', 'field': 'Y'}, //Dependant (predicted) variable from real dataset
                 {'data': 'predictions', 'field': 'predicted_value'}, // Predicted by regression coefficients
               ],
             },
@@ -229,7 +300,7 @@ export class HsStatisticsRegressionDialogComponent
             'name': 'color',
             'type': 'ordinal',
             'range': 'category',
-            'domain': this.multipleRegressionOutput.variables
+            'domain': regressionVars
               .map((col) => col.factorName)
               .concat(['Predicted Y', 'Observed Y']),
           },
@@ -244,10 +315,10 @@ export class HsStatisticsRegressionDialogComponent
           },
           {'orient': 'left', 'scale': 'y'},
         ],
-        'marks': this.multipleRegressionOutput.variables
+        'marks': regressionVars
           .map((col) => {
             return {
-              from: {'data': 'table'},
+              from: {'data': 'real' + col.factorName},
               'type': 'symbol',
               'encode': {
                 'enter': {
@@ -258,31 +329,35 @@ export class HsStatisticsRegressionDialogComponent
                 },
                 'update': {
                   'strokeOpacity': {'value': 1},
-                  'x': {'scale': 'x', 'field': 'time'},
+                  'x': {'scale': 'x', 'field': 'key'},
                   'y': {'scale': 'y', 'field': col.factorName},
                 },
                 'hover': {'strokeOpacity': {'value': 0.5}},
               },
             };
           })
-          .concat({
-            from: {'data': 'table'},
-            'type': 'symbol',
-            'encode': {
-              'enter': {
-                stroke: {scale: 'color', value: 'Observed Y'},
-                shape: {value: 'diamond'},
-                size: {value: 30},
-                strokeWidth: {value: 1.5},
-              },
-              'update': {
-                'strokeOpacity': {'value': 1},
-                'x': {'scale': 'x', 'field': 'time'},
-                'y': {'scale': 'y', 'field': 'Y'},
-              },
-              'hover': {'strokeOpacity': {'value': 0.5}},
-            },
-          })
+          .concat(
+            regressionVars.map((col) => {
+              return {
+                from: {'data': 'real' + col.factorName},
+                'type': 'symbol',
+                'encode': {
+                  'enter': {
+                    stroke: {scale: 'color', value: 'Observed Y'},
+                    shape: {value: 'diamond'},
+                    size: {value: 30},
+                    strokeWidth: {value: 1.5},
+                  },
+                  'update': {
+                    'strokeOpacity': {'value': 1},
+                    'x': {'scale': 'x', 'field': 'key'},
+                    'y': {'scale': 'y', 'field': 'Y'},
+                  },
+                  'hover': {'strokeOpacity': {'value': 0.5}},
+                },
+              };
+            })
+          )
           .concat([
             {
               'from': {
@@ -298,7 +373,7 @@ export class HsStatisticsRegressionDialogComponent
                   'strokeWidth': {'value': 2},
                 },
                 'update': {
-                  'x': {'scale': 'x', 'field': 'time'},
+                  'x': {'scale': 'x', 'field': 'key'},
                   'y': {'scale': 'y', 'field': 'predicted_value'},
                   'strokeOpacity': {'value': 1},
                 },
@@ -346,16 +421,15 @@ export class HsStatisticsRegressionDialogComponent
     setTimeout((_) => {
       const $index = this.colWrappers.indexOf(col);
       const factor = col.name;
-      const {sample1, sample2} = this.hsStatisticsService.createShiftedSamples(
-        factor,
-        this.shifts,
-        this.selectedVariable
+      const {samples} = this.hsStatisticsService.createShiftedSamples(
+        [factor, this.selectedVariable],
+        this.shifts
       );
       const observations = [];
-      for (let i = 0; i < sample1.length; i++) {
+      for (let i = 0; i < samples[0].length; i++) {
         const tmp = {};
-        tmp[factor] = sample1[i];
-        tmp[this.selectedVariable] = sample2[i];
+        tmp[factor] = samples[0][i];
+        tmp[this.selectedVariable] = samples[1][i];
         observations.push(tmp);
       }
       const inputData = observations.map((row) => {
