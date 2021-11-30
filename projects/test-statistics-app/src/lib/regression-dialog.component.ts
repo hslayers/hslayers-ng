@@ -464,6 +464,7 @@ export class HsStatisticsRegressionDialogComponent
       {
         predictedVariable,
         factor,
+        shifts: this.shifts,
       }
     );
   }
