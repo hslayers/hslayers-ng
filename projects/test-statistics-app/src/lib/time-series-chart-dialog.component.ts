@@ -24,7 +24,8 @@ const CHART_DIV = '.hs-statistics-timeseries';
   templateUrl: './time-series-chart-dialog.component.html',
 })
 export class HsStatisticsTimeSeriesChartDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: {
     rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
@@ -191,7 +192,9 @@ export class HsStatisticsTimeSeriesChartDialogComponent
             },
             'x': {
               'axis': {
-                'title': 'Timestamp',
+                'title': this.HsLanguageService.getTranslation(
+                  'STATISTICS.TIMESTAMP'
+                ),
                 'labelOverlap': true,
               },
               'field': 'time',
@@ -200,7 +203,8 @@ export class HsStatisticsTimeSeriesChartDialogComponent
             },
             'y': {
               'axis': {
-                'title': `Value`,
+                'title':
+                  this.HsLanguageService.getTranslation('STATISTICS.VALUE'),
               },
               'field': 'value',
               'type': 'quantitative',

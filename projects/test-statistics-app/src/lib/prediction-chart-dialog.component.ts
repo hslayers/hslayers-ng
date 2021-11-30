@@ -132,7 +132,15 @@ export class HsStatisticsPredictionChartDialogComponent
     const chartHeight = chartDiv.parentElement.offsetHeight - 40;
     const chartData: any = {
       '$schema': 'https://vega.github.io/schema/vega/v5.json',
-      'config': {'mark': {'tooltip': null}},
+      'config': {
+        'mark': {'tooltip': null},
+        'axis': {
+          'labelColor': 'black',
+          'labelFontSize': 10,
+          'titleFontSize': 16,
+          'titleFontWeight': '600',
+        },
+      },
       'width': chartDiv.parentElement.offsetWidth - 40,
       'height': chartHeight,
       'autosize': {
@@ -306,8 +314,20 @@ export class HsStatisticsPredictionChartDialogComponent
         },
       ],
       'axes': [
-        {'orient': 'bottom', 'scale': 'x'},
-        {'orient': 'left', 'scale': 'y'},
+        {
+          'orient': 'bottom',
+          'scale': 'x',
+          'title': this.HsLanguageService.getTranslation(
+            'STATISTICS.TIMESTAMP'
+          ),
+          'titleY': 40,
+          'titleX': 305,
+        },
+        {
+          'orient': 'left',
+          'scale': 'y',
+          'title': this.HsLanguageService.getTranslation('STATISTICS.VALUE'),
+        },
       ],
       'marks': [
         {
