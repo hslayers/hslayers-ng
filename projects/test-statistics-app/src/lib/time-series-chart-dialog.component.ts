@@ -151,6 +151,18 @@ export class HsStatisticsTimeSeriesChartDialogComponent
       }
       return 0;
     });
+
+    const toolTipVariables = observations
+      .map((ob) => ob.name)
+      .filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      })
+      .map((v) => {
+        return {
+          field: v,
+          type: 'quantitative',
+        };
+      });
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
     const chartData: any = {
       '$schema': 'https://vega.github.io/schema/vega-lite/v4.15.0.json',
@@ -166,6 +178,7 @@ export class HsStatisticsTimeSeriesChartDialogComponent
         'type': 'fit',
         'contains': 'padding',
       },
+      'encoding': {'x': {'field': 'time', 'type': 'temporal'}},
       'data': {
         'name': 'data-062c25e80e0ff23df3803082d5c6f7e7',
       },
@@ -175,10 +188,6 @@ export class HsStatisticsTimeSeriesChartDialogComponent
       'transform': [{type: 'formula', expr: 'datum.value * 2', 'as': 'val2'}],
       'layer': [
         {
-          'mark': {
-            'type': 'line',
-            'tooltip': {'content': 'data'},
-          },
           'encoding': {
             'color': {
               'field': 'name',
@@ -210,13 +219,38 @@ export class HsStatisticsTimeSeriesChartDialogComponent
               'type': 'quantitative',
             },
           },
+          'layer': [
+            {'mark': 'line'},
+            {
+              'transform': [{'filter': {'param': 'hover', 'empty': false}}],
+              'mark': 'point',
+            },
+          ],
         },
         {
-          'mark': {'type': 'point', 'color': 'yellow'},
+          'transform': [
+            {'pivot': 'name', 'value': 'value', 'groupby': ['time']},
+          ],
+          'mark': 'rule',
           'encoding': {
-            'x': {'field': 'time', 'type': 'temporal', 'sort': false},
-            'y': {'field': 'val2', 'type': 'quantitative'},
+            'opacity': {
+              'condition': {'value': 0.3, 'param': 'hover', 'empty': false},
+              'value': 0,
+            },
+            'tooltip': toolTipVariables,
           },
+          'params': [
+            {
+              'name': 'hover',
+              'select': {
+                'type': 'point',
+                'fields': ['time'],
+                'nearest': true,
+                'on': 'mouseover',
+                'clear': 'mouseout',
+              },
+            },
+          ],
         },
       ],
     };
