@@ -322,6 +322,7 @@ export class HsStatisticsRegressionDialogComponent
               'type': 'symbol',
               'encode': {
                 'enter': {
+                  'tooltip': {'field': col.factorName},
                   'stroke': {'scale': 'color', 'value': col.factorName},
                   'shape': {'value': 'diamond'},
                   'size': {'value': 30},
@@ -343,6 +344,7 @@ export class HsStatisticsRegressionDialogComponent
                 'type': 'symbol',
                 'encode': {
                   'enter': {
+                    'tooltip': {'field': 'Y'},
                     stroke: {scale: 'color', value: 'Observed Y'},
                     shape: {value: 'diamond'},
                     size: {value: 30},
@@ -471,6 +473,7 @@ export class HsStatisticsRegressionDialogComponent
             'mark': {
               'type': 'point',
               'filled': true,
+              'tooltip': true,
             },
             'encoding': {
               'x': {
