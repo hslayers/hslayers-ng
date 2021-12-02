@@ -278,7 +278,9 @@
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
     "selectThemes": "Izvēlēties tēmas",
-    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!"
+    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!",
+    "errorWhileCreatingLayerFromComposition": "Radās kļūda veidojot slāni no kompozīcijas",
+    "notAbleToParseLayerFromComposition": "Neveiksmīga slāņa parsēšana no kompozīcijas:"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
