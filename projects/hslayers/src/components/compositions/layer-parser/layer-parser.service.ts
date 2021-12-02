@@ -22,12 +22,12 @@ import ImageSource from 'ol/source/Image';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataCommonService} from '../../add-data/common/common.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
-import {HsUrlWfsService} from '../../add-data/url/wfs/wfs.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
+import {HsUrlWfsService} from '../../add-data/url/wfs/wfs.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
@@ -356,97 +356,101 @@ export class HsCompositionsLayerParserService {
   async createVectorLayer(
     lyr_def
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
-    let format = '';
-    if (lyr_def.protocol) {
-      format = lyr_def.protocol.format;
-      if (lyr_def.protocol.url !== undefined) {
-        lyr_def.protocol.url = decodeURIComponent(lyr_def.protocol.url);
+    try {
+      let format = '';
+      if (lyr_def.protocol) {
+        format = lyr_def.protocol.format;
+        if (lyr_def.protocol.url !== undefined) {
+          lyr_def.protocol.url = decodeURIComponent(lyr_def.protocol.url);
+        }
       }
+      const options: HsVectorLayerOptions = {
+        opacity: lyr_def.opacity || 1,
+        fromComposition: true,
+        path: lyr_def.path,
+        visible: lyr_def.visibility,
+        // Extract workspace name for partial backwards compatibility.
+        workspace:
+          lyr_def.workspace ||
+          lyr_def.protocol?.url.split('geoserver/')[1].split('/')[0],
+      };
+      let extractStyles = true;
+      if (lyr_def.style) {
+        Object.assign(
+          options,
+          await this.HsStylerService.parseStyle(lyr_def.style)
+        );
+        extractStyles = false;
+      }
+      const title = lyr_def.title || 'Layer';
+      let layer;
+      switch (format) {
+        case 'ol.format.KML':
+          layer = await this.HsAddDataVectorService.createVectorLayer(
+            'kml',
+            lyr_def.protocol.url,
+            lyr_def.name || title,
+            title,
+            lyr_def.abstract,
+            lyr_def.projection?.toUpperCase(),
+            Object.assign(options, {extractStyles})
+          );
+          break;
+        case 'ol.format.GeoJSON':
+          layer = await this.HsAddDataVectorService.createVectorLayer(
+            'geojson',
+            lyr_def.protocol.url,
+            lyr_def.name || title,
+            title,
+            lyr_def.abstract,
+            lyr_def.projection?.toUpperCase(),
+            options
+          );
+          break;
+        case 'hs.format.WFS':
+        case 'WFS':
+          layer = await this.HsAddDataVectorService.createVectorLayer(
+            'wfs',
+            lyr_def.protocol.url,
+            //lyr_def.protocol.LAYERS
+            lyr_def.name || title,
+            title,
+            lyr_def.abstract,
+            lyr_def.projection?.toUpperCase(),
+            options
+          );
+          break;
+        case 'hs.format.Sparql':
+          layer = await this.createSparqlLayer(lyr_def);
+          break;
+        default:
+          const features = lyr_def.features
+            ? new GeoJSON().readFeatures(lyr_def.features, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: this.HsMapService.getCurrentProj(),
+              })
+            : undefined;
+          layer = await this.HsAddDataVectorService.createVectorLayer(
+            '',
+            undefined,
+            lyr_def.name || title,
+            title,
+            lyr_def.abstract,
+            lyr_def.projection?.toUpperCase(),
+            {
+              opacity: lyr_def.opacity,
+              visible: lyr_def.visibility,
+              path: lyr_def.path,
+              fromComposition: lyr_def.fromComposition,
+              style: lyr_def.style,
+              features,
+            }
+          );
+      }
+      setDefinition(layer, lyr_def.protocol);
+      return layer;
+    } catch (error) {
+      return null;
     }
-    const options: HsVectorLayerOptions = {
-      opacity: lyr_def.opacity || 1,
-      fromComposition: true,
-      path: lyr_def.path,
-      visible: lyr_def.visibility,
-      // Extract workspace name for partial backwards compatibility.
-      workspace:
-        lyr_def.workspace ||
-        lyr_def.protocol?.url.split('geoserver/')[1].split('/')[0],
-    };
-    let extractStyles = true;
-    if (lyr_def.style) {
-      Object.assign(
-        options,
-        await this.HsStylerService.parseStyle(lyr_def.style)
-      );
-      extractStyles = false;
-    }
-    const title = lyr_def.title || 'Layer';
-    let layer;
-    switch (format) {
-      case 'ol.format.KML':
-        layer = await this.HsAddDataVectorService.createVectorLayer(
-          'kml',
-          lyr_def.protocol.url,
-          lyr_def.name || title,
-          title,
-          lyr_def.abstract,
-          lyr_def.projection?.toUpperCase(),
-          Object.assign(options, {extractStyles})
-        );
-        break;
-      case 'ol.format.GeoJSON':
-        layer = await this.HsAddDataVectorService.createVectorLayer(
-          'geojson',
-          lyr_def.protocol.url,
-          lyr_def.name || title,
-          title,
-          lyr_def.abstract,
-          lyr_def.projection?.toUpperCase(),
-          options
-        );
-        break;
-      case 'hs.format.WFS':
-      case 'WFS':
-        layer = await this.HsAddDataVectorService.createVectorLayer(
-          'wfs',
-          lyr_def.protocol.url,
-          //lyr_def.protocol.LAYERS
-          lyr_def.name || title,
-          title,
-          lyr_def.abstract,
-          lyr_def.projection?.toUpperCase(),
-          options
-        );
-        break;
-      case 'hs.format.Sparql':
-        layer = await this.createSparqlLayer(lyr_def);
-        break;
-      default:
-        const features = lyr_def.features
-          ? new GeoJSON().readFeatures(lyr_def.features, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: this.HsMapService.getCurrentProj(),
-            })
-          : undefined;
-        layer = await this.HsAddDataVectorService.createVectorLayer(
-          '',
-          undefined,
-          lyr_def.name || title,
-          title,
-          lyr_def.abstract,
-          lyr_def.projection?.toUpperCase(),
-          {
-            opacity: lyr_def.opacity,
-            visible: lyr_def.visibility,
-            path: lyr_def.path,
-            fromComposition: lyr_def.fromComposition,
-            style: lyr_def.style,
-            features,
-          }
-        );
-    }
-    setDefinition(layer, lyr_def.protocol);
-    return layer;
   }
 }

@@ -265,6 +265,8 @@
       "outOfBounds": "Rozsah kompozice je mimo rozsah systému EPSG:4326",
       "toContinue": "Na základě dané velikosti mapy nebude mapa zobrazovat geometrii nebo rozsah dané kompozice"
     },
+    "errorWhileCreatingLayerFromComposition": "Chyba při vytváření vrstvy z kompozice",
+    "notAbleToParseLayerFromComposition": "Nebylo možné spracovat vrstvu z kompozice:",
     "endpointUrlIsNotDefined": "Není definováno URL serveru!",
     "endpointUserIsNotDefined": "Není definován uživatel katalogu",
     "errorWhileLoadingCompositionMetadata": "Chyba při načítání metadat kompozice",
