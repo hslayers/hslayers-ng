@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
 import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 
@@ -20,7 +21,8 @@ export class HsAddDataCommonService {
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsToastService: HsToastService,
     public hsAddDataService: HsAddDataService,
-    public hsDimensionService: HsDimensionService
+    public hsDimensionService: HsDimensionService,
+    public hsEventBusService: HsEventBusService
   ) {
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.clearParams();
@@ -31,6 +33,15 @@ export class HsAddDataCommonService {
     this.loadingInfo = false;
     this.showDetails = false;
     this.url = '';
+    this.hsEventBusService.owsConnecting.next({
+      type: undefined,
+      uri: '',
+      layer: null,
+    });
+  }
+
+  setPanelToCatalogue(): void {
+    this.hsAddDataService.typeSelected = 'catalogue';
   }
 
   /**

@@ -434,6 +434,7 @@ export class HsAddDataCatalogueService {
             }
           );
           this.hsAddDataVectorService.fitExtent(layer);
+          this.hsAddDataService.typeSelected = 'catalogue';
         } else {
           //Layman layers without write access
           setTimeout(() => {

@@ -23,4 +23,5 @@ export interface HsUrlTypeServiceModel {
     addUnder?: Layer<Source>,
     path?: string
   ): Promise<void>;
+  setDataToDefault(): void;
 }
