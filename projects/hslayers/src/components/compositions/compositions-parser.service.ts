@@ -18,6 +18,7 @@ import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {HsToastService} from '../layout/toast/toast.service';
 
 import {
   getFromComposition,
@@ -62,7 +63,8 @@ export class HsCompositionsParserService {
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
     public HsCommonEndpointsService: HsCommonEndpointsService,
-    public HsLayerManagerService: HsLayerManagerService
+    public HsLayerManagerService: HsLayerManagerService,
+    public hsToastService: HsToastService
   ) {}
 
   /**
@@ -399,6 +401,18 @@ export class HsCompositionsParserService {
           this.$log.warn(
             'Was not able to parse layer from composition',
             lyr_def
+          );
+          this.hsToastService.createToastPopupMessage(
+            this.HsLanguageService.getTranslation(
+              'COMPOSITIONS.errorWhileCreatingLayerFromComposition'
+            ),
+            this.HsLanguageService.getTranslation(
+              'COMPOSITIONS.notAbleToParseLayerFromComposition'
+            ) + lyr_def.title,
+            {
+              disableLocalization: true,
+              serviceCalledFrom: 'HsCompositionsParserService',
+            }
           );
         }
       } else {
