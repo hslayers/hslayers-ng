@@ -60,7 +60,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         this.addLayers(true);
-        this.hsAddDataCommonService.layerToSelect = null;
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -147,6 +146,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager');
+    this.hsAddDataCommonService.clearParams();
+    this.setDataToDefault();
+    this.hsAddDataCommonService.setPanelToCatalogue();
   }
 
   addLayersRecursively(

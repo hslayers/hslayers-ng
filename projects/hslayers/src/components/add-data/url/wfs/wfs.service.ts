@@ -85,7 +85,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         this.addLayers(true, style);
-        this.hsAddDataCommonService.layerToSelect = null;
         this.zoomToBBox(bbox);
       }
     } catch (e) {
@@ -119,8 +118,40 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.data.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType
         : [caps.FeatureTypeList.FeatureType];
-      this.data.bbox =
-        layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
+      if (layer) {
+        this.data.bbox =
+          layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
+
+        const srsType = layer && layer.DefaultSRS ? 'SRS' : 'CRS';
+        if (layer['Default' + srsType] !== undefined) {
+          this.data.srss = [layer['Default' + srsType]];
+        } else {
+          this.data.srss = [];
+          this.data.srss.push('EPSG:4326');
+        }
+
+        const otherSRS = layer['Other' + srsType];
+        if (otherSRS) {
+          if (typeof otherSRS == 'string') {
+            this.data.srss.push(otherSRS);
+          } else {
+            for (const srs of layer['Other' + srsType]) {
+              this.data.srss.push(srs);
+            }
+          }
+        }
+
+        if (this.data.srss[0] === undefined) {
+          this.data.srss = [
+            caps.FeatureTypeList.FeatureType[0]['Default' + srsType],
+          ];
+          for (const srs of caps.FeatureTypeList.FeatureType[0][
+            'Other' + srsType
+          ]) {
+            this.data.srss.push(srs);
+          }
+        }
+      }
 
       this.data.output_format = this.getPreferredFormat(this.data.version);
 
@@ -128,35 +159,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         ? caps.FeatureTypeList.FeatureType
         : [caps.FeatureTypeList.FeatureType];
 
-      const srsType = layer.DefaultSRS ? 'SRS' : 'CRS';
-      if (layer['Default' + srsType] !== undefined) {
-        this.data.srss = [layer['Default' + srsType]];
-      } else {
-        this.data.srss = [];
-        this.data.srss.push('EPSG:4326');
-      }
-
-      const otherSRS = layer['Other' + srsType];
-      if (otherSRS) {
-        if (typeof otherSRS == 'string') {
-          this.data.srss.push(otherSRS);
-        } else {
-          for (const srs of layer['Other' + srsType]) {
-            this.data.srss.push(srs);
-          }
-        }
-      }
-
-      if (this.data.srss[0] === undefined) {
-        this.data.srss = [
-          caps.FeatureTypeList.FeatureType[0]['Default' + srsType],
-        ];
-        for (const srs of caps.FeatureTypeList.FeatureType[0][
-          'Other' + srsType
-        ]) {
-          this.data.srss.push(srs);
-        }
-      }
       this.data.srss = this.parseEPSG(this.data.srss);
       if (this.data.srss.length == 0) {
         this.data.srss = ['EPSG:3857'];
@@ -284,6 +286,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     for (const layer of this.data.services) {
       this.addLayersRecursively(layer, {style});
     }
+    this.hsAddDataCommonService.clearParams();
+    this.setDataToDefault();
+    this.hsAddDataCommonService.setPanelToCatalogue();
   }
 
   addLayersRecursively(layer, options: addLayersRecursivelyOptions): void {

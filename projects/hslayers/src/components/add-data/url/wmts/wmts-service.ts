@@ -55,7 +55,6 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         this.addLayers(true);
-        this.hsAddDataCommonService.layerToSelect = null;
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -100,6 +99,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       this.addLayersRecursively(layer);
     }
     this.hsLayoutService.setMainPanel('layermanager');
+    this.hsAddDataCommonService.clearParams();
+    this.setDataToDefault();
+    this.hsAddDataCommonService.setPanelToCatalogue();
     //FIX ME: to implement
     // this.zoomToLayers();
   }
