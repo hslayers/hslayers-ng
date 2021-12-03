@@ -5,7 +5,7 @@
                 <h4 class="modal-title text-uppercase">
                     {{'ADDLAYERS.capabilitiesParsingProblem' | translate}}
                 </h4>
-                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
+                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translate}}"></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <p>{{'ADDLAYERS.ERROR.thereWasErrorWhile' | translate}}</p>

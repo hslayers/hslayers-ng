@@ -7,7 +7,7 @@
                 <h4 class="modal-title">
                     {{'SENSORS.sensorUnit' | translate}} {{HsSensorsUnitDialogService.unit.description}}
                 </h4>
-                <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
+                <button type="button" class="btn-close" (click)="close()" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translate}}"></button>
             </div>
             <div class="modal-body" style="max-height: 260px; overflow-y: auto">
                 <div class="container-fluid">
