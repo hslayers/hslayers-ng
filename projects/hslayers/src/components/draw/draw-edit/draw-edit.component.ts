@@ -148,6 +148,7 @@ export class DrawEditComponent implements OnDestroy {
       if (features.getLength() > 1) {
         this.deselectMultiple();
       }
+      this.setType('LineString'); //Commence drawing right away
     } else {
       if (features.getLength() > 1) {
         //Remove non polygon features from selection
