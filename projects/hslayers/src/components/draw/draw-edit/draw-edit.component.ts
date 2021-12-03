@@ -1,12 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
 
 import * as polygonClipping from 'polygon-clipping';
-import lineOffset from '@turf/line-offset';
-
 import Feature from 'ol/Feature';
 import Polygon from 'ol/geom/Polygon';
 import VectorLayer from 'ol/layer/Vector';
-import {GeoJSON} from 'ol/format';
+import polygonSplitter from 'polygon-splitter';
 import {Vector} from 'ol/source';
 
 import {HsDrawService} from '../draw.service';
@@ -267,29 +265,29 @@ export class DrawEditComponent implements OnDestroy {
       editCoords[index] = features[index].getGeometry().getCoordinates();
     }
 
+    let newGeom;
     if (type === 'split') {
-      const thickLine = [];
       const splittingLine =
         this.HsQueryBaseService.data.features.length > 1
           ? this.HsQueryBaseService.data.features[1].feature
           : this.editLayer.getSource().getFeatures()[0];
-      const parser = new GeoJSON();
-      const GeoJSONline = parser.writeFeatureObject(splittingLine);
-      thickLine[0] = lineOffset(GeoJSONline, 0.001, {units: 'meters'});
-      thickLine[1] = lineOffset(GeoJSONline, -0.001, {units: 'meters'});
 
-      const polyCoords = [
-        ...thickLine[0].geometry.coordinates,
-        ...thickLine[1].geometry.coordinates.reverse(),
-      ];
-      polyCoords.push(polyCoords[0]);
-      editCoords[1] = [[polyCoords]];
+      const polygon = {
+        type: 'Polygon',
+        coordinates: editCoords[0],
+      };
+      const polyline = {
+        type: 'LineString',
+        coordinates: splittingLine.getGeometry().getCoordinates(),
+      };
+      newGeom = polygonSplitter(polygon, polyline).geometry.coordinates;
+    } else {
+      newGeom = polygonClipping[type == 'split' ? 'difference' : type](
+        editCoords[0],
+        ...editCoords.slice(1)
+      );
     }
 
-    const newGeom = polygonClipping[type == 'split' ? 'difference' : type](
-      editCoords[0],
-      ...editCoords.slice(1)
-    );
     //TYPE SPECIFFIC ACTION
     this[type](newGeom);
   }
