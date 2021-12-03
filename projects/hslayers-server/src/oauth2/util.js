@@ -43,7 +43,7 @@ exports.deleteUserSession = async (req) => {
 const getAuthenticationHeaders = (user) => {
   return {
     AuthorizationIssUrl: process.env.OAUTH2_AUTH_URL,
-    Authorization: `Bearer ${user.ticket.access_token}`,
+    Authorization: user.ticket ? `Bearer ${user.ticket.access_token}` : ''
   }
 };
 

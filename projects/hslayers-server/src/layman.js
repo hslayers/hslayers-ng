@@ -101,19 +101,20 @@ app.use(`/rest`,
     onProxyRes: authnUtil.handleProxyRes
   }),
 );
+
+const gsProxy = createProxyMiddleware({
+  target: process.env.LAYMAN_BASEURL,
+  changeOrigin: true,
+  selfHandleResponse: true,
+  secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
+  onProxyReq: (proxyReq, req, res) => {
+    authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+  },
+  onProxyRes: authnUtil.handleProxyRes
+});
 // Layman proxy for WFS transactions endpoint
-app.use(`/geoserver`,
-  createProxyMiddleware({
-    target: process.env.LAYMAN_BASEURL,
-    changeOrigin: true,
-    selfHandleResponse: true,
-    secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
-    onProxyReq: (proxyReq, req, res) => {
-      authnUtil.addAuthenticationHeaders(proxyReq, req, res);
-    },
-    onProxyRes: authnUtil.handleProxyRes
-  }),
-);
+app.use(`/geoserver`, gsProxy);
+app.use(`/client/geoserver`, gsProxy);
 
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
