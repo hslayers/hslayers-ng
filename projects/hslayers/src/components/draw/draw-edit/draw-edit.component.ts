@@ -231,10 +231,7 @@ export class DrawEditComponent implements OnDestroy {
     if (type) {
       this.HsDrawService.activateDrawing({onDrawEnd: (e) => this.onDrawEnd(e)});
     }
-    if (
-      this.selectedType == 'split' &&
-      this.HsQueryBaseService.data.features.length > 1
-    ) {
+    if (this.selectedType == 'split' && this.features.length > 1) {
       this.deselectMultiple(0);
     }
   }
@@ -245,17 +242,18 @@ export class DrawEditComponent implements OnDestroy {
 
   //Modifiy firstly selected features with the output of polygonClipping
   setCoordinatesToFirstFeature(coords): void {
-    this.HsQueryBaseService.data.features[0].feature
-      .getGeometry()
-      .setCoordinates(coords[0], 'XY');
-    console.log(this.HsQueryBaseService.data.features[0]);
+    this.features[0].feature.getGeometry().setCoordinates(coords[0], 'XY');
+  }
+
+  get features() {
+    return this.HsQueryBaseService.data.features;
   }
 
   modify(type): void | boolean {
     const features = [];
     const editCoords = [];
 
-    this.HsQueryBaseService.data.features.forEach((feature, idx) => {
+    this.features.forEach((feature, idx) => {
       if ((type == 'difference' && idx < 2) || type != 'difference') {
         features.push(feature.feature.clone());
       }
@@ -268,24 +266,22 @@ export class DrawEditComponent implements OnDestroy {
     let newGeom;
     if (type === 'split') {
       const splittingLine =
-        this.HsQueryBaseService.data.features.length > 1
-          ? this.HsQueryBaseService.data.features[1].feature
+        this.features.length > 1
+          ? this.features[1].feature
           : this.editLayer.getSource().getFeatures()[0];
 
-      const polygon = {
-        type: 'Polygon',
-        coordinates: editCoords[0],
-      };
-      const polyline = {
-        type: 'LineString',
-        coordinates: splittingLine.getGeometry().getCoordinates(),
-      };
-      newGeom = polygonSplitter(polygon, polyline).geometry.coordinates;
+      newGeom = polygonSplitter(
+        {
+          type: 'Polygon',
+          coordinates: editCoords[0],
+        },
+        {
+          type: 'LineString',
+          coordinates: splittingLine.getGeometry().getCoordinates(),
+        }
+      ).geometry.coordinates;
     } else {
-      newGeom = polygonClipping[type == 'split' ? 'difference' : type](
-        editCoords[0],
-        ...editCoords.slice(1)
-      );
+      newGeom = polygonClipping[type](editCoords[0], ...editCoords.slice(1));
     }
 
     //TYPE SPECIFFIC ACTION
@@ -312,7 +308,7 @@ export class DrawEditComponent implements OnDestroy {
   }
 
   union(newGeom): void {
-    const features = this.HsQueryBaseService.data.features;
+    const features = this.features;
     const featuresLength = features.length;
     for (let i = 0; i <= featuresLength; i++) {
       //Remove all but the first (edited) features
@@ -329,14 +325,13 @@ export class DrawEditComponent implements OnDestroy {
   split(newGeom): void {
     for (const geom of newGeom) {
       const layer = this.hsMapService.getLayerForFeature(
-        this.HsQueryBaseService.data.features[0].feature
+        this.features[0].feature
       );
-      const polygon = new Polygon(geom);
-      const feature = new Feature(polygon);
+      const feature = new Feature(new Polygon(geom));
 
       layer.getSource().addFeature(feature);
     }
-    for (const feature of this.HsQueryBaseService.data.features) {
+    for (const feature of this.features) {
       this.HsQueryVectorService.removeFeature(feature.feature);
     }
     this.resetState();
@@ -347,17 +342,16 @@ export class DrawEditComponent implements OnDestroy {
       this.setCoordinatesToFirstFeature(newGeom);
     } else {
       const layer = this.hsMapService.getLayerForFeature(
-        this.HsQueryBaseService.data.features[0].feature
+        this.features[0].feature
       );
 
       for (const geom of newGeom) {
-        const polygon = new Polygon(geom);
-        const feature = new Feature(polygon);
+        const feature = new Feature(new Polygon(geom));
 
         layer.getSource().addFeature(feature);
       }
 
-      for (const feature of this.HsQueryBaseService.data.features) {
+      for (const feature of this.features) {
         this.HsQueryVectorService.removeFeature(feature.feature);
       }
     }
