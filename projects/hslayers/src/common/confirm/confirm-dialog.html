@@ -5,7 +5,7 @@
                 <h4 class="modal-title">
                     {{data.title}}
                 </h4>
-                <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
+                <button type="button" (click)="no()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translate}}"></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
                 <p class="fw-bold h6">{{data.message}}</p>
@@ -13,7 +13,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translate" data-dismiss="modal">{{'COMMON.yes' | translate}}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.no' | translate" (click)="no()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>      
+                <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.no' | translate" (click)="no()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>
             </div>
         </div>
     </div>
