@@ -68,6 +68,7 @@
     "ol-popup": "^4.0.0",
     "passport-oauth2-middleware": "^1.0.3",
     "polygon-clipping": "^0.15.3",
+    "polygon-splitter": "^0.0.5",
     "proj4": "^2.7.5",
     "queue": "^6.0.2",
     "resumablejs": "^1.1.0",
