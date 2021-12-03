@@ -48,7 +48,6 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0 || >=11.0.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "@turf/line-offset": "^6.5.0",
     "@types/cesium": "^1.70.0",
     "@types/jszip": "^3.4.1",
     "bootstrap": "^5.1.3",
