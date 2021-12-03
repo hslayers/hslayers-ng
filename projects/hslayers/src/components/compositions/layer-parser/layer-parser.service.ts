@@ -62,7 +62,7 @@ export class HsCompositionsLayerParserService {
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );
-    this.HsUrlWfsService.addLayerFromCapabilities(wrapper);
+    this.HsUrlWfsService.addLayerFromCapabilities(wrapper, lyr_def.style);
   }
 
   /**
