@@ -828,6 +828,8 @@
   },
   "LAYMAN": {
     "ERROR": {
+      "2": "Nie je možné otvoriť rastrový súbor",
+      "18": "Chýba jeden alebo viac súborov Shapefile",
       "50": "Chyba pri normalizácií rastrového súboru"
     }
   }
