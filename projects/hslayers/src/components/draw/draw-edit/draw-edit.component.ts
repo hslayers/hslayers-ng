@@ -264,6 +264,7 @@ export class DrawEditComponent implements OnDestroy {
     }
 
     let newGeom;
+    let properties;
     if (type === 'split') {
       const splittingLine =
         this.features.length > 1
@@ -280,17 +281,25 @@ export class DrawEditComponent implements OnDestroy {
           coordinates: splittingLine.getGeometry().getCoordinates(),
         }
       ).geometry.coordinates;
+      properties = features[0].getProperties();
     } else {
+      if (type == 'union' || type == 'intersection') {
+        const properties = {};
+        for (const f of features) {
+          Object.assign(properties, f.getProperties());
+        }
+      }
       newGeom = polygonClipping[type](editCoords[0], ...editCoords.slice(1));
     }
 
     //TYPE SPECIFFIC ACTION
-    this[type](newGeom);
+    this[type](newGeom, properties);
   }
 
-  intersection(newGeom): void {
+  intersection(newGeom, properties): void {
     if (newGeom.length > 0) {
       this.setCoordinatesToFirstFeature(newGeom);
+      this.features[0].feature.setProperties(properties);
       this.resetState();
     } else {
       this.hsToastService.createToastPopupMessage(
@@ -307,7 +316,7 @@ export class DrawEditComponent implements OnDestroy {
     }
   }
 
-  union(newGeom): void {
+  union(newGeom, properties): void {
     const features = this.features;
     const featuresLength = features.length;
     for (let i = 0; i <= featuresLength; i++) {
@@ -318,16 +327,19 @@ export class DrawEditComponent implements OnDestroy {
         );
       }
     }
+    this.features[0].feature.setProperties(properties);
     this.setCoordinatesToFirstFeature(newGeom);
     this.resetState();
   }
 
-  split(newGeom): void {
-    for (const geom of newGeom) {
+  split(coords, properties): void {
+    for (const c of coords) {
       const layer = this.hsMapService.getLayerForFeature(
         this.features[0].feature
       );
-      const feature = new Feature(new Polygon(geom));
+      const feature = new Feature(
+        Object.assign(properties, {geometry: new Polygon(c)})
+      );
 
       layer.getSource().addFeature(feature);
     }
@@ -337,7 +349,8 @@ export class DrawEditComponent implements OnDestroy {
     this.resetState();
   }
 
-  difference(newGeom: Array<any>): void {
+  difference(newGeom: any[], properties): void {
+    //TODO: Not sure what to do with properties here
     if (newGeom.length === 1) {
       this.setCoordinatesToFirstFeature(newGeom);
     } else {
