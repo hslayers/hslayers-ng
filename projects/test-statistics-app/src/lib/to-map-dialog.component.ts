@@ -50,6 +50,9 @@ export class HsStatisticsToMapDialogComponent
   filteredRows: any[];
   locationColumn: string;
   filteredValues: number[];
+  locProperties: {[x: string]: any};
+  selectedLocationProp: string;
+
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -143,6 +146,10 @@ export class HsStatisticsToMapDialogComponent
     title: string;
   }): Promise<void> {
     this.selectedLayer = layer;
+    const features = layer.layer.getSource().getFeatures();
+    if (features.length > 0) {
+      this.locProperties = Object.keys(features[0].getProperties());
+    }
   }
 
   histogramDisabled(): boolean {
@@ -189,7 +196,8 @@ export class HsStatisticsToMapDialogComponent
     const features = this.selectedLayer.layer.getSource().getFeatures();
     for (const row of this.filteredRows) {
       const feature = features.find(
-        (feature) => feature.get('LABEL') == row[this.locationColumn]
+        (feature) =>
+          feature.get(this.selectedLocationProp) == row[this.locationColumn]
       );
       if (feature) {
         feature.set(

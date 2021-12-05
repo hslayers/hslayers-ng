@@ -11,7 +11,7 @@
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
                     <p class="m-0 p-0 flex-fill text-primary">{{'COMMON.layer' | translate}}:</p>
-                    <div ngbDropdown placement="bottom" style="max-width: 50%">
+                    <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
                       rounded-0
@@ -29,6 +29,31 @@
                                 <a class="dropdown-item text-truncate" *ngFor="let layer of vectorLayers"
                                     data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
                                     (click)="selectLayer(layer);">{{HsLayerUtilsService.translateTitle(layer.title)}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.LOCATION_PROPERTY' | translate}}:</p>
+                    <div ngbDropdown placement="bottom-right" style="max-width: 50%">
+                        <button type="button" ngbDropdownToggle class="
+                      btn btn-sm
+                      rounded-0
+                      hs-toolbar-button
+                      d-flex
+                      align-items-center
+                      mw-100
+                    " aria-haspopup="true">
+                            <div class="text-truncate" *ngIf="selectedLocationProp !== undefined">
+                                {{selectedLocationProp}}
+                            </div>
+                        </button>
+                        <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
+                            <div class="d-flex align-items-center w-100 flex-column">
+                                <a class="dropdown-item text-truncate" *ngFor="let p of locProperties"
+                                    data-toggle="tooltip" title="{{p}}"
+                                    (click)="selectedLocationProp = p">{{p}}</a>
                             </div>
                         </div>
                     </div>

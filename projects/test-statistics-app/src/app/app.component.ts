@@ -118,6 +118,7 @@ export class HslayersAppComponent {
             SHIFT: 'Shift',
             YEARS: 'years',
             AGO: 'ago',
+            LOCATION_PROPERTY: 'Location property',
           },
         },
       },
