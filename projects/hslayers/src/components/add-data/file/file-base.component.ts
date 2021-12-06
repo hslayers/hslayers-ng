@@ -63,7 +63,7 @@ export class HsAddDataFileBaseComponent
 
   ngAfterViewInit(): void {
     if (this.hsUploadComponent) {
-      this.fileInput = this.hsUploadComponent.getVectorFileInput();
+      this.fileInput = this.hsUploadComponent.getFileInput();
     }
   }
 

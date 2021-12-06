@@ -21,6 +21,7 @@ import {
   HsUploadedFiles,
 } from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {accessRightsModel} from '../../common/access-rights.model';
 import {vectorDataObject} from '../vector-data.type';
 
 @Component({
