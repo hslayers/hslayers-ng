@@ -12,7 +12,7 @@
                     translate}}</button>
             </div>
             <ng-container>
-                <table class="table table-sm table-striped table-bordered" style="table-layout: fixed;">
+                <table class="table table-sm table-striped table-bordered" style="table-layout: fixed;max-height: 500px;display: block;overflow-y: scroll;">
                     <thead>
                         <th *ngFor="let col of columns">
                             <select class="form-control form-select" style="border: none;" [(ngModel)]="uses[col]">
