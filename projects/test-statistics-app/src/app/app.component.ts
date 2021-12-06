@@ -122,6 +122,8 @@ export class HslayersAppComponent {
             VISUALIZE: 'Visualize',
             YEARS: 'years',
             LOCATION_PROPERTY: 'Location property',
+            DOWNLOAD_TEMPLATE_HINT: `Upload data in CSV format. A template can be downloaded`,
+            HERE: 'here',
           },
         },
       },

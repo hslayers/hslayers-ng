@@ -2,7 +2,9 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
+import {HsDownloadModule} from 'hslayers-ng';
 import {HsPanelHelpersModule, HsUploadModule} from 'hslayers-ng';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {AbsPipe} from './abs.pipe';
@@ -14,7 +16,6 @@ import {HsStatisticsRegressionDialogComponent} from './regression-dialog.compone
 import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
 import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 import {HsStatisticsUploadPanelComponent} from './upload-panel';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -36,6 +37,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     TranslateModule,
     HsUploadModule,
     NgbDropdownModule,
+    HsDownloadModule,
   ],
   exports: [
     HsStatisticsPanelComponent,

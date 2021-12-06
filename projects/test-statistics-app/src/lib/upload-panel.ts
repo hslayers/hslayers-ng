@@ -31,6 +31,11 @@ export class HsStatisticsUploadPanelComponent
   rowsCollapsed = false;
   fileInput;
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
+  downloadData: any;
+  uploadTemplate = `"Municipality name or code",Year,"Variable 1","Variable 2"
+  Alūksnes municipality,2010,1,1
+  Cēsu municipality,2010,1,2`;
+
   constructor(
     public hsStatisticsService: HsStatisticsService,
     public hsConfig: HsConfig,
@@ -115,9 +120,15 @@ export class HsStatisticsUploadPanelComponent
         case 'Novads':
         case 'Pagasts':
         case 'Pašvaldība':
+        case 'Municipality':
+        case 'Field':
+        case 'Municipality name or code':
           this.uses[key] = 'location';
           break;
         case 'Gads':
+        case 'Year':
+        case 'Month':
+        case 'Date':
           this.uses[key] = 'time';
           break;
         default:

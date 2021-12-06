@@ -2,6 +2,12 @@
     <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
     <div class="card-body">
         <div class="card-body">
+            <div>
+                {{'STATISTICS.DOWNLOAD_TEMPLATE_HINT' |
+                    translate}} <a download="template.csv" [hsDownload]="uploadTemplate" mimeType="text/csv"
+                [href]="downloadData" (downloadPrepared)="downloadData = $event" [title]="'STATISTICS.HERE' | translate">
+                here</a>.
+            </div>
             <div class="form-group m-3">
                 <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".csv">
                 </hs-file-upload>
