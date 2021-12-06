@@ -266,7 +266,7 @@
       "toContinue": "Na základě dané velikosti mapy nebude mapa zobrazovat geometrii nebo rozsah dané kompozice"
     },
     "errorWhileCreatingLayerFromComposition": "Chyba při vytváření vrstvy z kompozice",
-    "notAbleToParseLayerFromComposition": "Nebylo možné spracovat vrstvu z kompozice:",
+    "notAbleToParseLayerFromComposition": "Nebylo možné zpracovat vrstvu z kompozice:",
     "endpointUrlIsNotDefined": "Není definováno URL serveru!",
     "endpointUserIsNotDefined": "Není definován uživatel katalogu",
     "errorWhileLoadingCompositionMetadata": "Chyba při načítání metadat kompozice",
