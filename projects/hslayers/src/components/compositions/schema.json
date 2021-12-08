@@ -497,7 +497,7 @@
                 }
               }
             ]
-          },,
+          },
           "dimensions": {
             "$id": "#/properties/layers/items/properties/dimensions",
             "type": "object",
