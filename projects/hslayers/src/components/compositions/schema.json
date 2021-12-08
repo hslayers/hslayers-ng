@@ -468,10 +468,15 @@
           },
           "style": {
             "$id": "#/properties/layers/items/properties/style",
-            "type": "object",
+            "type": [
+              "string",
+              "object"
+            ],
             "title": "Style of vector layer features",
-            "description": "",
+            "description": "The style can be specified using a string in SLD format, URL to SLD file or JSON object (old way for hslayers-ng@<5.0.0) which specifies fill/stroke/image attributes of the style",
             "examples": [
+              "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <StyledLayerDescriptor version=\"1.0.0\" xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"> <NamedLayer> <Name>GeoServer SLD Cook Book: Simple point with stroke</Name> <UserStyle> <Name>GeoServer SLD Cook Book: Simple point with stroke</Name> <Title>GeoServer SLD Cook Book: Simple point with stroke</Title> <FeatureTypeStyle> <Rule> <Name/> <PointSymbolizer> <Graphic> <Mark> <WellKnownName>circle</WellKnownName> <Fill> <CssParameter name=\"fill\">#FF0000</CssParameter> </Fill> <Stroke> <CssParameter name=\"stroke\">#000000</CssParameter> <CssParameter name=\"stroke-width\">2</CssParameter> </Stroke> </Mark> <Size>18</Size> </Graphic> </PointSymbolizer> </Rule> </FeatureTypeStyle> </UserStyle> </NamedLayer> </StyledLayerDescriptor>",
+              "https://docs.geoserver.org/latest/en/user/_downloads/734cc880c145b4d96a3d17fc6eb9b0c8/point_simplepoint.sld",
               {
                 "stroke": {
                   "color": "rgba(238, 156, 150, 1)",
@@ -492,7 +497,7 @@
                 }
               }
             ]
-          },
+          },,
           "dimensions": {
             "$id": "#/properties/layers/items/properties/dimensions",
             "type": "object",
