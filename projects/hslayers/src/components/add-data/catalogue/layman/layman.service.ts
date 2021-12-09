@@ -280,17 +280,7 @@ export class HsLaymanBrowserService {
     const lyr = await this.fillLayerMetadata(ds, layer);
     let style: string = undefined;
     if (lyr.style?.url) {
-      try {
-        style = await this.http
-          .get(lyr.style?.url, {
-            headers: new HttpHeaders().set('Content-Type', 'text'),
-            responseType: 'text',
-            withCredentials: true,
-          })
-          .toPromise();
-      } catch (ex) {
-        console.error(ex);
-      }
+      style = await this.getStyleFromUrl(lyr.style?.url);
     }
     if (lyr.style.type == 'sld') {
       if (!style?.includes('StyledLayerDescriptor')) {
@@ -323,6 +313,19 @@ export class HsLaymanBrowserService {
         {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
       );
       return false;
+    }
+  }
+
+  async getStyleFromUrl(styleUrl: string): Promise<string> {
+    try {
+      const req = this.http.get(styleUrl, {
+        headers: new HttpHeaders().set('Content-Type', 'text'),
+        responseType: 'text',
+        withCredentials: true,
+      });
+      return await req.toPromise();
+    } catch (ex) {
+      console.error(ex);
     }
   }
 }
