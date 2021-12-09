@@ -6,6 +6,7 @@ import {HsConfig} from './config.service';
 import {HsDrawComponent} from './components/draw/draw.component';
 import {HsDrawToolbarComponent} from './components/draw/draw-toolbar/draw-toolbar.component';
 // import {HsFeatureInfoComponent} from './components/query/query-popup-feature/feature-widgets/feature-info.component';
+import {HsExternalService} from './components/external/external.service';
 import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
 import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
 import {HsInfoComponent} from './components/info/info.component';
@@ -32,6 +33,7 @@ import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
+import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -49,7 +51,9 @@ export class HslayersComponent implements OnInit {
     private HsLayerManagerService: HsLayerManagerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     private hsQueryPopupService: HsQueryPopupService,
-    private HsMapSwipeService: HsMapSwipeService
+    private HsMapSwipeService: HsMapSwipeService,
+    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    hsExternalService: HsExternalService
   ) {}
 
   /**

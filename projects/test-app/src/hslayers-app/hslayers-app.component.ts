@@ -63,6 +63,7 @@ export class HslayersAppComponent {
           },
           'properties': {
             'name': 'Poly 3',
+            'id': 'poly1',
             'population': Math.floor(Math.random() * 100000),
           },
         },
@@ -372,6 +373,38 @@ export class HslayersAppComponent {
             }),
           }),
           source: new VectorSource({features}),
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'Polygons',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'],
+            },
+            domFeatureLinks: [
+              {
+                domSelector: '#poly1',
+                feature: 'poly1',
+                eventInDom: 'mouseover',
+                actions: ['zoomToExtent'],
+              },
+            ],
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
+              },
+            },
+            sld: polygonSld,
+            path: 'User generated',
+          },
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
+          }),
         }),
         new VectorLayer({
           properties: {
