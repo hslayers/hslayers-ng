@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import ImageSource from 'ol/source/Image';
 import TileSource from 'ol/source/Tile';
 import VectorSource from 'ol/source/Vector';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
@@ -18,12 +19,12 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
-import ImageSource from 'ol/source/Image';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataCommonService} from '../../add-data/common/common.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
@@ -49,7 +50,8 @@ export class HsCompositionsLayerParserService {
     public HsEventBusService: HsEventBusService,
     public HsUrlWfsService: HsUrlWfsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsAddDataCommonService: HsAddDataCommonService
+    public hsAddDataCommonService: HsAddDataCommonService,
+    private HsLaymanBrowserService: HsLaymanBrowserService
   ) {}
 
   /**
@@ -62,6 +64,7 @@ export class HsCompositionsLayerParserService {
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );
+    console.log(lyr_def.style);
     this.HsUrlWfsService.addLayerFromCapabilities(wrapper, lyr_def.style);
   }
 
@@ -376,6 +379,18 @@ export class HsCompositionsLayerParserService {
       };
       let extractStyles = true;
       if (lyr_def.style) {
+        if (
+          typeof lyr_def.style == 'string' &&
+          (lyr_def.style as string).startsWith('http')
+        ) {
+          try {
+            lyr_def.style = await this.HsLaymanBrowserService.getStyleFromUrl(
+              lyr_def.style
+            );
+          } catch (ex) {
+            console.warn('Could not get style from ' + lyr_def.style);
+          }
+        }
         Object.assign(
           options,
           await this.HsStylerService.parseStyle(lyr_def.style)

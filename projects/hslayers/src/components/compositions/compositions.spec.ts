@@ -20,6 +20,7 @@ import {HsCompositionsStatusManagerService} from './endpoints/compositions-statu
 import {HsConfig} from '../../config.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLaymanBrowserService} from '../add-data/catalogue/layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
@@ -51,6 +52,59 @@ class HsCompositionsMickaServiceMock {
 
 class emptyMock {
   constructor() {}
+}
+
+class HsLaymanBrowserServiceMock {
+  constructor() {}
+  async getStyleFromUrl(styleUrl: string): Promise<string> {
+    return `<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+    <sld:NamedLayer>
+      <sld:Name>Default Styler</sld:Name>
+      <sld:UserStyle>
+        <sld:Name>Default Styler</sld:Name>
+        <sld:Title>Default Styler</sld:Title>
+        <sld:FeatureTypeStyle>
+          <sld:Name>name</sld:Name>
+          <sld:Rule>
+            <sld:PointSymbolizer>
+              <sld:Graphic>
+                <sld:Mark>
+                  <sld:WellKnownName>triangle</sld:WellKnownName>
+                  <sld:Fill>
+                    <sld:CssParameter name="fill">#5171aa</sld:CssParameter>
+                  </sld:Fill>
+                  <sld:Stroke>
+                    <sld:CssParameter name="stroke">#3790cb</sld:CssParameter>
+                    <sld:CssParameter name="stroke-width">1.25</sld:CssParameter>
+                  </sld:Stroke>
+                </sld:Mark>
+                <sld:Opacity>0.45</sld:Opacity>
+                <sld:Size>70</sld:Size>
+              </sld:Graphic>
+            </sld:PointSymbolizer>
+            <sld:PolygonSymbolizer>
+              <sld:Fill>
+                <sld:CssParameter name="fill-opacity">0.45</sld:CssParameter>
+              </sld:Fill>
+              <sld:Stroke>
+                <sld:CssParameter name="stroke">rgba(0, 153, 255, 1)</sld:CssParameter>
+                <sld:CssParameter name="stroke-opacity">0.3</sld:CssParameter>
+                <sld:CssParameter name="stroke-width">1.25</sld:CssParameter>
+              </sld:Stroke>
+            </sld:PolygonSymbolizer>
+            <sld:LineSymbolizer>
+              <sld:Stroke>
+                <sld:CssParameter name="stroke">rgba(0, 153, 255, 1)</sld:CssParameter>
+                <sld:CssParameter name="stroke-width">1.25</sld:CssParameter>
+              </sld:Stroke>
+            </sld:LineSymbolizer>
+          </sld:Rule>
+        </sld:FeatureTypeStyle>
+      </sld:UserStyle>
+    </sld:NamedLayer>
+  </sld:StyledLayerDescriptor>
+  `;
+  }
 }
 
 let mockedMapService;
@@ -108,6 +162,10 @@ describe('compositions', () => {
         {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         HsStylerService,
         HsCompositionsLayerParserService,
+        {
+          provide: HsLaymanBrowserService,
+          useValue: new HsLaymanBrowserServiceMock(),
+        },
         {
           provide: HsCompositionsStatusManagerService,
           useValue: {
@@ -215,5 +273,13 @@ describe('compositions', () => {
   it('if should parse composition layer style', async function () {
     await loadComposition(component);
     expect(mockedMapService.map.getLayers().item(2).getStyle()).toBeDefined();
+    expect(
+      mockedMapService.map
+        .getLayers()
+        .item(7)
+        .getStyle()[2]
+        .getStroke()
+        .getColor()
+    ).toBe('rgba(0, 153, 255, 1)');
   });
 });
