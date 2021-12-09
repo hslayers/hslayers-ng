@@ -1,6 +1,7 @@
 import Feature from 'ol/Feature';
 import {Group, Layer} from 'ol/layer';
 
+import {DOMFeatureLink} from './dom-feature-link.type';
 import {Geometry} from 'ol/geom';
 import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Source} from 'ol/source';
@@ -51,6 +52,7 @@ const TITLE = 'title';
 const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const WFS_URL = 'wfsUrl';
 const WORKSPACE = 'workspace';
+export const DOM_FEATURE_LINKS = 'domFeatureLinks';
 
 export type Attribution = {
   onlineResource?: string;
@@ -274,6 +276,17 @@ export function setDimension(
  */
 export function getDimension(layer: Layer<Source>, type: string): Dimension {
   return layer.get(DIMENSIONS) ? layer.get(DIMENSIONS)[type] : undefined;
+}
+
+export function setDomFeatureLinks(
+  layer: Layer<Source>,
+  domFeatureLinks: DOMFeatureLink[]
+): void {
+  layer.set(DOM_FEATURE_LINKS, domFeatureLinks);
+}
+
+export function getDomFeatureLinks(layer: Layer<Source>): DOMFeatureLink[] {
+  return layer.get(DOM_FEATURE_LINKS);
 }
 
 export function setEditor(layer: Layer<Source>, editor: Editor): void {
@@ -639,6 +652,8 @@ export const HsLayerExt = {
   getDefinition,
   setDimensions,
   getDimensions,
+  getDomFeatureLinks,
+  setDomFeatureLinks,
   setEditor,
   getEditor,
   setEnableProxy,
