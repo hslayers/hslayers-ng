@@ -1,3 +1,205 @@
+# [7.0.0](https://github.com/hslayers/hslayers-ng/compare/6.1.0...7.0.0) (2021-12-10)
+
+
+### Bug Fixes
+
+* Add toolbar panel container service to exports ([76b5a24](https://github.com/hslayers/hslayers-ng/commit/76b5a24ecb80653e85177fda2215d49e4914bec9))
+* Align layers style attribute to laymans schema ([cc65079](https://github.com/hslayers/hslayers-ng/commit/cc650790d82e042216f070a5ca2870b9830e80fe))
+* Change how layer/feat is passeed to popup widget ([4d5c901](https://github.com/hslayers/hslayers-ng/commit/4d5c9015dfea68732a5a7f7abc99e470d0474558))
+* Check if layman response includes wfs param ([c8deebb](https://github.com/hslayers/hslayers-ng/commit/c8deebb9521a63b995a121aac227d4072a128c60))
+* check if popup displayFunction is defined ([ca7c582](https://github.com/hslayers/hslayers-ng/commit/ca7c58211ceb2ce4f50e73799360f5e2fce68531))
+* Check if user is logged in layman ([93cb3c7](https://github.com/hslayers/hslayers-ng/commit/93cb3c7bcc1ca7bc30166c0eb5b587ca6f02df62))
+* Check if values are undefined or null ([3aaf985](https://github.com/hslayers/hslayers-ng/commit/3aaf985649a123abae37cb5448eb5285834a0039))
+* Check the publication status of the layer ([e3e660f](https://github.com/hslayers/hslayers-ng/commit/e3e660f072dd09d5c2ccbc420919439aa18d623a))
+* Deselect edit geometry temp. layer ([b991552](https://github.com/hslayers/hslayers-ng/commit/b99155264e6b8fa9d97ee451d037f01b7e139615))
+* Disable selector and modify interactions when drawing edit features ([cd603f6](https://github.com/hslayers/hslayers-ng/commit/cd603f6dc56e635a43fb31008ea2bca6d0adc394))
+* Feature geom editor difference can result in multiple features ([f452047](https://github.com/hslayers/hslayers-ng/commit/f4520474fd3e67bb32d645230f2d3f4ba2cf2d41))
+* Find the correct layer from wfs service ([e569edd](https://github.com/hslayers/hslayers-ng/commit/e569edd10e831f8253361a9cbcb617f182e07694))
+* Fix translations, css and panel widths ([b3191e5](https://github.com/hslayers/hslayers-ng/commit/b3191e54b7070dab033bb0a62c87ab9e7794a4e6))
+* Get sld/qml from style url in composition ([729d5f5](https://github.com/hslayers/hslayers-ng/commit/729d5f54b4c3577cb8e91ef4fc261caec8eec785))
+* Hide cesium hover popup if not over features ([1ee1242](https://github.com/hslayers/hslayers-ng/commit/1ee124269652937a205c11d6ad60c7d424e28c86))
+* Hide cesium hover popup if not over features ([9beff28](https://github.com/hslayers/hslayers-ng/commit/9beff28cca0b0511b60dbaa549011083a3fd773f))
+* Layer being loaded by accident ([1be80a5](https://github.com/hslayers/hslayers-ng/commit/1be80a500d3045cfe2b5858b9367e87c31a775e3))
+* Load qml style also in styler for editing ([af92f0d](https://github.com/hslayers/hslayers-ng/commit/af92f0df104b0bcf5180091882450b0cbb79e2d7))
+* Loading layer after it is added to layman ([8a05673](https://github.com/hslayers/hslayers-ng/commit/8a05673000997de7901a7d63c977999adbff4ce7))
+* Micka query strings ([8f70013](https://github.com/hslayers/hslayers-ng/commit/8f70013f7035e91c9b56ac9a30eb801dba6d72d8))
+* Move popup style to css file. Add border after layer ([d545126](https://github.com/hslayers/hslayers-ng/commit/d545126d5de1fde500e3d7af61c0f1dc31378b0c))
+* Parse style when loading WFS from compositions ([9164b11](https://github.com/hslayers/hslayers-ng/commit/9164b1131e799065df5833ef0ac5e6cbde9942ef)), closes [#2420](https://github.com/hslayers/hslayers-ng/issues/2420)
+* Pass event object to layer source change legend generation callback ([77044c4](https://github.com/hslayers/hslayers-ng/commit/77044c4c3d88129c23df80091d3134bd49757a63))
+* Provide a zip file name so Layman recognizes it ([414a279](https://github.com/hslayers/hslayers-ng/commit/414a279fe3c50fb8482afc38948b78d02078d3a8))
+* Remove all but first features when 'union' operation is executed ([1a6ae5a](https://github.com/hslayers/hslayers-ng/commit/1a6ae5afa4698ecd5ba6dba4a3ffbdbd54a7076c))
+* Remove basePath from url only in case of ngRouter ([6e65c02](https://github.com/hslayers/hslayers-ng/commit/6e65c02ea52f4a048b9db012573586c9e8872cba))
+* Resolve few UI interaction problems ([f2679a1](https://github.com/hslayers/hslayers-ng/commit/f2679a1984cd8a7b258b4198bf275ece3c7d7b67))
+* Send authentication headers when requesting WFS style ([d197d3d](https://github.com/hslayers/hslayers-ng/commit/d197d3d1f7a2bdc1f4d34e1abcbb5906bffed493))
+* Set panel data only if it doesnt set itself ([fb472e9](https://github.com/hslayers/hslayers-ng/commit/fb472e9728b998c80f1b7879fd04f31b9d012dcc))
+* Show 'Only one split line' info toast only if it already exists ([2e12520](https://github.com/hslayers/hslayers-ng/commit/2e12520748ea5438980c505ee4b769568a49705a))
+* style missing from the wfs layer ([a01506f](https://github.com/hslayers/hslayers-ng/commit/a01506fed5d2618b239d334ca57211f7a13e5e24))
+* to-map-dialog not loading initial data ([8f83eb6](https://github.com/hslayers/hslayers-ng/commit/8f83eb6191249888f0ddf26216de4c48a3845e93))
+* Vega tooltips not visible ([364bea4](https://github.com/hslayers/hslayers-ng/commit/364bea4cbf13d6f8ebb70b8676d72e571ceb4c74))
+* **3d:** Align cesium feature picking with 2d ([781d6a1](https://github.com/hslayers/hslayers-ng/commit/781d6a1e01555468becfcd5b68bfa8d8e4ef4172)), closes [#2353](https://github.com/hslayers/hslayers-ng/issues/2353)
+* **add-data:** Provide error message ([9e2af04](https://github.com/hslayers/hslayers-ng/commit/9e2af045bfb4956795c810db74ade91d0a8db3a2))
+* Add missing cluster widget to layer editor ([6cd3f40](https://github.com/hslayers/hslayers-ng/commit/6cd3f40c525c72a20b5d86819e99c83f20c6415b))
+* Change how hslayers bootstrap css is bundled ([b8a98b2](https://github.com/hslayers/hslayers-ng/commit/b8a98b27aa366afd3b8f62313fb0e76adaf20483)), closes [#2223](https://github.com/hslayers/hslayers-ng/issues/2223)
+* Disable query in decoupling-test-app and fix dimensions ([d4c2620](https://github.com/hslayers/hslayers-ng/commit/d4c2620d069f77efec7d005c45d9e2bb7ec0df79))
+* Don't crash if panelsEnabled undefined in hsl-app ([db4f428](https://github.com/hslayers/hslayers-ng/commit/db4f42878ac2bf5afbfacacbd694b9fe3096a4d3))
+* Don't use hardcoded background for popup ([8681ab1](https://github.com/hslayers/hslayers-ng/commit/8681ab11387726db5512833777bda55781311dfb))
+* Dont mistaken scale and resolution ([1129d01](https://github.com/hslayers/hslayers-ng/commit/1129d013997614e54b6bb9b7bdc784bb6309b49e))
+* Fix bootstrap module imports ([4a2af51](https://github.com/hslayers/hslayers-ng/commit/4a2af5178bbd5ea1a93961eaa42b7aa821dca4ce))
+* Hide rectanle around legend ([7197eb7](https://github.com/hslayers/hslayers-ng/commit/7197eb76e342f5de6611fb2b48814f4eb415b842))
+* Hover popup without enabled info panel ([a4ffaad](https://github.com/hslayers/hslayers-ng/commit/a4ffaad02f815756e06ac8436d28b1985f94ada2))
+* Import bootstrap scss separately by module, some modules outside hsl class to uncover root css varaibles ([2e8e1bb](https://github.com/hslayers/hslayers-ng/commit/2e8e1bb4dfc3da554e3eea18247a149c113d6386))
+* Incorrect default panel state ([205b8f1](https://github.com/hslayers/hslayers-ng/commit/205b8f1c6c0b4a418f8ca1a69ff693645567d3c2))
+* Link cesium entities to ol features ([b22cb82](https://github.com/hslayers/hslayers-ng/commit/b22cb82c08c819d7719dbaa7e9090c077a2481ce))
+* make cesium config checking function optional ([78547d8](https://github.com/hslayers/hslayers-ng/commit/78547d83bcb580f7776c72c7bb3e1d248f70f2ad))
+* Make measure panel ON by default ([21fd754](https://github.com/hslayers/hslayers-ng/commit/21fd754ab66adb9f7959f06693eb00acbcce6c2b))
+* Migrate to geostyler 3.x ([e3c4ebb](https://github.com/hslayers/hslayers-ng/commit/e3c4ebb1f8cc4101dc657d9ff368b5484639360c))
+* Nested sublayers not toggleable ([4979c63](https://github.com/hslayers/hslayers-ng/commit/4979c635a1a30f55754eb2a0d05703be7f63b023))
+* Post build script ([#2317](https://github.com/hslayers/hslayers-ng/issues/2317)) ([e8d95f4](https://github.com/hslayers/hslayers-ng/commit/e8d95f4883631f609cde43caf1ddec3dd0cf08f7))
+* Prevent circular JSON loops for comp/data extents ([6a3f758](https://github.com/hslayers/hslayers-ng/commit/6a3f7581bd43ff8209334ca07b8111acaf9981b9))
+* Reference extent features with ids not objects ([61746a4](https://github.com/hslayers/hslayers-ng/commit/61746a40670d53135291ca70fb56036481b4838e))
+* Selected language not highlighted after init ([db202e7](https://github.com/hslayers/hslayers-ng/commit/db202e7e828e5de784b2073b679d6a483d469339))
+* Show highlight when hovering search results ([253252b](https://github.com/hslayers/hslayers-ng/commit/253252b21327594c3807a802dd21e66afc615747))
+* Toast close button styling on bootstrap 5 ([19953c5](https://github.com/hslayers/hslayers-ng/commit/19953c5c597b194eb057b3e6c2086d100104e00b))
+* URL detail table head font color in liferay ([6bd79f9](https://github.com/hslayers/hslayers-ng/commit/6bd79f9ce6c05f4c5f7b8a84d996dea5892be646))
+* Url table rows broken in liferay ([8cd723f](https://github.com/hslayers/hslayers-ng/commit/8cd723fdfe111d89867830a8d33d6f9ee3ac5622))
+* Use `removable` layer attrib when clearing map ([e933375](https://github.com/hslayers/hslayers-ng/commit/e93337564729998a7d4f20a71c264e1598f34beb))
+* Use geostyler-legend lib to generate legends ([7370459](https://github.com/hslayers/hslayers-ng/commit/737045931baa8447bb342130ed627298878644d2)), closes [#2150](https://github.com/hslayers/hslayers-ng/issues/2150)
+* Use ngBootstrap to control dropdown menus ([5497cf0](https://github.com/hslayers/hslayers-ng/commit/5497cf0c75ecc8594f869433193d27410282fc7c))
+* Wait for hsConfig before loading translations ([3c6c7e5](https://github.com/hslayers/hslayers-ng/commit/3c6c7e5103a66388000efe993493abf766589f8c))
+* **attribute-row:** Use tmp string of object ([538b38d](https://github.com/hslayers/hslayers-ng/commit/538b38d6c65e815f42bad4fe3f67eb073d497754))
+* Use StyleLike for parsed OL style ([95a7e85](https://github.com/hslayers/hslayers-ng/commit/95a7e85a32799ba58cd2d0595d68d0b3299c5bfe))
+* **legend:** Show correct legend for layer-editor window ([c04de22](https://github.com/hslayers/hslayers-ng/commit/c04de2248cc0a42f35a02933308bfa2370e317a3))
+* **server:** Support /client/geoserver path for backward compatibility ([2259081](https://github.com/hslayers/hslayers-ng/commit/2259081d7e88fce63b23de4db24f7584abca7731))
+
+
+### Build System
+
+* Added back missing dependency ([8cbcce8](https://github.com/hslayers/hslayers-ng/commit/8cbcce85bf5f69770cdcbde4d3391f9125957f46))
+
+
+### chore
+
+* Upgrade to bootstrap 5.1.3 ([0fd2fbb](https://github.com/hslayers/hslayers-ng/commit/0fd2fbb19f4921d5352ea97037d08db35b9ad634))
+
+
+### deps
+
+* Added geotiff.js library for parsing geotiff data ([fc47d38](https://github.com/hslayers/hslayers-ng/commit/fc47d383d00e895006a0353fe10780421f9e19a3))
+
+
+### Features
+
+* Ability to collapse table rows with a button ([f9297f4](https://github.com/hslayers/hslayers-ng/commit/f9297f459ee38e09aaeb1fa83a511231c2eac5fc))
+* Add csv upload template ([7bc6156](https://github.com/hslayers/hslayers-ng/commit/7bc61564abf2f806d33dc54e80147adaefe2f7a8))
+* Add dropdown for location property to map statistics ([dcde2ab](https://github.com/hslayers/hslayers-ng/commit/dcde2ab86afcc25ee95409922d9d16a23a1dde57))
+* Add function to find feature by ID in all layers ([78d644d](https://github.com/hslayers/hslayers-ng/commit/78d644d8e2acefb6ed94cfd4844948922857cec4))
+* Add multiple linear regression support ([9dd4759](https://github.com/hslayers/hslayers-ng/commit/9dd4759802fa3a158db6dd46e6658642eb433337))
+* add prediction chart axis titles ([622a0d0](https://github.com/hslayers/hslayers-ng/commit/622a0d0ebc735f1413861271164b473d620b3b09))
+* Add prediction dialog ([13676ad](https://github.com/hslayers/hslayers-ng/commit/13676ad72be0e8fe00da177365168e575802483f))
+* Add QML support for layer styles when loading ([b82ee4c](https://github.com/hslayers/hslayers-ng/commit/b82ee4c8eac6d48ca88a9a9355db24952de30dc5)), closes [#2361](https://github.com/hslayers/hslayers-ng/issues/2361)
+* Add regression dialog ([b9d2bcb](https://github.com/hslayers/hslayers-ng/commit/b9d2bcb4a835c9c39e722bb8256b00efa0ec85f0))
+* Add time series chart dialog ([deaaafd](https://github.com/hslayers/hslayers-ng/commit/deaaafd9f553ef42fedc360f3c705f0ea311ccaa))
+* Add tooltips for regression charts ([d661e1d](https://github.com/hslayers/hslayers-ng/commit/d661e1d3aa06ccdcb391cb5b0880cfe382c39676))
+* Added file-base.component as a super ([773467b](https://github.com/hslayers/hslayers-ng/commit/773467b2dd5bdd74cb3d56bcd8d8c2118f2665e8))
+* Added geotiff component ([cfb723a](https://github.com/hslayers/hslayers-ng/commit/cfb723a80bd21422bac7e5cf9c070319677812ef))
+* Added histogram with desc statistics ([05b191d](https://github.com/hslayers/hslayers-ng/commit/05b191d3b8929999dc7d562c93376040127c6e6a))
+* Added line data type to histogram ([2d6cc09](https://github.com/hslayers/hslayers-ng/commit/2d6cc09d6b083c21ebf5cf1f8d891a5f963141a4))
+* Added new common-file service ([a638080](https://github.com/hslayers/hslayers-ng/commit/a63808044713149b87ac18f9bc69a0a69328a5fd))
+* Added tooltips to time-series chart ([2a0b2bb](https://github.com/hslayers/hslayers-ng/commit/2a0b2bb77e825c727e6843a968bb5848d218a6ed))
+* Catch errors while parsing  vector layer from composition ([a710b52](https://github.com/hslayers/hslayers-ng/commit/a710b52a6032e5ffefab17ad44a6e2af55e90261))
+* Clear all statistics data feature ([b3e801c](https://github.com/hslayers/hslayers-ng/commit/b3e801ca8a2d5ddd5a8a203c0d4b3933e29b0f2b))
+* Compile Hslayers+bootstrap+OL to css file ([e254bff](https://github.com/hslayers/hslayers-ng/commit/e254bff601e561f4f671937ce1c2a1c66da87c56))
+* Correlation calculation from shifted values by year ([b1adf96](https://github.com/hslayers/hslayers-ng/commit/b1adf961bfd3ab2c83db805d090800f9f6e01f1d))
+* Display cesium popup under mouse ([258ea1a](https://github.com/hslayers/hslayers-ng/commit/258ea1a4a66d3d98bca56d84c43b5735405e88c2))
+* List variables in statistic panel ([43e7a88](https://github.com/hslayers/hslayers-ng/commit/43e7a88c621b59fd2f86657abcf69ee5ac219ecb))
+* Load query popup widgets specified in hsConfig ([61cbb13](https://github.com/hslayers/hslayers-ng/commit/61cbb13bb0d9ad0325ad7c14250a22d46623f3b0))
+* Load translations from assets using HttpClient ([3cb1d23](https://github.com/hslayers/hslayers-ng/commit/3cb1d2390f7787be14ea5043a5b4f5bce58ffb2c))
+* Meake popup widget list overridable in layer ([a4dc0fa](https://github.com/hslayers/hslayers-ng/commit/a4dc0fa95ce5795c3ebe895204441290565273e8))
+* Merge properties when editing features ([e115559](https://github.com/hslayers/hslayers-ng/commit/e115559672cd33048bc156f9dae868ff76f015a3)), closes [#2386](https://github.com/hslayers/hslayers-ng/issues/2386)
+* Moved cesium related config to new class ([35fab9c](https://github.com/hslayers/hslayers-ng/commit/35fab9cd49f1ba1fddddfe30f53b8203cd700233))
+* Multiple regression charts and coefficient output ([99aad31](https://github.com/hslayers/hslayers-ng/commit/99aad3133c75a0c992657815253721d6da534534))
+* New adddata common component ([c1df662](https://github.com/hslayers/hslayers-ng/commit/c1df6621025e0f8e2868861c1212b75f395453fa))
+* New query-popup widget feature-info ([e044391](https://github.com/hslayers/hslayers-ng/commit/e044391192c6e9989c6be7796469df1b7f8d9dd3))
+* One panel container service for many components ([ebab4ea](https://github.com/hslayers/hslayers-ng/commit/ebab4eaa79dc75099b74a32d3c57d0a084d474da))
+* Parse csv and calculate correlations ([8563613](https://github.com/hslayers/hslayers-ng/commit/8563613ec45c9bfc6f88308fc6353d9150ec2c3c))
+* Register popup in according service (Cesium or OL) ([498d993](https://github.com/hslayers/hslayers-ng/commit/498d9933e3f9be4e08ebb8c176ed75d1abe9e291))
+* Save data corpus on parsing new csv ([1745efe](https://github.com/hslayers/hslayers-ng/commit/1745efe396d852c174e2e00f44ae39ecd75cd937))
+* Shadow uses for escaped columns ([7c15742](https://github.com/hslayers/hslayers-ng/commit/7c1574272f66134eccdabceb70e123bcf8c2e99d))
+* Store csv table data also ([e501f4d](https://github.com/hslayers/hslayers-ng/commit/e501f4decadd3f9c5eb8157954856d6e0b913f88))
+* Temporal input shifting for predictions ([932ca78](https://github.com/hslayers/hslayers-ng/commit/932ca7837f423107aedb3b376852689d3d896dbd))
+* Temporal shifting for multiple regression ([b6f1150](https://github.com/hslayers/hslayers-ng/commit/b6f1150a35018236d5c244ee382539b6e07bbb34))
+* Time shifting for regression ([2ed01ef](https://github.com/hslayers/hslayers-ng/commit/2ed01efcc39811e56cbb360c67e255ecb8c91453))
+* Topologically correct splitting of polygons ([8d86c87](https://github.com/hslayers/hslayers-ng/commit/8d86c879497f3f40bc69411197b89f6c83dd1ad0)), closes [#2386](https://github.com/hslayers/hslayers-ng/issues/2386)
+* Upload shape and geotiff files as zip ([60c6c0f](https://github.com/hslayers/hslayers-ng/commit/60c6c0f0038e0af76946f15e96aa2f5c8cd629c4))
+* Upload zip files containing files ([9291a47](https://github.com/hslayers/hslayers-ng/commit/9291a47e1fabb11877d0d675ecdd4b2c65d7800e))
+* Usability improvements for feature editing ([6cf5ce8](https://github.com/hslayers/hslayers-ng/commit/6cf5ce890c0febbb29a9687740e9aa053574482a))
+* Variables can be removed ([c05ac62](https://github.com/hslayers/hslayers-ng/commit/c05ac62d4fd341f3c5f02eeec224f60d3db0382b))
+* Visualize statistics variables on map ([12f9af4](https://github.com/hslayers/hslayers-ng/commit/12f9af415cc18435efa0fa2c20ff1626ed5dd96d))
+* **3d:** Create popup and picker service for cesium ([f674033](https://github.com/hslayers/hslayers-ng/commit/f67403334073bc382fb245b03fb3437f7ecd8494)), closes [#2353](https://github.com/hslayers/hslayers-ng/issues/2353)
+* **config:** Added new queryPopupWidgets and ([e1ec040](https://github.com/hslayers/hslayers-ng/commit/e1ec040784975e293e006a015d5564c4fd33168b))
+* **draw:** Create feature geometry editor ([81f3d62](https://github.com/hslayers/hslayers-ng/commit/81f3d626639e0c6aa33c15fe40e3cba2ea154700))
+* **query:** new widget layer-name ([82f4e86](https://github.com/hslayers/hslayers-ng/commit/82f4e863e0d131a748b2bfd765bcbfacbd77dd0c))
+* **toast:** Allow to add error details to toast message ([8a838d6](https://github.com/hslayers/hslayers-ng/commit/8a838d6097f2e77fe5d5525754e2d97fa3bb35b3))
+* Try adding widgets to feature popup ([66fb7cd](https://github.com/hslayers/hslayers-ng/commit/66fb7cd2ea3fc2d144c8e6414609816f90749d6c))
+* Use hsconfig.uploadTypes to restrict upload choices ([4f1b9b2](https://github.com/hslayers/hslayers-ng/commit/4f1b9b2528e7dd540f4bf6300fa0c5cdd9e529a0))
+* Warn about default_view not set for cesium ([d55ee83](https://github.com/hslayers/hslayers-ng/commit/d55ee837b087d198b61dc9d7e3ed35a358f92815))
+* Warn about moved cesium config props ([3634049](https://github.com/hslayers/hslayers-ng/commit/3634049bf6afceb3f97aa17f054fc504ffeab143))
+* Widget to generate popup content dynamically ([96fa126](https://github.com/hslayers/hslayers-ng/commit/96fa1265024f8fa8f5ba9db51a22ffe9e0b7fd15)), closes [#2370](https://github.com/hslayers/hslayers-ng/issues/2370)
+
+
+### Performance Improvements
+
+* Debounce legend event listeners ([b266253](https://github.com/hslayers/hslayers-ng/commit/b26625320d4c2bc129da1d07b109a7367d758b8a))
+* Import only ngBootstrap submodules ([ef33ce3](https://github.com/hslayers/hslayers-ng/commit/ef33ce341ff0b9d48a1b1f8d6b20ae80fbe41c1f))
+* Remove deprecated legend event listeners from layer and layer source (partialy) ([d93dbc8](https://github.com/hslayers/hslayers-ng/commit/d93dbc85a67a9d49dbcf48b1df65d51004164ccf))
+* Unlisten map pointer move event ([764b227](https://github.com/hslayers/hslayers-ng/commit/764b227b4d612ac93e563de440b7b38429addb48))
+
+
+### Reverts
+
+* Downgrade typescript to 4.3.5 ([c00edf4](https://github.com/hslayers/hslayers-ng/commit/c00edf4cf38ae119ca742d6ff5965c4fb17b9f26))
+* Remove redundant destruction of popup widget panels ([7d80820](https://github.com/hslayers/hslayers-ng/commit/7d808208abf85d01bb41a875625afe746fd4184f))
+* Return escaping of variable names ([afa945c](https://github.com/hslayers/hslayers-ng/commit/afa945cf122d7741afac44cdf36f5abba1fdfde4))
+* Revert experimental nested widget mechanics ([a297372](https://github.com/hslayers/hslayers-ng/commit/a2973720baecc815d74165e50b1d66b24b712216))
+
+
+### BREAKING CHANGES
+
+* Need to specify HsConfig.ngRouter = true if Angular router is used
+* Add polygon-splitter peer dependency `npm i polygon-splitter`
+* **draw:** Add new dependencies `npm i polygon-clipping`
+* Added jszip and @types/jszip as peerDependecies `npm i
+jszip @types/jszip`
+* Add geostyler-qgis-parser peerdependency: `npm i geostyler-qgis-parser`
+* `npm install geotiff`
+* **3d:** 3D features are now picked using left mouse button instead of right.
+* To add cesium specific config
+
+parameters, user must use ->
+
+this.HsCesiumConfig.update({
+      cesiumBase: 'assets/cesium/',
+
+replacing ->
+
+this.HsConfig.update({
+      cesiumBase: 'assets/cesium/',
+* Need to include node_modules/hslayers-ng/css/hslayers-ng.css in the container
+application. For example in app.scss `@import 'hslayers-ng/css/hslayers-ng'`
+* https://getbootstrap.com/docs/5.0/migration/
+* Import ol.css, hslayers-bootstrap.scss and whhg.css files either through imports in code,
+AppComponent styleUrls or in angular.json architect/build/options/:
+```
+"styles": [
+    "node_modules/ol/ol.css",
+    "node_modules/hslayers-ng/src/css/hslayers-bootstrap.scss",
+    "node_modules/hslayers-ng/src/css/whhg-font/css/whhg.css"
+]
+```
+* Add geostyler-legend and d3 peer dependencies: `npm i geostyler-legend d3`
+
+
+
 # [6.1.0](https://github.com/hslayers/hslayers-ng/compare/6.0.2...6.1.0) (2021-10-11)
 
 
