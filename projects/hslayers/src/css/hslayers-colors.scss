@@ -4,6 +4,9 @@
 $table-group-separator-color: white;
 
 .hsl {
+  .nav-link[class*='btn-']:hover{
+    color: white;
+  }
 
   .hs-url-table .text-light th {
      color: $light;
