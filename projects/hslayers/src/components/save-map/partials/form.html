@@ -2,7 +2,7 @@
 <ul class="nav flex-column flex-sm-row stc-tabs pb-2" role="tablist">
     <li role="presentation" class="nav-item" *ngFor="let s of steps">
         <a class="nav-link" [ngClass]="{'btn-primary text-white': step === s}" attr.aria-controls="hs-{{s}}" role="tab"
-            data-toggle="tab" (click)="setStep(s)">{{capitalizeFirstLetter(s)}}</a>
+            data-toggle="tab" (click)="setStep(s)">{{'COMMON.'+s | translate}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
@@ -69,7 +69,8 @@
             </div>
             <div class="form-group">
                 <ul class="list-group" id="stc-layerlist">
-                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers; let i = index" class="list-group-item">
+                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers; let i = index"
+                        class="list-group-item">
                         <div class="form-check text-truncat">
                             <input type="checkbox" class="form-check-input mt-0" name="hs-stclayer-{{i}}"
                                 id="hs-stclayer-{{i}}" [(ngModel)]="layer.checked">

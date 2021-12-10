@@ -230,7 +230,10 @@
     "zoomTo": "zvětšit na",
     "into": " do",
     "uploading": "Odesílání dat",
-    "edit": "Upravit"
+    "edit": "Upravit",
+    "context": "Kontext",
+    "author": "Autor",
+    "access": "Přístup"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

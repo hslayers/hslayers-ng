@@ -230,7 +230,10 @@
     "zoomTo": "pietuvināt",
     "into": "iekš",
     "uploading": "Augšupielādē datus",
-    "edit": "Rediģēt"
+    "edit": "Rediģēt",
+    "context": "Konteksts",
+    "author": "Autors",
+    "access": "Piekļuve"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
