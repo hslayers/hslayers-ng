@@ -230,7 +230,10 @@
     "zoomTo": "zväčšiť na",
     "into": " do",
     "uploading": "Nahrávanie údajov",
-    "edit": "Upraviť"
+    "edit": "Upraviť",
+    "context": "Kontext",
+    "author": "Autor",
+    "access": "Prístup"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

@@ -230,7 +230,10 @@
     "zoomTo": "zoom to",
     "into": " into",
     "uploading": "Uploading data",
-    "edit": "Edit"
+    "edit": "Edit",
+    "context": "Context",
+    "author": "Author",
+    "access": "Access"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
