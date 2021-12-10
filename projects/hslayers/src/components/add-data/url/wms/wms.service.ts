@@ -340,9 +340,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         {},
         {
           layerName: this.data.title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(
-            this.data.folder_name
-          ),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -531,9 +529,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       if (layer.Layer === undefined) {
         this.addLayer(layer, {
           layerName: layer.Title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(
-            this.data.folder_name
-          ),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -545,9 +541,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         delete clone.Layer;
         this.addLayer(layer, {
           layerName: layer.Title.replace(/\//g, '&#47;'),
-          layerTitle: this.hsUtilsService.undefineEmptyString(
-            this.data.folder_name
-          ),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
