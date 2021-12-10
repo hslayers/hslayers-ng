@@ -90,6 +90,9 @@ $list-group-item-padding-x: 1.25rem;
    }
   }
 
+  .nav-link[class*='btn-']:hover{
+    color: white;
+  }
 
   /* app css stylesheet */
   .icon-spin {
