@@ -1,6 +1,6 @@
 {
   "name": "hslayers-ng",
-  "version": "6.1.0",
+  "version": "7.0.0",
   "scripts": {},
   "peerDependencies": {
     "@angular/common": "^12.0.0",
