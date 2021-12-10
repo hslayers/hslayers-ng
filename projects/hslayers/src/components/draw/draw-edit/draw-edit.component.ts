@@ -47,6 +47,12 @@ export class DrawEditComponent implements OnDestroy {
     public hsToastService: HsToastService,
     public hsEventBusService: HsEventBusService
   ) {
+    if (this.HsDrawService.selectedLayer) {
+      this.HsDrawService.previouslySelected = this.HsDrawService.selectedLayer;
+    } else {
+      this.HsDrawService.previouslySelected = null;
+    }
+
     this.checkFeatureGeometryType(
       this.HsQueryVectorService.selector.getFeatures().getArray()[0]
     );
@@ -101,7 +107,17 @@ export class DrawEditComponent implements OnDestroy {
     this.hsMapService.loaded().then((map) => {
       map.removeLayer(this.editLayer);
       this.setType(this.HsDrawService.type);
-      this.HsDrawService.selectedLayer = null;
+      //Timeout necessary because setType triggers async deactivateDrawing
+      //HsDrawService.draw needs to be null in order to change draw soruce properly
+      setTimeout(() => {
+        if (this.HsDrawService.previouslySelected) {
+          this.HsDrawService.selectedLayer =
+            this.HsDrawService.previouslySelected;
+          this.HsDrawService.changeDrawSource();
+        } else {
+          this.HsDrawService.fillDrawableLayers();
+        }
+      });
       this.vectorQueryFeatureSubscription.unsubscribe();
     });
   }
