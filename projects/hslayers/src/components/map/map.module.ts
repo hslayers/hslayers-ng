@@ -8,6 +8,5 @@ import {HsMapDirective} from './map.directive';
   declarations: [HsMapComponent, HsMapDirective],
   imports: [CommonModule],
   exports: [HsMapComponent],
-  entryComponents: [HsMapComponent],
 })
 export class HsMapModule {}

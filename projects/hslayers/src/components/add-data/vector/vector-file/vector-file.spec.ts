@@ -56,7 +56,10 @@ describe('add-layers-vector', () => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
+      platformBrowserDynamicTesting(),
+      {
+        teardown: {destroyAfterEach: false},
+      }
     );
   });
 

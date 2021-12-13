@@ -31,11 +31,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLaymanModule,
   ],
   exports: [HsSaveMapComponent],
-  entryComponents: [
-    HsSaveMapComponent,
-    HsSaveMapAdvancedFormComponent,
-    HsSaveMapResultDialogComponent,
-    HsSaveMapDialogComponent,
-  ],
 })
 export class HsSaveMapModule {}

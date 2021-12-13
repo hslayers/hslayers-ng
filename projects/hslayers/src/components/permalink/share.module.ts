@@ -19,6 +19,5 @@ import {TranslateModule} from '@ngx-translate/core';
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
-  entryComponents: [HsShareComponent],
 })
 export class HsShareModule {}

@@ -5,7 +5,6 @@ import {NgModule} from '@angular/core';
 @NgModule({
   declarations: [],
   imports: [CommonModule],
-  entryComponents: [],
   exports: [],
 })
 export class HsCommonEndpointsModule {}

@@ -4,7 +4,6 @@ import {NgModule} from '@angular/core';
 @NgModule({
   declarations: [],
   imports: [],
-  entryComponents: [],
   exports: [],
 })
 export class HsGetCapabilitiesModule {}

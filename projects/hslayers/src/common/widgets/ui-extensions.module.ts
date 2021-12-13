@@ -15,7 +15,6 @@ import {TrackByPropertyPipe} from './trackByProperty.pipe';
   ],
   imports: [CommonModule],
   providers: [EndpointsWithDatasourcesPipe],
-  entryComponents: [HsUiExtensionsRecursiveDdComponent],
   exports: [
     HsUiExtensionsRecursiveDdComponent,
     EndpointsWithDatasourcesPipe,

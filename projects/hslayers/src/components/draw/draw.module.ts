@@ -38,6 +38,5 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     HsDrawLayerMetadataDialogComponent,
     HsDrawToolbarComponent,
   ],
-  entryComponents: [HsDrawComponent, HsDrawToolbarComponent],
 })
 export class HsDrawModule {}

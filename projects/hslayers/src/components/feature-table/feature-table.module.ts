@@ -27,6 +27,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerFeaturesComponent,
     HsFeatureFilterPipe,
   ],
-  entryComponents: [HsFeatureTableComponent, HsLayerFeaturesComponent],
 })
 export class HsFeatureTableModule {}

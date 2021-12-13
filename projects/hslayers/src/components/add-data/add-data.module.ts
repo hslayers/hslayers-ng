@@ -23,6 +23,5 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsAddDataCatalogueModule,
   ],
   exports: [HsAddDataComponent],
-  entryComponents: [HsAddDataComponent],
 })
 export class HsAddDataModule {}

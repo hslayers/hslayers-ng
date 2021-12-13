@@ -18,37 +18,36 @@ import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 import {HsStatisticsUploadPanelComponent} from './upload-panel';
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
-    HsStatisticsPanelComponent,
-    HsStatisticsUploadPanelComponent,
-    HsStatisticsCorrelationsComponent,
-    HsStatisticsToMapDialogComponent,
-    HsStatisticsTimeSeriesChartDialogComponent,
-    HsStatisticsRegressionDialogComponent,
-    HsStatisticsHistogramComponent,
-    HsStatisticsPredictionChartDialogComponent,
-    AbsPipe,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HsPanelHelpersModule,
-    TranslateModule,
-    HsUploadModule,
-    NgbDropdownModule,
-    HsDownloadModule,
-  ],
-  exports: [
-    HsStatisticsPanelComponent,
-    HsStatisticsUploadPanelComponent,
-    HsStatisticsCorrelationsComponent,
-    HsStatisticsToMapDialogComponent,
-    HsStatisticsTimeSeriesChartDialogComponent,
-    HsStatisticsRegressionDialogComponent,
-    HsStatisticsPredictionChartDialogComponent,
-    HsStatisticsHistogramComponent,
-  ],
-  entryComponents: [HsStatisticsPanelComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [
+        HsStatisticsPanelComponent,
+        HsStatisticsUploadPanelComponent,
+        HsStatisticsCorrelationsComponent,
+        HsStatisticsToMapDialogComponent,
+        HsStatisticsTimeSeriesChartDialogComponent,
+        HsStatisticsRegressionDialogComponent,
+        HsStatisticsHistogramComponent,
+        HsStatisticsPredictionChartDialogComponent,
+        AbsPipe,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        HsPanelHelpersModule,
+        TranslateModule,
+        HsUploadModule,
+        NgbDropdownModule,
+        HsDownloadModule,
+    ],
+    exports: [
+        HsStatisticsPanelComponent,
+        HsStatisticsUploadPanelComponent,
+        HsStatisticsCorrelationsComponent,
+        HsStatisticsToMapDialogComponent,
+        HsStatisticsTimeSeriesChartDialogComponent,
+        HsStatisticsRegressionDialogComponent,
+        HsStatisticsPredictionChartDialogComponent,
+        HsStatisticsHistogramComponent,
+    ]
 })
 export class HsStatisticsModule {}

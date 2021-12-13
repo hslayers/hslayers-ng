@@ -37,6 +37,5 @@ import {HsUrlWmtsModule} from './wmts/wmts.module';
     {provide: TYPE_CAPABILITIES_SERVICE, useValue: null},
   ],
   exports: [HsAddDataUrlComponent, HsAddDataUrlBaseComponent],
-  entryComponents: [HsAddDataUrlComponent],
 })
 export class HsAddDataUrlModule {}

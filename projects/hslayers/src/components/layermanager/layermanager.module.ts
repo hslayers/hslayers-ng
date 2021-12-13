@@ -88,17 +88,5 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLegendWidgetComponent,
     HsOpacityWidgetComponent,
   ],
-  entryComponents: [
-    HsLayerManagerComponent,
-    HsLayerEditorDimensionsComponent,
-    HsLayerEditorSubLayerCheckboxesComponent,
-    HsLayerManagerGalleryComponent,
-    HsLayerManagerFolderComponent,
-    HsLayerListComponent,
-    HsLayerManagerRemoveAllDialogComponent,
-    HsLayerManagerRemoveLayerDialogComponent,
-    HsLayerManagerTimeEditorComponent,
-    HsLayerPhysicalListComponent,
-  ],
 })
 export class HsLayerManagerModule {}

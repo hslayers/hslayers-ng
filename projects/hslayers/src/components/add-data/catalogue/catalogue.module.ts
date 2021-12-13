@@ -31,10 +31,5 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
     HsCatalogueListItemComponent,
     HsCatalogueMetadataComponent,
   ],
-  entryComponents: [
-    HsAddDataCatalogueComponent,
-    HsCatalogueListItemComponent,
-    HsCatalogueMetadataComponent,
-  ],
 })
 export class HsAddDataCatalogueModule {}

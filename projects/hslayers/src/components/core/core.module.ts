@@ -117,7 +117,6 @@ export function getWebpackTranslateLoader(
   ],
   exports: [TranslateModule],
   providers: [TranslateStore, TranslateService, HsConfig],
-  entryComponents: [],
 })
 export class HsCoreModule {
   constructor() {}

@@ -7,6 +7,5 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [],
   imports: [CommonModule, FormsModule, TranslateModule],
   exports: [],
-  entryComponents: [],
 })
 export class HsCompositionsEndpointsModule {}

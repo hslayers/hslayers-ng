@@ -11,6 +11,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 
+import {HsClusterWidgetComponent} from 'hslayers-ng/src/public-api';
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../../draw/draw.service';
 import {HsLayerEditorComponent} from './layer-editor.component';
@@ -32,7 +33,6 @@ import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
 import {getCluster} from '../../../common/layer-extensions';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
-import { HsClusterWidgetComponent } from 'hslayers-ng/src/public-api';
 
 class HsConfigMock {
   reverseLayerList = true;
@@ -61,7 +61,10 @@ describe('layermanager', () => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
+      platformBrowserDynamicTesting(),
+      {
+        teardown: {destroyAfterEach: false},
+      }
     );
   });
 

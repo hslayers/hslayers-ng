@@ -22,6 +22,5 @@ import {HsFileShpModule} from './shp/shp.module';
     HsAddDataGeotiffModule,
   ],
   exports: [HsAddDataFileComponent, HsAddDataFileBaseComponent],
-  entryComponents: [HsAddDataFileComponent],
 })
 export class HsAddDataFileModule {}

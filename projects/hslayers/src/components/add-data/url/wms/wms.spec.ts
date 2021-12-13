@@ -46,7 +46,10 @@ describe('add-data-url', () => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
+      platformBrowserDynamicTesting(),
+      {
+        teardown: {destroyAfterEach: false},
+      }
     );
   });
 

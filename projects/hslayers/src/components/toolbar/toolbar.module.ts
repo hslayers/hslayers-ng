@@ -20,6 +20,5 @@ import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
     HsPanelHelpersModule,
   ],
   exports: [HsToolbarComponent, HsToolbarPanelBaseComponent],
-  entryComponents: [HsToolbarComponent],
 })
 export class HsToolbarModule {}

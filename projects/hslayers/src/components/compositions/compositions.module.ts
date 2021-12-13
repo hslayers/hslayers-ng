@@ -39,14 +39,5 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsPagerModule,
   ],
   exports: [HsCompositionsComponent],
-  entryComponents: [
-    HsCompositionsComponent,
-    HsCompositionsOverwriteDialogComponent,
-    HsCompositionsWarningDialogComponent,
-    HsCompositionsDeleteDialogComponent,
-    HsCompositionsShareDialogComponent,
-    HsCompositionsInfoDialogComponent,
-    HsCompositionsListItemComponent,
-  ],
 })
 export class HsCompositionsModule {}

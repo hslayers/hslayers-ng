@@ -32,6 +32,5 @@ import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component
     HsPositionComponent,
     HsAddLayerAuthorizedComponent,
   ],
-  entryComponents: [HsGetCapabilitiesErrorComponent],
 })
 export class HsAddDataCommonModule {}

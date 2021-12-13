@@ -27,11 +27,5 @@ import {limitToPipe} from './limitTo.pipe';
     HsSearchInputComponent,
     HsSearchToolbarComponent,
   ],
-  entryComponents: [
-    HsSearchComponent,
-    HsSearchResultsComponent,
-    HsSearchInputComponent,
-    HsSearchToolbarComponent,
-  ],
 })
 export class HsSearchModule {}

@@ -48,7 +48,7 @@ describe('layermanager-layer-list', () => {
     source: new VectorSource({}),
   });
 
-  const params = {'LAYERS': 'BSS', 'TILED': true };
+  const params = {'LAYERS': 'BSS', 'TILED': true};
   const subLayerContainerLayer = new ImageLayer({
     properties: {title: 'test'},
     source: new ImageWMS({
@@ -63,7 +63,10 @@ describe('layermanager-layer-list', () => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
+      platformBrowserDynamicTesting(),
+      {
+        teardown: {destroyAfterEach: false},
+      }
     );
   });
 

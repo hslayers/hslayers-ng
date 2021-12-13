@@ -84,23 +84,5 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsSelectIconDialogComponent,
     HsRuleListItemComponent,
   ],
-  entryComponents: [
-    HsStylerComponent,
-    HsRuleComponent,
-    HsSymbolizerComponent,
-    HsFillSymbolizerComponent,
-    HsMarkSymbolizerComponent,
-    HsIconSymbolizerComponent,
-    HsTextSymbolizerComponent,
-    HsLineSymbolizerComponent,
-    HsColorPickerComponent,
-    HsSliderComponent,
-    HsFiltersComponent,
-    HsFilterComponent,
-    HsComparisonFilterComponent,
-    HsAddFilterButtonComponent,
-    HsScaleDenominatorComponent,
-    HsSelectIconDialogComponent,
-  ],
 })
 export class HsStylerModule {}

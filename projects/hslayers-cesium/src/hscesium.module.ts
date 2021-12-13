@@ -26,6 +26,5 @@ import {HslayersCesiumComponent} from './hscesium.component';
     HsCesiumLayersService,
     HsCesiumTimeService,
   ],
-  entryComponents: [HslayersCesiumComponent],
 })
 export class HsCesiumModule {}

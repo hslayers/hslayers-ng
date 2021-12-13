@@ -24,7 +24,10 @@ declare const require: {
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting()
+  platformBrowserDynamicTesting(),
+  {
+    teardown: {destroyAfterEach: false},
+  }
 );
 beforeEach(() => patchConsoleToFailOnError());
 // Then we find all the tests.

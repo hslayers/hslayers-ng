@@ -62,7 +62,10 @@ describe('HsLayerUtilsService', () => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
+      platformBrowserDynamicTesting(),
+      {
+        teardown: {destroyAfterEach: false},
+      }
     );
   });
   let hsLayerUtils: HsLayerUtilsService;

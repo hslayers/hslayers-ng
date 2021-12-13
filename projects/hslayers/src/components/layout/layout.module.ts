@@ -31,7 +31,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsPanelHelpersModule,
     HsToastModule,
   ],
-  entryComponents: [HsDialogContainerComponent, HsLayoutComponent],
   exports: [HsDialogContainerComponent, HsLayoutComponent],
 })
 export class HsLayoutModule implements DoBootstrap {

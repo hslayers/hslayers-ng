@@ -9,7 +9,6 @@ import {HsUploadComponent} from './upload.component';
   declarations: [HsUploadComponent, HsFileDropDirective],
   imports: [CommonModule, TranslateModule, FormsModule],
   providers: [],
-  entryComponents: [],
   exports: [HsUploadComponent, HsFileDropDirective],
 })
 export class HsUploadModule {}

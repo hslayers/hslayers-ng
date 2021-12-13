@@ -11,19 +11,18 @@ import {HsLayerManagerService} from 'hslayers-ng';
 import {HsMatLayerManagerComponent} from './layermanager.component';
 
 @NgModule({
-  declarations: [HsMatLayerManagerComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    MatIconModule,
-    MatSliderModule,
-    MatTreeModule,
-  ],
-  providers: [HsLayerManagerService],
-  entryComponents: [HsMatLayerManagerComponent],
-  exports: [HsMatLayerManagerComponent],
+    declarations: [HsMatLayerManagerComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        MatIconModule,
+        MatSliderModule,
+        MatTreeModule,
+    ],
+    providers: [HsLayerManagerService],
+    exports: [HsMatLayerManagerComponent]
 })
 export class HsMatLayerManagerModule {}

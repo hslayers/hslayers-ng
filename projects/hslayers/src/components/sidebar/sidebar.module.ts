@@ -17,10 +17,5 @@ import {TranslateModule} from '@ngx-translate/core';
   ],
   imports: [CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsMiniSidebarComponent, HsSidebarComponent],
-  entryComponents: [
-    HsImpressumComponent,
-    HsMiniSidebarComponent,
-    HsSidebarComponent,
-  ],
 })
 export class HsSidebarModule {}

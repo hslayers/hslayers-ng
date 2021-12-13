@@ -10,6 +10,5 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [HsGeolocationComponent],
   imports: [FormsModule, CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsGeolocationComponent],
-  entryComponents: [HsGeolocationComponent],
 })
 export class HsGeolocationModule {}

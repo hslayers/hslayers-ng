@@ -11,11 +11,6 @@ import {NgModule} from '@angular/core';
     HsPanelBaseComponent,
   ],
   imports: [],
-  entryComponents: [
-    HsPanelHeaderComponent,
-    HsPanelContainerComponent,
-    HsPanelBaseComponent,
-  ],
   exports: [
     HsPanelHeaderComponent,
     HsPanelContainerComponent,

@@ -8,20 +8,23 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsMeasureComponent} from './measure.component';
 import {HsMeasureService} from './measure.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import { HsLayoutServiceMock } from '../layout/layout.service.mock';
 
 describe('HsMeasure', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting()
+      platformBrowserDynamicTesting(),
+      {
+        teardown: {destroyAfterEach: false},
+      }
     );
   });
 
@@ -36,7 +39,7 @@ describe('HsMeasure', () => {
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
-        {provide: HsLayoutService, useValue: new HsLayoutServiceMock(),},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
       ],

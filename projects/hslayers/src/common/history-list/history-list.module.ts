@@ -12,6 +12,5 @@ import {TranslateModule} from '@ngx-translate/core';
   imports: [FormsModule, CommonModule, TranslateModule, NgbDropdownModule],
   exports: [HsHistoryListComponent],
   providers: [CookieService],
-  entryComponents: [HsHistoryListComponent],
 })
 export class HsHistoryListModule {}

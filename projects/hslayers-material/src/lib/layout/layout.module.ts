@@ -12,23 +12,22 @@ import {HsMatLayoutComponent} from './layout.component';
 import {HsMatOverlayComponent} from './overlay.component';
 
 @NgModule({
-  declarations: [
-    HsMapHostDirective,
-    HsMatLayoutComponent,
-    HsMatOverlayComponent,
-    HsAttributionDialogComponent,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    HsMatLayerManagerModule,
-    HsMapModule,
-  ],
-  providers: [HsLayoutService],
-  entryComponents: [HsMatLayoutComponent, HsMatOverlayComponent],
-  exports: [HsMatLayoutComponent, HsMatOverlayComponent],
+    declarations: [
+        HsMapHostDirective,
+        HsMatLayoutComponent,
+        HsMatOverlayComponent,
+        HsAttributionDialogComponent,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        HsMatLayerManagerModule,
+        HsMapModule,
+    ],
+    providers: [HsLayoutService],
+    exports: [HsMatLayoutComponent, HsMatOverlayComponent]
 })
 export class HsMatLayoutModule {}

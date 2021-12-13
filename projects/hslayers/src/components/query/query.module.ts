@@ -53,6 +53,5 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     HsLayerNameComponent,
     HsDynamicTextComponent,
   ],
-  entryComponents: [HsQueryComponent, HsQueryPopupComponent],
 })
 export class HsQueryModule {}

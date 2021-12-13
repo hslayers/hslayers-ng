@@ -6,7 +6,6 @@ import {HsDownloadDirective} from './download.directive';
   declarations: [HsDownloadDirective],
   imports: [CommonModule],
   providers: [],
-  entryComponents: [],
   exports: [HsDownloadDirective],
 })
 export class HsDownloadModule {}
