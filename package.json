@@ -96,7 +96,7 @@
     "@angular/compiler-cli": "~13.1.0",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
-    "@compodoc/compodoc": "^1.1.15",
+    "@compodoc/compodoc": "^1.1.16",
     "@types/jasmine": "~3.10.2",
     "@types/jasminewd2": "~2.0.10",
     "@typescript-eslint/eslint-plugin": "5.4.0",
