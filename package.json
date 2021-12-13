@@ -119,7 +119,7 @@
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "^1.7.0",
     "ng-packagr": "^13.1.1",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.1",
     "protractor": "~7.0.0",
     "puppeteer": "^11.0.0",
     "sass": "^1.43.4",
