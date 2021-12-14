@@ -30,7 +30,7 @@ export class HsQueryComponent
   popupOpens: Subject<any> = new Subject();
   name = 'info';
 
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsConfig: HsConfig,
     public hsQueryBaseService: HsQueryBaseService,

@@ -22,7 +22,7 @@ export class HsMeasureComponent
   data;
   name = 'measure';
 
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,

@@ -24,7 +24,7 @@ export class HsSaveMapComponent
   isAuthorized = false;
   advancedForm: boolean;
   name = 'saveMap';
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     //Used in template
     public HsConfig: HsConfig,

@@ -14,7 +14,7 @@ import {Subject} from 'rxjs';
 export class HsSidebarService {
   extraButtons: Array<HsButton> = [];
   buttons: Array<HsButton> = [];
-  sidebarLoad: Subject<any> = new Subject();
+  sidebarLoad: Subject<void> = new Subject();
   /**
    * If buttons with importancy property exist.
    * If not, don't display expansion +/- icon

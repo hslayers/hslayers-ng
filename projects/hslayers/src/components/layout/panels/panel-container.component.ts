@@ -29,7 +29,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Input() panelObserver?: ReplaySubject<HsPanelItem>;
   interval: any;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

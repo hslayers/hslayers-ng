@@ -34,8 +34,8 @@ export class HsEventBusService {
    * Fires when map completely reset
    * @event mapResets
    */
-  mapResets: Subject<any> = new Subject();
-  layerManagerUpdates: Subject<any> = new Subject();
+  mapResets: Subject<void> = new Subject();
+  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
   compositionDeletes: Subject<any> = new Subject();
   /**
@@ -44,7 +44,7 @@ export class HsEventBusService {
    */
   compositionLoads: Subject<any> = new Subject();
   layerRemovals: Subject<Layer<Source>> = new Subject();
-  compositionEdits: Subject<any> = new Subject();
+  compositionEdits: Subject<void> = new Subject();
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
@@ -96,15 +96,15 @@ export class HsEventBusService {
    * replaces 'core.mainpanel_changed'
    * @event mainPanelChanges
    */
-  mainPanelChanges: Subject<any> = new Subject();
+  mainPanelChanges: Subject<string | void> = new Subject();
   /**
    * replaces 'measure.drawStart'
    */
-  measurementStarts: Subject<any> = new Subject();
+  measurementStarts: Subject<void> = new Subject();
   /**
    * replaces 'measure.drawEnd'
    */
-  measurementEnds: Subject<any> = new Subject();
+  measurementEnds: Subject<void> = new Subject();
   cesiumLoads: Subject<any> = new Subject();
   cesiumResizes: Subject<any> = new Subject();
   zoomTo: Subject<any> = new Subject();
@@ -138,7 +138,7 @@ export class HsEventBusService {
    */
   searchResultsReceived: Subject<any> = new Subject();
   searchZoomTo: Subject<any> = new Subject();
-  clearSearchResults: Subject<any> = new Subject();
+  clearSearchResults: Subject<void> = new Subject();
   /**
    * replaces 'query.dataUpdated'
    */

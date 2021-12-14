@@ -31,7 +31,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
    */
   timeDisplayLocale = 'en-US';
   timesInSync: boolean;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsEventBusService: HsEventBusService,
     public hsDimensionTimeService: HsDimensionTimeService,

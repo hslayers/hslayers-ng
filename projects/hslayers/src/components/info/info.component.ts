@@ -31,7 +31,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   composition_id: number;
   info_image: string;
   composition_edited: boolean;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,

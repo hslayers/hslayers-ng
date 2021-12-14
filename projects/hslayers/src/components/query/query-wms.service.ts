@@ -81,7 +81,7 @@ export class HsQueryWmsService {
     }
   }
 
-  async request(url, infoFormat, coordinate, layer): Promise<void> {
+  async request(url, infoFormat, coordinate: number[], layer): Promise<void> {
     const req_url = this.hsUtilsService.proxify(url, true);
     const reqHash = this.hsQueryBaseService.currentQuery;
     try {
@@ -124,7 +124,12 @@ export class HsQueryWmsService {
    * @param coordinate - Coordinate of request
    * @param layer -
    */
-  featureInfoReceived(response, infoFormat: string, coordinate, layer): void {
+  featureInfoReceived(
+    response,
+    infoFormat: string,
+    coordinate: number[],
+    layer
+  ): void {
     /* Maybe this will work in future OL versions
      * var format = new GML();
      *  console.log(format.readFeatures(response, {}));
@@ -286,7 +291,7 @@ export class HsQueryWmsService {
   /**
    * @param coordinate -
    */
-  queriesCollected(coordinate): void {
+  queriesCollected(coordinate: number[]): void {
     const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
     if (
       this.hsQueryBaseService.data.features.length > 0 ||
@@ -301,7 +306,7 @@ export class HsQueryWmsService {
    * @param layer - Layer to Query
    * @param coordinate -
    */
-  queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate) {
+  queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate: number[]) {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService.parseRequestUrl(layer, coordinate).then(

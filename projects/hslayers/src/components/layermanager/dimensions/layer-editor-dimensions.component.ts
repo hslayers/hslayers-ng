@@ -25,7 +25,7 @@ export class HsLayerEditorDimensionsComponent
 {
   name: 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     public hsDimensionService: HsDimensionService,

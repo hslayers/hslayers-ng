@@ -20,7 +20,7 @@ export class HsSearchResultsComponent implements OnDestroy {
   searchResultsVisible: boolean;
   data: any = {};
   fcode_zoom_map: any;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
     private hsSearchService: HsSearchService

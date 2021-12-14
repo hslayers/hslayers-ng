@@ -19,7 +19,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
   endpoint: any;
   overwrite = false;
   downloadableData: string;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsEventBusService: HsEventBusService,
