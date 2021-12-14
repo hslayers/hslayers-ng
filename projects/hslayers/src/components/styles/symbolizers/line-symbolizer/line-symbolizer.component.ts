@@ -3,6 +3,7 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {LineSymbolizer, SymbolizerKind} from 'geostyler-style';
 
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
+import {Kinds} from '../symbolizer-kind.enum';
 
 @Component({
   selector: 'hs-line-symbolizer',
@@ -14,6 +15,7 @@ export class HsLineSymbolizerComponent extends HsStylerPartBaseComponent {
   @ViewChild('graphicStrokeMenu') strokeMenuRef;
   caps = ['butt', 'round', 'square'];
   joins = ['bevel', 'round', 'miter'];
+  kinds = Kinds;
 
   addSymbolizer(attribute: string, kind: SymbolizerKind): void {
     this.symbolizer[attribute] = {kind};

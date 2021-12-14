@@ -73,7 +73,7 @@
     </div>
     <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1">
-      <div ngbDropdown #graphicLineMenu="ngbDropdown"  class="d-inline-block" placement="top-right">
+      <div ngbDropdown #graphicLineMenu="ngbDropdown" class="d-inline-block" placement="top-right">
         <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
           <span class="icon-plus"></span>
         </button>
@@ -114,6 +114,12 @@
     </div>
   </div>
 
-  <hs-symbolizer *ngIf="symbolizer.graphicStroke !== undefined" [symbolizer]="symbolizer.graphicStroke"
-    (changes)="emitChange()" (remove)="symbolizer.graphicStroke = undefined"></hs-symbolizer>
+  <hs-mark-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
+    (changes)="emitChange()" *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.mark">
+  </hs-mark-symbolizer>
+
+  <hs-icon-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
+    (changes)="emitChange()" *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.icon">
+  </hs-icon-symbolizer>
+
 </form>
