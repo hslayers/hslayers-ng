@@ -15,7 +15,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 export class HsLegendLayerComponent implements OnDestroy {
   @Input() layer: any;
   svg: SafeHtml;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsUtilsService: HsUtilsService,
     public hsLegendService: HsLegendService,

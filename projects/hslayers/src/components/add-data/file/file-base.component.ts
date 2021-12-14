@@ -29,7 +29,7 @@ export class HsAddDataFileBaseComponent
   fileInput: ElementRef;
   acceptedFormats: string;
   baseDataType: string;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,

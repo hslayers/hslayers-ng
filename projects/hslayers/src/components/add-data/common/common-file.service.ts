@@ -338,7 +338,7 @@ export class HsAddDataCommonFileService {
       details: _options.details,
     });
     this.hsLaymanService.totalProgress = 0;
-    this.layerAddedAsWms.next();
+    this.layerAddedAsWms.next(false);
   }
 
   isSRSSupported(data: fileDataObject): boolean {

@@ -29,7 +29,7 @@ export class HsStylerComponent
   implements OnDestroy
 {
   layerTitle: string;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';

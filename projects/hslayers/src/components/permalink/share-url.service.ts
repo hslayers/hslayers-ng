@@ -30,7 +30,7 @@ export class HsShareUrlService {
   urlUntilParams: string;
   param_string: string;
   public statusSaving = false;
-  public browserUrlUpdated: Subject<any> = new Subject();
+  public browserUrlUpdated: Subject<void> = new Subject();
 
   constructor(
     public HsMapService: HsMapService,

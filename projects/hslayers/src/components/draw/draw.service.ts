@@ -97,7 +97,7 @@ export class HsDrawService {
   isAuthorized: boolean;
   onlyMine = true;
   addedLayersRemoved = false;
-  layerMetadataDialog: Subject<any> = new Subject();
+  layerMetadataDialog: Subject<void> = new Subject();
 
   //Layer being loaded from layman (endpoint url pending)
   pendingLayers = [];

@@ -22,7 +22,7 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver

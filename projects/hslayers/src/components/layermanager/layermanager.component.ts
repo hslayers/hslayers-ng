@@ -105,7 +105,7 @@ export class HsLayerManagerComponent
   getTitle = getTitle;
   getThumbnail = getThumbnail;
   name = 'layermanager';
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,

@@ -67,7 +67,7 @@ export class HsQueryBaseService {
   ];
   last_coordinate_clicked: any;
   getFeatureInfoStarted: Subject<any> = new Subject();
-  getFeatureInfoCollected: Subject<any> = new Subject();
+  getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
   vectorSelectorCreated: Subject<Select> = new Subject();
 

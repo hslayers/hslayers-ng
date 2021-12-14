@@ -33,7 +33,7 @@ export const TYPE_CAPABILITIES_SERVICE_TOKEN =
   ],
 })
 export class HsAddDataUrlBaseComponent implements OnInit, OnDestroy {
-  private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
