@@ -25,12 +25,13 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsQueryBaseService {
   map: Map;
-  data: any = {
+  data = {
     attributes: [],
     features: [],
     featureInfoHtmls: [],
     customFeatures: [],
     coordinates: [],
+    selectedProj: undefined,
   };
 
   queryActive = false;

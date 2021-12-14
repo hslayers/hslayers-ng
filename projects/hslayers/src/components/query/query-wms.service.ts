@@ -67,16 +67,15 @@ export class HsQueryWmsService {
   /**
    * @param updated -
    * @param customInfoTemplate -
-   * @param Base -
    * @param group -
    */
-  updateFeatureList(updated, customInfoTemplate, Base, group): void {
+  updateFeatureList(updated, customInfoTemplate, group): void {
     if (updated) {
       if (customInfoTemplate) {
-        Base.setData(group, 'customFeatures');
-        Base.dataCleared = false;
+        this.hsQueryBaseService.setData(group, 'customFeatures');
+        this.hsQueryBaseService.dataCleared = false;
       } else {
-        Base.setData(group, 'features');
+        this.hsQueryBaseService.setData(group, 'features');
       }
     }
   }
@@ -87,10 +86,12 @@ export class HsQueryWmsService {
     try {
       const headers = new Headers({'Content-Type': 'text'});
       headers.set('Accept', 'text');
-      const response = await this.httpClient.get(req_url, {
-        headers: new HttpHeaders().set('Content-Type', 'text'),
-        responseType: 'text',
-      }).toPromise();
+      const response = await this.httpClient
+        .get(req_url, {
+          headers: new HttpHeaders().set('Content-Type', 'text'),
+          responseType: 'text',
+        })
+        .toPromise();
 
       if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;
@@ -213,12 +214,7 @@ export class HsQueryWmsService {
           attributes: attributes,
           customInfoTemplate: customInfoTemplate,
         };
-        this.updateFeatureList(
-          updated,
-          customInfoTemplate,
-          this.hsQueryBaseService,
-          group
-        );
+        this.updateFeatureList(updated, customInfoTemplate, group);
       }
       const featureNode = feature.firstChild;
       const group = {
@@ -235,12 +231,7 @@ export class HsQueryWmsService {
           updated = true;
         }
       }
-      this.updateFeatureList(
-        updated,
-        customInfoTemplate,
-        this.hsQueryBaseService,
-        group
-      );
+      this.updateFeatureList(updated, customInfoTemplate, group);
     }
     doc.querySelectorAll('msGMLOutput').forEach(($this) => {
       for (const layer_i in $this.children) {
@@ -271,12 +262,7 @@ export class HsQueryWmsService {
                 updated = true;
               }
             }
-            this.updateFeatureList(
-              updated,
-              customInfoTemplate,
-              this.hsQueryBaseService,
-              group
-            );
+            this.updateFeatureList(updated, customInfoTemplate, group);
           }
         }
       }
@@ -304,13 +290,13 @@ export class HsQueryWmsService {
   queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate) {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
-        this.hsQueryWmtsService.parseRequestUrl(layer, coordinate).then(
-          (res) => {
+        this.hsQueryWmtsService
+          .parseRequestUrl(layer, coordinate)
+          .then((res) => {
             console.log(res);
             this.infoCounter++;
             this.request(res.url, res.format, coordinate, layer);
-          }
-        );
+          });
         return;
       }
 
