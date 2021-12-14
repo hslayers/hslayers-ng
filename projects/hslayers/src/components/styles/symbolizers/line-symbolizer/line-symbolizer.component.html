@@ -89,8 +89,13 @@
     </div>
   </div>
 
-  <hs-symbolizer *ngIf="symbolizer.graphicFill !== undefined" [symbolizer]="symbolizer.graphicFill"
-    (changes)="emitChange()" (remove)="symbolizer.graphicFill = undefined"></hs-symbolizer>
+  <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [symbolizer]="symbolizer.graphicFill"
+  (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
+</hs-mark-symbolizer>
+
+<hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [symbolizer]="symbolizer.graphicFill"
+  (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
+</hs-icon-symbolizer>
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1 mt-2">
