@@ -57,7 +57,7 @@
     </div>
 </div>
 <div *ngIf="selectedFeaturesVisible">
-    <hs-query-feature *ngFor="let item of hsQueryBaseService.data.features; trackBy: trackById" [feature]="item">
+    <hs-query-feature *ngFor="let item of hsQueryBaseService.data.features | slice:0:50; trackBy: trackById" [feature]="item">
     </hs-query-feature>
 </div>
 </ng-container>
