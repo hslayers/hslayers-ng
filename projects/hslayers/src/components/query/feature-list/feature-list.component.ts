@@ -54,9 +54,9 @@ export class HsQueryFeatureListComponent {
   ) {}
 
   olFeatureArray(): Feature<Geometry>[] {
-    return this.hsQueryBaseService.data.features.map(
-      (feature) => feature.feature
-    );
+    return this.hsQueryBaseService.data.features
+      .map((feature) => feature.feature)
+      .filter((f) => f);
   }
 
   /**

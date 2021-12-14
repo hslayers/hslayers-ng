@@ -10,7 +10,7 @@
                 (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
             </button>
         </div>
-        <div class="btn-group" *ngIf="hsQueryBaseService.data.features.length > 1">
+        <div class="btn-group" *ngIf="olFeatureArray().length > 0">
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
                         class="icon-settingsthree-gears"></i></button>
