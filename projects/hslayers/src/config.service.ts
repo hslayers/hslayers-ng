@@ -77,6 +77,7 @@ export class HsConfig {
     search?: boolean;
     tripPlanner?: boolean;
     addData?: boolean;
+    mapSwipe?: boolean;
   };
   advancedForm?: boolean;
   project_name?: string;
@@ -91,6 +92,7 @@ export class HsConfig {
       url: string;
     };
   };
+  initialSwipeRight?: Layer<Source>[];
   status_manager_url?: string;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
