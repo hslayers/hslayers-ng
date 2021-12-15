@@ -14,6 +14,8 @@ cd ../hslayers-app
 npm version $TYPE
 cd ../hslayers-cesium
 npm version $TYPE
+cd ../hslayers-cesium-app
+npm version $TYPE
 cd ../../
 make build-all
 # Second round of building needed because app building 
