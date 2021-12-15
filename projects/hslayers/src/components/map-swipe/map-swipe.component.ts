@@ -26,7 +26,7 @@ export class HsMapSwipeComponent
   implements OnDestroy
 {
   layerManagerUpdatesSubscription: Subscription;
-
+  orientation = 'vertical';
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
@@ -57,8 +57,8 @@ export class HsMapSwipeComponent
   name = 'mapSwipe';
 
   setOrientation(event: any): void {
-    const ori = event.target.checked ? 'horizontal' : 'vertical';
-    this.hsMapSwipeService.swipeCtrl.set('orientation', ori);
+    this.orientation = event.target.checked ? 'horizontal' : 'vertical';
+    this.hsMapSwipeService.swipeCtrl.set('orientation', this.orientation);
   }
 
   resetSwipePos(): void {
