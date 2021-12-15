@@ -35,6 +35,7 @@ class HsConfigMock {
     search: false,
     tripPlanner: false,
     addData: false,
+    mapSwipe: false,
   };
   constructor() {}
 }
