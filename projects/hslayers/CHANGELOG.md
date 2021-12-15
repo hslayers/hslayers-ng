@@ -1,3 +1,12 @@
+## [7.0.1](https://github.com/hslayers/hslayers-ng/compare/7.0.0...7.0.1) (2021-12-15)
+
+
+### Bug Fixes
+
+* Query feature ops and reload on wms featureinfo ([#2455](https://github.com/hslayers/hslayers-ng/issues/2455)) ([9f8bc0a](https://github.com/hslayers/hslayers-ng/commit/9f8bc0a22fa55bfb8bc8867c124ed245624a4c4f)), closes [#2454](https://github.com/hslayers/hslayers-ng/issues/2454)
+
+
+
 # [7.0.0](https://github.com/hslayers/hslayers-ng/compare/6.1.0...7.0.0) (2021-12-10)
 
 
