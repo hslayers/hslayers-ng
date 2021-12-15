@@ -181,6 +181,21 @@ export class SwipeControl extends Control {
     });
   }
 
+  /** Remove a specific layer from swipe control completely
+   */
+  removeCompletely(layerToRm: any): void {
+    let layerFound;
+    layerFound = this.layers.find((l) => l.layer == layerToRm);
+    if (layerFound) {
+      this.removeLayer(layerFound);
+    } else {
+      layerFound = this.rightLayers.find((l) => l.layer == layerToRm);
+      if (layerFound) {
+        this.removeLayer(layerFound, true);
+      }
+    }
+  }
+
   /** Remove a layer to clip
    *	@param layer - to clip
    *  @param right - layer from right side to clip

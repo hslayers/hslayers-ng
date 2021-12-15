@@ -5,6 +5,10 @@ export function mockHsMapSwipeService() {
     'fillSwipeLayers',
     'addSwipeLayers',
     'setLayerActive',
+    'addRight',
+    'addLeft',
+    'removeCompletely',
     'checkForMissingLayers',
+    'setSwipeLayers',
   ]);
 }
