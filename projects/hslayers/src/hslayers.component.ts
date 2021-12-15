@@ -16,13 +16,13 @@ import {HsLayerManagerService} from './components/layermanager/layermanager.serv
 import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsLegendComponent} from './components/legend/legend.component';
+import {HsMapSwipeComponent} from './components/map-swipe/map-swipe.component';
 import {HsMeasureComponent} from './components/measure/measure.component';
 import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
 import {HsPrintComponent} from './components/print/print.component';
 import {HsQueryComponent} from './components/query/query.component';
 import {HsQueryPopupComponent} from './components/query/query-popup/query-popup.component';
 import {HsQueryPopupService} from './components/query/query-popup.service';
-import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
 import {HsSaveMapComponent} from './components/save-map/save-map.component';
 import {HsSearchComponent} from './components/search/search.component';
 import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
@@ -47,8 +47,7 @@ export class HslayersComponent implements OnInit {
     private hsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
-    private hsQueryPopupService: HsQueryPopupService,
-    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    private hsQueryPopupService: HsQueryPopupService
   ) {}
 
   /**
@@ -90,6 +89,7 @@ export class HslayersComponent implements OnInit {
         HsLayerManagerComponent,
         this.HsLayerManagerService.data
       );
+      this.createPanel('mapSwipe', HsMapSwipeComponent);
       this.hsLayoutService.createPanel(HsStylerComponent, {});
       this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
       this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
@@ -101,7 +101,6 @@ export class HslayersComponent implements OnInit {
       this.hsLayoutService.createOverlay(HsQueryPopupComponent, {
         service: this.hsQueryPopupService,
       });
-
       this.hsLayoutService.initializedOnce = true;
     }
   }
