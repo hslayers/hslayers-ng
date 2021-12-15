@@ -5,7 +5,9 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import {Subject} from 'rxjs/internal/Subject';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
@@ -52,23 +54,29 @@ export class HsMapSwipeComponent
     this.hsMapSwipeService.init();
     this.hsEventBusService.layerManagerUpdates
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: any) => {
+      .subscribe((layer: Layer<Source>) => {
         this.hsMapSwipeService.fillSwipeLayers(layer);
       });
 
     this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        this.hsMapSwipeService.setSwipeLayers();
+        this.hsMapSwipeService.setInitialSwipeLayers();
       });
   }
   name = 'mapSwipe';
 
+  /**
+   * Set swipe control orientation
+   * @param event - checkbox trigger event
+   */
   setOrientation(event: any): void {
     this.orientation = event.target.checked ? 'horizontal' : 'vertical';
     this.hsMapSwipeService.swipeCtrl.set('orientation', this.orientation);
   }
-
+  /**
+   * Reset swipe slider position to default
+   */
   resetSwipePos(): void {
     this.hsMapSwipeService.swipeCtrl.set('position', 0.5);
   }
@@ -77,7 +85,11 @@ export class HsMapSwipeComponent
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
+  /**
+   * Modify arrays after drag and drop
+   * @param event - CdkDragDrop drop event
+   * @param right - (Optional) Item dragged to right
+   */
   drop(event: CdkDragDrop<string[]>, right?: boolean): void {
     let draggedLayer;
     let replacedLayer;

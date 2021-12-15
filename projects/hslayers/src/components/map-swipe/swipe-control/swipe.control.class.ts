@@ -3,6 +3,8 @@
  */
 
 import Control from 'ol/control/Control';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {LayerListItem} from '../../../common/layer-shifting/layer-shifting.service';
 
@@ -116,20 +118,20 @@ export class SwipeControl extends Control {
 
   private enableEvents(l: LayerListItem, right?: boolean): void {
     if (right) {
-      l.layer.on(['precompose', 'prerender'], this.precomposeRight);
+      (l.layer as any).on(['precompose', 'prerender'], this.precomposeRight);
     } else {
-      l.layer.on(['precompose', 'prerender'], this.precomposeLeft);
+      (l.layer as any).on(['precompose', 'prerender'], this.precomposeLeft);
     }
-    l.layer.on(['postcompose', 'postrender'], this.postcompose);
+    (l.layer as any).on(['postcompose', 'postrender'], this.postcompose);
   }
 
   private disableEvents(l: LayerListItem, right?: boolean): void {
     if (right) {
-      l.layer.un(['precompose', 'prerender'], this.precomposeRight);
+      (l.layer as any).un(['precompose', 'prerender'], this.precomposeRight);
     } else {
-      l.layer.un(['precompose', 'prerender'], this.precomposeLeft);
+      (l.layer as any).un(['precompose', 'prerender'], this.precomposeLeft);
     }
-    l.layer.un(['postcompose', 'postrender'], this.postcompose);
+    (l.layer as any).un(['postcompose', 'postrender'], this.postcompose);
   }
 
   private isLayerAdded(lyr: LayerListItem, right?: boolean) {
@@ -183,7 +185,7 @@ export class SwipeControl extends Control {
 
   /** Remove a specific layer from swipe control completely
    */
-  removeCompletely(layerToRm: any): void {
+  removeCompletely(layerToRm: Layer<Source>): void {
     let layerFound;
     layerFound = this.layers.find((l) => l.layer == layerToRm);
     if (layerFound) {

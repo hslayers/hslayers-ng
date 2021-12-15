@@ -11,7 +11,7 @@ import {getBase} from '../layer-extensions';
 
 export class LayerListItem {
   title: string;
-  layer: any;
+  layer: Layer<Source>;
   active?: boolean;
 }
 
