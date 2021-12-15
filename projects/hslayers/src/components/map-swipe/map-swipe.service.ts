@@ -46,21 +46,37 @@ export class HsMapSwipeService {
       );
       if (layerFound !== undefined) {
         this.setLayerActive(layerFound);
+        this.addSwipeLayer(layerFound);
         this.checkForMissingLayers();
-        this.addSwipeLayers(layerFound);
+      } else {
+        this.removeCompletely(layer);
       }
     }
   }
 
-  addSwipeLayers(layer?: LayerListItem): void {
+  addSwipeLayer(layer?: LayerListItem): void {
     if (this.movingRight) {
-      this.swipeCtrl.removeLayer(layer);
-      this.swipeCtrl.addLayer(layer, true);
+      this.addRight(layer);
     } else {
-      this.swipeCtrl.removeLayer(layer, true);
-      this.swipeCtrl.addLayer(layer);
+      this.addLeft(layer);
     }
     this.movingRight = false;
+  }
+
+  addRight(layer: LayerListItem): void {
+    this.swipeCtrl.removeLayer(layer);
+    this.swipeCtrl.addLayer(layer, true);
+  }
+
+  addLeft(layer: LayerListItem): void {
+    this.swipeCtrl.removeLayer(layer, true);
+    this.swipeCtrl.addLayer(layer);
+  }
+
+  removeCompletely(layerToRm: any): void {
+    this.layers = this.layers.filter((l) => l.layer != layerToRm);
+    this.rightLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
+    this.swipeCtrl.removeCompletely(layerToRm);
   }
 
   setLayerActive(layer: LayerListItem): void {
@@ -73,7 +89,6 @@ export class HsMapSwipeService {
   }
 
   setSwipeLayers(): void {
-    this.swipeCtrl.removeLayers();
     this.hsLayerShiftingService.fillLayers();
     if (
       !this.hsConfig.initialSwipeRight ||
