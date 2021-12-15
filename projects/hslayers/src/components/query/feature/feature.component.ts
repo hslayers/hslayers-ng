@@ -52,6 +52,10 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
+    if (!this.olFeature()) {
+      //Feature from WMS getFeatureInfo
+      return;
+    }
     const featureLayer = this.hsMapService.getLayerForFeature(this.olFeature());
     this.availableLayersSubscription =
       this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
@@ -61,7 +65,7 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.availableLayersSubscription.unsubscribe();
+    this.availableLayersSubscription?.unsubscribe();
   }
 
   olFeature(): Feature<Geometry> {

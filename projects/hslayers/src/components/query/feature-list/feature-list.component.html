@@ -1,15 +1,16 @@
-<div class="navbar navbar-light bg-light px-1" *ngIf="features.length > 0">
+<ng-container>
+<div class="navbar navbar-light bg-light px-1" *ngIf="hsQueryBaseService.data.features.length > 0">
     <div class="d-flex align-items-baseline w-100">
         <div class="d-flex align-items-baseline" style="flex: 1;">
-            <p class="m-0" [ngStyle]="{'flex' : features.length > 1 ? '' : '1'}">
-                {{'QUERY.featuresSelected' | translate}}{{features.length}}
+            <p class="m-0" [ngStyle]="{'flex' : hsQueryBaseService.data.features.length > 1 ? '' : '1'}">
+                {{'QUERY.featuresSelected' | translate}}{{hsQueryBaseService.data.features.length}}
             </p>
             <button type="button" class="btn dropdown-toggle border-0 ms-2"
                 [title]="'HISTORY.toggleDropdown' | translate"
                 (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
             </button>
         </div>
-        <div class="btn-group" *ngIf="features.length > 1">
+        <div class="btn-group" *ngIf="olFeatureArray().length > 0">
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
                         class="icon-settingsthree-gears"></i></button>
@@ -56,6 +57,7 @@
     </div>
 </div>
 <div *ngIf="selectedFeaturesVisible">
-    <hs-query-feature *ngFor="let item of features | slice:0:50; trackBy: trackById" [feature]="item">
+    <hs-query-feature *ngFor="let item of hsQueryBaseService.data.features | slice:0:50; trackBy: trackById" [feature]="item">
     </hs-query-feature>
 </div>
+</ng-container>
