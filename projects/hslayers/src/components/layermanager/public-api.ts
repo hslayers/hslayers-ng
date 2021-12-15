@@ -13,7 +13,6 @@ export * from './gallery/layermanager-gallery.component';
 export * from './logical-list/layermanager-layerlist.component';
 export * from './layermanager-metadata.service';
 export * from './physical-list/layermanager-physical-layerlist.component';
-export * from './physical-list/layermanager-physical-layerlist.service';
 export * from './layermanager.component';
 export * from './layermanager.module';
 export * from './layermanager.service';

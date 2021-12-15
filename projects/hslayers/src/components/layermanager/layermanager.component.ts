@@ -14,11 +14,9 @@ import {takeUntil} from 'rxjs/operators';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLayerEditorSublayerService} from './editor/layer-editor.sub-layer.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
@@ -112,9 +110,7 @@ export class HsLayerManagerComponent
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsMapService: HsMapService,
     public HsLayerManagerService: HsLayerManagerService,
-    public HsDimensionTimeService: HsDimensionTimeService,
     public HsLayoutService: HsLayoutService,
-    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public HsLayerSynchronizerService: HsLayerSynchronizerService,
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,

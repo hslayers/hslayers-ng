@@ -23,6 +23,7 @@ export * from './common/queues/public-api';
 export * from './common/upload/public-api';
 export * from './common/widgets/public-api';
 export * from './common/pager/public-api';
+export * from './common/layer-shifting/public-api';
 /*
  * COMPONENTS
  */
@@ -49,5 +50,6 @@ export * from './components/styles/public-api';
 export * from './components/toolbar/public-api';
 export * from './components/trip-planner/public-api';
 export * from './components/utils/public-api';
+export * from './components/map-swipe/public-api';
 
 export * from './config.service';
