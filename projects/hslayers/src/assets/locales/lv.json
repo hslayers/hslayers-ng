@@ -589,7 +589,8 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRIP_PLANNER": "Maršruta plānotājs"
+    "TRIP_PLANNER": "Maršruta plānotājs",
+    "MAP_SWIPE": "Kartes vilkšana"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -730,7 +731,8 @@
       "PRINT": "Printēt karti",
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
       "SEARCH": "Meklēt atrašanās vietu",
-      "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus"
+      "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus",
+      "MAP_SWIPE": "Kartes vilkšanas vadības slāņa pārvaldnieks"
     }
   },
   "STYLER": {
@@ -837,5 +839,17 @@
       "18": "Trūkst viena vai vairāku Shape failu",
       "50": "Kļūda, normalizējot rastra failu"
     }
+  },
+  "MAP_SWIPE": {
+    "horizontalSwipe": "Horizontālā vilkšana",
+    "resetSlider": "Atiestatīt slīdni",
+    "swipeMapWarning": "Pārvelkamās kartes brīdinājums",
+    "bottom": "Apakša",
+    "leftSide": "Kreisā puse",
+    "rightSide": "Labā puse",
+    "top": "Augša"
+  },
+  "Map_SWIPE": {
+    "initialSwipeRightNot": "Sākotnējie vilkšanas pa labi slāņi nav iestatīti"
   }
 }

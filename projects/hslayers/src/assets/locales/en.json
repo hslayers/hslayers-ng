@@ -596,7 +596,8 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRIP_PLANNER": "Trip planner"
+    "TRIP_PLANNER": "Trip planner",
+    "MAP_SWIPE": "Map swipe"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -737,7 +738,8 @@
       "PRINT": "Print map",
       "SAVECOMPOSITION": "Save content of map to composition",
       "SEARCH": "Search for location",
-      "TRIP_PLANNER": "Create new trip routes"
+      "TRIP_PLANNER": "Create new trip routes",
+      "MAP_SWIPE": "Map swipe cotrol layer manager"
     }
   },
   "STYLER": {
@@ -837,5 +839,17 @@
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypointLayer": "Waypoint layer",
     "waypoints": "Waypoints"
+  },
+  "MAP_SWIPE": {
+    "horizontalSwipe": "Horizontal swipe",
+    "resetSlider": "Reset slider",
+    "swipeMapWarning": "Swipe map warning",
+    "leftSide": "Left side",
+    "rightSide": "Right side",
+    "top": "Top",
+    "bottom": "Bottom"
+  },
+  "Map_SWIPE": {
+    "initialSwipeRightNot": "Initial swipe right layers have not been set"
   }
 }
