@@ -1,0 +1,52 @@
+<div class="card hs-main-panel" [hidden]="!isVisible()">
+  <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translate"></hs-panel-header>
+  <div *ngIf="hsMapSwipeService.layersAvailable()" class="pt-1">
+    <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
+      <thead>
+        <tr style="text-align: center;">
+          <th>Left</th>
+          <th>Right</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div cdkDropList #leftList="cdkDropList" [cdkDropListConnectedTo]="[rightList]"
+              [cdkDropListData]="hsMapSwipeService.layers" class="hs-map-swipe-list"
+              (cdkDropListDropped)="drop($event)">
+              <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
+                *ngFor="let layer of hsMapSwipeService.layers" cdkDrag>
+                <div class="hs-lm-item-title"
+                  style="word-break:break-all; cursor:move">
+                  <p class="m-0">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div cdkDropList #rightList="cdkDropList" [cdkDropListConnectedTo]="[leftList]"
+              [cdkDropListData]="hsMapSwipeService.rightLayers" class="hs-map-swipe-list"
+              (cdkDropListDropped)="drop($event, true)">
+              <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
+                *ngFor="let layer of hsMapSwipeService.rightLayers" cdkDrag>
+                <div class="hs-lm-item-title"
+                  style="word-break:break-all; cursor:move">
+                  <p class="m-0">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
+                </div>
+              </div>
+            </div>
+          </td> 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex justify-content-between align-items-center ps-2">
+      <div>
+        <input id="ori" type="checkbox" (change)="setOrientation($event)" />
+        <label class="ms-1" style="cursor: pointer;" for="ori">{{'MAP_SWIPE.horizontalSwipe' | translate}}</label>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()">{{'MAP_SWIPE.resetSlider' | translate}}</button>
+      </div>
+  </div>
+</div>

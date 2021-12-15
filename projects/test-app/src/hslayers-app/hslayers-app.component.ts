@@ -124,30 +124,59 @@ export class HslayersAppComponent {
         },
       ],
     };
-    const opticalMap = new Tile({
-      source: new XYZ({
-        attributions:
-          '&copy; <a href="http://www.baltsat.lv/">Baltic Satellite Service</a>, <a href="https://www.esa.int/">European Space Agency - ESA</a>',
-        url: 'https://wms.forestradar.com/tiles-v1/fie-xNFwHfJdIR1dCtA7kJ1K8g/{time}-RGB/{z}/{x}/{y}.png',
-        crossOrigin: 'Anonymous',
-      }),
+    const points = new VectorLayer({
       properties: {
-        title: 'Optical satellite basemap',
-        from_composition: true,
-        dimensions: {
-          time: {
-            value: '2020-11-20',
-            name: 'time',
-            values: ['2020-11-20'],
+        title: 'Points',
+        synchronize: false,
+        cluster: false,
+        inlineLegend: true,
+        popUp: {
+          attributes: ['name', 'population'],
+        },
+        editor: {
+          editable: true,
+          defaultAttributes: {
+            name: 'New bookmark',
+            description: 'none',
           },
         },
-        base: false,
-        editor: {editable: false},
-        path: 'Vegetation indexes and satellite imagery',
+        sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
+            <StyledLayerDescriptor version="1.0.0" 
+                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+                xmlns="http://www.opengis.net/sld" 
+                xmlns:ogc="http://www.opengis.net/ogc" 
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <NamedLayer>
+                <Name>Simple point with stroke</Name>
+                <UserStyle>
+                  <Title>Default</Title>
+                  <FeatureTypeStyle>
+                    <Rule>
+                      <PointSymbolizer>
+                        <Graphic>
+                          <Mark>
+                            <WellKnownName>circle</WellKnownName>
+                            <Fill>
+                              <CssParameter name="fill">#FF0000</CssParameter>
+                            </Fill>
+                            <Stroke>
+                              <CssParameter name="stroke">#000000</CssParameter>
+                              <CssParameter name="stroke-width">2</CssParameter>
+                            </Stroke>
+                          </Mark>
+                          <Size>6</Size>
+                        </Graphic>
+                      </PointSymbolizer>
+                    </Rule>
+                  </FeatureTypeStyle>
+                </UserStyle>
+              </NamedLayer>
+            </StyledLayerDescriptor>
+            `,
+        path: 'User generated',
       },
-      maxZoom: 18,
-      visible: false,
-      opacity: 1,
+      source: new VectorSource({features}),
     });
     const polygonSld = `<?xml version="1.0" encoding="ISO-8859-1"?>
             <StyledLayerDescriptor version="1.0.0" 
@@ -173,6 +202,55 @@ export class HslayersAppComponent {
               </NamedLayer>
             </StyledLayerDescriptor>
             `;
+    const polygons = new VectorLayer({
+      properties: {
+        title: 'Polygons',
+        synchronize: false,
+        cluster: false,
+        inlineLegend: true,
+        popUp: {
+          attributes: ['name'],
+          widgets: ['layer-name', 'clear-layer'],
+        },
+        editor: {
+          editable: true,
+          defaultAttributes: {
+            name: 'New polygon',
+            description: 'none',
+          },
+        },
+        sld: polygonSld,
+        path: 'User generated',
+      },
+      source: new VectorSource({
+        features: new GeoJSON().readFeatures(geojsonObject),
+      }),
+    });
+    const opticalMap = new Tile({
+      source: new XYZ({
+        attributions:
+          '&copy; <a href="http://www.baltsat.lv/">Baltic Satellite Service</a>, <a href="https://www.esa.int/">European Space Agency - ESA</a>',
+        url: 'https://wms.forestradar.com/tiles-v1/fie-xNFwHfJdIR1dCtA7kJ1K8g/{time}-RGB/{z}/{x}/{y}.png',
+        crossOrigin: 'Anonymous',
+      }),
+      properties: {
+        title: 'Optical satellite basemap',
+        from_composition: true,
+        dimensions: {
+          time: {
+            value: '2020-11-20',
+            name: 'time',
+            values: ['2020-11-20'],
+          },
+        },
+        base: false,
+        editor: {editable: false},
+        path: 'Vegetation indexes and satellite imagery',
+      },
+      maxZoom: 18,
+      visible: false,
+      opacity: 1,
+    });
     this.HsConfig.update({
       queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
       datasources: [
@@ -195,10 +273,13 @@ export class HslayersAppComponent {
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: true,
+        mapSwipe: true,
       },
+      initialSwipeRight: [polygons],
       componentsEnabled: {
         basemapGallery: true,
       },
+      enabledLanguages: 'sk, en',
       assetsPath: 'assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
@@ -260,60 +341,7 @@ export class HslayersAppComponent {
             removable: false,
           },
         }),
-        new VectorLayer({
-          properties: {
-            title: 'Points',
-            synchronize: false,
-            cluster: false,
-            inlineLegend: true,
-            popUp: {
-              attributes: ['name', 'population'],
-            },
-            editor: {
-              editable: true,
-              defaultAttributes: {
-                name: 'New bookmark',
-                description: 'none',
-              },
-            },
-            sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-            <StyledLayerDescriptor version="1.0.0" 
-                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-                xmlns="http://www.opengis.net/sld" 
-                xmlns:ogc="http://www.opengis.net/ogc" 
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-              <NamedLayer>
-                <Name>Simple point with stroke</Name>
-                <UserStyle>
-                  <Title>Default</Title>
-                  <FeatureTypeStyle>
-                    <Rule>
-                      <PointSymbolizer>
-                        <Graphic>
-                          <Mark>
-                            <WellKnownName>circle</WellKnownName>
-                            <Fill>
-                              <CssParameter name="fill">#FF0000</CssParameter>
-                            </Fill>
-                            <Stroke>
-                              <CssParameter name="stroke">#000000</CssParameter>
-                              <CssParameter name="stroke-width">2</CssParameter>
-                            </Stroke>
-                          </Mark>
-                          <Size>6</Size>
-                        </Graphic>
-                      </PointSymbolizer>
-                    </Rule>
-                  </FeatureTypeStyle>
-                </UserStyle>
-              </NamedLayer>
-            </StyledLayerDescriptor>
-            `,
-            path: 'User generated',
-          },
-          source: new VectorSource({features}),
-        }),
+
         new VectorLayer({
           properties: {
             title: 'Clusters without SLD',
@@ -339,30 +367,6 @@ export class HslayersAppComponent {
             }),
           }),
           source: new VectorSource({features}),
-        }),
-        new VectorLayer({
-          properties: {
-            title: 'Polygons',
-            synchronize: false,
-            cluster: false,
-            inlineLegend: true,
-            popUp: {
-              attributes: ['name'],
-              widgets: ['layer-name', 'clear-layer'],
-            },
-            editor: {
-              editable: true,
-              defaultAttributes: {
-                name: 'New polygon',
-                description: 'none',
-              },
-            },
-            sld: polygonSld,
-            path: 'User generated',
-          },
-          source: new VectorSource({
-            features: new GeoJSON().readFeatures(geojsonObject),
-          }),
         }),
         new VectorLayer({
           properties: {
@@ -393,6 +397,8 @@ export class HslayersAppComponent {
             features: new GeoJSON().readFeatures(geojsonObject),
           }),
         }),
+        polygons,
+        points,
         opticalMap,
       ],
     });
