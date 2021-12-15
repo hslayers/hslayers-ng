@@ -27,26 +27,7 @@ export class HsMapSwipeService {
     this.hsMapService.loaded().then(() => {
       this.swipeCtrl.setTargetMap(this.hsMapService.map);
       this.hsMapService.map.addControl(this.swipeCtrl);
-      this.hsLayerShiftingService.fillLayers();
-      if (
-        !this.hsConfig.initialSwipeRight ||
-        this.hsConfig.initialSwipeRight.length == 0
-      ) {
-        this.hsToastService.createToastPopupMessage(
-          'MAP_SWIPE.swipeMapWarning',
-          'Map_SWIPE.initialSwipeRightNot'
-        );
-        this.layers = Object.assign([], this.hsLayerShiftingService.layersCopy);
-      } else {
-        this.rightLayers = this.hsConfig.initialSwipeRight.map((l) => {
-          return {layer: l, title: getTitle(l)};
-        });
-        this.layers = this.hsLayerShiftingService.layersCopy.filter(
-          (l) => !this.hsConfig.initialSwipeRight.includes(l.layer)
-        );
-      }
-      this.swipeCtrl.addLayer(this.rightLayers, true);
-      this.swipeCtrl.addLayer(this.layers);
+      this.setSwipeLayers();
     });
   }
 
@@ -89,6 +70,30 @@ export class HsMapSwipeService {
     this.rightLayers.forEach((l) => {
       l.layer == layer.layer ? (l.active = true) : (l.active = false);
     });
+  }
+
+  setSwipeLayers(): void {
+    this.swipeCtrl.removeLayers();
+    this.hsLayerShiftingService.fillLayers();
+    if (
+      !this.hsConfig.initialSwipeRight ||
+      this.hsConfig.initialSwipeRight.length == 0
+    ) {
+      this.hsToastService.createToastPopupMessage(
+        'MAP_SWIPE.swipeMapWarning',
+        'Map_SWIPE.initialSwipeRightNot'
+      );
+      this.layers = Object.assign([], this.hsLayerShiftingService.layersCopy);
+    } else {
+      this.rightLayers = this.hsConfig.initialSwipeRight.map((l) => {
+        return {layer: l, title: getTitle(l)};
+      });
+      this.layers = this.hsLayerShiftingService.layersCopy.filter(
+        (l) => !this.hsConfig.initialSwipeRight.includes(l.layer)
+      );
+    }
+    this.swipeCtrl.addLayer(this.rightLayers, true);
+    this.swipeCtrl.addLayer(this.layers);
   }
 
   checkForMissingLayers(): void {

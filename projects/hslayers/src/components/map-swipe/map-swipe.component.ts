@@ -5,7 +5,8 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import {Subscription} from 'rxjs/internal/Subscription';
+import {Subject} from 'rxjs/internal/Subject';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -25,7 +26,7 @@ export class HsMapSwipeComponent
   extends HsPanelBaseComponent
   implements OnDestroy
 {
-  layerManagerUpdatesSubscription: Subscription;
+  private ngUnsubscribe = new Subject<void>();
   orientation = 'vertical';
   constructor(
     public hsLayoutService: HsLayoutService,
@@ -49,9 +50,16 @@ export class HsMapSwipeComponent
       icon: 'icon-layers',
     });
     this.hsMapSwipeService.init();
-    this.layerManagerUpdatesSubscription =
-      this.hsEventBusService.layerManagerUpdates.subscribe((layer: any) => {
+    this.hsEventBusService.layerManagerUpdates
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((layer: any) => {
         this.hsMapSwipeService.fillSwipeLayers(layer);
+      });
+
+    this.hsEventBusService.mapResets
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.hsMapSwipeService.setSwipeLayers();
       });
   }
   name = 'mapSwipe';
@@ -66,7 +74,8 @@ export class HsMapSwipeComponent
   }
 
   ngOnDestroy(): void {
-    this.layerManagerUpdatesSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   drop(event: CdkDragDrop<string[]>, right?: boolean): void {
