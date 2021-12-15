@@ -43,7 +43,7 @@
         </div>
     </div>
 </div>
-<div class="justify-content-end" style="padding-left: 10px">
+<div class="justify-content-end" style="padding-left: 10px" *ngIf="olFeature() !== undefined">
     <div class="mx-1 mb-2 text-end">
         <div class="btn-group">
             <button class="btn btn-secondary btn-sm" (click)="newAttribVisible = !newAttribVisible"><i

@@ -1,5 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Input} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -10,6 +9,7 @@ import {HsFeatureCommonService} from '../feature-common.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsQueryBaseService} from '../query-base.service';
 import {HsQueryVectorService} from '../query-vector.service';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from '../../../common/layer-extensions';
@@ -17,11 +17,8 @@ import {getTitle} from '../../../common/layer-extensions';
 @Component({
   selector: 'hs-query-feature-list',
   templateUrl: './feature-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsQueryFeatureListComponent {
-  @Input() features;
-
   exportMenuVisible;
   selectedFeaturesVisible = true;
   exportFormats: exportFormats[] = [
@@ -39,7 +36,11 @@ export class HsQueryFeatureListComponent {
   getTitle = getTitle;
 
   trackById(index, item) {
-    return item.feature.ol_uid;
+    if (item.feature) {
+      return item.feature.ol_uid;
+    } else {
+      return JSON.stringify(item);
+    }
   }
 
   constructor(
@@ -48,11 +49,14 @@ export class HsQueryFeatureListComponent {
     public hsDialogContainerService: HsDialogContainerService,
     public hsLayoutService: HsLayoutService,
     public hsFeatureCommonService: HsFeatureCommonService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsQueryBaseService: HsQueryBaseService
   ) {}
 
   olFeatureArray(): Feature<Geometry>[] {
-    return this.features.map((feature) => feature.feature);
+    return this.hsQueryBaseService.data.features
+      .map((feature) => feature.feature)
+      .filter((f) => f);
   }
 
   /**
@@ -106,7 +110,7 @@ export class HsQueryFeatureListComponent {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      for (const feature of this.features) {
+      for (const feature of this.hsQueryBaseService.data.features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
           this.hsQueryVectorService.removeFeature(feature.feature);
