@@ -4,11 +4,13 @@ export function mockHsMapSwipeService() {
     'layersAvailable',
     'fillSwipeLayers',
     'addSwipeLayer',
+    'addSwipeLayers',
     'setLayerActive',
     'addRight',
     'addLeft',
     'removeCompletely',
     'checkForMissingLayers',
     'setInitialSwipeLayers',
+    'fillExplicitLayers',
   ]);
 }

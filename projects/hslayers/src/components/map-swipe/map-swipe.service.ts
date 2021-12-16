@@ -4,12 +4,13 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
 import {SwipeControl} from './swipe-control/swipe.control.class';
-import {getTitle} from '../../common/layer-extensions';
+import {getSwipeSide} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -23,17 +24,28 @@ export class HsMapSwipeService {
     public hsMapService: HsMapService,
     public hsConfig: HsConfig,
     public hsToastService: HsToastService,
-    public hsLayerShiftingService: HsLayerShiftingService
-  ) {}
+    public hsLayerShiftingService: HsLayerShiftingService,
+    public hsEventBusService: HsEventBusService
+  ) {
+    this.hsMapService.loaded().then(() => {
+      this.init();
+    });
+    this.hsEventBusService.layerManagerUpdates.subscribe(
+      (layer: Layer<Source>) => {
+        this.fillSwipeLayers(layer);
+      }
+    );
+    this.hsEventBusService.mapResets.subscribe(() => {
+      this.setInitialSwipeLayers();
+    });
+  }
   /**
    * Initializes swipe control add adds it to the map
    */
   init(): void {
-    this.hsMapService.loaded().then(() => {
-      this.swipeCtrl.setTargetMap(this.hsMapService.map);
-      this.hsMapService.map.addControl(this.swipeCtrl);
-      this.setInitialSwipeLayers();
-    });
+    this.swipeCtrl.setTargetMap(this.hsMapService.map);
+    this.hsMapService.map.addControl(this.swipeCtrl);
+    this.setInitialSwipeLayers();
   }
   /**
    * Check if any layers are added to the swipe control
@@ -64,7 +76,7 @@ export class HsMapSwipeService {
     }
   }
   /**
-   * Add layer to swipe control
+   * Add a layer to swipe control
    * @param layer - layer issued from layerManagerUpdates event
    */
   addSwipeLayer(layer: LayerListItem): void {
@@ -129,32 +141,59 @@ export class HsMapSwipeService {
         'MAP_SWIPE.swipeMapWarning',
         'Map_SWIPE.initialSwipeRightNot'
       );
-      this.layers = Object.assign([], this.hsLayerShiftingService.layersCopy);
     } else {
-      this.rightLayers = this.hsConfig.initialSwipeRight.map((l) => {
-        return {layer: l, title: getTitle(l)};
-      });
-      this.layers = this.hsLayerShiftingService.layersCopy.filter(
-        (l) => !this.hsConfig.initialSwipeRight.includes(l.layer)
+      this.rightLayers = this.rightLayers.concat(
+        this.rightLayers.filter(
+          (l) => !this.hsConfig.initialSwipeRight.includes(l.layer)
+        )
       );
     }
-    this.swipeCtrl.addLayer(this.rightLayers, true);
-    this.swipeCtrl.addLayer(this.layers);
+    this.layers = this.layers.concat(
+      this.hsLayerShiftingService.layersCopy
+        .filter((l) => !this.layers.includes(l))
+        .filter((l) => !this.rightLayers.includes(l))
+    );
+    this.addSwipeLayers();
   }
   /**
    * Check if any layer is left out from swipe control and add it
    */
   checkForMissingLayers(): void {
-    let missingLayers = [];
-    missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
-      return !this.layers.find((lyr) => lyr.layer == l.layer);
-    });
-    missingLayers = missingLayers.filter((l) => {
-      return !this.rightLayers.find((lyr) => lyr.layer == l.layer);
-    });
-    missingLayers.forEach((l) => {
-      this.layers.push(l);
-    });
-    this.swipeCtrl.addLayer(missingLayers);
+    const missingLayers = this.hsLayerShiftingService.layersCopy
+      .filter((l) => {
+        return !this.layers.find((lyr) => lyr.layer == l.layer);
+      })
+      .filter((l) => {
+        return !this.rightLayers.find((lyr) => lyr.layer == l.layer);
+      });
+    this.layers = this.layers.concat(
+      missingLayers.filter(
+        (l) => getSwipeSide(l.layer) == 1 || !getSwipeSide(l.layer)
+      )
+    );
+    this.rightLayers = this.rightLayers.concat(
+      missingLayers.filter((l) => getSwipeSide(l.layer) == 2)
+    );
+    this.addSwipeLayers();
+  }
+
+  /**
+   * Add explicit layers with swipeSide property set
+   */
+  fillExplicitLayers(): void {
+    this.layers = this.hsLayerShiftingService.layersCopy.filter(
+      (lyr) => getSwipeSide(lyr.layer) == 1
+    );
+    this.rightLayers = this.hsLayerShiftingService.layersCopy.filter(
+      (lyr) => getSwipeSide(lyr.layer) == 2
+    );
+  }
+
+  /**
+   * Add swipe layers array to swipe control
+   */
+  addSwipeLayers(): void {
+    this.swipeCtrl.addLayers(this.rightLayers, true);
+    this.swipeCtrl.addLayers(this.layers);
   }
 }

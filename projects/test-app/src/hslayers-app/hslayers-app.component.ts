@@ -10,6 +10,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
+import {HsMapSwipeService} from 'hslayers-ng/src/components/map-swipe/map-swipe.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/public-api';
 import {PopupWidgetComponent} from './popup-widget.component';
 
@@ -22,7 +23,8 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
-    private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    private HsMapSwipeService: HsMapSwipeService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -273,7 +275,6 @@ export class HslayersAppComponent {
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: true,
-        mapSwipe: true,
       },
       initialSwipeRight: [polygons],
       componentsEnabled: {

@@ -1,6 +1,8 @@
 import {TestBed} from '@angular/core/testing';
 
 import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
@@ -35,6 +37,7 @@ describe('HsMapSwipeService', () => {
           provide: HsLayerShiftingService,
           useValue: mockHsLayerShiftingService(),
         },
+        {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
       ],
     });
     service = TestBed.inject(HsMapSwipeService);
