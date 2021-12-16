@@ -117,6 +117,10 @@ export class HsMapSwipeService {
    */
   setInitialSwipeLayers(): void {
     this.hsLayerShiftingService.fillLayers();
+    if (!this.hsLayerShiftingService.layersCopy) {
+      return;
+    }
+    this.fillExplicitLayers();
     if (
       !this.hsConfig.initialSwipeRight ||
       this.hsConfig.initialSwipeRight.length == 0

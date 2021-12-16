@@ -114,7 +114,7 @@ export class HsLayoutService {
     search: false,
     tripPlanner: false,
     addData: true,
-    mapSwipe: true,
+    mapSwipe: false,
   };
   mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(null);
 
