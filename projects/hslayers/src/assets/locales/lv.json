@@ -841,15 +841,13 @@
     }
   },
   "MAP_SWIPE": {
-    "horizontalSwipe": "Horizontālā vilkšana",
-    "resetSlider": "Atiestatīt slīdni",
-    "swipeMapWarning": "Pārvelkamās kartes brīdinājums",
     "bottom": "Apakša",
+    "horizontalSwipe": "Horizontālā vilkšana",
+    "initialSwipeRightNot": "Sākotnējie kartes vilkšanas labās puses slāņi nav iestatīti",
     "leftSide": "Kreisā puse",
+    "resetSlider": "Atiestatīt slīdni",
     "rightSide": "Labā puse",
+    "swipeMapWarning": "Pārvelkamās kartes brīdinājums",
     "top": "Augša"
-  },
-  "Map_SWIPE": {
-    "initialSwipeRightNot": "Sākotnējie vilkšanas pa labi slāņi nav iestatīti"
   }
 }
