@@ -5,12 +5,8 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -34,7 +30,6 @@ export class HsMapSwipeComponent
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
     public hsLanguageService: HsLanguageService,
-    public hsEventBusService: HsEventBusService,
     public hsMapSwipeService: HsMapSwipeService,
     public hsLayerUtilsService: HsLayerUtilsService, //In template
     public hsLayerShiftingService: HsLayerShiftingService
@@ -51,18 +46,6 @@ export class HsMapSwipeComponent
         this.hsLanguageService.getTranslation('SIDEBAR.descriptions.MAP_SWIPE'),
       icon: 'icon-layers',
     });
-    this.hsMapSwipeService.init();
-    this.hsEventBusService.layerManagerUpdates
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: Layer<Source>) => {
-        this.hsMapSwipeService.fillSwipeLayers(layer);
-      });
-
-    this.hsEventBusService.mapResets
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.hsMapSwipeService.setInitialSwipeLayers();
-      });
   }
   name = 'mapSwipe';
 
@@ -115,7 +98,7 @@ export class HsMapSwipeComponent
     if (draggedLayer && replacedLayer?.layer) {
       this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
     } else {
-      this.hsMapSwipeService.fillSwipeLayers(draggedLayer);
+      this.hsMapSwipeService.fillSwipeLayers(draggedLayer.layer);
     }
   }
 }

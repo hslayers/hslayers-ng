@@ -5,8 +5,6 @@ import {FormsModule} from '@angular/forms';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -43,7 +41,6 @@ describe('HsMapSwipeComponent', () => {
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsSidebarService, useValue: {buttons: []}},
         {provide: HsLanguageService, useValue: mockLanguageService},
-        {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {provide: HsMapSwipeService, useValue: mockHsMapSwipeService()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {

@@ -48,10 +48,10 @@ export class SwipeControl extends Control {
     this.layers = [];
     this.rightLayers = [];
     if (options?.layers) {
-      this.addLayer(options.layers);
+      this.addLayers(options.layers);
     }
     if (options?.rightLayers) {
-      this.addLayer(options.rightLayers, true);
+      this.addLayers(options.rightLayers, true);
     }
 
     this.on('propertychange', () => {
@@ -149,24 +149,31 @@ export class SwipeControl extends Control {
     }
   }
 
-  /** Add a layer to clip
+  /** Add layers array to clip
    *	@param layers - to clip
-   *	@param right - layer in the right part of the map, default left.
+   *	@param right - layers in the right part of the map, default left.
    */
-  addLayer(layers: LayerListItem | LayerListItem[], right?: boolean) {
+  addLayers(layers: LayerListItem[], right?: boolean): void {
     if (!(layers instanceof Array)) {
       layers = [layers];
     }
     for (const l of layers) {
-      if (this.isLayerAdded(l, right) < 0) {
-        right ? this.rightLayers.push(l) : this.layers.push(l);
-        if (this.getMap()) {
-          this.enableEvents(l, right);
-          try {
-            this.getMap().renderSync();
-          } catch (e) {
-            console.error(e);
-          }
+      this.addLayer(l, right);
+    }
+  }
+  /** Add a layer to clip
+   *	@param layer - to clip
+   *	@param right - layer in the right part of the map, default left.
+   */
+  addLayer(layer: LayerListItem, right?: boolean) {
+    if (this.isLayerAdded(layer, right) < 0) {
+      right ? this.rightLayers.push(layer) : this.layers.push(layer);
+      if (this.getMap()) {
+        this.enableEvents(layer, right);
+        try {
+          this.getMap().renderSync();
+        } catch (e) {
+          console.error(e);
         }
       }
     }
