@@ -16,7 +16,7 @@ import {getSwipeSide} from '../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsMapSwipeService {
-  swipeCtrl = new SwipeControl();
+  swipeCtrl;
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
   movingRight: boolean;
@@ -28,6 +28,11 @@ export class HsMapSwipeService {
     public hsEventBusService: HsEventBusService
   ) {
     this.hsMapService.loaded().then(() => {
+      this.swipeCtrl = new SwipeControl({
+        orientation: this.hsConfig?.mapSwipeOrientation
+          ? this.hsConfig.mapSwipeOrientation
+          : 'vertical',
+      });
       this.init();
     });
     this.hsEventBusService.layerManagerUpdates.subscribe(
@@ -52,8 +57,8 @@ export class HsMapSwipeService {
    */
   layersAvailable(): boolean {
     return (
-      this.swipeCtrl.layers?.length > 0 ||
-      this.swipeCtrl.rightLayers?.length > 0
+      this.swipeCtrl?.layers?.length > 0 ||
+      this.swipeCtrl?.rightLayers?.length > 0
     );
   }
   /**

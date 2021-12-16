@@ -277,6 +277,7 @@ export class HslayersAppComponent {
         tripPlanner: true,
       },
       initialSwipeRight: [polygons],
+      mapSwipeOrientation: 'vertical',
       componentsEnabled: {
         basemapGallery: true,
       },
