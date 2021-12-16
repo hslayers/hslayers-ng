@@ -19,7 +19,7 @@ export class LayerListItem {
   providedIn: 'root',
 })
 export class HsLayerShiftingService {
-  layersCopy: LayerListItem[];
+  layersCopy: LayerListItem[] = [];
   constructor(
     public hsMapService: HsMapService,
     public hsLayerManagerService: HsLayerManagerService,

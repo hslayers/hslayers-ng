@@ -111,7 +111,7 @@ export class SwipeControl extends Control {
       try {
         map.renderSync();
       } catch (e) {
-        console.error(e);
+        //console.error(e);
       }
     }
   }
