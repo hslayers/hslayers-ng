@@ -841,15 +841,13 @@
     "waypoints": "Waypoints"
   },
   "MAP_SWIPE": {
+    "bottom": "Bottom",
     "horizontalSwipe": "Horizontal swipe",
-    "resetSlider": "Reset slider",
-    "swipeMapWarning": "Swipe map warning",
+    "initialSwipeRightNot": "Initial map swipe right side layers have not been set",
     "leftSide": "Left side",
+    "resetSlider": "Reset slider",
     "rightSide": "Right side",
-    "top": "Top",
-    "bottom": "Bottom"
-  },
-  "Map_SWIPE": {
-    "initialSwipeRightNot": "Initial swipe right layers have not been set"
+    "swipeMapWarning": "Swipe map warning",
+    "top": "Top"
   }
 }

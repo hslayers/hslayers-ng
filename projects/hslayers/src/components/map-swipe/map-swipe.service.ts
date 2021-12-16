@@ -144,7 +144,7 @@ export class HsMapSwipeService {
     ) {
       this.hsToastService.createToastPopupMessage(
         'MAP_SWIPE.swipeMapWarning',
-        'Map_SWIPE.initialSwipeRightNot'
+        'MAP_SWIPE.initialSwipeRightNot'
       );
     } else {
       this.rightLayers = this.rightLayers.concat(
