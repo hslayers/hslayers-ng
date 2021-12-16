@@ -93,6 +93,7 @@ export class HsConfig {
     };
   };
   initialSwipeRight?: Layer<Source>[];
+  mapSwipeOrientation?: 'vertical' | 'horizontal';
   status_manager_url?: string;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
