@@ -1,6 +1,6 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
   <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translate"></hs-panel-header>
-  <div class="alert alert-info m-2 text-nowrap ps-2" role="alert">
+  <div class="alert alert-info m-2 ps-2" role="alert">
     {{'MAP_SWIPE.dndLayers' | translate}}
   </div>
   <div *ngIf="hsMapSwipeService.layersAvailable()" class="pt-1">
