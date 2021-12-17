@@ -44,7 +44,7 @@ export class HsMapSwipeComponent
         this.hsLanguageService.getTranslation('PANEL_HEADER.MAP_SWIPE'),
       description: () =>
         this.hsLanguageService.getTranslation('SIDEBAR.descriptions.MAP_SWIPE'),
-      icon: 'icon-layers',
+      icon: 'icon-resizehorizontalalt',
     });
   }
   name = 'mapSwipe';
