@@ -208,6 +208,7 @@ export class HslayersAppComponent {
       properties: {
         title: 'Polygons',
         synchronize: false,
+        swipeSide: 2,
         cluster: false,
         inlineLegend: true,
         popUp: {
