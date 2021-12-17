@@ -848,6 +848,7 @@
     "resetSlider": "Atiestatīt slīdni",
     "rightSide": "Labā puse",
     "swipeMapWarning": "Pārvelkamās kartes brīdinājums",
-    "top": "Augša"
+    "top": "Augša",
+    "dndLayers": "Izmantojiet vilkšanu un nomešanu, lai pārvietotu slāņus starp kartes pusēm"
   }
 }

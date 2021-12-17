@@ -848,6 +848,7 @@
     "resetSlider": "Reset slider",
     "rightSide": "Right side",
     "swipeMapWarning": "Swipe map warning",
-    "top": "Top"
+    "top": "Top",
+    "dndLayers": "Use Drag&Drop to move layers between  map sides!"
   }
 }
