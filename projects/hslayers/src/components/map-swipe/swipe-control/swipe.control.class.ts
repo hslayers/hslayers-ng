@@ -85,6 +85,9 @@ export class SwipeControl extends Control {
    * @param map - The map instance.
    */
   setTargetMap(map) {
+    if (map) {
+      this.setMap(map);
+    }
     if (this.getMap()) {
       for (const l of this.layers) {
         this.disableEvents(l);
@@ -94,22 +97,6 @@ export class SwipeControl extends Control {
       }
       try {
         this.getMap().renderSync();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    this.setMap(map);
-
-    if (map) {
-      for (const l of this.layers) {
-        this.enableEvents(l);
-      }
-      for (const l of this.rightLayers) {
-        this.enableEvents(l, true);
-      }
-      try {
-        map.renderSync();
       } catch (e) {
         //console.error(e);
       }
@@ -341,10 +328,7 @@ export class SwipeControl extends Control {
   }
 
   precomposeLeft(e) {
-    const ctx = e.context;
     const size = e.frameState.size;
-    ctx.save();
-    ctx.beginPath();
     const pts = [
       [0, 0],
       [size[0], size[1]],
@@ -354,15 +338,19 @@ export class SwipeControl extends Control {
     } else {
       pts[1] = [size[0], size[1] * this.get('position')];
     }
+    this.precompose(e, pts);
+  }
+
+  precompose(e, pts): void {
+    const ctx = e.context;
+    ctx.save();
+    ctx.beginPath();
     this.drawRect(e, pts);
     ctx.clip();
   }
 
   precomposeRight(e) {
-    const ctx = e.context;
     const size = e.frameState.size;
-    ctx.save();
-    ctx.beginPath();
     const pts = [
       [0, 0],
       [size[0], size[1]],
@@ -372,8 +360,7 @@ export class SwipeControl extends Control {
     } else {
       pts[0] = [0, size[1] * this.get('position')];
     }
-    this.drawRect(e, pts);
-    ctx.clip();
+    this.precompose(e, pts);
   }
 
   postcompose(e) {

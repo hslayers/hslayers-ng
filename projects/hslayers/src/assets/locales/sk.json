@@ -589,7 +589,8 @@
     "SAVECOMPOSITION": "Uložiť aktuálnu mapu",
     "SEARCH": "Hľadanie",
     "SENSORS": "Senzory",
-    "TRIP_PLANNER": "Plánovač tras"
+    "TRIP_PLANNER": "Plánovač tras",
+    "MAP_SWIPE": "Posuvná mapa"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -730,7 +731,8 @@
       "PRINT": "Tlačiť mapy",
       "SAVECOMPOSITION": "Uložiť obsah mapy do kompozície",
       "SEARCH": "Vyhľadať miesto",
-      "TRIP_PLANNER": "Vytvoriť novú trasu výletu"
+      "TRIP_PLANNER": "Vytvoriť novú trasu výletu",
+      "MAP_SWIPE": "Ovládanie posuvníka mapy"
     }
   },
   "STYLER": {
@@ -837,5 +839,16 @@
       "18": "Chýba jeden alebo viac súborov Shapefile",
       "50": "Chyba pri normalizácií rastrového súboru"
     }
+  },
+  "MAP_SWIPE": {
+    "dndLayers": "Potiahnutím presuniete vrstvy medzi stranami mapy!",
+    "bottom": "Spodná časť",
+    "horizontalSwipe": "Horizontál",
+    "leftSide": "Ľavá strana",
+    "resetSlider": "Resetovať posúvač",
+    "rightSide": "Pravá strana",
+    "top": "Vrchná časť",
+    "swipeMapWarning": "Upozornenie nástroja posuvnej mapy",
+    "initialSwipeRightNot": "Počiatočné vrstvy pre pravú stranu posuvnej mapy neboli definované"
   }
 }
