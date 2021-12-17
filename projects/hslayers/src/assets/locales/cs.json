@@ -589,7 +589,8 @@
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "SEARCH": "Hledání",
     "SENSORS": "Senzory",
-    "TRIP_PLANNER": "Plánovač tras"
+    "TRIP_PLANNER": "Plánovač tras",
+    "MAP_SWIPE": "Půlená mapa"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -730,7 +731,8 @@
       "PRINT": "Tisk mapy",
       "SAVECOMPOSITION": "Uložit obsah mapy do kompozice",
       "SEARCH": "Vyhledat místo",
-      "TRIP_PLANNER": "Vytvořit novou trasu výletu"
+      "TRIP_PLANNER": "Vytvořit novou trasu výletu",
+      "MAP_SWIPE": "Spravovat vrstvy pro půlenou mapu"
     }
   },
   "STYLER": {
@@ -837,5 +839,16 @@
       "18": "Chybí jeden nebo více souborů Shapefile",
       "50": "Chyba při normalizaci rastrového souboru"
     }
+  },
+  "MAP_SWIPE": {
+    "horizontalSwipe": "Vodorovný posuvník",
+    "leftSide": "Levá strana",
+    "rightSide": "Pravá strana",
+    "swipeMapWarning": "Varování půlené mapy",
+    "bottom": "Spodní část",
+    "top": "Horní část",
+    "resetSlider": "Vrátit posuvník",
+    "initialSwipeRightNot": "Výchozí vrstvy pro pravou stranu půlené mapy nebyly nastaveny",
+    "dndLayers": "Přetahujte vrstvy mezi sloupci pro přesun do opačné poloviny mapy"
   }
 }
