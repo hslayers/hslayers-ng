@@ -276,12 +276,12 @@ export class HslayersAppComponent {
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: true,
-        mapSwipe: true
+        mapSwipe: true,
       },
       initialSwipeRight: [polygons],
       mapSwipeOrientation: 'vertical',
       componentsEnabled: {
-        basemapGallery: true
+        basemapGallery: true,
       },
       enabledLanguages: 'sk, en',
       assetsPath: 'assets',

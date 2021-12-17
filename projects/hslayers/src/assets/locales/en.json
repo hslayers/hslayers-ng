@@ -843,12 +843,12 @@
   "MAP_SWIPE": {
     "bottom": "Bottom",
     "horizontalSwipe": "Horizontal swipe",
-    "initialSwipeRightNot": "Initial map swipe right side layers have not been set",
+    "initialSwipeRightNot": "Initial layers for the right side of map swipe have not been set",
     "leftSide": "Left side",
     "resetSlider": "Reset slider",
     "rightSide": "Right side",
     "swipeMapWarning": "Swipe map warning",
     "top": "Top",
-    "dndLayers": "Use Drag&Drop to move layers between  map sides!"
+    "dndLayers": "Use drag&drop to move layers between the map sides!"
   }
 }
