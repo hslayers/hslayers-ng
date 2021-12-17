@@ -147,10 +147,10 @@ export class HsMapSwipeService {
         'MAP_SWIPE.initialSwipeRightNot'
       );
     } else {
-      this.rightLayers = this.rightLayers.concat(
-        this.rightLayers.filter(
-          (l) => !this.hsConfig.initialSwipeRight.includes(l.layer)
-        )
+      const initialLayers = this.hsLayerShiftingService.layersCopy.filter(
+          (l) => this.hsConfig.initialSwipeRight.includes(l.layer)
+        );
+      this.rightLayers = this.rightLayers.concat(initialLayers.filter((l) => !this.rightLayers.includes(l))
       );
     }
     this.layers = this.layers.concat(
