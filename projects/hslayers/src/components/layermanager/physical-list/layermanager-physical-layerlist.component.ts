@@ -1,6 +1,8 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy} from '@angular/core';
 
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {Subscription} from 'rxjs';
 
 import {HsConfig} from '../../../config.service';
@@ -17,26 +19,27 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 export class HsLayerPhysicalListComponent implements OnDestroy {
   layerManagerUpdatesSubscription: Subscription;
   constructor(
-    public HsLayerManagerService: HsLayerManagerService,
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public HsEventBusService: HsEventBusService,
-    public HsLayerShiftingService: HsLayerShiftingService,
-    public HsConfig: HsConfig
+    public hsLayerManagerService: HsLayerManagerService,
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsEventBusService: HsEventBusService,
+    public hsLayerShiftingService: HsLayerShiftingService,
+    public hsConfig: HsConfig
   ) {
-    this.HsLayerShiftingService.fillLayers();
+    this.hsLayerShiftingService.fillLayers();
     this.layerManagerUpdatesSubscription =
-      this.HsEventBusService.layerManagerUpdates.subscribe((layer: any) => {
-        this.HsLayerShiftingService.fillLayers();
-        if (layer !== undefined) {
-          const layerFound = this.HsLayerShiftingService.layersCopy.find(
-            (wrapper) =>
-              wrapper.layer == layer || wrapper.layer == layer.layer
-          );
-          if (layerFound !== undefined) {
-            layerFound.active = true;
+      this.hsEventBusService.layerManagerUpdates.subscribe(
+        (layer: Layer<Source>) => {
+          this.hsLayerShiftingService.fillLayers();
+          if (layer !== undefined) {
+            const layerFound = this.hsLayerShiftingService.layersCopy.find(
+              (wrapper) => wrapper.layer == layer
+            );
+            if (layerFound !== undefined) {
+              layerFound.active = true;
+            }
           }
         }
-      });
+      );
   }
   ngOnDestroy(): void {
     this.layerManagerUpdatesSubscription.unsubscribe();
@@ -46,11 +49,11 @@ export class HsLayerPhysicalListComponent implements OnDestroy {
     const replacedLayer = event.container.data[event.currentIndex];
 
     moveItemInArray(
-      this.HsLayerShiftingService.layersCopy,
+      this.hsLayerShiftingService.layersCopy,
       event.previousIndex,
       event.currentIndex
     );
 
-    this.HsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
+    this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
   }
 }
