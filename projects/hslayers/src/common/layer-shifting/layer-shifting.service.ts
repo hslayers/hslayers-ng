@@ -34,14 +34,14 @@ export class HsLayerShiftingService {
   private get mapLayers(): Layer<Source>[] {
     return this.hsMapService
       .getLayersArray()
-      .filter((layer: Layer<Source>) => getBase(layer) != true);
+      .filter((layer: Layer<Source>) => getBase(layer) !== true);
   }
 
   /**
    * Copies layers from Layermanager layer list for the physical layer list
    */
   fillLayers(): void {
-    if (this.availableLayers == undefined) {
+    if (!this.availableLayers) {
       return;
     }
     this.layersCopy = this.hsLayerManagerService.sortLayersByZ(

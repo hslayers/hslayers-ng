@@ -373,12 +373,11 @@ export class HsLayerManagerService {
   }
 
   sortLayersByZ(arr: any[]): any[] {
-    const minus = this.HsConfig.reverseLayerList || false;
+    const minus = this.HsConfig.reverseLayerList ?? false;
     return arr.sort((a, b) => {
       a = a.layer.getZIndex();
       b = b.layer.getZIndex();
-      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
-      return tmp;
+      return (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
     });
   }
 
@@ -999,15 +998,15 @@ export class HsLayerManagerService {
    */
   async init(): Promise<void> {
     this.map = this.HsMapService.map;
-    this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
-      this.applyZIndex(lyr);
-      this.layerAdded(
+    for (const lyr of this.HsMapService.map.getLayers().getArray()) {
+      this.applyZIndex(lyr as Layer<Source>);
+      await this.layerAdded(
         {
-          element: lyr,
+          element: lyr as Layer<Source>,
         },
         true
       );
-    });
+    }
     this.sortFoldersByZ();
     this.sortLayersByZ(this.data.layers);
     this.HsEventBusService.layerManagerUpdates.next();
