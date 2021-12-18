@@ -2,7 +2,7 @@
  * Original code from https://github.com/Viglino/ol-ext/blob/master/src/control/Swipe.js
  */
 
-import Control from 'ol/control/Control';
+import {Control} from 'ol/control';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
@@ -379,5 +379,3 @@ export class SwipeControl extends Control {
     }
   }
 }
-
-export default SwipeControl;

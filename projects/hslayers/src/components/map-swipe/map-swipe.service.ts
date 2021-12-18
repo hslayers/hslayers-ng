@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {first} from 'rxjs';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -16,7 +17,7 @@ import {getSwipeSide} from '../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsMapSwipeService {
-  swipeCtrl;
+  swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
   movingRight: boolean;
@@ -29,12 +30,13 @@ export class HsMapSwipeService {
   ) {
     this.hsMapService.loaded().then(() => {
       this.swipeCtrl = new SwipeControl({
-        orientation: this.hsConfig?.mapSwipeOrientation
-          ? this.hsConfig.mapSwipeOrientation
-          : 'vertical',
+        orientation: this.hsConfig?.mapSwipeOrientation ?? 'vertical',
       });
       this.init();
     });
+    this.hsEventBusService.layerManagerUpdates
+      .pipe(first())
+      .subscribe(() => this.setInitialSwipeLayers());
     this.hsEventBusService.layerManagerUpdates.subscribe(
       (layer: Layer<Source>) => {
         this.fillSwipeLayers(layer);
@@ -50,7 +52,6 @@ export class HsMapSwipeService {
   init(): void {
     this.swipeCtrl.setTargetMap(this.hsMapService.map);
     this.hsMapService.map.addControl(this.swipeCtrl);
-    this.setInitialSwipeLayers();
   }
   /**
    * Check if any layers are added to the swipe control
@@ -67,17 +68,18 @@ export class HsMapSwipeService {
    */
   fillSwipeLayers(layer: Layer<Source>): void {
     this.hsLayerShiftingService.fillLayers();
-    if (layer !== undefined) {
-      const layerFound = this.hsLayerShiftingService.layersCopy.find(
-        (wrapper) => wrapper.layer == layer
-      );
-      if (layerFound !== undefined) {
-        this.setLayerActive(layerFound);
-        this.addSwipeLayer(layerFound);
-        this.checkForMissingLayers();
-      } else {
-        this.removeCompletely(layer);
-      }
+    if (!layer) {
+      return;
+    }
+    const layerFound = this.hsLayerShiftingService.layersCopy.find(
+      (wrapper) => wrapper.layer == layer
+    );
+    if (layerFound !== undefined) {
+      this.setLayerActive(layerFound);
+      this.addSwipeLayer(layerFound);
+      this.checkForMissingLayers();
+    } else {
+      this.removeCompletely(layer);
     }
   }
   /**
@@ -147,10 +149,11 @@ export class HsMapSwipeService {
         'MAP_SWIPE.initialSwipeRightNot'
       );
     } else {
-      const initialLayers = this.hsLayerShiftingService.layersCopy.filter(
-          (l) => this.hsConfig.initialSwipeRight.includes(l.layer)
-        );
-      this.rightLayers = this.rightLayers.concat(initialLayers.filter((l) => !this.rightLayers.includes(l))
+      const initialLayers = this.hsLayerShiftingService.layersCopy.filter((l) =>
+        this.hsConfig.initialSwipeRight.includes(l.layer)
+      );
+      this.rightLayers = this.rightLayers.concat(
+        initialLayers.filter((l) => !this.rightLayers.includes(l))
       );
     }
     this.layers = this.layers.concat(
