@@ -153,7 +153,9 @@ export class HsLayerManagerService {
           const layerDescriptor = this.data.layers.find(
             (ld) => ld.layer == olLayer
           );
-          this.HsDimensionTimeService.setupTimeLayer(layerDescriptor);
+          if (layerDescriptor) {
+            this.HsDimensionTimeService.setupTimeLayer(layerDescriptor);
+          }
         }
       }
     );

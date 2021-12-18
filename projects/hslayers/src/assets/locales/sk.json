@@ -233,7 +233,8 @@
     "edit": "Upraviť",
     "context": "Kontext",
     "author": "Autor",
-    "access": "Prístup"
+    "access": "Prístup",
+    "enabled": "Povolené"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

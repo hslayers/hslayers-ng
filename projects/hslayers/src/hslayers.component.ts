@@ -17,6 +17,7 @@ import {HsLayoutComponent} from './components/layout/layout.component';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsLegendComponent} from './components/legend/legend.component';
 import {HsMapSwipeComponent} from './components/map-swipe/map-swipe.component';
+import {HsMapSwipeService} from './components/map-swipe/map-swipe.service';
 import {HsMeasureComponent} from './components/measure/measure.component';
 import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
 import {HsPrintComponent} from './components/print/print.component';
@@ -47,15 +48,16 @@ export class HslayersComponent implements OnInit {
     private hsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
-    private hsQueryPopupService: HsQueryPopupService
+    private hsQueryPopupService: HsQueryPopupService,
+    private HsMapSwipeService: HsMapSwipeService
   ) {}
 
   /**
    * Check if panel is configured to be visible in hsConfig.panelsEnabled
    * or hsLayoutService.panelsEnabledDefaults and create one if so.
-   * @param name Name of panel used in panelsEnabled config
-   * @param panelComponent Class defining panel
-   * @param data Extra misc data object to be stored in panel
+   * @param name - Name of panel used in panelsEnabled config
+   * @param panelComponent - Class defining panel
+   * @param data - Extra misc data object to be stored in panel
    */
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
     let panelsEnabled = this.hsConfig.panelsEnabled;
