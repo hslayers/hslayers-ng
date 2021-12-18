@@ -233,7 +233,8 @@
     "edit": "Upravit",
     "context": "Kontext",
     "author": "Autor",
-    "access": "Přístup"
+    "access": "Přístup",
+    "enabled": "Povoleno"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

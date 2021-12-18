@@ -17,8 +17,8 @@ import {LayerListItem} from '../../../common/layer-shifting/layer-shifting.servi
  *  @param orientation - orientation property (vertical|horizontal), default vertical
  */
 export type SwipeControlOptions = {
-  layers?: any[];
-  rightLayers?: any[];
+  layers?: LayerListItem[];
+  rightLayers?: LayerListItem[];
   className?: string;
   position?: number;
   orientation?: string;
@@ -122,10 +122,9 @@ export class SwipeControl extends Control {
   }
 
   private isLayerAdded(lyr: LayerListItem, right?: boolean) {
-    const layer = lyr.layer ? lyr.layer : lyr;
     const found = right
-      ? this.rightLayers.find((l) => l.layer == layer)
-      : this.layers.find((l) => l.layer == layer);
+      ? this.rightLayers.find((l) => l.layer == lyr.layer)
+      : this.layers.find((l) => l.layer == lyr.layer);
     if (!found) {
       return -1;
     } else {
@@ -164,6 +163,18 @@ export class SwipeControl extends Control {
         }
       }
     }
+  }
+  /**
+   * Sets available layer events to enabled/disabled
+   * @param enabled - (Optional) If true, map swipe control is enabled, else it is removed
+   */
+  setEvents(enabled?: boolean): void {
+    this.layers.forEach((l) => {
+      enabled ? this.enableEvents(l) : this.disableEvents(l);
+    });
+    this.rightLayers.forEach((l) => {
+      enabled ? this.enableEvents(l, true) : this.disableEvents(l, true);
+    });
   }
 
   /** Remove all layers

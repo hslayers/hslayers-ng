@@ -233,7 +233,8 @@
     "edit": "Edit",
     "context": "Context",
     "author": "Author",
-    "access": "Access"
+    "access": "Access",
+    "enabled": "Enabled"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

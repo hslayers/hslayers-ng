@@ -26,6 +26,7 @@ export class HsMapSwipeComponent
 {
   private ngUnsubscribe = new Subject<void>();
   orientation = 'vertical';
+  swipeControlEnabled = true;
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
@@ -57,6 +58,10 @@ export class HsMapSwipeComponent
     this.orientation = event.target.checked ? 'horizontal' : 'vertical';
     this.hsMapSwipeService.swipeCtrl.set('orientation', this.orientation);
   }
+
+  setControlVisibility(): void {
+    this.hsMapSwipeService.setControl(this.swipeControlEnabled);
+  }
   /**
    * Reset swipe slider position to default
    */
@@ -77,6 +82,7 @@ export class HsMapSwipeComponent
     let draggedLayer;
     let replacedLayer;
     this.hsMapSwipeService.movingRight = right;
+    this.hsMapSwipeService.wasMoved = true;
     if (event.previousContainer === event.container) {
       draggedLayer = event.container.data[event.previousIndex];
       replacedLayer = event.container.data[event.currentIndex];

@@ -1,16 +1,19 @@
 export function mockHsMapSwipeService() {
   return jasmine.createSpyObj('HsMapSwipeService', [
     'init',
+    'addSwipeLayer',
     'layersAvailable',
     'fillSwipeLayers',
-    'addSwipeLayer',
+    'moveSwipeLayer',
     'addSwipeLayers',
     'setLayerActive',
-    'addRight',
-    'addLeft',
+    'moveRight',
+    'moveLeft',
     'removeCompletely',
     'checkForMissingLayers',
     'setInitialSwipeLayers',
     'fillExplicitLayers',
+    'setControl',
+    'sortLayers',
   ]);
 }

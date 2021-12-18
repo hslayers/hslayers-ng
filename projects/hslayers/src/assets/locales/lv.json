@@ -233,7 +233,8 @@
     "edit": "Rediģēt",
     "context": "Konteksts",
     "author": "Autors",
-    "access": "Piekļuve"
+    "access": "Piekļuve",
+    "enabled": "Iespējots"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
