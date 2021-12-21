@@ -4,11 +4,11 @@
     <div class="alert alert-info ps-2" role="alert">
       {{'MAP_SWIPE.dndLayers' | translate}}
     </div>
-    <div *ngIf="hsMapSwipeService.layersAvailable() && swipeControlEnabled" class="pt-1">
+    <div *ngIf="hsMapSwipeService.layersAvailable() && hsMapSwipeService.swipeControlActive" class="pt-1">
       <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
         <thead>
           <tr style="text-align: center;">
-            <ng-container *ngIf="orientation === 'vertical'; else topDownLabels">
+            <ng-container *ngIf="hsMapSwipeService.orientation === 'vertical'; else topDownLabels">
               <th>{{'MAP_SWIPE.leftSide' | translate}}</th>
               <th>{{'MAP_SWIPE.rightSide' | translate}}</th>
             </ng-container>
@@ -43,13 +43,14 @@
       </table>
     </div>
     <div class="btn-group align-items-center d-flex justify-content-between" data-toggle="buttons">
-      <button class="btn btn-sm btn-secondary" type="button" (click)="setOrientation()"
-        [disabled]="!swipeControlEnabled">{{getOrientationButtonString() | translate}}</button>
+      <button class="btn btn-sm btn-secondary" type="button" (click)="hsMapSwipeService.setOrientation()"
+        [disabled]="!hsMapSwipeService.swipeControlActive">{{getOrientationButtonString() | translate}}</button>
       <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
-        [disabled]="!swipeControlEnabled">{{'MAP_SWIPE.resetSlider' |
+        [disabled]="!hsMapSwipeService.swipeControlActive">{{'MAP_SWIPE.resetSlider' |
         translate}}</button>
-      <button class="btn btn-sm btn-primary" type="button" (click)="setControlStatus()"
-        [ngClass]="swipeControlEnabled ? 'active' : ''">{{getEnabledButtonString() | translate}}</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="hsMapSwipeService.setControl()"
+        [ngClass]="hsMapSwipeService.swipeControlActive ? 'active' : ''">{{getEnabledButtonString() |
+        translate}}</button>
     </div>
   </div>
 </div>

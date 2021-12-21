@@ -278,6 +278,7 @@ export class HslayersAppComponent {
       },
       initialSwipeRight: [polygons],
       mapSwipeOrientation: 'vertical',
+      mapSwipeActiveOnStart: true,
       componentsEnabled: {
         basemapGallery: true,
       },

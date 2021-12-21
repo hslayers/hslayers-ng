@@ -23,6 +23,9 @@ export class HsMapSwipeService {
   layers: LayerListItem[] = [];
   movingRight: boolean;
   wasMoved: boolean;
+  swipeControlActive = false;
+  orientation = 'vertical';
+  orientationVertical = true;
   constructor(
     public hsMapService: HsMapService,
     public hsConfig: HsConfig,
@@ -31,6 +34,15 @@ export class HsMapSwipeService {
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerService: HsLayerManagerService
   ) {
+    if (this.hsConfig?.mapSwipeActiveOnStart) {
+      this.swipeControlActive = this.hsConfig.mapSwipeActiveOnStart;
+    }
+    if (this.hsConfig?.mapSwipeOrientation) {
+      this.orientation = this.hsConfig.mapSwipeOrientation;
+      if (this.orientation !== 'vertical') {
+        this.orientationVertical = false;
+      }
+    }
     this.hsMapService.loaded().then(() => {
       this.init();
     });
@@ -48,10 +60,12 @@ export class HsMapSwipeService {
    */
   init(): void {
     this.swipeCtrl = new SwipeControl({
-      orientation: this.hsConfig?.mapSwipeOrientation ?? 'vertical',
+      orientation: this.orientation,
     });
-    this.swipeCtrl.setTargetMap(this.hsMapService.map);
-    this.hsMapService.map.addControl(this.swipeCtrl);
+    if (this.swipeControlActive) {
+      this.swipeCtrl.setTargetMap(this.hsMapService.map);
+      this.hsMapService.map.addControl(this.swipeCtrl);
+    }
   }
   /**
    * Check if any layers are added to the swipe control
@@ -61,6 +75,15 @@ export class HsMapSwipeService {
       this.swipeCtrl?.layers?.length > 0 ||
       this.swipeCtrl?.rightLayers?.length > 0
     );
+  }
+
+  /**
+   * Set swipe control orientation
+   */
+  setOrientation(): void {
+    this.orientationVertical = !this.orientationVertical;
+    this.orientation = this.orientationVertical ? 'vertical' : 'horizontal';
+    this.swipeCtrl.set('orientation', this.orientation);
   }
   /**
    * Fill swipe control layers
@@ -139,14 +162,15 @@ export class HsMapSwipeService {
   }
 
   /**
-   * Add layer to swipe control left side
-   * @param enabled - (Optional) If true, map swipe control is enabled, else it is removed
+   * Set map swipe control status enabled/disabled
    */
-  setControl(enabled?: boolean): void {
+  setControl(): void {
+    this.swipeControlActive = !this.swipeControlActive;
     if (!this.hsMapService.map) {
       return;
     }
-    if (enabled) {
+    if (this.swipeControlActive) {
+      this.swipeCtrl.setTargetMap(this.hsMapService.map);
       this.hsMapService.map.addControl(this.swipeCtrl);
       this.swipeCtrl.setEvents(true);
     } else {

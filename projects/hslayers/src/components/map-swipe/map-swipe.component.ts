@@ -25,16 +25,13 @@ export class HsMapSwipeComponent
   implements OnDestroy
 {
   private ngUnsubscribe = new Subject<void>();
-  orientation = 'vertical';
-  swipeControlEnabled = true;
-  orientationVertical = true;
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
     public hsLanguageService: HsLanguageService,
     public hsMapSwipeService: HsMapSwipeService,
     public hsLayerUtilsService: HsLayerUtilsService, //In template
-    public hsLayerShiftingService: HsLayerShiftingService
+    public hsLayerShiftingService: HsLayerShiftingService,
   ) {
     super(hsLayoutService);
     hsSidebarService.buttons.push({
@@ -52,19 +49,10 @@ export class HsMapSwipeComponent
   name = 'mapSwipe';
 
   /**
-   * Set swipe control orientation
-   */
-  setOrientation(): void {
-    this.orientationVertical = !this.orientationVertical;
-    this.orientation = this.orientationVertical ? 'vertical' : 'horizontal';
-    this.hsMapSwipeService.swipeCtrl.set('orientation', this.orientation);
-  }
-
-  /**
    * Return label for button changing map swipe state from enabled to disabled
    */
   getEnabledButtonString(): string {
-    if (this.swipeControlEnabled) {
+    if (this.hsMapSwipeService.swipeControlActive) {
       return 'MAP_SWIPE.disableSwipe';
     } else {
       return 'MAP_SWIPE.enableSwipe';
@@ -75,20 +63,13 @@ export class HsMapSwipeComponent
    * Return label for button changing swipe orientation from horizontal swipe to vertical swipe
    */
   getOrientationButtonString(): string {
-    if (this.orientationVertical) {
+    if (this.hsMapSwipeService.orientationVertical) {
       return 'MAP_SWIPE.horizontalSwipe';
     } else {
       return 'MAP_SWIPE.verticalSwipe';
     }
   }
 
-  /**
-   * Set map swipe control status enabled/disabled
-   */
-  setControlStatus(): void {
-    this.swipeControlEnabled = !this.swipeControlEnabled;
-    this.hsMapSwipeService.setControl(this.swipeControlEnabled);
-  }
   /**
    * Reset swipe slider position to default
    */
