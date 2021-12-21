@@ -849,7 +849,10 @@
     "top": "Horní část",
     "resetSlider": "Vrátit posuvník",
     "dndLayers": "Přetahujte vrstvy mezi sloupci pro přesun do opačné poloviny mapy",
-    "disableSwipe": "",
-    "entireMap": "Celá mapa"
+    "disableSwipe": "Vypnout půlení",
+    "enableSwipe": "Zapnout půlení",
+    "entireMap": "Celá mapa",
+    "verticalSwipe": "Svislý posuvník",
+    "noLayers": "Žádné vrstvy (přetáhněte vrstvu sem)"
   }
 }
