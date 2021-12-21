@@ -850,6 +850,7 @@
     "top": "Horní část",
     "resetSlider": "Vrátit posuvník",
     "initialSwipeRightNot": "Výchozí vrstvy pro pravou stranu půlené mapy nebyly nastaveny",
-    "dndLayers": "Přetahujte vrstvy mezi sloupci pro přesun do opačné poloviny mapy"
+    "dndLayers": "Přetahujte vrstvy mezi sloupci pro přesun do opačné poloviny mapy",
+    "disableSwipe": ""
   }
 }

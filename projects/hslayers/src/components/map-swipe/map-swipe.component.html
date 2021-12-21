@@ -1,10 +1,6 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
   <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translate"></hs-panel-header>
   <div class="card-body m-2">
-    <div class="d-flex justify-content-start align-items-center pt-2 mb-1">
-      <input id="enable" type="checkbox" [(ngModel)]="swipeControlEnabled"(change)="setControlVisibility()" />
-      <label class="ms-1" style="cursor: pointer;" for="enable">{{'COMMON.enabled' | translate}}</label>
-    </div>
     <div class="alert alert-info ps-2" role="alert">
       {{'MAP_SWIPE.dndLayers' | translate}}
     </div>
@@ -46,15 +42,14 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex justify-content-between align-items-center ps-2 ">
-      <div>
-        <input id="ori" type="checkbox" (change)="setOrientation($event)" [disabled]="!swipeControlEnabled"/>
-        <label class="ms-1" style="cursor: pointer;" for="ori">{{'MAP_SWIPE.horizontalSwipe' | translate}}</label>
-      </div>
-      <div>
-        <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()" [disabled]="!swipeControlEnabled">{{'MAP_SWIPE.resetSlider' |
-          translate}}</button>
-      </div>
+    <div class="btn-group align-items-center d-flex justify-content-between" data-toggle="buttons">
+      <button class="btn btn-sm btn-secondary" type="button" (click)="setOrientation()"
+        [disabled]="!swipeControlEnabled">{{getOrientationButtonString() | translate}}</button>
+      <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
+        [disabled]="!swipeControlEnabled">{{'MAP_SWIPE.resetSlider' |
+        translate}}</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="setControlStatus()"
+        [ngClass]="swipeControlEnabled ? 'active' : ''">{{getEnabledButtonString() | translate}}</button>
     </div>
   </div>
 </div>
