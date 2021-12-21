@@ -375,7 +375,7 @@ export class HsLayerManagerService {
   }
 
   sortLayersByZ(arr: any[]): any[] {
-    const minus = this.HsConfig.reverseLayerList ?? false;
+    const minus = this.HsConfig.reverseLayerList ?? true;
     return arr.sort((a, b) => {
       a = a.layer.getZIndex();
       b = b.layer.getZIndex();
@@ -989,7 +989,7 @@ export class HsLayerManagerService {
     this.data.folders.sub_folders.sort(
       (a, b) =>
         (a.zIndex < b.zIndex ? -1 : a.zIndex > b.zIndex ? 1 : 0) *
-        (this.HsConfig.reverseLayerList ? -1 : 1)
+        (this.HsConfig.reverseLayerList ?? true ? -1 : 1)
     );
   }
 
