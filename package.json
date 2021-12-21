@@ -20,7 +20,6 @@
     "start-test-statistics-app": "ng serve test-statistics-app --hmr",
     "start-cesium-test-app": "ng serve cesium-test-app --hmr",
     "build-watch": "ng build hslayers --watch",
-    "release": "dotenv -- release-it",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
     "test": "ng test hslayers",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
