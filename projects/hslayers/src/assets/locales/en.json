@@ -850,6 +850,9 @@
     "rightSide": "Right side",
     "swipeMapWarning": "Swipe map warning",
     "top": "Top",
-    "dndLayers": "Use drag&drop to move layers between the map sides!"
+    "dndLayers": "Use drag&drop to move layers between the map sides!",
+    "verticalSwipe": "Vertical swipe",
+    "disableSwipe": "Disable swipe",
+    "enableSwipe": "Enable swipe"
   }
 }

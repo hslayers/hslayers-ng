@@ -27,6 +27,7 @@ export class HsMapSwipeComponent
   private ngUnsubscribe = new Subject<void>();
   orientation = 'vertical';
   swipeControlEnabled = true;
+  orientationVertical = true;
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
@@ -52,14 +53,40 @@ export class HsMapSwipeComponent
 
   /**
    * Set swipe control orientation
-   * @param event - checkbox trigger event
    */
-  setOrientation(event: any): void {
-    this.orientation = event.target.checked ? 'horizontal' : 'vertical';
+  setOrientation(): void {
+    this.orientationVertical = !this.orientationVertical;
+    this.orientation = this.orientationVertical ? 'vertical' : 'horizontal';
     this.hsMapSwipeService.swipeCtrl.set('orientation', this.orientation);
   }
 
-  setControlVisibility(): void {
+  /**
+   * Return label for button changing map swipe state from enabled to disabled
+   */
+  getEnabledButtonString(): string {
+    if (this.swipeControlEnabled) {
+      return 'MAP_SWIPE.disableSwipe';
+    } else {
+      return 'MAP_SWIPE.enableSwipe';
+    }
+  }
+
+  /**
+   * Return label for button changing swipe orientation from horizontal swipe to vertical swipe
+   */
+  getOrientationButtonString(): string {
+    if (this.orientationVertical) {
+      return 'MAP_SWIPE.horizontalSwipe';
+    } else {
+      return 'MAP_SWIPE.verticalSwipe';
+    }
+  }
+
+  /**
+   * Set map swipe control status enabled/disabled
+   */
+  setControlStatus(): void {
+    this.swipeControlEnabled = !this.swipeControlEnabled;
     this.hsMapSwipeService.setControl(this.swipeControlEnabled);
   }
   /**
