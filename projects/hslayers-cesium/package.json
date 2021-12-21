@@ -3,7 +3,6 @@
   "version": "7.0.1",
   "scripts": {},
   "peerDependencies": {
-    "@types/cesium": "^1.70.0",
     "cesium": "^1.87.0",
     "@angular/common": "^12.0.0",
     "@angular/core": "^12.0.0",
