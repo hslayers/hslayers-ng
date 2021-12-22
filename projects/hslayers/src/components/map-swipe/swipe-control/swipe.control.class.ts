@@ -209,7 +209,7 @@ export class SwipeControl extends Control {
    */
   removeLayer(layer: LayerListItem, right?: boolean) {
     const k = this.isLayerAdded(layer, right);
-    if (k > -1 && this.getMap()) {
+    if (k > -1) {
       this.disableEvents(layer, right);
       right ? this.rightLayers.splice(k, 1) : this.layers.splice(k, 1);
     }
