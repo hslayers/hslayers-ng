@@ -18,6 +18,12 @@ export type SymbolizerIcon = {
   url: string;
 };
 
+export type MapSwipeOptions = {
+  initialSwipeRight?: Layer<Source>[];
+  mapSwipeActiveOnStart?: boolean;
+  mapSwipeOrientation?: 'vertical' | 'horizontal';
+};
+
 @Injectable()
 export class HsConfig {
   private defaultSymbolizerIcons? = [
@@ -92,9 +98,7 @@ export class HsConfig {
       url: string;
     };
   };
-  initialSwipeRight?: Layer<Source>[];
-  mapSwipeActiveOnStart?: boolean = false;
-  mapSwipeOrientation?: 'vertical' | 'horizontal';
+  mapSwipe?: MapSwipeOptions = {};
   status_manager_url?: string;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
