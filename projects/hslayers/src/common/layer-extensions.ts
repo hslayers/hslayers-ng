@@ -50,7 +50,7 @@ const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 const WORKSPACE = 'workspace';
 const WFS_URL = 'wfsUrl';
-const SWIPE_SIDE = 'swipeSide';
+const SWIPE_RIGHT = 'swipeRight';
 
 export type Attribution = {
   onlineResource?: string;
@@ -606,12 +606,12 @@ export function setWfsUrl(layer: Layer<Source>, url: string): void {
   layer.set(WFS_URL, url);
 }
 
-export function getSwipeSide(layer: Layer<Source>): number {
-  return layer.get(SWIPE_SIDE);
+export function getSwipeRight(layer: Layer<Source>): boolean {
+  return layer.get(SWIPE_RIGHT);
 }
 
-export function setSwipeSide(layer: Layer<Source>, side: number): void {
-  layer.set(SWIPE_SIDE, side);
+export function setSwipeRight(layer: Layer<Source>, right: boolean): void {
+  layer.set(SWIPE_RIGHT, right);
 }
 
 export const HsLayerExt = {
@@ -693,6 +693,6 @@ export const HsLayerExt = {
   getWorkspace,
   getWfsUrl,
   setWfsUrl,
-  getSwipeSide,
-  setSwipeSide,
+  getSwipeRight,
+  setSwipeRight,
 };

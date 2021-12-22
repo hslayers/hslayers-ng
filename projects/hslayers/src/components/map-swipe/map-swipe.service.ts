@@ -12,7 +12,7 @@ import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
 import {SwipeControl} from './swipe-control/swipe.control.class';
-import {getSwipeSide} from '../../common/layer-extensions';
+import {getSwipeRight} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -118,7 +118,7 @@ export class HsMapSwipeService {
   addSwipeLayer(layerItem: LayerListItem): void {
     if (!this.findLayer(layerItem.layer)) {
       layerItem.visible = layerItem.layer.getVisible();
-      if (getSwipeSide(layerItem.layer) === 2) {
+      if (getSwipeRight(layerItem.layer)) {
         this.swipeCtrl.addLayer(layerItem, true);
         this.rightLayers.push(layerItem);
       } else {
