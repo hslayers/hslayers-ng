@@ -21,10 +21,11 @@ export class HsMapSwipeService {
   swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
+  initialRight: Layer<Source>[] = [];
   movingRight: boolean;
   wasMoved: boolean;
-  swipeControlActive = false;
-  orientation = 'vertical';
+  swipeControlActive: boolean;
+  orientation: string;
   orientationVertical = true;
   constructor(
     public hsMapService: HsMapService,
@@ -34,14 +35,13 @@ export class HsMapSwipeService {
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerService: HsLayerManagerService
   ) {
-    if (this.hsConfig?.mapSwipeActiveOnStart) {
-      this.swipeControlActive = this.hsConfig.mapSwipeActiveOnStart;
-    }
-    if (this.hsConfig?.mapSwipeOrientation) {
-      this.orientation = this.hsConfig.mapSwipeOrientation;
-      if (this.orientation !== 'vertical') {
-        this.orientationVertical = false;
-      }
+    this.swipeControlActive =
+      this.hsConfig?.mapSwipe?.mapSwipeActiveOnStart ?? false;
+    this.orientation =
+      this.hsConfig?.mapSwipe?.mapSwipeOrientation ?? 'vertical';
+    this.initialRight = this.hsConfig?.mapSwipe?.initialSwipeRight ?? [];
+    if (this.orientation !== 'vertical') {
+      this.orientationVertical = false;
     }
     this.hsMapService.loaded().then(() => {
       this.init();
@@ -121,8 +121,7 @@ export class HsMapSwipeService {
       this.rightLayers.filter((l) => l.layer == layer.layer).length == 0
     ) {
       if (
-        (this.hsConfig.initialSwipeRight &&
-          this.hsConfig.initialSwipeRight.includes(layer.layer)) ||
+        this.initialRight?.includes(layer.layer) ||
         getSwipeSide(layer.layer) === 2
       ) {
         this.swipeCtrl.addLayer(layer, true);
@@ -214,17 +213,14 @@ export class HsMapSwipeService {
       return;
     }
     this.fillExplicitLayers();
-    if (
-      !this.hsConfig.initialSwipeRight ||
-      this.hsConfig.initialSwipeRight.length == 0
-    ) {
+    if (this.initialRight?.length == 0) {
       this.hsToastService.createToastPopupMessage(
         'MAP_SWIPE.swipeMapWarning',
         'MAP_SWIPE.initialSwipeRightNot'
       );
     } else {
       const initialLayers = this.hsLayerShiftingService.layersCopy.filter((l) =>
-        this.hsConfig.initialSwipeRight.includes(l.layer)
+        this.initialRight?.includes(l.layer)
       );
       this.rightLayers = this.rightLayers.concat(
         initialLayers.filter((l) => !this.rightLayers.includes(l))

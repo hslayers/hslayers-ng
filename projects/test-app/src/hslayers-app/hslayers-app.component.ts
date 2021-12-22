@@ -22,7 +22,7 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
-    private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -276,9 +276,11 @@ export class HslayersAppComponent {
         tripPlanner: true,
         mapSwipe: true,
       },
-      initialSwipeRight: [polygons],
-      mapSwipeOrientation: 'vertical',
-      mapSwipeActiveOnStart: true,
+      mapSwipe: {
+        initialSwipeRight: null,
+        mapSwipeOrientation: 'vertical',
+        mapSwipeActiveOnStart: true,
+      },
       componentsEnabled: {
         basemapGallery: true,
       },
