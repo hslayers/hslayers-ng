@@ -4,6 +4,20 @@
     <div class="alert alert-info ps-2" role="alert">
       {{'MAP_SWIPE.dndLayers' | translate}}
     </div>
+    <div class="btn-group align-items-center d-flex justify-content-between" style="margin-bottom: 1rem;" data-toggle="buttons">
+      <button class="btn btn-sm btn-secondary" type="button" (click)="hsMapSwipeService.setOrientation()"
+              [disabled]="!hsMapSwipeService.swipeControlActive">
+        {{getOrientationButtonString() | translate}}
+      </button>
+      <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
+              [disabled]="!hsMapSwipeService.swipeControlActive">
+        {{'MAP_SWIPE.resetSlider' | translate}}
+      </button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="hsMapSwipeService.setControl()"
+              [ngClass]="hsMapSwipeService.swipeControlActive ? 'active' : ''">
+        {{getEnabledButtonString() | translate}}
+      </button>
+    </div>
     <div *ngIf="hsMapSwipeService.layersAvailable() && hsMapSwipeService.swipeControlActive" class="pt-1">
       <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
         <thead>
@@ -21,18 +35,18 @@
         <tbody>
           <tr>
             <td cdkDropList #leftList="cdkDropList" [cdkDropListConnectedTo]="[rightList]"
-              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event)">
+                [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event)">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
-                *ngFor="let layer of hsMapSwipeService.layers" cdkDrag>
+                   *ngFor="let layer of hsMapSwipeService.layers" cdkDrag>
                 <div class="hs-lm-item-title" style="word-break:break-all; cursor:move">
                   <p class="m-0">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
                 </div>
               </div>
             </td>
             <td cdkDropList #rightList="cdkDropList" [cdkDropListConnectedTo]="[leftList]"
-              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, true)">
+                [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, true)">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
-                *ngFor="let layer of hsMapSwipeService.rightLayers" cdkDrag>
+                   *ngFor="let layer of hsMapSwipeService.rightLayers" cdkDrag>
                 <div class="hs-lm-item-title" style="word-break:break-all; cursor:move">
                   <p class="m-0">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
                 </div>
@@ -41,16 +55,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-    <div class="btn-group align-items-center d-flex justify-content-between" data-toggle="buttons">
-      <button class="btn btn-sm btn-secondary" type="button" (click)="hsMapSwipeService.setOrientation()"
-        [disabled]="!hsMapSwipeService.swipeControlActive">{{getOrientationButtonString() | translate}}</button>
-      <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
-        [disabled]="!hsMapSwipeService.swipeControlActive">{{'MAP_SWIPE.resetSlider' |
-        translate}}</button>
-      <button class="btn btn-sm btn-primary" type="button" (click)="hsMapSwipeService.setControl()"
-        [ngClass]="hsMapSwipeService.swipeControlActive ? 'active' : ''">{{getEnabledButtonString() |
-        translate}}</button>
     </div>
   </div>
 </div>
