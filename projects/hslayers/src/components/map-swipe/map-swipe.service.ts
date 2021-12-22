@@ -6,7 +6,6 @@ import {first} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
@@ -69,34 +68,6 @@ export class HsMapSwipeService {
   }
 
   /**
-   * Get layer HsLayerDescriptor
-   */
-  getLayerDescriptor(layerItem: LayerListItem): HsLayerDescriptor {
-    return this.hsLayerManagerService.data.layers.find(
-      (lyr) => lyr.layer == layerItem.layer
-    );
-  }
-
-  /**
-   * Change layer visibility
-   */
-  changeLayerVisibility(layerItem: LayerListItem): void {
-    const found = this.getLayerDescriptor(layerItem);
-    if (found) {
-      this.hsLayerManagerService.changeLayerVisibility(!found.visible, found);
-    }
-  }
-
-  /**
-   * Get layer visibility
-   */
-  getLayerVisibility(layerItem: LayerListItem): boolean {
-    const found = this.getLayerDescriptor(layerItem);
-    if (found) {
-      return found.visible;
-    }
-  }
-  /**
    * Check if any layers are added to the swipe control
    */
   layersAvailable(): boolean {
@@ -144,18 +115,19 @@ export class HsMapSwipeService {
    * Move a layer to swipe control
    * @param layer - layer issued from layerManagerUpdates event
    */
-  addSwipeLayer(layer: LayerListItem): void {
-    if (
-      this.layers.filter((l) => l.layer == layer.layer).length == 0 &&
-      this.rightLayers.filter((l) => l.layer == layer.layer).length == 0
-    ) {
-      if (getSwipeSide(layer.layer) === 2) {
-        this.swipeCtrl.addLayer(layer, true);
-        this.rightLayers.push(layer);
+  addSwipeLayer(layerItem: LayerListItem): void {
+    if (!this.findLayer(layerItem.layer)) {
+      layerItem.visible = layerItem.layer.getVisible();
+      if (getSwipeSide(layerItem.layer) === 2) {
+        this.swipeCtrl.addLayer(layerItem, true);
+        this.rightLayers.push(layerItem);
       } else {
-        this.swipeCtrl.addLayer(layer);
-        this.layers.push(layer);
+        this.swipeCtrl.addLayer(layerItem);
+        this.layers.push(layerItem);
       }
+      layerItem.layer.on('change:visible', (e) =>
+        this.layerVisibilityChanged(e)
+      );
     }
   }
   /**
@@ -238,13 +210,10 @@ export class HsMapSwipeService {
     if (!this.hsLayerShiftingService.layersCopy) {
       return;
     }
-    this.fillExplicitLayers();
-    this.layers = this.layers.concat(
-      this.hsLayerShiftingService.layersCopy
-        .filter((l) => !this.layers.includes(l))
-        .filter((l) => !this.rightLayers.includes(l))
-    );
-    this.addSwipeLayers();
+    for (const layer of this.hsLayerShiftingService.layersCopy) {
+      this.addSwipeLayer(layer);
+    }
+    this.sortLayers();
   }
   /**
    * Check if any layer is left out from swipe control and add it
@@ -257,36 +226,10 @@ export class HsMapSwipeService {
       .filter((l) => {
         return !this.rightLayers.find((lyr) => lyr.layer == l.layer);
       });
-    this.layers = this.layers.concat(
-      missingLayers.filter(
-        (l) => getSwipeSide(l.layer) == 1 || !getSwipeSide(l.layer)
-      )
-    );
-    this.rightLayers = this.rightLayers.concat(
-      missingLayers.filter((l) => getSwipeSide(l.layer) == 2)
-    );
-    this.addSwipeLayers();
-  }
-
-  /**
-   * Add explicit layers with swipeSide property set
-   */
-  fillExplicitLayers(): void {
-    this.layers = this.hsLayerShiftingService.layersCopy.filter(
-      (lyr) => getSwipeSide(lyr.layer) == 1
-    );
-    this.rightLayers = this.hsLayerShiftingService.layersCopy.filter(
-      (lyr) => getSwipeSide(lyr.layer) == 2
-    );
-  }
-
-  /**
-   * Add swipe layers array to swipe control
-   */
-  addSwipeLayers(): void {
+    for (const layer of missingLayers) {
+      this.addSwipeLayer(layer);
+    }
     this.sortLayers();
-    this.swipeCtrl.addLayers(this.rightLayers, true);
-    this.swipeCtrl.addLayers(this.layers);
   }
 
   /**
@@ -297,5 +240,36 @@ export class HsMapSwipeService {
     this.rightLayers = this.hsLayerManagerService.sortLayersByZ(
       this.rightLayers
     );
+  }
+
+  /**
+   * Change layer visibility
+   */
+  changeLayerVisibility(layerItem: LayerListItem): void {
+    layerItem.layer.setVisible(!layerItem.layer.getVisible());
+    layerItem.visible = layerItem.layer.getVisible();
+  }
+
+  /**
+   * Act upon layer visibility changes
+   * @param e - Event description
+   */
+  layerVisibilityChanged(e): void {
+    const layer = this.findLayer(e.target);
+    if (layer) {
+      layer.visible = e.target.getVisible();
+    }
+  }
+
+  /**
+   * Find layer based on layer source
+   */
+  findLayer(targetLayer: Layer<Source>): LayerListItem {
+    let layerFound;
+    layerFound = this.layers.find((lyr) => lyr.layer == targetLayer);
+    if (!layerFound) {
+      layerFound = this.rightLayers.find((lyr) => lyr.layer == targetLayer);
+    }
+    return layerFound;
   }
 }

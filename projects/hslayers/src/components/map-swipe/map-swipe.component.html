@@ -3,7 +3,7 @@
   <div class="hs-lm-item-title d-flex align-items-center" style="word-break:break-all; cursor:move">
     <button type="button" class="btn btn-sm hs-lm-item-visibility m-0 p-0"
       (click)="hsMapSwipeService.changeLayerVisibility(layer);$event.stopPropagation()"
-      [ngClass]="hsMapSwipeService.getLayerVisibility(layer) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+      [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
     <p class="m-0 ps-1">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
   </div>
 </ng-template>

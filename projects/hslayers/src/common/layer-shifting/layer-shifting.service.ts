@@ -13,6 +13,7 @@ export class LayerListItem {
   title: string;
   layer: Layer<Source>;
   active?: boolean;
+  visible?: boolean;
 }
 
 @Injectable({
