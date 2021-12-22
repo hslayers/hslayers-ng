@@ -21,7 +21,6 @@ export class HsMapSwipeService {
   swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
-  initialRight: Layer<Source>[] = [];
   movingRight: boolean;
   wasMoved: boolean;
   swipeControlActive: boolean;
@@ -36,10 +35,10 @@ export class HsMapSwipeService {
     public hsLayerManagerService: HsLayerManagerService
   ) {
     this.swipeControlActive =
-      this.hsConfig?.mapSwipe?.mapSwipeActiveOnStart ?? false;
+      this.hsConfig?.componentsEnabled?.mapSwipe ?? false;
     this.orientation =
-      this.hsConfig?.mapSwipe?.mapSwipeOrientation ?? 'vertical';
-    this.initialRight = this.hsConfig?.mapSwipe?.initialSwipeRight ?? [];
+      this.hsConfig?.mapSwipeOptions?.orientation ?? 'vertical';
+
     if (this.orientation !== 'vertical') {
       this.orientationVertical = false;
     }
@@ -120,10 +119,7 @@ export class HsMapSwipeService {
       this.layers.filter((l) => l.layer == layer.layer).length == 0 &&
       this.rightLayers.filter((l) => l.layer == layer.layer).length == 0
     ) {
-      if (
-        this.initialRight?.includes(layer.layer) ||
-        getSwipeSide(layer.layer) === 2
-      ) {
+      if (getSwipeSide(layer.layer) === 2) {
         this.swipeCtrl.addLayer(layer, true);
         this.rightLayers.push(layer);
       } else {
@@ -213,19 +209,6 @@ export class HsMapSwipeService {
       return;
     }
     this.fillExplicitLayers();
-    if (this.initialRight?.length == 0) {
-      this.hsToastService.createToastPopupMessage(
-        'MAP_SWIPE.swipeMapWarning',
-        'MAP_SWIPE.initialSwipeRightNot'
-      );
-    } else {
-      const initialLayers = this.hsLayerShiftingService.layersCopy.filter((l) =>
-        this.initialRight?.includes(l.layer)
-      );
-      this.rightLayers = this.rightLayers.concat(
-        initialLayers.filter((l) => !this.rightLayers.includes(l))
-      );
-    }
     this.layers = this.layers.concat(
       this.hsLayerShiftingService.layersCopy
         .filter((l) => !this.layers.includes(l))

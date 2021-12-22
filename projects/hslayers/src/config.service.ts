@@ -19,9 +19,7 @@ export type SymbolizerIcon = {
 };
 
 export type MapSwipeOptions = {
-  initialSwipeRight?: Layer<Source>[];
-  mapSwipeActiveOnStart?: boolean;
-  mapSwipeOrientation?: 'vertical' | 'horizontal';
+  orientation?: 'vertical' | 'horizontal';
 };
 
 @Injectable()
@@ -43,6 +41,7 @@ export class HsConfig {
     defaultViewButton: true,
     mapControls: true,
     basemapGallery: false,
+    mapSwipe: false,
   };
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
@@ -98,7 +97,7 @@ export class HsConfig {
       url: string;
     };
   };
-  mapSwipe?: MapSwipeOptions = {};
+  mapSwipeOptions?: MapSwipeOptions = {};
   status_manager_url?: string;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;

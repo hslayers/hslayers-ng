@@ -237,6 +237,7 @@ export class HslayersAppComponent {
       properties: {
         title: 'Optical satellite basemap',
         from_composition: true,
+        swipeSide: 2,
         dimensions: {
           time: {
             value: '2020-11-20',
@@ -276,13 +277,12 @@ export class HslayersAppComponent {
         tripPlanner: true,
         mapSwipe: true,
       },
-      mapSwipe: {
-        initialSwipeRight: null,
-        mapSwipeOrientation: 'vertical',
-        mapSwipeActiveOnStart: true,
+      mapSwipeOptions: {
+        orientation: 'vertical',
       },
       componentsEnabled: {
         basemapGallery: true,
+        mapSwipe: true,
       },
       enabledLanguages: 'sk, en',
       assetsPath: 'assets',
