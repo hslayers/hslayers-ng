@@ -845,11 +845,9 @@
     "horizontalSwipe": "Vodorovný posuvník",
     "leftSide": "Levá strana",
     "rightSide": "Pravá strana",
-    "swipeMapWarning": "Varování půlené mapy",
     "bottom": "Spodní část",
     "top": "Horní část",
     "resetSlider": "Vrátit posuvník",
-    "initialSwipeRightNot": "Výchozí vrstvy pro pravou stranu půlené mapy nebyly nastaveny",
     "dndLayers": "Přetahujte vrstvy mezi sloupci pro přesun do opačné poloviny mapy",
     "disableSwipe": ""
   }

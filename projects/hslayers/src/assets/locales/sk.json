@@ -848,8 +848,6 @@
     "leftSide": "Ľavá strana",
     "resetSlider": "Resetovať posúvač",
     "rightSide": "Pravá strana",
-    "top": "Vrchná časť",
-    "swipeMapWarning": "Upozornenie nástroja posuvnej mapy",
-    "initialSwipeRightNot": "Počiatočné vrstvy pre pravú stranu posuvnej mapy neboli definované"
+    "top": "Vrchná časť"
   }
 }
