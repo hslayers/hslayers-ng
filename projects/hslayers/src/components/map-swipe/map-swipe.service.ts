@@ -6,6 +6,7 @@ import {first} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
@@ -64,6 +65,35 @@ export class HsMapSwipeService {
     if (this.swipeControlActive) {
       this.swipeCtrl.setTargetMap(this.hsMapService.map);
       this.hsMapService.map.addControl(this.swipeCtrl);
+    }
+  }
+
+  /**
+   * Get layer HsLayerDescriptor
+   */
+  getLayerDescriptor(layerItem: LayerListItem): HsLayerDescriptor {
+    return this.hsLayerManagerService.data.layers.find(
+      (lyr) => lyr.layer == layerItem.layer
+    );
+  }
+
+  /**
+   * Change layer visibility
+   */
+  changeLayerVisibility(layerItem: LayerListItem): void {
+    const found = this.getLayerDescriptor(layerItem);
+    if (found) {
+      this.hsLayerManagerService.changeLayerVisibility(!found.visible, found);
+    }
+  }
+
+  /**
+   * Get layer visibility
+   */
+  getLayerVisibility(layerItem: LayerListItem): boolean {
+    const found = this.getLayerDescriptor(layerItem);
+    if (found) {
+      return found.visible;
     }
   }
   /**
