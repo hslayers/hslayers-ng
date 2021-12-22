@@ -206,7 +206,7 @@ export class HslayersAppComponent {
       properties: {
         title: 'Polygons',
         synchronize: false,
-        swipeSide: 2,
+        swipeRight: true,
         cluster: false,
         inlineLegend: true,
         popUp: {
@@ -237,7 +237,7 @@ export class HslayersAppComponent {
       properties: {
         title: 'Optical satellite basemap',
         from_composition: true,
-        swipeSide: 2,
+        swipeRight: true,
         dimensions: {
           time: {
             value: '2020-11-20',
@@ -346,6 +346,65 @@ export class HslayersAppComponent {
             removable: false,
           },
         }),
+
+        new VectorLayer({
+          properties: {
+            title: 'Clusters without SLD',
+            synchronize: false,
+            cluster: true,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name', 'population'],
+            },
+            editor: {editable: false},
+            path: 'User generated',
+          },
+          style: new Style({
+            image: new Circle({
+              fill: new Fill({
+                color: 'rgba(0, 157, 87, 0.5)',
+              }),
+              stroke: new Stroke({
+                color: 'rgb(0, 157, 87)',
+                width: 2,
+              }),
+              radius: 5,
+            }),
+          }),
+          source: new VectorSource({features}),
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'Polygons with display f-n',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'], //Will be ignored due to display function
+              displayFunction: function (feature) {
+                return `<a>${feature.get(
+                  'name'
+                )} with population of ${feature.get('population')}</a>`;
+              },
+            },
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
+              },
+            },
+            sld: polygonSld,
+            path: 'User generated',
+          },
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
+          }),
+        }),
+        polygons,
+        points,
+        opticalMap,
       ],
     });
     const dimensions = opticalMap.get('dimensions');
