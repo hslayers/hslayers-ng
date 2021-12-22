@@ -14,6 +14,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapSwipeService} from './map-swipe.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
+import {getExclusive} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-map-swipe',
@@ -22,16 +23,16 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
+  getExclusive = getExclusive;
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
     public hsLanguageService: HsLanguageService,
     public hsMapSwipeService: HsMapSwipeService,
     public hsLayerUtilsService: HsLayerUtilsService, //In template
-    public hsLayerShiftingService: HsLayerShiftingService,
+    public hsLayerShiftingService: HsLayerShiftingService
   ) {
     super(hsLayoutService);
     hsSidebarService.buttons.push({

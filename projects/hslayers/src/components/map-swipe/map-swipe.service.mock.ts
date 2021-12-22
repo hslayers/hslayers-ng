@@ -15,5 +15,8 @@ export function mockHsMapSwipeService() {
     'fillExplicitLayers',
     'setControl',
     'sortLayers',
+    'getLayerDescriptor',
+    'changeLayerVisibility',
+    'getLayerVisibility',
   ]);
 }
