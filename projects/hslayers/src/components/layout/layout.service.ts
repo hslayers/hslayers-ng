@@ -323,6 +323,7 @@ export class HsLayoutService {
       ows: 700,
       composition_browser: 550,
       addData: 700,
+      mapSwipe: 550
     };
     const layoutWidth = this.layoutElement.clientWidth;
     Object.assign(panelWidths, this.HsConfig.panelWidths);
