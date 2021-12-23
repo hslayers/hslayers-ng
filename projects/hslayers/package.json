@@ -3,6 +3,7 @@
   "version": "7.0.1",
   "scripts": {},
   "peerDependencies": {
+    "@angular/cdk": "^13.0.0",
     "@angular/common": "^13.0.0",
     "@angular/compiler": "^13.0.0",
     "@angular/core": "^13.0.0",
