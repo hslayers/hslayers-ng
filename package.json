@@ -92,7 +92,7 @@
     "@angular-eslint/template-parser": "^13.0.1",
     "@angular/cli": "~13.1.1",
     "@angular/compiler-cli": "~13.1.1",
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^16.0.0",
     "@commitlint/config-conventional": "^15.0.0",
     "@compodoc/compodoc": "^1.1.16",
     "@types/jasmine": "~3.10.2",
