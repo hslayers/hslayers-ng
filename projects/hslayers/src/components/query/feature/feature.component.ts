@@ -18,10 +18,9 @@ import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature',
-  templateUrl: './feature.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './feature.component.html'
 })
-export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
+export class HsQueryFeatureComponent implements OnDestroy {
   @Input() feature;
   attributeName = '';
   attributeValue = '';
@@ -40,7 +39,7 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   selectedLayer = null;
   editType: string;
   getTitle = getTitle;
-  availableLayers;
+  availableLayers = [];
   availableLayersSubscription: any;
 
   constructor(
@@ -49,19 +48,16 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
     public hsFeatureCommonService: HsFeatureCommonService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public cd: ChangeDetectorRef
-  ) {}
-
-  ngAfterViewInit(): void {
-    if (!this.olFeature()) {
-      //Feature from WMS getFeatureInfo
-      return;
-    }
-    const featureLayer = this.hsMapService.getLayerForFeature(this.olFeature());
+  ) {
     this.availableLayersSubscription =
-      this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
-        this.availableLayers = layers.filter((layer) => layer != featureLayer);
-        this.cd.markForCheck();
-      });
+    this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
+      if (!this.olFeature()) {
+        //Feature from WMS getFeatureInfo
+        return;
+      }
+      const featureLayer = this.hsMapService.getLayerForFeature(this.olFeature());
+      this.availableLayers = layers.filter((layer) => layer != featureLayer);
+    });
   }
 
   ngOnDestroy(): void {
@@ -69,7 +65,7 @@ export class HsQueryFeatureComponent implements AfterViewInit, OnDestroy {
   }
 
   olFeature(): Feature<Geometry> {
-    return this.feature.feature;
+    return this.feature?.feature;
   }
 
   isFeatureRemovable(): boolean {
