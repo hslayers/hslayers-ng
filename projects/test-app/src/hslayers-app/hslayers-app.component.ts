@@ -83,6 +83,7 @@ export class HslayersAppComponent {
           },
           'properties': {
             'name': 'Poly 2',
+            'id': 'poly2',
             'population': Math.floor(Math.random() * 100000),
           },
         },
@@ -390,6 +391,12 @@ export class HslayersAppComponent {
                 feature: 'poly1',
                 eventInDom: 'mouseover',
                 actions: ['zoomToExtent'],
+              },
+              {
+                domSelector: '#poly2',
+                feature: 'poly2',
+                eventInDom: 'mouseover',
+                actions: ['showPopup'],
               },
             ],
             editor: {

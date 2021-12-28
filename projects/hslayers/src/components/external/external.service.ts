@@ -16,6 +16,7 @@ import {
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { HsQueryPopupService } from '../query/query-popup.service';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
@@ -36,7 +37,8 @@ export class HsExternalService {
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    private hsLayerUtilsService: HsLayerUtilsService
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsQueryPopupService: HsQueryPopupService
   ) {
     this.hsMapService.loaded().then((map) => this.init(map));
   }
@@ -151,16 +153,19 @@ export class HsExternalService {
     domElement: Element,
     e: Event
   ) {
+    const center = feature.getGeometry().getCenter();
     switch (action) {
       case 'zoomToExtent':
         const extent = feature.getGeometry().getExtent();
         this.hsMapService.fitExtent(extent);
         break;
       case 'panToCenter':
-        const center = feature.getGeometry().getCenter();
         this.hsMapService.map.getView().setCenter(center);
         break;
       case 'showPopup':
+        this.hsQueryPopupService.fillFeatures([feature]);
+        const pixel = this.hsMapService.map.getPixelFromCoordinate(center);
+        this.hsQueryPopupService.showPopup({pixel, map: this.hsMapService.map});
         break;
       case 'hidePopup':
         break;
