@@ -16,7 +16,8 @@ import {
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import { HsQueryPopupService } from '../query/query-popup.service';
+import {HsQueryPopupService} from '../query/query-popup.service';
+import {getCenter} from 'ol/extent';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
@@ -153,7 +154,7 @@ export class HsExternalService {
     domElement: Element,
     e: Event
   ) {
-    const center = feature.getGeometry().getCenter();
+    const center = getCenter(feature.getGeometry().getExtent());
     switch (action) {
       case 'zoomToExtent':
         const extent = feature.getGeometry().getExtent();
