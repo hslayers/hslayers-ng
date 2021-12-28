@@ -154,21 +154,23 @@ export class HsExternalService {
     domElement: Element,
     e: Event
   ) {
-    const center = getCenter(feature.getGeometry().getExtent());
+    const extent = feature.getGeometry().getExtent();
+    const center = getCenter(extent);
+    const map = this.hsMapService.map;
     switch (action) {
       case 'zoomToExtent':
-        const extent = feature.getGeometry().getExtent();
         this.hsMapService.fitExtent(extent);
         break;
       case 'panToCenter':
-        this.hsMapService.map.getView().setCenter(center);
+        map.getView().setCenter(center);
         break;
       case 'showPopup':
         this.hsQueryPopupService.fillFeatures([feature]);
-        const pixel = this.hsMapService.map.getPixelFromCoordinate(center);
-        this.hsQueryPopupService.showPopup({pixel, map: this.hsMapService.map});
+        const pixel = map.getPixelFromCoordinate(center);
+        this.hsQueryPopupService.showPopup({pixel, map});
         break;
       case 'hidePopup':
+        this.hsQueryPopupService.closePopup();
         break;
       default:
         if (typeof action == 'function') {
