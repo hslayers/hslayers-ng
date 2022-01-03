@@ -147,15 +147,16 @@ export class HsAddDataCommonService {
   /**
    * @param service -
    */
-  getSublayerNames(service): any[] {
+  getSublayerNames(service): string[] {
     if (service.Layer) {
       return service.Layer.map((l) => {
-        const tmp: any = {};
+        let tmp: string[] = [];
         if (l.Name) {
-          tmp.name = l.Name;
+          tmp.push(l.Name);
         }
         if (l.Layer) {
-          tmp.children = this.getSublayerNames(l);
+          const children = this.getSublayerNames(l);
+          tmp = tmp.concat(children);
         }
         return tmp;
       });

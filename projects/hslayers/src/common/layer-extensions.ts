@@ -6,15 +6,13 @@ import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descr
 import {Source} from 'ol/source';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
 
-const TITLE = 'title';
-const NAME = 'name';
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
 const ACTIVE = 'active';
 const ATTRIBUTION = 'attribution';
 const AUTO_LEGEND = 'autoLegend';
-const CAPABILITIES = 'capabilities';
 const BASE = 'base';
+const CAPABILITIES = 'capabilities';
 const CLUSTER = 'cluster';
 const CUSTOM_INFO_TEMPLATE = 'customInfoTemplate';
 const DEFINITION = 'definition';
@@ -27,30 +25,32 @@ const FEATURE_INFO_LANG = 'featureInfoLang';
 const FROM_COMPOSITION = 'fromComposition';
 const GET_FEATURE_INFO_TARGET = 'getFeatureInfoTarget';
 const HS_LAYMAN_SYNCHRONIZING = 'hsLaymanSynchronizing';
+const HS_QML = 'qml';
+const HS_SLD = 'sld';
 const INFO_FORMAT = 'infoFormat';
 const INLINE_LEGEND = 'inlineLegend';
 const LAYMAN_LAYER_DESCRIPTOR = 'laymanLayerDescriptor';
+const LEGENDS = 'legends';
 const MAX_RESOLUTION_DENOMINATOR = 'maxResolutionDenominator';
 const METADATA = 'metadata';
 const MINIMUM_TERRAIN_LEVEL = 'minimumTerrainLevel';
+const NAME = 'name';
 const ON_FEATURE_SELECTED = 'onFeatureSelected';
 const PATH = 'path';
 const POPUP = 'popUp';
 const POPUP_CLASS = 'popupClass';
-const QUERYABLE = 'queryable';
 const QUERY_CAPABILITIES = 'queryCapabilities';
 const QUERY_FILTER = 'queryFilter';
+const QUERYABLE = 'queryable';
 const REMOVABLE = 'removable';
 const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
-const HS_SLD = 'sld';
-const HS_QML = 'qml';
-const THUMBNAIL = 'thumbnail';
-const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
-const LEGENDS = 'legends';
-const SUB_LAYERS = 'sublayers';
-const WORKSPACE = 'workspace';
-const WFS_URL = 'wfsUrl';
+const SUB_LAYERS = 'subLayers';
 const SWIPE_RIGHT = 'swipeRight';
+const THUMBNAIL = 'thumbnail';
+const TITLE = 'title';
+const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
+const WFS_URL = 'wfsUrl';
+const WORKSPACE = 'workspace';
 
 export type Attribution = {
   onlineResource?: string;
@@ -557,10 +557,10 @@ export function getShowInLayerManager(layer: Layer<Source>): boolean {
 /**
  * Set list of all possible sub-layers for WMS
  * @param layer -
- * @param sublayers - String of all possible WMS layers sub-layer names separated by comma
+ * @param subLayers - String of all possible WMS layers sub-layer names separated by comma
  */
-export function setSubLayers(layer: Layer<Source>, sublayers: string): void {
-  layer.set(SUB_LAYERS, sublayers);
+export function setSubLayers(layer: Layer<Source>, subLayers: string): void {
+  layer.set(SUB_LAYERS, subLayers);
 }
 
 /**
