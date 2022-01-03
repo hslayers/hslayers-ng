@@ -14,7 +14,7 @@ import {HsLogService} from '../../../common/log/log.service';
 })
 export class HsAddDataUrlService {
   addDataCapsParsingError: Subject<{e: any; context: any}> = new Subject();
-  hasAnyChecked: boolean;
+  addingAllowed: boolean;
   typeSelected: AddDataUrlType;
   connectFromParams = true;
   constructor(
@@ -125,6 +125,6 @@ export class HsAddDataUrlService {
   }
 
   searchForChecked(services: Array<any>): void {
-    this.hasAnyChecked = services.some((service) => service.checked);
+    this.addingAllowed = services.some((service) => service.checked);
   }
 }

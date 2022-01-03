@@ -30,7 +30,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
     public hsAddDataCommonService: HsAddDataCommonService
   ) {}
   ngAfterContentInit(): void {
-    this.hsAddDataUrlService.hasAnyChecked = false;
+    this.hsAddDataUrlService.addingAllowed = false;
     this.data = this.injectedService.data;
     this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
@@ -44,7 +44,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
 
   searchForChecked(service): void {
     this.checkedSubLayers[service.Name] = service.checked;
-    this.hsAddDataUrlService.hasAnyChecked = Object.values(
+    this.hsAddDataUrlService.addingAllowed = Object.values(
       this.checkedSubLayers
     ).some((value) => value === true);
   }
