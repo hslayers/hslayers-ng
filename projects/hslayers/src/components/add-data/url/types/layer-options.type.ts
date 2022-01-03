@@ -10,4 +10,5 @@ export type addLayerOptions = {
   qml?: string;
   subLayers?: string;
   tileSize?;
+  base?: boolean;
 };

@@ -48,7 +48,7 @@ export class HsAddDataOwsService {
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
       this.typeService.data.get_map_url = url;
     }
-    this.hsAddDataUrlService.hasAnyChecked = false;
+    this.hsAddDataUrlService.addingAllowed = false;
     this.hsHistoryListService.addSourceHistory(
       this.hsAddDataUrlService.typeSelected,
       url
