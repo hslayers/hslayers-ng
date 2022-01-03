@@ -1,5 +1,5 @@
 <div [hidden]="!hsAddDataCommonService.showDetails || hsAddDataCommonService.loadingInfo">
-  <ng-container *ngIf="type !== 'arcgis'">
+  <ng-container>
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
@@ -41,7 +41,7 @@
   </ng-container>
   <div class="form-group">
     <div class="capabilities_input d-flex flex-column">
-      <ng-container *ngIf="type === 'wms'">
+      <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
         <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
             [(ngModel)]="data.use_tiles" />
           {{'ADDLAYERS.useTiles' | translate}}
