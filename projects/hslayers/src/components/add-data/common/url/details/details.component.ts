@@ -1,5 +1,6 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
+import {AddDataUrlType} from '../../../url/types/url.type';
 import {HsAddDataCommonService} from '../../common.service';
 import {HsAddDataService} from '../../../add-data.service';
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
@@ -14,7 +15,7 @@ import {HsUtilsService} from '../../../../utils/utils.service';
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: any;
-  @Input() type: string;
+  @Input() type: AddDataUrlType;
   data;
   checkedSubLayers = {};
   hasNestedLayers: any;

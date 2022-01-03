@@ -124,13 +124,15 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       return;
     }
 
-    const anyChecked = this.data.services.some((l) => l.checked);
     const checkedLayers = this.data.services.filter((l) => l.checked);
     const collection = [
       this.addLayer(checkedLayers, {
-        layerTitle: anyChecked
-          ? checkedLayers.map((l) => l.name.replace(/\//g, '&#47;')).join(', ')
-          : this.data.title.replace(/\//g, '&#47;'),
+        layerTitle:
+          checkedLayers.length > 0
+            ? checkedLayers
+                .map((l) => l.name.replace(/\//g, '&#47;'))
+                .join(', ')
+            : this.data.title.replace(/\//g, '&#47;'),
         path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         imageFormat: this.data.image_format,
         queryFormat: this.data.query_format,
