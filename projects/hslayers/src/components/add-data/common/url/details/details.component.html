@@ -34,7 +34,7 @@
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
-  <ng-container *ngIf="type === 'wms'">
+  <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
     <p class="col-sm-12 alert alert-danger" [hidden]="!data.use_resampling">
       {{'ADDLAYERS.mapAndLayerProjection' | translate}}
     </p>
@@ -53,7 +53,7 @@
         translate}}</label>
     </div>
   </div>
-  <ng-container *ngIf="type === 'wms'">
+  <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
     <p class="col-sm-12 alert alert-warning" [hidden]="data.use_tiles">
       {{'ADDLAYERS.considerUsingTiles' | translate}}
     </p>
@@ -80,7 +80,7 @@
         </button>
       </div>
     </div>
-    <div [hidden]="!data.base" class="input-group">
+    <div class="input-group">
       <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
