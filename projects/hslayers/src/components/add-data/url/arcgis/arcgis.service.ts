@@ -1,8 +1,13 @@
 import {Injectable} from '@angular/core';
 
+import ImageLayer from 'ol/layer/Image';
+import ImageSource from 'ol/source/Image';
+import TileSource from 'ol/source/Tile';
+import {ImageArcGISRest, TileArcGISRest} from 'ol/source';
+import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Layer} from 'ol/layer';
-import {Source, TileArcGISRest} from 'ol/source';
 import {Tile} from 'ol/layer';
+import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonService} from '../../common/common.service';
@@ -183,7 +188,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       layers.length > 0
         ? `show:${layers.map((l) => l.id).join(',')}`
         : undefined;
-    const source = new TileArcGISRest({
+    const sourceParams = {
       url: this.data.get_map_url,
       attributions,
       //projection: me.data.srs,
@@ -195,8 +200,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         {}
       ),
       crossOrigin: 'anonymous',
-    });
-    const new_layer = new Tile({
+    };
+    const source = this.data.use_tiles
+      ? new TileArcGISRest(sourceParams)
+      : new ImageArcGISRest(sourceParams);
+    const layerParams = {
       properties: {
         title: options.layerTitle,
         name: options.layerTitle,
@@ -206,7 +214,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         dimensions,
       },
       source,
-    });
+    };
+    const new_layer = this.data.use_tiles
+      ? new Tile(layerParams as TileOptions<TileSource>)
+      : new ImageLayer(layerParams as ImageOptions<ImageSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     this.hsMapService.map.addLayer(new_layer);
     return new_layer;
