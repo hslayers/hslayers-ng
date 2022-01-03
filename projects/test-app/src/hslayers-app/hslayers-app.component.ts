@@ -390,13 +390,13 @@ export class HslayersAppComponent {
               {
                 domSelector: '#poly1',
                 feature: 'poly1',
-                eventInDom: 'mouseover',
+                event: 'mouseover',
                 actions: ['zoomToExtent'],
               },
               {
                 domSelector: '#poly2',
                 feature: 'poly2',
-                eventInDom: 'mouseover',
+                event: 'mouseover',
                 actions: ['showPopup'],
               },
             ],
