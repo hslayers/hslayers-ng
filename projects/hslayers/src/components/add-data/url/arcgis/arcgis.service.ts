@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Group, Layer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 import {Source, TileArcGISRest} from 'ol/source';
 import {Tile} from 'ol/layer';
 
@@ -123,85 +123,30 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     if (this.data.services === undefined) {
       return;
     }
-    const collection = [];
-    if (this.data.base) {
-      const newLayer = this.addLayer(
-        {},
-        {
-          layerTitle: this.data.title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-          subLayers: '',
-        }
-      );
-      collection.push(newLayer);
-    } else {
-      for (const layer of this.data.services) {
-        this.addLayersRecursively(
-          layer,
-          {checkedOnly: checkedOnly},
-          collection
-        );
-      }
-    }
+
+    const anyChecked = this.data.services.some((l) => l.checked);
+    const checkedLayers = this.data.services.filter((l) => l.checked);
+    const collection = [
+      this.addLayer(checkedLayers, {
+        layerTitle: anyChecked
+          ? checkedLayers.map((l) => l.name.replace(/\//g, '&#47;')).join(', ')
+          : this.data.title.replace(/\//g, '&#47;'),
+        path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+        imageFormat: this.data.image_format,
+        queryFormat: this.data.query_format,
+        tileSize: this.data.tile_size,
+        crs: this.data.srs,
+        subLayers: checkedLayers.map((l) => l.name).join(','),
+        base: this.data.base,
+      }),
+    ];
+
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager');
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
     return collection;
-  }
-
-  addLayersRecursively(
-    layer: any,
-    options: addLayersRecursivelyOptions = {checkedOnly: true},
-    collection: Layer<Source>[]
-  ): void {
-    if (!options.checkedOnly || layer.checked) {
-      if (layer.Layer === undefined) {
-        collection.push(
-          this.addLayer(layer, {
-            layerTitle: layer.name.replace(/\//g, '&#47;'),
-            path: this.hsUtilsService.undefineEmptyString(
-              this.data.folder_name
-            ),
-            imageFormat: this.data.image_format,
-            queryFormat: this.data.query_format,
-            tileSize: this.data.tile_size,
-            crs: this.data.srs,
-            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
-          })
-        );
-      } else {
-        const clone = this.hsUtilsService.structuredClone(layer);
-        delete clone.Layer;
-        collection.push(
-          this.addLayer(layer, {
-            layerTitle: layer.name.replace(/\//g, '&#47;'),
-            path: this.hsUtilsService.undefineEmptyString(
-              this.data.folder_name
-            ),
-            imageFormat: this.data.image_format,
-            queryFormat: this.data.query_format,
-            tileSize: this.data.tile_size,
-            crs: this.data.srs,
-            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
-          })
-        );
-      }
-    }
-    if (layer.Layer) {
-      for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(
-          sublayer,
-          {checkedOnly: options.checkedOnly},
-          collection
-        );
-      }
-    }
   }
 
   /**
@@ -215,37 +160,34 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(layer, options: addLayerOptions): Layer<Source> {
-    let attributions = [];
-    if (layer.Attribution) {
-      attributions = [
-        `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
-      ];
-    }
+  addLayer(
+    layers: {
+      defaultVisibility?: boolean;
+      geometryType: string;
+      id: number;
+      maxScale: number;
+      minScale: number;
+      name: string;
+      parentLayerId: number;
+      subLayerIds: number[];
+      type: string;
+    }[],
+    options: addLayerOptions
+  ): Layer<Source> {
+    const attributions = [];
     const dimensions = {};
-    if (layer.Dimension) {
-      for (const val of layer.Dimension) {
-        dimensions[val.name] = val;
-      }
-    }
-
     const legends = [];
-    if (layer.Style && layer.Style[0].LegendURL) {
-      legends.push(layer.Style[0].LegendURL[0].OnlineResource);
-    }
+    const LAYERS =
+      layers.length > 0
+        ? `show:${layers.map((l) => l.id).join(',')}`
+        : undefined;
     const source = new TileArcGISRest({
       url: this.data.get_map_url,
       attributions,
       //projection: me.data.srs,
       params: Object.assign(
         {
-          LAYERS: this.data.base
-            ? `show:${this.hsAddDataCommonService.createBasemapName(
-                this.data.services,
-                'name'
-              )}`
-            : `show:${layer.name}`,
-          INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
+          LAYERS,
           FORMAT: options.imageFormat,
         },
         {}
@@ -262,35 +204,17 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         dimensions,
       },
       source,
-      maxResolution:
-        layer.minScale > 0
-          ? this.hsLayerUtilsService.calculateResolutionFromScale(
-              layer.minScale
-            )
-          : undefined,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     this.hsMapService.map.addLayer(new_layer);
     return new_layer;
   }
 
-  /**
-   * FIXME: UNUSED
-   * Add service and its layers to project TODO
-   * @param url - Service url
-   * @param group - Group layer to which add layer to
-   */
-  async addService(url: string, group: Group): Promise<void> {
-    const wrapper = await this.hsArcgisGetCapabilitiesService.request(url);
-    const ol_layers = this.hsArcgisGetCapabilitiesService.service2layers(
-      wrapper.response
-    );
-    ol_layers.forEach((layer) => {
-      if (group !== undefined) {
-        group.getLayers().push(layer);
-      } else {
-        this.hsMapService.addLayer(layer);
-      }
-    });
+  addLayersRecursively(
+    layer: any,
+    options: addLayersRecursivelyOptions,
+    collection: Layer<Source>[]
+  ): void {
+    //Not needed yet, but interface has it
   }
 }
