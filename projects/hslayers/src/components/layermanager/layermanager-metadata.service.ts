@@ -126,10 +126,9 @@ export class HsLayerManagerMetadataService {
                 sublayer.MaxScaleDenominator
               );
             if (maxScale < sublayer.MaxScaleDenominator) {
-              maxScale =
-                this.HsLayerUtilsService.calculateResolutionFromScale(
-                  sublayer.MaxScaleDenominator
-                );
+              maxScale = this.HsLayerUtilsService.calculateResolutionFromScale(
+                sublayer.MaxScaleDenominator
+              );
             }
           } else if (!sublayer.maxResolution) {
             sublayer.maxResolution = maxScale;

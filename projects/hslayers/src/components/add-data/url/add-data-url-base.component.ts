@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 
-import {Subject} from 'rxjs/internal/Subject';
+import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsAddDataCommonService} from '../common/common.service';
