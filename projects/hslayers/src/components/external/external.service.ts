@@ -15,15 +15,15 @@ import {
 } from '../../common/layer-extensions';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
 import {HsQueryPopupService} from '../query/query-popup.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {getCenter} from 'ol/extent';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
   layer: Layer<Source>;
   domElements: Element[];
-  eventInDom: string;
+  event: string;
 };
 
 export interface FeatureDomEventLinkDict {
@@ -115,12 +115,12 @@ export class HsExternalService {
               handles: [],
               layer,
               domElements: [],
-              eventInDom: link.eventInDom,
+              event: link.event,
             };
           }
           this.featureLinks[featureId].handles.push(handler);
           this.featureLinks[featureId].domElements.push(domElement);
-          domElement.addEventListener(link.eventInDom, handler);
+          domElement.addEventListener(link.event, handler);
         }
       });
     }
@@ -138,7 +138,7 @@ export class HsExternalService {
   private removeFeatureLink(linkage: FeatureDomEventLink) {
     for (const handle of linkage.handles) {
       for (const domEl of linkage.domElements) {
-        domEl.removeEventListener(linkage.eventInDom, handle);
+        domEl.removeEventListener(linkage.event, handle);
       }
     }
   }

@@ -9,7 +9,7 @@ export type DOMFeatureLink = {
     | string
     | Feature<Geometry>
     | ((layer: Layer<Source>, domElement: Element) => any);
-  eventInDom: string;
+  event: string;
   actions: [
     'zoomToExtent' | 'panToCenter' | 'showPopup',
     (
