@@ -8,6 +8,6 @@ export type addLayerOptions = {
   queryFormat?: string;
   sld?: string;
   qml?: string;
-  subLayers?: any[];
+  subLayers?: string;
   tileSize?;
 };

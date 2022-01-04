@@ -147,7 +147,7 @@ export class HsAddDataCommonService {
   /**
    * @param service -
    */
-  getSublayerNames(service): string[] {
+  getSublayerNames(service): string {
     if (service.Layer) {
       return service.Layer.map((l) => {
         let tmp: string[] = [];
@@ -158,10 +158,10 @@ export class HsAddDataCommonService {
           const children = this.getSublayerNames(l);
           tmp = tmp.concat(children);
         }
-        return tmp;
+        return tmp.join(',');
       });
     } else {
-      return [];
+      return '';
     }
   }
 }
