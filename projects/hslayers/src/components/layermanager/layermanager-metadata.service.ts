@@ -197,6 +197,7 @@ export class HsLayerManagerMetadataService {
       if (layerObj == undefined) {
         return;
       }
+      //TODO: This should be removed probably to not pollute layer object. Use cachedCapabilities instead
       olLayer.setProperties(layerObj);
       if (
         layerObj.Dimension?.name === 'time' ||
@@ -206,6 +207,10 @@ export class HsLayerManagerMetadataService {
       }
       if (layerObj.Layer && getSubLayers(olLayer)) {
         layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+        /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. 
+        We delete to not crash interface if the service has thousands of layers. There is an assumption that if we specify sublayers 
+        in layer definition, user will not be allowed to display other sublayers 
+        thus it is fine if the sublayer list gets hidden in layer editor. */
         delete layerObj.Layer;
       }
       this.collectLegend(layerObj, legends);
