@@ -4,7 +4,7 @@ import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
+import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
@@ -404,6 +404,35 @@ export class HslayersAppComponent {
         }),
         polygons,
         points,
+        new Tile({
+          properties: {
+            title: 'Latvian municipalities (parent layer)',
+          },
+          source: new TileWMS({
+            url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
+            params: {
+              LAYERS: 'public:LV_admin_vienibas',
+              INFO_FORMAT: undefined,
+              FORMAT: 'image/png; mode=8bit',
+            },
+            crossOrigin: 'anonymous',
+          }),
+        }),
+        new Tile({
+          properties: {
+            title: 'Latvian municipalities (1 sub-layer)',
+            sublayers: 'public:Pagasti',
+          },
+          source: new TileWMS({
+            url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
+            params: {
+              LAYERS: 'public:LV_admin_vienibas',
+              INFO_FORMAT: undefined,
+              FORMAT: 'image/png; mode=8bit',
+            },
+            crossOrigin: 'anonymous',
+          }),
+        }),
         opticalMap,
       ],
     });
