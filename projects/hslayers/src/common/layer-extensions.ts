@@ -44,7 +44,7 @@ const QUERY_FILTER = 'queryFilter';
 const QUERYABLE = 'queryable';
 const REMOVABLE = 'removable';
 const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
-const SUB_LAYERS = 'subLayers';
+const SUB_LAYERS = ['subLayers', 'sublayers'];
 const SWIPE_RIGHT = 'swipeRight';
 const THUMBNAIL = 'thumbnail';
 const TITLE = 'title';
@@ -560,7 +560,7 @@ export function getShowInLayerManager(layer: Layer<Source>): boolean {
  * @param subLayers - String of all possible WMS layers sub-layer names separated by comma
  */
 export function setSubLayers(layer: Layer<Source>, subLayers: string): void {
-  layer.set(SUB_LAYERS, subLayers);
+  layer.set(SUB_LAYERS[0], subLayers);
 }
 
 /**
@@ -568,7 +568,7 @@ export function setSubLayers(layer: Layer<Source>, subLayers: string): void {
  * @param layer -
  */
 export function getSubLayers(layer: Layer<Source>): string {
-  return layer.get(SUB_LAYERS);
+  return layer.get(SUB_LAYERS[0]) ?? layer.get(SUB_LAYERS[1]);
 }
 
 export function setThumbnail(layer: Layer<Source>, thumbnail: string): void {

@@ -345,7 +345,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-          subLayers: null,
+          subLayers: '',
         }
       );
     } else {
