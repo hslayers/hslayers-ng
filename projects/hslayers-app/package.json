@@ -1,6 +1,6 @@
 {
   "name": "hslayers-ng-app",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "A bundle of HSLayers-NG library + angular + OL",
   "main": "karma.conf.js",
   "directories": {

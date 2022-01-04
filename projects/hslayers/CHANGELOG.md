@@ -1,3 +1,13 @@
+## [7.0.2](https://github.com/hslayers/hslayers-ng/compare/7.0.0...7.0.2) (2022-01-04)
+
+
+### Bug Fixes
+
+* Add missing peer dependencies ([699e2c0](https://github.com/hslayers/hslayers-ng/commit/699e2c0a7bdcdebcb0494ae61539c18f100b6911))
+* Query feature ops and reload on wms featureinfo ([#2455](https://github.com/hslayers/hslayers-ng/issues/2455)) ([9f8bc0a](https://github.com/hslayers/hslayers-ng/commit/9f8bc0a22fa55bfb8bc8867c124ed245624a4c4f)), closes [#2454](https://github.com/hslayers/hslayers-ng/issues/2454)
+
+
+
 ## [7.0.1](https://github.com/hslayers/hslayers-ng/compare/7.0.0...7.0.1) (2021-12-15)
 
 
