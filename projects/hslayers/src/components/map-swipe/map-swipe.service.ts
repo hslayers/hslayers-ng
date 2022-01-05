@@ -26,7 +26,7 @@ export class HsMapSwipeService {
   swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
-  fullMapLayers: LayerListItem[] = [];
+  entireMapLayers: LayerListItem[] = [];
   movingSide = SwipeSide.Left;
   wasMoved: boolean;
   swipeControlActive: boolean;
@@ -80,7 +80,7 @@ export class HsMapSwipeService {
     return (
       this.swipeCtrl?.layers?.length > 0 ||
       this.swipeCtrl?.rightLayers?.length > 0 ||
-      this.fullMapLayers?.length > 0
+      this.entireMapLayers?.length > 0
     );
   }
 
@@ -204,8 +204,8 @@ export class HsMapSwipeService {
       if (layerFound.arr === 'rightLayers') {
         this.rightLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
       }
-      if (layerFound.arr === 'fullMapLayers') {
-        this.fullMapLayers = this.fullMapLayers.filter(
+      if (layerFound.arr === 'entireMapLayers') {
+        this.entireMapLayers = this.entireMapLayers.filter(
           (l) => l.layer != layerToRm
         );
       }
@@ -220,7 +220,7 @@ export class HsMapSwipeService {
     const layerFound = this.findLayer(layer.layer);
     this.layers.forEach((l) => (l.active = false));
     this.rightLayers.forEach((l) => (l.active = false));
-    this.fullMapLayers.forEach((l) => (l.active = false));
+    this.entireMapLayers.forEach((l) => (l.active = false));
     if (layerFound?.l) {
       layerFound.l.active = true;
     }
@@ -231,7 +231,7 @@ export class HsMapSwipeService {
   setInitialSwipeLayers(): void {
     this.layers = [];
     this.rightLayers = [];
-    this.fullMapLayers = [];
+    this.entireMapLayers = [];
     this.hsLayerShiftingService.fillLayers();
     if (!this.hsLayerShiftingService.layersCopy) {
       return;
@@ -262,8 +262,8 @@ export class HsMapSwipeService {
     this.rightLayers = this.hsLayerManagerService.sortLayersByZ(
       this.rightLayers
     );
-    this.fullMapLayers = this.hsLayerManagerService.sortLayersByZ(
-      this.fullMapLayers
+    this.entireMapLayers = this.hsLayerManagerService.sortLayersByZ(
+      this.entireMapLayers
     );
   }
 
@@ -298,8 +298,8 @@ export class HsMapSwipeService {
       found.arr = 'rightLayers';
     }
     if (!found.l) {
-      found.l = this.fullMapLayers.find((lyr) => lyr.layer == targetLayer);
-      found.arr = 'fullMapLayers';
+      found.l = this.entireMapLayers.find((lyr) => lyr.layer == targetLayer);
+      found.arr = 'entireMapLayers';
     }
     return found;
   }
