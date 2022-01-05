@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import JSZip from 'jszip';
-import {Subject} from 'rxjs/internal/Subject';
+import {Subject} from 'rxjs';
 
 import {FileDescriptor} from '../file/types/file-descriptor.type';
 import {HsAddDataCommonService} from './common.service';

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {ImageryProvider, JulianDate} from 'cesium';
-import {Subject} from 'rxjs/internal/Subject';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class HsCesiumConfig {

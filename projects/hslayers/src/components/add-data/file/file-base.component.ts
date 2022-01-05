@@ -9,7 +9,7 @@ import {
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject} from 'rxjs/internal/Subject';
+import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {FileDescriptor} from './types/file-descriptor.type';
