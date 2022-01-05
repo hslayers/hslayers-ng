@@ -27,7 +27,7 @@ export class HsMapSwipeService {
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
   fullMapLayers: LayerListItem[] = [];
-  movingSide: SwipeSide;
+  movingSide = SwipeSide.Left;
   wasMoved: boolean;
   swipeControlActive: boolean;
   orientation: string;
@@ -115,6 +115,7 @@ export class HsMapSwipeService {
     }
     this.sortLayers();
     this.wasMoved = false;
+    this.movingSide = SwipeSide.Left;
   }
 
   /**
@@ -122,7 +123,7 @@ export class HsMapSwipeService {
    * @param layer - layer issued from layerManagerUpdates event
    */
   addSwipeLayer(layerItem: LayerListItem): void {
-    if (!this.findLayer(layerItem.layer)) {
+    if (!this.findLayer(layerItem.layer)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeRight(layerItem.layer)) {
         this.swipeCtrl.addLayer(layerItem, true);
@@ -195,9 +196,20 @@ export class HsMapSwipeService {
    * @param layer - layer issued from layerManagerUpdates event
    */
   removeCompletely(layerToRm: Layer<Source>): void {
-    this.layers = this.layers.filter((l) => l.layer != layerToRm);
-    this.rightLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
-    this.fullMapLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
+    const layerFound = this.findLayer(layerToRm);
+    if (layerFound.l) {
+      if (layerFound.arr === 'layers') {
+        this.layers = this.layers.filter((l) => l.layer != layerToRm);
+      }
+      if (layerFound.arr === 'rightLayers') {
+        this.rightLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
+      }
+      if (layerFound.arr === 'fullMapLayers') {
+        this.fullMapLayers = this.fullMapLayers.filter(
+          (l) => l.layer != layerToRm
+        );
+      }
+    }
     this.swipeCtrl.removeCompletely(layerToRm);
   }
   /**
@@ -205,21 +217,21 @@ export class HsMapSwipeService {
    * @param layer - layer issued from layerManagerUpdates event
    */
   setLayerActive(layer: LayerListItem): void {
-    this.layers.forEach((l) => {
-      l.layer == layer.layer ? (l.active = true) : (l.active = false);
-    });
-    this.rightLayers.forEach((l) => {
-      l.layer == layer.layer ? (l.active = true) : (l.active = false);
-    });
-    this.fullMapLayers.forEach((l) => {
-      l.layer == layer.layer ? (l.active = true) : (l.active = false);
-    });
+    const layerFound = this.findLayer(layer.layer);
+    this.layers.forEach((l) => (l.active = false));
+    this.rightLayers.forEach((l) => (l.active = false));
+    this.fullMapLayers.forEach((l) => (l.active = false));
+    if (layerFound?.l) {
+      layerFound.l.active = true;
+    }
   }
   /**
    * Set and add initial swipe control layers
    */
   setInitialSwipeLayers(): void {
     this.layers = [];
+    this.rightLayers = [];
+    this.fullMapLayers = [];
     this.hsLayerShiftingService.fillLayers();
     if (!this.hsLayerShiftingService.layersCopy) {
       return;
@@ -234,7 +246,7 @@ export class HsMapSwipeService {
    */
   checkForMissingLayers(): void {
     const missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
-      return !this.findLayer(l.layer);
+      return !this.findLayer(l.layer)?.l;
     });
     for (const layer of missingLayers) {
       this.addSwipeLayer(layer);
@@ -268,24 +280,27 @@ export class HsMapSwipeService {
    * @param e - Event description
    */
   layerVisibilityChanged(e): void {
-    const layer = this.findLayer(e.target);
-    if (layer) {
-      layer.visible = e.target.getVisible();
+    const found = this.findLayer(e.target);
+    if (found.l) {
+      found.l.visible = e.target.getVisible();
     }
   }
 
   /**
    * Find layer based on layer source
    */
-  findLayer(targetLayer: Layer<Source>): LayerListItem {
-    let layerFound;
-    layerFound = this.layers.find((lyr) => lyr.layer == targetLayer);
-    if (!layerFound) {
-      layerFound = this.rightLayers.find((lyr) => lyr.layer == targetLayer);
+  findLayer(targetLayer: Layer<Source>): {l: LayerListItem; arr: string} {
+    const found = {l: null, arr: ''};
+    found.l = this.layers.find((lyr) => lyr.layer == targetLayer);
+    found.arr = 'layers';
+    if (!found.l) {
+      found.l = this.rightLayers.find((lyr) => lyr.layer == targetLayer);
+      found.arr = 'rightLayers';
     }
-    if (!layerFound) {
-      layerFound = this.fullMapLayers.find((lyr) => lyr.layer == targetLayer);
+    if (!found.l) {
+      found.l = this.fullMapLayers.find((lyr) => lyr.layer == targetLayer);
+      found.arr = 'fullMapLayers';
     }
-    return layerFound;
+    return found;
   }
 }
