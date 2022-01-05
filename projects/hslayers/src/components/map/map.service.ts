@@ -434,7 +434,7 @@ export class HsMapService {
    * @param template
    */
   cloneView(template: View): View {
-    const view = new View((template as any).options_);
+    const view = new View(template.getProperties());
     return view;
   }
 
