@@ -851,6 +851,7 @@
     "dndLayers": "Izmantojiet vilkšanu un nomešanu, lai pārvietotu slāņus starp kartes pusēm",
     "disableSwipe": "Atspējot vilkšanu",
     "enableSwipe": "Iespējot vilkšanu",
-    "verticalSwipe": "Vertikālā vilkšana"
+    "verticalSwipe": "Vertikālā vilkšana",
+    "fullMap": "Visa karte"
   }
 }

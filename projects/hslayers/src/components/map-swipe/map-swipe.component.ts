@@ -11,7 +11,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsMapSwipeService} from './map-swipe.service';
+import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
@@ -25,6 +25,7 @@ export class HsMapSwipeComponent
   implements OnDestroy
 {
   private ngUnsubscribe = new Subject<void>();
+  swipeSide = SwipeSide;
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
@@ -86,10 +87,10 @@ export class HsMapSwipeComponent
    * @param event - CdkDragDrop drop event
    * @param right - (Optional) Item dragged to right
    */
-  drop(event: CdkDragDrop<string[]>, right?: boolean): void {
+  drop(event: CdkDragDrop<string[]>, side?: SwipeSide): void {
     let draggedLayer;
     let replacedLayer;
-    this.hsMapSwipeService.movingRight = right;
+    this.hsMapSwipeService.movingSide = side;
     this.hsMapSwipeService.wasMoved = true;
     if (event.previousContainer === event.container) {
       draggedLayer = event.container.data[event.previousIndex];

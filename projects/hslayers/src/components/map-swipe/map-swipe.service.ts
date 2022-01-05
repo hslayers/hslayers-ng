@@ -14,6 +14,11 @@ import {LayerListItem} from './../../common/layer-shifting/layer-shifting.servic
 import {SwipeControl} from './swipe-control/swipe.control.class';
 import {getSwipeRight} from '../../common/layer-extensions';
 
+export enum SwipeSide {
+  Left = 'left',
+  Right = 'right',
+  Full = 'full',
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -21,7 +26,8 @@ export class HsMapSwipeService {
   swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
-  movingRight: boolean;
+  fullMapLayers: LayerListItem[] = [];
+  movingSide: SwipeSide;
   wasMoved: boolean;
   swipeControlActive: boolean;
   orientation: string;
@@ -73,7 +79,8 @@ export class HsMapSwipeService {
   layersAvailable(): boolean {
     return (
       this.swipeCtrl?.layers?.length > 0 ||
-      this.swipeCtrl?.rightLayers?.length > 0
+      this.swipeCtrl?.rightLayers?.length > 0 ||
+      this.fullMapLayers?.length > 0
     );
   }
 
@@ -107,7 +114,6 @@ export class HsMapSwipeService {
       this.removeCompletely(layer);
     }
     this.sortLayers();
-    this.movingRight = false;
     this.wasMoved = false;
   }
 
@@ -135,10 +141,14 @@ export class HsMapSwipeService {
    * @param layer - layer issued from layerManagerUpdates event
    */
   moveSwipeLayer(layer: LayerListItem): void {
-    if (this.movingRight) {
+    if (this.movingSide === SwipeSide.Right) {
       this.moveRight(layer);
-    } else {
+    }
+    if (this.movingSide === SwipeSide.Left) {
       this.moveLeft(layer);
+    }
+    if (this.movingSide === SwipeSide.Full) {
+      this.swipeCtrl.removeCompletely(layer.layer);
     }
   }
   /**
@@ -187,6 +197,7 @@ export class HsMapSwipeService {
   removeCompletely(layerToRm: Layer<Source>): void {
     this.layers = this.layers.filter((l) => l.layer != layerToRm);
     this.rightLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
+    this.fullMapLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
     this.swipeCtrl.removeCompletely(layerToRm);
   }
   /**
@@ -198,6 +209,9 @@ export class HsMapSwipeService {
       l.layer == layer.layer ? (l.active = true) : (l.active = false);
     });
     this.rightLayers.forEach((l) => {
+      l.layer == layer.layer ? (l.active = true) : (l.active = false);
+    });
+    this.fullMapLayers.forEach((l) => {
       l.layer == layer.layer ? (l.active = true) : (l.active = false);
     });
   }
@@ -219,13 +233,9 @@ export class HsMapSwipeService {
    * Check if any layer is left out from swipe control and add it
    */
   checkForMissingLayers(): void {
-    const missingLayers = this.hsLayerShiftingService.layersCopy
-      .filter((l) => {
-        return !this.layers.find((lyr) => lyr.layer == l.layer);
-      })
-      .filter((l) => {
-        return !this.rightLayers.find((lyr) => lyr.layer == l.layer);
-      });
+    const missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
+      return !this.findLayer(l.layer);
+    });
     for (const layer of missingLayers) {
       this.addSwipeLayer(layer);
     }
@@ -239,6 +249,9 @@ export class HsMapSwipeService {
     this.layers = this.hsLayerManagerService.sortLayersByZ(this.layers);
     this.rightLayers = this.hsLayerManagerService.sortLayersByZ(
       this.rightLayers
+    );
+    this.fullMapLayers = this.hsLayerManagerService.sortLayersByZ(
+      this.fullMapLayers
     );
   }
 
@@ -269,6 +282,9 @@ export class HsMapSwipeService {
     layerFound = this.layers.find((lyr) => lyr.layer == targetLayer);
     if (!layerFound) {
       layerFound = this.rightLayers.find((lyr) => lyr.layer == targetLayer);
+    }
+    if (!layerFound) {
+      layerFound = this.fullMapLayers.find((lyr) => lyr.layer == targetLayer);
     }
     return layerFound;
   }
