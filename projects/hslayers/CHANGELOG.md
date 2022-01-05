@@ -194,17 +194,8 @@ replacing ->
 this.HsConfig.update({
       cesiumBase: 'assets/cesium/',
 * Need to include node_modules/hslayers-ng/css/hslayers-ng.css in the container
-application. For example in app.scss `@import 'hslayers-ng/css/hslayers-ng'`
+application. For example in app.scss `@import 'hslayers-ng/css/hslayers-ng'` or in the angular.json's styles property. OL, bootstrap and  WebHostingHub-Glyphs are bundled in hslayers-ng.css
 * https://getbootstrap.com/docs/5.0/migration/
-* Import ol.css, hslayers-bootstrap.scss and whhg.css files either through imports in code,
-AppComponent styleUrls or in angular.json architect/build/options/:
-```
-"styles": [
-    "node_modules/ol/ol.css",
-    "node_modules/hslayers-ng/src/css/hslayers-bootstrap.scss",
-    "node_modules/hslayers-ng/src/css/whhg-font/css/whhg.css"
-]
-```
 * Add geostyler-legend and d3 peer dependencies: `npm i geostyler-legend d3`
 
 
