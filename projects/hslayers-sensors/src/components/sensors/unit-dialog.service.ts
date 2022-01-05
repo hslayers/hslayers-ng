@@ -1,5 +1,8 @@
-import dayjs from 'dayjs';
 import {ElementRef, Injectable} from '@angular/core';
+
+import dayjs from 'dayjs';
+import objectSupport from 'dayjs/plugin/objectSupport';
+
 import {HsLanguageService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsLogService} from 'hslayers-ng';
@@ -8,6 +11,8 @@ import {HsUtilsService} from 'hslayers-ng';
 import {HttpClient} from '@angular/common/http';
 import {SensLogEndpoint} from './senslog-endpoint';
 import {default as vegaEmbed} from 'vega-embed';
+
+dayjs.extend(objectSupport);
 
 type Aggregate = {
   sensor_id;
