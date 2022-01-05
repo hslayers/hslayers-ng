@@ -238,4 +238,21 @@ export class HsLayerEditorComponent {
   getSubLayers() {
     return this.HsLayerEditorSublayerService.getSubLayers();
   }
+
+  async copyLayer(): Promise<void> {
+    const dialog = this.HsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message:
+          this.HsLanguageService.getTranslation(
+            'LAYERMANAGER.layerEditor.copyLayer'
+          ) + '?',
+        title: this.HsLanguageService.getTranslation('COMMON.confirm'),
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      return this.HsLayerManagerService.copyLayer();
+    }
+  }
 }

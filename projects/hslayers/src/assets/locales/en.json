@@ -234,7 +234,8 @@
     "context": "Context",
     "author": "Author",
     "access": "Access",
-    "enabled": "Enabled"
+    "enabled": "Enabled",
+    "copyLayer": "Copy layer"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -505,7 +506,8 @@
       "vector (GeoJSON)": "Vector (GeoJSON)",
       "vector (KML)": "Vector (KML)",
       "vector (TopoJSON)": "Vector (TopoJSON)",
-      "zoomToLayer": "Zoom to layer"
+      "zoomToLayer": "Zoom to layer",
+      "copyLayer": "Copy selected layer"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",

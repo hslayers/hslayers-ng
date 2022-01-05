@@ -51,6 +51,7 @@ import {
   getTitle,
   setActive,
   setPath,
+  setTitle,
 } from '../../common/layer-extensions';
 
 @Injectable({
@@ -1174,5 +1175,21 @@ export class HsLayerManagerService {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     }, 0);
+  }
+
+  /*
+    Creats a copy of the currentLayer
+  */
+  copyLayer(): void {
+    const copiedLayer = new VectorLayer(
+      this.currentLayer.layer.getProperties()
+    );
+    let title = getTitle(copiedLayer);
+    const numb = Number(title.replace(/\D/g, ''));
+    numb !== 0
+      ? (title = title.replace(numb.toString(), `${numb + 1}`))
+      : (title = title + ' (1)');
+    setTitle(copiedLayer, title);
+    this.HsMapService.addLayer(copiedLayer);
   }
 }

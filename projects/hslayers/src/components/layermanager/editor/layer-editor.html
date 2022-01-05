@@ -8,9 +8,8 @@
         </div>
         <div *ngIf="currentLayer.settings">
             <form>
-                <hs-panel-container 
-                    [service]="hsLayerEditorWidgetContainerService">
-                </hs-panel-container >
+                <hs-panel-container [service]="hsLayerEditorWidgetContainerService">
+                </hs-panel-container>
             </form>
             <div class="btn-group m-auto d-flex w-75" *ngIf="currentLayer.visible && getBase(currentLayer.layer)">
                 <button class="btn btn-sm btn-outline-primary  w-50"
@@ -46,6 +45,8 @@
             <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip"
                 *ngIf="HsLayerEditorService.isLayerVectorLayer(currentLayer.layer)"
                 [title]="'LAYERMANAGER.layerEditor.savegeojson' | translate"><i class="icon-save-floppy"></i></button>
+            <button class="btn btn-primary" (click)="copyLayer()" data-toggle="tooltip"
+                [title]="'COMMON.copyLayer' | translate"><i class="icon-copy"></i></button>
             <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip"
                 [title]="'COMMON.removeLayer' | translate"><i class="icon-trash"></i></button>
         </div>
