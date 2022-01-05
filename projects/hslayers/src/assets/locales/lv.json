@@ -234,7 +234,8 @@
     "context": "Konteksts",
     "author": "Autors",
     "access": "Piekļuve",
-    "enabled": "Iespējots"
+    "enabled": "Iespējots",
+    "copyLayer": "Kopēt slāni"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -505,7 +506,8 @@
       "vector (GeoJSON)": "Vektoru (GeoJSON)",
       "vector (KML)": "Vektoru (KML)",
       "vector (TopoJSON)": "Vektoru (TopoJSON)",
-      "zoomToLayer": "Tuvināt līdz slānim"
+      "zoomToLayer": "Tuvināt līdz slānim",
+      "copyLayer": "Kopēt izvēlēto slāni"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",

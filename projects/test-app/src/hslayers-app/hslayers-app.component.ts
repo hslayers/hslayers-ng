@@ -286,7 +286,7 @@ export class HslayersAppComponent {
         basemapGallery: true,
         mapSwipe: true,
       },
-      enabledLanguages: 'sk, en',
+      enabledLanguages: 'sk, lv, en',
       assetsPath: 'assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
