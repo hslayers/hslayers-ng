@@ -30,7 +30,19 @@
     </div>
     <div *ngIf="hsMapSwipeService.layersAvailable() && hsMapSwipeService.swipeControlActive" class="pt-1">
       <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
-        <thead>
+        <tbody>
+          <tr style="text-align: center;">
+            <th colspan="2">{{'MAP_SWIPE.fullMap' | translate}}</th>
+          </tr>
+          <tr class="mb-1">
+            <td colspan="2" cdkDropList #fullMapList="cdkDropList" [cdkDropListConnectedTo]="[leftList, rightList]"
+              [cdkDropListData]="hsMapSwipeService.fullMapLayers" (cdkDropListDropped)="drop($event, swipeSide.Full)">
+              <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
+                *ngFor="let layer of hsMapSwipeService.fullMapLayers" cdkDrag>
+                <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
+              </div>
+            </td>
+          </tr>
           <tr style="text-align: center;">
             <ng-container *ngIf="hsMapSwipeService.orientation === 'vertical'; else topDownLabels">
               <th>{{'MAP_SWIPE.leftSide' | translate}}</th>
@@ -41,18 +53,16 @@
               <th>{{'MAP_SWIPE.bottom' | translate}}</th>
             </ng-template>
           </tr>
-        </thead>
-        <tbody>
           <tr>
-            <td cdkDropList #leftList="cdkDropList" [cdkDropListConnectedTo]="[rightList]"
-              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event)">
+            <td cdkDropList #leftList="cdkDropList" [cdkDropListConnectedTo]="[rightList, fullMapList]"
+              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event, swipeSide.Left)">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.layers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
               </div>
             </td>
-            <td cdkDropList #rightList="cdkDropList" [cdkDropListConnectedTo]="[leftList]"
-              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, true)">
+            <td cdkDropList #rightList="cdkDropList" [cdkDropListConnectedTo]="[leftList, fullMapList]"
+              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, swipeSide.Right)">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.rightLayers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
