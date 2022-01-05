@@ -89,7 +89,9 @@ async function convertHsStyleToSld(json: any): Promise<string> {
       name,
       rules: [{name, symbolizers}],
     };
-    const parser = new SLDParser();
+    const parser = (SLDParser as any).default
+      ? new (SLDParser as any).default()
+      : new SLDParser();
     return (await parser.writeStyle(sldModel)).output;
   }
 }

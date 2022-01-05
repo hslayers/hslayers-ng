@@ -47,8 +47,13 @@ export class HsStylerService {
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
-  sldParser = new SLDParser();
-  qmlParser = new QGISStyleParser();
+  sldParser = (SLDParser as any).default
+    ? new (SLDParser as any).default()
+    : new SLDParser();
+  qmlParser = (QGISStyleParser as any).default
+    ? new (QGISStyleParser as any).default()
+    : new QGISStyleParser();
+
   sld: string;
 
   pin_white_blue = new Style({
