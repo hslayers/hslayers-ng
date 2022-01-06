@@ -234,7 +234,8 @@
     "context": "Kontext",
     "author": "Autor",
     "access": "Přístup",
-    "enabled": "Povoleno"
+    "enabled": "Povoleno",
+    "copyLayer": "Kopírovat vrstvu"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -502,7 +503,8 @@
       "vector (GeoJSON)": "Vektorová (GeoJSON)",
       "vector (KML)": "Vektorová (KML)",
       "vector (TopoJSON)": "Vektorová (TopoJSON)",
-      "zoomToLayer": "Přiblížit na vrstvu"
+      "zoomToLayer": "Přiblížit na vrstvu",
+      "copyLayer": "Kopírovat vybranou vrstvu"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
