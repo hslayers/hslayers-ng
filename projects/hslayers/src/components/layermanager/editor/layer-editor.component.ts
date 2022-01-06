@@ -8,6 +8,7 @@ import {Source} from 'ol/source';
 
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
+import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsDrawService} from '../../draw/draw.service';
@@ -241,18 +242,19 @@ export class HsLayerEditorComponent {
 
   async copyLayer(): Promise<void> {
     const dialog = this.HsDialogContainerService.create(
-      HsConfirmDialogComponent,
+      HsCopyLayerDialogComponent,
       {
         message:
           this.HsLanguageService.getTranslation(
             'LAYERMANAGER.layerEditor.copyLayer'
           ) + '?',
-        title: this.HsLanguageService.getTranslation('COMMON.confirm'),
+        title: this.HsLanguageService.getTranslation('COMMON.copyLayer'),
+        layerTitle: getTitle(this.currentLayer.layer),
       }
     );
-    const confirmed = await dialog.waitResult();
-    if (confirmed == 'yes') {
-      return this.HsLayerManagerService.copyLayer();
+    const result = await dialog.waitResult();
+    if (result.confirmed == 'yes') {
+      return this.HsLayerManagerService.copyLayer(result.layerTitle);
     }
   }
 }

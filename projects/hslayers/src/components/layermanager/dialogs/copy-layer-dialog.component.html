@@ -1,0 +1,24 @@
+<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{data.title}}
+                </h4>
+                <button type="button" (click)="no()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translate}}"></button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                <p class="fw-bold h6">{{data.message}}</p>
+                <div class="form-floating m-2">
+                    <input class="form-control" name="title" [(ngModel)]="data.layerTitle"
+                        placeholder="'COMMON.title' | translate" />
+                    <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translate" data-dismiss="modal">{{'COMMON.yes' | translate}}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.no' | translate" (click)="no()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

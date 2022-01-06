@@ -10,6 +10,7 @@ import {
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
+import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
@@ -44,6 +45,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsCopyLayerDialogComponent,
     HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerEditorWidgetBaseComponent,
@@ -78,6 +80,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsCopyLayerDialogComponent,
     HsLayerManagerRemoveLayerDialogComponent,
     HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
