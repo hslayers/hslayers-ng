@@ -130,6 +130,7 @@ export class HslayersAppComponent {
       properties: {
         title: 'Points',
         synchronize: false,
+        swipeSide: 'left',
         cluster: false,
         inlineLegend: true,
         popUp: {
@@ -208,11 +209,9 @@ export class HslayersAppComponent {
       properties: {
         title: 'Polygons',
         synchronize: false,
-        swipeRight: true,
         cluster: false,
         inlineLegend: true,
         popUp: {
-          
           attributes: ['name'],
           widgets: ['layer-name', 'clear-layer'],
         },
@@ -240,7 +239,7 @@ export class HslayersAppComponent {
       properties: {
         title: 'Optical satellite basemap',
         from_composition: true,
-        swipeRight: true,
+        swipeSide: 'right',
         dimensions: {
           time: {
             value: '2020-11-20',

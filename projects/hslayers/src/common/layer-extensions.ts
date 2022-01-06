@@ -46,7 +46,7 @@ const QUERYABLE = 'queryable';
 const REMOVABLE = 'removable';
 const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
 const SUB_LAYERS = ['subLayers', 'sublayers'];
-const SWIPE_RIGHT = 'swipeRight';
+const SWIPE_SIDE = 'swipeSide';
 const THUMBNAIL = 'thumbnail';
 const TITLE = 'title';
 const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
@@ -619,12 +619,15 @@ export function setWfsUrl(layer: Layer<Source>, url: string): void {
   layer.set(WFS_URL, url);
 }
 
-export function getSwipeRight(layer: Layer<Source>): boolean {
-  return layer.get(SWIPE_RIGHT);
+export function getSwipeSide(layer: Layer<Source>): string {
+  return layer.get(SWIPE_SIDE);
 }
 
-export function setSwipeRight(layer: Layer<Source>, right: boolean): void {
-  layer.set(SWIPE_RIGHT, right);
+export function setSwipeSide(
+  layer: Layer<Source>,
+  side: 'left' | 'right'
+): void {
+  layer.set(SWIPE_SIDE, side);
 }
 
 export const HsLayerExt = {
@@ -708,6 +711,6 @@ export const HsLayerExt = {
   getWorkspace,
   getWfsUrl,
   setWfsUrl,
-  getSwipeRight,
-  setSwipeRight,
+  getSwipeSide,
+  setSwipeSide,
 };
