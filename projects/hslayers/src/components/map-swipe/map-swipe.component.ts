@@ -26,6 +26,11 @@ export class HsMapSwipeComponent
 {
   private ngUnsubscribe = new Subject<void>();
   swipeSide = SwipeSide;
+  placeholders = {
+    entire: true,
+    left: true,
+    right: true,
+  };
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsSidebarService: HsSidebarService,
@@ -48,7 +53,6 @@ export class HsMapSwipeComponent
     });
   }
   name = 'mapSwipe';
-
   /**
    * Return label for button changing map swipe state from enabled to disabled
    */

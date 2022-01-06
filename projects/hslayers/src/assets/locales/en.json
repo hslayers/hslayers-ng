@@ -852,6 +852,7 @@
     "verticalSwipe": "Vertical swipe",
     "disableSwipe": "Disable swipe",
     "enableSwipe": "Enable swipe",
-    "entireMap": "Entire map"
+    "entireMap": "Entire map",
+    "noLayers": "No layers (drag any layer here)"
   }
 }
