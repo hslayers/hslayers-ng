@@ -12,7 +12,7 @@ import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
 import {SwipeControl} from './swipe-control/swipe.control.class';
-import {getSwipeRight} from '../../common/layer-extensions';
+import {getSwipeSide} from '../../common/layer-extensions';
 
 export enum SwipeSide {
   Left = 'left',
@@ -125,12 +125,14 @@ export class HsMapSwipeService {
   addSwipeLayer(layerItem: LayerListItem): void {
     if (!this.findLayer(layerItem.layer)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
-      if (getSwipeRight(layerItem.layer)) {
+      if (getSwipeSide(layerItem.layer) === 'right') {
         this.swipeCtrl.addLayer(layerItem, true);
         this.rightLayers.push(layerItem);
-      } else {
+      } else if (getSwipeSide(layerItem.layer) === 'left') {
         this.swipeCtrl.addLayer(layerItem);
         this.layers.push(layerItem);
+      } else {
+        this.entireMapLayers.push(layerItem);
       }
       layerItem.layer.on('change:visible', (e) =>
         this.layerVisibilityChanged(e)
