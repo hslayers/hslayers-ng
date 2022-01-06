@@ -119,7 +119,7 @@
     "prettier": "^2.5.1",
     "protractor": "~7.0.0",
     "puppeteer": "^13.0.1",
-    "sass": "^1.45.2",
+    "sass": "^1.46.0",
     "ts-node": "^10.4.0",
     "typescript": "4.5.4"
   },
