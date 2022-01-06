@@ -7,6 +7,13 @@
     <p class="m-0 ps-1">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
   </div>
 </ng-template>
+<!-- List placeholder template -->
+<ng-template #listPlaceholder>
+  <div class="p-2" style="border: 1px solid #ddd; text-align: center; font-weight: 600; color: rgba(0,0,0,0.3);">
+    {{'MAP_SWIPE.noLayers' | translate}}
+  </div>
+</ng-template>
+
 <div class="card hs-main-panel" [hidden]="!isVisible()">
   <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translate"></hs-panel-header>
   <div class="card-body m-2">
@@ -35,11 +42,15 @@
             <th colspan="2">{{'MAP_SWIPE.entireMap' | translate}}</th>
           </tr>
           <tr class="mb-1">
-            <td colspan="2" cdkDropList #entireMapList="cdkDropList" [cdkDropListConnectedTo]="[leftList, rightList]"
+            <td colspan="2" cdkDropList #entireMapList="cdkDropList" (cdkDropListExited)="placeholders.entire = true"
+              (cdkDropListEntered)="placeholders.entire = false" [cdkDropListConnectedTo]="[leftList, rightList]"
               [cdkDropListData]="hsMapSwipeService.entireMapLayers" (cdkDropListDropped)="drop($event, swipeSide.Full)">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.entireMapLayers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
+              </div>
+              <div *ngIf="hsMapSwipeService.entireMapLayers.length === 0 && placeholders.entire">
+                <ng-container *ngTemplateOutlet="listPlaceholder"></ng-container>
               </div>
             </td>
           </tr>
@@ -55,17 +66,25 @@
           </tr>
           <tr>
             <td cdkDropList #leftList="cdkDropList" [cdkDropListConnectedTo]="[rightList, entireMapList]"
-              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event, swipeSide.Left)">
+              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event, swipeSide.Left)" (cdkDropListExited)="placeholders.left = true"
+              (cdkDropListEntered)="placeholders.left = false">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.layers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
               </div>
+              <div *ngIf="hsMapSwipeService.layers.length === 0 && placeholders.left">
+                <ng-container *ngTemplateOutlet="listPlaceholder"></ng-container>
+              </div>
             </td>
             <td cdkDropList #rightList="cdkDropList" [cdkDropListConnectedTo]="[leftList, entireMapList]"
-              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, swipeSide.Right)">
+              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, swipeSide.Right)" (cdkDropListExited)="placeholders.right = true"
+              (cdkDropListEntered)="placeholders.right = false">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.rightLayers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
+              </div>
+              <div *ngIf="hsMapSwipeService.rightLayers.length === 0 && placeholders.right">
+                <ng-container *ngTemplateOutlet="listPlaceholder"></ng-container>
               </div>
             </td>
           </tr>
