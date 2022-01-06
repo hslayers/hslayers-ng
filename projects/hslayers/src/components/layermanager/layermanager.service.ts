@@ -1180,15 +1180,20 @@ export class HsLayerManagerService {
   /*
     Creats a copy of the currentLayer
   */
-  copyLayer(): void {
+  copyLayer(newTitle: string): void {
     const copiedLayer = new VectorLayer(
       this.currentLayer.layer.getProperties()
     );
     let title = getTitle(copiedLayer);
-    const numb = Number(title.replace(/\D/g, ''));
-    numb !== 0
-      ? (title = title.replace(numb.toString(), `${numb + 1}`))
-      : (title = title + ' (1)');
+    if (newTitle && newTitle !== title) {
+      title = newTitle;
+    } else {
+      const numb = Number(title.replace(/\D/g, ''));
+      numb !== 0
+        ? (title = title.replace(numb.toString(), `${numb + 1}`))
+        : (title = title + ' (1)');
+    }
+
     setTitle(copiedLayer, title);
     this.HsMapService.addLayer(copiedLayer);
   }
