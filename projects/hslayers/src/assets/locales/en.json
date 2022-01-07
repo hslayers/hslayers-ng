@@ -29,7 +29,8 @@
       },
       "showNext100": "Next 100",
       "showAll": "All",
-      "showingSubset": "Currently showing {{limitShown}} of {{total}} services. Show"
+      "showingSubset": "Currently showing {{limitShown}} of {{total}} services. Show",
+      "theNumberOfRecords": "The number of records will be calculated as close as possible to the selected number"
     },
     "file": "File",
     "saveToDatabase": "Save to database",
@@ -235,7 +236,8 @@
     "author": "Author",
     "access": "Access",
     "enabled": "Enabled",
-    "copyLayer": "Copy layer"
+    "copyLayer": "Copy layer",
+    "selectRecordCountPerPage": "Select record count per page"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

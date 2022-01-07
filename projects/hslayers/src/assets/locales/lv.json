@@ -29,7 +29,8 @@
       },
       "showAll": "Visus",
       "showNext100": "Nākošos 100",
-      "showingSubset": "Pašlaik rādu {{limitShown}} no {total}} servisiem. Rādīt"
+      "showingSubset": "Pašlaik rādu {{limitShown}} no {total}} servisiem. Rādīt",
+      "theNumberOfRecords": "Ierakstu skaits tiks aprēķināts pēc iespējas tuvāk izvēlētajam skaitam"
     },
     "file": "Fails",
     "saveToDatabase": "Saglabāt datubāzē",
@@ -235,7 +236,8 @@
     "author": "Autors",
     "access": "Piekļuve",
     "enabled": "Iespējots",
-    "copyLayer": "Kopēt slāni"
+    "copyLayer": "Kopēt slāni",
+    "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

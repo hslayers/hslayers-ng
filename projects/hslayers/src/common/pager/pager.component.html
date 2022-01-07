@@ -1,19 +1,16 @@
-<div class="card-footer"
-  *ngIf="pagerService.matchedRecords !== 0 && !pagerService.dataLoading">
-  <ul class="pagination d-flex justify-content-center">
+<div class="card-footer" *ngIf="resultsVisible()">
+  <ul class="pagination d-flex justify-content-center m-1 align-items-center">
     <li class="page-item" [ngClass]="{'disabled': pagerService.listStart === 0 }"
       [ngStyle]="{'color' : pagerService.listStart === 0 ? '#555' : '#007bff'}">
       <a class="page-link" (click)="getPreviousRecords()"><span aria-hidden="true">&laquo;</span></a>
     </li>
-    <li class="page-item"
-      *ngIf="resultsVisible() && pagerService.listNext !== pagerService.matchedRecords">
+    <li class="page-item" *ngIf="pagerService.listNext !== pagerService.matchedRecords">
       <span class="page-link">
         {{'COMMON.results' | translate}}
         {{pagerService.listStart + 1}} -
         {{pagerService.listNext}}</span>
     </li>
-    <li class="page-item"
-      *ngIf="resultsVisible() && pagerService.listNext === pagerService.matchedRecords">
+    <li class="page-item" *ngIf="pagerService.listNext === pagerService.matchedRecords">
       <span class="page-link">
         {{'COMMON.results' | translate}}
         {{pagerService.listStart + 1}} -
@@ -22,6 +19,22 @@
     <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }"
       [ngStyle]="{'color' : nextPageAvailable() ? '#555' : '#007bff'}">
       <a class="page-link" (click)="getNextRecords()"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    <li ngbDropdown display="dynamic" placement="top-right" class="pe-3" style="position: absolute;
+    right: 0;">
+      <div class="btn-group">
+        <button class="but-title-sm m-1" data-toggle="tooltip" [title]="'ADDDATA.CATALOGUE.theNumberOfRecords' | translate">
+          <i class="icon-question-sign"></i>
+        </button>
+        <button ngbDropdownToggle type="button"
+          class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split rounded-0"
+          [title]="'COMMON.selectRecordCountPerPage' | translate" aria-haspopup="true" aria-expanded="false">
+        </button>
+      </div>
+      <div ngbDropdownMenu class="dropdown-menu">
+        <a class="dropdown-item" *ngFor="let perPage of recordsPerPageArray"
+          (click)="changeRecordsPerPage(perPage)">{{perPage}}</a>
+      </div>
     </li>
   </ul>
 </div>

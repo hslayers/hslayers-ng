@@ -46,9 +46,9 @@ export class HsAddDataCatalogueService {
   selectedLayer: HsAddDataLayerDescriptor;
   catalogEntries = [];
   dataLoading: boolean;
-  itemsPerPage = 20;
+  recordsPerPage = 20;
   listStart = 0;
-  listNext = this.itemsPerPage;
+  listNext = this.recordsPerPage;
   catalogQuery;
   endpointsWithDatasources: any[];
   matchedRecords: number;
@@ -136,7 +136,7 @@ export class HsAddDataCatalogueService {
 
   resetList(): void {
     this.listStart = 0;
-    this.listNext = this.itemsPerPage;
+    this.listNext = this.recordsPerPage;
     this.selectedLayer = <HsAddDataLayerDescriptor>{};
     this.endpointsWithDatasources.forEach((ep: HsEndpoint) => {
       ep.datasourcePaging.start = 0;
@@ -194,7 +194,6 @@ export class HsAddDataCatalogueService {
    */
   calculateEndpointLimits(): void {
     this.matchedRecords = 0;
-    this.itemsPerPage = 20;
     this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
       (ep) => ep.datasourcePaging.matched != 0
     );
@@ -208,14 +207,16 @@ export class HsAddDataCatalogueService {
     let sumLimits = 0;
     this.endpointsWithDatasources.forEach((ep) => {
       ep.datasourcePaging.limit = Math.floor(
-        (ep.datasourcePaging.matched / this.matchedRecords) * this.itemsPerPage
+        (ep.datasourcePaging.matched / this.matchedRecords) *
+          this.recordsPerPage
       );
       if (ep.datasourcePaging.limit == 0) {
         ep.datasourcePaging.limit = 1;
       }
       sumLimits += ep.datasourcePaging.limit;
     });
-    this.itemsPerPage = sumLimits;
+    this.recordsPerPage = sumLimits;
+    this.listNext = this.recordsPerPage;
     this.queryCatalogs(true);
   }
 
@@ -237,7 +238,7 @@ export class HsAddDataCatalogueService {
       }
     }
 
-    if (this.matchedRecords < this.itemsPerPage) {
+    if (this.matchedRecords < this.recordsPerPage) {
       this.listNext = this.matchedRecords;
     }
 
@@ -261,8 +262,8 @@ export class HsAddDataCatalogueService {
   }
 
   getNextRecords(): void {
-    this.listStart += this.itemsPerPage;
-    this.listNext += this.itemsPerPage;
+    this.listStart += this.recordsPerPage;
+    this.listNext += this.recordsPerPage;
     if (this.listNext > this.matchedRecords) {
       this.listNext = this.matchedRecords;
     }
@@ -273,21 +274,26 @@ export class HsAddDataCatalogueService {
   }
 
   getPreviousRecords(): void {
-    if (this.listStart - this.itemsPerPage <= 0) {
+    if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
-      this.listNext = this.itemsPerPage;
+      this.listNext = this.recordsPerPage;
       this.endpointsWithDatasources.forEach(
         (ep: HsEndpoint) => (ep.datasourcePaging.start = 0)
       );
     } else {
-      this.listStart -= this.itemsPerPage;
-      this.listNext = this.listStart + this.itemsPerPage;
+      this.listStart -= this.recordsPerPage;
+      this.listNext = this.listStart + this.recordsPerPage;
       this.endpointsWithDatasources.forEach(
         (ep: HsEndpoint) =>
           (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
       );
     }
     this.queryCatalogs(true);
+  }
+
+  changeRecordsPerPage(perPage: number): void {
+    this.resetList();
+    this.queryCatalogs();
   }
 
   clearLoadedData(): void {
