@@ -234,7 +234,8 @@
     "context": "Kontext",
     "author": "Autor",
     "access": "Prístup",
-    "enabled": "Povolené"
+    "enabled": "Povolené",
+    "copyLayer": "Kopírovať vrstvu"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -502,7 +503,8 @@
       "vector (GeoJSON)": "Vektorová (GeoJSON)",
       "vector (KML)": "Vektorová (KML)",
       "vector (TopoJSON)": "Vektorová (TopoJSON)",
-      "zoomToLayer": "Priblížiť na vrstvu"
+      "zoomToLayer": "Priblížiť na vrstvu",
+      "copyLayer": "Kopírovať vybranú vrstvu"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
@@ -844,10 +846,13 @@
   "MAP_SWIPE": {
     "dndLayers": "Potiahnutím presuniete vrstvy medzi stranami mapy!",
     "bottom": "Spodná časť",
-    "horizontalSwipe": "Horizontál",
+    "horizontalSwipe": "Horizontálny posuvník",
     "leftSide": "Ľavá strana",
-    "resetSlider": "Resetovať posúvač",
+    "resetSlider": "Resetovať posuvník",
     "rightSide": "Pravá strana",
-    "top": "Vrchná časť"
+    "top": "Vrchná časť",
+    "disableSwipe": "Zakázať potiahnutie prstom",
+    "enableSwipe": "Povoliť potiahnutie prstom",
+    "verticalSwipe": "Vertikálny posuvník"
   }
 }
