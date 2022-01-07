@@ -173,7 +173,6 @@ export class HsCompositionsCatalogueService {
    */
   calculateEndpointLimits(): void {
     this.matchedRecords = 0;
-    this.recordsPerPage = 20;
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep) => ep.compositionsPaging.matched != 0
     );
@@ -196,6 +195,7 @@ export class HsCompositionsCatalogueService {
       sumLimits += ep.compositionsPaging.limit;
     });
     this.recordsPerPage = sumLimits;
+    this.listNext = this.recordsPerPage;
     this.loadCompositions(true);
   }
   /**
@@ -327,6 +327,11 @@ export class HsCompositionsCatalogueService {
       (ep) => (ep.compositionsPaging.start += ep.compositionsPaging.limit)
     );
     this.loadCompositions(true);
+  }
+
+  changeRecordsPerPage(): void {
+    this.clearListCounters();
+    this.loadCompositions();
   }
 
   /**

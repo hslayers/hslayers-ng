@@ -120,11 +120,13 @@
                         [hidden]="!hsAddDataCatalogueService.dataLoading"><img class="pe-2"
                             [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
                     <li [hidden]='hsAddDataCatalogueService.catalogEntries.length > 0 || hsAddDataCatalogueService.dataLoading'
-                        class='list-group-item '>
+                        class='list-group-item' style="border-top-width: 1px; border-radius: inherit">
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                 </ul>
             </div>
-            <hs-pager [pagerService]="hsAddDataCatalogueService"></hs-pager>
+            <ng-container *ngIf="hsAddDataCatalogueService.matchedRecords !== 0 && !hsAddDataCatalogueService.dataLoading">
+                <hs-pager [pagerService]="hsAddDataCatalogueService"></hs-pager>
+            </ng-container>
         </div>
     </div>
 </div>

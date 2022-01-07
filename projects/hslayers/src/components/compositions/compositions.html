@@ -177,7 +177,9 @@
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                 </ul>
             </div>
-            <hs-pager [pagerService]="hsCompositionsCatalogueService"></hs-pager>
+            <ng-container *ngIf="hsCompositionsCatalogueService.matchedRecords !== 0 && !hsCompositionsCatalogueService.dataLoading">
+                <hs-pager [pagerService]="hsCompositionsCatalogueService"></hs-pager>
+            </ng-container>
         </div>
     </div>
 </div>
