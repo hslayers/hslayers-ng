@@ -22,8 +22,8 @@
     </div>
     <div class="btn-group align-items-center d-flex justify-content-between" style="margin-bottom: 1rem;"
       data-toggle="buttons">
-      <button class="btn btn-sm btn-secondary" type="button" (click)="hsMapSwipeService.setOrientation()"
-        [disabled]="!hsMapSwipeService.swipeControlActive">
+      <button class="btn btn-sm btn-secondary text-truncate" style="max-width: 30%;" type="button"
+        (click)="hsMapSwipeService.setOrientation()" [disabled]="!hsMapSwipeService.swipeControlActive">
         {{getOrientationButtonString() | translate}}
       </button>
       <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
@@ -66,8 +66,8 @@
           </tr>
           <tr>
             <td cdkDropList #leftList="cdkDropList" [cdkDropListConnectedTo]="[rightList, entireMapList]"
-              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event, swipeSide.Left)" (cdkDropListExited)="placeholders.left = true"
-              (cdkDropListEntered)="placeholders.left = false">
+              [cdkDropListData]="hsMapSwipeService.layers" (cdkDropListDropped)="drop($event, swipeSide.Left)"
+              (cdkDropListExited)="placeholders.left = true" (cdkDropListEntered)="placeholders.left = false">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.layers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
@@ -77,8 +77,8 @@
               </div>
             </td>
             <td cdkDropList #rightList="cdkDropList" [cdkDropListConnectedTo]="[leftList, entireMapList]"
-              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, swipeSide.Right)" (cdkDropListExited)="placeholders.right = true"
-              (cdkDropListEntered)="placeholders.right = false">
+              [cdkDropListData]="hsMapSwipeService.rightLayers" (cdkDropListDropped)="drop($event, swipeSide.Right)"
+              (cdkDropListExited)="placeholders.right = true" (cdkDropListEntered)="placeholders.right = false">
               <div class="list-group-item p-2" [ngClass]="{'activeLayer': layer.active}"
                 *ngFor="let layer of hsMapSwipeService.rightLayers" cdkDrag>
                 <ng-container *ngTemplateOutlet="layerItem;context:{layer: layer}"></ng-container>
