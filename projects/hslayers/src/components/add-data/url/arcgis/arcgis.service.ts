@@ -79,7 +79,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         .getProjection()
         .getCode()
         .toUpperCase();
-      this.data.title = caps.mapName || 'Arcgis layer';
+      this.data.title =
+        caps.documentInfo.Title || caps.mapName || 'Arcgis layer';
       this.data.description = addAnchors(caps.description);
       this.data.version = caps.currentVersion;
       this.data.image_formats = caps.supportedImageFormatTypes
