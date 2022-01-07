@@ -331,7 +331,9 @@ export class HsStylerService {
   public async geoStylerStyleToOlStyle(
     sldObject: GeoStylerStyle
   ): Promise<StyleLike> {
-    const olConverter = new OpenLayersParser();
+    const olConverter = (OpenLayersParser as any).default
+      ? new (OpenLayersParser as any).default()
+      : new OpenLayersParser();
     const {output: style} = await olConverter.writeStyle(sldObject);
     return style;
   }
