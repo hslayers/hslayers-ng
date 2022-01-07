@@ -1181,9 +1181,11 @@ export class HsLayerManagerService {
     Creats a copy of the currentLayer
   */
   copyLayer(newTitle: string): void {
-    const copiedLayer = new VectorLayer(
-      this.currentLayer.layer.getProperties()
-    );
+    const clonedSource = Object.create(this.currentLayer.layer.getSource());
+    const copiedLayer = new VectorLayer({
+      properties: this.currentLayer.layer.getProperties(),
+    });
+    copiedLayer.setSource(clonedSource);
     let title = getTitle(copiedLayer);
     if (newTitle && newTitle !== title) {
       title = newTitle;
