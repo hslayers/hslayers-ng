@@ -133,8 +133,8 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error' }), function (req, res) {
-  if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    res.send(`Logged in as ${req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>
+  if (req.session.passport && req.session.passport.user && (req.session.passport.user.authenticated || req.session.passport.user.ticket)) {
+    res.send(`Logged in as ${req.session.passport.user.screenName || req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>
     <script>
     function inIframe () {
         try {
