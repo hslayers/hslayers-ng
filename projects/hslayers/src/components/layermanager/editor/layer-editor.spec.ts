@@ -11,7 +11,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 
-import {HsAddDataService} from '../../add-data/add-data.service';
+import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../../draw/draw.service';
@@ -84,7 +84,7 @@ describe('layermanager', () => {
         HsLayerEditorService,
         HsLayerEditorVectorLayerService,
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
-        {provide: HsAddDataService, useValue: new emptyMock()},
+        {provide: HsAddDataOwsService, useValue: new emptyMock()},
         {
           provide: HsShareUrlService,
           useValue: {
