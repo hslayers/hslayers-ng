@@ -1195,16 +1195,26 @@ export class HsLayerManagerService {
         : (copyTitle = copyTitle + ' (1)');
     }
     if (this.HsLayerUtilsService.isLayerVectorLayer(this.currentLayer.layer)) {
-      const clonedSource = new VectorSource({
-        features: (
+      let features;
+      if (this.HsLayerUtilsService.isLayerClustered(this.currentLayer.layer)) {
+        features = (this.currentLayer.layer.getSource() as Cluster)
+          .getSource()
+          ?.getFeatures();
+      } else {
+        features = (
           this.currentLayer.layer.getSource() as VectorSource<Geometry>
-        ).getFeatures(),
-      });
+        )?.getFeatures();
+      }
+
       const copiedLayer = new VectorLayer({
         properties: this.currentLayer.layer.getProperties(),
+        source: new VectorSource({
+          features,
+        }),
+        style: (
+          this.currentLayer.layer as VectorLayer<VectorSource<Geometry>>
+        ).getStyle(),
       });
-
-      copiedLayer.setSource(clonedSource);
       setTitle(copiedLayer, copyTitle);
       this.HsMapService.addLayer(copiedLayer);
     } else {
