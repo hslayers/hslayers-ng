@@ -1,5 +1,5 @@
 const express = require('express');
-//const cors = require('cors');
+const cors = require('cors');
 const share = express();
 
 const Database = require('better-sqlite3');
@@ -7,7 +7,7 @@ const Database = require('better-sqlite3');
 // parse incoming POST requests body to JSON
 share.use(express.json());
 // handle CORS
-//share.use(cors())
+share.use(cors())
 share.set('view engine', 'pug')
 share.set('views', __dirname + '/views/');
 
@@ -46,7 +46,11 @@ share.get('/', context => {
 });
 
 // handle POST requests
-share.post('/', express.json({ strict: false, type: '*/*' }), context => {
+share.post('/', express.json({
+  limit: process.env.PAYLOAD_LIMIT ? process.env.PAYLOAD_LIMIT : '100kb',
+  strict: false,
+  type: '*/*'
+}), context => {
   if (context.body && context.body.request) {
     switch (context.body.request.toLowerCase()) {
       case 'save':
@@ -66,11 +70,13 @@ share.post('/', express.json({ strict: false, type: '*/*' }), context => {
         break;
 
       default:
-        formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
+        console.error("Request not specified - switch");
+        formatResponseJson({ success: false, error: "Request not specified - switch" }, context, 400);
     }
   }
   else {
-    formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
+    console.error("Request not specified - no html body");
+    formatResponseJson({ success: false, error: "Request not specified - no html body" }, context, 400);
   }
 });
 
@@ -160,6 +166,7 @@ function insertRecord(record, context) {
   const db = new Database(process.env.DB_PATH, process.env.NODE_ENV == "production" ? {} : { verbose: console.log });
 
   try {
+    db.exec('CREATE TABLE IF NOT EXISTS share (id TEXT PRIMARY KEY, data TEXT);');
     const sqlinsert = db.prepare('INSERT INTO share (id, data) VALUES (@id, @data)');
 
     const insertInto = db.transaction((comp) => {
