@@ -148,26 +148,6 @@ export class HsEventBusService {
    */
   mapClicked: Subject<any> = new Subject();
   /**
-   * replaces 'ows.filling'
-   */
-  owsFilling: Subject<{
-    type: any;
-    uri: any;
-    layer: any;
-    newTitle?: string;
-    style?: string;
-  }> = new Subject();
-  /**
-   * replaces `ows.${type}_connecting`
-   */
-  owsConnecting: BehaviorSubject<{
-    type: AddDataUrlType;
-    uri: string;
-    layer?: any;
-    newTitle?: string;
-    style?: string;
-  }> = new BehaviorSubject({type: undefined, uri: '', layer: null});
-  /**
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl
    */

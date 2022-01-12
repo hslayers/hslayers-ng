@@ -6,10 +6,10 @@ import {Subject} from 'rxjs';
 
 import {FileDescriptor} from '../file/types/file-descriptor.type';
 import {HsAddDataCommonService} from './common.service';
+import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanLayerDescriptor} from '../../save-map/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
@@ -34,8 +34,8 @@ export class HsAddDataCommonFileService {
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsLaymanService: HsLaymanService,
-    public hsEventBusService: HsEventBusService,
-    public hsAddDataCommonService: HsAddDataCommonService
+    public hsAddDataCommonService: HsAddDataCommonService,
+    public hsAddDataOwsService: HsAddDataOwsService
   ) {}
 
   clearParams(): void {
@@ -263,8 +263,8 @@ export class HsAddDataCommonFileService {
           this.hsLaymanService.totalProgress = 0;
           this.hsAddDataService.selectType('url');
           this.layerAddedAsWms.next(true);
-          setTimeout(() => {
-            this.hsEventBusService.owsFilling.next({
+          setTimeout(async () => {
+            await this.hsAddDataOwsService.connectToOWS({
               type: 'wms',
               uri: descriptor.wms.url,
               layer: data.name,

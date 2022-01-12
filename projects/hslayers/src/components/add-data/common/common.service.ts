@@ -35,11 +35,6 @@ export class HsAddDataCommonService {
     this.loadingInfo = false;
     this.showDetails = false;
     this.url = '';
-    this.hsEventBusService.owsConnecting.next({
-      type: undefined,
-      uri: '',
-      layer: null,
-    });
   }
 
   setPanelToCatalogue(): void {
