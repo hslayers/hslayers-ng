@@ -17,7 +17,7 @@
     "build-css-colors": "npx sass --load-path=node_modules projects/hslayers/src/css/hslayers-colors.scss dist/hslayers/css/hslayers-ng-colors.css",
     "start-test-app": "ng serve test-app --hmr",
     "start-decoupling-test-app": "ng serve decoupling-test-app --hmr",
-    "start-test-statistics-app": "ng serve test-statistics-app --hmr",
+    "start-test-statistics-app": "ng serve test-statistics-app",
     "start-cesium-test-app": "ng serve cesium-test-app --hmr",
     "build-watch": "ng build hslayers --watch",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
@@ -83,6 +83,7 @@
   },
   "devDependencies": {
     "@angular-architects/module-federation": "^14.0.1",
+    "ngx-build-plus": "^13.0.1",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular-devkit/build-angular": "^13.1.1",
     "@angular-eslint/builder": "^13.0.1",

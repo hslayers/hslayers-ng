@@ -3,14 +3,8 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [],
-    "target": "ES5",
-    "paths": {
-      "@angular/*": [ "node_modules/@angular/*" ],
-      "rxjs/*": [ "node_modules/rxjs/*" ],
-      "hslayers-ng": ["projects/hslayers/src/public-api"],
-      "hslayers-ng/*": ["projects/hslayers/*", "projects/hslayers"],
-      "ol/*": ["node_modules/ol/*"],
-    }
+    "target": "es2020",
+    "module": "es2020",
   },
   "files": [
     "src/main.ts",
