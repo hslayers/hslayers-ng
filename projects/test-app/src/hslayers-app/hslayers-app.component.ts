@@ -337,6 +337,8 @@ export class HslayersAppComponent {
         {name: 'warning', url: '/assets/icons/warning.svg'},
         {name: 'wifi', url: '/assets/icons/wifi8.svg'},
       ],
+      status_manager_url: 'http://localhost:8086',
+
       popUpDisplay: 'hover',
       default_layers: [
         new Tile({
