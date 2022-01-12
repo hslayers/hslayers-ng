@@ -139,6 +139,8 @@ export class HsMapService {
   element: any;
   visible: boolean;
   featureLayerMapping = {};
+  /** Copy of the default_view for map resetting purposes */
+  originalView: {center: number[]; zoom: number};
 
   constructor(
     public HsConfig: HsConfig,
@@ -320,15 +322,15 @@ export class HsMapService {
         controls: this.controls,
         target: this.mapElement,
         interactions: [],
-        view: this.cloneView(
-          this.HsConfig.default_view || this.createPlaceholderView()
-        ),
+        view: this.HsConfig.default_view ?? this.createPlaceholderView(),
       });
+      const view = this.map.getView();
+      this.originalView = {center: view.getCenter(), zoom: view.getZoom()};
 
-      this.map.getView().on('change:center', (e) => {
+      view.on('change:center', (e) => {
         this.extentChanged(e);
       });
-      this.map.getView().on('change:resolution', (e) => {
+      view.on('change:resolution', (e) => {
         this.extentChanged(e);
       });
 
@@ -427,15 +429,6 @@ export class HsMapService {
         });
       }
     });
-  }
-
-  //clone View to not overwrite default
-  /**
-   * @param template
-   */
-  cloneView(template: View): View {
-    const view = new View(template.getProperties());
-    return view;
   }
 
   /**
@@ -717,9 +710,8 @@ export class HsMapService {
    * @description Reset map view to view configured in app config
    */
   resetView() {
-    this.map.setView(
-      this.cloneView(this.HsConfig.default_view || this.createPlaceholderView())
-    );
+    this.map.getView().setCenter(this.originalView.center);
+    this.map.getView().setZoom(this.originalView.zoom);
   }
 
   /**
