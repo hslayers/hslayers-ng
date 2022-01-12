@@ -4,12 +4,6 @@ import {FormsModule} from '@angular/forms';
 
 import {TranslateModule} from '@ngx-translate/core';
 
-import {
-  BASE_DATA_TYPE,
-  TYPE_CAPABILITIES_SERVICE,
-  TYPE_SERVICE,
-} from './injection-tokens.type';
-import {HsAddDataUrlBaseComponent} from './add-data-url-base.component';
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
 import {HsUrlArcGisModule} from './arcgis/arcgis.module';
@@ -19,7 +13,7 @@ import {HsUrlWmtsModule} from './wmts/wmts.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsAddDataUrlComponent, HsAddDataUrlBaseComponent],
+  declarations: [HsAddDataUrlComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,11 +25,6 @@ import {HsUrlWmtsModule} from './wmts/wmts.module';
     HsAddDataVectorModule,
     HsUrlWmtsModule,
   ],
-  providers: [
-    {provide: BASE_DATA_TYPE, useValue: ''},
-    {provide: TYPE_SERVICE, useValue: null},
-    {provide: TYPE_CAPABILITIES_SERVICE, useValue: null},
-  ],
-  exports: [HsAddDataUrlComponent, HsAddDataUrlBaseComponent],
+  exports: [HsAddDataUrlComponent],
 })
 export class HsAddDataUrlModule {}
