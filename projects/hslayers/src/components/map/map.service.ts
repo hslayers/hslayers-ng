@@ -140,7 +140,7 @@ export class HsMapService {
   visible: boolean;
   featureLayerMapping = {};
   /** Copy of the default_view for map resetting purposes */
-  originalView: {center: number[]; zoom: number};
+  originalView: {center: number[]; zoom: number; rotation: number};
 
   constructor(
     public HsConfig: HsConfig,
@@ -325,7 +325,11 @@ export class HsMapService {
         view: this.HsConfig.default_view ?? this.createPlaceholderView(),
       });
       const view = this.map.getView();
-      this.originalView = {center: view.getCenter(), zoom: view.getZoom()};
+      this.originalView = {
+        center: view.getCenter(),
+        zoom: view.getZoom(),
+        rotation: view.getRotation(),
+      };
 
       view.on('change:center', (e) => {
         this.extentChanged(e);
@@ -712,6 +716,7 @@ export class HsMapService {
   resetView() {
     this.map.getView().setCenter(this.originalView.center);
     this.map.getView().setZoom(this.originalView.zoom);
+    this.map.getView().setRotation(this.originalView.rotation);
   }
 
   /**
