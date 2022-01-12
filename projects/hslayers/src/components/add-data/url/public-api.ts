@@ -16,4 +16,4 @@ export * from './add-data-url.service';
 export * from './models/url-type-service.model';
 export * from './types/data-object.type';
 export * from './add-data-url-values';
-export * from './add-data-url-base.component';
+export * from './add-data-ows.service';
