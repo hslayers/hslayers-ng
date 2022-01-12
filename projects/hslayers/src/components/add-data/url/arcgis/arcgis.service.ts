@@ -66,54 +66,52 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
   }
 
-  createLayer(response): Promise<void> {
-    return new Promise(() => {
-      try {
-        const caps = response;
-        this.data.map_projection = this.hsMapService.map
-          .getView()
-          .getProjection()
-          .getCode()
-          .toUpperCase();
-        this.data.title = caps.mapName || 'Arcgis layer';
-        this.data.description = addAnchors(caps.description);
-        this.data.version = caps.currentVersion;
-        this.data.image_formats = caps.supportedImageFormatTypes
-          ? caps.supportedImageFormatTypes.split(',')
-          : [];
-        this.data.query_formats = caps.supportedQueryFormats
-          ? caps.supportedQueryFormats.split(',')
-          : [];
-        this.data.srss = caps.spatialReference?.wkid
-          ? [caps.spatialReference.wkid.toString()]
-          : [];
-        this.data.services = caps.layers || caps.services;
-        this.data.srs = (() => {
-          for (const srs of this.data.srss) {
-            if (srs.includes('3857')) {
-              return srs;
-            }
+  async createLayer(response): Promise<void> {
+    try {
+      const caps = response;
+      this.data.map_projection = this.hsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+      this.data.title = caps.mapName || 'Arcgis layer';
+      this.data.description = addAnchors(caps.description);
+      this.data.version = caps.currentVersion;
+      this.data.image_formats = caps.supportedImageFormatTypes
+        ? caps.supportedImageFormatTypes.split(',')
+        : [];
+      this.data.query_formats = caps.supportedQueryFormats
+        ? caps.supportedQueryFormats.split(',')
+        : [];
+      this.data.srss = caps.spatialReference?.wkid
+        ? [caps.spatialReference.wkid.toString()]
+        : [];
+      this.data.services = caps.layers || caps.services;
+      this.data.srs = (() => {
+        for (const srs of this.data.srss) {
+          if (srs.includes('3857')) {
+            return srs;
           }
-          return this.data.srss[0];
-        })();
-        this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-          this.data.srs
-        );
-        this.data.image_format = getPreferredFormat(this.data.image_formats, [
-          'PNG32',
-          'PNG',
-          'GIF',
-          'JPG',
-        ]);
-        this.data.query_format = getPreferredFormat(this.data.query_formats, [
-          'geoJSON',
-          'JSON',
-        ]);
-        this.hsAddDataCommonService.loadingInfo = false;
-      } catch (e) {
-        throw new Error(e);
-      }
-    });
+        }
+        return this.data.srss[0];
+      })();
+      this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
+        this.data.srs
+      );
+      this.data.image_format = getPreferredFormat(this.data.image_formats, [
+        'PNG32',
+        'PNG',
+        'GIF',
+        'JPG',
+      ]);
+      this.data.query_format = getPreferredFormat(this.data.query_formats, [
+        'geoJSON',
+        'JSON',
+      ]);
+      this.hsAddDataCommonService.loadingInfo = false;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
   /**
@@ -237,7 +235,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     });
     const new_layer = new Tile({
       properties: {
-        title: options.layerTitle,
+        title:
+          this.hsAddDataCommonService.layerToSelectNewTitle ??
+          options.layerTitle,
+        name: options.layerTitle,
         removable: true,
         path: options.path,
         base: this.data.base,

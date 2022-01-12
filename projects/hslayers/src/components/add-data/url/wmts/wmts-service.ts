@@ -171,7 +171,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     try {
       const wmts = new Tile({
         properties: {
-          title: layer.Title,
+          title:
+            this.hsAddDataCommonService.layerToSelectNewTitle ?? layer.Title,
+          name: layer.Title,
           info_format: this.getPreferredInfoFormat(layer.ResourceURL),
           queryCapabilities: false,
           removable: true,

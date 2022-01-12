@@ -54,9 +54,10 @@ export class HsAddDataUrlBaseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.hsEventBusService.owsConnecting
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({type, uri, layer, style}) => {
+      .subscribe(({type, uri, layer, newTitle, style}) => {
         if (type === this.baseDataType) {
           this.hsAddDataCommonService.layerToSelect = layer;
+          this.hsAddDataCommonService.layerToSelectNewTitle = newTitle;
           this.setUrlAndConnect(uri, style);
         }
       });

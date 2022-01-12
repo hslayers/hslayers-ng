@@ -10,6 +10,7 @@ import {HsToastService} from '../../layout/toast/toast.service';
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonService {
   layerToSelect: string;
+  layerToSelectNewTitle: string;
   loadingInfo = false;
   showDetails = false;
   url: string;
@@ -30,6 +31,7 @@ export class HsAddDataCommonService {
   }
   clearParams(): void {
     this.layerToSelect = '';
+    this.layerToSelectNewTitle = null;
     this.loadingInfo = false;
     this.showDetails = false;
     this.url = '';
@@ -56,7 +58,8 @@ export class HsAddDataCommonService {
     for (const layer of services) {
       //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
-      if (layer.Name.toLowerCase() === this.layerToSelect.toLowerCase()) {
+      const layerName = layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase();
+      if (layerName === this.layerToSelect.toLowerCase()) {
         layer.checked = true;
       }
     }

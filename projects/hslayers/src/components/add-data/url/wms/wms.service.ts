@@ -435,7 +435,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     const metadata =
       this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
     const layerOptions = {
-      title: options.layerName,
+      title:
+        this.hsAddDataCommonService.layerToSelectNewTitle ?? options.layerName,
       name: options.layerName,
       source,
       minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(

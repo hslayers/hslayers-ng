@@ -150,8 +150,13 @@ export class HsEventBusService {
   /**
    * replaces 'ows.filling'
    */
-  owsFilling: Subject<{type: any; uri: any; layer: any; style?: string}> =
-    new Subject();
+  owsFilling: Subject<{
+    type: any;
+    uri: any;
+    layer: any;
+    newTitle?: string;
+    style?: string;
+  }> = new Subject();
   /**
    * replaces `ows.${type}_connecting`
    */
@@ -159,6 +164,7 @@ export class HsEventBusService {
     type: AddDataUrlType;
     uri: string;
     layer?: any;
+    newTitle?: string;
     style?: string;
   }> = new BehaviorSubject({type: undefined, uri: '', layer: null});
   /**

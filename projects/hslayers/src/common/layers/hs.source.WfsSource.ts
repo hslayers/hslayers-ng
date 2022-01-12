@@ -14,7 +14,6 @@ export type WfsOptions = {
   output_format?: string;
   crs?: string;
   provided_url?: string;
-  layer?: any;
   layer_name?: string;
   map_projection?: any;
 };
@@ -32,7 +31,6 @@ export class WfsSource extends Vector<Geometry> {
       output_format,
       crs,
       provided_url,
-      layer,
       layer_name,
       map_projection,
     }: WfsOptions
