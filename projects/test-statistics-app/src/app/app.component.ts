@@ -189,7 +189,6 @@ export class HslayersAppComponent {
       ],
     });
     hsLayoutService.createPanel(HsQueryComponent, {});
-    hsLayoutService.createPanel(HsStatisticsUploadPanelComponent, {});
     hsLayoutService.createPanel(HsStatisticsPanelComponent, {});
     hsLayoutService.createPanel(HsLayerManagerComponent, {});
     hsLayoutService.createPanel(HsStylerComponent, {});

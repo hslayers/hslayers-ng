@@ -4,10 +4,6 @@ import Papa from 'papaparse';
 import {
   HsConfig,
   HsDialogContainerService,
-  HsLanguageService,
-  HsLayoutService,
-  HsPanelBaseComponent,
-  HsSidebarService,
   HsUploadComponent,
   HsUploadedFiles,
 } from 'hslayers-ng';
@@ -19,12 +15,9 @@ import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
   selector: 'hs-statistics-upload',
   templateUrl: './upload-panel.component.html',
 })
-export class HsStatisticsUploadPanelComponent
-  extends HsPanelBaseComponent
-  implements AfterViewInit
+export class HsStatisticsUploadPanelComponent implements AfterViewInit
 {
   public title = '';
-  name = 'statistics-upload';
   columns: string[];
   uses: Usage;
   rows: any[];
@@ -39,22 +32,8 @@ export class HsStatisticsUploadPanelComponent
   constructor(
     public hsStatisticsService: HsStatisticsService,
     public hsConfig: HsConfig,
-    hsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService,
     private hsDialogContainerService: HsDialogContainerService
   ) {
-    super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'statistics-upload',
-      module: 'hs.statistics-upload',
-      order: 10,
-      fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.UPLOAD'),
-      description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.UPLOAD'),
-      icon: 'icon-upload',
-    });
     if (!this.rows && !this.columns) {
       const savedTable = localStorage.getItem('hs_statistics_table');
       if (savedTable) {

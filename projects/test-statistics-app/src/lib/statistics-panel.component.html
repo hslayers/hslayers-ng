@@ -1,41 +1,59 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
     <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
     <div class="card-body">
-        <div>
-            {{'STATISTICS.CURRENT_VARIABLES' |
-            translate}}: {{hsStatisticsService.corpus?.variables?.length ?? '0'}}
 
-            <ng-container *ngIf="hsStatisticsService.corpus?.variables?.length > 0">
-                <ul class="list-group hs-styler-content-list">
-                    <ng-container *ngFor="let variable of hsStatisticsService.corpus.variables">
-                        <li
-                            class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center">
-                            <div>
-                                {{variable}}
-                            </div>
-                            <div>
-                                <button class="btn btn-danger btn-sm me-0" (click)="removeVariable(variable)"
-                                    data-toggle="tooltip" [title]="'STATISTICS.removeVariable' | translate">
-                                    <i class="icon-trash"></i>
-                                </button>
-                            </div>
-                        </li>
+        <ul ngbNav #nav="ngbNav" [(activeId)]="hsStatisticsService.activeTab" class="nav-tabs">
+            <li [ngbNavItem]="1">
+              <a ngbNavLink>Upload</a>
+              <ng-template ngbNavContent>
+                <hs-statistics-upload></hs-statistics-upload>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+              <a ngbNavLink>Data</a>
+              <ng-template ngbNavContent>
+                <div>
+                    {{'STATISTICS.CURRENT_VARIABLES' |
+                    translate}}: {{hsStatisticsService.corpus?.variables?.length ?? '0'}}
+        
+                    <ng-container *ngIf="hsStatisticsService.corpus?.variables?.length > 0">
+                        <ul class="list-group hs-styler-content-list">
+                            <ng-container *ngFor="let variable of hsStatisticsService.corpus.variables">
+                                <li
+                                    class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center">
+                                    <div>
+                                        {{variable}}
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-danger btn-sm me-0" (click)="removeVariable(variable)"
+                                            data-toggle="tooltip" [title]="'STATISTICS.removeVariable' | translate">
+                                            <i class="icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ng-container>
+                        </ul>
                     </ng-container>
-                </ul>
-            </ng-container>
-            <div class="btn-group mt-2 align-items-center d-flex justify-content-between" data-toggle="buttons">
-                <button type="button" class="btn btn-sm btn-primary m-1" (click)="correlate()">{{'STATISTICS.CORRELATE' |
-                    translate}}</button>
-                <button type="button" class="btn btn-sm btn-primary m-1" (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
-                    translate}}</button>
-                <button type="button" class="btn btn-sm btn-primary m-1" (click)="regression()">{{'STATISTICS.REGRESSION'
-                    |
-                    translate}}</button>
-                <button type="button" class="btn btn-sm btn-secondary m-1" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
-                    translate}}</button>
-                <button type="button" class="btn btn-sm btn-danger m-1" (click)="clearAll()">{{'STATISTICS.CLEAR_ALL_DATA' |
-                    translate}}</button>
-            </div>
-        </div>
+                    <div class="btn-group mt-2 align-items-center d-flex justify-content-between" data-toggle="buttons">
+                        <button type="button" class="btn btn-sm btn-primary m-1" (click)="correlate()">{{'STATISTICS.CORRELATE' |
+                            translate}}</button>
+                        <button type="button" class="btn btn-sm btn-primary m-1" (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
+                            translate}}</button>
+                        <button type="button" class="btn btn-sm btn-primary m-1" (click)="regression()">{{'STATISTICS.REGRESSION'
+                            |
+                            translate}}</button>
+                        <button type="button" class="btn btn-sm btn-secondary m-1" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
+                            translate}}</button>
+                        <button type="button" class="btn btn-sm btn-danger m-1" (click)="clearAll()">{{'STATISTICS.CLEAR_ALL_DATA' |
+                            translate}}</button>
+                    </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+          
+          <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        
+        
     </div>
 </div>

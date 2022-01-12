@@ -35,6 +35,7 @@ export class HsStatisticsService {
   /** Main hash table of time+location keys and values which are populated from columns marked as 'variable'*/
   corpus: CorpusItems = {dict: {}, variables: [], uses: {}};
   clearData$: Subject<void> = new Subject();
+  activeTab = 1;
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsDialogContainerService: HsDialogContainerService

@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {HsDownloadModule} from 'hslayers-ng';
 import {HsPanelHelpersModule, HsUploadModule} from 'hslayers-ng';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {AbsPipe} from './abs.pipe';
@@ -37,6 +37,7 @@ import {HsStatisticsUploadPanelComponent} from './upload-panel';
         TranslateModule,
         HsUploadModule,
         NgbDropdownModule,
+        NgbNavModule,
         HsDownloadModule,
     ],
     exports: [

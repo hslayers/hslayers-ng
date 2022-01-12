@@ -1,55 +1,50 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
-    <div class="card-body">
-        <div class="card-body">
-            <div>
-                {{'STATISTICS.DOWNLOAD_TEMPLATE_HINT' |
-                    translate}} <a download="template.csv" [hsDownload]="uploadTemplate" mimeType="text/csv"
-                [href]="downloadData" (downloadPrepared)="downloadData = $event" [title]="'STATISTICS.HERE' | translate">
-                here</a>.
-            </div>
-            <div class="form-group m-3">
-                <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".csv">
-                </hs-file-upload>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn m-1 btn-secondary" (click)="rowsCollapsed = !rowsCollapsed"
-                    *ngIf="dataAvailable()">{{'STATISTICS.COLLAPSE_ROWS' |
-                    translate}}</button>
-            </div>
-            <ng-container>
-                <table class="table table-sm table-striped table-bordered" style="table-layout: fixed;max-height: 500px;display: block;overflow-y: scroll;">
-                    <thead>
-                        <th *ngFor="let col of columns">
-                            <select class="form-control form-select" style="border: none;" [(ngModel)]="uses[col]">
-                                <option value="ignore">Ignore</option>
-                                <option value="location">Location</option>
-                                <option value="time">Time</option>
-                                <option value="variable">Variable</option>
-                            </select>
-                        </th>
-                    </thead>
-                    <thead style="vertical-align: middle;">
-                        <th *ngFor="let col of columns">{{col}}</th>
-                    </thead>
-                    <tbody [hidden]="rowsCollapsed">
-                        <tr *ngFor="let row of rows">
-                            <td *ngFor="let col of columns">{{row[col]}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </ng-container>
-
-            <div class="btn-group align-items-center" data-toggle="buttons">
-                <button type="button" class="btn m-1 btn-primary"
-                    (click)="hsStatisticsService.store(rows, columns, uses)">{{'STATISTICS.STORE' |
-                    translate}}</button>
-                <button type="button" class="btn m-1 btn-secondary"
-                    (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP'
-                    |
-                    translate}}</button>
-            </div>
-
-        </div>
+<div>
+    <div>
+        {{'STATISTICS.DOWNLOAD_TEMPLATE_HINT' |
+        translate}} <a download="template.csv" [hsDownload]="uploadTemplate" mimeType="text/csv" [href]="downloadData"
+            (downloadPrepared)="downloadData = $event" [title]="'STATISTICS.HERE' | translate">
+            here</a>.
     </div>
+    <div class="form-group m-3">
+        <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".csv">
+        </hs-file-upload>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn m-1 btn-secondary" (click)="rowsCollapsed = !rowsCollapsed"
+            *ngIf="dataAvailable()">{{'STATISTICS.COLLAPSE_ROWS' |
+            translate}}</button>
+    </div>
+    <ng-container>
+        <table class="table table-sm table-striped table-bordered"
+            style="table-layout: fixed;max-height: 500px;display: block;overflow-y: scroll;">
+            <thead>
+                <th *ngFor="let col of columns">
+                    <select class="form-control form-select" style="border: none;" [(ngModel)]="uses[col]">
+                        <option value="ignore">Ignore</option>
+                        <option value="location">Location</option>
+                        <option value="time">Time</option>
+                        <option value="variable">Variable</option>
+                    </select>
+                </th>
+            </thead>
+            <thead style="vertical-align: middle;">
+                <th *ngFor="let col of columns">{{col}}</th>
+            </thead>
+            <tbody [hidden]="rowsCollapsed">
+                <tr *ngFor="let row of rows">
+                    <td *ngFor="let col of columns">{{row[col]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+
+    <div class="btn-group align-items-center" data-toggle="buttons">
+        <button type="button" class="btn m-1 btn-primary"
+            (click)="hsStatisticsService.store(rows, columns, uses)">{{'STATISTICS.STORE' |
+            translate}}</button>
+        <button type="button" class="btn m-1 btn-secondary" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP'
+            |
+            translate}}</button>
+    </div>
+
 </div>
