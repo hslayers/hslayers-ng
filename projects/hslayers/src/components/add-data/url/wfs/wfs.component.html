@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnectWfs" role="form">
-    <hs-common-url type="wfs" [(url)]="hsAddDataCommonService.url" (connect)="connect()"></hs-common-url>
+    <hs-common-url type="wfs" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()"></hs-common-url>
 
     <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress>
     
@@ -14,7 +14,7 @@
         <ul class="list-group">
             <li *ngFor="let layer of data.services; trackBy:( 'Name' | trackByProperty )" class="list-group-item py-2 clearfix">
                 <div>
-                    <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer" (change)="changed(data)" />
+                    <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer" (change)="hsAddDataOwsService.changed(data)" />
                     {{layer.Title}}
                 </div>
                 <div class="alert alert-primary d-flex m-1" role="alert"
