@@ -11,6 +11,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {ImageWMS, Vector as VectorSource} from 'ol/source';
 
+import {HsAddDataService} from '../../add-data/add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../../draw/draw.service';
 import {HsLayerListComponent} from './layermanager-layerlist.component';
@@ -83,6 +84,7 @@ describe('layermanager-layer-list', () => {
       providers: [
         HsLayerManagerService,
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
+        {provide: HsAddDataService, useValue: new emptyMock()},
         {
           provide: HsWmsGetCapabilitiesService,
           useValue: {
