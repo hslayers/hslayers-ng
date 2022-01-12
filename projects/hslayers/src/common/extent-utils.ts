@@ -20,7 +20,20 @@ export function addExtentFeature(
     geometry: null,
     id: generateUuid(),
   };
-  const mapExtent = mapProjection.getExtent();
+  let mapExtent = mapProjection.getExtent();
+  if (mapExtent === null) {
+    console.warn(
+      'Map projection extent not found - fallback value used. To prevent unexpected results of app functionalities define it by yourself. Eg. mapExtent.setExtent([extent])'
+    );
+    mapProjection.setExtent(
+      transformExtentValue(
+        parseExtent([-180, -90, 180, 90]),
+        mapProjection,
+        true
+      )
+    );
+    mapExtent = mapProjection.getExtent();
+  }
   const recordBBox = record.bbox || record.bounding_box;
   const b = parseExtent(recordBBox || ['180', '180', '180', '180']);
   //Check if height or Width covers the whole screen
