@@ -32,7 +32,7 @@ export class HsStatusManagerService implements HsSaverService {
       //Full url specified
       return this.HsConfig.status_manager_url;
     } else {
-      return hostName + (this.HsConfig.status_manager_url || '/statusmanager/');
+      return hostName + (this.HsConfig.status_manager_url || '/share/');
     }
   }
 
