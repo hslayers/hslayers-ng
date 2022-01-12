@@ -14,9 +14,8 @@ import {
 } from 'ol/layer';
 import {Injectable, NgZone} from '@angular/core';
 
-import {AddDataUrlType} from '../add-data/url/types/url.type';
 import {HS_PRMS} from '../permalink/get-params';
-import {HsAddDataService} from '../add-data/add-data.service';
+import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
 import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
 import {HsConfig} from '../../config.service';
 import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
@@ -142,7 +141,7 @@ export class HsLayerManagerService {
     public HsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsQueuesService: HsQueuesService,
-    public HsAddDataService: HsAddDataService,
+    public HsAddDataOwsService: HsAddDataOwsService,
     private HsShareUrlService: HsShareUrlService,
     public HsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
@@ -1218,18 +1217,13 @@ export class HsLayerManagerService {
       setTitle(copiedLayer, copyTitle);
       this.HsMapService.addLayer(copiedLayer);
     } else {
-      const type = this.getLayerSourceType(
-        this.currentLayer.layer
-      ).toLowerCase() as AddDataUrlType;
       const url = this.HsLayerUtilsService.getURL(this.currentLayer.layer);
       const name =
         getCachedCapabilities(this.currentLayer.layer)?.Name ??
         getName(this.currentLayer.layer);
-      this.HsLayoutService.setMainPanel('addData');
-      this.HsAddDataService.typeSelected = 'url';
-      setTimeout(() => {
-        this.HsEventBusService.owsFilling.next({
-          type: type,
+      setTimeout(async () => {
+        await this.HsAddDataOwsService.connectToOWS({
+          type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
           uri: url,
           layer: name,
           newTitle: copyTitle,

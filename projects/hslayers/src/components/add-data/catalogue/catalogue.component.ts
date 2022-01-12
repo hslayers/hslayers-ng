@@ -1,6 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
-
-import {Subscription} from 'rxjs';
+import {Component} from '@angular/core';
 
 import {DatasetType} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
@@ -10,7 +8,6 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsConfig} from '../../../config.service';
 import {HsCoreService} from '../../core/core.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -22,7 +19,7 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-add-data-catalogue',
   templateUrl: './catalogue.component.html',
 })
-export class HsAddDataCatalogueComponent implements OnDestroy {
+export class HsAddDataCatalogueComponent {
   typeSelected: string;
   types: any[];
   data: any;
@@ -34,7 +31,6 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
   dataTypes = ['all', 'service', 'dataset'];
   sortbyTypes = ['date', 'title', 'bbox'];
   optionsButtonLabel = 'more';
-  owsConnectingSubscription: Subscription;
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -42,7 +38,6 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
     public hsCore: HsCoreService, //Used in template
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //Used in template
-    public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
     public hsLaymanService: HsLaymanService //Used in template
@@ -50,17 +45,8 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
     this.data = hsAddDataCatalogueService.data;
     this.advancedSearch = false;
     this.queryCatalogs = () => hsAddDataCatalogueService.queryCatalogs();
-    this.owsConnectingSubscription =
-      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-        if (type == 'wms') {
-          this.data.wms_connecting = true;
-        }
-      });
     this.loaderImage =
       this.hsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
-  }
-  ngOnDestroy(): void {
-    this.owsConnectingSubscription.unsubscribe();
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {

@@ -8,6 +8,7 @@ import {DatasetType, HsAddDataService} from '../add-data.service';
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
+import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataVectorService} from '../vector/vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
@@ -67,7 +68,8 @@ export class HsAddDataCatalogueService {
     public hsAddDataService: HsAddDataService,
     public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
     private zone: NgZone,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
+    public hsAddDataOwsService: HsAddDataOwsService
   ) {
     this.data.query = {
       textFilter: '',
@@ -79,7 +81,6 @@ export class HsAddDataCatalogueService {
 
     this.data.textField = 'AnyText';
     this.data.selectedLayer = null;
-    this.data.wms_connecting = false;
     this.data.id_selected = 'OWS';
     this.data.filterByExtent = true;
     this.data.onlyMine = false;
@@ -394,8 +395,8 @@ export class HsAddDataCatalogueService {
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
         : whatToAdd.link;
       this.datasetSelect('url');
-      setTimeout(() => {
-        this.hsEventBusService.owsFilling.next({
+      setTimeout(async () => {
+        await this.hsAddDataOwsService.connectToOWS({
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
           layer: ds.type == 'layman' ? layer.name : undefined,
@@ -409,8 +410,8 @@ export class HsAddDataCatalogueService {
               link.toLowerCase().includes('wfs')
             )[0]
           : whatToAdd.link;
-        setTimeout(() => {
-          this.hsEventBusService.owsFilling.next({
+        setTimeout(async () => {
+          await this.hsAddDataOwsService.connectToOWS({
             type: whatToAdd.type.toLowerCase(),
             uri: decodeURIComponent(whatToAdd.link),
             layer: undefined, //layer.title || layer.name ||
@@ -437,8 +438,8 @@ export class HsAddDataCatalogueService {
           this.hsAddDataService.typeSelected = 'catalogue';
         } else {
           //Layman layers without write access
-          setTimeout(() => {
-            this.hsEventBusService.owsFilling.next({
+          setTimeout(async () => {
+            await this.hsAddDataOwsService.connectToOWS({
               type: 'wfs',
               uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
               style: whatToAdd.style,
@@ -466,7 +467,6 @@ export class HsAddDataCatalogueService {
   }
 
   datasetSelect(id_selected: DatasetType): void {
-    this.data.wms_connecting = false;
     this.data.id_selected = id_selected;
     this.hsAddDataService.selectType(id_selected);
     this.calcExtentLayerVisibility();
