@@ -95,7 +95,7 @@ export class HsAddDataVectorService {
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
         */
-        if (!this.hsUtilsService.undefineEmptyString(url) === undefined) {
+        if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
           setDefinition(lyr, {
             format: 'hs.format.WFS',
             url: url,
