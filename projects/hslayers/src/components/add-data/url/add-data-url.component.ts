@@ -39,12 +39,13 @@ export class HsAddDataUrlComponent implements OnDestroy {
     }
 
     this.owsFillingSubscription = this.hsEventBusService.owsFilling.subscribe(
-      ({type, uri, layer, style}) => {
+      ({type, uri, layer, newTitle, style}) => {
         this.typeSelected = type.toLowerCase();
         this.hsEventBusService.owsConnecting.next({
           type,
           uri,
           layer,
+          newTitle,
           style,
         });
       }

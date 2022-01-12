@@ -334,7 +334,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         crs: options.crs,
         provided_url:
           this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
-        layer: layer,
         layer_name: options.layerName,
         map_projection: this.hsMapService.map.getView().getProjection(),
       }),

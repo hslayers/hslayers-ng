@@ -126,6 +126,9 @@ export class HsLayerUtilsService {
     if (this.HsUtilsService.instOf(src, ImageWMS)) {
       return (src as ImageWMS).getUrl();
     }
+    if (this.HsUtilsService.instOf(src, TileArcGISRest)) {
+      return (src as TileArcGISRest).getUrls()[0];
+    }
     if (this.HsUtilsService.instOf(src, TileWMS)) {
       return (src as TileWMS).getUrls()[0];
     }

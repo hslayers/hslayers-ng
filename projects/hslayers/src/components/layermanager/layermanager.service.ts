@@ -13,9 +13,10 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Injectable, NgZone} from '@angular/core';
-import {METERS_PER_UNIT} from 'ol/proj';
 
+import {AddDataUrlType} from '../add-data/url/types/url.type';
 import {HS_PRMS} from '../permalink/get-params';
+import {HsAddDataService} from '../add-data/add-data.service';
 import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
 import {HsConfig} from '../../config.service';
 import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
@@ -40,9 +41,11 @@ import {
   getAbstract,
   getActive,
   getBase,
+  getCachedCapabilities,
   getCluster,
   getExclusive,
   getLegends,
+  getName,
   getPath,
   getQueryCapabilities,
   getRemovable,
@@ -139,6 +142,7 @@ export class HsLayerManagerService {
     public HsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsQueuesService: HsQueuesService,
+    public HsAddDataService: HsAddDataService,
     private HsShareUrlService: HsShareUrlService,
     public HsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
@@ -1181,22 +1185,46 @@ export class HsLayerManagerService {
     Creats a copy of the currentLayer
   */
   copyLayer(newTitle: string): void {
-    const clonedSource = Object.create(this.currentLayer.layer.getSource());
-    const copiedLayer = new VectorLayer({
-      properties: this.currentLayer.layer.getProperties(),
-    });
-    copiedLayer.setSource(clonedSource);
-    let title = getTitle(copiedLayer);
-    if (newTitle && newTitle !== title) {
-      title = newTitle;
+    let copyTitle = getTitle(this.currentLayer.layer);
+    if (newTitle && newTitle !== copyTitle) {
+      copyTitle = newTitle;
     } else {
-      const numb = Number(title.replace(/\D/g, ''));
+      const numb = Number(copyTitle.replace(/\D/g, ''));
       numb !== 0
-        ? (title = title.replace(numb.toString(), `${numb + 1}`))
-        : (title = title + ' (1)');
+        ? (copyTitle = copyTitle.replace(numb.toString(), `${numb + 1}`))
+        : (copyTitle = copyTitle + ' (1)');
     }
+    if (this.HsLayerUtilsService.isLayerVectorLayer(this.currentLayer.layer)) {
+      const clonedSource = new VectorSource({
+        features: (
+          this.currentLayer.layer.getSource() as VectorSource<Geometry>
+        ).getFeatures(),
+      });
+      const copiedLayer = new VectorLayer({
+        properties: this.currentLayer.layer.getProperties(),
+      });
 
-    setTitle(copiedLayer, title);
-    this.HsMapService.addLayer(copiedLayer);
+      copiedLayer.setSource(clonedSource);
+      setTitle(copiedLayer, copyTitle);
+      this.HsMapService.addLayer(copiedLayer);
+    } else {
+      const type = this.getLayerSourceType(
+        this.currentLayer.layer
+      ).toLowerCase() as AddDataUrlType;
+      const url = this.HsLayerUtilsService.getURL(this.currentLayer.layer);
+      const name =
+        getCachedCapabilities(this.currentLayer.layer)?.Name ??
+        getName(this.currentLayer.layer);
+      this.HsLayoutService.setMainPanel('addData');
+      this.HsAddDataService.typeSelected = 'url';
+      setTimeout(() => {
+        this.HsEventBusService.owsFilling.next({
+          type: type,
+          uri: url,
+          layer: name,
+          newTitle: copyTitle,
+        });
+      }, 0);
+    }
   }
 }
