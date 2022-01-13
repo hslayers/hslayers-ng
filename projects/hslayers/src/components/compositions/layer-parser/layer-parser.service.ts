@@ -11,11 +11,17 @@ import {
   ImageArcGISRest,
   ImageStatic,
   ImageWMS,
+  Source,
   TileArcGISRest,
   TileWMS,
   XYZ,
 } from 'ol/source';
-import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import {
+  Image as ImageLayer,
+  Layer,
+  Tile,
+  Vector as VectorLayer,
+} from 'ol/layer';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
@@ -59,13 +65,16 @@ export class HsCompositionsLayerParserService {
    * @param {object} lyr_def Layer definition object
    * @description Initiate creation of WFS layer thorough HsUrlWfsService
    */
-  async createWFSLayer(lyr_def): Promise<void> {
+  async createWFSLayer(lyr_def): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
     );
     console.log(lyr_def.style);
-    this.HsUrlWfsService.addLayerFromCapabilities(wrapper, lyr_def.style);
+    return await this.HsUrlWfsService.addLayerFromCapabilities(
+      wrapper,
+      lyr_def.style
+    );
   }
 
   /**

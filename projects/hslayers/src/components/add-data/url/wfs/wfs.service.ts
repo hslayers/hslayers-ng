@@ -14,6 +14,8 @@ import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {urlDataObject} from '../types/data-object.type';
@@ -72,7 +74,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   async addLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     style?: string
-  ): Promise<void> {
+  ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -84,8 +86,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       const bbox = await this.parseCapabilities(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
-        this.addLayers(true, style);
+        const collection = this.addLayers(true, style);
         this.zoomToBBox(bbox);
+        return collection;
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -281,19 +284,25 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean, style: string): void {
+  addLayers(checkedOnly: boolean, style?: string): Layer<Source>[] {
     this.data.add_all = checkedOnly;
+    const collection = [];
     for (const layer of this.data.services) {
-      this.addLayersRecursively(layer, {style});
+      this.addLayersRecursively(layer, {style}, collection);
     }
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
+    return collection;
   }
 
-  addLayersRecursively(layer, options: addLayersRecursivelyOptions): void {
+  addLayersRecursively(
+    layer,
+    options: addLayersRecursivelyOptions,
+    collection: Layer<Source>[]
+  ): void {
     if (!this.data.add_all || layer.checked) {
-      this.addLayer(layer, {
+      const newLayer = this.addLayer(layer, {
         layerName: layer.Name,
         folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         crs: this.data.srs,
@@ -302,10 +311,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           : undefined,
         qml: options.style?.includes('qgis') ? options.style : undefined,
       });
+      collection.push(newLayer);
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {style: options.style});
+        this.addLayersRecursively(sublayer, {style: options.style}, collection);
       }
     }
   }
@@ -317,7 +327,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param folder - name
    * @param srs - of the layer
    */
-  addLayer(layer, options: addLayerOptions): void {
+  addLayer(layer, options: addLayerOptions): Layer<Source> {
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -342,6 +352,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     });
     this.hsMapService.map.addLayer(new_layer);
     this.hsLayoutService.setMainPanel('layermanager');
+    return new_layer;
   }
 
   private zoomToBBox(bbox: any) {
