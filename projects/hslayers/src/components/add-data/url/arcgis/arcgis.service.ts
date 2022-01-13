@@ -162,27 +162,35 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   ): void {
     if (!options.checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
-        this.addLayer(layer, {
-          layerTitle: layer.name.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
-        });
+        collection.push(
+          this.addLayer(layer, {
+            layerTitle: layer.name.replace(/\//g, '&#47;'),
+            path: this.hsUtilsService.undefineEmptyString(
+              this.data.folder_name
+            ),
+            imageFormat: this.data.image_format,
+            queryFormat: this.data.query_format,
+            tileSize: this.data.tile_size,
+            crs: this.data.srs,
+            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
+          })
+        );
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
         delete clone.Layer;
-        this.addLayer(layer, {
-          layerTitle: layer.name.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
-        });
+        collection.push(
+          this.addLayer(layer, {
+            layerTitle: layer.name.replace(/\//g, '&#47;'),
+            path: this.hsUtilsService.undefineEmptyString(
+              this.data.folder_name
+            ),
+            imageFormat: this.data.image_format,
+            queryFormat: this.data.query_format,
+            tileSize: this.data.tile_size,
+            crs: this.data.srs,
+            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
+          })
+        );
       }
     }
     if (layer.Layer) {
@@ -246,9 +254,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     });
     const new_layer = new Tile({
       properties: {
-        title:
-          this.hsAddDataCommonService.layerToSelectNewTitle ??
-          options.layerTitle,
+        title: options.layerTitle,
         name: options.layerTitle,
         removable: true,
         path: options.path,
