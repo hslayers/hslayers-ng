@@ -174,8 +174,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     try {
       const wmts = new Tile({
         properties: {
-          title:
-            this.hsAddDataCommonService.layerToSelectNewTitle ?? layer.Title,
+          title: layer.Title,
           name: layer.Title,
           info_format: this.getPreferredInfoFormat(layer.ResourceURL),
           queryCapabilities: false,
@@ -194,7 +193,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       const wmtsSource = new WMTS(options);
       // set the data source for raster and vector tile layers
       wmts.setSource(wmtsSource);
-      this.hsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
+      this.hsMapService.addLayer(wmts);
       layer.base = false;
       return wmts;
     } catch (e) {
