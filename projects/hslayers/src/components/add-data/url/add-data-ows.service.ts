@@ -84,12 +84,10 @@ export class HsAddDataOwsService {
     type: string;
     uri: string;
     layer?: any;
-    newTitle?: string;
     style?: string;
   }): Promise<Layer<Source>[]> {
     this.baseDataType = params.type as AddDataUrlType;
     this.hsAddDataCommonService.layerToSelect = params.layer;
-    this.hsAddDataCommonService.layerToSelectNewTitle = params.newTitle;
     return await this.setUrlAndConnect(params.uri, params.style);
   }
 
