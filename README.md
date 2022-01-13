@@ -26,7 +26,7 @@ Configuration for these applications can be provided through global `hslayersNgC
 
 
 Server components:
-+ [hslayers-server](./projects/hslayers-proxy) - a simple [cors-anywhere](https://www.npmjs.com/package/cors-anywhere) based proxy server which can be used to overcome [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restrictions, fill API keys for services such as [geonames](https://www.geonames.org/) used for search and other tasks. Forking and modifying it to preserve secrets and not expose the proxy for everyone and all kinds of requests will be necessary.
++ [hslayers-server](./projects/hslayers-server) - a simple [cors-anywhere](https://www.npmjs.com/package/cors-anywhere) based proxy server which can be used to overcome [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restrictions, fill API keys for services such as [geonames](https://www.geonames.org/) used for search and other tasks. Forking and modifying it to preserve secrets and not expose the proxy for everyone and all kinds of requests will be necessary.
 
 
 ## Development server
