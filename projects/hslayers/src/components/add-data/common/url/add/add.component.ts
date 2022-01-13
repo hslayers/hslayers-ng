@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
+import {HsUrlTypeServiceModel} from '../../../url/models/url-type-service.model';
 
 @Component({
   selector: 'hs-url-add',
@@ -8,7 +9,7 @@ import {HsAddDataUrlService} from '../../../url/add-data-url.service';
 })
 export class HsUrlAddComponent {
   @Input() layers: any;
-  @Input() injectedService: any;
+  @Input() injectedService: HsUrlTypeServiceModel;
   selectAll = true;
 
   constructor(public hsAddDataUrlService: HsAddDataUrlService) {}

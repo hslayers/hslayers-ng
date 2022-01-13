@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
-import {Tile} from 'ol/layer';
+import {Layer, Tile} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
@@ -39,7 +40,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
 
   async addLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
-  ): Promise<void> {
+  ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
     if (!response && !error) {
@@ -54,7 +55,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       await this.capabilitiesReceived(response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
-        this.addLayers(true);
+        return this.addLayers(true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -82,26 +83,28 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     }
   }
 
-  addLayersRecursively(layer): void {
+  addLayersRecursively(layer, collection): void {
     if (!this.data.add_all || layer.checked) {
-      this.addLayer(layer);
+      collection.push(this.addLayer(layer));
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer);
+        this.addLayersRecursively(sublayer, collection);
       }
     }
   }
 
-  addLayers(checkedOnly: boolean): void {
+  addLayers(checkedOnly: boolean): Layer<Source>[] {
     this.data.add_all = checkedOnly;
+    const collection = [];
     for (const layer of this.data.services) {
-      this.addLayersRecursively(layer);
+      this.addLayersRecursively(layer, collection);
     }
     this.hsLayoutService.setMainPanel('layermanager');
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
+    return collection;
     //FIX ME: to implement
     // this.zoomToLayers();
   }
@@ -167,7 +170,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Uses previously received capabilities response as a reference for the source
    * @param response - Set of available info formats for layer being added
    */
-  addLayer(layer): void {
+  addLayer(layer): Layer<Source> {
     try {
       const wmts = new Tile({
         properties: {
@@ -193,6 +196,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       wmts.setSource(wmtsSource);
       this.hsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
       layer.base = false;
+      return wmts;
     } catch (e) {
       throw new Error(e);
     }

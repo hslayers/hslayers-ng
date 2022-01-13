@@ -12,10 +12,14 @@ export interface HsUrlTypeServiceModel {
   addLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     sld?: string
-  ): Promise<void>;
-  addLayers(checkedOnly: boolean, style?: string): void;
-  addLayer(layer: any, options: addLayerOptions): void;
-  addLayersRecursively(layer: any, options: addLayersRecursivelyOptions): void;
+  ): Promise<Layer<Source>[]>;
+  addLayers(checkedOnly: boolean, style?: string): Layer<Source>[];
+  addLayer(layer: any, options: addLayerOptions): Layer<Source>;
+  addLayersRecursively(
+    layer: any,
+    options: addLayersRecursivelyOptions,
+    collection: Layer<Source>[]
+  ): void;
   addService?(
     url: string,
     group: Group,

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 
-import {Group} from 'ol/layer';
+import {Group, Layer} from 'ol/layer';
+import {Source, TileArcGISRest} from 'ol/source';
 import {Tile} from 'ol/layer';
-import {TileArcGISRest} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonService} from '../../common/common.service';
@@ -47,7 +47,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
   async addLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
-  ): Promise<void> {
+  ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -59,7 +59,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       await this.createLayer(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
-        this.addLayers(true);
+        return this.addLayers(true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -119,13 +119,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param checked - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean): void {
+  addLayers(checkedOnly: boolean): Layer<Source>[] {
     if (this.data.services === undefined) {
       return;
     }
-
+    const collection = [];
     if (this.data.base) {
-      this.addLayer(
+      const newLayer = this.addLayer(
         {},
         {
           layerTitle: this.data.title.replace(/\//g, '&#47;'),
@@ -137,9 +137,14 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           subLayers: '',
         }
       );
+      collection.push(newLayer);
     } else {
       for (const layer of this.data.services) {
-        this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
+        this.addLayersRecursively(
+          layer,
+          {checkedOnly: checkedOnly},
+          collection
+        );
       }
     }
     this.data.base = false;
@@ -147,11 +152,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
+    return collection;
   }
 
   addLayersRecursively(
     layer: any,
-    options: addLayersRecursivelyOptions = {checkedOnly: true}
+    options: addLayersRecursivelyOptions = {checkedOnly: true},
+    collection: Layer<Source>[]
   ): void {
     if (!options.checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
@@ -180,7 +187,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {checkedOnly: options.checkedOnly});
+        this.addLayersRecursively(
+          sublayer,
+          {checkedOnly: options.checkedOnly},
+          collection
+        );
       }
     }
   }
@@ -196,7 +207,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(layer, options: addLayerOptions): void {
+  addLayer(layer, options: addLayerOptions): Layer<Source> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -254,6 +265,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     this.hsMapService.map.addLayer(new_layer);
+    return new_layer;
   }
 
   /**

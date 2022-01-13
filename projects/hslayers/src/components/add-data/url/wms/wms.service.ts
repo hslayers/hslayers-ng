@@ -75,7 +75,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
 
   async addLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
-  ): Promise<void> {
+  ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -90,7 +90,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       );
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
-        this.addLayers(true);
+        return this.addLayers(true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -328,15 +328,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  addLayers(checkedOnly: boolean): void {
+  addLayers(checkedOnly: boolean): Layer<Source>[] {
     if (this.data.services === undefined) {
       return;
     }
+    const collection = [];
     //Limit visible layers to 10 to not freeze accidentally
     this.data.visible =
       this.data.services.filter((l) => l.checked === true).length <= 10;
     if (this.data.base) {
-      this.addLayer(
+      const newLayer = this.addLayer(
         {},
         {
           layerName: this.data.title.replace(/\//g, '&#47;'),
@@ -348,9 +349,14 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           subLayers: '',
         }
       );
+      collection.push(newLayer);
     } else {
       for (const layer of this.data.services) {
-        this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
+        this.addLayersRecursively(
+          layer,
+          {checkedOnly: checkedOnly},
+          collection
+        );
       }
       this.zoomToLayers();
     }
@@ -359,6 +365,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
+    return collection;
   }
 
   /**
@@ -372,7 +379,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(layer, options: addLayerOptions): void {
+  addLayer(layer, options: addLayerOptions): Layer<Source> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -461,6 +468,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       : new Tile(layerOptions as TileOptions<TileSource>);
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.use_tiles);
     this.hsAddDataService.addLayer(new_layer, this.data.add_under);
+    return new_layer;
   }
 
   private getLayerStyles(layer: any): {styles: string[]; legends: string[]} {
@@ -524,36 +532,49 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
 
   addLayersRecursively(
     layer: any,
-    options: addLayersRecursivelyOptions = {checkedOnly: true}
+    options: addLayersRecursivelyOptions = {checkedOnly: true},
+    collection: Layer<Source>[]
   ): void {
     if (!options.checkedOnly || layer.checked) {
       if (layer.Layer === undefined) {
-        this.addLayer(layer, {
-          layerName: layer.Title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
-        });
+        collection.push(
+          this.addLayer(layer, {
+            layerName: layer.Title.replace(/\//g, '&#47;'),
+            path: this.hsUtilsService.undefineEmptyString(
+              this.data.folder_name
+            ),
+            imageFormat: this.data.image_format,
+            queryFormat: this.data.query_format,
+            tileSize: this.data.tile_size,
+            crs: this.data.srs,
+            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
+          })
+        );
       } else {
         const clone = this.hsUtilsService.structuredClone(layer);
         delete clone.Layer;
-        this.addLayer(layer, {
-          layerName: layer.Title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-          subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
-        });
+        collection.push(
+          this.addLayer(layer, {
+            layerName: layer.Title.replace(/\//g, '&#47;'),
+            path: this.hsUtilsService.undefineEmptyString(
+              this.data.folder_name
+            ),
+            imageFormat: this.data.image_format,
+            queryFormat: this.data.query_format,
+            tileSize: this.data.tile_size,
+            crs: this.data.srs,
+            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
+          })
+        );
       }
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {checkedOnly: options.checkedOnly});
+        this.addLayersRecursively(
+          sublayer,
+          {checkedOnly: options.checkedOnly},
+          collection
+        );
       }
     }
   }
