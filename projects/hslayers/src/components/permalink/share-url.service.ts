@@ -247,6 +247,18 @@ export class HsShareUrlService {
   }
 
   /**
+   * @param param - Param to get current value and remove
+   * Returns param value and removes custom param when it is called
+   */
+  getParamValAndRemove(param: string): string {
+    const value = this.getParamValue(param);
+    if (this.customParams[param]) {
+      delete this.customParams[param];
+    }
+    return value;
+  }
+
+  /**
    * @param param Param to get current value
    * @returns Current value for requested param or null if param doesn't exist
    * Find current param value from Url
