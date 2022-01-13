@@ -64,5 +64,6 @@ export class HsAddDataUrlComponent {
     } else {
       this.hsAddDataOwsService.connectToOWS({type, uri: url});
     }
+    this.hsAddDataService.urlType = null;
   }
 }
