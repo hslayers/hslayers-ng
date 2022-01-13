@@ -147,7 +147,11 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
             )[0].authenticated;
         }
         //add layman endpoint url as url to allow sync
-        if (this.data.url == '' && this.data.saveToLayman) {
+        if (
+          this.hsUtilsService.undefineEmptyString(this.data.url) ===
+            undefined &&
+          this.data.saveToLayman
+        ) {
           this.data.url = this.hsCommonEndpointsService.endpoints.filter(
             (ep) => ep.type == 'layman'
           )[0].url;
