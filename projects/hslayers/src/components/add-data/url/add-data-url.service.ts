@@ -17,7 +17,6 @@ export class HsAddDataUrlService {
   addingAllowed: boolean;
   typeSelected: AddDataUrlType;
   connectFromParams = true;
-  serviceType: AddDataUrlType;
   constructor(
     public hsLog: HsLogService,
     public hsLanguageService: HsLanguageService,
@@ -128,6 +127,6 @@ export class HsAddDataUrlService {
   searchForChecked(services: Array<any>): void {
     this.addingAllowed =
       services.some((service) => service.checked) ||
-      this.serviceType == 'arcgis';
+      this.typeSelected == 'arcgis';
   }
 }
