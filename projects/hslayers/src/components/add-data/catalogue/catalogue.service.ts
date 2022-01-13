@@ -395,12 +395,10 @@ export class HsAddDataCatalogueService {
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
         : whatToAdd.link;
       this.datasetSelect('url');
-      setTimeout(async () => {
-        await this.hsAddDataOwsService.connectToOWS({
-          type: whatToAdd.type.toLowerCase(),
-          uri: decodeURIComponent(whatToAdd.link),
-          layer: ds.type == 'layman' ? layer.name : undefined,
-        });
+      await this.hsAddDataOwsService.connectToOWS({
+        type: whatToAdd.type.toLowerCase(),
+        uri: decodeURIComponent(whatToAdd.link),
+        layer: ds.type == 'layman' ? layer.name : undefined,
       });
     } else if (whatToAdd.type == 'WFS') {
       this.datasetSelect('url');
@@ -410,13 +408,11 @@ export class HsAddDataCatalogueService {
               link.toLowerCase().includes('wfs')
             )[0]
           : whatToAdd.link;
-        setTimeout(async () => {
-          await this.hsAddDataOwsService.connectToOWS({
-            type: whatToAdd.type.toLowerCase(),
-            uri: decodeURIComponent(whatToAdd.link),
-            layer: undefined, //layer.title || layer.name ||
-            style: whatToAdd.style,
-          });
+        await this.hsAddDataOwsService.connectToOWS({
+          type: whatToAdd.type.toLowerCase(),
+          uri: decodeURIComponent(whatToAdd.link),
+          layer: undefined, //layer.title || layer.name ||
+          style: whatToAdd.style,
         });
       } else {
         //Layman layers of logged user/ with write access
@@ -438,13 +434,11 @@ export class HsAddDataCatalogueService {
           this.hsAddDataService.typeSelected = 'catalogue';
         } else {
           //Layman layers without write access
-          setTimeout(async () => {
-            await this.hsAddDataOwsService.connectToOWS({
-              type: 'wfs',
-              uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
-              style: whatToAdd.style,
-              layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
-            });
+          await this.hsAddDataOwsService.connectToOWS({
+            type: 'wfs',
+            uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+            style: whatToAdd.style,
+            layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
           });
         }
         this.hsLayoutService.setMainPanel('layermanager');
