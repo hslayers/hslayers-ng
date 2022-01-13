@@ -10,7 +10,6 @@ import {HsToastService} from '../../layout/toast/toast.service';
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonService {
   layerToSelect: string;
-  layerToSelectNewTitle: string;
   loadingInfo = false;
   showDetails = false;
   url: string;
@@ -31,7 +30,6 @@ export class HsAddDataCommonService {
   }
   clearParams(): void {
     this.layerToSelect = '';
-    this.layerToSelectNewTitle = null;
     this.loadingInfo = false;
     this.showDetails = false;
     this.url = '';

@@ -52,6 +52,7 @@ import {
   getThumbnail,
   getTitle,
   setActive,
+  setName,
   setPath,
   setTitle,
 } from '../../common/layer-extensions';
@@ -253,6 +254,10 @@ export class HsLayerManagerService {
       }
       layerDescriptor.thumbnail = this.getImage(layer);
       this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
+    }
+
+    if (!getName(layer)) {
+      setName(layer, getTitle(layer));
     }
     //*NOTE Commented out, because the  following references to this.data.baselayer are causing issues.
 
@@ -1183,52 +1188,75 @@ export class HsLayerManagerService {
   /*
     Creats a copy of the currentLayer
   */
-  copyLayer(newTitle: string): void {
-    let copyTitle = getTitle(this.currentLayer.layer);
-    if (newTitle && newTitle !== copyTitle) {
-      copyTitle = newTitle;
-    } else {
-      const numb = Number(copyTitle.replace(/\D/g, ''));
-      numb !== 0
-        ? (copyTitle = copyTitle.replace(numb.toString(), `${numb + 1}`))
-        : (copyTitle = copyTitle + ' (1)');
-    }
+  async copyLayer(newTitle: string): Promise<void> {
+    const copyTitle = this.createCopyTitle(newTitle);
     if (this.HsLayerUtilsService.isLayerVectorLayer(this.currentLayer.layer)) {
-      let features;
-      if (this.HsLayerUtilsService.isLayerClustered(this.currentLayer.layer)) {
-        features = (this.currentLayer.layer.getSource() as Cluster)
-          .getSource()
-          ?.getFeatures();
-      } else {
-        features = (
-          this.currentLayer.layer.getSource() as VectorSource<Geometry>
-        )?.getFeatures();
-      }
-
-      const copiedLayer = new VectorLayer({
-        properties: this.currentLayer.layer.getProperties(),
-        source: new VectorSource({
-          features,
-        }),
-        style: (
-          this.currentLayer.layer as VectorLayer<VectorSource<Geometry>>
-        ).getStyle(),
-      });
-      setTitle(copiedLayer, copyTitle);
-      this.HsMapService.addLayer(copiedLayer);
+      this.copyVectorLayer(copyTitle);
     } else {
       const url = this.HsLayerUtilsService.getURL(this.currentLayer.layer);
       const name =
         getCachedCapabilities(this.currentLayer.layer)?.Name ??
         getName(this.currentLayer.layer);
-      setTimeout(async () => {
-        await this.HsAddDataOwsService.connectToOWS({
-          type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
-          uri: url,
-          layer: name,
-          newTitle: copyTitle,
-        });
-      }, 0);
+      const layerAdded = await this.HsAddDataOwsService.connectToOWS({
+        type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
+        uri: url,
+        layer: name,
+      });
+      setTitle(layerAdded[0], copyTitle);
     }
+  }
+
+  /*
+    Creats a copy of the currentLayer if it is a vector layer
+  */
+  copyVectorLayer(newTitle: string): void {
+    let features;
+    if (this.HsLayerUtilsService.isLayerClustered(this.currentLayer.layer)) {
+      features = (this.currentLayer.layer.getSource() as Cluster)
+        .getSource()
+        ?.getFeatures();
+    } else {
+      features = (
+        this.currentLayer.layer.getSource() as VectorSource<Geometry>
+      )?.getFeatures();
+    }
+
+    const copiedLayer = new VectorLayer({
+      properties: this.currentLayer.layer.getProperties(),
+      source: new VectorSource({
+        features,
+      }),
+      style: (
+        this.currentLayer.layer as VectorLayer<VectorSource<Geometry>>
+      ).getStyle(),
+    });
+    setTitle(copiedLayer, newTitle);
+    this.HsMapService.addLayer(copiedLayer);
+  }
+
+  /*
+    Creats a new title for the copied layer
+  */
+  createCopyTitle(newTitle: string): string {
+    const layerName = getName(this.currentLayer.layer);
+    let copyTitle = getTitle(this.currentLayer.layer);
+    let numb = 0;
+    if (newTitle && newTitle !== copyTitle) {
+      copyTitle = newTitle;
+    } else {
+      const layerCopies = this.HsMapService.getLayersArray().filter(
+        (l) => getName(l) == layerName
+      );
+      layerCopies.forEach((l) => {
+        const numberInTitle = Number(getTitle(l).replace(/\D/g, ''));
+        if (numberInTitle > numb) {
+          numb = numberInTitle;
+        }
+      });
+      numb !== 0
+        ? (copyTitle = layerName + ` (${numb + 1})`)
+        : (copyTitle = copyTitle + ' (1)');
+    }
+    return copyTitle;
   }
 }
