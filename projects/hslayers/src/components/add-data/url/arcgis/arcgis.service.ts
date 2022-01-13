@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import ImageLayer from 'ol/layer/Image';
 import ImageSource from 'ol/source/Image';
 import TileSource from 'ol/source/Tile';
-import {ImageArcGISRest, TileArcGISRest} from 'ol/source';
+import {ImageArcGISRest, Source, TileArcGISRest} from 'ol/source';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Layer} from 'ol/layer';
 import {Tile} from 'ol/layer';
