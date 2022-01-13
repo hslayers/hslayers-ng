@@ -4,6 +4,8 @@ import {GPX, GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
+import {get as getProjection} from 'ol/proj';
+import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
 import {HsAddDataService} from '../add-data.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
@@ -358,6 +360,11 @@ export class HsAddDataVectorService {
   transformFeaturesIfNeeded(features, projection): void {
     const mapProjection = this.hsMapService.map.getView().getProjection();
     if (projection != mapProjection) {
+      projection = epsg4326Aliases
+        .map((proj) => proj.getCode())
+        .some((code) => code === projection.getCode())
+        ? getProjection('EPSG:4326')
+        : projection;
       features.forEach((f) =>
         //TODO: Make it parallel using workers or some library
         f.getGeometry().transform(projection, mapProjection)
