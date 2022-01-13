@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+
 import {AddDataUrlType} from './types/url.type';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
@@ -36,7 +39,7 @@ export class HsAddDataOwsService {
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService
   ) {}
-  async connect(style?: string): Promise<void> {
+  async connect(style?: string): Promise<Layer<Source>[]> {
     await this.setTypeServices();
     const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
@@ -53,7 +56,7 @@ export class HsAddDataOwsService {
       showDetails: true,
     });
     const wrapper = await this.typeCapabilitiesService.request(url);
-    this.typeService.addLayerFromCapabilities(wrapper, style);
+    return await this.typeService.addLayerFromCapabilities(wrapper, style);
   }
 
   /**
@@ -62,9 +65,12 @@ export class HsAddDataOwsService {
    * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
-  setUrlAndConnect(url: string, style?: string): void {
+  async setUrlAndConnect(
+    url: string,
+    style?: string
+  ): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.updateUrl(url);
-    this.connect(style);
+    return await this.connect(style);
   }
 
   changed(data: urlDataObject): void {
@@ -80,11 +86,11 @@ export class HsAddDataOwsService {
     layer?: any;
     newTitle?: string;
     style?: string;
-  }): Promise<void> {
+  }): Promise<Layer<Source>[]> {
     this.baseDataType = params.type as AddDataUrlType;
     this.hsAddDataCommonService.layerToSelect = params.layer;
     this.hsAddDataCommonService.layerToSelectNewTitle = params.newTitle;
-    this.setUrlAndConnect(params.uri, params.style);
+    return await this.setUrlAndConnect(params.uri, params.style);
   }
 
   async setTypeServices(): Promise<void> {
