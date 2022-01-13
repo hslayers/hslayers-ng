@@ -31,7 +31,6 @@ export class HsUrlDetailsComponent implements AfterContentInit {
     public hsAddDataCommonService: HsAddDataCommonService
   ) {}
   ngAfterContentInit(): void {
-    this.hsAddDataUrlService.addingAllowed = false;
     this.data = this.injectedService.data;
     this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;

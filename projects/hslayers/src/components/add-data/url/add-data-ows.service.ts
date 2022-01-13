@@ -45,10 +45,12 @@ export class HsAddDataOwsService {
     if (!url || url === '') {
       return;
     }
+
+    this.hsAddDataUrlService.addingAllowed = false;
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
       this.typeService.data.get_map_url = url;
+      this.hsAddDataUrlService.addingAllowed = true;
     }
-    this.hsAddDataUrlService.addingAllowed = false;
     this.hsHistoryListService.addSourceHistory(
       this.hsAddDataUrlService.typeSelected,
       url
