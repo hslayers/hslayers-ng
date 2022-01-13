@@ -242,7 +242,7 @@ export class HsAddDataCommonFileService {
           data.name = response[0].name; //Name translated to Layman-safe name
           return this.describeNewLayer(this.endpoint, response[0].name);
         })
-        .then((descriptor) => {
+        .then(async (descriptor) => {
           if (descriptor?.file.error) {
             this.hsToastService.createToastPopupMessage(
               this.hsLanguageService.getTranslation(
@@ -263,13 +263,11 @@ export class HsAddDataCommonFileService {
           this.hsLaymanService.totalProgress = 0;
           this.hsAddDataService.selectType('url');
           this.layerAddedAsWms.next(true);
-          setTimeout(async () => {
-            await this.hsAddDataOwsService.connectToOWS({
-              type: 'wms',
-              uri: descriptor.wms.url,
-              layer: data.name,
-            });
-          }, 1000);
+          await this.hsAddDataOwsService.connectToOWS({
+            type: 'wms',
+            uri: descriptor.wms.url,
+            layer: data.name,
+          });
           return;
         })
         .catch((err) => {
