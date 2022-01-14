@@ -411,7 +411,7 @@ export class HsLayerManagerMetadataService {
         geometryType?: string;
       }[];
     }
-  ): {Title: string; Name: number; Layer: {Title: string; Name: number}[]} {
+  ): {Title: string; Name: number; Layer?: {Title: string; Name: number}[]} {
     if (layerId == undefined || isNaN(layerId)) {
       //parseInt(undefined) returns NaN
       return {
@@ -424,7 +424,7 @@ export class HsLayerManagerMetadataService {
     } else {
       const found = caps.layers.find((l) => l.id == layerId);
       if (found) {
-        return {
+        const tmp = {
           Title: found.name,
           Name: found.id,
           Layer: caps.layers
@@ -433,6 +433,10 @@ export class HsLayerManagerMetadataService {
               return {Title: l.name, Name: l.id};
             }),
         };
+        if (tmp.Layer.length == 0) {
+          delete tmp.Layer;
+        }
+        return tmp;
       }
     }
     return null;
