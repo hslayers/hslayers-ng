@@ -534,35 +534,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     collection: Layer<Source>[]
   ): void {
     if (!options.checkedOnly || layer.checked) {
-      if (layer.Layer === undefined) {
-        collection.push(
-          this.addLayer(layer, {
-            layerName: layer.Title.replace(/\//g, '&#47;'),
-            path: this.hsUtilsService.undefineEmptyString(
-              this.data.folder_name
-            ),
-            imageFormat: this.data.image_format,
-            queryFormat: this.data.query_format,
-            tileSize: this.data.tile_size,
-            crs: this.data.srs,
-          })
-        );
-      } else {
-        const clone = this.hsUtilsService.structuredClone(layer);
-        delete clone.Layer;
-        collection.push(
-          this.addLayer(layer, {
-            layerName: layer.Title.replace(/\//g, '&#47;'),
-            path: this.hsUtilsService.undefineEmptyString(
-              this.data.folder_name
-            ),
-            imageFormat: this.data.image_format,
-            queryFormat: this.data.query_format,
-            tileSize: this.data.tile_size,
-            crs: this.data.srs,
-          })
-        );
-      }
+      collection.push(
+        this.addLayer(layer, {
+          layerName: layer.Title.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+          imageFormat: this.data.image_format,
+          queryFormat: this.data.query_format,
+          tileSize: this.data.tile_size,
+          crs: this.data.srs,
+        })
+      );
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
