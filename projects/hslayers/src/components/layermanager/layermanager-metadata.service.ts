@@ -209,11 +209,11 @@ export class HsLayerManagerMetadataService {
       }
       if (layerObj.Layer && getSubLayers(olLayer)) {
         layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
-        /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. 
-        We delete to not crash interface if the service has thousands of layers. There is an assumption that if we specify sublayers 
-        in layer definition, user will not be allowed to display other sublayers 
-        thus it is fine if the sublayer list gets hidden in layer editor. */
-        delete layerObj.Layer;
+        /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. */
+        const subLayerArray = getSubLayers(olLayer).split(',');
+        layerObj.Layer = layerObj.Layer.filter((l) =>
+          subLayerArray.includes(l.Name)
+        );
       }
       this.collectLegend(layerObj, legends);
     }
@@ -357,27 +357,27 @@ export class HsLayerManagerMetadataService {
       }
       if (getCachedCapabilities(olLayer) === undefined) {
         layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
-          maxResolution: Math.max(
+          /* TODO maxResolution: Math.max(
             ...layerObjs.map((layer) => this.searchForScaleDenominator(layer))
-          ),
+          ), */
           Layer: layerObjs,
         });
       }
-      this.fillMetadataUrlsIfNotExist(olLayer, resp);
+      //TODO this.fillMetadataUrlsIfNotExist(olLayer, resp);
     } else {
       layerObj = this.identifyArcgisLayerObj(parseInt(layerName), resp);
       if (layerObj == undefined) {
         return;
       }
-      //TODO: This should be removed probably to not pollute layer object. Use cachedCapabilities instead
+      /* TODO 
       if (
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
       ) {
         this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
-      }
+      } */
       if (layerObj.Layer && getSubLayers(olLayer)) {
-        layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+        //TODO layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
         /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. 
         We delete to not crash interface if the service has thousands of layers. There is an assumption that if we specify sublayers 
         in layer definition, user will not be allowed to display other sublayers 
@@ -398,6 +398,7 @@ export class HsLayerManagerMetadataService {
   identifyArcgisLayerObj(
     layerId: number,
     caps: {
+      mapName: string;
       layers: {
         id: number;
         name: string;
@@ -410,10 +411,12 @@ export class HsLayerManagerMetadataService {
         geometryType?: string;
       }[];
     }
-  ): {Layer: {Title: string; Name: number}[]} {
+  ): {Title: string; Name: number; Layer: {Title: string; Name: number}[]} {
     if (layerId == undefined || isNaN(layerId)) {
       //parseInt(undefined) returns NaN
       return {
+        Title: caps.mapName,
+        Name: 0,
         Layer: caps.layers.map((l) => {
           return {Title: l.name, Name: l.id};
         }),
@@ -422,6 +425,8 @@ export class HsLayerManagerMetadataService {
       const found = caps.layers.find((l) => l.id == layerId);
       if (found) {
         return {
+          Title: found.name,
+          Name: found.id,
           Layer: caps.layers
             .filter((l) => l.parentLayerId == layerId)
             .map((l) => {
