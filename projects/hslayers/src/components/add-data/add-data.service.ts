@@ -4,7 +4,6 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 
-import {AddDataUrlType} from './url/types/url.type';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -18,9 +17,7 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
   providedIn: 'root',
 })
 export class HsAddDataService {
-  typeSelected: DatasetType;
-  //Holds reference to data.url.component type selected
-  urlType: AddDataUrlType;
+  dsSelected: DatasetType;
   datasetSelected: Subject<{type: DatasetType}> = new Subject();
   /**
    * Cancels any external url data request from datasources panel
@@ -52,7 +49,7 @@ export class HsAddDataService {
   }
 
   selectType(type: DatasetType): void {
-    this.typeSelected = type;
+    this.dsSelected = type;
     this.datasetSelected.next({type: type});
   }
 }

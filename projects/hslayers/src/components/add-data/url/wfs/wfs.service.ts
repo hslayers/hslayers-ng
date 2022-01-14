@@ -84,8 +84,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
     try {
       const bbox = await this.parseCapabilities(wrapper.response);
+      this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
       if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         const collection = this.addLayers(true, style);
         this.zoomToBBox(bbox);
         return collection;

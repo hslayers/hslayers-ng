@@ -36,7 +36,7 @@ export class HsAddDataCommonService {
   }
 
   setPanelToCatalogue(): void {
-    this.hsAddDataService.typeSelected = 'catalogue';
+    this.hsAddDataService.dsSelected = 'catalogue';
   }
 
   /**
@@ -48,6 +48,9 @@ export class HsAddDataCommonService {
   }
 
   checkTheSelectedLayer(services: any) {
+    if (!this.layerToSelect) {
+      return;
+    }
     for (const layer of services) {
       //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
@@ -56,6 +59,7 @@ export class HsAddDataCommonService {
         layer.checked = true;
       }
     }
+    this.hsAddDataUrlService.searchForChecked(services);
   }
 
   displayParsingError(e: any): void {

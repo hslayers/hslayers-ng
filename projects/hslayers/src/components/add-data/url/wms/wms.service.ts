@@ -88,8 +88,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         wrapper.response,
         this.hsAddDataCommonService.layerToSelect
       );
+      this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
       if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         return this.addLayers(true);
       }
     } catch (e) {

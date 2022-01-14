@@ -6,12 +6,13 @@
     <div *ngIf="hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
-                <div>{{data.title}}</div>
+                <div>{{hsUrlWmtsService.data.title}}</div>
             </li>
-            <li *ngFor="let layer of data.services; trackBy:( 'Identifier' | trackByProperty ); let index = index"
+            <li *ngFor="let layer of hsUrlWmtsService.data.services; trackBy:( 'Identifier' | trackByProperty ); let index = index"
                 class="list-group-item clearfix">
-                <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="hsAddDataOwsService.changed(data)"
-                    [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}" />
+                <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}"
+                    (change)="hsAddDataOwsService.changed(hsUrlWmtsService.data)" [attr.id]="'wmtslayer-'+index"
+                    name="wmtslayer-{{index}}" />
                 <label class="form-check-label m-0 ps-4 mw-100 d-flex align-items-center"
                     [attr.for]="'wmtslayer-'+index"
                     [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ms-2"
@@ -36,7 +37,7 @@
         bottom: 0; z-index:10">
             <div class="d-flex justify-content-center">
                 <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService"
-                    [layers]="data.services">
+                    [layers]="hsUrlWmtsService.data.services">
                 </hs-url-add>
             </div>
         </li>

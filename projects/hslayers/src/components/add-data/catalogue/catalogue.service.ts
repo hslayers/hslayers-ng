@@ -431,7 +431,7 @@ export class HsAddDataCatalogueService {
             }
           );
           this.hsAddDataVectorService.fitExtent(layer);
-          this.hsAddDataService.typeSelected = 'catalogue';
+          this.hsAddDataService.dsSelected = 'catalogue';
         } else {
           //Layman layers without write access
           await this.hsAddDataOwsService.connectToOWS({
@@ -493,7 +493,7 @@ export class HsAddDataCatalogueService {
 
   calcExtentLayerVisibility(): void {
     this.hsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible() && this.hsAddDataService.typeSelected == 'catalogue'
+      this.panelVisible() && this.hsAddDataService.dsSelected == 'catalogue'
     );
   }
 }
