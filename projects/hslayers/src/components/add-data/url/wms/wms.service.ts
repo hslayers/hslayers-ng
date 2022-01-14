@@ -491,7 +491,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * FIXME: UNUSED
    * Add service and its layers to project
    * @param url - Service URL
    * @param addUnder - OL layer before which to add new layer
@@ -546,7 +545,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
             queryFormat: this.data.query_format,
             tileSize: this.data.tile_size,
             crs: this.data.srs,
-            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
           })
         );
       } else {
@@ -562,7 +560,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
             queryFormat: this.data.query_format,
             tileSize: this.data.tile_size,
             crs: this.data.srs,
-            subLayers: this.hsAddDataCommonService.getSublayerNames(layer),
           })
         );
       }

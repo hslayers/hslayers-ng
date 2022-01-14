@@ -144,7 +144,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         queryFormat: this.data.query_format,
         tileSize: this.data.tile_size,
         crs: this.data.srs,
-        subLayers: checkedLayers.map((l) => l.name).join(','),
         base: this.data.base,
       }),
     ];

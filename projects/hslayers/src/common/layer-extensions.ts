@@ -568,7 +568,10 @@ export function getShowInLayerManager(layer: Layer<Source>): boolean {
 }
 
 /**
- * Set list of all possible sub-layers for WMS
+ * Set list of all possible sub-layers for WMS.
+ * This is used to limit the displayed sub-layers on the map.
+ * If sublayers property is set, the sub-layer tree in layer manager is
+ * hidden, otherwise all sub-layers are shown.
  * @param layer -
  * @param subLayers - String of all possible WMS layers sub-layer names separated by comma
  */
@@ -577,7 +580,10 @@ export function setSubLayers(layer: Layer<Source>, subLayers: string): void {
 }
 
 /**
- * Get list of all possible sub-layers for WMS
+ * Get list of all possible sub-layers for WMS.
+ * This is used to limit the displayed sub-layers on the map.
+ * If sub-layers property is set, the sub-layer tree in layer manager is
+ * hidden, otherwise all sub-layers are shown.
  * @param layer -
  */
 export function getSubLayers(layer: Layer<Source>): string {
