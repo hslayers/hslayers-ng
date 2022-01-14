@@ -4,7 +4,7 @@ import {AddDataUrlType, servicesSupportedByUrl} from './types/url.type';
 import {AddDataUrlValues} from './add-data-url-values';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataOwsService} from './add-data-ows.service';
-import {HsAddDataService} from '../add-data.service';
+import {HsAddDataUrlService} from './add-data-url.service';
 import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -15,17 +15,15 @@ import {HsShareUrlService} from '../../permalink/share-url.service';
   templateUrl: './add-data-url.component.html',
 })
 export class HsAddDataUrlComponent {
-  typeSelected: AddDataUrlType;
   types: {id: AddDataUrlType; text: string}[];
-
   constructor(
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
     public hsShareUrlService: HsShareUrlService,
-    public hsAddDataService: HsAddDataService,
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataOwsService: HsAddDataOwsService
+    public hsAddDataOwsService: HsAddDataOwsService,
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes
@@ -34,20 +32,21 @@ export class HsAddDataUrlComponent {
     } else {
       this.types = AddDataUrlValues;
     }
-    //This component initializes after add-data.component which already set the urlType so *should* be fine to connect now
-    if (this.hsAddDataService.urlType) {
-      this.selectType(this.hsAddDataService.urlType);
-      this.connectServiceFromUrlParam(this.hsAddDataService.urlType);
+    //This component initializes after add-data.component which already set the typeSelected so *should* be fine to connect now
+    if (this.hsAddDataUrlService.typeSelected) {
+      this.connectServiceFromUrlParam(this.hsAddDataUrlService.typeSelected);
     }
   }
 
   selectType(type: AddDataUrlType): void {
-    this.typeSelected = type;
-    this.hsAddDataOwsService.baseDataType = type;
+    this.hsAddDataUrlService.typeSelected = type;
     this.hsAddDataCommonService.clearParams();
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {
+    if (!this.hsAddDataUrlService.connectFromParams) {
+      return;
+    }
     const layers = this.hsShareUrlService.getParamValue(`hs-${type}-layers`);
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
 
@@ -64,6 +63,6 @@ export class HsAddDataUrlComponent {
     } else {
       this.hsAddDataOwsService.connectToOWS({type, uri: url});
     }
-    this.hsAddDataService.urlType = null;
+    this.hsAddDataUrlService.connectFromParams = false;
   }
 }

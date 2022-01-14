@@ -20,7 +20,6 @@ import {HsUtilsService} from '../../utils/utils.service';
   templateUrl: './catalogue.component.html',
 })
 export class HsAddDataCatalogueComponent {
-  typeSelected: string;
   types: any[];
   data: any;
   advancedSearch: boolean;

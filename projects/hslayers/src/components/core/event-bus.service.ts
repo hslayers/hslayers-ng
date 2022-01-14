@@ -8,7 +8,6 @@ import {Map} from 'ol';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
-import {AddDataUrlType} from '../add-data/url/types/url.type';
 import {HsDimensionDescriptor} from '../../common/get-capabilities/dimension';
 import {
   HsLayerDescriptor,

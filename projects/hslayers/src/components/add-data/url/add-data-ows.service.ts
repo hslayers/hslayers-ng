@@ -17,6 +17,7 @@ import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-
 import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
 import {IGetCapabilities} from '../../../common/get-capabilities/get-capabilities.interface';
+import {owsConnection} from './types/ows-connection.type';
 import {urlDataObject} from './types/data-object.type';
 
 @Injectable({
@@ -25,7 +26,6 @@ import {urlDataObject} from './types/data-object.type';
 export class HsAddDataOwsService {
   typeService: HsUrlTypeServiceModel;
   typeCapabilitiesService: IGetCapabilities;
-  baseDataType: AddDataUrlType;
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -45,12 +45,14 @@ export class HsAddDataOwsService {
     if (!url || url === '') {
       return;
     }
-
-    if (this.baseDataType === 'arcgis') {
+    if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
       this.typeService.data.get_map_url = url;
     }
     this.hsAddDataUrlService.hasAnyChecked = false;
-    this.hsHistoryListService.addSourceHistory(this.baseDataType, url);
+    this.hsHistoryListService.addSourceHistory(
+      this.hsAddDataUrlService.typeSelected,
+      url
+    );
     Object.assign(this.hsAddDataCommonService, {
       loadingInfo: true,
       showDetails: true,
@@ -65,12 +67,10 @@ export class HsAddDataOwsService {
    * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
-  async setUrlAndConnect(
-    url: string,
-    style?: string
-  ): Promise<Layer<Source>[]> {
-    this.hsAddDataCommonService.updateUrl(url);
-    return await this.connect(style);
+  async setUrlAndConnect(params: owsConnection): Promise<Layer<Source>[]> {
+    this.hsAddDataCommonService.layerToSelect = params.layer;
+    this.hsAddDataCommonService.updateUrl(params.uri);
+    return await this.connect(params.style);
   }
 
   changed(data: urlDataObject): void {
@@ -80,19 +80,13 @@ export class HsAddDataOwsService {
   /**
    * replaces `ows.${type}_connecting`
    */
-  async connectToOWS(params: {
-    type: string;
-    uri: string;
-    layer?: any;
-    style?: string;
-  }): Promise<Layer<Source>[]> {
-    this.baseDataType = params.type as AddDataUrlType;
-    this.hsAddDataCommonService.layerToSelect = params.layer;
-    return await this.setUrlAndConnect(params.uri, params.style);
+  async connectToOWS(params: owsConnection): Promise<Layer<Source>[]> {
+    this.hsAddDataUrlService.typeSelected = params.type as AddDataUrlType;
+    return await this.setUrlAndConnect(params);
   }
 
   async setTypeServices(): Promise<void> {
-    switch (this.baseDataType) {
+    switch (this.hsAddDataUrlService.typeSelected) {
       case 'wmts':
         this.typeService = this.hsUrlWmtsService;
         this.typeCapabilitiesService = this.hsWmtsGetCapabilitiesService;
