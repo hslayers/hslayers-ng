@@ -40,7 +40,6 @@ export class HsAddDataUrlComponent {
 
   selectType(type: AddDataUrlType): void {
     this.hsAddDataUrlService.typeSelected = type;
-    this.hsAddDataCommonService.clearParams();
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {

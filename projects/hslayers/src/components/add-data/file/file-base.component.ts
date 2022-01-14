@@ -23,8 +23,7 @@ import {fileDataObject} from './types/file-data-object.type';
   template: '<div></div>',
 })
 export class HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   data: fileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
@@ -49,6 +48,7 @@ export class HsAddDataFileBaseComponent
       .subscribe((success) => {
         if (success) {
           this.hsLayoutService.setMainPanel('layermanager');
+          this.hsAddDataCommonService.setPanelToCatalogue();
         }
         this.setDataToDefault();
         this.clearInput();

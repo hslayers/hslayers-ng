@@ -53,8 +53,8 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     try {
       //TODO AWAIT and add-layer if layerToSelect
       await this.capabilitiesReceived(response);
-      this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
       if (this.hsAddDataCommonService.layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
         return this.addLayers(true);
       }
     } catch (e) {

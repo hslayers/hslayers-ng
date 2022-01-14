@@ -4,8 +4,8 @@ import {GPX, GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
-import {get as getProjection} from 'ol/proj';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
+import {get as getProjection} from 'ol/proj';
 
 import {HsAddDataService} from '../add-data.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
@@ -194,6 +194,10 @@ export class HsAddDataVectorService {
     } else {
       src.on('change', this.changeListener(src));
     }
+  }
+
+  setPanelToCatalogue(): void {
+    this.hsAddDataService.dsSelected = 'catalogue';
   }
 
   changeListener(src): any {

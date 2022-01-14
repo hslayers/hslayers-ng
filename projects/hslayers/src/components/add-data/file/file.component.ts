@@ -32,10 +32,11 @@ export class HsAddDataFileComponent {
     this.typeSelected = type;
   }
 
+  //Not being used
   isVectorType(): boolean {
     return (
       this.typeSelected == 'kml' ||
-      // this.typeSelected == 'gpx' ||
+      this.typeSelected == 'gpx' ||
       this.typeSelected == 'geojson'
     );
   }
