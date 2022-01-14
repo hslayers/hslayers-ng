@@ -40,7 +40,7 @@ export class HsAddDataOwsService {
     public hsUrlWmtsService: HsUrlWmtsService
   ) {
     this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
-      this.setUrlAndConnect(url);
+      this.setUrlAndConnect({uri: url});
     });
   }
   async connect(style?: string): Promise<Layer<Source>[]> {

@@ -12,6 +12,7 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {ImageWMS, Vector as VectorSource} from 'ol/source';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
+import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../../draw/draw.service';
 import {HsLayerListComponent} from './layermanager-layerlist.component';
@@ -83,6 +84,7 @@ describe('layermanager-layer-list', () => {
       declarations: [HsLayerListComponent],
       providers: [
         HsLayerManagerService,
+        {provide: HsArcgisGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsAddDataOwsService, useValue: new emptyMock()},
         {

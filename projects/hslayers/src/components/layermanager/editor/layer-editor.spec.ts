@@ -12,6 +12,7 @@ import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
+import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../../draw/draw.service';
@@ -93,6 +94,7 @@ describe('layermanager', () => {
         },
         {provide: HsWmsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
+        {provide: HsArcgisGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayerUtilsService,
