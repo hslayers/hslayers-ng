@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 
+import {Subject} from 'rxjs';
+
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
 import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
@@ -15,7 +17,7 @@ export class HsAddDataCommonService {
   url: string;
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
-
+  serviceLayersCalled: Subject<string> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,

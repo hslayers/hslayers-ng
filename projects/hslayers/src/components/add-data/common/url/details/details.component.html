@@ -142,11 +142,24 @@
         <th>{{'COMMON.name' | translate}}</th>
       </thead>
       <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
-        <tr>
-          <td><input class="checkbox-lg" type="checkbox" name="service" (change)="changed()"
-              [(ngModel)]="service.checked" /></td>
-          <td>{{service.name}}</td>
-        </tr>
+        <ng-container *ngIf="isLayer(service); else serviceToggleBtn">
+          <tr>
+            <td><input class="checkbox-lg ms-2" type="checkbox" name="service" (change)="changed()"
+                [(ngModel)]="service.checked" /></td>
+            <td>{{service.name}}</td>
+          </tr>
+        </ng-container>
+        <ng-template #serviceToggleBtn>
+          <tr>
+            <td>
+              <button class="but-title-sm" (click)="addService(service)" data-toggle="tooltip"
+                [title]="'Add service layers'">
+                <i class="icon-plus"></i>
+              </button>
+            </td>
+            <td class="pt-2">{{service.name}}</td>
+          </tr>
+        </ng-template>
       </tbody>
     </table>
   </ng-template>

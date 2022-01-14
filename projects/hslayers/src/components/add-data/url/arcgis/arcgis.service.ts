@@ -23,11 +23,9 @@ import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
 import {urlDataObject} from '../types/data-object.type';
-
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   data: urlDataObject;
-
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsLayoutService: HsLayoutService,
@@ -92,7 +90,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.srss = caps.spatialReference?.wkid
         ? [caps.spatialReference.wkid.toString()]
         : [];
-      this.data.services = caps.layers || caps.services;
+      this.data.services = caps.layers ?? caps.services;
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
           if (srs.includes('3857')) {
@@ -129,8 +127,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     if (this.data.services === undefined) {
       return;
     }
-
-    const checkedLayers = this.data.services.filter((l) => l.checked);
+    const checkedLayers = this.data.services.filter(
+      (l) => l.checked && l.hasOwnProperty('defaultVisibility')
+    );
     const collection = [
       this.addLayer(checkedLayers, {
         layerTitle: this.data.title.replace(/\//g, '&#47;'),
@@ -224,5 +223,17 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     collection: Layer<Source>[]
   ): void {
     //Not needed yet, but interface has it
+  }
+
+  /**
+   * Add service and its layers to project
+   * @param service - Service URL
+   */
+  async addService(service: any): Promise<void> {
+    const serviceReq = this.hsAddDataCommonService.url.endsWith('/')
+      ? `services/${service.name}` + `/${service.type}`
+      : `/services/${service.name}` + `/${service.type}`;
+    const url = this.hsAddDataCommonService.url + serviceReq;
+    this.hsAddDataCommonService.serviceLayersCalled.next(url);
   }
 }

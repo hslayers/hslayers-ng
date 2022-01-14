@@ -59,4 +59,14 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   changed(): void {
     this.hsAddDataUrlService.searchForChecked(this.data.services);
   }
+
+  isLayer(serviceOrLayer: any): boolean {
+    return serviceOrLayer.hasOwnProperty('defaultVisibility');
+  }
+
+  addService(service): void {
+    if (this.injectedService.addService) {
+      this.injectedService.addService(service);
+    }
+  }
 }

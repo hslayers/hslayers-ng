@@ -490,44 +490,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     return {styles, legends};
   }
 
-  /**
-   * Add service and its layers to project
-   * @param url - Service URL
-   * @param addUnder - OL layer before which to add new layer
-   * @param path - Folder name with path to group layers
-   * @param group - Group layer to which add layer to
-   * @param layerName - Name of layer to add. If not specified then all layers are added
-   */
-  async addService(
-    url: string,
-    group: Group,
-    layerName: string,
-    addUnder?: Layer<Source>,
-    path?: string
-  ): Promise<void> {
-    const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
-
-    let ol_layers = this.hsWmsGetCapabilitiesService.service2layers(
-      wrapper.response,
-      path
-    );
-    if (layerName) {
-      ol_layers = ol_layers.filter(
-        (layer) =>
-          getName(layer) == layerName ||
-          (getName(layer) == undefined && //Backwards compatibility with layman when title==name
-            getTitle(layer) == layerName)
-      );
-    }
-    ol_layers.forEach((layer) => {
-      if (group !== undefined) {
-        group.getLayers().push(layer);
-      } else {
-        this.hsAddDataService.addLayer(layer, addUnder);
-      }
-    });
-  }
-
   addLayersRecursively(
     layer: any,
     options: addLayersRecursivelyOptions = {checkedOnly: true},
