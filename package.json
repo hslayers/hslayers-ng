@@ -73,7 +73,7 @@
     "resumablejs": "^1.1.0",
     "rxjs": "^7.5.2",
     "share-api-polyfill": "^1.0.21",
-    "simple-statistics": "^7.7.0",
+    "simple-statistics": "^7.7.3",
     "tslib": "^2.3.0",
     "vega": "5.21.0",
     "vega-embed": "6.20.5",
