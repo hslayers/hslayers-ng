@@ -44,18 +44,18 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
     //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail
     if (sublayer != undefined && sublayer.Layer) {
       for (const children of sublayer.Layer) {
+        const nameOrId = children.Name;
         Object.assign(this.checkedSubLayers, {
-          [children.Name]: state,
+          [nameOrId]: state,
         });
-        this.HsLayerEditorSublayerService.checkedSubLayersTmp[children.Name] =
-          state;
+        this.HsLayerEditorSublayerService.checkedSubLayersTmp[nameOrId] = state;
       }
     }
-    if (this.checkedSubLayers[sublayer.Name] != undefined) {
-      this.HsLayerEditorSublayerService.checkedSubLayersTmp[sublayer.Name] =
-        state;
+    const nameOrId = sublayer.Name; //ID is stored in Name prop for ArcGISREST
+    if (this.checkedSubLayers[nameOrId] != undefined) {
+      this.HsLayerEditorSublayerService.checkedSubLayersTmp[nameOrId] = state;
     } else {
-      this.HsLayerEditorSublayerService.withChildrenTmp[sublayer.Name] = state;
+      this.HsLayerEditorSublayerService.withChildrenTmp[nameOrId] = state;
     }
     return this.HsLayerEditorSublayerService.subLayerSelected();
   }

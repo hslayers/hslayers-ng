@@ -17,6 +17,7 @@ import {
   setLegends,
   setMetadata,
 } from '../../common/layer-extensions';
+import {HsArcgisGetCapabilitiesService} from '../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -24,6 +25,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
+import {Title} from '@angular/platform-browser';
 import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
@@ -36,6 +38,7 @@ export class HsLayerManagerMetadataService {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private HsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public HsDimensionTimeService: HsDimensionTimeService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLog: HsLogService
@@ -159,7 +162,7 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  parseLayerInfo(
+  parseWmsCaps(
     layerDescriptor: HsLayerDescriptor,
     layerName: string,
     caps: WMSGetCapabilitiesResponse
@@ -258,13 +261,14 @@ export class HsLayerManagerMetadataService {
    */
   async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
     const layer = layerDescriptor.layer;
-    const capabilities = '';
     const url = this.HsLayerUtilsService.getURL(layer);
     if (!url) {
       return;
     }
-    //WMS
-    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+    if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
+      const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
+      this.parseArcGisCaps(layerDescriptor, wrapper.response);
+    } else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
@@ -274,7 +278,7 @@ export class HsLayerManagerMetadataService {
       const params = this.HsLayerUtilsService.getLayerParams(layer);
       const layerNameInParams: string = params.LAYERS;
 
-      this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
+      this.parseWmsCaps(layerDescriptor, layerNameInParams, caps);
       if (getSubLayers(layer)) {
         params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
         this.HsLayerUtilsService.updateLayerParams(layer, params);
@@ -333,6 +337,100 @@ export class HsLayerManagerMetadataService {
         }
       }
     }
+  }
+  parseArcGisCaps(layerDescriptor: HsLayerDescriptor, resp: any) {
+    const olLayer = layerDescriptor.layer;
+    const params = this.HsLayerUtilsService.getLayerParams(olLayer);
+    const layerName: string = params.LAYERS;
+    const legends: string[] = [];
+    let layerObj; //Main object representing layer created from capabilities which will be cached
+    if (layerName !== undefined && layerName.includes(',')) {
+      const layerObjs = []; //array of layer objects representing added layer
+      for (const subLayer of layerName.replace('show:', '').split(',')) {
+        /** This is the found sublayer by ID from the layers array */
+        const subObj = this.identifyArcgisLayerObj(parseInt(subLayer), resp);
+        layerObjs.push(subObj);
+        this.collectLegend(subObj, legends);
+        if (subObj && subObj.Layer !== undefined && getSubLayers(olLayer)) {
+          delete subObj.Layer;
+        }
+      }
+      if (getCachedCapabilities(olLayer) === undefined) {
+        layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
+          maxResolution: Math.max(
+            ...layerObjs.map((layer) => this.searchForScaleDenominator(layer))
+          ),
+          Layer: layerObjs,
+        });
+      }
+      this.fillMetadataUrlsIfNotExist(olLayer, resp);
+    } else {
+      layerObj = this.identifyArcgisLayerObj(parseInt(layerName), resp);
+      if (layerObj == undefined) {
+        return;
+      }
+      //TODO: This should be removed probably to not pollute layer object. Use cachedCapabilities instead
+      if (
+        layerObj.Dimension?.name === 'time' ||
+        layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
+      ) {
+        this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
+      }
+      if (layerObj.Layer && getSubLayers(olLayer)) {
+        layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+        /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. 
+        We delete to not crash interface if the service has thousands of layers. There is an assumption that if we specify sublayers 
+        in layer definition, user will not be allowed to display other sublayers 
+        thus it is fine if the sublayer list gets hidden in layer editor. */
+        delete layerObj.Layer;
+      }
+      this.collectLegend(layerObj, legends);
+    }
+    if (getCachedCapabilities(olLayer) == undefined) {
+      setCacheCapabilities(olLayer, layerObj);
+    }
+    this.parseAttribution(olLayer, getCachedCapabilities(olLayer));
+    const existingLegends = getLegends(olLayer);
+    if (legends.length > 0 && existingLegends == undefined) {
+      setLegends(olLayer, legends);
+    }
+  }
+  identifyArcgisLayerObj(
+    layerId: number,
+    caps: {
+      layers: {
+        id: number;
+        name: string;
+        parentLayerId?: number;
+        defaultVisibility?: boolean;
+        subLayerIds?: number[];
+        minScale?: number;
+        maxScale?: number;
+        type?: string;
+        geometryType?: string;
+      }[];
+    }
+  ): {Layer: {Title: string; Name: number}[]} {
+    if (layerId == undefined || isNaN(layerId)) {
+      //parseInt(undefined) returns NaN
+      return {
+        Layer: caps.layers.map((l) => {
+          return {Title: l.name, Name: l.id};
+        }),
+      };
+    } else {
+      const found = caps.layers.find((l) => l.id == layerId);
+      if (found) {
+        return {
+          Layer: caps.layers
+            .filter((l) => l.parentLayerId == layerId)
+            .map((l) => {
+              return {Title: l.name, Name: l.id};
+            }),
+        };
+      }
+    }
+    return null;
   }
 
   private fillMetadataUrlsIfNotExist(layer: any, caps: any) {
