@@ -80,6 +80,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       ? await this.hsAddDataVectorService.addNewLayer(this.data)
       : await this.updateExistingLayer();
     this.hsLayoutService.setMainPanel('layermanager');
+    this.hsAddDataVectorService.setPanelToCatalogue();
     this.setToDefault();
   }
 
