@@ -305,6 +305,9 @@ export class HsLayerUtilsService {
     if (this.HsUtilsService.instOf(src, TileWMS)) {
       (src as TileWMS).updateParams(params);
     }
+    if (this.HsUtilsService.instOf(src, TileArcGISRest)) {
+      (src as TileArcGISRest).updateParams(params);
+    }
   }
 
   /**

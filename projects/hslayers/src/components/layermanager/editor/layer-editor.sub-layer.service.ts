@@ -100,7 +100,10 @@ export class HsLayerEditorSublayerService {
     params.LAYERS = Object.keys(this.checkedSubLayers)
       .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])
       .join(',');
-    if (params.LAYERS == '') {
+    if (this.HsLayerUtilsService.isLayerArcgis(layer.layer)) {
+      params.LAYERS = `show:${params.LAYERS}`;
+    }
+    if (params.LAYERS == '' || params.LAYERS == 'show:') {
       this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
       return;
     }
