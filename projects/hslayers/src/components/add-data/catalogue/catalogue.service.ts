@@ -394,15 +394,17 @@ export class HsAddDataCatalogueService {
       whatToAdd.link = Array.isArray(whatToAdd.link)
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
         : whatToAdd.link;
-      this.datasetSelect('url');
+      if (ds.type == 'micka') {
+        this.datasetSelect('url');
+      }
       await this.hsAddDataOwsService.connectToOWS({
         type: whatToAdd.type.toLowerCase(),
         uri: decodeURIComponent(whatToAdd.link),
         layer: ds.type == 'layman' ? layer.name : undefined,
       });
     } else if (whatToAdd.type == 'WFS') {
-      this.datasetSelect('url');
       if (ds.type == 'micka') {
+        this.datasetSelect('url');
         whatToAdd.link = Array.isArray(whatToAdd.link)
           ? whatToAdd.link.filter((link) =>
               link.toLowerCase().includes('wfs')
@@ -431,7 +433,7 @@ export class HsAddDataCatalogueService {
             }
           );
           this.hsAddDataVectorService.fitExtent(layer);
-          this.hsAddDataService.dsSelected = 'catalogue';
+          this.datasetSelect('catalogue');
         } else {
           //Layman layers without write access
           await this.hsAddDataOwsService.connectToOWS({
