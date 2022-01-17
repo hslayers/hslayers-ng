@@ -48,7 +48,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     };
   }
 
-  async addLayerFromCapabilities(
+  async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
@@ -61,7 +61,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     try {
       await this.createLayer(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         return this.addLayers(true);
       }
     } catch (e) {
@@ -90,7 +90,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.srss = caps.spatialReference?.wkid
         ? [caps.spatialReference.wkid.toString()]
         : [];
-      this.data.services = caps.layers ?? caps.services;
+      this.data.services = caps.services;
+      this.data.layers = caps.layers;
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
           if (srs.includes('3857')) {
@@ -124,12 +125,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param checked - Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): Layer<Source>[] {
-    if (this.data.services === undefined) {
+    if (this.data.layers === undefined) {
       return;
     }
-    const checkedLayers = this.data.services.filter(
-      (l) => l.checked && l.hasOwnProperty('defaultVisibility')
-    );
+    const checkedLayers = this.data.layers.filter((l) => l.checked);
     const collection = [
       this.addLayer(checkedLayers, {
         layerTitle: this.data.title.replace(/\//g, '&#47;'),
@@ -230,10 +229,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Add service and its layers to project
    * @param service - Service URL
    */
-  async addService(service: any): Promise<void> {
+  async addService(params: {service: any}): Promise<void> {
     const serviceReq = this.hsAddDataCommonService.url.endsWith('/')
-      ? `services/${service.name}` + `/${service.type}`
-      : `/services/${service.name}` + `/${service.type}`;
+      ? `services/${params.service.name}` + `/${params.service.type}`
+      : `/services/${params.service.name}` + `/${params.service.type}`;
     const url = this.hsAddDataCommonService.url + serviceReq;
     this.hsAddDataCommonService.serviceLayersCalled.next(url);
   }

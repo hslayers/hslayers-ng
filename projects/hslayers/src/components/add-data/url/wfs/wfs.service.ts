@@ -71,7 +71,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     };
   }
 
-  async addLayerFromCapabilities(
+  async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     style?: string
   ): Promise<Layer<Source>[]> {
@@ -85,7 +85,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     try {
       const bbox = await this.parseCapabilities(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         const collection = this.addLayers(true, style);
         this.zoomToBBox(bbox);
         return collection;
@@ -158,10 +158,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
       this.data.output_format = this.getPreferredFormat(this.data.version);
 
-      this.data.services = caps.FeatureTypeList.FeatureType[0]
-        ? caps.FeatureTypeList.FeatureType
-        : [caps.FeatureTypeList.FeatureType];
-
       this.data.srss = this.parseEPSG(this.data.srss);
       if (this.data.srss.length == 0) {
         this.data.srss = ['EPSG:3857'];
@@ -206,14 +202,14 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   parseFeatureCount(): void {
-    for (const service of this.data.services) {
+    for (const layer of this.data.layers) {
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
         this.hsUtilsService.paramsToURLWoEncode({
           service: 'wfs',
           version: this.data.version, //== '2.0.0' ? '1.1.0' : this.version,
           request: 'GetFeature',
-          typeName: service.Name,
+          typeName: layer.Name,
           resultType: 'hits',
         }),
       ].join('?');
@@ -225,15 +221,15 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
             const oParser = new DOMParser();
             const oDOM = oParser.parseFromString(response, 'application/xml');
             const doc = oDOM.documentElement;
-            service.featureCount = doc.getAttribute('numberOfFeatures');
+            layer.featureCount = doc.getAttribute('numberOfFeatures');
             //WFS 2.0.0
-            if (service.featureCount == 0 || !service.featureCount) {
-              service.featureCount = doc.getAttribute('numberMatched');
+            if (layer.featureCount == 0 || !layer.featureCount) {
+              layer.featureCount = doc.getAttribute('numberMatched');
             }
 
-            service.featureCount > 1000
-              ? (service.limitFeatureCount = true)
-              : (service.limitFeatureCount = false);
+            layer.featureCount > 1000
+              ? (layer.limitFeatureCount = true)
+              : (layer.limitFeatureCount = false);
           },
           (e) => {
             this.hsAddDataCommonService.throwParsingError(e);
@@ -287,7 +283,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   addLayers(checkedOnly: boolean, style?: string): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
-    for (const layer of this.data.services) {
+    for (const layer of this.data.layers) {
       this.addLayersRecursively(layer, {style}, collection);
     }
     this.hsAddDataCommonService.clearParams();

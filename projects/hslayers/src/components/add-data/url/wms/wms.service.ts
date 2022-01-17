@@ -73,7 +73,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     };
   }
 
-  async addLayerFromCapabilities(
+  async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
@@ -89,7 +89,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.hsAddDataCommonService.layerToSelect
       );
       if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         return this.addLayers(true);
       }
     } catch (e) {
@@ -195,18 +195,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
         this.data.srs
       );
-      this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
-
+      this.data.layers = this.filterCapabilitiesLayers(caps.Capability.Layer);
       //Make sure every service has a title to be displayed in table
-      for (const service of this.data.services) {
-        if (service.Title.length == 0) {
-          service.Title = service.Name;
+      for (const layer of this.data.layers) {
+        if (layer.Title.length == 0) {
+          layer.Title = layer.Name;
         }
       }
 
       const serviceLayer = this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
-        this.data.services,
+        this.data.layers,
         'Name'
       );
 
@@ -214,7 +213,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       if (layerToSelect) {
         this.data.extent = this.getLayerBBox(serviceLayer);
       } else {
-        this.data.extent = this.calcAllLayersExtent(this.data.services);
+        this.data.extent = this.calcAllLayersExtent(this.data.layers);
       }
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
@@ -329,13 +328,13 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
   addLayers(checkedOnly: boolean): Layer<Source>[] {
-    if (this.data.services === undefined) {
+    if (this.data.layers === undefined) {
       return;
     }
     const collection = [];
     //Limit visible layers to 10 to not freeze accidentally
     this.data.visible =
-      this.data.services.filter((l) => l.checked === true).length <= 10;
+      this.data.layers.filter((l) => l.checked === true).length <= 10;
     if (this.data.base) {
       const newLayer = this.addLayer(
         {},
@@ -351,7 +350,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       );
       collection.push(newLayer);
     } else {
-      for (const layer of this.data.services) {
+      for (const layer of this.data.layers) {
         this.addLayersRecursively(
           layer,
           {checkedOnly: checkedOnly},
@@ -424,7 +423,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       params: {
         LAYERS: this.data.base
           ? this.hsAddDataCommonService.createBasemapName(
-              this.data.services,
+              this.data.layers,
               'Name'
             )
           : layer.Name,
