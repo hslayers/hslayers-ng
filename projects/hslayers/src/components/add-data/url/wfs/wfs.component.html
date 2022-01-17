@@ -14,7 +14,7 @@
             <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translate}}</label>
         </div>
         <ul class="list-group">
-            <li *ngFor="let layer of hsUrlWfsService.data.services; trackBy:( 'Name' | trackByProperty )"
+            <li *ngFor="let layer of hsUrlWfsService.data.layers; trackBy:( 'Name' | trackByProperty )"
                 class="list-group-item py-2 clearfix">
                 <div>
                     <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer"
@@ -35,7 +35,7 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
                 <div class="d-flex justify-content-center">
                     <hs-url-add class="w-100" [injectedService]="hsUrlWfsService"
-                        [layers]="hsUrlWfsService.data.services">
+                        [layers]="hsUrlWfsService.data.layers">
                     </hs-url-add>
                     <button *ngIf="hsUrlWfsService.loadingFeatures"
                         class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img

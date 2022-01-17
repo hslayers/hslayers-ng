@@ -97,37 +97,37 @@
         <!-- <th style="width:30%">{{'COMMON.name' | translate}}</th> -->
         <th>{{'COMMON.abstract' | translate}}</th>
       </thead>
-      <tbody *ngFor="let service of data.services | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
+      <tbody *ngFor="let layer of data.layers | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
         <tr>
-          <td [attr.rowspan]="service.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(service)}">
-            <input type="checkbox" class="checkbox-lg" [(ngModel)]="service.checked" name="service"
-              (change)="searchForChecked(service)" />
+          <td [attr.rowspan]="layer.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(layer)}">
+            <input type="checkbox" class="checkbox-lg" [(ngModel)]="layer.checked" name="layer"
+              (change)="searchForChecked(layer)" />
           </td>
           <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate"
-            [title]="'Title: ' + service.Title  + '\nName: ' + service.Name"
-            (click)="hsUrlWmsService.expandTableRow($event)">{{service.Title}}</td>
-          <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="service.Name">{{service.Name}}</td> -->
+            [title]="'Title: ' + layer.Title  + '\nName: ' + layer.Name"
+            (click)="hsUrlWmsService.expandTableRow($event)">{{layer.Title}}</td>
+          <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="layer.Name">{{layer.Name}}</td> -->
           <td hsWmsLayerHighlight style="max-width: 10.875em; width:30%" class="text-truncate"
-            [title]="service.Abstract" (click)="hsUrlWmsService.expandTableRow($event)">
-            {{service.Abstract}}</td>
+            [title]="layer.Abstract" (click)="hsUrlWmsService.expandTableRow($event)">
+            {{layer.Abstract}}</td>
         </tr>
-        <tr *ngIf="service.Style?.length > 1 && service.checked">
+        <tr *ngIf="layer.Style?.length > 1 && layer.checked">
           <td colspan="3">
             <div class="d-flex align-items-baseline px-2 w-100">
               <div class="d-flex align-items-baseline" style="flex-grow: 1;">
                 <label class="control-label">{{'COMMON.style' | translate}}:</label>
-                <select class="form-control form-select-sm form-select" [(ngModel)]="service.styleSelected"
+                <select class="form-control form-select-sm form-select" [(ngModel)]="layer.styleSelected"
                   [ngModelOptions]="{standalone: true}">
-                  <option *ngFor="let style of service.Style" [ngValue]="style">{{style.Name}}
+                  <option *ngFor="let style of layer.Style" [ngValue]="style">{{style.Name}}
                   </option>
                 </select>
               </div>
             </div>
           </td>
         </tr>
-        <tr [hidden]="!hasNestedLayers(service)">
+        <tr [hidden]="!hasNestedLayers(layer)">
           <td colspan="3" style="padding-left: 1em">
-            <hs-nested-layers-table style="display: block;" [layers]="service.Layer"
+            <hs-nested-layers-table style="display: block;" [layers]="layer.Layer"
               (layerChecked)="searchForChecked($event)">
             </hs-nested-layers-table>
           </td>
@@ -142,43 +142,41 @@
         <th>{{'COMMON.name' | translate}}</th>
       </thead>
       <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
-        <ng-container *ngIf="isLayer(service); else serviceToggleBtn">
-          <tr>
-            <td><input class="checkbox-lg ms-2" type="checkbox" name="service" (change)="changed()"
-                [(ngModel)]="service.checked" /></td>
-            <td>{{service.name}}</td>
-          </tr>
-        </ng-container>
-        <ng-template #serviceToggleBtn>
-          <tr>
-            <td>
-              <button class="but-title-sm" (click)="addService(service)" data-toggle="tooltip"
-                [title]="'Add service layers'">
-                <i class="icon-plus"></i>
-              </button>
-            </td>
-            <td class="pt-2">{{service.name}}</td>
-          </tr>
-        </ng-template>
+        <tr>
+          <td>
+            <button class="but-title-sm" (click)="addService({service})" data-toggle="tooltip"
+              [title]="'Add service layers'">
+              <i class="icon-plus"></i>
+            </button>
+          </td>
+          <td class="pt-2">{{service.name}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngFor="let layer of data.layers; trackBy:( 'id' | trackByProperty )">
+        <tr>
+          <td><input class="checkbox-lg ms-2" type="checkbox" name="layer" (change)="changed()"
+              [(ngModel)]="layer.checked" /></td>
+          <td>{{layer.name}}</td>
+        </tr>
       </tbody>
     </table>
   </ng-template>
   <ng-container *ngIf="type === 'wms'">
     <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span
         [translate]="'ADDDATA.CATALOGUE.showingSubset'"
-        [translateParams]="{limitShown: limitShown, total: data.services.length}"></span>
+        [translateParams]="{limitShown: limitShown, total: data.layers.length}"></span>
       <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
           (click)="limitShown = limitShown + 100">
           {{'ADDDATA.CATALOGUE.showNext100' | translate}}
         </button>
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-          (click)="limitShown = data.services.length">
+          (click)="limitShown = data.layers.length">
           {{'ADDDATA.CATALOGUE.showAll' | translate}}
         </button>
       </div>
     </div>
   </ng-container>
-  <hs-url-add class="w-100" [injectedService]="injectedService" [layers]="data.services">
+  <hs-url-add class="w-100" [injectedService]="injectedService" [layers]="data.layers">
   </hs-url-add>
 </div>

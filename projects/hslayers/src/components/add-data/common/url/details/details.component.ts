@@ -6,6 +6,7 @@ import {HsAddDataService} from '../../../add-data.service';
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
 import {HsLanguageService} from '../../../../language/language.service';
 import {HsLayerUtilsService} from '../../../../utils/layer-utils.service';
+import {HsUrlTypeServiceModel} from '../../../url/models/url-type-service.model';
 import {HsUrlWmsService} from '../../../url/wms/wms.service';
 import {HsUtilsService} from '../../../../utils/utils.service';
 
@@ -14,7 +15,7 @@ import {HsUtilsService} from '../../../../utils/utils.service';
   templateUrl: './details.component.html',
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
-  @Input() injectedService: any;
+  @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
   data;
   checkedSubLayers = {};
@@ -58,10 +59,6 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   }
   changed(): void {
     this.hsAddDataUrlService.searchForChecked(this.data.services);
-  }
-
-  isLayer(serviceOrLayer: any): boolean {
-    return serviceOrLayer.hasOwnProperty('defaultVisibility');
   }
 
   addService(service): void {

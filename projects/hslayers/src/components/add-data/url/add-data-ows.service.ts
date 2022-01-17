@@ -64,7 +64,7 @@ export class HsAddDataOwsService {
       showDetails: true,
     });
     const wrapper = await this.typeCapabilitiesService.request(url);
-    return await this.typeService.addLayerFromCapabilities(wrapper, style);
+    return await this.typeService.listLayerFromCapabilities(wrapper, style);
   }
 
   /**
@@ -80,7 +80,7 @@ export class HsAddDataOwsService {
   }
 
   changed(data: urlDataObject): void {
-    this.hsAddDataUrlService.searchForChecked(data.services);
+    this.hsAddDataUrlService.searchForChecked(data.layers);
   }
 
   /**

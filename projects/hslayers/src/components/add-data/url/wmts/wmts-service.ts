@@ -33,12 +33,13 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       description: '',
       image_format: '',
       services: [],
+      layers: [],
       title: '',
       version: '',
     };
   }
 
-  async addLayerFromCapabilities(
+  async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
@@ -54,7 +55,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       //TODO AWAIT and add-layer if layerToSelect
       await this.capabilitiesReceived(response);
       if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.services);
+        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         return this.addLayers(true);
       }
     } catch (e) {
@@ -75,7 +76,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
 
       this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.Version || caps.version;
-      this.data.services = caps.Contents.Layer;
+      this.data.layers = caps.Contents.Layer;
       this.hsAddDataCommonService.loadingInfo = false;
       return this.data.title;
     } catch (e) {
@@ -97,7 +98,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   addLayers(checkedOnly: boolean): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
-    for (const layer of this.data.services) {
+    for (const layer of this.data.layers) {
       this.addLayersRecursively(layer, collection);
     }
     this.hsLayoutService.setMainPanel('layermanager');

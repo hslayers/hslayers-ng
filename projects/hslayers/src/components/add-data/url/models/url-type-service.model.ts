@@ -9,7 +9,7 @@ import {urlDataObject} from '../types/data-object.type';
 export interface HsUrlTypeServiceModel {
   data: urlDataObject;
 
-  addLayerFromCapabilities(
+  listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     sld?: string
   ): Promise<Layer<Source>[]>;
@@ -20,12 +20,6 @@ export interface HsUrlTypeServiceModel {
     options: addLayersRecursivelyOptions,
     collection: Layer<Source>[]
   ): void;
-  addService?(
-    url: string,
-    group: Group,
-    layerName?: string,
-    addUnder?: Layer<Source>,
-    path?: string
-  ): Promise<void>;
+  addService?(params: any): Promise<void>;
   setDataToDefault(): void;
 }
