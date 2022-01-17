@@ -43,22 +43,25 @@ export class HsUrlDetailsComponent implements AfterContentInit {
     );
   }
 
-  searchForChecked(service): void {
-    this.checkedSubLayers[service.Name] = service.checked;
+  searchForChecked(layer): void {
+    this.checkedSubLayers[layer.Name] = layer.checked;
     this.hsAddDataUrlService.addingAllowed = Object.values(
       this.checkedSubLayers
     ).some((value) => value === true);
   }
 
   reachedLimit(): boolean {
-    if (this.data.services?.length > this.limitShown) {
+    if (
+      this.data.layers?.length > this.limitShown ||
+      this.data.services?.length > this.limitShown
+    ) {
       return true;
     } else {
       return false;
     }
   }
   changed(): void {
-    this.hsAddDataUrlService.searchForChecked(this.data.services);
+    this.hsAddDataUrlService.searchForChecked(this.data.layers);
   }
 
   addService(service): void {

@@ -124,9 +124,8 @@ export class HsAddDataUrlService {
     }, 1000);
   }
 
-  searchForChecked(services: Array<any>): void {
+  searchForChecked(layers: Array<any>): void {
     this.addingAllowed =
-      services.some((service) => service.checked) ||
-      this.typeSelected == 'arcgis';
+      layers.some((l) => l.checked) || this.typeSelected == 'arcgis';
   }
 }
