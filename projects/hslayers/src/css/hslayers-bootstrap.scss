@@ -63,6 +63,14 @@ $list-group-item-padding-x: 1.25rem;
   // Utilities
   @import "bootstrap/scss/utilities/api";
 
+  @media screen and (min-width:767px) {
+    @for $i from 0 through 14{
+      .hs-panelspace hs-panel-container .hs-panelWidth-#{400 + ($i * 25) } {
+        width: 400 + ($i * 25)+px;
+      }
+    }
+  }
+
   //Dropped in b5. suggested to use utilities mb-*. Might refactor later
   .form-group {
     margin-bottom: 1rem;

@@ -14,6 +14,7 @@ import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {HsPanelItem} from './panel-item';
+import {HsConfig} from '../../../config.service';
 
 @Component({
   selector: 'hs-panel-container',
@@ -30,7 +31,10 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @Input() panelObserver?: ReplaySubject<HsPanelItem>;
   interval: any;
   private ngUnsubscribe = new Subject<void>();
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private HsConfig: HsConfig
+  ) {}
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -57,6 +61,14 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   }
 
   loadPanel(panelItem: HsPanelItem): void {
+    const panelWidths = {
+      default: 425,
+      ows: 700,
+      composition_browser: 550,
+      addData: 700,
+      mapSwipe: 550,
+    };
+
     const componentFactory =
       this.componentFactoryResolver.resolveComponentFactory(
         panelItem.component
@@ -65,6 +77,16 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
+    /**
+     * Assign panel width class to a component host first child
+     * Used to define panelSpace panel width
+     */
+    Object.assign(panelWidths, this.HsConfig.panelWidths);
+    const panelWidth =
+      panelWidths[componentRefInstance.name] || panelWidths.default;
+    componentRef.location.nativeElement.children[0].classList.add(
+      `hs-panelWidth-${Math.round(panelWidth / 25) * 25}`
+    );
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;
     }

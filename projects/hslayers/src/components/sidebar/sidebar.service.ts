@@ -167,7 +167,7 @@ export class HsSidebarService {
   fitsSidebar(button: HsButton): boolean {
     const dimensionToCheck =
       window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
-
+    this.HsLayoutService.sidebarToggleable = window.innerWidth > 767;
     let maxNumberOfButtons = Math.floor(
       this.HsLayoutService.layoutElement[dimensionToCheck] / 60
     );

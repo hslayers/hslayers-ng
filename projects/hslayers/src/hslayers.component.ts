@@ -25,6 +25,7 @@ import {HsPrintComponent} from './components/print/print.component';
 import {HsQueryComponent} from './components/query/query.component';
 import {HsQueryPopupComponent} from './components/query/query-popup/query-popup.component';
 import {HsQueryPopupService} from './components/query/query-popup.service';
+import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
 import {HsSaveMapComponent} from './components/save-map/save-map.component';
 import {HsSearchComponent} from './components/search/search.component';
 import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
@@ -33,7 +34,6 @@ import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
-import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
