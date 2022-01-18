@@ -344,7 +344,10 @@ export class HsLayerManagerMetadataService {
     const layerName: string = params.LAYERS;
     const legends: string[] = [];
     let layerObj; //Main object representing layer created from capabilities which will be cached
-    if (layerName !== undefined && layerName.includes(',')) {
+    if (
+      layerName !== undefined &&
+      (layerName.includes(',') || layerName.includes('show'))
+    ) {
       const layerObjs = []; //array of layer objects representing added layer
       for (const subLayer of layerName.replace('show:', '').split(',')) {
         /** This is the found sublayer by ID from the layers array */

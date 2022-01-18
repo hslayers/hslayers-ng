@@ -140,7 +140,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         tileSize: this.data.tile_size,
         crs: this.data.srs,
         base: this.data.base,
-        subLayers: checkedLayers.join(','),
       }),
     ];
 
@@ -216,6 +215,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         base: this.data.base,
         extent: mapExtent,
         dimensions,
+        subLayers: layers.map((l) => l.id).join(','),
       },
       source,
     };
