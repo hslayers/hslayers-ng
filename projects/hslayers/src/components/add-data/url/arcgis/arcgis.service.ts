@@ -8,6 +8,7 @@ import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Layer} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {transformExtent} from 'ol/proj';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonService} from '../../common/common.service';
@@ -87,8 +88,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.query_formats = caps.supportedQueryFormats
         ? caps.supportedQueryFormats.split(',')
         : [];
-      this.data.srss = caps.spatialReference?.wkid
-        ? [caps.spatialReference.wkid.toString()]
+      this.data.srss = caps.spatialReference?.latestWkid
+        ? [caps.spatialReference.latestWkid.toString()]
         : [];
       this.data.services = caps.services;
       this.data.layers = caps.layers;
@@ -100,6 +101,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         }
         return this.data.srss[0];
       })();
+      this.data.extent = caps.fullExtent;
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
         this.data.srs
       );
@@ -198,6 +200,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     const source = this.data.use_tiles
       ? new TileArcGISRest(sourceParams)
       : new ImageArcGISRest(sourceParams);
+
+    const mapExtent = transformExtent(
+      [this.data.extent.xmin, this.data.extent.ymin, this.data.extent.xmax, this.data.extent.ymax],
+      'EPSG:' + this.data.srs,
+      this.data.map_projection
+    );
+
     const layerParams = {
       properties: {
         title: options.layerTitle,
@@ -205,6 +214,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         removable: true,
         path: options.path,
         base: this.data.base,
+        extent: mapExtent,
         dimensions,
       },
       source,
