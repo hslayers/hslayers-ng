@@ -859,8 +859,9 @@ export class HsLayerManagerService {
           });
         }
       }, 2000);
+    } else {
+      progress.loaded = progress.loadTotal > 0 ? false : true;
     }
-    progress.loaded = !(progress.loadTotal > 0 && progress.loaded);
 
     let percents = 100.0;
     if (progress.loadTotal > 0) {
