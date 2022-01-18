@@ -85,7 +85,7 @@ export class HsLayoutService {
    */
   initializedOnce = false;
   /**
-   * Whether the app has been initialized already once. 
+   * Whether the app has been initialized already once.
    * Need this to not add panels wtice when NgRouter is used
    * @public
    * @default false
@@ -323,7 +323,7 @@ export class HsLayoutService {
       ows: 700,
       composition_browser: 550,
       addData: 700,
-      mapSwipe: 550
+      mapSwipe: 550,
     };
     const layoutWidth = this.layoutElement.clientWidth;
     Object.assign(panelWidths, this.HsConfig.panelWidths);

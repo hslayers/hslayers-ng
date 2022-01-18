@@ -14,9 +14,13 @@
     pointer-events: auto;
     /* position: absolute; */
     top: 0;
-    width: 400px;
+    min-width: 425px;
     z-index: 2;
     transition: width 100ms ease-out;
+
+    &.labels{
+        width: 425px;
+    }
 }
 
 .hs-sb-right .hs-panelspace {
