@@ -60,8 +60,13 @@ export class HsUrlDetailsComponent implements AfterContentInit {
       return false;
     }
   }
-  changed(): void {
-    this.hsAddDataUrlService.searchForChecked(this.data.layers);
+  changed(whichArray: 'layers' | 'services'): void {
+    if (whichArray == 'layers') {
+      this.hsAddDataUrlService.searchForChecked(this.data.layers);
+    }
+    if (whichArray == 'services') {
+      this.hsAddDataUrlService.searchForChecked(this.data.services);
+    }
   }
 
   addService(service): void {

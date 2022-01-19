@@ -2,7 +2,7 @@
     <tbody *ngFor="let sub_layer of layers; trackBy:( 'Name' | trackByProperty )">
         <tr>
             <td style="width: 1em"><input type="checkbox" [(ngModel)]="sub_layer.checked" (change)="checked(sub_layer)"
-                    [ngModelOptions]="{standalone: true}" /></td>
+                    [ngModelOptions]="{standalone: true}" style="cursor: pointer;" /></td>
             <td hsWmsLayerHighlight class="text-truncate" style="max-width: 12em;" id="hs-add-layer-{{sub_layer.Name}}"
                 [title]="'Title: ' + sub_layer.Title  + '\nName: ' + sub_layer.Name"
                 (click)="hsUrlWmsService.expandTableRow($event)">{{sub_layer.Title}}

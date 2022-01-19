@@ -20,6 +20,6 @@ export interface HsUrlTypeServiceModel {
     options: addLayersRecursivelyOptions,
     collection: Layer<Source>[]
   ): void;
-  addService?(params: any): Promise<void>;
+  addService?(params: any): void;
   setDataToDefault(): void;
 }

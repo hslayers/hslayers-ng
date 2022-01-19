@@ -61,6 +61,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     try {
       await this.createLayer(wrapper.response);
+      if (this.hsAddDataCommonService.addAllServiceLayers) {
+        this.hsAddDataCommonService.layerToSelect = this.data.layers.find(
+          (l) => l.id == 0
+        )?.name;
+      }
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         return this.addLayers(true);
@@ -93,6 +98,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         : [];
       this.data.services = caps.services;
       this.data.layers = caps.layers;
+      this.hsAddDataUrlService.searchForChecked(
+        this.data.layers ?? this.data.services
+      );
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
           if (srs.includes('3857')) {
@@ -127,10 +135,15 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param checked - Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): Layer<Source>[] {
-    if (this.data.layers === undefined) {
+    if (this.data.layers === undefined && this.data.services === undefined) {
       return;
     }
-    const checkedLayers = this.data.layers.filter((l) => l.checked);
+    const checkedLayers = this.data.layers?.filter((l) => l.checked);
+    const checkedServices = this.data.services?.filter((l) => l.checked);
+    if (checkedServices?.length > 0) {
+      this.service2Layers(checkedServices);
+      return;
+    }
     const collection = [
       this.addLayer(checkedLayers, {
         layerTitle: this.data.title.replace(/\//g, '&#47;'),
@@ -201,7 +214,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       : new ImageArcGISRest(sourceParams);
 
     const mapExtent = transformExtent(
-      [this.data.extent.xmin, this.data.extent.ymin, this.data.extent.xmax, this.data.extent.ymax],
+      [
+        this.data.extent.xmin,
+        this.data.extent.ymin,
+        this.data.extent.xmax,
+        this.data.extent.ymax,
+      ],
       'EPSG:' + this.data.srs,
       this.data.map_projection
     );
@@ -239,11 +257,21 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Add service and its layers to project
    * @param service - Service URL
    */
-  async addService(params: {service: any}): Promise<void> {
+  addService(params: {service: any; addAll?: boolean}): void {
     const serviceReq = this.hsAddDataCommonService.url.endsWith('/')
       ? `services/${params.service.name}` + `/${params.service.type}`
       : `/services/${params.service.name}` + `/${params.service.type}`;
     const url = this.hsAddDataCommonService.url + serviceReq;
-    this.hsAddDataCommonService.serviceLayersCalled.next(url);
+    this.hsAddDataCommonService.serviceLayersCalled.next({
+      url,
+      addAll: params.addAll,
+    });
+  }
+
+  service2Layers(services: any): void {
+    //This will no work, because it doesnt wait for one to finish
+    services.forEach((s) => {
+      this.addService({service: s, addAll: true});
+    });
   }
 }

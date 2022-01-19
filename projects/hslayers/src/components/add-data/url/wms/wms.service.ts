@@ -31,7 +31,6 @@ import {
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';
 import {urlDataObject} from '../types/data-object.type';
 
@@ -208,7 +207,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.data.layers,
         'Name'
       );
-
+      this.hsAddDataUrlService.searchForChecked(this.data.layers);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
         this.data.extent = this.getLayerBBox(serviceLayer);
