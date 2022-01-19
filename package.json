@@ -57,7 +57,7 @@
     "geostyler-openlayers-parser": "^3.0.1",
     "geostyler-qgis-parser": "^1.0.0",
     "geostyler-sld-parser": "^3.1.0",
-    "geostyler-style": "^5.0.0",
+    "geostyler-style": "^5.0.1",
     "jszip": "^3.7.1",
     "multiregress": "^1.0.0",
     "ngx-color": "^7.3.3",
