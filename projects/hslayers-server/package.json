@@ -1,7 +1,8 @@
 {
   "name": "hslayers-server",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "main": "server.js",
+  "engines": { "node": "^12.20.0 || ^14.13.1 || >=16.0.0" },
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,19 +12,19 @@
   },
   "author": "plan4all",
   "dependencies": {
-    "better-sqlite3": "^7.1.2",
+    "better-sqlite3": "^7.5.0",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "got": "11.8.3",
     "http": "0.0.1-security",
-    "http-proxy-middleware": "^1.0.6",
-    "got": "^11.8.1",
-    "passport": "^0.4.1",
+    "http-proxy-middleware": "^2.0.1",
+    "passport": "^0.5.2",
     "passport-oauth2": "^1.6.1",
     "passport-oauth2-middleware": "^1.0.3",
-    "pug": "^3.0.1"
+    "pug": "^3.0.2"
   }
 }
