@@ -39,7 +39,7 @@ export class HsAddDataOwsService {
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService
   ) {
-    this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
+    this.hsAddDataCommonService.serviceLayersCalled.subscribe(({url}) => {
       this.setUrlAndConnect({uri: url});
     });
   }

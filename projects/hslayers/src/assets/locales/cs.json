@@ -65,7 +65,6 @@
     "queryFormat": "Formát dotazu",
     "registerMetadata": "Registrovat metadata",
     "resampleLayer": "Převzorkovat vrstvu",
-    "selectAllLayers": "Vybrat všechny vrstvy",
     "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií",
     "SHP": {
       "loginRequired": "Před načtením vrstvy je vyžadováno přihlášení",

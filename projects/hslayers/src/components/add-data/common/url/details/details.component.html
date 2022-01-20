@@ -100,15 +100,15 @@
       <tbody *ngFor="let layer of data.layers | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
         <tr>
           <td [attr.rowspan]="layer.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(layer)}">
-            <input type="checkbox" class="checkbox-lg" [(ngModel)]="layer.checked" name="layer"
+            <input type="checkbox" class="checkbox-lg" [(ngModel)]="layer.checked" name="layer" style="cursor: pointer;"
               (change)="searchForChecked(layer)" />
           </td>
           <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate"
             [title]="'Title: ' + layer.Title  + '\nName: ' + layer.Name"
             (click)="hsUrlWmsService.expandTableRow($event)">{{layer.Title}}</td>
           <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="layer.Name">{{layer.Name}}</td> -->
-          <td hsWmsLayerHighlight style="max-width: 10.875em; width:30%" class="text-truncate"
-            [title]="layer.Abstract" (click)="hsUrlWmsService.expandTableRow($event)">
+          <td hsWmsLayerHighlight style="max-width: 10.875em; width:30%" class="text-truncate" [title]="layer.Abstract"
+            (click)="hsUrlWmsService.expandTableRow($event)">
             {{layer.Abstract}}</td>
         </tr>
         <tr *ngIf="layer.Style?.length > 1 && layer.checked">
@@ -144,18 +144,20 @@
       <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
         <tr>
           <td>
-            <button class="but-title-sm" (click)="addService({service})" data-toggle="tooltip"
-              [title]="'Add service layers'">
-              <i class="icon-plus"></i>
-            </button>
+            <input class="checkbox-lg" type="checkbox" name="service" (change)="changed('services')"
+              style="cursor: pointer;" [(ngModel)]="service.checked" />
           </td>
-          <td class="pt-2">{{service.name}}</td>
+          <td (click)="expandService(service)" data-toggle="tooltip" [title]="'ADDDATA.requestServiceLayers' | translate"
+            style="cursor: pointer;">
+            {{service.name}}
+            <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
+          </td>
         </tr>
       </tbody>
       <tbody *ngFor="let layer of data.layers; trackBy:( 'id' | trackByProperty )">
         <tr>
-          <td><input class="checkbox-lg ms-2" type="checkbox" name="layer" (change)="changed()"
-              [(ngModel)]="layer.checked" /></td>
+          <td><input class="checkbox-lg" type="checkbox" name="layer" style="cursor: pointer;"
+              (change)="changed('layers')" [(ngModel)]="layer.checked" /></td>
           <td>{{layer.name}}</td>
         </tr>
       </tbody>
@@ -177,6 +179,6 @@
       </div>
     </div>
   </ng-container>
-  <hs-url-add class="w-100" [injectedService]="injectedService" [layers]="data.layers">
+  <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
   </hs-url-add>
 </div>

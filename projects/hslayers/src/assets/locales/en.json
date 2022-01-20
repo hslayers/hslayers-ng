@@ -38,7 +38,8 @@
       "selectAll": "Select all Layers",
       "submitLayerName": "Fill in layer name",
       "submitLayerTitle": "Fill in layer title"
-    }
+    },
+    "requestServiceLayers": "Request service layers"
   },
   "ADDLAYERS": {
     "addSelected": "Add selected layers to the map",
@@ -66,7 +67,6 @@
     "queryFormat": "Query format",
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
-    "selectAllLayers": "Select All layers",
     "serviceTypeNotMatching": "URL service type does not match selected category",
     "SHP": {
       "loginRequired": "User login is required before layer can be loaded",

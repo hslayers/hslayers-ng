@@ -38,7 +38,8 @@
       "selectAll": "Izvēlēties visus slāņus",
       "submitLayerName": "Ievadiet slāņa nosaukumu",
       "submitLayerTitle": "Ievadiet slāņa nosaukumu"
-    }
+    },
+    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus"
   },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
@@ -66,7 +67,6 @@
     "queryFormat": "Vaicājuma formāts",
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
-    "selectAllLayers": "Atlasīt visus slāņus",
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
     "SHP": {
       "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",

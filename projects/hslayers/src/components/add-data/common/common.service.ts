@@ -17,7 +17,7 @@ export class HsAddDataCommonService {
   url: string;
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
-  serviceLayersCalled: Subject<string> = new Subject();
+  serviceLayersCalled: Subject<{url: string}> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,

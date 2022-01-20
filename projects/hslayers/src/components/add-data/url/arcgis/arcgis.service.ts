@@ -17,7 +17,7 @@ import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilitie
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
-import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
+import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addLayerOptions} from '../types/layer-options.type';
@@ -93,6 +93,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         : [];
       this.data.services = caps.services;
       this.data.layers = caps.layers;
+      this.hsAddDataUrlService.searchForChecked(
+        this.data.layers ?? this.data.services
+      );
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
           if (srs.includes('3857')) {
@@ -122,15 +125,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * @param checkedOnly -
-   * Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param checked - Add all available layers or only checked ones. Checked=false=all
+   * Second step in adding layers to the map. Lops through the list of layers and calls addLayer.
    */
   addLayers(checkedOnly: boolean): Layer<Source>[] {
-    if (this.data.layers === undefined) {
+    if (this.data.layers === undefined && this.data.services === undefined) {
       return;
     }
-    const checkedLayers = this.data.layers.filter((l) => l.checked);
+    const checkedLayers = this.data.layers?.filter((l) => l.checked);
     const collection = [
       this.addLayer(checkedLayers, {
         layerTitle: this.data.title.replace(/\//g, '&#47;'),
@@ -201,7 +202,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       : new ImageArcGISRest(sourceParams);
 
     const mapExtent = transformExtent(
-      [this.data.extent.xmin, this.data.extent.ymin, this.data.extent.xmax, this.data.extent.ymax],
+      [
+        this.data.extent.xmin,
+        this.data.extent.ymin,
+        this.data.extent.xmax,
+        this.data.extent.ymax,
+      ],
       'EPSG:' + this.data.srs,
       this.data.map_projection
     );
@@ -236,14 +242,26 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Add service and its layers to project
+   * Request services layers
    * @param service - Service URL
    */
-  async addService(params: {service: any}): Promise<void> {
-    const serviceReq = this.hsAddDataCommonService.url.endsWith('/')
-      ? `services/${params.service.name}` + `/${params.service.type}`
-      : `/services/${params.service.name}` + `/${params.service.type}`;
-    const url = this.hsAddDataCommonService.url + serviceReq;
-    this.hsAddDataCommonService.serviceLayersCalled.next(url);
+  async expandService(service: Service): Promise<void> {
+    const urlRest = this.hsAddDataCommonService.url;
+    this.data.get_map_url =
+      (urlRest.endsWith('/') ? urlRest.slice(0, -1) : urlRest) +
+      [`/services`, service.name, service.type].join('/');
+    const wrapper = await this.hsArcgisGetCapabilitiesService.request(
+      this.data.get_map_url
+    );
+    await this.listLayerFromCapabilities(wrapper);
+  }
+
+  async addServices(services: Service[]): Promise<void> {
+    const originalRestUrl = this.hsAddDataCommonService.url;
+    for (const service of services.filter((s) => s.checked)) {
+      this.hsAddDataCommonService.url = originalRestUrl; //Because addLayers clears all params
+      await this.expandService(service);
+      await this.addLayers(undefined);
+    }
   }
 }
