@@ -6,7 +6,10 @@ import {HsAddDataService} from '../../../add-data.service';
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
 import {HsLanguageService} from '../../../../language/language.service';
 import {HsLayerUtilsService} from '../../../../utils/layer-utils.service';
-import {HsUrlTypeServiceModel} from '../../../url/models/url-type-service.model';
+import {
+  HsUrlTypeServiceModel,
+  Service,
+} from '../../../url/models/url-type-service.model';
 import {HsUrlWmsService} from '../../../url/wms/wms.service';
 import {HsUtilsService} from '../../../../utils/utils.service';
 
@@ -69,9 +72,9 @@ export class HsUrlDetailsComponent implements AfterContentInit {
     }
   }
 
-  addService(service): void {
-    if (this.injectedService.addService) {
-      this.injectedService.addService(service);
+  expandService(service: Service): void {
+    if (this.injectedService.expandService) {
+      this.injectedService.expandService(service);
     }
   }
 }

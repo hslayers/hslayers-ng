@@ -6,6 +6,12 @@ import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {urlDataObject} from '../types/data-object.type';
 
+export type Service = {
+  name: string;
+  checked: boolean;
+  type?: string;
+};
+
 export interface HsUrlTypeServiceModel {
   data: urlDataObject;
 
@@ -20,6 +26,7 @@ export interface HsUrlTypeServiceModel {
     options: addLayersRecursivelyOptions,
     collection: Layer<Source>[]
   ): void;
-  addService?(params: any): void;
+  expandService?(service: Service): void;
+  addServices?(services: Service[]);
   setDataToDefault(): void;
 }

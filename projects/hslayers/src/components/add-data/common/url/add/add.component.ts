@@ -1,14 +1,18 @@
 import {Component, Input} from '@angular/core';
 
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
-import {HsUrlTypeServiceModel} from '../../../url/models/url-type-service.model';
+import {
+  HsUrlTypeServiceModel,
+  Service,
+} from '../../../url/models/url-type-service.model';
 
 @Component({
   selector: 'hs-url-add',
   templateUrl: './add.component.html',
 })
 export class HsUrlAddComponent {
-  @Input() records: any;
+  @Input() services?: Service[];
+  @Input() layers: {name: string; checked: boolean}[];
   @Input() injectedService: HsUrlTypeServiceModel;
   _selectAll = true;
 
@@ -19,7 +23,9 @@ export class HsUrlAddComponent {
    */
   selectAll(): void {
     this._selectAll = !this._selectAll;
-    this.checkAllRecords(this.records);
+    this.checkAllRecords(
+      this.services?.length > 0 ? this.services : this.layers
+    );
   }
 
   checkAllRecords(records: any[]): void {
@@ -27,7 +33,6 @@ export class HsUrlAddComponent {
       return;
     }
     for (const r of records) {
-      r.checked = false;
       r.checked = !this._selectAll;
       if (r.Layer) {
         this.checkAllRecords(r.Layer);
@@ -36,13 +41,21 @@ export class HsUrlAddComponent {
     this.changed();
   }
 
-  addLayers(checked: boolean): void {
-    this.injectedService.addLayers(checked);
+  add(): void {
+    if (this.layers) {
+      this.injectedService.addLayers(true);
+    }
+    if (this.injectedService.addServices && this.services) {
+      this.injectedService.addServices(this.services);
+    }
     //FIXME: to implement
     // this.injectedService.zoomToLayers();
   }
 
   changed(): void {
-    this.hsAddDataUrlService.searchForChecked(this.records);
+    this.hsAddDataUrlService.searchForChecked([
+      ...this.layers,
+      ...this.services,
+    ]);
   }
 }

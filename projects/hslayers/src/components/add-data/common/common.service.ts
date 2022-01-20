@@ -12,13 +12,12 @@ import {HsToastService} from '../../layout/toast/toast.service';
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonService {
   layerToSelect: string;
-  addAllServiceLayers = false;
   loadingInfo = false;
   showDetails = false;
   url: string;
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
-  serviceLayersCalled: Subject<{url: string; addAll: boolean}> = new Subject();
+  serviceLayersCalled: Subject<{url: string}> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -37,7 +36,6 @@ export class HsAddDataCommonService {
     this.showDetails = false;
     this.url = '';
     this.hsAddDataUrlService.typeSelected = null;
-    this.addAllServiceLayers = false;
   }
 
   setPanelToCatalogue(): void {

@@ -147,7 +147,7 @@
             <input class="checkbox-lg" type="checkbox" name="service" (change)="changed('services')"
               style="cursor: pointer;" [(ngModel)]="service.checked" />
           </td>
-          <td (click)="addService({service})" data-toggle="tooltip" [title]="'ADDDATA.requestServiceLayers' | translate"
+          <td (click)="expandService(service)" data-toggle="tooltip" [title]="'ADDDATA.requestServiceLayers' | translate"
             style="cursor: pointer;">
             {{service.name}}
             <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
@@ -179,6 +179,6 @@
       </div>
     </div>
   </ng-container>
-  <hs-url-add class="w-100" [injectedService]="injectedService" [records]="data.services ?? data.layers">
+  <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
   </hs-url-add>
 </div>

@@ -3,6 +3,6 @@
   <button class="btn btn-primary" (click)="selectAll()">{{'ADDDATA.URL.selectAll' |
     translate}}</button>
   <button class="btn btn-primary" [disabled]="!hsAddDataUrlService.addingAllowed"
-    [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' |
+    [title]="'ADDLAYERS.addSelected' | translate" (click)="add()">{{'ADDLAYERS.WFS.addToMap' |
     translate}}</button>
 </div>
