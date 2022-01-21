@@ -246,10 +246,15 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param service - Service URL
    */
   async expandService(service: Service): Promise<void> {
-    const urlRest = this.hsAddDataCommonService.url;
+    let urlRest = this.hsAddDataCommonService.url.toLowerCase();
+    //There are cases when loaded services are loaded from folders, problem is that folder name is also included inside the service.name
+    //to avoid any uncertainties, lets remove everything starting from 'services' inside the url and rebuild it
+    if (urlRest.includes('services')) {
+      urlRest = urlRest.slice(0, urlRest.indexOf('services'));
+    }
     this.data.get_map_url =
-      (urlRest.endsWith('/') ? urlRest.slice(0, -1) : urlRest) +
-      [`/services`, service.name, service.type].join('/');
+      (urlRest.endsWith('/') ? urlRest : urlRest.concat('/')) +
+      ['services', service.name, service.type].join('/');
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
       this.data.get_map_url
     );
@@ -261,7 +266,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     for (const service of services.filter((s) => s.checked)) {
       this.hsAddDataCommonService.url = originalRestUrl; //Because addLayers clears all params
       await this.expandService(service);
-      await this.addLayers(undefined);
+      this.addLayers(undefined);
     }
   }
 }
