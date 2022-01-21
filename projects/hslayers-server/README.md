@@ -6,7 +6,32 @@ HSLayers Server is a server component for HSLayers map client applications. It i
 * [Share](#share)
 * [Layman Authentication Client](#layman-auth-client).
 
-All three services are configured using [.env file](https://github.com/motdotla/dotenv#readme).
+All three services are configured using [.env file](https://github.com/motdotla/dotenv#readme). It is mandatory to create one at least for running the Layman Client.
+
+
+## Installation
+
+```
+npm i hslayers-server
+```
+
+
+## Run
+
+```
+npx hslayers-server [options]
+```
+
+#### Options
+
+--proxy (-p) - run the proxy service (default: true)
+  
+--share (-s) - run the map share service (default: true)
+  
+--layman (-l) - run the Layman client service (default: false)
+  
+
+Run `npx hslayers-server --help` to get more info.
 
 
 ### Proxy
@@ -81,15 +106,3 @@ Liferay portal is being currently used as an identity provider. Following env va
 
 The client can be configured for any Layman instance. If your application runs in the same domain as the client, OAuth2 identity provider authorization form will appear in modal window.
 If the application runs in different domain (or localhost), authorization form will open in a new window.
-
-
-## Installation
-
-```
-npm i hslayers-server
-```
-
-
-## Run
-
-./node_modules/.bin/hslayers-server
