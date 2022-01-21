@@ -29,7 +29,8 @@
       },
       "showAll": "Všechny",
       "showNext100": "Dalších 100",
-      "showingSubset": "Aktuálně se zobrazuje {{limitShown}} z {{total}} služeb. Ukázat"
+      "showingSubset": "Aktuálně se zobrazuje {{limitShown}} z {{total}} služeb. Ukázat",
+      "theNumberOfRecords": "Počet záznamů bude vypočten tak, aby byl co nejblíže to bude můžné k vybranému číslu"
     },
     "file": "Soubor",
     "saveToDatabase": "Uložit do databáze",
@@ -37,7 +38,13 @@
       "selectAll": "Označit všechny vrstvy",
       "submitLayerName": "Zadejte název vrsty",
       "submitLayerTitle": "Zadejte titulek vrstvy"
-    }
+    },
+    "FILE": {
+      "onlyOneZipFileCan": "Lze nahrát pouze jeden soubor ZIP najednou",
+      "someOfTheUploadedFiles": "Nahrávaný soubor přesahuje maximální povolenou velikost",
+      "zipFileCannotBeUploaded": "Soubor archivu nemůže být nahrát současně s běžnými soubory"
+    },
+    "requestServiceLayers": "Vyžádat vrstvy"
   },
   "ADDLAYERS": {
     "addSelected": "Přidat označené vrstvy do mapy",
@@ -109,9 +116,10 @@
       "tileMatrix": "Matice dlaždic"
     },
     "filesSelected": "souborů vybráno",
-    "geotiffParsingProblem": "Problém při syntaktické analýze souboru GeoTiff",
-    "onlyGeoTIFFimages": "Pouze obrázky GeoTIFF v souřadnicových systémech EPSG:4326 a EPSG:3857 jsou aktuálně podporovány. Ujistěte se, prosím, že splňují tyto požadavky před načtením.",
-    "unauthorizedAccess": "Neoprávněný přístup. Nemáte oprávnění dotazovat se na data z této služby"
+    "unauthorizedAccess": "Neoprávněný přístup. Nemáte oprávnění dotazovat se na data z této služby",
+    "OlDoesNotRecognizeProjection": "OL nezná požadované kartografické zobrazení vrstvy",
+    "missingImageorWorldFile": "Chybí snímek nebo referenční soubor \"world file\". Prosím, zkontrolujte soubory a zkuste to znovu!",
+    "rasterImageryWith": "Georeferencované rastrové snímky jsou v současnosti podporované pouze v souřadnicových systémech EPSG:4326 a EPSG:3857. Prosím, ujistěte se před nahráním, že vaše data splňují tyto požadavky."
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -234,7 +242,8 @@
     "author": "Autor",
     "access": "Přístup",
     "enabled": "Povoleno",
-    "copyLayer": "Kopírovat vrstvu"
+    "copyLayer": "Kopírovat vrstvu",
+    "selectRecordCountPerPage": "Vyberte počet záznamů na stránku"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

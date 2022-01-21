@@ -109,8 +109,6 @@
     },
     "unknownDimesion": "Táto vrstva definuje dimenziu, ktorú nemožno v súčasnosti načítať",
     "filesSelected": "vybraných súborov",
-    "geotiffParsingProblem": "Problém pri syntaktickej analýze súboru GeoTiff",
-    "onlyGeoTIFFimages": "V súčasnosti sú podporované iba obrázky GeoTIFF v súradnicových systémoch EPSG:4326 a EPSG:3857. Pred nahrávaním sa uistite, že spĺňate tieto požiadavky.",
     "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby"
   },
   "COMMON": {

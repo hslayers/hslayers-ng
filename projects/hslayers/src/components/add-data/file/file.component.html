@@ -4,7 +4,7 @@
             <button *ngFor="let type of types" [ngClass]="{'active': type.id === typeSelected }"
                 (click)="selectType(type.id)" style="margin: 3px;"
                 class="btn btn-light btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
-                {{type.text}}
+                {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS', type.text)}}
             </button>
         </div>
     </div>
@@ -13,6 +13,6 @@
         <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'gpx'"></hs-file-vector>
         <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'kml'"></hs-file-vector>
         <hs-file-shp *ngIf="typeSelected === 'shp'"></hs-file-shp>
-        <hs-raster-images *ngIf="typeSelected === 'rasterImages'"></hs-raster-images>
+        <hs-file-raster *ngIf="typeSelected === 'raster'"></hs-file-raster>
     </div>
 </div>

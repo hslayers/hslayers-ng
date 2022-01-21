@@ -6,7 +6,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {HsRasterImagesComponent} from './raster-images.component';
+import {HsFileRasterComponent} from './raster.component';
 import {HsUploadModule} from '../../../../common/upload/upload.module';
 
 @NgModule({
@@ -18,8 +18,8 @@ import {HsUploadModule} from '../../../../common/upload/upload.module';
     TranslateModule,
     HsUploadModule,
   ],
-  exports: [HsRasterImagesComponent],
-  declarations: [HsRasterImagesComponent],
+  exports: [HsFileRasterComponent],
+  declarations: [HsFileRasterComponent],
   providers: [],
 })
-export class HsRasterImagesModule {}
+export class HsFileRasterModule {}

@@ -39,7 +39,12 @@
       "submitLayerName": "Ievadiet slāņa nosaukumu",
       "submitLayerTitle": "Ievadiet slāņa nosaukumu"
     },
-    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus"
+    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
+    "FILE": {
+      "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
+      "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu",
+      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
+    }
   },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
@@ -112,10 +117,10 @@
     },
     "unauthorizedAccess": "Neatļauta piekļuve. Jūs neesat pilnvarots pieprasīt datus no šī pakalpojuma",
     "filesSelected": "Faili atlasīti",
-    "geotiffParsingProblem": "Ģeotifa parsēšanas problēma",
-    "onlyGeoTIFFimages": "Uz doto brīdi tiek atbalstīti tikai GeoTIFF attēli EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai šīs prasības tiek ievērotas.",
     "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju",
-    "GPServerServicesAreNotSupported": "GPServer pakalpojumi netiek atbalstīti!"
+    "rasterImageryWith": "Rastra attēls ar ģeoreferencēšanu pašlaik tiek atbalstīts tikai EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai dati atbilst šīm prasībām.",
+    "missingImageorWorldFile": "Trūkst attēla vai pasaules faila. Lūdzu, pārbaudiet failus un mēģiniet vēlreiz!",
+    "Raster image": "Rastra attēls"
   },
   "COMMON": {
     "abstract": "Apraksts",

@@ -47,7 +47,7 @@ export class HsFileService {
           data.sld = filesRead[0];
           this.hsAddDataCommonFileService.dataObjectChanged.next(data);
           break;
-        case 'hs-raster-images':
+        case 'hs-file-raster':
           data.files = filesRead;
           this.checkRasterFiles(data);
           break;

@@ -7,8 +7,8 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsAddDataFileBaseComponent} from './file-base.component';
 import {HsAddDataFileComponent} from './file.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
+import {HsFileRasterModule} from './raster/raster.module';
 import {HsFileShpModule} from './shp/shp.module';
-import {HsRasterImagesModule} from './raster-images/raster-images.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -19,7 +19,7 @@ import {HsRasterImagesModule} from './raster-images/raster-images.module';
     TranslateModule,
     HsFileShpModule,
     HsAddDataVectorModule,
-    HsRasterImagesModule,
+    HsFileRasterModule,
   ],
   exports: [HsAddDataFileComponent, HsAddDataFileBaseComponent],
 })

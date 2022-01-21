@@ -9,13 +9,13 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 
 @Component({
-  selector: 'hs-raster-images',
-  templateUrl: 'raster-images.component.html',
+  selector: 'hs-file-raster',
+  templateUrl: 'raster.component.html',
 })
-export class HsRasterImagesComponent
+export class HsFileRasterComponent
   extends HsAddDataFileBaseComponent
   implements OnInit {
-  dataType: AddDataFileType = 'rasterImages';
+  dataType: AddDataFileType = 'raster';
   constructor(
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,

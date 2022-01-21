@@ -1,7 +1,6 @@
-<form class="form-horizontal" role="form" name="frmRasterImages">
+<form class="form-horizontal" role="form" name="frmRaster">
   <div class="form-group m-3">
-    <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-raster-images"
-      [acceptedFormats]="acceptedFormats">
+    <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-file-raster" [acceptedFormats]="acceptedFormats">
     </hs-file-upload>
   </div>
   <div *ngIf="hsAddDataCommonService.showDetails">

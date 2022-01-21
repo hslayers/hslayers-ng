@@ -2,7 +2,7 @@
 
   <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
-  <div *ngIf="data.type === 'rasterImages'"
+  <div *ngIf="data.type === 'raster'"
     class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
     <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translate}}</p>
   </div>
@@ -30,14 +30,14 @@
   <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable">
     <hs-save-to-layman [data]="data"></hs-save-to-layman>
   </ng-container>
-  <ng-container *ngIf="data.type === 'shp' || data.type === 'rasterImages'">
+  <ng-container *ngIf="data.type === 'shp' || data.type === 'raster'">
     <div class="d-flex justify-content-between align-items-center">
       <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
       <label class="dropzone-label">
         <input name="file" type="file" accept=".sld" class="inputfile"
           (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
         <label for="sld" class="p-2 rounded" style="font-size: 1em;" [ngClass]="data.sld ? 'bg-success' : 'bg-primary'">
-          <i class="icon-uploadalt pr-2"></i>{{sldTitle()}}</label>
+          <i class="icon-uploadalt p-2"></i>{{sldTitle()}}</label>
       </label>
     </div>
   </ng-container>
