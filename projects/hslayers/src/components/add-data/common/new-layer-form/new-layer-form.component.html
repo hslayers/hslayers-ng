@@ -2,8 +2,9 @@
 
   <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
-  <div *ngIf="data.type === 'geotiff'" class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-    <p class="m-0"> {{'ADDLAYERS.onlyGeoTIFFimages' | translate}}</p>
+  <div *ngIf="data.type === 'rasterImages'"
+    class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
+    <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translate}}</p>
   </div>
 
   <div class="form-floating mb-3">
@@ -29,7 +30,7 @@
   <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable">
     <hs-save-to-layman [data]="data"></hs-save-to-layman>
   </ng-container>
-  <ng-container *ngIf="data.type === 'shp' || data.type === 'geotiff'">
+  <ng-container *ngIf="data.type === 'shp' || data.type === 'rasterImages'">
     <div class="d-flex justify-content-between align-items-center">
       <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
       <label class="dropzone-label">

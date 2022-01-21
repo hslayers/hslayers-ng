@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 
+import {AddDataFileType} from '../types/file.type';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
@@ -15,7 +16,7 @@ export class HsFileShpComponent
   extends HsAddDataFileBaseComponent
   implements OnInit, AfterViewInit
 {
-  dataType = 'shp';
+  dataType: AddDataFileType = 'shp';
 
   constructor(
     public hsFileService: HsFileService,

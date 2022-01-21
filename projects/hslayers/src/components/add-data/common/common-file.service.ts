@@ -19,6 +19,9 @@ import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {fileDataObject} from '../file/types/file-data-object.type';
+
+export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
+
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonFileService {
   loadingToLayman = false;
@@ -86,14 +89,22 @@ export class HsAddDataCommonFileService {
 
   filesValid(files: File[]): boolean {
     let isValid = true;
+    if (files.filter((f) => f.size > FILE_UPLOAD_SIZE_LIMIT).length > 0) {
+      this.catchError({
+        message: 'ADDDATA.FILE.someOfTheUploadedFiles',
+      });
+      return false;
+    }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
     if (zipFilesCount === 1 && files.length > 1) {
-      this.catchError({message: 'Mixed zip with simple files'});
+      this.catchError({
+        message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
+      });
       isValid = false;
     }
     if (zipFilesCount > 1) {
       isValid = false;
-      this.catchError({message: 'Please upload only one zip folder!'});
+      this.catchError({message: 'ADDDATA.FILE.onlyOneZipFileCan'});
     }
     return isValid;
   }
@@ -104,6 +115,14 @@ export class HsAddDataCommonFileService {
       'application/x-zip',
       'application/x-zip-compressed',
     ].includes(type);
+  }
+
+  isGeotiff(type: string): boolean {
+    return ['image/tiff', 'image/tif'].includes(type);
+  }
+
+  isJp2(type: string): boolean {
+    return ['image/jp2'].includes(type);
   }
 
   /**

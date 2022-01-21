@@ -18,7 +18,7 @@ export const AddDataFileValues: Array<{id: AddDataFileType; text: string}> = [
     text: 'Shapefile',
   },
   {
-    id: 'geotiff',
-    text: 'GeoTIFF',
+    id: 'rasterImages',
+    text: 'Raster images',
   },
 ];

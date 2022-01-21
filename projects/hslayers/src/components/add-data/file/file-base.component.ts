@@ -12,6 +12,7 @@ import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
+import {AddDataFileType} from './types/file.type';
 import {FileDescriptor} from './types/file-descriptor.type';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataCommonService} from '../common/common.service';
@@ -27,7 +28,7 @@ export class HsAddDataFileBaseComponent
   data: fileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
-  baseDataType: string;
+  baseDataType: AddDataFileType;
   private ngUnsubscribe = new Subject<void>();
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   constructor(

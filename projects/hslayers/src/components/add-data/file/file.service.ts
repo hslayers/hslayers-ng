@@ -38,17 +38,21 @@ export class HsFileService {
         promises.push(filePromise);
       }
       await Promise.all(promises);
-      if (evt.uploader === 'shpdbfshx') {
-        data.files = filesRead;
-        this.checkShpFiles(data);
-      }
-      if (evt.uploader === 'sld') {
-        data.sld = filesRead[0];
-        this.hsAddDataCommonFileService.dataObjectChanged.next(data);
-      }
-      if (evt.uploader === 'hs-geotiff-file') {
-        data.files = filesRead;
-        this.hsAddDataCommonFileService.setDataName(data);
+      switch (evt.uploader) {
+        case 'shpdbfshx':
+          data.files = filesRead;
+          this.checkShpFiles(data);
+          break;
+        case 'sld':
+          data.sld = filesRead[0];
+          this.hsAddDataCommonFileService.dataObjectChanged.next(data);
+          break;
+        case 'hs-raster-images':
+          data.files = filesRead;
+          this.checkRasterFiles(data);
+          break;
+        default:
+          return;
       }
     } catch (e) {
       this.hsAddDataCommonFileService.catchError({
@@ -64,19 +68,41 @@ export class HsFileService {
     ) {
       this.hsAddDataCommonFileService.setDataName(data);
     } else if (data.files.length > 3) {
-      this.hsAddDataCommonFileService.catchError({
-        message: this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS.SHP',
-          'maximumNumberOf',
-          {length: data.files.length}
-        ),
-        header: this.fileUploadErrorHeader,
-      });
+      this.tooManyFiles(data.files.length);
     } else {
       this.hsAddDataCommonFileService.catchError({
         message: 'ADDLAYERS.SHP.missingOneOrMore',
         header: this.fileUploadErrorHeader,
       });
     }
+  }
+
+  checkRasterFiles(data: fileDataObject): void {
+    if (
+      data.files.length == 2 ||
+      this.hsAddDataCommonFileService.isZip(data.files[0].type) ||
+      this.hsAddDataCommonFileService.isGeotiff(data.files[0].type) ||
+      this.hsAddDataCommonFileService.isJp2(data.files[0].type)
+    ) {
+      this.hsAddDataCommonFileService.setDataName(data);
+    } else if (data.files.length > 2) {
+      this.tooManyFiles(data.files.length);
+    } else {
+      this.hsAddDataCommonFileService.catchError({
+        message: 'ADDLAYERS.missingImageorWorldFile',
+        header: this.fileUploadErrorHeader,
+      });
+    }
+  }
+
+  tooManyFiles(length: number): void {
+    this.hsAddDataCommonFileService.catchError({
+      message: this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'ADDLAYERS.SHP',
+        'maximumNumberOf',
+        {length}
+      ),
+      header: this.fileUploadErrorHeader,
+    });
   }
 }

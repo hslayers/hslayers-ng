@@ -6,9 +6,9 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataFileBaseComponent} from './file-base.component';
 import {HsAddDataFileComponent} from './file.component';
-import {HsAddDataGeotiffModule} from './geotiff/geotiff.module';
 import {HsAddDataVectorModule} from '../vector/vector.module';
 import {HsFileShpModule} from './shp/shp.module';
+import {HsRasterImagesModule} from './raster-images/raster-images.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -19,7 +19,7 @@ import {HsFileShpModule} from './shp/shp.module';
     TranslateModule,
     HsFileShpModule,
     HsAddDataVectorModule,
-    HsAddDataGeotiffModule,
+    HsRasterImagesModule,
   ],
   exports: [HsAddDataFileComponent, HsAddDataFileBaseComponent],
 })

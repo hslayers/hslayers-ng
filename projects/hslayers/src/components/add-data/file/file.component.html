@@ -12,7 +12,7 @@
         <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'geojson'"></hs-file-vector>
         <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'gpx'"></hs-file-vector>
         <hs-file-vector [dataType]="typeSelected" *ngIf="typeSelected === 'kml'"></hs-file-vector>
-        <hs-file-geotiff *ngIf="typeSelected === 'geotiff'"></hs-file-geotiff>
         <hs-file-shp *ngIf="typeSelected === 'shp'"></hs-file-shp>
+        <hs-raster-images *ngIf="typeSelected === 'rasterImages'"></hs-raster-images>
     </div>
 </div>
