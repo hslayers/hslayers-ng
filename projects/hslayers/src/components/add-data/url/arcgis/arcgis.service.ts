@@ -17,6 +17,7 @@ import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilitie
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
@@ -34,7 +35,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsUtilsService: HsUtilsService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonService: HsAddDataCommonService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsToastService: HsToastService
   ) {
     this.setDataToDefault();
   }
@@ -201,16 +203,28 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       ? new TileArcGISRest(sourceParams)
       : new ImageArcGISRest(sourceParams);
 
-    const mapExtent = transformExtent(
-      [
-        this.data.extent.xmin,
-        this.data.extent.ymin,
-        this.data.extent.xmax,
-        this.data.extent.ymax,
-      ],
-      'EPSG:' + this.data.srs,
-      this.data.map_projection
-    );
+    let mapExtent;
+    try {
+      mapExtent = transformExtent(
+        [
+          this.data.extent.xmin,
+          this.data.extent.ymin,
+          this.data.extent.xmax,
+          this.data.extent.ymax,
+        ],
+        'EPSG:' + this.data.srs,
+        this.data.map_projection
+      );
+    } catch (error) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+        'ADDLAYERS.OlDoesNotRecognizeProjection',
+        {
+          serviceCalledFrom: 'HsUrlArcGisService',
+          details: [`${options.layerTitle}`, `EPSG: ${this.data.srs}`],
+        }
+      );
+    }
 
     const layerParams = {
       properties: {
