@@ -22,7 +22,6 @@ import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addLayerOptions} from '../types/layer-options.type';
-import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
 import {urlDataObject} from '../types/data-object.type';
 @Injectable({providedIn: 'root'})
@@ -63,9 +62,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     try {
       await this.createLayer(wrapper.response);
-      if (this.hsAddDataCommonService.layerToSelect) {
+      if (this.hsAddDataCommonService.layerToSelect || this.isImageService()) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.addLayers(true);
+        return this.addLayers();
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -81,7 +80,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
       this.data.title =
-        caps.documentInfo?.Title || caps.mapName || 'Arcgis layer';
+        caps.documentInfo?.Title || caps.mapName || caps.name || 'Arcgis layer';
       this.data.description = addAnchors(caps.description);
       this.data.version = caps.currentVersion;
       this.data.image_formats = caps.supportedImageFormatTypes
@@ -129,8 +128,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   /**
    * Second step in adding layers to the map. Lops through the list of layers and calls addLayer.
    */
-  addLayers(checkedOnly: boolean): Layer<Source>[] {
-    if (this.data.layers === undefined && this.data.services === undefined) {
+  addLayers(): Layer<Source>[] {
+    if (
+      this.data.layers === undefined &&
+      this.data.services === undefined &&
+      !this.isImageService()
+    ) {
       return;
     }
     const checkedLayers = this.data.layers?.filter((l) => l.checked);
@@ -181,24 +184,27 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   ): Layer<Source> {
     const attributions = [];
     const dimensions = {};
-    const legends = [];
-    const LAYERS =
-      layers.length > 0
-        ? `show:${layers.map((l) => l.id).join(',')}`
-        : undefined;
+    //Not being used right now
+    // const legends = [];
     const sourceParams = {
       url: this.data.get_map_url,
       attributions,
       //projection: me.data.srs,
       params: Object.assign(
         {
-          LAYERS,
           FORMAT: options.imageFormat,
         },
         {}
       ),
       crossOrigin: 'anonymous',
     };
+    if (!this.isImageService()) {
+      const LAYERS =
+        layers.length > 0
+          ? `show:${layers.map((l) => l.id).join(',')}`
+          : undefined;
+      Object.assign(sourceParams.params, {LAYERS});
+    }
     const source = this.data.use_tiles
       ? new TileArcGISRest(sourceParams)
       : new ImageArcGISRest(sourceParams);
@@ -235,24 +241,20 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         base: this.data.base,
         extent: mapExtent,
         dimensions,
-        subLayers: layers.map((l) => l.id).join(','),
       },
       source,
     };
+    if (!this.isImageService()) {
+      Object.assign(layerParams.properties, {
+        subLayers: layers?.map((l) => l.id).join(','),
+      });
+    }
     const new_layer = this.data.use_tiles
       ? new Tile(layerParams as TileOptions<TileSource>)
       : new ImageLayer(layerParams as ImageOptions<ImageSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     this.hsMapService.map.addLayer(new_layer);
     return new_layer;
-  }
-
-  addLayersRecursively(
-    layer: any,
-    options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
-  ): void {
-    //Not needed yet, but interface has it
   }
 
   /**
@@ -280,7 +282,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     for (const service of services.filter((s) => s.checked)) {
       this.hsAddDataCommonService.url = originalRestUrl; //Because addLayers clears all params
       await this.expandService(service);
-      this.addLayers(undefined);
+      this.addLayers();
     }
+  }
+
+  isImageService(): boolean {
+    return this.data.get_map_url.toLowerCase().includes('imageserver');
   }
 }
