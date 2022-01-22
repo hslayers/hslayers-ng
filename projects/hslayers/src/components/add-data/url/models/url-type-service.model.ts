@@ -19,9 +19,9 @@ export interface HsUrlTypeServiceModel {
     wrapper: CapabilitiesResponseWrapper,
     sld?: string
   ): Promise<Layer<Source>[]>;
-  addLayers(checkedOnly: boolean, style?: string): Layer<Source>[];
+  addLayers(checkedOnly?: boolean, style?: string): Layer<Source>[];
   addLayer(layer: any, options: addLayerOptions): Layer<Source>;
-  addLayersRecursively(
+  addLayersRecursively?(
     layer: any,
     options: addLayersRecursivelyOptions,
     collection: Layer<Source>[]
