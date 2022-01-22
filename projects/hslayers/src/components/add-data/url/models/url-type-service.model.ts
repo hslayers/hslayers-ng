@@ -29,4 +29,5 @@ export interface HsUrlTypeServiceModel {
   expandService?(service: Service): void;
   addServices?(services: Service[]);
   setDataToDefault(): void;
+  isImageService?(): boolean;
 }

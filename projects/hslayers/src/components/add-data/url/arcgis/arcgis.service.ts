@@ -62,7 +62,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     try {
       await this.createLayer(wrapper.response);
-      if (this.hsAddDataCommonService.layerToSelect || this.isImageService()) {
+      if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         return this.addLayers();
       }
@@ -93,7 +93,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         ? [caps.spatialReference.latestWkid.toString()]
         : [];
       this.data.services = caps.services?.filter(
-        (s: Service) => s.type.toLowerCase() !== 'gpserver'
+        (s: Service) => !this.isGpService(s.type)
       );
       this.data.layers = caps.layers;
       this.hsAddDataUrlService.searchForChecked(
@@ -290,5 +290,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
   isImageService(): boolean {
     return this.data.get_map_url.toLowerCase().includes('imageserver');
+  }
+
+  isGpService(str: string): boolean {
+    return str.toLowerCase().includes('gpserver');
   }
 }

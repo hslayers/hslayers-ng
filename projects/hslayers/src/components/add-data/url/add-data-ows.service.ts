@@ -52,7 +52,7 @@ export class HsAddDataOwsService {
 
     this.hsAddDataUrlService.addingAllowed = false;
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
-      if (url.toLowerCase().includes('gpserver')) {
+      if (this.hsUrlArcGisService.isGpService(url)) {
         this.hsAddDataCommonService.throwParsingError(
           'GPServerServicesAreNotSupported'
         );
@@ -70,7 +70,14 @@ export class HsAddDataOwsService {
       showDetails: true,
     });
     const wrapper = await this.typeCapabilitiesService.request(url);
-    return await this.typeService.listLayerFromCapabilities(wrapper, style);
+    const response = await this.typeService.listLayerFromCapabilities(
+      wrapper,
+      style
+    );
+    if (this.hsUrlArcGisService.isImageService()) {
+      this.hsUrlArcGisService.addLayers();
+    }
+    return response;
   }
 
   /**

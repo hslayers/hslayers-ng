@@ -75,6 +75,12 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   expandService(service: Service): void {
     if (this.injectedService.expandService) {
       this.injectedService.expandService(service);
+      if (
+        this.injectedService.isImageService &&
+        this.injectedService.isImageService()
+      ) {
+        this.injectedService.addLayers();
+      }
     }
   }
 }
