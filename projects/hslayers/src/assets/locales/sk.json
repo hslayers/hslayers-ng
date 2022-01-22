@@ -71,7 +71,7 @@
       "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
-      "maximumNumberOf": "Maximálny povolený počet súborov je 3, ale vybrané sú{{dĺžka}}",
+      "maximumNumberOf": "Maximálny povolený počet súborov je {{allowed}}, ale vybrané sú{{dĺžka}}",
       "missingOneOrMore": "Chýba jeden alebo viac súborov Shapefile. Nahrajte súbory s príponami *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",

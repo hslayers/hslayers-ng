@@ -78,7 +78,7 @@
       "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Soubor se styly",
-      "maximumNumberOf": "Povoleny maximálně 3 soubory, ale bylo vybráno {{length}}",
+      "maximumNumberOf": "Povoleny maximálně {{allowed}} soubory, ale bylo vybráno {{length}}",
       "missingOneOrMore": "Chybí jeden nebo více souborů Shapefile. Nahrajte soubory s příponami *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",
@@ -119,7 +119,8 @@
     "unauthorizedAccess": "Neoprávněný přístup. Nemáte oprávnění dotazovat se na data z této služby",
     "OlDoesNotRecognizeProjection": "OL nezná požadované kartografické zobrazení vrstvy",
     "missingImageorWorldFile": "Chybí snímek nebo referenční soubor \"world file\". Prosím, zkontrolujte soubory a zkuste to znovu!",
-    "rasterImageryWith": "Georeferencované rastrové snímky jsou v současnosti podporované pouze v souřadnicových systémech EPSG:4326 a EPSG:3857. Prosím, ujistěte se před nahráním, že vaše data splňují tyto požadavky."
+    "rasterImageryWith": "Georeferencované rastrové snímky jsou v současnosti podporované pouze v souřadnicových systémech EPSG:4326 a EPSG:3857. Prosím, ujistěte se před nahráním, že vaše data splňují tyto požadavky.",
+    "Raster image": "Rastrový snímek"
   },
   "COMMON": {
     "abstract": "Abstrakt",

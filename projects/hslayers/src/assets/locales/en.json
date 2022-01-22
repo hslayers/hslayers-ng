@@ -78,7 +78,7 @@
       "nameRequired": "'Name' field required to proceed!",
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file",
-      "maximumNumberOf": "Maximum number of 3 files allowed, but {{length}} selected",
+      "maximumNumberOf": "Maximum number of {{allowed}} files allowed, but {{length}} selected",
       "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",
