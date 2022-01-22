@@ -68,7 +68,7 @@ export class HsFileService {
     ) {
       this.hsAddDataCommonFileService.setDataName(data);
     } else if (data.files.length > 3) {
-      this.tooManyFiles(data.files.length);
+      this.tooManyFiles(3, data.files.length);
     } else {
       this.hsAddDataCommonFileService.catchError({
         message: 'ADDLAYERS.SHP.missingOneOrMore',
@@ -86,7 +86,7 @@ export class HsFileService {
     ) {
       this.hsAddDataCommonFileService.setDataName(data);
     } else if (data.files.length > 2) {
-      this.tooManyFiles(data.files.length);
+      this.tooManyFiles(2, data.files.length);
     } else {
       this.hsAddDataCommonFileService.catchError({
         message: 'ADDLAYERS.missingImageorWorldFile',
@@ -95,12 +95,12 @@ export class HsFileService {
     }
   }
 
-  tooManyFiles(length: number): void {
+  tooManyFiles(allowed: number, length: number): void {
     this.hsAddDataCommonFileService.catchError({
       message: this.hsLanguageService.getTranslationIgnoreNonExisting(
         'ADDLAYERS.SHP',
         'maximumNumberOf',
-        {length}
+        {allowed, length}
       ),
       header: this.fileUploadErrorHeader,
     });

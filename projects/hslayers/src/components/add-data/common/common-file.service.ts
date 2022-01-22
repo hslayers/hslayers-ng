@@ -118,7 +118,7 @@ export class HsAddDataCommonFileService {
   }
 
   isGeotiff(type: string): boolean {
-    return ['image/tiff', 'image/tif'].includes(type);
+    return ['image/tiff', 'image/tif', 'image/gtiff'].includes(type);
   }
 
   isJp2(type: string): boolean {

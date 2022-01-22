@@ -24,7 +24,8 @@ import {fileDataObject} from './types/file-data-object.type';
   template: '<div></div>',
 })
 export class HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   data: fileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
@@ -88,7 +89,7 @@ export class HsAddDataFileBaseComponent
       saveAvailable: true,
       saveToLayman: true,
       sld: null,
-      srs: 'EPSG:4326',
+      srs: null,
       title: '',
       type: this.baseDataType,
     };
