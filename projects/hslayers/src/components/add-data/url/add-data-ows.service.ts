@@ -52,6 +52,12 @@ export class HsAddDataOwsService {
 
     this.hsAddDataUrlService.addingAllowed = false;
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
+      if (url.toLowerCase().includes('gpserver')) {
+        this.hsAddDataCommonService.throwParsingError(
+          'GPServerServicesAreNotSupported'
+        );
+        return;
+      }
       this.typeService.data.get_map_url = url;
       this.hsAddDataUrlService.addingAllowed = true;
     }

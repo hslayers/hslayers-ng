@@ -32,6 +32,11 @@ export class HsAddDataUrlService {
           'ADDLAYERS',
           'serviceTypeNotMatching'
         );
+      } else {
+        error = this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS',
+          error
+        );
       }
       this.hsDialogContainerService.create(
         HsGetCapabilitiesErrorComponent,

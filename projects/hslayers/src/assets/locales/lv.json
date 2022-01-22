@@ -114,7 +114,8 @@
     "filesSelected": "Faili atlasīti",
     "geotiffParsingProblem": "Ģeotifa parsēšanas problēma",
     "onlyGeoTIFFimages": "Uz doto brīdi tiek atbalstīti tikai GeoTIFF attēli EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai šīs prasības tiek ievērotas.",
-    "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju"
+    "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju",
+    "GPServerServicesAreNotSupported": "GPServer pakalpojumi netiek atbalstīti!"
   },
   "COMMON": {
     "abstract": "Apraksts",

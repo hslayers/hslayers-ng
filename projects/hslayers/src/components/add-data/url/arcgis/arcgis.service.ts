@@ -92,7 +92,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.srss = caps.spatialReference?.latestWkid
         ? [caps.spatialReference.latestWkid.toString()]
         : [];
-      this.data.services = caps.services;
+      this.data.services = caps.services?.filter(
+        (s: Service) => s.type.toLowerCase() !== 'gpserver'
+      );
       this.data.layers = caps.layers;
       this.hsAddDataUrlService.searchForChecked(
         this.data.layers ?? this.data.services
