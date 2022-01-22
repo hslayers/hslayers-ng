@@ -51,6 +51,9 @@ export class HsAddDataCommonService {
   }
 
   checkTheSelectedLayer(services: any) {
+    if (!services) {
+      return;
+    }
     for (const layer of services) {
       //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
