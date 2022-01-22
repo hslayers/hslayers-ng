@@ -280,7 +280,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean, style?: string): Layer<Source>[] {
+  addLayers(checkedOnly?: boolean, style?: string): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
