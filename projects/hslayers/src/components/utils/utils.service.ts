@@ -390,6 +390,9 @@ export class HsUtilsService {
     if (obj === undefined || obj === null) {
       return false;
     }
+    if (klass.default) {
+      klass = klass.default;
+    }
     if (this.isFunction(klass)) {
       return obj instanceof klass;
     }

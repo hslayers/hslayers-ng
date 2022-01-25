@@ -138,6 +138,12 @@ export class HsLayerUtilsService {
     if (this.HsUtilsService.instOf(src, XYZ)) {
       return (src as XYZ).getUrls()[0];
     }
+    if ((src as any).getUrl) {
+      return (src as any).getUrl();
+    }
+    if ((src as any).getUrls) {
+      return (src as any).getUrls()[0];
+    }
   }
 
   /**
