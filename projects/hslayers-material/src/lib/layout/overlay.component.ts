@@ -1,5 +1,5 @@
 import * as olExtent from 'ol/extent';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {HsAttributionDialogComponent} from './attribution-dialog.component';
 import {
   HsConfig,
@@ -15,6 +15,7 @@ import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/ev
 @Component({
   selector: 'hs-mat-overlay',
   templateUrl: './overlay.component.html',
+  styleUrls: ['./overlay.component.scss'],
 })
 export class HsMatOverlayComponent implements OnInit {
   constructor(

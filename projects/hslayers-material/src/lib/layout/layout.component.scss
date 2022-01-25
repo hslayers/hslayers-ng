@@ -23,29 +23,6 @@ hslayers-material {
     .hs-flex-fill {
 	flex: 1 1 auto;
     }
-
-    .hs-overlay {
-	position: absolute;
-	pointer-events: none;
-    
-	* {
-	    pointer-events: auto;
-	}
-
-	section {
-	    position: absolute;
-
-	    button {
-		margin: 6px 8px;
-	    }
-	}
-
-	.bottom {bottom: 20px;}
-	.top {top: 20px;}
-	.right {right: 20px;}
-	.left {left: 20px;}
-    }
-
 }
 
 .w-100 {
