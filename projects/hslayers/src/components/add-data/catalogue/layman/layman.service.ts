@@ -208,7 +208,6 @@ export class HsLaymanBrowserService {
       dataset.layers = data.map((layer) => {
         const tmp = {
           title: layer.title,
-          type: ['WMS', 'WFS'],
           name: layer.name,
           id: layer.uuid,
           featureId: layer.featureId,
@@ -253,8 +252,9 @@ export class HsLaymanBrowserService {
           withCredentials: true,
         })
         .toPromise()
-        .then((data: any) => {
-          delete data.type;
+        .then((data: HsLaymanLayerDescriptor) => {
+          layer.type =
+            data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
           layer = {...layer, ...data};
           if (layer.thumbnail) {
             layer.thumbnail = endpoint.url + layer.thumbnail.url;
@@ -294,7 +294,7 @@ export class HsLaymanBrowserService {
     }
     if (lyr.wms.url) {
       return {
-        type: lyr.type,
+        type: lyr?.file?.file_type === 'raster' ? ['wms'] : lyr.type,
         link: lyr.wms.url,
         style,
         layer: lyr.name,
