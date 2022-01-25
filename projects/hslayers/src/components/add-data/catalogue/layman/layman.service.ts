@@ -14,12 +14,12 @@ import {
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';
+import {HsLaymanLayerDescriptor} from './../../../save-map/layman-layer-descriptor.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addExtentFeature} from '../../../../common/extent-utils';
-
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
   httpCall;
@@ -251,19 +251,19 @@ export class HsLaymanBrowserService {
     if (lyr.style?.url) {
       style = await this.getStyleFromUrl(lyr.style?.url);
     }
-    if (lyr.style.type == 'sld') {
+    if (lyr.style?.type == 'sld') {
       if (!style?.includes('StyledLayerDescriptor')) {
         style = undefined;
       }
     }
-    if (lyr.style.type == 'qml') {
+    if (lyr.style?.type == 'qml') {
       if (!style?.includes('<qgis')) {
         style = undefined;
       }
     }
     if (lyr.wms.url) {
       return {
-        type: lyr?.file?.file_type === 'raster' ? ['wms'] : lyr.type,
+        type: lyr.type,
         link: lyr.wms.url,
         style,
         layer: lyr.name,

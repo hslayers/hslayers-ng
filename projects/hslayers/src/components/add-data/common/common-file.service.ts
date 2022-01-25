@@ -16,6 +16,7 @@ import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
+import {PostLayerResponse} from '../../../common/layman/post-layer-response.type';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {fileDataObject} from '../file/types/file-data-object.type';
@@ -205,7 +206,7 @@ export class HsAddDataCommonFileService {
           {withCredentials: true}
         )
         .toPromise()
-        .then(async (data: any) => {
+        .then(async (data: PostLayerResponse[]) => {
           //CHECK IF OK not auth etc.
           if (data && data.length > 0) {
             if (this.asyncLoading) {
@@ -321,7 +322,7 @@ export class HsAddDataCommonFileService {
       );
       if (
         ['UPDATING'].includes(descriptor.layman_metadata?.publication_status) ||
-        ['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)
+        ['STARTED', 'PENDING'].includes(descriptor.wms.status)
       ) {
         return new Promise((resolve) => {
           setTimeout(() => {

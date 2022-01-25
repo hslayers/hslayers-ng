@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
+import {CurrentUserResponse} from './current-user-response.type';
 import {HsEndpoint} from '../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../components/language/language.service';
 import {HsToastService} from '../../components/layout/toast/toast.service';
@@ -27,7 +28,7 @@ export class HsCommonLaymanService {
   async detectAuthChange(endpoint): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
-      const res: any = await this.$http
+      const res: CurrentUserResponse = await this.$http
         .get(url, {withCredentials: true})
         .toPromise();
 
@@ -83,7 +84,7 @@ export class HsCommonLaymanService {
   displayLaymanError(
     endpoint: HsEndpoint,
     errorMsg: string,
-    responseBody: any
+    responseBody: {code?: number; message?: string; detail?: string}
   ): void {
     let simplifiedResponse = '';
     if (responseBody.code === undefined) {

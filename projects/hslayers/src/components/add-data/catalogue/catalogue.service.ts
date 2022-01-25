@@ -44,13 +44,13 @@ export class HsAddDataCatalogueService {
   data: any = {};
   selectedEndpoint: HsEndpoint;
   selectedLayer: HsAddDataLayerDescriptor;
-  catalogEntries = [];
+  catalogEntries: HsAddDataLayerDescriptor[] = [];
   dataLoading: boolean;
   recordsPerPage = 20;
   listStart = 0;
   listNext = this.recordsPerPage;
   catalogQuery;
-  endpointsWithDatasources: any[];
+  endpointsWithDatasources: HsEndpoint[];
   matchedRecords: number;
   extentChangeSuppressed = false;
 
