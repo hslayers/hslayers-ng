@@ -70,14 +70,22 @@ export class HsAddDataOwsService {
       showDetails: true,
     });
     const wrapper = await this.typeCapabilitiesService.request(url);
-    const response = await this.typeService.listLayerFromCapabilities(
-      wrapper,
-      style
-    );
-    if (this.hsUrlArcGisService.isImageService()) {
-      this.hsUrlArcGisService.addLayers();
+    if (
+      typeof wrapper.response === 'string' &&
+      wrapper.response?.includes('Unsuccessful OAuth2')
+    ) {
+      this.hsAddDataCommonService.throwParsingError(wrapper.response);
+      return [];
+    } else {
+      const response = await this.typeService.listLayerFromCapabilities(
+        wrapper,
+        style
+      );
+      if (this.hsUrlArcGisService.isImageService()) {
+        this.hsUrlArcGisService.addLayers();
+      }
+      return response;
     }
-    return response;
   }
 
   /**

@@ -147,37 +147,6 @@ export class HsLaymanBrowserService {
     return endpoint.httpCall;
   }
 
-  displayLaymanError(endpointTitle: string, responseBody: any): void {
-    let simplifiedResponse = '';
-    if (responseBody.code === undefined) {
-      simplifiedResponse = 'COMMON.unknownError';
-    }
-    switch (responseBody.code) {
-      case 48:
-        simplifiedResponse = 'mapExtentFilterMissing';
-        break;
-      case 32:
-        simplifiedResponse =
-          'Unsuccessful OAuth2 authentication. Access token is not valid';
-        break;
-      default:
-        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
-    }
-    //If response is object, it is an error response
-    this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(
-        'ADDLAYERS.ERROR.errorWhileRequestingLayers'
-      ),
-      endpointTitle +
-        ': ' +
-        this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMMON',
-          simplifiedResponse
-        ),
-      {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
-    );
-  }
-
   /**
    * (PRIVATE) Callback for catalogue http query
    * @param data - HTTP response containing all the layers

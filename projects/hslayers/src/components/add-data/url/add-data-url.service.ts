@@ -13,7 +13,7 @@ import {HsLogService} from '../../../common/log/log.service';
   providedIn: 'root',
 })
 export class HsAddDataUrlService {
-  addDataCapsParsingError: Subject<{e: any; context: any}> = new Subject();
+  addDataCapsParsingError: Subject<any> = new Subject();
   addingAllowed: boolean;
   typeSelected: AddDataUrlType;
   connectFromParams = true;
@@ -25,9 +25,13 @@ export class HsAddDataUrlService {
   ) {
     this.addDataCapsParsingError.subscribe((e) => {
       this.hsLog.warn(e);
-
       let error = e.toString();
-      if (error.includes('property')) {
+      if (e?.includes('Unsuccessful OAuth2')) {
+        error = this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          'Authentication failed. Login to the catalogue.'
+        );
+      } else if (error.includes('property')) {
         error = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS',
           'serviceTypeNotMatching'
