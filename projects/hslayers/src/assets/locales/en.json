@@ -73,9 +73,11 @@
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
     "serviceTypeNotMatching": "URL service type does not match selected category",
+    "nameAndSRSRequired": "'Name' and 'SRS' field required to proceed!",
+    "nameRequired": "'Name' field required to proceed!",
+    "SRSRequired": "'SRS' field required to proceed!",
     "SHP": {
       "loginRequired": "User login is required before layer can be loaded",
-      "nameRequired": "'Name' field required to proceed!",
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file",
       "maximumNumberOf": "Maximum number of {{allowed}} files allowed, but {{length}} selected",

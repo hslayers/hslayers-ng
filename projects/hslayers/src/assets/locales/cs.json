@@ -73,9 +73,9 @@
     "registerMetadata": "Registrovat metadata",
     "resampleLayer": "Převzorkovat vrstvu",
     "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií",
+    "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!",
     "SHP": {
       "loginRequired": "Před načtením vrstvy je vyžadováno přihlášení",
-      "nameRequired": "Pro pokračování je nutné vyplnit pole 'Název'!",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Soubor se styly",
       "maximumNumberOf": "Povoleny maximálně {{allowed}} soubory, ale bylo vybráno {{length}}",
@@ -120,7 +120,9 @@
     "OlDoesNotRecognizeProjection": "OL nezná požadované kartografické zobrazení vrstvy",
     "missingImageorWorldFile": "Chybí snímek nebo referenční soubor \"world file\". Prosím, zkontrolujte soubory a zkuste to znovu!",
     "rasterImageryWith": "Georeferencované rastrové snímky jsou v současnosti podporované pouze v souřadnicových systémech EPSG:4326 a EPSG:3857. Prosím, ujistěte se před nahráním, že vaše data splňují tyto požadavky.",
-    "Raster image": "Rastrový snímek"
+    "Raster image": "Rastrový snímek",
+    "SRSRequired": "Pro pokračování je nutné vyplnit pole 'SRS'!",
+    "nameAndSRSRequired": "Pro pokračování je nutné vyplnit pole 'Název' a 'SRS'!"
   },
   "COMMON": {
     "abstract": "Abstrakt",

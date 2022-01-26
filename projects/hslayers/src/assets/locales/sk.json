@@ -66,9 +66,9 @@
     "registerMetadata": "Registrovať metadáta",
     "resampleLayer": "Prevzorkovať vrstvu",
     "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
+    "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
     "SHP": {
       "loginRequired": "Pred načítaním vrstvy je potrebné prihlásiť sa ",
-      "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
       "maximumNumberOf": "Maximálny povolený počet súborov je {{allowed}}, ale vybrané sú{{dĺžka}}",
@@ -109,7 +109,9 @@
     },
     "unknownDimesion": "Táto vrstva definuje dimenziu, ktorú nemožno v súčasnosti načítať",
     "filesSelected": "vybraných súborov",
-    "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby"
+    "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby",
+    "nameAndSRSRequired": "Pre pokračovanie je potrebné pole 'Názov' a 'SRS'!",
+    "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!"
   },
   "COMMON": {
     "abstract": "Abstrakt",

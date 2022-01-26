@@ -73,9 +73,9 @@
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
+    "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
     "SHP": {
       "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",
-      "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
       "SLDStyleFile": "Stila datne",
       "missingOneOrMore": "Trūkst viena vai vairāku ShapeFile failu. Ielādējiet failus ar paplašinājumiem *.shp, *.shx, *.dbf",
@@ -120,7 +120,9 @@
     "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju",
     "rasterImageryWith": "Rastra attēls ar ģeoreferencēšanu pašlaik tiek atbalstīts tikai EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai dati atbilst šīm prasībām.",
     "missingImageorWorldFile": "Trūkst attēla vai pasaules faila. Lūdzu, pārbaudiet failus un mēģiniet vēlreiz!",
-    "Raster image": "Rastra attēls"
+    "Raster image": "Rastra attēls",
+    "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
+    "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!"
   },
   "COMMON": {
     "abstract": "Apraksts",

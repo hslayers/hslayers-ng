@@ -76,16 +76,28 @@ export class HsAddDataCommonFileService {
     }
   }
 
-  addTooltip(title: string): string {
-    return title
-      ? this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'DRAW.drawToolbar',
-          'addLayer'
-        )
-      : this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS.SHP',
-          'nameRequired'
-        );
+  addTooltip(data: fileDataObject): string {
+    let tooltipString;
+    if (!data.srs && !data.name) {
+      tooltipString = 'nameAndSRSRequired';
+    }
+    if (data.srs && !data.name) {
+      tooltipString = 'nameRequired';
+    }
+    if (!data.srs && data.name) {
+      tooltipString = 'SRSRequired';
+    }
+    if (tooltipString) {
+      return this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'ADDLAYERS',
+        tooltipString
+      );
+    } else {
+      return this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'DRAW.drawToolbar',
+        'addLayer'
+      );
+    }
   }
 
   filesValid(files: File[]): boolean {
