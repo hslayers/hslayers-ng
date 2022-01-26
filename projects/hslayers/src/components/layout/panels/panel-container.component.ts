@@ -87,7 +87,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       //Without timeout componentRef.location.nativeElement could containe only placeholder <!--container--> until the real content is loaded
       componentRef.location.nativeElement.children[0].classList.add(
-        `hs-panelWidth-${Math.round(panelWidth / 25) * 25}`
+        `hs-panel-width-${Math.round(panelWidth / 25) * 25}`
       );
     }, 0);
 
