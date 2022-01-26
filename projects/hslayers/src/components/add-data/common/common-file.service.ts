@@ -287,6 +287,7 @@ export class HsAddDataCommonFileService {
             type: 'wms',
             uri: descriptor.wms.url,
             layer: data.name,
+            owrCache: true,
           });
           return;
         })

@@ -70,9 +70,13 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
    * Parse added service url and sends request GetCapabilities to WFS service
    *
    * @param service_url - Raw Url localization of service
+   * @param owrCache - Overwrites cache for the requested url
    * @returns Promise object - Response to GetCapabilities request
    */
-  async request(service_url: string): Promise<CapabilitiesResponseWrapper> {
+  async request(
+    service_url: string,
+    owrCache?: boolean
+  ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     this.service_url = service_url;
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
@@ -93,7 +97,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
     let url = [path, this.params2String(params)].join('?');
 
     url = this.hsUtilsService.proxify(url);
-    if (this.hsCapabilityCacheService.get(url)) {
+    if (this.hsCapabilityCacheService.get(url) && !owrCache) {
       return this.hsCapabilityCacheService.get(url);
     }
     try {

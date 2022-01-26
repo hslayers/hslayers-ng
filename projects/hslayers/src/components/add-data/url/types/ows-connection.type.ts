@@ -3,4 +3,5 @@ export type owsConnection = {
   uri?: string;
   layer?: string;
   style?: string;
+  owrCache?: boolean;
 };

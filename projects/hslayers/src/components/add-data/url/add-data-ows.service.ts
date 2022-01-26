@@ -43,13 +43,15 @@ export class HsAddDataOwsService {
       this.setUrlAndConnect({uri: url});
     });
   }
-  async connect(style?: string): Promise<Layer<Source>[]> {
+  async connect(opt?: {
+    style?: string;
+    owrCache?: boolean;
+  }): Promise<Layer<Source>[]> {
     await this.setTypeServices();
     const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
       return;
     }
-
     this.hsAddDataUrlService.addingAllowed = false;
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
       if (this.hsUrlArcGisService.isGpService(url)) {
@@ -69,7 +71,10 @@ export class HsAddDataOwsService {
       loadingInfo: true,
       showDetails: true,
     });
-    const wrapper = await this.typeCapabilitiesService.request(url);
+    const wrapper = await this.typeCapabilitiesService.request(
+      url,
+      opt?.owrCache
+    );
     if (
       typeof wrapper.response === 'string' &&
       wrapper.response?.includes('Unsuccessful OAuth2')
@@ -79,7 +84,7 @@ export class HsAddDataOwsService {
     } else {
       const response = await this.typeService.listLayerFromCapabilities(
         wrapper,
-        style
+        opt?.style
       );
       if (this.hsUrlArcGisService.isImageService()) {
         this.hsUrlArcGisService.addLayers();
@@ -97,7 +102,10 @@ export class HsAddDataOwsService {
   async setUrlAndConnect(params: owsConnection): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = params.layer;
     this.hsAddDataCommonService.updateUrl(params.uri);
-    return await this.connect(params.style);
+    return await this.connect({
+      style: params.style,
+      owrCache: params.owrCache,
+    });
   }
 
   changed(data: urlDataObject): void {
