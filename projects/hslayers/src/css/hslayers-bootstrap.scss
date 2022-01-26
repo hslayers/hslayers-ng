@@ -64,7 +64,7 @@ $list-group-item-padding-x: 1.25rem;
   @import "bootstrap/scss/utilities/api";
 
   @media screen and (min-width:767px) {
-    @for $i from 0 through 14{
+    @for $i from 0 through 20{
       .hs-panelspace hs-panel-container .hs-panelWidth-#{400 + ($i * 25) } {
         width: 400 + ($i * 25)+px;
       }
