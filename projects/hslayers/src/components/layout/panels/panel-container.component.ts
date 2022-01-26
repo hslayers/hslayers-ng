@@ -10,11 +10,11 @@ import {
 import {ReplaySubject, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
+import {HsConfig} from '../../../config.service';
 import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {HsPanelItem} from './panel-item';
-import {HsConfig} from '../../../config.service';
 
 @Component({
   selector: 'hs-panel-container',
@@ -84,9 +84,13 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     Object.assign(panelWidths, this.HsConfig.panelWidths);
     const panelWidth =
       panelWidths[componentRefInstance.name] || panelWidths.default;
-    componentRef.location.nativeElement.children[0].classList.add(
-      `hs-panelWidth-${Math.round(panelWidth / 25) * 25}`
-    );
+    setTimeout(() => {
+      //Without timeout componentRef.location.nativeElement could containe only placeholder <!--container--> until the real content is loaded
+      componentRef.location.nativeElement.children[0].classList.add(
+        `hs-panelWidth-${Math.round(panelWidth / 25) * 25}`
+      );
+    }, 0);
+
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;
     }
