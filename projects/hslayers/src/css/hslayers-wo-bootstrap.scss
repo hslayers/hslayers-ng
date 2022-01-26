@@ -28,7 +28,7 @@ $list-group-item-padding-x: 1.25rem;
 .hsl {
   @media screen and (min-width:767px) {
     @for $i from 0 through 14{
-      .hs-panelspace hs-panel-container .hs-panelWidth-#{400 + ($i * 25) } {
+      .hs-panelspace hs-panel-container .hs-panel-width-#{400 + ($i * 25) } {
         width: 400 + ($i * 25)+px;
       }
     }
