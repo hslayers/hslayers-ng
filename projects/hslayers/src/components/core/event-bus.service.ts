@@ -34,7 +34,7 @@ export class HsEventBusService {
    * @event mapResets
    */
   mapResets: Subject<void> = new Subject();
-  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
+  layerManagerUpdates: Subject<Layer<Source, any> | void> = new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
   compositionDeletes: Subject<any> = new Subject();
   /**
@@ -42,14 +42,14 @@ export class HsEventBusService {
    * @event compositionLoads
    */
   compositionLoads: Subject<any> = new Subject();
-  layerRemovals: Subject<Layer<Source>> = new Subject();
+  layerRemovals: Subject<Layer<Source, any>> = new Subject();
   compositionEdits: Subject<void> = new Subject();
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<{
-    layer: Layer<Source>;
+    layer: Layer<Source, any>;
     progress: HsLayerLoadProgress;
   }> = new Subject();
   /**
@@ -73,13 +73,13 @@ export class HsEventBusService {
    * or in "dimensions" property in OL Layer object
    */
   layerDimensionDefinitionChanges: Subject<{
-    layer: Layer<Source>;
+    layer: Layer<Source, any>;
   }> = new Subject();
   /**
    * Used to listen for changes of dimension settings in layermanager-dimensions component
    */
   layermanagerDimensionChanges: Subject<{
-    layer: Layer<Source>;
+    layer: Layer<Source, any>;
     dimension: HsDimensionDescriptor;
   }> = new Subject();
   vectorQueryFeatureSelection: Subject<{
@@ -150,8 +150,7 @@ export class HsEventBusService {
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl
    */
-  layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
-    null
-  );
+  layerSelectedFromUrl: BehaviorSubject<Layer<Source, any>> =
+    new BehaviorSubject(null);
   constructor() {}
 }

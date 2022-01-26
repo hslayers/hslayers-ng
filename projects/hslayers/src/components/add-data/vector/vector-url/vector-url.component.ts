@@ -38,9 +38,9 @@ export class HsAddDataVectorUrlComponent {
 
   setDataToDefault(): void {
     this.data = {
-      // Not possible to save KML to layman yet
+      // Not possible to save KML to Layman yet
       abstract: '',
-      addUnder: null as Layer<Source>,
+      addUnder: null as Layer<Source, any>,
       base64url: '',
       dataType: this.dataType,
       extract_styles: false,

@@ -4,7 +4,7 @@ import {Source} from 'ol/source';
 
 export interface HsLegendDescriptor {
   autoLegend?: boolean;
-  lyr: Layer<Source>;
+  lyr: Layer<Source, any>;
   title: string;
   type: string;
   subLayerLegends?: Array<string>;

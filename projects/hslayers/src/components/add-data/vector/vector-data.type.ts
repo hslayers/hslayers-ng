@@ -10,7 +10,7 @@ import {accessRightsModel} from '../common/access-rights.model';
 export type vectorDataObject = {
   abstract?: string;
   access_rights?: accessRightsModel;
-  addUnder?: Layer<Source>;
+  addUnder?: Layer<Source, any>;
   base64url?: string;
   dataType?: string;
   extract_styles?: boolean;

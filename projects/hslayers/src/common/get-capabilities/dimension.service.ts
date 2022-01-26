@@ -136,7 +136,7 @@ export class HsDimensionService {
    * @param layer - OL Layer
    * @returns true if layer has any dimensions
    */
-  isLayerWithDimensions(layer: Layer<Source>): boolean {
+  isLayerWithDimensions(layer: Layer<Source, any>): boolean {
     if (!layer) {
       return false;
     }

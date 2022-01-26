@@ -19,7 +19,7 @@ export class HsMapServiceMock {
     return [0, 0, 100, 100];
   }
 
-  addLayer(layer): Layer<Source> {
+  addLayer(layer): Layer<Source, any> {
     try {
       this.map.addLayer(layer);
       return layer;

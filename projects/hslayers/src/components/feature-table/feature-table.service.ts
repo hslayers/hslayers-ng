@@ -41,11 +41,11 @@ export class HsFeatureTableService {
     public HsLanguageService: HsLanguageService
   ) {}
   /**
-   * @param layer Layer from HsConfig.layersInFeatureTable
-   * @description Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
-   * @returns {any} Returns layer
+   * Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
+   * @param layer - Layer from HsConfig.layersInFeatureTable
+   * @returns Returns layer
    */
-  addLayer(layer: Layer<Source>): any {
+  addLayer(layer: Layer<Source, any>): any {
     if (
       !getBase(layer) &&
       this.HsUtilsService.instOf(layer, VectorLayer) &&
@@ -57,11 +57,11 @@ export class HsFeatureTableService {
     return;
   }
   /**
-   * @param layer Layer from HsConfig.layersInFeatureTable
-   * @description Wrap layer object
-   * @returns {any} Returns wrapped layer object
+   * Wrap layer object
+   * @param layer - Layer from HsConfig.layersInFeatureTable
+   * @returns Returns wrapped layer object
    */
-  wrapLayer(layer: Layer<Source>): any {
+  wrapLayer(layer: Layer<Source, any>): any {
     return {
       title: getTitle(layer),
       lyr: layer,
@@ -69,10 +69,10 @@ export class HsFeatureTableService {
     };
   }
   /**
-   * @param layer Layer from HsConfig.layersInFeatureTable
-   * @description Search all layers feature attributes and map them into new objects for html table
+   * Search all layers feature attributes and map them into new objects for html table
+   * @param layer - Layer from HsConfig.layersInFeatureTable
    */
-  fillFeatureList(layer: Layer<Source>): void {
+  fillFeatureList(layer: Layer<Source, any>): void {
     const source: VectorSource<Geometry> =
       this.HsLayerUtilsService.isLayerClustered(layer)
         ? (layer.getSource() as Cluster).getSource()

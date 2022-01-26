@@ -47,7 +47,7 @@ const LCLSTORAGE_EXPIRE = 5000;
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  public internalLayers: Layer<Source>[] = [];
+  public internalLayers: Layer<Source, any>[] = [];
   constructor(
     public hsConfig: HsConfig,
     public HsMapService: HsMapService,
@@ -270,7 +270,7 @@ export class HsSaveMapService {
    * @param layer - Map layer that should be converted
    * @returns JSON object representing the layer
    */
-  layer2json(layer: Layer<Source>): any {
+  layer2json(layer: Layer<Source, any>): any {
     const json: any = {
       metadata: getMetadata(layer) || {},
     };
@@ -512,7 +512,7 @@ export class HsSaveMapService {
       expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
       layers: this.HsMapService.getLayersArray()
         .filter((lyr) => !this.internalLayers.includes(lyr))
-        .map((lyr: Layer<Source>) => this.layer2json(lyr)),
+        .map((lyr: Layer<Source, any>) => this.layer2json(lyr)),
     };
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good

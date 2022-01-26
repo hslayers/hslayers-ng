@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 
+import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
@@ -21,6 +22,7 @@ import {
   getInlineLegend,
   setCluster,
 } from '../../../common/layer-extensions';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +31,7 @@ export class HsLayerEditorService {
   layerTitleChange: Subject<{
     newTitle: string;
     oldTitle: string;
-    layer: Layer<Source>;
+    layer: Layer<Source, any>;
   }> = new Subject();
 
   constructor(
@@ -55,7 +57,7 @@ export class HsLayerEditorService {
    * BoundingBox property of GetCapabilities request (for WMS layer)
    * @param layer - OpenLayers layer to zoom to
    */
-  async zoomToLayer(layer: Layer<Source>): Promise<boolean> {
+  async zoomToLayer(layer: Layer<Source, any>): Promise<boolean> {
     let extent = null;
     if (layer.getExtent()) {
       extent = layer.getExtent();
@@ -103,15 +105,19 @@ export class HsLayerEditorService {
    * @param distance - Distance in pixels
    * @returns Current cluster state
    */
-  cluster(layer: Layer<Source>, newValue: boolean, distance: number): boolean {
-    if (layer == undefined) {
+  cluster(
+    layer: Layer<Source, any>,
+    newValue: boolean,
+    distance: number
+  ): boolean {
+    if (layer === undefined || !this.isLayerVectorLayer(layer)) {
       return;
     }
     if (newValue != undefined) {
       setCluster(layer, newValue);
       this.HsLayerEditorVectorLayerService.cluster(
         newValue,
-        layer,
+        layer as VectorLayer<VectorSource<Geometry>>,
         distance,
         !this.HsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
           layer
@@ -124,11 +130,10 @@ export class HsLayerEditorService {
   }
 
   /**
-   * @typedef {Array<number>} Extent
-   * @param {Extent} extent - Extent in EPSG:4326
+   * @param extent - Extent in EPSG:4326
    * @param layer
    */
-  fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
+  fitIfExtentSet(extent: number[], layer: Layer<Source, any>): void {
     if (extent !== null) {
       layer.setExtent(extent);
       this.HsMapService.fitExtent(extent);
@@ -158,7 +163,7 @@ export class HsLayerEditorService {
    * Test if layer is Vector layer
    * @param layer - Selected layer
    */
-  isLayerVectorLayer(layer: Layer<Source>): boolean {
+  isLayerVectorLayer(layer: Layer<Source, any>): boolean {
     return this.HsLayerUtilsService.isLayerVectorLayer(layer);
   }
 }

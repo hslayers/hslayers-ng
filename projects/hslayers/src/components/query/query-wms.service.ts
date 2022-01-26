@@ -44,23 +44,25 @@ export class HsQueryWmsService {
   ) {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
-      this.hsMapService.getLayersArray().forEach((layer: Layer<Source>) => {
-        if (getBase(layer) == true || layer.get('queryable') == false) {
-          return;
-        }
-        if (getQueryFilter(layer) != undefined) {
-          const filter = getQueryFilter(layer);
-          if (!filter(hsMapService.map, layer, evt.pixel)) {
+      this.hsMapService
+        .getLayersArray()
+        .forEach((layer: Layer<Source, any>) => {
+          if (getBase(layer) == true || layer.get('queryable') == false) {
             return;
           }
-        }
-        this.queryWmsLayer(
-          this.hsUtilsService.instOf(layer, Tile)
-            ? (layer as Layer<TileWMS>)
-            : (layer as Layer<ImageWMS>),
-          evt.coordinate
-        );
-      });
+          if (getQueryFilter(layer) != undefined) {
+            const filter = getQueryFilter(layer);
+            if (!filter(hsMapService.map, layer, evt.pixel)) {
+              return;
+            }
+          }
+          this.queryWmsLayer(
+            this.hsUtilsService.instOf(layer, Tile)
+              ? (layer as Tile<TileWMS>)
+              : (layer as ImageLayer<ImageWMS>),
+            evt.coordinate
+          );
+        });
     });
   }
 
@@ -194,7 +196,7 @@ export class HsQueryWmsService {
     }
   }
 
-  parseGmlResponse(doc, layer: Layer<Source>, customInfoTemplate): void {
+  parseGmlResponse(doc, layer: Layer<Source, any>, customInfoTemplate): void {
     let updated = false;
     let features = doc.querySelectorAll('gml\\:featureMember');
     if (features.length == 0) {
@@ -290,9 +292,12 @@ export class HsQueryWmsService {
   /**
    * Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
    * @param layer - Layer to Query
-   * @param coordinate -
+   * @param coordinate
    */
-  queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate: number[]) {
+  queryWmsLayer(
+    layer: ImageLayer<ImageWMS> | Tile<TileWMS>,
+    coordinate: number[]
+  ) {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService

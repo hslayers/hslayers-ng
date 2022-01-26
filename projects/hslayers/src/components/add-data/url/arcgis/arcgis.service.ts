@@ -51,7 +51,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
-  ): Promise<Layer<Source>[]> {
+  ): Promise<Layer<Source, any>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -126,7 +126,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param checked - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean): Layer<Source>[] {
+  addLayers(checkedOnly: boolean): Layer<Source, any>[] {
     if (this.data.layers === undefined) {
       return;
     }
@@ -175,7 +175,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       type: string;
     }[],
     options: addLayerOptions
-  ): Layer<Source> {
+  ): Layer<Source, any> {
     const attributions = [];
     const dimensions = {};
     const legends = [];
@@ -201,7 +201,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       : new ImageArcGISRest(sourceParams);
 
     const mapExtent = transformExtent(
-      [this.data.extent.xmin, this.data.extent.ymin, this.data.extent.xmax, this.data.extent.ymax],
+      [
+        this.data.extent.xmin,
+        this.data.extent.ymin,
+        this.data.extent.xmax,
+        this.data.extent.ymax,
+      ],
       'EPSG:' + this.data.srs,
       this.data.map_projection
     );
@@ -230,7 +235,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   addLayersRecursively(
     layer: any,
     options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source, any>[]
   ): void {
     //Not needed yet, but interface has it
   }

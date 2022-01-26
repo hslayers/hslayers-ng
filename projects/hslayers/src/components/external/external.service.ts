@@ -1,12 +1,10 @@
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
-import VectorSource from 'ol/source/Vector';
+import {Cluster, Source, Vector as VectorSource} from 'ol/source';
+import {Feature, Map} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {Map} from 'ol';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
-import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';
 import {
@@ -21,7 +19,7 @@ import {getCenter} from 'ol/extent';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
-  layer: Layer<Source>;
+  layer: Layer<Source, any>;
   domElements: Element[];
   event: string;
 };
@@ -46,13 +44,13 @@ export class HsExternalService {
 
   init(map: Map) {
     for (const layer of map.getLayers().getArray()) {
-      this.layerAdded(layer as Layer<Source>);
+      this.layerAdded(layer as Layer<Source, any>);
     }
     map.getLayers().on('add', (e) => this.layerAdded(e.element));
     map.getLayers().on('remove', (e) => this.layerRemoved(e.element));
   }
 
-  layerRemoved(layer: Layer<Source>): void {
+  layerRemoved(layer: Layer<Source, any>): void {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       for (const key of Object.keys(this.featureLinks)) {
         const link = this.featureLinks[key];
@@ -62,10 +60,10 @@ export class HsExternalService {
     }
   }
 
-  layerAdded(layer: Layer<Source>): void {
+  layerAdded(layer: Layer<Source, any>): void {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (getDomFeatureLinks(layer)) {
-        this.processLinks(layer);
+        this.processLinks(layer as VectorLayer<VectorSource<Geometry>>);
       }
       layer.on('propertychange', (e) => {
         this.hsUtilsService.debounce(
@@ -77,16 +75,17 @@ export class HsExternalService {
       });
     }
   }
+
   layerPropChanged(e: ObjectEvent): void {
     if (e.key == DOM_FEATURE_LINKS) {
-      this.processLinks(e.target as Layer<Source>);
+      this.processLinks(e.target as VectorLayer<VectorSource<Geometry>>);
     }
   }
 
-  private processLinks(layer: Layer<any>) {
+  private processLinks(layer: VectorLayer<VectorSource<Geometry>>) {
     const source: VectorSource<Geometry> =
       this.hsLayerUtilsService.isLayerClustered(layer)
-        ? layer.getSource().getSource()
+        ? (layer.getSource() as Cluster).getSource()
         : layer.getSource();
     for (const link of getDomFeatureLinks(layer)) {
       const domElements = document.querySelectorAll(link.domSelector);
@@ -180,7 +179,7 @@ export class HsExternalService {
   }
 
   private getFeature(
-    layer: Layer<Source>,
+    layer: Layer<Source, any>,
     source: VectorSource<Geometry>,
     link: DOMFeatureLink,
     domElement: Element

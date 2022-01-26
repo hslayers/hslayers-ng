@@ -151,7 +151,8 @@ export class HsLayerManagerMetadataService {
    * @param values
    */
   //TODO: TYPES
-  setOrUpdate(layer: Layer<Source>, key, values): void {
+  //FIXME: unused?
+  setOrUpdate(layer: Layer<Source, any>, key, values): void {
     const previousValue = layer.get(key);
     if (previousValue) {
       for (const value of values) {
@@ -236,7 +237,7 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  parseAttribution(layer: Layer<Source>, caps: any) {
+  parseAttribution(layer: Layer<Source, any>, caps: any) {
     const attr = caps.Attribution;
     if (getAttribution(layer)?.locked || attr == undefined) {
       return;

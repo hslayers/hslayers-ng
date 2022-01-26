@@ -19,6 +19,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
     .replace(/[^\w\s\-\.]/gm, '') //Remove spaces
     .trim()
     .replace(/[\s\-\._]+/gm, '_') //Remove dashes
+    // eslint-disable-next-line no-control-regex
     .replace(/[^\x00-\x7F]/g, ''); //Remove non-ascii letters https://stackoverflow.com/questions/20856197/remove-non-ascii-character-in-string
   return title;
 }
@@ -29,7 +30,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
  *
  * @param layer - Layer to get the name for
  */
-export function getLayerName(layer: Layer<Source>): string {
+export function getLayerName(layer: Layer<Source, any>): string {
   const layerName = getName(layer) || getTitle(layer);
   if (layerName == undefined) {
     this.$log.warn('Layer title/name not set for', layer);

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import Renderer from 'ol/renderer/Layer';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
@@ -58,7 +59,7 @@ export class HsConfig {
   };
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
-  default_layers?: Layer<Source>[];
+  default_layers?: Layer<Source, any>[];
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;

@@ -17,8 +17,8 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
-import {HsUtilsService} from '../utils/utils.service';
 import {HsToastService} from '../layout/toast/toast.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 import {
   getFromComposition,
@@ -242,7 +242,7 @@ export class HsCompositionsParserService {
     if (layers?.length > 0) {
       layers.forEach((lyr) => {
         this.HsMapService.addLayer(
-          lyr as Layer<Source>,
+          lyr as Layer<Source, any>,
           DuplicateHandling.RemoveOriginal
         );
       });
@@ -250,7 +250,7 @@ export class HsCompositionsParserService {
     }
 
     if (obj.current_base_layer) {
-      this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
+      this.HsMapService.map.getLayers().forEach((lyr: Layer<Source, any>) => {
         if (
           getTitle(lyr) == obj.current_base_layer.title ||
           getTitle(lyr) == obj.current_base_layer
@@ -384,12 +384,11 @@ export class HsCompositionsParserService {
     });
   }
   /**
-   * @public
-   * @param {object} j Composition object with Layers
-   * @returns {Array} Array of created layers
-   * @description Parse composition object to extract individual layers and add them to map
+   * Parse composition object to extract individual layers and add them to map
+   * @param j - Composition object with Layers
+   * @returns Array of created layers
    */
-  async jsonToLayers(j): Promise<Layer<Source>[]> {
+  async jsonToLayers(j): Promise<Layer<Source, any>[]> {
     const layers = [];
     if (j.data) {
       j = j.data;
@@ -466,7 +465,7 @@ export class HsCompositionsParserService {
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(
-          (l) => getTitle(l as Layer<Source>) == lyr_def.title
+          (l) => getTitle(l as Layer<Source, any>) == lyr_def.title
         );
         if (existing != undefined) {
           existing.setZIndex(undefined);

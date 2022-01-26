@@ -124,7 +124,7 @@ export class HsStatisticsToMapDialogComponent
     this.HsMapService.loaded().then((map) => {
       this.vectorLayers = [
         ...this.HsMapService.getLayersArray()
-          .filter((layer: Layer<Source>) =>
+          .filter((layer: Layer<Source, any>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer)
           )
           .map((layer: VectorLayer<VectorSource<Geometry>>) => {

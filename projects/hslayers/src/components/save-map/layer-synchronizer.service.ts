@@ -74,7 +74,7 @@ export class HsLayerSynchronizerService {
 
   /**
    * Start synchronizing layer to database
-   * @param {object} layer Layer to add
+   * @param layer - Layer to add
    */
   addLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
     if (this.isLayerSynchronizable(layer)) {
@@ -97,7 +97,7 @@ export class HsLayerSynchronizerService {
   /**
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initially also get features from server
-   * @param layer Layer to add
+   * @param layer - Layer to add
    * @returns If layer is synchronizable
    */
   async startMonitoringIfNeeded(
@@ -141,8 +141,8 @@ export class HsLayerSynchronizerService {
   /**
    * Get features from Layman endpoint as WFS string, parse and add
    * them to OpenLayers VectorSource
-   * @param layer Layer to get Layman friendly name for
-   * @param source OpenLayers VectorSource to store features in
+   * @param layer - Layer to get Layman friendly name for
+   * @param source - OpenLayers VectorSource to store features in
    */
   async pull(
     layer: VectorLayer<VectorSource<Geometry>>,
@@ -284,7 +284,7 @@ export class HsLayerSynchronizerService {
 
   /**
    * Stop synchronizing layer to database
-   * @param {Layer} layer Layer to remove from legend
+   * @param layer - Layer to remove from legend
    */
   removeLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
     for (let i = 0; i < this.syncedLayers.length; i++) {

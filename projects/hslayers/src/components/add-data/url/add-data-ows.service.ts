@@ -43,7 +43,7 @@ export class HsAddDataOwsService {
       this.setUrlAndConnect({uri: url});
     });
   }
-  async connect(style?: string): Promise<Layer<Source>[]> {
+  async connect(style?: string): Promise<Layer<Source, any>[]> {
     await this.setTypeServices();
     const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
@@ -73,7 +73,7 @@ export class HsAddDataOwsService {
    * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
-  async setUrlAndConnect(params: owsConnection): Promise<Layer<Source>[]> {
+  async setUrlAndConnect(params: owsConnection): Promise<Layer<Source, any>[]> {
     this.hsAddDataCommonService.layerToSelect = params.layer;
     this.hsAddDataCommonService.updateUrl(params.uri);
     return await this.connect(params.style);
@@ -86,7 +86,7 @@ export class HsAddDataOwsService {
   /**
    * replaces `ows.${type}_connecting`
    */
-  async connectToOWS(params: owsConnection): Promise<Layer<Source>[]> {
+  async connectToOWS(params: owsConnection): Promise<Layer<Source, any>[]> {
     this.hsAddDataUrlService.typeSelected = params.type as AddDataUrlType;
     return await this.setUrlAndConnect(params);
   }

@@ -30,7 +30,7 @@ export class HsLayerEditorVectorLayerService {
    */
   async cluster(
     newValue: boolean,
-    layer: Layer<Source>,
+    layer: VectorLayer<VectorSource<Geometry>>,
     distance: number,
     generateStyle: boolean
   ): Promise<void> {
@@ -51,10 +51,13 @@ export class HsLayerEditorVectorLayerService {
     }
   }
 
-  createClusteredSource(layer: Layer<Source>, distance: number): Cluster {
+  createClusteredSource(
+    layer: VectorLayer<VectorSource<Geometry>>,
+    distance: number
+  ): Cluster {
     return new Cluster({
       distance,
-      source: layer.getSource() as VectorSource<Geometry>,
+      source: layer.getSource(),
       geometryFunction: function (feature) {
         if (!feature) {
           return null;

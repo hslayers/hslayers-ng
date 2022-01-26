@@ -32,7 +32,7 @@ export interface HsLayerDescriptor {
   };
   galleryMiniMenu?: boolean;
   loadProgress?: HsLayerLoadProgress;
-  layer: Layer<Source>;
+  layer: Layer<Source, any>;
   abstract?: string;
   legends?: string | string[];
   active?: boolean;

@@ -210,7 +210,7 @@ export class HsMapService {
   getVectorLayers(
     layersToLookFor: {
       source: VectorSource<Geometry> | Cluster;
-      layer: Layer<Source>;
+      layer: Layer<Source, any>;
     }[]
   ): void {
     const check = (layer) => {
@@ -246,7 +246,7 @@ export class HsMapService {
     } else {
       const layersToLookFor: {
         source: VectorSource<Geometry> | Cluster;
-        layer: Layer<Source>;
+        layer: Layer<Source, any>;
       }[] = [];
       this.getVectorLayers(layersToLookFor);
       const obj = layersToLookFor.find((obj) => obj.source.getFeatureById(fid));
@@ -528,16 +528,16 @@ export class HsMapService {
       });
   }
 
-  getLayersArray(): Layer<Source>[] {
-    return this.map.getLayers().getArray() as Layer<Source>[];
+  getLayersArray(): Layer<Source, any>[] {
+    return this.map.getLayers().getArray() as Layer<Source, any>[];
   }
 
   /**
-   * @param lyr {Layer} Layer which to proxify if needed
-   * @description Proxify layer based on its source object type and if its tiled or not.
+   * Proxify layer based on its source object type and if its tiled or not.
    * Each underlying OL source class has its own way to override imagery loading.
+   * @param lyr - Layer which to proxify if needed
    */
-  proxifyLayer(lyr: Layer<Source>): void {
+  proxifyLayer(lyr: Layer<Source, any>): void {
     const source = lyr.getSource();
     if (
       [ImageWMS, ImageArcGISRest].some((typ) =>
@@ -582,12 +582,12 @@ export class HsMapService {
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
    * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.map.addLayer.
    *
-   * @param lyr Layer to add
-   * @param duplicateHandling How to handle duplicate layers (same class and title)
-   * @param visibleOverride Override the visibility using an array layer titles, which
+   * @param lyr - Layer to add
+   * @param duplicateHandling - How to handle duplicate layers (same class and title)
+   * @param visibleOverride - Override the visibility using an array layer titles, which
    */
   addLayer(
-    lyr: Layer<Source>,
+    lyr: Layer<Source, any>,
     duplicateHandling?: DuplicateHandling,
     visibleOverride?: string[]
   ): void {
@@ -614,23 +614,23 @@ export class HsMapService {
     }
     this.proxifyLayer(lyr);
     lyr.on('change:source', (e) => {
-      this.proxifyLayer(e.target as Layer<Source>);
+      this.proxifyLayer(e.target as Layer<Source, any>);
     });
     this.map.addLayer(lyr);
   }
 
   /**
    * @public
-   * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
-   * should be visible. Usefull when the layer visibility is stored in a URL parameter
-   * @description Add all layers from app config (box_layers and default_layers) to the map.
+   * Add all layers from app config (box_layers and default_layers) to the map.
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
+   * @param visibilityOverrides - Override the visibility using an array layer titles, which
+   * should be visible. Usefull when the layer visibility is stored in a URL parameter
    */
 
   repopulateLayers(visibilityOverrides) {
     if (this.HsConfig.box_layers) {
       this.HsConfig.box_layers.forEach((box) => {
-        for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
+        for (const lyr of box.getLayers().getArray() as Layer<Source, any>[]) {
           this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
         }
       });
@@ -639,7 +639,7 @@ export class HsMapService {
     if (this.HsConfig.default_layers) {
       this.HsConfig.default_layers
         .filter((lyr) => lyr)
-        .forEach((lyr: Layer<Source>) => {
+        .forEach((lyr: Layer<Source, any>) => {
           this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
         });
     }
@@ -869,7 +869,7 @@ export class HsMapService {
     this.map
       .getLayers()
       .getArray()
-      .filter((layer) => getRemovable(layer as Layer<Source>) !== false)
+      .filter((layer) => getRemovable(layer as Layer<Source, any>) !== false)
       .forEach((lyr) => {
         to_be_removed.push(lyr);
       });

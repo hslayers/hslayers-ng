@@ -47,7 +47,7 @@ export class HsLayerUtilsService {
    * @returns True for layer with BoundingBox property, for
    * WMS layer or for layer, which has source with extent
    */
-  layerIsZoomable(layer: Layer<Source>): boolean {
+  layerIsZoomable(layer: Layer<Source, any>): boolean {
     if (typeof layer == 'undefined') {
       return false;
     }
@@ -82,7 +82,7 @@ export class HsLayerUtilsService {
    * @param layer - Selected layer
    * @returns True for ol.layer.Vector
    */
-  layerIsStyleable(layer: Layer<Source>): boolean {
+  layerIsStyleable(layer: Layer<Source, any>): boolean {
     if (typeof layer == 'undefined') {
       return false;
     }
@@ -103,7 +103,7 @@ export class HsLayerUtilsService {
    * @returns True for ol.layer.Tile and ol.layer.Image with
    * INFO_FORMAT in params
    */
-  isLayerQueryable(layer: Layer<Source>): boolean {
+  isLayerQueryable(layer: Layer<Source, any>): boolean {
     return this.isLayerWMS(layer) && !!this.getLayerParams(layer).INFO_FORMAT;
   }
 
@@ -112,7 +112,7 @@ export class HsLayerUtilsService {
    * @param layer - to get layer title
    * @returns Layer title or "Void"
    */
-  getLayerTitle(layer: Layer<Source>): string {
+  getLayerTitle(layer: Layer<Source, any>): string {
     if (getTitle(layer) !== undefined && getTitle(layer) != '') {
       return getTitle(layer).replace(/&#47;/g, '/');
     } else {
@@ -121,7 +121,7 @@ export class HsLayerUtilsService {
   }
 
   // todo
-  getURL(layer: Layer<Source>): string {
+  getURL(layer: Layer<Source, any>): string {
     const src = layer.getSource();
     if (this.HsUtilsService.instOf(src, ImageWMS)) {
       return (src as ImageWMS).getUrl();
@@ -145,7 +145,7 @@ export class HsLayerUtilsService {
    * @param layer - Selected layer
    * @returns True for ol.layer.Tile and ol.layer.Image
    */
-  isLayerWMS(layer: Layer<Source>): boolean {
+  isLayerWMS(layer: Layer<Source, any>): boolean {
     if (
       this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), TileWMS)
@@ -162,7 +162,7 @@ export class HsLayerUtilsService {
   }
 
   // todo
-  isLayerWMTS(layer: Layer<Source>): boolean {
+  isLayerWMTS(layer: Layer<Source, any>): boolean {
     if (
       this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), WMTS)
@@ -172,7 +172,7 @@ export class HsLayerUtilsService {
     return false;
   }
 
-  isLayerXYZ(layer: Layer<Source>): boolean {
+  isLayerXYZ(layer: Layer<Source, any>): boolean {
     if (
       this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), XYZ)
@@ -182,7 +182,7 @@ export class HsLayerUtilsService {
     return false;
   }
 
-  isLayerArcgis(layer: Layer<Source>): boolean {
+  isLayerArcgis(layer: Layer<Source, any>): boolean {
     if (
       this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), TileArcGISRest)
@@ -192,7 +192,7 @@ export class HsLayerUtilsService {
     return false;
   }
 
-  getLayerSourceFormat(layer: Layer<Source>): FeatureFormat {
+  getLayerSourceFormat(layer: Layer<Source, any>): FeatureFormat {
     if (!this.isLayerVectorLayer(layer)) {
       return;
     }
@@ -206,7 +206,7 @@ export class HsLayerUtilsService {
    * @param layer - Selected layer
    * @returns True for Vector layer
    */
-  isLayerVectorLayer(layer: Layer<Source>): boolean {
+  isLayerVectorLayer(layer: Layer<Source, any>): boolean {
     if (
       this.HsUtilsService.instOf(layer, VectorLayer) &&
       (this.HsUtilsService.instOf(layer.getSource(), Cluster) ||
@@ -222,7 +222,7 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the GeoJSON format is explicitly specified in the source. False otherwise.
    */
-  isLayerGeoJSONSource(layer: Layer<Source>): boolean {
+  isLayerGeoJSONSource(layer: Layer<Source, any>): boolean {
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GeoJSON)) {
       return true;
     }
@@ -234,7 +234,7 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the TopoJSON format is explicitly specified in the source. False otherwise.
    */
-  isLayerTopoJSONSource(layer: Layer<Source>): boolean {
+  isLayerTopoJSONSource(layer: Layer<Source, any>): boolean {
     if (
       this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), TopoJSON)
     ) {
@@ -248,7 +248,7 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the KML format is explicitly specified in the source. False otherwise.
    */
-  isLayerKMLSource(layer: Layer<Source>): boolean {
+  isLayerKMLSource(layer: Layer<Source, any>): boolean {
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), KML)) {
       return true;
     }
@@ -260,7 +260,7 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the GPX format is explicitly specified in the source. False otherwise.
    */
-  isLayerGPXSource(layer: Layer<Source>): boolean {
+  isLayerGPXSource(layer: Layer<Source, any>): boolean {
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GPX)) {
       return true;
     }
@@ -273,7 +273,7 @@ export class HsLayerUtilsService {
    * @param layer - Layer to check
    * @returns True if showInLayerManager attribute is set to true
    */
-  isLayerInManager(layer: Layer<Source>): boolean {
+  isLayerInManager(layer: Layer<Source, any>): boolean {
     return (
       getShowInLayerManager(layer) === undefined ||
       getShowInLayerManager(layer) == true
@@ -284,7 +284,7 @@ export class HsLayerUtilsService {
     return source.getParams();
   }
 
-  getLayerParams(layer: Layer<Source>): any {
+  getLayerParams(layer: Layer<Source, any>): any {
     const src = layer.getSource();
     if (this.HsUtilsService.instOf(src, ImageWMS)) {
       return this.getSourceParams(src as ImageWMS);
@@ -297,7 +297,7 @@ export class HsLayerUtilsService {
     }
   }
 
-  updateLayerParams(layer: Layer<Source>, params: any): void {
+  updateLayerParams(layer: Layer<Source, any>, params: any): void {
     const src = layer.getSource();
     if (this.HsUtilsService.instOf(src, ImageWMS)) {
       (src as ImageWMS).updateParams(params);
@@ -315,7 +315,7 @@ export class HsLayerUtilsService {
    * @param layer - Layer to check
    * @returns True if layer is has a title
    */
-  hasLayerTitle(layer: Layer<Source>): boolean {
+  hasLayerTitle(layer: Layer<Source, any>): boolean {
     return getTitle(layer) !== undefined && getTitle(layer) !== '';
   }
 
@@ -325,7 +325,7 @@ export class HsLayerUtilsService {
    * @returns True if layer has attribute 'editor' and in it
    * 'editable' property is set to true or missing
    */
-  isLayerEditable(layer: Layer<Source>): boolean {
+  isLayerEditable(layer: Layer<Source, any>): boolean {
     if (getEditor(layer) === undefined) {
       return true;
     }
@@ -342,7 +342,7 @@ export class HsLayerUtilsService {
    * Is used in query service and hover popup.
    * @param layer - Layer to get the name for
    */
-  getLayerName(layer: Layer<Source>): string {
+  getLayerName(layer: Layer<Source, any>): string {
     if (
       layer === undefined ||
       (getShowInLayerManager(layer) !== undefined &&
@@ -396,7 +396,7 @@ export class HsLayerUtilsService {
    * @param layer - Layer to check
    * @returns True if layer is drawable vector layer
    */
-  isLayerDrawable(layer: Layer<Source>): boolean {
+  isLayerDrawable(layer: Layer<Source, any>): boolean {
     return (
       this.HsUtilsService.instOf(layer, VectorLayer) &&
       layer.getVisible() &&
@@ -411,7 +411,7 @@ export class HsLayerUtilsService {
    * @param layer - Layer to check
    * @returns True if layer is clustered, false otherwise
    */
-  isLayerClustered(layer: Layer<Source>): boolean {
+  isLayerClustered(layer: Layer<Source, any>): boolean {
     return this.isLayerVectorLayer(layer) &&
       getCluster(layer) &&
       this.HsUtilsService.instOf(layer.getSource(), Cluster)

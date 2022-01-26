@@ -31,7 +31,7 @@ export class HsAddDataService {
     public hsCommonLaymanService: HsCommonLaymanService
   ) {}
 
-  addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
+  addLayer(layer: Layer<Source, any>, underLayer?: Layer<Source, any>): void {
     if (underLayer) {
       const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();

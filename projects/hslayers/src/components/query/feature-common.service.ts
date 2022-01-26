@@ -1,18 +1,16 @@
 import {Injectable} from '@angular/core';
 
-import VectorSource from 'ol/source/Vector';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Source, Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsToastService} from '../layout/toast/toast.service';
-
 import {getTitle} from '../../common/layer-extensions';
 
 export interface exportFormats {
@@ -28,11 +26,11 @@ export interface exportFormats {
   providedIn: 'root',
 })
 export class HsFeatureCommonService {
-  private listSubject = new BehaviorSubject<Layer<Source>[]>(
-    [] as Layer<Source>[]
+  private listSubject = new BehaviorSubject<Layer<Source, any>[]>(
+    [] as Layer<Source, any>[]
   );
 
-  availableLayer$: Observable<Layer<Source>[]> =
+  availableLayer$: Observable<Layer<Source, any>[]> =
     this.listSubject.asObservable();
 
   constructor(
@@ -56,7 +54,7 @@ export class HsFeatureCommonService {
   updateLayerList(): void {
     const layers = this.hsMapService
       .getLayersArray()
-      .filter((layer: Layer<Source>) => {
+      .filter((layer: Layer<Source, any>) => {
         return this.hsLayerUtilsService.isLayerDrawable(layer);
       });
     this.listSubject.next(layers);
@@ -77,7 +75,7 @@ export class HsFeatureCommonService {
   moveOrCopyFeature(
     type: string,
     features: Feature<Geometry>[],
-    toLayer: Layer<VectorSource<Geometry>>
+    toLayer: VectorLayer<VectorSource<Geometry>>
   ): void {
     features.forEach((feature) => {
       feature.setStyle(null); //To prevent feature from getting individual style

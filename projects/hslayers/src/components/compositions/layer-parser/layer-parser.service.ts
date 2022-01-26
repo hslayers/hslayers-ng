@@ -1,19 +1,19 @@
 import {Injectable} from '@angular/core';
 
-import ImageSource from 'ol/source/Image';
-import TileSource from 'ol/source/Tile';
-import VectorSource from 'ol/source/Vector';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {
   ImageArcGISRest,
+  Image as ImageSource,
   ImageStatic,
   ImageWMS,
   Source,
   TileArcGISRest,
+  Tile as TileSource,
   TileWMS,
+  Vector as VectorSource,
   XYZ,
 } from 'ol/source';
 import {
@@ -61,11 +61,10 @@ export class HsCompositionsLayerParserService {
   ) {}
 
   /**
-   * @public
-   * @param {object} lyr_def Layer definition object
-   * @description Initiate creation of WFS layer thorough HsUrlWfsService
+   * Initiate creation of WFS layer thorough HsUrlWfsService
+   * @param lyr_def - Layer definition object
    */
-  async createWFSLayer(lyr_def): Promise<Layer<Source>[]> {
+  async createWFSLayer(lyr_def): Promise<Layer<Source, any>[]> {
     this.hsAddDataCommonService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url
@@ -314,8 +313,8 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @description  Parse definition object to create Sparql layer
+   * Parse definition object to create Sparql layer
+   * @param lyr_def - Layer definition object
    */
   async createSparqlLayer(
     lyr_def
@@ -360,9 +359,9 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {ol.layer.Vector|Function} Either valid vector layer or function for creation of other supported vector file types)
-   * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
+   * Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
+   * @param lyr_def - Layer definition object
+   * @returns Either valid vector layer or function for creation of other supported vector file types)
    */
   async createVectorLayer(
     lyr_def

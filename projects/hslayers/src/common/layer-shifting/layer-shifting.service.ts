@@ -11,7 +11,7 @@ import {getBase} from '../layer-extensions';
 
 export class LayerListItem {
   title: string;
-  layer: Layer<Source>;
+  layer: Layer<Source, any>;
   active?: boolean;
   visible?: boolean;
 }
@@ -32,10 +32,10 @@ export class HsLayerShiftingService {
     return this.hsLayerManagerService.data.layers;
   }
 
-  private get mapLayers(): Layer<Source>[] {
+  private get mapLayers(): Layer<Source, any>[] {
     return this.hsMapService
       .getLayersArray()
-      .filter((layer: Layer<Source>) => getBase(layer) !== true);
+      .filter((layer: Layer<Source, any>) => getBase(layer) !== true);
   }
 
   /**
@@ -58,15 +58,15 @@ export class HsLayerShiftingService {
    */
 
   moveTo(
-    layer: LayerListItem | Layer<Source>,
-    target: number | LayerListItem | Layer<Source>
+    layer: LayerListItem | Layer<Source, any>,
+    target: number | LayerListItem | Layer<Source, any>
   ): void {
     if (this.hsUtilsService.instOf(target, LayerListItem)) {
       //Wrapped layer provided
       target = (target as LayerListItem).layer.getZIndex();
     } else if (this.hsUtilsService.instOf(target, Layer)) {
       //OL layer provided
-      target = (target as Layer<Source>).getZIndex();
+      target = (target as Layer<Source, any>).getZIndex();
     }
     this.moveAndShift(this.getOlLayer(layer), target as number);
   }
@@ -76,7 +76,7 @@ export class HsLayerShiftingService {
    * @param preferredZIndex - ZIndex value to switch to
    */
   private moveAndShift(
-    providedLayer: Layer<Source>,
+    providedLayer: Layer<Source, any>,
     preferredZIndex: number
   ): void {
     if (providedLayer === undefined) {
@@ -106,10 +106,10 @@ export class HsLayerShiftingService {
    * @returns Returns ol layer
    */
   private getOlLayer(
-    providedLayer: LayerListItem | Layer<Source>
-  ): Layer<Source> {
+    providedLayer: LayerListItem | Layer<Source, any>
+  ): Layer<Source, any> {
     if (this.hsUtilsService.instOf(providedLayer, Layer)) {
-      return providedLayer as Layer<Source>;
+      return providedLayer as Layer<Source, any>;
     } else {
       return (providedLayer as LayerListItem).layer;
     }
@@ -142,7 +142,7 @@ export class HsLayerShiftingService {
    * @param indexTo - new ZIndex value for the selected layer
    * @param layer - Selected layer from physical layer list
    */
-  private setLayerZIndex(indexTo: number, layer: Layer<Source>): void {
+  private setLayerZIndex(indexTo: number, layer: Layer<Source, any>): void {
     const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
@@ -153,14 +153,14 @@ export class HsLayerShiftingService {
    * Move the provided layer under all other rendered layers on the map
    * @param layer - provided layer
    */
-  moveToBottom(layer: LayerListItem | Layer<Source>): void {
+  moveToBottom(layer: LayerListItem | Layer<Source, any>): void {
     this.moveAndShift(this.getOlLayer(layer), this.getMinZ());
   }
   /**
    * Move the provided layer over all other rendered layers on the map
    * @param layer - provided layer
    */
-  moveToTop(layer: LayerListItem | Layer<Source>): void {
+  moveToTop(layer: LayerListItem | Layer<Source, any>): void {
     this.moveAndShift(this.getOlLayer(layer), this.getMaxZ());
   }
 

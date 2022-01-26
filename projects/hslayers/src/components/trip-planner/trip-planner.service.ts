@@ -153,7 +153,7 @@ export class HsTripPlannerService {
           title: 'newLayer',
         },
         ...this.HsMapService.getLayersArray()
-          .filter((layer: Layer<Source>) =>
+          .filter((layer: Layer<Source, any>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer)
           )
           .map((layer: VectorLayer<VectorSource<Geometry>>) => {

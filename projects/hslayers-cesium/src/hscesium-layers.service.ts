@@ -185,7 +185,7 @@ export class HsCesiumLayersService {
     }
     //Some layers might be loaded from cookies before cesium service was called
     const map = await this.HsMapService.loaded();
-    map.getLayers().forEach((lyr: Layer<Source>) => {
+    map.getLayers().forEach((lyr: Layer<Source, any>) => {
       const cesiumLayer = this.findCesiumLayer(lyr);
       if (cesiumLayer == undefined) {
         this.processOlLayer(lyr);
@@ -250,7 +250,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  findCesiumLayer(ol: Layer<Source> | Source): ImageryLayer | DataSource {
+  findCesiumLayer(ol: Layer<Source, any> | Source): ImageryLayer | DataSource {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) => m.olObject == ol
     );
@@ -259,7 +259,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  findOlLayer(cs: ImageryLayer | DataSource): Layer<Source> {
+  findOlLayer(cs: ImageryLayer | DataSource): Layer<Source, any> {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
         m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Layer)
@@ -280,16 +280,16 @@ export class HsCesiumLayersService {
   }
 
   linkOlLayerToCesiumLayer(
-    ol_layer: Layer<Source>,
+    ol_layer: Layer<Source, any>,
     cesium_layer: ImageryLayer
   ): void {
     this.ol2CsMappings.push({olObject: ol_layer, csObject: cesium_layer});
     ol_layer.on('change:visible', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
+      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source, any>);
       cesiumLayer.show = ol_layer.getVisible();
     });
     ol_layer.on('change:opacity', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
+      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source, any>);
       if (this.HsUtilsService.instOf(cesiumLayer, ImageryLayer)) {
         (<ImageryLayer>cesiumLayer).alpha = ol_layer.getOpacity();
       }
@@ -352,14 +352,15 @@ export class HsCesiumLayersService {
     });
   }
 
-  async processOlLayer(lyr: Layer<Source> | Group): Promise<void> {
+  async processOlLayer(lyr: Layer<Source, any> | Group): Promise<void> {
     if (!this.viewer) {
       return;
     }
     if (this.HsUtilsService.instOf(lyr, Group)) {
+      // eslint-disable-next-line prettier/prettier
       for (const sub_lyr of (<Group>lyr)
         .getLayers()
-        .getArray() as Layer<Source>[]) {
+        .getArray() as Layer<Source, any>[]) {
         this.processOlLayer(sub_lyr);
       }
     } else {
@@ -391,12 +392,12 @@ export class HsCesiumLayersService {
         }
       }
       const cesium_layer = await this.convertOlToCesiumProvider(
-        lyr as Layer<Source>
+        lyr as Layer<Source, any>
       );
       if (cesium_layer) {
         if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
           this.linkOlLayerToCesiumLayer(
-            lyr as Layer<Source>,
+            lyr as Layer<Source, any>,
             cesium_layer as ImageryLayer
           );
           this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
@@ -406,7 +407,7 @@ export class HsCesiumLayersService {
           this.viewer.dataSources
         ) {
           this.viewer.dataSources.add(<DataSource>cesium_layer);
-          if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
+          if (getTitle(lyr as Layer<Source, any>) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
               (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
               cesium_layer
@@ -418,7 +419,7 @@ export class HsCesiumLayersService {
   }
 
   async convertOlToCesiumProvider(
-    ol_lyr: Layer<Source>
+    ol_lyr: Layer<Source, any>
   ): Promise<ImageryLayer | DataSource> {
     if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
@@ -469,7 +470,9 @@ export class HsCesiumLayersService {
       //link to cesium layer will be set also for OL layers source object, when this function returns.
       this.ol2CsMappings.push({olObject: ol_lyr, csObject: new_source});
       ol_lyr.on('change:visible', (e) => {
-        const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
+        const cesiumLayer = this.findCesiumLayer(
+          e.target as Layer<Source, any>
+        );
         cesiumLayer.show = ol_lyr.getVisible();
       });
       return new_source;

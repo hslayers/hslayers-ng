@@ -605,7 +605,7 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer -
    */
-  removeLayer(layer: Layer<Source> | string): void {
+  removeLayer(layer: Layer<Source, any> | string): void {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
@@ -626,7 +626,7 @@ export class HsLaymanService implements HsSaverService {
                   error: error.error.message,
                   layer:
                     layer instanceof Layer
-                      ? (layer as Layer<Source>).get('title')
+                      ? (layer as Layer<Source, any>).get('title')
                       : layer,
                 }
               ),

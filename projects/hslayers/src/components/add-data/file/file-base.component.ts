@@ -79,7 +79,7 @@ export class HsAddDataFileBaseComponent
         'access_rights.write': 'private',
         'access_rights.read': 'EVERYONE',
       },
-      addUnder: null as Layer<Source>,
+      addUnder: null as Layer<Source, any>,
       extract_styles: false,
       files: [] as FileDescriptor[],
       folder_name: '',

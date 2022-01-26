@@ -55,7 +55,7 @@ export class HsMapSwipeService {
       .pipe(first())
       .subscribe(() => this.setInitialSwipeLayers());
     this.hsEventBusService.layerManagerUpdates.subscribe(
-      (layer: Layer<Source>) => {
+      (layer: Layer<Source, any>) => {
         this.fillSwipeLayers(layer);
       }
     );
@@ -96,7 +96,7 @@ export class HsMapSwipeService {
    * Fill swipe control layers
    * @param layer - layer issued from layerManagerUpdates event
    */
-  fillSwipeLayers(layer: Layer<Source>): void {
+  fillSwipeLayers(layer: Layer<Source, any>): void {
     this.hsLayerShiftingService.fillLayers();
     if (!layer) {
       return;
@@ -197,7 +197,7 @@ export class HsMapSwipeService {
    * Remove layer completely
    * @param layer - layer issued from layerManagerUpdates event
    */
-  removeCompletely(layerToRm: Layer<Source>): void {
+  removeCompletely(layerToRm: Layer<Source, any>): void {
     const layerFound = this.findLayer(layerToRm);
     if (layerFound.l) {
       if (layerFound.arr === 'layers') {
@@ -291,7 +291,7 @@ export class HsMapSwipeService {
   /**
    * Find layer based on layer source
    */
-  findLayer(targetLayer: Layer<Source>): {l: LayerListItem; arr: string} {
+  findLayer(targetLayer: Layer<Source, any>): {l: LayerListItem; arr: string} {
     const found = {l: null, arr: ''};
     found.l = this.layers.find((lyr) => lyr.layer == targetLayer);
     found.arr = 'layers';

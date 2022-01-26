@@ -24,7 +24,7 @@ export class HsLayerEditorWidgetBaseComponent implements HsPanelComponent {
     return true;
   }
 
-  olLayer(): Layer<Source> {
+  olLayer(): Layer<Source, any> {
     if (!this.currentLayer) {
       return undefined;
     }

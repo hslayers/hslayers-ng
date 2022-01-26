@@ -45,7 +45,7 @@ export class HsStylerComponent
     super(hsLayoutService);
     this.hsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: Layer<Source>) => {
+      .subscribe((layer: Layer<Source, any>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
           this.hsStylerService.fill(
             layer as VectorLayer<VectorSource<Geometry>>

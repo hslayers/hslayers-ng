@@ -108,7 +108,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
    * @param caps - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(caps): Layer<Source>[] {
+  service2layers(caps): Layer<Source, any>[] {
     const service = caps.layers;
     //onst srss = caps.spatialReference.wkid;
     const image_formats = caps.supportedImageFormatTypes.split(',');

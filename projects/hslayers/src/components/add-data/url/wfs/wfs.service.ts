@@ -74,7 +74,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     style?: string
-  ): Promise<Layer<Source>[]> {
+  ): Promise<Layer<Source, any>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -280,7 +280,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly: boolean, style?: string): Layer<Source>[] {
+  addLayers(checkedOnly: boolean, style?: string): Layer<Source, any>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
@@ -295,7 +295,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   addLayersRecursively(
     layer,
     options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source, any>[]
   ): void {
     if (!this.data.add_all || layer.checked) {
       const newLayer = this.addLayer(layer, {
@@ -323,7 +323,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param folder - name
    * @param srs - of the layer
    */
-  addLayer(layer, options: addLayerOptions): Layer<Source> {
+  addLayer(layer, options: addLayerOptions): Layer<Source, any> {
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,

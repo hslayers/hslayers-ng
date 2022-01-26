@@ -7,7 +7,7 @@ import {accessRightsModel} from '../../common/access-rights.model';
 export type fileDataObject = {
   abstract?: string;
   access_rights?: accessRightsModel;
-  addUnder?: Layer<Source>;
+  addUnder?: Layer<Source, any>;
   extract_styles?: boolean;
   files?: FileDescriptor[];
   folder_name?: string;

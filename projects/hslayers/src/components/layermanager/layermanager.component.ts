@@ -134,7 +134,7 @@ export class HsLayerManagerComponent
 
     this.HsEventBusService.layerRemovals
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer: Layer<Source>) => {
+      .subscribe((layer: Layer<Source, any>) => {
         if (
           this.HsLayerManagerService?.currentLayer?.layer == layer &&
           this.HsUtilsService.runningInBrowser()
@@ -185,11 +185,11 @@ export class HsLayerManagerComponent
     this.HsLayerManagerService.layerEditorElement =
       this.layerEditorRef.nativeElement;
   }
-  changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
+  changeBaseLayerVisibility(e?, layer?: Layer<Source, any>) {
     return this.HsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }
 
-  changeTerrainLayerVisibility(e, layer: Layer<Source>) {
+  changeTerrainLayerVisibility(e, layer: Layer<Source, any>) {
     return this.HsLayerManagerService.changeTerrainLayerVisibility(e, layer);
   }
 
@@ -197,7 +197,7 @@ export class HsLayerManagerComponent
     return this.HsLayerManagerService.changeLayerVisibility(toWhat, layer);
   }
 
-  setProp(layer: Layer<Source>, property, value): void {
+  setProp(layer: Layer<Source, any>, property, value): void {
     layer.set(property, value);
   }
 
@@ -218,7 +218,7 @@ export class HsLayerManagerComponent
    * Removes layer from map object
    * @param layer - Layer to remove
    */
-  removeLayer(layer: Layer<Source>): void {
+  removeLayer(layer: Layer<Source, any>): void {
     this.map.removeLayer(layer);
   }
 
@@ -258,7 +258,7 @@ export class HsLayerManagerComponent
    * Test if layer (WMS) resolution is within map resolution interval
    * @param layer - Selected layer
    */
-  isLayerInResolutionInterval(layer: Layer<Source>): boolean {
+  isLayerInResolutionInterval(layer: Layer<Source, any>): boolean {
     return this.HsLayerManagerService.isLayerInResolutionInterval(layer);
   }
 

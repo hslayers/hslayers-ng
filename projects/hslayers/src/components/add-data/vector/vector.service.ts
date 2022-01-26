@@ -80,7 +80,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-    addUnder?: Layer<Source>
+    addUnder?: Layer<Source, any>
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     return new Promise(async (resolve, reject) => {
       try {

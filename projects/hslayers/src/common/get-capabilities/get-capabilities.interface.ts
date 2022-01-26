@@ -7,5 +7,5 @@ export interface IGetCapabilities {
   getPathFromUrl(str: string): string;
   params2String(obj): string;
   request(service_url: string): Promise<CapabilitiesResponseWrapper>;
-  service2layers?(caps: any, path?: string): Layer<Source>[];
+  service2layers?(caps: any, path?: string): Layer<Source, any>[];
 }

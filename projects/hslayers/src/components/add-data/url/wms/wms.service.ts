@@ -75,7 +75,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
 
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
-  ): Promise<Layer<Source>[]> {
+  ): Promise<Layer<Source, any>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
@@ -327,7 +327,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  addLayers(checkedOnly: boolean): Layer<Source>[] {
+  addLayers(checkedOnly: boolean): Layer<Source, any>[] {
     if (this.data.layers === undefined) {
       return;
     }
@@ -378,7 +378,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(layer, options: addLayerOptions): Layer<Source> {
+  addLayer(layer, options: addLayerOptions): Layer<Source, any> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -492,7 +492,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   addLayersRecursively(
     layer: any,
     options: addLayersRecursivelyOptions = {checkedOnly: true},
-    collection: Layer<Source>[]
+    collection: Layer<Source, any>[]
   ): void {
     if (!options.checkedOnly || layer.checked) {
       collection.push(

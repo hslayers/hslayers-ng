@@ -183,7 +183,7 @@ export class HsLayerEditorComponent {
     );
   }
 
-  olLayer(): Layer<Source> {
+  olLayer(): Layer<Source, any> {
     if (!this.currentLayer) {
       return undefined;
     }

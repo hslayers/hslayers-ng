@@ -52,7 +52,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
    * to display/hide legend item when layer visibility change)
    * @param layer - Layer to add legend for
    */
-  async addLayerToLegends(layer: Layer<Source>): Promise<void> {
+  async addLayerToLegends(layer: Layer<Source, any>): Promise<void> {
     const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
       layer
     );
@@ -102,7 +102,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
    * Remove selected layer from legend items
    * @param layer - Layer to remove from legend
    */
-  removeLayerFromLegends(layer: Layer<Source>): void {
+  removeLayerFromLegends(layer: Layer<Source, any>): void {
     for (let i = 0; i < this.layerDescriptors.length; i++) {
       if (this.layerDescriptors[i].lyr == layer) {
         this.layerDescriptors.splice(i, 1);
@@ -177,7 +177,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
    * @param layer - OpenLayers layer
    * @returns Object describing the legend
    */
-  findLayerDescriptor(layer: Layer<Source>): HsLegendDescriptor {
+  findLayerDescriptor(layer: Layer<Source, any>): HsLegendDescriptor {
     return this.layerDescriptors.find((ld) => ld.lyr == layer);
   }
 

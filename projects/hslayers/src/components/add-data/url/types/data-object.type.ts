@@ -3,7 +3,7 @@ import {Source} from 'ol/source';
 
 export type urlDataObject = {
   add_all?: boolean;
-  add_under?: Layer<Source>;
+  add_under?: Layer<Source, any>;
   base?: boolean;
   bbox?: string;
   caps?: any;

@@ -133,7 +133,7 @@ export class HsLegendService {
   getLegendUrl(
     source: Source,
     layer_name: string,
-    layer: Layer<Source>
+    layer: Layer<Source, any>
   ): string {
     if (!this.hsLayerUtilsService.isLayerWMS(layer)) {
       return '';
@@ -167,11 +167,9 @@ export class HsLegendService {
     return source_url;
   }
 
-  async setSvg(layer: Layer<Source>): Promise<SafeHtml> {
+  async setSvg(layer: VectorLayer<VectorSource<Geometry>>): Promise<SafeHtml> {
     return this.sanitizer.bypassSecurityTrustHtml(
-      await this.getVectorLayerLegendSvg(
-        layer as VectorLayer<VectorSource<Geometry>>
-      )
+      await this.getVectorLayerLegendSvg(layer)
     );
   }
 
@@ -181,7 +179,7 @@ export class HsLegendService {
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    */
   async getLayerLegendDescriptor(
-    layer: Layer<Source>
+    layer: Layer<Source, any>
   ): Promise<HsLegendDescriptor | undefined> {
     if (getBase(layer)) {
       return;
@@ -215,7 +213,7 @@ export class HsLegendService {
         lyr: layer,
         type: 'vector',
         visible: layer.getVisible(),
-        svg: await this.setSvg(layer),
+        svg: await this.setSvg(layer as VectorLayer<VectorSource<Geometry>>),
       };
     } else if (
       this.hsUtilsService.instOf(layer, ImageLayer) &&

@@ -133,7 +133,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
    * @param path
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml, path: string): Layer<Source>[] {
+  service2layers(capabilities_xml, path: string): Layer<Source, any>[] {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;

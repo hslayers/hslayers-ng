@@ -295,11 +295,11 @@ export class HsSaveMapManagerService {
       .getLayers()
       .getArray()
       .filter(
-        (lyr: Layer<Source>) =>
+        (lyr: Layer<Source, any>) =>
           getShowInLayerManager(lyr) == undefined ||
           getShowInLayerManager(lyr) == true
       )
-      .map((lyr: Layer<Source>) => {
+      .map((lyr: Layer<Source, any>) => {
         return {
           title: getTitle(lyr),
           checked: true,

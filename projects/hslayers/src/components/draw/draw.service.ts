@@ -88,8 +88,8 @@ export class HsDrawService {
   currentStyle: any;
   highlightDrawButton = false; // Toggles toolbar button 'Draw' class
   onDeselected: any;
-  public drawingLayerChanges: Subject<{
-    layer: Layer<Source>;
+  drawingLayerChanges: Subject<{
+    layer: VectorLayer<VectorSource<Geometry>>;
     source: VectorSource<Geometry>;
   }> = new Subject();
   laymanEndpoint: any;
@@ -503,7 +503,7 @@ export class HsDrawService {
     drawables = this.HsMapService.map
       .getLayers()
       .getArray()
-      .filter((layer: Layer<Source>) =>
+      .filter((layer: Layer<Source, any>) =>
         this.HsLayerUtilsService.isLayerDrawable(layer)
       );
 

@@ -41,7 +41,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
 
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
-  ): Promise<Layer<Source>[]> {
+  ): Promise<Layer<Source, any>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
     if (!response && !error) {
@@ -95,7 +95,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     }
   }
 
-  addLayers(checkedOnly: boolean): Layer<Source>[] {
+  addLayers(checkedOnly: boolean): Layer<Source, any>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
@@ -171,7 +171,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Uses previously received capabilities response as a reference for the source
    * @param response - Set of available info formats for layer being added
    */
-  addLayer(layer): Layer<Source> {
+  addLayer(layer): Layer<Source, any> {
     try {
       const wmts = new Tile({
         properties: {
