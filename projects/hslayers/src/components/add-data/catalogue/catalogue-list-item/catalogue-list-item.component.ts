@@ -154,7 +154,7 @@ export class HsCatalogueListItemComponent {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.hsLaymanService.removeLayer(layer.name);
+      await this.hsLaymanService.removeLayer(layer.name);
       this.hsAddDataCatalogueService.catalogEntries =
         this.hsAddDataCatalogueService.catalogEntries.filter((item) => {
           return item.id != layer.id;
