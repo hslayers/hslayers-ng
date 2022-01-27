@@ -1,7 +1,7 @@
 import Resumable from 'resumablejs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, catchError, forkJoin, of} from 'rxjs';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -58,6 +58,7 @@ export class HsLaymanService implements HsSaverService {
   pendingLayers: Array<string> = [];
   laymanLayerPending: Subject<any> = new Subject();
   totalProgress = 0;
+  deleteQuery;
   constructor(
     public HsUtilsService: HsUtilsService,
     private http: HttpClient,
@@ -605,35 +606,51 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer -
    */
-  removeLayer(layer: Layer<Source> | string): void {
-    (this.HsCommonEndpointsService.endpoints || [])
-      .filter((ds) => ds.type == 'layman')
-      .forEach((ds) => {
-        const layerName =
-          typeof layer == 'string' ? layer : getLayerName(layer);
-        this.http
-          .delete(`${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`, {
-            withCredentials: true,
-          })
-          .toPromise()
-          .catch((error) => {
-            this.HsToastService.createToastPopupMessage(
-              this.HsLanguageService.getTranslation('COMMON.warning'),
-              this.HsLanguageService.getTranslationIgnoreNonExisting(
-                'SAVECOMPOSITION',
-                'removeLayerError',
-                {
-                  error: error.error.message,
-                  layer:
-                    layer instanceof Layer
-                      ? (layer as Layer<Source>).get('title')
-                      : layer,
-                }
-              ),
-              {serviceCalledFrom: 'HsLaymanService'}
+  async removeLayer(layer: Layer<Source> | string): Promise<void> {
+    return new Promise((resolve, reject): void => {
+      if (this.deleteQuery) {
+        this.deleteQuery.unsubscribe();
+        delete this.deleteQuery;
+      }
+      const observables = [];
+      (this.HsCommonEndpointsService.endpoints || [])
+        .filter((ds) => ds.type == 'layman')
+        .forEach((ds) => {
+          const layerName =
+            typeof layer == 'string' ? layer : getLayerName(layer);
+          const response = this.http
+            .delete(
+              `${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`,
+              {
+                withCredentials: true,
+              }
+            )
+            .pipe(
+              catchError((e) => {
+                this.HsToastService.createToastPopupMessage(
+                  this.HsLanguageService.getTranslation('COMMON.warning'),
+                  this.HsLanguageService.getTranslationIgnoreNonExisting(
+                    'SAVECOMPOSITION',
+                    'removeLayerError',
+                    {
+                      error: e.error.message,
+                      layer:
+                        layer instanceof Layer
+                          ? (layer as Layer<Source>).get('title')
+                          : layer,
+                    }
+                  ),
+                  {serviceCalledFrom: 'HsLaymanService'}
+                );
+                return of(e);
+              })
             );
-          });
+          observables.push(response);
+        });
+      this.deleteQuery = forkJoin(observables).subscribe(() => {
+        resolve();
       });
+    });
   }
 
   getLaymanEndpoint(): HsEndpoint {
