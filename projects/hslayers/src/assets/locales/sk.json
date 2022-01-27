@@ -29,7 +29,8 @@
       },
       "showAll": "Všetky",
       "showNext100": "Dalších 100",
-      "showingSubset": "Aktuálne sa zobrazuje {{limitShown}} z {{total}} služieb. \nŠou"
+      "showingSubset": "Aktuálne sa zobrazuje {{limitShown}} z {{total}} služieb. \nŠou",
+      "theNumberOfRecords": "Počet záznamov bude vypočítaný čo najbližšie k zvolenému počtu"
     },
     "file": "Súbor",
     "saveToDatabase": "Uložit do databázy",
@@ -37,6 +38,12 @@
       "selectAll": "Označiť všetky vrstvy",
       "submitLayerName": "Zadajte názov vrstvy",
       "submitLayerTitle": "Zadajte titulok vrstvy"
+    },
+    "requestServiceLayers": "Vyžiadať vrstvy služby",
+    "FILE": {
+      "onlyOneZipFileCan": "Súbory ZIP je možné nahrávať len po jednom",
+      "someOfTheUploadedFiles": "Nahrávaný súbor prekročil maximálnu povolenú veľkosť",
+      "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi"
     }
   },
   "ADDLAYERS": {
@@ -112,7 +119,12 @@
     "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby",
     "nameAndSRSRequired": "Pre pokračovanie je potrebné pole 'Názov' a 'SRS'!",
     "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!",
-    "layerNameAlreadyExists": "Názov vrstvy už existuje"
+    "layerNameAlreadyExists": "Názov vrstvy už existuje",
+    "GPServerServicesAreNotSupported": "GPServer služby nie sú podporovane!",
+    "OlDoesNotRecognizeProjection": "Ol nerozpoznáva mapové zobrazenie požadovanej vrstvy",
+    "Raster image": "Rastrová snímka",
+    "missingImageorWorldFile": "Chýba snímka alebo referenční súbor \"world file\". Skontrolujte súbory a skúste to znova!",
+    "rasterImageryWith": "Georeferencované rastrové snímky sú v súčasnosti podporované iba v súradnicových systémoch EPSG:4326 a EPSG:3857. Pred nahraním sa uistite, že vaše dáta spĺňajú tieto požiadavky."
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -235,7 +247,10 @@
     "author": "Autor",
     "access": "Prístup",
     "enabled": "Povolené",
-    "copyLayer": "Kopírovať vrstvu"
+    "copyLayer": "Kopírovať vrstvu",
+    "selectAndConfirmToDeleteMultiple": "Vyberte",
+    "unknown": "Neznáme",
+    "selectRecordCountPerPage": "Vyberte počet záznamov na stránku"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -442,7 +457,10 @@
         "split": "Rozdelenie",
         "union": "Zjednotenie"
       }
-    }
+    },
+    "deleteNotePlural": "*Všetky vybrané vrstvy budú kompletne odstránené. V prípade, že si prajete vrstvy ponechať v databáze, využite možnosť odstránenia vrstiev v panely 'Správca vrstiev'",
+    "pleaseCheckTheLayers": "Vyberte vrstvy, ktoré si prajete vymazať",
+    "removeMultipleLayers": "Odstráňte viacero vrstiev"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
@@ -841,7 +859,10 @@
       "2": "Nie je možné otvoriť rastrový súbor",
       "18": "Chýba jeden alebo viac súborov Shapefile",
       "50": "Chyba pri normalizácií rastrového súboru"
-    }
+    },
+    "allLayersSuccessfullyRemoved": "Všetky vrstvy boli úspešne vymazané",
+    "deleteLayersRequest": "Požiadavka na vymazanie vrstiev",
+    "layerSuccessfullyRemoved": "Vrstva bola úspešne vymazaná"
   },
   "MAP_SWIPE": {
     "dndLayers": "Potiahnutím presuniete vrstvy medzi stranami mapy!",
@@ -853,6 +874,8 @@
     "top": "Vrchná časť",
     "disableSwipe": "Zakázať potiahnutie prstom",
     "enableSwipe": "Povoliť potiahnutie prstom",
-    "verticalSwipe": "Vertikálny posuvník"
+    "verticalSwipe": "Vertikálny posuvník",
+    "entireMap": "Celá mapa",
+    "noLayers": "Žiadne vrstvy (potiahnutím presunte vrstvy)"
   }
 }
