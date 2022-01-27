@@ -123,7 +123,8 @@
     "Raster image": "Rastra attēls",
     "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
     "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!",
-    "layerNameAlreadyExists": "Slāņa nosaukums jau pastāv"
+    "layerNameAlreadyExists": "Slāņa nosaukums jau pastāv",
+    "GPServerServicesAreNotSupported": "GPServer pakalpojumi netiek atbalstīti!"
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -247,7 +248,9 @@
     "access": "Piekļuve",
     "enabled": "Iespējots",
     "copyLayer": "Kopēt slāni",
-    "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā"
+    "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā",
+    "selectAndConfirmToDeleteMultiple": "Atlasiet un apstipriniet, lai dzēstu vairākus slāņus",
+    "unknown": "Nezināms"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -454,7 +457,10 @@
       "selectFeatureToEdit": "Atlasiet objektu, kuru vēlaties rediģēt!",
       "selectedFeature": "Izvēlētais objekts",
       "onlyOneFeatureToEdit": "Vienlaicīgi var rediģēt (sadalīt) tikai vienu objektu!"
-    }
+    },
+    "deleteNotePlural": "*Visi atlasītie slāņi tiks pilnībā izdzēsti. Ja vēlaties dzēst visus atlasītos slāņus tikai no pašreizējās kompozīcijas (saglabājot to datu bāzē), dariet to panelī Layermanager.",
+    "pleaseCheckTheLayers": "Lūdzu, atzīmējiet slāņus, kurus vēlaties dzēst",
+    "removeMultipleLayers": "Noņemiet vairākus slāņus"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
@@ -853,7 +859,10 @@
       "2": "Nevar atvērt rastra failu",
       "18": "Trūkst viena vai vairāku Shape failu",
       "50": "Kļūda, normalizējot rastra failu"
-    }
+    },
+    "allLayersSuccessfullyRemoved": "Visi slāņi veiksmīgi noņemti",
+    "layerSuccessfullyRemoved": "Slānis veiksmīgi noņemts",
+    "deleteLayersRequest": "Slāņu dzēšanas pieprasījums"
   },
   "MAP_SWIPE": {
     "bottom": "Apakša",

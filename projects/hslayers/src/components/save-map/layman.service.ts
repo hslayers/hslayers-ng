@@ -640,10 +640,10 @@ export class HsLaymanService implements HsSaverService {
                 ) => {
                   let message = 'LAYMAN.layerSuccessfullyRemoved';
                   if (!layer) {
-                    message = 'LAYMAN.allLaymanlayersSuccessfullyRemoved';
+                    message = 'LAYMAN.allLayersSuccessfullyRemoved';
                   }
                   this.HsToastService.createToastPopupMessage(
-                    'LAYMAN.laymanDeleteRequest',
+                    'LAYMAN.deleteLayersRequest',
                     message,
                     {
                       toastStyleClasses: 'bg-success text-light',

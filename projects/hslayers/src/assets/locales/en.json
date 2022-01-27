@@ -123,7 +123,8 @@
     "missingImageorWorldFile": "Missing an image or world file, please check the files and try again!",
     "rasterImageryWith": "Raster imagery with georeferencing is currently only supported on EPSG:4326 and EPSG:3857 coordinate systems. Please make sure your data meets these requirements before uploading.",
     "Raster image": "Raster image",
-    "layerNameAlreadyExists": "Layer name already exists"
+    "layerNameAlreadyExists": "Layer name already exists",
+    "GPServerServicesAreNotSupported": "GPServer services are not supported!"
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -247,7 +248,9 @@
     "access": "Access",
     "enabled": "Enabled",
     "copyLayer": "Copy layer",
-    "selectRecordCountPerPage": "Select record count per page"
+    "selectRecordCountPerPage": "Select record count per page",
+    "selectAndConfirmToDeleteMultiple": "Select and confirm to delete multiple layers",
+    "unknown": "Unknown"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -401,6 +404,7 @@
     "boxSelection": "Box selection",
     "boxSelectionActivated": "Box selection activated",
     "definedStyle": "Defined style",
+    "deleteNotePlural": "*All selected layers will be deleted completely. In case you want to delete all selected layers from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
     "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
     "deselectAllFeatures": "Deselect all features",
     "disableDrawing": "Disable drawing",
@@ -454,7 +458,9 @@
       "drawNewFeature": "Draw new feature",
       "orSelectOne": "or select one (shift + click)",
       "onlyOneFeatureToEdit": "Only one feature can be edited (split) at the time!"
-    }
+    },
+    "pleaseCheckTheLayers": "Please check the layers you want to delete",
+    "removeMultipleLayers": "Remove multiple layers"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
@@ -577,7 +583,10 @@
       "2": "Unable to open raster file",
       "18": "Missing one or more Shape files",
       "50": "Error when normalizing raster file"
-    }
+    },
+    "layerSuccessfullyRemoved": "Layer successfully removed",
+    "allLayersSuccessfullyRemoved": "All layers successfully removed",
+    "deleteLayersRequest": "Delete layers request"
   },
   "MAP": {
     "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map",
