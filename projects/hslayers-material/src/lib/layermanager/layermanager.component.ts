@@ -11,10 +11,9 @@ import {
   HsEventBusService,
   HsLanguageService,
   HsLayerDescriptor,
-  HsLayerEditorSublayerService,
+  HsLayerListService,
   HsLayerManagerComponent,
   HsLayerManagerService,
-  HsDimensionTimeService,
   HsLayerSynchronizerService,
   HsLayerUtilsService,
   HsLayoutService,
@@ -124,14 +123,13 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
     HsUtilsService: HsUtilsService,
     HsLayerUtilsService: HsLayerUtilsService,
     HsMapService: HsMapService,
-    HsDimensionTimeService: HsDimensionTimeService,
     HsLayoutService: HsLayoutService,
-    HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     HsLayerSynchronizerService: HsLayerSynchronizerService,
     HsEventBusService: HsEventBusService,
     HsDialogContainerService: HsDialogContainerService,
     HsLanguageService: HsLanguageService,
     HsConfig: HsConfig,
+    HsLayerListService: HsLayerListService,
     HsSidebarService: HsSidebarService
   ) {
     super(
@@ -140,14 +138,13 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
       HsLayerUtilsService,
       HsMapService,
       HsLayerManagerService,
-      HsDimensionTimeService,
       HsLayoutService,
-      HsLayerEditorSublayerService,
       HsLayerSynchronizerService,
       HsEventBusService,
       HsDialogContainerService,
       HsLanguageService,
       HsConfig,
+      HsLayerListService,
       HsSidebarService
     );
     this.treeFlattener = new MatTreeFlattener(
