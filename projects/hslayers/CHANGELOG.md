@@ -1,10 +1,19 @@
-## [7.0.3](https://github.com/hslayers/hslayers-ng/compare/7.0.0...7.0.3) (2022-01-07)
+## [7.0.4](https://github.com/hslayers/hslayers-ng/compare/7.0.3...7.0.4) (2022-01-27)
+
+
+### Bug Fixes
+
+* Reset also views rotation ([aa3e325](https://github.com/hslayers/hslayers-ng/commit/aa3e3257f7c1cb1821fe87917520fa74ffeda01e))
+* Don't access private properties of ol.View ([a307da4](https://github.com/hslayers/hslayers-ng/commit/a307da483adc602743ecde9ed68bce5ae247453b))
+
+
+
+## [7.0.3](https://github.com/hslayers/hslayers-ng/compare/7.0.2...7.0.3) (2022-01-07)
 
 
 ### Bug Fixes
 
 * Add missing peer dependencies ([699e2c0](https://github.com/hslayers/hslayers-ng/commit/699e2c0a7bdcdebcb0494ae61539c18f100b6911))
-* Don't access private properties of ol.View ([a307da4](https://github.com/hslayers/hslayers-ng/commit/a307da483adc602743ecde9ed68bce5ae247453b))
 * Query feature ops and reload on wms featureinfo ([#2455](https://github.com/hslayers/hslayers-ng/issues/2455)) ([9f8bc0a](https://github.com/hslayers/hslayers-ng/commit/9f8bc0a22fa55bfb8bc8867c124ed245624a4c4f)), closes [#2454](https://github.com/hslayers/hslayers-ng/issues/2454)
 
 
@@ -15,15 +24,6 @@
 ### Bug Fixes
 
 * Add missing peer dependencies ([699e2c0](https://github.com/hslayers/hslayers-ng/commit/699e2c0a7bdcdebcb0494ae61539c18f100b6911))
-* Query feature ops and reload on wms featureinfo ([#2455](https://github.com/hslayers/hslayers-ng/issues/2455)) ([9f8bc0a](https://github.com/hslayers/hslayers-ng/commit/9f8bc0a22fa55bfb8bc8867c124ed245624a4c4f)), closes [#2454](https://github.com/hslayers/hslayers-ng/issues/2454)
-
-
-
-## [7.0.1](https://github.com/hslayers/hslayers-ng/compare/7.0.0...7.0.1) (2021-12-15)
-
-
-### Bug Fixes
-
 * Query feature ops and reload on wms featureinfo ([#2455](https://github.com/hslayers/hslayers-ng/issues/2455)) ([9f8bc0a](https://github.com/hslayers/hslayers-ng/commit/9f8bc0a22fa55bfb8bc8867c124ed245624a4c4f)), closes [#2454](https://github.com/hslayers/hslayers-ng/issues/2454)
 
 
