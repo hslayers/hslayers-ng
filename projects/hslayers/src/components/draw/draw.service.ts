@@ -8,6 +8,10 @@ import {Cluster, Source} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Geometry} from 'ol/geom';
+import {Layer} from 'ol/layer';
+import {fromCircle} from 'ol/geom/Polygon';
+import {platformModifierKeyOnly} from 'ol/events/condition';
+
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -23,11 +27,10 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsRmMultipleDialogComponent} from '../../common/remove-multiple/remove-multiple-dialog.component';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
 import {defaultStyle} from '../styles/styles';
-import {fromCircle} from 'ol/geom/Polygon';
 import {
   getDefinition,
   getEditor,
@@ -43,7 +46,6 @@ import {
   setTitle,
   setWorkspace,
 } from '../../common/layer-extensions';
-import {platformModifierKeyOnly} from 'ol/events/condition';
 
 type activateParams = {
   onDrawStart?;
@@ -63,6 +65,7 @@ export class HsDrawService {
   drawableLayers: Array<any> = [];
   drawableLaymanLayers: Array<any> = [];
   hasSomeDrawables: boolean;
+  moreThenOneDrawable: boolean;
   draw: Draw;
   modify: Modify;
 
@@ -185,15 +188,6 @@ export class HsDrawService {
         setDefinition(this.selectedLayer, definition);
       }
     });
-
-    this.HsEventBusService.LayerManagerLayerVisibilityChanges.subscribe(
-      (event) => {
-        if (this.draw && event.layer == this.selectedLayer) {
-          this.setType(this.type);
-        }
-      }
-    );
-
     this.HsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
       this.pendingLayers = pendingLayers;
     });
@@ -204,6 +198,14 @@ export class HsDrawService {
   init(): void {
     this.HsMapService.loaded().then((_) => {
       this.fillDrawableLayers();
+      this.HsMapService.getLayersArray().forEach((l) =>
+        l.on('change:visible', (e) => {
+          if (this.draw && l == this.selectedLayer) {
+            this.setType(this.type);
+          }
+          this.fillDrawableLayers();
+        })
+      );
     });
   }
   /**
@@ -539,6 +541,9 @@ export class HsDrawService {
     }
     this.hasSomeDrawables =
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
+
+    this.moreThenOneDrawable =
+      this.drawableLayers.length + this.drawableLaymanLayers.length > 1;
   }
 
   private selectedLayerNotAvailable(drawables) {
@@ -562,35 +567,95 @@ export class HsDrawService {
    * Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(): Promise<void> {
-    const note = this.isAuthorized
-      ? this.HsLanguageService.getTranslation('DRAW.deleteNote')
-      : '';
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
         message: this.HsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer'
         ),
-        note: note,
+        note: this.getDeleteNote(),
         title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
       }
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.HsMapService.map.removeLayer(this.selectedLayer);
-      const definition = getDefinition(this.selectedLayer);
-      if (
-        definition?.format?.toLowerCase().includes('wfs') &&
-        definition?.url
-      ) {
-        this.HsLaymanService.removeLayer(this.selectedLayer);
-      }
-      if (getTitle(this.selectedLayer) == TMP_LAYER_TITLE) {
-        this.tmpDrawLayer = false;
-      }
+      await this.completeLayerRemoval(this.selectedLayer);
       this.selectedLayer = null;
       this.fillDrawableLayers();
     }
+  }
+
+  /**
+   * Removes multiple selected layers from both Layermanager and Layman
+   */
+  async removeMultipleLayers(): Promise<void> {
+    const dialog = this.HsDialogContainerService.create(
+      HsRmMultipleDialogComponent,
+      {
+        message: this.HsLanguageService.getTranslation(
+          'DRAW.pleaseCheckTheLayers'
+        ),
+        note: this.getDeleteNote(true),
+        title: this.HsLanguageService.getTranslation(
+          'COMMON.selectAndConfirmToDeleteMultiple'
+        ),
+        items: [
+          ...(this.drawableLayers ?? []),
+          ...(this.drawableLaymanLayers ?? []),
+        ],
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      const drawableLaymanRm = this.drawableLaymanLayers.filter(
+        (l) => l.toRemove
+      );
+      const drawableRm = this.drawableLayers.filter((l) => l.toRemove);
+
+      if (
+        drawableLaymanRm?.length == this.drawableLaymanLayers?.length &&
+        this.drawableLaymanLayers?.length != 0
+      ) {
+        await this.HsLaymanService.removeLayer();
+        for (const l of drawableRm) {
+          await this.completeLayerRemoval(l);
+        }
+      } else {
+        const toRemove = [...drawableRm, ...drawableLaymanRm];
+        for (const l of toRemove) {
+          await this.completeLayerRemoval(l);
+        }
+      }
+
+      this.selectedLayer = null;
+      this.fillDrawableLayers();
+    }
+  }
+
+  private async completeLayerRemoval(layerToRemove: any): Promise<void> {
+    let definition;
+    const isLayer = layerToRemove instanceof Layer;
+    if (isLayer) {
+      this.HsMapService.map.removeLayer(layerToRemove);
+      definition = getDefinition(layerToRemove);
+      if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
+        this.tmpDrawLayer = false;
+      }
+    }
+    if (
+      (definition?.format?.toLowerCase().includes('wfs') && definition?.url) ||
+      !isLayer
+    ) {
+      await this.HsLaymanService.removeLayer(layerToRemove.name);
+    }
+  }
+
+  getDeleteNote(plural?: boolean): string {
+    return this.isAuthorized
+      ? this.HsLanguageService.getTranslation(
+          plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote'
+        )
+      : '';
   }
 
   /**

@@ -6,3 +6,4 @@ export * from './layman.service';
 export * from './current-user-response.type';
 export * from './post-layer-response.type';
 export * from './get-layers-response.type';
+export * from './delete-layer-response.type';
