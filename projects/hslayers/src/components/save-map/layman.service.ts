@@ -1,7 +1,7 @@
 import Resumable from 'resumablejs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject, catchError, forkJoin, of} from 'rxjs';
+import {Subject, catchError, forkJoin, map, of} from 'rxjs';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -10,6 +10,10 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {
+  DeleteAllLayersResponse,
+  DeleteSingleLayerResponse,
+} from '../../common/layman/delete-layer-response.type';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
@@ -606,7 +610,7 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer -
    */
-  async removeLayer(layer: Layer<Source> | string): Promise<void> {
+  async removeLayer(layer?: Layer<Source> | string): Promise<void> {
     return new Promise((resolve, reject): void => {
       if (this.deleteQuery) {
         this.deleteQuery.unsubscribe();
@@ -616,16 +620,40 @@ export class HsLaymanService implements HsSaverService {
       (this.HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
-          const layerName =
-            typeof layer == 'string' ? layer : getLayerName(layer);
+          let url;
+          if (layer) {
+            const layerName =
+              typeof layer == 'string' ? layer : getLayerName(layer);
+            url = `${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`;
+          } else {
+            url = `${ds.url}/rest/workspaces/${ds.user}/layers`;
+          }
+
           const response = this.http
-            .delete(
-              `${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`,
-              {
-                withCredentials: true,
-              }
-            )
+            .delete(url, {
+              withCredentials: true,
+            })
             .pipe(
+              map(
+                (
+                  res: DeleteSingleLayerResponse | DeleteAllLayersResponse[]
+                ) => {
+                  let message = 'LAYMAN.layerSuccessfullyRemoved';
+                  if (!layer) {
+                    message = 'LAYMAN.allLaymanlayersSuccessfullyRemoved';
+                  }
+                  this.HsToastService.createToastPopupMessage(
+                    'LAYMAN.laymanDeleteRequest',
+                    message,
+                    {
+                      toastStyleClasses: 'bg-success text-light',
+                      details: (res as DeleteSingleLayerResponse)?.name
+                        ? [(res as DeleteSingleLayerResponse).name]
+                        : null,
+                    }
+                  );
+                }
+              ),
               catchError((e) => {
                 this.HsToastService.createToastPopupMessage(
                   this.HsLanguageService.getTranslation('COMMON.warning'),

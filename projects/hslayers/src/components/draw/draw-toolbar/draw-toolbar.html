@@ -8,7 +8,7 @@
         <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
             <button type="button" ngbDropdownToggle
                 class="btn btn-light rounded-0 btn-secondary dropdown-toggle hs-draw-layer-toggle d-flex align-items-center"
-                [hidden]="!(HsDrawService.drawableLayers.length > 0 || HsDrawService.tmpDrawLayer)"
+                [hidden]="!(HsDrawService.hasSomeDrawables || HsDrawService.tmpDrawLayer)"
                 (click)="controlLayerListAction(); HsDrawService.fillDrawableLayers() "
                 style="max-width: 125px; overflow: hidden; font-size: smaller; z-index: 2;"
                 [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
@@ -54,11 +54,37 @@
             [title]="'DRAW.saveDrawingToLayer' | translate">
             <i class="glyphicon icon-save-floppy"></i>
         </button>
-        <button type="button" *ngIf="HsDrawService.selectedLayer"
-            class="btn btn-light hs-toolbar-button  btn-outline-secondary" (click)="HsDrawService.removeLayer()"
-            [title]="'COMMON.removeLayer' | translate">
-            <i class="glyphicon icon-trash"></i>
-        </button>
+        <ng-container *ngIf="HsDrawService.hasSomeDrawables">
+            <ng-container *ngIf="HsDrawService.moreThenOneDrawable === true; else deleteButton">
+                <div class="btn-group">
+                    <div ngbDropdown placement="bottom-right" display="dynamic" style="white-space: nowrap;"
+                        #removeLayersDropdown="ngbDropdown">
+                        <button type="button" ngbDropdownToggle
+                            class="btn btn-light hs-toolbar-button  btn-outline-secondary">
+                            <i class="glyphicon icon-trash"></i>
+                        </button>
+                        <div ngbDropdownMenu class="flex-column px-1 py-2">
+                            <div class="d-flex align-items-center w-100 flex-column">
+                                <a class="dropdown-item" *ngIf="HsDrawService.selectedLayer"
+                                    (click)="HsDrawService.removeLayer(); removeLayersDropdown.close()">{{'COMMON.removeLayer'
+                                    |
+                                    translate}}</a>
+                                <a class="dropdown-item"
+                                    (click)="HsDrawService.removeMultipleLayers(); removeLayersDropdown.close()">{{'Remove
+                                    multiple layers' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #deleteButton>
+                <button type="button" *ngIf="HsDrawService.selectedLayer"
+                    class="btn btn-light hs-toolbar-button  btn-outline-secondary" (click)="HsDrawService.removeLayer()"
+                    [title]="'COMMON.removeLayer' | translate">
+                    <i class="glyphicon icon-trash"></i>
+                </button>
+            </ng-template>
+        </ng-container>
         <div class="btn-group">
             <div ngbDropdown placement="bottom-right" display="dynamic" style="white-space: nowrap;"
                 #selectionTypeDropdown="ngbDropdown">

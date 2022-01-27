@@ -10,6 +10,7 @@ export * from './hslayers.module';
  * COMMON
  */
 export * from './common/confirm/public-api';
+export * from './common/remove-multiple/public-api';
 export * from './common/download/public-api';
 export * from './common/endpoints/public-api';
 export * from './common/feature-extensions';
