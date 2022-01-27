@@ -65,7 +65,7 @@
     "multiregress": "^1.0.0",
     "ngx-color": "^7.2.0",
     "ngx-cookie-service": "^12.0.3",
-    "ol": "^6.9.0",
+    "ol": "^6.9.0 <6.10.0",
     "ol-popup": "^4.0.0",
     "papaparse": "^5",
     "passport-oauth2-middleware": "^1.0.3",
