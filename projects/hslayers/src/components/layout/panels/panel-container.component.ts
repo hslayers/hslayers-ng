@@ -36,10 +36,16 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     private HsConfig: HsConfig
   ) {}
   ngOnDestroy(): void {
+    if (this.service.panelObserver) {
+      this.service.panelObserver.complete();
+      this.service.panelObserver = new ReplaySubject<HsPanelItem>();
+    }
+
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
+    this.service.panels = [];
     (this.panelObserver ?? this.service.panelObserver)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelItem) => {
@@ -94,5 +100,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;
     }
+
+    this.service.panels.push(componentRef.instance as HsPanelComponent);
   }
 }
