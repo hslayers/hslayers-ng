@@ -9,6 +9,7 @@ export * from './editor/layer-editor.sub-layer-checkboxes.component';
 export * from './editor/layer-editor.sub-layer.service';
 export * from './editor/layer-selector.service';
 export * from './logical-list/layermanager-folder.component';
+export * from './logical-list/layermanager-layerlist.service';
 export * from './gallery/layermanager-gallery.component';
 export * from './logical-list/layermanager-layerlist.component';
 export * from './layermanager-metadata.service';

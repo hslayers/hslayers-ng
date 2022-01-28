@@ -1,28 +1,29 @@
 <div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
     <ul class="list-group row">
-        <li *ngFor="let layer of filtered_layers | filter:layerFilter" id="{{layer.idString()}}" class="list-group-item hs-lm-item"
+        <li *ngFor="let layer of filtered_layers | filter:layerFilter" id="{{layer.idString()}}"
+            class="list-group-item hs-lm-item"
             [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed === true}">
             <div class="d-flex">
                 <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''">
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                        (click)="HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);toggleSublayersVisibility(layer);$event.stopPropagation()"
+                        (click)="hsLayerManagerService.changeLayerVisibility(!layer.visible, layer);hsLayerListService.toggleSublayersVisibility(layer);$event.stopPropagation()"
                         [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
                 <ng-template #abstractTooltip>
-                    <span [innerHtml]="HsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                    <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
                 </ng-template>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
-                    (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
+                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
                     style="word-break:break-word;" [ngClass]="{'hover': layer.hasSublayers === true}"
-                    [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="HsConfig.layerTooltipDelay || 0">
-                    {{HsLayerUtilsService.translateTitle(layer.title)}}
+                    [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="hsConfig.layerTooltipDelay || 0">
+                    {{hsLayerUtilsService.translateTitle(layer.title)}}
                 </div>
                 <div class="p-0 me-1 ms-1 info_btn" *ngIf="layer.hasSublayers"
                     style="font-size: x-small; flex-grow: 20;"
-                    (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
+                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="me-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer)"></span>
                     <span class="me-1"
-                        [ngClass]="{'icon-chevron-right':HsLayerManagerService.currentLayer === layer, 'icon-chevron-down': HsLayerManagerService.currentLayer !== layer}"
+                        [ngClass]="{'icon-chevron-right':hsLayerManagerService.currentLayer === layer, 'icon-chevron-down': hsLayerManagerService.currentLayer !== layer}"
                         [hidden]="!layerLoaded(layer)"></span>
                 </div>
 
@@ -42,19 +43,20 @@
                         data-toggle="tooltip" data-container="body" data-placement="auto"
                         (click)="$event.stopPropagation()"></i>
                 </div>
-                <div class="p-0" [hidden]="!isLayerQueryable(layer)">
+                <div class="p-0" [hidden]="!hsLayerListService.isLayerQueryable(layer)">
                     <i class="icon-info-sign hs-lm-queryable"
                         [title]="'LAYERMANAGER.layerList.layerIsQueryable' | translate"
                         (click)="$event.stopPropagation()"></i>
                 </div>
                 <div class="ps-1 info_btn">
                     <span class="icon-settingsthree-gears text-secondary"
-                        (click)="HsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"
+                        (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"
                         [title]="'COMMON.info' | translate" data-toggle="tooltip" data-container="body"
                         data-placement="auto"></span>
                 </div>
             </div>
-            <hs-layermanager-time-editor [layer]="layer" class="d-flex" *ngIf="showLayerWmsT(layer)"></hs-layermanager-time-editor>
+            <hs-layermanager-time-editor [layer]="layer" class="d-flex" *ngIf="showLayerWmsT(layer)">
+            </hs-layermanager-time-editor>
         </li>
     </ul>
 </div>
