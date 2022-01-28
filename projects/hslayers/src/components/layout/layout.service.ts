@@ -304,6 +304,14 @@ export class HsLayoutService {
       this.sidebarLabels = false;
     }
     this.mainpanel = which;
+    const componentRefInstance = this.hsPanelContainerService.panels.find(
+      (p) => p.name == which
+    );
+    this.hsPanelContainerService.setPanelWidth(
+      {}, //Class for hsl internal panels is already set so we don't care about default widths here
+      this.HsConfig.panelWidths,
+      componentRefInstance
+    );
     this.HsEventBusService.mainPanelChanges.next(which);
   }
 

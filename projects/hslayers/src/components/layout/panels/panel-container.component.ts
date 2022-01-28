@@ -92,20 +92,15 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
      * Assign panel width class to a component host first child
      * Used to define panelSpace panel width
      */
-    Object.assign(panelWidths, this.HsConfig.panelWidths);
-    const panelWidth =
-      panelWidths[componentRefInstance.name] || panelWidths.default;
-    setTimeout(() => {
-      //Without timeout componentRef.location.nativeElement could containe only placeholder <!--container--> until the real content is loaded
-      componentRef.location.nativeElement.children[0].classList.add(
-        `hs-panel-width-${Math.round(panelWidth / 25) * 25}`
-      );
-    }, 0);
+    this.service.setPanelWidth(
+      panelWidths,
+      this.HsConfig.panelWidths,
+      componentRefInstance
+    );
 
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;
     }
-
     this.service.panels.push(componentRef.instance as HsPanelComponent);
   }
 }
