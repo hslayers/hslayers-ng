@@ -22,6 +22,13 @@ export type MapSwipeOptions = {
   orientation?: 'vertical' | 'horizontal';
 };
 
+/**
+ * Names and corresponding numbers
+ */
+export interface KeyNumberDict {
+  [key: string]: number;
+}
+
 @Injectable()
 export class HsConfig {
   private defaultSymbolizerIcons? = [
@@ -83,6 +90,26 @@ export class HsConfig {
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
+  } = {
+    legend: true,
+    info: true,
+    composition_browser: true,
+    toolbar: true,
+    measure: true,
+    mobile_settings: false,
+    draw: true,
+    layermanager: true,
+    print: true,
+    saveMap: true,
+    language: true,
+    permalink: true,
+    compositionLoadingProgress: false,
+    sensors: true,
+    filter: false,
+    search: false,
+    tripPlanner: false,
+    addData: true,
+    mapSwipe: false,
   };
   advancedForm?: boolean;
   project_name?: string;
@@ -133,7 +160,13 @@ export class HsConfig {
   connectTypes?: AddDataUrlType[];
   uploadTypes?: AddDataFileType[];
   datasources?: any;
-  panelWidths?: any;
+  panelWidths?: KeyNumberDict = {
+    default: 425,
+    ows: 700,
+    composition_browser: 550,
+    addData: 700,
+    mapSwipe: 550,
+  };
   sidebarToggleable?: boolean;
   sizeMode?: string;
   symbolizerIcons?: SymbolizerIcon[];
@@ -198,7 +231,12 @@ export class HsConfig {
   update?(newConfig: HsConfig): void {
     this.checkDeprecatedCesiumConfig(newConfig);
     Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
+    //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
+    Object.assign(this.panelWidths, newConfig.panelWidths);
+    //See componentsEnabled ^
+    Object.assign(this.panelsEnabled, newConfig.panelsEnabled);
+    delete newConfig.panelsEnabled;
     this.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),
       ...(newConfig.symbolizerIcons ?? []),

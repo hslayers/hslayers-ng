@@ -7,6 +7,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsConfig} from './../../config.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
@@ -42,11 +43,16 @@ describe('HsMeasure', () => {
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        HsConfig,
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMeasureComponent);
     service = TestBed.inject(HsMeasureService);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });

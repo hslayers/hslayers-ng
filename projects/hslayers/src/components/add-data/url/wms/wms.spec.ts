@@ -74,7 +74,7 @@ describe('add-data-url', () => {
         HsUrlWmsService,
         {
           provide: HsConfig,
-          useValue: EmptyMock,
+          useValue: {panelsEnabled: {}},
         },
         {
           provide: HsUtilsService,
