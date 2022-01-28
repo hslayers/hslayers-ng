@@ -17,7 +17,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   type: string;
   data;
   name = 'measure';
@@ -35,17 +36,20 @@ export class HsMeasureComponent
     this.data = this.HsMeasureService.data;
     this.type = 'distance';
 
-    hsSidebarService.buttons.push({
-      panel: 'measure',
-      module: 'hs.measure',
-      order: 2,
-      fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
-      description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
-      icon: 'icon-design',
-      condition: true,
-    });
+    //Don't need two buttons (sidebar and toolbar) to toggle measure panel
+    if (!this.HsLayoutService.componentEnabled('measureToolbar')) {
+      hsSidebarService.buttons.push({
+        panel: 'measure',
+        module: 'hs.measure',
+        order: 2,
+        fits: true,
+        title: () => hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
+        description: () =>
+          hsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
+        icon: 'icon-design',
+        condition: true,
+      });
+    }
 
     if (this.HsUtilsService.runningInBrowser()) {
       document.addEventListener('keyup', (e) => {

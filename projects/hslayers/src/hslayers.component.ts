@@ -51,9 +51,9 @@ export class HslayersComponent implements OnInit {
     private HsLayerManagerService: HsLayerManagerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     private hsQueryPopupService: HsQueryPopupService,
-    private HsMapSwipeService: HsMapSwipeService,
-    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    hsExternalService: HsExternalService
+    private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
+    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService, //Leave this, need to inject somewhere
+    hsExternalService: HsExternalService //Leave this, need to inject somewhere
   ) {}
 
   /**
@@ -64,11 +64,7 @@ export class HslayersComponent implements OnInit {
    * @param data - Extra misc data object to be stored in panel
    */
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
-    let panelsEnabled = this.hsConfig.panelsEnabled;
-    if (panelsEnabled == undefined || panelsEnabled[name] == undefined) {
-      panelsEnabled = this.hsLayoutService.panelsEnabledDefaults;
-    }
-    if (panelsEnabled[name]) {
+    if (this.hsConfig.panelsEnabled[name]) {
       this.hsLayoutService.createPanel(panelComponent, data || {});
     }
   }

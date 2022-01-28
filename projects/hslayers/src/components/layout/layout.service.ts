@@ -94,28 +94,6 @@ export class HsLayoutService {
   contentWrapper: any;
   layoutElement: any;
   private _sidebarVisible: any;
-  panelsEnabledDefaults = {
-    legend: true,
-    info: true,
-    composition_browser: true,
-    toolbar: true,
-    measure: true,
-    mobile_settings: false,
-    draw: true,
-    layermanager: true,
-    print: true,
-    saveMap: true,
-    language: true,
-    permalink: true,
-    compositionLoadingProgress: false,
-    sensors: true,
-    tracking: true,
-    filter: false,
-    search: false,
-    tripPlanner: false,
-    addData: true,
-    mapSwipe: false,
-  };
   mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(null);
 
   constructor(
@@ -153,16 +131,15 @@ export class HsLayoutService {
 
   parseConfig() {
     this.panel_enabled = {};
-    for (const key of Object.keys(this.panelsEnabledDefaults)) {
+    for (const key of Object.keys(this.HsConfig.panelsEnabled)) {
       this.panelEnabled(key, this.getPanelEnableState(key));
     }
   }
 
   getPanelEnableState(panel): boolean {
     if (
-      this.panelsEnabledDefaults[panel] == undefined &&
-      (this.HsConfig?.panelsEnabled == undefined ||
-        this.HsConfig?.panelsEnabled[panel] == undefined)
+      this.HsConfig?.panelsEnabled == undefined ||
+      this.HsConfig?.panelsEnabled[panel] == undefined
     ) {
       /* 
       Function called from sidebar and panel is 
@@ -170,14 +147,7 @@ export class HsLayoutService {
       */
       return true;
     }
-    if (this.HsConfig.panelsEnabled == undefined) {
-      return this.panelsEnabledDefaults[panel];
-    }
-    if (this.HsConfig.panelsEnabled[panel] == undefined) {
-      return this.panelsEnabledDefaults[panel];
-    } else {
-      return this.HsConfig.panelsEnabled[panel];
-    }
+    return this.HsConfig.panelsEnabled[panel];
   }
 
   /**

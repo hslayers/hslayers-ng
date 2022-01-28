@@ -90,6 +90,26 @@ export class HsConfig {
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
+  } = {
+    legend: true,
+    info: true,
+    composition_browser: true,
+    toolbar: true,
+    measure: true,
+    mobile_settings: false,
+    draw: true,
+    layermanager: true,
+    print: true,
+    saveMap: true,
+    language: true,
+    permalink: true,
+    compositionLoadingProgress: false,
+    sensors: true,
+    filter: false,
+    search: false,
+    tripPlanner: false,
+    addData: true,
+    mapSwipe: false,
   };
   advancedForm?: boolean;
   project_name?: string;
@@ -215,7 +235,8 @@ export class HsConfig {
     delete newConfig.componentsEnabled;
     Object.assign(this.panelWidths, newConfig.panelWidths);
     //See componentsEnabled ^
-    delete newConfig.panelWidths;
+    Object.assign(this.panelsEnabled, newConfig.panelsEnabled);
+    delete newConfig.panelsEnabled;
     this.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),
       ...(newConfig.symbolizerIcons ?? []),
