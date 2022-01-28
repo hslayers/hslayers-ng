@@ -10,6 +10,7 @@ import {ReplaySubject, Subject} from 'rxjs';
 export class HsPanelContainerService
   implements HsPanelContainerServiceInterface
 {
+  panels: HsPanelComponent[] = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
   panelDestroyObserver: Subject<any> = new Subject();
 
