@@ -10,11 +10,6 @@ import {getPath} from '../../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsLayerListService {
-  /**
-   * List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
-   * @public
-   */
-  layer_titles: Array<string> = [];
   constructor(
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerEditorSublayerService: HsLayerEditorSublayerService,
@@ -68,17 +63,6 @@ export class HsLayerListService {
       }
     }
     return tmp;
-  }
-
-  /**
-   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects can't be used because DragDropList functionality can handle only simple structures.
-   * @public
-   */
-  generateLayerTitlesArray(filtered_layers: HsLayerDescriptor[]): void {
-    this.layer_titles = [];
-    for (let i = 0; i < filtered_layers.length; i++) {
-      this.layer_titles.push(filtered_layers[i].title);
-    }
   }
 
   private changeSublayerVisibilityState(layer: HsLayerDescriptor, state): void {

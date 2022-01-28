@@ -84,6 +84,5 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
    */
   private updateLayers(): void {
     this.filtered_layers = this.hsLayerListService.filterLayers(this.folder);
-    this.hsLayerListService.generateLayerTitlesArray(this.filtered_layers);
   }
 }
