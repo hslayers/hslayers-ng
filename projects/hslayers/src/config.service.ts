@@ -209,6 +209,8 @@ export class HsConfig {
     this.checkDeprecatedCesiumConfig(newConfig);
     Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
     delete newConfig.componentsEnabled;
+    Object.assign(this.panelWidths, newConfig.panelWidths);
+    delete newConfig.panelWidths;
     this.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),
       ...(newConfig.symbolizerIcons ?? []),
