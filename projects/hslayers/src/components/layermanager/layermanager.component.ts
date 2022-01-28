@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
@@ -17,6 +18,7 @@ import {HsDialogContainerService} from '../layout/dialogs/dialog-container.servi
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLayerListService} from './logical-list/layermanager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
@@ -26,7 +28,6 @@ import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Source} from 'ol/source';
 import {
   getActive,
   getAttribution,
@@ -40,12 +41,12 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('layerEditor', {static: false, read: ElementRef})
   layerEditorRef: ElementRef;
   map: any;
   shiftDown = false;
+  allLayersVisible = false;
   data: any;
   layerlistVisible: boolean;
   hovering: boolean;
@@ -116,6 +117,7 @@ export class HsLayerManagerComponent
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
     public HsConfig: HsConfig,
+    public hsLayerListService: HsLayerListService,
     hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
@@ -212,6 +214,23 @@ export class HsLayerManagerComponent
 
   filterLayerTitles(): void {
     this.HsEventBusService.layerManagerUpdates.next();
+  }
+
+  toggleVisibilityForAll(): void {
+    this.allLayersVisible = !this.allLayersVisible;
+    this.data.layers.forEach((l) => {
+      this.HsLayerManagerService.changeLayerVisibility(
+        this.allLayersVisible,
+        l
+      );
+      this.hsLayerListService.toggleSublayersVisibility(l);
+    });
+  }
+
+  getButttonStateString(): string {
+    return this.allLayersVisible
+      ? this.HsLanguageService.getTranslation('COMMON.off')
+      : this.HsLanguageService.getTranslation('COMMON.on');
   }
 
   /**

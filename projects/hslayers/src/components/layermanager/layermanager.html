@@ -19,8 +19,8 @@
         <div class="nav nav-pills" [hidden]="!hasBoxImages()">
             <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
                 style="padding-right: 2px; padding-left: 2px;">
-                <a  [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}"
-                    title="{{getTitle(box)}}" (click)="activateTheme(box)">
+                <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" title="{{getTitle(box)}}"
+                    (click)="activateTheme(box)">
                     <img src="{{getThumbnail(box)}}" alt="{{getTitle(box)}}">
                 </a>
             </div>
@@ -32,8 +32,8 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle"
-                            style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translate }}</span>
+                        <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translate
+                            }}</span>
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()"
@@ -65,7 +65,8 @@
                             data-placement="auto"></span>
                     </div>
                 </div>
-                <ngb-progressbar type="secondary" *ngIf="layer.loadProgress?.loadTotal > 0" [value]="layer.loadProgress.percents" height="2px"></ngb-progressbar>
+                <ngb-progressbar type="secondary" *ngIf="layer.loadProgress?.loadTotal > 0"
+                    [value]="layer.loadProgress.percents" height="2px"></ngb-progressbar>
             </li>
         </ul>
 
@@ -73,8 +74,8 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle"
-                            style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translate }}</span>
+                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translate
+                            }}</span>
                     </div>
                 </div>
             </li>
@@ -96,23 +97,30 @@
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
-                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''" 
+                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
                         [closeDelay]="HsConfig.layerTooltipDelay || 0">
                         {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                 </div>
             </li>
         </ul>
-
-        <ul class="list-group hs-lm-mapcontentlist" >
+        <div class="list-group p-1" *ngIf="hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled">
+            <div class="d-flex w-100 justify-content-end text-align-center">
+                <button type="button" class="btn btn-sm btn-secondary"
+                    (click)="toggleVisibilityForAll()">{{'LAYERMANAGER.toggleAllLayerVisibility'|
+                    translate}} {{getButttonStateString()}}</button>
+            </div>
+        </div>
+        <ul class="list-group hs-lm-mapcontentlist">
             <li *ngIf="!HsLayoutService.componentEnabled('basemapGallery')"
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translate }}</span>
             </li>
-            <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders" [hidden]="physicalLayerListEnabled">
-                <li class="list-group-item hs-lm-layerlist-header list-group-item-primary" *ngIf="data.folders.sub_folders.length > 1"
-                    (click)="value.visible = !value.visible">
+            <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders"
+                [hidden]="physicalLayerListEnabled">
+                <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
+                    *ngIf="data.folders.sub_folders.length > 1" (click)="value.visible = !value.visible">
                     <span>{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}&nbsp;</span>
                     <span class="glyphicon"
                         [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
@@ -142,7 +150,8 @@
         </div> -->
         </ul>
         <hs-layer-editor [current-layer]="HsLayerManagerService.currentLayer" #layerEditor
-            [hidden]="!(HsLayerManagerService.currentLayer !== null) || HsLayerManagerService.menuExpanded" class="hs-layerpanel">
+            [hidden]="!(HsLayerManagerService.currentLayer !== null) || HsLayerManagerService.menuExpanded"
+            class="hs-layerpanel">
         </hs-layer-editor>
     </div>
 </div>
