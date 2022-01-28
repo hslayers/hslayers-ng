@@ -1,19 +1,16 @@
-import {HsPanelComponent} from './panel-component.interface';
-import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
-import {HsPanelItem} from './panel-item';
 import {Injectable, Type} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
-type KeyNumberDic = {
-  [key: string]: number;
-};
+import {HsPanelComponent} from './panel-component.interface';
+import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
+import {HsPanelItem} from './panel-item';
+import {KeyNumberDict} from '../../../config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface
-{
+  implements HsPanelContainerServiceInterface {
   panels: HsPanelComponent[] = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
   panelDestroyObserver: Subject<any> = new Subject();
@@ -52,13 +49,14 @@ export class HsPanelContainerService
    * @param componentRefInstance - Panel component instance which can be read from HsPanelContainerService.panels array
    */
   setPanelWidth(
-    panelWidths: KeyNumberDic,
+    panelWidths: KeyNumberDict,
     componentRefInstance: HsPanelComponent
   ): void {
     if (componentRefInstance == undefined) {
       return;
     }
-    const pnlWidth = panelWidths[componentRefInstance.name] || panelWidths.default;
+    const pnlWidth =
+      panelWidths[componentRefInstance.name] || panelWidths.default;
     const guessedClass = `hs-panel-width-${Math.round(pnlWidth / 25) * 25}`;
     setTimeout(() => {
       const rootView = componentRefInstance.viewRef as any; //Any is used because the actual class RootViewRef is not exported from angular

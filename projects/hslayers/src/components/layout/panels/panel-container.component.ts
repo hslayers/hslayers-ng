@@ -84,10 +84,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
      * Assign panel width class to a component host first child
      * Used to define panelSpace panel width
      */
-    this.service.setPanelWidth(
-      this.HsConfig.panelWidths,
-      componentRefInstance
-    );
+    this.service.setPanelWidth(this.HsConfig.panelWidths, componentRefInstance);
 
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;

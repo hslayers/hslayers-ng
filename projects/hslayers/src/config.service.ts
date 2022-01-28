@@ -22,8 +22,11 @@ export type MapSwipeOptions = {
   orientation?: 'vertical' | 'horizontal';
 };
 
-interface LooseObject {
-  [key: string]: number
+/**
+ * Names and corresponding numbers
+ */
+export interface KeyNumberDict {
+  [key: string]: number;
 }
 
 @Injectable()
@@ -137,7 +140,7 @@ export class HsConfig {
   connectTypes?: AddDataUrlType[];
   uploadTypes?: AddDataFileType[];
   datasources?: any;
-  panelWidths?: LooseObject = {
+  panelWidths?: KeyNumberDict = {
     default: 425,
     ows: 700,
     composition_browser: 550,
@@ -208,8 +211,10 @@ export class HsConfig {
   update?(newConfig: HsConfig): void {
     this.checkDeprecatedCesiumConfig(newConfig);
     Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
+    //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
     Object.assign(this.panelWidths, newConfig.panelWidths);
+    //See componentsEnabled ^
     delete newConfig.panelWidths;
     this.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),

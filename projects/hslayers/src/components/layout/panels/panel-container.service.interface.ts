@@ -1,13 +1,13 @@
-import {HsPanelComponent} from './panel-component.interface';
-import {HsPanelItem} from './panel-item';
 import {ReplaySubject, Subject} from 'rxjs';
 import {Type} from '@angular/core';
 
+import {HsPanelComponent} from './panel-component.interface';
+import {HsPanelItem} from './panel-item';
+import {KeyNumberDict} from '../../../config.service';
+
 export interface HsPanelContainerServiceInterface {
   setPanelWidth?(
-    panelWidths: {
-      [key: string]: number;
-    },
+    panelWidths: KeyNumberDict,
     componentRefInstance: HsPanelComponent
   );
   panels: HsPanelComponent[];
