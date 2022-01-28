@@ -16,6 +16,7 @@ import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/a
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../../draw/draw.service';
 import {HsLayerListComponent} from './layermanager-layerlist.component';
+import {HsLayerListService} from './layermanager-layerlist.service';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -28,6 +29,7 @@ import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
+import {mockHsLayerListService} from './layermanager-layerlist.service.mock';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 import {wmsGetCapabilitiesResponse} from '../../../../test/data/wms-capabilities';
 
@@ -84,6 +86,7 @@ describe('layermanager-layer-list', () => {
       declarations: [HsLayerListComponent],
       providers: [
         HsLayerManagerService,
+        {provide: HsLayerListService, useValue: mockHsLayerListService()},
         {provide: HsArcgisGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsAddDataOwsService, useValue: new emptyMock()},
@@ -133,7 +136,7 @@ describe('layermanager-layer-list', () => {
   });
 
   it('should list sublayers', () => {
-    component['HsLayerManagerService'].layerAdded(
+    component['hsLayerManagerService'].layerAdded(
       {
         element: subLayerContainerLayer,
       },
