@@ -72,14 +72,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   }
 
   loadPanel(panelItem: HsPanelItem): void {
-    const panelWidths = {
-      default: 425,
-      ows: 700,
-      composition_browser: 550,
-      addData: 700,
-      mapSwipe: 550,
-    };
-
     const componentFactory =
       this.componentFactoryResolver.resolveComponentFactory(
         panelItem.component
@@ -93,7 +85,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
      * Used to define panelSpace panel width
      */
     this.service.setPanelWidth(
-      panelWidths,
       this.HsConfig.panelWidths,
       componentRefInstance
     );
