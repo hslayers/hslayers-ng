@@ -41,8 +41,8 @@ export class HsPanelContainerService
 
   /**
    * An admittedly hacky solution to set panel width
-   * from 2 dictionaries containing names (as in name property in PanelComponent)
-   * and numbers - defaults dictionary and HsConfig.panelWidths (priority) dictionary.
+   * from dictionary containing names (as in name property in PanelComponent)
+   * and numbers stored in HsConfig.panelWidths in most cases.
    * It's also possible to set the css class hs-panel-width-(400-850) on the panel
    * templates root element skipping the HsConfig.panelWidths.
    * @param panelWidths - key-value pairs of panel names and their widths
