@@ -22,6 +22,10 @@ export type MapSwipeOptions = {
   orientation?: 'vertical' | 'horizontal';
 };
 
+interface LooseObject {
+  [key: string]: number
+}
+
 @Injectable()
 export class HsConfig {
   private defaultSymbolizerIcons? = [
@@ -133,7 +137,13 @@ export class HsConfig {
   connectTypes?: AddDataUrlType[];
   uploadTypes?: AddDataFileType[];
   datasources?: any;
-  panelWidths?: any;
+  panelWidths?: LooseObject = {
+    default: 425,
+    ows: 700,
+    composition_browser: 550,
+    addData: 700,
+    mapSwipe: 550,
+  };
   sidebarToggleable?: boolean;
   sizeMode?: string;
   symbolizerIcons?: SymbolizerIcon[];

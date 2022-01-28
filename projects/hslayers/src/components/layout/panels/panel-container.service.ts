@@ -48,20 +48,17 @@ export class HsPanelContainerService
    * and numbers - defaults dictionary and HsConfig.panelWidths (priority) dictionary.
    * It's also possible to set the css class hs-panel-width-(400-850) on the panel
    * templates root element skipping the HsConfig.panelWidths.
-   * @param defaults - key-value pairs of panel names and their widths
    * @param panelWidths - key-value pairs of panel names and their widths
    * @param componentRefInstance - Panel component instance which can be read from HsPanelContainerService.panels array
    */
   setPanelWidth(
-    defaults: KeyNumberDic,
     panelWidths: KeyNumberDic,
     componentRefInstance: HsPanelComponent
   ): void {
     if (componentRefInstance == undefined) {
       return;
     }
-    Object.assign(defaults, panelWidths);
-    const pnlWidth = defaults[componentRefInstance.name] || defaults.default;
+    const pnlWidth = panelWidths[componentRefInstance.name] || panelWidths.default;
     const guessedClass = `hs-panel-width-${Math.round(pnlWidth / 25) * 25}`;
     setTimeout(() => {
       const rootView = componentRefInstance.viewRef as any; //Any is used because the actual class RootViewRef is not exported from angular
