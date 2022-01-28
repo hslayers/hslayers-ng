@@ -250,7 +250,9 @@
     "copyLayer": "Kopēt slāni",
     "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā",
     "selectAndConfirmToDeleteMultiple": "Atlasiet un apstipriniet, lai dzēstu vairākus slāņus",
-    "unknown": "Nezināms"
+    "unknown": "Nezināms",
+    "off": "IZSLĒGTA",
+    "on": "IESLĒGTA"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -569,7 +571,8 @@
       "syncTimes": "Sinhronizēt laikus",
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
-    "User generated": "Lietotāja ģenerēti"
+    "User generated": "Lietotāja ģenerēti",
+    "toggleAllLayerVisibility": "Pārslēgt visu slāņu redzamību"
   },
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
