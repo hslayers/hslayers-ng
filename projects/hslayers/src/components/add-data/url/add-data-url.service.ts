@@ -26,7 +26,7 @@ export class HsAddDataUrlService {
     this.addDataCapsParsingError.subscribe((e) => {
       this.hsLog.warn(e);
       let error = e.toString();
-      if (e?.includes('Unsuccessful OAuth2')) {
+      if (error?.includes('Unsuccessful OAuth2')) {
         error = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
           'Authentication failed. Login to the catalogue.'
@@ -71,15 +71,13 @@ export class HsAddDataUrlService {
           serviceLayer,
           selector
         );
+        if (selectedLayer && serviceLayer[selector] == layerToSelect) {
+          return selectedLayer;
+        }
       }
     } else {
-      selectedLayer = this.selectSubLayerByName(
-        layerToSelect,
-        services,
-        selector
-      );
+      return this.selectSubLayerByName(layerToSelect, services, selector);
     }
-    return selectedLayer;
   }
 
   /**
@@ -91,13 +89,14 @@ export class HsAddDataUrlService {
     selector: 'Title' | 'Name'
   ): any {
     let selectedLayer;
-    if (serviceLayer.Layer && serviceLayer.Name != layerToSelect) {
+    if (serviceLayer.Layer && serviceLayer[selector] != layerToSelect) {
       selectedLayer = this.selectLayerByName(
         layerToSelect,
         serviceLayer.Layer,
         selector
       );
-    } else {
+    }
+    if (serviceLayer[selector] == layerToSelect) {
       selectedLayer = this.setLayerCheckedTrue(
         layerToSelect,
         serviceLayer,
