@@ -3,6 +3,10 @@ export class HsLayoutServiceMock {
   constructor() {}
 
   panelVisible() {
-    return true
+    return true;
+  }
+
+  componentEnabled() {
+    return true;
   }
 }
