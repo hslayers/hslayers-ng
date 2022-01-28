@@ -13,10 +13,12 @@
     <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
 
   </div>
-
+  <div *ngIf="hsAddDataCommonFileService.layerNameExists">
+    <p><sub class="text-danger">{{'ADDLAYERS.layerNameAlreadyExists' | translate}}</sub></p>
+  </div>
   <div class="form-floating mb-3">
     <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate" class="form-control" name="name"
-      [(ngModel)]="data.name" />
+      [(ngModel)]="data.name" (change)="hsAddDataCommonFileService.layerNameExists = false" />
     <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
 
   </div>

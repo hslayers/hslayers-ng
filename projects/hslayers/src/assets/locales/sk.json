@@ -111,7 +111,8 @@
     "filesSelected": "vybraných súborov",
     "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby",
     "nameAndSRSRequired": "Pre pokračovanie je potrebné pole 'Názov' a 'SRS'!",
-    "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!"
+    "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!",
+    "layerNameAlreadyExists": "Názov vrstvy už existuje"
   },
   "COMMON": {
     "abstract": "Abstrakt",

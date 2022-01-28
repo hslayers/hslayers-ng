@@ -122,7 +122,8 @@
     "missingImageorWorldFile": "Trūkst attēla vai pasaules faila. Lūdzu, pārbaudiet failus un mēģiniet vēlreiz!",
     "Raster image": "Rastra attēls",
     "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
-    "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!"
+    "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!",
+    "layerNameAlreadyExists": "Slāņa nosaukums jau pastāv"
   },
   "COMMON": {
     "abstract": "Apraksts",

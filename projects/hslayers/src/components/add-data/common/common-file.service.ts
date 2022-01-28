@@ -27,6 +27,7 @@ export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
 export class HsAddDataCommonFileService {
   loadingToLayman = false;
   asyncLoading = false;
+  layerNameExists = false;
   endpoint: HsEndpoint = null;
   layerAddedAsWms: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<fileDataObject> = new Subject();
@@ -46,6 +47,7 @@ export class HsAddDataCommonFileService {
     this.asyncLoading = false;
     this.endpoint = null;
     this.loadingToLayman = false;
+    this.hsLaymanService.totalProgress = 0;
   }
 
   getLoadingText(): string {
@@ -304,6 +306,11 @@ export class HsAddDataCommonFileService {
           return;
         })
         .catch((err) => {
+          if (err?.code === 17) {
+            this.clearParams();
+            this.layerNameExists = true;
+            return;
+          }
           const errorMessage =
             err?.error?.message ?? err?.message == 'Wrong parameter value'
               ? `${err?.message} : ${err?.detail.parameter}`
@@ -368,7 +375,6 @@ export class HsAddDataCommonFileService {
       header: _options.header ?? 'ADDLAYERS.ERROR.someErrorHappened',
       details: _options.details,
     });
-    this.hsLaymanService.totalProgress = 0;
     this.layerAddedAsWms.next(false);
   }
 

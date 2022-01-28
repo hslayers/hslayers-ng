@@ -122,7 +122,8 @@
     "rasterImageryWith": "Georeferencované rastrové snímky jsou v současnosti podporované pouze v souřadnicových systémech EPSG:4326 a EPSG:3857. Prosím, ujistěte se před nahráním, že vaše data splňují tyto požadavky.",
     "Raster image": "Rastrový snímek",
     "SRSRequired": "Pro pokračování je nutné vyplnit pole 'SRS'!",
-    "nameAndSRSRequired": "Pro pokračování je nutné vyplnit pole 'Název' a 'SRS'!"
+    "nameAndSRSRequired": "Pro pokračování je nutné vyplnit pole 'Název' a 'SRS'!",
+    "layerNameAlreadyExists": "Název vrstvy již existuje"
   },
   "COMMON": {
     "abstract": "Abstrakt",
