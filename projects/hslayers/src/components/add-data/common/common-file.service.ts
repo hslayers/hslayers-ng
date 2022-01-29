@@ -16,13 +16,18 @@ import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
+import {PostLayerResponse} from '../../../common/layman/post-layer-response.type';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {fileDataObject} from '../file/types/file-data-object.type';
+
+export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
+
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonFileService {
   loadingToLayman = false;
   asyncLoading = false;
+  layerNameExists = false;
   endpoint: HsEndpoint = null;
   layerAddedAsWms: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<fileDataObject> = new Subject();
@@ -42,6 +47,7 @@ export class HsAddDataCommonFileService {
     this.asyncLoading = false;
     this.endpoint = null;
     this.loadingToLayman = false;
+    this.hsLaymanService.totalProgress = 0;
   }
 
   getLoadingText(): string {
@@ -72,28 +78,48 @@ export class HsAddDataCommonFileService {
     }
   }
 
-  addTooltip(title: string): string {
-    return title
-      ? this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'DRAW.drawToolbar',
-          'addLayer'
-        )
-      : this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS.SHP',
-          'nameRequired'
-        );
+  addTooltip(data: fileDataObject): string {
+    let tooltipString;
+    if (!data.srs && !data.name) {
+      tooltipString = 'nameAndSRSRequired';
+    }
+    if (data.srs && !data.name) {
+      tooltipString = 'nameRequired';
+    }
+    if (!data.srs && data.name) {
+      tooltipString = 'SRSRequired';
+    }
+    if (tooltipString) {
+      return this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'ADDLAYERS',
+        tooltipString
+      );
+    } else {
+      return this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'DRAW.drawToolbar',
+        'addLayer'
+      );
+    }
   }
 
   filesValid(files: File[]): boolean {
     let isValid = true;
+    if (files.filter((f) => f.size > FILE_UPLOAD_SIZE_LIMIT).length > 0) {
+      this.catchError({
+        message: 'ADDDATA.FILE.someOfTheUploadedFiles',
+      });
+      return false;
+    }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
     if (zipFilesCount === 1 && files.length > 1) {
-      this.catchError({message: 'Mixed zip with simple files'});
+      this.catchError({
+        message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
+      });
       isValid = false;
     }
     if (zipFilesCount > 1) {
       isValid = false;
-      this.catchError({message: 'Please upload only one zip folder!'});
+      this.catchError({message: 'ADDDATA.FILE.onlyOneZipFileCan'});
     }
     return isValid;
   }
@@ -104,6 +130,14 @@ export class HsAddDataCommonFileService {
       'application/x-zip',
       'application/x-zip-compressed',
     ].includes(type);
+  }
+
+  isGeotiff(type: string): boolean {
+    return ['image/tiff', 'image/tif', 'image/gtiff'].includes(type);
+  }
+
+  isJp2(type: string): boolean {
+    return ['image/jp2'].includes(type);
   }
 
   /**
@@ -186,7 +220,7 @@ export class HsAddDataCommonFileService {
           {withCredentials: true}
         )
         .toPromise()
-        .then(async (data: any) => {
+        .then(async (data: PostLayerResponse[]) => {
           //CHECK IF OK not auth etc.
           if (data && data.length > 0) {
             if (this.asyncLoading) {
@@ -267,10 +301,16 @@ export class HsAddDataCommonFileService {
             type: 'wms',
             uri: descriptor.wms.url,
             layer: data.name,
+            owrCache: true,
           });
           return;
         })
         .catch((err) => {
+          if (err?.code === 17) {
+            this.clearParams();
+            this.layerNameExists = true;
+            return;
+          }
           const errorMessage =
             err?.error?.message ?? err?.message == 'Wrong parameter value'
               ? `${err?.message} : ${err?.detail.parameter}`
@@ -302,7 +342,7 @@ export class HsAddDataCommonFileService {
       );
       if (
         ['UPDATING'].includes(descriptor.layman_metadata?.publication_status) ||
-        ['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)
+        ['STARTED', 'PENDING'].includes(descriptor.wms.status)
       ) {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -335,7 +375,6 @@ export class HsAddDataCommonFileService {
       header: _options.header ?? 'ADDLAYERS.ERROR.someErrorHappened',
       details: _options.details,
     });
-    this.hsLaymanService.totalProgress = 0;
     this.layerAddedAsWms.next(false);
   }
 

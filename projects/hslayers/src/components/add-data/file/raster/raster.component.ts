@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
+import {AddDataFileType} from '../types/file.type';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
@@ -8,13 +9,14 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 
 @Component({
-  selector: 'hs-file-geotiff',
-  templateUrl: 'geotiff.component.html',
+  selector: 'hs-file-raster',
+  templateUrl: 'raster.component.html',
 })
-export class HsFileGeotiffComponent
+export class HsFileRasterComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit {
-  dataType = 'geotiff';
+  implements OnInit
+{
+  dataType: AddDataFileType = 'raster';
   constructor(
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
@@ -25,7 +27,8 @@ export class HsFileGeotiffComponent
   }
   ngOnInit(): void {
     this.baseDataType = this.dataType;
-    this.acceptedFormats = '.tif, .tiff, .gtiff, .zip';
+    this.acceptedFormats =
+      '.tif, .tifw, .tiff, .tiffw, .gtiff, .gtiffw, .tfw, .png, .pngw, .pgw, .png.aux.xml, .jpg, .jpgw, .jgw, .jpg.aux.xml, .jp2, .jp2w, .j2w, .zip, .wld';
     super.ngOnInit();
   }
 

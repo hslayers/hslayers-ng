@@ -14,12 +14,12 @@ import {
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';
+import {HsLaymanLayerDescriptor} from './../../../save-map/layman-layer-descriptor.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addExtentFeature} from '../../../../common/extent-utils';
-
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
   httpCall;
@@ -147,37 +147,6 @@ export class HsLaymanBrowserService {
     return endpoint.httpCall;
   }
 
-  displayLaymanError(endpointTitle: string, responseBody: any): void {
-    let simplifiedResponse = '';
-    if (responseBody.code === undefined) {
-      simplifiedResponse = 'COMMON.unknownError';
-    }
-    switch (responseBody.code) {
-      case 48:
-        simplifiedResponse = 'mapExtentFilterMissing';
-        break;
-      case 32:
-        simplifiedResponse =
-          'Unsuccessful OAuth2 authentication. Access token is not valid';
-        break;
-      default:
-        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
-    }
-    //If response is object, it is an error response
-    this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(
-        'ADDLAYERS.ERROR.errorWhileRequestingLayers'
-      ),
-      endpointTitle +
-        ': ' +
-        this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMMON',
-          simplifiedResponse
-        ),
-      {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
-    );
-  }
-
   /**
    * (PRIVATE) Callback for catalogue http query
    * @param data - HTTP response containing all the layers
@@ -208,7 +177,6 @@ export class HsLaymanBrowserService {
       dataset.layers = data.map((layer) => {
         const tmp = {
           title: layer.title,
-          type: ['WMS', 'WFS'],
           name: layer.name,
           id: layer.uuid,
           featureId: layer.featureId,
@@ -253,8 +221,9 @@ export class HsLaymanBrowserService {
           withCredentials: true,
         })
         .toPromise()
-        .then((data: any) => {
-          delete data.type;
+        .then((data: HsLaymanLayerDescriptor) => {
+          layer.type =
+            data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
           layer = {...layer, ...data};
           if (layer.thumbnail) {
             layer.thumbnail = endpoint.url + layer.thumbnail.url;
@@ -282,12 +251,12 @@ export class HsLaymanBrowserService {
     if (lyr.style?.url) {
       style = await this.getStyleFromUrl(lyr.style?.url);
     }
-    if (lyr.style.type == 'sld') {
+    if (lyr.style?.type == 'sld') {
       if (!style?.includes('StyledLayerDescriptor')) {
         style = undefined;
       }
     }
-    if (lyr.style.type == 'qml') {
+    if (lyr.style?.type == 'qml') {
       if (!style?.includes('<qgis')) {
         style = undefined;
       }

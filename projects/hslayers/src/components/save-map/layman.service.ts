@@ -557,7 +557,7 @@ export class HsLaymanService implements HsSaverService {
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
-      const response: any = await this.http
+      const response: HsLaymanLayerDescriptor = await this.http
         .get(
           `${
             endpoint.url
@@ -571,8 +571,8 @@ export class HsLaymanService implements HsSaverService {
         return null;
       }
       if (
-        wfsPendingOrStarting(response) ||
-        (response.wfs?.status == 'SUCCESS' && response.wfs?.url == undefined)
+        response.wfs &&
+        (wfsPendingOrStarting(response) || response.wfs?.url == undefined)
       ) {
         if (!this.pendingLayers.includes(layerName)) {
           this.pendingLayers.push(layerName);

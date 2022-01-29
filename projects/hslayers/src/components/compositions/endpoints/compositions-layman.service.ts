@@ -178,7 +178,7 @@ export class HsCompositionsLaymanService {
   }
 
   async getInfo(composition: any): Promise<any> {
-    const endpoint = composition.endpoint
+    const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.displayWarningToast(
         endpoint,

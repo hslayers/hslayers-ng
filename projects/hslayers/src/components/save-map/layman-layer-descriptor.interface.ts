@@ -1,16 +1,74 @@
+import {StatusStateType} from './status-state.type';
+
 export interface HsLaymanLayerDescriptor {
-  wms?: any;
-  wfs?: any;
+  uuid?: string;
   name?: any;
+  title?: string;
+  description?: string;
+  updated_at?: string;
+  wms?: {
+    url?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
+  wfs?: {
+    url?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
   file?: {
+    path?: string;
+    file_type?: string;
+    status?: StatusStateType;
     error?: {
       code?: number;
       message?: string;
     };
   };
+  //Only for vector layers
+  db_table?: {
+    name?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
+  style?: {
+    url?: string;
+    type?: string;
+    name?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
+  //Deprecated, yet is still there
+  sld?: {
+    url?: string;
+    name?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
+  metadata?: {
+    identifier?: string;
+    record_url?: string;
+    csw_url?: string;
+    comparison_url?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
+  access_rights?: {
+    read?: string[];
+    write?: string[];
+  };
+  bounding_box?: number[];
+  native_crs?: any;
+  native_bounding_box?: number[];
+  url?: string;
+  thumbnail?: {
+    url?: string;
+    status?: StatusStateType;
+    error?: any;
+  };
   code?: any;
   exists?: boolean;
   layman_metadata?: {
-    publication_status: string;
+    publication_status: 'COMPLETE' | 'INCOMPLETE' | 'UPDATING';
   };
 }

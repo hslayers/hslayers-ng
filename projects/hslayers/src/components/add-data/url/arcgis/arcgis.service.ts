@@ -289,7 +289,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   }
 
   isImageService(): boolean {
-    return this.data.get_map_url.toLowerCase().includes('imageserver');
+    return this.data.get_map_url?.toLowerCase().includes('imageserver');
   }
 
   isGpService(str: string): boolean {

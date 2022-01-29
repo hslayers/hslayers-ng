@@ -1,14 +1,16 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
+import {HsEndpoint} from '../endpoints/endpoint.interface';
+
 @Pipe({
   name: 'endpointsWithDatasources',
 })
 export class EndpointsWithDatasourcesPipe implements PipeTransform {
   transform(
-    endpoints: any[],
+    endpoints: HsEndpoint[],
     typeToFilter = 'statusmanager',
     filterType = 'exclusive'
-  ): any[] {
+  ): HsEndpoint[] {
     switch (filterType) {
       case 'exclusive':
         return endpoints.filter((ep) => ep.type != typeToFilter);

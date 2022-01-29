@@ -66,12 +66,12 @@
     "registerMetadata": "Registrovať metadáta",
     "resampleLayer": "Prevzorkovať vrstvu",
     "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
+    "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
     "SHP": {
       "loginRequired": "Pred načítaním vrstvy je potrebné prihlásiť sa ",
-      "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
-      "maximumNumberOf": "Maximálny povolený počet súborov je 3, ale vybrané sú{{dĺžka}}",
+      "maximumNumberOf": "Maximálny povolený počet súborov je {{allowed}}, ale vybrané sú{{dĺžka}}",
       "missingOneOrMore": "Chýba jeden alebo viac súborov Shapefile. Nahrajte súbory s príponami *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",
@@ -109,9 +109,10 @@
     },
     "unknownDimesion": "Táto vrstva definuje dimenziu, ktorú nemožno v súčasnosti načítať",
     "filesSelected": "vybraných súborov",
-    "geotiffParsingProblem": "Problém pri syntaktickej analýze súboru GeoTiff",
-    "onlyGeoTIFFimages": "V súčasnosti sú podporované iba obrázky GeoTIFF v súradnicových systémoch EPSG:4326 a EPSG:3857. Pred nahrávaním sa uistite, že spĺňate tieto požiadavky.",
-    "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby"
+    "unauthorizedAccess": "Nepovolený prístup. Nemáte oprávnenie dotazovať sa na dáta z tejto služby",
+    "nameAndSRSRequired": "Pre pokračovanie je potrebné pole 'Názov' a 'SRS'!",
+    "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!",
+    "layerNameAlreadyExists": "Názov vrstvy už existuje"
   },
   "COMMON": {
     "abstract": "Abstrakt",

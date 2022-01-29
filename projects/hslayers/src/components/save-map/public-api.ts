@@ -13,3 +13,4 @@ export * from './save-map.result-dialog.component';
 export * from './save-map.service';
 export * from './saver-service.interface';
 export * from './status-manager.service';
+export * from './status-state.type';

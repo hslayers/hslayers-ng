@@ -13,7 +13,7 @@ import {HsLogService} from '../../../common/log/log.service';
   providedIn: 'root',
 })
 export class HsAddDataUrlService {
-  addDataCapsParsingError: Subject<{e: any; context: any}> = new Subject();
+  addDataCapsParsingError: Subject<any> = new Subject();
   addingAllowed: boolean;
   typeSelected: AddDataUrlType;
   connectFromParams = true;
@@ -25,9 +25,13 @@ export class HsAddDataUrlService {
   ) {
     this.addDataCapsParsingError.subscribe((e) => {
       this.hsLog.warn(e);
-
       let error = e.toString();
-      if (error.includes('property')) {
+      if (error?.includes('Unsuccessful OAuth2')) {
+        error = this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          'Authentication failed. Login to the catalogue.'
+        );
+      } else if (error.includes('property')) {
         error = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS',
           'serviceTypeNotMatching'
@@ -67,15 +71,13 @@ export class HsAddDataUrlService {
           serviceLayer,
           selector
         );
+        if (selectedLayer && serviceLayer[selector] == layerToSelect) {
+          return selectedLayer;
+        }
       }
     } else {
-      selectedLayer = this.selectSubLayerByName(
-        layerToSelect,
-        services,
-        selector
-      );
+      return this.selectSubLayerByName(layerToSelect, services, selector);
     }
-    return selectedLayer;
   }
 
   /**
@@ -87,13 +89,14 @@ export class HsAddDataUrlService {
     selector: 'Title' | 'Name'
   ): any {
     let selectedLayer;
-    if (serviceLayer.Layer && serviceLayer.Name != layerToSelect) {
+    if (serviceLayer.Layer && serviceLayer[selector] != layerToSelect) {
       selectedLayer = this.selectLayerByName(
         layerToSelect,
         serviceLayer.Layer,
         selector
       );
-    } else {
+    }
+    if (serviceLayer[selector] == layerToSelect) {
       selectedLayer = this.setLayerCheckedTrue(
         layerToSelect,
         serviceLayer,

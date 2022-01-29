@@ -210,7 +210,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.hsAddDataUrlService.searchForChecked(this.data.layers);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
-        this.data.extent = this.getLayerBBox(serviceLayer);
+        this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs);
       } else {
         this.data.extent = this.calcAllLayersExtent(this.data.layers);
       }
@@ -243,10 +243,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    */
   calcAllLayersExtent(serviceLayers: any): any {
     if (!Array.isArray(serviceLayers)) {
-      return this.getLayerBBox(serviceLayers);
+      return this.getLayerBBox(serviceLayers, this.data.srs);
     }
     return serviceLayers
-      .map((lyr) => this.getLayerBBox(lyr))
+      .map((lyr) => this.getLayerBBox(lyr, this.data.srs))
       .reduce((acc, curr) => {
         //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
         const [west, south, east, north] = curr;
@@ -270,8 +270,30 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       });
   }
 
-  getLayerBBox(serviceLayer: any): any {
-    return serviceLayer.EX_GeographicBoundingBox; // TODO: ?? serviceLayer.BoundingBox; (is more complex, contains SRS definition etc.)
+  getLayerBBox(serviceLayer: any, crs: any): any {
+    let boundingbox = serviceLayer.BoundingBox;
+    let preferred;
+    if (Array.isArray(serviceLayer.BoundingBox)) {
+      preferred = boundingbox.filter((bboxInCrs) => {
+        return bboxInCrs.crs == this.data.map_projection;
+      })[0];
+    }
+    if (preferred) {
+      boundingbox = preferred.extent;
+    } else if (crs !== undefined) {
+      if (serviceLayer.EX_GeographicBoundingBox !== undefined) {
+        boundingbox = transformExtent(
+          serviceLayer.EX_GeographicBoundingBox,
+          'EPSG:4326',
+          this.hsMapService.map.getView().getProjection()
+        );
+      }
+    } else {
+      if (this.data.map_projection != serviceLayer.crs) {
+        boundingbox = serviceLayer.LatLonBoundingBox;
+      }
+    }
+    return boundingbox; // TODO: ?? serviceLayer.BoundingBox; (is more complex, contains SRS definition etc.)
   }
 
   //TODO: what is the reason to do such things?
@@ -384,29 +406,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
       ];
     }
-
-    let boundingbox = layer.BoundingBox;
-    let preferred;
-    if (Array.isArray(layer.BoundingBox)) {
-      preferred = boundingbox.filter((bboxInCrs) => {
-        return bboxInCrs.crs == this.data.map_projection;
-      })[0];
-    }
-    if (preferred) {
-      boundingbox = preferred.extent;
-    } else if (options.crs !== undefined) {
-      if (layer.EX_GeographicBoundingBox !== undefined) {
-        boundingbox = transformExtent(
-          layer.EX_GeographicBoundingBox,
-          'EPSG:4326',
-          this.hsMapService.map.getView().getProjection()
-        );
-      }
-    } else {
-      if (this.data.map_projection != options.crs) {
-        boundingbox = layer.LatLonBoundingBox;
-      }
-    }
     const dimensions = {};
     if (layer.Dimension) {
       for (const val of layer.Dimension) {
@@ -452,7 +451,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       removable: true,
       abstract: layer.Abstract,
       metadata,
-      extent: boundingbox,
+      extent: this.getLayerBBox(layer, options.crs),
       path: options.path,
       dimensions: dimensions,
       legends: legends,
@@ -518,14 +517,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
 
   private zoomToLayers() {
     if (this.data.extent) {
-      const extent = transformExtent(
-        this.data.extent,
-        'EPSG:4326',
-        this.hsMapService.map.getView().getProjection()
-      );
-      if (extent) {
-        this.hsMapService.fitExtent(extent);
-      }
+      this.hsMapService.fitExtent(this.data.extent);
     }
   }
 }

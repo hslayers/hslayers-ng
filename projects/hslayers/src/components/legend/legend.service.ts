@@ -189,7 +189,7 @@ export class HsLegendService {
     if (this.hsLayerUtilsService.isLayerWMS(layer)) {
       const subLayerLegends = this.hsLayerUtilsService
         .getLayerParams(layer)
-        .LAYERS.split(',');
+        .LAYERS?.split(',');
       for (let i = 0; i < subLayerLegends.length; i++) {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),

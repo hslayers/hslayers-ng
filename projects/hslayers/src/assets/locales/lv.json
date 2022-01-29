@@ -39,7 +39,12 @@
       "submitLayerName": "Ievadiet slāņa nosaukumu",
       "submitLayerTitle": "Ievadiet slāņa nosaukumu"
     },
-    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus"
+    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
+    "FILE": {
+      "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
+      "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu",
+      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
+    }
   },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
@@ -68,13 +73,13 @@
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
+    "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
     "SHP": {
       "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",
-      "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
       "SLDStyleFile": "Stila datne",
       "missingOneOrMore": "Trūkst viena vai vairāku ShapeFile failu. Ielādējiet failus ar paplašinājumiem *.shp, *.shx, *.dbf",
-      "maximumNumberOf": "Maksimālais atļautais failu skaits ir 3, taču tika atlasīti {{length}}"
+      "maximumNumberOf": "Maksimālais atļautais failu skaits ir {{allowed}}, taču tika atlasīti {{length}}"
     },
     "srs": "Ģeodēziskā atskaites sistēma",
     "thisIsRequired": "Šis ir nepieciešams!",
@@ -112,10 +117,13 @@
     },
     "unauthorizedAccess": "Neatļauta piekļuve. Jūs neesat pilnvarots pieprasīt datus no šī pakalpojuma",
     "filesSelected": "Faili atlasīti",
-    "geotiffParsingProblem": "Ģeotifa parsēšanas problēma",
-    "onlyGeoTIFFimages": "Uz doto brīdi tiek atbalstīti tikai GeoTIFF attēli EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai šīs prasības tiek ievērotas.",
     "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju",
-    "GPServerServicesAreNotSupported": "GPServer pakalpojumi netiek atbalstīti!"
+    "rasterImageryWith": "Rastra attēls ar ģeoreferencēšanu pašlaik tiek atbalstīts tikai EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai dati atbilst šīm prasībām.",
+    "missingImageorWorldFile": "Trūkst attēla vai pasaules faila. Lūdzu, pārbaudiet failus un mēģiniet vēlreiz!",
+    "Raster image": "Rastra attēls",
+    "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
+    "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!",
+    "layerNameAlreadyExists": "Slāņa nosaukums jau pastāv"
   },
   "COMMON": {
     "abstract": "Apraksts",

@@ -39,7 +39,12 @@
       "submitLayerName": "Fill in layer name",
       "submitLayerTitle": "Fill in layer title"
     },
-    "requestServiceLayers": "Request service layers"
+    "requestServiceLayers": "Request service layers",
+    "FILE": {
+      "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size",
+      "onlyOneZipFileCan": "Only one zip file can be uploaded at once",
+      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
+    }
   },
   "ADDLAYERS": {
     "addSelected": "Add selected layers to the map",
@@ -68,12 +73,14 @@
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
     "serviceTypeNotMatching": "URL service type does not match selected category",
+    "nameAndSRSRequired": "'Name' and 'SRS' field required to proceed!",
+    "nameRequired": "'Name' field required to proceed!",
+    "SRSRequired": "'SRS' field required to proceed!",
     "SHP": {
       "loginRequired": "User login is required before layer can be loaded",
-      "nameRequired": "'Name' field required to proceed!",
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file",
-      "maximumNumberOf": "Maximum number of 3 files allowed, but {{length}} selected",
+      "maximumNumberOf": "Maximum number of {{allowed}} files allowed, but {{length}} selected",
       "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf"
     },
     "srs": "SRS",
@@ -111,11 +118,12 @@
       "tileMatrix": "Tile matrix"
     },
     "unauthorizedAccess": "Unauthorized access. You are not authorized to query data from this service",
-    "geotiffParsingProblem": "Geotiff parsing problem",
     "filesSelected": "Files selected",
-    "onlyGeoTIFFimages": "Only GeoTIFF images in EPSG:4326 and EPSG:3857 coordinate systems are currently supported. Please make sure you meet these requirements before uploading.",
     "OlDoesNotRecognizeProjection": "Ol does not recognize requested layers projection",
-    "GPServerServicesAreNotSupported": "GPServer services are not supported!"
+    "missingImageorWorldFile": "Missing an image or world file, please check the files and try again!",
+    "rasterImageryWith": "Raster imagery with georeferencing is currently only supported on EPSG:4326 and EPSG:3857 coordinate systems. Please make sure your data meets these requirements before uploading.",
+    "Raster image": "Raster image",
+    "layerNameAlreadyExists": "Layer name already exists"
   },
   "COMMON": {
     "abstract": "Abstract",
