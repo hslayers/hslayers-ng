@@ -1,9 +1,11 @@
 import {
   Component,
   ComponentFactoryResolver,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 
@@ -29,6 +31,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
    * This is used if undefined value is passed to the create functions data parameter. */
   @Input() data: any;
   @Input() panelObserver?: ReplaySubject<HsPanelItem>;
+  @Output() init = new EventEmitter<void>();
   interval: any;
   private ngUnsubscribe = new Subject<void>();
   constructor(
@@ -61,6 +64,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       .subscribe((item: HsPanelComponent) => {
         this.destroyPanel(item);
       });
+    this.init.emit();
   }
 
   destroyPanel(panel: HsPanelComponent): void {
