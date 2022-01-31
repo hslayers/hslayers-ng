@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -70,30 +70,17 @@ export class HsLayerEditorComponent {
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
-    public hsLayerEditorWidgetContainerService: HsLayerEditorWidgetContainerService
-  ) {
-    this.hsLayerEditorWidgetContainerService.create(HsTypeWidgetComponent, {});
-    this.hsLayerEditorWidgetContainerService.create(
-      HsMetadataWidgetComponent,
-      {}
-    );
-    this.hsLayerEditorWidgetContainerService.create(HsScaleWidgetComponent, {});
-    this.hsLayerEditorWidgetContainerService.create(
-      HsClusterWidgetComponent,
-      {}
-    );
-    this.hsLayerEditorWidgetContainerService.create(
-      HsLegendWidgetComponent,
-      {}
-    );
-    this.hsLayerEditorWidgetContainerService.create(
-      HsLayerEditorDimensionsComponent,
-      {}
-    );
-    this.hsLayerEditorWidgetContainerService.create(
-      HsOpacityWidgetComponent,
-      {}
-    );
+    public hsWidgetContainerService: HsLayerEditorWidgetContainerService
+  ) {}
+
+  createWidgets() {
+    this.hsWidgetContainerService.create(HsTypeWidgetComponent, {});
+    this.hsWidgetContainerService.create(HsMetadataWidgetComponent, {});
+    this.hsWidgetContainerService.create(HsScaleWidgetComponent, {});
+    this.hsWidgetContainerService.create(HsClusterWidgetComponent, {});
+    this.hsWidgetContainerService.create(HsLegendWidgetComponent, {});
+    this.hsWidgetContainerService.create(HsLayerEditorDimensionsComponent, {});
+    this.hsWidgetContainerService.create(HsOpacityWidgetComponent, {});
   }
 
   /**
