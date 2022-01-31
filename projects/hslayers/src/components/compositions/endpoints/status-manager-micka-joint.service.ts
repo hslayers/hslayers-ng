@@ -128,8 +128,8 @@ export class HsCompositionsStatusManagerMickaJointService {
     }
   }
 
-  delete(endpoint, composition) {
-    this.HsCompositionsStatusManagerService.delete(endpoint, composition);
+  async delete(endpoint, composition): Promise<void> {
+    await this.HsCompositionsStatusManagerService.delete(endpoint, composition);
   }
   getCompositionUrls(compData: any): string | Array<string> {
     if (typeof compData == 'string') {

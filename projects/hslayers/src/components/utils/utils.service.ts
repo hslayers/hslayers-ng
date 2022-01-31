@@ -4,11 +4,12 @@ import {PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
+import {ProjectionLike, transform} from 'ol/proj';
+import {getArea, getDistance} from 'ol/sphere';
+import {lastValueFrom} from 'rxjs';
 
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
-import {ProjectionLike, transform} from 'ol/proj';
-import {getArea, getDistance} from 'ol/sphere';
 
 export type Measurement = {
   size: number;
@@ -96,11 +97,14 @@ export class HsUtilsService {
     if (this.HsConfig.shortenUrl != undefined) {
       return this.HsConfig.shortenUrl(url);
     }
-    return await this.http
-      .get(this.proxify('http://tinyurl.com/api-create.php?url=' + url), {
-        responseType: 'text',
-      })
-      .toPromise();
+    return await lastValueFrom(
+      this.http.get(
+        this.proxify('http://tinyurl.com/api-create.php?url=' + url),
+        {
+          responseType: 'text',
+        }
+      )
+    );
     // return new Promise((resolve, reject) => {
     //   this.http
     //     .get(

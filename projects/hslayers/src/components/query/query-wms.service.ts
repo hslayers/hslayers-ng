@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
+import {lastValueFrom} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -86,12 +87,12 @@ export class HsQueryWmsService {
     try {
       const headers = new Headers({'Content-Type': 'text'});
       headers.set('Accept', 'text');
-      const response = await this.httpClient
-        .get(req_url, {
+      const response = await lastValueFrom(
+        this.httpClient.get(req_url, {
           headers: new HttpHeaders().set('Content-Type', 'text'),
           responseType: 'text',
         })
-        .toPromise();
+      );
 
       if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;

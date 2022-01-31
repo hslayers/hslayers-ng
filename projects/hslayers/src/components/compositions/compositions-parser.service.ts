@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 import * as xml2Json from 'xml-js';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {lastValueFrom} from 'rxjs';
 import {transform, transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -17,8 +18,8 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
-import {HsUtilsService} from '../utils/utils.service';
 import {HsToastService} from '../layout/toast/toast.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 import {
   getFromComposition,
@@ -97,7 +98,7 @@ export class HsCompositionsParserService {
         (ep) => ep.type == 'layman'
       )[0]?.url
     );
-    const data: any = await this.$http.get(url, options).toPromise();
+    const data: any = await lastValueFrom(this.$http.get(url, options));
     if (data?.file) {
       // Layman composition wrapper
       return this.loadUrl(data.file.url, overwrite, callback, pre_parse);
@@ -318,10 +319,10 @@ export class HsCompositionsParserService {
     let response;
     if (url.endsWith('.wmc')) {
       options = {responseType: 'text'};
-      response = await this.$http.get(url, options).toPromise();
+      response = await lastValueFrom(this.$http.get(url, options));
       response = this.parseMickaWmcInfo(response);
     } else {
-      response = await this.$http.get(url, options).toPromise();
+      response = await lastValueFrom(this.$http.get(url, options));
     }
     return response.data || response;
   }

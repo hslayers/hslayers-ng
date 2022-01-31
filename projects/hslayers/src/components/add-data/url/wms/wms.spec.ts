@@ -7,8 +7,10 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
+import {lastValueFrom} from 'rxjs';
 
 import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
@@ -95,11 +97,11 @@ describe('add-data-url', () => {
       const serviceURUL = url.includes('?')
         ? url.substring(0, url.indexOf('?'))
         : url;
-      return httpClient
-        .get(serviceURUL + '?service=WMS&request=getCapabilities', {
+      return lastValueFrom(
+        httpClient.get(serviceURUL + '?service=WMS&request=getCapabilities', {
           responseType: 'text',
         })
-        .toPromise();
+      );
     };
   });
 

@@ -1,10 +1,12 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+import {lastValueFrom} from 'rxjs';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -51,8 +53,8 @@ export class HsStatusManagerService implements HsSaverService {
     }
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await this.http
-          .post(this.endpointUrl(), {
+        const response = await lastValueFrom(
+          this.http.post(this.endpointUrl(), {
             data: compositionJson,
             permanent: true,
             id: compoData.id,
@@ -60,7 +62,7 @@ export class HsStatusManagerService implements HsSaverService {
             thumbnail: compoData.thumbnail,
             request: 'save',
           })
-          .toPromise();
+        );
         resolve(response);
       } catch (err) {
         reject();

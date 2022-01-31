@@ -1,6 +1,7 @@
-import {BehaviorSubject, Subject} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
@@ -142,13 +143,13 @@ export class HsSaveMapManagerService {
 
   async confirmSave(): Promise<void> {
     try {
-      const response: any = await this.http
-        .post(this.HsStatusManagerService.endpointUrl(), {
+      const response: any = await lastValueFrom(
+        this.http.post(this.HsStatusManagerService.endpointUrl(), {
           project: this.HsConfig.project_name,
           title: this.compoData.title,
           request: 'rightToSave',
         })
-        .toPromise();
+      );
       const j = response.data;
       this.statusData.hasPermission = j.results.hasPermission;
       this.statusData.titleFree = j.results.titleFree;
@@ -318,15 +319,15 @@ export class HsSaveMapManagerService {
   async fillGroups(): Promise<void> {
     this.statusData.groups = [];
     if (this.HsConfig.advancedForm) {
-      const response: any = await this.http
-        .get(this.HsStatusManagerService.endpointUrl(), {
+      const response: any = await lastValueFrom(
+        this.http.get(this.HsStatusManagerService.endpointUrl(), {
           params: new HttpParams({
             fromObject: {
               request: 'getGroups',
             },
           }),
         })
-        .toPromise();
+      );
       const j = response.data;
       if (j.success) {
         this.statusData.groups = j.result;
@@ -342,9 +343,11 @@ export class HsSaveMapManagerService {
    * Get User info from server and call callback (setUserDetail)
    */
   async loadUserDetails() {
-    const response: any = await this.http
-      .get(this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo')
-      .toPromise();
+    const response: any = await lastValueFrom(
+      this.http.get(
+        this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo'
+      )
+    );
     this.setUserDetails(response);
   }
 

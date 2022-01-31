@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Subject} from 'rxjs';
+import {Subject, lastValueFrom} from 'rxjs';
 
 import {CurrentUserResponse} from './current-user-response.type';
 import {HsEndpoint} from '../endpoints/endpoint.interface';
@@ -28,9 +28,9 @@ export class HsCommonLaymanService {
   async detectAuthChange(endpoint): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
-      const res: CurrentUserResponse = await this.$http
-        .get(url, {withCredentials: true})
-        .toPromise();
+      const res: CurrentUserResponse = await lastValueFrom(
+        this.$http.get(url, {withCredentials: true})
+      );
 
       let somethingChanged = false;
       if (res.code === 32) {
@@ -69,9 +69,7 @@ export class HsCommonLaymanService {
   async logout(endpoint): Promise<void> {
     const url = `${endpoint.url}/logout`;
     try {
-      const response = await this.$http
-        .get(url, {withCredentials: true})
-        .toPromise();
+      await lastValueFrom(this.$http.get(url, {withCredentials: true}));
     } catch (ex) {
       console.warn(ex);
     } finally {

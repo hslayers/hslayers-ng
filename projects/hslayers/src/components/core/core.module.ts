@@ -1,17 +1,16 @@
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
-import {Observable, forkJoin, from} from 'rxjs';
+
+import * as merge from 'deepmerge';
+import {Observable, forkJoin, from, lastValueFrom, map} from 'rxjs';
 import {
   TranslateLoader,
   TranslateModule,
   TranslateService,
   TranslateStore,
 } from '@ngx-translate/core';
-import {map} from 'rxjs/operators';
 
-import * as merge from 'deepmerge';
 import en from '../../assets/locales/en.json';
-
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
@@ -52,9 +51,9 @@ export class WebpackTranslateLoader implements TranslateLoader {
               }
               console.log('assetsPath OK');
             }
-            const res = await this.HttpClient.get(
-              `${hsConfig.assetsPath}/locales/${lang}.json`
-            ).toPromise();
+            const res = await lastValueFrom(
+              this.HttpClient.get(`${hsConfig.assetsPath}/locales/${lang}.json`)
+            );
             resolve(res);
           })();
         })

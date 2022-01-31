@@ -2,6 +2,7 @@ import 'share-api-polyfill';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {lastValueFrom} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -65,21 +66,23 @@ export class HsShareService {
             return a.getZIndex() - b.getZIndex();
           });
         try {
-          await this.HttpClient.post(
-            status_url,
-            JSON.stringify({
-              data: this.HsSaveMapService.map2json(
-                this.HsMapService.map,
-                {layers: layers},
-                {},
-                {}
-              ),
-              permalink: true,
-              id: this.HsShareUrlService.id,
-              project: this.HsConfig.project_name,
-              request: 'save',
-            })
-          ).toPromise();
+          await lastValueFrom(
+            this.HttpClient.post(
+              status_url,
+              JSON.stringify({
+                data: this.HsSaveMapService.map2json(
+                  this.HsMapService.map,
+                  {layers: layers},
+                  {},
+                  {}
+                ),
+                permalink: true,
+                id: this.HsShareUrlService.id,
+                project: this.HsConfig.project_name,
+                request: 'save',
+              })
+            )
+          );
           this.HsShareUrlService.statusSaving = false;
           this.HsShareUrlService.permalinkRequestUrl =
             status_url + '?request=load&id=' + this.HsShareUrlService.id;
@@ -217,18 +220,20 @@ export class HsShareService {
           'Content-Type',
           'text/plain; charset=utf-8'
         );
-        await this.HttpClient.post(
-          endpointUrl,
-          JSON.stringify({
-            request: 'socialShare',
-            id: this.HsShareUrlService.shareId,
-            url: encodeURIComponent(this.getShareUrl()),
-            title: this.data.title,
-            description: this.data.abstract,
-            image: this.data.thumbnail,
-          }),
-          {headers, responseType: 'text'}
-        ).toPromise();
+        await lastValueFrom(
+          this.HttpClient.post(
+            endpointUrl,
+            JSON.stringify({
+              request: 'socialShare',
+              id: this.HsShareUrlService.shareId,
+              url: encodeURIComponent(this.getShareUrl()),
+              title: this.data.title,
+              description: this.data.abstract,
+              image: this.data.thumbnail,
+            }),
+            {headers, responseType: 'text'}
+          )
+        );
 
         const shortUrl = await this.HsUtilsService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`

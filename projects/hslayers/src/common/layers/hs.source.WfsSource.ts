@@ -3,11 +3,12 @@ import {HttpClient} from '@angular/common/http';
 import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
+import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
+import {lastValueFrom} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {HsUtilsService} from '../../components/utils/utils.service';
-import {WFS} from 'ol/format';
 
 export type WfsOptions = {
   data_version?: string;
@@ -66,9 +67,9 @@ export class WfsSource extends Vector<Geometry> {
         ].join('?');
 
         url = hsUtilsService.proxify(url);
-        const response = await http
-          .get(url, {responseType: 'text'})
-          .toPromise();
+        const response = await lastValueFrom(
+          http.get(url, {responseType: 'text'})
+        );
         if (response) {
           const features = readFeatures(
             response,

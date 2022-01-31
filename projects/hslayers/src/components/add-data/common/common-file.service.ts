@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import JSZip from 'jszip';
-import {Subject} from 'rxjs';
+import {Subject, lastValueFrom} from 'rxjs';
 
 import {FileDescriptor} from '../file/types/file-descriptor.type';
 import {HsAddDataCommonService} from './common.service';
@@ -211,36 +211,35 @@ export class HsAddDataCommonFileService {
 
       formdata.append('access_rights.write', write);
       formdata.append('access_rights.read', read);
-      this.httpClient
-        .post(
-          `${endpoint.url}/rest/workspaces/${
-            endpoint.user
-          }/layers?${Math.random()}`,
-          formdata,
-          {withCredentials: true}
-        )
-        .toPromise()
-        .then(async (data: PostLayerResponse[]) => {
-          //CHECK IF OK not auth etc.
-          if (data && data.length > 0) {
-            if (this.asyncLoading) {
-              const promise = await this.hsLaymanService.asyncUpload(
-                files_to_async_upload,
-                data,
-                endpoint
-              );
-              resolve(promise);
-            } else {
-              resolve(data);
-            }
+      try {
+        const data = await lastValueFrom(
+          this.httpClient.post<PostLayerResponse[]>(
+            `${endpoint.url}/rest/workspaces/${
+              endpoint.user
+            }/layers?${Math.random()}`,
+            formdata,
+            {withCredentials: true}
+          )
+        );
+        //CHECK IF OK not auth etc.
+        if (data && data.length > 0) {
+          if (this.asyncLoading) {
+            const promise = await this.hsLaymanService.asyncUpload(
+              files_to_async_upload,
+              data,
+              endpoint
+            );
+            resolve(promise);
           } else {
-            reject(data);
+            resolve(data);
           }
-        })
-        .catch((err) => {
-          this.hsLog.error(err);
-          reject(err);
-        });
+        } else {
+          reject(data);
+        }
+      } catch (err) {
+        this.hsLog.error(err);
+        reject(err);
+      }
     });
   }
 
