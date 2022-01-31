@@ -250,9 +250,7 @@
     "copyLayer": "Kopēt slāni",
     "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā",
     "selectAndConfirmToDeleteMultiple": "Atlasiet un apstipriniet, lai dzēstu vairākus slāņus",
-    "unknown": "Nezināms",
-    "off": "IZSLĒGTA",
-    "on": "IESLĒGTA"
+    "unknown": "Nezināms"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
