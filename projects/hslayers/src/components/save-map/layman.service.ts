@@ -638,6 +638,11 @@ export class HsLaymanService implements HsSaverService {
                 (
                   res: DeleteSingleLayerResponse | DeleteAllLayersResponse[]
                 ) => {
+                  this.HsToastService.removeByText(
+                    this.HsLanguageService.getTranslation(
+                      'LAYMAN.deletionInProgress'
+                    )
+                  );
                   let message = 'LAYMAN.layerSuccessfullyRemoved';
                   if (!layer) {
                     message = 'LAYMAN.allLayersSuccessfullyRemoved';

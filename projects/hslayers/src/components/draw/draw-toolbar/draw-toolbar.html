@@ -60,7 +60,7 @@
                     <div ngbDropdown placement="bottom-right" display="dynamic" style="white-space: nowrap;"
                         #removeLayersDropdown="ngbDropdown">
                         <button type="button" ngbDropdownToggle
-                            class="btn btn-light hs-toolbar-button  btn-outline-secondary">
+                            class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary">
                             <i class="glyphicon icon-trash"></i>
                         </button>
                         <div ngbDropdownMenu class="flex-column px-1 py-2">
@@ -78,9 +78,8 @@
                 </div>
             </ng-container>
             <ng-template #deleteButton>
-                <button type="button" *ngIf="HsDrawService.selectedLayer"
-                    class="btn btn-light hs-toolbar-button  btn-outline-secondary" (click)="HsDrawService.removeLayer()"
-                    [title]="'COMMON.removeLayer' | translate">
+                <button type="button" class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary"
+                    (click)="HsDrawService.removeLayer()" [title]="'COMMON.removeLayer' | translate">
                     <i class="glyphicon icon-trash"></i>
                 </button>
             </ng-template>

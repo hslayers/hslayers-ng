@@ -3,6 +3,16 @@ import {Injectable, TemplateRef} from '@angular/core';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from './../layout.service';
 
+export interface Toast {
+  autohide?: boolean;
+  classname?: string;
+  delay?: number;
+  details?: string[];
+  header?: string;
+  serviceCalledFrom?: string;
+  textOrTpl?: string;
+}
+
 export type customToastOptions = {
   /**
    * Disable text translation
@@ -35,13 +45,22 @@ export class HsToastService {
     public HsLanguageService: HsLanguageService,
     private HsLayoutService: HsLayoutService
   ) {}
-  toasts: any[] = [];
+  toasts: Toast[] = [];
   /**
    * @param toast - Toast pop up
    * Callback method to remove Toast DOM element from view
    */
   remove(toast): void {
     this.toasts = this.toasts.filter((t) => t !== toast);
+  }
+
+  removeByText(text: string): void {
+    const found = this.toasts.filter((t) => t.textOrTpl === text);
+    if (found?.length > 0) {
+      for (const f of found) {
+        this.remove(f);
+      }
+    }
   }
   /**
    * @param textOrTpl - Text or a template message to display
