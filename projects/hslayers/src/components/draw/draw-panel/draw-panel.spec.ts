@@ -5,15 +5,18 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
-import {of} from 'rxjs';
+import {HttpClientModule} from '@angular/common/http';
 
 import VectorLayer from 'ol/layer/Vector';
-import {Polygon} from 'ol/geom';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
+import {of} from 'rxjs';
 
 import {DrawPanelComponent} from './draw-panel.component';
+import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig} from '../../../config.service';
 import {HsDrawService} from '../draw.service';
@@ -28,7 +31,6 @@ import {HsQueryBaseService} from '../../query/query-base.service';
 import {HsQueryVectorService} from '../../query/query-vector.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 
 class emptyMock {
@@ -40,6 +42,13 @@ class HsConfigMock {
 
 class HsQueryVectorMock {
   constructor() {}
+}
+
+class HsCommonEndpointsServiceMock {
+  constructor() {}
+  fillLayerMetadata() {
+    return;
+  }
 }
 
 describe('HsDrawPanel', () => {
@@ -56,6 +65,11 @@ describe('HsDrawPanel', () => {
     ...jasmine.createSpyObj('HsLaymanService', ['getLaymanEndpoint']),
     laymanLayerPending: of([]),
   };
+  const mockHsCommonEndpointsService = {
+    ...jasmine.createSpyObj('HsCommonEndpointsService', ['fillEndpoints']),
+    endpointsFilled: of([]),
+  };
+
   const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
     'getTranslation',
     'getTranslationIgnoreNonExisting',
@@ -83,7 +97,12 @@ describe('HsDrawPanel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, TranslateModule.forRoot(), NgbDropdownModule],
+      imports: [
+        FormsModule,
+        TranslateModule.forRoot(),
+        NgbDropdownModule,
+        HttpClientModule,
+      ],
       declarations: [DrawPanelComponent],
       providers: [
         HsDrawService,
@@ -95,7 +114,15 @@ describe('HsDrawPanel', () => {
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
         {provide: HsLaymanService, useValue: mockLaymanService},
-        {provide: HsLaymanBrowserService, useValue: new emptyMock()},
+        {
+          provide: HsCommonEndpointsService,
+          useValue: mockHsCommonEndpointsService,
+        },
+        {
+          provide: HsLaymanBrowserService,
+          useValue: new HsCommonEndpointsServiceMock(),
+        },
+        {provice: HsAddDataOwsService, useValue: new emptyMock()},
         {provide: HsAddDataVectorService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
