@@ -586,7 +586,8 @@
     },
     "layerSuccessfullyRemoved": "Layer successfully removed",
     "allLayersSuccessfullyRemoved": "All layers successfully removed",
-    "deleteLayersRequest": "Delete layers request"
+    "deleteLayersRequest": "Delete layers request",
+    "deletionInProgress": "Deletion in progress, please wait!"
   },
   "MAP": {
     "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map",

@@ -862,7 +862,8 @@
     },
     "allLayersSuccessfullyRemoved": "Visi slāņi veiksmīgi noņemti",
     "layerSuccessfullyRemoved": "Slānis veiksmīgi noņemts",
-    "deleteLayersRequest": "Slāņu dzēšanas pieprasījums"
+    "deleteLayersRequest": "Slāņu dzēšanas pieprasījums",
+    "deletionInProgress": "Notiek dzēšana, lūdzu, uzgaidiet!"
   },
   "MAP_SWIPE": {
     "bottom": "Apakša",

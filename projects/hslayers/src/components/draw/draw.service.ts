@@ -64,8 +64,8 @@ const TMP_LAYER_TITLE = 'tmpDrawLayer';
 export class HsDrawService {
   drawableLayers: Array<any> = [];
   drawableLaymanLayers: Array<any> = [];
-  hasSomeDrawables: boolean;
-  moreThenOneDrawable: boolean;
+  hasSomeDrawables = false;
+  moreThenOneDrawable = false;
   draw: Draw;
   modify: Modify;
 
@@ -543,7 +543,7 @@ export class HsDrawService {
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
 
     this.moreThenOneDrawable =
-      this.drawableLayers.length + this.drawableLaymanLayers.length > 1;
+      this.drawableLayers?.length + this.drawableLaymanLayers?.length > 1;
   }
 
   private selectedLayerNotAvailable(drawables) {
@@ -607,6 +607,16 @@ export class HsDrawService {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
+      this.hsToastService.createToastPopupMessage(
+        this.HsLanguageService.getTranslation('LAYMAN.deleteLayersRequest'),
+        this.HsLanguageService.getTranslation('LAYMAN.deletionInProgress'),
+        {
+          toastStyleClasses: 'bg-info text-white',
+          serviceCalledFrom: 'HsDrawService',
+          disableLocalization: true,
+          customDelay: 600000,
+        }
+      );
       const drawableLaymanRm = this.drawableLaymanLayers.filter(
         (l) => l.toRemove
       );
@@ -626,7 +636,6 @@ export class HsDrawService {
           await this.completeLayerRemoval(l);
         }
       }
-
       this.selectedLayer = null;
       this.fillDrawableLayers();
     }
