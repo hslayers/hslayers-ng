@@ -325,7 +325,7 @@ export class HsDrawService {
    */
   async selectLayer(layer) {
     let lyr = layer;
-    if (layer.type) {
+    if (layer.workspace) {
       lyr = await this.HsAddDataVectorService.addVectorLayer(
         'wfs',
         this.laymanEndpoint.url,
