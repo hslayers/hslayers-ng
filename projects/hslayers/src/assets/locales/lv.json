@@ -458,7 +458,7 @@
       "selectedFeature": "Izvēlētais objekts",
       "onlyOneFeatureToEdit": "Vienlaicīgi var rediģēt (sadalīt) tikai vienu objektu!"
     },
-    "deleteNotePlural": "*Visi atlasītie slāņi tiks pilnībā izdzēsti. Ja vēlaties dzēst visus atlasītos slāņus tikai no pašreizējās kompozīcijas (saglabājot to datu bāzē), dariet to panelī Layermanager.",
+    "deleteNotePlural": "* Visi atlasītie slāņi tiks pilnībā izdzēsti. Ja vēlaties dzēst visus atlasītos slāņus tikai no pašreizējās kompozīcijas (saglabājot to datu bāzē), dariet to panelī Layermanager.",
     "pleaseCheckTheLayers": "Lūdzu, atzīmējiet slāņus, kurus vēlaties dzēst",
     "removeMultipleLayers": "Noņemiet vairākus slāņus"
   },
