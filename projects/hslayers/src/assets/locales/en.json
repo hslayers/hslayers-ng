@@ -404,7 +404,7 @@
     "boxSelection": "Box selection",
     "boxSelectionActivated": "Box selection activated",
     "definedStyle": "Defined style",
-    "deleteNotePlural": "*All selected layers will be deleted completely. In case you want to delete all selected layers from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
+    "deleteNotePlural": "* All selected layers will be deleted completely. In case you want to delete all selected layers from the current compositon only (preserving it in database) do so in 'LayerManager' panel.",
     "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
     "deselectAllFeatures": "Deselect all features",
     "disableDrawing": "Disable drawing",

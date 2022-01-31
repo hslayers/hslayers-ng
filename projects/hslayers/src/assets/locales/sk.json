@@ -458,7 +458,7 @@
         "union": "Zjednotenie"
       }
     },
-    "deleteNotePlural": "*Všetky vybrané vrstvy budú kompletne odstránené. V prípade, že si prajete vrstvy ponechať v databáze, využite možnosť odstránenia vrstiev v panely 'Správca vrstiev'",
+    "deleteNotePlural": "* Všetky vybrané vrstvy budú kompletne odstránené. V prípade, že si prajete vrstvy ponechať v databáze, využite možnosť odstránenia vrstiev v panely 'Správca vrstiev'",
     "pleaseCheckTheLayers": "Vyberte vrstvy, ktoré si prajete vymazať",
     "removeMultipleLayers": "Odstráňte viacero vrstiev"
   },
