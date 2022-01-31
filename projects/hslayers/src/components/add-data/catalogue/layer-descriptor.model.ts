@@ -28,4 +28,5 @@ export interface HsAddDataLayerDescriptor {
   };
   featureId?: string;
   highlighted?: boolean;
+  toRemove?: boolean;
 }

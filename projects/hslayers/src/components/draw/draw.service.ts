@@ -12,6 +12,7 @@ import {Subject, lastValueFrom} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 
+import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -129,6 +130,7 @@ export class HsDrawService {
     public HsUtilsService: HsUtilsService,
     public HsCommonLaymanService: HsCommonLaymanService,
     public hsToastService: HsToastService,
+    public hsAddDataOwsService: HsAddDataOwsService,
     private zone: NgZone
   ) {
     this.keyUp = this.keyUp.bind(this);
@@ -321,9 +323,39 @@ export class HsDrawService {
   /**
    * Handles drawing layer selection/change by activating drawing for selected layer.
    * In case of Layman layer not yet existing in app it pulls the layer first.
-   * @param layer
+   * @param layer -
    */
   async selectLayer(layer) {
+    let metadata;
+    if (!(layer instanceof Layer)) {
+      metadata = await this.hsLaymanBrowserService.fillLayerMetadata(
+        this.laymanEndpoint,
+        layer
+      );
+    }
+    if (metadata && !metadata?.type?.includes('WFS')) {
+      const dialog = this.hsDialogContainerService.create(
+        HsConfirmDialogComponent,
+        {
+          message: this.HsLanguageService.getTranslation(
+            'DRAW.thisLayerDoesNotSupportDrawing'
+          ),
+          title: this.HsLanguageService.getTranslation('DRAW.notAVectorLayer'),
+        }
+      );
+      const confirmed = await dialog.waitResult();
+      if (confirmed == 'yes') {
+        await this.hsAddDataOwsService.connectToOWS({
+          type: 'wms',
+          uri: decodeURIComponent(metadata.wms.url),
+          layer: layer.name,
+        });
+        this.selectedLayer = null;
+        this.fillDrawableLayers();
+      }
+      return;
+    }
+
     let lyr = layer;
     if (layer.workspace) {
       lyr = await this.HsAddDataVectorService.addVectorLayer(
