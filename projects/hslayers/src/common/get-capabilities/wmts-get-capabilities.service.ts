@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Layer, Tile} from 'ol/layer';
 import {Source, WMTS} from 'ol/source';
-import {takeUntil} from 'rxjs/operators';
+import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
@@ -106,12 +106,13 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     }
     try {
       url = this.hsUtilsService.proxify(url);
-      const r = await this.httpClient
-        .get(url, {
-          responseType: 'text',
-        })
-        .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
-        .toPromise();
+      const r = await lastValueFrom(
+        this.httpClient
+          .get(url, {
+            responseType: 'text',
+          })
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+      );
 
       const wrap = {response: r};
       this.hsCapabilityCacheService.set(url, wrap);

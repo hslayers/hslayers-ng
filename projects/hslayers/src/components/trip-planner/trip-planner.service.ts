@@ -4,18 +4,17 @@ import {Injectable} from '@angular/core';
 import Collection from 'ol/Collection';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Draw, Modify} from 'ol/interaction';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {Point} from 'ol/geom';
-import {catchError, timeout} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {catchError, lastValueFrom, of, timeout} from 'rxjs';
 import {transform} from 'ol/proj';
 
-import Layer from 'ol/layer/Layer';
-import Source from 'ol/source/Source';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -413,40 +412,41 @@ export class HsTripPlannerService {
         const url = this.HsUtilsService.proxify(
           'https://api.openrouteservice.org/v2/directions/driving-car/geojson'
         );
-        const response = await this.$http
-          .post(url, {
-            'coordinates': [
-              [wpf.lon, wpf.lat],
-              [wpt.lon, wpt.lat],
-            ],
-          })
-          .pipe(
-            timeout(10000),
-            catchError((e) => {
-              let title = this.HsLanguageService.getTranslation(
-                'TRIP_PLANNER.serviceDown'
-              );
-              if (e.status == 404) {
-                title = this.HsLanguageService.getTranslation(
-                  'TRIP_PLANNER.missingAuth'
-                );
-              }
-              this.HsToastService.createToastPopupMessage(
-                title,
-                this.HsLanguageService.getTranslationIgnoreNonExisting(
-                  'ERRORMESSAGES',
-                  e.message,
-                  {url: url}
-                ),
-                {
-                  disableLocalization: true,
-                  serviceCalledFrom: 'HsTripPlannerService',
-                }
-              );
-              return of(null);
+        const response = await lastValueFrom(
+          this.$http
+            .post(url, {
+              'coordinates': [
+                [wpf.lon, wpf.lat],
+                [wpt.lon, wpt.lat],
+              ],
             })
-          )
-          .toPromise();
+            .pipe(
+              timeout(10000),
+              catchError((e) => {
+                let title = this.HsLanguageService.getTranslation(
+                  'TRIP_PLANNER.serviceDown'
+                );
+                if (e.status == 404) {
+                  title = this.HsLanguageService.getTranslation(
+                    'TRIP_PLANNER.missingAuth'
+                  );
+                }
+                this.HsToastService.createToastPopupMessage(
+                  title,
+                  this.HsLanguageService.getTranslationIgnoreNonExisting(
+                    'ERRORMESSAGES',
+                    e.message,
+                    {url: url}
+                  ),
+                  {
+                    disableLocalization: true,
+                    serviceCalledFrom: 'HsTripPlannerService',
+                  }
+                );
+                return of(null);
+              })
+            )
+        );
         if (!response) {
           return;
         }

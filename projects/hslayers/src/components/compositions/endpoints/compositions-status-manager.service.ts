@@ -1,8 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {catchError, map, timeout} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {catchError, lastValueFrom, map, of, timeout} from 'rxjs';
 
 import {
   EndpointErrorHandler,
@@ -148,7 +147,7 @@ export class HsCompositionsStatusManagerService {
     );
   }
 
-  delete(endpoint, composition) {
+  async delete(endpoint, composition): Promise<void> {
     let url =
       this.HsStatusManagerService.endpointUrl() +
       '?request=delete&id=' +
@@ -156,7 +155,7 @@ export class HsCompositionsStatusManagerService {
       '&project=' +
       encodeURIComponent(this.HsConfig.project_name);
     url = this.HsUtilsService.proxify(url);
-    this.$http.get(url).toPromise();
+    await lastValueFrom(this.$http.get(url));
     this.HsEventBusService.compositionDeletes.next(composition);
   }
 }

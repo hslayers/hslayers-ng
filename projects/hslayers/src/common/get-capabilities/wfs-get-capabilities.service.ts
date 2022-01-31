@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {takeUntil} from 'rxjs/operators';
+import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
@@ -101,12 +101,13 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
-      const r = await this.httpClient
-        .get(url, {
-          responseType: 'text',
-        })
-        .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
-        .toPromise();
+      const r = await lastValueFrom(
+        this.httpClient
+          .get(url, {
+            responseType: 'text',
+          })
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+      );
       const wrap = {response: r};
       this.hsCapabilityCacheService.set(url, wrap);
       return wrap;

@@ -1,5 +1,4 @@
 import {Injectable, NgZone} from '@angular/core';
-import {Subject} from 'rxjs';
 
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
@@ -9,6 +8,7 @@ import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
+import {Subject, lastValueFrom} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 
@@ -524,11 +524,13 @@ export class HsDrawService {
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
-      await this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint, {
-        onlyMine: this.onlyMine,
-        limit: '',
-        query: {},
-      }).toPromise();
+      await lastValueFrom(
+        this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint, {
+          onlyMine: this.onlyMine,
+          limit: '',
+          query: {},
+        })
+      );
       if (this.laymanEndpoint.layers) {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
           (layer) => {

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, lastValueFrom} from 'rxjs';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HS_PRMS} from '../permalink/get-params';
@@ -126,8 +126,8 @@ export class HsCompositionsService {
     }
   }
 
-  deleteComposition(composition): void {
-    this.managerByType(composition.endpoint)?.delete(
+  async deleteComposition(composition): Promise<void> {
+    await this.managerByType(composition.endpoint)?.delete(
       composition.endpoint,
       composition
     );
@@ -145,8 +145,8 @@ export class HsCompositionsService {
       'Content-Type',
       'text/plain; charset=utf-8'
     );
-    return await this.http
-      .post(
+    return await lastValueFrom(
+      this.http.post(
         this.hsStatusManagerService.endpointUrl(),
         JSON.stringify({
           request: 'socialShare',
@@ -158,7 +158,7 @@ export class HsCompositionsService {
         }),
         {headers, responseType: 'text'}
       )
-      .toPromise();
+    );
   }
   async getShareUrl(): Promise<string> {
     try {
@@ -242,7 +242,7 @@ export class HsCompositionsService {
       return;
     }
     const layersUrl = this.hsUtilsService.proxify(permalink);
-    const response: any = await this.http.get(layersUrl).toPromise();
+    const response: any = await lastValueFrom(this.http.get(layersUrl));
     if (response.success == true) {
       const data: any = {};
       data.data = {};

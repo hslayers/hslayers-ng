@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
 import {Source, TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
-import {takeUntil} from 'rxjs/operators';
+import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
@@ -107,17 +107,18 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
-      const r = await this.httpClient
-        .get(url, {
-          responseType: 'text',
-          withCredentials: url.includes(
-            this.hsCommonEndpointsService?.endpoints.filter(
-              (ep) => ep.type == 'layman'
-            )[0]?.url
-          ),
-        })
-        .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
-        .toPromise();
+      const r = await lastValueFrom(
+        this.httpClient
+          .get(url, {
+            responseType: 'text',
+            withCredentials: url.includes(
+              this.hsCommonEndpointsService?.endpoints.filter(
+                (ep) => ep.type == 'layman'
+              )[0]?.url
+            ),
+          })
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+      );
       const wrap = {response: r};
       this.hsCapabilityCacheService.set(url, wrap);
       return wrap;

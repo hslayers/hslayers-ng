@@ -1,8 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Observable, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
+import {Observable, catchError, lastValueFrom, map, of, timeout} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {
@@ -213,23 +212,22 @@ export class HsLaymanBrowserService {
   ): Promise<HsAddDataLayerDescriptor> {
     const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
-      return await this.http
-        .get(url, {
+      const data = await lastValueFrom(
+        this.http.get<HsLaymanLayerDescriptor>(url, {
           //timeout: endpoint.canceler.promise,
           //endpoint,
           responseType: 'json',
           withCredentials: true,
         })
-        .toPromise()
-        .then((data: HsLaymanLayerDescriptor) => {
-          layer.type =
-            data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
-          layer = {...layer, ...data};
-          if (layer.thumbnail) {
-            layer.thumbnail = endpoint.url + layer.thumbnail.url;
-          }
-          return layer;
-        });
+      );
+
+      layer.type =
+        data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
+      layer = {...layer, ...data};
+      if (layer.thumbnail) {
+        layer.thumbnail = endpoint.url + layer.thumbnail.url;
+      }
+      return layer;
     } catch (e) {
       this.log.error(e);
       return e;
@@ -287,12 +285,13 @@ export class HsLaymanBrowserService {
 
   async getStyleFromUrl(styleUrl: string): Promise<string> {
     try {
-      const req = this.http.get(styleUrl, {
-        headers: new HttpHeaders().set('Content-Type', 'text'),
-        responseType: 'text',
-        withCredentials: true,
-      });
-      return await req.toPromise();
+      return await lastValueFrom(
+        this.http.get(styleUrl, {
+          headers: new HttpHeaders().set('Content-Type', 'text'),
+          responseType: 'text',
+          withCredentials: true,
+        })
+      );
     } catch (ex) {
       console.error(ex);
     }

@@ -1,14 +1,14 @@
-import Resumable from 'resumablejs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject, catchError, forkJoin, map, of} from 'rxjs';
 
+import Resumable from 'resumablejs';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {GeoJSON, WFS} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Subject, catchError, forkJoin, lastValueFrom, map, of} from 'rxjs';
 
 import {
   DeleteAllLayersResponse,
@@ -130,13 +130,15 @@ export class HsLaymanService implements HsSaverService {
           headers: headers,
           withCredentials: true,
         };
-        response = await this.http[saveAsNew ? 'post' : 'patch'](
-          `${endpoint.url}/rest/workspaces/${workspace}/maps${
-            saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
-          }`,
-          formdata,
-          options
-        ).toPromise();
+        response = await lastValueFrom(
+          this.http[saveAsNew ? 'post' : 'patch'](
+            `${endpoint.url}/rest/workspaces/${workspace}/maps${
+              saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
+            }`,
+            formdata,
+            options
+          )
+        );
         //Unsuccessfull request response contains code,detail and message properties
         if (!response.code) {
           success = true;
@@ -231,33 +233,29 @@ export class HsLaymanService implements HsSaverService {
       } catch (ex) {
         this.HsLogService.log(`Creating layer ${description.name}`);
       }
-      return await this.http[layerDesc2?.name ? 'patch' : 'post'](
-        `${endpoint.url}/rest/workspaces/${description.workspace}/layers${
-          layerDesc2?.name ? '/' + description.name : ''
-        }?${Math.random()}`,
-        formdata,
-        options
-      )
-        .toPromise()
-        .then(async (data: any) => {
-          if (data && data.length > 0) {
-            if (async_upload) {
-              const promise = await this.asyncUpload(
-                files_to_async_upload,
-                data,
-                {
-                  url: endpoint.url,
-                  user: description.workspace,
-                }
-              );
-              return promise;
-            } else {
-              return data;
-            }
-          } else {
-            return data;
-          }
-        });
+      const data = await lastValueFrom(
+        this.http[layerDesc2?.name ? 'patch' : 'post']<any>(
+          `${endpoint.url}/rest/workspaces/${description.workspace}/layers${
+            layerDesc2?.name ? '/' + description.name : ''
+          }?${Math.random()}`,
+          formdata,
+          options
+        )
+      );
+
+      if (data && data.length > 0) {
+        if (async_upload) {
+          const promise = await this.asyncUpload(files_to_async_upload, data, {
+            url: endpoint.url,
+            user: description.workspace,
+          });
+          return promise;
+        } else {
+          return data;
+        }
+      } else {
+        return data;
+      }
     } catch (err) {
       throw err;
     }
@@ -469,7 +467,9 @@ export class HsLaymanService implements HsSaverService {
       const body = featureNode.outerHTML
         .replace(/<geometry>/gm, '<wkb_geometry>')
         .replace(/<\/geometry>/gm, '</wkb_geometry>');
-      const r: any = await this.http.post(url, body, httpOptions).toPromise();
+      const r: any = await lastValueFrom(
+        this.http.post(url, body, httpOptions)
+      );
       return r;
     } catch (ex) {
       this.HsLogService.error(ex);
@@ -527,8 +527,8 @@ export class HsLaymanService implements HsSaverService {
     try {
       /* When OL will support GML3.2, then we can use WFS
         version 2.0.0. Currently only 3.1.1 is possible */
-      const response: string = await this.http
-        .get(
+      const response: string = await lastValueFrom(
+        this.http.get(
           descr.wfs.url +
             '?' +
             this.HsUtilsService.paramsToURL({
@@ -541,7 +541,7 @@ export class HsLaymanService implements HsSaverService {
             }),
           {responseType: 'text', withCredentials: true}
         )
-        .toPromise();
+      );
       return response;
     } catch (ex) {
       return null;
@@ -562,8 +562,8 @@ export class HsLaymanService implements HsSaverService {
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
-      const response: HsLaymanLayerDescriptor = await this.http
-        .get(
+      const response: HsLaymanLayerDescriptor = await lastValueFrom(
+        this.http.get(
           `${
             endpoint.url
           }/rest/workspaces/${workspace}/layers/${layerName}?${Math.random()}`,
@@ -571,7 +571,7 @@ export class HsLaymanService implements HsSaverService {
             withCredentials: true,
           }
         )
-        .toPromise();
+      );
       if (response?.code == 15 || response?.code == 15 || wfsFailed(response)) {
         return null;
       }

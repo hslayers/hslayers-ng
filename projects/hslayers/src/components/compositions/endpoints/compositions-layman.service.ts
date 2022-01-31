@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
+
+import {Observable, catchError, lastValueFrom, map, of, timeout} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {
@@ -173,7 +173,7 @@ export class HsCompositionsLaymanService {
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
-    await this.$http.delete(url, {withCredentials: true}).toPromise();
+    await lastValueFrom(this.$http.delete(url, {withCredentials: true}));
     this.hsEventBusService.compositionDeletes.next(composition);
   }
 

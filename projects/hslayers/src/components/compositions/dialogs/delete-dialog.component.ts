@@ -21,11 +21,11 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
 
   /**
    * @public
-   * @param {object} composition Composition selected for deletion
-   * @description Delete selected composition from project (including deletion from composition server, useful for user created compositions)
+   * @param composition - Composition selected for deletion
+   * Delete selected composition from project (including deletion from composition server, useful for user created compositions)
    */
-  delete(composition) {
-    this.HsCompositionsService.deleteComposition(composition);
+  async delete(composition): Promise<void> {
+    await this.HsCompositionsService.deleteComposition(composition);
     this.close();
   }
 }
