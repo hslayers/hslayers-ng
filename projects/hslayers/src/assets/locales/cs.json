@@ -569,7 +569,8 @@
     "User generated": "Uživatelský",
     "dialogRemoveLayer": {
       "dialogMessage": "Opravdu chcete odstranit vybranou vrstvu?"
-    }
+    },
+    "toggleAllLayerVisibility": "Přepnout viditelnost všech vrstev"
   },
   "LAYERS": {
     "existingLayer": "Existující vrstva",
