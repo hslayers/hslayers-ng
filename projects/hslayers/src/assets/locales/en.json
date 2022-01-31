@@ -570,7 +570,7 @@
       "syncTimesTooltip": "Synchronize time for all layers"
     },
     "User generated": "User generated",
-    "toggleAllLayerVisibility": "Toggle all layer visibility"
+    "toggleAllLayerVisibility": "Toggle visibility of all layers"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",
