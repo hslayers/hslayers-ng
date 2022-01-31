@@ -117,19 +117,8 @@ export class HsAddDataUrlService {
   ): any {
     if (serviceLayer[selector] == layerToSelect) {
       serviceLayer.checked = true;
-      this.scrollToLayer(serviceLayer[selector]);
     }
     return serviceLayer;
-  }
-
-  scrollToLayer(name: string): void {
-    setTimeout(() => {
-      const id = `#hs-add-layer-${name}`;
-      const el = this.hsLayoutService.contentWrapper.querySelector(id);
-      if (el) {
-        el.scrollIntoView();
-      }
-    }, 1000);
   }
 
   searchForChecked(records: Array<any>): void {
