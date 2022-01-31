@@ -460,7 +460,9 @@
     },
     "deleteNotePlural": "* Všetky vybrané vrstvy budú kompletne odstránené. V prípade, že si prajete vrstvy ponechať v databáze, využite možnosť odstránenia vrstiev v panely 'Správca vrstiev'",
     "pleaseCheckTheLayers": "Vyberte vrstvy, ktoré si prajete vymazať",
-    "removeMultipleLayers": "Odstráňte viacero vrstiev"
+    "removeMultipleLayers": "Odstráňte viacero vrstiev",
+    "notAVectorLayer": "Vrstva nie je vektorová",
+    "thisLayerDoesNotSupportDrawing": "Táto vrstva nepodporuje kreslenie, chcete ju napriek tomu pridať?"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
@@ -569,7 +571,8 @@
     "User generated": "Užívateľské",
     "dialogRemoveLayer": {
       "dialogMessage": "Naozaj chcete odstrániť vybratú vrstvu?"
-    }
+    },
+    "toggleAllLayerVisibility": "Prepnúť viditeľnosť všetkých vrstiev"
   },
   "LAYERS": {
     "existingLayer": "Existujúca vrstva",
@@ -862,7 +865,8 @@
     },
     "allLayersSuccessfullyRemoved": "Všetky vrstvy boli úspešne vymazané",
     "deleteLayersRequest": "Požiadavka na vymazanie vrstiev",
-    "layerSuccessfullyRemoved": "Vrstva bola úspešne vymazaná"
+    "layerSuccessfullyRemoved": "Vrstva bola úspešne vymazaná",
+    "deletionInProgress": "Prebieha odstraňovanie, prosím čakajte!"
   },
   "MAP_SWIPE": {
     "dndLayers": "Potiahnutím presuniete vrstvy medzi stranami mapy!",
