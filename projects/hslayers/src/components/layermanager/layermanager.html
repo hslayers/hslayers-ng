@@ -6,14 +6,14 @@
                         class="icon-menu"></i></button>
                 <div ngbDropdownMenu>
                     <a class="dropdown-item" (click)="physicalLayerListEnabled = !physicalLayerListEnabled">
-                        <i class="glyphicon icon-layerorder"></i> {{'LAYERMANAGER.enablePhysicalLayerList' | translate}}
+                        <i class="glyphicon icon-layerorder hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.enablePhysicalLayerList' | translate}}
                     </a>
                     <a class="dropdown-item" (click)="removeAllLayers()">
-                        <i class="glyphicon icon-trash"></i> {{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' |
+                        <i class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' |
                         translate}}
                     </a>
                     <a class="dropdown-item" (click)="hsCore.resetMap()">
-                        <i class="glyphicon icon-fatredo"></i> {{'LAYERMANAGER.resetMap' | translate}}
+                        <i class="glyphicon icon-fatredo hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.resetMap' | translate}}
                     </a>
                     <a class="dropdown-item"
                         *ngIf="hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled"
