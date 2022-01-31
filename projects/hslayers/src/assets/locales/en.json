@@ -460,7 +460,9 @@
       "onlyOneFeatureToEdit": "Only one feature can be edited (split) at the time!"
     },
     "pleaseCheckTheLayers": "Please check the layers you want to delete",
-    "removeMultipleLayers": "Remove multiple layers"
+    "removeMultipleLayers": "Remove multiple layers",
+    "thisLayerDoesNotSupportDrawing": "This layer does not support drawing, would You like to add it anyway?",
+    "notAVectorLayer": "Not a vector layer"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",

@@ -460,7 +460,9 @@
     },
     "deleteNotePlural": "* Visi atlasītie slāņi tiks pilnībā izdzēsti. Ja vēlaties dzēst visus atlasītos slāņus tikai no pašreizējās kompozīcijas (saglabājot to datu bāzē), dariet to panelī Layermanager.",
     "pleaseCheckTheLayers": "Lūdzu, atzīmējiet slāņus, kurus vēlaties dzēst",
-    "removeMultipleLayers": "Noņemiet vairākus slāņus"
+    "removeMultipleLayers": "Noņemiet vairākus slāņus",
+    "notAVectorLayer": "Nav vektorslānis",
+    "thisLayerDoesNotSupportDrawing": "Šis slānis neatbalsta zīmēšanu. Vai tomēr vēlaties to pievienot?"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
