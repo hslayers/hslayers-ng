@@ -460,7 +460,9 @@
     },
     "removeMultipleLayers": "Odstranit více vrstev",
     "pleaseCheckTheLayers": "Zaškrtněte prosím vrstvy, které chcete smazat",
-    "deleteNotePlural": "* Všechny vybrané vrstvy budou navždy smazány. V případě, že chcete tyto vrstvy pouze odebrat z aktuální kompozice (a ponechat je v databázi), odeberte je v panelu 'Správce vrstev'."
+    "deleteNotePlural": "* Všechny vybrané vrstvy budou navždy smazány. V případě, že chcete tyto vrstvy pouze odebrat z aktuální kompozice (a ponechat je v databázi), odeberte je v panelu 'Správce vrstev'.",
+    "notAVectorLayer": "Vrstva není vektorová",
+    "thisLayerDoesNotSupportDrawing": "Tato vrstva neumožňuje kreslení, chcete ji přesto přidat?"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
@@ -863,7 +865,8 @@
     },
     "allLayersSuccessfullyRemoved": "Všechny vrstvy úspěšně odstraněny",
     "layerSuccessfullyRemoved": "Vrstva úspěšně odstraněna",
-    "deleteLayersRequest": "Požadavek na smazání vrstvy"
+    "deleteLayersRequest": "Požadavek na smazání vrstvy",
+    "deletionInProgress": "Probíhá mazání, počkejte prosím!"
   },
   "MAP_SWIPE": {
     "horizontalSwipe": "Vodorovný posuvník",
