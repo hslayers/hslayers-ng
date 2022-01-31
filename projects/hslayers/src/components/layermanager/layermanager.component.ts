@@ -228,12 +228,6 @@ export class HsLayerManagerComponent
     });
   }
 
-  getButttonStateString(): string {
-    return this.allLayersVisible
-      ? this.hsLanguageService.getTranslation('COMMON.off')
-      : this.hsLanguageService.getTranslation('COMMON.on');
-  }
-
   /**
    * Removes layer from map object
    * @param layer - Layer to remove
