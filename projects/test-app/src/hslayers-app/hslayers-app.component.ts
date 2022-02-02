@@ -65,6 +65,7 @@ export class HslayersAppComponent {
             'name': 'Poly 3',
             'population': Math.floor(Math.random() * 100000),
           },
+          'id': 'poly1',
         },
         {
           'type': 'Feature',
@@ -84,6 +85,7 @@ export class HslayersAppComponent {
             'name': 'Poly 2',
             'population': Math.floor(Math.random() * 100000),
           },
+          'id': 'poly2',
         },
         {
           'type': 'Feature',
