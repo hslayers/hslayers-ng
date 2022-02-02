@@ -38,6 +38,7 @@ import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
+import VectorLayer from 'ol/layer/Vector';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -56,6 +57,11 @@ export enum DuplicateHandling {
   IgnoreNew = 1,
   RemoveOriginal = 2,
 }
+
+type VectorAndSource = {
+  source: VectorSource<Geometry> | Cluster;
+  layer: VectorLayer<VectorSource<Geometry>>;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -138,7 +144,9 @@ export class HsMapService {
 
   element: any;
   visible: boolean;
-  featureLayerMapping = {};
+  featureLayerMapping: {
+    [key: string]: VectorAndSource[];
+  } = {};
   /** Copy of the default_view for map resetting purposes */
   originalView: {center: number[]; zoom: number; rotation: number};
 
@@ -168,19 +176,20 @@ export class HsMapService {
    * Returns the associated layer for feature.
    * This is used in query-vector.service to get the layer of clicked
    * feature when features are listed in info panel.
-   *
    * @param feature
-   * @returns {Vector} Layer.
+   * @returns VectorLayer
    */
-  getLayerForFeature(feature) {
+  getLayerForFeature(
+    feature
+  ): VectorLayer<VectorSource<Geometry>> | VectorLayer<Cluster> {
     if (typeof feature.getId() == 'undefined') {
       feature.setId(this.HsUtilsService.generateUuid());
     }
     const fid = feature.getId();
     if (this.featureLayerMapping[fid]) {
-      return this.featureLayerMapping[fid];
+      this.refineLayerSearch(this.featureLayerMapping[fid], feature);
     }
-    let layer_;
+    const layersFound: VectorAndSource[] = [];
     const layersToLookFor = [];
     this.getVectorLayers(layersToLookFor);
     for (const obj of layersToLookFor) {
@@ -190,29 +199,52 @@ export class HsMapService {
         found = obj.source.getFeatureById(fid);
       } else {
         //For cluster layers we need to loop through features
-        found = obj.source.getFeatures().some((layer_feature) => {
-          return layer_feature === feature;
-        });
+        found = this.findFeatureByInst(obj, feature) !== undefined;
       }
-
       if (found) {
-        layer_ = obj.layer;
-        break;
+        layersFound.push(obj);
+        //break; Tempting to use break, but if multiple layers contain features with same id we won't find them all.
       }
     }
-    if (layer_ && !this.featureLayerMapping[fid]) {
+    if (layersFound && !this.featureLayerMapping[fid]) {
       //TODO: Will have to delete the mapping at some point when layer is cleared or feature removed
-      this.featureLayerMapping[fid] = layer_;
+      this.featureLayerMapping[fid] = layersFound;
     }
-    return layer_;
+    return this.refineLayerSearch(layersFound, feature);
   }
 
-  getVectorLayers(
-    layersToLookFor: {
-      source: VectorSource<Geometry> | Cluster;
-      layer: Layer<Source>;
-    }[]
-  ): void {
+  /**
+   * When multiple layers contain feature with the same ID do a full search by feature instance instead.
+   * @param array - Cached array of layers for a given feature ID
+   * @param feature - Instance of feature
+   * @returns Layer
+   */
+  refineLayerSearch(array: VectorAndSource[], feature: Feature<Geometry>) {
+    if (array.length > 1) {
+      return array.find(
+        (entry) => this.findFeatureByInst(entry, feature) !== undefined
+      )?.layer;
+    } else if (array.length == 1) {
+      return array[0].layer;
+    }
+  }
+
+  /**
+   * Search for feature in layer by looping through feature list. getFeatureById is more efficient, but is not always available
+   * @param obj - dictionary entry for layer and its vector source (ordinary vector source, source of each Group layers child or underlying source for cluster layer)
+   * @param feature - Feature instance
+   * @returns Feature
+   */
+  findFeatureByInst(
+    obj: VectorAndSource,
+    feature: Feature<Geometry>
+  ): Feature<Geometry> {
+    return obj.source.getFeatures().find((layer_feature) => {
+      return layer_feature === feature;
+    });
+  }
+
+  getVectorLayers(layersToLookFor: VectorAndSource[]): void {
     const check = (layer) => {
       const source = layer.getSource();
       if (this.HsUtilsService.instOf(source, Cluster)) {
@@ -242,11 +274,15 @@ export class HsMapService {
 
   getFeatureById(fid: string): Feature<Geometry> {
     if (this.featureLayerMapping[fid]) {
-      return this.featureLayerMapping[fid].getSource().getFeatureById(fid);
+      if (this.featureLayerMapping[fid].length > 1) {
+        console.warn(`Multiple layers exist for feature id ${fid}`);
+      } else {
+        return this.featureLayerMapping[fid][0].source.getFeatureById(fid);
+      }
     } else {
       const layersToLookFor: {
         source: VectorSource<Geometry> | Cluster;
-        layer: Layer<Source>;
+        layer: any;
       }[] = [];
       this.getVectorLayers(layersToLookFor);
       const obj = layersToLookFor.find((obj) => obj.source.getFeatureById(fid));

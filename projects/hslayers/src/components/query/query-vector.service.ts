@@ -3,12 +3,12 @@ import {Injectable} from '@angular/core';
 
 import * as extent from 'ol/extent';
 import Feature from 'ol/Feature';
+import {Cluster, Vector as VectorSource} from 'ol/source';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Map} from 'ol';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
-import {Vector as VectorSource} from 'ol/source';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
@@ -214,8 +214,8 @@ export class HsQueryVectorService {
     const layer = this.hsMapService.getLayerForFeature(feature);
     if (layer == undefined) {
       return;
-    } else if (layer.getSource().getSource) {
-      return layer.getSource().getSource();
+    } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+      return (layer.getSource() as Cluster).getSource();
     } else {
       return layer.getSource();
     }
