@@ -23,8 +23,7 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './query-popup.component.html',
 })
 export class HsQueryPopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit
-{
+  implements OnDestroy, HsDialogComponent, AfterViewInit {
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -58,17 +57,12 @@ export class HsQueryPopupComponent
   }
 
   popupVisible(): any {
-    
     const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
       (f) => {
         const layer = this.hsMapService.getLayerForFeature(f);
         if (!layer) {
           return false;
         }
-        if(getPopUp(layer) == undefined){
-          console.log('No popup');
-        }
-        
         return getPopUp(layer) != undefined;
       }
     );
