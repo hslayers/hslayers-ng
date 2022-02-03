@@ -43,7 +43,7 @@
     "@angular/forms": "^13.2.0",
     "@angular/localize": "^13.2.0",
     "@angular/material": "^13.2.0",
-    "@angular/platform-browser": "^13.2.0",
+    "@angular/platform-browser": "^13.2.1",
     "@angular/platform-browser-dynamic": "^13.2.0",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0",
     "@ngx-translate/core": "^14.0.0",
