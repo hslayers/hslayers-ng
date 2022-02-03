@@ -58,17 +58,21 @@ export class HsQueryPopupComponent
   }
 
   popupVisible(): any {
+    
     const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
       (f) => {
         const layer = this.hsMapService.getLayerForFeature(f);
         if (!layer) {
           return false;
         }
+        if(getPopUp(layer) == undefined){
+          console.log('No popup');
+        }
+        
         return getPopUp(layer) != undefined;
       }
     );
     const featureCount = featuresWithPopup.length;
-
     if (featureCount > 0) {
       let tmpForHover: any[] = [];
       this.data.service.featuresUnderMouse.forEach((feature) => {
