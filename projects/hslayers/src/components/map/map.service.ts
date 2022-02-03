@@ -187,7 +187,7 @@ export class HsMapService {
     }
     const fid = feature.getId();
     if (this.featureLayerMapping[fid]) {
-      this.refineLayerSearch(this.featureLayerMapping[fid], feature);
+      return this.refineLayerSearch(this.featureLayerMapping[fid], feature);
     }
     const layersFound: VectorAndSource[] = [];
     const layersToLookFor = [];
