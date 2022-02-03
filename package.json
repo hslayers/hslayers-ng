@@ -37,7 +37,7 @@
   "private": true,
   "dependencies": {
     "@angular/cdk": "^13.2.0",
-    "@angular/common": "^13.2.0",
+    "@angular/common": "^13.2.1",
     "@angular/compiler": "^13.2.0",
     "@angular/core": "^13.2.0",
     "@angular/forms": "^13.2.0",
