@@ -1,3 +1,13 @@
+# [7.1.0](https://github.com/hslayers/hslayers-ng/compare/7.0.4...7.1.0) (2022-02-03)
+
+
+### Bug Fixes
+
+* Finding of correct layer when feature IDs overlap ([db1ee03](https://github.com/hslayers/hslayers-ng/commit/db1ee03b2ad744fa83eb3134421fcda1145ad74d)), closes [#2617](https://github.com/hslayers/hslayers-ng/issues/2617)
+* Flickering due to cached feature-layer mappings ([b3ad553](https://github.com/hslayers/hslayers-ng/commit/b3ad553a32ed9b64afa5d83748f698a802e00a6c))
+
+
+
 ## [7.0.4](https://github.com/hslayers/hslayers-ng/compare/7.0.3...7.0.4) (2022-01-27)
 
 
