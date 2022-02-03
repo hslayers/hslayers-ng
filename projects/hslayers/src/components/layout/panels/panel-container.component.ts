@@ -30,6 +30,10 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   /** Miscellaneous data object to set to each of the panels inside this container.
    * This is used if undefined value is passed to the create functions data parameter. */
   @Input() data: any;
+  /**
+   * Set this to true to not clear the ReplaySubject on container destruction because
+   * panels are added to ReplaySubject from app component and we cant re-add them. */
+  @Input() reusePanelObserver?: boolean;
   @Input() panelObserver?: ReplaySubject<HsPanelItem>;
   @Output() init = new EventEmitter<void>();
   interval: any;
@@ -39,7 +43,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     private HsConfig: HsConfig
   ) {}
   ngOnDestroy(): void {
-    if (this.service.panelObserver) {
+    if (this.service.panelObserver && this.reusePanelObserver !== true) {
       this.service.panelObserver.complete();
       this.service.panelObserver = new ReplaySubject<HsPanelItem>();
     }
