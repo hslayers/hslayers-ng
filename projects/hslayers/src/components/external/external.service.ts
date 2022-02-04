@@ -56,8 +56,10 @@ export class HsExternalService {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       for (const key of Object.keys(this.featureLinks)) {
         const link = this.featureLinks[key];
-        this.removeFeatureLink(link);
-        delete this.featureLinks[key];
+        if (link.layer == layer) {
+          this.removeFeatureLink(link);
+          delete this.featureLinks[key];
+        }
       }
     }
   }
