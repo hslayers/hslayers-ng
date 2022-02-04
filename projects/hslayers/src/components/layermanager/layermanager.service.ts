@@ -47,6 +47,7 @@ import {
   getName,
   getPath,
   getQueryCapabilities,
+  getQueryable,
   getRemovable,
   getShowInLayerManager,
   getSubLayers,
@@ -55,10 +56,10 @@ import {
   setActive,
   setName,
   setPath,
+  setQueryable,
   setSubLayers,
   setTitle,
 } from '../../common/layer-extensions';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -1209,6 +1210,10 @@ export class HsLayerManagerService {
       setTitle(layerAdded[0], copyTitle);
       setName(layerAdded[0], getName(this.currentLayer.layer));
       setSubLayers(layerAdded[0], getSubLayers(this.currentLayer.layer));
+      this.HsLayerUtilsService.updateLayerParams(
+        layerAdded[0],
+        this.HsLayerUtilsService.getLayerParams(this.currentLayer.layer)
+      );
     }
   }
 
