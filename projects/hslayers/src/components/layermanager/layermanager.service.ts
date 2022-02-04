@@ -49,11 +49,13 @@ import {
   getQueryCapabilities,
   getRemovable,
   getShowInLayerManager,
+  getSubLayers,
   getThumbnail,
   getTitle,
   setActive,
   setName,
   setPath,
+  setSubLayers,
   setTitle,
 } from '../../common/layer-extensions';
 
@@ -1195,15 +1197,18 @@ export class HsLayerManagerService {
       this.copyVectorLayer(copyTitle);
     } else {
       const url = this.HsLayerUtilsService.getURL(this.currentLayer.layer);
-      const name =
-        getCachedCapabilities(this.currentLayer.layer)?.Name ??
-        getName(this.currentLayer.layer);
+      let name = getCachedCapabilities(this.currentLayer.layer)?.Name;
+      if (!name || typeof name === 'number') {
+        name = getName(this.currentLayer.layer);
+      }
       const layerAdded = await this.HsAddDataOwsService.connectToOWS({
         type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
         uri: url,
         layer: name,
       });
       setTitle(layerAdded[0], copyTitle);
+      setName(layerAdded[0], getName(this.currentLayer.layer));
+      setSubLayers(layerAdded[0], getSubLayers(this.currentLayer.layer));
     }
   }
 
@@ -1232,6 +1237,7 @@ export class HsLayerManagerService {
       ).getStyle(),
     });
     setTitle(copiedLayer, newTitle);
+    setName(copiedLayer, getName(this.currentLayer.layer));
     this.HsMapService.addLayer(copiedLayer);
   }
 
@@ -1248,15 +1254,9 @@ export class HsLayerManagerService {
       const layerCopies = this.HsMapService.getLayersArray().filter(
         (l) => getName(l) == layerName
       );
-      layerCopies.forEach((l) => {
-        const numberInTitle = Number(getTitle(l).replace(/\D/g, ''));
-        if (numberInTitle > numb) {
-          numb = numberInTitle;
-        }
-      });
-      numb !== 0
-        ? (copyTitle = layerName + ` (${numb + 1})`)
-        : (copyTitle = copyTitle + ' (1)');
+      numb = layerCopies !== undefined ? layerCopies.length : 0;
+      copyTitle = copyTitle.replace(/\([0-9]\)/g, '').trimEnd();
+      copyTitle = copyTitle + ` (${numb})`;
     }
     return copyTitle;
   }
