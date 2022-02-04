@@ -13,7 +13,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.font' | translate}}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-select-sm form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font"
+      <select class="form-control form-select-sm form-select" (change)="emitChange()" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font"
         multiple>
         <option *ngFor="let font of fonts" [ngValue]="font">{{font}}</option>
       </select>
