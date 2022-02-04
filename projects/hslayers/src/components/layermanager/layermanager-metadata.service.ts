@@ -231,6 +231,16 @@ export class HsLayerManagerMetadataService {
           subLayerArray.includes(l.Name)
         );
       }
+      if (
+        layerObj.queryable &&
+        this.HsLayerUtilsService.getLayerParams(olLayer)?.INFO_FORMAT ==
+          undefined
+      ) {
+        this.HsLayerUtilsService.updateLayerParams(olLayer, {
+          //TODO: Hslayers needs to support other formats too
+          INFO_FORMAT: 'application/vnd.ogc.gml', //Assumption that this will be supported by the server.
+        });
+      }
       this.collectLegend(layerObj, legends);
     }
     if (getCachedCapabilities(olLayer) == undefined) {
