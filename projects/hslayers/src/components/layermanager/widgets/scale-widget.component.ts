@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
@@ -9,7 +9,6 @@ import {METERS_PER_UNIT} from 'ol/proj';
 @Component({
   selector: 'hs-scale-widget',
   templateUrl: './scale-widget.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'scale-widget';
