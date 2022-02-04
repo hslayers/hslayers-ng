@@ -307,14 +307,14 @@ export class HsLayerManagerMetadataService {
       //Identify max resolution of layer. If layer has sublayers the highest value is selected
       setTimeout(() => {
         if (getMaxResolutionDenominator(layer)) {
-          layer.set('maxResolution', getMaxResolutionDenominator(layer));
+          layer.setMaxResolution(getMaxResolutionDenominator(layer));
           return;
         }
         const maxResolution = this.searchForScaleDenominator(
           layer.getProperties()
         );
         if (maxResolution) {
-          layer.set('maxResolution', maxResolution);
+          layer.setMaxResolution(maxResolution);
         }
       });
       return true;
