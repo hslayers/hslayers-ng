@@ -25,7 +25,6 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
-import {Title} from '@angular/platform-browser';
 import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
@@ -297,8 +296,11 @@ export class HsLayerManagerMetadataService {
 
       this.parseWmsCaps(layerDescriptor, layerNameInParams, caps);
       if (getSubLayers(layer)) {
-        params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
-        this.HsLayerUtilsService.updateLayerParams(layer, params);
+        /* When capabilities have been queried, it's safe to override LAYERS 
+         param now to not render the container layer, but sublayers. */
+        this.HsLayerUtilsService.updateLayerParams(layer, {
+          LAYERS: getSubLayers(layer),
+        });
       }
 
       this.fillMetadataUrlsIfNotExist(layer, caps);
