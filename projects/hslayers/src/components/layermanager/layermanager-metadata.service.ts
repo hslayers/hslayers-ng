@@ -110,39 +110,56 @@ export class HsLayerManagerMetadataService {
    * @description Looks for maxScaleDenominator in property object
    */
   searchForScaleDenominator(properties: any) {
-    let maxScale = properties.MaxScaleDenominator
+    let maxResolution = properties.MaxScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
           properties.MaxScaleDenominator
         )
       : null;
 
+    //TODO: Currently we are not using minResolution, but should. That would require rewriting this function to return structure of {minRes, maxRes}
+    const minResolution = properties.MinScaleDenominator
+      ? this.HsLayerUtilsService.calculateResolutionFromScale(
+          properties.MinScaleDenominator
+        )
+      : 0;
+
     const layers = properties.Layer;
     if (layers) {
       for (const sublayer of layers) {
         if (sublayer.Layer) {
-          const subScale = this.searchForScaleDenominator(sublayer);
-          maxScale = subScale > maxScale ? subScale : maxScale;
+          const subResolution = this.searchForScaleDenominator(sublayer);
+          maxResolution =
+            subResolution > maxResolution ? subResolution : maxResolution;
         } else {
+          // Set sublayer.maxResolution which is used
+          // to display sublayers grayed out or black in layer-editor sublayer tree
           if (sublayer.MaxScaleDenominator) {
             sublayer.maxResolution =
               this.HsLayerUtilsService.calculateResolutionFromScale(
                 sublayer.MaxScaleDenominator
               );
-            if (maxScale < sublayer.MaxScaleDenominator) {
-              maxScale = this.HsLayerUtilsService.calculateResolutionFromScale(
-                sublayer.MaxScaleDenominator
-              );
+            if (
+              maxResolution < sublayer.maxResolution &&
+              maxResolution !== null
+            ) {
+              maxResolution =
+                this.HsLayerUtilsService.calculateResolutionFromScale(
+                  sublayer.MaxScaleDenominator
+                );
             }
           } else if (!sublayer.maxResolution) {
-            sublayer.maxResolution = maxScale;
+            sublayer.maxResolution = maxResolution ?? Number.MAX_VALUE;
           }
         }
       }
     }
-    if (maxScale) {
-      properties.maxResolution = maxScale;
+    if (maxResolution) {
+      properties.maxResolution = maxResolution;
     }
-    return maxScale;
+    if (minResolution) {
+      properties.minResolution = minResolution;
+    }
+    return maxResolution;
   }
   /**
    * Sets or updates values in layer object
@@ -291,9 +308,11 @@ export class HsLayerManagerMetadataService {
           layer.set('maxResolution', getMaxResolutionDenominator(layer));
           return;
         }
-        const maxScale = this.searchForScaleDenominator(layer.getProperties());
-        if (maxScale) {
-          layer.set('maxResolution', maxScale);
+        const maxResolution = this.searchForScaleDenominator(
+          layer.getProperties()
+        );
+        if (maxResolution) {
+          layer.set('maxResolution', maxResolution);
         }
       });
       return true;
