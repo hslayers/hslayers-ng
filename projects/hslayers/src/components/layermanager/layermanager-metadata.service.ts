@@ -77,7 +77,11 @@ export class HsLayerManagerMetadataService {
    */
   async fillMetadata(layerDescriptor: HsLayerDescriptor): Promise<void> {
     const layer = layerDescriptor.layer;
-    await this.queryMetadata(layerDescriptor);
+    try {
+      await this.queryMetadata(layerDescriptor);
+    } catch (error) {
+      this.hsLog.warn(`Error while querying metadata${error}`);
+    }
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
       if (!layerDescriptor.hasSublayers) {
@@ -254,7 +258,7 @@ export class HsLayerManagerMetadataService {
   }
 
   private collectLegend(layerObject: any, legends: string[]) {
-    const styleWithLegend = layerObject.Style?.find(
+    const styleWithLegend = layerObject?.Style?.find(
       (style) => style.LegendURL !== undefined
     );
     if (styleWithLegend) {
@@ -293,11 +297,16 @@ export class HsLayerManagerMetadataService {
     }
     if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
       const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
-      this.parseArcGisCaps(layerDescriptor, wrapper.response);
+      if (wrapper.error) {
+        return wrapper.response;
+      } else {
+        this.parseArcGisCaps(layerDescriptor, wrapper.response);
+      }
     } else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
+        return wrapper.response;
       }
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(wrapper.response);

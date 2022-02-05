@@ -814,6 +814,7 @@ export class HsLayerManagerService {
         this.changeLoadCounter(olLayer, loadProgress, 1);
       });
       source.on('imageloadend', (event) => {
+        loadProgress.error = false;
         this.changeLoadCounter(olLayer, loadProgress, -1);
       });
       source.on('imageloaderror', (event) => {
@@ -827,6 +828,7 @@ export class HsLayerManagerService {
         this.changeLoadCounter(olLayer, loadProgress, 1);
       });
       source.on('tileloadend', (event) => {
+        loadProgress.error = false;
         this.changeLoadCounter(olLayer, loadProgress, -1);
       });
       source.on('tileloaderror', (event) => {
@@ -918,6 +920,7 @@ export class HsLayerManagerService {
     toToggle: string,
     control: string
   ): void {
+    this.HsLayerManagerMetadata.fillMetadata(layer);
     if (toToggle == 'sublayers' && layer.hasSublayers != true) {
       return;
     }
