@@ -8,6 +8,7 @@ import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsMapSwipeService} from './map-swipe.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
 
@@ -41,6 +42,13 @@ describe('HsMapSwipeService', () => {
         {
           provide: HsLayerShiftingService,
           useValue: mockHsLayerShiftingService(),
+        },
+        {
+          provide: HsShareUrlService,
+          useValue: {
+            getParamValue: () => undefined,
+            updateCustomParams: () => undefined,
+          },
         },
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {

@@ -244,6 +244,9 @@ export class HsStylerService {
   async parseStyle(
     style: any
   ): Promise<{sld?: string; qml?: string; style: StyleLike}> {
+    if (!style) {
+      return {style: await this.sldToOlStyle(defaultStyle)};
+    }
     if (
       typeof style == 'string' &&
       (style as string).includes('StyledLayerDescriptor')
@@ -252,9 +255,14 @@ export class HsStylerService {
     }
     if (typeof style == 'string' && (style as string).includes('<qgis')) {
       return {qml: style, style: await this.qmlToOlStyle(style)};
-    } else if (typeof style == 'object') {
+    } else if (
+      typeof style == 'object' &&
+      !this.hsUtilsService.instOf(style, Style)
+    ) {
       //Backwards compatibility with style encoded in custom JSON object
       return parseStyle(style);
+    } else {
+      return {style};
     }
   }
 

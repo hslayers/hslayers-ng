@@ -25,6 +25,7 @@ import {
   getFromComposition,
   getTitle,
   setMetadata,
+  setSwipeSide,
 } from '../../common/layer-extensions';
 import {parseExtent, transformExtentValue} from '../../common/extent-utils';
 
@@ -477,6 +478,7 @@ export class HsCompositionsParserService {
     }
     if (resultLayer) {
       setMetadata(resultLayer, lyr_def.metadata);
+      setSwipeSide(resultLayer, lyr_def.swipeSide);
     }
     return resultLayer;
   }

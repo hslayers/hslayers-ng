@@ -97,16 +97,19 @@ export class HsAddDataVectorService {
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
         */
-        if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
-          setDefinition(lyr, {
-            format: 'hs.format.WFS',
-            url: url,
-          });
-        } else {
-          setDefinition(lyr, {
-            format: 'hs.format.WFS',
-          });
+        if (options.saveToLayman) {
+          if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
+            setDefinition(lyr, {
+              format: 'hs.format.WFS',
+              url: url,
+            });
+          } else {
+            setDefinition(lyr, {
+              format: 'hs.format.WFS',
+            });
+          }
         }
+
         if (this.hsMapService.map) {
           this.hsAddDataService.addLayer(lyr, addUnder);
         }
@@ -177,12 +180,10 @@ export class HsAddDataVectorService {
         ? new sourceDescriptor.sourceClass(sourceDescriptor.sourceParams)
         : new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
-    if (descriptor.layerParams.style) {
-      Object.assign(
-        descriptor.layerParams,
-        await this.hsStylerService.parseStyle(descriptor.layerParams.style)
-      );
-    }
+    Object.assign(
+      descriptor.layerParams,
+      await this.hsStylerService.parseStyle(descriptor.layerParams.style)
+    );
     const lyr = new VectorLayer(descriptor.layerParams);
     return lyr;
   }
@@ -239,6 +240,7 @@ export class HsAddDataVectorService {
           data.dataType != 'kml' &&
           data.dataType != 'gpx' &&
           !data.url?.endsWith('json'),
+        saveToLayman: data.saveToLayman,
       },
       data.addUnder
     );
