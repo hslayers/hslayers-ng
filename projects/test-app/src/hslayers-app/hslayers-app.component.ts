@@ -10,7 +10,8 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/public-api';
+import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
+
 import {PopupWidgetComponent} from './popup-widget.component';
 
 @Component({
@@ -341,7 +342,6 @@ export class HslayersAppComponent {
         {name: 'wifi', url: '/assets/icons/wifi8.svg'},
       ],
       status_manager_url: 'http://localhost:8086',
-
       popUpDisplay: 'hover',
       default_layers: [
         new Tile({

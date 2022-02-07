@@ -37,6 +37,7 @@ import {
   getShowInLayerManager,
   getSld,
   getSubLayers,
+  getSwipeSide,
   getTitle,
   getWfsUrl,
   getWorkspace,
@@ -293,6 +294,7 @@ export class HsSaveMapService {
 
     // options
     json.visibility = layer.getVisible();
+    json.swipeSide = getSwipeSide(layer);
     json.opacity = layer.getOpacity();
     json.base = getBase(layer) ?? false;
     json.title = getTitle(layer);

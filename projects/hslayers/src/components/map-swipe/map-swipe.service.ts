@@ -9,10 +9,11 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
 import {SwipeControl} from './swipe-control/swipe.control.class';
-import {getSwipeSide} from '../../common/layer-extensions';
+import {getSwipeSide, setSwipeSide} from '../../common/layer-extensions';
 
 export enum SwipeSide {
   Left = 'left',
@@ -38,18 +39,13 @@ export class HsMapSwipeService {
     public hsToastService: HsToastService,
     public hsLayerShiftingService: HsLayerShiftingService,
     public hsEventBusService: HsEventBusService,
-    public hsLayerManagerService: HsLayerManagerService
+    public hsLayerManagerService: HsLayerManagerService,
+    public hsShareUrlService: HsShareUrlService
   ) {
-    this.swipeControlActive =
-      this.hsConfig?.componentsEnabled?.mapSwipe ?? false;
-    this.orientation =
-      this.hsConfig?.mapSwipeOptions?.orientation ?? 'vertical';
-
-    if (this.orientation !== 'vertical') {
-      this.orientationVertical = false;
-    }
+    this.setInitCtrlActive();
+    this.setInitOri();
     this.hsMapService.loaded().then(() => {
-      this.init();
+      this.initSwipeControl();
     });
     this.hsEventBusService.layerManagerUpdates
       .pipe(first())
@@ -60,10 +56,42 @@ export class HsMapSwipeService {
       }
     );
   }
+
+  setInitCtrlActive(): void {
+    const param = this.hsShareUrlService.getParamValue('map-swipe');
+    if (param) {
+      switch (param) {
+        case 'enabled':
+          this.swipeControlActive = true;
+          break;
+        default:
+          this.swipeControlActive = false;
+          break;
+      }
+    } else {
+      this.swipeControlActive =
+        this.hsConfig?.componentsEnabled?.mapSwipe ?? false;
+    }
+    this.updateUrlParam();
+  }
+
+  setInitOri(): void {
+    const storageOri = localStorage.getItem('hs_map_swipe_ori');
+    if (storageOri) {
+      this.orientation = storageOri;
+    } else {
+      this.orientation =
+        this.hsConfig?.mapSwipeOptions?.orientation ?? 'vertical';
+    }
+    if (this.orientation !== 'vertical') {
+      this.orientationVertical = false;
+    }
+    this.updateStorageOri();
+  }
   /**
    * Initializes swipe control add adds it to the map
    */
-  init(): void {
+  initSwipeControl(): void {
     this.swipeCtrl = new SwipeControl({
       orientation: this.orientation,
     });
@@ -71,6 +99,16 @@ export class HsMapSwipeService {
       this.swipeCtrl.setTargetMap(this.hsMapService.map);
       this.hsMapService.map.addControl(this.swipeCtrl);
     }
+  }
+
+  updateStorageOri(): void {
+    localStorage.setItem('hs_map_swipe_ori', this.orientation);
+  }
+
+  updateUrlParam(): void {
+    this.hsShareUrlService.updateCustomParams({
+      'map-swipe': this.swipeControlActive ? 'enabled' : 'disabled',
+    });
   }
 
   /**
@@ -91,6 +129,7 @@ export class HsMapSwipeService {
     this.orientationVertical = !this.orientationVertical;
     this.orientation = this.orientationVertical ? 'vertical' : 'horizontal';
     this.swipeCtrl.set('orientation', this.orientation);
+    this.updateStorageOri();
   }
   /**
    * Fill swipe control layers
@@ -143,15 +182,18 @@ export class HsMapSwipeService {
    * Move a layer to swipe control
    * @param layer - layer issued from layerManagerUpdates event
    */
-  moveSwipeLayer(layer: LayerListItem): void {
+  moveSwipeLayer(lyrListItem: LayerListItem): void {
     if (this.movingSide === SwipeSide.Right) {
-      this.moveRight(layer);
+      this.moveRight(lyrListItem);
+      setSwipeSide(lyrListItem.layer, 'right');
     }
     if (this.movingSide === SwipeSide.Left) {
-      this.moveLeft(layer);
+      this.moveLeft(lyrListItem);
+      setSwipeSide(lyrListItem.layer, 'left');
     }
     if (this.movingSide === SwipeSide.Full) {
-      this.swipeCtrl.removeCompletely(layer.layer);
+      setSwipeSide(lyrListItem.layer, undefined);
+      this.swipeCtrl.removeCompletely(lyrListItem.layer);
     }
   }
   /**
@@ -176,6 +218,7 @@ export class HsMapSwipeService {
    */
   setControl(): void {
     this.swipeControlActive = !this.swipeControlActive;
+    this.updateUrlParam();
     if (!this.hsMapService.map) {
       return;
     }

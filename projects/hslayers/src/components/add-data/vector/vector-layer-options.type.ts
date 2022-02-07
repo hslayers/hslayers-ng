@@ -15,4 +15,5 @@ export type HsVectorLayerOptions = {
   access_rights?: accessRightsModel;
   queryCapabilities?: boolean;
   sld?: string;
+  saveToLayman?: boolean;
 };
