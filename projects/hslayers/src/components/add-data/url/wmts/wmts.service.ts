@@ -6,10 +6,10 @@ import {Layer, Tile} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsLayoutService} from '../../../layout/layout.service';
+import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {urlDataObject} from '../types/data-object.type';
@@ -25,7 +25,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   ) {
     this.setDataToDefault();
   }
-
+  /**
+   * Reset data object to its default values
+   */
   setDataToDefault(): void {
     this.data = {
       add_all: null,
@@ -38,7 +40,10 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       version: '',
     };
   }
-
+  /**
+   * List and return layers from WMTS getCapabilities response
+   * @param wrapper - Capabilities response wrapper
+   */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
@@ -56,7 +61,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       await this.capabilitiesReceived(response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.addLayers(true);
+        return this.getLayers(true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -64,7 +69,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Parse information received in WMTS getCapabilities respond
+   * Parse information received in WMTS getCapabilities response
    * @param response - Url of requested service
    */
   async capabilitiesReceived(response: string): Promise<any> {
@@ -83,23 +88,40 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       throw new Error(e);
     }
   }
-
-  addLayersRecursively(layer, collection): void {
+  /**
+   * Loop through the list of layers and call getLayer recursively
+   * @param layer - Layer selected
+   * @param collection - Layers created and retreived collection
+   */
+  getLayersRecursively(layer, collection): void {
     if (!this.data.add_all || layer.checked) {
-      collection.push(this.addLayer(layer));
+      collection.push(this.getLayer(layer));
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, collection);
+        this.getLayersRecursively(sublayer, collection);
       }
     }
   }
 
-  addLayers(checkedOnly: boolean): Layer<Source>[] {
+  /**
+   * Loop through the list of layers and add them to the map
+   */
+  addLayers(layers: Layer<Source>[]): void {
+    for (const l of layers) {
+      this.hsMapService.addLayer(l);
+    }
+  }
+
+  /**
+   * Loop through the list of layers and call getLayer.
+   * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
+   */
+  getLayers(checkedOnly: boolean): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.addLayersRecursively(layer, collection);
+      this.getLayersRecursively(layer, collection);
     }
     this.hsLayoutService.setMainPanel('layermanager');
     this.hsAddDataCommonService.clearParams();
@@ -111,7 +133,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Returns preferred tile format
+   * Return preferred tile format
    * @param formats - Set of available formats for layer being added
    */
   getPreferredFormat(formats: any): string {
@@ -120,7 +142,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Returns preferred tile tileMatrixSet
+   * Return preferred tile tileMatrixSet
    * Looks for the occurrence of supported CRS's, if possible picks CRS of current view
    * otherwise returns 3857 as trial(some services support 3857 matrix set even though its not clear from capabilities )
    * @param sets - Set of available matrixSets
@@ -144,7 +166,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Returns preferred info format
+   * Return preferred info format
    * Looks for the occurrence of supported formats (query.wms)
    * if possible picks HTML, otherwise first from the list of supported is selected
    * @param response - Set of available info formats for layer being added
@@ -167,11 +189,11 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Add WMTS layer to the map
+   * Get WMTS layer
    * Uses previously received capabilities response as a reference for the source
-   * @param response - Set of available info formats for layer being added
+   * @param response - Set of available info formats for layer
    */
-  addLayer(layer): Layer<Source> {
+  getLayer(layer): Layer<Source> {
     try {
       const wmts = new Tile({
         properties: {
@@ -194,7 +216,6 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       const wmtsSource = new WMTS(options);
       // set the data source for raster and vector tile layers
       wmts.setSource(wmtsSource);
-      this.hsMapService.addLayer(wmts);
       layer.base = false;
       return wmts;
     } catch (e) {

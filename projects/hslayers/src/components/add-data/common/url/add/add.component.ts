@@ -43,7 +43,8 @@ export class HsUrlAddComponent {
 
   add(): void {
     if (this.layers) {
-      this.injectedService.addLayers(true);
+      const layers = this.injectedService.getLayers(true);
+      this.injectedService.addLayers(layers);
     }
     if (this.injectedService.addServices && this.services) {
       this.injectedService.addServices(this.services);

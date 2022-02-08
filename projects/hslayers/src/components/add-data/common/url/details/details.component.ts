@@ -79,7 +79,8 @@ export class HsUrlDetailsComponent implements AfterContentInit {
         this.injectedService.isImageService &&
         this.injectedService.isImageService()
       ) {
-        this.injectedService.addLayers();
+        const layers = this.injectedService.getLayers();
+        this.injectedService.addLayers(layers);
       }
     }
   }

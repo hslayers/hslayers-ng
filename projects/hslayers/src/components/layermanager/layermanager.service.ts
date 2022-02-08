@@ -45,6 +45,7 @@ import {
   getExclusive,
   getLegends,
   getName,
+  getOrigLayers,
   getPath,
   getQueryCapabilities,
   getQueryable,
@@ -55,6 +56,7 @@ import {
   getTitle,
   setActive,
   setName,
+  setOrigLayers,
   setPath,
   setQueryable,
   setSubLayers,
@@ -238,6 +240,14 @@ export class HsLayerManagerService {
       this.populateFolders(layer);
       layerDescriptor.legends = getLegends(layer);
       this.data.layers.push(layerDescriptor);
+      if (getSubLayers(layer)) {
+        /*Need to 
+         keep track of original LAYERS value for saving to composition*/
+        const params = this.HsLayerUtilsService.getLayerParams(layer);
+        if (params?.LAYERS) {
+          setOrigLayers(layer, params.LAYERS);
+        }
+      }
       if (getQueryCapabilities(layer) !== false) {
         const que = this.HsQueuesService.ensureQueue('wmsGetCapabilities', 1);
         que.push(async (cb) => {
@@ -920,7 +930,10 @@ export class HsLayerManagerService {
     toToggle: string,
     control: string
   ): void {
-    this.HsLayerManagerMetadata.fillMetadata(layer);
+    if (!getCachedCapabilities(layer.layer)) {
+      this.HsLayerManagerMetadata.fillMetadata(layer);
+    }
+
     if (toToggle == 'sublayers' && layer.hasSublayers != true) {
       return;
     }
@@ -1209,18 +1222,36 @@ export class HsLayerManagerService {
       if (!name || typeof name === 'number') {
         name = getName(this.currentLayer.layer);
       }
-      const layerAdded = await this.HsAddDataOwsService.connectToOWS({
+      const layerCopy = await this.HsAddDataOwsService.connectToOWS({
         type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
         uri: url,
         layer: name,
+        getOnly: true,
       });
-      setTitle(layerAdded[0], copyTitle);
-      setName(layerAdded[0], getName(this.currentLayer.layer));
-      setSubLayers(layerAdded[0], getSubLayers(this.currentLayer.layer));
-      this.HsLayerUtilsService.updateLayerParams(
-        layerAdded[0],
-        this.HsLayerUtilsService.getLayerParams(this.currentLayer.layer)
-      );
+      if (layerCopy[0]) {
+        layerCopy[0].setProperties(this.currentLayer.layer.getProperties());
+        setTitle(layerCopy[0], copyTitle);
+        //Currently ticked sub-layers are stored in LAYERS
+        const subLayers = this.HsLayerUtilsService.getLayerParams(
+          this.currentLayer.layer
+        )?.LAYERS;
+        if (subLayers) {
+          setSubLayers(layerCopy[0], subLayers);
+        }
+        this.HsLayerUtilsService.updateLayerParams(
+          layerCopy[0],
+          this.HsLayerUtilsService.getLayerParams(this.currentLayer.layer)
+        );
+        // We don't want the default styles to be set which add-data panel does.
+        // Otherwise they won't be cleared if the original layer has undefined STYLES
+        // Also we have to set LAYERS to currentLayer original values for composition saving
+        this.HsLayerUtilsService.updateLayerParams(layerCopy[0], {
+          STYLES: null,
+          //Object.assign will ignore it if origLayers is undefined.
+          LAYERS: getOrigLayers(this.currentLayer.layer),
+        });
+        this.HsMapService.map.addLayer(layerCopy[0]);
+      }
     }
   }
 

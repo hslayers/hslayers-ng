@@ -194,7 +194,9 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       this.fileInput.nativeElement.value = '';
     }
   }
-
+  /**
+   * Reset data object to its default valuess
+   */
   setDataToDefault(): void {
     this.data = {
       // Not possible to save KML to layman yet

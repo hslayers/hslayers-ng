@@ -74,6 +74,9 @@ export class HsAddDataFileBaseComponent
     this.setDataToDefault();
   }
 
+  /**
+   * Reset data object to its default values
+   */
   setDataToDefault(): void {
     this.data = {
       abstract: '',

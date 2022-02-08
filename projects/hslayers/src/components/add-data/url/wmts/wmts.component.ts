@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataOwsService} from '../add-data-ows.service';
-import {HsUrlWmtsService} from './wmts-service';
+import {HsUrlWmtsService} from './wmts.service';
 
 @Component({
   selector: 'hs-url-wmts',

@@ -12,7 +12,7 @@ import {HsUrlArcGisService} from './arcgis/arcgis.service';
 import {HsUrlTypeServiceModel} from './models/url-type-service.model';
 import {HsUrlWfsService} from './wfs/wfs.service';
 import {HsUrlWmsService} from './wms/wms.service';
-import {HsUrlWmtsService} from './wmts/wmts-service';
+import {HsUrlWmtsService} from './wmts/wmts.service';
 import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
@@ -46,6 +46,7 @@ export class HsAddDataOwsService {
   async connect(opt?: {
     style?: string;
     owrCache?: boolean;
+    getOnly?: boolean;
   }): Promise<Layer<Source>[]> {
     await this.setTypeServices();
     const url = this.hsAddDataCommonService.url;
@@ -86,9 +87,16 @@ export class HsAddDataOwsService {
         wrapper,
         opt?.style
       );
-      if (this.hsUrlArcGisService.isImageService()) {
-        this.hsUrlArcGisService.addLayers();
+      if (!opt?.getOnly) {
+        if (response?.length > 0) {
+          this.typeService.addLayers(response);
+        }
+        if (this.hsUrlArcGisService.isImageService()) {
+          const layers = this.hsUrlArcGisService.getLayers();
+          this.hsUrlArcGisService.addLayers(layers);
+        }
       }
+
       return response;
     }
   }
@@ -105,6 +113,7 @@ export class HsAddDataOwsService {
     return await this.connect({
       style: params.style,
       owrCache: params.owrCache,
+      getOnly: params.getOnly,
     });
   }
 

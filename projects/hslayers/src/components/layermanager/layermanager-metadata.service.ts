@@ -80,7 +80,7 @@ export class HsLayerManagerMetadataService {
     try {
       await this.queryMetadata(layerDescriptor);
     } catch (error) {
-      this.hsLog.warn(`Error while querying metadata${error}`);
+      this.hsLog.warn(`Error while querying metadata ${error}`);
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
@@ -315,13 +315,12 @@ export class HsLayerManagerMetadataService {
 
       this.parseWmsCaps(layerDescriptor, layerNameInParams, caps);
       if (getSubLayers(layer)) {
-        /* When capabilities have been queried, it's safe to override LAYERS 
-         param now to not render the container layer, but sublayers. */
+        /* When capabilities have been queried, it's safe to override LAYERS
+         param now to not render the container layer, but sublayers.*/
         this.HsLayerUtilsService.updateLayerParams(layer, {
           LAYERS: getSubLayers(layer),
         });
       }
-
       this.fillMetadataUrlsIfNotExist(layer, caps);
       //Identify max resolution of layer. If layer has sublayers the highest value is selected
       setTimeout(() => {
@@ -460,7 +459,7 @@ export class HsLayerManagerMetadataService {
       return {
         Title: caps.mapName,
         Name: 0,
-        Layer: caps.layers.map((l) => {
+        Layer: caps?.layers?.map((l) => {
           return {Title: l.name, Name: l.id};
         }),
       };

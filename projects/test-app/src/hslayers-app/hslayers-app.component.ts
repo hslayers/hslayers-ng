@@ -290,6 +290,7 @@ export class HslayersAppComponent {
       },
       enabledLanguages: 'sk, lv, en',
       assetsPath: 'assets',
+      saveMapStateOnReload: true,
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
         {name: 'banking', url: '/assets/icons/banking4.svg'},
