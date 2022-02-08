@@ -4,4 +4,5 @@ export type owsConnection = {
   layer?: string;
   style?: string;
   owrCache?: boolean;
+  getOnly?: boolean;
 };

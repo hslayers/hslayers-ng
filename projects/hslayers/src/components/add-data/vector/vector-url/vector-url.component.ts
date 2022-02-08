@@ -35,7 +35,9 @@ export class HsAddDataVectorUrlComponent {
     this.hsLayoutService.setMainPanel('layermanager');
     this.setDataToDefault();
   }
-
+  /**
+   * Reset data object to its default values
+   */
   setDataToDefault(): void {
     this.data = {
       // Not possible to save KML to layman yet

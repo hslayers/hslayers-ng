@@ -32,6 +32,7 @@ import {
   getLegends,
   getMetadata,
   getName,
+  getOrigLayers,
   getPath,
   getShowInLayerManager,
   getSld,
@@ -358,6 +359,9 @@ export class HsSaveMapService {
           json.projection = src.getProjection().getCode().toLowerCase();
         }
         json.params = this.HsLayerUtilsService.getLayerParams(layer);
+        if (getOrigLayers(layer)) {
+          json.params.LAYERS = getOrigLayers(layer);
+        }
         json.subLayers = getSubLayers(layer);
         json.metadata.styles = src.get('styles');
       }

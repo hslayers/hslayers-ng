@@ -54,6 +54,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     });
   }
 
+  /**
+   * Reset data object to its default values
+   */
   setDataToDefault(): void {
     this.data = {
       add_all: null,
@@ -70,7 +73,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       version: '',
     };
   }
-
+  /**
+   * List and return layers from WFS getCapabilities response
+   * @param wrapper - Capabilities response wrapper
+   */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     style?: string
@@ -86,7 +92,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       const bbox = await this.parseCapabilities(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        const collection = this.addLayers(true, style);
+        const collection = this.getLayers(true, style);
         this.zoomToBBox(bbox);
         return collection;
       }
@@ -96,8 +102,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
+   * Parse information received in WFS getCapabilities response
    * @param response - A stringified XML response to getCapabilities request
-   * @returns
    */
   async parseCapabilities(response: string): Promise<any> {
     try {
@@ -188,6 +194,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
   }
 
+  /**
+   * Get preferred GML version format
+   * @param version - GML version
+   */
   getPreferredFormat(version: string): string {
     switch (version) {
       case '1.0.0':
@@ -201,6 +211,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
   }
 
+  /**
+   * Parse layer feature count and set feature limits
+   */
   parseFeatureCount(): void {
     for (const layer of this.data.layers) {
       const url = [
@@ -237,7 +250,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         );
     }
   }
-
+  /**
+   * Parse WFS json file
+   * @param json - JSON file
+   */
   parseWFSJson(json: JSON): void {
     try {
       for (const key of Object.keys(json)) {
@@ -263,6 +279,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
   }
 
+  /**
+   * Parse EPSG in usable formats
+   * @param srss -
+   */
   parseEPSG(srss): Array<any> {
     srss.forEach((srs, index) => {
       const epsgCode = srs.slice(-4);
@@ -277,14 +297,14 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * First step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checkedOnly?: boolean, style?: string): Layer<Source>[] {
+  getLayers(checkedOnly?: boolean, style?: string): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.addLayersRecursively(layer, {style}, collection);
+      this.getLayersRecursively(layer, {style}, collection);
     }
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
@@ -292,13 +312,20 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     return collection;
   }
 
-  addLayersRecursively(
+  /**
+   * Loop through the list of layers and call getLayer recursively
+   * @param layer - Layer selected
+   * @param options - Add layers recursively options
+   * (checkedOnly?: boolean; style?: string;)
+   * @param collection - Layers created and retreived collection
+   */
+  getLayersRecursively(
     layer,
     options: addLayersRecursivelyOptions,
     collection: Layer<Source>[]
   ): void {
     if (!this.data.add_all || layer.checked) {
-      const newLayer = this.addLayer(layer, {
+      const newLayer = this.getLayer(layer, {
         layerName: layer.Name,
         folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         crs: this.data.srs,
@@ -311,19 +338,19 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(sublayer, {style: options.style}, collection);
+        this.getLayersRecursively(sublayer, {style: options.style}, collection);
       }
     }
   }
 
   /**
-   * (PRIVATE) Add selected layer to map???
+   * Get selected layer
    * @param layer - capabilities layer object
    * @param layerName - layer name in the map
    * @param folder - name
    * @param srs - of the layer
    */
-  addLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: addLayerOptions): Layer<Source> {
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -346,9 +373,17 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });
-    this.hsMapService.map.addLayer(new_layer);
-    this.hsLayoutService.setMainPanel('layermanager');
     return new_layer;
+  }
+
+  /**
+   * Loop through the list of layers and add them to the map
+   */
+  addLayers(layers: Layer<Source>[]): void {
+    for (const l of layers) {
+      this.hsMapService.map.addLayer(l);
+    }
+    this.hsLayoutService.setMainPanel('layermanager');
   }
 
   private zoomToBBox(bbox: any) {

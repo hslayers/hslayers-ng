@@ -37,6 +37,7 @@ const METADATA = 'metadata';
 const MINIMUM_TERRAIN_LEVEL = 'minimumTerrainLevel';
 const NAME = 'name';
 const ON_FEATURE_SELECTED = 'onFeatureSelected';
+const ORIG_LAYERS = 'origLayers';
 const PATH = 'path';
 const POPUP = 'popUp';
 const POPUP_CLASS = 'popupClass';
@@ -495,6 +496,21 @@ export function setOnFeatureSelected(
 
 export function getOnFeatureSelected(layer: Layer<Source>): FeatureSelector {
   return layer.get(ON_FEATURE_SELECTED);
+}
+
+/**
+ * Used internaly by hslayers. Store the original LAYERS param
+ * when overriding LAYERS by subLayers property. This is needed for metadata
+ * parsing after page has refreshed and LAYERS are read from cookie or map compositions.
+ * @param layer - OL layer
+ * @param origLayers - Comma separated list of layer names OR 1 container layer name
+ */
+export function setOrigLayers(layer: Layer<Source>, origLayers: string): void {
+  layer.set(ORIG_LAYERS, origLayers);
+}
+
+export function getOrigLayers(layer: Layer<Source>): string {
+  return layer.get(ORIG_LAYERS);
 }
 
 export function setPath(layer: Layer<Source>, path: string): void {

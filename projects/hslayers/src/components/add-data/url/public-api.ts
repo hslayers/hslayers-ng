@@ -7,7 +7,7 @@ export * from './wfs/wfs.service';
 export * from './wms/wms.component';
 export * from './wms/wms.module';
 export * from './wms/wms.service';
-export * from './wmts/wmts-service';
+export * from './wmts/wmts.service';
 export * from './wmts/wmts.component';
 export * from './wmts/wmts.module';
 export * from './add-data-url.component';

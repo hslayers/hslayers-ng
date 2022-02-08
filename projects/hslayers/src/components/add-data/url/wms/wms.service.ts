@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import ImageSource from 'ol/source/Image';
 import TileSource from 'ol/source/Tile';
-import {Group, Image as ImageLayer, Layer, Tile} from 'ol/layer';
+import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
@@ -59,7 +59,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         .toUpperCase();
     });
   }
-
+  /**
+   * Reset data object to its default values
+   */
   setDataToDefault(): void {
     this.data = {
       add_under: null,
@@ -71,7 +73,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       visible: true,
     };
   }
-
+  /**
+   * List and return layers from WMS getCapabilities response
+   * @param wrapper - Capabilities response wrapper
+   */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
@@ -89,7 +94,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       );
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.addLayers(true);
+        return this.getLayers(true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -149,6 +154,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
   }
 
+  /**
+   * Parse information received in WMS getCapabilities response
+   */
   async capabilitiesReceived(response, layerToSelect: string): Promise<void> {
     try {
       const parser = new WMSCapabilities();
@@ -345,10 +353,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
+   * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  addLayers(checkedOnly: boolean): Layer<Source>[] {
+  getLayers(checkedOnly: boolean): Layer<Source>[] {
     if (this.data.layers === undefined) {
       return;
     }
@@ -357,7 +365,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.data.visible =
       this.data.layers.filter((l) => l.checked === true).length <= 10;
     if (this.data.base) {
-      const newLayer = this.addLayer(
+      const newLayer = this.getLayer(
         {},
         {
           layerName: this.data.title.replace(/\//g, '&#47;'),
@@ -372,7 +380,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       collection.push(newLayer);
     } else {
       for (const layer of this.data.layers) {
-        this.addLayersRecursively(
+        this.getLayersRecursively(
           layer,
           {checkedOnly: checkedOnly},
           collection
@@ -389,7 +397,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Add selected layer to map
+   * Get selected layer
    * @param layer - capabilities layer object
    * @param layerName - layer name in the map
    * @param path - Path (folder) name
@@ -399,7 +407,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: addLayerOptions): Layer<Source> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -463,10 +471,22 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
       : new Tile(layerOptions as TileOptions<TileSource>);
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.use_tiles);
-    this.hsAddDataService.addLayer(new_layer, this.data.add_under);
     return new_layer;
   }
 
+  /**
+   * Loop through the list of layers and add them to the map
+   */
+  addLayers(layers: Layer<Source>[]): void {
+    for (const l of layers) {
+      this.hsAddDataService.addLayer(l, this.data.add_under);
+    }
+  }
+
+  /**
+   * Get selected layer styles and legends
+   * @param layer - Selected layer
+   */
   private getLayerStyles(layer: any): {styles: string[]; legends: string[]} {
     const legends = [];
     let styles = undefined;
@@ -487,14 +507,21 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     return {styles, legends};
   }
 
-  addLayersRecursively(
+  /**
+   * Loop through the list of layers and call getLayer recursively
+   * @param layer - Layer selected
+   * @param options - Add layers recursively options
+   * (checkedOnly?: boolean; style?: string;)
+   * @param collection - Layers created and retreived collection
+   */
+  getLayersRecursively(
     layer: any,
     options: addLayersRecursivelyOptions = {checkedOnly: true},
     collection: Layer<Source>[]
   ): void {
     if (!options.checkedOnly || layer.checked) {
       collection.push(
-        this.addLayer(layer, {
+        this.getLayer(layer, {
           layerName: layer.Title.replace(/\//g, '&#47;'),
           path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
@@ -506,7 +533,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.addLayersRecursively(
+        this.getLayersRecursively(
           sublayer,
           {checkedOnly: options.checkedOnly},
           collection
@@ -515,6 +542,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
   }
 
+  /**
+   * Zoom map to one layers or combined layer list extent
+   */
   private zoomToLayers() {
     if (this.data.extent) {
       this.hsMapService.fitExtent(this.data.extent);

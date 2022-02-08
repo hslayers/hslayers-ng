@@ -40,6 +40,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     this.setDataToDefault();
   }
 
+  /**
+   * Reset data object to its default values
+   */
   setDataToDefault(): void {
     this.data = {
       map_projection: '',
@@ -49,7 +52,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       use_tiles: true,
     };
   }
-
+  /**
+   * List and return layers from Arcgis getCapabilities response
+   * @param wrapper - Capabilities response wrapper
+   */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
@@ -64,13 +70,16 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       await this.createLayer(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.addLayers();
+        return this.getLayers();
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
     }
   }
-
+  /**
+   * Parse information received in Arcgis getCapabilities response
+   * @param response - getCapabilities response
+   */
   async createLayer(response): Promise<void> {
     try {
       const caps = response;
@@ -128,9 +137,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Second step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * Loop through the list of layers and call getLayer
    */
-  addLayers(): Layer<Source>[] {
+  getLayers(): Layer<Source>[] {
     if (
       this.data.layers === undefined &&
       this.data.services === undefined &&
@@ -140,7 +149,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     const checkedLayers = this.data.layers?.filter((l) => l.checked);
     const collection = [
-      this.addLayer(checkedLayers, {
+      this.getLayer(checkedLayers, {
         layerTitle: this.data.title.replace(/\//g, '&#47;'),
         path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         imageFormat: this.data.image_format,
@@ -160,7 +169,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Add selected layer to map
+   * Get selected layer
    * @param layer - capabilities layer object
    * @param layerTitle - layer name in the map
    * @param path - Path name
@@ -170,7 +179,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  addLayer(
+  getLayer(
     layers: {
       defaultVisibility?: boolean;
       geometryType: string;
@@ -255,8 +264,17 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       ? new Tile(layerParams as TileOptions<TileSource>)
       : new ImageLayer(layerParams as ImageOptions<ImageSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
-    this.hsMapService.map.addLayer(new_layer);
     return new_layer;
+  }
+
+  /**
+   * Loop through the list of layers and add them to the map
+   * @param layers - Layers selected
+   */
+  addLayers(layers: Layer<Source>[]): void {
+    for (const l of layers) {
+      this.hsMapService.map.addLayer(l);
+    }
   }
 
   /**
@@ -278,20 +296,28 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     );
     await this.listLayerFromCapabilities(wrapper);
   }
-
+  /**
+   * Add services layers
+   * @param services - Services selected
+   */
   async addServices(services: Service[]): Promise<void> {
     const originalRestUrl = this.hsAddDataCommonService.url;
     for (const service of services.filter((s) => s.checked)) {
-      this.hsAddDataCommonService.url = originalRestUrl; //Because addLayers clears all params
+      this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service);
-      this.addLayers();
+      const layers = this.getLayers();
+      this.addLayers(layers);
     }
   }
-
+  /**
+   * Check if getCapabilities response is Image service layer
+   */
   isImageService(): boolean {
     return this.data.get_map_url?.toLowerCase().includes('imageserver');
   }
-
+  /**
+   * Check if getCapabilities response is Gp service layer
+   */
   isGpService(str: string): boolean {
     return str.toLowerCase().includes('gpserver');
   }
