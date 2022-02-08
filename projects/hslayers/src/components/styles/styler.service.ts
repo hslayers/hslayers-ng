@@ -392,6 +392,7 @@ export class HsStylerService {
             {
               kind: 'Text',
               label: '{{features}}',
+              size: 12,
               haloColor: '#fff',
               color: '#000',
               offset: [0, 0],
