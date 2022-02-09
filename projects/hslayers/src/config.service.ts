@@ -53,7 +53,7 @@ export class HsConfig {
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
-  sidebarPosition?: string;
+  sidebarPosition?: 'right' | 'left' | 'invisible';
   box_layers?: Group[];
   senslog?: {
     url: string;
