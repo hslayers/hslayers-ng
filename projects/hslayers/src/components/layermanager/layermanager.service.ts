@@ -993,9 +993,13 @@ export class HsLayerManagerService {
       layerContainer.classList.add('hs-grayscale');
       layer.grayscale = true;
     }
+
     setTimeout(() => {
+      //Dispatching change event triggers renderer which causes non base layer to be
+      //moved into separate canvas thus not being affected by css filter
+      layer.layer.getSource().changed();
       layer.galleryMiniMenu = false;
-    }, 100);
+    }, 0);
   }
 
   sortFoldersByZ(): void {
