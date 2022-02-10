@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {Input} from '@angular/core';
 
-import {Subscription} from 'rxjs/internal/Subscription';
+import {Subscription} from 'rxjs';
 
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
