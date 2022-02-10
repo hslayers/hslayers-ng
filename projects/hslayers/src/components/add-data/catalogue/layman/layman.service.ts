@@ -109,7 +109,7 @@ export class HsLaymanBrowserService {
 
           return x.body;
         }),
-        catchError((e) => {
+        catchError(async (e) => {
           if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
             (<EndpointErrorHandler>endpoint.onError?.compositionLoad).handle(
               endpoint,
@@ -123,7 +123,7 @@ export class HsLaymanBrowserService {
             case EndpointErrorHandling.toast:
             default:
               this.hsToastService.createToastPopupMessage(
-                this.hsLanguageService.getTranslation(
+                await this.hsLanguageService.awaitTranslation(
                   'ADDLAYERS.ERROR.errorWhileRequestingLayers'
                 ),
                 endpoint.title +
