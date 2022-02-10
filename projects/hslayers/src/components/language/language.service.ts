@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs/internal/lastValueFrom';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +67,14 @@ export class HsLanguageService {
    */
   getTranslation(str: string, params?: any): string {
     return this.TranslateService.instant(str, params);
+  }
+
+  /**
+   * Async variant of getTranslation function for translations which might
+   * be needed immediately after application init before locales are even loaded
+   */
+  async awaitTranslation(str: string, params?: any): Promise<string> {
+    return await lastValueFrom(this.TranslateService.get(str, params));
   }
 
   /**
