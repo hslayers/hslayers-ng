@@ -40,21 +40,23 @@ export class HsQueryPopupBaseService {
           ),
           'title'
         );
-        this.featureLayersUnderMouse = layersFound.map((l) => {
-          const needSpecialWidgets =
-            getPopUp(l)?.widgets || getPopUp(l)?.displayFunction;
-          const layer = {
-            title: getTitle(l),
-            layer: l,
-            features: this.featuresUnderMouse.filter(
-              (f) => this.hsMapService.getLayerForFeature(f) == l
-            ),
-            panelObserver: needSpecialWidgets
-              ? new ReplaySubject<HsPanelItem>()
-              : undefined,
-          };
-          return layer;
-        });
+        this.featureLayersUnderMouse = layersFound
+          .filter((l) => getPopUp(l)) //Only list the layers which have popUp defined
+          .map((l) => {
+            const needSpecialWidgets =
+              getPopUp(l)?.widgets || getPopUp(l)?.displayFunction;
+            const layer = {
+              title: getTitle(l),
+              layer: l,
+              features: this.featuresUnderMouse.filter(
+                (f) => this.hsMapService.getLayerForFeature(f) == l
+              ),
+              panelObserver: needSpecialWidgets
+                ? new ReplaySubject<HsPanelItem>()
+                : undefined,
+            };
+            return layer;
+          });
         for (const layer of this.featureLayersUnderMouse) {
           if (layer.panelObserver) {
             const popupDef = getPopUp(layer.layer);
