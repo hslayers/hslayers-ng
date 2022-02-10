@@ -71,7 +71,7 @@
     "proj4": "^2.7.5",
     "queue": "^6.0.2",
     "resumablejs": "^1.1.0",
-    "rxjs": "^7.5.2",
+    "rxjs": "^7.5.4",
     "share-api-polyfill": "^1.0.21",
     "simple-statistics": "^7.7.3",
     "tslib": "^2.3.0",
