@@ -220,6 +220,7 @@ export class HsMapService {
    * @returns Layer
    */
   refineLayerSearch(array: VectorAndSource[], feature: Feature<Geometry>) {
+    array = array.filter((entry) => entry.layer.getVisible());
     if (array.length > 1) {
       return array.find(
         (entry) => this.findFeatureByInst(entry, feature) !== undefined

@@ -136,9 +136,6 @@ export class HslayersAppComponent {
         swipeSide: 'left',
         cluster: false,
         inlineLegend: true,
-        popUp: {
-          attributes: ['name', 'population'],
-        },
         editor: {
           editable: true,
           defaultAttributes: {
