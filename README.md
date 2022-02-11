@@ -11,6 +11,7 @@ This is a monorepo for developing HSLayers-NG [Angular](https://angular.io/guide
 | 5                | 11.x                | 4.x         |
 | 6                | 12.x                | 4.x         |
 | 7                | 12.x                | 5.x         |
+| 8                | 13.x                | 5.x         |
 
 It contains source code of libraries which need to be used in an existing Angular based container project:
 + [hslayers](./projects/hslayers) - core components and services for map application based on OpenLayers 6 + Angular + [Bootstrap](https://getbootstrap.com/)
