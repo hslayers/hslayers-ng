@@ -231,4 +231,8 @@ hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
     hs-mini-sidebar .hs-sidebar-item:not(.hs-panel-hidden) {
         display: none !important;
     }
+
+    .hs-content-wrapper:not(.hs-open) .hs-panelspace {
+        width: 100%
+    }
 }
