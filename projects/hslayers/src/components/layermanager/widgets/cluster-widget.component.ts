@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 import {Cluster} from 'ol/source';
 
+import {HsConfig} from '../../../config.service';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
@@ -18,9 +19,11 @@ export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
 
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
-    private HsLayerEditorService: HsLayerEditorService
+    private HsLayerEditorService: HsLayerEditorService,
+    private HsConfig: HsConfig
   ) {
     super(hsLayerSelectorService);
+    this.distance.value = this.setClusteringDistanceFromConfig();
   }
 
   /**
@@ -80,5 +83,12 @@ export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     } else {
       return true;
     }
+  }
+  /**
+   * Parse initial cluster distance value
+   */
+  private setClusteringDistanceFromConfig(): number {
+    const distance = this.HsConfig.clusteringDistance ?? this.distance.value;
+    return distance > 100 ? 100 : distance;
   }
 }
