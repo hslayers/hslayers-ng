@@ -134,6 +134,10 @@ export class HsLayoutService {
     for (const key of Object.keys(this.HsConfig.panelsEnabled)) {
       this.panelEnabled(key, this.getPanelEnableState(key));
     }
+
+    this.sidebarToggleable = this.HsConfig.hasOwnProperty('sidebarToggleable')
+      ? this.HsConfig.sidebarToggleable
+      : true;
   }
 
   getPanelEnableState(panel): boolean {
