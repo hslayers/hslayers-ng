@@ -1,3 +1,131 @@
+# [8.0.0](https://github.com/hslayers/hslayers-ng/compare/7.0.3...8.0.0) (2022-02-11)
+
+
+### Bug Fixes
+
+* Await for locales to load for some translations ([2d41de5](https://github.com/hslayers/hslayers-ng/commit/2d41de5c22216cac9d5e093ba26c562c809523c5)), closes [#2671](https://github.com/hslayers/hslayers-ng/issues/2671)
+* Check if server layer is vector ([083f92f](https://github.com/hslayers/hslayers-ng/commit/083f92f2b2abf308ab7e25de849217cb7abe1a40))
+* Clear error message on each tile load successfully loaded ([7cc6c65](https://github.com/hslayers/hslayers-ng/commit/7cc6c65c490b63bb20142bd090efd36527b65d60))
+* clusteringDistance config param ([1d8d599](https://github.com/hslayers/hslayers-ng/commit/1d8d59973340305a3b9ea767a5f5bb5972ba02c4))
+* Correctly remove external actions on layer removal ([9258524](https://github.com/hslayers/hslayers-ng/commit/925852483b61f49efd7c402b306b86190f1e75da)), closes [#2635](https://github.com/hslayers/hslayers-ng/issues/2635)
+* Don't scroll to layer being added through GET param ([c2a66fe](https://github.com/hslayers/hslayers-ng/commit/c2a66fe71c5f0ab0e37ec6271b7c0f1855dd6af5)), closes [#2541](https://github.com/hslayers/hslayers-ng/issues/2541)
+* Don't search layer for feature in invisible layers ([e16e771](https://github.com/hslayers/hslayers-ng/commit/e16e7719404c5047b10155cd6f1141d919e6d19d))
+* Dont clear hover widget replay subject on destruction ([aa18426](https://github.com/hslayers/hslayers-ng/commit/aa18426aad1c81a492574862a5185b369633330d))
+* Draw layer list dropdown position ([cbc7ff0](https://github.com/hslayers/hslayers-ng/commit/cbc7ff0841310443eaeda7d7b63c63540dea386c))
+* Enable getfeatureinfo if capabilities lists layer as queryable ([381b772](https://github.com/hslayers/hslayers-ng/commit/381b77267e57f2ef3779e62693552408bf468558))
+* Exclude GPServer services from services list ([fc3ae66](https://github.com/hslayers/hslayers-ng/commit/fc3ae6662825a07fdff239c477bd43c813ea7dd7))
+* Finding of correct layer when feature IDs overlap ([6cf6739](https://github.com/hslayers/hslayers-ng/commit/6cf6739d32006ba2c6849920113520add9742d32)), closes [#2617](https://github.com/hslayers/hslayers-ng/issues/2617)
+* Flickering due to cached feature-layer mappings ([7e1432a](https://github.com/hslayers/hslayers-ng/commit/7e1432ae5e23702bc8bbab3cd40ef79e6aa4e589))
+* Group layer manager action under dropdown menu ([94ed8ea](https://github.com/hslayers/hslayers-ng/commit/94ed8eaf6630389a4132afdeb82bb961fd5ffcdf)), closes [#2585](https://github.com/hslayers/hslayers-ng/issues/2585)
+* Hide popup for layers where it's not configured ([5a96c81](https://github.com/hslayers/hslayers-ng/commit/5a96c81be574a0177f4f34a03df2234b9e301839)), closes [#2672](https://github.com/hslayers/hslayers-ng/issues/2672)
+* Increase supported max panel size ([388b36f](https://github.com/hslayers/hslayers-ng/commit/388b36fc34ca963bdc975c59e2dfc1509bcd9569))
+* Layer scale settings in LayerManager keeps its value ([3a73ec4](https://github.com/hslayers/hslayers-ng/commit/3a73ec459336d36f6bd8cb3f5488a7a6d119280f))
+* Make instance checking more robus when mod-fed is used ([3126d68](https://github.com/hslayers/hslayers-ng/commit/3126d6813d68accb455a26c1b6550f6ba4dcc125))
+* Make layer removed async ([3bf71ee](https://github.com/hslayers/hslayers-ng/commit/3bf71eecb468fccaca36bae3643da68091bba92d))
+* Missing layer editor widgets after second toggle ([4d721a1](https://github.com/hslayers/hslayers-ng/commit/4d721a15bcfc26fc4ff2d9f073681f92797b5090)), closes [#2602](https://github.com/hslayers/hslayers-ng/issues/2602)
+* Not possible to add Layman layer to the map using draw layers list ([0188beb](https://github.com/hslayers/hslayers-ng/commit/0188beb1193e4f363edd378016f87bf37b9bbea1))
+* Only imageServer gets loaded ([89f96ae](https://github.com/hslayers/hslayers-ng/commit/89f96aed9ee064e7cde16fd5cc3fa38661c3de06))
+* Override LAYERS param with subLayers if specified ([5f0f0de](https://github.com/hslayers/hslayers-ng/commit/5f0f0de9a5c374c1499f5e1f4bc71f5edbc6f100))
+* Panels space minw width ([6d2d95a](https://github.com/hslayers/hslayers-ng/commit/6d2d95ae9cb29d5fb624ee5442feb151da4b4cdd))
+* Render font in styler imediately after change ([89ba1cf](https://github.com/hslayers/hslayers-ng/commit/89ba1cfed945a576ed4ec1b630e59a94a0ed15e8)), closes [#2637](https://github.com/hslayers/hslayers-ng/issues/2637)
+* Set copied layer props and source params before adding to map ([ddc9861](https://github.com/hslayers/hslayers-ng/commit/ddc986100b693654b4a3e817c284d1d1386b5e6a))
+* Set copied layers sublayers to new copy ([cfcb6c3](https://github.com/hslayers/hslayers-ng/commit/cfcb6c3837c07af984834a12274b10add929a357))
+* sidebarToggleable config param ([8c5fc0e](https://github.com/hslayers/hslayers-ng/commit/8c5fc0efd5920f4321eb3b49d7aae9aa1536b251))
+* **map:** Fix mousewheel zoom not working in Material apps ([c83ff8d](https://github.com/hslayers/hslayers-ng/commit/c83ff8dcc02b05fb4608e7d76229d72044d0b538))
+* Add ability to toggle arcgisrest sub layers ([45255da](https://github.com/hslayers/hslayers-ng/commit/45255da485a6040ef0c72d378f18fc5d1e3b3451))
+* Add checked layers OR all layers if none checked ([3de2100](https://github.com/hslayers/hslayers-ng/commit/3de210037f9d602fffbc66573722fe646ffb859c))
+* Adding of ArcGis layers as one layer ([fa97558](https://github.com/hslayers/hslayers-ng/commit/fa97558d35efb90428e497c9d8ba5678fcce29b7))
+* Allow setting of arcgis layer title ([dc4e497](https://github.com/hslayers/hslayers-ng/commit/dc4e49711a9ac0cd65f50b825fc759c58dad94c3))
+* Callback fix for Wagtail ([bbd47a0](https://github.com/hslayers/hslayers-ng/commit/bbd47a030f83fc9e7f6a276c110ffe7097edf34d))
+* Catch error, if Ol cannot get mapExtent ([cec1ec3](https://github.com/hslayers/hslayers-ng/commit/cec1ec3fd70fac45b4ddc0e58dc434614cbfb01f))
+* Changed some missed replacements from ([5ccba47](https://github.com/hslayers/hslayers-ng/commit/5ccba47564025303adb58dc77e8389b1611d05bb))
+* Check if caps.documentInfo exists ([89af3e4](https://github.com/hslayers/hslayers-ng/commit/89af3e44f4274c86b6f976eeff945b2a5de95a32))
+* Check if layer is clustered ([ae070ba](https://github.com/hslayers/hslayers-ng/commit/ae070bafb2efd48cf0da7499e97e1cce51db3676))
+* Clear initial urlType after it is loaded ([6b4a0c4](https://github.com/hslayers/hslayers-ng/commit/6b4a0c4e3bd0a0542b2558f101542c7c381e2c8e)), closes [#2541](https://github.com/hslayers/hslayers-ng/issues/2541)
+* Clone copied layers source ([27a29ab](https://github.com/hslayers/hslayers-ng/commit/27a29ab3a7748bbe2fe42ebc1b4056b8b969bbcd))
+* Create a layer copy ([bd36a2d](https://github.com/hslayers/hslayers-ng/commit/bd36a2d7878b495df8de13146f5d4ac253e3a75c))
+* Delete ArcGis Layer array if size is 0 ([cc4f76e](https://github.com/hslayers/hslayers-ng/commit/cc4f76eab5c9b53dc85d111691039f5a52ecd154))
+* Display subset of sublayers if needed ([d3cc6f8](https://github.com/hslayers/hslayers-ng/commit/d3cc6f8f3259f10fc1284736e6502f9a8f22babe))
+* Do not iterate undefined ([479edbb](https://github.com/hslayers/hslayers-ng/commit/479edbb402f4fb30a9fdb028bd787acc8f248d18))
+* Don't generate new arcGis layer title from sublayers ([096cde9](https://github.com/hslayers/hslayers-ng/commit/096cde96ee043c262b89b680d100dbc759f67ba1))
+* Don't set subLayers property if whole wms layer is added ([1230841](https://github.com/hslayers/hslayers-ng/commit/1230841895fd929311612e562a18f959d46e076c))
+* Expanding services in arcgis ([4da520d](https://github.com/hslayers/hslayers-ng/commit/4da520dc2568c710852c4fab95709fd4a93be49b))
+* Get arcgis layer name preferably from documentInfo ([16c42a6](https://github.com/hslayers/hslayers-ng/commit/16c42a62a275d882bfa1db40b861c1079586dc08))
+* Load extent of ArcGIS layers for zoom to button ([b1dd9b6](https://github.com/hslayers/hslayers-ng/commit/b1dd9b640932acf235b3575cbf78cfa06780b846))
+* Might fix the loading layer icon ([26ef760](https://github.com/hslayers/hslayers-ng/commit/26ef76008c18cf1c906dc246e60a9c6b3956d053))
+* OpenLayersParser when default imports are used ([fc38ff4](https://github.com/hslayers/hslayers-ng/commit/fc38ff4578e5f5d2b2a2940471b75065d1af72d2))
+* Private view properties not applied ([abbf2f4](https://github.com/hslayers/hslayers-ng/commit/abbf2f4b336a320dfe58839a7b203209aa358758)), closes [#2522](https://github.com/hslayers/hslayers-ng/issues/2522)
+* Push argis added layers to returned collection ([c340986](https://github.com/hslayers/hslayers-ng/commit/c3409862ceaef938a47b405a851c0824ad9b9b5b))
+* Readme link to hslayers-server ([f6d69de](https://github.com/hslayers/hslayers-ng/commit/f6d69de100e8a4bbdcd665e7eb1b0454f4c3d62a))
+* Register 3031 projection to proj.def ([4004f2b](https://github.com/hslayers/hslayers-ng/commit/4004f2b142f64be87bed132eb175404bdadbf006))
+* Register 3995 projection to proj.def ([d1b046f](https://github.com/hslayers/hslayers-ng/commit/d1b046f9a6be6164996f88e7998c12c6649714cb))
+* Replace default url path for map sharing ([9b25b5c](https://github.com/hslayers/hslayers-ng/commit/9b25b5c0efc305dfedcef3e7f47786709878ed9d))
+* Reset also views rotation ([fa61a43](https://github.com/hslayers/hslayers-ng/commit/fa61a43a431a31debbe2e9fd8e2517feea550dd9))
+* Set AddData panel to catalogue after adding layers ([07f0325](https://github.com/hslayers/hslayers-ng/commit/07f0325a3b323857c3408f8dde13969eabc4ebc3))
+* Set fornt size for new SLD rule for clusters ([03d0da5](https://github.com/hslayers/hslayers-ng/commit/03d0da5df1106abf4219a61112ba0573f5ba4cee))
+* Setting of vector layer definition ([593e03e](https://github.com/hslayers/hslayers-ng/commit/593e03e0e3e9f60d41d4143103f4fb944f0fa333))
+* Unclosable sidebar ([477746b](https://github.com/hslayers/hslayers-ng/commit/477746b697466fdbeb155637c5ea143115760a8e))
+* Update dependencies for the material layermanager component ([3782d8c](https://github.com/hslayers/hslayers-ng/commit/3782d8c03af24ca083fa4293d43fcefcea70a791))
+* Use correct values for tooltip positions ([88dfe25](https://github.com/hslayers/hslayers-ng/commit/88dfe2531c261b696a0ed78f3124cebbbdebde0d))
+* Wrong arcgis subl;ayer list when 1 selected ([221c5b7](https://github.com/hslayers/hslayers-ng/commit/221c5b7b903eb6ec174ce39dab8a1010b2d26c0f))
+* **add-data:** Open dataset for micka catalogue items ([689b03d](https://github.com/hslayers/hslayers-ng/commit/689b03d07895b8b2d9284a80fb246c3fe8479239))
+* vector file upload not syncing with layman ([1c0c2ed](https://github.com/hslayers/hslayers-ng/commit/1c0c2ed3ce77ec981b14fbac5ddbb739ab128c9e))
+* Wait for panel to be populated before setting the width style ([905128c](https://github.com/hslayers/hslayers-ng/commit/905128c20db41393b1da3151441743b445047c75))
+* Widgets overlaping container ([4b81b0e](https://github.com/hslayers/hslayers-ng/commit/4b81b0e4f67d35cea99b06ebac45600ba9491455))
+
+
+### Code Refactoring
+
+* Add layers to entire map by default ([80b11fc](https://github.com/hslayers/hslayers-ng/commit/80b11fc3c9a9f088cda1e13ffb524d54fda45200))
+* Removal of owsFilling and owsConnecting ([6cb9ae7](https://github.com/hslayers/hslayers-ng/commit/6cb9ae7f70c5b8e847adf34d45691d50b899ab4a))
+
+
+### Features
+
+* Map swipe state in url, properties stored ([b4d92d0](https://github.com/hslayers/hslayers-ng/commit/b4d92d0ebf7aa8414730906eb8157e306ed2007b))
+* **overlay:** Fine tune overlay buttons ([d836bed](https://github.com/hslayers/hslayers-ng/commit/d836beda72aec14343f657db315d5ed07939d607))
+* Ability to add a layer copy to the map ([743f0de](https://github.com/hslayers/hslayers-ng/commit/743f0ded42882e9b8fe84bf615ea3f640933b58b))
+* Ability to display layer for full map ([0ca73a5](https://github.com/hslayers/hslayers-ng/commit/0ca73a5baa301201b2bf11990c69b4357d40cc1e))
+* Ability to load service layers from service list ([01b9314](https://github.com/hslayers/hslayers-ng/commit/01b9314c95207787be7ba9a9cd0033852a5f00b2))
+* Add support for raster images with world file (Issue 356) ([#2575](https://github.com/hslayers/hslayers-ng/issues/2575)) ([ef95c05](https://github.com/hslayers/hslayers-ng/commit/ef95c052a94ad4502c6a7909759fadd8c8328056))
+* Added button to toggle all layer visibility ([2c90b88](https://github.com/hslayers/hslayers-ng/commit/2c90b8886743eb4bece06648221738ff4254ed4a))
+* Added multiple item removal dialog ([0edf5bb](https://github.com/hslayers/hslayers-ng/commit/0edf5bb487459b4516f0c18ff711b93d2d6a2a69))
+* Added new copy-layer-dialog ([e953349](https://github.com/hslayers/hslayers-ng/commit/e953349db37d02996ae7d59e0f44b16058a42b95))
+* Allow user to add multiple arcgis services as a whole ([ae4660d](https://github.com/hslayers/hslayers-ng/commit/ae4660d7770918d7063a18550b8e9682cba8f6bf))
+* Check for imageServices and add them to map on request ([6dac200](https://github.com/hslayers/hslayers-ng/commit/6dac20089e22bcc268be13b1f566236f2dd5a6a0))
+* Cleanup after panels ([e58173b](https://github.com/hslayers/hslayers-ng/commit/e58173b38439dafb161a40e445684cbef8ff9f88))
+* Execute cleanup on panel container component destruction ([052c2b0](https://github.com/hslayers/hslayers-ng/commit/052c2b023680c2e3824b250d1f2f44066dcebc52))
+* Provide toast, informing user about deletion in progress ([ae00641](https://github.com/hslayers/hslayers-ng/commit/ae00641b2eea3a9b6eefb036bcbe9408378e6a31))
+* **add-data:** Added new service ([cfe2f76](https://github.com/hslayers/hslayers-ng/commit/cfe2f76f0f958d16924729ee51d416b10157b09b))
+* **pager:** Ability to change item count per page ([53f8b00](https://github.com/hslayers/hslayers-ng/commit/53f8b0065545573a14f5e7bb403d6179d5c2dcc2))
+* **permalink:** Added getParamValAndRemove func ([473da70](https://github.com/hslayers/hslayers-ng/commit/473da70cf4ad2ac68e7dbd28a09b160d1294d93d))
+* **server:** Add env parameter for payload size limit ([1812b1f](https://github.com/hslayers/hslayers-ng/commit/1812b1f86157f0deb2a8edd26d92bdae5f8dc624))
+* **server:** Add options to run only specified components of server ([6f45898](https://github.com/hslayers/hslayers-ng/commit/6f4589827828459776b279220d85db31c7c065c0))
+* Return added layers from getCaps/add-data panel ([377396c](https://github.com/hslayers/hslayers-ng/commit/377396c92592647f6f03fdce55393d7a7c1fa65f))
+* Show placeholder for d&d lists ([098ceef](https://github.com/hslayers/hslayers-ng/commit/098ceef1f4def1d34edd19647be2b32f2945f331))
+* Support untiled arcgis layers and extra params ([1a285e2](https://github.com/hslayers/hslayers-ng/commit/1a285e20bef863f3010ff766d9d25e556626e0a1))
+
+
+### Performance Improvements
+
+* Remove usage of panelSpaceWidth function ([b3d91a3](https://github.com/hslayers/hslayers-ng/commit/b3d91a390a00daef1431dc1d53a38726e07a7c15))
+
+
+### Reverts
+
+* Remove unneeded translations ([43b0af3](https://github.com/hslayers/hslayers-ng/commit/43b0af325e948bad0dc1e29827a98a773df8b7d5))
+
+
+### BREAKING CHANGES
+
+* Removal of hsLayoutService.initializedOnce variable which was a crutch anyway
+* owsFilling and owsConnecting rxjs subjects are no
+longer being used. To load external layers, please now use
+HsAddDataOwsService.connectToOWS
+* Layer property swipeRight is changed to swipeSide, and the values are changed from boolean to string (left and right) respectively
+
+
+
 ## [7.0.1](https://github.com/hslayers/hslayers-ng/compare/7.0.0...7.0.1) (2021-12-15)
 
 
