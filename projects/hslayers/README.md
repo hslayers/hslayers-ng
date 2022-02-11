@@ -37,7 +37,7 @@ It will install hslayers-ng for the default application specified in your angula
 `ng add hslayers-ng --project myProject`
 
 Add peer dependencies:
-`npm i bootstrap@^5.0.0 ol@^6.0.0 @angular/cdk@^12 @angular/common@^12 @angular/core@^12 @angular/forms@^12.0.0 @ngx-translate/core@^13 @ngx-translate/http-loader@^6.0.0 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^10.0.0 ol-popup@^4.0.0 proj4@^2.6.0 share-api-polyfill@^1.0.0 @angular/compiler@^12.0.0 @angular/platform-browser@^12.0.0 @angular/platform-browser-dynamic@^12.0.0 @angular/localize@^12.0.0 rxjs@^6.0.0 zone.js@^0.11.3 xml-js@^1.0.0 ngx-cookie-service@^12.0.0 geostyler-style@^5 geostyler-sld-parser@^3 geostyler-openlayers-parser@^3 geostyler-legend@>=3 ngx-color@^7 queue resumablejs d3 geostyler-qgis-parser@^1 jszip polygon-splitter polygon-clipping`
+`npm i bootstrap@^5.0.0 ol@^6.0.0 @angular/cdk@^12 @angular/common@^12 @angular/core@^12 @angular/forms@^12.0.0 @ngx-translate/core@^13 @ngx-translate/http-loader@^6.0.0 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^10.0.0 ol-popup@^4.0.0 proj4@^2.6.0 share-api-polyfill@^1.0.0 @angular/compiler@^12.0.0 @angular/platform-browser@^12.0.0 @angular/platform-browser-dynamic@^12.0.0 @angular/localize@^12.0.0 rxjs@^6.0.0 zone.js@^0.11.3 xml-js@^1.0.0 ngx-cookie-service@^12.0.0 geostyler-style@^5 geostyler-sld-parser@^3 geostyler-openlayers-parser@^3 geostyler-legend ngx-color@^7 queue resumablejs d3 geostyler-qgis-parser@^1 jszip polygon-splitter polygon-clipping`
 
 For using hslayers-ng prebuilt bundle including angular, bootstrap etc. dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 
