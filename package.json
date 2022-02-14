@@ -82,7 +82,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-architects/module-federation": "^14.0.2",
+    "@angular-architects/module-federation": "^14.1.1",
     "ngx-build-plus": "^13.0.1",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular-devkit/build-angular": "^13.2.3",
