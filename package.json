@@ -90,7 +90,7 @@
     "@angular-eslint/eslint-plugin": "^13.0.1",
     "@angular-eslint/eslint-plugin-template": "^13.0.1",
     "@angular-eslint/schematics": "^13.0.1",
-    "@angular-eslint/template-parser": "^13.0.1",
+    "@angular-eslint/template-parser": "^13.1.0",
     "@angular/cli": "~13.2.3",
     "@angular/compiler-cli": "~13.2.2",
     "@commitlint/cli": "^16.1.0",
