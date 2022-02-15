@@ -111,7 +111,6 @@ export class HsConfig {
     addData: true,
     mapSwipe: false,
   };
-  advancedForm?: boolean;
   project_name?: string;
   hostname?: {
     status_manager?: {

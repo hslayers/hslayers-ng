@@ -19,10 +19,10 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   endpoint = null;
   isAuthorized = false;
-  advancedForm: boolean;
   name = 'saveMap';
   private ngUnsubscribe = new Subject<void>();
   constructor(
@@ -52,10 +52,6 @@ export class HsSaveMapComponent
       icon: 'icon-save-floppy',
     });
 
-    this.advancedForm =
-      HsConfig.advancedForm == undefined || HsConfig.advancedForm
-        ? true
-        : false;
     this.HsSaveMapManagerService.panelOpened
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((composition) => {

@@ -1,95 +1,32 @@
-<!-- Nav tabs -->
-<ul class="nav flex-column flex-sm-row stc-tabs pb-2" role="tablist">
-    <li role="presentation" class="nav-item" *ngFor="let s of steps">
-        <a class="nav-link" [ngClass]="{'btn-primary text-white': step === s}" attr.aria-controls="hs-{{s}}" role="tab"
-            data-toggle="tab" (click)="setStep(s)">{{'COMMON.'+s | translate}}</a>
-    </li>
-</ul><!-- Tab panes -->
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step ==='context'}" id="hs-context">
-        <form>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" name="hs-save-map-title"
-                    placeholder="'COMMON.title' | translate" [(ngModel)]="HsSaveMapManagerService.compoData.title"
-                    (change)="titleChanged()">
-                <label for="hs-save-map-title">{{'COMMON.title' | translate}} *</label>
-            </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" name="hs-save-map-name"
-                    [(ngModel)]="HsSaveMapManagerService.compoData.name" (change)="titleChanged()"
-                    placeholder="'COMMON.name' | translate">
-                <label for="hs-save-map-name">{{'COMMON.name' | translate}} *</label>
-            </div>
-
-            <div class="form-floating mb-2">
-                <textarea class="form-control" name="hs-save-map-abstract" placeholder="'COMMON.abstract' | translate"
-                    [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
-                <label for="hs-save-map-abstract">{{'COMMON.abstract' | translate}}</label>
-            </div>
-
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" name="hs-save-map-keywords"
-                    placeholder="'COMMON.keywords' | translate"
-                    [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
-                <label for="hs-save-map-keywords">{{'COMMON.keywords' | translate}}</label>
-            </div>
-            <hs-layman-access-rights [(access_rights)]="HsSaveMapManagerService.compoData.access_rights">
-            </hs-layman-access-rights>
-            <div class="form-group">
-                <label for="stc-extent1" class="form-group">{{'COMMON.extent' | translate}}</label>
-                <div class="d-flex w-100 pb-2 stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">
-                    <div class="form-floating px-0">
-                        <input type="text" class="form-control" id="floatingEast" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.east"
-                            [title]="'COMMON.east' | translate">
-                        <label for="floatingEast">{{'COMMON.east' | translate}}</label>
-                    </div>
-                    <div class="form-floating px-0">
-                        <input type="text" class="form-control" id="floatingSouth" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.south"
-                            [title]="'COMMON.south' | translate">
-                        <label for="floatingSouth">{{'COMMON.south' | translate}}</label>
-                    </div>
-                    <div class="form-floating px-0">
-                        <input type="text" class="form-control" id="floatingWest" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.west"
-                            [title]="'COMMON.west' | translate">
-                        <label for="floatingWest">{{'COMMON.west' | translate}}</label>
-                    </div>
-                    <div class="form-floating px-0">
-                        <input type="text" class="form-control" id="floatingNorth" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.north"
-                            [title]="'COMMON.north' | translate">
-                        <label for="floatingNorth">{{'COMMON.north' | translate}}</label>
-                    </div>
-                </div>
-                <button type="button" class="mt-1 btn btn-secondary w-100"
-                    (click)="HsSaveMapManagerService.setCurrentBoundingBox()">{{'SAVECOMPOSITION.form.userCurrentMapExtent'
-                    | translate}}</button>
-            </div>
-            <div class="form-group">
-                <ul class="list-group" id="stc-layerlist">
-                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers; let i = index"
-                        class="list-group-item">
-                        <div class="form-check text-truncat">
-                            <input type="checkbox" class="form-check-input mt-0" name="hs-stclayer-{{i}}"
-                                id="hs-stclayer-{{i}}" [(ngModel)]="layer.checked">
-                            <label for="hs-stclayer-{{i}}" title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
-                                class="form-check-label mw-100 text-truncate">{{HsLayerUtilsService.translateTitle(layer.title)}}</label>
-                        </div>
-                    </li>
-                    <li class="list-group-item" style="padding: 3px">
-                        <div class="d-flex w-100 justify-content-center">
-                            <button type="button" class="mt-1 btn btn-primary"
-                                (click)="selectDeselectAllLayers()">{{'SAVECOMPOSITION.form.toggleAll' |
-                                translate}}</button>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </form>
+<div class="form">
+    <div class="form-floating mb-2">
+        <input type="text" class="form-control" name="hs-save-map-title" placeholder="'COMMON.title' | translate"
+            [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
+        <label for="hs-save-map-title">{{'COMMON.title' | translate}} *</label>
     </div>
-    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step ==='access'}" id="hs-access">
+    <div class="form-floating mb-2">
+        <input type="text" class="form-control" name="hs-save-map-name"
+            [(ngModel)]="HsSaveMapManagerService.compoData.name" (change)="titleChanged()"
+            placeholder="'COMMON.name' | translate">
+        <label for="hs-save-map-name">{{'COMMON.name' | translate}} *</label>
+    </div>
+    <div class="form-floating mb-2">
+        <textarea class="form-control" name="hs-save-map-abstract" placeholder="'COMMON.abstract' | translate"
+            [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
+        <label for="hs-save-map-abstract">{{'COMMON.abstract' | translate}}</label>
+    </div>
+    <div class="form-floating mb-2">
+        <input type="text" class="form-control" name="hs-save-map-keywords" placeholder="'COMMON.keywords' | translate"
+            [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
+        <label for="hs-save-map-keywords">{{'COMMON.keywords' | translate}}</label>
+    </div>
+    <label class="form-group">{{'COMMON.thumbnail' | translate}}
+        <img class="hs-stc-thumbnail img-thumbnail" alt="Composition thumbnail" width="256" height="256">
+    </label>
+    <hs-layman-access-rights *ngIf="endpoint?.type === 'layman'"
+        [(access_rights)]="HsSaveMapManagerService.compoData.access_rights">
+    </hs-layman-access-rights>
+    <ng-container *ngIf="HsSaveMapManagerService.statusData?.groups?.length > 0 && endpoint?.type !== 'layman'">
         <table class="table table-condensed">
             <tbody>
                 <tr>
@@ -100,14 +37,76 @@
                 <tr *ngFor="let g of HsSaveMapManagerService.statusData.groups">
                     <td>{{g.roleTitle || g.roleName}}:</td>
                     <td><input type="checkbox" class="form-control" [(ngModel)]="g.r"
-                            [ngModelOptions]="{standalone: true}"></td>
+                            [ngModelOptions]="{standalone: true}">
+                    </td>
                     <td><input type="checkbox" class="form-control" [(ngModel)]="g.w"
-                            [ngModelOptions]="{standalone: true}"></td>
+                            [ngModelOptions]="{standalone: true}">
+                    </td>
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step ==='author'}" id="hs-author">
+    </ng-container>
+</div>
+<div class="mb-2 d-flex justify-content-center">
+    <button type="button" class="btn btn-secondary me-2 w-50" id="stc-advanced-options"
+        (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translate}}</button>
+    <button type="button" class="btn btn-secondary w-50" id="stc-user-information"
+        (click)="setExtraFormTo('aboutAuthor')">{{'COMMON.aboutAuthor' | translate}}</button>
+</div>
+<div class="hs-save-comp-advanced-panel" *ngIf="extraFormOpened === 'advancedOptions'">
+    <form class="form">
+        <div class="form-group">
+            <label for="stc-extent1" class="form-group">{{'COMMON.extent' | translate}}</label>
+            <div class="d-flex w-100 pb-2 stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">
+                <div class="form-floating px-0">
+                    <input type="text" class="form-control" id="floatingEast" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="HsSaveMapManagerService.compoData.bbox.east" [title]="'COMMON.east' | translate">
+                    <label for="floatingEast">{{'COMMON.east' | translate}}</label>
+                </div>
+                <div class="form-floating px-0">
+                    <input type="text" class="form-control" id="floatingSouth" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="HsSaveMapManagerService.compoData.bbox.south" [title]="'COMMON.south' | translate">
+                    <label for="floatingSouth">{{'COMMON.south' | translate}}</label>
+                </div>
+                <div class="form-floating px-0">
+                    <input type="text" class="form-control" id="floatingWest" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="HsSaveMapManagerService.compoData.bbox.west" [title]="'COMMON.west' | translate">
+                    <label for="floatingWest">{{'COMMON.west' | translate}}</label>
+                </div>
+                <div class="form-floating px-0">
+                    <input type="text" class="form-control" id="floatingNorth" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="HsSaveMapManagerService.compoData.bbox.north" [title]="'COMMON.north' | translate">
+                    <label for="floatingNorth">{{'COMMON.north' | translate}}</label>
+                </div>
+            </div>
+            <button type="button" class="mt-1 btn btn-secondary w-100"
+                (click)="HsSaveMapManagerService.setCurrentBoundingBox()">{{'SAVECOMPOSITION.form.userCurrentMapExtent'
+                | translate}}</button>
+        </div>
+        <div class="form-group">
+            <ul class="list-group" id="stc-layerlist">
+                <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers; let i = index"
+                    class="list-group-item">
+                    <div class="form-check text-truncat">
+                        <input type="checkbox" class="form-check-input mt-0" name="hs-stclayer-{{i}}"
+                            id="hs-stclayer-{{i}}" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}">
+                        <label for="hs-stclayer-{{i}}" title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
+                            class="form-check-label mw-100 text-truncate">{{HsLayerUtilsService.translateTitle(layer.title)}}</label>
+                    </div>
+                </li>
+                <li class="list-group-item" style="padding: 3px">
+                    <div class="d-flex w-100 justify-content-center">
+                        <button type="button" class="mt-1 btn btn-primary"
+                            (click)="selectDeselectAllLayers()">{{'SAVECOMPOSITION.form.toggleAll' |
+                            translate}}</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<div *ngIf="extraFormOpened === 'aboutAuthor'">
+    <div class="form">
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.name"
                 name="hs-savemap-userdata-name" placeholder="'SAVECOMPOSITION.form.person' | translate">
@@ -174,12 +173,10 @@
                 name="hs-savemap-userdata-url" placeholder="WWW">
             <label for="hs-savemap-userdata-url">WWW</label>
         </div>
-
     </div>
 </div>
 <div class="modal-footer w-100">
-    <div [hidden]="!(step === 'end' 
-        && HsSaveMapManagerService.currentUser !== HsSaveMapManagerService.compoData.workspace 
+    <div [hidden]="!(HsSaveMapManagerService.currentUser !== HsSaveMapManagerService.compoData.workspace 
         && HsSaveMapManagerService.compoData.workspace)">
         <div class="alert alert-info text-gray">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translate}}
@@ -189,11 +186,12 @@
             translate}}</button>
         <p style="text-align: center;" class="m-1">{{'COMMON.or' | translate}}</p>
     </div>
-
-    <button type="button" class="btn btn-primary" id="stc-saveas" [hidden]="!(step === 'end' && isAllowed())"
-        (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
-    <button type="button" class="btn btn-primary" id="stc-next" [hidden]="!(step !== 'end')"
-        (click)="next()">{{'COMMON.next' | translate}}</button>
-    <a class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download"
-        [hidden]="!(step === 'end')">{{'COMMON.download' | translate}}</a>
+    <div class="mb-2 d-flex justify-content-end">
+        <button type="button" class="btn btn-primary me-2" id="stc-saveas" [hidden]="!(isAllowed())"
+            [disabled]="!HsSaveMapManagerService.compoData.title || !HsSaveMapManagerService.compoData.name"
+            (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
+        <button type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
+            |
+            translate}}</button>
+    </div>
 </div>

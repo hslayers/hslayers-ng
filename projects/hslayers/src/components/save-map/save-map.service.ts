@@ -460,7 +460,7 @@ export class HsSaveMapService {
      *
      */
     function rendered() {
-      const canvas = this.HsMapService.getCanvases()[0];
+      const canvas = localThis.HsMapService.getCanvases()[0];
       const canvas2 = document.createElement('canvas');
       const width = 256,
         height = 256;
@@ -482,19 +482,19 @@ export class HsSaveMapService {
       );
       try {
         $element.setAttribute('src', canvas2.toDataURL('image/png'));
-        this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+        localThis.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
       } catch (e) {
-        this.HsLogService.warn(e);
+        localThis.HsLogService.warn(e);
         $element.setAttribute(
           'src',
-          this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
+          localThis.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
         );
       }
       $element.style.width = width + 'px';
       $element.style.height = height + 'px';
     }
     if (
-      this.HsLayoutService.mainpanel == 'save-map' ||
+      this.HsLayoutService.mainpanel == 'saveMap' ||
       this.HsLayoutService.mainpanel == 'permalink' ||
       this.HsLayoutService.mainpanel == 'statusCreator'
     ) {
