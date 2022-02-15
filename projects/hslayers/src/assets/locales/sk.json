@@ -250,7 +250,8 @@
     "copyLayer": "Kopírovať vrstvu",
     "selectAndConfirmToDeleteMultiple": "Vyberte",
     "unknown": "Neznáme",
-    "selectRecordCountPerPage": "Vyberte počet záznamov na stránku"
+    "selectRecordCountPerPage": "Vyberte počet záznamov na stránku",
+    "aboutAuthor": "O autorovi"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

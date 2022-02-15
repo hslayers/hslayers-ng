@@ -4,11 +4,10 @@ import {FormsModule} from '@angular/forms';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsSaveMapAdvancedFormComponent} from './save-map-advanced-form.component';
+import {HsSaveMapAdvancedFormComponent} from './save-map-form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapDialogComponent} from './save-map-dialog.component';
 import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component';
-import {HsSaveMapSimpleFormComponent} from './save-map-simple-form.component';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -17,7 +16,6 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [
     HsSaveMapComponent,
     HsSaveMapResultDialogComponent,
-    HsSaveMapSimpleFormComponent,
     HsSaveMapDialogComponent,
     HsSaveMapAdvancedFormComponent,
   ],

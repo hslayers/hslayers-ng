@@ -250,7 +250,8 @@
     "copyLayer": "Copy layer",
     "selectRecordCountPerPage": "Select record count per page",
     "selectAndConfirmToDeleteMultiple": "Select and confirm to delete multiple layers",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "aboutAuthor": "About author"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

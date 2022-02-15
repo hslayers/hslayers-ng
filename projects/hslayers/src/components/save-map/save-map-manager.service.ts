@@ -73,10 +73,10 @@ export class HsSaveMapManagerService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
   ) {
-    HsEventBusService.compositionLoads.subscribe((data) => {
+    this.init();
+    this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
         const responseData = data.data ?? data;
-
         this.compoData.id = responseData.id;
         this.compoData.abstract = responseData.abstract;
         this.compoData.title = responseData.title;
@@ -84,29 +84,20 @@ export class HsSaveMapManagerService {
         this.compoData.keywords = responseData.keywords;
         this.compoData.currentComposition = responseData;
         this.compoData.workspace = responseData.workspace;
-
         this.compoData.currentCompositionTitle = this.compoData.title;
       }
     });
 
-    HsEventBusService.mapResets.subscribe(() => {
+    this.HsEventBusService.mapResets.subscribe(() => {
       this.resetCompoData();
     });
 
-    HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
-        HsLayoutService.mainpanel == 'saveMap' ||
-        HsLayoutService.mainpanel == 'statusCreator'
+        this.HsLayoutService.mainpanel == 'saveMap' ||
+        this.HsLayoutService.mainpanel == 'statusCreator'
       ) {
-        HsMapService.loaded().then(() => {
-          this.fillCompositionData();
-          this.HsSaveMapService.generateThumbnail(
-            this.HsLayoutService.contentWrapper.querySelector(
-              '.hs-stc-thumbnail'
-            ),
-            this.compoData
-          );
-        });
+        this.init();
       }
     });
 
@@ -121,13 +112,23 @@ export class HsSaveMapManagerService {
               this.HsLayoutService.contentWrapper.querySelector(
                 '.hs-stc-thumbnail'
               ),
-              this.compoData
+              this
             );
           },
           1000,
           false,
           this
         )
+      );
+    });
+  }
+
+  init(): void {
+    this.HsMapService.loaded().then(() => {
+      this.fillCompositionData();
+      this.HsSaveMapService.generateThumbnail(
+        this.HsLayoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+        this
       );
     });
   }
@@ -141,6 +142,7 @@ export class HsSaveMapManagerService {
     this.compoData.bbox = this.getCurrentExtent();
   }
 
+  //*NOTE not being used
   async confirmSave(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
@@ -235,7 +237,7 @@ export class HsSaveMapManagerService {
   }
 
   /**
-   * @param download Used when generating json for catalogue save
+   * @param download - Used when generating json for catalogue save
    * @returns composition JSON
    */
   generateCompositionJson(compoData?): any {
@@ -260,7 +262,7 @@ export class HsSaveMapManagerService {
 
   /**
    * Initialization of Save map wizard from outside of component
-   * @param composition
+   * @param composition -
    */
   openPanel(composition) {
     this.HsLayoutService.setMainPanel('saveMap', true);
@@ -314,27 +316,24 @@ export class HsSaveMapManagerService {
 
   /**
    * Send getGroups request to status manager server and process response
-   * @param {Function} cb Callback function
    */
   async fillGroups(): Promise<void> {
     this.statusData.groups = [];
-    if (this.HsConfig.advancedForm) {
-      const response: any = await lastValueFrom(
-        this.http.get(this.HsStatusManagerService.endpointUrl(), {
-          params: new HttpParams({
-            fromObject: {
-              request: 'getGroups',
-            },
-          }),
-        })
-      );
-      const j = response.data;
-      if (j.success) {
-        this.statusData.groups = j.result;
-        for (const g of this.statusData.groups) {
-          g.w = false;
-          g.r = false;
-        }
+    const response: any = await lastValueFrom(
+      this.http.get(this.HsStatusManagerService.endpointUrl(), {
+        params: new HttpParams({
+          fromObject: {
+            request: 'getGroups',
+          },
+        }),
+      })
+    );
+    const j = response.data;
+    if (j.success) {
+      this.statusData.groups = j.result;
+      for (const g of this.statusData.groups) {
+        g.w = false;
+        g.r = false;
       }
     }
   }
@@ -353,7 +352,7 @@ export class HsSaveMapManagerService {
 
   /**
    * Process user info into controller model, so they can be used in Save composition forms
-   * @param {object} response Http response containing user data
+   * @param response - Http response containing user data
    */
   setUserDetails(response) {
     const user = response.data;
@@ -377,7 +376,7 @@ export class HsSaveMapManagerService {
 
   /**
    * Get current extent of map, transform it into EPSG:4326 and save it into controller model
-   * @returns {Array} Extent coordinates
+   * Returns Extent coordinates
    */
   getCurrentExtent() {
     const b = this.HsMapService.map
