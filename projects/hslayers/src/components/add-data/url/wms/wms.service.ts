@@ -304,7 +304,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     return boundingbox; // TODO: ?? serviceLayer.BoundingBox; (is more complex, contains SRS definition etc.)
   }
 
-  //TODO: what is the reason to do such things?
+  /**
+   * Filters out layers without 'Name' parameter
+   */
   filterCapabilitiesLayers(layers: WmsLayer | Array<WmsLayer>): Array<any> {
     if (Array.isArray(layers)) {
       return layers;
@@ -317,9 +319,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           return layersWithNameParam;
         }
         for (const layer of layers.Layer) {
-          if (Array.isArray(layer?.Layer)) {
-            tmp.push(...layer.Layer.filter((layer) => layer.Name));
-          }
+          tmp.push(...this.filterCapabilitiesLayers(layer));
         }
       } else {
         tmp = [layers];
@@ -327,7 +327,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
     return tmp;
   }
-
   /**
    * Removes extra port which is added to the getMap request when
    * GetCapabilities is queried through proxy. <GetMap><DCPType><HTTP><Get>
