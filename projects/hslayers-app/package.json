@@ -1,8 +1,8 @@
 {
   "name": "hslayers-ng-app",
   "version": "8.0.0",
-  "description": "A bundle of HSLayers-NG library + angular + OL",
-  "main": "karma.conf.js",
+  "description": "A bundle of HSLayers-NG library + Angular + OL",
+  "main": "src/main.ts",
   "directories": {
     "test": "test"
   },
@@ -14,8 +14,11 @@
     "url": "git+https://github.com/hslayers/hslayers-ng.git"
   },
   "keywords": [
-    "map",
+    "hslayers",
     "hslayers-ng",
+    "map",
+    "mapping",
+    "openlayers",
     "ol",
     "angular"
   ],
@@ -24,5 +27,5 @@
   "bugs": {
     "url": "https://github.com/hslayers/hslayers-ng/issues"
   },
-  "homepage": "https://github.com/hslayers/hslayers-ng/blob/develop/projects/hslayers-app/README.md"
+  "homepage": "https://ng.hslayers.org/"
 }
