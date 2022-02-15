@@ -156,6 +156,9 @@ export class HsExternalService {
     domElement: Element,
     e: Event
   ) {
+    if (!this.hsMapService.getLayerForFeature(feature)?.getVisible()) {
+      return;
+    }
     const extent = feature.getGeometry().getExtent();
     const center = getCenter(extent);
     const map = this.hsMapService.map;
