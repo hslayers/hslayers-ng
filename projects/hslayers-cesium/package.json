@@ -3,18 +3,14 @@
   "version": "8.0.0",
   "scripts": {},
   "peerDependencies": {
-    "cesium": "^1.87.0",
-    "@angular/common": "^12.0.0",
-    "@angular/core": "^12.0.0",
-    "@angular/forms": "^12.0.0",
-    "@angular/localize": "^12.0.0",
-    "@ngx-translate/core": "^13.0.0",
-    "@ngx-translate/http-loader": "^6.0.0",
-    "dayjs": "^1.0.0",
-    "ol": "^6.7.0",
-    "ol-popup": "^4.0.0",
-    "proj4": "^2.6.0",
-    "rxjs": "^6.0.0"
+    "@angular/common": "^13.0.0",
+    "@angular/core": "^13.0.0",
+    "@angular/forms": "^13.0.0",
+    "@angular/localize": "^13.0.0",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
+    "cesium": "^1.90.0",
+    "hslayers-ng": "^8.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
