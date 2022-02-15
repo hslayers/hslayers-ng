@@ -1,12 +1,26 @@
 {
   "name": "hslayers-cesium",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "HSLayers-NG 3D mapping library",
   "author": "Plan4All",
-  "keywords": ["hslayers", "hslayers-ng", "openlayers", "ol", "cesium", "map", "mapping", "angular"],
+  "keywords": [
+    "hslayers",
+    "hslayers-ng",
+    "openlayers",
+    "ol",
+    "cesium",
+    "map",
+    "mapping",
+    "angular"
+  ],
   "homepage": "https://ng.hslayers.org/",
-  "bugs": {"url": "https://github.com/hslayers/hslayers-ng/issues"},
-  "repository": {"type": "git", "directory": "https://github.com/hslayers/hslayers-ng"},
+  "bugs": {
+    "url": "https://github.com/hslayers/hslayers-ng/issues"
+  },
+  "repository": {
+    "type": "git",
+    "directory": "https://github.com/hslayers/hslayers-ng"
+  },
   "license": "MIT",
   "scripts": {},
   "peerDependencies": {
