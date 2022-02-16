@@ -251,7 +251,8 @@
     "selectRecordCountPerPage": "Vyberte počet záznamů na stránku",
     "unknown": "Neznámý",
     "selectAndConfirmToDeleteMultiple": "Vybrat a potvrdit smazání více vrstev",
-    "aboutAuthor": "O autorovi"
+    "aboutAuthor": "O autorovi",
+    "required": "Požadované"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

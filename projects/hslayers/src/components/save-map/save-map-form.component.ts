@@ -68,7 +68,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
     }, 0);
   }
 
-  selectDeselectAllLayers() {
+  selectDeselectAllLayers(): void {
     this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
     this.HsSaveMapManagerService.compoData.layers.forEach(
       (layer) => (layer.checked = this.btnSelectDeselectClicked)
@@ -80,11 +80,17 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
     return this.HsUtilsService.capitalizeFirstLetter(string);
   }
 
-  titleChanged() {
+  titleChanged(): void {
     this.overwrite = false;
+    this.HsSaveMapManagerService.missingTitle = false;
+    this.HsSaveMapManagerService.missingName = false;
   }
 
-  isAllowed() {
+  abstractChanged(): void {
+    this.HsSaveMapManagerService.missingAbstract = false;
+  }
+
+  isAllowed(): boolean {
     if (this.endpoint === null) {
       return false;
     }

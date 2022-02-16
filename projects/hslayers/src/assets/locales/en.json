@@ -251,7 +251,8 @@
     "selectRecordCountPerPage": "Select record count per page",
     "selectAndConfirmToDeleteMultiple": "Select and confirm to delete multiple layers",
     "unknown": "Unknown",
-    "aboutAuthor": "About author"
+    "aboutAuthor": "About author",
+    "required": "Required"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
