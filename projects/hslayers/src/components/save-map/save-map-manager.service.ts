@@ -87,6 +87,7 @@ export class HsSaveMapManagerService {
         this.compoData.currentComposition = responseData;
         this.compoData.workspace = responseData.workspace;
         this.compoData.currentCompositionTitle = this.compoData.title;
+        this.validateForm();
       }
     });
 
@@ -405,6 +406,15 @@ export class HsSaveMapManagerService {
     this.changeTitle = true;
   }
 
+  validateForm() {
+    this.missingTitle = !this.compoData.title;
+    this.missingName = !this.compoData.name;
+    this.missingAbstract = !this.compoData.abstract;
+    return (
+      this.compoData.title || this.compoData.name || this.compoData.abstract
+    );
+  }
+
   resetCompoData() {
     this.compoData.id = '';
     this.compoData.abstract = '';
@@ -416,14 +426,7 @@ export class HsSaveMapManagerService {
   }
 
   async initiateSave(saveAsNew) {
-    if (
-      !this.compoData.title ||
-      !this.compoData.name ||
-      !this.compoData.abstract
-    ) {
-      this.missingTitle = !this.compoData.title;
-      this.missingName = !this.compoData.name;
-      this.missingAbstract = !this.compoData.abstract;
+    if (!this.validateForm()) {
       return;
     }
     try {

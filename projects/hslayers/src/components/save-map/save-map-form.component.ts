@@ -37,6 +37,9 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
         if (statusData.overWriteNeeded) {
           this.overwrite = true;
         }
+        if (statusData == 'rename') {
+          document.getElementsByName('hs-save-map-name')[0].focus();
+        }
       });
   }
   ngOnDestroy(): void {
