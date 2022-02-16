@@ -24,6 +24,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
+import {ShareThumbnailService} from '../permalink/share-thumbnail.service';
 import {
   getAttribution,
   getBase,
@@ -56,7 +57,8 @@ export class HsSaveMapService {
     public HsUtilsService: HsUtilsService,
     public HsLayoutService: HsLayoutService,
     public HsLogService: HsLogService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public ShareThumbnailService: ShareThumbnailService
   ) {
     window.addEventListener('beforeunload', (e) => {
       if (hsConfig.saveMapStateOnReload) {
@@ -456,60 +458,17 @@ export class HsSaveMapService {
    * @param {boolean} newRender Force new render?
    */
   generateThumbnail($element, localThis, newRender?) {
-    /**
-     *
-     */
-    function rendered() {
-      const canvas = localThis.HsMapService.getCanvases()[0];
-      const canvas2 = document.createElement('canvas');
-      const width = 256,
-        height = 256;
-      canvas2.style.width = width + 'px';
-      canvas2.style.height = height + 'px';
-      canvas2.width = width;
-      canvas2.height = height;
-      const ctx2 = canvas2.getContext('2d');
-      ctx2.drawImage(
-        canvas,
-        canvas.width / 2 - height / 2,
-        canvas.height / 2 - width / 2,
-        width,
-        height,
-        0,
-        0,
-        width,
-        height
-      );
-      try {
-        $element.setAttribute('src', canvas2.toDataURL('image/png'));
-        localThis.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
-      } catch (e) {
-        localThis.HsLogService.warn(e);
-        $element.setAttribute(
-          'src',
-          localThis.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
-        );
-      }
-      $element.style.width = width + 'px';
-      $element.style.height = height + 'px';
+    if ($element === null) {
+      return;
     }
-    if (
-      this.HsLayoutService.mainpanel == 'saveMap' ||
-      this.HsLayoutService.mainpanel == 'permalink' ||
-      this.HsLayoutService.mainpanel == 'statusCreator'
-    ) {
-      if ($element === null) {
-        return;
-      }
-      $element.setAttribute('crossOrigin', 'Anonymous');
-
-      rendered.bind(localThis);
-      this.HsMapService.map.once('postcompose', rendered);
-      if (newRender) {
-        this.HsMapService.map.renderSync();
-      } else {
-        rendered();
-      }
+    $element.setAttribute('crossOrigin', 'Anonymous');
+    this.HsMapService.map.once('postcompose', () =>
+      this.ShareThumbnailService.rendered($element, newRender)
+    );
+    if (newRender) {
+      this.HsMapService.map.renderSync();
+    } else {
+      this.ShareThumbnailService.rendered($element, newRender);
     }
   }
 

@@ -87,7 +87,9 @@ export class HsSaveMapManagerService {
         this.compoData.currentComposition = responseData;
         this.compoData.workspace = responseData.workspace;
         this.compoData.currentCompositionTitle = this.compoData.title;
-        this.validateForm();
+        if (Object.keys(data).length !== 0) {
+          this.validateForm();
+        }
       }
     });
 
@@ -110,13 +112,15 @@ export class HsSaveMapManagerService {
         'postcompose',
         this.HsUtilsService.debounce(
           () => {
-            this.setCurrentBoundingBox();
-            this.HsSaveMapService.generateThumbnail(
-              this.HsLayoutService.contentWrapper.querySelector(
-                '.hs-stc-thumbnail'
-              ),
-              this
-            );
+            if (this.HsLayoutService.mainpanel == 'saveMap') {
+              this.setCurrentBoundingBox();
+              this.HsSaveMapService.generateThumbnail(
+                this.HsLayoutService.contentWrapper.querySelector(
+                  '.hs-stc-thumbnail'
+                ),
+                this
+              );
+            }
           },
           1000,
           false,
@@ -411,7 +415,9 @@ export class HsSaveMapManagerService {
     this.missingName = !this.compoData.name;
     this.missingAbstract = !this.compoData.abstract;
     return (
-      this.compoData.title || this.compoData.name || this.compoData.abstract
+      !!this.compoData.title &&
+      !!this.compoData.name &&
+      !!this.compoData.abstract
     );
   }
 
