@@ -1,19 +1,32 @@
 <div class="form">
     <div class="form-floating mb-2">
-        <input type="text" class="form-control" name="hs-save-map-title" placeholder="'COMMON.title' | translate"
-            [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
+        <input type="text" class="form-control"
+            [ngStyle]="{'border-color': HsSaveMapManagerService.missingTitle ? '#ff0000' : '#ced4da'}"
+            name="hs-save-map-title" placeholder="'COMMON.title' | translate"
+            [(ngModel)]="HsSaveMapManagerService.compoData.title" (ngModelChange)="titleChanged()">
         <label for="hs-save-map-title">{{'COMMON.title' | translate}} *</label>
+        <span class="d-flex justify-content-end text-danger"
+            *ngIf="HsSaveMapManagerService.missingTitle">{{'COMMON.required' |
+            translate}}</span>
     </div>
     <div class="form-floating mb-2">
-        <input type="text" class="form-control" name="hs-save-map-name"
-            [(ngModel)]="HsSaveMapManagerService.compoData.name" (change)="titleChanged()"
-            placeholder="'COMMON.name' | translate">
+        <input type="text" class="form-control"
+            [ngStyle]="{'border-color': HsSaveMapManagerService.missingName ? '#ff0000' : '#ced4da'}"
+            name="hs-save-map-name" [(ngModel)]="HsSaveMapManagerService.compoData.name"
+            (ngModelChange)="titleChanged()" placeholder="'COMMON.name' | translate">
         <label for="hs-save-map-name">{{'COMMON.name' | translate}} *</label>
+        <span class="d-flex justify-content-end text-danger"
+            *ngIf="HsSaveMapManagerService.missingName">{{'COMMON.required' |
+            translate}}</span>
     </div>
     <div class="form-floating mb-2">
         <textarea class="form-control" name="hs-save-map-abstract" placeholder="'COMMON.abstract' | translate"
-            [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
-        <label for="hs-save-map-abstract">{{'COMMON.abstract' | translate}}</label>
+            [ngStyle]="{'border-color': HsSaveMapManagerService.missingAbstract ? '#ff0000' : '#ced4da'}"
+            [(ngModel)]="HsSaveMapManagerService.compoData.abstract" (ngModelChange)="abstractChanged()"></textarea>
+        <label for="hs-save-map-abstract">{{'COMMON.abstract' | translate}} *</label>
+        <span class="d-flex justify-content-end text-danger"
+            *ngIf="HsSaveMapManagerService.missingAbstract">{{'COMMON.required' |
+            translate}}</span>
     </div>
     <div class="form-floating mb-2">
         <input type="text" class="form-control" name="hs-save-map-keywords" placeholder="'COMMON.keywords' | translate"
@@ -188,7 +201,6 @@
     </div>
     <div class="mb-2 d-flex justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="stc-saveas" [hidden]="!(isAllowed())"
-            [disabled]="!HsSaveMapManagerService.compoData.title || !HsSaveMapManagerService.compoData.name"
             (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
         <button type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
             |

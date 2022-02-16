@@ -251,7 +251,8 @@
     "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā",
     "selectAndConfirmToDeleteMultiple": "Atlasiet un apstipriniet, lai dzēstu vairākus slāņus",
     "unknown": "Nezināms",
-    "aboutAuthor": "Par autoru"
+    "aboutAuthor": "Par autoru",
+    "required": "Nepieciešams"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

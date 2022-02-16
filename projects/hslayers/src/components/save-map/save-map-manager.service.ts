@@ -61,7 +61,9 @@ export class HsSaveMapManagerService {
   preSaveCheckCompleted: Subject<{endpoint}> = new Subject();
   changeTitle: boolean;
   currentUser: boolean;
-
+  missingTitle = false;
+  missingName = false;
+  missingAbstract = false;
   constructor(
     public HsMapService: HsMapService,
     public HsSaveMapService: HsSaveMapService,
@@ -414,6 +416,16 @@ export class HsSaveMapManagerService {
   }
 
   async initiateSave(saveAsNew) {
+    if (
+      !this.compoData.title ||
+      !this.compoData.name ||
+      !this.compoData.abstract
+    ) {
+      this.missingTitle = !this.compoData.title;
+      this.missingName = !this.compoData.name;
+      this.missingAbstract = !this.compoData.abstract;
+      return;
+    }
     try {
       const augmentedResponse = await this.save(
         saveAsNew,
