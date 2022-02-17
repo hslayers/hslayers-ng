@@ -202,8 +202,8 @@
     <div class="mb-2 d-flex justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="stc-saveas" [hidden]="!(isAllowed())"
             (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
-        <button type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
+        <a type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
             |
-            translate}}</button>
+            translate}}</a>
     </div>
 </div>
