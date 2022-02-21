@@ -1,0 +1,42 @@
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'STYLER.fillColor' | translate}}:</div>
+  <div class="p-1 w-100">
+    <input class="form-control form-select-sm" (click)="fillPickerVisible = !fillPickerVisible"
+      [ngStyle]="getColorPickerStyle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="legendObj.bcColor" />
+    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event)">
+    </color-sketch>
+  </div>
+</div>
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'COMMON.width' | translate}}</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.width"
+      [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="width" *ngFor="let width of legendWidths">
+        {{width}}px
+      </option>
+    </select>
+  </div>
+</div>
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translate}} X:</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posX"
+      [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="positionX" *ngFor="let positionX of positionOptions.positionsX">
+        {{getTranslation('PRINT',positionX)}}
+      </option>
+    </select>
+  </div>
+</div>
+<div class="d-flex flex-row mb-2">
+  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translate}} Y:</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posY"
+      [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="positionY" *ngFor="let positionY of positionOptions.positionsY">
+        {{getTranslation('PRINT',positionY)}}
+      </option>
+    </select>
+  </div>
+</div>

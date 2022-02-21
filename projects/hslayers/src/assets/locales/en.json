@@ -22,28 +22,28 @@
       },
       "searchType": "Search filter type",
       "selectFilterType": "Change search filter type",
+      "showAll": "All",
+      "showingSubset": "Currently showing {{limitShown}} of {{total}} services. Show",
+      "showNext100": "Next 100",
       "sortbyTypes": {
         "bbox": "Extent",
         "date": "Date",
         "title": "Title"
       },
-      "showNext100": "Next 100",
-      "showAll": "All",
-      "showingSubset": "Currently showing {{limitShown}} of {{total}} services. Show",
       "theNumberOfRecords": "The number of records will be calculated as close as possible to the selected number"
     },
     "file": "File",
+    "FILE": {
+      "onlyOneZipFileCan": "Only one zip file can be uploaded at once",
+      "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size",
+      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
+    },
+    "requestServiceLayers": "Request service layers",
     "saveToDatabase": "Save to database",
     "URL": {
       "selectAll": "Select all Layers",
       "submitLayerName": "Fill in layer name",
       "submitLayerTitle": "Fill in layer title"
-    },
-    "requestServiceLayers": "Request service layers",
-    "FILE": {
-      "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size",
-      "onlyOneZipFileCan": "Only one zip file can be uploaded at once",
-      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
     }
   },
   "ADDLAYERS": {
@@ -57,33 +57,40 @@
     "ERROR": {
       "errorWhileRequestingLayers": "Error while requesting layers",
       "someErrorHappened": "Some error happened or input missing",
+      "srsNotSupported": "Selected Coordinate reference systems (CRS/SRS) is not supported. Please provide file in EPSG:3857 or EPSG:4326 to proceed.",
       "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
-      "urlInvalid": "Missing or invalid endpoint URL of requested layer!",
-      "srsNotSupported": "Selected Coordinate reference systems (CRS/SRS) is not supported. Please provide file in EPSG:3857 or EPSG:4326 to proceed."
+      "urlInvalid": "Missing or invalid endpoint URL of requested layer!"
     },
     "externalDataSource": "External data source (URL)",
     "featureCount": "Feature count",
+    "filesSelected": "Files selected",
     "folderName": "Folder name",
+    "GPServerServicesAreNotSupported": "GPServer services are not supported!",
     "imageFormat": "Image format",
+    "layerNameAlreadyExists": "Layer name already exists",
     "loadingFeaturePleaseWait": "Loading features, please wait",
     "mapAndLayerProjection": "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.",
     "mapProjectionAndLayerProjection": "Map projection and layer projection do not match. Add the layer to map and use server-side resampling program?",
+    "missingImageorWorldFile": "Missing an image or world file, please check the files and try again!",
+    "nameAndSRSRequired": "'Name' and 'SRS' field required to proceed!",
+    "nameRequired": "'Name' field required to proceed!",
     "none": "None (at top)",
+    "OlDoesNotRecognizeProjection": "Ol does not recognize requested layers projection",
     "queryFormat": "Query format",
+    "Raster image": "Raster image",
+    "rasterImageryWith": "Raster imagery with georeferencing is currently only supported on EPSG:4326 and EPSG:3857 coordinate systems. Please make sure your data meets these requirements before uploading.",
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
     "serviceTypeNotMatching": "URL service type does not match selected category",
-    "nameAndSRSRequired": "'Name' and 'SRS' field required to proceed!",
-    "nameRequired": "'Name' field required to proceed!",
-    "SRSRequired": "'SRS' field required to proceed!",
     "SHP": {
       "loginRequired": "User login is required before layer can be loaded",
-      "shapeFile": "Shape file (shp+dbf+shx)",
-      "SLDStyleFile": "Style file",
       "maximumNumberOf": "Maximum number of {{allowed}} files allowed, but {{length}} selected",
-      "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf"
+      "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf",
+      "shapeFile": "Shape file (shp+dbf+shx)",
+      "SLDStyleFile": "Style file"
     },
     "srs": "SRS",
+    "SRSRequired": "'SRS' field required to proceed!",
     "thisIsRequired": "This is required!",
     "tileSize": "Tile size",
     "TYPES": {
@@ -93,6 +100,7 @@
       "WFS": "Web feature service (WFS)",
       "WMS": "Web map service (WMS)"
     },
+    "unauthorizedAccess": "Unauthorized access. You are not authorized to query data from this service",
     "under": "Add under layer",
     "unknownDimesion": "This layer defines some dimension, which cannot be currently parsed",
     "useProxy": "Use proxy",
@@ -116,18 +124,11 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    },
-    "unauthorizedAccess": "Unauthorized access. You are not authorized to query data from this service",
-    "filesSelected": "Files selected",
-    "OlDoesNotRecognizeProjection": "Ol does not recognize requested layers projection",
-    "missingImageorWorldFile": "Missing an image or world file, please check the files and try again!",
-    "rasterImageryWith": "Raster imagery with georeferencing is currently only supported on EPSG:4326 and EPSG:3857 coordinate systems. Please make sure your data meets these requirements before uploading.",
-    "Raster image": "Raster image",
-    "layerNameAlreadyExists": "Layer name already exists",
-    "GPServerServicesAreNotSupported": "GPServer services are not supported!"
+    }
   },
   "COMMON": {
     "abstract": "Abstract",
+    "access": "Access",
     "add": "Add",
     "addAs": "Add as",
     "advancedOptions": "Advanced options",
@@ -137,6 +138,7 @@
     "attribute": "Attribute",
     "attributes": "Attributes",
     "Authentication failed. Login to the catalogue.": "Authentication failed. Login to the catalogue.",
+    "author": "Author",
     "boundingBox": "Bounding box",
     "cancel": "Cancel",
     "category": "Category",
@@ -149,7 +151,9 @@
     "confirmDelete": "Confirm delete",
     "connect": "Connect",
     "contactInformation": "Contact Information",
+    "context": "Context",
     "continue": "Continue",
+    "copyLayer": "Copy layer",
     "data": "Data",
     "dataset": "Dataset",
     "date": "Date",
@@ -157,8 +161,11 @@
     "description": "Description",
     "distance": "Distance",
     "download": "Download",
+    "downloadAsPng": "Download as PNG",
     "drawNewFeatures": "Draw new features",
     "east": "East",
+    "edit": "Edit",
+    "enabled": "Enabled",
     "extent": "Extent",
     "fill": "Fill",
     "fillInDescriptive": "Fill in descriptive text about map",
@@ -171,6 +178,7 @@
     "icon": "Icon",
     "ignoreAndContinue": "Ignore and continue",
     "info": "Additional information",
+    "into": " into",
     "keywords": "Keywords",
     "layer": "Layer",
     "layers": "Layers",
@@ -200,6 +208,7 @@
     "photo": "Photo",
     "point": "Point",
     "polygon": "Polygon",
+    "preview": "Preview",
     "print": "Print",
     "projection": "Projection",
     "radius": "Radius",
@@ -207,6 +216,7 @@
     "removeLayer": "Remove layer",
     "renameLayer": "Rename layer",
     "reset": "Reset",
+    "resetToDefault": "Reset to default values",
     "results": "Results",
     "rotation": "Rotation",
     "save": "Save",
@@ -214,6 +224,8 @@
     "saveTo": "Save to",
     "scale": "Scale",
     "search": "Search:",
+    "selectAndConfirmToDeleteMultiple": "Select and confirm to delete multiple layers",
+    "selectRecordCountPerPage": "Select record count per page",
     "service": "Service",
     "settings": "Settings",
     "share": "Share",
@@ -221,6 +233,7 @@
     "Sort": "Sort",
     "sortBy": "Sort by",
     "south": "South",
+    "steps": "Steps",
     "stop": "Stop",
     "stroke": "Stroke",
     "strokeWidth": "Stroke width",
@@ -230,8 +243,10 @@
     "title": "Title",
     "to": "to",
     "type": "Type",
+    "unknown": "Unknown",
     "unknownError": "Unknown error. Please try again.",
     "until": "Until",
+    "uploading": "Uploading data",
     "url": "URL",
     "value": "Value",
     "warning": "Warning",
@@ -240,19 +255,7 @@
     "wrongCombinationOfParams": "Wrong combination of parameters",
     "yes": "Yes",
     "zoomTo": "zoom to",
-    "into": " into",
-    "uploading": "Uploading data",
-    "edit": "Edit",
-    "context": "Context",
-    "author": "Author",
-    "access": "Access",
-    "enabled": "Enabled",
-    "copyLayer": "Copy layer",
-    "selectRecordCountPerPage": "Select record count per page",
-    "selectAndConfirmToDeleteMultiple": "Select and confirm to delete multiple layers",
-    "unknown": "Unknown",
-    "aboutAuthor": "About author",
-    "required": "Required"
+    "height": "Height"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -287,10 +290,9 @@
       "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
       "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders."
     },
-    "errorWhileCreatingLayerFromComposition": "Error while creating layer from composition",
-    "notAbleToParseLayerFromComposition": "It was not possible to parse a layer from composition:",
     "endpointUrlIsNotDefined": "Endpoint url is not defined!",
     "endpointUserIsNotDefined": "Endpoint user is not defined!",
+    "errorWhileCreatingLayerFromComposition": "Error while creating layer from composition",
     "errorWhileLoadingCompositionMetadata": "Error while loading composition metadata",
     "errorWhileRequestingCompositions": "Error while requesting compositions",
     "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network",
@@ -299,6 +301,7 @@
     "inspireTheme": "INSPIRE theme",
     "loginToCatalogue": "Login to catalogue",
     "metadataNotAvailable": "Metadata are not available!",
+    "notAbleToParseLayerFromComposition": "It was not possible to parse a layer from composition:",
     "notAllowedToEditLayer": "You are not allowed to edit this composition",
     "onlyMine": "Only mine",
     "selectKeywords": "Select keywords",
@@ -406,8 +409,8 @@
     "boxSelection": "Box selection",
     "boxSelectionActivated": "Box selection activated",
     "definedStyle": "Defined style",
-    "deleteNotePlural": "* All selected layers will be deleted completely. In case you want to delete all selected layers from the current compositon only (preserving it in database) do so in 'LayerManager' panel.",
     "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
+    "deleteNotePlural": "* All selected layers will be deleted completely. In case you want to delete all selected layers from the current compositon only (preserving it in database) do so in 'LayerManager' panel.",
     "deselectAllFeatures": "Deselect all features",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
@@ -428,13 +431,33 @@
       "removeLastPoint": "Remove last point",
       "selectType": "Geometry type"
     },
+    "featureEditor": {
+      "drawNewFeature": "Draw new feature",
+      "editOptions": {
+        "difference": "Difference",
+        "intersection": "Intersection",
+        "split": "Split",
+        "union": "Union"
+      },
+      "featureCanBeEditedbyOptions": "can be edited by one of the avaliable options",
+      "featureEditor": "Feature editor",
+      "noIntersection": "No common intersection found for selected features",
+      "onlyOneFeatureToEdit": "Only one feature can be edited (split) at the time!",
+      "onlyOneSplitLine": "Only one splitting line allowed",
+      "orSelectOne": "or select one (shift + click)",
+      "selectedFeature": "Selected feature",
+      "selectFeatureToEdit": "Select a polygon feature you want to edit!"
+    },
     "fillOpacity": "Fill opacity:",
     "loadingLayer": "Loading layer ",
     "longerLoading": "Seems like loading takes longer than usual. Wait a moment please!\n",
     "newGPS": "New GPS",
     "noSuitableLayer": "No suitable layer available",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
+    "notAVectorLayer": "Not a vector layer",
+    "pleaseCheckTheLayers": "Please check the layers you want to delete",
     "reallyDeleteThisLayer": "Really delete this layer?",
+    "removeMultipleLayers": "Remove multiple layers",
     "saveDrawingToLayer": "Save drawing to layer",
     "Select layer": "Select layer",
     "selectAllFeatures": "Select all features",
@@ -442,29 +465,9 @@
     "snapTo": "Snap to features of layer",
     "stylingMissing": "Proper styling missing",
     "stylingMissingWarning": "{{type}} geometry can NOT be visualized. Create {{symbolizer}} symbolizer first. You can do so in {{panel}} panel.",
-    "unsavedDrawing": "Unsaved drawing",
-    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box",
-    "featureEditor": {
-      "featureEditor": "Feature editor",
-      "noIntersection": "No common intersection found for selected features",
-      "onlyOneSplitLine": "Only one splitting line allowed",
-      "selectFeatureToEdit": "Select a polygon feature you want to edit!",
-      "selectedFeature": "Selected feature",
-      "featureCanBeEditedbyOptions": "can be edited by one of the avaliable options",
-      "editOptions": {
-        "split": "Split",
-        "intersection": "Intersection",
-        "union": "Union",
-        "difference": "Difference"
-      },
-      "drawNewFeature": "Draw new feature",
-      "orSelectOne": "or select one (shift + click)",
-      "onlyOneFeatureToEdit": "Only one feature can be edited (split) at the time!"
-    },
-    "pleaseCheckTheLayers": "Please check the layers you want to delete",
-    "removeMultipleLayers": "Remove multiple layers",
     "thisLayerDoesNotSupportDrawing": "This layer does not support drawing, would You like to add it anyway?",
-    "notAVectorLayer": "Not a vector layer"
+    "unsavedDrawing": "Unsaved drawing",
+    "useModifierToSelectWithBox": "Use {{platformModifierKey}} and drag to select features with box"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
@@ -516,6 +519,7 @@
     "enablePhysicalLayerList": "Enable/Disable physical layer list",
     "layerEditor": {
       "cluster": "Cluster",
+      "copyLayer": "Copy selected layer",
       "copyright": "Copyright",
       "layerFrom": "layer from",
       "memory": "memory",
@@ -528,8 +532,7 @@
       "vector (GeoJSON)": "Vector (GeoJSON)",
       "vector (KML)": "Vector (KML)",
       "vector (TopoJSON)": "Vector (TopoJSON)",
-      "zoomToLayer": "Zoom to layer",
-      "copyLayer": "Copy selected layer"
+      "zoomToLayer": "Zoom to layer"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
@@ -573,30 +576,44 @@
       "syncTimes": "Synchronize times",
       "syncTimesTooltip": "Synchronize time for all layers"
     },
-    "User generated": "User generated",
-    "toggleAllLayerVisibility": "Toggle visibility of all layers"
+    "toggleAllLayerVisibility": "Toggle visibility of all layers",
+    "User generated": "User generated"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",
     "newLayer": "New layer"
   },
-  "LEGEND": {
-    "noLegendExists": "No layer with legend exists!"
-  },
   "LAYMAN": {
+    "allLayersSuccessfullyRemoved": "All layers successfully removed",
+    "deleteLayersRequest": "Delete layers request",
+    "deletionInProgress": "Deletion in progress, please wait!",
     "ERROR": {
       "2": "Unable to open raster file",
       "18": "Missing one or more Shape files",
       "50": "Error when normalizing raster file"
     },
-    "layerSuccessfullyRemoved": "Layer successfully removed",
-    "allLayersSuccessfullyRemoved": "All layers successfully removed",
-    "deleteLayersRequest": "Delete layers request",
-    "deletionInProgress": "Deletion in progress, please wait!"
+    "layerSuccessfullyRemoved": "Layer successfully removed"
+  },
+  "LEGEND": {
+    "noLegendExists": "No layer with legend exists!"
   },
   "MAP": {
     "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map",
     "zoomToInitialWindow": "Zoom to initial window"
+  },
+  "MAP_SWIPE": {
+    "bottom": "Bottom",
+    "disableSwipe": "Disable swipe",
+    "dndLayers": "Use drag&drop to move layers between the map sides!",
+    "enableSwipe": "Enable swipe",
+    "entireMap": "Entire map",
+    "horizontalSwipe": "Horizontal swipe",
+    "leftSide": "Left side",
+    "noLayers": "No layers (drag any layer here)",
+    "resetSlider": "Reset slider",
+    "rightSide": "Right side",
+    "top": "Top",
+    "verticalSwipe": "Vertical swipe"
   },
   "MEASURE": {
     "measureMd": {
@@ -618,6 +635,7 @@
     "LANGUAGE": "Change language",
     "LEGEND": "Legend",
     "LM": "Layermanager",
+    "MAP_SWIPE": "Map swipe",
     "MAPCOMPOSITIONS": "Map compositions",
     "MEASURE": "Measurement",
     "PERMALINK": "Share map",
@@ -626,8 +644,7 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRIP_PLANNER": "Trip planner",
-    "MAP_SWIPE": "Map swipe"
+    "TRIP_PLANNER": "Trip planner"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -645,6 +662,35 @@
     "sharesOnlyMap": "*Shares only map as picture",
     "socialShare": "Social share"
   },
+  "PRINT": {
+    "bottom": "Bottom",
+    "center": "Center",
+    "degrees": "Degrees",
+    "imperial inch": "Imperial inch",
+    "imprintStylingOptions": "Imprint styling options",
+    "italic": "Italic",
+    "left": "Left",
+    "legendStylingOptions": "Legend styling options",
+    "metric": "Metric",
+    "middle": "Middle",
+    "nautical mile": "Nautical mile",
+    "normal": "Normal",
+    "bold": "Bold",
+    "right": "Right",
+    "scalebar": "Scale bar",
+    "scaleBarText": "Scale bar text",
+    "scaleline": "Scale line",
+    "scaleSteps": "Scale steps",
+    "scaleStylingOptions": "Scale styling options",
+    "scaleType": "Scale type",
+    "scaleUnits": "Scale units",
+    "textDraw": "Text draw type",
+    "textPosition": "Text position",
+    "titleStylingOptions": "Title styling options",
+    "top": "Top",
+    "us inch": "Us inch",
+    "imprint": "Imprint"
+  },
   "QUERY": {
     "clusterContaining": "Cluster containing {{count}} features",
     "confirmClear": "Confirm clear",
@@ -656,11 +702,11 @@
       "attributeName": "Attribute name",
       "attributeValue": "Attribute value",
       "copyFeature": "Copy feature",
+      "copyFeatures": "Copy features",
       "featurecopySucc": "Feature was successfully copied into layer: ",
       "featureEdited": "Feature change successfull",
       "featuremoveSucc": "Feature was successfully moved to layer: ",
       "moveFeature": "Move feature",
-      "copyFeatures": "Copy features",
       "moveFeatures": "Move features"
     },
     "featureInfo": "Feature info",
@@ -762,14 +808,14 @@
       "LANGUAGE": "Change language",
       "LEGEND": "Legend",
       "LM": "Manage and style your layers in composition",
+      "MAP_SWIPE": "Map swipe cotrol layer manager",
       "MAPCOMPOSITIONS": "List available map compositions",
       "MEASURE": "Measure distance or area at map",
       "PERMALINK": "Share map",
       "PRINT": "Print map",
       "SAVECOMPOSITION": "Save content of map to composition",
       "SEARCH": "Search for location",
-      "TRIP_PLANNER": "Create new trip routes",
-      "MAP_SWIPE": "Map swipe cotrol layer manager"
+      "TRIP_PLANNER": "Create new trip routes"
     }
   },
   "STYLER": {
@@ -792,7 +838,6 @@
     "fillColor": "Fill color",
     "fillOpacity": "Fill opacity",
     "fillSymbolizer": "Fill symbolizer",
-    "unknownSymbolizer": "Unknown symbolizer",
     "filtersAndScales": "Filters & scales",
     "font": "Font",
     "fontStyle": "Font style",
@@ -849,11 +894,12 @@
     "toggleFilters": "Toggle filters",
     "toggleScaleDenominators": "Toggle scale denominators",
     "transform": "Transform",
+    "unknownSymbolizer": "Unknown symbolizer",
     "uploadSld": "Upload style as SLD file",
     "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
+    "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
-    "width": "Width",
-    "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD"
+    "width": "Width"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
@@ -869,19 +915,5 @@
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypointLayer": "Waypoint layer",
     "waypoints": "Waypoints"
-  },
-  "MAP_SWIPE": {
-    "bottom": "Bottom",
-    "horizontalSwipe": "Horizontal swipe",
-    "leftSide": "Left side",
-    "resetSlider": "Reset slider",
-    "rightSide": "Right side",
-    "top": "Top",
-    "dndLayers": "Use drag&drop to move layers between the map sides!",
-    "verticalSwipe": "Vertical swipe",
-    "disableSwipe": "Disable swipe",
-    "enableSwipe": "Enable swipe",
-    "entireMap": "Entire map",
-    "noLayers": "No layers (drag any layer here)"
   }
 }

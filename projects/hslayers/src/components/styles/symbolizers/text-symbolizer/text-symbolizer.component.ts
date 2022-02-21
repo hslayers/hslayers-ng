@@ -33,7 +33,7 @@ export class HsTextSymbolizerComponent extends HsStylerPartBaseComponent {
     'Georgia',
     'Serif',
   ];
-  fontStyles = ['normal', 'italic', 'oblique'];
+  fontStyles = ['normal', 'italic', 'bold'];
   transforms = ['none', 'uppercase', 'lowercase'];
   justifications = ['left', 'center', 'right'];
   fontWeights = ['normal', 'bold'];
