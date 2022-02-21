@@ -1,0 +1,44 @@
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleType' | translate}}:</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleType"
+      [ngModelOptions]="{standalone: true}" style="flex-grow: 1;" (ngModelChange)="scaleObjChanged()">
+      <option [ngValue]="scaleType" *ngFor="let scaleType of stylingOptions.scaleType">
+        {{getTranslation('PRINT',scaleType)}}
+      </option>
+    </select>
+  </div>
+</div>
+<div class="d-flex flex-row" *ngIf="scaleObj.scaleType === 'scalebar'">
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleBarText' | translate}}:</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleBarText"
+      (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
+      <option selected [ngValue]="true">true</option>
+      <option [ngValue]="false">false</option>
+    </select>
+  </div>
+</div>
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleUnits' | translate}}:</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleUnits"
+      (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
+      <option [ngValue]="scaleUnits.value" *ngFor="let scaleUnits of stylingOptions.scaleUnits">
+        {{getTranslation('PRINT',scaleUnits.name)}}
+      </option>
+    </select>
+  </div>
+</div>
+<div class="d-flex flex-row" *ngIf="scaleObj.scaleType === 'scalebar'">
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleSteps' | translate}}:</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleBarSteps"
+      (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
+      <option [ngValue]="scaleBarSteps" *ngFor="let scaleBarSteps of stylingOptions.scaleBarSteps">{{scaleBarSteps}}
+        {{'COMMON.steps' |
+        translate}}
+      </option>
+    </select>
+  </div>
+</div>

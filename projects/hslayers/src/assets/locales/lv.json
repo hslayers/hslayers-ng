@@ -22,28 +22,28 @@
       },
       "searchType": "Filtra tips",
       "selectFilterType": "Nomainīt filtra tipu",
+      "showAll": "Visus",
+      "showingSubset": "Pašlaik rādu {{limitShown}} no {total}} servisiem. Rādīt",
+      "showNext100": "Nākošos 100",
       "sortbyTypes": {
         "bbox": "Mērogojuma",
         "date": "Datuma",
         "title": "Nosaukuma"
       },
-      "showAll": "Visus",
-      "showNext100": "Nākošos 100",
-      "showingSubset": "Pašlaik rādu {{limitShown}} no {total}} servisiem. Rādīt",
       "theNumberOfRecords": "Ierakstu skaits tiks aprēķināts pēc iespējas tuvāk izvēlētajam skaitam"
     },
     "file": "Fails",
+    "FILE": {
+      "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
+      "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu",
+      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
+    },
+    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
     "saveToDatabase": "Saglabāt datubāzē",
     "URL": {
       "selectAll": "Izvēlēties visus slāņus",
       "submitLayerName": "Ievadiet slāņa nosaukumu",
       "submitLayerTitle": "Ievadiet slāņa nosaukumu"
-    },
-    "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
-    "FILE": {
-      "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
-      "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu",
-      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
     }
   },
   "ADDLAYERS": {
@@ -57,31 +57,40 @@
     "ERROR": {
       "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
       "someErrorHappened": "Radās kļūda vai trūkst ievades",
+      "srsNotSupported": "Atlasītās koordinātu atskaites sistēmas (CRS/SRS) netiek atbalstītas. Lai turpinātu, lūdzu, norādiet failu EPSG: 3857 vai EPSG: 4326 projekcijā.",
       "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
-      "urlInvalid": "Nav pieejama vai ari nav derīga pieprasītā slāņa URL adrese!",
-      "srsNotSupported": "Atlasītās koordinātu atskaites sistēmas (CRS/SRS) netiek atbalstītas. Lai turpinātu, lūdzu, norādiet failu EPSG: 3857 vai EPSG: 4326 projekcijā."
+      "urlInvalid": "Nav pieejama vai ari nav derīga pieprasītā slāņa URL adrese!"
     },
     "externalDataSource": "Ārējais datu avots (hipersaite)",
     "featureCount": "Grafisko objektu skaits",
+    "filesSelected": "Faili atlasīti",
     "folderName": "Mapes nosaukums",
+    "GPServerServicesAreNotSupported": "GPServer pakalpojumi netiek atbalstīti!",
     "imageFormat": "Attēla formāts",
+    "layerNameAlreadyExists": "Slāņa nosaukums jau pastāv",
     "loadingFeaturePleaseWait": "Notiek grafisko objektu ielāde, lūdzu uzgaidiet!",
     "mapAndLayerProjection": "Kartes un slāņa projekcija nesakrīt! Tiks izmantota atkārtota paraugu ņemšana. Tas var novest pie negaidītiem rezultātiem.",
     "mapProjectionAndLayerProjection": "Kartes projekcija un slāņa projekcija nesakrīt. Pievienojiet slāni kartei un izmantojiet servera puses atkārtotas atlases programmu?",
+    "missingImageorWorldFile": "Trūkst attēla vai pasaules faila. Lūdzu, pārbaudiet failus un mēģiniet vēlreiz!",
+    "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!",
+    "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
     "none": "Neviena (pievienot augšā)",
+    "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju",
     "queryFormat": "Vaicājuma formāts",
+    "Raster image": "Rastra attēls",
+    "rasterImageryWith": "Rastra attēls ar ģeoreferencēšanu pašlaik tiek atbalstīts tikai EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai dati atbilst šīm prasībām.",
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
-    "nameRequired": "Lai turpinātu, ir jānorāda lauks 'Nosaukums'!",
     "SHP": {
       "loginRequired": "Pirms slāņa ielādes ir nepieciešama lietotāja autentifikācija",
-      "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
-      "SLDStyleFile": "Stila datne",
+      "maximumNumberOf": "Maksimālais atļautais failu skaits ir {{allowed}}, taču tika atlasīti {{length}}",
       "missingOneOrMore": "Trūkst viena vai vairāku ShapeFile failu. Ielādējiet failus ar paplašinājumiem *.shp, *.shx, *.dbf",
-      "maximumNumberOf": "Maksimālais atļautais failu skaits ir {{allowed}}, taču tika atlasīti {{length}}"
+      "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
+      "SLDStyleFile": "Stila datne"
     },
     "srs": "Ģeodēziskā atskaites sistēma",
+    "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
     "thisIsRequired": "Šis ir nepieciešams!",
     "tileSize": "\"Flīžu\" izmērs",
     "TYPES": {
@@ -91,6 +100,7 @@
       "WFS": "Tīmekļa grafisko objektu pakalpojums (WFS)",
       "WMS": "Tīmekļa karšu pakalpojums (WMS)"
     },
+    "unauthorizedAccess": "Neatļauta piekļuve. Jūs neesat pilnvarots pieprasīt datus no šī pakalpojuma",
     "under": "Pievienot zem slāņa",
     "unknownDimesion": "Šis slānis nosaka kādu dimensiju, kuru pašlaik nevar parsēt",
     "useProxy": "Izmantojiet starpniekserveri",
@@ -114,20 +124,11 @@
     },
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
-    },
-    "unauthorizedAccess": "Neatļauta piekļuve. Jūs neesat pilnvarots pieprasīt datus no šī pakalpojuma",
-    "filesSelected": "Faili atlasīti",
-    "OlDoesNotRecognizeProjection": "Ol neatpazīst pieprasīto slāņu projekciju",
-    "rasterImageryWith": "Rastra attēls ar ģeoreferencēšanu pašlaik tiek atbalstīts tikai EPSG:4326 un EPSG:3857 koordinātu sistēmās. Pirms augšupielādes pārliecinieties, vai dati atbilst šīm prasībām.",
-    "missingImageorWorldFile": "Trūkst attēla vai pasaules faila. Lūdzu, pārbaudiet failus un mēģiniet vēlreiz!",
-    "Raster image": "Rastra attēls",
-    "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
-    "nameAndSRSRequired": "Lai turpinātu, ir jānorāda lauks 'Name' un 'SRS'!",
-    "layerNameAlreadyExists": "Slāņa nosaukums jau pastāv",
-    "GPServerServicesAreNotSupported": "GPServer pakalpojumi netiek atbalstīti!"
+    }
   },
   "COMMON": {
     "abstract": "Apraksts",
+    "access": "Piekļuve",
     "add": "Pievienot",
     "addAs": "Pievienot kā",
     "advancedOptions": "Advancētas opcijas",
@@ -137,6 +138,7 @@
     "attribute": "Atribūts",
     "attributes": "Atribūts",
     "Authentication failed. Login to the catalogue.": "Neveiksmīga autentifikācija. Pieslēdzieties katalogam.",
+    "author": "Autors",
     "boundingBox": "Robežu taisnstūris",
     "cancel": "Atcelt",
     "category": "Kategorija",
@@ -149,7 +151,9 @@
     "confirmDelete": "Aptipriniet dzēšanu",
     "connect": "Izveidot savienojumu",
     "contactInformation": "Kontaktinformācija",
+    "context": "Konteksts",
     "continue": "turpināt",
+    "copyLayer": "Kopēt slāni",
     "data": "Dati",
     "dataset": "Datu kopa",
     "date": "Datums",
@@ -157,8 +161,11 @@
     "description": "Apraksts",
     "distance": "Distance",
     "download": "Lejuplādēt",
+    "downloadAsPng": "Lejupielādēt kā PNG",
     "drawNewFeatures": "Zīmēt jaunus objektus",
     "east": "Austrumi",
+    "edit": "Rediģēt",
+    "enabled": "Iespējots",
     "extent": "Apjoms",
     "fill": "Aizpildījums",
     "fillInDescriptive": "Aizpildiet aprakstošu tekstu par karti",
@@ -171,6 +178,7 @@
     "icon": "Ikona",
     "ignoreAndContinue": "Ignorēt un turpināt",
     "info": "Papildu informācija",
+    "into": "iekš",
     "keywords": "Atslēgvārdi",
     "layer": "Slānis",
     "layers": "Slāņi",
@@ -200,6 +208,7 @@
     "photo": "Bilde",
     "point": "Punkts",
     "polygon": "Daudzstūris",
+    "preview": "Priekšskatījums",
     "print": "Printēt",
     "projection": "Projekcija",
     "radius": "Rādiuss",
@@ -207,6 +216,7 @@
     "removeLayer": "Noņemt slāni",
     "renameLayer": "Pārsaukt slāni",
     "reset": "Atiestatīt",
+    "resetToDefault": "Atiestatīt uz noklusējuma vērtībām",
     "results": "Rezultāti",
     "rotation": "Rotācija",
     "save": "Saglabāt",
@@ -214,6 +224,8 @@
     "saveTo": "Saglabāt",
     "scale": "Mērogs",
     "search": "Meklēt:",
+    "selectAndConfirmToDeleteMultiple": "Atlasiet un apstipriniet, lai dzēstu vairākus slāņus",
+    "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā",
     "service": "Service",
     "settings": "Uzstādījumi",
     "share": "Kopīgot",
@@ -221,6 +233,7 @@
     "Sort": "Kārtot",
     "sortBy": "Kārtot pēc",
     "south": "Dienvidi",
+    "steps": "Soļi",
     "stop": "Apturēt",
     "stroke": "Līnija",
     "strokeWidth": "Līnjas platums",
@@ -230,8 +243,10 @@
     "title": "Virsraksts",
     "to": "līdz",
     "type": "Tips",
+    "unknown": "Nezināms",
     "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
     "until": "Līdz",
+    "uploading": "Augšupielādē datus",
     "url": "URL",
     "value": "Vērtība",
     "warning": "Brīdinājums",
@@ -240,19 +255,7 @@
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
     "yes": "Jā",
     "zoomTo": "pietuvināt",
-    "into": "iekš",
-    "uploading": "Augšupielādē datus",
-    "edit": "Rediģēt",
-    "context": "Konteksts",
-    "author": "Autors",
-    "access": "Piekļuve",
-    "enabled": "Iespējots",
-    "copyLayer": "Kopēt slāni",
-    "selectRecordCountPerPage": "Izvēlieties ierakstu skaitu vienā lapā",
-    "selectAndConfirmToDeleteMultiple": "Atlasiet un apstipriniet, lai dzēstu vairākus slāņus",
-    "unknown": "Nezināms",
-    "aboutAuthor": "Par autoru",
-    "required": "Nepieciešams"
+    "height": "Augstums"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -289,6 +292,7 @@
     },
     "endpointUrlIsNotDefined": "Saites galapunkts nav definēts!",
     "endpointUserIsNotDefined": "Galapunkta lietotājs nav definēts!",
+    "errorWhileCreatingLayerFromComposition": "Radās kļūda veidojot slāni no kompozīcijas",
     "errorWhileLoadingCompositionMetadata": "Radusies kļūda ielādējot kompozīcijas metadatus",
     "errorWhileRequestingCompositions": "Radusies kļūda pieprasot kompozīcijas",
     "errorWhileSharingOnSocialNetwork": "Radusies kļūda koplietojot kompozīciju sociālajos tīklos",
@@ -297,13 +301,12 @@
     "inspireTheme": "INSPIRE tēma",
     "loginToCatalogue": "Pieslēgties katalogam",
     "metadataNotAvailable": "Metadati nav pieejami!",
+    "notAbleToParseLayerFromComposition": "Neveiksmīga slāņa parsēšana no kompozīcijas:",
     "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni",
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
     "selectThemes": "Izvēlēties tēmas",
-    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!",
-    "errorWhileCreatingLayerFromComposition": "Radās kļūda veidojot slāni no kompozīcijas",
-    "notAbleToParseLayerFromComposition": "Neveiksmīga slāņa parsēšana no kompozīcijas:"
+    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
@@ -407,6 +410,7 @@
     "boxSelectionActivated": "Iezīmēšana ar lodziņu aktivizēta",
     "definedStyle": "Definētais stils",
     "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
+    "deleteNotePlural": "* Visi atlasītie slāņi tiks pilnībā izdzēsti. Ja vēlaties dzēst visus atlasītos slāņus tikai no pašreizējās kompozīcijas (saglabājot to datu bāzē), dariet to panelī Layermanager.",
     "deselectAllFeatures": "Atcelt visu grafisko objektu atzīmi",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
@@ -427,13 +431,33 @@
       "removeLastPoint": "Noņemt pēdējo punktu",
       "selectType": "Izvēlieties tipu"
     },
+    "featureEditor": {
+      "drawNewFeature": "Zīmēt jaunu objektu",
+      "editOptions": {
+        "difference": "Starpība",
+        "intersection": "Krustošanās",
+        "split": "Sadalīt",
+        "union": "Apvienojums"
+      },
+      "featureCanBeEditedbyOptions": "var rediģēt, izmantojot kādu no pieejamajām opcijām",
+      "featureEditor": "Objektu redaktors",
+      "noIntersection": "Atlasītajiem objektiem nav atrasts kopīgs krustošanās punkts",
+      "onlyOneFeatureToEdit": "Vienlaicīgi var rediģēt (sadalīt) tikai vienu objektu!",
+      "onlyOneSplitLine": "Atļauta tikai viena sadalīšanas līnija",
+      "orSelectOne": "vai atlasiet vienu (shift + klikšķis)",
+      "selectedFeature": "Izvēlētais objekts",
+      "selectFeatureToEdit": "Atlasiet objektu, kuru vēlaties rediģēt!"
+    },
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "loadingLayer": "Notiek slāņa ielāde",
     "longerLoading": "Izskatās, ka slāņa ielāde notiek ilgāk nekā ierasts. Lūdzu uzgaidiet!",
     "newGPS": "Jauns GPS",
     "noSuitableLayer": "Nav pieejams piemērots slānis",
     "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
+    "notAVectorLayer": "Nav vektorslānis",
+    "pleaseCheckTheLayers": "Lūdzu, atzīmējiet slāņus, kurus vēlaties dzēst",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
+    "removeMultipleLayers": "Noņemiet vairākus slāņus",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "Select layer": "Izvēlieties slāni",
     "selectAllFeatures": "Atlasīt visus grafiskos objektus",
@@ -441,30 +465,9 @@
     "snapTo": "Pieķerties slāņa grafiskajam objektam",
     "stylingMissing": "Trūkst pareizais stils",
     "stylingMissingWarning": "\n{{type}} ģeometriju NAV iespējams vizualizēt. Vispirms izveidojiet {{symbolizer}} simbolizētāju. To var izdarīt panelī {{panel}}.",
+    "thisLayerDoesNotSupportDrawing": "Šis slānis neatbalsta zīmēšanu. Vai tomēr vēlaties to pievienot?",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu",
-    "featureEditor": {
-      "drawNewFeature": "Zīmēt jaunu objektu",
-      "editOptions": {
-        "intersection": "Krustošanās",
-        "difference": "Starpība",
-        "split": "Sadalīt",
-        "union": "Apvienojums"
-      },
-      "featureCanBeEditedbyOptions": "var rediģēt, izmantojot kādu no pieejamajām opcijām",
-      "featureEditor": "Objektu redaktors",
-      "noIntersection": "Atlasītajiem objektiem nav atrasts kopīgs krustošanās punkts",
-      "onlyOneSplitLine": "Atļauta tikai viena sadalīšanas līnija",
-      "orSelectOne": "vai atlasiet vienu (shift + klikšķis)",
-      "selectFeatureToEdit": "Atlasiet objektu, kuru vēlaties rediģēt!",
-      "selectedFeature": "Izvēlētais objekts",
-      "onlyOneFeatureToEdit": "Vienlaicīgi var rediģēt (sadalīt) tikai vienu objektu!"
-    },
-    "deleteNotePlural": "* Visi atlasītie slāņi tiks pilnībā izdzēsti. Ja vēlaties dzēst visus atlasītos slāņus tikai no pašreizējās kompozīcijas (saglabājot to datu bāzē), dariet to panelī Layermanager.",
-    "pleaseCheckTheLayers": "Lūdzu, atzīmējiet slāņus, kurus vēlaties dzēst",
-    "removeMultipleLayers": "Noņemiet vairākus slāņus",
-    "notAVectorLayer": "Nav vektorslānis",
-    "thisLayerDoesNotSupportDrawing": "Šis slānis neatbalsta zīmēšanu. Vai tomēr vēlaties to pievienot?"
+    "useModifierToSelectWithBox": "Izmantojiet {{platformModifierKey}} un velciet, lai atlasītu grafiskos objektus ar lodziņu"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
@@ -516,6 +519,7 @@
     "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu",
     "layerEditor": {
       "cluster": "Apvienot blakusesošos",
+      "copyLayer": "Kopēt izvēlēto slāni",
       "copyright": "Autortiesības",
       "layerFrom": "slānis no",
       "memory": "atmiņas",
@@ -528,8 +532,7 @@
       "vector (GeoJSON)": "Vektoru (GeoJSON)",
       "vector (KML)": "Vektoru (KML)",
       "vector (TopoJSON)": "Vektoru (TopoJSON)",
-      "zoomToLayer": "Tuvināt līdz slānim",
-      "copyLayer": "Kopēt izvēlēto slāni"
+      "zoomToLayer": "Tuvināt līdz slānim"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
@@ -573,12 +576,23 @@
       "syncTimes": "Sinhronizēt laikus",
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
-    "User generated": "Lietotāja ģenerēti",
-    "toggleAllLayerVisibility": "Pārslēgt visu slāņu redzamību"
+    "toggleAllLayerVisibility": "Pārslēgt visu slāņu redzamību",
+    "User generated": "Lietotāja ģenerēti"
   },
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
     "newLayer": "Jauns slānis"
+  },
+  "LAYMAN": {
+    "allLayersSuccessfullyRemoved": "Visi slāņi veiksmīgi noņemti",
+    "deleteLayersRequest": "Slāņu dzēšanas pieprasījums",
+    "deletionInProgress": "Notiek dzēšana, lūdzu, uzgaidiet!",
+    "ERROR": {
+      "2": "Nevar atvērt rastra failu",
+      "18": "Trūkst viena vai vairāku Shape failu",
+      "50": "Kļūda, normalizējot rastra failu"
+    },
+    "layerSuccessfullyRemoved": "Slānis veiksmīgi noņemts"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -586,6 +600,20 @@
   "MAP": {
     "zoomKeyModifier": "Lietojiet {{platformModifierKey}} + peles rullīti, lai pietuvinātu karti",
     "zoomToInitialWindow": "Pietuvināt sākotnējo logu"
+  },
+  "MAP_SWIPE": {
+    "bottom": "Apakša",
+    "disableSwipe": "Atspējot vilkšanu",
+    "dndLayers": "Izmantojiet vilkšanu un nomešanu, lai pārvietotu slāņus starp kartes pusēm",
+    "enableSwipe": "Iespējot vilkšanu",
+    "entireMap": "Visa karte",
+    "horizontalSwipe": "Horizontālā vilkšana",
+    "leftSide": "Kreisā puse",
+    "noLayers": "Nav slāņu (velciet šeit jebkuru slāni)",
+    "resetSlider": "Atiestatīt slīdni",
+    "rightSide": "Labā puse",
+    "top": "Augša",
+    "verticalSwipe": "Vertikālā vilkšana"
   },
   "MEASURE": {
     "measureMd": {
@@ -607,6 +635,7 @@
     "LANGUAGE": "Nomainīt valodu",
     "LEGEND": "Leģenda",
     "LM": "Slāņu pārvaldība",
+    "MAP_SWIPE": "Kartes vilkšana",
     "MAPCOMPOSITIONS": "Kartes kompozīcijas",
     "MEASURE": "Mērījumi",
     "PERMALINK": "Kopīgot karti",
@@ -615,8 +644,7 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRIP_PLANNER": "Maršruta plānotājs",
-    "MAP_SWIPE": "Kartes vilkšana"
+    "TRIP_PLANNER": "Maršruta plānotājs"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -634,6 +662,35 @@
     "sharesOnlyMap": "*Kopīgot tikai karti kā attēlu",
     "socialShare": "Sociālās kopīgošanas"
   },
+  "PRINT": {
+    "bottom": "Apakša",
+    "center": "Centrs",
+    "degrees": "Grādi",
+    "imperial inch": "Imperiālā colla",
+    "italic": "Slīpraksts",
+    "left": "Pa kreisi",
+    "metric": "Metriskā skala",
+    "middle": "Pa vidu",
+    "nautical mile": "Jūras jūdze",
+    "normal": "Normāls",
+    "bold": "Treknraksts",
+    "right": "Pa labi",
+    "scalebar": "Mēroga josla",
+    "scaleBarText": "Mēroga joslas teksts",
+    "scaleline": "Mēroga līnija",
+    "scaleSteps": "Mēroga soļi",
+    "scaleStylingOptions": "Mēroga veidošanas iespējas",
+    "scaleType": "Mēroga tips",
+    "scaleUnits": "Mēroga vienības",
+    "textDraw": "Teksta zīmēšanas veids",
+    "textPosition": "Teksta pozīcija",
+    "titleStylingOptions": "Virsraksta stilizēšanas iespējas",
+    "top": "Augša",
+    "us inch": "Amerikas collas",
+    "legendStylingOptions": "Leģendas stilizēšanas iespējas",
+    "imprint": "Zīmogs",
+    "imprintStylingOptions": "Zīmoga stilizēšanas iespējas"
+  },
   "QUERY": {
     "clusterContaining": "Objektu apvienojums, kas satur {{count}} objektus",
     "confirmClear": "Apstiprināt notīrīšanu",
@@ -645,11 +702,11 @@
       "attributeName": "Atribūtu nosaukums",
       "attributeValue": "Atribūta vērtība",
       "copyFeature": "Kopēt grafiskos objektus",
+      "copyFeatures": "Kopēt grafiskos objektus",
       "featurecopySucc": "Grafiskais objekts tika veiksmīgi nokopēts slānī:",
       "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
       "featuremoveSucc": "Grafiskais objekts tika veiksmīgi pārvietots uz slāni:",
       "moveFeature": "Pārvietot grafisko objektu",
-      "copyFeatures": "Kopēt grafiskos objektus",
       "moveFeatures": "Pārvietot grafiskos objektus"
     },
     "featureInfo": "Objektu informācija",
@@ -751,14 +808,14 @@
       "LANGUAGE": "Nomainīt valodu",
       "LEGEND": "Leģenda",
       "LM": "Pārvaldīt un noformēt slāņus kompozīcijā",
+      "MAP_SWIPE": "Kartes vilkšanas vadības slāņa pārvaldnieks",
       "MAPCOMPOSITIONS": "Uzskaitīt pieejamās karšu kompozīcijas",
       "MEASURE": "Izmērīt attālumu vai platību kartē",
       "PERMALINK": "Kopīgot karti",
       "PRINT": "Printēt karti",
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
       "SEARCH": "Meklēt atrašanās vietu",
-      "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus",
-      "MAP_SWIPE": "Kartes vilkšanas vadības slāņa pārvaldnieks"
+      "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus"
     }
   },
   "STYLER": {
@@ -837,12 +894,12 @@
     "toggleFilters": "Pārslēgt filtrus",
     "toggleScaleDenominators": "Pārslēgt mēroga saucējus",
     "transform": "Transformēt",
+    "unknownSymbolizer": "Nezināms simbolizētājs",
     "uploadSld": "Augšupielādēt stilu kā SLD failu",
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
-    "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
-    "width": "Platums",
     "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD",
-    "unknownSymbolizer": "Nezināms simbolizētājs"
+    "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
+    "width": "Platums"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
@@ -858,30 +915,5 @@
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
     "waypointLayer": "Galapunktu slānis",
     "waypoints": "Pieturas punkti"
-  },
-  "LAYMAN": {
-    "ERROR": {
-      "2": "Nevar atvērt rastra failu",
-      "18": "Trūkst viena vai vairāku Shape failu",
-      "50": "Kļūda, normalizējot rastra failu"
-    },
-    "allLayersSuccessfullyRemoved": "Visi slāņi veiksmīgi noņemti",
-    "layerSuccessfullyRemoved": "Slānis veiksmīgi noņemts",
-    "deleteLayersRequest": "Slāņu dzēšanas pieprasījums",
-    "deletionInProgress": "Notiek dzēšana, lūdzu, uzgaidiet!"
-  },
-  "MAP_SWIPE": {
-    "bottom": "Apakša",
-    "horizontalSwipe": "Horizontālā vilkšana",
-    "leftSide": "Kreisā puse",
-    "resetSlider": "Atiestatīt slīdni",
-    "rightSide": "Labā puse",
-    "top": "Augša",
-    "dndLayers": "Izmantojiet vilkšanu un nomešanu, lai pārvietotu slāņus starp kartes pusēm",
-    "disableSwipe": "Atspējot vilkšanu",
-    "enableSwipe": "Iespējot vilkšanu",
-    "verticalSwipe": "Vertikālā vilkšana",
-    "entireMap": "Visa karte",
-    "noLayers": "Nav slāņu (velciet šeit jebkuru slāni)"
   }
 }

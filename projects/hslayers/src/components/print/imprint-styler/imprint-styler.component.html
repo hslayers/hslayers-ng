@@ -1,0 +1,34 @@
+<div class="form-floating mb-2">
+  <input type="text" class="form-control" id="imprint-author" [(ngModel)]="imprintObj.author"
+    placeholder="'COMMON.author' | translate" />
+  <label for="imprint-author" class="control-label">{{'COMMON.author' | translate}}</label>
+</div>
+<div class="form-floating mb-2">
+  <textarea class="form-control" id='imprint-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
+    name="imprint-abstract" [(ngModel)]="imprintObj.abstract">
+                              </textarea>
+  <label for="imprint-abstract" class="control-label">{{'COMMON.abstract' | translate}}</label>
+</div>
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'COMMON.width' | translate}}</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="imprintObj.width"
+      [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="width" *ngFor="let width of sizes">
+        {{width}}px
+      </option>
+    </select>
+  </div>
+</div>
+<div class="d-flex flex-row">
+  <div class="p-1 w-50 mt-1">{{'COMMON.height' | translate}}</div>
+  <div class="p-1 w-100">
+    <select class="form-control form-select-sm form-select" [(ngModel)]="imprintObj.height"
+      [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="height" *ngFor="let height of sizes">
+        {{height}}px
+      </option>
+    </select>
+  </div>
+</div>
+<hs-print-text-styler [textStyle]="imprintObj.textStyle"></hs-print-text-styler>

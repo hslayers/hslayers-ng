@@ -5,6 +5,7 @@ export * from './filters/filters.component';
 export * from './filters/filters.service';
 export * from './filters/scale-denominator.component';
 export * from './symbolizers/color-picker/color-picker.component';
+export * from './symbolizers/color-picker/color-picker.service';
 export * from './symbolizers/fill-symbolizer/fill-symbolizer.component';
 export * from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 export * from './symbolizers/line-symbolizer/line-symbolizer.component';

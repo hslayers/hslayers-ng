@@ -793,6 +793,20 @@ export class HsMapService {
     return this.mapElement.querySelectorAll('.ol-layer canvas');
   }
 
+  getScaleLineElement(type: 'scaleline' | 'scalebar'): Element {
+    switch (type) {
+      case 'scalebar':
+        return this.mapElement.querySelectorAll(
+          '.ol-scale-bar.ol-unselectable'
+        )?.[0];
+      case 'scaleline':
+      default:
+        return this.mapElement.querySelectorAll(
+          '.ol-scale-line.ol-unselectable'
+        )?.[0];
+    }
+  }
+
   /**
    * @public
    * @param {Ol.layer} lyr Layer to proxify
