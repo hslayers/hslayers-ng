@@ -3,6 +3,7 @@ import {Component, Input} from '@angular/core';
 import {ColorEvent} from 'ngx-color';
 import {FillSymbolizer, MarkSymbolizer, TextSymbolizer} from 'geostyler-style';
 
+import {HsColorPickerService} from './color-picker.service';
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 
 @Component({
@@ -10,6 +11,9 @@ import {HsStylerPartBaseComponent} from '../../style-part-base.component';
   templateUrl: './color-picker.component.html',
 })
 export class HsColorPickerComponent extends HsStylerPartBaseComponent {
+  constructor(public hsColorPickerService: HsColorPickerService) {
+    super();
+  }
   @Input() symbolizer: MarkSymbolizer | FillSymbolizer | TextSymbolizer;
   @Input() attribute: string;
   @Input() opacityAttribute?: string;
@@ -22,7 +26,7 @@ export class HsColorPickerComponent extends HsStylerPartBaseComponent {
     if (this.opacityAttribute) {
       this.symbolizer[this.opacityAttribute] = $event.color.rgb.a;
     }
-    this.fontColor = this.generateFontColor([
+    this.fontColor = this.hsColorPickerService.generateFontColor([
       $event.color.rgb.r,
       $event.color.rgb.g,
       $event.color.rgb.b,
@@ -30,36 +34,10 @@ export class HsColorPickerComponent extends HsStylerPartBaseComponent {
     this.emitChange();
   }
 
-  addAlpha(color: string, opacity: number): string {
-    if (opacity == undefined) {
-      return color;
-    }
-    const t = {...this.hex2Rgb(color), a: opacity};
-    return `rgba(${t.r}, ${t.g}, ${t.b}, ${t.a})`;
-  }
-
-  hex2Rgb(aRgbHex: string): {r: number; g: number; b: number} {
-    if (!aRgbHex) {
-      return {r: 0, g: 0, b: 0};
-    }
-    const rgb = aRgbHex.replace('#', '').match(/.{1,2}/g);
-    return {
-      r: parseInt(rgb[0], 16),
-      g: parseInt(rgb[1], 16),
-      b: parseInt(rgb[2], 16),
-    };
-  }
-
-  generateFontColor(rgbColor: Array<number>): string {
-    const [r, g, b] = rgbColor;
-    const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-    return hsp > 127.5 ? 'black' : 'white';
-  }
-
-  colorPickerStyle(): any {
-    return {
-      'background-color': this.symbolizer[this.attribute],
-      'color': this.fontColor,
-    };
+  colorPickerStyle(): string {
+    return this.hsColorPickerService.colorPickerStyle(
+      this.symbolizer[this.attribute],
+      this.fontColor
+    );
   }
 }

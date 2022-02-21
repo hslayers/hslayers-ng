@@ -2,11 +2,11 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{label}}</div>
     <div class="p-1 w-75">
-      <input class="form-control form-select-sm" (click)="pickerVisible = !pickerVisible"
-        [ngStyle]="colorPickerStyle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer[attribute]" />
+      <input class="form-control form-select-sm" (click)="pickerVisible = !pickerVisible" [ngStyle]="colorPickerStyle()"
+        [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer[attribute]" />
     </div>
   </div>
-  <color-sketch [color]="addAlpha(symbolizer[attribute], symbolizer[opacityAttribute])"
+  <color-sketch [color]="hsColorPickerService.addAlpha(symbolizer[attribute], symbolizer[opacityAttribute])"
     *ngIf="pickerVisible && symbolizer[attribute] !== undefined" (onChangeComplete)="onPick($event)"></color-sketch>
   <color-sketch *ngIf="pickerVisible && symbolizer[attribute] === undefined" (onChangeComplete)="onPick($event)">
   </color-sketch>
