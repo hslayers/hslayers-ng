@@ -35,11 +35,23 @@ import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
 
+import {HsOverlayPanelContainerService} from './components/layout/overlay-panel-container.service';
+import {HsPanelContainerService} from './components/layout/panels/panel-container.service';
+
+export const indexCounter = {
+  id: 0,
+};
+
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',
   templateUrl: './hslayers.html',
   styles: [],
+  providers: [
+    HsPanelContainerService,
+    HsOverlayPanelContainerService,
+    HsToolbarPanelContainerService,
+  ],
 })
 export class HslayersComponent implements OnInit {
   @Input() config: HsConfig;
@@ -49,6 +61,8 @@ export class HslayersComponent implements OnInit {
     public hsConfig: HsConfig,
     private hsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
+    private HsPanelContainerService: HsPanelContainerService,
+    private HsOverlayPanelContainerService: HsOverlayPanelContainerService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     private hsQueryPopupService: HsQueryPopupService,
     private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
@@ -65,7 +79,7 @@ export class HslayersComponent implements OnInit {
    */
   createPanel(name: string, panelComponent: Type<any>, data?: any): void {
     if (this.hsConfig.panelsEnabled[name]) {
-      this.hsLayoutService.createPanel(panelComponent, data || {});
+      this.HsPanelContainerService.create(panelComponent, data || {});
     }
   }
   ngOnInit(): void {
@@ -91,15 +105,21 @@ export class HslayersComponent implements OnInit {
       this.HsLayerManagerService.data
     );
     this.createPanel('mapSwipe', HsMapSwipeComponent);
-    this.hsLayoutService.createPanel(HsStylerComponent, {});
+
+    this.HsPanelContainerService.create(HsStylerComponent, {});
+
     this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    this.hsLayoutService.createOverlay(HsGeolocationComponent, {});
-    this.hsLayoutService.createOverlay(HsInfoComponent, {});
-    this.hsLayoutService.createOverlay(HsLayerManagerGalleryComponent, {});
-    this.hsLayoutService.createOverlay(HsToolbarComponent, {});
-    this.hsLayoutService.createOverlay(HsQueryPopupComponent, {
+
+    this.HsOverlayPanelContainerService.create(HsGeolocationComponent, {});
+    this.HsOverlayPanelContainerService.create(HsInfoComponent, {});
+    this.HsOverlayPanelContainerService.create(
+      HsLayerManagerGalleryComponent,
+      {}
+    );
+    this.HsOverlayPanelContainerService.create(HsToolbarComponent, {});
+    this.HsOverlayPanelContainerService.create(HsQueryPopupComponent, {
       service: this.hsQueryPopupService,
     });
   }
