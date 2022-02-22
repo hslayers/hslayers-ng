@@ -40,6 +40,7 @@
     "@angular/common": "^13.2.2",
     "@angular/compiler": "^13.2.2",
     "@angular/core": "^13.2.2",
+    "@angular/elements": "^13.2.2",
     "@angular/forms": "^13.2.2",
     "@angular/localize": "^13.2.2",
     "@angular/material": "^13.2.2",
@@ -83,7 +84,6 @@
   },
   "devDependencies": {
     "@angular-architects/module-federation": "^14.1.1",
-    "ngx-build-plus": "^13.0.1",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular-devkit/build-angular": "^13.2.3",
     "@angular-eslint/builder": "^13.1.0",
@@ -117,6 +117,7 @@
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "^1.7.0",
     "ng-packagr": "^13.2.1",
+    "ngx-build-plus": "^13.0.1",
     "prettier": "^2.5.1",
     "protractor": "~7.0.0",
     "puppeteer": "^13.3.2",
