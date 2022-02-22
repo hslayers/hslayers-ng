@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -18,6 +18,7 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 })
 export class HsLayerPhysicalListComponent implements OnDestroy {
   layerManagerUpdatesSubscription: Subscription;
+  @Input() app = 'default';
   constructor(
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerUtilsService: HsLayerUtilsService,
@@ -25,21 +26,19 @@ export class HsLayerPhysicalListComponent implements OnDestroy {
     public hsLayerShiftingService: HsLayerShiftingService,
     public hsConfig: HsConfig
   ) {
-    this.hsLayerShiftingService.fillLayers();
+    this.hsLayerShiftingService.fillLayers(this.app);
     this.layerManagerUpdatesSubscription =
-      this.hsEventBusService.layerManagerUpdates.subscribe(
-        (layer: Layer<Source>) => {
-          this.hsLayerShiftingService.fillLayers();
-          if (layer !== undefined) {
-            const layerFound = this.hsLayerShiftingService.layersCopy.find(
-              (wrapper) => wrapper.layer == layer
-            );
-            if (layerFound !== undefined) {
-              layerFound.active = true;
-            }
+      this.hsEventBusService.layerManagerUpdates.subscribe(({layer, app}) => {
+        this.hsLayerShiftingService.fillLayers(this.app);
+        if (layer !== undefined) {
+          const layerFound = this.hsLayerShiftingService.layersCopy.find(
+            (wrapper) => wrapper.layer == layer
+          );
+          if (layerFound !== undefined) {
+            layerFound.active = true;
           }
         }
-      );
+      });
   }
   ngOnDestroy(): void {
     this.layerManagerUpdatesSubscription.unsubscribe();
@@ -54,6 +53,10 @@ export class HsLayerPhysicalListComponent implements OnDestroy {
       event.currentIndex
     );
 
-    this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
+    this.hsLayerShiftingService.moveTo(
+      draggedLayer,
+      replacedLayer.layer,
+      this.app
+    );
   }
 }

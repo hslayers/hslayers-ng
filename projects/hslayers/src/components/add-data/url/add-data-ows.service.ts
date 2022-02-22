@@ -39,15 +39,18 @@ export class HsAddDataOwsService {
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService
   ) {
-    this.hsAddDataCommonService.serviceLayersCalled.subscribe(({url}) => {
-      this.setUrlAndConnect({uri: url});
+    this.hsAddDataCommonService.serviceLayersCalled.subscribe(({url, app}) => {
+      this.setUrlAndConnect({uri: url}, app);
     });
   }
-  async connect(opt?: {
-    style?: string;
-    owrCache?: boolean;
-    getOnly?: boolean;
-  }): Promise<Layer<Source>[]> {
+  async connect(
+    app: string,
+    opt?: {
+      style?: string;
+      owrCache?: boolean;
+      getOnly?: boolean;
+    }
+  ): Promise<Layer<Source>[]> {
     await this.setTypeServices();
     const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
@@ -74,6 +77,7 @@ export class HsAddDataOwsService {
     });
     const wrapper = await this.typeCapabilitiesService.request(
       url,
+      app,
       opt?.owrCache
     );
     if (
@@ -89,11 +93,11 @@ export class HsAddDataOwsService {
       );
       if (!opt?.getOnly) {
         if (response?.length > 0) {
-          this.typeService.addLayers(response);
+          this.typeService.addLayers(response, app);
         }
         if (this.hsUrlArcGisService.isImageService()) {
-          const layers = this.hsUrlArcGisService.getLayers();
-          this.hsUrlArcGisService.addLayers(layers);
+          const layers = this.hsUrlArcGisService.getLayers(app);
+          this.hsUrlArcGisService.addLayers(layers, app);
         }
       }
 
@@ -107,10 +111,13 @@ export class HsAddDataOwsService {
    * @param layer - Optional layer to select, when
    * getCapabilities arrives
    */
-  async setUrlAndConnect(params: owsConnection): Promise<Layer<Source>[]> {
+  async setUrlAndConnect(
+    params: owsConnection,
+    app: string
+  ): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = params.layer;
     this.hsAddDataCommonService.updateUrl(params.uri);
-    return await this.connect({
+    return await this.connect(app, {
       style: params.style,
       owrCache: params.owrCache,
       getOnly: params.getOnly,
@@ -124,9 +131,12 @@ export class HsAddDataOwsService {
   /**
    * replaces `ows.${type}_connecting`
    */
-  async connectToOWS(params: owsConnection): Promise<Layer<Source>[]> {
+  async connectToOWS(
+    params: owsConnection,
+    app: string
+  ): Promise<Layer<Source>[]> {
     this.hsAddDataUrlService.typeSelected = params.type as AddDataUrlType;
-    return await this.setUrlAndConnect(params);
+    return await this.setUrlAndConnect(params, app);
   }
 
   async setTypeServices(): Promise<void> {

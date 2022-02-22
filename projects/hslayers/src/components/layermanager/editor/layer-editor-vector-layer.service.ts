@@ -32,7 +32,8 @@ export class HsLayerEditorVectorLayerService {
     newValue: boolean,
     layer: Layer<Source>,
     distance: number,
-    generateStyle: boolean
+    generateStyle: boolean,
+    app: string
   ): Promise<void> {
     if (newValue == true) {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
@@ -43,7 +44,8 @@ export class HsLayerEditorVectorLayerService {
           );
         }
         this.updateFeatureTableLayers(
-          layer as VectorLayer<VectorSource<Geometry>>
+          layer as VectorLayer<VectorSource<Geometry>>,
+          app
         );
       }
     } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
@@ -74,12 +76,15 @@ export class HsLayerEditorVectorLayerService {
       },
     });
   }
-  updateFeatureTableLayers(layer: VectorLayer<VectorSource<Geometry>>): void {
-    const currentLayerIndex = this.HsConfig.layersInFeatureTable?.findIndex(
-      (l) => l == layer
-    );
+  updateFeatureTableLayers(
+    layer: VectorLayer<VectorSource<Geometry>>,
+    app: string
+  ): void {
+    const currentLayerIndex = this.HsConfig.get(
+      app
+    ).layersInFeatureTable?.findIndex((l) => l == layer);
     if (layer && currentLayerIndex > -1) {
-      this.HsConfig.layersInFeatureTable[currentLayerIndex] = layer;
+      this.HsConfig.get(app).layersInFeatureTable[currentLayerIndex] = layer;
     }
   }
 }

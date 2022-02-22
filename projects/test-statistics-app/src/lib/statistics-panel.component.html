@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="print" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
+    <hs-panel-header name="statistics" [app]="data.app" [title]="'PANEL_HEADER.STATISTICS' | translate"></hs-panel-header>
     <div class="card-body">
 
         <ul ngbNav #nav="ngbNav" [(activeId)]="hsStatisticsService.activeTab" class="nav-tabs">

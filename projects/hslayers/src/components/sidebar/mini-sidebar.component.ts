@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -8,6 +8,7 @@ import {HsSidebarService} from './sidebar.service';
   templateUrl: './partials/sidebar.html',
 })
 export class HsMiniSidebarComponent {
+  @Input() app = 'default';
   constructor(
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
@@ -20,17 +21,17 @@ export class HsMiniSidebarComponent {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant =
-      !this.HsSidebarService.showUnimportant;
+    this.HsSidebarService.get(this.app).showUnimportant =
+      !this.HsSidebarService.get(this.app).showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded =
-      !this.HsLayoutService.sidebarExpanded;
+    this.HsLayoutService.get(this.app).sidebarExpanded =
+      !this.HsLayoutService.get(this.app).sidebarExpanded;
     setTimeout(() => {
-      this.HsCoreService.updateMapSize();
+      this.HsCoreService.updateMapSize(this.app);
     }, 110);
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -15,6 +15,7 @@ import {HsSidebarService} from './sidebar.service';
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;
+  @Input() app = 'default';
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
@@ -28,17 +29,23 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
     if (panel) {
-      if (!this.HsLayoutService.minisidebar) {
-        this.HsLayoutService.setMainPanel(panel);
+      if (!this.HsLayoutService.get(this.app).minisidebar) {
+        this.HsLayoutService.setMainPanel(panel, this.app);
       }
     }
-    this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+    this.HsSidebarService.setPanelState(
+      this.HsSidebarService.get(this.app).buttons,
+      this.app
+    );
     this.configChangesSubscription = this.HsConfig.configChanges.subscribe(
       (_) => {
-        this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+        this.HsSidebarService.setPanelState(
+          this.HsSidebarService.get(this.app).buttons,
+          this.app
+        );
       }
     );
-    this.HsSidebarService.sidebarLoad.next();
+    this.HsSidebarService.sidebarLoad.next(this.app);
   }
 
   /**
@@ -46,17 +53,17 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant =
-      !this.HsSidebarService.showUnimportant;
+    this.HsSidebarService.get(this.app).showUnimportant =
+      !this.HsSidebarService.get(this.app).showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded =
-      !this.HsLayoutService.sidebarExpanded;
+    this.HsLayoutService.get(this.app).sidebarExpanded =
+      !this.HsLayoutService.get(this.app).sidebarExpanded;
     setTimeout(() => {
-      this.HsCoreService.updateMapSize();
+      this.HsCoreService.updateMapSize(this.app);
     }, 110);
   }
 }

@@ -17,8 +17,11 @@ export class HsDimensionTimeService {
   /**
    * To communicate changes between this service and HsDimensionService
    */
-  layerTimeChanges: Subject<{layer: HsLayerDescriptor; time: string}> =
-    new Subject();
+  layerTimeChanges: Subject<{
+    layer: HsLayerDescriptor;
+    time: string;
+    app: string;
+  }> = new Subject();
 
   constructor(
     public hsLog: HsLogService,
@@ -192,6 +195,7 @@ export class HsDimensionTimeService {
    */
   setupTimeLayer(
     currentLayer: HsLayerDescriptor,
+    app: string,
     serviceLayer?: WmsLayer
   ): void {
     const olLayer = currentLayer.layer;
@@ -233,7 +237,7 @@ export class HsDimensionTimeService {
       //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
     };
     this.polyfillLayerDimensionsValues(currentLayer);
-    this.setLayerTime(currentLayer, defaultTime);
+    this.setLayerTime(currentLayer, defaultTime, app);
   }
 
   /**
@@ -241,13 +245,18 @@ export class HsDimensionTimeService {
    * @param currentLayer - Selected layer
    * @param newTime - ISO8601 string of a date and time to set
    */
-  setLayerTime(currentLayer: HsLayerDescriptor, newTime: string): void {
+  setLayerTime(
+    currentLayer: HsLayerDescriptor,
+    newTime: string,
+    app: string
+  ): void {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
     this.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
+      app,
     });
   }
 

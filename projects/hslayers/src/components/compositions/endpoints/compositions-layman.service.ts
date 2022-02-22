@@ -40,7 +40,9 @@ export class HsCompositionsLaymanService {
   loadList(
     endpoint: HsEndpoint,
     params,
-    extentFeatureCreated
+    extentFeatureCreated,
+    _bbox,
+    app: string
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
@@ -54,10 +56,11 @@ export class HsCompositionsLaymanService {
         : 'last_change';
 
     const b = transformExtent(
-      this.hsMapService.map
+      this.hsMapService
+        .getMap(app)
         .getView()
-        .calculateExtent(this.hsMapService.map.getSize()),
-      this.hsMapService.getCurrentProj(),
+        .calculateExtent(this.hsMapService.getMap(app).getSize()),
+      this.hsMapService.getCurrentProj(app),
       'EPSG:3857'
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
@@ -86,7 +89,7 @@ export class HsCompositionsLaymanService {
         map((response: any) => {
           if (Array.isArray(response.body)) {
             response.body.extentFeatureCreated = extentFeatureCreated;
-            this.compositionsReceived(endpoint, response);
+            this.compositionsReceived(endpoint, response, app);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
@@ -131,7 +134,7 @@ export class HsCompositionsLaymanService {
       );
     return endpoint.listLoading;
   }
-  compositionsReceived(endpoint: HsEndpoint, response): void {
+  compositionsReceived(endpoint: HsEndpoint, response, app: string): void {
     if (response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
       this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
@@ -160,7 +163,7 @@ export class HsCompositionsLaymanService {
       if (response.body.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj()
+          this.hsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
           tmp.featureId = extentFeature.getId();
@@ -177,7 +180,7 @@ export class HsCompositionsLaymanService {
     this.hsEventBusService.compositionDeletes.next(composition);
   }
 
-  async getInfo(composition: any): Promise<any> {
+  async getInfo(composition: any, app: string): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.displayWarningToast(
@@ -201,7 +204,7 @@ export class HsCompositionsLaymanService {
       return;
     }
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
-    const info = await this.hsCompositionsParserService.loadInfo(url);
+    const info = await this.hsCompositionsParserService.loadInfo(url, app);
     if (
       info.thumbnail?.status !== undefined &&
       info.thumbnail?.status == 'NOT_AVAILABLE'

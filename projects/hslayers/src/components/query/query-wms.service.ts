@@ -43,15 +43,15 @@ export class HsQueryWmsService {
     public hsLogService: HsLogService,
     public hsQueryWmtsService: HsQueryWmtsService
   ) {
-    this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
+    this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
       this.infoCounter = 0;
-      this.hsMapService.getLayersArray().forEach((layer: Layer<Source>) => {
+      this.hsMapService.getLayersArray(app).forEach((layer: Layer<Source>) => {
         if (getBase(layer) == true || layer.get('queryable') == false) {
           return;
         }
         if (getQueryFilter(layer) != undefined) {
           const filter = getQueryFilter(layer);
-          if (!filter(hsMapService.map, layer, evt.pixel)) {
+          if (!filter(hsMapService.getMap(app), layer, evt.pixel)) {
             return;
           }
         }
@@ -59,7 +59,8 @@ export class HsQueryWmsService {
           this.hsUtilsService.instOf(layer, Tile)
             ? (layer as Layer<TileWMS>)
             : (layer as Layer<ImageWMS>),
-          evt.coordinate
+          evt.coordinate,
+          app
         );
       });
     });
@@ -81,8 +82,14 @@ export class HsQueryWmsService {
     }
   }
 
-  async request(url, infoFormat, coordinate: number[], layer): Promise<void> {
-    const req_url = this.hsUtilsService.proxify(url, true);
+  async request(
+    url,
+    infoFormat,
+    coordinate: number[],
+    layer,
+    app: string
+  ): Promise<void> {
+    const req_url = this.hsUtilsService.proxify(url, app, true);
     const reqHash = this.hsQueryBaseService.currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});
@@ -97,7 +104,7 @@ export class HsQueryWmsService {
       if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;
       }
-      this.featureInfoReceived(response, infoFormat, coordinate, layer);
+      this.featureInfoReceived(response, infoFormat, coordinate, layer, app);
     } catch (exception) {
       if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;
@@ -130,7 +137,8 @@ export class HsQueryWmsService {
     response,
     infoFormat: string,
     coordinate: number[],
-    layer
+    layer,
+    app: string
   ): void {
     /* Maybe this will work in future OL versions
      * var format = new GML();
@@ -177,7 +185,7 @@ export class HsQueryWmsService {
       if (getFeatureInfoTarget(layer) == 'info-panel') {
         this.hsQueryBaseService.pushFeatureInfoHtml(response);
       } else {
-        this.hsQueryBaseService.fillIframeAndResize(response, true);
+        this.hsQueryBaseService.fillIframeAndResize(response, true, app);
         if (getPopupClass(layer) != undefined) {
           this.hsQueryBaseService.popupClassname =
             'ol-popup ' + getPopupClass(layer);
@@ -293,28 +301,32 @@ export class HsQueryWmsService {
    * @param layer - Layer to Query
    * @param coordinate -
    */
-  queryWmsLayer(layer: Layer<ImageWMS | TileWMS>, coordinate: number[]) {
+  queryWmsLayer(
+    layer: Layer<ImageWMS | TileWMS>,
+    coordinate: number[],
+    app: string
+  ) {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService
-          .parseRequestUrl(layer, coordinate)
+          .parseRequestUrl(layer, coordinate, app)
           .then((res) => {
             console.log(res);
             this.infoCounter++;
-            this.request(res.url, res.format, coordinate, layer);
+            this.request(res.url, res.format, coordinate, layer, app);
           });
         return;
       }
 
       const source = layer.getSource();
-      const map = this.hsMapService.map;
+      const map = this.hsMapService.getMap(app);
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
         coordinate,
         viewResolution,
         source.getProjection()
           ? source.getProjection()
-          : this.hsMapService.getCurrentProj(),
+          : this.hsMapService.getCurrentProj(app),
         {
           INFO_FORMAT: source.getParams().INFO_FORMAT,
         }
@@ -345,7 +357,13 @@ export class HsQueryWmsService {
           source.getParams().INFO_FORMAT.includes('json')
         ) {
           this.infoCounter++;
-          this.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
+          this.request(
+            url,
+            source.getParams().INFO_FORMAT,
+            coordinate,
+            layer,
+            app
+          );
         }
       }
     }

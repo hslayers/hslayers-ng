@@ -65,10 +65,11 @@ export class HsCompositionsLayerParserService {
    * @param {object} lyr_def Layer definition object
    * @description Initiate creation of WFS layer thorough HsUrlWfsService
    */
-  async createWFSLayer(lyr_def): Promise<Layer<Source>[]> {
+  async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
-      lyr_def.protocol.url
+      lyr_def.protocol.url,
+      app
     );
     return await this.HsUrlWfsService.listLayerFromCapabilities(
       wrapper,
@@ -82,7 +83,7 @@ export class HsCompositionsLayerParserService {
    * @returns {object} Ol Tile layer
    * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
    */
-  async createWMTSLayer(lyr_def): Promise<Tile<TileSource>> {
+  async createWMTSLayer(lyr_def, app: string): Promise<Tile<TileSource>> {
     const wmts = new Tile({
       source: new WMTS({} as any),
       properties: {
@@ -93,7 +94,8 @@ export class HsCompositionsLayerParserService {
 
     // Get WMTS Capabilities and create WMTS source base on it
     const wrapper = await this.HsWmtsGetCapabilitiesService.request(
-      lyr_def.url
+      lyr_def.url,
+      app
     );
     try {
       //parse the XML response and create options object...
@@ -107,7 +109,7 @@ export class HsCompositionsLayerParserService {
       });
       // WMTS source for raster tiles layer
       wmts.setSource(new WMTS(options));
-      this.HsMapService.proxifyLayerLoader(wmts, true);
+      this.HsMapService.proxifyLayerLoader(wmts, true, app);
     } catch (error) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
@@ -122,7 +124,7 @@ export class HsCompositionsLayerParserService {
           serviceCalledFrom: 'HsCompositionsLayerParserService',
         }
       );
-      this.HsMapService.map.getLayers().remove(wmts);
+      this.HsMapService.getMap(app).getLayers().remove(wmts);
     }
 
     wmts.setVisible(lyr_def.visibility);
@@ -135,7 +137,7 @@ export class HsCompositionsLayerParserService {
    * @returns {object} Ol Image or Tile layer
    * @description Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
    */
-  createWmsLayer(lyr_def) {
+  createWmsLayer(lyr_def, app: string) {
     const params = lyr_def.params;
     const legends = this.getLegends(lyr_def);
     delete params.REQUEST;
@@ -175,7 +177,7 @@ export class HsCompositionsLayerParserService {
       : new Tile(layerOptions as TileOptions<TileSource>);
 
     new_layer.setVisible(lyr_def.visibility);
-    this.HsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
+    this.HsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile, app);
     return new_layer;
   }
 
@@ -365,7 +367,8 @@ export class HsCompositionsLayerParserService {
    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
   async createVectorLayer(
-    lyr_def
+    lyr_def,
+    app: string
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     try {
       let format = '';
@@ -416,7 +419,8 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            Object.assign(options, {extractStyles})
+            Object.assign(options, {extractStyles}),
+            app
           );
           break;
         case 'ol.format.GeoJSON':
@@ -427,7 +431,8 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            options
+            options,
+            app
           );
           break;
         case 'hs.format.WFS':
@@ -440,7 +445,8 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            options
+            options,
+            app
           );
           break;
         case 'hs.format.Sparql':
@@ -450,7 +456,7 @@ export class HsCompositionsLayerParserService {
           const features = lyr_def.features
             ? new GeoJSON().readFeatures(lyr_def.features, {
                 dataProjection: 'EPSG:4326',
-                featureProjection: this.HsMapService.getCurrentProj(),
+                featureProjection: this.HsMapService.getCurrentProj(app),
               })
             : undefined;
           layer = await this.HsAddDataVectorService.createVectorLayer(
@@ -467,7 +473,8 @@ export class HsCompositionsLayerParserService {
               fromComposition: lyr_def.fromComposition,
               style: lyr_def.style,
               features,
-            }
+            },
+            app
           );
       }
       setDefinition(layer, lyr_def.protocol);

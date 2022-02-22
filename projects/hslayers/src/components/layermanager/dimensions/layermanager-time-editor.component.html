@@ -8,7 +8,7 @@
       {{currentTime | date:timeDisplayFormat:'cs'}}
     </span>
     <span [hidden]="currentTimeDefined()" class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
-    [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translate" [closeDelay]="hsConfig.layerTooltipDelay || 0">
+    [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translate" [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
       {{'LAYERMANAGER.time.outOfRange' | translate}}
     </span>
   </button>

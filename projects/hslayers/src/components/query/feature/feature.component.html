@@ -39,7 +39,7 @@
                 <option *ngFor="let layer of availableLayers" [ngValue]="layer">
                     {{hsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
             </select>
-            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
+            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature(app)" [disabled]="!selectedLayer"><i class="icon-save-floppy"></i></button>
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@
             </div>  
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                    (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translate"
+                    (click)="toggleExportMenu(app)" [title]="'QUERY.downloadAs' | translate"
                     ><i
                         class="icon-download"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">

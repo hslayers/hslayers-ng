@@ -29,7 +29,7 @@
                     <dl *ngFor="let item of HsSaveMapManagerService.statusData.error | keyvalue">
                         <dt>{{item.key}} </dt>
                         <dd>
-                            <hs-widgets-recursive-dd [value]="item.value"></hs-widgets-recursive-dd>
+                            <hs-widgets-recursive-dd [value]="item.value" [app]="data.app"></hs-widgets-recursive-dd>
                         </dd>
                     </dl>
                 </div>

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HsToastService} from './toast.service';
 
 @Component({
@@ -20,5 +20,6 @@ import {HsToastService} from './toast.service';
   ],
 })
 export class HsToastComponent {
+  @Input() app = 'default';
   constructor(public PmToastService: HsToastService) {}
 }

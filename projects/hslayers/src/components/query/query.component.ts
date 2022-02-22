@@ -1,6 +1,6 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
@@ -24,7 +24,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
@@ -40,38 +40,57 @@ export class HsQueryComponent
     public hsQueryVectorService: HsQueryVectorService,
     public hsQueryWmsService: HsQueryWmsService,
     public hsDrawService: HsDrawService,
-    hsSidebarService: HsSidebarService,
-    hsLanguageService: HsLanguageService
+    public hsSidebarService: HsSidebarService,
+    public hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+
+    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
+      if (source && source != 'hs.query' && this.popup !== undefined) {
+        this.popup.hide();
+      }
+    });
+
+    this.hsQueryVectorService.featureRemovals
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((feature) => {
+        this.hsQueryBaseService.data.features.splice(
+          this.hsQueryBaseService.data.features.indexOf(feature),
+          1
+        );
+      });
+  }
+  async ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'info',
       module: 'hs.query',
       order: 7,
       fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.INFO'),
+      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.INFO'),
       description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
       icon: 'icon-info-sign',
     });
-    this.hsMapService.loaded().then((map) => {
+    this.hsMapService.loaded(this.data.app).then((map) => {
       map.addOverlay(this.popup);
     });
-
+    await this.hsQueryBaseService.init(this.data.app);
     //add current panel queryable - activate/deactivate
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((closed) => {
-        if (this.hsQueryBaseService.currentPanelQueryable()) {
-          if (
-            !this.hsQueryBaseService.queryActive &&
-            !this.hsDrawService.drawActive
-          ) {
-            this.hsQueryBaseService.activateQueries();
-          }
-        } else {
-          if (this.hsQueryBaseService.queryActive) {
-            this.hsQueryBaseService.deactivateQueries();
+      .subscribe(({which, app}) => {
+        if (this.data.app == app) {
+          if (this.hsQueryBaseService.currentPanelQueryable(this.data.app)) {
+            if (
+              !this.hsQueryBaseService.queryActive &&
+              !this.hsDrawService.drawActive
+            ) {
+              this.hsQueryBaseService.activateQueries(this.data.app);
+            }
+          } else {
+            if (this.hsQueryBaseService.queryActive) {
+              this.hsQueryBaseService.deactivateQueries(this.data.app);
+            }
           }
         }
       });
@@ -84,10 +103,10 @@ export class HsQueryComponent
           .subscribe((e) => {
             this.popup.hide();
             if (
-              this.hsQueryBaseService.currentPanelQueryable() &&
-              this.hsLayoutService.mainpanel != 'draw'
+              this.hsQueryBaseService.currentPanelQueryable(this.data.app) &&
+              this.hsLayoutService.get(this.data.app).mainpanel != 'draw'
             ) {
-              this.hsLayoutService.setMainPanel('info');
+              this.hsLayoutService.setMainPanel('info', this.data.app);
             }
           });
 
@@ -117,21 +136,6 @@ export class HsQueryComponent
               this.popupOpens.next('hs.query');
             }
           });
-      });
-
-    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
-      if (source && source != 'hs.query' && this.popup !== undefined) {
-        this.popup.hide();
-      }
-    });
-
-    this.hsQueryVectorService.featureRemovals
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((feature) => {
-        this.hsQueryBaseService.data.features.splice(
-          this.hsQueryBaseService.data.features.indexOf(feature),
-          1
-        );
       });
   }
   ngOnDestroy(): void {

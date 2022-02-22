@@ -48,10 +48,14 @@ export class HsQueryVectorService {
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     private domSanitizer: DomSanitizer
-  ) {
+  ) {}
+
+  init(_app: string): void {
     this.selector = new Select({
       condition: click,
-      multi: this.hsConfig.query?.multi ? this.hsConfig.query.multi : false,
+      multi: this.hsConfig.get(_app).query?.multi
+        ? this.hsConfig.get(_app).query.multi
+        : false,
       filter: function (feature, layer) {
         if (layer === null) {
           return;
@@ -65,8 +69,10 @@ export class HsQueryVectorService {
     });
     this.hsQueryBaseService.vectorSelectorCreated.next(this.selector);
 
-    this.hsEventBusService.olMapLoads.subscribe((map) => {
-      map.addInteraction(this.selector);
+    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
+      if (_app == app) {
+        map.addInteraction(this.selector);
+      }
     });
 
     this.hsQueryBaseService.queryStatusChanges.subscribe(() => {
@@ -89,7 +95,7 @@ export class HsQueryVectorService {
     });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       if (e?.feature) {
-        const layer = this.hsMapService.getLayerForFeature(e.feature);
+        const layer = this.hsMapService.getLayerForFeature(e.feature, _app);
         if (layer && getOnFeatureSelected(layer)) {
           const originalFeature = this.getSelectedFeature(e.feature);
           if (originalFeature) {
@@ -103,15 +109,16 @@ export class HsQueryVectorService {
       if (!this.hsQueryBaseService.queryActive) {
         return;
       }
-      this.createFeatureAttributeList();
+      this.createFeatureAttributeList(_app);
     });
   }
-  getFeaturesUnderMouse(map: Map, pixel: any) {
+
+  getFeaturesUnderMouse(map: Map, pixel: any, app: string) {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature);
-        return layer && layer != this.hsQueryBaseService.queryLayer;
+        const layer = this.hsMapService.getLayerForFeature(feature, app);
+        return layer && layer != this.hsQueryBaseService.apps[app].queryLayer;
       });
   }
   getSelectedFeature(feature: any): any {
@@ -121,13 +128,13 @@ export class HsQueryVectorService {
     }
     return original;
   }
-  createFeatureAttributeList() {
+  createFeatureAttributeList(app: string) {
     this.hsQueryBaseService.data.attributes.length = 0;
     const features = this.selector.getFeatures().getArray();
     let featureDescriptions = [];
     for (const feature of features) {
       featureDescriptions = featureDescriptions.concat(
-        this.getFeatureAttributes(feature)
+        this.getFeatureAttributes(feature, app)
       );
     }
     this.hsQueryBaseService.setData(featureDescriptions, 'features');
@@ -136,7 +143,8 @@ export class HsQueryVectorService {
 
   exportData(
     clickedFormat: 'WKT' | 'GeoJSON',
-    feature: Feature<Geometry>[] | Feature<Geometry>
+    feature: Feature<Geometry>[] | Feature<Geometry>,
+    app: string
   ): string {
     let fmt;
     const featureArray = Array.isArray(feature) ? feature : [feature];
@@ -150,7 +158,7 @@ export class HsQueryVectorService {
         fmt = new GeoJSON();
         return fmt.writeFeatures(featureArray, {
           dataProjection: 'EPSG:4326',
-          featureProjection: this.hsMapService.getCurrentProj(),
+          featureProjection: this.hsMapService.getCurrentProj(app),
         });
         break;
     }
@@ -159,8 +167,8 @@ export class HsQueryVectorService {
   /**
    * @param feature -
    */
-  getFeatureLayerName(feature) {
-    const layer = this.hsMapService.getLayerForFeature(feature);
+  getFeatureLayerName(feature, app: string) {
+    const layer = this.hsMapService.getLayerForFeature(feature, app);
     return this.hsLayerUtilsService.getLayerName(layer);
   }
 
@@ -178,13 +186,13 @@ export class HsQueryVectorService {
    * (PRIVATE) Adding a default stats to query based on feature geom type
    * @param f - Selected feature from map
    */
-  addDefaultStats(f) {
+  addDefaultStats(f, app: string) {
     const geom = f.getGeometry();
     const type = geom.getType();
     if (type == 'Polygon') {
       const area = this.hsUtilsService.formatArea(
         geom,
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(app)
       );
       return [
         {name: `${area.type} in ${area.unit}`, value: area.size},
@@ -194,7 +202,7 @@ export class HsQueryVectorService {
     if (type == 'LineString') {
       const length = this.hsUtilsService.formatLength(
         geom,
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(app)
       );
       return [
         {name: `${length.type} in ${length.unit}`, value: length.size},
@@ -210,8 +218,8 @@ export class HsQueryVectorService {
    * @param feature - Selected feature from map
    * @returns
    */
-  olSource(feature) {
-    const layer = this.hsMapService.getLayerForFeature(feature);
+  olSource(feature, app: string) {
+    const layer = this.hsMapService.getLayerForFeature(feature, app);
     if (layer == undefined) {
       return;
     } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
@@ -225,12 +233,12 @@ export class HsQueryVectorService {
    * @param feature - Selected feature from map
    * @returns
    */
-  isFeatureRemovable(feature) {
-    const source = this.olSource(feature);
+  isFeatureRemovable(feature, app: string) {
+    const source = this.olSource(feature, app);
     if (source == undefined) {
       return false;
     }
-    const layer = this.hsMapService.getLayerForFeature(feature);
+    const layer = this.hsMapService.getLayerForFeature(feature, app);
     return (
       this.hsUtilsService.instOf(source, VectorSource) &&
       this.hsLayerUtilsService.isLayerEditable(layer)
@@ -240,8 +248,8 @@ export class HsQueryVectorService {
   /**
    * @param feature - Selected feature from map
    */
-  removeFeature(feature) {
-    const source = this.olSource(feature);
+  removeFeature(feature, app: string) {
+    const source = this.olSource(feature, app);
     if (this.hsUtilsService.instOf(source, VectorSource)) {
       source.removeFeature(feature);
     }
@@ -253,7 +261,7 @@ export class HsQueryVectorService {
    * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
    * @param feature - Selected feature from map
    */
-  getFeatureAttributes(feature) {
+  getFeatureAttributes(feature, app: string) {
     const attributes = [];
     let tmp = [];
     const hstemplate = feature.get('hstemplate')
@@ -266,7 +274,7 @@ export class HsQueryVectorService {
       }
       if (key == 'features') {
         for (const subFeature of getFeatures(feature)) {
-          tmp = tmp.concat(this.getFeatureAttributes(subFeature));
+          tmp = tmp.concat(this.getFeatureAttributes(subFeature, app));
         }
       } else {
         const obj: AttributeValuePair = {
@@ -277,7 +285,7 @@ export class HsQueryVectorService {
         attributes.push(obj);
       }
     });
-    const layer = this.hsMapService.getLayerForFeature(feature);
+    const layer = this.hsMapService.getLayerForFeature(feature, app);
     if (layer && getCustomInfoTemplate(layer)) {
       customInfoTemplate = getCustomInfoTemplate(layer);
     }
@@ -295,10 +303,10 @@ export class HsQueryVectorService {
     }
     if (!getFeatures(feature)) {
       const featureDescription = {
-        layer: this.getFeatureLayerName(feature),
+        layer: this.getFeatureLayerName(feature, app),
         name: 'Feature',
         attributes: attributes,
-        stats: this.addDefaultStats(feature),
+        stats: this.addDefaultStats(feature, app),
         hstemplate,
         feature,
         customInfoTemplate:

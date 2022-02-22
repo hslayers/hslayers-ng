@@ -26,23 +26,24 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   print: PrintModel;
 
   constructor(
-    private hsPrintService: HsPrintService,
-    private hsPrintScaleService: HsPrintScaleService,
-    public hsLayoutService: HsLayoutService,
+    public HsPrintService: HsPrintService,
+    public HsConfig: HsConfig,
+    HsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService,
-    public hsUtilsService: HsUtilsService,
-    private hsPrintLegendService: HsPrintLegendService
+    public hsSidebarService: HsSidebarService
   ) {
-    super(hsLayoutService);
-    hsSidebarService.buttons.push({
+    super(HsLayoutService);
+  }
+
+  ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'print',
       module: 'hs.print',
       order: 10,
       fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.PRINT'),
+      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.PRINT'),
       description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.PRINT'),
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.PRINT'),
       icon: 'icon-print',
     });
   }

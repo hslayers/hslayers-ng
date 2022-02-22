@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -15,6 +15,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
   templateUrl: './partials/search-input.component.html',
 })
 export class HsSearchInputComponent implements OnInit, OnDestroy {
+  @Input() app = 'default';
   query = '';
   searchInputVisible: boolean;
   clearVisible = false;
@@ -47,12 +48,12 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
    * Handler of search input, request search service and display results div
    */
   async queryChanged(): Promise<void> {
-    await this.hsSearchService.hsMapService.loaded();
+    await this.hsSearchService.hsMapService.loaded(this.app);
     if (this.query.length == 0) {
       this.clear();
       return;
     }
-    this.hsSearchService.request(this.query);
+    this.hsSearchService.request(this.query, this.app);
   }
   /**
    * Remove previous search and search results
@@ -60,7 +61,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   clear(): void {
     this.query = '';
     this.clearVisible = false;
-    this.hsSearchService.cleanResults();
+    this.hsSearchService.cleanResults(this.app);
     this.hsEventBusService.clearSearchResults.next();
   }
   toggleSearchInput(): void {

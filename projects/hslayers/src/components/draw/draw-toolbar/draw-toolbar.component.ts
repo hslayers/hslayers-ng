@@ -35,23 +35,23 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
-  toggleDrawToolbar(): void {
+  toggleDrawToolbar(app: string): void {
     this.HsDrawService.highlightDrawButton = false;
     if (
-      this.HsLayoutService.layoutElement.clientWidth > 767 &&
-      this.HsLayoutService.layoutElement.clientWidth < 870 &&
+      this.HsLayoutService.get(app).layoutElement.clientWidth > 767 &&
+      this.HsLayoutService.get(app).layoutElement.clientWidth < 870 &&
       !this.drawToolbarExpanded
     ) {
-      this.HsLayoutService.sidebarExpanded = false;
+      this.HsLayoutService.get(app).sidebarExpanded = false;
     }
     this.drawToolbarExpanded = !this.drawToolbarExpanded;
     if (!this.drawToolbarExpanded) {
-      this.HsDrawService.stopDrawing();
+      this.HsDrawService.stopDrawing(this.data.app);
     }
-    this.HsDrawService.fillDrawableLayers();
+    this.HsDrawService.fillDrawableLayers(this.data.app);
   }
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer);
+    this.HsDrawService.selectLayer(layer, this.data.app);
   }
 
   controlLayerListAction() {
@@ -59,18 +59,18 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
       !this.HsDrawService.hasSomeDrawables &&
       this.HsDrawService.tmpDrawLayer
     ) {
-      this.HsDrawService.saveDrawingLayer();
+      this.HsDrawService.saveDrawingLayer(this.data.app);
     }
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what);
+    const type = this.HsDrawService.setType(what, this.data.app);
     if (type) {
-      this.HsDrawService.activateDrawing({});
+      this.HsDrawService.activateDrawing({}, this.data.app);
     }
   }
 
   finishDrawing(): void {
-    this.HsDrawService.stopDrawing();
+    this.HsDrawService.stopDrawing(this.data.app);
   }
 }

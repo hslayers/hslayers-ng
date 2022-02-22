@@ -29,31 +29,12 @@ export interface KeyNumberDict {
   [key: string]: number;
 }
 
-@Injectable()
-export class HsConfig {
-  private defaultSymbolizerIcons? = [
-    {name: 'favourite', url: 'img/icons/favourite28.svg'},
-    {name: 'gps', url: 'img/icons/gps43.svg'},
-    {name: 'information', url: 'img/icons/information78.svg'},
-    {name: 'wifi', url: 'img/icons/wifi8.svg'},
-  ];
-  componentsEnabled?: any = {
-    guiOverlay: true,
-    sidebar: true,
-    toolbar: true,
-    drawToolbar: true,
-    searchToolbar: true,
-    measureToolbar: true,
-    geolocationButton: true,
-    defaultViewButton: true,
-    mapControls: true,
-    basemapGallery: false,
-    mapSwipe: false,
-  };
+export class HsConfigObject {
+  componentsEnabled?: any;
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
-  sidebarPosition?: 'right' | 'left' | 'invisible';
+  sidebarPosition?: string;
   box_layers?: Group[];
   senslog?: {
     url: string;
@@ -90,27 +71,8 @@ export class HsConfig {
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
-  } = {
-    legend: true,
-    info: true,
-    composition_browser: true,
-    toolbar: true,
-    measure: true,
-    mobile_settings: false,
-    draw: true,
-    layermanager: true,
-    print: true,
-    saveMap: true,
-    language: true,
-    permalink: true,
-    compositionLoadingProgress: false,
-    sensors: true,
-    filter: false,
-    search: false,
-    tripPlanner: false,
-    addData: true,
-    mapSwipe: false,
   };
+  advancedForm?: boolean;
   project_name?: string;
   hostname?: {
     status_manager?: {
@@ -125,6 +87,7 @@ export class HsConfig {
   };
   mapSwipeOptions?: MapSwipeOptions = {};
   status_manager_url?: string;
+  shortenUrl?: any;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
   useProxy?: boolean;
@@ -140,11 +103,7 @@ export class HsConfig {
   /**
    * Configures query popup widgets, the order in which they are generated, and visibility
    */
-  queryPopupWidgets?: QueryPopupWidgetsType[] | string[] = [
-    'layer-name',
-    'feature-info',
-    'clear-layer',
-  ];
+  queryPopupWidgets?: QueryPopupWidgetsType[] | string[];
   /**
    * Allows the user to add custom widgets to query popup
    */
@@ -159,13 +118,7 @@ export class HsConfig {
   connectTypes?: AddDataUrlType[];
   uploadTypes?: AddDataFileType[];
   datasources?: any;
-  panelWidths?: KeyNumberDict = {
-    default: 425,
-    ows: 700,
-    composition_browser: 550,
-    addData: 700,
-    mapSwipe: 550,
-  };
+  panelWidths?: KeyNumberDict;
   sidebarToggleable?: boolean;
   sizeMode?: string;
   symbolizerIcons?: SymbolizerIcon[];
@@ -181,24 +134,79 @@ export class HsConfig {
    */
   saveMapStateOnReload?: boolean;
   /**
-   * Triggered when config is updated using 'update' function of HsConfig.
+   * Triggered when config is updated using 'update' function of HsConfig.get(app).
    * The full resulting config is provided in the subscriber as a parameter
    */
-  configChanges?: Subject<HsConfig> = new Subject();
   timeDisplayFormat?: string;
 
   /**
    *  Determines behavior of exclusive layers (layer.exclusive = true) visibility
    *  If set to true, only layers with same path are affected by exclusivity
    */
-  pathExclusivity?: boolean = false;
+  pathExclusivity?: boolean;
   ngRouter?: boolean;
+
   constructor() {
-    this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
-      val.url = (this.assetsPath ?? '') + val.url;
-      return val;
-    });
+    this.pathExclusivity = false;
+    this.panelsEnabled = {
+      legend: true,
+      info: true,
+      composition_browser: true,
+      toolbar: true,
+      measure: true,
+      mobile_settings: false,
+      draw: true,
+      layermanager: true,
+      print: true,
+      saveMap: true,
+      language: true,
+      permalink: true,
+      compositionLoadingProgress: false,
+      sensors: true,
+      filter: false,
+      search: false,
+      tripPlanner: false,
+      addData: true,
+      mapSwipe: false,
+    };
+    this.componentsEnabled = {
+      guiOverlay: true,
+      sidebar: true,
+      toolbar: true,
+      drawToolbar: true,
+      searchToolbar: true,
+      measureToolbar: true,
+      geolocationButton: true,
+      defaultViewButton: true,
+      mapControls: true,
+      basemapGallery: false,
+      mapSwipe: false,
+    };
+    this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
+    this.panelWidths = {
+      default: 425,
+      ows: 700,
+      composition_browser: 550,
+      addData: 700,
+      mapSwipe: 550,
+    };
   }
+}
+
+@Injectable()
+export class HsConfig {
+  apps: {[id: string]: HsConfigObject} = {
+    default: new HsConfigObject(),
+  };
+  configChanges?: Subject<HsConfigObject> = new Subject();
+  private defaultSymbolizerIcons? = [
+    {name: 'favourite', url: 'img/icons/favourite28.svg'},
+    {name: 'gps', url: 'img/icons/gps43.svg'},
+    {name: 'information', url: 'img/icons/information78.svg'},
+    {name: 'wifi', url: 'img/icons/wifi8.svg'},
+  ];
+
+  constructor() {}
 
   checkDeprecatedCesiumConfig?(newConfig: any) {
     for (const prop of [
@@ -221,34 +229,43 @@ export class HsConfig {
     ]) {
       if (newConfig[prop] != undefined) {
         console.error(
-          `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
+          `HsConfig.get(app).${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
         );
       }
     }
   }
 
-  update?(newConfig: HsConfig): void {
+  update?(newConfig: HsConfigObject, app?: string): void {
     this.checkDeprecatedCesiumConfig(newConfig);
-    Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
+    let appConfig = this.apps[app];
+    if (appConfig == undefined) {
+      this.apps[app] = new HsConfigObject();
+      appConfig = this.apps[app];
+    }
+    appConfig.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
+      val.url = (appConfig.assetsPath ?? '') + val.url;
+      return val;
+    });
+    Object.assign(appConfig.componentsEnabled, newConfig.componentsEnabled);
     //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
-    Object.assign(this.panelWidths, newConfig.panelWidths);
+    Object.assign(appConfig.panelWidths, newConfig.panelWidths);
     //See componentsEnabled ^
-    Object.assign(this.panelsEnabled, newConfig.panelsEnabled);
+    Object.assign(appConfig.panelsEnabled, newConfig.panelsEnabled);
     delete newConfig.panelsEnabled;
-    this.symbolizerIcons = [
+    appConfig.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),
       ...(newConfig.symbolizerIcons ?? []),
     ];
     delete newConfig.symbolizerIcons;
-    Object.assign(this, newConfig);
+    Object.assign(appConfig, newConfig);
     this.configChanges.next(this);
   }
 
   /**
    * This kind of duplicates getAssetsPath() in HsUtilsService, which can't be used here due to circular dependency
    */
-  updateSymbolizers?(config: HsConfig) {
+  updateSymbolizers?(config: HsConfigObject) {
     /* Removing 'private' since it makes this method non-optional */
     let assetsPath = config.assetsPath ?? '';
     assetsPath += assetsPath.endsWith('/') ? '' : '/';
@@ -256,6 +273,10 @@ export class HsConfig {
       val.url = assetsPath + val.url;
       return val;
     });
+  }
+
+  get(app: string): HsConfigObject {
+    return this.apps[app ?? 'default'];
   }
 
   shortenUrl?(url: string): any;

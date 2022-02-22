@@ -86,7 +86,7 @@
     </div>
   </div>
   <ng-container *ngIf="type === 'wms'">
-    <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
+    <hs-target-position [(addUnder)]="data.add_under" [app]="app"></hs-target-position>
   </ng-container>
   <hr />
   <ng-container *ngIf="type === 'wms'; else simpleTable">
@@ -147,8 +147,8 @@
             <input class="checkbox-lg" type="checkbox" name="service" (change)="changed('services')"
               style="cursor: pointer;" [(ngModel)]="service.checked" />
           </td>
-          <td (click)="expandService(service)" data-toggle="tooltip" [title]="'ADDDATA.requestServiceLayers' | translate"
-            style="cursor: pointer;">
+          <td (click)="expandService(service)" data-toggle="tooltip"
+            [title]="'ADDDATA.requestServiceLayers' | translate" style="cursor: pointer;">
             {{service.name}}
             <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
           </td>
@@ -179,6 +179,7 @@
       </div>
     </div>
   </ng-container>
-  <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
+  <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers"
+    [app]="app">
   </hs-url-add>
 </div>

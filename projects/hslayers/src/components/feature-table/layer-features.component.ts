@@ -36,7 +36,8 @@ type Operation = {
   ],
 })
 export class HsLayerFeaturesComponent implements OnInit {
-  @Input('layer') layer: any; //Input layer from HsConfig.layersInFeatureTable property array
+  @Input() layer: any; //Input layer from HsConfig.get(app).layersInFeatureTable property array
+  @Input() app = 'default';
   showFeatureStats = false; //Toggle for showing feature statistics
   searchedFeatures = '';
   constructor(
@@ -56,12 +57,15 @@ export class HsLayerFeaturesComponent implements OnInit {
       ? olLayer.getSource().getSource()
       : olLayer.getSource();
     if (source) {
-      this.HsFeatureTableService.fillFeatureList(olLayer);
+      this.HsFeatureTableService.fillFeatureList(olLayer, this.app);
       source.on('changefeature', (e) => {
-        this.HsFeatureTableService.updateFeatureDescription(e.feature);
+        this.HsFeatureTableService.updateFeatureDescription(
+          e.feature,
+          this.app
+        );
       });
       source.on('addfeature', (e) => {
-        this.HsFeatureTableService.addFeatureDescription(e.feature);
+        this.HsFeatureTableService.addFeatureDescription(e.feature, this.app);
       });
       source.on('removefeature', (e) => {
         this.HsFeatureTableService.removeFeatureDescription(e.feature);
@@ -77,7 +81,7 @@ export class HsLayerFeaturesComponent implements OnInit {
     switch (operation.action) {
       case 'zoom to':
         const extent = operation.feature.getGeometry().getExtent();
-        this.HsMapService.fitExtent(extent);
+        this.HsMapService.fitExtent(extent, this.app);
         break;
       case 'custom action':
         operation.customAction(operation.feature);

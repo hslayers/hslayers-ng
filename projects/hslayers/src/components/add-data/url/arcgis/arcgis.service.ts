@@ -57,7 +57,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
+    app: string
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -67,10 +68,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       return;
     }
     try {
-      await this.createLayer(wrapper.response);
+      await this.createLayer(wrapper.response, app);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.getLayers();
+        return this.getLayers(app);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -80,10 +81,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Parse information received in Arcgis getCapabilities response
    * @param response - getCapabilities response
    */
-  async createLayer(response): Promise<void> {
+  async createLayer(response, app: string): Promise<void> {
     try {
       const caps = response;
-      this.data.map_projection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -118,7 +120,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       })();
       this.data.extent = caps.fullExtent;
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs
+        this.data.srs,
+        app
       );
       this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'PNG32',
@@ -139,7 +142,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer
    */
-  getLayers(): Layer<Source>[] {
+  getLayers(app: string): Layer<Source>[] {
     if (
       this.data.layers === undefined &&
       this.data.services === undefined &&
@@ -161,7 +164,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     ];
 
     this.data.base = false;
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
@@ -271,9 +274,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and add them to the map
    * @param layers - Layers selected
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.map.addLayer(l);
+      this.hsMapService.getMap(app).addLayer(l);
     }
   }
 
@@ -281,7 +284,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Request services layers
    * @param service - Service URL
    */
-  async expandService(service: Service): Promise<void> {
+  async expandService(service: Service, app: string): Promise<void> {
     let urlRest = this.hsAddDataCommonService.url.toLowerCase();
     //There are cases when loaded services are loaded from folders, problem is that folder name is also included inside the service.name
     //to avoid any uncertainties, lets remove everything starting from 'services' inside the url and rebuild it
@@ -292,21 +295,22 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       (urlRest.endsWith('/') ? urlRest : urlRest.concat('/')) +
       ['services', service.name, service.type].join('/');
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
-      this.data.get_map_url
+      this.data.get_map_url,
+      app
     );
-    await this.listLayerFromCapabilities(wrapper);
+    await this.listLayerFromCapabilities(wrapper, app);
   }
   /**
    * Add services layers
    * @param services - Services selected
    */
-  async addServices(services: Service[]): Promise<void> {
+  async addServices(services: Service[], app: string): Promise<void> {
     const originalRestUrl = this.hsAddDataCommonService.url;
     for (const service of services.filter((s) => s.checked)) {
       this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
-      await this.expandService(service);
-      const layers = this.getLayers();
-      this.addLayers(layers);
+      await this.expandService(service, app);
+      const layers = this.getLayers(app);
+      this.addLayers(layers, app);
     }
   }
   /**

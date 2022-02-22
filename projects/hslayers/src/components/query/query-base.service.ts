@@ -24,7 +24,6 @@ import {HsUtilsService} from '../utils/utils.service';
   providedIn: 'root',
 })
 export class HsQueryBaseService {
-  map: Map;
   data = {
     attributes: [],
     features: [],
@@ -40,22 +39,6 @@ export class HsQueryBaseService {
   currentQuery = null;
   dataCleared = true;
   queryPoint = new Point([0, 0]);
-  queryLayer = new VectorLayer({
-    properties: {
-      title: 'Point clicked',
-      queryable: false,
-      showInLayerManager: false,
-      removable: false,
-    },
-    source: new Vector({
-      features: [
-        new Feature({
-          geometry: this.queryPoint,
-        }),
-      ],
-    }),
-    style: () => this.pointClickedStyle(),
-  });
   featureLayersUnderMouse = [];
   nonQueryablePanels = [
     'measure',
@@ -66,10 +49,11 @@ export class HsQueryBaseService {
     'tripPlanner',
   ];
   last_coordinate_clicked: any;
-  getFeatureInfoStarted: Subject<any> = new Subject();
+  getFeatureInfoStarted: Subject<{evt; app: string}> = new Subject();
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
   vectorSelectorCreated: Subject<Select> = new Subject();
+  apps: {[key: string]: {queryLayer}} = {};
 
   constructor(
     public hsMapService: HsMapService,
@@ -85,20 +69,39 @@ export class HsQueryBaseService {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
     });
-
-    this.hsMapService.loaded().then(() => this.init());
   }
   /**
    *
    */
-  init(): void {
-    this.map = this.hsMapService.map;
-    this.activateQueries();
-    this.map.on('singleclick', (evt) => {
+  async init(app): Promise<void> {
+    await this.hsMapService.loaded(app);
+    if (this.apps[app] == undefined) {
+      this.apps[app] = {
+        queryLayer: new VectorLayer({
+          properties: {
+            title: 'Point clicked',
+            queryable: false,
+            showInLayerManager: false,
+            removable: false,
+          },
+          source: new Vector({
+            features: [
+              new Feature({
+                geometry: this.queryPoint,
+              }),
+            ],
+          }),
+          style: () => this.pointClickedStyle(app),
+        }),
+      };
+    }
+    this.activateQueries(app);
+    this.hsMapService.getMap(app).on('singleclick', (evt) => {
       this.zone.run(() => {
         this.hsEventBusService.mapClicked.next(
           Object.assign(evt, {
-            coordinates: this.getCoordinate(evt.coordinate),
+            coordinates: this.getCoordinate(evt.coordinate, app),
+            app,
           })
         );
         if (!this.queryActive) {
@@ -110,20 +113,24 @@ export class HsQueryBaseService {
         }
         this.dataCleared = false;
         this.currentQuery = (Math.random() + 1).toString(36).substring(7);
-        this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
+        this.setData(
+          this.getCoordinate(evt.coordinate, app),
+          'coordinates',
+          true
+        );
         this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
         this.data.selectedProj = this.data.coordinates[0].projections[0];
-        this.getFeatureInfoStarted.next(evt);
+        this.getFeatureInfoStarted.next({evt, app});
       });
     });
   }
 
-  getFeaturesUnderMouse(map: Map, pixel: any) {
+  getFeaturesUnderMouse(map: Map, pixel: any, app: string) {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature);
-        return layer && layer != this.queryLayer;
+        const layer = this.hsMapService.getLayerForFeature(feature, app);
+        return layer && layer != this.apps[app].queryLayer;
       });
   }
 
@@ -175,7 +182,7 @@ export class HsQueryBaseService {
     this.dataCleared = false;
   }
 
-  fillIframeAndResize(response, append: boolean): void {
+  fillIframeAndResize(response, append: boolean, app: string): void {
     const iframe = this.getInvisiblePopup();
     if (append) {
       iframe.contentDocument.body.innerHTML += response;
@@ -185,12 +192,12 @@ export class HsQueryBaseService {
     let tmp_width = iframe.contentWindow.innerWidth;
     if (
       tmp_width >
-      this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+      this.hsLayoutService.get(app).contentWrapper.querySelector('.hs-ol-map')
         .clientWidth -
         60
     ) {
       tmp_width =
-        this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+        this.hsLayoutService.get(app).contentWrapper.querySelector('.hs-ol-map')
           .clientWidth - 60;
     }
     iframe.style.width = tmp_width + 'px';
@@ -204,11 +211,11 @@ export class HsQueryBaseService {
   /**
    * @param coordinate -
    */
-  getCoordinate(coordinate) {
+  getCoordinate(coordinate, app: string) {
     this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
-      this.hsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(app),
       'EPSG:4326'
     );
     const coords = {
@@ -225,7 +232,7 @@ export class HsQueryBaseService {
           value: createStringXY(7)(epsg4326Coordinate),
         },
         {
-          name: this.hsMapService.getCurrentProj().getCode(),
+          name: this.hsMapService.getCurrentProj(app).getCode(),
           value: createStringXY(7)(coordinate),
         },
       ],
@@ -233,37 +240,34 @@ export class HsQueryBaseService {
     return coords;
   }
 
-  activateQueries(): void {
+  activateQueries(app: string): void {
     if (this.queryActive) {
       return;
     }
     this.queryActive = true;
-    this.hsMapService.loaded().then((map) => {
-      map.addLayer(this.queryLayer);
-      this.hsSaveMapService.internalLayers.push(this.queryLayer);
-      this.queryStatusChanges.next(true);
-    });
+    this.hsMapService.getMap(app).addLayer(this.apps[app].queryLayer);
+    this.hsSaveMapService.internalLayers.push(this.apps[app].queryLayer);
+    this.queryStatusChanges.next(true);
   }
 
-  deactivateQueries(): void {
+  deactivateQueries(app: string): void {
     if (!this.queryActive) {
       return;
     }
     this.queryActive = false;
-    this.hsMapService.loaded().then((map) => {
-      map.removeLayer(this.queryLayer);
-      this.queryStatusChanges.next(false);
-    });
+    this.hsMapService.getMap(app).removeLayer(this.apps[app].queryLayer);
+    this.queryStatusChanges.next(false);
   }
 
-  currentPanelQueryable(): boolean {
+  currentPanelQueryable(app: string): boolean {
     return (
-      !this.nonQueryablePanels.includes(this.hsLayoutService.mainpanel) &&
-      !this.nonQueryablePanels.includes('*')
+      !this.nonQueryablePanels.includes(
+        this.hsLayoutService.get(app).mainpanel
+      ) && !this.nonQueryablePanels.includes('*')
     );
   }
 
-  pointClickedStyle(): Style {
+  pointClickedStyle(app: string): Style {
     const defaultStyle = new Style({
       image: new Circle({
         fill: new Fill({
@@ -276,11 +280,11 @@ export class HsQueryBaseService {
         radius: 5,
       }),
     });
-    if (this.hsConfig.queryPoint) {
+    if (this.hsConfig.get(app).queryPoint) {
       const circle = defaultStyle.getImage() as CircleStyle;
-      if (this.hsConfig.queryPoint == 'hidden') {
+      if (this.hsConfig.get(app).queryPoint == 'hidden') {
         circle.setRadius(0);
-      } else if (this.hsConfig.queryPoint == 'notWithin') {
+      } else if (this.hsConfig.get(app).queryPoint == 'notWithin') {
         if (this.selector.getFeatures().getLength() > 0) {
           circle.setRadius(0);
         }

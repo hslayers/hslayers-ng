@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translate">
+    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translate" [app]="data.app">
         <extra-buttons>
             <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translate">
                 <i class="icon-question-sign"></i>
@@ -19,8 +19,8 @@
                 translate}}</a>
         </li>
     </ul>
-    <hs-draw-panel *ngIf="selectedOption === 'draw'"></hs-draw-panel>
-    <hs-draw-edit class="my-4 d-flex flex-column align-items-center" *ngIf="selectedOption === 'edit'"></hs-draw-edit>
+    <hs-draw-panel *ngIf="selectedOption === 'draw'" [app]="data.app"></hs-draw-panel>
+    <hs-draw-edit class="my-4 d-flex flex-column align-items-center" *ngIf="selectedOption === 'edit'" [app]="data.app"></hs-draw-edit>
     <div *ngIf="HsDrawService.pendingLayers.length > 0" class="m-auto w-100 p-3">
         <div class="alert alert-warning text-justify">
             <ol>
@@ -30,11 +30,11 @@
             </ol>
             {{'DRAW.longerLoading' | translate}}
             <div class="d-flex justify-content-center pt-3">
-                <img [src]="hsUtilsService.getAjaxLoaderIcon()" />
+                <img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" />
             </div>
         </div>
     </div>
     <div class="mh-75 pt-2">
-        <hs-query-feature-list></hs-query-feature-list>
+        <hs-query-feature-list [app]="data.app"></hs-query-feature-list>
     </div>
 </div>

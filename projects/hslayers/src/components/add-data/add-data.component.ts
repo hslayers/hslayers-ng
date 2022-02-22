@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {AddDataUrlType, servicesSupportedByUrl} from './url/types/url.type';
 import {DatasetType, HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -14,7 +15,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
   selector: 'hs-add-data',
   templateUrl: './add-data.component.html',
 })
-export class HsAddDataComponent extends HsPanelBaseComponent {
+export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
@@ -22,10 +23,24 @@ export class HsAddDataComponent extends HsPanelBaseComponent {
     public hsLayoutService: HsLayoutService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    hsSidebarService: HsSidebarService
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+
+    this.hsAddDataService.dsSelected = 'catalogue';
+    servicesSupportedByUrl.forEach((type) =>
+      this.connectServiceFromUrlParam(type as AddDataUrlType)
+    );
+  }
+  name = 'addData';
+
+  datasetSelect(type: DatasetType): void {
+    this.hsAddDataService.selectType(type, this.data.app);
+  }
+
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'addData',
       module: 'hs.addData',
       order: 4,
@@ -36,21 +51,13 @@ export class HsAddDataComponent extends HsPanelBaseComponent {
         this.hsLanguageService.getTranslation('SIDEBAR.descriptions.ADDLAYERS'),
       icon: 'icon-database',
     });
-    this.hsAddDataService.dsSelected = 'catalogue';
-    servicesSupportedByUrl.forEach((type) =>
-      this.connectServiceFromUrlParam(type as AddDataUrlType)
-    );
-  }
-  name = 'addData';
-
-  datasetSelect(type: DatasetType): void {
-    this.hsAddDataService.selectType(type);
+    this.hsCommonEndpointsService.init(this.data.app);
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
     if (url) {
-      this.hsLayoutService.setMainPanel('addData');
+      this.hsLayoutService.setMainPanel('addData', this.data.app);
       this.hsAddDataService.dsSelected = 'url';
       this.hsAddDataUrlService.typeSelected = type;
     }

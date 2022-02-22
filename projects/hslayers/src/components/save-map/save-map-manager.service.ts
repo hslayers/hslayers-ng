@@ -56,9 +56,9 @@ export class HsSaveMapManagerService {
     organization: '',
   };
   panelOpened: Subject<any> = new Subject();
-  saveMapResulted: Subject<any> = new Subject();
+  saveMapResulted: Subject<{statusData; app: string}> = new Subject();
   endpointSelected: BehaviorSubject<any> = new BehaviorSubject(null);
-  preSaveCheckCompleted: Subject<{endpoint}> = new Subject();
+  preSaveCheckCompleted: Subject<{endpoint; app: string}> = new Subject();
   changeTitle: boolean;
   currentUser: boolean;
   missingTitle = false;
@@ -145,16 +145,16 @@ export class HsSaveMapManagerService {
     this.endpointSelected.next(endpoint);
   }
 
-  setCurrentBoundingBox(): void {
-    this.compoData.bbox = this.getCurrentExtent();
+  setCurrentBoundingBox(app: string): void {
+    this.compoData.bbox = this.getCurrentExtent(app);
   }
 
   //*NOTE not being used
   async confirmSave(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.http.post(this.HsStatusManagerService.endpointUrl(), {
-          project: this.HsConfig.project_name,
+        this.http.post(this.HsStatusManagerService.endpointUrl(app), {
+          project: this.HsConfig.get(app).project_name,
           title: this.compoData.title,
           request: 'rightToSave',
         })
@@ -171,18 +171,20 @@ export class HsSaveMapManagerService {
       if (this.statusData.titleFree && this.statusData.hasPermission) {
         this.save(
           true,
-          this.HsStatusManagerService.findStatusmanagerEndpoint()
+          this.HsStatusManagerService.findStatusmanagerEndpoint(),
+          app
         );
       }
       this.preSaveCheckCompleted.next({
         endpoint: this.HsStatusManagerService.findStatusmanagerEndpoint(),
+        app,
       });
     } catch (ex) {
       this.statusData.success = false;
     }
   }
 
-  save(saveAsNew, endpoint) {
+  save(saveAsNew, endpoint, app: string) {
     return new Promise((resolve, reject) => {
       const tempCompoData: any = {};
       Object.assign(tempCompoData, this.compoData);
@@ -198,7 +200,7 @@ export class HsSaveMapManagerService {
         saver = this.HsLaymanService;
       }
       saver
-        .save(compositionJson, endpoint, tempCompoData, saveAsNew)
+        .save(compositionJson, endpoint, tempCompoData, saveAsNew, app)
         .then((response) => {
           const compInfo: any = {};
           const j = response;
@@ -247,7 +249,7 @@ export class HsSaveMapManagerService {
    * @param download - Used when generating json for catalogue save
    * @returns composition JSON
    */
-  generateCompositionJson(compoData?): any {
+  generateCompositionJson(app: string, compoData?): any {
     /*TODO: REFACTOR
       Workaround for composition JSON generated for download. 
       Should be handled differently and generated only once. Task for upcoming component rework
@@ -260,10 +262,11 @@ export class HsSaveMapManagerService {
     }
 
     return this.HsSaveMapService.map2json(
-      this.HsMapService.map,
+      this.HsMapService.getMap(app),
       tempCompoData,
       this.userData,
-      this.statusData
+      this.statusData,
+      app
     );
   }
 
@@ -271,15 +274,15 @@ export class HsSaveMapManagerService {
    * Initialization of Save map wizard from outside of component
    * @param composition -
    */
-  openPanel(composition) {
-    this.HsLayoutService.setMainPanel('saveMap', true);
-    this.fillCompositionData();
+  openPanel(composition, app: string) {
+    this.HsLayoutService.setMainPanel('saveMap', app, true);
+    this.fillCompositionData(app);
     this.panelOpened.next({composition});
   }
 
-  private async fillCompositionData() {
-    this.fillLayers();
-    await this.fillGroups();
+  private async fillCompositionData(app: string) {
+    this.fillLayers(app);
+    await this.fillGroups(app);
     this.statusData.groups.unshift({
       roleTitle: 'Public',
       roleName: 'guest',
@@ -295,13 +298,13 @@ export class HsSaveMapManagerService {
         }
       }
     }
-    this.loadUserDetails();
+    this.loadUserDetails(app);
   }
 
-  private fillLayers() {
+  private fillLayers(app: string) {
     this.compoData.layers = [];
-    this.compoData.bbox = this.getCurrentExtent();
-    this.compoData.layers = this.HsMapService.map
+    this.compoData.bbox = this.getCurrentExtent(app);
+    this.compoData.layers = this.HsMapService.getMap(app)
       .getLayers()
       .getArray()
       .filter(
@@ -324,7 +327,7 @@ export class HsSaveMapManagerService {
   /**
    * Send getGroups request to status manager server and process response
    */
-  async fillGroups(): Promise<void> {
+  async fillGroups(app: string): Promise<void> {
     this.statusData.groups = [];
     const response: any = await lastValueFrom(
       this.http.get(this.HsStatusManagerService.endpointUrl(), {
@@ -348,10 +351,10 @@ export class HsSaveMapManagerService {
   /**
    * Get User info from server and call callback (setUserDetail)
    */
-  async loadUserDetails() {
+  async loadUserDetails(app: string) {
     const response: any = await lastValueFrom(
       this.http.get(
-        this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo'
+        this.HsStatusManagerService.endpointUrl(app) + '?request=getuserinfo'
       )
     );
     this.setUserDetails(response);
@@ -385,13 +388,13 @@ export class HsSaveMapManagerService {
    * Get current extent of map, transform it into EPSG:4326 and save it into controller model
    * Returns Extent coordinates
    */
-  getCurrentExtent() {
-    const b = this.HsMapService.map
+  getCurrentExtent(app: string) {
+    const b = this.HsMapService.getMap(app)
       .getView()
-      .calculateExtent(this.HsMapService.map.getSize());
+      .calculateExtent(this.HsMapService.getMap(app).getSize());
     let pair1 = [b[0], b[1]];
     let pair2 = [b[2], b[3]];
-    const cur_proj = this.HsMapService.getCurrentProj().getCode();
+    const cur_proj = this.HsMapService.getCurrentProj(app).getCode();
     pair1 = transform(pair1, cur_proj, 'EPSG:4326');
     pair2 = transform(pair2, cur_proj, 'EPSG:4326');
     return {
@@ -438,15 +441,16 @@ export class HsSaveMapManagerService {
     try {
       const augmentedResponse = await this.save(
         saveAsNew,
-        this.endpointSelected.getValue()
+        this.endpointSelected.getValue(),
+        app
       );
-      this.processSaveCallback(augmentedResponse);
+      this.processSaveCallback(augmentedResponse, app);
     } catch (ex) {
-      this.processSaveCallback(ex);
+      this.processSaveCallback(ex, app);
     }
   }
 
-  processSaveCallback(response) {
+  processSaveCallback(response, app) {
     this.statusData.status = response.status;
     if (!response.status) {
       if (response.code == 24) {
@@ -460,16 +464,18 @@ export class HsSaveMapManagerService {
       }
       this.statusData.error = response;
     } else {
-      this.HsLayoutService.setMainPanel('layermanager', true);
+      this.HsLayoutService.setMainPanel('layermanager', app, true);
     }
     this.saveMapResulted.next(this.statusData);
   }
 
-  focusTitle() {
+  focusTitle(app: string) {
     if (this.statusData.guessedTitle) {
       this.compoData.title = this.statusData.guessedTitle;
     }
     //TODO Check if this works and input is focused
-    this.HsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
+    this.HsLayoutService.get(app)
+      .contentWrapper.querySelector('.hs-stc-title')
+      .focus();
   }
 }

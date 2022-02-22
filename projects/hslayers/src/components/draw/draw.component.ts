@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {HsDialogContainerService} from '../layout/public-api';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
@@ -14,7 +14,7 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-draw',
   templateUrl: './partials/draw.html',
 })
-export class HsDrawComponent extends HsPanelBaseComponent {
+export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   name = 'draw';
   selectedOption = 'draw';
 
@@ -24,11 +24,20 @@ export class HsDrawComponent extends HsPanelBaseComponent {
     public HsLanguageService: HsLanguageService,
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
-    hsSidebarService: HsSidebarService,
+    public hsSidebarService: HsSidebarService,
     HsDialogContainerService: HsDialogContainerService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+    this.HsDrawService.layerMetadataDialog.subscribe(() => {
+      HsDialogContainerService.create(
+        HsDrawLayerMetadataDialogComponent,
+        this.HsDrawService
+      );
+    });
+  }
+
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'draw',
       module: 'hs.draw',
       order: 16,
@@ -38,19 +47,13 @@ export class HsDrawComponent extends HsPanelBaseComponent {
         this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
       icon: 'icon-pencil',
     });
-    this.HsDrawService.init();
-    this.HsDrawService.layerMetadataDialog.subscribe(() => {
-      HsDialogContainerService.create(
-        HsDrawLayerMetadataDialogComponent,
-        this.HsDrawService
-      );
-    });
+    this.HsDrawService.init(this.data.app);
   }
 
   componentOptionSelected(option) {
     this.selectedOption = option;
     if (this.selectedOption == 'edit') {
-      this.HsDrawService.setType(this.HsDrawService.type);
+      this.HsDrawService.setType(this.HsDrawService.type, this.data.app);
     }
   }
 }

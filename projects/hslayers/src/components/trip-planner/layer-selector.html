@@ -16,7 +16,7 @@
         mw-100
       "
       aria-haspopup="true"
-      (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
+      (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers(app) "
       [attr.aria-expanded]="layersExpanded"
     >
       <div class="text-truncate" *ngIf="selectedwrapper !== undefined">
@@ -34,7 +34,7 @@
           *ngFor="let layer of HsTripPlannerService.vectorLayers"
           data-toggle="tooltip"
           title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
-          (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false"
+          (click)="HsTripPlannerService.selectLayer(layer, usage, app); layersExpanded = false"
           >{{HsLayerUtilsService.translateTitle(layer.title)}}</a
         >
       </div>

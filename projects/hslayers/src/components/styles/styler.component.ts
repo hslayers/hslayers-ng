@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 import VectorLayer from 'ol/layer/Vector';
@@ -26,7 +26,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   layerTitle: string;
   private ngUnsubscribe = new Subject<void>();
@@ -54,11 +54,14 @@ export class HsStylerComponent
       });
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((e) => {
-        if (e == 'styler') {
+      .subscribe(({which, app}) => {
+        if (which == 'styler' && app == this.data.app) {
           this.hsStylerService.fill(this.hsStylerService.layer);
         }
       });
+  }
+  ngOnInit(): void {
+    this.hsStylerService.init(this.data.app);
   }
 
   ngOnDestroy(): void {
@@ -67,7 +70,7 @@ export class HsStylerComponent
   }
 
   layermanager(): void {
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', this.data.app);
   }
 
   uploadSld(): void {
@@ -75,7 +78,7 @@ export class HsStylerComponent
   }
 
   async clear(): Promise<void> {
-    await this.hsStylerService.reset();
+    await this.hsStylerService.reset(this.data.app);
   }
 
   drop(event: CdkDragDrop<any[]>): void {

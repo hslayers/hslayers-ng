@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {
   CdkDragDrop,
@@ -22,8 +22,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy, OnInit {
   private ngUnsubscribe = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
@@ -40,7 +39,12 @@ export class HsMapSwipeComponent
     public hsLayerShiftingService: HsLayerShiftingService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+  }
+
+  name = 'mapSwipe';
+
+  ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'mapSwipe',
       module: 'hs.mapSwipe',
       order: 18,
@@ -51,8 +55,9 @@ export class HsMapSwipeComponent
         this.hsLanguageService.getTranslation('SIDEBAR.descriptions.MAP_SWIPE'),
       icon: 'icon-resizehorizontalalt',
     });
+    this.hsMapSwipeService.init(this.data.app);
   }
-  name = 'mapSwipe';
+
   /**
    * Return label for button changing map swipe state from enabled to disabled
    */
@@ -79,7 +84,7 @@ export class HsMapSwipeComponent
    * Reset swipe slider position to default
    */
   resetSwipePos(): void {
-    this.hsMapSwipeService.swipeCtrl.set('position', 0.5);
+    this.hsMapSwipeService.apps[this.data.app].swipeCtrl.set('position', 0.5);
   }
 
   ngOnDestroy(): void {
@@ -115,9 +120,13 @@ export class HsMapSwipeComponent
       );
     }
     if (draggedLayer && replacedLayer?.layer) {
-      this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
+      this.hsLayerShiftingService.moveTo(
+        draggedLayer,
+        replacedLayer.layer,
+        this.data.app
+      );
     } else {
-      this.hsMapSwipeService.fillSwipeLayers(draggedLayer.layer);
+      this.hsMapSwipeService.fillSwipeLayers(draggedLayer.layer, this.data.app);
     }
   }
 }

@@ -11,6 +11,7 @@ import {HsLayerManagerService} from '../layermanager.service';
 })
 export class HsLayerEditorSubLayerCheckboxesComponent {
   @Input() subLayer: any;
+  @Input() app = 'default';
   expanded = false;
   checkedSubLayers: KeyBooleanDict;
   withChildren: KeyBooleanDict;
@@ -23,8 +24,8 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;
   }
 
-  getSubLayers() {
-    return this.HsLayerEditorSublayerService.getSubLayers();
+  getSubLayers(app: string) {
+    return this.HsLayerEditorSublayerService.getSubLayers(app);
   }
 
   subLayerIsString(subLayer: any): boolean {
@@ -57,6 +58,6 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
     } else {
       this.HsLayerEditorSublayerService.withChildrenTmp[nameOrId] = state;
     }
-    return this.HsLayerEditorSublayerService.subLayerSelected();
+    return this.HsLayerEditorSublayerService.subLayerSelected(this.app);
   }
 }

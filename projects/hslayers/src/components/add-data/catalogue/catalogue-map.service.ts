@@ -50,9 +50,7 @@ export class HsAddDataCatalogueMapService {
     private hsSaveMapService: HsSaveMapService,
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService
-  ) {
-    this.hsMapService.loaded().then((map) => this.init(map));
-  }
+  ) {}
 
   /**
    * @param evt -
@@ -75,7 +73,9 @@ export class HsAddDataCatalogueMapService {
   /**
    * @param map -
    */
-  init(map): void {
+  async init(app): Promise<void> {
+    await this.hsMapService.loaded(app);
+    const map = this.hsMapService.getMap(app);
     map.on('pointermove', (evt) => this.mapPointerMoved(evt));
     map.addLayer(this.extentLayer);
     this.hsSaveMapService.internalLayers.push(this.extentLayer);
@@ -137,7 +137,7 @@ export class HsAddDataCatalogueMapService {
    * ZoomTo / MoveTo to selected layer overview
    * @param bbox - Bounding box of selected layer
    */
-  zoomTo(bbox): void {
+  zoomTo(bbox, app: string): void {
     if (bbox === undefined) {
       return;
     }
@@ -152,12 +152,12 @@ export class HsAddDataCatalogueMapService {
     first_pair = transform(
       first_pair,
       'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
+      this.hsMapService.getMap(app).getView().getProjection()
     );
     second_pair = transform(
       second_pair,
       'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
+      this.hsMapService.getMap(app).getView().getProjection()
     );
     if (
       isNaN(first_pair[0]) ||
@@ -173,6 +173,6 @@ export class HsAddDataCatalogueMapService {
       second_pair[0],
       second_pair[1],
     ];
-    this.hsMapService.fitExtent(extent);
+    this.hsMapService.fitExtent(extent, app);
   }
 }

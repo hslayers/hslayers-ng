@@ -28,27 +28,33 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
     public hsStatisticsService: HsStatisticsService,
     public hsConfig: HsConfig,
     hsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService,
+    private hsLanguageService: HsLanguageService,
+    private hsSidebarService: HsSidebarService,
     private hsDialogContainerService: HsDialogContainerService,
     private TranslateService: TranslateService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+    this.setConfig();
+  }
+
+  ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'statistics',
       module: 'hs.statistics',
       order: 10,
       fits: true,
       visible: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.STATISTICS'),
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.STATISTICS'),
       description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.STATISTICS'),
+        this.hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.STATISTICS'
+        ),
       icon: 'icon-barchartasc',
     });
-    this.setConfig();
   }
   setConfig() {
-    this.hsConfig.update({
+    this.hsConfig.get(app).update({
       panelWidths: {statistics: 600, 'statistics-upload': 700},
       translationOverrides: {
         en: {

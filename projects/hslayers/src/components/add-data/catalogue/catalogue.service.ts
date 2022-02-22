@@ -85,25 +85,20 @@ export class HsAddDataCatalogueService {
     this.data.filterByExtent = true;
     this.data.onlyMine = false;
 
-    if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
-      this.queryCatalogs();
-      // this.hsMickaFilterService.fillCodesets();
-    }
-
     this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
       this.hsCommonEndpointsService.endpoints
     );
 
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
-        (e) => {
-          if (!this.panelVisible() || this.extentChangeSuppressed) {
+        ({e, app}) => {
+          if (!this.panelVisible(app) || this.extentChangeSuppressed) {
             this.extentChangeSuppressed = false;
             return;
           }
           if (this.data.filterByExtent) {
             this.zone.run(() => {
-              this.reloadData();
+              this.reloadData(app);
             });
           }
         },
@@ -113,25 +108,32 @@ export class HsAddDataCatalogueService {
       )
     );
 
-    this.hsEventBusService.mainPanelChanges.subscribe(() => {
-      if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
-        this.reloadData();
+    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
+      if (this.dataSourceExistsAndEmpty() && this.panelVisible(app)) {
+        this.reloadData(app);
         this.extentChangeSuppressed = true;
       }
-      this.calcExtentLayerVisibility();
+      this.calcExtentLayerVisibility(app);
     });
 
-    this.hsCommonLaymanService.authChange.subscribe(() => {
-      if (this.panelVisible()) {
-        this.reloadData();
+    this.hsCommonLaymanService.authChange.subscribe(({app}) => {
+      if (this.panelVisible(app)) {
+        this.reloadData(app);
       }
     });
 
-    this.hsAddDataService.datasetSelected.subscribe(({type}) => {
-      if (type == 'catalogue' && this.panelVisible()) {
-        this.reloadData();
+    this.hsAddDataService.datasetSelected.subscribe(({type, app}) => {
+      if (type == 'catalogue' && this.panelVisible(app)) {
+        this.reloadData(app);
       }
     });
+  }
+
+  init(app: string) {
+    if (this.dataSourceExistsAndEmpty() && this.panelVisible(app)) {
+      this.queryCatalogs(app);
+      // this.hsMickaFilterService.fillCodesets();
+    }
   }
 
   resetList(): void {
@@ -145,22 +147,22 @@ export class HsAddDataCatalogueService {
     });
   }
 
-  reloadData(): void {
+  reloadData(app: string): void {
     this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
       this.hsCommonEndpointsService.endpoints
     );
     this.resetList();
 
-    this.queryCatalogs();
+    this.queryCatalogs(app);
     // this.hsMickaFilterService.fillCodesets();
-    this.calcExtentLayerVisibility();
+    this.calcExtentLayerVisibility(app);
   }
 
   /**
    * Queries all configured catalogs for datasources (layers)
    * @param suspendLimitCalculation -
    */
-  queryCatalogs(suspendLimitCalculation?: boolean): void {
+  queryCatalogs(app: string, suspendLimitCalculation?: boolean): void {
     if (this.endpointsWithDatasources.length > 0) {
       if (this.catalogQuery) {
         this.catalogQuery.unsubscribe();
@@ -168,7 +170,7 @@ export class HsAddDataCatalogueService {
       }
       this.clearLoadedData();
 
-      this.hsMapService.loaded().then(() => {
+      this.hsMapService.loaded(app).then(() => {
         this.dataLoading = true;
         this.hsAddDataCatalogueMapService.clearExtentLayer();
         const observables = [];
@@ -176,14 +178,14 @@ export class HsAddDataCatalogueService {
         //TODO Mark non functional endpoint
         for (const endpoint of this.endpointsWithDatasources) {
           if (!this.data.onlyMine || endpoint.type == 'layman') {
-            const promise = this.queryCatalog(endpoint);
+            const promise = this.queryCatalog(endpoint, app);
             observables.push(promise);
           }
         }
         this.catalogQuery = forkJoin(observables).subscribe(() => {
           suspendLimitCalculation
             ? this.createLayerList()
-            : this.calculateEndpointLimits();
+            : this.calculateEndpointLimits(app);
         });
       });
     }
@@ -192,7 +194,7 @@ export class HsAddDataCatalogueService {
    * Calculates each endpoint layer request limit, based on the matched layers ratio
    * from all endpoint matched layers
    */
-  calculateEndpointLimits(): void {
+  calculateEndpointLimits(app: string): void {
     this.matchedRecords = 0;
     this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
       (ep) => ep.datasourcePaging.matched != 0
@@ -217,7 +219,7 @@ export class HsAddDataCatalogueService {
     });
     this.recordsPerPage = sumLimits;
     this.listNext = this.recordsPerPage;
-    this.queryCatalogs(true);
+    this.queryCatalogs(app, true);
   }
 
   createLayerList(): void {
@@ -261,7 +263,7 @@ export class HsAddDataCatalogueService {
     this.catalogEntries = this.catalogEntries.concat(filteredLayers);
   }
 
-  getNextRecords(): void {
+  getNextRecords(app: string): void {
     this.listStart += this.recordsPerPage;
     this.listNext += this.recordsPerPage;
     if (this.listNext > this.matchedRecords) {
@@ -270,10 +272,10 @@ export class HsAddDataCatalogueService {
     this.endpointsWithDatasources.forEach(
       (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit)
     );
-    this.queryCatalogs(true);
+    this.queryCatalogs(app, true);
   }
 
-  getPreviousRecords(): void {
+  getPreviousRecords(app: string): void {
     if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
@@ -288,12 +290,12 @@ export class HsAddDataCatalogueService {
           (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
       );
     }
-    this.queryCatalogs(true);
+    this.queryCatalogs(app, true);
   }
 
-  changeRecordsPerPage(perPage: number): void {
+  changeRecordsPerPage(perPage: number, app: string): void {
     this.resetList();
-    this.queryCatalogs();
+    this.queryCatalogs(app);
   }
 
   clearLoadedData(): void {
@@ -308,7 +310,7 @@ export class HsAddDataCatalogueService {
    * Use all query params (search text, bbox, params.., sorting, start)
    * @param catalog - Configuration of selected datasource (from app config)
    */
-  queryCatalog(catalog: HsEndpoint): any {
+  queryCatalog(catalog: HsEndpoint, app: string): any {
     this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {
@@ -318,12 +320,14 @@ export class HsAddDataCatalogueService {
           this.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature),
-          this.data.textField
+          this.data.textField,
+          app
         );
         return query;
       case 'layman':
         query = this.hsLaymanBrowserService.queryCatalog(
           catalog,
+          app,
           this.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature)
@@ -372,6 +376,7 @@ export class HsAddDataCatalogueService {
   async addLayerToMap(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
+    app: string,
     type?: string
   ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
@@ -401,27 +406,33 @@ export class HsAddDataCatalogueService {
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
         : whatToAdd.link;
       if (ds.type == 'micka') {
-        this.datasetSelect('url');
+        this.datasetSelect('url', app);
       }
-      await this.hsAddDataOwsService.connectToOWS({
-        type: whatToAdd.type.toLowerCase(),
-        uri: decodeURIComponent(whatToAdd.link),
-        layer: ds.type == 'layman' ? layer.name : undefined,
-      });
+      await this.hsAddDataOwsService.connectToOWS(
+        {
+          type: whatToAdd.type.toLowerCase(),
+          uri: decodeURIComponent(whatToAdd.link),
+          layer: ds.type == 'layman' ? layer.name : undefined,
+        },
+        app
+      );
     } else if (whatToAdd.type == 'WFS') {
       if (ds.type == 'micka') {
-        this.datasetSelect('url');
+        this.datasetSelect('url', app);
         whatToAdd.link = Array.isArray(whatToAdd.link)
           ? whatToAdd.link.filter((link) =>
               link.toLowerCase().includes('wfs')
             )[0]
           : whatToAdd.link;
-        await this.hsAddDataOwsService.connectToOWS({
-          type: whatToAdd.type.toLowerCase(),
-          uri: decodeURIComponent(whatToAdd.link),
-          layer: undefined, //layer.title || layer.name ||
-          style: whatToAdd.style,
-        });
+        await this.hsAddDataOwsService.connectToOWS(
+          {
+            type: whatToAdd.type.toLowerCase(),
+            uri: decodeURIComponent(whatToAdd.link),
+            layer: undefined, //layer.title || layer.name ||
+            style: whatToAdd.style,
+          },
+          app
+        );
       } else {
         //Layman layers of logged user/ with write access
         if (whatToAdd.editable) {
@@ -436,20 +447,24 @@ export class HsAddDataCatalogueService {
               extractStyles: whatToAdd.extractStyles,
               workspace: whatToAdd.workspace,
               style: whatToAdd.style,
-            }
+            },
+            app
           );
-          this.hsAddDataVectorService.fitExtent(layer);
-          this.datasetSelect('catalogue');
+          this.hsAddDataVectorService.fitExtent(layer, app);
+          this.datasetSelect('catalogue', app);
         } else {
           //Layman layers without write access
-          await this.hsAddDataOwsService.connectToOWS({
-            type: 'wfs',
-            uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
-            style: whatToAdd.style,
-            layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
-          });
+          await this.hsAddDataOwsService.connectToOWS(
+            {
+              type: 'wfs',
+              uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+              style: whatToAdd.style,
+              layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
+            },
+            app
+          );
         }
-        this.hsLayoutService.setMainPanel('layermanager');
+        this.hsLayoutService.setMainPanel('layermanager', app);
       }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddDataVectorService.addVectorLayer(
@@ -459,19 +474,20 @@ export class HsAddDataCatalogueService {
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles}
+        {extractStyles: whatToAdd.extractStyles},
+        app
       );
-      this.hsAddDataVectorService.fitExtent(layer);
+      this.hsAddDataVectorService.fitExtent(layer, app);
     } else {
-      this.hsLayoutService.setMainPanel('layermanager');
+      this.hsLayoutService.setMainPanel('layermanager', app);
     }
     return whatToAdd.type;
   }
 
-  datasetSelect(id_selected: DatasetType): void {
+  datasetSelect(id_selected: DatasetType, app: string): void {
     this.data.id_selected = id_selected;
-    this.hsAddDataService.selectType(id_selected);
-    this.calcExtentLayerVisibility();
+    this.hsAddDataService.selectType(id_selected, app);
+    this.calcExtentLayerVisibility(app);
   }
   /**
    * Clear query variable
@@ -495,13 +511,13 @@ export class HsAddDataCatalogueService {
   /**
    *
    */
-  private panelVisible(): boolean {
-    return this.hsLayoutService.panelVisible('addData');
+  private panelVisible(app: string): boolean {
+    return this.hsLayoutService.panelVisible('addData', app);
   }
 
-  calcExtentLayerVisibility(): void {
+  calcExtentLayerVisibility(app: string): void {
     this.hsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible() && this.hsAddDataService.dsSelected == 'catalogue'
+      this.panelVisible(app) && this.hsAddDataService.dsSelected == 'catalogue'
     );
   }
 }

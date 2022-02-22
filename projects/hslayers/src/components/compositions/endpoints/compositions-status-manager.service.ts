@@ -40,8 +40,8 @@ export class HsCompositionsStatusManagerService {
    * @param params
    * @param bbox
    */
-  loadList(ds, params, bbox) {
-    let url = this.HsStatusManagerService.endpointUrl();
+  loadList(ds, params, extentFeatureCreated, bbox, app: string) {
+    let url = this.HsStatusManagerService.endpointUrl(app);
     const query = params.query;
     const textFilter =
       query && query.title !== undefined && query.title != ''
@@ -49,13 +49,13 @@ export class HsCompositionsStatusManagerService {
         : '';
     url +=
       '?request=list&project=' +
-      encodeURIComponent(this.HsConfig.project_name) +
+      encodeURIComponent(this.HsConfig.get(app).project_name) +
       '&extent=' +
       bbox.join(',') +
       textFilter +
       '&start=0&limit=1000&sort=' +
       getStatusSortAttr(params.sortBy);
-    url = this.HsUtilsService.proxify(url);
+    url = this.HsUtilsService.proxify(url, app);
     if (ds.listLoading) {
       ds.listLoading.unsubscribe();
       delete ds.listLoading;
@@ -119,13 +119,13 @@ export class HsCompositionsStatusManagerService {
             }
             if (record.link == undefined) {
               record.link =
-                this.HsStatusManagerService.endpointUrl() +
+                this.HsStatusManagerService.endpointUrl(app) +
                 '?request=load&id=' +
                 record.id;
             }
             if (record.thumbnail == undefined) {
               record.thumbnail =
-                this.HsStatusManagerService.endpointUrl() +
+                this.HsStatusManagerService.endpointUrl(app) +
                 '?request=loadthumb&id=' +
                 record.id;
             }
@@ -147,14 +147,14 @@ export class HsCompositionsStatusManagerService {
     );
   }
 
-  async delete(endpoint, composition): Promise<void> {
+  async delete(endpoint, composition, app: string): Promise<void> {
     let url =
-      this.HsStatusManagerService.endpointUrl() +
+      this.HsStatusManagerService.endpointUrl(app) +
       '?request=delete&id=' +
       composition.id +
       '&project=' +
-      encodeURIComponent(this.HsConfig.project_name);
-    url = this.HsUtilsService.proxify(url);
+      encodeURIComponent(this.HsConfig.get(app).project_name);
+    url = this.HsUtilsService.proxify(url, app);
     await lastValueFrom(this.$http.get(url));
     this.HsEventBusService.compositionDeletes.next(composition);
   }

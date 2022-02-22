@@ -13,6 +13,8 @@ import {HsUploadedFiles} from './../../../../common/upload/upload.component';
 export class HsNewLayerFormComponent {
   advancedPanelVisible = false;
   @Input() data: any;
+  @Input() app = 'default';
+
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,

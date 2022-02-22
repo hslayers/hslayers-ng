@@ -79,6 +79,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
+    app: string,
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -87,7 +88,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
     params.f = 'json';
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsUtilsService.proxify(url, app);
 
     if (this.hsCapabilityCacheService.get(url) && !owrCache) {
       return this.hsCapabilityCacheService.get(url);
@@ -114,7 +115,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
    * @param caps - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(caps): Layer<Source>[] {
+  service2layers(caps, app: string): Layer<Source>[] {
     const service = caps.layers;
     //onst srss = caps.spatialReference.wkid;
     const image_formats = caps.supportedImageFormatTypes.split(',');
@@ -170,7 +171,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
           useInterimTilesOnError: false,
           extent: layer.BoundingBox,
         });
-        this.hsMapService.proxifyLayerLoader(new_layer, true);
+        this.hsMapService.proxifyLayerLoader(new_layer, true, app);
         tmp.push(new_layer);
       }
     }

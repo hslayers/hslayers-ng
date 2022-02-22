@@ -20,6 +20,7 @@ import {HsUtilsService} from '../../../../utils/utils.service';
 export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
+  @Input() app: string;
   data;
   checkedSubLayers = {};
   hasNestedLayers: any;
@@ -42,7 +43,8 @@ export class HsUrlDetailsComponent implements AfterContentInit {
 
   srsChanged(): void {
     this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-      this.data.srs
+      this.data.srs,
+      this.app
     );
   }
 
@@ -74,13 +76,13 @@ export class HsUrlDetailsComponent implements AfterContentInit {
 
   expandService(service: Service): void {
     if (this.injectedService.expandService) {
-      this.injectedService.expandService(service);
+      this.injectedService.expandService(service, this.app);
       if (
         this.injectedService.isImageService &&
         this.injectedService.isImageService()
       ) {
-        const layers = this.injectedService.getLayers();
-        this.injectedService.addLayers(layers);
+        const layers = this.injectedService.getLayers(this.app);
+        this.injectedService.addLayers(layers, this.app);
       }
     }
   }

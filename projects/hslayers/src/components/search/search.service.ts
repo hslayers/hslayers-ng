@@ -52,40 +52,44 @@ export class HsSearchService {
    * @param query - Place name or part of it
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
-  request(query: string): void {
+  request(query: string, app: string): void {
     let url = null;
     let providers = [];
     if (
-      this.hsConfig.search_provider !== undefined &&
-      this.hsConfig.searchProvider === undefined
+      this.hsConfig.get(app).search_provider !== undefined &&
+      this.hsConfig.get(app).searchProvider === undefined
     ) {
-      this.hsConfig.searchProvider = this.hsConfig.search_provider;
+      this.hsConfig.get(app).searchProvider =
+        this.hsConfig.get(app).search_provider;
     }
 
-    if (this.hsConfig.searchProvider === undefined) {
+    if (this.hsConfig.get(app).searchProvider === undefined) {
       providers = ['geonames'];
     } else if (
-      typeof this.hsConfig.searchProvider === 'string' ||
-      typeof this.hsConfig.searchProvider === 'function'
+      typeof this.hsConfig.get(app).searchProvider === 'string' ||
+      typeof this.hsConfig.get(app).searchProvider === 'function'
     ) {
-      providers = [this.hsConfig.searchProvider];
-    } else if (typeof this.hsConfig.searchProvider === 'object') {
-      providers = this.hsConfig.searchProvider;
+      providers = [this.hsConfig.get(app).searchProvider];
+    } else if (typeof this.hsConfig.get(app).searchProvider === 'object') {
+      providers = this.hsConfig.get(app).searchProvider;
     }
-    this.cleanResults();
+    this.cleanResults(app);
     for (const provider of providers) {
       let providerId = provider;
       if (provider == 'geonames') {
-        if (this.hsConfig.geonamesUser !== undefined) {
-          url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${this.hsConfig.geonamesUser}`;
+        if (this.hsConfig.get(app).geonamesUser !== undefined) {
+          url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${
+            this.hsConfig.get(app).geonamesUser
+          }`;
         } else {
           //Username will have to be set in proxy
           url = this.hsUtilsService.proxify(
-            `http://api.geonames.org/searchJSON?&name_startsWith=${query}`
+            `http://api.geonames.org/searchJSON?&name_startsWith=${query}`,
+            app
           );
         }
         if (window.location.protocol == 'https:') {
-          url = this.hsUtilsService.proxify(url);
+          url = this.hsUtilsService.proxify(url, app);
         }
       } else if (provider == 'sdi4apps_openapi') {
         url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
@@ -104,7 +108,7 @@ export class HsSearchService {
       }
       this.canceler[providerId] = this.http.get(url).subscribe(
         (data) => {
-          this.searchResultsReceived(data, providerId);
+          this.searchResultsReceived(data, providerId, app);
         },
         () => {
           //
@@ -118,7 +122,11 @@ export class HsSearchService {
    * @param providerName - Name of request provider
    * Maintain inner results object and parse response with correct provider parser
    */
-  searchResultsReceived(response: any, providerName: string): void {
+  searchResultsReceived(
+    response: any,
+    providerName: string,
+    app: string
+  ): void {
     if (this.data.providers[providerName] === undefined) {
       this.data.providers[providerName] = {
         results: [],
@@ -127,15 +135,15 @@ export class HsSearchService {
     }
     const provider = this.data.providers[providerName];
     if (providerName.indexOf('geonames') > -1) {
-      this.parseGeonamesResults(response, provider);
+      this.parseGeonamesResults(response, provider, app);
     } else if (providerName == 'sdi4apps_openapi') {
-      this.parseOpenApiResults(response, provider);
+      this.parseOpenApiResults(response, provider, app);
     } else {
-      this.parseGeonamesResults(response, provider);
+      this.parseGeonamesResults(response, provider, app);
     }
-    this.pointerMoveEventKey = this.hsMapService.map.on('pointermove', (e) =>
-      this.mapPointerMoved(e)
-    );
+    this.pointerMoveEventKey = this.hsMapService
+      .getMap(app)
+      .on('pointermove', (e) => this.mapPointerMoved(e, app));
     this.hsEventBusService.searchResultsReceived.next({
       layer: this.searchResultsLayer,
       providers: this.data.providers,
@@ -145,22 +153,22 @@ export class HsSearchService {
    * @public
    * Remove results layer from map
    */
-  hideResultsLayer(): void {
-    this.hsMapService.map.removeLayer(this.searchResultsLayer);
+  hideResultsLayer(app: string): void {
+    this.hsMapService.getMap(app).removeLayer(this.searchResultsLayer);
   }
   /**
    * @public
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
-  showResultsLayer(): void {
-    this.hideResultsLayer();
-    this.hsMapService.map.addLayer(this.searchResultsLayer);
+  showResultsLayer(app: string): void {
+    this.hideResultsLayer(app);
+    this.hsMapService.getMap(app).addLayer(this.searchResultsLayer);
   }
   /**
    * @public
    * Clean all search results from results variable and results layer
    */
-  cleanResults(): void {
+  cleanResults(app: string): void {
     if (this.data.providers !== undefined) {
       for (const key of Object.keys(this.data.providers)) {
         const provider = this.data.providers[key];
@@ -169,7 +177,7 @@ export class HsSearchService {
         }
       }
       this.searchResultsLayer.getSource().clear();
-      this.hideResultsLayer();
+      this.hideResultsLayer(app);
       unByKey(this.pointerMoveEventKey);
     }
   }
@@ -178,12 +186,13 @@ export class HsSearchService {
    * @param evt -
    * Highlight in the search list result, that corresponds with the nearest found feature under the pointer over the map
    */
-  mapPointerMoved(evt): void {
+  mapPointerMoved(evt, app: string): void {
     console.log('searchlistener');
-    const featuresUnderMouse = this.hsMapService.map
+    const featuresUnderMouse = this.hsMapService
+      .getMap(app)
       .getFeaturesAtPixel(evt.pixel)
       .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature);
+        const layer = this.hsMapService.getLayerForFeature(feature, app);
         return layer && layer == this.searchResultsLayer;
       });
     for (const provider of Object.keys(this.data.providers)
@@ -202,17 +211,17 @@ export class HsSearchService {
    * @param zoomLevel - Zoom level to zoom on
    * Move map and zoom on selected search result
    */
-  selectResult(result: any, zoomLevel: number): void {
-    const coordinate = this.getResultCoordinate(result);
-    this.hsMapService.map.getView().setCenter(coordinate);
+  selectResult(result: any, zoomLevel: number, app: string): void {
+    const coordinate = this.getResultCoordinate(result, app);
+    this.hsMapService.getMap(app).getView().setCenter(coordinate);
     if (zoomLevel === undefined) {
       zoomLevel = 10;
     }
-    this.hsMapService.map.getView().setZoom(zoomLevel);
+    this.hsMapService.getMap(app).getView().setZoom(zoomLevel);
     this.hsEventBusService.searchZoomTo.next({
       coordinate: transform(
         coordinate,
-        this.hsMapService.getCurrentProj(),
+        this.hsMapService.getCurrentProj(app),
         'EPSG:4326'
       ),
       zoom: zoomLevel,
@@ -224,8 +233,8 @@ export class HsSearchService {
    * @returns Ol.coordinate of selected result
    * Parse coordinate of selected result
    */
-  getResultCoordinate(result: any): any {
-    const currentProj = this.hsMapService.getCurrentProj();
+  getResultCoordinate(result: any, app: string): any {
+    const currentProj = this.hsMapService.getCurrentProj(app);
     if (
       result.provider_name.indexOf('geonames') > -1 ||
       result.provider_name == 'searchFunctionsearchProvider'
@@ -251,19 +260,19 @@ export class HsSearchService {
    * @param provider - Which provider sent the search results
    * Result parser of results from Geonames service
    */
-  parseGeonamesResults(response: any, provider: any): void {
+  parseGeonamesResults(response: any, provider: any, app: string): void {
     provider.results = response.geonames;
-    this.generateGeonamesFeatures(provider);
+    this.generateGeonamesFeatures(provider, app);
   }
   /**
    * @param provider -
    */
-  generateGeonamesFeatures(provider: any): void {
+  generateGeonamesFeatures(provider: any, app: string): void {
     const src = this.searchResultsLayer.getSource();
     for (const result of provider.results) {
       result.provider_name = provider.name;
       const feature = new Feature({
-        geometry: new Point(this.getResultCoordinate(result)),
+        geometry: new Point(this.getResultCoordinate(result, app)),
         record: result,
         id: this.hsUtilsService.generateUuid(),
       });
@@ -278,19 +287,19 @@ export class HsSearchService {
    * @param provider - Which provider sent the search results
    * Result parser of results from OpenApi service
    */
-  parseOpenApiResults(response: any, provider: any): void {
+  parseOpenApiResults(response: any, provider: any, app: string): void {
     provider.results = response.data;
-    this.generateOpenApiFeatures(provider);
+    this.generateOpenApiFeatures(provider, app);
   }
   /**
    * @param provider -
    */
-  generateOpenApiFeatures(provider: any): void {
+  generateOpenApiFeatures(provider: any, app: string): void {
     const src = this.searchResultsLayer.getSource();
     for (const result of provider.results) {
       result.provider_name = provider.name;
       const feature = new Feature({
-        geometry: new Point(this.getResultCoordinate(result)),
+        geometry: new Point(this.getResultCoordinate(result, app)),
         record: result,
       });
       src.addFeature(feature);

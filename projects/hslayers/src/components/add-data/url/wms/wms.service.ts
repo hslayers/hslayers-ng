@@ -51,8 +51,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.setDataToDefault();
-    this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.data.map_projection = this.hsMapService.map
+    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
+      this.data.map_projection = this.hsMapService
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -78,7 +79,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
+    app: string
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -90,11 +92,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     try {
       await this.capabilitiesReceived(
         wrapper.response,
-        this.hsAddDataCommonService.layerToSelect
+        this.hsAddDataCommonService.layerToSelect,
+        app
       );
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.getLayers(true);
+        return this.getLayers(app, true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -157,11 +160,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Parse information received in WMS getCapabilities response
    */
-  async capabilitiesReceived(response, layerToSelect: string): Promise<void> {
+  async capabilitiesReceived(
+    response,
+    layerToSelect: string,
+    app: string
+  ): Promise<void> {
     try {
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(response);
-      this.data.map_projection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -183,13 +191,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       //   this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
       // }
       if (
-        this.hsAddDataCommonService.currentProjectionSupported(this.data.srss)
+        this.hsAddDataCommonService.currentProjectionSupported(
+          this.data.srss,
+          app
+        )
       ) {
         this.data.srs = this.data.srss.includes(
-          this.hsMapService.map.getView().getProjection().getCode()
+          this.hsMapService.getMap(app).getView().getProjection().getCode()
         )
-          ? this.hsMapService.map.getView().getProjection().getCode()
-          : this.hsMapService.map
+          ? this.hsMapService.getMap(app).getView().getProjection().getCode()
+          : this.hsMapService
+              .getMap(app)
               .getView()
               .getProjection()
               .getCode()
@@ -200,7 +212,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.data.srs = this.data.srss[0];
       }
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs
+        this.data.srs,
+        app
       );
       this.data.layers = this.filterCapabilitiesLayers(caps.Capability.Layer);
       //Make sure every service has a title to be displayed in table
@@ -218,14 +231,15 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.hsAddDataUrlService.searchForChecked(this.data.layers);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
-        this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs);
+        this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs, app);
       } else {
-        this.data.extent = this.calcAllLayersExtent(this.data.layers);
+        this.data.extent = this.calcAllLayersExtent(this.data.layers, app);
       }
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
       this.data.get_map_url = this.removePortIfProxified(
-        caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
+        caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+        app
       );
       this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'image/png; mode=8bit',
@@ -249,12 +263,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcAllLayersExtent(serviceLayers: any): any {
+  calcAllLayersExtent(serviceLayers: any, app: string): any {
     if (!Array.isArray(serviceLayers)) {
-      return this.getLayerBBox(serviceLayers, this.data.srs);
+      return this.getLayerBBox(serviceLayers, this.data.srs, app);
     }
     return serviceLayers
-      .map((lyr) => this.getLayerBBox(lyr, this.data.srs))
+      .map((lyr) => this.getLayerBBox(lyr, this.data.srs, app))
       .reduce((acc, curr) => {
         //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
         const [west, south, east, north] = curr;
@@ -278,7 +292,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       });
   }
 
-  getLayerBBox(serviceLayer: any, crs: any): any {
+  getLayerBBox(serviceLayer: any, crs: any, app: string): any {
     let boundingbox = serviceLayer.BoundingBox;
     let preferred;
     if (Array.isArray(serviceLayer.BoundingBox)) {
@@ -293,7 +307,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = transformExtent(
           serviceLayer.EX_GeographicBoundingBox,
           'EPSG:4326',
-          this.hsMapService.map.getView().getProjection()
+          this.hsMapService.getMap(app).getView().getProjection()
         );
       }
     } else {
@@ -338,12 +352,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * with port in proxy path.
    * @returns URL without proxy services port added to it.
    */
-  removePortIfProxified(url: string): string {
-    if (this.hsConfig.proxyPrefix === undefined) {
+  removePortIfProxified(url: string, app: string): string {
+    if (this.hsConfig.get(app).proxyPrefix === undefined) {
       return url;
     }
     const proxyPort = parseInt(
-      this.hsUtilsService.getPortFromUrl(this.hsConfig.proxyPrefix)
+      this.hsUtilsService.getPortFromUrl(this.hsConfig.get(app).proxyPrefix)
     );
     if (proxyPort > 0) {
       return url.replace(':' + proxyPort.toString(), '');
@@ -355,7 +369,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  getLayers(checkedOnly: boolean): Layer<Source>[] {
+  getLayers(app: string, checkedOnly: boolean): Layer<Source>[] {
     if (this.data.layers === undefined) {
       return;
     }
@@ -374,7 +388,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           tileSize: this.data.tile_size,
           crs: this.data.srs,
           subLayers: '',
-        }
+        },
+        app
       );
       collection.push(newLayer);
     } else {
@@ -382,13 +397,14 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.getLayersRecursively(
           layer,
           {checkedOnly: checkedOnly},
-          collection
+          collection,
+          app
         );
       }
-      this.zoomToLayers();
+      this.zoomToLayers(app);
     }
     this.data.base = false;
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
@@ -406,7 +422,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  getLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: addLayerOptions, app: string): Layer<Source> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -450,15 +466,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       name: options.layerName,
       source,
       minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MinScaleDenominator
+        layer.MinScaleDenominator,
+        app
       ),
       maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MaxScaleDenominatorview
+        layer.MaxScaleDenominatorview,
+        app
       ),
       removable: true,
       abstract: layer.Abstract,
       metadata,
-      extent: this.getLayerBBox(layer, options.crs),
+      extent: this.getLayerBBox(layer, options.crs, app),
       path: options.path,
       dimensions: dimensions,
       legends: legends,
@@ -469,16 +487,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     const new_layer = !this.data.use_tiles
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
       : new Tile(layerOptions as TileOptions<TileSource>);
-    this.hsMapService.proxifyLayerLoader(new_layer, this.data.use_tiles);
+    this.hsMapService.proxifyLayerLoader(new_layer, this.data.use_tiles, app);
     return new_layer;
   }
 
   /**
    * Loop through the list of layers and add them to the map
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsAddDataService.addLayer(l, this.data.add_under);
+      this.hsAddDataService.addLayer(l, app, this.data.add_under);
     }
   }
 
@@ -516,18 +534,25 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   getLayersRecursively(
     layer: any,
     options: addLayersRecursivelyOptions = {checkedOnly: true},
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
+    app: string
   ): void {
     if (!options.checkedOnly || layer.checked) {
       collection.push(
-        this.getLayer(layer, {
-          layerName: layer.Title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-        })
+        this.getLayer(
+          layer,
+          {
+            layerName: layer.Title.replace(/\//g, '&#47;'),
+            path: this.hsUtilsService.undefineEmptyString(
+              this.data.folder_name
+            ),
+            imageFormat: this.data.image_format,
+            queryFormat: this.data.query_format,
+            tileSize: this.data.tile_size,
+            crs: this.data.srs,
+          },
+          app
+        )
       );
     }
     if (layer.Layer) {
@@ -535,7 +560,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.getLayersRecursively(
           sublayer,
           {checkedOnly: options.checkedOnly},
-          collection
+          collection,
+          app
         );
       }
     }
@@ -544,9 +570,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Zoom map to one layers or combined layer list extent
    */
-  private zoomToLayers() {
+  private zoomToLayers(app: string) {
     if (this.data.extent) {
-      this.hsMapService.fitExtent(this.data.extent);
+      this.hsMapService.fitExtent(this.data.extent, app);
     }
   }
 }

@@ -337,7 +337,8 @@ export class HsLaymanService implements HsSaverService {
   public async upsertLayer(
     ep: HsEndpoint,
     layer: VectorLayer<VectorSource<Geometry>>,
-    withFeatures: boolean
+    withFeatures: boolean,
+    app: string
   ): Promise<void> {
     if (layer.getSource().loading) {
       return;
@@ -378,7 +379,7 @@ export class HsLaymanService implements HsSaverService {
       sld: getSld(layer),
     });
     setTimeout(async () => {
-      await this.makeGetLayerRequest(ep, layer);
+      await this.makeGetLayerRequest(ep, layer, app);
       setHsLaymanSynchronizing(layer, false);
     }, 2000);
   }
@@ -393,7 +394,10 @@ export class HsLaymanService implements HsSaverService {
    * @param param0.layer
    * @returns Promise result of POST
    */
-  async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
+  async sync(
+    {ep, add, upd, del, layer}: WfsSyncParams,
+    app: string
+  ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized anytime */
@@ -411,13 +415,14 @@ export class HsLaymanService implements HsSaverService {
         }
       } catch (ex) {
         this.HsLogService.warn(`Layer ${name} didn't exist. Creating..`);
-        this.upsertLayer(ep, layer, true);
+        this.upsertLayer(ep, layer, true, app);
         return;
       }
       desc.wfs.url = desc.wfs.url;
       return this.makeWfsRequest(
         {ep: endpoint, add, upd, del, layer},
-        desc.wfs.url
+        desc.wfs.url,
+        app
       );
     } catch (ex) {
       throw ex;
@@ -437,10 +442,11 @@ export class HsLaymanService implements HsSaverService {
    */
   private async makeWfsRequest(
     {ep, add, upd, del, layer}: WfsSyncParams,
-    url: string
+    url: string,
+    app: string
   ): Promise<string> {
     try {
-      const srsName = this.HsMapService.getCurrentProj().getCode();
+      const srsName = this.HsMapService.getCurrentProj(app).getCode();
       const featureType = getLayerName(layer);
       const wfsFormat = new WFS();
       const options = {
@@ -497,7 +503,8 @@ export class HsLaymanService implements HsSaverService {
    */
   async makeGetLayerRequest(
     ep: HsEndpoint,
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
+    app: string
   ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
@@ -537,7 +544,7 @@ export class HsLaymanService implements HsSaverService {
               request: 'GetFeature',
               typeNames: `${getWorkspace(layer)}:${descr.name}`,
               r: Math.random(),
-              srsName: this.HsMapService.getCurrentProj().getCode(),
+              srsName: this.HsMapService.getCurrentProj(app).getCode(),
             }),
           {responseType: 'text', withCredentials: true}
         )

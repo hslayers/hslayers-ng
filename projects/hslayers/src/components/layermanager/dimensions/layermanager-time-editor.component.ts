@@ -15,6 +15,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 })
 export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   @Input() layer: HsLayerDescriptor;
+  @Input() app = 'default';
   /**
    * ISO format time
    */
@@ -155,7 +156,11 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
 
   setLayerTime(): void {
     setTimeout(() => {
-      this.hsDimensionTimeService.setLayerTime(this.layer, this.currentTime);
+      this.hsDimensionTimeService.setLayerTime(
+        this.layer,
+        this.currentTime,
+        this.app
+      );
     }, 100);
   }
 
@@ -177,8 +182,8 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   }
 
   private setDateTimeFormatting() {
-    if (this.hsConfig.timeDisplayFormat) {
-      this.timeDisplayFormat = this.hsConfig.timeDisplayFormat;
+    if (this.hsConfig.get(this.app).timeDisplayFormat) {
+      this.timeDisplayFormat = this.hsConfig.get(this.app).timeDisplayFormat;
     } else if (
       this.availableTimes.every((time) => time.endsWith('00-00T00:00:00.000Z'))
     ) {

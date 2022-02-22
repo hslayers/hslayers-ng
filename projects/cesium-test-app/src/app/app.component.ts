@@ -259,9 +259,9 @@ export class AppComponent {
         HslayersCesiumComponent
       );
 
-    this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
-      if (mapSpace) {
-        mapSpace.createComponent(componentFactory);
+    this.HsLayoutService.mapSpaceRef.subscribe(({viewContainerRef, app}) => {
+      if (viewContainerRef) {
+        viewContainerRef.createComponent(componentFactory);
       }
     });
   }

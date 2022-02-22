@@ -46,7 +46,7 @@ class HsEventBusServiceMock {
   compositionLoads: Subject<any> = new Subject();
   mapResets: Subject<any> = new Subject();
   mainPanelChanges: Subject<any> = new Subject();
-  olMapLoads: Subject<any> = new Subject();
+  olMapLoads: Subject<{map; app}> = new Subject();
   layoutLoads: Subject<any> = new Subject();
 }
 

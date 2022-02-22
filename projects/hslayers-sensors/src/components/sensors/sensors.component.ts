@@ -24,7 +24,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     super(HsLayoutService);
   }
   ngOnInit(): void {
-    this.HsMapService.loaded().then(() => this.init());
+    this.HsMapService.loaded(this.data.app).then(() => this.init());
   }
 
   /**

@@ -12,7 +12,7 @@
       [(ngModel)]="dimension.modelValue"
       [ngModelOptions]="{standalone: true}"
       *ngIf="dimension.type === null"
-      (change)="hsDimensionService.dimensionChanged(dimension)"
+      (change)="hsDimensionService.dimensionChanged(dimension, data.app)"
     >
       <option
         [ngValue]="dimension_value"
@@ -38,7 +38,7 @@
         placeholder="YYYY-MM-DD"
         #d="ngbDatepicker"
         [(ngModel)]="dimension.modelValue"
-        (dateSelect)="hsDimensionService.dimensionChanged(dimension)"
+        (dateSelect)="hsDimensionService.dimensionChanged(dimension, data.app)"
         [ngModelOptions]="{standalone: true}"
       />
       <button
@@ -54,7 +54,7 @@
       *ngIf="dimension.type === 'datetime'"
       size="small"
       [(ngModel)]="dimension.modelTimeValue"
-      (ngModelChange)="hsDimensionService.dimensionChanged(dimension)"
+      (ngModelChange)="hsDimensionService.dimensionChanged(dimension, data.app)"
       [ngModelOptions]="{standalone: true}"
     >
     </ngb-timepicker>

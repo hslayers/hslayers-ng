@@ -5,7 +5,7 @@
             <i class="glyphicon icon-map x-large p-0"></i>
         </button>
         <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
-            <div *ngFor="let layer of HsLayerManagerService.data.baselayers" (click)="toggleBasemap(layer);"
+            <div *ngFor="let layer of HsLayerManagerService.apps[app].data.baselayers" (click)="toggleBasemap(layer);"
                 [ngStyle]="{'position':'relative'}" class="m-0">
                 <div style="position:absolute;top:5px; right:5px;z-index:5"
                     [ngClass]="layer.galleryMiniMenu ? 'text-white' : 'text-primary'" *ngIf="layer.active"
@@ -13,9 +13,10 @@
                     <span class="glyphicon icon-menu icon-small"></span>
                 </div>
                 <div class="hs-miniMenu" [hidden]="!(layer.galleryMiniMenu === true && layer.active)"
-                    [ngStyle]="{'position':'absolute'}" [ngClass]="{'expanded': HsLayerManagerService.menuExpanded}">
-                    <div class="ps-1 w-100" *ngIf="!HsLayerManagerService.menuExpanded"
-                        (click)="HsLayerManagerService.setGreyscale(layer)">
+                    [ngStyle]="{'position':'absolute'}"
+                    [ngClass]="{'expanded': HsLayerManagerService.apps[app].menuExpanded}">
+                    <div class="ps-1 w-100" *ngIf="!HsLayerManagerService.apps[app].menuExpanded"
+                        (click)="HsLayerManagerService.setGreyscale(layer, app)">
                         <label class="form-check-label m-0"
                             [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
                         <p class="ms-1 mb-0">
@@ -24,9 +25,9 @@
                     <label class="ps-2 mb-0 w-100" [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}"
                         (click)="expandMenu(layer)">
 
-                        {{HsLayerManagerService.menuExpanded ? 'Less ': 'More'}}</label>
-                    <hs-layer-editor [current-layer]="layer" *ngIf="HsLayerManagerService.menuExpanded"
-                        class="hs-layerpanel w-100" #layerEditor>
+                        {{HsLayerManagerService.apps[app].menuExpanded ? 'Less ': 'More'}}</label>
+                    <hs-layer-editor [current-layer]="layer" *ngIf="HsLayerManagerService.apps[app].menuExpanded"
+                        [app]="app" class="hs-layerpanel w-100" #layerEditor>
                     </hs-layer-editor>
                 </div>
 
@@ -37,9 +38,9 @@
             </div>
             <div (click)="toggleBasemap()">
                 <div style="height: 4em; width: 100%; background: white"
-                    [ngClass]="{'active': !HsLayerManagerService.data.baselayersVisible}"></div>
+                    [ngClass]="{'active': !HsLayerManagerService.apps[app].data.baselayersVisible}"></div>
                 <a class="dropdown-item"
-                    [ngClass]="{'active': !HsLayerManagerService.data.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
+                    [ngClass]="{'active': !HsLayerManagerService.apps[app].data.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
                     | translate}}</a>
             </div>
         </div>

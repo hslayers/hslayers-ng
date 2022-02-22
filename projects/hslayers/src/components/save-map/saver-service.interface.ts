@@ -1,3 +1,3 @@
 export interface HsSaverService {
-  save(compositionJson, endpoint, data, saveAsNew): Promise<any>;
+  save(compositionJson, endpoint, data, saveAsNew, app: string): Promise<any>;
 }

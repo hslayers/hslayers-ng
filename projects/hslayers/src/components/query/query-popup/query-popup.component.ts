@@ -8,6 +8,7 @@ import {
 
 import {Subscription} from 'rxjs';
 
+import {HsConfig} from '../../../config.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogItem} from '../../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -31,6 +32,7 @@ export class HsQueryPopupComponent
   viewRef: ViewRef;
   data: {
     service: HsQueryPopupServiceModel;
+    app: string;
   };
 
   constructor(
@@ -38,11 +40,14 @@ export class HsQueryPopupComponent
     public hsLanguageService: HsLanguageService,
     public hsMapService: HsMapService,
     private ElementRef: ElementRef,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    private hsConfig: HsConfig
   ) {
     this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
-      (map) => {
-        map.addOverlay(this.data.service.hoverPopup);
+      ({map, app}) => {
+        if (app == this.data.app) {
+          map.addOverlay(this.data.service.hoverPopup);
+        }
       }
     );
   }
@@ -51,15 +56,24 @@ export class HsQueryPopupComponent
     this.data.service.registerPopup(this.ElementRef.nativeElement);
   }
 
+  ngOnInit() {
+    this.hsQueryPopupWidgetContainerService.initWidgets(
+      this.hsConfig.get(this.data.app).queryPopupWidgets,
+      this.data.app
+    );
+  }
+
   ngOnDestroy(): void {
-    this.hsMapService.map.removeOverlay(this.data.service.hoverPopup);
+    this.hsMapService
+      .getMap(this.data.app)
+      .removeOverlay(this.data.service.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
   popupVisible(): any {
     const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
       (f) => {
-        const layer = this.hsMapService.getLayerForFeature(f);
+        const layer = this.hsMapService.getLayerForFeature(f, this.data.app);
         if (!layer) {
           return false;
         }
@@ -71,14 +85,17 @@ export class HsQueryPopupComponent
       let tmpForHover: any[] = [];
       this.data.service.featuresUnderMouse.forEach((feature) => {
         tmpForHover = tmpForHover.concat(
-          this.data.service.serializeFeatureAttributes(feature)
+          this.data.service.serializeFeatureAttributes(feature, this.data.app)
         );
         if (getFeatures(feature)) {
           getFeatures(feature).forEach((subfeature) => {
             const subFeatureObj: any = {};
             subFeatureObj.feature = subfeature;
             subFeatureObj.attributes =
-              this.data.service.serializeFeatureAttributes(subfeature);
+              this.data.service.serializeFeatureAttributes(
+                subfeature,
+                this.data.app
+              );
             tmpForHover.push(subFeatureObj);
           });
         }

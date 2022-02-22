@@ -59,7 +59,7 @@ export class AppComponent {
     };
 
     if (w.hslayersNgConfig) {
-      this.HsConfig.update(w.hslayersNgConfig(w.ol));
+      this.HsConfig.get(app).update(w.hslayersNgConfig(w.ol));
     }
 
     if (w.hslayersCesiumConfig) {

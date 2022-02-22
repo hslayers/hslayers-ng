@@ -18,23 +18,25 @@ export class HsStatusManagerService implements HsSaverService {
     public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
-  endpointUrl() {
+  endpointUrl(app: string) {
     let hostName = location.protocol + '//' + location.host;
 
-    if (this.HsConfig.hostname?.status_manager?.url) {
-      return this.HsConfig.hostname.status_manager.url;
+    if (this.HsConfig.get(app).hostname?.status_manager?.url) {
+      return this.HsConfig.get(app).hostname.status_manager.url;
     }
-    if (this.HsConfig.hostname?.user?.url) {
-      hostName = this.HsConfig.hostname.user.url;
-    } else if (this.HsConfig.hostname?.default?.url) {
-      hostName = this.HsConfig.hostname.default.url;
+    if (this.HsConfig.get(app).hostname?.user?.url) {
+      hostName = this.HsConfig.get(app).hostname.user.url;
+    } else if (this.HsConfig.get(app).hostname?.default?.url) {
+      hostName = this.HsConfig.get(app).hostname.default.url;
     }
 
-    if (this.HsConfig.status_manager_url?.includes('://')) {
+    if (this.HsConfig.get(app).status_manager_url?.includes('://')) {
       //Full url specified
-      return this.HsConfig.status_manager_url;
+      return this.HsConfig.get(app).status_manager_url;
     } else {
-      return hostName + (this.HsConfig.status_manager_url || '/share/');
+      return (
+        hostName + (this.HsConfig.get(app).status_manager_url || '/share/')
+      );
     }
   }
 
@@ -47,18 +49,18 @@ export class HsStatusManagerService implements HsSaverService {
     }
   }
 
-  save(compositionJson, endpoint, compoData, saveAsNew) {
+  save(compositionJson, endpoint, compoData, saveAsNew, app: string) {
     if (saveAsNew || compoData.id == '') {
       compoData.id = this.HsUtilsService.generateUuid();
     }
     return new Promise(async (resolve, reject) => {
       try {
         const response = await lastValueFrom(
-          this.http.post(this.endpointUrl(), {
+          this.http.post(this.endpointUrl(app), {
             data: compositionJson,
             permanent: true,
             id: compoData.id,
-            project: this.HsConfig.project_name,
+            project: this.HsConfig.get(app).project_name,
             thumbnail: compoData.thumbnail,
             request: 'save',
           })

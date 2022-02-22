@@ -1,37 +1,29 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {HsCoreService} from '../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareService} from './share.service';
+import {HsShareUrlService} from './share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 @Component({
   selector: 'hs-share',
   templateUrl: './partials/share.component.html',
 })
-export class HsShareComponent extends HsPanelBaseComponent {
+export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;
   name = 'permalink';
 
   constructor(
     public HsShareService: HsShareService,
+    public HsShareUrlService: HsShareUrlService,
     public HsCore: HsCoreService,
     HsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    public hsLanguageService: HsLanguageService,
+    public hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'permalink',
-      module: 'hs.permalink',
-      order: 11,
-      fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
-      description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.PERMALINK'),
-      icon: 'icon-share-alt',
-    });
   }
 
   /**
@@ -61,6 +53,22 @@ export class HsShareComponent extends HsPanelBaseComponent {
    * @description Create share post on selected social network
    */
   shareOnSocial(): void {
-    this.HsShareService.shareOnSocial(this.new_share);
+    this.HsShareService.shareOnSocial(this.new_share, this.data.app);
+  }
+
+  ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'permalink',
+      module: 'hs.permalink',
+      order: 11,
+      fits: true,
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
+      description: () =>
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.PERMALINK'),
+      icon: 'icon-share-alt',
+    });
+    this.HsShareUrlService.init(this.data.app);
+    this.HsShareService.init(this.data.app);
   }
 }

@@ -30,6 +30,7 @@ import {vectorDataObject} from '../vector-data.type';
 })
 export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
+  @Input() app: 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';
@@ -77,9 +78,9 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
    */
   async add(): Promise<void> {
     this.uploadType == 'new'
-      ? await this.hsAddDataVectorService.addNewLayer(this.data)
+      ? await this.hsAddDataVectorService.addNewLayer(this.data, this.app)
       : await this.updateExistingLayer();
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', this.app);
     this.hsAddDataVectorService.setPanelToCatalogue();
     this.setToDefault();
   }
@@ -88,7 +89,8 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     let features = this.data.features.length > 0 ? this.data.features : [];
     if (this.dataType != 'geojson') {
       const nonJson = await this.hsAddDataVectorService.convertUploadedData(
-        this.fileInput.nativeElement.files[0]
+        this.fileInput.nativeElement.files[0],
+        this.app
       );
       features = nonJson.features; //proper typing will get rid of this
     }
@@ -102,7 +104,8 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   handleFileUpload(evt: HsUploadedFiles): void {
     Array.from(evt.fileList).forEach(async (f) => {
       const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
-        f
+        f,
+        this.app
       );
       if (uploadedData !== undefined) {
         uploadedData.url !== undefined
@@ -178,11 +181,11 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   setUploadType(type: string): void {
     this.uploadType = type;
     if (type == 'existing') {
-      this.data.vectorLayers = this.hsLayerManagerService.data.layers.filter(
-        (layer) => {
-          return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
-        }
-      );
+      this.data.vectorLayers = this.hsLayerManagerService.apps[
+        this.app
+      ].data.layers.filter((layer) => {
+        return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
+      });
     }
   }
 

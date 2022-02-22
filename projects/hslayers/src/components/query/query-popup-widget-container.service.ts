@@ -23,12 +23,12 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
 
   constructor(private hsConfig: HsConfig) {
     super();
-    this.initWidgets(this.hsConfig.queryPopupWidgets);
   }
 
   initWidgets(
     widgetNames: string[],
-    panelObserver?: ReplaySubject<HsPanelItem>
+    app: string,
+    panelObserver?: ReplaySubject<HsPanelItem>,
   ) {
     if (widgetNames?.length > 0) {
       for (const widgetName of widgetNames) {
@@ -36,12 +36,17 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
           (widget) => widget.name == widgetName
         );
 
-        if (!widgetFound && this.hsConfig.customQueryPopupWidgets?.length > 0) {
-          widgetFound = this.hsConfig.customQueryPopupWidgets.find(
-            (widget) => widget.name == widgetName
-          );
+        if (
+          !widgetFound &&
+          this.hsConfig.get(app).customQueryPopupWidgets?.length > 0
+        ) {
+          widgetFound = this.hsConfig
+            .get(app)
+            .customQueryPopupWidgets.find(
+              (widget) => widget.name == widgetName
+            );
         }
-        this.create(widgetFound.component, undefined, panelObserver);
+        this.create(widgetFound.component, {app}, panelObserver);
       }
     }
   }

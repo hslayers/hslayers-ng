@@ -47,9 +47,10 @@ export class HsMickaBrowserService {
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
-    textField: string
+    textField: string,
+    app: string
   ): any {
-    const url = this.createRequestUrl(dataset, data, textField);
+    const url = this.createRequestUrl(dataset, data, textField, app);
     dataset.datasourcePaging.loaded = false;
 
     dataset.httpCall = this.http
@@ -61,7 +62,7 @@ export class HsMickaBrowserService {
         map((x: any) => {
           x.dataset = dataset;
           x.extentFeatureCreated = extentFeatureCreated;
-          this.datasetsReceived(x);
+          this.datasetsReceived(x, app);
           return x;
         }),
         catchError((e) => {
@@ -102,13 +103,14 @@ export class HsMickaBrowserService {
     return dataset.httpCall;
   }
 
-  private createRequestUrl(dataset, data, textField) {
+  private createRequestUrl(dataset, data, textField, app: string) {
     const query = data.query;
     const b = transformExtent(
-      this.hsMapService.map
+      this.hsMapService
+        .getMap(app)
         .getView()
-        .calculateExtent(this.hsMapService.map.getSize()),
-      this.hsMapService.map.getView().getProjection(),
+        .calculateExtent(this.hsMapService.getMap(app).getSize()),
+      this.hsMapService.getMap(app).getView().getProjection(),
       'EPSG:4326'
     );
     const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
@@ -151,14 +153,14 @@ export class HsMickaBrowserService {
         start: dataset.datasourcePaging.start,
         validservice: '>0',
       });
-    return this.hsUtilsService.proxify(url);
+    return this.hsUtilsService.proxify(url, app);
   }
 
   /**
    * @param data - HTTP response containing all the layers
    * Callback for catalogue http query
    */
-  private datasetsReceived(data): boolean {
+  private datasetsReceived(data, app: string): boolean {
     if (!data.dataset || !data.extentFeatureCreated) {
       return;
     }
@@ -178,7 +180,7 @@ export class HsMickaBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             lyr,
-            this.hsMapService.getCurrentProj()
+            this.hsMapService.getCurrentProj(app)
           );
           if (extentFeature) {
             lyr.featureId = extentFeature.getId();

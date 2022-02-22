@@ -81,6 +81,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
+    app: string,
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -105,7 +106,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
-      url = this.hsUtilsService.proxify(url);
+      url = this.hsUtilsService.proxify(url, app);
       const r = await lastValueFrom(
         this.httpClient
           .get(url, {
@@ -131,7 +132,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
    * @param capabilities_xml - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml): Layer<Source>[] {
+  service2layers(capabilities_xml, app: string): Layer<Source>[] {
     const parser = new WMTSCapabilities();
     const caps = parser.read(capabilities_xml);
     const service = caps.Capability.Layer;

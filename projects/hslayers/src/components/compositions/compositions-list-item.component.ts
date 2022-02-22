@@ -16,6 +16,7 @@ import {HsToastService} from '../layout/toast/toast.service';
 export class HsCompositionsListItemComponent {
   @Input() composition;
   @Input() selectedCompId;
+  @Input() app = 'default';
   constructor(
     public hsCompositionsService: HsCompositionsService,
     public hsLayoutService: HsLayoutService,
@@ -31,11 +32,11 @@ export class HsCompositionsListItemComponent {
    */
   openComposition(composition): void {
     this.hsCompositionsService
-      .loadCompositionParser(composition)
+      .loadCompositionParser(composition, this.app)
       .then(() => {
         //This should not be needed, as for that is the save map button created
         // this.HsSaveMapManagerService.openPanel(composition);
-        this.hsLayoutService.setMainPanel('layermanager');
+        this.hsLayoutService.setMainPanel('layermanager', this.app);
       })
       .catch(() => {
         //Do nothing
@@ -59,9 +60,9 @@ export class HsCompositionsListItemComponent {
     let url: string;
     try {
       await this.hsCompositionsService
-        .shareComposition(record)
+        .shareComposition(record, this.app)
         .then(async () => {
-          url = await this.hsCompositionsService.getShareUrl();
+          url = await this.hsCompositionsService.getShareUrl(this.app);
           if (url !== undefined) {
             this.shareDialogBootstrap(record, url);
           } else {
@@ -108,9 +109,9 @@ export class HsCompositionsListItemComponent {
     this.hsDialogContainerService.create(HsCompositionsShareDialogComponent, {
       url,
       title:
-        this.hsConfig.social_hashtag &&
-        !record.title.includes(this.hsConfig.social_hashtag)
-          ? record.title + ' ' + this.hsConfig.social_hashtag
+        this.hsConfig.get(this.app).social_hashtag &&
+        !record.title.includes(this.hsConfig.get(this.app).social_hashtag)
+          ? record.title + ' ' + this.hsConfig.get(this.app).social_hashtag
           : record.title,
       abstract: record.abstract,
     });

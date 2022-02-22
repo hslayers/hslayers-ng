@@ -15,7 +15,6 @@ import {setTitle} from '../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsMeasureService {
-  map;
   draw: Draw;
   data = {
     measurements: [],
@@ -45,9 +44,6 @@ export class HsMeasureService {
     public HsEventBusService: HsEventBusService
   ) {
     setTitle(this.measureVector, 'Measurement sketches');
-    HsMapService.loaded().then((m) => {
-      this.map = m;
-    });
   }
 
   /**
@@ -68,10 +64,10 @@ export class HsMeasureService {
    * @param {string} type Geometry type of measurement ('area' for polygon, 'line' for linestring)
    * @description Change geometry type of measurement without deleting of old ones
    */
-  changeMeasureParams(type: string): void {
-    this.map.removeInteraction(this.draw);
+  changeMeasureParams(type: string, app: string): void {
+    this.HsMapService.getMap(app).removeInteraction(this.draw);
     this.sketches = [];
-    this.addInteraction(type);
+    this.addInteraction(type, app);
   }
 
   /**
@@ -91,47 +87,48 @@ export class HsMeasureService {
    * @param type
    * @description Start measuring interaction in app
    */
-  activateMeasuring(type: string): void {
-    if (!this.map) {
+  activateMeasuring(type: string, app: string): void {
+    const map = this.HsMapService.getMap(app);
+    if (!map) {
       setTimeout(() => {
-        this.activateMeasuring(type);
+        this.activateMeasuring(type, app);
       }, 500);
       return;
     }
-    this.map.addLayer(this.measureVector);
-    this.map.getViewport().addEventListener('mousemove', (evt) => {
-      this.mouseMoveHandler(evt);
+    map.addLayer(this.measureVector);
+    map.getViewport().addEventListener('mousemove', (evt) => {
+      this.mouseMoveHandler(evt, app);
     });
-    this.map.getViewport().addEventListener('touchmove', (evt) => {
-      this.mouseMoveHandler(evt);
+    map.getViewport().addEventListener('touchmove', (evt) => {
+      this.mouseMoveHandler(evt, app);
     });
-    this.map.getViewport().addEventListener('touchend', (evt) => {
-      this.mouseMoveHandler(evt);
+    map.getViewport().addEventListener('touchend', (evt) => {
+      this.mouseMoveHandler(evt, app);
     });
 
-    this.addInteraction(type);
+    this.addInteraction(type, app);
   }
 
   /**
    * @public
    * @description Stop measuring interaction in app
    */
-  deactivateMeasuring(): void {
-    this.HsMapService.loaded().then((map) => {
+  deactivateMeasuring(app: string): void {
+    this.HsMapService.loaded(app).then((map) => {
       map.getViewport().removeEventListener('mousemove', (evt) => {
-        this.mouseMoveHandler(evt);
+        this.mouseMoveHandler(evt, app);
       });
       map.getViewport().removeEventListener('touchmove', (evt) => {
-        this.mouseMoveHandler(evt);
+        this.mouseMoveHandler(evt, app);
       });
       map.getViewport().removeEventListener('touchend', (evt) => {
-        this.mouseMoveHandler(evt);
+        this.mouseMoveHandler(evt, app);
       });
 
       map.removeInteraction(this.draw);
       map.removeLayer(this.measureVector);
     });
-    this.HsEventBusService.measurementEnds.next(); //better emit drawingEnds here
+    this.HsEventBusService.measurementEnds.next({app}); //better emit drawingEnds here
   }
 
   /**
@@ -139,7 +136,7 @@ export class HsMeasureService {
    * @param {object} evt Callback param for mouse move event
    * @description Callback for mouse and touch move event, compute live measurement results
    */
-  mouseMoveHandler(evt): void {
+  mouseMoveHandler(evt, app: string): void {
     if (this.sketches.length > 0) {
       let output: Measurement;
 
@@ -149,7 +146,7 @@ export class HsMeasureService {
           output = this.addMultiple(
             this.HsUtilsService.formatArea(
               geom as Polygon,
-              this.HsMapService.getCurrentProj()
+              this.HsMapService.getCurrentProj(app)
             ),
             output
           );
@@ -157,7 +154,7 @@ export class HsMeasureService {
           output = this.addMultiple(
             this.HsUtilsService.formatLength(
               geom as LineString,
-              this.HsMapService.getCurrentProj()
+              this.HsMapService.getCurrentProj(app)
             ),
             output
           );
@@ -215,17 +212,17 @@ export class HsMeasureService {
    * @param {string} type Geometry type
    * @description Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
    */
-  addInteraction(type: string): void {
+  addInteraction(type: string, app: string): void {
     const drawType = type == 'area' ? 'Polygon' : 'LineString';
     this.draw = new Draw({
       source: this.measureVector.getSource(),
       type: /** @type {GeometryType} */ drawType,
       dragVertexDelay: 150,
     });
-    this.map.addInteraction(this.draw);
+    this.HsMapService.getMap(app).addInteraction(this.draw);
 
     this.draw.on('drawstart', (evt) => {
-      this.HsEventBusService.measurementStarts.next();
+      this.HsEventBusService.measurementStarts.next({app});
       if (this.data.multipleShapeMode) {
         if (!Array.isArray(this.sketches)) {
           this.sketches = [];
@@ -246,7 +243,7 @@ export class HsMeasureService {
     });
 
     this.draw.on('drawend', (evt) => {
-      this.HsEventBusService.measurementEnds.next();
+      this.HsEventBusService.measurementEnds.next({app});
     });
   }
 }

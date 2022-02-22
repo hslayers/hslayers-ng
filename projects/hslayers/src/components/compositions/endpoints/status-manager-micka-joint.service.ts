@@ -47,16 +47,24 @@ export class HsCompositionsStatusManagerMickaJointService {
     ds: HsEndpoint,
     params,
     extentFeatureCreated,
-    bbox
+    bbox,
+    app: string
   ): Observable<any> {
     const Observable = this.HsCompositionsMickaService.loadList(
       ds,
       params,
       extentFeatureCreated,
-      bbox
+      bbox,
+      app
     ).pipe(
       map((response: any) => {
-        this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);
+        this.HsCompositionsStatusManagerService.loadList(
+          ds,
+          params,
+          null,
+          bbox,
+          app
+        );
       }),
       catchError((e) => {
         if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
@@ -91,7 +99,7 @@ export class HsCompositionsStatusManagerMickaJointService {
     );
     return Observable;
   }
-  async getInfo(composition): Promise<any> {
+  async getInfo(composition, app: string): Promise<any> {
     const compLinks = composition.link || composition.links;
     if (compLinks === undefined) {
       return;
@@ -101,7 +109,7 @@ export class HsCompositionsStatusManagerMickaJointService {
     let url = '';
     Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
     try {
-      info = await this.HsCompositionsParserService.loadInfo(url);
+      info = await this.HsCompositionsParserService.loadInfo(url, app);
       //TODO: find out if this is even available
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {
@@ -128,8 +136,12 @@ export class HsCompositionsStatusManagerMickaJointService {
     }
   }
 
-  async delete(endpoint, composition): Promise<void> {
-    await this.HsCompositionsStatusManagerService.delete(endpoint, composition);
+  async delete(endpoint, composition, app): Promise<void> {
+    await this.HsCompositionsStatusManagerService.delete(
+      endpoint,
+      composition,
+      app
+    );
   }
   getCompositionUrls(compData: any): string | Array<string> {
     if (typeof compData == 'string') {

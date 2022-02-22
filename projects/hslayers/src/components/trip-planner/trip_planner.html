@@ -2,10 +2,11 @@
   <hs-panel-header
     name="tripPlaner"
     [title]="'PANEL_HEADER.TRIP_PLANNER' | translate"
+    [app]="data.app"
   ></hs-panel-header>
   <div class="card-body">
-    <hs-trip-planner-layer-selector usage="route" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
-    <hs-trip-planner-layer-selector usage="waypoints" label="{{'TRIP_PLANNER.waypointLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="route" [app]="data.app" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app" label="{{'TRIP_PLANNER.waypointLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
 
     <div
       *ngFor="let waypoint of HsTripPlannerService.waypoints"
@@ -26,7 +27,7 @@
       <div class="p-1">
         <img
           [hidden]="!waypoint.loading"
-          [src]="HsUtilsService.getAjaxLoaderIcon()"
+          [src]="HsUtilsService.getAjaxLoaderIcon(data.app)"
         />
       </div>
       <div class="p-1" style="height: 1.7em">
@@ -35,7 +36,7 @@
       <div class="p-1">
         <a
           class="p-1"
-          (click)="HsTripPlannerService.removeWaypoint(waypoint)"
+          (click)="HsTripPlannerService.removeWaypoint(waypoint, data.app)"
           data-toggle="tooltip"
           [title]="'TRIP_PLANNER.removeWaypoint' | translate"
         >

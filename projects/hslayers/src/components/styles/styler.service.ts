@@ -56,13 +56,8 @@ export class HsStylerService {
 
   sld: string;
 
-  pin_white_blue = new Style({
-    image: new Icon({
-      src: this.hsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
-      crossOrigin: 'anonymous',
-      anchor: [0.5, 1],
-    }),
-  });
+  pin_white_blue;
+  pin_white_blue_highlight;
 
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
@@ -73,15 +68,40 @@ export class HsStylerService {
     public sanitizer: DomSanitizer,
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService
-  ) {
-    this.hsMapService.loaded().then(() => this.init());
-  }
+  ) {}
 
-  async init(): Promise<void> {
+  async init(app: string): Promise<void> {
+    await this.hsMapService.loaded(app);
+    this.pin_white_blue = new Style({
+      image: new Icon({
+        src:
+          this.hsUtilsService.getAssetsPath(app) + 'img/pin_white_blue32.png',
+        crossOrigin: 'anonymous',
+        anchor: [0.5, 1],
+      }),
+    });
+    this.pin_white_blue_highlight = (
+      feature: Feature<Geometry>,
+      resolution
+    ): Array<Style> => {
+      return [
+        new Style({
+          image: new Icon({
+            src: getHighlighted(feature)
+              ? this.hsUtilsService.getAssetsPath(app) +
+                'img/pin_white_red32.png'
+              : this.hsUtilsService.getAssetsPath(app) +
+                'img/pin_white_blue32.png',
+            crossOrigin: 'anonymous',
+            anchor: [0.5, 1],
+          }),
+        }),
+      ];
+    };
     for (const layer of this.hsMapService
-      .getLayersArray()
+      .getLayersArray(app)
       .filter((layer) => this.hsLayerUtilsService.isLayerVectorLayer(layer))) {
-      this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
+      this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>, app);
     }
     this.hsEventBusService.layerAdditions.subscribe(
       (layerDescriptor: HsLayerDescriptor) => {
@@ -89,29 +109,13 @@ export class HsStylerService {
           this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
           this.initLayerStyle(
-            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>
+            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>,
+            app
           );
         }
       }
     );
   }
-
-  pin_white_blue_highlight = (
-    feature: Feature<Geometry>,
-    resolution
-  ): Array<Style> => {
-    return [
-      new Style({
-        image: new Icon({
-          src: getHighlighted(feature)
-            ? this.hsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
-            : this.hsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
-          crossOrigin: 'anonymous',
-          anchor: [0.5, 1],
-        }),
-      }),
-    ];
-  };
 
   isVectorLayer(layer: any): boolean {
     if (this.hsUtilsService.instOf(layer, VectorLayer)) {
@@ -199,7 +203,8 @@ export class HsStylerService {
    * @param layer - OL layer to fill the missing style info
    */
   async initLayerStyle(
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
+    app: string
   ): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
@@ -226,7 +231,10 @@ export class HsStylerService {
       !this.hsUtilsService.isFunction(style) &&
       !Array.isArray(style)
     ) {
-      const customJson = this.hsSaveMapService.serializeStyle(style as Style);
+      const customJson = this.hsSaveMapService.serializeStyle(
+        style as Style,
+        app
+      );
       const sld = (await this.parseStyle(customJson)).sld;
       if (sld) {
         setSld(layer, sld);
@@ -501,10 +509,10 @@ export class HsStylerService {
     };
   }
 
-  async reset(): Promise<void> {
+  async reset(app: string): Promise<void> {
     setSld(this.layer, undefined);
     this.layer.setStyle(createDefaultStyle);
-    await this.initLayerStyle(this.layer);
+    await this.initLayerStyle(this.layer, app);
     await this.fill(this.layer);
     await this.save();
   }

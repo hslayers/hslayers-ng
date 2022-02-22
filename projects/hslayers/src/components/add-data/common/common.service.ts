@@ -17,7 +17,7 @@ export class HsAddDataCommonService {
   url: string;
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
-  serviceLayersCalled: Subject<{url: string}> = new Subject();
+  serviceLayersCalled: Subject<{url: string; app: string}> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -83,9 +83,9 @@ export class HsAddDataCommonService {
   }
 
   //NOTE* - Is this method even needed?
-  srsChanged(srs): any {
+  srsChanged(srs, app: string): any {
     setTimeout(() => {
-      return !this.currentProjectionSupported([srs]);
+      return !this.currentProjectionSupported([srs], app);
     }, 0);
   }
 
@@ -95,7 +95,7 @@ export class HsAddDataCommonService {
    * @param srss - List of supported projections
    * @returns True if map projection is in list, otherwise false
    */
-  currentProjectionSupported(srss: string[]): boolean {
+  currentProjectionSupported(srss: string[], app: string): boolean {
     if (!srss || srss.length === 0) {
       return false;
     }
@@ -105,7 +105,8 @@ export class HsAddDataCommonService {
         found = false;
       } else {
         if (
-          this.hsMapService.map
+          this.hsMapService
+            .getMap(app)
             .getView()
             .getProjection()
             .getCode()

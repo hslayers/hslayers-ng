@@ -48,23 +48,25 @@ export class HsCompositionsMapService {
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
-    this.hsMapService.loaded().then((map) => {
-      map.on('pointermove', (e) => this.mapPointerMoved(e));
-      map.addLayer(this.extentLayer);
-      this.hsSaveMapService.internalLayers.push(this.extentLayer);
-    });
-
-    this.hsEventBusService.mainPanelChanges.subscribe(() => {
+    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (this.extentLayer) {
         if (
-          this.hsLayoutService.mainpanel === 'composition_browser' ||
-          this.hsLayoutService.mainpanel === 'composition'
+          this.hsLayoutService.get(app).mainpanel === 'composition_browser' ||
+          this.hsLayoutService.get(app).mainpanel === 'composition'
         ) {
           this.extentLayer.setVisible(true);
         } else {
           this.extentLayer.setVisible(false);
         }
       }
+    });
+  }
+
+  init(app: string) {
+    this.hsMapService.loaded(app).then((map) => {
+      map.on('pointermove', (e) => this.mapPointerMoved(e));
+      map.addLayer(this.extentLayer);
+      this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
   }
 
@@ -110,10 +112,10 @@ export class HsCompositionsMapService {
     this.extentLayer.getSource().addFeatures([extentFeature]);
   }
 
-  getFeatureRecordAndUnhighlight(feature, selector, list: any[]) {
+  getFeatureRecordAndUnhighlight(feature, selector, list: any[], app: string) {
     const record = list?.find((record) => record.featureId == feature.getId());
     if (
-      this.hsMapService.getLayerForFeature(feature) == this.extentLayer &&
+      this.hsMapService.getLayerForFeature(feature, app) == this.extentLayer &&
       record
     ) {
       setHighlighted(feature, false);

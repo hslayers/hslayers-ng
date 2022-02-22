@@ -1,10 +1,10 @@
 <div class="d-flex flex-column">
     <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
         <button type="button" class="btn rounded btn-primary hs-toolbar-button"
-            (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}">
+            (click)="HsDrawService.saveDrawingLayer(app)" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}">
             {{'COMMON.newDrawingLayer' | translate}}
         </button>
-        <button type="button" (click)="HsDrawService.setType(HsDrawService.type)"
+        <button type="button" (click)="HsDrawService.setType(HsDrawService.type, app)"
             [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}"
             class="btn ms-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
             {{'DRAW.disableDrawing' | translate}}
@@ -23,7 +23,7 @@
             <p class="m-0 p-0">{{'DRAW.drawingTo' | translate}}</p>
             <div ngbDropdown style="max-width: 50%;" placement="bottom">
                 <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
-                    ngbDropdownToggle (click)="HsDrawService.fillDrawableLayers()"
+                    ngbDropdownToggle (click)="HsDrawService.fillDrawableLayers(app)"
                     [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
                     [disabled]="!HsDrawService.hasSomeDrawables">
                     <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
@@ -50,7 +50,7 @@
                                 *ngIf="onlyMineFilterVisible">
                                 <label class="m-0">
                                     <input type="checkbox" name="onlyMine" [(ngModel)]="HsDrawService.onlyMine"
-                                        (ngModelChange)="HsDrawService.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
+                                        (ngModelChange)="HsDrawService.fillDrawableLayers(app); onlyMineFilterVisible = !onlyMineFilterVisible">
                                     {{'COMPOSITIONS.onlyMine' | translate}}
                                 </label>
                             </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <button type="button" *ngIf="HsDrawService.tmpDrawLayer"
-                class="btn btn-light btn-outline-primary border-0 btn-sm" (click)="HsDrawService.saveDrawingLayer()"
+                class="btn btn-light btn-outline-primary border-0 btn-sm" (click)="HsDrawService.saveDrawingLayer(app)"
                 [title]="'DRAW.saveDrawingToLayer' | translate">
                 <i class="glyphicon icon-save-floppy"></i>
             </button>
@@ -77,11 +77,11 @@
                         <div ngbDropdownMenu class="flex-column px-1 py-2">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item" *ngIf="HsDrawService.selectedLayer"
-                                    (click)="HsDrawService.removeLayer(); removeLayersDropdown.close()">{{'COMMON.removeLayer'
+                                    (click)="HsDrawService.removeLayer(app); removeLayersDropdown.close()">{{'COMMON.removeLayer'
                                     |
                                     translate}}</a>
                                 <a class="dropdown-item"
-                                    (click)="HsDrawService.removeMultipleLayers(); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
+                                    (click)="HsDrawService.removeMultipleLayers(app); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
                                     | translate}}</a>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                 </ng-container>
                 <ng-template #deleteButton>
                     <button type="button" class="btn btn-light  btn-outline-danger btn-sm"
-                        (click)="HsDrawService.removeLayer()" [title]="'COMMON.removeLayer' | translate"
+                        (click)="HsDrawService.removeLayer(app)" [title]="'COMMON.removeLayer' | translate"
                         style="border: none !important;">
                         <i class="glyphicon icon-trash"></i>
                     </button>
@@ -130,11 +130,11 @@
                     <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
                         translate}}</label>
                     <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-                        (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
+                        (change)="HsDrawService.toggleBoxSelection(app);selectionTypeDropdown.close()"
                         id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
                 </div>
                 <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
-                    (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()" data-toggle="tooltip"
+                    (click)="HsDrawService.selectAllFeatures(app);selectionTypeDropdown.close()" data-toggle="tooltip"
                     [title]="'DRAW.deselectAllFeatures' | translate">
                     {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
                 </button>
@@ -147,7 +147,7 @@
         <div class="pb-2">
             <div class="form-check">
                 <input class="d-none" type="checkbox" id="hs-draw-snap" [(ngModel)]="HsDrawService.snapActive"
-                    (change)="HsDrawService.toggleSnapping()" />
+                    (change)="HsDrawService.toggleSnapping(app)" />
                 <label for="hs-draw-snap"
                     [ngClass]="{'hs-checkmark':HsDrawService.snapActive,'hs-uncheckmark':!HsDrawService.snapActive}">{{'DRAW.allowSnapping'
                     | translate}}</label>
@@ -158,7 +158,7 @@
                 <div ngbDropdown placement="bottom" class="w-50 d-flex justify-content-center">
                     <button ngbDropdownToggle type="button"
                         class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
-                        (click)=" HsDrawService.fillDrawableLayers() " style=" font-size: small;">
+                        (click)=" HsDrawService.fillDrawableLayers(app) " style=" font-size: small;">
                         <div class="mw-100 text-truncate">{{HsDrawService.snapLayerString()}}</div>
                     </button>
                     <div ngbDropdownMenu style="max-width: 150%;">

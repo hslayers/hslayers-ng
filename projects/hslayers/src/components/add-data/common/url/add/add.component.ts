@@ -12,6 +12,7 @@ import {
 })
 export class HsUrlAddComponent {
   @Input() services?: Service[];
+  @Input() app = 'default';
   @Input() layers: {name: string; checked: boolean}[];
   @Input() injectedService: HsUrlTypeServiceModel;
   _selectAll = true;
@@ -43,11 +44,11 @@ export class HsUrlAddComponent {
 
   add(): void {
     if (this.layers) {
-      const layers = this.injectedService.getLayers(true);
-      this.injectedService.addLayers(layers);
+      const layers = this.injectedService.getLayers(this.app, true);
+      this.injectedService.addLayers(layers, this.app);
     }
     if (this.injectedService.addServices && this.services) {
-      this.injectedService.addServices(this.services);
+      this.injectedService.addServices(this.services, this.app);
     }
     //FIXME: to implement
     // this.injectedService.zoomToLayers();

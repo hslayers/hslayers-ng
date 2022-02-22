@@ -15,19 +15,19 @@ export class HsQueryWmtsService {
     private hsUtilsService: HsUtilsService
   ) {}
 
-  async parseRequestUrl(layer, coordinate) {
+  async parseRequestUrl(layer, coordinate, app: string) {
     const source = layer.getSource();
 
     coordinate = transform(
       coordinate,
-      this.hsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(app),
       source.getProjection()
     );
 
     const tileGrid = source.getTileGrid();
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
-      this.hsMapService.map.getView().getResolution()
+      this.hsMapService.getMap(app).getView().getResolution()
     );
 
     const tileExtent = tileGrid.getTileCoordExtent(tileCoord);

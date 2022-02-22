@@ -26,7 +26,7 @@ export class HsCompositionsMickaService {
     public HsLanguageService: HsLanguageService
   ) {}
 
-  getCompositionsQueryUrl(endpoint, params, bbox): string {
+  getCompositionsQueryUrl(endpoint, params, bbox, app: string): string {
     const query = params.query;
     const bboxDelimiter =
       endpoint.url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
@@ -78,10 +78,10 @@ export class HsCompositionsMickaService {
       params.start +
       '&limit=' +
       params.limit;
-    tmp = this.HsUtilsService.proxify(tmp);
+    tmp = this.HsUtilsService.proxify(tmp, app);
     return tmp;
   }
-  compositionsReceived(endpoint: HsEndpoint, response: any): void {
+  compositionsReceived(endpoint: HsEndpoint, response: any, app: string): void {
     if (!response.records) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation('COMMON.warning'),
@@ -113,7 +113,7 @@ export class HsCompositionsMickaService {
       if (response.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.HsMapService.getCurrentProj()
+          this.HsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
           record.featureId = extentFeature.getId();
@@ -127,10 +127,11 @@ export class HsCompositionsMickaService {
     endpoint: HsEndpoint,
     params: any,
     extentFeatureCreated,
-    bbox: any
+    bbox: any,
+    app: string
   ): Observable<any> {
     params = this.checkForParams(endpoint, params);
-    const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
+    const url = this.getCompositionsQueryUrl(endpoint, params, bbox, app);
     endpoint.compositionsPaging.loaded = false;
 
     endpoint.httpCall = this.$http
@@ -141,7 +142,7 @@ export class HsCompositionsMickaService {
         timeout(5000),
         map((response: any) => {
           response.extentFeatureCreated = extentFeatureCreated;
-          this.compositionsReceived(endpoint, response);
+          this.compositionsReceived(endpoint, response, app);
         }),
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(

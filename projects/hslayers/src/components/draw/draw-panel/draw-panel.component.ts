@@ -1,5 +1,5 @@
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {HsDrawService} from '../draw.service';
 import {HsLanguageService} from '../../language/language.service';
@@ -21,12 +21,13 @@ export class DrawPanelComponent {
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
   onlyMineFilterVisible = false;
   getTitle = getTitle;
+  @Input() app = 'default';
 
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
-    public HsLanguageService: HsLanguageService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   translateString(module: string, text: string): string {
@@ -34,30 +35,33 @@ export class DrawPanelComponent {
   }
 
   changeSnapSource(layer): void {
-    this.HsDrawService.changeSnapSource(layer);
+    this.HsDrawService.changeSnapSource(layer, this.app);
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what);
+    const type = this.HsDrawService.setType(what, this.app);
     if (type) {
-      this.activateDrawing(this.hsLayoutService.panelVisible('draw'));
+      this.activateDrawing(this.hsLayoutService.panelVisible('draw', this.app));
     }
   }
 
   activateDrawing(withStyle?): void {
-    this.HsDrawService.activateDrawing({
-      changeStyle: withStyle ? () => this.changeStyle() : undefined,
-    });
+    this.HsDrawService.activateDrawing(
+      {
+        changeStyle: withStyle ? () => this.changeStyle() : undefined,
+      },
+      this.app
+    );
   }
 
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer);
+    this.HsDrawService.selectLayer(layer, this.app);
   }
 
   updateStyle(): void {
     this.HsDrawService.updateStyle(() => this.changeStyle());
   }
-  
+
   /**
    * @param {Event} e optional parameter passed when changeStyle is called
    * for 'ondrawend' event features
@@ -65,7 +69,7 @@ export class DrawPanelComponent {
    * hs.styler.colorDirective
    * @returns {Array} Array of style definitions
    */
-   changeStyle(e = null): Style {
+  changeStyle(e = null): Style {
     const newStyle = new Style({
       stroke: new Stroke({
         color: this.fillcolor['background-color'],

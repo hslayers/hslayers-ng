@@ -29,14 +29,14 @@ export class HsQueryPopupBaseService {
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {}
 
-  fillFeatures(features: Feature<Geometry>[]) {
+  fillFeatures(features: Feature<Geometry>[], app: string) {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
     this.zone.run(() => {
       this.featuresUnderMouse = features;
       if (this.featuresUnderMouse.length) {
         const layersFound = this.hsUtilsService.removeDuplicates(
           this.featuresUnderMouse.map((f) =>
-            this.hsMapService.getLayerForFeature(f)
+            this.hsMapService.getLayerForFeature(f, app)
           ),
           'title'
         );
@@ -49,7 +49,7 @@ export class HsQueryPopupBaseService {
               title: getTitle(l),
               layer: l,
               features: this.featuresUnderMouse.filter(
-                (f) => this.hsMapService.getLayerForFeature(f) == l
+                (f) => this.hsMapService.getLayerForFeature(f, app) == l
               ),
               panelObserver: needSpecialWidgets
                 ? new ReplaySubject<HsPanelItem>()
@@ -66,6 +66,7 @@ export class HsQueryPopupBaseService {
             }
             this.hsQueryPopupWidgetContainerService.initWidgets(
               widgets,
+              app,
               layer.panelObserver
             );
           }
@@ -83,9 +84,9 @@ export class HsQueryPopupBaseService {
   /**
    * @param feature -
    */
-  serializeFeatureAttributes(feature: Feature<Geometry>): any[] {
+  serializeFeatureAttributes(feature: Feature<Geometry>, app: string): any[] {
     const attributesForHover = [];
-    const layer = this.hsMapService.getLayerForFeature(feature);
+    const layer = this.hsMapService.getLayerForFeature(feature, app);
     if (layer === undefined) {
       return;
     }

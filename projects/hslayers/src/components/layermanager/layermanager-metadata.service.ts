@@ -75,10 +75,13 @@ export class HsLayerManagerMetadataService {
    * Adds hasSublayers parameter if layer has sub-layers
    * @param layerDescriptor - Selected layer
    */
-  async fillMetadata(layerDescriptor: HsLayerDescriptor): Promise<void> {
+  async fillMetadata(
+    layerDescriptor: HsLayerDescriptor,
+    app: string
+  ): Promise<void> {
     const layer = layerDescriptor.layer;
     try {
-      await this.queryMetadata(layerDescriptor);
+      await this.queryMetadata(layerDescriptor, app);
     } catch (error) {
       this.hsLog.warn(`Error while querying metadata ${error}`);
     }
@@ -112,17 +115,19 @@ export class HsLayerManagerMetadataService {
    * @returns {any}
    * @description Looks for maxScaleDenominator in property object
    */
-  searchForScaleDenominator(properties: any) {
+  searchForScaleDenominator(properties: any, app: string) {
     let maxResolution = properties.MaxScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
-          properties.MaxScaleDenominator
+          properties.MaxScaleDenominator,
+          app
         )
       : null;
 
     //TODO: Currently we are not using minResolution, but should. That would require rewriting this function to return structure of {minRes, maxRes}
     const minResolution = properties.MinScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
-          properties.MinScaleDenominator
+          properties.MinScaleDenominator,
+          app
         )
       : 0;
 
@@ -130,7 +135,7 @@ export class HsLayerManagerMetadataService {
     if (layers) {
       for (const sublayer of layers) {
         if (sublayer.Layer) {
-          const subResolution = this.searchForScaleDenominator(sublayer);
+          const subResolution = this.searchForScaleDenominator(sublayer, app);
           maxResolution =
             subResolution > maxResolution ? subResolution : maxResolution;
         } else {
@@ -139,7 +144,8 @@ export class HsLayerManagerMetadataService {
           if (sublayer.MaxScaleDenominator) {
             sublayer.maxResolution =
               this.HsLayerUtilsService.calculateResolutionFromScale(
-                sublayer.MaxScaleDenominator
+                sublayer.MaxScaleDenominator,
+                app
               );
             if (
               maxResolution < sublayer.maxResolution &&
@@ -147,7 +153,8 @@ export class HsLayerManagerMetadataService {
             ) {
               maxResolution =
                 this.HsLayerUtilsService.calculateResolutionFromScale(
-                  sublayer.MaxScaleDenominator
+                  sublayer.MaxScaleDenominator,
+                  app
                 );
             }
           } else if (!sublayer.maxResolution) {
@@ -185,7 +192,8 @@ export class HsLayerManagerMetadataService {
   parseWmsCaps(
     layerDescriptor: HsLayerDescriptor,
     layerName: string,
-    caps: WMSGetCapabilitiesResponse
+    caps: WMSGetCapabilitiesResponse,
+    app: string
   ): void {
     const olLayer = layerDescriptor.layer;
     const legends: string[] = [];
@@ -208,7 +216,9 @@ export class HsLayerManagerMetadataService {
       if (getCachedCapabilities(olLayer) === undefined) {
         layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
           maxResolution: Math.max(
-            ...layerObjs.map((layer) => this.searchForScaleDenominator(layer))
+            ...layerObjs.map((layer) =>
+              this.searchForScaleDenominator(layer, app)
+            )
           ),
           Layer: layerObjs,
         });
@@ -228,7 +238,7 @@ export class HsLayerManagerMetadataService {
         this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
       }
       if (layerObj.Layer && getSubLayers(olLayer)) {
-        layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+        layerObj.maxResolution = this.searchForScaleDenominator(layerObj, app);
         /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. */
         const subLayerArray = getSubLayers(olLayer).split(',');
         layerObj.Layer = layerObj.Layer.filter((l) =>
@@ -289,21 +299,27 @@ export class HsLayerManagerMetadataService {
    * @param layerDescriptor - Selected layer
    * @returns Promise
    */
-  async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
+  async queryMetadata(
+    layerDescriptor: HsLayerDescriptor,
+    app: string
+  ): Promise<boolean> {
     const layer = layerDescriptor.layer;
     const url = this.HsLayerUtilsService.getURL(layer);
     if (!url) {
       return;
     }
     if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
-      const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
+      const wrapper = await this.HsArcgisGetCapabilitiesService.request(
+        url,
+        app
+      );
       if (wrapper.error) {
         return wrapper.response;
       } else {
         this.parseArcGisCaps(layerDescriptor, wrapper.response);
       }
     } else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
-      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
+      const wrapper = await this.HsWmsGetCapabilitiesService.request(url, app);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
         return wrapper.response;
@@ -313,7 +329,7 @@ export class HsLayerManagerMetadataService {
       const params = this.HsLayerUtilsService.getLayerParams(layer);
       const layerNameInParams: string = params.LAYERS;
 
-      this.parseWmsCaps(layerDescriptor, layerNameInParams, caps);
+      this.parseWmsCaps(layerDescriptor, layerNameInParams, caps, app);
       if (getSubLayers(layer)) {
         /* When capabilities have been queried, it's safe to override LAYERS
          param now to not render the container layer, but sublayers.*/
@@ -329,7 +345,8 @@ export class HsLayerManagerMetadataService {
           return;
         }
         const maxResolution = this.searchForScaleDenominator(
-          layer.getProperties()
+          layer.getProperties(),
+          app
         );
         if (maxResolution) {
           layer.setMaxResolution(maxResolution);
@@ -339,7 +356,7 @@ export class HsLayerManagerMetadataService {
     }
     //WMTS
     else if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
-      const wrapper = await this.HsWmtsGetCapabilitiesService.request(url);
+      const wrapper = await this.HsWmtsGetCapabilitiesService.request(url, app);
       if (wrapper.error) {
         return wrapper.response;
       } else {
@@ -357,7 +374,10 @@ export class HsLayerManagerMetadataService {
     //WFS and vector
     else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (url) {
-        const wrapper = await this.HsWfsGetCapabilitiesService.request(url);
+        const wrapper = await this.HsWfsGetCapabilitiesService.request(
+          url,
+          app
+        );
         if (wrapper.error) {
           return wrapper.response;
         } else {

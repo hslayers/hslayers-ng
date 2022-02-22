@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -18,7 +18,8 @@ import {getTitle} from '../../../common/layer-extensions';
   selector: 'hs-query-feature-list',
   templateUrl: './feature-list.component.html',
 })
-export class HsQueryFeatureListComponent {
+export class HsQueryFeatureListComponent implements OnInit {
+  @Input() app = 'default';
   exportMenuVisible;
   selectedFeaturesVisible = true;
   exportFormats: exportFormats[] = [
@@ -53,6 +54,10 @@ export class HsQueryFeatureListComponent {
     public hsQueryBaseService: HsQueryBaseService
   ) {}
 
+  ngOnInit(): void {
+    this.hsFeatureCommonService.init(this.app);
+  }
+
   olFeatureArray(): Feature<Geometry>[] {
     return this.hsQueryBaseService.data.features
       .map((feature) => feature.feature)
@@ -69,10 +74,11 @@ export class HsQueryFeatureListComponent {
     this[beingToggled] = !this[beingToggled];
   }
 
-  toggleExportMenu(): void {
+  toggleExportMenu(app: string): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeatureArray()
+      this.olFeatureArray(),
+      app
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -90,15 +96,16 @@ export class HsQueryFeatureListComponent {
     this.editMenuVisible = !this.editMenuVisible;
   }
 
-  moveOrCopyFeature(): void {
+  moveOrCopyFeature(app: string): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       this.olFeatureArray(),
-      this.selectedLayer
+      this.selectedLayer,
+      app
     );
   }
 
-  async removeAllSelectedFeatures(): Promise<void> {
+  async removeAllSelectedFeatures(app: string): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -113,7 +120,7 @@ export class HsQueryFeatureListComponent {
       for (const feature of this.hsQueryBaseService.data.features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
-          this.hsQueryVectorService.removeFeature(feature.feature);
+          this.hsQueryVectorService.removeFeature(feature.feature, app);
         }, 250);
       }
     }

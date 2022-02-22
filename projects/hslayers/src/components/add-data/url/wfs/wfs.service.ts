@@ -45,8 +45,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       'EPSG:4326',
     ];
 
-    this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.data.map_projection = this.hsMapService.map
+    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
+      this.data.map_projection = this.hsMapService
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -79,6 +80,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
+    app: string,
     style?: string
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
@@ -89,11 +91,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       return;
     }
     try {
-      const bbox = await this.parseCapabilities(wrapper.response);
+      const bbox = await this.parseCapabilities(wrapper.response, app);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        const collection = this.getLayers(true, style);
-        this.zoomToBBox(bbox);
+        const collection = this.getLayers(app, true, style);
+        this.zoomToBBox(bbox, app);
         return collection;
       }
     } catch (e) {
@@ -105,7 +107,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Parse information received in WFS getCapabilities response
    * @param response - A stringified XML response to getCapabilities request
    */
-  async parseCapabilities(response: string): Promise<any> {
+  async parseCapabilities(response: string, app: string): Promise<any> {
     try {
       this.loadingFeatures = false;
 
@@ -181,7 +183,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       if (!this.hsAddDataCommonService.layerToSelect) {
         setTimeout(() => {
           try {
-            this.parseFeatureCount();
+            this.parseFeatureCount(app);
           } catch (e) {
             throw new Error(e);
           }
@@ -214,7 +216,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Parse layer feature count and set feature limits
    */
-  parseFeatureCount(): void {
+  parseFeatureCount(app: string): void {
     for (const layer of this.data.layers) {
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
@@ -228,7 +230,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       ].join('?');
 
       this.http
-        .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
+        .get(this.hsUtilsService.proxify(url, app), {responseType: 'text'})
         .subscribe(
           (response: any) => {
             const oParser = new DOMParser();
@@ -300,11 +302,15 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  getLayers(checkedOnly?: boolean, style?: string): Layer<Source>[] {
+  getLayers(
+    app: string,
+    checkedOnly?: boolean,
+    style?: string
+  ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.getLayersRecursively(layer, {style}, collection);
+      this.getLayersRecursively(layer, {style}, collection, app);
     }
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
@@ -322,23 +328,35 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   getLayersRecursively(
     layer,
     options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
+    app: string
   ): void {
     if (!this.data.add_all || layer.checked) {
-      const newLayer = this.getLayer(layer, {
-        layerName: layer.Name,
-        folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-        crs: this.data.srs,
-        sld: options.style?.includes('StyledLayerDescriptor')
-          ? options.style
-          : undefined,
-        qml: options.style?.includes('qgis') ? options.style : undefined,
-      });
+      const newLayer = this.getLayer(
+        layer,
+        {
+          layerName: layer.Name,
+          folder: this.hsUtilsService.undefineEmptyString(
+            this.data.folder_name
+          ),
+          crs: this.data.srs,
+          sld: options.style?.includes('StyledLayerDescriptor')
+            ? options.style
+            : undefined,
+          qml: options.style?.includes('qgis') ? options.style : undefined,
+        },
+        app
+      );
       collection.push(newLayer);
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.getLayersRecursively(sublayer, {style: options.style}, collection);
+        this.getLayersRecursively(
+          sublayer,
+          {style: options.style},
+          collection,
+          app
+        );
       }
     }
   }
@@ -350,7 +368,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param folder - name
    * @param srs - of the layer
    */
-  getLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: addLayerOptions, app: string): Layer<Source> {
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -361,15 +379,23 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         qml: options.qml,
         wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       },
-      source: new WfsSource(this.hsUtilsService, this.http, {
-        data_version: this.data.version,
-        output_format: this.data.output_format,
-        crs: options.crs,
-        provided_url:
-          this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
-        layer_name: options.layerName,
-        map_projection: this.hsMapService.map.getView().getProjection(),
-      }),
+      source: new WfsSource(
+        this.hsUtilsService,
+        this.http,
+        {
+          data_version: this.data.version,
+          output_format: this.data.output_format,
+          crs: options.crs,
+          provided_url:
+            this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+          layer_name: options.layerName,
+          map_projection: this.hsMapService
+            .getMap(app)
+            .getView()
+            .getProjection(),
+        },
+        app
+      ),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });
@@ -379,14 +405,14 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and add them to the map
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.map.addLayer(l);
+      this.hsMapService.getMap(app).addLayer(l);
     }
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', app);
   }
 
-  private zoomToBBox(bbox: any) {
+  private zoomToBBox(bbox: any, app: string) {
     if (!bbox) {
       return;
     }
@@ -399,7 +425,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       ];
     }
     if (!this.data.map_projection) {
-      this.data.map_projection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -407,7 +434,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
     const extent = transformExtent(bbox, 'EPSG:4326', this.data.map_projection);
     if (extent) {
-      this.hsMapService.fitExtent(extent);
+      this.hsMapService.fitExtent(extent, app);
     }
   }
 }

@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   NgZone,
   OnDestroy,
   ViewChild,
@@ -23,6 +24,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;
+  @Input() app = 'default';
   unregisterMapSyncCenterHandlerSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
@@ -38,14 +40,15 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       });
   }
   ngAfterViewInit(): void {
-    this.HsMapService.mapElement = this.map.nativeElement;
     const visibleLayersParam = this.HsPermalinkUrlService.getParamValue(
       HS_PRMS.visibleLayers
     );
     if (visibleLayersParam) {
       this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
-    this.zone.runOutsideAngular(() => this.HsMapService.init());
+    this.zone.runOutsideAngular(() =>
+      this.HsMapService.init(this.map.nativeElement, this.app)
+    );
     const pos = this.HsPermalinkUrlService.getParamValues([
       HS_PRMS.x,
       HS_PRMS.y,
@@ -55,17 +58,17 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       this.HsMapService.moveToAndZoom(
         parseFloat(pos[HS_PRMS.x]),
         parseFloat(pos[HS_PRMS.y]),
-        parseInt(pos[HS_PRMS.zoom])
+        parseInt(pos[HS_PRMS.zoom]),
+        this.app
       );
     }
-
     if (
       this.HsPermalinkUrlService.getParamValue(HS_PRMS.pureMap) ||
-      this.HsConfig.pureMap == true
+      this.HsConfig.get(this.app).pureMap == true
     ) {
-      this.HsCoreService.puremapApp = true;
+      this.HsCoreService.setPuremapApp(true, this.app);
     }
-    this.HsMapService.map.updateSize();
+    this.HsMapService.getMap(this.app).updateSize();
   }
 
   ngOnDestroy(): void {
@@ -76,17 +79,18 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
    * This gets called from Cesium map, to
    * synchronize center and resolution between Ol and Cesium maps
    */
-  onCenterSync(data?) {
+  onCenterSync(app: string, data?) {
     const center = data.center;
     if (!center) {
       return;
     }
-    const toProj = this.HsMapService.getCurrentProj();
+    const toProj = this.HsMapService.getCurrentProj(app);
     const transformed = transform([center[0], center[1]], 'EPSG:4326', toProj);
     this.HsMapService.moveToAndZoom(
       transformed[0],
       transformed[1],
-      this.zoomForResolution(center[2])
+      this.zoomForResolution(center[2]),
+      this.app
     );
   }
 

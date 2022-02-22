@@ -11,6 +11,6 @@ export class HsToolbarPanelBaseComponent implements HsPanelComponent {
   data: any;
   constructor(public hsLayoutService: HsLayoutService) {}
   isVisible(): boolean {
-    return this.hsLayoutService.componentEnabled(this.name);
+    return this.hsLayoutService.componentEnabled(this.name, this.data.app);
   }
 }

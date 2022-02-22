@@ -34,9 +34,10 @@ export class HsEventBusService {
    * @event mapResets
    */
   mapResets: Subject<void> = new Subject();
-  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
+  layerManagerUpdates: Subject<{layer: Layer<Source> | void; app: string}> =
+    new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
-  compositionDeletes: Subject<any> = new Subject();
+  compositionDeletes: Subject<{composition; app: string}> = new Subject();
   /**
    * Fires when composition is loaded or not loaded with Error message
    * @event compositionLoads
@@ -74,6 +75,7 @@ export class HsEventBusService {
    */
   layerDimensionDefinitionChanges: Subject<{
     layer: Layer<Source>;
+    app: string;
   }> = new Subject();
   /**
    * Used to listen for changes of dimension settings in layermanager-dimensions component
@@ -95,15 +97,15 @@ export class HsEventBusService {
    * replaces 'core.mainpanel_changed'
    * @event mainPanelChanges
    */
-  mainPanelChanges: Subject<string | void> = new Subject();
+  mainPanelChanges: Subject<{which?: string; app: string}> = new Subject();
   /**
    * replaces 'measure.drawStart'
    */
-  measurementStarts: Subject<void> = new Subject();
+  measurementStarts: Subject<{app: string}> = new Subject();
   /**
    * replaces 'measure.drawEnd'
    */
-  measurementEnds: Subject<void> = new Subject();
+  measurementEnds: Subject<{app: string}> = new Subject();
   cesiumLoads: Subject<any> = new Subject();
   cesiumResizes: Subject<any> = new Subject();
   zoomTo: Subject<any> = new Subject();
@@ -112,7 +114,7 @@ export class HsEventBusService {
    * Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
    * @event mapExtentChanges
    */
-  mapExtentChanges: Subject<any> = new Subject();
+  mapExtentChanges: Subject<{e; app: string}> = new Subject();
   mapCenterSynchronizations: Subject<any> = new Subject();
   mapLibraryChanges: Subject<any> = new Subject();
   /**
@@ -120,11 +122,12 @@ export class HsEventBusService {
    */
   cesiumTimeLayerChanges: Subject<any> = new Subject();
   layoutResizes: Subject<any> = new Subject();
-  layoutLoads: Subject<{element: any; innerElement: string}> = new Subject();
+  layoutLoads: Subject<{element: any; innerElement: string; app: string}> =
+    new Subject();
   /**
    * replaces 'map.loaded'
    */
-  olMapLoads: Subject<Map> = new Subject();
+  olMapLoads: Subject<{map: Map; app: string}> = new Subject();
   /**
    * Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
@@ -145,7 +148,7 @@ export class HsEventBusService {
   /**
    * replaces 'mapClicked'
    */
-  mapClicked: Subject<any> = new Subject();
+  mapClicked: Subject<{coordinates; app: string}> = new Subject();
   /**
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl

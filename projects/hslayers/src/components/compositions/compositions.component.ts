@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -8,6 +8,7 @@ import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -22,7 +23,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   keywordsVisible = false;
   themesVisible = false;
@@ -45,31 +46,38 @@ export class HsCompositionsComponent
     public hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public hsLaymanService: HsLaymanService,
-    hsSidebarService: HsSidebarService,
-    hsLanguageService: HsLanguageService
+    public hsSidebarService: HsSidebarService,
+    public hsLanguageService: HsLanguageService,
+    public hsEventBusService: HsEventBusService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'composition_browser',
-      module: 'hs.compositions',
-      order: 3,
-      fits: true,
-      title: () =>
-        hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
-      description: () =>
-        hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.MAPCOMPOSITIONS'
-        ),
-      icon: 'icon-map',
-    });
     this.loadFilteredCompositions = () =>
-      hsCompositionsCatalogueService.loadFilteredCompositions();
+      hsCompositionsCatalogueService.loadFilteredCompositions(this.data.app);
     this.notSavedCompositionLoadingSubscription =
       this.hsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
         this.hsCompositionsService.compositionToLoad = {url, title: ''};
         this.loadUnsavedDialogBootstrap(url, '');
       });
   }
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'composition_browser',
+      module: 'hs.compositions',
+      order: 3,
+      fits: true,
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
+      description: () =>
+        this.hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.MAPCOMPOSITIONS'
+        ),
+      icon: 'icon-map',
+    });
+    //this.hsCommonEndpointsService.init(this.data.app);
+    this.hsCompositionsService.init(this.data.app);
+    this.hsCompositionsMapService.init(this.data.app);
+  }
+
   ngOnDestroy(): void {
     this.notSavedCompositionLoadingSubscription.unsubscribe();
   }
@@ -93,12 +101,14 @@ export class HsCompositionsComponent
     if (this.hsCompositionsParserService.composition_edited == true) {
       this.hsCompositionsService.notSavedCompositionLoading.next(url);
     } else {
-      this.hsCompositionsService.loadComposition(url, true).then((_) => {
-        this.addCompositionUrlVisible = false;
-      });
+      this.hsCompositionsService
+        .loadComposition(url, this.data.app, true)
+        .then((_) => {
+          this.addCompositionUrlVisible = false;
+        });
     }
   }
-  handleFileSelect(evt): void {
+  handleFileSelect(evt, app: string): void {
     const files = evt.target.files; // FileList object
     for (const f of files) {
       if (!f.type.match('application/json')) {
@@ -109,7 +119,8 @@ export class HsCompositionsComponent
         const json = JSON.parse(<string>reader.result);
         await this.hsCompositionsParserService.loadCompositionObject(
           json,
-          true
+          true,
+          app
         );
       };
       reader.readAsText(f);
@@ -124,6 +135,7 @@ export class HsCompositionsComponent
       HsCompositionsOverwriteDialogComponent,
       {
         composition_name_to_be_loaded: title,
+        app: this.data.app,
       }
     );
   }
@@ -143,13 +155,13 @@ export class HsCompositionsComponent
     this.themesVisible = false;
     this.keywordsVisible = false;
     this.selectedCompId = '';
-    this.hsCompositionsCatalogueService.clearFilters();
+    this.hsCompositionsCatalogueService.clearFilters(this.data.app);
   }
   changeUrlButtonVisible(): void {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
   openSaveMapPanel(): void {
-    this.hsLayoutService.setMainPanel('saveMap');
+    this.hsLayoutService.setMainPanel('saveMap', this.data.app);
   }
   compositionClicked(composition): void {
     if (

@@ -46,7 +46,12 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     layer: HsAddDataLayerDescriptor,
     type: string
   ): void {
-    this.hsAddDataCatalogueService.addLayerToMap(ds, layer, type);
+    this.hsAddDataCatalogueService.addLayerToMap(
+      ds,
+      layer,
+      this.data.app,
+      type
+    );
     this.close();
   }
 

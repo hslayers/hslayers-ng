@@ -18,7 +18,7 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 })
 export class HsAddDataService {
   dsSelected: DatasetType;
-  datasetSelected: Subject<{type: DatasetType}> = new Subject();
+  datasetSelected: Subject<{type: DatasetType; app: string}> = new Subject();
   /**
    * Cancels any external url data request from datasources panel
    */
@@ -31,9 +31,13 @@ export class HsAddDataService {
     public hsCommonLaymanService: HsCommonLaymanService
   ) {}
 
-  addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
+  addLayer(
+    layer: Layer<Source>,
+    app: string,
+    underLayer?: Layer<Source>
+  ): void {
     if (underLayer) {
-      const layers = this.hsMapService.getLayersArray();
+      const layers = this.hsMapService.getLayersArray(app);
       const underZ = underLayer.getZIndex();
       layer.setZIndex(underZ);
       for (const iLayer of layers.filter((l) => !getBase(l))) {
@@ -42,14 +46,14 @@ export class HsAddDataService {
         }
       }
       const ix = layers.indexOf(underLayer);
-      this.hsMapService.map.getLayers().insertAt(ix, layer);
+      this.hsMapService.getMap(app).getLayers().insertAt(ix, layer);
     } else {
-      this.hsMapService.map.addLayer(layer);
+      this.hsMapService.getMap(app).addLayer(layer);
     }
   }
 
-  selectType(type: DatasetType): void {
+  selectType(type: DatasetType, app: string): void {
     this.dsSelected = type;
-    this.datasetSelected.next({type: type});
+    this.datasetSelected.next({type, app});
   }
 }

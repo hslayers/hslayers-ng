@@ -31,6 +31,7 @@ export class HsFeatureInfoComponent
   @Input() data: {
     layerDescriptor: any;
     attributesForHover: any[];
+    app: string;
     service: HsQueryPopupServiceModel;
   };
 
@@ -77,7 +78,7 @@ export class HsFeatureInfoComponent
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.hsQueryVectorService.removeFeature(feature);
+      this.hsQueryVectorService.removeFeature(feature, this.data.app);
       this.data.service.featuresUnderMouse = [];
     }
   }

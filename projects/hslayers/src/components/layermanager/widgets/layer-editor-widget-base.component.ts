@@ -16,8 +16,8 @@ export class HsLayerEditorWidgetBaseComponent implements HsPanelComponent {
   currentLayer: HsLayerDescriptor;
   constructor(hsLayerSelectorService: HsLayerSelectorService) {
     this.currentLayer = hsLayerSelectorService.currentLayer;
-    hsLayerSelectorService.layerSelected.subscribe((layerDescriptor) => {
-      this.currentLayer = layerDescriptor;
+    hsLayerSelectorService.layerSelected.subscribe(({layer, app}) => {
+      this.currentLayer = layer;
     });
   }
   isVisible(): boolean {

@@ -79,22 +79,22 @@ export class HsCompositionsCatalogueService {
       () =>
         (this.filteredEndpoints = this.getFilteredEndpointsForCompositions())
     );
-    hsEventBusService.mainPanelChanges.subscribe(() => {
+    hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (
-        this.hsLayoutService.mainpanel === 'composition_browser' ||
-        this.hsLayoutService.mainpanel === 'composition'
+        this.hsLayoutService.get(app).mainpanel === 'composition_browser' ||
+        this.hsLayoutService.get(app).mainpanel === 'composition'
       ) {
-        this.loadFilteredCompositions();
+        this.loadFilteredCompositions(app);
         this.extentChangeSuppressed = true;
       }
     });
     const extentChangeDebouncer = {};
     this.hsEventBusService.mapExtentChanges.subscribe(
       hsUtilsService.debounce(
-        () => {
+        ({e, app}) => {
           if (
-            (this.hsLayoutService.mainpanel != 'composition_browser' &&
-              this.hsLayoutService.mainpanel != 'composition') ||
+            (this.hsLayoutService.get(app).mainpanel != 'composition_browser' &&
+              this.hsLayoutService.get(app).mainpanel != 'composition') ||
             this.extentChangeSuppressed
           ) {
             this.extentChangeSuppressed = false;
@@ -102,7 +102,7 @@ export class HsCompositionsCatalogueService {
           }
           if (this.filterByExtent) {
             this._zone.run(() => {
-              this.loadFilteredCompositions();
+              this.loadFilteredCompositions(app);
             });
           }
         },
@@ -112,18 +112,20 @@ export class HsCompositionsCatalogueService {
       )
     );
 
-    this.hsEventBusService.compositionDeletes.subscribe((composition) => {
-      //TODO: rewrite
-      const deleteDialog = this.hsLayoutService.contentWrapper.querySelector(
-        '.hs-composition-delete-dialog'
-      );
-      if (deleteDialog) {
-        deleteDialog.parentNode.remove(deleteDialog);
+    this.hsEventBusService.compositionDeletes.subscribe(
+      ({composition, app}) => {
+        //TODO: rewrite
+        const deleteDialog = this.hsLayoutService
+          .get(app)
+          .contentWrapper.querySelector('.hs-composition-delete-dialog');
+        if (deleteDialog) {
+          deleteDialog.parentNode.remove(deleteDialog);
+        }
+        this._zone.run(() => {
+          this.loadFilteredCompositions(app);
+        });
       }
-      this._zone.run(() => {
-        this.loadFilteredCompositions();
-      });
-    });
+    );
 
     this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
       this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
@@ -134,36 +136,36 @@ export class HsCompositionsCatalogueService {
       });
     });
 
-    this.hsCommonLaymanService.authChange.subscribe(() => {
+    this.hsCommonLaymanService.authChange.subscribe(({endpoint, app}) => {
       if (
-        this.hsLayoutService.mainpanel != 'composition_browser' &&
-        this.hsLayoutService.mainpanel != 'composition'
+        this.hsLayoutService.get(app).mainpanel != 'composition_browser' &&
+        this.hsLayoutService.get(app).mainpanel != 'composition'
       ) {
         return;
       }
-      this.loadFilteredCompositions();
+      this.loadFilteredCompositions(app);
     });
   }
   /**
    * Load list of compositions for all endpoints
    * @param suspendLimitCalculation -
    */
-  loadCompositions(suspendLimitCalculation?: boolean): void {
+  loadCompositions(app: string, suspendLimitCalculation?: boolean): void {
     if (this.loadCompositionsQuery) {
       this.loadCompositionsQuery.unsubscribe();
       delete this.loadCompositionsQuery;
     }
     this.clearLoadedData();
     this.dataLoading = true;
-    this.hsMapService.loaded().then(() => {
+    this.hsMapService.loaded(app).then(() => {
       const observables = [];
       for (const endpoint of this.filteredEndpoints) {
-        observables.push(this.loadCompositionFromEndpoint(endpoint));
+        observables.push(this.loadCompositionFromEndpoint(endpoint, app));
       }
       this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
         suspendLimitCalculation
           ? this.createCompositionList()
-          : this.calculateEndpointLimits();
+          : this.calculateEndpointLimits(app);
       });
     });
   }
@@ -171,7 +173,7 @@ export class HsCompositionsCatalogueService {
    * Calculates each endpoint composition request limit, based on the matched compositions ratio
    * from all endpoint matched compositions
    */
-  calculateEndpointLimits(): void {
+  calculateEndpointLimits(app: string): void {
     this.matchedRecords = 0;
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep) => ep.compositionsPaging.matched != 0
@@ -196,30 +198,34 @@ export class HsCompositionsCatalogueService {
     });
     this.recordsPerPage = sumLimits;
     this.listNext = this.recordsPerPage;
-    this.loadCompositions(true);
+    this.loadCompositions(app, true);
   }
   /**
    * Load list of compositions according to current filter values and pager position
    * (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
    * @param ep -
    */
-  loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
-    return this.hsCompositionsService.loadCompositions(ep, {
-      query: this.data.query,
-      sortBy: this.data.sortBy.value,
-      filterByExtent: this.filterByExtent,
-      keywords: this.data.keywords,
-      themes: this.data.themes,
-      type: this.data.type,
-      start: ep.compositionsPaging.start,
-      limit: ep.compositionsPaging.limit,
-      filterByOnlyMine: this.filterByOnlyMine,
-    });
+  loadCompositionFromEndpoint(ep: HsEndpoint, app: string): Observable<any> {
+    return this.hsCompositionsService.loadCompositions(
+      ep,
+      {
+        query: this.data.query,
+        sortBy: this.data.sortBy.value,
+        filterByExtent: this.filterByExtent,
+        keywords: this.data.keywords,
+        themes: this.data.themes,
+        type: this.data.type,
+        start: ep.compositionsPaging.start,
+        limit: ep.compositionsPaging.limit,
+        filterByOnlyMine: this.filterByOnlyMine,
+      },
+      app
+    );
   }
   /**
    * Clear all loaded data and filter endpoint array (if required) before loading compositions
    */
-  loadFilteredCompositions(): void {
+  loadFilteredCompositions(app: string): void {
     this.clearListCounters();
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep: HsEndpoint) => {
@@ -230,7 +236,7 @@ export class HsCompositionsCatalogueService {
         }
       }
     );
-    this.loadCompositions();
+    this.loadCompositions(app);
   }
   /**
    * Creates list of compositions from all endpoints currently available
@@ -296,7 +302,7 @@ export class HsCompositionsCatalogueService {
   /**
    * Load previous list of compositions to display on pager
    */
-  getPreviousRecords(): void {
+  getPreviousRecords(app: string): void {
     if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
@@ -311,13 +317,13 @@ export class HsCompositionsCatalogueService {
           (ep.compositionsPaging.start -= ep.compositionsPaging.limit)
       );
     }
-    this.loadCompositions(true);
+    this.loadCompositions(app, true);
   }
 
   /**
    * Load next list of compositions to display on pager
    */
-  getNextRecords(): void {
+  getNextRecords(app: string): void {
     this.listStart += this.recordsPerPage;
     this.listNext += this.recordsPerPage;
     if (this.listNext > this.matchedRecords) {
@@ -326,18 +332,21 @@ export class HsCompositionsCatalogueService {
     this.filteredEndpoints.forEach(
       (ep) => (ep.compositionsPaging.start += ep.compositionsPaging.limit)
     );
-    this.loadCompositions(true);
+    this.loadCompositions(app, true);
   }
 
-  changeRecordsPerPage(): void {
+  changeRecordsPerPage(app: string): void {
     this.clearListCounters();
-    this.loadCompositions();
+    this.loadCompositions(app);
   }
 
   /**
    * Filters statusmanager endpoint out from rest of the endpoints
    */
   getFilteredEndpointsForCompositions(): HsEndpoint[] {
+    if (this.hsCommonEndpointsService.endpoints == undefined) {
+      return [];
+    }
     return this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );
@@ -345,13 +354,13 @@ export class HsCompositionsCatalogueService {
   /**
    * Clears all filters set for composition list filtering
    */
-  clearFilters(): void {
+  clearFilters(app: string): void {
     this.data.query.title = '';
     this.data.sortBy = SORTBYVALUES[0];
     this.data.type = TYPES[0].name;
     this.data.keywords.forEach((kw) => (kw.selected = false));
     this.data.themes.forEach((th) => (th.selected = false));
     this.filteredEndpoints.push(this.hsLaymanService.getLaymanEndpoint());
-    this.loadFilteredCompositions();
+    this.loadFilteredCompositions(app);
   }
 }

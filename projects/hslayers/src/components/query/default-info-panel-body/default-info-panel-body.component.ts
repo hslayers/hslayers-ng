@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {HsQueryBaseService} from '../query-base.service';
 
@@ -8,6 +8,7 @@ import {HsQueryBaseService} from '../query-base.service';
 })
 export class HsQueryDefaultInfoPanelBodyComponent implements OnInit {
   featureInfoExpanded: boolean;
+  @Input() app = 'default';
   constructor(public hsQueryBaseService: HsQueryBaseService) {}
   ngOnInit(): void {
     this.featureInfoExpanded = true;

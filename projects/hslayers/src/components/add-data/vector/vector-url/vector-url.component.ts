@@ -14,6 +14,8 @@ import {vectorDataObject} from '../vector-data.type';
 })
 export class HsAddDataVectorUrlComponent {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
+  @Input() app: 'default';
+
   data: vectorDataObject;
   constructor(
     public hsHistoryListService: HsHistoryListService,
@@ -31,8 +33,8 @@ export class HsAddDataVectorUrlComponent {
    * Handler for adding non-wms service, file in template.
    */
   async add(): Promise<void> {
-    await this.hsAddDataVectorService.addNewLayer(this.data);
-    this.hsLayoutService.setMainPanel('layermanager');
+    await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
+    this.hsLayoutService.setMainPanel('layermanager', this.app);
     this.setDataToDefault();
   }
   /**

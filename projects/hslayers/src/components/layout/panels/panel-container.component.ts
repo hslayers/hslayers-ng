@@ -30,6 +30,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   /** Miscellaneous data object to set to each of the panels inside this container.
    * This is used if undefined value is passed to the create functions data parameter. */
   @Input() data: any;
+  @Input() app = 'default';
   /**
    * Set this to true to not clear the ReplaySubject on container destruction because
    * panels are added to ReplaySubject from app component and we cant re-add them. */
@@ -92,7 +93,10 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
      * Assign panel width class to a component host first child
      * Used to define panelSpace panel width
      */
-    this.service.setPanelWidth(this.HsConfig.panelWidths, componentRefInstance);
+    this.service.setPanelWidth(
+      this.HsConfig.get(this.app).panelWidths,
+      componentRefInstance
+    );
 
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;

@@ -1,5 +1,5 @@
 import Map from 'ol/Map';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
@@ -18,7 +18,7 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
 })
-export class HsLegendComponent extends HsPanelBaseComponent {
+export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
@@ -30,21 +30,24 @@ export class HsLegendComponent extends HsPanelBaseComponent {
     public hsUtilsService: HsUtilsService,
     public hsQueuesService: HsQueuesService,
     hsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    public hsLanguageService: HsLanguageService,
+    public hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+  }
+
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'legend',
       module: 'hs.legend',
       order: 1,
       fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
+      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
       description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
       icon: 'icon-dotlist',
     });
-    this.hsMapService.loaded().then((map) => this.init(map));
+    this.hsMapService.loaded(this.data.app).then((map) => this.init(map));
   }
 
   /**
@@ -54,7 +57,8 @@ export class HsLegendComponent extends HsPanelBaseComponent {
    */
   async addLayerToLegends(layer: Layer<Source>): Promise<void> {
     const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
-      layer
+      layer,
+      this.data.app
     );
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
@@ -73,9 +77,9 @@ export class HsLegendComponent extends HsPanelBaseComponent {
     }
   }
 
-  rebuildLegends(): void {
+  rebuildLegends(app: string): void {
     this.layerDescriptors = [];
-    this.buildLegendsForLayers(this.hsMapService.map);
+    this.buildLegendsForLayers(this.hsMapService.getMap(app));
   }
 
   filterDescriptors(): any[] {
@@ -160,7 +164,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
     const descriptor = this.findLayerDescriptorBySource(e.target);
     if (descriptor) {
       this.hsLegendService
-        .getLayerLegendDescriptor(descriptor.lyr)
+        .getLayerLegendDescriptor(descriptor.lyr, this.data.app)
         .then((newDescriptor) => {
           if (
             newDescriptor.subLayerLegends != descriptor.subLayerLegends ||

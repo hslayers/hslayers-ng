@@ -8,7 +8,8 @@ import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
   templateUrl: './dialog_overwriteconfirm.html',
 })
 export class HsCompositionsOverwriteDialogComponent
-  implements HsDialogComponent {
+  implements HsDialogComponent
+{
   viewRef: ViewRef;
   data: any;
 
@@ -29,6 +30,7 @@ export class HsCompositionsOverwriteDialogComponent
   overwrite() {
     this.HsCompositionsService.loadComposition(
       this.HsCompositionsService.compositionToLoad.url,
+      this.data.app,
       true
     );
     this.close();
@@ -39,7 +41,7 @@ export class HsCompositionsOverwriteDialogComponent
    * @description Save currently loaded composition first
    */
   save() {
-    this.HsSaveMapManagerService.openPanel(null);
+    this.HsSaveMapManagerService.openPanel(null, this.data.app);
     this.close();
   }
 
@@ -50,6 +52,7 @@ export class HsCompositionsOverwriteDialogComponent
   add() {
     this.HsCompositionsService.loadComposition(
       this.HsCompositionsService.compositionToLoad.url,
+      this.data.app,
       false
     );
     this.close();

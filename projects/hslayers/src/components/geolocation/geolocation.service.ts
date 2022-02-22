@@ -79,10 +79,12 @@ export class HsGeolocationService {
         color: [0x66, 0x66, 0x00, 0.8],
       }),
     });
-    this.HsMapService.loaded().then((map) => this.init(map));
   }
-  getRotate(): any {
-    for (const control of this.HsMapService.map.getControls().getArray()) {
+
+  getRotate(app: string): any {
+    for (const control of this.HsMapService.getMap(app)
+      .getControls()
+      .getArray()) {
       if (control instanceof Rotate) {
         return control;
       }
@@ -93,18 +95,18 @@ export class HsGeolocationService {
    * @public
    * @description Reset all geolocalization parameters concerning position tracking
    */
-  stopTracking(): void {
+  stopTracking(app: string): void {
     this.following = false;
-    const rotate = this.getRotate();
+    const rotate = this.getRotate(app);
     rotate.element.classList.add('hidden');
-    this.HsMapService.map.on('pointermove', () => {
+    this.HsMapService.getMap(app).on('pointermove', () => {
       this.centering = false;
     });
     this.geolocation.setTracking(false);
     if (this.gn !== null) {
       this.gn.stop();
     }
-    this.HsMapService.map.getView().setRotation(0);
+    this.HsMapService.getMap(app).getView().setRotation(0);
   }
 
   /**
@@ -112,12 +114,12 @@ export class HsGeolocationService {
    * @description Toggles tracking/following
    * Takes care of the distinction between click and double-click on mobile
    */
-  toggleTracking(): any {
+  toggleTracking(app: string): any {
     if (this.clicked) {
       this.cancelClick = true;
       if (this.HsLayoutService.sidebarBottom()) {
-        this.HsLayoutService.contentWrapper
-          .querySelector('.hs-locationButton')
+        this.HsLayoutService.get(app)
+          .contentWrapper.querySelector('.hs-locationButton')
           .dispatchEvent(new Event('dblclick'));
       }
       return;
@@ -129,34 +131,36 @@ export class HsGeolocationService {
         this.clicked = false;
         return;
       }
-      if (this.isCentered()) {
+      if (this.isCentered(app)) {
         if (!this.following) {
           //position
-          this.geolocation.on('change:position', () => this.setNewPosition());
+          this.geolocation.on('change:position', () =>
+            this.setNewPosition(app)
+          );
           this.geolocation.setTracking(true);
           this.following = true;
           //rotation
           this.setRotation();
-          this.geolocation.on('change:heading', () => this.newRotation());
+          this.geolocation.on('change:heading', () => this.newRotation(app));
           this.centering = true;
 
-          this.HsMapService.map.on('pointermove', () => {
+          this.HsMapService.getMap(app).on('pointermove', () => {
             this.centering = false;
           });
-          const rotate = this.getRotate();
+          const rotate = this.getRotate(app);
           rotate.element.classList.remove('hidden');
-          this.HsLayoutService.contentWrapper
-            .querySelector('button.ol-rotate')
+          this.HsLayoutService.get(app)
+            .contentWrapper.querySelector('button.ol-rotate')
             .classList.add('active');
         } else {
-          this.HsLayoutService.contentWrapper
-            .querySelector('button.ol-rotate')
+          this.HsLayoutService.get(app)
+            .contentWrapper.querySelector('button.ol-rotate')
             .classList.remove('active');
-          this.stopTracking();
+          this.stopTracking(app);
         }
       } else {
         if (this.geolocation.getPosition()) {
-          this.HsMapService.map
+          this.HsMapService.getMap(app)
             .getView()
             .setCenter(this.geolocation.getPosition());
           this.centering = true;
@@ -173,25 +177,25 @@ export class HsGeolocationService {
    * @public
    * @description Reset all geolocalization parameters
    */
-  stopLocalization(): void {
+  stopLocalization(app: string): void {
     this.localization = false;
-    this.HsMapService.map.removeLayer(this.position_layer);
-    this.stopTracking();
+    this.HsMapService.getMap(app).removeLayer(this.position_layer);
+    this.stopTracking(app);
   }
   /**
    * @public
    * @description Display current position by querying geolocation, once
    */
-  startLocalization(): void {
+  startLocalization(app: string): void {
     if (!this.localization) {
       this.geolocation.setTracking(true);
       this.localization = true;
       this.geolocation.once('change:position', () => {
-        this.setNewPosition();
-        this.HsMapService.map
+        this.setNewPosition(app);
+        this.HsMapService.getMap(app)
           .getView()
           .setCenter(this.geolocation.getPosition());
-        this.HsMapService.map.addLayer(this.position_layer);
+        this.HsMapService.getMap(app).addLayer(this.position_layer);
         this.position_layer.setZIndex(99);
 
         //stop tracking position
@@ -204,9 +208,9 @@ export class HsGeolocationService {
    * @public
    * @description Function which determines whether map is centered on current position or not
    */
-  isCentered(): any {
+  isCentered(app: string): any {
     return (
-      JSON.stringify(this.HsMapService.map.getView().getCenter()) ===
+      JSON.stringify(this.HsMapService.getMap(app).getView().getCenter()) ===
       JSON.stringify(this.positionFeature.getGeometry().getCoordinates())
     );
   }
@@ -214,14 +218,14 @@ export class HsGeolocationService {
    * @public
    * @description Callback function handling geolocation change:position event
    */
-  setNewPosition(): void {
+  setNewPosition(app: string): void {
     const position = this.geolocation.getPosition();
     this.positionFeature.getGeometry().setCoordinates(position);
     this.accuracyFeature
       .getGeometry()
       .setCenterAndRadius(position, this.geolocation.getAccuracy());
     if (this.centering) {
-      this.HsMapService.map.getView().setCenter(position);
+      this.HsMapService.getMap(app).getView().setCenter(position);
     }
   }
   /**
@@ -229,14 +233,14 @@ export class HsGeolocationService {
    * @description Callback function handling geolocation change:heading event
    * @param e
    */
-  newRotation(): void {
+  newRotation(app: string): void {
     this.HsUtilsService.debounce(
       () => {
         const heading = this.geolocation.getHeading()
           ? this.geolocation.getHeading()
           : null;
         if (heading) {
-          this.HsMapService.map.getView().setRotation(heading);
+          this.HsMapService.getMap(app).getView().setRotation(heading);
         }
       },
       150,
@@ -254,9 +258,11 @@ export class HsGeolocationService {
    * @description Init function of service, establish instance of geolocation object and layer.
    * Sets rotate map control.
    */
-  init(map: any): void {
+  async init(app: string): Promise<void> {
+    await this.HsMapService.loaded(app);
+    const map = this.HsMapService.getMap(app);
     this.geolocation = new Geolocation({
-      projection: this.HsMapService.getCurrentProj(),
+      projection: this.HsMapService.getCurrentProj(app),
       trackingOptions: {
         enableHighAccuracy: true,
       },
