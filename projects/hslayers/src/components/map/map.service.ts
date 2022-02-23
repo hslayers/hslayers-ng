@@ -32,7 +32,7 @@ import {
 } from 'ol/interaction';
 import {Feature, Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Group, Layer} from 'ol/layer';
+import {Group, Layer, Tile} from 'ol/layer';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
@@ -72,7 +72,7 @@ export class HsMapService {
     default: {
       map: undefined,
       mapElement: undefined,
-      renderer: undefined
+      renderer: undefined,
     },
   };
   visibleLayersInUrl;
@@ -331,6 +331,17 @@ export class HsMapService {
       const controls = defaultDesktopControls;
       map = new Map({
         controls,
+        layers: [
+          new Tile({
+            source: new OSM(),
+            visible: true,
+            properties: {
+              title: 'OpenStreetMap',
+              base: true,
+              removable: true,
+            },
+          }),
+        ],
         target: mapElement,
         interactions: [],
         view:
