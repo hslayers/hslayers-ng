@@ -1,3 +1,3 @@
-<img *ngIf="legendType === 'image'" [src]="legendImage">
-<div *ngIf="legendType === 'svg'" [innerHtml]="svgContent">
+<img *ngIf="layerLegend.legendType === 'image'" [src]="layerLegend.legendImage">
+<div *ngIf="layerLegend.legendType === 'svg'" [innerHtml]="layerLegend.svgContent">
 </div>
