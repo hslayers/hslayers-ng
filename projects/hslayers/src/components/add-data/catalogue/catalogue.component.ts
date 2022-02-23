@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {DatasetType} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
@@ -19,7 +19,8 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-add-data-catalogue',
   templateUrl: './catalogue.component.html',
 })
-export class HsAddDataCatalogueComponent {
+export class HsAddDataCatalogueComponent implements OnInit {
+  @Input() app = 'default';
   types: any[];
   data: any;
   advancedSearch: boolean;
@@ -47,6 +48,9 @@ export class HsAddDataCatalogueComponent {
     this.loaderImage =
       this.hsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
   }
+  ngOnInit(): void {
+    this.hsAddDataCatalogueService.init(this.app);
+  }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
     this.hsAddDataCatalogueService.selectedLayer =
@@ -68,7 +72,7 @@ export class HsAddDataCatalogueComponent {
   }
 
   queryByFilter(): void {
-    this.hsAddDataCatalogueService.reloadData();
+    this.hsAddDataCatalogueService.reloadData(this.app);
   }
 
   selectType(type: string): void {
@@ -91,7 +95,7 @@ export class HsAddDataCatalogueComponent {
   }
 
   datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {
-    this.hsAddDataCatalogueService.datasetSelect(id_selected);
+    this.hsAddDataCatalogueService.datasetSelect(id_selected, this.app);
     if (endpoint) {
       this.hsAddDataCatalogueService.selectedEndpoint = endpoint;
     }

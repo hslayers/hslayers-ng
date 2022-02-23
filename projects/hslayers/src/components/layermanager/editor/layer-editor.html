@@ -13,11 +13,11 @@
             </form>
             <div class="btn-group m-auto d-flex w-75" *ngIf="currentLayer.visible && getBase(currentLayer.layer)">
                 <button class="btn btn-sm btn-outline-primary  w-50"
-                    (click)="HsLayerManagerService.setGreyscale(currentLayer)"
+                    (click)="HsLayerManagerService.setGreyscale(currentLayer, app)"
                     [ngClass]="{'active' : !currentLayer.grayscale}" data-toggle="tooltip"
                     [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate">{{'COMMON.color' | translate}}</button>
                 <button class="btn btn-sm btn-outline-primary  w-50"
-                    (click)="HsLayerManagerService.setGreyscale(currentLayer)"
+                    (click)="HsLayerManagerService.setGreyscale(currentLayer, app)"
                     [ngClass]="{'active' : currentLayer.grayscale}" data-toggle="tooltip"
                     [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate">{{'LAYERMANAGER.baseMapGallery.grayscale'
                     | translate}}</button>

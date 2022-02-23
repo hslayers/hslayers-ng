@@ -55,7 +55,7 @@ export class HsToolbarComponent
 
   isVisible(): boolean {
     return (
-      this.HsLayoutService.panelEnabled('toolbar') &&
+      this.HsLayoutService.panelEnabled('toolbar', this.data.app) &&
       this.HsLayoutService.componentEnabled('toolbar', this.data.app) &&
       this.HsLayoutService.componentEnabled('guiOverlay', this.data.app)
     );

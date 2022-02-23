@@ -110,11 +110,11 @@ export class HsToastService {
     );
   }
 
-  shown() {
+  shown(app: string) {
     //** Following hack is needed until ngBootstrap supports bootstrap5 fully */
-    for (const toastElement of this.HsLayoutService.contentWrapper.querySelectorAll(
-      '.toast-header .close'
-    )) {
+    for (const toastElement of this.HsLayoutService.get(
+      app
+    ).contentWrapper.querySelectorAll('.toast-header .close')) {
       const classList = toastElement.classList;
       classList.add('btn-close');
       classList.remove('close');

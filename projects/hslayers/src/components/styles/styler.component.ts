@@ -54,8 +54,8 @@ export class HsStylerComponent
       });
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({which}) => {
-        if (which == 'styler') {
+      .subscribe(({which, app}) => {
+        if (which == 'styler' && app == this.data.app) {
           this.hsStylerService.fill(this.hsStylerService.layer);
         }
       });

@@ -420,7 +420,7 @@ export class HsDrawService {
      * added to the layer and layer can't be retrieved from the
      * feature, so they don't appear in Info panel */
     if (
-      this.hsLayoutService.mainpanel != 'draw' &&
+      this.hsLayoutService.get(app).mainpanel != 'draw' &&
       this.hsConfig.get(app).openQueryPanelOnDrawEnd
     ) {
       this.hsLayoutService.setMainPanel('info', app);

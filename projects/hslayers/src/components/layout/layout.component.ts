@@ -47,16 +47,18 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService
   ) {
-    this.HsLayoutService.layoutElement = elementRef.nativeElement;
+    this.HsLayoutService.get(this.app).layoutElement = elementRef.nativeElement;
   }
 
   ngOnInit(): void {
     this.HsLayoutService.init(this.app);
-    this.HsLayoutService.contentWrapper =
+    this.HsLayoutService.get(this.app).contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
     if (this.HsConfig.get(this.app).sidebarPosition === 'left') {
-      this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
-      this.HsLayoutService.sidebarRight = false;
+      this.HsLayoutService.get(this.app).contentWrapper.classList.add(
+        'flex-reverse'
+      );
+      this.HsLayoutService.get(this.app).sidebarRight = false;
     } else if (this.HsConfig.get(this.app).sidebarPosition != 'invisible') {
       this.HsConfig.get(this.app).sidebarPosition = 'right';
     }
@@ -79,7 +81,8 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
+    this.HsLayoutService.get(this.app).layoutElement =
+      this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement.parentElement;
 
     if (window.innerWidth < 767) {

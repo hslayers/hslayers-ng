@@ -76,7 +76,7 @@ export class HsShareService {
                 ),
                 permalink: true,
                 id: this.HsShareUrlService.id,
-                project: this.HsConfig.get(app).project_name,
+                project: this.HsConfig.get(app1).project_name,
                 request: 'save',
               })
             )
@@ -84,7 +84,7 @@ export class HsShareService {
           this.HsShareUrlService.statusSaving = false;
           this.HsShareUrlService.permalinkRequestUrl =
             status_url + '?request=load&id=' + this.HsShareUrlService.id;
-          this.HsShareUrlService.update(app);
+          this.HsShareUrlService.update(app1);
         } catch (ex) {
           this.HsLogService.error('Error saving permalink layers.', ex);
           throw ex;

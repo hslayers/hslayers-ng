@@ -49,7 +49,7 @@ export class HsSidebarService {
      */
     this.buttons = [];
 
-    this.HsEventBusService.mainPanelChanges.subscribe(({app}) => {
+    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       /* NOTE: WE used to update map size only 'if (!HsLayoutService.sidebarExpanded) {' 
       but that leads to blank margin between map and window border 
       (see https://github.com/hslayers/hslayers-ng/issues/1107). Using timer to take
@@ -61,16 +61,16 @@ export class HsSidebarService {
     });
 
     this.HsEventBusService.layoutLoads.subscribe(({app}) => {
-      this.setButtonVisibility();
+      this.setButtonVisibility(app);
       this.setPanelState(this.buttons, app);
       //After initial run update sidebar with each layoutResizes event
       this.HsEventBusService.layoutResizes.subscribe(() => {
-        this.setButtonVisibility();
+        this.setButtonVisibility(app);
       });
     });
   }
 
-  setButtonVisibility() {
+  setButtonVisibility(app: string) {
     this.importantButtons = this.buttons.filter((button) => {
       return (
         button.important != false && this.visibleButtons.includes(button.panel)
@@ -79,10 +79,10 @@ export class HsSidebarService {
     this.numberOfUnimportant =
       this.buttons.length - this.importantButtons.length;
     for (const button of this.importantButtons) {
-      button.fits = this.fitsSidebar(button);
+      button.fits = this.fitsSidebar(button, app);
     }
     if (!this.unimportantExist) {
-      this.HsLayoutService.minisidebar = this.importantButtons.some(
+      this.HsLayoutService.get(app).minisidebar = this.importantButtons.some(
         (b) => b.fits == false
       );
     }
@@ -104,7 +104,7 @@ export class HsSidebarService {
    * @param panelName
    * @param state
    */
-  setButtonImportancy(panelName: string, state: boolean): void {
+  setButtonImportancy(panelName: string, state: boolean, app: string): void {
     const backCompat = {datasource_selector: 'addData'};
     panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
     const button = this.buttons.find((b) => b.panel == panelName);
@@ -115,7 +115,7 @@ export class HsSidebarService {
     }
 
     this.unimportantExist = this.buttons.some((b) => b.important == false);
-    this.HsLayoutService.minisidebar = this.unimportantExist;
+    this.HsLayoutService.get(app).minisidebar = this.unimportantExist;
   }
   buttonClicked(button: HsButton, app: string): void {
     if (button.click) {
@@ -164,12 +164,12 @@ export class HsSidebarService {
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
    * @description Toggles minisidebar button
    */
-  fitsSidebar(button: HsButton): boolean {
+  fitsSidebar(button: HsButton, app: string): boolean {
     const dimensionToCheck =
       window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
-    this.HsLayoutService.sidebarToggleable = window.innerWidth > 767;
+    this.HsLayoutService.get(app).sidebarToggleable = window.innerWidth > 767;
     let maxNumberOfButtons = Math.floor(
-      this.HsLayoutService.layoutElement[dimensionToCheck] / 60
+      this.HsLayoutService.get(app).layoutElement[dimensionToCheck] / 60
     );
     maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'

@@ -29,7 +29,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
     if (panel) {
-      if (!this.HsLayoutService.minisidebar) {
+      if (!this.HsLayoutService.get(this.app).minisidebar) {
         this.HsLayoutService.setMainPanel(panel, this.app);
       }
     }
@@ -60,8 +60,8 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded =
-      !this.HsLayoutService.sidebarExpanded;
+    this.HsLayoutService.get(this.app).sidebarExpanded =
+      !this.HsLayoutService.get(this.app).sidebarExpanded;
     setTimeout(() => {
       this.HsCoreService.updateMapSize(this.app);
     }, 110);

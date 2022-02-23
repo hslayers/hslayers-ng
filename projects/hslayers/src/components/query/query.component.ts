@@ -24,8 +24,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
@@ -78,17 +77,19 @@ export class HsQueryComponent
     //add current panel queryable - activate/deactivate
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((closed) => {
-        if (this.hsQueryBaseService.currentPanelQueryable()) {
-          if (
-            !this.hsQueryBaseService.queryActive &&
-            !this.hsDrawService.drawActive
-          ) {
-            this.hsQueryBaseService.activateQueries(this.data.app);
-          }
-        } else {
-          if (this.hsQueryBaseService.queryActive) {
-            this.hsQueryBaseService.deactivateQueries(this.data.app);
+      .subscribe(({which, app}) => {
+        if (this.data.app == app) {
+          if (this.hsQueryBaseService.currentPanelQueryable(this.data.app)) {
+            if (
+              !this.hsQueryBaseService.queryActive &&
+              !this.hsDrawService.drawActive
+            ) {
+              this.hsQueryBaseService.activateQueries(this.data.app);
+            }
+          } else {
+            if (this.hsQueryBaseService.queryActive) {
+              this.hsQueryBaseService.deactivateQueries(this.data.app);
+            }
           }
         }
       });
@@ -101,8 +102,8 @@ export class HsQueryComponent
           .subscribe((e) => {
             this.popup.hide();
             if (
-              this.hsQueryBaseService.currentPanelQueryable() &&
-              this.hsLayoutService.mainpanel != 'draw'
+              this.hsQueryBaseService.currentPanelQueryable(this.data.app) &&
+              this.hsLayoutService.get(this.data.app).mainpanel != 'draw'
             ) {
               this.hsLayoutService.setMainPanel('info', this.data.app);
             }

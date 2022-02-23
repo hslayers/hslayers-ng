@@ -1,7 +1,7 @@
 <div class="btn-group" [hidden]="!isVisible()">
     <button class="btn rounded-0 btn-light hs-toolbar-button"
         [ngClass]="HsDrawService.highlightDrawButton ? 'btn-outline-danger' : 'btn-outline-secondary'"
-        (click)="toggleDrawToolbar()">
+        (click)="toggleDrawToolbar(data.app)">
         <i [ngClass]="{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}" data-toggle="tooltip"
             [title]="'PANEL_HEADER.DRAW' | translate"></i></button>
     <div class="btn-group" *ngIf="drawToolbarExpanded">

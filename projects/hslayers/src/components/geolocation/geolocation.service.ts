@@ -112,12 +112,12 @@ export class HsGeolocationService {
    * @description Toggles tracking/following
    * Takes care of the distinction between click and double-click on mobile
    */
-  toggleTracking(): any {
+  toggleTracking(app: string): any {
     if (this.clicked) {
       this.cancelClick = true;
       if (this.HsLayoutService.sidebarBottom()) {
-        this.HsLayoutService.contentWrapper
-          .querySelector('.hs-locationButton')
+        this.HsLayoutService.get(app)
+          .contentWrapper.querySelector('.hs-locationButton')
           .dispatchEvent(new Event('dblclick'));
       }
       return;
@@ -145,12 +145,12 @@ export class HsGeolocationService {
           });
           const rotate = this.getRotate();
           rotate.element.classList.remove('hidden');
-          this.HsLayoutService.contentWrapper
-            .querySelector('button.ol-rotate')
+          this.HsLayoutService.get(app)
+            .contentWrapper.querySelector('button.ol-rotate')
             .classList.add('active');
         } else {
-          this.HsLayoutService.contentWrapper
-            .querySelector('button.ol-rotate')
+          this.HsLayoutService.get(app)
+            .contentWrapper.querySelector('button.ol-rotate')
             .classList.remove('active');
           this.stopTracking();
         }

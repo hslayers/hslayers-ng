@@ -152,11 +152,11 @@ export class HsLayerEditorService {
     );
   }
 
-  legendVisible(): boolean {
+  legendVisible(app: string): boolean {
     return (
       this.HsLegendService.legendValid(this.legendDescriptor) &&
       (getInlineLegend(this.legendDescriptor.lyr) ||
-        !this.HsLayoutService.panelEnabled('legend'))
+        !this.HsLayoutService.panelEnabled('legend', app))
     );
   }
 

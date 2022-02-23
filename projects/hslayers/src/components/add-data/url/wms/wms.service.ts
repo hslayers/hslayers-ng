@@ -51,9 +51,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.setDataToDefault();
-    this.hsEventBusService.olMapLoads.subscribe(() => {
+    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
       this.data.map_projection = this.hsMapService
-        .getMap()
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()

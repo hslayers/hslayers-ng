@@ -26,6 +26,6 @@
         <hs-add-data-url *ngIf="hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'" [app]="data.app">
         </hs-add-data-url>
         <hs-add-data-file *ngIf="hsAddDataService.dsSelected === 'file'" [app]="data.app"></hs-add-data-file>
-        <hs-add-data-catalogue *ngIf="hsAddDataService.dsSelected === 'catalogue'"></hs-add-data-catalogue>
+        <hs-add-data-catalogue *ngIf="hsAddDataService.dsSelected === 'catalogue'" [app]="data.app"></hs-add-data-catalogue>
     </div>
 </div>

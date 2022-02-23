@@ -45,11 +45,11 @@ export class HsCoreService {
    */
   init(app: string): void {
     if (window.innerWidth < 767 || this.HsConfig.get(app).sidebarClosed) {
-      this.HsLayoutService.sidebarExpanded = false;
+      this.HsLayoutService.get(app).sidebarExpanded = false;
       // debugger;
-      this.HsLayoutService.sidebarLabels = false;
+      this.HsLayoutService.get(app).sidebarLabels = false;
     } else {
-      this.HsLayoutService.sidebarExpanded = true;
+      this.HsLayoutService.get(app).sidebarExpanded = true;
     }
     const languages = this.HsConfig.get(app).enabledLanguages
       ? this.HsConfig.get(app)
@@ -121,12 +121,15 @@ export class HsCoreService {
     }
     if (this.HsMapService.getMap(app)) {
       this.HsMapService.getMap(app).updateSize();
-      if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
-        this.HsLayoutService.smallWidth = true; //deprecated
-        this.HsLayoutService.sidebarLabels = false;
+      if (
+        window.innerWidth < 767 ||
+        this.HsLayoutService.get(app).mainpanel != ''
+      ) {
+        this.HsLayoutService.get(app).smallWidth = true; //deprecated
+        this.HsLayoutService.get(app).sidebarLabels = false;
       } else {
-        this.HsLayoutService.smallWidth = false; //deprecated
-        this.HsLayoutService.sidebarLabels = true;
+        this.HsLayoutService.get(app).smallWidth = false; //deprecated
+        this.HsLayoutService.get(app).sidebarLabels = true;
       }
     } else {
       console.log('Map not yet initialized!');

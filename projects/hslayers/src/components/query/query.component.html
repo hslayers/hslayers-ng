@@ -6,7 +6,7 @@
         <p class="small">{{'QUERY.infoPanel.clickOnMap' | translate}}</p>
     </div>
 </div>
-<hs-query-default-info-panel-body *ngIf="hsLayoutService.mainpanel === 'info'" [hidden]="!isVisible()"></hs-query-default-info-panel-body>
+<hs-query-default-info-panel-body *ngIf="hsLayoutService.get(data.app).mainpanel === 'info'" [hidden]="!isVisible()"></hs-query-default-info-panel-body>
 <hs-custom-info-panel-body [hidden]="!isVisible()"></hs-custom-info-panel-body>
 <div class="container-fluid" [hidden]="!isVisible()" *ngIf="hsQueryBaseService.data.coordinates !== undefined && hsQueryBaseService.data.coordinates.length > 0">
     <div class="row">

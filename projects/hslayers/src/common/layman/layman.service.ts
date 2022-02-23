@@ -12,7 +12,7 @@ import {HsToastService} from '../../components/layout/toast/toast.service';
   providedIn: 'root',
 })
 export class HsCommonLaymanService {
-  authChange: Subject<HsEndpoint> = new Subject();
+  authChange: Subject<{endpoint: HsEndpoint; app: string}> = new Subject();
   constructor(
     private $http: HttpClient,
     public hsToastService: HsToastService,

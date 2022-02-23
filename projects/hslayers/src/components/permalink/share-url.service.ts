@@ -78,7 +78,7 @@ export class HsShareUrlService {
     //This might become useful, but url size is limited, so we are not using it
     const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
-    const pnlMain = this.HsLayoutService.mainpanel;
+    const pnlMain = this.HsLayoutService.get(app).mainpanel;
     this.push(HS_PRMS.panel, pnlMain == 'permalink' ? 'layermanager' : pnlMain);
 
     this.push(HS_PRMS.x, view.getCenter()[0]);

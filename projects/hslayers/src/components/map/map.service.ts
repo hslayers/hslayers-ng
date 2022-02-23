@@ -309,8 +309,11 @@ export class HsMapService {
     this.timer = setTimeout(() => {
       const map = this.getMap(app);
       this.HsEventBusService.mapExtentChanges.next({
-        element: e.element,
-        extent: map.getView().calculateExtent(map.getSize()),
+        e: {
+          element: e.element,
+          extent: map.getView().calculateExtent(map.getSize()),
+        },
+        app,
       });
     }, 500);
   }
@@ -416,7 +419,7 @@ export class HsMapService {
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
-          !this.HsLayoutService.contentWrapper.querySelector(
+          !this.HsLayoutService.get(app).contentWrapper.querySelector(
             '.hs-zoom-info-dialog'
           )
         ) {
@@ -441,12 +444,14 @@ export class HsMapService {
           );
           this.renderer.appendChild(html, text);
           this.renderer.appendChild(
-            this.HsLayoutService.contentWrapper.querySelector('.hs-map-space'),
+            this.HsLayoutService.get(app).contentWrapper.querySelector(
+              '.hs-map-space'
+            ),
             html
           );
           setTimeout(() => {
-            this.HsLayoutService.contentWrapper
-              .querySelector('.hs-zoom-info-dialog')
+            this.HsLayoutService.get(app)
+              .contentWrapper.querySelector('.hs-zoom-info-dialog')
               .remove();
           }, 4000);
         }
@@ -476,7 +481,7 @@ export class HsMapService {
     if (this.HsConfig.get(app).componentsEnabled?.mapControls == false) {
       this.removeAllControls();
     }
-    this.HsEventBusService.olMapLoads.next(map);
+    this.HsEventBusService.olMapLoads.next({map, app});
   }
 
   loaded(app?: string) {
@@ -485,7 +490,7 @@ export class HsMapService {
         resolve(this.getMap(app ?? DEFAULT));
         return;
       } else {
-        this.HsEventBusService.olMapLoads.subscribe((map) => {
+        this.HsEventBusService.olMapLoads.subscribe(({map, app}) => {
           if (map) {
             resolve(map);
           }

@@ -166,7 +166,7 @@ export class HsLayerManagerComponent
 
     this.hsEventBusService.compositionDeletes
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((composition) => {
+      .subscribe(({composition, app}) => {
         if (composition.id == this.hsLayerManagerService.composition_id) {
           this.hsLayerManagerService.composition_id = null;
         }

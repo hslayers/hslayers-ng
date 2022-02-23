@@ -46,7 +46,7 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   name = 'addData';
 
   datasetSelect(type: DatasetType): void {
-    this.hsAddDataService.selectType(type);
+    this.hsAddDataService.selectType(type, this.data.app);
   }
 
   ngOnInit(): void {

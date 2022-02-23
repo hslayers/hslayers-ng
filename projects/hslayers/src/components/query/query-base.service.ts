@@ -49,7 +49,7 @@ export class HsQueryBaseService {
     'tripPlanner',
   ];
   last_coordinate_clicked: any;
-  getFeatureInfoStarted: Subject<any> = new Subject();
+  getFeatureInfoStarted: Subject<{evt; app: string}> = new Subject();
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
   vectorSelectorCreated: Subject<Select> = new Subject();
@@ -101,6 +101,7 @@ export class HsQueryBaseService {
         this.hsEventBusService.mapClicked.next(
           Object.assign(evt, {
             coordinates: this.getCoordinate(evt.coordinate),
+            app,
           })
         );
         if (!this.queryActive) {
@@ -115,7 +116,7 @@ export class HsQueryBaseService {
         this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
         this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
         this.data.selectedProj = this.data.coordinates[0].projections[0];
-        this.getFeatureInfoStarted.next(evt);
+        this.getFeatureInfoStarted.next({evt, app});
       });
     });
   }
@@ -177,7 +178,7 @@ export class HsQueryBaseService {
     this.dataCleared = false;
   }
 
-  fillIframeAndResize(response, append: boolean): void {
+  fillIframeAndResize(response, append: boolean, app: string): void {
     const iframe = this.getInvisiblePopup();
     if (append) {
       iframe.contentDocument.body.innerHTML += response;
@@ -187,12 +188,12 @@ export class HsQueryBaseService {
     let tmp_width = iframe.contentWindow.innerWidth;
     if (
       tmp_width >
-      this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+      this.hsLayoutService.get(app).contentWrapper.querySelector('.hs-ol-map')
         .clientWidth -
         60
     ) {
       tmp_width =
-        this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+        this.hsLayoutService.get(app).contentWrapper.querySelector('.hs-ol-map')
           .clientWidth - 60;
     }
     iframe.style.width = tmp_width + 'px';
@@ -254,10 +255,11 @@ export class HsQueryBaseService {
     this.queryStatusChanges.next(false);
   }
 
-  currentPanelQueryable(): boolean {
+  currentPanelQueryable(app: string): boolean {
     return (
-      !this.nonQueryablePanels.includes(this.hsLayoutService.mainpanel) &&
-      !this.nonQueryablePanels.includes('*')
+      !this.nonQueryablePanels.includes(
+        this.hsLayoutService.get(app).mainpanel
+      ) && !this.nonQueryablePanels.includes('*')
     );
   }
 

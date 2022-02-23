@@ -18,7 +18,7 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 })
 export class HsAddDataService {
   dsSelected: DatasetType;
-  datasetSelected: Subject<{type: DatasetType}> = new Subject();
+  datasetSelected: Subject<{type: DatasetType; app: string}> = new Subject();
   /**
    * Cancels any external url data request from datasources panel
    */
@@ -48,8 +48,8 @@ export class HsAddDataService {
     }
   }
 
-  selectType(type: DatasetType): void {
+  selectType(type: DatasetType, app: string): void {
     this.dsSelected = type;
-    this.datasetSelected.next({type: type});
+    this.datasetSelected.next({type, app});
   }
 }

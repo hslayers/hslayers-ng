@@ -99,7 +99,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
 
     this.HsEventBusService.compositionDeletes
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((composition) => {
+      .subscribe(({composition, app}) => {
         if (composition.id == this.composition_id) {
           delete this.composition_title;
           delete this.composition_abstract;
@@ -140,6 +140,9 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   }
 
   isVisible(): boolean {
-    return this.HsLayoutService.panelEnabled('compositionLoadingProgress');
+    return this.HsLayoutService.panelEnabled(
+      'compositionLoadingProgress',
+      this.data.app
+    );
   }
 }

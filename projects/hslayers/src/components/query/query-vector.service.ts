@@ -50,11 +50,11 @@ export class HsQueryVectorService {
     private domSanitizer: DomSanitizer
   ) {}
 
-  init(app: string): void {
+  init(_app: string): void {
     this.selector = new Select({
       condition: click,
-      multi: this.hsConfig.get(app).query?.multi
-        ? this.hsConfig.get(app).query.multi
+      multi: this.hsConfig.get(_app).query?.multi
+        ? this.hsConfig.get(_app).query.multi
         : false,
       filter: function (feature, layer) {
         if (layer === null) {
@@ -69,8 +69,10 @@ export class HsQueryVectorService {
     });
     this.hsQueryBaseService.vectorSelectorCreated.next(this.selector);
 
-    this.hsEventBusService.olMapLoads.subscribe((map) => {
-      map.addInteraction(this.selector);
+    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
+      if (_app == app) {
+        map.addInteraction(this.selector);
+      }
     });
 
     this.hsQueryBaseService.queryStatusChanges.subscribe(() => {

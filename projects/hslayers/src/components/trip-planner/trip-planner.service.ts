@@ -116,8 +116,8 @@ export class HsTripPlannerService {
     this.HsMapService.loaded().then((map) => {
       map.addInteraction(this.modify);
     });
-    this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
-      if (this.HsLayoutService.mainpanel != 'tripPlanner') {
+    this.HsEventBusService.mapClicked.subscribe(({coordinates, app}) => {
+      if (this.HsLayoutService.get(app).mainpanel != 'tripPlanner') {
         return;
       }
       if (!this.waypointLayer) {

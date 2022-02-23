@@ -45,9 +45,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       'EPSG:4326',
     ];
 
-    this.hsEventBusService.olMapLoads.subscribe(() => {
+    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
       this.data.map_projection = this.hsMapService
-        .getMap()
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()

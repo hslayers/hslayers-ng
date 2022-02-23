@@ -14,7 +14,7 @@ export class HsMeasureToolbarComponent extends HsToolbarPanelBaseComponent {
   name = 'measureToolbar';
   isVisible(): boolean {
     return (
-      this.HsLayoutService.panelEnabled('measure') &&
+      this.HsLayoutService.panelEnabled('measure', this.data.app) &&
       this.HsLayoutService.componentEnabled('measureToolbar', this.data.app)
     );
   }

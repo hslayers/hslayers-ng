@@ -5,7 +5,7 @@
         <i class="glyphicon icon-gpsoff-gps hs-locateToggler"></i>
     </button>
     <button *ngIf="HsGeolocationService.localization" class="ol-has-tooltip blocate hs-locateToggler hs-locationButton"
-        type="button" (click)="HsGeolocationService.toggleTracking()" [title]="'GEOLOCATION.locateMe' | translate"
+        type="button" (click)="HsGeolocationService.toggleTracking(data.app)" [title]="'GEOLOCATION.locateMe' | translate"
         (dblclick)="HsGeolocationService.stopLocalization()">
         <i class="glyphicon hs-locateToggler"
             [ngClass]="(HsGeolocationService.following && HsGeolocationService.localization) ? 'icon-navigation' : 'icon-gpson'"></i>

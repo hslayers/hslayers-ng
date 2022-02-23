@@ -1006,10 +1006,10 @@ export class HsLayerManagerService {
    * Makes layer grayscale
    * @param layer - Selected layer (currentLayer)
    */
-  setGreyscale(layer: HsLayerDescriptor): void {
-    const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
-      '.ol-layers > div:first-child'
-    );
+  setGreyscale(layer: HsLayerDescriptor, app: string): void {
+    const layerContainer = this.HsLayoutService.get(
+      app
+    ).contentWrapper.querySelector('.ol-layers > div:first-child');
     if (layerContainer.classList.contains('hs-grayscale')) {
       layerContainer.classList.remove('hs-grayscale');
       layer.grayscale = false;

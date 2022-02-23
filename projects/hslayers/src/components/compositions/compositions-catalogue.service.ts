@@ -79,10 +79,10 @@ export class HsCompositionsCatalogueService {
       () =>
         (this.filteredEndpoints = this.getFilteredEndpointsForCompositions())
     );
-    hsEventBusService.mainPanelChanges.subscribe(() => {
+    hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (
-        this.hsLayoutService.mainpanel === 'composition_browser' ||
-        this.hsLayoutService.mainpanel === 'composition'
+        this.hsLayoutService.get(app).mainpanel === 'composition_browser' ||
+        this.hsLayoutService.get(app).mainpanel === 'composition'
       ) {
         this.loadFilteredCompositions();
         this.extentChangeSuppressed = true;
@@ -91,10 +91,10 @@ export class HsCompositionsCatalogueService {
     const extentChangeDebouncer = {};
     this.hsEventBusService.mapExtentChanges.subscribe(
       hsUtilsService.debounce(
-        () => {
+        ({e, app}) => {
           if (
-            (this.hsLayoutService.mainpanel != 'composition_browser' &&
-              this.hsLayoutService.mainpanel != 'composition') ||
+            (this.hsLayoutService.get(app).mainpanel != 'composition_browser' &&
+              this.hsLayoutService.get(app).mainpanel != 'composition') ||
             this.extentChangeSuppressed
           ) {
             this.extentChangeSuppressed = false;
@@ -112,18 +112,20 @@ export class HsCompositionsCatalogueService {
       )
     );
 
-    this.hsEventBusService.compositionDeletes.subscribe((composition) => {
-      //TODO: rewrite
-      const deleteDialog = this.hsLayoutService.contentWrapper.querySelector(
-        '.hs-composition-delete-dialog'
-      );
-      if (deleteDialog) {
-        deleteDialog.parentNode.remove(deleteDialog);
+    this.hsEventBusService.compositionDeletes.subscribe(
+      ({composition, app}) => {
+        //TODO: rewrite
+        const deleteDialog = this.hsLayoutService
+          .get(app)
+          .contentWrapper.querySelector('.hs-composition-delete-dialog');
+        if (deleteDialog) {
+          deleteDialog.parentNode.remove(deleteDialog);
+        }
+        this._zone.run(() => {
+          this.loadFilteredCompositions();
+        });
       }
-      this._zone.run(() => {
-        this.loadFilteredCompositions();
-      });
-    });
+    );
 
     this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
       this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
@@ -134,10 +136,10 @@ export class HsCompositionsCatalogueService {
       });
     });
 
-    this.hsCommonLaymanService.authChange.subscribe(() => {
+    this.hsCommonLaymanService.authChange.subscribe(({endpoint, app}) => {
       if (
-        this.hsLayoutService.mainpanel != 'composition_browser' &&
-        this.hsLayoutService.mainpanel != 'composition'
+        this.hsLayoutService.get(app).mainpanel != 'composition_browser' &&
+        this.hsLayoutService.get(app).mainpanel != 'composition'
       ) {
         return;
       }

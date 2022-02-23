@@ -294,7 +294,7 @@ export class HsAddDataCommonFileService {
             return;
           }
           this.hsLaymanService.totalProgress = 0;
-          this.hsAddDataService.selectType('url');
+          this.hsAddDataService.selectType('url', app);
           this.layerAddedAsWms.next(true);
           await this.hsAddDataOwsService.connectToOWS(
             {

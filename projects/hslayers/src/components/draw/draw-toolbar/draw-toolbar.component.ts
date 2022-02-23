@@ -35,14 +35,14 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
-  toggleDrawToolbar(): void {
+  toggleDrawToolbar(app: string): void {
     this.HsDrawService.highlightDrawButton = false;
     if (
-      this.HsLayoutService.layoutElement.clientWidth > 767 &&
-      this.HsLayoutService.layoutElement.clientWidth < 870 &&
+      this.HsLayoutService.get(app).layoutElement.clientWidth > 767 &&
+      this.HsLayoutService.get(app).layoutElement.clientWidth < 870 &&
       !this.drawToolbarExpanded
     ) {
-      this.HsLayoutService.sidebarExpanded = false;
+      this.HsLayoutService.get(app).sidebarExpanded = false;
     }
     this.drawToolbarExpanded = !this.drawToolbarExpanded;
     if (!this.drawToolbarExpanded) {

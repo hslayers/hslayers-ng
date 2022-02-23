@@ -68,10 +68,10 @@ export class HsMeasureService {
    * @param {string} type Geometry type of measurement ('area' for polygon, 'line' for linestring)
    * @description Change geometry type of measurement without deleting of old ones
    */
-  changeMeasureParams(type: string): void {
+  changeMeasureParams(type: string, app: string): void {
     this.map.removeInteraction(this.draw);
     this.sketches = [];
-    this.addInteraction(type);
+    this.addInteraction(type, app);
   }
 
   /**
@@ -91,10 +91,10 @@ export class HsMeasureService {
    * @param type
    * @description Start measuring interaction in app
    */
-  activateMeasuring(type: string): void {
+  activateMeasuring(type: string, app: string): void {
     if (!this.map) {
       setTimeout(() => {
-        this.activateMeasuring(type);
+        this.activateMeasuring(type, app);
       }, 500);
       return;
     }
@@ -109,14 +109,14 @@ export class HsMeasureService {
       this.mouseMoveHandler(evt);
     });
 
-    this.addInteraction(type);
+    this.addInteraction(type, app);
   }
 
   /**
    * @public
    * @description Stop measuring interaction in app
    */
-  deactivateMeasuring(): void {
+  deactivateMeasuring(app: string): void {
     this.HsMapService.loaded().then((map) => {
       map.getViewport().removeEventListener('mousemove', (evt) => {
         this.mouseMoveHandler(evt);
@@ -131,7 +131,7 @@ export class HsMeasureService {
       map.removeInteraction(this.draw);
       map.removeLayer(this.measureVector);
     });
-    this.HsEventBusService.measurementEnds.next(); //better emit drawingEnds here
+    this.HsEventBusService.measurementEnds.next({app}); //better emit drawingEnds here
   }
 
   /**
@@ -215,7 +215,7 @@ export class HsMeasureService {
    * @param {string} type Geometry type
    * @description Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
    */
-  addInteraction(type: string): void {
+  addInteraction(type: string, app: string): void {
     const drawType = type == 'area' ? 'Polygon' : 'LineString';
     this.draw = new Draw({
       source: this.measureVector.getSource(),
@@ -225,7 +225,7 @@ export class HsMeasureService {
     this.map.addInteraction(this.draw);
 
     this.draw.on('drawstart', (evt) => {
-      this.HsEventBusService.measurementStarts.next();
+      this.HsEventBusService.measurementStarts.next({app});
       if (this.data.multipleShapeMode) {
         if (!Array.isArray(this.sketches)) {
           this.sketches = [];
@@ -246,7 +246,7 @@ export class HsMeasureService {
     });
 
     this.draw.on('drawend', (evt) => {
-      this.HsEventBusService.measurementEnds.next();
+      this.HsEventBusService.measurementEnds.next({app});
     });
   }
 }

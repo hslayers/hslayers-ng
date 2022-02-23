@@ -468,11 +468,13 @@ export class HsSaveMapManagerService {
     this.saveMapResulted.next(this.statusData);
   }
 
-  focusTitle() {
+  focusTitle(app: string) {
     if (this.statusData.guessedTitle) {
       this.compoData.title = this.statusData.guessedTitle;
     }
     //TODO Check if this works and input is focused
-    this.HsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
+    this.HsLayoutService.get(app)
+      .contentWrapper.querySelector('.hs-stc-title')
+      .focus();
   }
 }

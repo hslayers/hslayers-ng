@@ -41,7 +41,7 @@ export class DrawPanelComponent {
   setType(what): void {
     const type = this.HsDrawService.setType(what, this.app);
     if (type) {
-      this.activateDrawing(this.hsLayoutService.panelVisible('draw'));
+      this.activateDrawing(this.hsLayoutService.panelVisible('draw', this.app));
     }
   }
 

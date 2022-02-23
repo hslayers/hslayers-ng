@@ -54,11 +54,11 @@ export class HsCompositionsMapService {
       this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
 
-    this.hsEventBusService.mainPanelChanges.subscribe(() => {
+    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (this.extentLayer) {
         if (
-          this.hsLayoutService.mainpanel === 'composition_browser' ||
-          this.hsLayoutService.mainpanel === 'composition'
+          this.hsLayoutService.get(app).mainpanel === 'composition_browser' ||
+          this.hsLayoutService.get(app).mainpanel === 'composition'
         ) {
           this.extentLayer.setVisible(true);
         } else {

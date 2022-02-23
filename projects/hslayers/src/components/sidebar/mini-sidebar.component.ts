@@ -28,8 +28,8 @@ export class HsMiniSidebarComponent {
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded =
-      !this.HsLayoutService.sidebarExpanded;
+    this.HsLayoutService.get(this.app).sidebarExpanded =
+      !this.HsLayoutService.get(this.app).sidebarExpanded;
     setTimeout(() => {
       this.HsCoreService.updateMapSize(this.app);
     }, 110);

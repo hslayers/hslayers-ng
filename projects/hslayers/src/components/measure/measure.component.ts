@@ -48,30 +48,34 @@ export class HsMeasureComponent
     }
     this.HsEventBusService.measurementStarts
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.HsLayoutService.panelEnabled('toolbar', false);
+      .subscribe(({app}) => {
+        if (app == this.data.app) {
+          this.HsLayoutService.panelEnabled('toolbar', app, false);
+        }
       });
 
     this.HsEventBusService.measurementEnds
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.HsLayoutService.panelEnabled('toolbar', true);
-        this.data = this.HsMeasureService.data;
+      .subscribe(({app}) => {
+        if (app == this.data.app) {
+          this.HsLayoutService.panelEnabled('toolbar', app, true);
+          this.data = this.HsMeasureService.data;
+        }
       });
 
     this.HsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        if (HsLayoutService.mainpanel == 'measure') {
-          this.HsMeasureService.activateMeasuring(this.type);
+      .subscribe(({which, app}) => {
+        if (HsLayoutService.get(app).mainpanel == 'measure') {
+          this.HsMeasureService.activateMeasuring(this.type, app);
         } else {
-          this.HsMeasureService.deactivateMeasuring();
+          this.HsMeasureService.deactivateMeasuring(app);
         }
       });
 
     //Temporary fix when measure panel is loaded as default (e.g. reloading page with parameters in link)
-    if (this.HsLayoutService.mainpanel == 'measure') {
-      this.HsMeasureService.activateMeasuring(this.type);
+    if (this.HsLayoutService.get(this.data.app).mainpanel == 'measure') {
+      this.HsMeasureService.activateMeasuring(this.type, this.data.app);
     }
 
     //$scope.$emit('scope_loaded', 'Measure');
@@ -102,10 +106,10 @@ export class HsMeasureComponent
   }
 
   changeMeasureParams(): void {
-    if (this.HsLayoutService.mainpanel != 'measure') {
+    if (this.HsLayoutService.get(this.data.app).mainpanel != 'measure') {
       return;
     }
-    this.HsMeasureService.changeMeasureParams(this.type);
+    this.HsMeasureService.changeMeasureParams(this.type, this.data.app);
   }
 
   /**
