@@ -119,7 +119,7 @@
     "ng-packagr": "^13.2.1",
     "prettier": "^2.5.1",
     "protractor": "~7.0.0",
-    "puppeteer": "^13.3.2",
+    "puppeteer": "^13.4.0",
     "sass": "^1.49.8",
     "ts-node": "^10.5.0",
     "typescript": "4.5.5"
