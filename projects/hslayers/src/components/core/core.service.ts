@@ -46,7 +46,7 @@ export class HsCoreService {
   init(app: string): void {
     if (window.innerWidth < 767 || this.HsConfig.get(app).sidebarClosed) {
       this.HsLayoutService.sidebarExpanded = false;
-      debugger;
+      // debugger;
       this.HsLayoutService.sidebarLabels = false;
     } else {
       this.HsLayoutService.sidebarExpanded = true;
@@ -65,11 +65,11 @@ export class HsCoreService {
     if (this.initCalled) {
       return;
     }
-    this.HsMapService.loaded().then(() => {
-      this.initSizeListeners();
+    this.HsMapService.loaded(app).then(() => {
+      this.initSizeListeners(app);
       setTimeout(() => {
         this.updateVH();
-        this.updateMapSize();
+        this.updateMapSize(app);
       }, 750);
       this.initCalled = true;
     });
@@ -95,12 +95,12 @@ export class HsCoreService {
    * Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    * @public
    */
-  initSizeListeners(): void {
+  initSizeListeners(app: string): void {
     window.addEventListener('resize', () => {
       this.HsUtilsService.debounce(
         function () {
           this.updateVH();
-          this.updateMapSize();
+          this.updateMapSize(app);
           this.HsEventBusService.layoutResizes.next();
         },
         300,
@@ -114,8 +114,8 @@ export class HsCoreService {
    * Update map size.
    * @public
    */
-  updateMapSize(): void {
-    const map = this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map');
+  updateMapSize(app?: string): void {
+    const map = this.HsMapService.apps[app ?? 'default'].mapElement;
     if (map === null) {
       return;
     }

@@ -703,16 +703,15 @@ export class HsMapService {
     }
 
     if (this.HsConfig.get(app).default_layers) {
-      this.HsConfig.get(app)
-        .default_layers.filter((lyr) => lyr)
-        .forEach((lyr: Layer<Source>) => {
-          this.addLayer(
-            lyr,
-            DuplicateHandling.IgnoreNew,
-            visibilityOverrides,
-            app
-          );
-        });
+      const layers = this.HsConfig.get(app).default_layers.filter((lyr) => lyr);
+      layers.forEach((lyr: Layer<Source>) => {
+        this.addLayer(
+          lyr,
+          DuplicateHandling.IgnoreNew,
+          visibilityOverrides,
+          app
+        );
+      });
     }
   }
 

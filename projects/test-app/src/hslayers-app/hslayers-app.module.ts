@@ -17,7 +17,7 @@ import {HslayersModule} from '../../../hslayers/src/public-api';
 })
 export class AppModule implements DoBootstrap {
   components = [
-    {type: HslayersAppComponent, selector: 'hslayers#app-1'},
+    {type: HslayersAppComponent, selector: 'hslayers'},
     {type: HslayersAppComponent, selector: 'hslayers#app-2'},
   ];
   HslayersAppComponent;

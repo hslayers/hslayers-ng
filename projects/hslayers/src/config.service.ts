@@ -260,7 +260,7 @@ export class HsConfig {
       ...(newConfig.symbolizerIcons ?? []),
     ];
     delete newConfig.symbolizerIcons;
-    Object.assign(this, newConfig);
+    Object.assign(appConfig, newConfig);
     this.configChanges.next(this);
   }
 
