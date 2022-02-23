@@ -69,14 +69,14 @@ export class HsShareService {
               status_url,
               JSON.stringify({
                 data: this.HsSaveMapService.map2json(
-                  this.HsMapService.map,
+                  this.HsMapService.getMap(),
                   {layers: layers},
                   {},
                   {}
                 ),
                 permalink: true,
                 id: this.HsShareUrlService.id,
-                project: this.HsConfig.project_name,
+                project: this.HsConfig.get(app).project_name,
                 request: 'save',
               })
             )
@@ -84,7 +84,7 @@ export class HsShareService {
           this.HsShareUrlService.statusSaving = false;
           this.HsShareUrlService.permalinkRequestUrl =
             status_url + '?request=load&id=' + this.HsShareUrlService.id;
-          this.HsShareUrlService.update();
+          this.HsShareUrlService.update(app);
         } catch (ex) {
           this.HsLogService.error('Error saving permalink layers.', ex);
           throw ex;

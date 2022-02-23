@@ -247,7 +247,7 @@ export class HsAddDataCommonFileService {
    * Handler for button click to send file to layman and wait for
    * answer with wms service url to add to map
    */
-  async addAsWms(data: fileDataObject): Promise<void> {
+  async addAsWms(data: fileDataObject, app: string): Promise<void> {
     try {
       this.loadingToLayman = true;
       if (!this.endpoint) {
@@ -296,12 +296,15 @@ export class HsAddDataCommonFileService {
           this.hsLaymanService.totalProgress = 0;
           this.hsAddDataService.selectType('url');
           this.layerAddedAsWms.next(true);
-          await this.hsAddDataOwsService.connectToOWS({
-            type: 'wms',
-            uri: descriptor.wms.url,
-            layer: data.name,
-            owrCache: true,
-          });
+          await this.hsAddDataOwsService.connectToOWS(
+            {
+              type: 'wms',
+              uri: descriptor.wms.url,
+              layer: data.name,
+              owrCache: true,
+            },
+            app
+          );
           return;
         })
         .catch((err) => {

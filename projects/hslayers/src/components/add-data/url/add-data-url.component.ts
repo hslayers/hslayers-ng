@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {AddDataUrlType, servicesSupportedByUrl} from './types/url.type';
 import {AddDataUrlValues} from './add-data-url-values';
@@ -16,6 +16,7 @@ import {HsShareUrlService} from '../../permalink/share-url.service';
 })
 export class HsAddDataUrlComponent {
   types: {id: AddDataUrlType; text: string}[];
+  @Input() app = 'default';
   constructor(
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
@@ -25,9 +26,10 @@ export class HsAddDataUrlComponent {
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsAddDataUrlService: HsAddDataUrlService
   ) {
-    if (Array.isArray(this.hsConfig.connectTypes)) {
-      this.types = this.hsConfig.connectTypes
-        .filter((type) => servicesSupportedByUrl.includes(type))
+    if (Array.isArray(this.hsConfig.get(this.app).connectTypes)) {
+      this.types = this.hsConfig
+        .get(this.app)
+        .connectTypes.filter((type) => servicesSupportedByUrl.includes(type))
         .map((type) => AddDataUrlValues.find((v) => v.id == type));
     } else {
       this.types = AddDataUrlValues;
@@ -53,15 +55,18 @@ export class HsAddDataUrlComponent {
     // const serviceName = `hsAddLayersWmsService`;
     if (layers) {
       for (const layer of layers.split(';')) {
-        this.hsAddDataOwsService.connectToOWS({
-          type,
-          uri: url,
-          layer,
-          style: undefined,
-        });
+        this.hsAddDataOwsService.connectToOWS(
+          {
+            type,
+            uri: url,
+            layer,
+            style: undefined,
+          },
+          this.app
+        );
       }
     } else {
-      this.hsAddDataOwsService.connectToOWS({type, uri: url});
+      this.hsAddDataOwsService.connectToOWS({type, uri: url}, this.app);
     }
     this.hsAddDataUrlService.connectFromParams = false;
   }

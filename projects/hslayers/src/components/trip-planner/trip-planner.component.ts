@@ -18,8 +18,7 @@ import {setHighlighted} from '../../common/feature-extensions';
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   loaderImage: string;
   timer: any;
   name = 'tripPlanner';
@@ -49,10 +48,12 @@ export class HsTripPlannerComponent
     });
   }
   ngOnInit(): void {
-    if (this.HsConfig.default_layers === undefined) {
-      this.HsConfig.default_layers = [];
+    if (this.HsConfig.apps[this.data.app].default_layers === undefined) {
+      this.HsConfig.apps[this.data.app].default_layers = [];
     } else {
-      this.HsConfig.default_layers.push(this.HsTripPlannerService.routeLayer);
+      this.HsConfig.apps[this.data.app].default_layers.push(
+        this.HsTripPlannerService.routeLayer
+      );
     }
     this.HsTripPlannerService.fillVectorLayers();
   }

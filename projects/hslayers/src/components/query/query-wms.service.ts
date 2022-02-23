@@ -51,7 +51,7 @@ export class HsQueryWmsService {
         }
         if (getQueryFilter(layer) != undefined) {
           const filter = getQueryFilter(layer);
-          if (!filter(hsMapService.map, layer, evt.pixel)) {
+          if (!filter(hsMapService.getMap(), layer, evt.pixel)) {
             return;
           }
         }
@@ -307,7 +307,7 @@ export class HsQueryWmsService {
       }
 
       const source = layer.getSource();
-      const map = this.hsMapService.map;
+      const map = this.hsMapService.getMap();
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
         coordinate,

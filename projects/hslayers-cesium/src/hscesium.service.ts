@@ -84,7 +84,7 @@ export class HsCesiumService {
         Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
         Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
       } else {
-        console.error('Please set HsConfig.default_view');
+        console.error('Please set HsConfig.get(app).default_view');
       }
 
       //TODO: research if this must be used or ignored
@@ -189,7 +189,7 @@ export class HsCesiumService {
       }
 
       this.HsEventBusService.mapExtentChanges.subscribe((data) => {
-        const view = this.HsMapService.map.getView();
+        const view = this.HsMapService.getMap().getView();
         if (this.HsMapService.visible) {
           this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
         }

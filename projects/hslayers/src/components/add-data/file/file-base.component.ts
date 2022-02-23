@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -26,6 +27,7 @@ import {fileDataObject} from './types/file-data-object.type';
 export class HsAddDataFileBaseComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  @Input() app = 'default';
   data: fileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
@@ -49,7 +51,7 @@ export class HsAddDataFileBaseComponent
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((success) => {
         if (success) {
-          this.hsLayoutService.setMainPanel('layermanager');
+          this.hsLayoutService.setMainPanel('layermanager', this.app);
           this.hsAddDataCommonService.setPanelToCatalogue();
         }
         this.setDataToDefault();

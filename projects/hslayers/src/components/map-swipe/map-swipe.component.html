@@ -15,7 +15,7 @@
 </ng-template>
 
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-  <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translate"></hs-panel-header>
+  <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translate" [app]="data.app"></hs-panel-header>
   <div class="card-body m-2">
     <div class="alert alert-info ps-2" role="alert">
       {{'MAP_SWIPE.dndLayers' | translate}}
@@ -30,7 +30,7 @@
         [disabled]="!hsMapSwipeService.swipeControlActive">
         {{'MAP_SWIPE.resetSlider' | translate}}
       </button>
-      <button class="btn btn-sm btn-primary" type="button" (click)="hsMapSwipeService.setControl()"
+      <button class="btn btn-sm btn-primary" type="button" (click)="hsMapSwipeService.setControl(data.app)"
         [ngClass]="hsMapSwipeService.swipeControlActive ? 'active' : ''">
         {{getEnabledButtonString() | translate}}
       </button>

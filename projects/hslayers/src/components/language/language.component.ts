@@ -39,7 +39,7 @@ export class HsLanguageComponent
 
   ngOnInit(): void {
     this.available_languages = this.HsLanguageService.listAvailableLanguages();
-    this.HsLanguageService.language = this.hsConfig.language ?? 'en';
+    this.HsLanguageService.language = this.hsConfig.get(this.data.app).language ?? 'en';
   }
   //$scope.$emit('scope_loaded', 'Language');
 }

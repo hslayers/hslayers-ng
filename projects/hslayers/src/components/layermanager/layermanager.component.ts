@@ -48,7 +48,6 @@ export class HsLayerManagerComponent
   map: any;
   shiftDown = false;
   allLayersVisible = false;
-  data: any;
   layerlistVisible: boolean;
   hovering: boolean;
   physicalLayerListEnabled = false;
@@ -132,8 +131,6 @@ export class HsLayerManagerComponent
         this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
       icon: 'icon-layers',
     });
-    this.data = this.hsLayerManagerService.data;
-    this.hsMapService.loaded().then((map) => this.init(map));
 
     this.hsEventBusService.layerRemovals
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -182,6 +179,8 @@ export class HsLayerManagerComponent
 
   ngOnInit(): void {
     this.layerlistVisible = true;
+    this.hsMapService.loaded(this.data.app).then((map) => this.init(map));
+    this.hsLayerManagerService.init(this.data.app);
   }
 
   ngAfterViewInit(): void {
@@ -197,7 +196,11 @@ export class HsLayerManagerComponent
   }
 
   changeLayerVisibility(toWhat: boolean, layer: HsLayerDescriptor) {
-    return this.hsLayerManagerService.changeLayerVisibility(toWhat, layer);
+    return this.hsLayerManagerService.changeLayerVisibility(
+      toWhat,
+      layer,
+      this.data.app
+    );
   }
 
   setProp(layer: Layer<Source>, property, value): void {
@@ -222,7 +225,8 @@ export class HsLayerManagerComponent
     this.data.layers.forEach((l) => {
       this.hsLayerManagerService.changeLayerVisibility(
         this.allLayersVisible,
-        l
+        l,
+        this.data.app
       );
       this.hsLayerListService.toggleSublayersVisibility(l);
     });
@@ -243,7 +247,7 @@ export class HsLayerManagerComponent
   removeAllLayers(): void {
     this.hsDialogContainerService.create(
       HsLayerManagerRemoveAllDialogComponent,
-      {}
+      {app: this.data.app}
     );
   }
 
@@ -288,7 +292,7 @@ export class HsLayerManagerComponent
    * @param m
    */
   init(m): void {
-    this.map = this.hsMapService.map;
+    this.map = this.hsMapService.getMap();
     this.hsLayerSynchronizerService.init(this.map);
     this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))

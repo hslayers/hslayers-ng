@@ -6,6 +6,7 @@ import {HsLayoutService} from '../layout.service';
 })
 export class HsPanelHeaderComponent {
   @Input() name: string;
+  @Input() app = 'default';
   @Input() title: string;
   /*transclude: {
     'extraButtons': '?extraButtons',
@@ -15,6 +16,6 @@ export class HsPanelHeaderComponent {
   constructor(public HsLayoutService: HsLayoutService) {}
 
   closePanel(): void {
-    this.HsLayoutService.closePanel(this.name);
+    this.HsLayoutService.closePanel(this.name, this.app);
   }
 }

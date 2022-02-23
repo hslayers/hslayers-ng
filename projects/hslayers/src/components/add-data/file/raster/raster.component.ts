@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {AddDataFileType} from '../types/file.type';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
@@ -17,6 +17,7 @@ export class HsFileRasterComponent
   implements OnInit
 {
   dataType: AddDataFileType = 'raster';
+  @Input() app = 'default';
   constructor(
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,

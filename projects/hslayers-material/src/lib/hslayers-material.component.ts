@@ -20,7 +20,7 @@ export class HslayersMaterialComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.config) {
-      this.HsConfig.update(this.config);
+      this.HsConfig.get(app).update(this.config);
     }
   }
 }

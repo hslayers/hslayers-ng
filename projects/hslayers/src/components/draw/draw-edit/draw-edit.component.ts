@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 
 import * as polygonClipping from 'polygon-clipping';
 import Feature from 'ol/Feature';
@@ -22,6 +22,7 @@ import {defaultStyle} from '../../styles/styles';
   styleUrls: ['./draw-edit.component.scss'],
 })
 export class DrawEditComponent implements OnDestroy {
+  @Input() app = 'default';
   vectorQueryFeatureSubscription;
   editOptions = ['difference', 'union', 'intersection', 'split'];
   selectedType: 'difference' | 'union' | 'intersection' | 'split';
@@ -53,6 +54,7 @@ export class DrawEditComponent implements OnDestroy {
       this.HsDrawService.previouslySelected = null;
     }
 
+    this.HsQueryVectorService.init(this.app);
     this.checkFeatureGeometryType(
       this.HsQueryVectorService.selector.getFeatures().getArray()[0]
     );
@@ -113,9 +115,9 @@ export class DrawEditComponent implements OnDestroy {
         if (this.HsDrawService.previouslySelected) {
           this.HsDrawService.selectedLayer =
             this.HsDrawService.previouslySelected;
-          this.HsDrawService.changeDrawSource();
+          this.HsDrawService.changeDrawSource(this.app);
         } else {
-          this.HsDrawService.fillDrawableLayers();
+          this.HsDrawService.fillDrawableLayers(this.app);
         }
       });
       this.vectorQueryFeatureSubscription.unsubscribe();
@@ -244,9 +246,12 @@ export class DrawEditComponent implements OnDestroy {
     );
     this.HsDrawService.modify.setActive(what === this.HsDrawService.type);
 
-    const type = this.HsDrawService.setType(what);
+    const type = this.HsDrawService.setType(what, this.app);
     if (type) {
-      this.HsDrawService.activateDrawing({onDrawEnd: (e) => this.onDrawEnd(e)});
+      this.HsDrawService.activateDrawing(
+        {onDrawEnd: (e) => this.onDrawEnd(e)},
+        this.app
+      );
     }
     if (this.selectedType == 'split' && this.features.length > 1) {
       this.deselectMultiple(0);

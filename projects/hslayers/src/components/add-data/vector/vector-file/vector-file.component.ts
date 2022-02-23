@@ -30,6 +30,7 @@ import {vectorDataObject} from '../vector-data.type';
 })
 export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
+  @Input() app: 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';
@@ -79,7 +80,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     this.uploadType == 'new'
       ? await this.hsAddDataVectorService.addNewLayer(this.data)
       : await this.updateExistingLayer();
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', this.app);
     this.hsAddDataVectorService.setPanelToCatalogue();
     this.setToDefault();
   }

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -19,7 +19,7 @@ import {getBase} from '../../../common/layer-extensions';
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   menuExpanded = false;
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
-
+  @Input() app = 'default';
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsLayerManagerService: HsLayerManagerService,
@@ -59,7 +59,8 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
     this.HsLayerManagerService.toggleLayerEditor(
       layer,
       'settings',
-      'sublayers'
+      'sublayers',
+      this.app
     );
     this.HsLayerManagerService.menuExpanded =
       !this.HsLayerManagerService.menuExpanded;
@@ -67,8 +68,8 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
 
   isVisible(): boolean {
     return (
-      this.HsLayoutService.componentEnabled('basemapGallery') &&
-      this.HsLayoutService.componentEnabled('guiOverlay')
+      this.HsLayoutService.componentEnabled('basemapGallery', this.app) &&
+      this.HsLayoutService.componentEnabled('guiOverlay', this.app)
     );
   }
 }

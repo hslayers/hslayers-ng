@@ -131,12 +131,27 @@ export class HsDrawService {
     private zone: NgZone
   ) {
     this.keyUp = this.keyUp.bind(this);
-    this.hsMapService.loaded().then((map) => {
-      this.modify = new Modify({
-        features: this.selectedFeatures,
-      });
-      map.addInteraction(this.modify);
+  }
+  /**
+   * initial function if the draw panel is loaded as first panel
+   */
+  async init(app: string): Promise<void> {
+    await this.hsMapService.loaded(app);
+    const map = this.hsMapService.getMap(app);
+    this.fillDrawableLayers(app);
+    this.hsMapService.getLayersArray().forEach((l) =>
+      l.on('change:visible', (e) => {
+        if (this.draw && l == this.selectedLayer) {
+          this.setType(this.type, app);
+        }
+        this.fillDrawableLayers(app);
+      })
+    );
+
+    this.modify = new Modify({
+      features: this.selectedFeatures,
     });
+    map.addInteraction(this.modify);
 
     this.selectedFeatures.on('add', (e) => {
       if (this.onSelected) {
@@ -160,20 +175,23 @@ export class HsDrawService {
         this.selectedFeatures.remove(feature);
       }
     );
+    this.hsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
+      this.pendingLayers = pendingLayers;
+    });
 
     this.hsEventBusService.mapResets.subscribe(() => {
       this.addedLayersRemoved = true;
-      this.fillDrawableLayers();
+      this.fillDrawableLayers(app);
     });
 
     this.hsEventBusService.mainPanelChanges.subscribe((event) => {
-      if (event === 'draw' && this.hsMapService.map) {
-        this.fillDrawableLayers();
+      if (event === 'draw' && this.hsMapService.getMap()) {
+        this.fillDrawableLayers(app);
       }
     });
 
     this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
-      this.fillDrawableLayers();
+      this.fillDrawableLayers(app);
       this.isAuthorized = endpoint.authenticated;
       //When metadata dialog window opened. Layer is being added
       if (this.selectedLayer && this.tmpDrawLayer) {
@@ -186,25 +204,6 @@ export class HsDrawService {
         };
         setDefinition(this.selectedLayer, definition);
       }
-    });
-    this.hsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
-      this.pendingLayers = pendingLayers;
-    });
-  }
-  /**
-   * initial function if the draw panel is loaded as first panel
-   */
-  init(): void {
-    this.hsMapService.loaded().then((_) => {
-      this.fillDrawableLayers();
-      this.hsMapService.getLayersArray().forEach((l) =>
-        l.on('change:visible', (e) => {
-          if (this.draw && l == this.selectedLayer) {
-            this.setType(this.type);
-          }
-          this.fillDrawableLayers();
-        })
-      );
     });
   }
   /**
@@ -236,7 +235,7 @@ export class HsDrawService {
     }
   }
 
-  saveDrawingLayer(): void {
+  saveDrawingLayer(app: string): void {
     if (this.selectedLayer) {
       this.previouslySelected = this.selectedLayer;
     }
@@ -263,7 +262,10 @@ export class HsDrawService {
     setRemovable(drawLayer, true);
     setSld(drawLayer, defaultStyle);
     setEditor(drawLayer, {editable: true});
-    setPath(drawLayer, this.hsConfig.defaultDrawLayerPath || 'User generated'); //TODO: Translate this
+    setPath(
+      drawLayer,
+      this.hsConfig.get(app).defaultDrawLayerPath || 'User generated'
+    ); //TODO: Translate this
     setDefinition(drawLayer, {
       format: this.isAuthorized ? 'hs.format.WFS' : null,
       url: this.isAuthorized ? layman.url + '/wfs' : null,
@@ -274,17 +276,17 @@ export class HsDrawService {
     this.layerMetadataDialog.next();
   }
 
-  setType(what): boolean {
+  setType(what, app: string): boolean {
     if (this.type == what) {
       this.type = null;
       this.deactivateDrawing();
       const tmpLayer =
         this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE) || null;
       if (tmpLayer) {
-        this.hsMapService.map.removeLayer(tmpLayer);
+        this.hsMapService.getMap().removeLayer(tmpLayer);
         this.tmpDrawLayer = false;
       }
-      this.hsQueryBaseService.activateQueries();
+      this.hsQueryBaseService.activateQueries(app);
       return false;
     }
     //console.log(this.drawableLayers);
@@ -300,11 +302,11 @@ export class HsDrawService {
       setEditor(drawLayer, {editable: true});
       setPath(
         drawLayer,
-        this.hsConfig.defaultDrawLayerPath || 'User generated'
+        this.hsConfig.get(app).defaultDrawLayerPath || 'User generated'
       );
       this.tmpDrawLayer = true;
       this.selectedLayer = drawLayer;
-      this.addDrawLayer(drawLayer);
+      this.addDrawLayer(drawLayer, app);
     }
     this.type = what;
     if (this.selectedLayer) {
@@ -322,7 +324,7 @@ export class HsDrawService {
    * In case of Layman layer not yet existing in app it pulls the layer first.
    * @param layer -
    */
-  async selectLayer(layer) {
+  async selectLayer(layer, app: string) {
     let metadata;
     if (!(layer instanceof Layer)) {
       metadata = await this.hsLaymanBrowserService.fillLayerMetadata(
@@ -342,13 +344,16 @@ export class HsDrawService {
       );
       const confirmed = await dialog.waitResult();
       if (confirmed == 'yes') {
-        await this.hsAddDataOwsService.connectToOWS({
-          type: 'wms',
-          uri: decodeURIComponent(metadata.wms.url),
-          layer: layer.name,
-        });
+        await this.hsAddDataOwsService.connectToOWS(
+          {
+            type: 'wms',
+            uri: decodeURIComponent(metadata.wms.url),
+            layer: layer.name,
+          },
+          app
+        );
         this.selectedLayer = null;
-        this.fillDrawableLayers();
+        this.fillDrawableLayers(app);
       }
       return;
     }
@@ -372,21 +377,21 @@ export class HsDrawService {
         getTitle(this.selectedLayer) == TMP_LAYER_TITLE
       ) {
         this.tmpDrawLayer = false;
-        this.hsMapService.map.removeLayer(this.selectedLayer);
+        this.hsMapService.getMap().removeLayer(this.selectedLayer);
       }
 
       this.selectedLayer = lyr;
-      this.changeDrawSource();
+      this.changeDrawSource(app);
     }
-    this.fillDrawableLayers();
+    this.fillDrawableLayers(app);
   }
   /**
    * Add draw layer to the map and repopulate list of drawables.
    * @param layer -
    */
-  addDrawLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
-    this.hsMapService.map.addLayer(layer);
-    this.fillDrawableLayers();
+  addDrawLayer(layer: VectorLayer<VectorSource<Geometry>>, app: string): void {
+    this.hsMapService.getMap().addLayer(layer);
+    this.fillDrawableLayers(app);
   }
 
   /**
@@ -400,7 +405,7 @@ export class HsDrawService {
     }
   }
 
-  onDrawEnd(e): void {
+  onDrawEnd(e, app: string): void {
     if (!getEditor(this.selectedLayer)) {
       return;
     }
@@ -416,9 +421,9 @@ export class HsDrawService {
      * feature, so they don't appear in Info panel */
     if (
       this.hsLayoutService.mainpanel != 'draw' &&
-      this.hsConfig.openQueryPanelOnDrawEnd
+      this.hsConfig.get(app).openQueryPanelOnDrawEnd
     ) {
-      this.hsLayoutService.setMainPanel('info');
+      this.hsLayoutService.setMainPanel('info', app);
     }
     setTimeout(() => {
       this.addFeatureToSelector(e.feature);
@@ -454,7 +459,7 @@ export class HsDrawService {
   /**
    * Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
    */
-  changeDrawSource(): void {
+  changeDrawSource(app: string): void {
     if (this.selectedLayer.getSource === undefined) {
       return;
     }
@@ -468,10 +473,13 @@ export class HsDrawService {
     });
     if (this.draw) {
       //Reactivate drawing with updated source
-      this.activateDrawing({
-        drawState: true,
-        onDrawEnd: (e) => this.onDrawEnd(e),
-      });
+      this.activateDrawing(
+        {
+          drawState: true,
+          onDrawEnd: (e) => this.onDrawEnd(e, app),
+        },
+        app
+      );
       //Set snapLayer and snap interaction source
       this.snapLayer = this.selectedLayer;
       this.toggleSnapping(this.source);
@@ -495,7 +503,7 @@ export class HsDrawService {
     });
   }
 
-  stopDrawing(): void {
+  stopDrawing(app: string): void {
     if (!this.draw || this.draw === null) {
       return;
     }
@@ -508,7 +516,7 @@ export class HsDrawService {
     }
     this.draw.setActive(false);
     this.modify.setActive(false);
-    this.hsQueryBaseService.activateQueries();
+    this.hsQueryBaseService.activateQueries(app);
     this.type = null;
     this.drawActive = false;
   }
@@ -528,10 +536,11 @@ export class HsDrawService {
    * Repopulates drawable layers. In case layman connection exists it also creates
    * a list of available server possibilities.
    */
-  async fillDrawableLayers(): Promise<void> {
+  async fillDrawableLayers(app: string): Promise<void> {
     let drawables = [];
     await this.hsMapService.loaded();
-    drawables = this.hsMapService.map
+    drawables = this.hsMapService
+      .getMap()
       .getLayers()
       .getArray()
       .filter((layer: Layer<Source>) =>
@@ -546,7 +555,7 @@ export class HsDrawService {
     } else if (drawables.length > 0) {
       if (this.selectedLayerNotAvailable(drawables)) {
         this.selectedLayer = drawables[0];
-        this.changeDrawSource();
+        this.changeDrawSource(app);
       }
     }
     this.addedLayersRemoved = false;
@@ -597,7 +606,7 @@ export class HsDrawService {
   /**
    * Removes selected drawing layer from both Layermanager and Layman
    */
-  async removeLayer(): Promise<void> {
+  async removeLayer(app: string): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -612,14 +621,14 @@ export class HsDrawService {
     if (confirmed == 'yes') {
       await this.completeLayerRemoval(this.selectedLayer);
       this.selectedLayer = null;
-      this.fillDrawableLayers();
+      this.fillDrawableLayers(app);
     }
   }
 
   /**
    * Removes multiple selected layers from both Layermanager and Layman
    */
-  async removeMultipleLayers(): Promise<void> {
+  async removeMultipleLayers(app: string): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsRmMultipleDialogComponent,
       {
@@ -668,7 +677,7 @@ export class HsDrawService {
         }
       }
       this.selectedLayer = null;
-      this.fillDrawableLayers();
+      this.fillDrawableLayers(app);
     }
   }
 
@@ -676,7 +685,7 @@ export class HsDrawService {
     let definition;
     const isLayer = layerToRemove instanceof Layer;
     if (isLayer) {
-      this.hsMapService.map.removeLayer(layerToRemove);
+      this.hsMapService.getMap().removeLayer(layerToRemove);
       definition = getDefinition(layerToRemove);
       if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
         this.tmpDrawLayer = false;
@@ -713,8 +722,12 @@ export class HsDrawService {
    * @param vertexCount - Number of vertexes the sketch has
    * @returns return boolean value if right mouse button was clicked
    */
-  rightClickCondition(typeNum: number, vertexCount: number): boolean {
-    const minPoints = this.hsConfig.preserveLastSketchPoint ? 1 : 0;
+  rightClickCondition(
+    typeNum: number,
+    vertexCount: number,
+    app: string
+  ): boolean {
+    const minPoints = this.hsConfig.get(app).preserveLastSketchPoint ? 1 : 0;
     const minVertexCount = typeNum - minPoints;
     if (vertexCount >= minVertexCount) {
       setTimeout(() => {
@@ -739,17 +752,20 @@ export class HsDrawService {
    * creating the interactions
    * Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
    */
-  activateDrawing({
-    onDrawStart,
-    onDrawEnd = (e) => this.onDrawEnd(e),
-    onSelected,
-    onDeselected,
-    drawState = true,
-  }: activateParams): void {
+  activateDrawing(
+    {
+      onDrawStart,
+      onDrawEnd = (e, app) => this.onDrawEnd(e, app),
+      onSelected,
+      onDeselected,
+      drawState = true,
+    }: activateParams,
+    app: string
+  ): void {
     this.onDeselected = onDeselected;
     this.onSelected = onSelected;
     this.deactivateDrawing().then(() => {
-      this.hsQueryBaseService.deactivateQueries();
+      this.hsQueryBaseService.deactivateQueries(app);
       this.draw = new Draw({
         source: this.source,
         type: /** GeometryType */ this.type,
@@ -761,10 +777,10 @@ export class HsDrawService {
             //right click
             if (this.type == 'Polygon') {
               const vertexCount = (this.draw as any).sketchLineCoords_?.length;
-              return this.rightClickCondition(4, vertexCount);
+              return this.rightClickCondition(4, vertexCount, app);
             } else if (this.type == 'LineString') {
               const vertexCount = (this.draw as any).sketchCoords_?.length;
-              return this.rightClickCondition(2, vertexCount - 1);
+              return this.rightClickCondition(2, vertexCount - 1, app);
             }
           }
         },

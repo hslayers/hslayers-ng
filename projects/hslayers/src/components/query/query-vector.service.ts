@@ -48,10 +48,14 @@ export class HsQueryVectorService {
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     private domSanitizer: DomSanitizer
-  ) {
+  ) {}
+
+  init(app: string): void {
     this.selector = new Select({
       condition: click,
-      multi: this.hsConfig.query?.multi ? this.hsConfig.query.multi : false,
+      multi: this.hsConfig.get(app).query?.multi
+        ? this.hsConfig.get(app).query.multi
+        : false,
       filter: function (feature, layer) {
         if (layer === null) {
           return;
@@ -106,12 +110,13 @@ export class HsQueryVectorService {
       this.createFeatureAttributeList();
     });
   }
-  getFeaturesUnderMouse(map: Map, pixel: any) {
+
+  getFeaturesUnderMouse(map: Map, pixel: any, app: string) {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
         const layer = this.hsMapService.getLayerForFeature(feature);
-        return layer && layer != this.hsQueryBaseService.queryLayer;
+        return layer && layer != this.hsQueryBaseService.apps[app].queryLayer;
       });
   }
   getSelectedFeature(feature: any): any {

@@ -48,11 +48,11 @@ export class HsMatLayoutComponent implements AfterViewInit {
     this.HsLayoutService.contentWrapper = this.elementRef.nativeElement.querySelector(
       '.hs-content-wrapper'
     );
-    if (this.HsConfig.sidebarPosition === 'left') {
+    if (this.HsConfig.get(app).sidebarPosition === 'left') {
       this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
       this.HsLayoutService.sidebarRight = false;
-    } else if (this.HsConfig.sidebarPosition != 'invisible') {
-      this.HsConfig.sidebarPosition = 'right';
+    } else if (this.HsConfig.get(app).sidebarPosition != 'invisible') {
+      this.HsConfig.get(app).sidebarPosition = 'right';
     }
     //if (window.innerWidth < 600 && this.HsUtilsService.runningInBrowser()) {
     //  const viewport = document.querySelector('meta[name="viewport"]');
@@ -63,7 +63,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //}
     ////this.$emit('scope_loaded', 'Layout');
 
-    //switch (this.HsConfig.theme) {
+    //switch (this.HsConfig.get(app).theme) {
     //  case 'dark':
     //    this.HsThemeService.setDarkTheme();
     //    break;

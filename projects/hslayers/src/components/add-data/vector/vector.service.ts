@@ -110,7 +110,7 @@ export class HsAddDataVectorService {
           }
         }
 
-        if (this.hsMapService.map) {
+        if (this.hsMapService.getMap()) {
           this.hsAddDataService.addLayer(lyr, addUnder);
         }
         resolve(lyr);
@@ -153,8 +153,12 @@ export class HsAddDataVectorService {
     }
 
     let mapProjection;
-    if (this.hsMapService.map) {
-      mapProjection = this.hsMapService.map.getView().getProjection().getCode();
+    if (this.hsMapService.getMap()) {
+      mapProjection = this.hsMapService
+        .getMap()
+        .getView()
+        .getProjection()
+        .getCode();
     }
 
     const descriptor = new VectorLayerDescriptor(
@@ -272,7 +276,7 @@ export class HsAddDataVectorService {
       !isNaN(extent[1]) &&
       !isNaN(extent[2]) &&
       !isNaN(extent[3]) &&
-      this.hsMapService.map
+      this.hsMapService.getMap()
     ) {
       this.hsMapService.fitExtent(extent);
       src.un('change', this.changeListener);
@@ -364,7 +368,7 @@ export class HsAddDataVectorService {
   }
 
   transformFeaturesIfNeeded(features, projection): void {
-    const mapProjection = this.hsMapService.map.getView().getProjection();
+    const mapProjection = this.hsMapService.getMap().getView().getProjection();
     if (projection != mapProjection) {
       projection = epsg4326Aliases
         .map((proj) => proj.getCode())

@@ -82,9 +82,10 @@ export class HsCompositionsParserService {
    */
   async loadUrl(
     url: string,
+    app: string,
     overwrite?: boolean,
     callback?,
-    pre_parse?
+    pre_parse?,
   ): Promise<void> {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
@@ -102,9 +103,9 @@ export class HsCompositionsParserService {
     const data: any = await lastValueFrom(this.$http.get(url, options));
     if (data?.file) {
       // Layman composition wrapper
-      return this.loadUrl(data.file.url, overwrite, callback, pre_parse);
+      return this.loadUrl(data.file.url, app, overwrite, callback, pre_parse);
     }
-    this.loaded(data, pre_parse, url, overwrite, callback);
+    this.loaded(data, pre_parse, url, overwrite, callback, app);
   }
 
   async loaded(
@@ -112,7 +113,8 @@ export class HsCompositionsParserService {
     pre_parse,
     url,
     overwrite: boolean,
-    callback
+    callback,
+    app: string
   ): Promise<void> {
     this.HsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
@@ -130,10 +132,11 @@ export class HsCompositionsParserService {
       await this.loadCompositionObject(
         response.data || response,
         overwrite,
+        app,
         response.title,
         response.extent
       );
-      this.finalizeCompositionLoading(response);
+      this.finalizeCompositionLoading(response, app);
       if (this.HsUtilsService.isFunction(callback)) {
         callback();
       }
@@ -217,6 +220,7 @@ export class HsCompositionsParserService {
   async loadCompositionObject(
     obj,
     overwrite: boolean,
+    app: string,
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
   ): Promise<void> {
@@ -240,7 +244,7 @@ export class HsCompositionsParserService {
       }
     }
 
-    const layers = await this.jsonToLayers(obj);
+    const layers = await this.jsonToLayers(obj, app);
     if (layers?.length > 0) {
       layers.forEach((lyr) => {
         this.HsMapService.addLayer(
@@ -248,24 +252,26 @@ export class HsCompositionsParserService {
           DuplicateHandling.RemoveOriginal
         );
       });
-      this.HsLayerManagerService.updateLayerListPositions();
+      this.HsLayerManagerService.updateLayerListPositions(app);
     }
 
     if (obj.current_base_layer) {
-      this.HsMapService.map.getLayers().forEach((lyr: Layer<Source>) => {
-        if (
-          getTitle(lyr) == obj.current_base_layer.title ||
-          getTitle(lyr) == obj.current_base_layer
-        ) {
-          lyr.setVisible(true);
-        }
-      });
+      this.HsMapService.getMap()
+        .getLayers()
+        .forEach((lyr: Layer<Source>) => {
+          if (
+            getTitle(lyr) == obj.current_base_layer.title ||
+            getTitle(lyr) == obj.current_base_layer
+          ) {
+            lyr.setVisible(true);
+          }
+        });
     }
   }
 
-  finalizeCompositionLoading(responseData): void {
-    if (this.HsConfig.open_lm_after_comp_loaded) {
-      this.HsLayoutService.setMainPanel('layermanager');
+  finalizeCompositionLoading(responseData, app: string): void {
+    if (this.HsConfig.get(app).open_lm_after_comp_loaded) {
+      this.HsLayoutService.setMainPanel('layermanager', app);
     }
 
     this.composition_edited = false;
@@ -302,7 +308,7 @@ export class HsCompositionsParserService {
       }
     });
     while (to_be_removed.length > 0) {
-      this.HsMapService.map.removeLayer(to_be_removed.shift());
+      this.HsMapService.getMap().removeLayer(to_be_removed.shift());
     }
   }
 
@@ -391,13 +397,13 @@ export class HsCompositionsParserService {
    * @returns {Array} Array of created layers
    * @description Parse composition object to extract individual layers and add them to map
    */
-  async jsonToLayers(j): Promise<Layer<Source>[]> {
+  async jsonToLayers(j, app: string): Promise<Layer<Source>[]> {
     const layers = [];
     if (j.data) {
       j = j.data;
     }
     for (const lyr_def of j.layers) {
-      const layer = await this.jsonToLayer(lyr_def);
+      const layer = await this.jsonToLayer(lyr_def, app);
       if (layer == undefined) {
         if (lyr_def.protocol.format != 'hs.format.externalWFS') {
           this.$log.warn(
@@ -430,17 +436,21 @@ export class HsCompositionsParserService {
    * @returns {Function} Parser function to create layer (using config_parsers service)
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
-  async jsonToLayer(lyr_def): Promise<any> {
+  async jsonToLayer(lyr_def, app: string): Promise<any> {
     let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
       case 'WMS':
-        resultLayer =
-          this.HsCompositionsLayerParserService.createWmsLayer(lyr_def);
+        resultLayer = this.HsCompositionsLayerParserService.createWmsLayer(
+          lyr_def,
+          app
+        );
         break;
       case 'HSLayers.Layer.WMTS':
-        resultLayer =
-          this.HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
+        resultLayer = this.HsCompositionsLayerParserService.createWMTSLayer(
+          lyr_def,
+          app
+        );
         break;
       case 'ArcGISRest':
         resultLayer =

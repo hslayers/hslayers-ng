@@ -48,7 +48,7 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
     this.setConfig();
   }
   setConfig() {
-    this.hsConfig.update({
+    this.hsConfig.get(app).update({
       panelWidths: {statistics: 600, 'statistics-upload': 700},
       translationOverrides: {
         en: {

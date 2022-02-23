@@ -134,7 +134,7 @@ describe('HsUtilsService', () => {
     expect(url).toEqual(
       '/proxy/http://gisserver.domain.com/request=GetFeatureInfo'
     );
-    hsConfig.proxyPrefix = 'http://localhost:8085/';
+    hsConfig.get('default').proxyPrefix = 'http://localhost:8085/';
     url = hsUtilsService.proxify(simpleUrl, false);
     expect(url).toEqual('http://localhost:8085/http://gisserver.domain.com');
     url = hsUtilsService.proxify(base64Url);
@@ -143,8 +143,8 @@ describe('HsUtilsService', () => {
     );
   });
   it('check if short url gets created correctly', async () => {
-    hsConfig.proxyPrefix = 'http://localhost:8085/';
-    hsConfig.shortenUrl = (url) => {
+    hsConfig.get('default').proxyPrefix = 'http://localhost:8085/';
+    hsConfig.get('default').shortenUrl = (url) => {
       return 'http://customShortUrl.com/shorturl';
     };
     const url =

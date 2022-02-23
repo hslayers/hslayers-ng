@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translate">
+    <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translate" [app]="data.app">
         <extra-buttons>
             <button class="but-title-sm hs-extra-buttons" (click)="reload()" [title]="'COMMON.reload' | translate">
                 <i class="glyphicon icon-fatredo"></i>
@@ -10,7 +10,7 @@
             </button>
             <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;"
                 [title]="'COMPOSITIONS.import'|translate">
-                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)" accept=".json"
+                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event, data.app)" accept=".json"
                     style="display: none;">
             </label>
             <button class="but-title-sm hs-extra-buttons" [title]="'COMPOSITIONS.addByAddress'|translate"
@@ -166,7 +166,7 @@
                         (mouseleave)="highlightComposition(composition, false)"
                         (click)="compositionClicked(composition)" data-container="body" data-placement="bottom"
                         [attr.title]="composition.mdAbstract">
-                        <hs-compositions-list-item [composition]="composition" [selectedCompId]="selectedCompId">
+                        <hs-compositions-list-item [composition]="composition" [app]="data.app" [selectedCompId]="selectedCompId">
                         </hs-compositions-list-item>
                     </li>
                     <li class="list-group-item text-primary text-center py-2"

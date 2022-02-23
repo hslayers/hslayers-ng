@@ -40,7 +40,7 @@ export class HsCompositionsStatusManagerService {
    * @param params
    * @param bbox
    */
-  loadList(ds, params, bbox) {
+  loadList(ds, params, bbox, app: string) {
     let url = this.HsStatusManagerService.endpointUrl();
     const query = params.query;
     const textFilter =
@@ -49,7 +49,7 @@ export class HsCompositionsStatusManagerService {
         : '';
     url +=
       '?request=list&project=' +
-      encodeURIComponent(this.HsConfig.project_name) +
+      encodeURIComponent(this.HsConfig.get(app).project_name) +
       '&extent=' +
       bbox.join(',') +
       textFilter +
@@ -147,13 +147,13 @@ export class HsCompositionsStatusManagerService {
     );
   }
 
-  async delete(endpoint, composition): Promise<void> {
+  async delete(endpoint, composition, app: string): Promise<void> {
     let url =
       this.HsStatusManagerService.endpointUrl() +
       '?request=delete&id=' +
       composition.id +
       '&project=' +
-      encodeURIComponent(this.HsConfig.project_name);
+      encodeURIComponent(this.HsConfig.get(app).project_name);
     url = this.HsUtilsService.proxify(url);
     await lastValueFrom(this.$http.get(url));
     this.HsEventBusService.compositionDeletes.next(composition);

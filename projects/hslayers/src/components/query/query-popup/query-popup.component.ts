@@ -8,6 +8,7 @@ import {
 
 import {Subscription} from 'rxjs';
 
+import {HsConfig} from '../../../config.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogItem} from '../../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -23,7 +24,8 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './query-popup.component.html',
 })
 export class HsQueryPopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit {
+  implements OnDestroy, HsDialogComponent, AfterViewInit
+{
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -31,6 +33,7 @@ export class HsQueryPopupComponent
   viewRef: ViewRef;
   data: {
     service: HsQueryPopupServiceModel;
+    app: string;
   };
 
   constructor(
@@ -38,7 +41,8 @@ export class HsQueryPopupComponent
     public hsLanguageService: HsLanguageService,
     public hsMapService: HsMapService,
     private ElementRef: ElementRef,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    private hsConfig: HsConfig
   ) {
     this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
       (map) => {
@@ -51,8 +55,15 @@ export class HsQueryPopupComponent
     this.data.service.registerPopup(this.ElementRef.nativeElement);
   }
 
+  ngOnInit() {
+    this.hsQueryPopupWidgetContainerService.initWidgets(
+      this.hsConfig.get(this.data.app).queryPopupWidgets,
+      this.data.app
+    );
+  }
+
   ngOnDestroy(): void {
-    this.hsMapService.map.removeOverlay(this.data.service.hoverPopup);
+    this.hsMapService.getMap().removeOverlay(this.data.service.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 

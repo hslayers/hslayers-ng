@@ -454,7 +454,7 @@ export class HsLayerUtilsService {
     if (!denominator) {
       return denominator;
     }
-    const view = this.hsMapService.map.getView();
+    const view = this.hsMapService.getMap().getView();
     const units = view.getProjection().getUnits();
     const dpi = 25.4 / 0.28;
     const mpu = METERS_PER_UNIT[units];

@@ -14,7 +14,8 @@ import {HsToolbarPanelContainerService} from './toolbar-panel-container.service'
 })
 export class HsToolbarComponent
   extends HsPanelBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   collapsed = false;
   composition_title: any;
   composition_abstract: any;
@@ -55,8 +56,8 @@ export class HsToolbarComponent
   isVisible(): boolean {
     return (
       this.HsLayoutService.panelEnabled('toolbar') &&
-      this.HsLayoutService.componentEnabled('toolbar') &&
-      this.HsLayoutService.componentEnabled('guiOverlay')
+      this.HsLayoutService.componentEnabled('toolbar', this.data.app) &&
+      this.HsLayoutService.componentEnabled('guiOverlay', this.data.app)
     );
   }
 }

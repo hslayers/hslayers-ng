@@ -22,8 +22,10 @@ export class HsGeolocationComponent
   }
   isVisible(): boolean {
     return (
-      this.HsLayoutService.componentEnabled('geolocationButton') &&
-      this.HsLayoutService.componentEnabled('guiOverlay')
+      this.HsLayoutService.componentEnabled(
+        'geolocationButton',
+        this.data.app
+      ) && this.HsLayoutService.componentEnabled('guiOverlay', this.data.app)
     );
   }
 }

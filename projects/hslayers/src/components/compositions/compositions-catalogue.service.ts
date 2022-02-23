@@ -338,6 +338,9 @@ export class HsCompositionsCatalogueService {
    * Filters statusmanager endpoint out from rest of the endpoints
    */
   getFilteredEndpointsForCompositions(): HsEndpoint[] {
+    if (this.hsCommonEndpointsService.endpoints == undefined) {
+      return [];
+    }
     return this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );

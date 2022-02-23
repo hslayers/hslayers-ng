@@ -45,7 +45,7 @@
                         [attr.id]="'hs-sublayers-'+subLayer" [ngModelOptions]="{standalone: true}">
                     <label class="form-check-label" [attr.for]="'hs-sublayers-'+subLayer">{{subLayer}}</label>
                 </div>
-                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer" *ngIf="!subLayerIsString(subLayer)">
+                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer" [app]="app" *ngIf="!subLayerIsString(subLayer)">
                 </hs-layer-editor-sub-layer-checkbox>
             </div>
         </div>

@@ -2,6 +2,7 @@
   <hs-panel-header
     name="tripPlaner"
     [title]="'PANEL_HEADER.TRIP_PLANNER' | translate"
+    [app]="data.app"
   ></hs-panel-header>
   <div class="card-body">
     <hs-trip-planner-layer-selector usage="route" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route"></hs-trip-planner-layer-selector>

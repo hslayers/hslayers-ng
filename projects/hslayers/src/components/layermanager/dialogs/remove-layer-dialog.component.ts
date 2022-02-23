@@ -27,8 +27,8 @@ export class HsLayerManagerRemoveLayerDialogComponent
     if (this.HsDrawService.selectedLayer == this.data.olLayer) {
       this.HsDrawService.selectedLayer = null;
     }
-    this.HsMapService.map.removeLayer(this.data.olLayer);
-    this.HsDrawService.fillDrawableLayers();
+    this.HsMapService.getMap().removeLayer(this.data.olLayer);
+    this.HsDrawService.fillDrawableLayers(this.data.app);
 
     this.HsEventBusService.layerManagerUpdates.next();
     this.close();

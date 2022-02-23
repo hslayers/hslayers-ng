@@ -16,24 +16,26 @@ export class HsCommonEndpointsService {
     public hsConfig: HsConfig,
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsUtilsService: HsUtilsService
-  ) {
-    this.fillEndpoints();
-    this.hsConfig.configChanges.subscribe(() => this.fillEndpoints());
+  ) {}
+
+  init(app: string): void {
+    this.fillEndpoints(app);
+    this.hsConfig.configChanges.subscribe(() => this.fillEndpoints(app));
   }
 
-  private fillEndpoints() {
+  private fillEndpoints(app: string) {
     this.endpoints = [
-      ...(this.hsConfig.status_manager_url
+      ...(this.hsConfig.get(app).status_manager_url
         ? [
             {
               type: 'statusmanager',
               title: 'Status manager',
-              url: this.hsConfig.status_manager_url,
+              url: this.hsConfig.get(app).status_manager_url,
               onError: {compositionLoad: EndpointErrorHandling.ignore},
             },
           ]
         : []),
-      ...(this.hsConfig.datasources || []).map((ds) => {
+      ...(this.hsConfig.get(app).datasources || []).map((ds) => {
         const tmp = {
           url: ds.url,
           id: this.hsUtilsService.generateUuid(),
@@ -67,7 +69,9 @@ export class HsCommonEndpointsService {
        */
       .sort((a, b) => a.type.localeCompare(b.type));
 
-    this.endpointsFilled.next(this.endpoints);
+    if (this.endpoints) {
+      this.endpointsFilled.next(this.endpoints);
+    }
   }
   getItemsPerPageConfig(endpoint): number {
     return endpoint.paging !== undefined &&

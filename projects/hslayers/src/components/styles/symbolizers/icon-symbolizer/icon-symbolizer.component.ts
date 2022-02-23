@@ -13,6 +13,7 @@ import {SymbolizerIcon} from '../../../../config.service';
 })
 export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: IconSymbolizer;
+  @Input() app: string;
 
   selectedIcon?: SymbolizerIcon;
 

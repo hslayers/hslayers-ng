@@ -60,10 +60,11 @@ export class HsLaymanBrowserService {
       sortBy = query.sortby == 'date' ? 'last_change' : query.sortby;
 
       const b = transformExtent(
-        this.hsMapService.map
+        this.hsMapService
+          .getMap()
           .getView()
-          .calculateExtent(this.hsMapService.map.getSize()),
-        this.hsMapService.map.getView().getProjection(),
+          .calculateExtent(this.hsMapService.getMap().getSize()),
+        this.hsMapService.getMap().getView().getProjection(),
         'EPSG:3857'
       );
       bbox = data.filterByExtent ? b.join(',') : '';

@@ -29,27 +29,12 @@ export class HsMeasureComponent
     public HsLayoutService: HsLayoutService,
     public HsMeasureService: HsMeasureService,
     private HsUtilsService: HsUtilsService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    private hsLanguageService: HsLanguageService,
+    private hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
     this.data = this.HsMeasureService.data;
     this.type = 'distance';
-
-    //Don't need two buttons (sidebar and toolbar) to toggle measure panel
-    if (!this.HsLayoutService.componentEnabled('measureToolbar')) {
-      hsSidebarService.buttons.push({
-        panel: 'measure',
-        module: 'hs.measure',
-        order: 2,
-        fits: true,
-        title: () => hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
-        description: () =>
-          hsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
-        icon: 'icon-design',
-        condition: true,
-      });
-    }
 
     if (this.HsUtilsService.runningInBrowser()) {
       document.addEventListener('keyup', (e) => {
@@ -94,6 +79,26 @@ export class HsMeasureComponent
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  ngOnInit() {
+    //Don't need two buttons (sidebar and toolbar) to toggle measure panel
+    if (
+      !this.HsLayoutService.componentEnabled('measureToolbar', this.data.app)
+    ) {
+      this.hsSidebarService.buttons.push({
+        panel: 'measure',
+        module: 'hs.measure',
+        order: 2,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
+        description: () =>
+          this.hsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
+        icon: 'icon-design',
+        condition: true,
+      });
+    }
   }
 
   changeMeasureParams(): void {

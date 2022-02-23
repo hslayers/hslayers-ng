@@ -103,7 +103,12 @@ export class HsLayerEditorService {
    * @param distance - Distance in pixels
    * @returns Current cluster state
    */
-  cluster(layer: Layer<Source>, newValue: boolean, distance: number): boolean {
+  cluster(
+    layer: Layer<Source>,
+    newValue: boolean,
+    distance: number,
+    app: string
+  ): boolean {
     if (layer == undefined) {
       return;
     }
@@ -115,7 +120,8 @@ export class HsLayerEditorService {
         distance,
         !this.HsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
           layer
-        )
+        ),
+        app
       );
       this.HsEventBusService.compositionEdits.next();
     } else {

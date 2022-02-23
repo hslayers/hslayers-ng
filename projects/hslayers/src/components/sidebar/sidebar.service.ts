@@ -60,9 +60,9 @@ export class HsSidebarService {
       }, 550);
     });
 
-    this.HsEventBusService.layoutLoads.subscribe(() => {
+    this.HsEventBusService.layoutLoads.subscribe(({app}) => {
       this.setButtonVisibility();
-      this.setPanelState(this.buttons);
+      this.setPanelState(this.buttons, app);
       //After initial run update sidebar with each layoutResizes event
       this.HsEventBusService.layoutResizes.subscribe(() => {
         this.setButtonVisibility();
@@ -117,18 +117,18 @@ export class HsSidebarService {
     this.unimportantExist = this.buttons.some((b) => b.important == false);
     this.HsLayoutService.minisidebar = this.unimportantExist;
   }
-  buttonClicked(button: HsButton): void {
+  buttonClicked(button: HsButton, app: string): void {
     if (button.click) {
       button.click();
     } else {
-      this.HsLayoutService.setMainPanel(button.panel, true);
+      this.HsLayoutService.setMainPanel(button.panel, app, true);
     }
   }
-  setPanelState(buttons: Array<HsButton>): void {
+  setPanelState(buttons: Array<HsButton>, app: string): void {
     for (const button of buttons) {
       if (
-        this.HsLayoutService.getPanelEnableState(button.panel) &&
-        this.checkConfigurableButtons(button)
+        this.HsLayoutService.getPanelEnableState(button.panel, app) &&
+        this.checkConfigurableButtons(button, app)
       ) {
         if (!this.visibleButtons.includes(button.panel)) {
           this.visibleButtons.push(button.panel);
@@ -148,13 +148,13 @@ export class HsSidebarService {
    * 'config.panelsEnabled = false' would prevent their functionality.
    * @param {object} button buttons Buttons object
    */
-  checkConfigurableButtons(button: HsButton): boolean {
+  checkConfigurableButtons(button: HsButton, app: string): boolean {
     if (typeof button.condition == 'undefined') {
       return true;
-    } else if (!this.HsConfig.panelsEnabled) {
+    } else if (!this.HsConfig.get(app).panelsEnabled) {
       return false;
     } else {
-      return this.HsConfig.panelsEnabled[button.panel];
+      return this.HsConfig.get(app).panelsEnabled[button.panel];
     }
   }
 

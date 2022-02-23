@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -8,6 +8,7 @@ import {HsSidebarService} from './sidebar.service';
   templateUrl: './partials/sidebar.html',
 })
 export class HsMiniSidebarComponent {
+  @Input() app = 'default';
   constructor(
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,

@@ -372,6 +372,7 @@ export class HsAddDataCatalogueService {
   async addLayerToMap(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
+    app: string,
     type?: string
   ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
@@ -403,11 +404,14 @@ export class HsAddDataCatalogueService {
       if (ds.type == 'micka') {
         this.datasetSelect('url');
       }
-      await this.hsAddDataOwsService.connectToOWS({
-        type: whatToAdd.type.toLowerCase(),
-        uri: decodeURIComponent(whatToAdd.link),
-        layer: ds.type == 'layman' ? layer.name : undefined,
-      });
+      await this.hsAddDataOwsService.connectToOWS(
+        {
+          type: whatToAdd.type.toLowerCase(),
+          uri: decodeURIComponent(whatToAdd.link),
+          layer: ds.type == 'layman' ? layer.name : undefined,
+        },
+        app
+      );
     } else if (whatToAdd.type == 'WFS') {
       if (ds.type == 'micka') {
         this.datasetSelect('url');
@@ -416,12 +420,15 @@ export class HsAddDataCatalogueService {
               link.toLowerCase().includes('wfs')
             )[0]
           : whatToAdd.link;
-        await this.hsAddDataOwsService.connectToOWS({
-          type: whatToAdd.type.toLowerCase(),
-          uri: decodeURIComponent(whatToAdd.link),
-          layer: undefined, //layer.title || layer.name ||
-          style: whatToAdd.style,
-        });
+        await this.hsAddDataOwsService.connectToOWS(
+          {
+            type: whatToAdd.type.toLowerCase(),
+            uri: decodeURIComponent(whatToAdd.link),
+            layer: undefined, //layer.title || layer.name ||
+            style: whatToAdd.style,
+          },
+          app
+        );
       } else {
         //Layman layers of logged user/ with write access
         if (whatToAdd.editable) {
@@ -442,14 +449,17 @@ export class HsAddDataCatalogueService {
           this.datasetSelect('catalogue');
         } else {
           //Layman layers without write access
-          await this.hsAddDataOwsService.connectToOWS({
-            type: 'wfs',
-            uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
-            style: whatToAdd.style,
-            layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
-          });
+          await this.hsAddDataOwsService.connectToOWS(
+            {
+              type: 'wfs',
+              uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+              style: whatToAdd.style,
+              layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
+            },
+            app
+          );
         }
-        this.hsLayoutService.setMainPanel('layermanager');
+        this.hsLayoutService.setMainPanel('layermanager', app);
       }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddDataVectorService.addVectorLayer(
@@ -463,7 +473,7 @@ export class HsAddDataCatalogueService {
       );
       this.hsAddDataVectorService.fitExtent(layer);
     } else {
-      this.hsLayoutService.setMainPanel('layermanager');
+      this.hsLayoutService.setMainPanel('layermanager', app);
     }
     return whatToAdd.type;
   }

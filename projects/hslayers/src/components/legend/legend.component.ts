@@ -75,7 +75,7 @@ export class HsLegendComponent extends HsPanelBaseComponent {
 
   rebuildLegends(): void {
     this.layerDescriptors = [];
-    this.buildLegendsForLayers(this.hsMapService.map);
+    this.buildLegendsForLayers(this.hsMapService.getMap());
   }
 
   filterDescriptors(): any[] {

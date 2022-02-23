@@ -120,7 +120,8 @@ export class HsEventBusService {
    */
   cesiumTimeLayerChanges: Subject<any> = new Subject();
   layoutResizes: Subject<any> = new Subject();
-  layoutLoads: Subject<{element: any; innerElement: string}> = new Subject();
+  layoutLoads: Subject<{element: any; innerElement: string; app: string}> =
+    new Subject();
   /**
    * replaces 'map.loaded'
    */

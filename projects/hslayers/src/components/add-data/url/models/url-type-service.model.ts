@@ -19,16 +19,21 @@ export interface HsUrlTypeServiceModel {
     wrapper: CapabilitiesResponseWrapper,
     sld?: string
   ): Promise<Layer<Source>[]>;
-  getLayers(checkedOnly?: boolean, style?: string): Layer<Source>[];
-  addLayers(layers: Layer<Source>[]): void;
-  getLayer(layer: any, options: addLayerOptions): Layer<Source>;
+  getLayers(
+    app: string,
+    checkedOnly?: boolean,
+    style?: string
+  ): Layer<Source>[];
+  addLayers(layers: Layer<Source>[], app: string): void;
+  getLayer(layer: any, options: addLayerOptions, app: string): Layer<Source>;
   getLayersRecursively?(
     layer: any,
     options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
+    app: string
   ): void;
-  expandService?(service: Service): void;
-  addServices?(services: Service[]);
+  expandService?(service: Service, app: string): void;
+  addServices?(services: Service[], app: string);
   setDataToDefault(): void;
   isImageService?(): boolean;
 }

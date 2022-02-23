@@ -25,7 +25,7 @@
                         (click)="expandMenu(layer)">
 
                         {{HsLayerManagerService.menuExpanded ? 'Less ': 'More'}}</label>
-                    <hs-layer-editor [current-layer]="layer" *ngIf="HsLayerManagerService.menuExpanded"
+                    <hs-layer-editor [current-layer]="layer" *ngIf="HsLayerManagerService.menuExpanded" [app]="app"
                         class="hs-layerpanel w-100" #layerEditor>
                     </hs-layer-editor>
                 </div>

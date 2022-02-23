@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -11,6 +11,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
+import {HsSaveMapService} from './save-map.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
@@ -19,7 +20,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   endpoint = null;
   isAuthorized = false;
@@ -35,7 +36,8 @@ export class HsSaveMapComponent
     //Running in background and watching observables
     public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
     hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    hsSidebarService: HsSidebarService,
+    private hsSaveMapService: HsSaveMapService
   ) {
     super(HsLayoutService);
     hsSidebarService.buttons.push({
@@ -69,7 +71,7 @@ export class HsSaveMapComponent
     this.HsCommonEndpointsService.endpointsFilled
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value) => {
-        if (value.length > 0 && !this.endpoint) {
+        if (value?.length > 0 && !this.endpoint) {
           const laymans = value.filter((ep) => ep.type == 'layman');
           if (laymans.length > 0) {
             this.HsSaveMapManagerService.selectEndpoint(laymans[0]);
@@ -100,6 +102,32 @@ export class HsSaveMapComponent
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
         this.HsSaveMapManagerService.currentUser = endpoint.user;
       });
+  }
+  ngOnInit() {
+    window.addEventListener('beforeunload', (e) => {
+      if (this.HsConfig.get(this.data.app).saveMapStateOnReload) {
+        this.hsSaveMapService.save2storage(e);
+      }
+    });
+    this.advancedForm =
+      this.HsConfig.get(this.data.app).advancedForm == undefined ||
+      this.HsConfig.get(this.data.app).advancedForm
+        ? true
+        : false;
+    this.HsSaveMapManagerService.panelOpened
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((composition) => {
+        if (composition && composition.endpoint) {
+          const openedType = composition.endpoint.type;
+          const found = this.HsCommonEndpointsService.endpoints.filter(
+            (ep) => ep.type == openedType
+          );
+          if (found.length > 0) {
+            this.HsSaveMapManagerService.selectEndpoint(found[0]);
+          }
+        }
+      });
+    this.HsSaveMapManagerService.init(this.data.app);
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

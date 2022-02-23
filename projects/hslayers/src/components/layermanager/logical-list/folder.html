@@ -4,10 +4,10 @@
             <span [ngStyle]="{'padding-left': value.indent*15}">{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}</span>
         </a>
         <li [hidden]="!folderVisible(value)">
-            <hs-layer-manager-folder [folder]="value"></hs-layer-manager-folder>
+            <hs-layer-manager-folder [folder]="value" [app]="app"></hs-layer-manager-folder>
         </li>
         <li>
-            <hs-layermanager-layer-list [folder]="value"></hs-layermanager-layer-list>
+            <hs-layermanager-layer-list [folder]="value" [app]="app"></hs-layermanager-layer-list>
         </li>
     </ul>
 </div>

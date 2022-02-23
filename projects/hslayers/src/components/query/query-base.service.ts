@@ -24,7 +24,6 @@ import {HsUtilsService} from '../utils/utils.service';
   providedIn: 'root',
 })
 export class HsQueryBaseService {
-  map: Map;
   data = {
     attributes: [],
     features: [],
@@ -40,22 +39,6 @@ export class HsQueryBaseService {
   currentQuery = null;
   dataCleared = true;
   queryPoint = new Point([0, 0]);
-  queryLayer = new VectorLayer({
-    properties: {
-      title: 'Point clicked',
-      queryable: false,
-      showInLayerManager: false,
-      removable: false,
-    },
-    source: new Vector({
-      features: [
-        new Feature({
-          geometry: this.queryPoint,
-        }),
-      ],
-    }),
-    style: () => this.pointClickedStyle(),
-  });
   featureLayersUnderMouse = [];
   nonQueryablePanels = [
     'measure',
@@ -70,6 +53,7 @@ export class HsQueryBaseService {
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
   vectorSelectorCreated: Subject<Select> = new Subject();
+  apps: {[key: string]: {queryLayer}} = {};
 
   constructor(
     public hsMapService: HsMapService,
@@ -85,16 +69,34 @@ export class HsQueryBaseService {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
     });
-
-    this.hsMapService.loaded().then(() => this.init());
   }
   /**
    *
    */
-  init(): void {
-    this.map = this.hsMapService.map;
-    this.activateQueries();
-    this.map.on('singleclick', (evt) => {
+  async init(app): Promise<void> {
+    await this.hsMapService.loaded();
+    if (this.apps[app] == undefined) {
+      this.apps[app] = {
+        queryLayer: new VectorLayer({
+          properties: {
+            title: 'Point clicked',
+            queryable: false,
+            showInLayerManager: false,
+            removable: false,
+          },
+          source: new Vector({
+            features: [
+              new Feature({
+                geometry: this.queryPoint,
+              }),
+            ],
+          }),
+          style: () => this.pointClickedStyle(app),
+        }),
+      };
+    }
+    this.activateQueries(app);
+    this.hsMapService.getMap(app).on('singleclick', (evt) => {
       this.zone.run(() => {
         this.hsEventBusService.mapClicked.next(
           Object.assign(evt, {
@@ -118,12 +120,12 @@ export class HsQueryBaseService {
     });
   }
 
-  getFeaturesUnderMouse(map: Map, pixel: any) {
+  getFeaturesUnderMouse(map: Map, pixel: any, app: string) {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
         const layer = this.hsMapService.getLayerForFeature(feature);
-        return layer && layer != this.queryLayer;
+        return layer && layer != this.apps[app].queryLayer;
       });
   }
 
@@ -233,27 +235,23 @@ export class HsQueryBaseService {
     return coords;
   }
 
-  activateQueries(): void {
+  activateQueries(app: string): void {
     if (this.queryActive) {
       return;
     }
     this.queryActive = true;
-    this.hsMapService.loaded().then((map) => {
-      map.addLayer(this.queryLayer);
-      this.hsSaveMapService.internalLayers.push(this.queryLayer);
-      this.queryStatusChanges.next(true);
-    });
+    this.hsMapService.getMap(app).addLayer(this.apps[app].queryLayer);
+    this.hsSaveMapService.internalLayers.push(this.apps[app].queryLayer);
+    this.queryStatusChanges.next(true);
   }
 
-  deactivateQueries(): void {
+  deactivateQueries(app: string): void {
     if (!this.queryActive) {
       return;
     }
     this.queryActive = false;
-    this.hsMapService.loaded().then((map) => {
-      map.removeLayer(this.queryLayer);
-      this.queryStatusChanges.next(false);
-    });
+    this.hsMapService.getMap(app).removeLayer(this.apps[app].queryLayer);
+    this.queryStatusChanges.next(false);
   }
 
   currentPanelQueryable(): boolean {
@@ -263,7 +261,7 @@ export class HsQueryBaseService {
     );
   }
 
-  pointClickedStyle(): Style {
+  pointClickedStyle(app: string): Style {
     const defaultStyle = new Style({
       image: new Circle({
         fill: new Fill({
@@ -276,11 +274,11 @@ export class HsQueryBaseService {
         radius: 5,
       }),
     });
-    if (this.hsConfig.queryPoint) {
+    if (this.hsConfig.get(app).queryPoint) {
       const circle = defaultStyle.getImage() as CircleStyle;
-      if (this.hsConfig.queryPoint == 'hidden') {
+      if (this.hsConfig.get(app).queryPoint == 'hidden') {
         circle.setRadius(0);
-      } else if (this.hsConfig.queryPoint == 'notWithin') {
+      } else if (this.hsConfig.get(app).queryPoint == 'notWithin') {
         if (this.selector.getFeatures().getLength() > 0) {
           circle.setRadius(0);
         }

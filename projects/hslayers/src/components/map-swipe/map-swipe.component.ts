@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {
   CdkDragDrop,
@@ -22,7 +22,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   private ngUnsubscribe = new Subject<void>();
   swipeSide = SwipeSide;
@@ -52,7 +52,13 @@ export class HsMapSwipeComponent
       icon: 'icon-resizehorizontalalt',
     });
   }
+
   name = 'mapSwipe';
+
+  ngOnInit() {
+    this.hsMapSwipeService.init(this.data.app);
+  }
+
   /**
    * Return label for button changing map swipe state from enabled to disabled
    */
@@ -117,7 +123,7 @@ export class HsMapSwipeComponent
     if (draggedLayer && replacedLayer?.layer) {
       this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
     } else {
-      this.hsMapSwipeService.fillSwipeLayers(draggedLayer.layer);
+      this.hsMapSwipeService.fillSwipeLayers(draggedLayer.layer, this.data.app);
     }
   }
 }

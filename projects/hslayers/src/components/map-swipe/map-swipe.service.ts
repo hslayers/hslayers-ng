@@ -41,23 +41,25 @@ export class HsMapSwipeService {
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerService: HsLayerManagerService,
     public hsShareUrlService: HsShareUrlService
-  ) {
-    this.setInitCtrlActive();
-    this.setInitOri();
+  ) {}
+
+  init(app: string) {
+    this.setInitCtrlActive(app);
+    this.setInitOri(app);
     this.hsMapService.loaded().then(() => {
       this.initSwipeControl();
     });
     this.hsEventBusService.layerManagerUpdates
       .pipe(first())
-      .subscribe(() => this.setInitialSwipeLayers());
+      .subscribe(() => this.setInitialSwipeLayers(app));
     this.hsEventBusService.layerManagerUpdates.subscribe(
       (layer: Layer<Source>) => {
-        this.fillSwipeLayers(layer);
+        this.fillSwipeLayers(layer, app);
       }
     );
   }
 
-  setInitCtrlActive(): void {
+  setInitCtrlActive(app: string): void {
     const param = this.hsShareUrlService.getParamValue('map-swipe');
     if (param) {
       switch (param) {
@@ -70,18 +72,18 @@ export class HsMapSwipeService {
       }
     } else {
       this.swipeControlActive =
-        this.hsConfig?.componentsEnabled?.mapSwipe ?? false;
+        this.hsConfig?.get(app).componentsEnabled?.mapSwipe ?? false;
     }
-    this.updateUrlParam();
+    this.updateUrlParam(app);
   }
 
-  setInitOri(): void {
+  setInitOri(app: string): void {
     const storageOri = localStorage.getItem('hs_map_swipe_ori');
     if (storageOri) {
       this.orientation = storageOri;
     } else {
       this.orientation =
-        this.hsConfig?.mapSwipeOptions?.orientation ?? 'vertical';
+        this.hsConfig?.get(app).mapSwipeOptions?.orientation ?? 'vertical';
     }
     if (this.orientation !== 'vertical') {
       this.orientationVertical = false;
@@ -96,8 +98,8 @@ export class HsMapSwipeService {
       orientation: this.orientation,
     });
     if (this.swipeControlActive) {
-      this.swipeCtrl.setTargetMap(this.hsMapService.map);
-      this.hsMapService.map.addControl(this.swipeCtrl);
+      this.swipeCtrl.setTargetMap(this.hsMapService.getMap());
+      this.hsMapService.getMap().addControl(this.swipeCtrl);
     }
   }
 
@@ -105,10 +107,13 @@ export class HsMapSwipeService {
     localStorage.setItem('hs_map_swipe_ori', this.orientation);
   }
 
-  updateUrlParam(): void {
-    this.hsShareUrlService.updateCustomParams({
-      'map-swipe': this.swipeControlActive ? 'enabled' : 'disabled',
-    });
+  updateUrlParam(app: string): void {
+    this.hsShareUrlService.updateCustomParams(
+      {
+        'map-swipe': this.swipeControlActive ? 'enabled' : 'disabled',
+      },
+      app
+    );
   }
 
   /**
@@ -135,8 +140,8 @@ export class HsMapSwipeService {
    * Fill swipe control layers
    * @param layer - layer issued from layerManagerUpdates event
    */
-  fillSwipeLayers(layer: Layer<Source>): void {
-    this.hsLayerShiftingService.fillLayers();
+  fillSwipeLayers(layer: Layer<Source>, app: string): void {
+    this.hsLayerShiftingService.fillLayers(app);
     if (!layer) {
       return;
     }
@@ -148,11 +153,11 @@ export class HsMapSwipeService {
       this.wasMoved
         ? this.moveSwipeLayer(layerFound)
         : this.addSwipeLayer(layerFound);
-      this.checkForMissingLayers();
+      this.checkForMissingLayers(app);
     } else {
       this.removeCompletely(layer);
     }
-    this.sortLayers();
+    this.sortLayers(app);
     this.wasMoved = false;
     this.movingSide = SwipeSide.Left;
   }
@@ -216,22 +221,22 @@ export class HsMapSwipeService {
   /**
    * Set map swipe control status enabled/disabled
    */
-  setControl(): void {
+  setControl(app: string): void {
     this.swipeControlActive = !this.swipeControlActive;
-    this.updateUrlParam();
-    if (!this.hsMapService.map) {
+    this.updateUrlParam(app);
+    if (!this.hsMapService.getMap()) {
       return;
     }
     if (this.swipeControlActive) {
-      this.swipeCtrl.setTargetMap(this.hsMapService.map);
-      this.hsMapService.map.addControl(this.swipeCtrl);
+      this.swipeCtrl.setTargetMap(this.hsMapService.getMap());
+      this.hsMapService.getMap().addControl(this.swipeCtrl);
       this.swipeCtrl.setEvents(true);
     } else {
-      this.hsMapService.map.removeControl(this.swipeCtrl);
+      this.hsMapService.getMap().removeControl(this.swipeCtrl);
       this.swipeCtrl.setEvents();
     }
     try {
-      this.hsMapService.map.renderSync();
+      this.hsMapService.getMap().renderSync();
     } catch (e) {
       console.error(e);
     }
@@ -273,42 +278,44 @@ export class HsMapSwipeService {
   /**
    * Set and add initial swipe control layers
    */
-  setInitialSwipeLayers(): void {
+  setInitialSwipeLayers(app: string): void {
     this.layers = [];
     this.rightLayers = [];
     this.entireMapLayers = [];
-    this.hsLayerShiftingService.fillLayers();
+    this.hsLayerShiftingService.fillLayers(app);
     if (!this.hsLayerShiftingService.layersCopy) {
       return;
     }
     for (const layer of this.hsLayerShiftingService.layersCopy) {
       this.addSwipeLayer(layer);
     }
-    this.sortLayers();
+    this.sortLayers(app);
   }
   /**
    * Check if any layer is left out from swipe control and add it
    */
-  checkForMissingLayers(): void {
+  checkForMissingLayers(app: string): void {
     const missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
       return !this.findLayer(l.layer)?.l;
     });
     for (const layer of missingLayers) {
       this.addSwipeLayer(layer);
     }
-    this.sortLayers();
+    this.sortLayers(app);
   }
 
   /**
    * Sort layers to resemple layer order by ZIndex on the map
    */
-  sortLayers(): void {
-    this.layers = this.hsLayerManagerService.sortLayersByZ(this.layers);
+  sortLayers(app: string): void {
+    this.layers = this.hsLayerManagerService.sortLayersByZ(this.layers, app);
     this.rightLayers = this.hsLayerManagerService.sortLayersByZ(
-      this.rightLayers
+      this.rightLayers,
+      app
     );
     this.entireMapLayers = this.hsLayerManagerService.sortLayersByZ(
-      this.entireMapLayers
+      this.entireMapLayers,
+      app
     );
   }
 

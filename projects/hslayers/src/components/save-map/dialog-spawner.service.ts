@@ -20,9 +20,10 @@ export class HsSaveMapDialogSpawnerService {
       }
     });
     this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(
-      ({endpoint}) => {
+      ({endpoint, app}) => {
         this.HsDialogContainerService.create(HsSaveMapDialogComponent, {
           endpoint,
+          app,
         });
       }
     );

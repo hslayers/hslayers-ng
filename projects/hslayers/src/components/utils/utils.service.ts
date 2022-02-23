@@ -33,12 +33,12 @@ export class HsUtilsService {
    * @param toEncoding - Optional parameter if UTF-8 encoding shouldn't be used for non-image URLs.
    * @returns Encoded Url with path to hsproxy.cgi script
    */
-  proxify(url: string, toEncoding?: boolean): string {
-    const laymanEp = this.HsConfig.datasources?.find(
+  proxify(url: string, toEncoding?: boolean, app?: string): string {
+    const laymanEp = this.HsConfig.get(app).datasources?.find(
       (ep) => ep.type == 'layman'
     );
     if (
-      url.startsWith(this.HsConfig.proxyPrefix) ||
+      url.startsWith(this.HsConfig.get(app).proxyPrefix) ||
       (laymanEp && url.startsWith(laymanEp.url))
     ) {
       return url;
@@ -56,10 +56,10 @@ export class HsUtilsService {
       this.getPortFromUrl(url) != this.getPortFromUrl(window.location.origin)
     ) {
       if (
-        this.HsConfig.useProxy === undefined ||
-        this.HsConfig.useProxy === true
+        this.HsConfig.get(app).useProxy === undefined ||
+        this.HsConfig.get(app).useProxy === true
       ) {
-        outUrl = this.HsConfig.proxyPrefix || '/proxy/';
+        outUrl = this.HsConfig.get(app).proxyPrefix || '/proxy/';
         if (outUrl.indexOf('hsproxy.cgi') > -1) {
           if (
             toEncoding &&
@@ -93,9 +93,9 @@ export class HsUtilsService {
             })
         }
    */
-  async shortUrl(url: string): Promise<any> {
-    if (this.HsConfig.shortenUrl != undefined) {
-      return this.HsConfig.shortenUrl(url);
+  async shortUrl(url: string, app?: string): Promise<any> {
+    if (this.HsConfig.get(app).shortenUrl != undefined) {
+      return this.HsConfig.get(app).shortenUrl(url);
     }
     return await lastValueFrom(
       this.http.get(
@@ -490,8 +490,8 @@ export class HsUtilsService {
     return target.charAt(0).toUpperCase() + target.slice(1);
   }
 
-  getAssetsPath() {
-    let assetsPath = this.HsConfig.assetsPath || '';
+  getAssetsPath(app?: string) {
+    let assetsPath = this.HsConfig.get(app).assetsPath || '';
     assetsPath += assetsPath.endsWith('/') ? '' : '/';
     return assetsPath;
   }

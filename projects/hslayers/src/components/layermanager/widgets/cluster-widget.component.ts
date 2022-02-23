@@ -37,7 +37,8 @@ export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     this.HsLayerEditorService.cluster(
       this.olLayer(),
       newValue,
-      this.distance.value
+      this.distance.value,
+      this.data.app
     );
   }
 
@@ -51,7 +52,8 @@ export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     return this.HsLayerEditorService.cluster(
       this.olLayer(),
       undefined,
-      this.distance.value
+      this.distance.value,
+      this.data.app
     );
   }
 
@@ -88,7 +90,9 @@ export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
    * Parse initial cluster distance value
    */
   private setClusteringDistanceFromConfig(): number {
-    const distance = this.HsConfig.clusteringDistance ?? this.distance.value;
+    const distance =
+      this.HsConfig.get(this.data.app).clusteringDistance ??
+      this.distance.value;
     return distance > 100 ? 100 : distance;
   }
 }

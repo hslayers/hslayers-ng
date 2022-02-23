@@ -105,10 +105,10 @@ export class HsMickaBrowserService {
   private createRequestUrl(dataset, data, textField) {
     const query = data.query;
     const b = transformExtent(
-      this.hsMapService.map
+      this.hsMapService.getMap()
         .getView()
-        .calculateExtent(this.hsMapService.map.getSize()),
-      this.hsMapService.map.getView().getProjection(),
+        .calculateExtent(this.hsMapService.getMap().getSize()),
+      this.hsMapService.getMap().getView().getProjection(),
       'EPSG:4326'
     );
     const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';

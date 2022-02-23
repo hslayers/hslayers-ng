@@ -92,8 +92,8 @@ export class HsSensorsService {
       icon: 'icon-weightscale',
     });
     this.setEndpoint();
-    this.HsConfig.configChanges.subscribe(() => {
-      if (this.HsConfig.senslog != this.endpoint) {
+    this.HsConfig.get(app).configChanges.subscribe(() => {
+      if (this.HsConfig.get(app).senslog != this.endpoint) {
         this.setEndpoint();
       }
     });
@@ -121,8 +121,8 @@ export class HsSensorsService {
   }
 
   private setEndpoint() {
-    if (this.HsConfig.senslog) {
-      this.endpoint = this.HsConfig.senslog;
+    if (this.HsConfig.get(app).senslog) {
+      this.endpoint = this.HsConfig.get(app).senslog;
       if (this.endpoint.liteApiPath == undefined) {
         this.endpoint.liteApiPath = 'senslog-lite2';
       }
@@ -158,7 +158,7 @@ export class HsSensorsService {
       unit,
       this.HsSensorsUnitDialogService.currentInterval
     ).then((_) => this.HsSensorsUnitDialogService.createChart(unit));
-    this.HsMapService.map
+    this.HsMapService.getMap()
       .getView()
       .fit(unit.feature.getGeometry(), {maxZoom: 16});
   }
@@ -195,7 +195,7 @@ export class HsSensorsService {
       },
       source: new VectorSource({}),
     });
-    this.HsMapService.map.addLayer(this.layer);
+    this.HsMapService.getMap().addLayer(this.layer);
   }
 
   /**

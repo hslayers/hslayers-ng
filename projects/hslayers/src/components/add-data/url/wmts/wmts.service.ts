@@ -45,7 +45,8 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
+    app: string
   ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
@@ -61,7 +62,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       await this.capabilitiesReceived(response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        return this.getLayers(true);
+        return this.getLayers(app, true);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -117,13 +118,13 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  getLayers(checkedOnly: boolean): Layer<Source>[] {
+  getLayers(app: string, checkedOnly: boolean): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
       this.getLayersRecursively(layer, collection);
     }
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
@@ -155,7 +156,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     if (preferred.length != 0) {
       const preferCurrent = preferred.find((set) =>
         set.TileMatrixSet.includes(
-          this.hsMapService.map.getView().getProjection().getCode()
+          this.hsMapService.getMap().getView().getProjection().getCode()
         )
       );
       return preferCurrent

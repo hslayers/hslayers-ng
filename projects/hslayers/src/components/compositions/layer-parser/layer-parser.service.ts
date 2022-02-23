@@ -82,7 +82,7 @@ export class HsCompositionsLayerParserService {
    * @returns {object} Ol Tile layer
    * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
    */
-  async createWMTSLayer(lyr_def): Promise<Tile<TileSource>> {
+  async createWMTSLayer(lyr_def, app: string): Promise<Tile<TileSource>> {
     const wmts = new Tile({
       source: new WMTS({} as any),
       properties: {
@@ -107,7 +107,7 @@ export class HsCompositionsLayerParserService {
       });
       // WMTS source for raster tiles layer
       wmts.setSource(new WMTS(options));
-      this.HsMapService.proxifyLayerLoader(wmts, true);
+      this.HsMapService.proxifyLayerLoader(wmts, true, app);
     } catch (error) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
@@ -122,7 +122,7 @@ export class HsCompositionsLayerParserService {
           serviceCalledFrom: 'HsCompositionsLayerParserService',
         }
       );
-      this.HsMapService.map.getLayers().remove(wmts);
+      this.HsMapService.getMap().getLayers().remove(wmts);
     }
 
     wmts.setVisible(lyr_def.visibility);
@@ -135,7 +135,7 @@ export class HsCompositionsLayerParserService {
    * @returns {object} Ol Image or Tile layer
    * @description Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
    */
-  createWmsLayer(lyr_def) {
+  createWmsLayer(lyr_def, app: string) {
     const params = lyr_def.params;
     const legends = this.getLegends(lyr_def);
     delete params.REQUEST;
@@ -175,7 +175,7 @@ export class HsCompositionsLayerParserService {
       : new Tile(layerOptions as TileOptions<TileSource>);
 
     new_layer.setVisible(lyr_def.visibility);
-    this.HsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
+    this.HsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile, app);
     return new_layer;
   }
 

@@ -1,6 +1,6 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
@@ -24,7 +24,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
@@ -58,6 +58,23 @@ export class HsQueryComponent
       map.addOverlay(this.popup);
     });
 
+    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
+      if (source && source != 'hs.query' && this.popup !== undefined) {
+        this.popup.hide();
+      }
+    });
+
+    this.hsQueryVectorService.featureRemovals
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((feature) => {
+        this.hsQueryBaseService.data.features.splice(
+          this.hsQueryBaseService.data.features.indexOf(feature),
+          1
+        );
+      });
+  }
+  async ngOnInit() {
+    await this.hsQueryBaseService.init(this.data.app);
     //add current panel queryable - activate/deactivate
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -67,11 +84,11 @@ export class HsQueryComponent
             !this.hsQueryBaseService.queryActive &&
             !this.hsDrawService.drawActive
           ) {
-            this.hsQueryBaseService.activateQueries();
+            this.hsQueryBaseService.activateQueries(this.data.app);
           }
         } else {
           if (this.hsQueryBaseService.queryActive) {
-            this.hsQueryBaseService.deactivateQueries();
+            this.hsQueryBaseService.deactivateQueries(this.data.app);
           }
         }
       });
@@ -87,7 +104,7 @@ export class HsQueryComponent
               this.hsQueryBaseService.currentPanelQueryable() &&
               this.hsLayoutService.mainpanel != 'draw'
             ) {
-              this.hsLayoutService.setMainPanel('info');
+              this.hsLayoutService.setMainPanel('info', this.data.app);
             }
           });
 
@@ -117,21 +134,6 @@ export class HsQueryComponent
               this.popupOpens.next('hs.query');
             }
           });
-      });
-
-    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
-      if (source && source != 'hs.query' && this.popup !== undefined) {
-        this.popup.hide();
-      }
-    });
-
-    this.hsQueryVectorService.featureRemovals
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((feature) => {
-        this.hsQueryBaseService.data.features.splice(
-          this.hsQueryBaseService.data.features.indexOf(feature),
-          1
-        );
       });
   }
   ngOnDestroy(): void {

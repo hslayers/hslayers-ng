@@ -1,5 +1,5 @@
 <div class="card panel-default hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="sensors" [title]="'PANEL_HEADER.SENSORS' | translate"></hs-panel-header>
+    <hs-panel-header name="sensors" [app]="data.app" [title]="'PANEL_HEADER.SENSORS' | translate"></hs-panel-header>
     <div class="card-body">
         <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="query.description"></p>
         <div class="container">

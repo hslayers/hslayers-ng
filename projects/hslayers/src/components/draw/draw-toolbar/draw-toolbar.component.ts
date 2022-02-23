@@ -46,12 +46,12 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
     }
     this.drawToolbarExpanded = !this.drawToolbarExpanded;
     if (!this.drawToolbarExpanded) {
-      this.HsDrawService.stopDrawing();
+      this.HsDrawService.stopDrawing(this.data.app);
     }
-    this.HsDrawService.fillDrawableLayers();
+    this.HsDrawService.fillDrawableLayers(this.data.app);
   }
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer);
+    this.HsDrawService.selectLayer(layer, this.data.app);
   }
 
   controlLayerListAction() {
@@ -59,18 +59,18 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
       !this.HsDrawService.hasSomeDrawables &&
       this.HsDrawService.tmpDrawLayer
     ) {
-      this.HsDrawService.saveDrawingLayer();
+      this.HsDrawService.saveDrawingLayer(this.data.app);
     }
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what);
+    const type = this.HsDrawService.setType(what, this.data.app);
     if (type) {
-      this.HsDrawService.activateDrawing({});
+      this.HsDrawService.activateDrawing({}, this.data.app);
     }
   }
 
   finishDrawing(): void {
-    this.HsDrawService.stopDrawing();
+    this.HsDrawService.stopDrawing(this.data.app);
   }
 }

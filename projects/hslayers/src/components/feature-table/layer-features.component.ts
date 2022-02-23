@@ -36,7 +36,7 @@ type Operation = {
   ],
 })
 export class HsLayerFeaturesComponent implements OnInit {
-  @Input('layer') layer: any; //Input layer from HsConfig.layersInFeatureTable property array
+  @Input('layer') layer: any; //Input layer from HsConfig.get(app).layersInFeatureTable property array
   showFeatureStats = false; //Toggle for showing feature statistics
   searchedFeatures = '';
   constructor(

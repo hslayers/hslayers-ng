@@ -41,14 +41,15 @@ export class HsLayerShiftingService {
   /**
    * Copies layers from Layermanager layer list for the physical layer list
    */
-  fillLayers(): void {
+  fillLayers(app: string): void {
     if (!this.availableLayers) {
       return;
     }
     this.layersCopy = this.hsLayerManagerService.sortLayersByZ(
       this.availableLayers.map((l) => {
         return {title: l.title, layer: l.layer};
-      })
+      }),
+      app
     );
   }
 

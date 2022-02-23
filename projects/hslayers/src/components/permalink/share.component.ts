@@ -1,21 +1,23 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {HsCoreService} from '../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareService} from './share.service';
+import {HsShareUrlService} from './share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 @Component({
   selector: 'hs-share',
   templateUrl: './partials/share.component.html',
 })
-export class HsShareComponent extends HsPanelBaseComponent {
+export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;
   name = 'permalink';
 
   constructor(
     public HsShareService: HsShareService,
+    public HsShareUrlService: HsShareUrlService,
     public HsCore: HsCoreService,
     HsLayoutService: HsLayoutService,
     hsLanguageService: HsLanguageService,
@@ -62,5 +64,10 @@ export class HsShareComponent extends HsPanelBaseComponent {
    */
   shareOnSocial(): void {
     this.HsShareService.shareOnSocial(this.new_share);
+  }
+
+  ngOnInit() {
+    this.HsShareUrlService.init(this.data.app);
+    this.HsShareService.init(this.data.app);
   }
 }

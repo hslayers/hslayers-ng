@@ -152,12 +152,12 @@ export class HsAddDataCatalogueMapService {
     first_pair = transform(
       first_pair,
       'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
+      this.hsMapService.getMap().getView().getProjection()
     );
     second_pair = transform(
       second_pair,
       'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
+      this.hsMapService.getMap().getView().getProjection()
     );
     if (
       isNaN(first_pair[0]) ||

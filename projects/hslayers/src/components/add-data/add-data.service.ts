@@ -42,9 +42,9 @@ export class HsAddDataService {
         }
       }
       const ix = layers.indexOf(underLayer);
-      this.hsMapService.map.getLayers().insertAt(ix, layer);
+      this.hsMapService.getMap().getLayers().insertAt(ix, layer);
     } else {
-      this.hsMapService.map.addLayer(layer);
+      this.hsMapService.getMap().addLayer(layer);
     }
   }
 

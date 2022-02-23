@@ -128,7 +128,7 @@ export class HsTripPlannerService {
       }
       //Don't add waypoints when drawing and measuring
       if (
-        this.HsMapService.map
+        this.HsMapService.getMap()
           .getInteractions()
           .getArray()
           .find((i) => i.getActive() && this.HsUtilsService.instOf(i, Draw))
@@ -184,7 +184,7 @@ export class HsTripPlannerService {
       this.waypointLayer,
       this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints')
     );
-    this.HsMapService.map.addLayer(this.waypointLayer);
+    this.HsMapService.getMap().addLayer(this.waypointLayer);
   }
 
   createRouteLayer(): void {
@@ -197,7 +197,7 @@ export class HsTripPlannerService {
       this.routeLayer,
       this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute')
     );
-    this.HsMapService.map.addLayer(this.routeLayer);
+    this.HsMapService.getMap().addLayer(this.routeLayer);
   }
 
   /**

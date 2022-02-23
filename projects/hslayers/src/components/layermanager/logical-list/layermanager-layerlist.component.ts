@@ -21,6 +21,7 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 })
 export class HsLayerListComponent implements OnInit, OnDestroy {
   @Input() folder: any;
+  @Input() app = 'default';
   /**
    * List of layers which belong to folder hierarchy level of directive instance
    */
@@ -38,7 +39,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   ) {
     this.layerManagerUpdatesSubscription =
       this.hsEventBusService.layerManagerUpdates.subscribe(() => {
-        this.hsLayerManagerService.updateLayerListPositions();
+        this.hsLayerManagerService.updateLayerListPositions(this.app);
         this.updateLayers();
       });
   }

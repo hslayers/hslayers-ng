@@ -34,7 +34,7 @@ export class HslayersAppComponent {
     hsQueryPopupService: HsQueryPopupService,
     hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
-    this.HsConfig.update({
+    this.HsConfig.get(app).update({
       datasources: [
         {
           title: 'Layman',

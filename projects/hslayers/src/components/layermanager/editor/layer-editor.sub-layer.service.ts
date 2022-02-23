@@ -94,7 +94,7 @@ export class HsLayerEditorSublayerService {
     }
   }
 
-  subLayerSelected(): void {
+  subLayerSelected(app: string): void {
     const layer = this.HsLayerManagerService.currentLayer;
     const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
     params.LAYERS = Object.keys(this.checkedSubLayers)
@@ -104,11 +104,19 @@ export class HsLayerEditorSublayerService {
       params.LAYERS = `show:${params.LAYERS}`;
     }
     if (params.LAYERS == '' || params.LAYERS == 'show:') {
-      this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
+      this.HsLayerManagerService.changeLayerVisibility(
+        !layer.visible,
+        layer,
+        app
+      );
       return;
     }
     if (layer.visible == false) {
-      this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
+      this.HsLayerManagerService.changeLayerVisibility(
+        !layer.visible,
+        layer,
+        app
+      );
     }
     this.HsLayerUtilsService.updateLayerParams(layer.layer, params);
   }

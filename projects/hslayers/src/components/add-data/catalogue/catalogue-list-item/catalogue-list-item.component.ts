@@ -21,6 +21,7 @@ import {HsUtilsService} from '../../../utils/utils.service';
 })
 export class HsCatalogueListItemComponent {
   @Input() layer;
+  @Input() app = 'default';
 
   explanationsVisible: boolean;
   metadata;
@@ -56,6 +57,7 @@ export class HsCatalogueListItemComponent {
     const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
       endpoint,
       layer,
+      this.app,
       this.selectedType
     );
     this.loadingInfo = false;
@@ -121,6 +123,7 @@ export class HsCatalogueListItemComponent {
     this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
       selectedLayer: this.selected_layer,
       selectedDS: this.selected_ds,
+      app: this.app,
     });
   }
 

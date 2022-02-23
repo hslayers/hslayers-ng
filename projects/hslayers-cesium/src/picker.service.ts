@@ -52,7 +52,7 @@ export class HsCesiumPickerService {
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
     handler.setInputAction((movement) => {
-      if (this.hsConfig.popUpDisplay === 'hover') {
+      if (this.hsConfig.get(app).popUpDisplay === 'hover') {
         this.hsUtilsService.debounce(
           this.handleScreenInteraction,
           200,
@@ -83,7 +83,7 @@ export class HsCesiumPickerService {
         }
       }
     }
-    if (pickedObject?.id && this.hsConfig.popUpDisplay !== 'none') {
+    if (pickedObject?.id && this.hsConfig.get(app).popUpDisplay !== 'none') {
       if (button == 'right' && pickedObject?.id?.onRightClick) {
         pickedObject.id.onRightClick(pickedObject.id);
       }

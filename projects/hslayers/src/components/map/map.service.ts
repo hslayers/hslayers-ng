@@ -63,10 +63,17 @@ type VectorAndSource = {
   layer: VectorLayer<VectorSource<Geometry>>;
 };
 
+const DEFAULT = 'default';
 @Injectable({
   providedIn: 'root',
 })
 export class HsMapService {
+  apps: {[id: string]: {map: Map; mapElement?: any}} = {
+    default: {
+      map: undefined,
+      mapElement: undefined,
+    },
+  };
   private renderer: Renderer2;
   visibleLayersInUrl;
   //timer variable for extent change event
@@ -78,7 +85,6 @@ export class HsMapService {
    * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    */
   duration = 400;
-  map: Map;
   defaultMobileControls = controlDefaults({
     zoom: false,
   });
@@ -95,7 +101,6 @@ export class HsMapService {
    */
 
   controls = this.defaultDesktopControls;
-  mapElement: any;
   /**
    * @public
    * @type {object}
@@ -110,37 +115,6 @@ export class HsMapService {
    *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragZoom.html DragZoom},
    *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragRotate.html DragRotate} )
    */
-  interactions = {
-    'DoubleClickZoom': new DoubleClickZoom({
-      duration: this.duration,
-    }),
-    'KeyboardPan': new KeyboardPan({
-      pixelDelta: 256,
-    }),
-    'KeyboardZoom': new KeyboardZoom({
-      duration: this.duration,
-    }),
-    'MouseWheelZoom': new MouseWheelZoom({
-      condition: (browserEvent): boolean => {
-        if (this.HsConfig.componentsEnabled?.mapControls == false) {
-          return false;
-        }
-        return this.HsConfig.zoomWithModifierKeyOnly
-          ? platformModifierKeyOnlyCondition(browserEvent)
-          : true;
-      },
-      duration: this.duration,
-    }),
-    'PinchRotate': new PinchRotate(),
-    'PinchZoom': new PinchZoom({
-      duration: this.duration,
-    }),
-    'DragPan': new DragPan({
-      kinetic: new Kinetic(-0.01, 0.1, 200),
-    }),
-    'DragZoom': new DragZoom(),
-    'DragRotate': new DragRotate(),
-  };
 
   element: any;
   visible: boolean;
@@ -162,15 +136,6 @@ export class HsMapService {
 
     this.defaultDesktopControls.removeAt(1);
     this.defaultDesktopControls.push(new ScaleLine());
-    setTimeout(() => {
-      //make sure translations are loaded
-      if (
-        this.HsConfig.componentsEnabled?.defaultViewButton &&
-        this.HsConfig.componentsEnabled?.guiOverlay != false
-      ) {
-        this.createDefaultViewButton();
-      }
-    }, 500);
   }
   /**
    * Returns the associated layer for feature.
@@ -245,7 +210,7 @@ export class HsMapService {
     });
   }
 
-  getVectorLayers(layersToLookFor: VectorAndSource[]): void {
+  getVectorLayers(layersToLookFor: VectorAndSource[], app?: string): void {
     const check = (layer) => {
       const source = layer.getSource();
       if (this.HsUtilsService.instOf(source, Cluster)) {
@@ -264,13 +229,15 @@ export class HsMapService {
         });
       }
     };
-    this.map.getLayers().forEach((layer) => {
-      if (this.HsUtilsService.instOf(layer, Group)) {
-        (layer as Group).getLayers().forEach(check);
-      } else {
-        check(layer);
-      }
-    });
+    this.getMap(app ?? DEFAULT)
+      .getLayers()
+      .forEach((layer) => {
+        if (this.HsUtilsService.instOf(layer, Group)) {
+          (layer as Group).getLayers().forEach(check);
+        } else {
+          check(layer);
+        }
+      });
   }
 
   getFeatureById(fid: string): Feature<Geometry> {
@@ -293,12 +260,12 @@ export class HsMapService {
     }
   }
 
-  createDefaultViewButton() {
+  createDefaultViewButton(app: string) {
     const button = this.renderer.createElement('button');
     button.addEventListener(
       'click',
       (e) => {
-        this.setDefaultView(e);
+        this.setDefaultView(e, app);
       },
       false
     );
@@ -326,23 +293,24 @@ export class HsMapService {
     this.defaultDesktopControls.push(defaultViewControl);
   }
 
-  setDefaultView = function (e) {
-    const center = this.HsConfig.default_view.getCenter();
+  setDefaultView = function (e, app) {
+    const center = this.HsConfig.get(app).default_view.getCenter();
     this.map.getView().setCenter(center);
-    const zoom = this.HsConfig.default_view.getZoom();
+    const zoom = this.HsConfig.get(app).default_view.getZoom();
     this.map.getView().setZoom(zoom);
   };
   /**
    * @param e
    */
-  extentChanged(e) {
+  extentChanged(e, app: string) {
     if (this.timer !== null) {
       clearTimeout(this.timer);
     }
     this.timer = setTimeout(() => {
+      const map = this.getMap(app);
       this.HsEventBusService.mapExtentChanges.next({
         element: e.element,
-        extent: this.map.getView().calculateExtent(this.map.getSize()),
+        extent: map.getView().calculateExtent(map.getSize()),
       });
     }, 500);
   }
@@ -351,17 +319,21 @@ export class HsMapService {
    * @public
    * @description Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
    */
-  init() {
-    if (this.map) {
-      this.map.setTarget(this.mapElement);
+  init(mapElement, app: string) {
+    let map;
+    if (this.getMap(app)) {
+      map = this.getMap(app);
+      map.setTarget(mapElement);
     } else {
-      this.map = new Map({
+      map = new Map({
         controls: this.controls,
-        target: this.mapElement,
+        target: mapElement,
         interactions: [],
-        view: this.HsConfig.default_view ?? this.createPlaceholderView(),
+        view:
+          this.HsConfig.get(app).default_view ?? this.createPlaceholderView(),
       });
-      const view = this.map.getView();
+      this.apps[app] = {mapElement, map};
+      const view = map.getView();
       this.originalView = {
         center: view.getCenter(),
         zoom: view.getZoom(),
@@ -369,22 +341,64 @@ export class HsMapService {
       };
 
       view.on('change:center', (e) => {
-        this.extentChanged(e);
+        this.extentChanged(e, app);
       });
       view.on('change:resolution', (e) => {
-        this.extentChanged(e);
+        this.extentChanged(e, app);
       });
 
-      this.map.on('moveend', (e) => {
-        this.extentChanged(e);
+      map.on('moveend', (e) => {
+        this.extentChanged(e, app);
       });
     }
 
-    if (this.HsConfig.mapInteractionsEnabled != false) {
-      for (const value of Object.values(this.interactions).filter(
-        (value) => !this.map.getInteractions().getArray().includes(value)
+    setTimeout(() => {
+      //make sure translations are loaded
+      if (
+        this.HsConfig.get(app).componentsEnabled?.defaultViewButton &&
+        this.HsConfig.get(app).componentsEnabled?.guiOverlay != false
+      ) {
+        this.createDefaultViewButton(app);
+      }
+    }, 500);
+
+    const interactions = {
+      'DoubleClickZoom': new DoubleClickZoom({
+        duration: this.duration,
+      }),
+      'KeyboardPan': new KeyboardPan({
+        pixelDelta: 256,
+      }),
+      'KeyboardZoom': new KeyboardZoom({
+        duration: this.duration,
+      }),
+      'MouseWheelZoom': new MouseWheelZoom({
+        condition: (browserEvent): boolean => {
+          if (this.HsConfig.get(app).componentsEnabled?.mapControls == false) {
+            return false;
+          }
+          return this.HsConfig.get(app).zoomWithModifierKeyOnly
+            ? platformModifierKeyOnlyCondition(browserEvent)
+            : true;
+        },
+        duration: this.duration,
+      }),
+      'PinchRotate': new PinchRotate(),
+      'PinchZoom': new PinchZoom({
+        duration: this.duration,
+      }),
+      'DragPan': new DragPan({
+        kinetic: new Kinetic(-0.01, 0.1, 200),
+      }),
+      'DragZoom': new DragZoom(),
+      'DragRotate': new DragRotate(),
+    };
+
+    if (this.HsConfig.get(app).mapInteractionsEnabled != false) {
+      for (const value of Object.values(interactions).filter(
+        (value) => !map.getInteractions().getArray().includes(value)
       )) {
-        this.map.addInteraction(value);
+        map.addInteraction(value);
       }
     }
 
@@ -395,10 +409,10 @@ export class HsMapService {
     // then also notify the user when he tries to zoom,
     // but the CTRL is not pressed
     if (
-      this.HsConfig.zoomWithModifierKeyOnly &&
-      this.HsConfig.mapInteractionsEnabled != false
+      this.HsConfig.get(app).zoomWithModifierKeyOnly &&
+      this.HsConfig.get(app).mapInteractionsEnabled != false
     ) {
-      this.map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
+      map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
@@ -439,7 +453,7 @@ export class HsMapService {
       });
     }
 
-    this.repopulateLayers(this.visibleLayersInUrl);
+    this.repopulateLayers(this.visibleLayersInUrl, app);
 
     proj4.defs(
       'EPSG:5514',
@@ -459,16 +473,16 @@ export class HsMapService {
       '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
     );
     register(proj4);
-    if (this.HsConfig.componentsEnabled?.mapControls == false) {
+    if (this.HsConfig.get(app).componentsEnabled?.mapControls == false) {
       this.removeAllControls();
     }
-    this.HsEventBusService.olMapLoads.next(this.map);
+    this.HsEventBusService.olMapLoads.next(map);
   }
 
-  loaded() {
+  loaded(app?: string) {
     return new Promise<Map>((resolve, reject) => {
-      if (this.map) {
-        resolve(this.map);
+      if (this.getMap(app ?? DEFAULT)) {
+        resolve(this.getMap(app ?? DEFAULT));
         return;
       } else {
         this.HsEventBusService.olMapLoads.subscribe((map) => {
@@ -549,32 +563,33 @@ export class HsMapService {
    * @param {ol/Layer} lyr A layer to check
    * @returns {boolean} True if layer is already present in the map, false otherwise
    */
-  layerAlreadyExists(lyr) {
-    const duplicateLayers = this.map
-      .getLayers()
-      .getArray()
-      .filter((existing) => {
+  layerAlreadyExists(lyr, app?: string) {
+    const duplicateLayers = this.getLayersArray(app ?? DEFAULT).filter(
+      (existing) => {
         const equal = this.layersEqual(existing, lyr);
         return equal;
-      });
+      }
+    );
     return duplicateLayers.length > 0;
   }
 
-  removeDuplicate(lyr) {
-    this.map
-      .getLayers()
-      .getArray()
+  removeDuplicate(lyr, app?: string) {
+    this.getLayersArray(app ?? DEFAULT)
       .filter((existing) => {
         const equal = this.layersEqual(existing, lyr);
         return equal;
       })
       .forEach((to_remove) => {
-        this.map.getLayers().remove(to_remove);
+        this.getMap(app ?? DEFAULT)
+          .getLayers()
+          .remove(to_remove);
       });
   }
 
-  getLayersArray(): Layer<Source>[] {
-    return this.map.getLayers().getArray() as Layer<Source>[];
+  getLayersArray(app?: string): Layer<Source>[] {
+    return this.getMap(app ?? DEFAULT)
+      .getLayers()
+      .getArray() as Layer<Source>[];
   }
 
   /**
@@ -582,18 +597,18 @@ export class HsMapService {
    * @description Proxify layer based on its source object type and if its tiled or not.
    * Each underlying OL source class has its own way to override imagery loading.
    */
-  proxifyLayer(lyr: Layer<Source>): void {
+  proxifyLayer(lyr: Layer<Source>, app: string): void {
     const source = lyr.getSource();
     if (
       [ImageWMS, ImageArcGISRest].some((typ) =>
         this.HsUtilsService.instOf(source, typ)
       )
     ) {
-      this.proxifyLayerLoader(lyr, false);
+      this.proxifyLayerLoader(lyr, false, app);
     }
     if (this.HsUtilsService.instOf(source, WMTS)) {
       (source as WMTS).setTileLoadFunction((i, s) =>
-        this.simpleImageryProxy(i, s)
+        this.simpleImageryProxy(i, s, app)
       );
     }
     if (
@@ -601,7 +616,7 @@ export class HsMapService {
         this.HsUtilsService.instOf(source, typ)
       )
     ) {
-      this.proxifyLayerLoader(lyr, true);
+      this.proxifyLayerLoader(lyr, true, app);
     }
     if (
       this.HsUtilsService.instOf(source, XYZ) &&
@@ -610,7 +625,7 @@ export class HsMapService {
         .getUrls()
         .filter((url) => url.indexOf('openstreetmap') > -1).length == 0
     ) {
-      this.proxifyLayerLoader(lyr, true);
+      this.proxifyLayerLoader(lyr, true, app);
     }
 
     if (this.HsUtilsService.instOf(source, Static)) {
@@ -625,7 +640,7 @@ export class HsMapService {
    * Function to add layer to map which also checks if
    * the layer is not already present and also proxifies the layer if needed.
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
-   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.map.addLayer.
+   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.getMap().addLayer.
    *
    * @param lyr Layer to add
    * @param duplicateHandling How to handle duplicate layers (same class and title)
@@ -634,9 +649,10 @@ export class HsMapService {
   addLayer(
     lyr: Layer<Source>,
     duplicateHandling?: DuplicateHandling,
-    visibleOverride?: string[]
+    visibleOverride?: string[],
+    app?: string
   ): void {
-    if (this.layerAlreadyExists(lyr)) {
+    if (this.layerAlreadyExists(lyr, app ?? DEFAULT)) {
       switch (duplicateHandling) {
         case DuplicateHandling.RemoveOriginal:
           if (getBase(lyr) == true) {
@@ -657,11 +673,11 @@ export class HsMapService {
     if (this.HsUtilsService.instOf(source, VectorSource)) {
       this.getVectorType(lyr);
     }
-    this.proxifyLayer(lyr);
+    this.proxifyLayer(lyr, app);
     lyr.on('change:source', (e) => {
-      this.proxifyLayer(e.target as Layer<Source>);
+      this.proxifyLayer(e.target as Layer<Source>, app);
     });
-    this.map.addLayer(lyr);
+    this.getMap(app ?? DEFAULT).addLayer(lyr);
   }
 
   /**
@@ -672,26 +688,38 @@ export class HsMapService {
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
    */
 
-  repopulateLayers(visibilityOverrides) {
-    if (this.HsConfig.box_layers) {
-      this.HsConfig.box_layers.forEach((box) => {
+  repopulateLayers(visibilityOverrides, app?: string) {
+    if (this.HsConfig.get(app).box_layers) {
+      this.HsConfig.get(app).box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
-          this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
+          this.addLayer(
+            lyr,
+            DuplicateHandling.IgnoreNew,
+            visibilityOverrides,
+            app
+          );
         }
       });
     }
 
-    if (this.HsConfig.default_layers) {
-      this.HsConfig.default_layers
-        .filter((lyr) => lyr)
+    if (this.HsConfig.get(app).default_layers) {
+      this.HsConfig.get(app)
+        .default_layers.filter((lyr) => lyr)
         .forEach((lyr: Layer<Source>) => {
-          this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
+          this.addLayer(
+            lyr,
+            DuplicateHandling.IgnoreNew,
+            visibilityOverrides,
+            app
+          );
         });
     }
   }
 
-  getCurrentProj(): Projection {
-    return this.map.getView().getProjection();
+  getCurrentProj(app?: string): Projection {
+    return this.getMap(app ?? DEFAULT)
+      .getView()
+      .getProjection();
   }
 
   getVectorType(layer) {
@@ -758,10 +786,11 @@ export class HsMapService {
    * @public
    * @description Reset map view to view configured in app config
    */
-  resetView() {
-    this.map.getView().setCenter(this.originalView.center);
-    this.map.getView().setZoom(this.originalView.zoom);
-    this.map.getView().setRotation(this.originalView.rotation);
+  resetView(app?: string) {
+    const view = this.getMap(app ?? DEFAULT).getView();
+    view.setCenter(this.originalView.center);
+    view.setZoom(this.originalView.zoom);
+    view.setRotation(this.originalView.rotation);
   }
 
   /**
@@ -789,8 +818,10 @@ export class HsMapService {
     return lyr.getVisible();
   }
 
-  getCanvases() {
-    return this.mapElement.querySelectorAll('.ol-layer canvas');
+  getCanvases(app?: string) {
+    return this.apps[app ?? DEFAULT].mapElement.querySelectorAll(
+      '.ol-layer canvas'
+    );
   }
 
   getScaleLineElement(type: 'scaleline' | 'scalebar'): Element {
@@ -813,7 +844,7 @@ export class HsMapService {
    * @param {boolean} tiled Info if layer is tiled
    * @description Proxify layer loader to work with layers from other sources than app
    */
-  proxifyLayerLoader(lyr, tiled) {
+  proxifyLayerLoader(lyr, tiled, app: string) {
     const src = lyr.getSource();
     if (getEnableProxy(lyr) && getEnableProxy(lyr) == false) {
       return;
@@ -829,14 +860,14 @@ export class HsMapService {
             url = url.replace(`{${dimension}}`, dimensions[dimension].value);
           });
         }
-        if (url.indexOf(this.HsConfig.proxyPrefix) == 0) {
+        if (url.indexOf(this.HsConfig.get(app).proxyPrefix) == 0) {
           return url;
         } else {
           return this.HsUtilsService.proxify(url);
         }
       });
       src.setTileLoadFunction((tile, src) => {
-        const laymanEp = this.HsConfig.datasources?.find(
+        const laymanEp = this.HsConfig.get(app).datasources?.find(
           (ep) => ep.type == 'layman'
         );
         if (laymanEp && src.startsWith(laymanEp.url)) {
@@ -846,15 +877,15 @@ export class HsMapService {
         }
       });
     } else {
-      src.setImageLoadFunction((i, s) => this.simpleImageryProxy(i, s));
+      src.setImageLoadFunction((i, s) => this.simpleImageryProxy(i, s, app));
     }
   }
 
-  simpleImageryProxy(image, src) {
-    if (src.indexOf(this.HsConfig.proxyPrefix) == 0) {
+  simpleImageryProxy(image, src, app: string) {
+    if (src.indexOf(this.HsConfig.get(app).proxyPrefix) == 0) {
       image.getImage().src = src;
     } else {
-      const laymanEp = this.HsConfig.datasources?.find(
+      const laymanEp = this.HsConfig.get(app).datasources?.find(
         (ep) => ep.type == 'layman'
       );
       if (laymanEp && src.startsWith(laymanEp.url)) {
@@ -887,16 +918,18 @@ export class HsMapService {
    * @param {number} zoom New zoom level
    * @description Move map and zoom to specified coordinate/zoom level
    */
-  moveToAndZoom(x, y, zoom) {
-    const view = this.map.getView();
+  moveToAndZoom(x, y, zoom, app?: string) {
+    const view = this.getMap(app ?? DEFAULT).getView();
     view.setCenter([x, y]);
     view.setZoom(zoom);
   }
 
-  getMapExtent() {
-    const mapSize = this.map.getSize();
+  getMapExtent(app?: string) {
+    const mapSize = this.getMap(app ?? DEFAULT).getSize();
     const mapExtent = mapSize
-      ? this.map.getView().calculateExtent(mapSize)
+      ? this.getMap(app ?? DEFAULT)
+          .getView()
+          .calculateExtent(mapSize)
       : [0, 0, 100, 100];
     return mapExtent;
   }
@@ -910,43 +943,49 @@ export class HsMapService {
     return bbox;
   }
 
-  fitExtent(extent: number[]): void {
-    this.map.getView().fit(extent, {size: this.map.getSize()});
+  fitExtent(extent: number[], app?: string): void {
+    this.getMap(app ?? DEFAULT)
+      .getView()
+      .fit(extent, {size: this.getMap(app ?? DEFAULT).getSize()});
   }
 
   /**
    * @public
    * @description Get ol.Map object from service
-   * @returns {ol.Map} ol.Map
+   * @returns ol.Map
    */
-  getMap() {
-    return this.map;
+  getMap(app?: string) {
+    return this.apps[app ?? DEFAULT]?.map;
   }
 
-  removeAllLayers() {
+  removeAllLayers(app?: string) {
     const to_be_removed = [];
-    this.map
-      .getLayers()
-      .getArray()
+    this.getLayersArray()
       .filter((layer) => getRemovable(layer as Layer<Source>) !== false)
       .forEach((lyr) => {
         to_be_removed.push(lyr);
       });
     while (to_be_removed.length > 0) {
-      this.map.removeLayer(to_be_removed.shift());
+      this.getMap(app ?? DEFAULT).removeLayer(to_be_removed.shift());
     }
   }
-  removeAllControls() {
-    [...this.map.getControls().getArray()].forEach((control) => {
-      this.map.removeControl(control);
+  removeAllControls(app?: string) {
+    [
+      ...this.getMap(app ?? DEFAULT)
+        .getControls()
+        .getArray(),
+    ].forEach((control) => {
+      this.getMap(app ?? DEFAULT).removeControl(control);
     });
-    this.HsConfig.componentsEnabled.mapControls = false;
+    this.HsConfig.get(app).componentsEnabled.mapControls = false;
   }
 
-  removeAllInteractions() {
-    this.map.getInteractions().forEach((interaction) => {
-      this.map.removeInteraction(interaction);
-    });
-    this.HsConfig.mapInteractionsEnabled = false;
+  removeAllInteractions(app?: string) {
+    this.getMap(app ?? DEFAULT)
+      .getInteractions()
+      .forEach((interaction) => {
+        this.getMap(app ?? DEFAULT).removeInteraction(interaction);
+      });
+    this.HsConfig.get(app).mapInteractionsEnabled = false;
   }
 }

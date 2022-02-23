@@ -1,18 +1,18 @@
 <div #hslayout class="hs-page-wrapper hsl" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper d-flex w-100 h-100"
-        [ngClass]="{'hs-open': HsLayoutService.sidebarExpanded && HsLayoutService.sidebarVisible(), 'hs-sb-right': HsConfig.sidebarPosition == 'right' && HsLayoutService.sidebarVisible(), 'hs-sb-left': HsConfig.sidebarPosition == 'left' && HsLayoutService.sidebarVisible(),'hs-sb-bottom':HsLayoutService.sidebarBottom()}">
+        [ngClass]="{'hs-open': HsLayoutService.sidebarExpanded && HsLayoutService.sidebarVisible(app), 'hs-sb-right': HsConfig.get(app).sidebarPosition == 'right' && HsLayoutService.sidebarVisible(app), 'hs-sb-left': HsConfig.get(app).sidebarPosition == 'left' && HsLayoutService.sidebarVisible(app),'hs-sb-bottom':HsLayoutService.sidebarBottom()}">
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space d-flex">
-            <hs-map class="hs-flex-fill d-flex"></hs-map>
+            <hs-map class="hs-flex-fill d-flex" [app]="app"></hs-map>
             <ng-template map-host></ng-template>
-            <hs-panel-container [service]="HsOverlayPanelContainerService"></hs-panel-container>
+            <hs-panel-container [service]="HsOverlayPanelContainerService" [app]="app"></hs-panel-container>
         </div>
-        <div class="hs-panelspace" *ngIf="HsLayoutService.sidebarVisible()"
+        <div class="hs-panelspace" *ngIf="HsLayoutService.sidebarVisible(app)"
             [ngClass]="{'labels': HsLayoutService.sidebarLabels, 'buttons': HsLayoutService.sidebarButtons}">
             <div class="hs-panelspace-wrapper me-1">
-                <hs-sidebar class="border-0"></hs-sidebar>
+                <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
                 <div class="hs-panelplace">
-                    <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar" [hidden]="!panelVisible('sidebar', this)">
+                    <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar" [app]="app" [hidden]="!panelVisible('sidebar', this)">
                     </hs-mini-sidebar>
                     <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace">
                     </hs-panel-container>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <hs-toast aria-live="polite" aria-atomic="true"
-            [ngClass]="HsConfig.sidebarPosition == 'left' ? 'hs-sb-right' : 'hs-sb-left'"></hs-toast>
+            [ngClass]="HsConfig.get(app).sidebarPosition === 'left' ? 'hs-sb-right' : 'hs-sb-left'"></hs-toast>
         <div class="hs-dialog-area"></div>
     </div>
     <hs-dialog-container></hs-dialog-container>

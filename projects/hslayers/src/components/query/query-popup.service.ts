@@ -39,7 +39,6 @@ export class HsQueryPopupService
       hsConfig,
       hsQueryPopupWidgetContainerService
     );
-    this.hsMapService.loaded().then(() => this.init());
   }
 
   registerPopup(nativeElement: any) {
@@ -48,16 +47,20 @@ export class HsQueryPopupService
     });
   }
 
-  init() {
-    this.map = this.hsMapService.map;
-    if (this.hsConfig.popUpDisplay && this.hsConfig.popUpDisplay === 'hover') {
+  async init(app: string) {
+    await this.hsMapService.loaded(app);
+    this.map = this.hsMapService.getMap();
+    if (
+      this.hsConfig.get(app).popUpDisplay &&
+      this.hsConfig.get(app).popUpDisplay === 'hover'
+    ) {
       this.map.on(
         'pointermove',
         this.hsUtilsService.debounce(this.preparePopup, 200, false, this)
       );
     } else if (
-      this.hsConfig.popUpDisplay &&
-      this.hsConfig.popUpDisplay === 'click'
+      this.hsConfig.get(app).popUpDisplay &&
+      this.hsConfig.get(app).popUpDisplay === 'click'
     ) {
       this.map.on(
         'singleclick',
@@ -72,12 +75,15 @@ export class HsQueryPopupService
    * @param e -
    * @returns
    */
-  preparePopup(e: {
-    map: Map;
-    pixel: number[];
-    dragging?: any;
-    originalEvent?: any;
-  }) {
+  preparePopup(
+    e: {
+      map: Map;
+      pixel: number[];
+      dragging?: any;
+      originalEvent?: any;
+    },
+    app: string
+  ) {
     // The latter case happens when hovering over the pop-up itself
     if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
@@ -87,7 +93,8 @@ export class HsQueryPopupService
     }
     const tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
       e.map,
-      e.pixel
+      e.pixel,
+      app
     );
     if (
       tmpFeatures.some(
@@ -95,7 +102,7 @@ export class HsQueryPopupService
       ) ||
       this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
     ) {
-      this.fillFeatures(tmpFeatures as Feature<Geometry>[]);
+      this.fillFeatures(tmpFeatures as Feature<Geometry>[], app);
     }
     this.showPopup(e);
   }

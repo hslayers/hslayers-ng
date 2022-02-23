@@ -27,7 +27,7 @@ export class HsQueryWmtsService {
     const tileGrid = source.getTileGrid();
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
-      this.hsMapService.map.getView().getResolution()
+      this.hsMapService.getMap().getView().getResolution()
     );
 
     const tileExtent = tileGrid.getTileCoordExtent(tileCoord);

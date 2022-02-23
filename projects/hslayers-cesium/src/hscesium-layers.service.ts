@@ -177,11 +177,11 @@ export class HsCesiumLayersService {
     if (this.viewer.isDestroyed()) {
       return;
     }
-    if (this.HsConfig.default_layers !== undefined) {
-      this.HsConfig.default_layers.forEach((l) => this.processOlLayer(l));
+    if (this.HsConfig.get(app).default_layers !== undefined) {
+      this.HsConfig.get(app).default_layers.forEach((l) => this.processOlLayer(l));
     }
-    if (this.HsConfig.box_layers) {
-      this.HsConfig.box_layers.forEach((l) => this.processOlLayer(l));
+    if (this.HsConfig.get(app).box_layers) {
+      this.HsConfig.get(app).box_layers.forEach((l) => this.processOlLayer(l));
     }
     //Some layers might be loaded from cookies before cesium service was called
     const map = await this.HsMapService.loaded();
@@ -243,10 +243,10 @@ export class HsCesiumLayersService {
   }
 
   currentMapProjCode() {
-    if (this.HsMapService.map) {
+    if (this.HsMapService.getMap()) {
       return this.HsMapService.getCurrentProj().getCode();
     } else {
-      this.HsConfig.default_view.getProjection().getCode();
+      this.HsConfig.get(app).default_view.getProjection().getCode();
     }
   }
 
@@ -525,7 +525,7 @@ export class HsCesiumLayersService {
   }
 
   private getProxyFromConfig(): string {
-    return this.HsConfig.proxyPrefix ? this.HsConfig.proxyPrefix : '/proxy/';
+    return this.HsConfig.get(app).proxyPrefix ? this.HsConfig.get(app).proxyPrefix : '/proxy/';
   }
 
   private getProjectionFromParams(params: any): string {

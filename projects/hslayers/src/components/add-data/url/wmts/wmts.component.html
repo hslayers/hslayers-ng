@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnectWmts" role="form">
-    <hs-common-url type="wmts" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
+    <hs-common-url type="wmts" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect(app)">
     </hs-common-url>
 
     <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress>
@@ -37,7 +37,7 @@
         bottom: 0; z-index:10">
             <div class="d-flex justify-content-center">
                 <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService"
-                    [layers]="hsUrlWmtsService.data.layers">
+                    [layers]="hsUrlWmtsService.data.layers" [app]="app">
                 </hs-url-add>
             </div>
         </li>

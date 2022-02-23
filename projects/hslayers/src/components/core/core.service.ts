@@ -31,29 +31,11 @@ export class HsCoreService {
     public HsEventBusService: HsEventBusService,
     private translate: TranslateService
   ) {
-    /**
-     * Service shortcut to config module defined by app.component.ts for application
-     * @public
-     * @type {object}
-     */
-    this.config = HsConfig;
-    if (window.innerWidth < 767 || this.HsConfig.sidebarClosed) {
-      this.HsLayoutService.sidebarExpanded = false;
-      this.HsLayoutService.sidebarLabels = false;
-    } else {
-      this.HsLayoutService.sidebarExpanded = true;
-    }
-    const languages = this.HsConfig.enabledLanguages
-      ? this.HsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
-      : ['cs', 'lv'];
-    this.translate.addLangs(languages);
-    this.translate.setDefaultLang('en');
-    if (this.HsConfig.language) {
-      this.translate.use(this.HsConfig.language);
-    }
-    this.HsEventBusService.layoutLoads.subscribe(({element, innerElement}) => {
-      this.init();
-    });
+    this.HsEventBusService.layoutLoads.subscribe(
+      ({element, innerElement, app}) => {
+        this.init(app);
+      }
+    );
   }
 
   /**
@@ -61,7 +43,25 @@ export class HsCoreService {
    * Stores element and container references and sets event listeners for map resizing.
    * @public
    */
-  init(): void {
+  init(app: string): void {
+    if (window.innerWidth < 767 || this.HsConfig.get(app).sidebarClosed) {
+      this.HsLayoutService.sidebarExpanded = false;
+      debugger;
+      this.HsLayoutService.sidebarLabels = false;
+    } else {
+      this.HsLayoutService.sidebarExpanded = true;
+    }
+    const languages = this.HsConfig.get(app).enabledLanguages
+      ? this.HsConfig.get(app)
+          .enabledLanguages.split(',')
+          .map((lang) => lang.trim())
+      : ['cs', 'lv'];
+    this.translate.addLangs(languages);
+    this.translate.setDefaultLang('en');
+    if (this.HsConfig.get(app).language) {
+      this.translate.use(this.HsConfig.get(app).language);
+    }
+
     if (this.initCalled) {
       return;
     }
@@ -119,10 +119,11 @@ export class HsCoreService {
     if (map === null) {
       return;
     }
-    if (this.HsMapService.map) {
-      this.HsMapService.map.updateSize();
+    if (this.HsMapService.getMap()) {
+      this.HsMapService.getMap().updateSize();
       if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
         this.HsLayoutService.smallWidth = true; //deprecated
+        debugger;
         this.HsLayoutService.sidebarLabels = false;
       } else {
         this.HsLayoutService.smallWidth = false; //deprecated
@@ -186,13 +187,13 @@ export class HsCoreService {
     return this._puremapApp;
   }
 
-  set puremapApp(value) {
+  setPuremapApp(value, app: string) {
     this._puremapApp = value;
     if (value) {
-      this.HsConfig.componentsEnabled.guiOverlay = false;
+      this.HsConfig.get(app).componentsEnabled.guiOverlay = false;
       this.HsMapService.removeAllInteractions();
       this.HsMapService.removeAllControls();
-      this.HsLayoutService.sidebarVisible(false);
+      this.HsLayoutService.sidebarVisible(app, false);
     }
   }
 }

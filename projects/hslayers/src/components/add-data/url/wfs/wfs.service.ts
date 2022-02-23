@@ -46,7 +46,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     ];
 
     this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.data.map_projection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService
+        .getMap()
         .getView()
         .getProjection()
         .getCode()
@@ -79,6 +80,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
+    app: string,
     style?: string
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
@@ -92,7 +94,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       const bbox = await this.parseCapabilities(wrapper.response);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
-        const collection = this.getLayers(true, style);
+        const collection = this.getLayers(app, true, style);
         this.zoomToBBox(bbox);
         return collection;
       }
@@ -300,7 +302,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    */
-  getLayers(checkedOnly?: boolean, style?: string): Layer<Source>[] {
+  getLayers(
+    app: string,
+    checkedOnly?: boolean,
+    style?: string
+  ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
@@ -368,7 +374,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         provided_url:
           this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
         layer_name: options.layerName,
-        map_projection: this.hsMapService.map.getView().getProjection(),
+        map_projection: this.hsMapService.getMap().getView().getProjection(),
       }),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
@@ -379,11 +385,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and add them to the map
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.map.addLayer(l);
+      this.hsMapService.getMap().addLayer(l);
     }
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', app);
   }
 
   private zoomToBBox(bbox: any) {
@@ -399,7 +405,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       ];
     }
     if (!this.data.map_projection) {
-      this.data.map_projection = this.hsMapService.map
+      this.data.map_projection = this.hsMapService
+        .getMap()
         .getView()
         .getProjection()
         .getCode()

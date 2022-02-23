@@ -20,7 +20,7 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   }
 
   initiateSave(newSave: boolean): void {
-    this.HsSaveMapManagerService.initiateSave(newSave);
+    this.HsSaveMapManagerService.initiateSave(newSave, this.data.app);
     this.close();
   }
 

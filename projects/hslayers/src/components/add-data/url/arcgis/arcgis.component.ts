@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataOwsService} from '../add-data-ows.service';
@@ -9,6 +9,7 @@ import {HsUrlArcGisService} from './arcgis.service';
   templateUrl: './arcgis.component.html',
 })
 export class HsUrlArcGisComponent {
+  @Input() app = 'default';
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsUrlArcGisService: HsUrlArcGisService,

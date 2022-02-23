@@ -29,7 +29,7 @@ export class HsQueryPopupBaseService {
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {}
 
-  fillFeatures(features: Feature<Geometry>[]) {
+  fillFeatures(features: Feature<Geometry>[], app: string) {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
     this.zone.run(() => {
       this.featuresUnderMouse = features;
@@ -66,6 +66,7 @@ export class HsQueryPopupBaseService {
             }
             this.hsQueryPopupWidgetContainerService.initWidgets(
               widgets,
+              app,
               layer.panelObserver
             );
           }

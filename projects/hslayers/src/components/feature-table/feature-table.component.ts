@@ -18,8 +18,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   layers: VectorLayer<VectorSource<Geometry>>[] = [];
   name = 'feature_table';
   constructor(
@@ -45,7 +44,8 @@ export class HsFeatureTableComponent
   }
   ngOnInit(): void {
     this.HsMapService.loaded().then(() => {
-      for (const layer of this.HsConfig.layersInFeatureTable || []) {
+      for (const layer of this.HsConfig.get(this.data.app)
+        .layersInFeatureTable || []) {
         this.addLayerToTable(layer);
       }
     });

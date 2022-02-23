@@ -11,6 +11,7 @@ import {fileDataObject} from '../../file/types/file-data-object.type';
 })
 export class HsAddLayerAuthorizedComponent {
   @Input() data: fileDataObject;
+  @Input() app = 'default';
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsUtilsService: HsUtilsService,

@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -22,7 +22,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   keywordsVisible = false;
   themesVisible = false;
@@ -70,6 +70,11 @@ export class HsCompositionsComponent
         this.loadUnsavedDialogBootstrap(url, '');
       });
   }
+  ngOnInit(): void {
+    //this.hsCommonEndpointsService.init(this.data.app);
+    this.hsCompositionsService.init(this.data.app);
+  }
+
   ngOnDestroy(): void {
     this.notSavedCompositionLoadingSubscription.unsubscribe();
   }
@@ -93,12 +98,14 @@ export class HsCompositionsComponent
     if (this.hsCompositionsParserService.composition_edited == true) {
       this.hsCompositionsService.notSavedCompositionLoading.next(url);
     } else {
-      this.hsCompositionsService.loadComposition(url, true).then((_) => {
-        this.addCompositionUrlVisible = false;
-      });
+      this.hsCompositionsService
+        .loadComposition(url, this.data.app, true)
+        .then((_) => {
+          this.addCompositionUrlVisible = false;
+        });
     }
   }
-  handleFileSelect(evt): void {
+  handleFileSelect(evt, app: string): void {
     const files = evt.target.files; // FileList object
     for (const f of files) {
       if (!f.type.match('application/json')) {
@@ -109,7 +116,8 @@ export class HsCompositionsComponent
         const json = JSON.parse(<string>reader.result);
         await this.hsCompositionsParserService.loadCompositionObject(
           json,
-          true
+          true,
+          app
         );
       };
       reader.readAsText(f);
@@ -124,6 +132,7 @@ export class HsCompositionsComponent
       HsCompositionsOverwriteDialogComponent,
       {
         composition_name_to_be_loaded: title,
+        app: this.data.app,
       }
     );
   }
@@ -149,7 +158,7 @@ export class HsCompositionsComponent
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
   openSaveMapPanel(): void {
-    this.hsLayoutService.setMainPanel('saveMap');
+    this.hsLayoutService.setMainPanel('saveMap', this.data.app);
   }
   compositionClicked(composition): void {
     if (

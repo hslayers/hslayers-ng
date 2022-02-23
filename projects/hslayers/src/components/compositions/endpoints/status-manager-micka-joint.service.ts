@@ -47,7 +47,8 @@ export class HsCompositionsStatusManagerMickaJointService {
     ds: HsEndpoint,
     params,
     extentFeatureCreated,
-    bbox
+    bbox,
+    app: string
   ): Observable<any> {
     const Observable = this.HsCompositionsMickaService.loadList(
       ds,
@@ -56,7 +57,7 @@ export class HsCompositionsStatusManagerMickaJointService {
       bbox
     ).pipe(
       map((response: any) => {
-        this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);
+        this.HsCompositionsStatusManagerService.loadList(ds, params, bbox, app);
       }),
       catchError((e) => {
         if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
@@ -128,8 +129,12 @@ export class HsCompositionsStatusManagerMickaJointService {
     }
   }
 
-  async delete(endpoint, composition): Promise<void> {
-    await this.HsCompositionsStatusManagerService.delete(endpoint, composition);
+  async delete(endpoint, composition, app): Promise<void> {
+    await this.HsCompositionsStatusManagerService.delete(
+      endpoint,
+      composition,
+      app
+    );
   }
   getCompositionUrls(compData: any): string | Array<string> {
     if (typeof compData == 'string') {

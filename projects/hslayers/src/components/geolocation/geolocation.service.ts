@@ -82,7 +82,7 @@ export class HsGeolocationService {
     this.HsMapService.loaded().then((map) => this.init(map));
   }
   getRotate(): any {
-    for (const control of this.HsMapService.map.getControls().getArray()) {
+    for (const control of this.HsMapService.getMap().getControls().getArray()) {
       if (control instanceof Rotate) {
         return control;
       }
@@ -97,14 +97,14 @@ export class HsGeolocationService {
     this.following = false;
     const rotate = this.getRotate();
     rotate.element.classList.add('hidden');
-    this.HsMapService.map.on('pointermove', () => {
+    this.HsMapService.getMap().on('pointermove', () => {
       this.centering = false;
     });
     this.geolocation.setTracking(false);
     if (this.gn !== null) {
       this.gn.stop();
     }
-    this.HsMapService.map.getView().setRotation(0);
+    this.HsMapService.getMap().getView().setRotation(0);
   }
 
   /**
@@ -140,7 +140,7 @@ export class HsGeolocationService {
           this.geolocation.on('change:heading', () => this.newRotation());
           this.centering = true;
 
-          this.HsMapService.map.on('pointermove', () => {
+          this.HsMapService.getMap().on('pointermove', () => {
             this.centering = false;
           });
           const rotate = this.getRotate();
@@ -156,7 +156,7 @@ export class HsGeolocationService {
         }
       } else {
         if (this.geolocation.getPosition()) {
-          this.HsMapService.map
+          this.HsMapService.getMap()
             .getView()
             .setCenter(this.geolocation.getPosition());
           this.centering = true;
@@ -175,7 +175,7 @@ export class HsGeolocationService {
    */
   stopLocalization(): void {
     this.localization = false;
-    this.HsMapService.map.removeLayer(this.position_layer);
+    this.HsMapService.getMap().removeLayer(this.position_layer);
     this.stopTracking();
   }
   /**
@@ -188,10 +188,10 @@ export class HsGeolocationService {
       this.localization = true;
       this.geolocation.once('change:position', () => {
         this.setNewPosition();
-        this.HsMapService.map
+        this.HsMapService.getMap()
           .getView()
           .setCenter(this.geolocation.getPosition());
-        this.HsMapService.map.addLayer(this.position_layer);
+        this.HsMapService.getMap().addLayer(this.position_layer);
         this.position_layer.setZIndex(99);
 
         //stop tracking position
@@ -206,7 +206,7 @@ export class HsGeolocationService {
    */
   isCentered(): any {
     return (
-      JSON.stringify(this.HsMapService.map.getView().getCenter()) ===
+      JSON.stringify(this.HsMapService.getMap().getView().getCenter()) ===
       JSON.stringify(this.positionFeature.getGeometry().getCoordinates())
     );
   }
@@ -221,7 +221,7 @@ export class HsGeolocationService {
       .getGeometry()
       .setCenterAndRadius(position, this.geolocation.getAccuracy());
     if (this.centering) {
-      this.HsMapService.map.getView().setCenter(position);
+      this.HsMapService.getMap().getView().setCenter(position);
     }
   }
   /**
@@ -236,7 +236,7 @@ export class HsGeolocationService {
           ? this.geolocation.getHeading()
           : null;
         if (heading) {
-          this.HsMapService.map.getView().setRotation(heading);
+          this.HsMapService.getMap().getView().setRotation(heading);
         }
       },
       150,

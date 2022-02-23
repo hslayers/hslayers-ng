@@ -40,15 +40,15 @@ export class HsExternalService {
     public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsQueryPopupService: HsQueryPopupService
-  ) {
-    this.hsMapService.loaded().then((map) => this.init(map));
-  }
+  ) {}
 
-  init(map: Map) {
+  async init(app: string) {
+    await this.hsMapService.loaded();
+    const map = this.hsMapService.getMap(app);
     for (const layer of map.getLayers().getArray()) {
-      this.layerAdded(layer as Layer<Source>);
+      this.layerAdded(layer as Layer<Source>, app);
     }
-    map.getLayers().on('add', (e) => this.layerAdded(e.element));
+    map.getLayers().on('add', (e) => this.layerAdded(e.element, app));
     map.getLayers().on('remove', (e) => this.layerRemoved(e.element));
   }
 
@@ -64,14 +64,14 @@ export class HsExternalService {
     }
   }
 
-  layerAdded(layer: Layer<Source>): void {
+  layerAdded(layer: Layer<Source>, app: string): void {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (getDomFeatureLinks(layer)) {
-        this.processLinks(layer);
+        this.processLinks(layer, app);
       }
       layer.on('propertychange', (e) => {
         this.hsUtilsService.debounce(
-          this.layerPropChanged(e),
+          this.layerPropChanged(e, app),
           100,
           false,
           this
@@ -79,13 +79,13 @@ export class HsExternalService {
       });
     }
   }
-  layerPropChanged(e: ObjectEvent): void {
+  layerPropChanged(e: ObjectEvent, app: string): void {
     if (e.key == DOM_FEATURE_LINKS) {
-      this.processLinks(e.target as Layer<Source>);
+      this.processLinks(e.target as Layer<Source>, app);
     }
   }
 
-  private processLinks(layer: Layer<any>) {
+  private processLinks(layer: Layer<any>, app: string) {
     const source: VectorSource<Geometry> =
       this.hsLayerUtilsService.isLayerClustered(layer)
         ? layer.getSource().getSource()
@@ -109,7 +109,7 @@ export class HsExternalService {
           //This was the only way how to unregister handlers afterwards
           const handler = (e) => {
             for (const action of link.actions) {
-              this.actOnFeature(action, feature, domElement, e);
+              this.actOnFeature(action, feature, domElement, e, app);
             }
           };
           if (!this.featureLinks[featureId]) {
@@ -154,14 +154,15 @@ export class HsExternalService {
       | ((feature: Feature<Geometry>, domElement: Element, event: any) => any),
     feature: any,
     domElement: Element,
-    e: Event
+    e: Event,
+    app: string
   ) {
     if (!this.hsMapService.getLayerForFeature(feature)?.getVisible()) {
       return;
     }
     const extent = feature.getGeometry().getExtent();
     const center = getCenter(extent);
-    const map = this.hsMapService.map;
+    const map = this.hsMapService.getMap();
     switch (action) {
       case 'zoomToExtent':
         this.hsMapService.fitExtent(extent);
@@ -170,7 +171,7 @@ export class HsExternalService {
         map.getView().setCenter(center);
         break;
       case 'showPopup':
-        this.hsQueryPopupService.fillFeatures([feature]);
+        this.hsQueryPopupService.fillFeatures([feature], app);
         const pixel = map.getPixelFromCoordinate(center);
         this.hsQueryPopupService.showPopup({pixel, map});
         break;

@@ -46,7 +46,6 @@ export class HsShareUrlService {
     private PlatformLocation: PlatformLocation
   ) {
     this.keepTrackOfGetParams();
-    this.HsMapService.loaded().then((map) => this.init(map));
   }
 
   private keepTrackOfGetParams() {
@@ -62,8 +61,8 @@ export class HsShareUrlService {
   /**
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
-  update(): void {
-    const view = this.HsMapService.map.getView();
+  update(app: string): void {
+    const view = this.HsMapService.getMap().getView();
     this.id = this.HsUtilsService.generateUuid();
 
     const externalLayers = this.HsMapService.getLayersArray().filter(
@@ -74,7 +73,7 @@ export class HsShareUrlService {
       .map((lyr) => getTitle(lyr));
 
     const addedLayers = externalLayers.filter(
-      (lyr) => !this.HsConfig.default_layers?.includes(lyr)
+      (lyr) => !this.HsConfig.get(app).default_layers?.includes(lyr)
     );
     //This might become useful, but url size is limited, so we are not using it
     const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
@@ -108,7 +107,10 @@ export class HsShareUrlService {
           .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
           .join('&');
         const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
-        if (locationPath.indexOf(baseHref) == 0 && this.HsConfig.ngRouter) {
+        if (
+          locationPath.indexOf(baseHref) == 0 &&
+          this.HsConfig.get(app).ngRouter
+        ) {
           locationPath = locationPath.replace(baseHref, '');
         }
         this.Location.replaceState(locationPath, paramsSerialized);
@@ -124,16 +126,19 @@ export class HsShareUrlService {
    * @returns Permalink url
    * Create permalink Url to map
    */
-  getPermalinkUrl(): string {
-    if (this.HsCore.isMobile() && this.HsConfig.permalinkLocation) {
+  getPermalinkUrl(app: string): string {
+    if (this.HsCore.isMobile() && this.HsConfig.get(app).permalinkLocation) {
       return (
-        this.HsConfig.permalinkLocation.origin +
+        this.HsConfig.get(app).permalinkLocation.origin +
         this.current_url.replace(
           this.pathName(),
-          this.HsConfig.permalinkLocation.pathname
+          this.HsConfig.get(app).permalinkLocation.pathname
         ) +
         `&${HS_PRMS.permalink}=${encodeURIComponent(this.permalinkRequestUrl)}`
-      ).replace(this.pathName(), this.HsConfig.permalinkLocation.pathname);
+      ).replace(
+        this.pathName(),
+        this.HsConfig.get(app).permalinkLocation.pathname
+      );
     } else {
       return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
         this.permalinkRequestUrl
@@ -153,10 +158,10 @@ export class HsShareUrlService {
    * @returns Embedded url
    * Create Url for PureMap version of map
    */
-  getPureMapUrl(): string {
+  getPureMapUrl(app): string {
     const params: any = {puremap: 'true'};
     return (
-      this.getPermalinkUrl() +
+      this.getPermalinkUrl(app) +
       '&' +
       this.HsUtilsService.paramsToURLWoEncode(params)
     );
@@ -289,7 +294,7 @@ export class HsShareUrlService {
    * @param params A dictionary of custom parameters which get added to the generated url
    * Update values for custom parameters which get added to the url and usually are application specific
    */
-  updateCustomParams(params): void {
+  updateCustomParams(params, app): void {
     for (const param in params) {
       this.customParams[param] = params[param];
     }
@@ -297,21 +302,23 @@ export class HsShareUrlService {
       clearTimeout(this.paramTimer);
     }
     this.paramTimer = setTimeout(() => {
-      this.update();
+      this.update(app);
     }, 1000);
   }
 
   /**
    * @param map Openlayers map
    */
-  private init(map: Map): void {
+  async init(app: string): Promise<void> {
+    await this.HsMapService.loaded();
+    const map = this.HsMapService.getMap(app);
     if (this.url_generation) {
       let timer = null;
       this.HsEventBusService.mapExtentChanges.subscribe(
         this.HsUtilsService.debounce(
           (data) => {
             this.zone.run(() => {
-              this.update();
+              this.update(app);
             });
           },
           200,
@@ -330,7 +337,7 @@ export class HsShareUrlService {
             clearTimeout(timer);
           }
           timer = setTimeout(() => {
-            this.update();
+            this.update(app);
           }, 1000);
         });
       });

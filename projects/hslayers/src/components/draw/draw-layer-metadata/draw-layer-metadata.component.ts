@@ -64,7 +64,7 @@ export class HsDrawLayerMetadataDialogComponent
     setName(this.layer, getLaymanFriendlyLayerName(getTitle(this.layer)));
     const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer') || null;
     if (tmpLayer) {
-      this.HsMapService.map.removeLayer(tmpLayer);
+      this.HsMapService.getMap().removeLayer(tmpLayer);
     }
 
     this.attributes.forEach((a) => {

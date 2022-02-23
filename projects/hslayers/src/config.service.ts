@@ -12,6 +12,7 @@ import {AddDataFileType} from './components/add-data/file/types/file.type';
 import {AddDataUrlType} from './components/add-data/url/types/url.type';
 import {QueryPopupWidgetsType} from './components/query/widgets/widgets.type';
 import {WidgetItem} from './components/query/widgets/widget-item.type';
+import {SignatureDeclaration} from 'typescript';
 
 export type SymbolizerIcon = {
   name: string;
@@ -29,27 +30,8 @@ export interface KeyNumberDict {
   [key: string]: number;
 }
 
-@Injectable()
-export class HsConfig {
-  private defaultSymbolizerIcons? = [
-    {name: 'favourite', url: 'img/icons/favourite28.svg'},
-    {name: 'gps', url: 'img/icons/gps43.svg'},
-    {name: 'information', url: 'img/icons/information78.svg'},
-    {name: 'wifi', url: 'img/icons/wifi8.svg'},
-  ];
-  componentsEnabled?: any = {
-    guiOverlay: true,
-    sidebar: true,
-    toolbar: true,
-    drawToolbar: true,
-    searchToolbar: true,
-    measureToolbar: true,
-    geolocationButton: true,
-    defaultViewButton: true,
-    mapControls: true,
-    basemapGallery: false,
-    mapSwipe: false,
-  };
+export type HsConfigObject = {
+  componentsEnabled?: any;
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
@@ -90,7 +72,99 @@ export class HsConfig {
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
-  } = {
+  };
+  advancedForm?: boolean;
+  project_name?: string;
+  hostname?: {
+    status_manager?: {
+      url: string;
+    };
+    user?: {
+      url: string;
+    };
+    default?: {
+      url: string;
+    };
+  };
+  mapSwipeOptions?: MapSwipeOptions;
+  status_manager_url?: string;
+  shortenUrl?: any;
+  permalinkLocation?: {origin: string; pathname: string};
+  social_hashtag?: string;
+  useProxy?: boolean;
+  layerTooltipDelay?: number;
+  search_provider?: string;
+  geonamesUser?: string;
+  searchProvider?: any;
+  language?: string;
+  enabledLanguages?: string;
+  query?: {multi: boolean};
+  queryPoint?: string;
+  popUpDisplay?: 'none' | 'click' | 'hover';
+  /**
+   * Configures query popup widgets, the order in which they are generated, and visibility
+   */
+  queryPopupWidgets?: QueryPopupWidgetsType[] | string[];
+  /**
+   * Allows the user to add custom widgets to query popup
+   */
+  customQueryPopupWidgets?: WidgetItem[];
+  preserveLastSketchPoint?: boolean;
+  zoomWithModifierKeyOnly?: boolean;
+  pureMap?: boolean;
+  translationOverrides?: any;
+  layersInFeatureTable?: VectorLayer<VectorSource<Geometry>>[];
+  open_lm_after_comp_loaded?: boolean;
+  draggable_windows?: boolean;
+  connectTypes?: AddDataUrlType[];
+  uploadTypes?: AddDataFileType[];
+  datasources?: any;
+  panelWidths?: KeyNumberDict;
+  sidebarToggleable?: boolean;
+  sizeMode?: string;
+  symbolizerIcons?: SymbolizerIcon[];
+  openQueryPanelOnDrawEnd?: boolean;
+  assetsPath?: string;
+  reverseLayerList?: boolean;
+  /**
+   * When set to 'true', the map layers are stored temporarily to localStorage
+   * on page reload, loaded when it starts and deleted afterwards.
+   * Otherwise, nothing is stored to localStorage and only default_layers are loaded
+   * after page reloads.
+   * Default: true
+   */
+  saveMapStateOnReload?: boolean;
+  /**
+   * Triggered when config is updated using 'update' function of HsConfig.get(app).
+   * The full resulting config is provided in the subscriber as a parameter
+   */
+  timeDisplayFormat?: string;
+
+  /**
+   *  Determines behavior of exclusive layers (layer.exclusive = true) visibility
+   *  If set to true, only layers with same path are affected by exclusivity
+   */
+  pathExclusivity?: boolean;
+  ngRouter?: boolean;
+};
+
+const defaultConfig = {
+  componentsEnabled: {
+    guiOverlay: true,
+    sidebar: true,
+    toolbar: true,
+    drawToolbar: true,
+    searchToolbar: true,
+    measureToolbar: true,
+    geolocationButton: true,
+    defaultViewButton: true,
+    mapControls: true,
+    basemapGallery: false,
+    mapSwipe: false,
+  },
+  mapSwipeOptions: {},
+  pathExclusivity: false,
+  panelsEnabled: {
     legend: true,
     info: true,
     composition_browser: true,
@@ -110,95 +184,31 @@ export class HsConfig {
     tripPlanner: false,
     addData: true,
     mapSwipe: false,
-  };
-  project_name?: string;
-  hostname?: {
-    status_manager?: {
-      url: string;
-    };
-    user?: {
-      url: string;
-    };
-    default?: {
-      url: string;
-    };
-  };
-  mapSwipeOptions?: MapSwipeOptions = {};
-  status_manager_url?: string;
-  permalinkLocation?: {origin: string; pathname: string};
-  social_hashtag?: string;
-  useProxy?: boolean;
-  layerTooltipDelay?: number;
-  search_provider?: string;
-  geonamesUser?: string;
-  searchProvider?: any;
-  language?: string;
-  enabledLanguages?: string;
-  query?: {multi: boolean};
-  queryPoint?: string;
-  popUpDisplay?: 'none' | 'click' | 'hover';
-  /**
-   * Configures query popup widgets, the order in which they are generated, and visibility
-   */
-  queryPopupWidgets?: QueryPopupWidgetsType[] | string[] = [
-    'layer-name',
-    'feature-info',
-    'clear-layer',
-  ];
-  /**
-   * Allows the user to add custom widgets to query popup
-   */
-  customQueryPopupWidgets?: WidgetItem[];
-  preserveLastSketchPoint?: boolean;
-  zoomWithModifierKeyOnly?: boolean;
-  pureMap?: boolean;
-  translationOverrides?: any;
-  layersInFeatureTable?: VectorLayer<VectorSource<Geometry>>[];
-  open_lm_after_comp_loaded?: boolean;
-  draggable_windows?: boolean;
-  connectTypes?: AddDataUrlType[];
-  uploadTypes?: AddDataFileType[];
-  datasources?: any;
-  panelWidths?: KeyNumberDict = {
+  },
+  queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
+  panelWidths: {
     default: 425,
     ows: 700,
     composition_browser: 550,
     addData: 700,
     mapSwipe: 550,
-  };
-  sidebarToggleable?: boolean;
-  sizeMode?: string;
-  symbolizerIcons?: SymbolizerIcon[];
-  openQueryPanelOnDrawEnd?: boolean;
-  assetsPath?: string;
-  reverseLayerList?: boolean;
-  /**
-   * When set to 'true', the map layers are stored temporarily to localStorage
-   * on page reload, loaded when it starts and deleted afterwards.
-   * Otherwise, nothing is stored to localStorage and only default_layers are loaded
-   * after page reloads.
-   * Default: true
-   */
-  saveMapStateOnReload?: boolean;
-  /**
-   * Triggered when config is updated using 'update' function of HsConfig.
-   * The full resulting config is provided in the subscriber as a parameter
-   */
-  configChanges?: Subject<HsConfig> = new Subject();
-  timeDisplayFormat?: string;
+  },
+};
 
-  /**
-   *  Determines behavior of exclusive layers (layer.exclusive = true) visibility
-   *  If set to true, only layers with same path are affected by exclusivity
-   */
-  pathExclusivity?: boolean = false;
-  ngRouter?: boolean;
-  constructor() {
-    this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
-      val.url = (this.assetsPath ?? '') + val.url;
-      return val;
-    });
-  }
+@Injectable()
+export class HsConfig {
+  apps: {[id: string]: HsConfigObject} = {
+    default: defaultConfig,
+  };
+  configChanges?: Subject<HsConfigObject> = new Subject();
+  private defaultSymbolizerIcons? = [
+    {name: 'favourite', url: 'img/icons/favourite28.svg'},
+    {name: 'gps', url: 'img/icons/gps43.svg'},
+    {name: 'information', url: 'img/icons/information78.svg'},
+    {name: 'wifi', url: 'img/icons/wifi8.svg'},
+  ];
+
+  constructor() {}
 
   checkDeprecatedCesiumConfig?(newConfig: any) {
     for (const prop of [
@@ -221,22 +231,31 @@ export class HsConfig {
     ]) {
       if (newConfig[prop] != undefined) {
         console.error(
-          `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
+          `HsConfig.get(app).${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
         );
       }
     }
   }
 
-  update?(newConfig: HsConfig): void {
+  update?(newConfig: HsConfigObject, app?: string): void {
     this.checkDeprecatedCesiumConfig(newConfig);
-    Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
+    let appConfig = this.apps[app];
+    if (appConfig == undefined) {
+      this.apps[app] = defaultConfig;
+      appConfig = this.apps[app];
+    }
+    appConfig.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
+      val.url = (appConfig.assetsPath ?? '') + val.url;
+      return val;
+    });
+    Object.assign(appConfig.componentsEnabled, newConfig.componentsEnabled);
     //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
-    Object.assign(this.panelWidths, newConfig.panelWidths);
+    Object.assign(appConfig.panelWidths, newConfig.panelWidths);
     //See componentsEnabled ^
-    Object.assign(this.panelsEnabled, newConfig.panelsEnabled);
+    Object.assign(appConfig.panelsEnabled, newConfig.panelsEnabled);
     delete newConfig.panelsEnabled;
-    this.symbolizerIcons = [
+    appConfig.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),
       ...(newConfig.symbolizerIcons ?? []),
     ];
@@ -248,7 +267,7 @@ export class HsConfig {
   /**
    * This kind of duplicates getAssetsPath() in HsUtilsService, which can't be used here due to circular dependency
    */
-  updateSymbolizers?(config: HsConfig) {
+  updateSymbolizers?(config: HsConfigObject) {
     /* Removing 'private' since it makes this method non-optional */
     let assetsPath = config.assetsPath ?? '';
     assetsPath += assetsPath.endsWith('/') ? '' : '/';
@@ -256,6 +275,10 @@ export class HsConfig {
       val.url = assetsPath + val.url;
       return val;
     });
+  }
+
+  get(app?: string): HsConfigObject {
+    return this.apps[app ?? 'default'];
   }
 
   shortenUrl?(url: string): any;

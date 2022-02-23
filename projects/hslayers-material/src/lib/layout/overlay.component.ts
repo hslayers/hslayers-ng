@@ -27,22 +27,22 @@ export class HsMatOverlayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const mapControls = this.HsConfig.componentsEnabled.mapControls;
+    const mapControls = this.HsConfig.get(app).componentsEnabled.mapControls;
     this.HsEventBusService.olMapLoads.subscribe(map => {
       map.addInteraction(new MouseWheelZoom({
         condition: (browserEvent): boolean => {
           if (mapControls == false) {
             return false;
           }
-          return this.HsConfig.zoomWithModifierKeyOnly
+          return this.HsConfig.get(app).zoomWithModifierKeyOnly
             ? platformModifierKeyOnlyCondition(browserEvent)
             : true;
         },
       }));
     });
 
-    this.HsConfig.componentsEnabled.mapControls = false;
-    this.HsConfig.componentsEnabled.defaultViewButton = false;
+    this.HsConfig.get(app).componentsEnabled.mapControls = false;
+    this.HsConfig.get(app).componentsEnabled.defaultViewButton = false;
   }
 
   openAttributionDialog(event): void {
@@ -64,24 +64,24 @@ export class HsMatOverlayComponent implements OnInit {
   }
 
   canZoomOut(): boolean {
-    const mapView = this.HsMapService.map?.getView();
+    const mapView = this.HsMapService.getMap()?.getView();
     return mapView?.getZoom() > mapView?.getMinZoom();
   }
 
   canZoomIn(): boolean {
-    const mapView = this.HsMapService.map?.getView();
+    const mapView = this.HsMapService.getMap()?.getView();
     return mapView?.getZoom() < mapView?.getMaxZoom();
   }
 
   adjustZoom(delta: number): void {
-    const mapView = this.HsMapService.map?.getView();
+    const mapView = this.HsMapService.getMap()?.getView();
     mapView.animate({zoom: mapView.getZoom() + delta, duration: 300});
   }
 
   defaultView(): void {
-    this.HsMapService.map?.getView().animate({
-      center: this.HsConfig.default_view.getCenter(),
-      zoom: this.HsConfig.default_view.getZoom(),
+    this.HsMapService.getMap()?.getView().animate({
+      center: this.HsConfig.get(app).default_view.getCenter(),
+      zoom: this.HsConfig.get(app).default_view.getZoom(),
       duration: 300,
     });
   }
@@ -99,8 +99,8 @@ export class HsMatOverlayComponent implements OnInit {
       }
     });
 
-    this.HsMapService.map?.getView().fit(extent, {
-      size: this.HsMapService.map.getSize(),
+    this.HsMapService.getMap()?.getView().fit(extent, {
+      size: this.HsMapService.getMap().getSize(),
       padding: [50, 50, 50, 50],
       duration: 300,
     });

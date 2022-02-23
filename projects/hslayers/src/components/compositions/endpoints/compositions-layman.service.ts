@@ -54,9 +54,10 @@ export class HsCompositionsLaymanService {
         : 'last_change';
 
     const b = transformExtent(
-      this.hsMapService.map
+      this.hsMapService
+        .getMap()
         .getView()
-        .calculateExtent(this.hsMapService.map.getSize()),
+        .calculateExtent(this.hsMapService.getMap().getSize()),
       this.hsMapService.getCurrentProj(),
       'EPSG:3857'
     );

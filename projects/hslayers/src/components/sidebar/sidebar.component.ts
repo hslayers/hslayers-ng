@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -15,6 +15,7 @@ import {HsSidebarService} from './sidebar.service';
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;
+  @Input() app = 'default';
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
@@ -29,13 +30,19 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
     if (panel) {
       if (!this.HsLayoutService.minisidebar) {
-        this.HsLayoutService.setMainPanel(panel);
+        this.HsLayoutService.setMainPanel(panel, this.app);
       }
     }
-    this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+    this.HsSidebarService.setPanelState(
+      this.HsSidebarService.buttons,
+      this.app
+    );
     this.configChangesSubscription = this.HsConfig.configChanges.subscribe(
       (_) => {
-        this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+        this.HsSidebarService.setPanelState(
+          this.HsSidebarService.buttons,
+          this.app
+        );
       }
     );
     this.HsSidebarService.sidebarLoad.next();

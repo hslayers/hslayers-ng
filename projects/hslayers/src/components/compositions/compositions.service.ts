@@ -50,16 +50,6 @@ export class HsCompositionsService {
     public hsCompositionsMapService: HsCompositionsMapService,
     public hsEventBusService: HsEventBusService
   ) {
-    if (hsConfig.saveMapStateOnReload) {
-      //Load composition data from cookies only if it is anticipated
-      setTimeout(() => {
-        this.tryParseCompositionFromCookie();
-      }, 500);
-    }
-
-    this.tryParseCompositionFromUrlParam();
-    this.parsePermalinkLayers();
-
     this.hsEventBusService.mapResets.subscribe(() => {
       this.hsCompositionsParserService.composition_loaded = null;
       this.hsCompositionsParserService.composition_edited = false;
@@ -69,11 +59,21 @@ export class HsCompositionsService {
       this.hsCompositionsParserService.composition_edited = true;
     });
 
-    this.hsEventBusService.compositionLoadStarts.subscribe((id) => {
+    this.hsEventBusService.compositionLoadStarts.subscribe(({id, app}) => {
       id = `${this.hsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
-      this.hsCompositionsParserService.loadUrl(id);
+      this.hsCompositionsParserService.loadUrl(id, app);
     });
+  }
 
+  init(app: string) {
+    this.tryParseCompositionFromUrlParam(app);
+    this.parsePermalinkLayers(app);
+    if (this.hsConfig.get(app).saveMapStateOnReload) {
+      //Load composition data from cookies only if it is anticipated
+      setTimeout(() => {
+        this.tryParseCompositionFromCookie(app);
+      }, 500);
+    }
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
         const record =
@@ -83,7 +83,7 @@ export class HsCompositionsService {
             endpoint.compositions
           );
         if (record) {
-          this.loadComposition(this.getRecordLink(record));
+          this.loadComposition(this.getRecordLink(record), app);
         }
       }
     });
@@ -133,9 +133,9 @@ export class HsCompositionsService {
     );
   }
 
-  async shareComposition(record): Promise<any> {
+  async shareComposition(record, app: string): Promise<any> {
     const recordLink = encodeURIComponent(this.getRecordLink(record));
-    const permalinkOverride = this.hsConfig.permalinkLocation;
+    const permalinkOverride = this.hsConfig.get(app).permalinkLocation;
     const compositionUrl =
       this.hsCore.isMobile() && permalinkOverride
         ? permalinkOverride.origin + permalinkOverride.pathname
@@ -198,7 +198,7 @@ export class HsCompositionsService {
     }
   }
 
-  loadCompositionParser(record): Promise<void> {
+  loadCompositionParser(record, app: string): Promise<void> {
     const recordEndpoint = record.endpoint;
     return new Promise((resolve, reject) => {
       let url;
@@ -222,7 +222,7 @@ export class HsCompositionsService {
           this.notSavedCompositionLoading.next(url);
           reject();
         } else {
-          this.loadComposition(url, true).then(() => {
+          this.loadComposition(url, app, true).then(() => {
             resolve();
           });
         }
@@ -233,7 +233,7 @@ export class HsCompositionsService {
   /**
    * Load layers received through permalink to map
    */
-  async parsePermalinkLayers(): Promise<void> {
+  async parsePermalinkLayers(app: string): Promise<void> {
     await this.hsMapService.loaded();
     const permalink = this.hsPermalinkUrlService.getParamValue(
       HS_PRMS.permalink
@@ -253,7 +253,10 @@ export class HsCompositionsService {
         data.data.layers = response.data;
       }
       this.hsCompositionsParserService.removeCompositionLayers();
-      const layers = await this.hsCompositionsParserService.jsonToLayers(data);
+      const layers = await this.hsCompositionsParserService.jsonToLayers(
+        data,
+        app
+      );
       for (let i = 0; i < layers.length; i++) {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
@@ -262,11 +265,11 @@ export class HsCompositionsService {
     }
   }
 
-  loadComposition(url, overwrite?: boolean): Promise<void> {
-    return this.hsCompositionsParserService.loadUrl(url, overwrite);
+  loadComposition(url, app: string, overwrite?: boolean): Promise<void> {
+    return this.hsCompositionsParserService.loadUrl(url, app, overwrite);
   }
 
-  async tryParseCompositionFromCookie(): Promise<void> {
+  async tryParseCompositionFromCookie(app: string): Promise<void> {
     if (
       localStorage.getItem('hs_layers') &&
       (<any>window).permalinkApp != true
@@ -281,7 +284,8 @@ export class HsCompositionsService {
         return;
       }
       const layers = await this.hsCompositionsParserService.jsonToLayers(
-        parsed
+        parsed,
+        app
       );
       for (let i = 0; i < layers.length; i++) {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
@@ -290,18 +294,18 @@ export class HsCompositionsService {
     }
   }
 
-  async tryParseCompositionFromUrlParam(): Promise<void> {
+  async tryParseCompositionFromUrlParam(app: string): Promise<void> {
     let id = this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
     if (id) {
       if (
         !id.includes('http') &&
-        !id.includes(this.hsConfig.status_manager_url)
+        !id.includes(this.hsConfig.get(app).status_manager_url)
       ) {
         id =
           this.hsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
       try {
-        await this.hsCompositionsParserService.loadUrl(id);
+        await this.hsCompositionsParserService.loadUrl(id, app);
       } catch (e) {
         this.compositionNotFoundAtUrl.next(e);
         this.$log.warn(e);

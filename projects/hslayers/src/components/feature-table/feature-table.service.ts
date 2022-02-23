@@ -41,7 +41,7 @@ export class HsFeatureTableService {
     public HsLanguageService: HsLanguageService
   ) {}
   /**
-   * @param layer Layer from HsConfig.layersInFeatureTable
+   * @param layer Layer from HsConfig.get(app).layersInFeatureTable
    * @description Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
    * @returns {any} Returns layer
    */
@@ -57,7 +57,7 @@ export class HsFeatureTableService {
     return;
   }
   /**
-   * @param layer Layer from HsConfig.layersInFeatureTable
+   * @param layer Layer from HsConfig.get(app).layersInFeatureTable
    * @description Wrap layer object
    * @returns {any} Returns wrapped layer object
    */
@@ -69,7 +69,7 @@ export class HsFeatureTableService {
     };
   }
   /**
-   * @param layer Layer from HsConfig.layersInFeatureTable
+   * @param layer Layer from HsConfig.get(app).layersInFeatureTable
    * @description Search all layers feature attributes and map them into new objects for html table
    */
   fillFeatureList(layer: Layer<Source>): void {

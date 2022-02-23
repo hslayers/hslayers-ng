@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="datasource_selector" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translate">
+    <hs-panel-header name="datasource_selector" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translate" [app]="data.app">
     </hs-panel-header>
     <div class="card-body">
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
@@ -23,9 +23,9 @@
                 </a>
             </li>
         </ul>
-        <hs-add-data-url *ngIf="hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'">
+        <hs-add-data-url *ngIf="hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'" [app]="data.app">
         </hs-add-data-url>
-        <hs-add-data-file *ngIf="hsAddDataService.dsSelected === 'file'"></hs-add-data-file>
+        <hs-add-data-file *ngIf="hsAddDataService.dsSelected === 'file'" [app]="data.app"></hs-add-data-file>
         <hs-add-data-catalogue *ngIf="hsAddDataService.dsSelected === 'catalogue'"></hs-add-data-catalogue>
     </div>
 </div>

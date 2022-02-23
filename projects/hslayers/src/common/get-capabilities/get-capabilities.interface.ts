@@ -10,5 +10,5 @@ export interface IGetCapabilities {
     service_url: string,
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper>;
-  service2layers?(caps: any, path?: string): Layer<Source>[];
+  service2layers?(caps: any, app: string, path?: string,): Layer<Source>[];
 }

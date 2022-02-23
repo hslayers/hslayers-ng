@@ -43,6 +43,7 @@ import {
   templateUrl: './layer-editor.html',
 })
 export class HsLayerEditorComponent {
+  @Input() app = 'default';
   _currentLayer: HsLayerDescriptor;
   @Input('current-layer') set currentLayer(value: HsLayerDescriptor) {
     this._currentLayer = value;
@@ -74,13 +75,27 @@ export class HsLayerEditorComponent {
   ) {}
 
   createWidgets() {
-    this.hsWidgetContainerService.create(HsTypeWidgetComponent, {});
-    this.hsWidgetContainerService.create(HsMetadataWidgetComponent, {});
-    this.hsWidgetContainerService.create(HsScaleWidgetComponent, {});
-    this.hsWidgetContainerService.create(HsClusterWidgetComponent, {});
-    this.hsWidgetContainerService.create(HsLegendWidgetComponent, {});
-    this.hsWidgetContainerService.create(HsLayerEditorDimensionsComponent, {});
-    this.hsWidgetContainerService.create(HsOpacityWidgetComponent, {});
+    this.hsWidgetContainerService.create(HsTypeWidgetComponent, {
+      app: this.app,
+    });
+    this.hsWidgetContainerService.create(HsMetadataWidgetComponent, {
+      app: this.app,
+    });
+    this.hsWidgetContainerService.create(HsScaleWidgetComponent, {
+      app: this.app,
+    });
+    this.hsWidgetContainerService.create(HsClusterWidgetComponent, {
+      app: this.app,
+    });
+    this.hsWidgetContainerService.create(HsLegendWidgetComponent, {
+      app: this.app,
+    });
+    this.hsWidgetContainerService.create(HsLayerEditorDimensionsComponent, {
+      app: this.app,
+    });
+    this.hsWidgetContainerService.create(HsOpacityWidgetComponent, {
+      app: this.app,
+    });
   }
 
   /**
@@ -124,7 +139,7 @@ export class HsLayerEditorComponent {
   styleLayer(): void {
     const layer = this.olLayer();
     this.HsStylerService.layer = layer as VectorLayer<VectorSource<Geometry>>;
-    this.HsLayoutService.setMainPanel('styler');
+    this.HsLayoutService.setMainPanel('styler', this.app);
   }
 
   /**
@@ -241,7 +256,7 @@ export class HsLayerEditorComponent {
     );
     const result = await dialog.waitResult();
     if (result.confirmed == 'yes') {
-      return this.HsLayerManagerService.copyLayer(result.layerTitle);
+      return this.HsLayerManagerService.copyLayer(result.layerTitle, this.app);
     }
   }
 }

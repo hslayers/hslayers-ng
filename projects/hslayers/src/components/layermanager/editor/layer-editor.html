@@ -3,12 +3,12 @@
         <!-- Sublayers-->
         <div [hidden]="!currentLayer.sublayers" class="form-group">
             <div *ngFor="let subLayer of getSubLayers()">
-                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer"></hs-layer-editor-sub-layer-checkbox>
+                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer" [app]="app"></hs-layer-editor-sub-layer-checkbox>
             </div>
         </div>
         <div *ngIf="currentLayer.settings">
             <form>
-                <hs-panel-container [service]="hsWidgetContainerService" (init)="createWidgets()">
+                <hs-panel-container [service]="hsWidgetContainerService" (init)="createWidgets()" [app]="app">
                 </hs-panel-container>
             </form>
             <div class="btn-group m-auto d-flex w-75" *ngIf="currentLayer.visible && getBase(currentLayer.layer)">

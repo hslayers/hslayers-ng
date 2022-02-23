@@ -67,7 +67,7 @@ export class HsStylerComponent
   }
 
   layermanager(): void {
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager', this.data.app);
   }
 
   uploadSld(): void {
