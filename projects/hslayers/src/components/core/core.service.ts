@@ -115,15 +115,14 @@ export class HsCoreService {
    * @public
    */
   updateMapSize(app?: string): void {
-    const map = this.HsMapService.apps[app ?? 'default'].mapElement;
+    const map = this.HsMapService.apps[app].mapElement;
     if (map === null) {
       return;
     }
-    if (this.HsMapService.getMap()) {
-      this.HsMapService.getMap().updateSize();
+    if (this.HsMapService.getMap(app)) {
+      this.HsMapService.getMap(app).updateSize();
       if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
         this.HsLayoutService.smallWidth = true; //deprecated
-        debugger;
         this.HsLayoutService.sidebarLabels = false;
       } else {
         this.HsLayoutService.smallWidth = false; //deprecated
