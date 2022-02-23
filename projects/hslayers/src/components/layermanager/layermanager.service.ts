@@ -280,7 +280,10 @@ export class HsLayerManagerService {
         const que = this.HsQueuesService.ensureQueue('wmsGetCapabilities', 1);
         que.push(async (cb) => {
           try {
-            await this.HsLayerManagerMetadata.fillMetadata(layerDescriptor);
+            await this.HsLayerManagerMetadata.fillMetadata(
+              layerDescriptor,
+              app
+            );
             layerDescriptor.grayed = !this.isLayerInResolutionInterval(
               layer,
               app
@@ -625,7 +628,7 @@ export class HsLayerManagerService {
     this.HsEventBusService.layerManagerUpdates.next(e.element);
     this.HsEventBusService.layerRemovals.next(e.element);
     this.HsEventBusService.compositionEdits.next();
-    const layers = this.HsMapService.getMap().getLayers().getArray();
+    const layers = this.HsMapService.getMap(app).getLayers().getArray();
     if (this.apps[app].zIndexValue > layers.length) {
       this.apps[app].zIndexValue--;
     }
@@ -964,7 +967,7 @@ export class HsLayerManagerService {
    * @param lyr - Selected layer
    */
   isLayerInResolutionInterval(lyr: Layer<Source>, app): boolean {
-    const cur_res = this.HsMapService.getMap().getView().getResolution();
+    const cur_res = this.HsMapService.getMap(app).getView().getResolution();
     this.apps[app].currentResolution = cur_res;
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
@@ -1091,7 +1094,7 @@ export class HsLayerManagerService {
   async init(app: string): Promise<void> {
     await this.HsMapService.loaded(app);
     this.apps[app].map = this.HsMapService.getMap(app);
-    for (const lyr of this.HsMapService.getMap().getLayers().getArray()) {
+    for (const lyr of this.HsMapService.getMap(app).getLayers().getArray()) {
       this.applyZIndex(lyr as Layer<Source>, app);
       await this.layerAdded(
         {
