@@ -184,8 +184,8 @@ export class HsDrawService {
       this.fillDrawableLayers(app);
     });
 
-    this.hsEventBusService.mainPanelChanges.subscribe((event) => {
-      if (event === 'draw' && this.hsMapService.getMap()) {
+    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
+      if (which === 'draw' && this.hsMapService.getMap()) {
         this.fillDrawableLayers(app);
       }
     });

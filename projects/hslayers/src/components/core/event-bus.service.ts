@@ -95,7 +95,7 @@ export class HsEventBusService {
    * replaces 'core.mainpanel_changed'
    * @event mainPanelChanges
    */
-  mainPanelChanges: Subject<string | void> = new Subject();
+  mainPanelChanges: Subject<{which?: string; app: string}> = new Subject();
   /**
    * replaces 'measure.drawStart'
    */

@@ -49,14 +49,14 @@ export class HsSidebarService {
      */
     this.buttons = [];
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.HsEventBusService.mainPanelChanges.subscribe(({app}) => {
       /* NOTE: WE used to update map size only 'if (!HsLayoutService.sidebarExpanded) {' 
       but that leads to blank margin between map and window border 
       (see https://github.com/hslayers/hslayers-ng/issues/1107). Using timer to take
       into account sidebar width changing animation. 
       */
       setTimeout(() => {
-        this.HsCoreService.updateMapSize();
+        this.HsCoreService.updateMapSize(app);
       }, 550);
     });
 

@@ -184,10 +184,10 @@ export class HsLayoutService {
    * Cannot resolve unpinned panels.
    * @public
    */
-  hidePanels() {
+  hidePanels(app) {
     this.mainpanel = '';
     this.sidebarLabels = true;
-    this.HsEventBusService.mainPanelChanges.next();
+    this.HsEventBusService.mainPanelChanges.next({app});
   }
 
   /**
@@ -221,7 +221,7 @@ export class HsLayoutService {
       this.sidebarExpanded = false;
     }
 
-    this.HsEventBusService.mainPanelChanges.next(which);
+    this.HsEventBusService.mainPanelChanges.next({which, app});
   }
 
   /**
@@ -290,7 +290,7 @@ export class HsLayoutService {
       this.HsConfig.get(app).panelWidths,
       componentRefInstance
     );
-    this.HsEventBusService.mainPanelChanges.next(which);
+    this.HsEventBusService.mainPanelChanges.next({which, app});
   }
 
   /**
