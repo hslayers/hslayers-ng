@@ -162,7 +162,7 @@ export class HsCesiumLayersService {
     );
 
     this.repopulateLayers();
-    const map = await this.HsMapService.loaded();
+    const map = await this.HsMapService.loaded(app);
     map.getLayers().on('add', (e) => {
       const lyr = e.element;
       this.processOlLayer(lyr);
@@ -184,7 +184,7 @@ export class HsCesiumLayersService {
       this.HsConfig.get(app).box_layers.forEach((l) => this.processOlLayer(l));
     }
     //Some layers might be loaded from cookies before cesium service was called
-    const map = await this.HsMapService.loaded();
+    const map = await this.HsMapService.loaded(app);
     map.getLayers().forEach((lyr: Layer<Source>) => {
       const cesiumLayer = this.findCesiumLayer(lyr);
       if (cesiumLayer == undefined) {
@@ -243,7 +243,7 @@ export class HsCesiumLayersService {
   }
 
   currentMapProjCode() {
-    if (this.HsMapService.getMap()) {
+    if (this.HsMapService.getMap(app)) {
       return this.HsMapService.getCurrentProj().getCode();
     } else {
       this.HsConfig.get(app).default_view.getProjection().getCode();

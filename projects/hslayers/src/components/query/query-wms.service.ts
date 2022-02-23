@@ -51,7 +51,7 @@ export class HsQueryWmsService {
         }
         if (getQueryFilter(layer) != undefined) {
           const filter = getQueryFilter(layer);
-          if (!filter(hsMapService.getMap(), layer, evt.pixel)) {
+          if (!filter(hsMapService.getMap(app), layer, evt.pixel)) {
             return;
           }
         }
@@ -309,7 +309,7 @@ export class HsQueryWmsService {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService
-          .parseRequestUrl(layer, coordinate)
+          .parseRequestUrl(layer, coordinate, app)
           .then((res) => {
             console.log(res);
             this.infoCounter++;
@@ -319,7 +319,7 @@ export class HsQueryWmsService {
       }
 
       const source = layer.getSource();
-      const map = this.hsMapService.getMap();
+      const map = this.hsMapService.getMap(app);
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
         coordinate,

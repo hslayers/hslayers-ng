@@ -5,8 +5,8 @@
     [app]="data.app"
   ></hs-panel-header>
   <div class="card-body">
-    <hs-trip-planner-layer-selector usage="route" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
-    <hs-trip-planner-layer-selector usage="waypoints" label="{{'TRIP_PLANNER.waypointLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="route" [app]="data.app" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app" label="{{'TRIP_PLANNER.waypointLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
 
     <div
       *ngFor="let waypoint of HsTripPlannerService.waypoints"

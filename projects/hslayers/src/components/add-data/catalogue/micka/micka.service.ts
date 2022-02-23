@@ -47,9 +47,10 @@ export class HsMickaBrowserService {
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
-    textField: string
+    textField: string,
+    app: string
   ): any {
-    const url = this.createRequestUrl(dataset, data, textField);
+    const url = this.createRequestUrl(dataset, data, textField, app);
     dataset.datasourcePaging.loaded = false;
 
     dataset.httpCall = this.http
@@ -102,13 +103,14 @@ export class HsMickaBrowserService {
     return dataset.httpCall;
   }
 
-  private createRequestUrl(dataset, data, textField) {
+  private createRequestUrl(dataset, data, textField, app: string) {
     const query = data.query;
     const b = transformExtent(
-      this.hsMapService.getMap()
+      this.hsMapService
+        .getMap(app)
         .getView()
-        .calculateExtent(this.hsMapService.getMap().getSize()),
-      this.hsMapService.getMap().getView().getProjection(),
+        .calculateExtent(this.hsMapService.getMap(app).getSize()),
+      this.hsMapService.getMap(app).getView().getProjection(),
       'EPSG:4326'
     );
     const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';

@@ -169,7 +169,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(response);
       this.data.map_projection = this.hsMapService
-        .getMap()
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -191,14 +191,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       //   this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
       // }
       if (
-        this.hsAddDataCommonService.currentProjectionSupported(this.data.srss)
+        this.hsAddDataCommonService.currentProjectionSupported(
+          this.data.srss,
+          app
+        )
       ) {
         this.data.srs = this.data.srss.includes(
-          this.hsMapService.getMap().getView().getProjection().getCode()
+          this.hsMapService.getMap(app).getView().getProjection().getCode()
         )
-          ? this.hsMapService.getMap().getView().getProjection().getCode()
+          ? this.hsMapService.getMap(app).getView().getProjection().getCode()
           : this.hsMapService
-              .getMap()
+              .getMap(app)
               .getView()
               .getProjection()
               .getCode()
@@ -209,7 +212,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.data.srs = this.data.srss[0];
       }
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs
+        this.data.srs,
+        app
       );
       this.data.layers = this.filterCapabilitiesLayers(caps.Capability.Layer);
       //Make sure every service has a title to be displayed in table
@@ -227,9 +231,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.hsAddDataUrlService.searchForChecked(this.data.layers);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
-        this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs);
+        this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs, app);
       } else {
-        this.data.extent = this.calcAllLayersExtent(this.data.layers);
+        this.data.extent = this.calcAllLayersExtent(this.data.layers, app);
       }
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
@@ -259,12 +263,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcAllLayersExtent(serviceLayers: any): any {
+  calcAllLayersExtent(serviceLayers: any, app: string): any {
     if (!Array.isArray(serviceLayers)) {
-      return this.getLayerBBox(serviceLayers, this.data.srs);
+      return this.getLayerBBox(serviceLayers, this.data.srs, app);
     }
     return serviceLayers
-      .map((lyr) => this.getLayerBBox(lyr, this.data.srs))
+      .map((lyr) => this.getLayerBBox(lyr, this.data.srs, app))
       .reduce((acc, curr) => {
         //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
         const [west, south, east, north] = curr;
@@ -288,7 +292,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       });
   }
 
-  getLayerBBox(serviceLayer: any, crs: any): any {
+  getLayerBBox(serviceLayer: any, crs: any, app: string): any {
     let boundingbox = serviceLayer.BoundingBox;
     let preferred;
     if (Array.isArray(serviceLayer.BoundingBox)) {
@@ -303,7 +307,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = transformExtent(
           serviceLayer.EX_GeographicBoundingBox,
           'EPSG:4326',
-          this.hsMapService.getMap().getView().getProjection()
+          this.hsMapService.getMap(app).getView().getProjection()
         );
       }
     } else {
@@ -462,15 +466,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       name: options.layerName,
       source,
       minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MinScaleDenominator
+        layer.MinScaleDenominator,
+        app
       ),
       maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MaxScaleDenominatorview
+        layer.MaxScaleDenominatorview,
+        app
       ),
       removable: true,
       abstract: layer.Abstract,
       metadata,
-      extent: this.getLayerBBox(layer, options.crs),
+      extent: this.getLayerBBox(layer, options.crs, app),
       path: options.path,
       dimensions: dimensions,
       legends: legends,
@@ -488,9 +494,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and add them to the map
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsAddDataService.addLayer(l, this.data.add_under);
+      this.hsAddDataService.addLayer(l, app, this.data.add_under);
     }
   }
 

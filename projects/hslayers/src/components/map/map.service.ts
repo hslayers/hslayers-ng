@@ -68,13 +68,13 @@ const DEFAULT = 'default';
   providedIn: 'root',
 })
 export class HsMapService {
-  apps: {[id: string]: {map: Map; mapElement?: any}} = {
+  apps: {[id: string]: {map: Map; mapElement?: any; renderer?: Renderer2}} = {
     default: {
       map: undefined,
       mapElement: undefined,
+      renderer: undefined
     },
   };
-  private renderer: Renderer2;
   visibleLayersInUrl;
   //timer variable for extent change event
   timer = null;
@@ -85,22 +85,7 @@ export class HsMapService {
    * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    */
   duration = 400;
-  defaultMobileControls = controlDefaults({
-    zoom: false,
-  });
-  defaultDesktopControls = controlDefaults({
-    attributionOptions: {
-      collapsible: true,
-      collapsed: true,
-    },
-  });
-  /**
-   * @public
-   * @type {object}
-   * @description Set of default map controls used in HSLayers, may be loaded from config file
-   */
 
-  controls = this.defaultDesktopControls;
   /**
    * @public
    * @type {object}
@@ -130,13 +115,8 @@ export class HsMapService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
-    rendererFactory: RendererFactory2
-  ) {
-    this.renderer = rendererFactory.createRenderer(null, null);
-
-    this.defaultDesktopControls.removeAt(1);
-    this.defaultDesktopControls.push(new ScaleLine());
-  }
+    private rendererFactory: RendererFactory2
+  ) {}
   /**
    * Returns the associated layer for feature.
    * This is used in query-vector.service to get the layer of clicked
@@ -260,8 +240,9 @@ export class HsMapService {
     }
   }
 
-  createDefaultViewButton(app: string) {
-    const button = this.renderer.createElement('button');
+  createDefaultViewButton(app: string, defaultDesktopControls) {
+    const rendered = this.apps[app].renderer;
+    const button = rendered.createElement('button');
     button.addEventListener(
       'click',
       (e) => {
@@ -270,27 +251,27 @@ export class HsMapService {
       false
     );
 
-    const icon = this.renderer.createElement('i');
-    this.renderer.addClass(icon, 'glyphicon');
-    this.renderer.addClass(icon, 'icon-globe');
+    const icon = rendered.createElement('i');
+    rendered.addClass(icon, 'glyphicon');
+    rendered.addClass(icon, 'icon-globe');
 
-    this.element = this.renderer.createElement('div');
-    this.renderer.addClass(this.element, 'hs-defaultView');
-    this.renderer.addClass(this.element, 'ol-unselectable');
-    this.renderer.addClass(this.element, 'ol-control');
+    this.element = rendered.createElement('div');
+    rendered.addClass(this.element, 'hs-defaultView');
+    rendered.addClass(this.element, 'ol-unselectable');
+    rendered.addClass(this.element, 'ol-control');
 
-    this.renderer.setAttribute(
+    rendered.setAttribute(
       this.element,
       'title',
       this.HsLanguageService.getTranslation('MAP.zoomToInitialWindow')
     );
 
-    this.renderer.appendChild(button, icon);
-    this.renderer.appendChild(this.element, button);
+    rendered.appendChild(button, icon);
+    rendered.appendChild(this.element, button);
     const defaultViewControl = new Control({
       element: this.element,
     });
-    this.defaultDesktopControls.push(defaultViewControl);
+    defaultDesktopControls.push(defaultViewControl);
   }
 
   setDefaultView = function (e, app) {
@@ -328,14 +309,38 @@ export class HsMapService {
       map = this.getMap(app);
       map.setTarget(mapElement);
     } else {
+      const defaultMobileControls = controlDefaults({
+        zoom: false,
+      });
+      const defaultDesktopControls = controlDefaults({
+        attributionOptions: {
+          collapsible: true,
+          collapsed: true,
+        },
+      });
+      /**
+       * @public
+       * @type {object}
+       * @description Set of default map controls used in HSLayers, may be loaded from config file
+       */
+
+      defaultDesktopControls.removeAt(1);
+      defaultDesktopControls.push(new ScaleLine());
+
+      const controls = defaultDesktopControls;
+
       map = new Map({
-        controls: this.controls,
+        controls,
         target: mapElement,
         interactions: [],
         view:
           this.HsConfig.get(app).default_view ?? this.createPlaceholderView(),
       });
-      this.apps[app] = {mapElement, map};
+      this.apps[app] = {
+        mapElement,
+        map,
+        renderer: this.rendererFactory.createRenderer(null, null),
+      };
       const view = map.getView();
       this.originalView = {
         center: view.getCenter(),
@@ -353,17 +358,17 @@ export class HsMapService {
       map.on('moveend', (e) => {
         this.extentChanged(e, app);
       });
-    }
 
-    setTimeout(() => {
-      //make sure translations are loaded
-      if (
-        this.HsConfig.get(app).componentsEnabled?.defaultViewButton &&
-        this.HsConfig.get(app).componentsEnabled?.guiOverlay != false
-      ) {
-        this.createDefaultViewButton(app);
-      }
-    }, 500);
+      setTimeout(() => {
+        //make sure translations are loaded
+        if (
+          this.HsConfig.get(app).componentsEnabled?.defaultViewButton &&
+          this.HsConfig.get(app).componentsEnabled?.guiOverlay != false
+        ) {
+          this.createDefaultViewButton(app, defaultDesktopControls);
+        }
+      }, 500);
+    }
 
     const interactions = {
       'DoubleClickZoom': new DoubleClickZoom({
@@ -416,6 +421,7 @@ export class HsMapService {
       this.HsConfig.get(app).mapInteractionsEnabled != false
     ) {
       map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
+        const renderer = this.apps[app].renderer;
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
@@ -426,24 +432,24 @@ export class HsMapService {
           //TODO: change the name of platform modifier key dynamically based on OS
           const platformModifierKey = 'CTRL/META';
           //Following styles would be better written as ng-styles...
-          const html = this.renderer.createElement('div');
-          this.renderer.setAttribute(
+          const html = renderer.createElement('div');
+          renderer.setAttribute(
             html,
             'class',
             'alert alert-info mt-1 hs-zoom-info-dialog'
           );
-          this.renderer.setAttribute(
+          renderer.setAttribute(
             html,
             'style',
             `position: absolute; right:15px; top:0.6em;z-index:101`
           );
-          const text = this.renderer.createText(
+          const text = renderer.createText(
             `${this.HsLanguageService.getTranslation('MAP.zoomKeyModifier', {
               platformModifierKey: platformModifierKey,
             })}`
           );
-          this.renderer.appendChild(html, text);
-          this.renderer.appendChild(
+          renderer.appendChild(html, text);
+          renderer.appendChild(
             this.HsLayoutService.get(app).contentWrapper.querySelector(
               '.hs-map-space'
             ),
@@ -484,7 +490,7 @@ export class HsMapService {
     this.HsEventBusService.olMapLoads.next({map, app});
   }
 
-  loaded(app?: string) {
+  loaded(app: string) {
     return new Promise<Map>((resolve, reject) => {
       if (this.getMap(app ?? DEFAULT)) {
         resolve(this.getMap(app ?? DEFAULT));
@@ -645,7 +651,7 @@ export class HsMapService {
    * Function to add layer to map which also checks if
    * the layer is not already present and also proxifies the layer if needed.
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
-   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.getMap().addLayer.
+   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.getMap(app).addLayer.
    *
    * @param lyr Layer to add
    * @param duplicateHandling How to handle duplicate layers (same class and title)
@@ -958,7 +964,7 @@ export class HsMapService {
    * @description Get ol.Map object from service
    * @returns ol.Map
    */
-  getMap(app?: string) {
+  getMap(app: string) {
     return this.apps[app ?? DEFAULT]?.map;
   }
 

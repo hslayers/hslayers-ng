@@ -158,7 +158,7 @@ export class HsSensorsService {
       unit,
       this.HsSensorsUnitDialogService.currentInterval
     ).then((_) => this.HsSensorsUnitDialogService.createChart(unit));
-    this.HsMapService.getMap()
+    this.HsMapService.getMap(app)
       .getView()
       .fit(unit.feature.getGeometry(), {maxZoom: 16});
   }
@@ -195,7 +195,7 @@ export class HsSensorsService {
       },
       source: new VectorSource({}),
     });
-    this.HsMapService.getMap().addLayer(this.layer);
+    this.HsMapService.getMap(app).addLayer(this.layer);
   }
 
   /**

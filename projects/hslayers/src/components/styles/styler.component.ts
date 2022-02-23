@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 import VectorLayer from 'ol/layer/Vector';
@@ -26,7 +26,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
   layerTitle: string;
   private ngUnsubscribe = new Subject<void>();
@@ -59,6 +59,9 @@ export class HsStylerComponent
           this.hsStylerService.fill(this.hsStylerService.layer);
         }
       });
+  }
+  ngOnInit(): void {
+    this.hsStylerService.init(this.data.app);
   }
 
   ngOnDestroy(): void {

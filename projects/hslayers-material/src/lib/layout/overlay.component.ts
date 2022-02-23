@@ -66,22 +66,22 @@ export class HsMatOverlayComponent implements OnInit {
   }
 
   canZoomOut(): boolean {
-    const mapView = this.HsMapService.getMap()?.getView();
+    const mapView = this.HsMapService.getMap(this.app)?.getView();
     return mapView?.getZoom() > mapView?.getMinZoom();
   }
 
   canZoomIn(): boolean {
-    const mapView = this.HsMapService.getMap()?.getView();
+    const mapView = this.HsMapService.getMap(this.app)?.getView();
     return mapView?.getZoom() < mapView?.getMaxZoom();
   }
 
   adjustZoom(delta: number): void {
-    const mapView = this.HsMapService.getMap()?.getView();
+    const mapView = this.HsMapService.getMap(this.app)?.getView();
     mapView.animate({zoom: mapView.getZoom() + delta, duration: 300});
   }
 
   defaultView(): void {
-    this.HsMapService.getMap()
+    this.HsMapService.getMap(this.app)
       ?.getView()
       .animate({
         center: this.HsConfig.get(app).default_view.getCenter(),
@@ -103,10 +103,10 @@ export class HsMatOverlayComponent implements OnInit {
       }
     });
 
-    this.HsMapService.getMap()
+    this.HsMapService.getMap(this.app)
       ?.getView()
       .fit(extent, {
-        size: this.HsMapService.getMap().getSize(),
+        size: this.HsMapService.getMap(this.app).getSize(),
         padding: [50, 50, 50, 50],
         duration: 300,
       });

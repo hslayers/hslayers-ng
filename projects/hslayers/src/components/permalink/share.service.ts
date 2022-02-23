@@ -69,7 +69,7 @@ export class HsShareService {
               status_url,
               JSON.stringify({
                 data: this.HsSaveMapService.map2json(
-                  this.HsMapService.getMap(),
+                  this.HsMapService.getMap(app),
                   {layers: layers},
                   {},
                   {}

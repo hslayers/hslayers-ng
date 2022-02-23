@@ -43,7 +43,7 @@ export class HsFeatureTableComponent
     });
   }
   ngOnInit(): void {
-    this.HsMapService.loaded().then(() => {
+    this.HsMapService.loaded(this.data.app).then(() => {
       for (const layer of this.HsConfig.get(this.data.app)
         .layersInFeatureTable || []) {
         this.addLayerToTable(layer);

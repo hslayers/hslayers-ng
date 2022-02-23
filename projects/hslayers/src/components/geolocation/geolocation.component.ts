@@ -19,6 +19,7 @@ export class HsGeolocationComponent
   }
   ngOnInit(): void {
     this.collapsed = true;
+    this.HsGeolocationService.init(this.data.app);
   }
   isVisible(): boolean {
     return (

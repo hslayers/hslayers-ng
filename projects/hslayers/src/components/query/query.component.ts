@@ -24,7 +24,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
@@ -53,9 +54,6 @@ export class HsQueryComponent
         hsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
       icon: 'icon-info-sign',
     });
-    this.hsMapService.loaded().then((map) => {
-      map.addOverlay(this.popup);
-    });
 
     this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
@@ -73,6 +71,9 @@ export class HsQueryComponent
       });
   }
   async ngOnInit() {
+    this.hsMapService.loaded(this.data.app).then((map) => {
+      map.addOverlay(this.popup);
+    });
     await this.hsQueryBaseService.init(this.data.app);
     //add current panel queryable - activate/deactivate
     this.hsEventBusService.mainPanelChanges

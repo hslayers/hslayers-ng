@@ -42,7 +42,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     }
     const layer = this.olLayer();
     layer.setMinResolution(
-      this.hsLayerUtilsService.calculateResolutionFromScale(newValue)
+      this.hsLayerUtilsService.calculateResolutionFromScale(
+        newValue,
+        this.data.app
+      )
     );
   }
 
@@ -64,7 +67,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     }
     const layer = this.olLayer();
     layer.setMaxResolution(
-      this.hsLayerUtilsService.calculateResolutionFromScale(newValue)
+      this.hsLayerUtilsService.calculateResolutionFromScale(
+        newValue,
+        this.data.app
+      )
     );
   }
 
@@ -77,7 +83,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   resolutionToScale(resolution) {
-    const view = this.hsMapService.getMap().getView();
+    const view = this.hsMapService.getMap(this.data.app).getView();
     const units = view.getProjection().getUnits();
     const dpi = 25.4 / 0.28;
     const mpu = METERS_PER_UNIT[units];

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -18,7 +18,8 @@ import {getTitle} from '../../../common/layer-extensions';
   selector: 'hs-query-feature-list',
   templateUrl: './feature-list.component.html',
 })
-export class HsQueryFeatureListComponent {
+export class HsQueryFeatureListComponent implements OnInit {
+  @Input() app = 'default';
   exportMenuVisible;
   selectedFeaturesVisible = true;
   exportFormats: exportFormats[] = [
@@ -52,6 +53,10 @@ export class HsQueryFeatureListComponent {
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsQueryBaseService: HsQueryBaseService
   ) {}
+
+  ngOnInit(): void {
+    this.hsFeatureCommonService.init(this.app);
+  }
 
   olFeatureArray(): Feature<Geometry>[] {
     return this.hsQueryBaseService.data.features

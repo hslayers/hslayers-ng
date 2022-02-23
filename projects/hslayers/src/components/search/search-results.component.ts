@@ -47,7 +47,7 @@ export class HsSearchResultsComponent implements OnDestroy {
   searchResultsReceived(): void {
     this.data = this.hsSearchService.data;
     this.searchResultsVisible = true;
-    this.hsSearchService.showResultsLayer();
+    this.hsSearchService.showResultsLayer(this.data.app);
   }
   clear(): void {
     this.searchResultsVisible = false;
@@ -102,6 +102,6 @@ export class HsSearchResultsComponent implements OnDestroy {
     ) {
       zoom_level = this.fcode_zoom_map[result.fcode];
     }
-    this.hsSearchService.selectResult(result, zoom_level);
+    this.hsSearchService.selectResult(result, zoom_level, this.data.app);
   }
 }

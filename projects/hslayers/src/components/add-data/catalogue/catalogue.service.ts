@@ -131,7 +131,7 @@ export class HsAddDataCatalogueService {
 
   init(app: string) {
     if (this.dataSourceExistsAndEmpty() && this.panelVisible(app)) {
-      this.queryCatalogs();
+      this.queryCatalogs(app);
       // this.hsMickaFilterService.fillCodesets();
     }
   }
@@ -153,7 +153,7 @@ export class HsAddDataCatalogueService {
     );
     this.resetList();
 
-    this.queryCatalogs();
+    this.queryCatalogs(app);
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility(app);
   }
@@ -162,7 +162,7 @@ export class HsAddDataCatalogueService {
    * Queries all configured catalogs for datasources (layers)
    * @param suspendLimitCalculation -
    */
-  queryCatalogs(suspendLimitCalculation?: boolean): void {
+  queryCatalogs(app: string, suspendLimitCalculation?: boolean): void {
     if (this.endpointsWithDatasources.length > 0) {
       if (this.catalogQuery) {
         this.catalogQuery.unsubscribe();
@@ -170,7 +170,7 @@ export class HsAddDataCatalogueService {
       }
       this.clearLoadedData();
 
-      this.hsMapService.loaded().then(() => {
+      this.hsMapService.loaded(app).then(() => {
         this.dataLoading = true;
         this.hsAddDataCatalogueMapService.clearExtentLayer();
         const observables = [];
@@ -178,14 +178,14 @@ export class HsAddDataCatalogueService {
         //TODO Mark non functional endpoint
         for (const endpoint of this.endpointsWithDatasources) {
           if (!this.data.onlyMine || endpoint.type == 'layman') {
-            const promise = this.queryCatalog(endpoint);
+            const promise = this.queryCatalog(endpoint, app);
             observables.push(promise);
           }
         }
         this.catalogQuery = forkJoin(observables).subscribe(() => {
           suspendLimitCalculation
             ? this.createLayerList()
-            : this.calculateEndpointLimits();
+            : this.calculateEndpointLimits(app);
         });
       });
     }
@@ -194,7 +194,7 @@ export class HsAddDataCatalogueService {
    * Calculates each endpoint layer request limit, based on the matched layers ratio
    * from all endpoint matched layers
    */
-  calculateEndpointLimits(): void {
+  calculateEndpointLimits(app: string): void {
     this.matchedRecords = 0;
     this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
       (ep) => ep.datasourcePaging.matched != 0
@@ -219,7 +219,7 @@ export class HsAddDataCatalogueService {
     });
     this.recordsPerPage = sumLimits;
     this.listNext = this.recordsPerPage;
-    this.queryCatalogs(true);
+    this.queryCatalogs(app, true);
   }
 
   createLayerList(): void {
@@ -263,7 +263,7 @@ export class HsAddDataCatalogueService {
     this.catalogEntries = this.catalogEntries.concat(filteredLayers);
   }
 
-  getNextRecords(): void {
+  getNextRecords(app: string): void {
     this.listStart += this.recordsPerPage;
     this.listNext += this.recordsPerPage;
     if (this.listNext > this.matchedRecords) {
@@ -272,10 +272,10 @@ export class HsAddDataCatalogueService {
     this.endpointsWithDatasources.forEach(
       (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit)
     );
-    this.queryCatalogs(true);
+    this.queryCatalogs(app, true);
   }
 
-  getPreviousRecords(): void {
+  getPreviousRecords(app: string): void {
     if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
@@ -290,12 +290,12 @@ export class HsAddDataCatalogueService {
           (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
       );
     }
-    this.queryCatalogs(true);
+    this.queryCatalogs(app, true);
   }
 
-  changeRecordsPerPage(perPage: number): void {
+  changeRecordsPerPage(perPage: number, app: string): void {
     this.resetList();
-    this.queryCatalogs();
+    this.queryCatalogs(app);
   }
 
   clearLoadedData(): void {
@@ -310,7 +310,7 @@ export class HsAddDataCatalogueService {
    * Use all query params (search text, bbox, params.., sorting, start)
    * @param catalog - Configuration of selected datasource (from app config)
    */
-  queryCatalog(catalog: HsEndpoint): any {
+  queryCatalog(catalog: HsEndpoint, app: string): any {
     this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {
@@ -320,12 +320,14 @@ export class HsAddDataCatalogueService {
           this.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature),
-          this.data.textField
+          this.data.textField,
+          app
         );
         return query;
       case 'layman':
         query = this.hsLaymanBrowserService.queryCatalog(
           catalog,
+          app,
           this.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature)
@@ -445,9 +447,10 @@ export class HsAddDataCatalogueService {
               extractStyles: whatToAdd.extractStyles,
               workspace: whatToAdd.workspace,
               style: whatToAdd.style,
-            }
+            },
+            app
           );
-          this.hsAddDataVectorService.fitExtent(layer);
+          this.hsAddDataVectorService.fitExtent(layer, app);
           this.datasetSelect('catalogue', app);
         } else {
           //Layman layers without write access
@@ -471,9 +474,10 @@ export class HsAddDataCatalogueService {
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles}
+        {extractStyles: whatToAdd.extractStyles},
+        app
       );
-      this.hsAddDataVectorService.fitExtent(layer);
+      this.hsAddDataVectorService.fitExtent(layer, app);
     } else {
       this.hsLayoutService.setMainPanel('layermanager', app);
     }

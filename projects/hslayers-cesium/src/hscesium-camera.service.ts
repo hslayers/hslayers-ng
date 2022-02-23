@@ -250,7 +250,7 @@ export class HsCesiumCameraService {
 
   setExtentEqualToOlExtent(view) {
     try {
-      const ol_ext = view.calculateExtent(this.HsMapService.getMap().getSize());
+      const ol_ext = view.calculateExtent(this.HsMapService.getMap(app).getSize());
       const trans_ext = transformExtent(
         ol_ext,
         view.getProjection(),
@@ -321,7 +321,7 @@ export class HsCesiumCameraService {
   calcDistanceForResolution(resolution, latitude) {
     const canvas = this.viewer.scene.canvas;
     const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
-    const metersPerUnit = this.HsMapService.getMap()
+    const metersPerUnit = this.HsMapService.getMap(app)
       .getView()
       .getProjection()
       .getMetersPerUnit();

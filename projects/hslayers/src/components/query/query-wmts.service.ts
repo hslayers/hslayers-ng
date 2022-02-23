@@ -15,7 +15,7 @@ export class HsQueryWmtsService {
     private hsUtilsService: HsUtilsService
   ) {}
 
-  async parseRequestUrl(layer, coordinate) {
+  async parseRequestUrl(layer, coordinate, app: string) {
     const source = layer.getSource();
 
     coordinate = transform(
@@ -27,7 +27,7 @@ export class HsQueryWmtsService {
     const tileGrid = source.getTileGrid();
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
-      this.hsMapService.getMap().getView().getResolution()
+      this.hsMapService.getMap(app).getView().getResolution()
     );
 
     const tileExtent = tileGrid.getTileCoordExtent(tileCoord);

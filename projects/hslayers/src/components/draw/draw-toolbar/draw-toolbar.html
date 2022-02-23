@@ -98,7 +98,7 @@
                         <label class="ms-1 cursor-pointer" for="draw-boxSelection"> {{'DRAW.boxSelection' |
                             translate}}</label>
                         <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-                            (change)="HsDrawService.toggleBoxSelection(); selectionTypeDropdown.close()"
+                            (change)="HsDrawService.toggleBoxSelection(data.app); selectionTypeDropdown.close()"
                             id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
                     </div>
                     <button class="btn btn-primary btn-sm hs-draw-selectAll w-100"

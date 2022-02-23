@@ -16,7 +16,7 @@
         mw-100
       "
       aria-haspopup="true"
-      (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
+      (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers(app) "
       [attr.aria-expanded]="layersExpanded"
     >
       <div class="text-truncate" *ngIf="selectedwrapper !== undefined">

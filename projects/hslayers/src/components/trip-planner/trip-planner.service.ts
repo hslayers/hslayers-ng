@@ -112,23 +112,24 @@ export class HsTripPlannerService {
     public HsLanguageService: HsLanguageService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayoutService: HsLayoutService
-  ) {
-    this.HsMapService.loaded().then((map) => {
-      map.addInteraction(this.modify);
-    });
+  ) {}
+
+  async init(app: string) {
+    await this.HsMapService.loaded(app);
+    this.HsMapService.getMap(app).addInteraction(this.modify);
     this.HsEventBusService.mapClicked.subscribe(({coordinates, app}) => {
       if (this.HsLayoutService.get(app).mainpanel != 'tripPlanner') {
         return;
       }
       if (!this.waypointLayer) {
-        this.createWaypointLayer();
+        this.createWaypointLayer(app);
       }
       if (!this.routeLayer) {
-        this.createRouteLayer();
+        this.createRouteLayer(app);
       }
       //Don't add waypoints when drawing and measuring
       if (
-        this.HsMapService.getMap()
+        this.HsMapService.getMap(app)
           .getInteractions()
           .getArray()
           .find((i) => i.getActive() && this.HsUtilsService.instOf(i, Draw))
@@ -144,8 +145,8 @@ export class HsTripPlannerService {
     });
   }
 
-  async fillVectorLayers(): Promise<void> {
-    this.HsMapService.loaded().then((map) => {
+  async fillVectorLayers(app): Promise<void> {
+    this.HsMapService.loaded(app).then((map) => {
       this.vectorLayers = [
         {
           layer: null,
@@ -174,7 +175,7 @@ export class HsTripPlannerService {
     }
   }
 
-  createWaypointLayer(): void {
+  createWaypointLayer(app: string): void {
     this.waypointSource = new VectorSource();
     this.waypointLayer = new VectorLayer({
       source: this.waypointSource,
@@ -184,10 +185,10 @@ export class HsTripPlannerService {
       this.waypointLayer,
       this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints')
     );
-    this.HsMapService.getMap().addLayer(this.waypointLayer);
+    this.HsMapService.getMap(app).addLayer(this.waypointLayer);
   }
 
-  createRouteLayer(): void {
+  createRouteLayer(app: string): void {
     this.routeSource = new VectorSource();
     this.routeLayer = new VectorLayer({
       source: this.routeSource,
@@ -197,7 +198,7 @@ export class HsTripPlannerService {
       this.routeLayer,
       this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute')
     );
-    this.HsMapService.getMap().addLayer(this.routeLayer);
+    this.HsMapService.getMap(app).addLayer(this.routeLayer);
   }
 
   /**

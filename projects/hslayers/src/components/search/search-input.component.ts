@@ -48,7 +48,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
    * Handler of search input, request search service and display results div
    */
   async queryChanged(): Promise<void> {
-    await this.hsSearchService.hsMapService.loaded();
+    await this.hsSearchService.hsMapService.loaded(this.app);
     if (this.query.length == 0) {
       this.clear();
       return;
@@ -61,7 +61,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   clear(): void {
     this.query = '';
     this.clearVisible = false;
-    this.hsSearchService.cleanResults();
+    this.hsSearchService.cleanResults(this.app);
     this.hsEventBusService.clearSearchResults.next();
   }
   toggleSearchInput(): void {

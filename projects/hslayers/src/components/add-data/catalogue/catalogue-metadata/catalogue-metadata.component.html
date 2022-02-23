@@ -11,7 +11,7 @@
                 <ng-container *ngFor="let key of selectedLayerKeys">
                     <dl *ngIf="key!=='feature'">
                         <dt>{{key}}</dt>
-                        <hs-widgets-recursive-dd [value]="selectedLayer[key]"></hs-widgets-recursive-dd>
+                        <hs-widgets-recursive-dd [value]="selectedLayer[key]" [app]="data.app"></hs-widgets-recursive-dd>
                     </dl>
                 </ng-container>
             </div>
@@ -24,7 +24,7 @@
                 </a>
                 <button type="button" class="btn btn-success"
                     [hidden]="!hsAddDataCatalogueMapService.isZoomable(selectedLayer)"
-                    (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' |
+                    (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox, data.app)">{{'COMMON.zoomTo' |
                     translate}}</button>
                 <div *ngIf="selectedDS.type === 'layman'">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"

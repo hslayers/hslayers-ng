@@ -12,8 +12,10 @@ export class HsVectorUrlParserService {
     public hsMapService: HsMapService,
     public hsShareUrlService: HsShareUrlService,
     public hsAddDataVectorService: HsAddDataVectorService
-  ) {
-    this.hsMapService.loaded().then((map) => {
+  ) {}
+
+  init(app: string) {
+    this.hsMapService.loaded(app).then((map) => {
       this.checkUrlParamsAndAdd();
     });
   }

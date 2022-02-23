@@ -96,7 +96,7 @@ export class HsAddDataOwsService {
         }
         if (this.hsUrlArcGisService.isImageService()) {
           const layers = this.hsUrlArcGisService.getLayers(app);
-          this.hsUrlArcGisService.addLayers(layers);
+          this.hsUrlArcGisService.addLayers(layers, app);
         }
       }
 

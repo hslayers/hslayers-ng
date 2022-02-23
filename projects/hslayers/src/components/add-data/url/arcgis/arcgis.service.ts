@@ -68,7 +68,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       return;
     }
     try {
-      await this.createLayer(wrapper.response);
+      await this.createLayer(wrapper.response, app);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         return this.getLayers(app);
@@ -81,11 +81,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Parse information received in Arcgis getCapabilities response
    * @param response - getCapabilities response
    */
-  async createLayer(response): Promise<void> {
+  async createLayer(response, app: string): Promise<void> {
     try {
       const caps = response;
       this.data.map_projection = this.hsMapService
-        .getMap()
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()
@@ -120,7 +120,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       })();
       this.data.extent = caps.fullExtent;
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs
+        this.data.srs,
+        app
       );
       this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'PNG32',
@@ -273,9 +274,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and add them to the map
    * @param layers - Layers selected
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.getMap().addLayer(l);
+      this.hsMapService.getMap(app).addLayer(l);
     }
   }
 
@@ -308,7 +309,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service, app);
       const layers = this.getLayers(app);
-      this.addLayers(layers);
+      this.addLayers(layers, app);
     }
   }
   /**

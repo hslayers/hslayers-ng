@@ -33,7 +33,7 @@ export class HsAddDataVectorUrlComponent {
    * Handler for adding non-wms service, file in template.
    */
   async add(): Promise<void> {
-    await this.hsAddDataVectorService.addNewLayer(this.data);
+    await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
     this.hsLayoutService.setMainPanel('layermanager', this.app);
     this.setDataToDefault();
   }

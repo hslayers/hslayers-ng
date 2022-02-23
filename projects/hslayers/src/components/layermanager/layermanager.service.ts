@@ -796,7 +796,7 @@ export class HsLayerManagerService {
    */
   removeAllLayers(app: string): void {
     const to_be_removed = [];
-    this.HsMapService.getMap()
+    this.HsMapService.getMap(app)
       .getLayers()
       .forEach((lyr: Layer<Source>) => {
         if (getRemovable(lyr) == true) {
@@ -811,7 +811,7 @@ export class HsLayerManagerService {
         }
       });
     while (to_be_removed.length > 0) {
-      this.HsMapService.getMap().removeLayer(to_be_removed.shift());
+      this.HsMapService.getMap(app).removeLayer(to_be_removed.shift());
     }
     this.HsDrawService.addedLayersRemoved = true;
     this.HsDrawService.fillDrawableLayers(app);
@@ -985,7 +985,7 @@ export class HsLayerManagerService {
     app: string
   ): void {
     if (!getCachedCapabilities(layer.layer)) {
-      this.HsLayerManagerMetadata.fillMetadata(layer);
+      this.HsLayerManagerMetadata.fillMetadata(layer, app);
     }
 
     if (toToggle == 'sublayers' && layer.hasSublayers != true) {
@@ -1327,7 +1327,7 @@ export class HsLayerManagerService {
           //Object.assign will ignore it if origLayers is undefined.
           LAYERS: getOrigLayers(this.apps[app].currentLayer.layer),
         });
-        this.HsMapService.getMap().addLayer(layerCopy[0]);
+        this.HsMapService.getMap(app).addLayer(layerCopy[0]);
       }
     }
   }

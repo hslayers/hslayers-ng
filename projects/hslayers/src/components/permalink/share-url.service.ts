@@ -62,7 +62,7 @@ export class HsShareUrlService {
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(app: string): void {
-    const view = this.HsMapService.getMap().getView();
+    const view = this.HsMapService.getMap(app).getView();
     this.id = this.HsUtilsService.generateUuid();
 
     const externalLayers = this.HsMapService.getLayersArray().filter(
@@ -310,7 +310,7 @@ export class HsShareUrlService {
    * @param map Openlayers map
    */
   async init(app: string): Promise<void> {
-    await this.HsMapService.loaded();
+    await this.HsMapService.loaded(app);
     const map = this.HsMapService.getMap(app);
     if (this.url_generation) {
       let timer = null;

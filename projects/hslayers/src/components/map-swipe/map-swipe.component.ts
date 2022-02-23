@@ -85,7 +85,7 @@ export class HsMapSwipeComponent
    * Reset swipe slider position to default
    */
   resetSwipePos(): void {
-    this.hsMapSwipeService.swipeCtrl.set('position', 0.5);
+    this.hsMapSwipeService.apps[this.data.app].swipeCtrl.set('position', 0.5);
   }
 
   ngOnDestroy(): void {

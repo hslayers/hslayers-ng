@@ -234,7 +234,7 @@ export class HsCompositionsService {
    * Load layers received through permalink to map
    */
   async parsePermalinkLayers(app: string): Promise<void> {
-    await this.hsMapService.loaded();
+    await this.hsMapService.loaded(app);
     const permalink = this.hsPermalinkUrlService.getParamValue(
       HS_PRMS.permalink
     );
@@ -252,7 +252,7 @@ export class HsCompositionsService {
         //Some old structure, where layers are stored in data
         data.data.layers = response.data;
       }
-      this.hsCompositionsParserService.removeCompositionLayers();
+      this.hsCompositionsParserService.removeCompositionLayers(app);
       const layers = await this.hsCompositionsParserService.jsonToLayers(
         data,
         app
@@ -274,7 +274,7 @@ export class HsCompositionsService {
       localStorage.getItem('hs_layers') &&
       (<any>window).permalinkApp != true
     ) {
-      await this.hsMapService.loaded();
+      await this.hsMapService.loaded(app);
       const data = localStorage.getItem('hs_layers');
       if (!data) {
         return;

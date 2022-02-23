@@ -73,11 +73,10 @@ export class HsStylerService {
     public sanitizer: DomSanitizer,
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService
-  ) {
-    this.hsMapService.loaded().then(() => this.init());
-  }
+  ) {}
 
-  async init(): Promise<void> {
+  async init(app: string): Promise<void> {
+    await this.hsMapService.loaded(app);
     for (const layer of this.hsMapService
       .getLayersArray()
       .filter((layer) => this.hsLayerUtilsService.isLayerVectorLayer(layer))) {

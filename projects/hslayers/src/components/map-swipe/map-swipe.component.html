@@ -23,7 +23,7 @@
     <div class="btn-group align-items-center d-flex justify-content-between" style="margin-bottom: 1rem;"
       data-toggle="buttons">
       <button class="btn btn-sm btn-secondary text-truncate" style="max-width: 30%;" type="button"
-        (click)="hsMapSwipeService.setOrientation()" [disabled]="!hsMapSwipeService.swipeControlActive">
+        (click)="hsMapSwipeService.setOrientation(data.app)" [disabled]="!hsMapSwipeService.swipeControlActive">
         {{getOrientationButtonString() | translate}}
       </button>
       <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
@@ -35,7 +35,7 @@
         {{getEnabledButtonString() | translate}}
       </button>
     </div>
-    <div *ngIf="hsMapSwipeService.layersAvailable() && hsMapSwipeService.swipeControlActive" class="pt-1">
+    <div *ngIf="hsMapSwipeService.layersAvailable(data.app) && hsMapSwipeService.swipeControlActive" class="pt-1">
       <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
         <tbody>
           <tr style="text-align: center;">

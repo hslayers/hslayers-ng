@@ -95,7 +95,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         const collection = this.getLayers(app, true, style);
-        this.zoomToBBox(bbox);
+        this.zoomToBBox(bbox, app);
         return collection;
       }
     } catch (e) {
@@ -310,7 +310,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.getLayersRecursively(layer, {style}, collection);
+      this.getLayersRecursively(layer, {style}, collection, app);
     }
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
@@ -328,23 +328,35 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   getLayersRecursively(
     layer,
     options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
+    app: string
   ): void {
     if (!this.data.add_all || layer.checked) {
-      const newLayer = this.getLayer(layer, {
-        layerName: layer.Name,
-        folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-        crs: this.data.srs,
-        sld: options.style?.includes('StyledLayerDescriptor')
-          ? options.style
-          : undefined,
-        qml: options.style?.includes('qgis') ? options.style : undefined,
-      });
+      const newLayer = this.getLayer(
+        layer,
+        {
+          layerName: layer.Name,
+          folder: this.hsUtilsService.undefineEmptyString(
+            this.data.folder_name
+          ),
+          crs: this.data.srs,
+          sld: options.style?.includes('StyledLayerDescriptor')
+            ? options.style
+            : undefined,
+          qml: options.style?.includes('qgis') ? options.style : undefined,
+        },
+        app
+      );
       collection.push(newLayer);
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.getLayersRecursively(sublayer, {style: options.style}, collection);
+        this.getLayersRecursively(
+          sublayer,
+          {style: options.style},
+          collection,
+          app
+        );
       }
     }
   }
@@ -356,7 +368,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param folder - name
    * @param srs - of the layer
    */
-  getLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: addLayerOptions, app: string): Layer<Source> {
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -374,7 +386,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         provided_url:
           this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
         layer_name: options.layerName,
-        map_projection: this.hsMapService.getMap().getView().getProjection(),
+        map_projection: this.hsMapService.getMap(app).getView().getProjection(),
       }),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
@@ -387,12 +399,12 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.getMap().addLayer(l);
+      this.hsMapService.getMap(app).addLayer(l);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);
   }
 
-  private zoomToBBox(bbox: any) {
+  private zoomToBBox(bbox: any, app: string) {
     if (!bbox) {
       return;
     }
@@ -406,7 +418,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
     if (!this.data.map_projection) {
       this.data.map_projection = this.hsMapService
-        .getMap()
+        .getMap(app)
         .getView()
         .getProjection()
         .getCode()

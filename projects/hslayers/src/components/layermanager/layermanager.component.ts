@@ -310,7 +310,7 @@ export class HsLayerManagerComponent
    * @param m
    */
   init(m): void {
-    this.map = this.hsMapService.getMap();
+    this.map = this.hsMapService.getMap(this.data.app);
     this.hsLayerSynchronizerService.init(this.map);
     this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))

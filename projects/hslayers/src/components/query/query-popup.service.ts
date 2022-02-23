@@ -49,7 +49,7 @@ export class HsQueryPopupService
 
   async init(app: string) {
     await this.hsMapService.loaded(app);
-    this.map = this.hsMapService.getMap();
+    this.map = this.hsMapService.getMap(app);
     if (
       this.hsConfig.get(app).popUpDisplay &&
       this.hsConfig.get(app).popUpDisplay === 'hover'

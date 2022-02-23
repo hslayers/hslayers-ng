@@ -43,7 +43,7 @@ export class HsExternalService {
   ) {}
 
   async init(app: string) {
-    await this.hsMapService.loaded();
+    await this.hsMapService.loaded(app);
     const map = this.hsMapService.getMap(app);
     for (const layer of map.getLayers().getArray()) {
       this.layerAdded(layer as Layer<Source>, app);
@@ -162,7 +162,7 @@ export class HsExternalService {
     }
     const extent = feature.getGeometry().getExtent();
     const center = getCenter(extent);
-    const map = this.hsMapService.getMap();
+    const map = this.hsMapService.getMap(app);
     switch (action) {
       case 'zoomToExtent':
         this.hsMapService.fitExtent(extent);

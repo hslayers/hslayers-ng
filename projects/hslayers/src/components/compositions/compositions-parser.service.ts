@@ -225,7 +225,7 @@ export class HsCompositionsParserService {
     extentFromContainer?: string | Array<number>
   ): Promise<void> {
     if (overwrite == undefined || overwrite == true) {
-      this.removeCompositionLayers();
+      this.removeCompositionLayers(app);
     }
     this.HsEventBusService.currentComposition.next(obj);
     this.current_composition_title = titleFromContainer || obj.title;
@@ -256,7 +256,7 @@ export class HsCompositionsParserService {
     }
 
     if (obj.current_base_layer) {
-      this.HsMapService.getMap()
+      this.HsMapService.getMap(app)
         .getLayers()
         .forEach((lyr: Layer<Source>) => {
           if (
@@ -300,7 +300,7 @@ export class HsCompositionsParserService {
    * @public
    * @description Remove all layers gained from composition from map
    */
-  removeCompositionLayers(): void {
+  removeCompositionLayers(app: string): void {
     const to_be_removed = [];
     this.HsMapService.getLayersArray().forEach((lyr) => {
       if (getFromComposition(lyr)) {
@@ -308,7 +308,7 @@ export class HsCompositionsParserService {
       }
     });
     while (to_be_removed.length > 0) {
-      this.HsMapService.getMap().removeLayer(to_be_removed.shift());
+      this.HsMapService.getMap(app).removeLayer(to_be_removed.shift());
     }
   }
 
@@ -472,7 +472,8 @@ export class HsCompositionsParserService {
         } else {
           resultLayer =
             await this.HsCompositionsLayerParserService.createVectorLayer(
-              lyr_def
+              lyr_def,
+              app
             );
         }
         break;

@@ -48,12 +48,6 @@ export class HsCompositionsMapService {
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
-    this.hsMapService.loaded().then((map) => {
-      map.on('pointermove', (e) => this.mapPointerMoved(e));
-      map.addLayer(this.extentLayer);
-      this.hsSaveMapService.internalLayers.push(this.extentLayer);
-    });
-
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (this.extentLayer) {
         if (
@@ -65,6 +59,14 @@ export class HsCompositionsMapService {
           this.extentLayer.setVisible(false);
         }
       }
+    });
+  }
+
+  init(app: string) {
+    this.hsMapService.loaded(app).then((map) => {
+      map.on('pointermove', (e) => this.mapPointerMoved(e));
+      map.addLayer(this.extentLayer);
+      this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
   }
 

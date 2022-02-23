@@ -83,9 +83,9 @@ export class HsAddDataCommonService {
   }
 
   //NOTE* - Is this method even needed?
-  srsChanged(srs): any {
+  srsChanged(srs, app: string): any {
     setTimeout(() => {
-      return !this.currentProjectionSupported([srs]);
+      return !this.currentProjectionSupported([srs], app);
     }, 0);
   }
 
@@ -95,7 +95,7 @@ export class HsAddDataCommonService {
    * @param srss - List of supported projections
    * @returns True if map projection is in list, otherwise false
    */
-  currentProjectionSupported(srss: string[]): boolean {
+  currentProjectionSupported(srss: string[], app: string): boolean {
     if (!srss || srss.length === 0) {
       return false;
     }
@@ -106,7 +106,7 @@ export class HsAddDataCommonService {
       } else {
         if (
           this.hsMapService
-            .getMap()
+            .getMap(app)
             .getView()
             .getProjection()
             .getCode()

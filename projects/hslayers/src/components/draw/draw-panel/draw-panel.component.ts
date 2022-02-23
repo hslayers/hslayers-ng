@@ -35,7 +35,7 @@ export class DrawPanelComponent {
   }
 
   changeSnapSource(layer): void {
-    this.HsDrawService.changeSnapSource(layer);
+    this.HsDrawService.changeSnapSource(layer, this.app);
   }
 
   setType(what): void {

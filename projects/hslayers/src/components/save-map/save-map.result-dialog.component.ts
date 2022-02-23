@@ -25,7 +25,10 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   }
 
   changeName() {
-    this.HsSaveMapManagerService.saveMapResulted.next('rename');
+    this.HsSaveMapManagerService.saveMapResulted.next({
+      statusData: 'rename',
+      app: this.data.app,
+    });
     this.close();
   }
 }

@@ -73,7 +73,7 @@ export class HsSearchService {
     } else if (typeof this.hsConfig.get(app).searchProvider === 'object') {
       providers = this.hsConfig.get(app).searchProvider;
     }
-    this.cleanResults();
+    this.cleanResults(app);
     for (const provider of providers) {
       let providerId = provider;
       if (provider == 'geonames') {
@@ -107,7 +107,7 @@ export class HsSearchService {
       }
       this.canceler[providerId] = this.http.get(url).subscribe(
         (data) => {
-          this.searchResultsReceived(data, providerId);
+          this.searchResultsReceived(data, providerId, app);
         },
         () => {
           //
@@ -121,7 +121,11 @@ export class HsSearchService {
    * @param providerName - Name of request provider
    * Maintain inner results object and parse response with correct provider parser
    */
-  searchResultsReceived(response: any, providerName: string): void {
+  searchResultsReceived(
+    response: any,
+    providerName: string,
+    app: string
+  ): void {
     if (this.data.providers[providerName] === undefined) {
       this.data.providers[providerName] = {
         results: [],
@@ -137,8 +141,8 @@ export class HsSearchService {
       this.parseGeonamesResults(response, provider);
     }
     this.pointerMoveEventKey = this.hsMapService
-      .getMap()
-      .on('pointermove', (e) => this.mapPointerMoved(e));
+      .getMap(app)
+      .on('pointermove', (e) => this.mapPointerMoved(e, app));
     this.hsEventBusService.searchResultsReceived.next({
       layer: this.searchResultsLayer,
       providers: this.data.providers,
@@ -148,22 +152,22 @@ export class HsSearchService {
    * @public
    * Remove results layer from map
    */
-  hideResultsLayer(): void {
-    this.hsMapService.getMap().removeLayer(this.searchResultsLayer);
+  hideResultsLayer(app: string): void {
+    this.hsMapService.getMap(app).removeLayer(this.searchResultsLayer);
   }
   /**
    * @public
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
-  showResultsLayer(): void {
-    this.hideResultsLayer();
-    this.hsMapService.getMap().addLayer(this.searchResultsLayer);
+  showResultsLayer(app: string): void {
+    this.hideResultsLayer(app);
+    this.hsMapService.getMap(app).addLayer(this.searchResultsLayer);
   }
   /**
    * @public
    * Clean all search results from results variable and results layer
    */
-  cleanResults(): void {
+  cleanResults(app: string): void {
     if (this.data.providers !== undefined) {
       for (const key of Object.keys(this.data.providers)) {
         const provider = this.data.providers[key];
@@ -172,7 +176,7 @@ export class HsSearchService {
         }
       }
       this.searchResultsLayer.getSource().clear();
-      this.hideResultsLayer();
+      this.hideResultsLayer(app);
       unByKey(this.pointerMoveEventKey);
     }
   }
@@ -181,10 +185,10 @@ export class HsSearchService {
    * @param evt -
    * Highlight in the search list result, that corresponds with the nearest found feature under the pointer over the map
    */
-  mapPointerMoved(evt): void {
+  mapPointerMoved(evt, app: string): void {
     console.log('searchlistener');
     const featuresUnderMouse = this.hsMapService
-      .getMap()
+      .getMap(app)
       .getFeaturesAtPixel(evt.pixel)
       .filter((feature: Feature<Geometry>) => {
         const layer = this.hsMapService.getLayerForFeature(feature);
@@ -206,13 +210,13 @@ export class HsSearchService {
    * @param zoomLevel - Zoom level to zoom on
    * Move map and zoom on selected search result
    */
-  selectResult(result: any, zoomLevel: number): void {
+  selectResult(result: any, zoomLevel: number, app: string): void {
     const coordinate = this.getResultCoordinate(result);
-    this.hsMapService.getMap().getView().setCenter(coordinate);
+    this.hsMapService.getMap(app).getView().setCenter(coordinate);
     if (zoomLevel === undefined) {
       zoomLevel = 10;
     }
-    this.hsMapService.getMap().getView().setZoom(zoomLevel);
+    this.hsMapService.getMap(app).getView().setZoom(zoomLevel);
     this.hsEventBusService.searchZoomTo.next({
       coordinate: transform(
         coordinate,

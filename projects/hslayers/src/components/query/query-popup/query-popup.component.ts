@@ -64,7 +64,7 @@ export class HsQueryPopupComponent
   }
 
   ngOnDestroy(): void {
-    this.hsMapService.getMap().removeOverlay(this.data.service.hoverPopup);
+    this.hsMapService.getMap(this.data.app).removeOverlay(this.data.service.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 

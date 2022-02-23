@@ -24,7 +24,7 @@ export enum SwipeSide {
   providedIn: 'root',
 })
 export class HsMapSwipeService {
-  swipeCtrl: SwipeControl;
+  apps: {[key: string]: {swipeCtrl: SwipeControl}} = {};
   rightLayers: LayerListItem[] = [];
   layers: LayerListItem[] = [];
   entireMapLayers: LayerListItem[] = [];
@@ -46,8 +46,8 @@ export class HsMapSwipeService {
   init(app: string) {
     this.setInitCtrlActive(app);
     this.setInitOri(app);
-    this.hsMapService.loaded().then(() => {
-      this.initSwipeControl();
+    this.hsMapService.loaded(app).then(() => {
+      this.initSwipeControl(app);
     });
     this.hsEventBusService.layerManagerUpdates
       .pipe(first())
@@ -91,13 +91,15 @@ export class HsMapSwipeService {
   /**
    * Initializes swipe control add adds it to the map
    */
-  initSwipeControl(): void {
-    this.swipeCtrl = new SwipeControl({
-      orientation: this.orientation,
-    });
+  initSwipeControl(app: string): void {
+    this.apps[app] = {
+      swipeCtrl: new SwipeControl({
+        orientation: this.orientation,
+      }),
+    };
     if (this.swipeControlActive) {
-      this.swipeCtrl.setTargetMap(this.hsMapService.getMap());
-      this.hsMapService.getMap().addControl(this.swipeCtrl);
+      this.apps[app].swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
+      this.hsMapService.getMap(app).addControl(this.apps[app].swipeCtrl);
     }
   }
 
@@ -117,10 +119,13 @@ export class HsMapSwipeService {
   /**
    * Check if any layers are added to the swipe control
    */
-  layersAvailable(): boolean {
+  layersAvailable(app: string): boolean {
+    if (this.apps[app] == undefined) {
+      return false;
+    }
     return (
-      this.swipeCtrl?.layers?.length > 0 ||
-      this.swipeCtrl?.rightLayers?.length > 0 ||
+      this.apps[app].swipeCtrl?.layers?.length > 0 ||
+      this.apps[app].swipeCtrl?.rightLayers?.length > 0 ||
       this.entireMapLayers?.length > 0
     );
   }
@@ -128,10 +133,10 @@ export class HsMapSwipeService {
   /**
    * Set swipe control orientation
    */
-  setOrientation(): void {
+  setOrientation(app: string): void {
     this.orientationVertical = !this.orientationVertical;
     this.orientation = this.orientationVertical ? 'vertical' : 'horizontal';
-    this.swipeCtrl.set('orientation', this.orientation);
+    this.apps[app].swipeCtrl.set('orientation', this.orientation);
     this.updateStorageOri();
   }
   /**
@@ -149,11 +154,11 @@ export class HsMapSwipeService {
     if (layerFound !== undefined) {
       this.setLayerActive(layerFound);
       this.wasMoved
-        ? this.moveSwipeLayer(layerFound)
-        : this.addSwipeLayer(layerFound);
+        ? this.moveSwipeLayer(layerFound, app)
+        : this.addSwipeLayer(layerFound, app);
       this.checkForMissingLayers(app);
     } else {
-      this.removeCompletely(layer);
+      this.removeCompletely(layer, app);
     }
     this.sortLayers(app);
     this.wasMoved = false;
@@ -164,14 +169,14 @@ export class HsMapSwipeService {
    * Move a layer to swipe control
    * @param layer - layer issued from layerManagerUpdates event
    */
-  addSwipeLayer(layerItem: LayerListItem): void {
+  addSwipeLayer(layerItem: LayerListItem, app: string): void {
     if (!this.findLayer(layerItem.layer)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeSide(layerItem.layer) === 'right') {
-        this.swipeCtrl.addLayer(layerItem, true);
+        this.apps[app].swipeCtrl.addLayer(layerItem, true);
         this.rightLayers.push(layerItem);
       } else if (getSwipeSide(layerItem.layer) === 'left') {
-        this.swipeCtrl.addLayer(layerItem);
+        this.apps[app].swipeCtrl.addLayer(layerItem);
         this.layers.push(layerItem);
       } else {
         this.entireMapLayers.push(layerItem);
@@ -185,35 +190,35 @@ export class HsMapSwipeService {
    * Move a layer to swipe control
    * @param layer - layer issued from layerManagerUpdates event
    */
-  moveSwipeLayer(lyrListItem: LayerListItem): void {
+  moveSwipeLayer(lyrListItem: LayerListItem, app: string): void {
     if (this.movingSide === SwipeSide.Right) {
-      this.moveRight(lyrListItem);
+      this.moveRight(lyrListItem, app);
       setSwipeSide(lyrListItem.layer, 'right');
     }
     if (this.movingSide === SwipeSide.Left) {
-      this.moveLeft(lyrListItem);
+      this.moveLeft(lyrListItem, app);
       setSwipeSide(lyrListItem.layer, 'left');
     }
     if (this.movingSide === SwipeSide.Full) {
       setSwipeSide(lyrListItem.layer, undefined);
-      this.swipeCtrl.removeCompletely(lyrListItem.layer);
+      this.apps[app].swipeCtrl.removeCompletely(lyrListItem.layer);
     }
   }
   /**
    * Move a layer to swipe control right side
    * @param layer - layer issued from layerManagerUpdates event
    */
-  moveRight(layer: LayerListItem): void {
-    this.swipeCtrl.removeLayer(layer);
-    this.swipeCtrl.addLayer(layer, true);
+  moveRight(layer: LayerListItem, app: string): void {
+    this.apps[app].swipeCtrl.removeLayer(layer);
+    this.apps[app].swipeCtrl.addLayer(layer, true);
   }
   /**
    * Move a layer to swipe control left side
    * @param layer - layer issued from layerManagerUpdates event
    */
-  moveLeft(layer: LayerListItem): void {
-    this.swipeCtrl.removeLayer(layer, true);
-    this.swipeCtrl.addLayer(layer);
+  moveLeft(layer: LayerListItem, app: string): void {
+    this.apps[app].swipeCtrl.removeLayer(layer, true);
+    this.apps[app].swipeCtrl.addLayer(layer);
   }
 
   /**
@@ -222,19 +227,19 @@ export class HsMapSwipeService {
   setControl(app: string): void {
     this.swipeControlActive = !this.swipeControlActive;
     this.updateUrlParam(app);
-    if (!this.hsMapService.getMap()) {
+    if (!this.hsMapService.getMap(app)) {
       return;
     }
     if (this.swipeControlActive) {
-      this.swipeCtrl.setTargetMap(this.hsMapService.getMap());
-      this.hsMapService.getMap().addControl(this.swipeCtrl);
-      this.swipeCtrl.setEvents(true);
+      this.apps[app].swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
+      this.hsMapService.getMap(app).addControl(this.apps[app].swipeCtrl);
+      this.apps[app].swipeCtrl.setEvents(true);
     } else {
-      this.hsMapService.getMap().removeControl(this.swipeCtrl);
-      this.swipeCtrl.setEvents();
+      this.hsMapService.getMap(app).removeControl(this.apps[app].swipeCtrl);
+      this.apps[app].swipeCtrl.setEvents();
     }
     try {
-      this.hsMapService.getMap().renderSync();
+      this.hsMapService.getMap(app).renderSync();
     } catch (e) {
       console.error(e);
     }
@@ -243,7 +248,7 @@ export class HsMapSwipeService {
    * Remove layer completely
    * @param layer - layer issued from layerManagerUpdates event
    */
-  removeCompletely(layerToRm: Layer<Source>): void {
+  removeCompletely(layerToRm: Layer<Source>, app: string): void {
     const layerFound = this.findLayer(layerToRm);
     if (layerFound.l) {
       if (layerFound.arr === 'layers') {
@@ -258,7 +263,7 @@ export class HsMapSwipeService {
         );
       }
     }
-    this.swipeCtrl.removeCompletely(layerToRm);
+    this.apps[app].swipeCtrl.removeCompletely(layerToRm);
   }
   /**
    * Set layer as active (last dragged)
@@ -285,7 +290,7 @@ export class HsMapSwipeService {
       return;
     }
     for (const layer of this.hsLayerShiftingService.layersCopy) {
-      this.addSwipeLayer(layer);
+      this.addSwipeLayer(layer, app);
     }
     this.sortLayers(app);
   }
@@ -297,7 +302,7 @@ export class HsMapSwipeService {
       return !this.findLayer(l.layer)?.l;
     });
     for (const layer of missingLayers) {
-      this.addSwipeLayer(layer);
+      this.addSwipeLayer(layer, app);
     }
     this.sortLayers(app);
   }

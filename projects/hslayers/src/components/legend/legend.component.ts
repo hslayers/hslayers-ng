@@ -1,5 +1,5 @@
 import Map from 'ol/Map';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
@@ -18,7 +18,7 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
 })
-export class HsLegendComponent extends HsPanelBaseComponent {
+export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
@@ -44,7 +44,10 @@ export class HsLegendComponent extends HsPanelBaseComponent {
         hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
       icon: 'icon-dotlist',
     });
-    this.hsMapService.loaded().then((map) => this.init(map));
+  }
+
+  ngOnInit(): void {
+    this.hsMapService.loaded(this.data.app).then((map) => this.init(map));
   }
 
   /**
@@ -73,9 +76,9 @@ export class HsLegendComponent extends HsPanelBaseComponent {
     }
   }
 
-  rebuildLegends(): void {
+  rebuildLegends(app: string): void {
     this.layerDescriptors = [];
-    this.buildLegendsForLayers(this.hsMapService.getMap());
+    this.buildLegendsForLayers(this.hsMapService.getMap(app));
   }
 
   filterDescriptors(): any[] {

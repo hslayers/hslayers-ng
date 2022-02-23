@@ -185,7 +185,7 @@ export class HsDrawService {
     });
 
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      if (which === 'draw' && this.hsMapService.getMap()) {
+      if (which === 'draw' && this.hsMapService.getMap(app)) {
         this.fillDrawableLayers(app);
       }
     });
@@ -279,11 +279,11 @@ export class HsDrawService {
   setType(what, app: string): boolean {
     if (this.type == what) {
       this.type = null;
-      this.deactivateDrawing();
+      this.deactivateDrawing(app);
       const tmpLayer =
         this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE) || null;
       if (tmpLayer) {
-        this.hsMapService.getMap().removeLayer(tmpLayer);
+        this.hsMapService.getMap(app).removeLayer(tmpLayer);
         this.tmpDrawLayer = false;
       }
       this.hsQueryBaseService.activateQueries(app);
@@ -367,7 +367,8 @@ export class HsDrawService {
         layer.title,
         undefined,
         'EPSG:4326',
-        {workspace: layer.workspace}
+        {workspace: layer.workspace},
+        app
       );
       lyr = this.hsMapService.findLayerByTitle(layer.title);
     }
@@ -377,7 +378,7 @@ export class HsDrawService {
         getTitle(this.selectedLayer) == TMP_LAYER_TITLE
       ) {
         this.tmpDrawLayer = false;
-        this.hsMapService.getMap().removeLayer(this.selectedLayer);
+        this.hsMapService.getMap(app).removeLayer(this.selectedLayer);
       }
 
       this.selectedLayer = lyr;
@@ -390,7 +391,7 @@ export class HsDrawService {
    * @param layer -
    */
   addDrawLayer(layer: VectorLayer<VectorSource<Geometry>>, app: string): void {
-    this.hsMapService.getMap().addLayer(layer);
+    this.hsMapService.getMap(app).addLayer(layer);
     this.fillDrawableLayers(app);
   }
 
@@ -482,7 +483,7 @@ export class HsDrawService {
       );
       //Set snapLayer and snap interaction source
       this.snapLayer = this.selectedLayer;
-      this.toggleSnapping(this.source);
+      this.toggleSnapping(app, this.source);
     }
   }
 
@@ -490,9 +491,9 @@ export class HsDrawService {
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
    * @returns {Promise}
    */
-  deactivateDrawing(): Promise<undefined> {
+  deactivateDrawing(app: string): Promise<undefined> {
     return new Promise((resolve, reject) => {
-      this.hsMapService.loaded().then((map) => {
+      this.hsMapService.loaded(app).then((map) => {
         this.afterDrawEnd();
         if (this.draw) {
           map.removeInteraction(this.draw);
@@ -538,9 +539,9 @@ export class HsDrawService {
    */
   async fillDrawableLayers(app: string): Promise<void> {
     let drawables = [];
-    await this.hsMapService.loaded();
+    await this.hsMapService.loaded(app);
     drawables = this.hsMapService
-      .getMap()
+      .getMap(app)
       .getLayers()
       .getArray()
       .filter((layer: Layer<Source>) =>
@@ -549,7 +550,7 @@ export class HsDrawService {
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
-      this.deactivateDrawing();
+      this.deactivateDrawing(app);
       this.selectedLayer = null;
       this.snapSource = null;
     } else if (drawables.length > 0) {
@@ -563,7 +564,7 @@ export class HsDrawService {
     this.laymanEndpoint = this.hsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
       await lastValueFrom(
-        this.hsLaymanBrowserService.queryCatalog(this.laymanEndpoint, {
+        this.hsLaymanBrowserService.queryCatalog(this.laymanEndpoint, app, {
           onlyMine: this.onlyMine,
           limit: '',
           query: {},
@@ -619,7 +620,7 @@ export class HsDrawService {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      await this.completeLayerRemoval(this.selectedLayer);
+      await this.completeLayerRemoval(this.selectedLayer, app);
       this.selectedLayer = null;
       this.fillDrawableLayers(app);
     }
@@ -668,12 +669,12 @@ export class HsDrawService {
       ) {
         await this.hsLaymanService.removeLayer();
         for (const l of drawableRm) {
-          await this.completeLayerRemoval(l);
+          await this.completeLayerRemoval(l, app);
         }
       } else {
         const toRemove = [...drawableRm, ...drawableLaymanRm];
         for (const l of toRemove) {
-          await this.completeLayerRemoval(l);
+          await this.completeLayerRemoval(l, app);
         }
       }
       this.selectedLayer = null;
@@ -681,11 +682,14 @@ export class HsDrawService {
     }
   }
 
-  private async completeLayerRemoval(layerToRemove: any): Promise<void> {
+  private async completeLayerRemoval(
+    layerToRemove: any,
+    app: string
+  ): Promise<void> {
     let definition;
     const isLayer = layerToRemove instanceof Layer;
     if (isLayer) {
-      this.hsMapService.getMap().removeLayer(layerToRemove);
+      this.hsMapService.getMap(app).removeLayer(layerToRemove);
       definition = getDefinition(layerToRemove);
       if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
         this.tmpDrawLayer = false;
@@ -764,7 +768,7 @@ export class HsDrawService {
   ): void {
     this.onDeselected = onDeselected;
     this.onSelected = onSelected;
-    this.deactivateDrawing().then(() => {
+    this.deactivateDrawing(app).then(() => {
       this.hsQueryBaseService.deactivateQueries(app);
       this.draw = new Draw({
         source: this.source,
@@ -787,7 +791,7 @@ export class HsDrawService {
       });
 
       this.draw.setActive(drawState);
-      this.hsMapService.loaded().then((map) => {
+      this.hsMapService.loaded(app).then((map) => {
         map.addInteraction(this.draw);
       });
 
@@ -834,7 +838,7 @@ export class HsDrawService {
       const snapSourceToBeUsed = this.snapSource
         ? this.snapSource
         : this.source;
-      this.toggleSnapping(snapSourceToBeUsed);
+      this.toggleSnapping(app, snapSourceToBeUsed);
     });
   }
 
@@ -852,8 +856,8 @@ export class HsDrawService {
    * Handle snap interaction changes
    * Remove snap interaction if it already exists, recreate it if source is provided.
    */
-  toggleSnapping(source?: VectorSource<Geometry>): void {
-    this.hsMapService.loaded().then((map) => {
+  toggleSnapping(app: string, source?: VectorSource<Geometry>): void {
+    this.hsMapService.loaded(app).then((map) => {
       this.snapSource = source ? source : this.snapSource;
       if (this.snap) {
         map.removeInteraction(this.snap);
@@ -870,13 +874,16 @@ export class HsDrawService {
   /**
    * Changes layer source of snap interaction
    */
-  changeSnapSource(layer: VectorLayer<VectorSource<Geometry>>): void {
+  changeSnapSource(
+    layer: VectorLayer<VectorSource<Geometry>>,
+    app: string
+  ): void {
     //isLayerClustered
     const snapSourceToBeUsed = this.hsLayerUtilsService.isLayerClustered(layer)
       ? (layer.getSource() as Cluster).getSource()
       : layer.getSource();
     this.snapLayer = layer;
-    this.toggleSnapping(snapSourceToBeUsed);
+    this.toggleSnapping(app, snapSourceToBeUsed);
   }
 
   /**
@@ -900,8 +907,8 @@ export class HsDrawService {
     this.hsQueryVectorService.createFeatureAttributeList();
   }
 
-  toggleBoxSelection(): void {
-    this.hsMapService.loaded().then((map) => {
+  toggleBoxSelection(app: string): void {
+    this.hsMapService.loaded(app).then((map) => {
       if (this.boxSelection) {
         map.removeInteraction(this.boxSelection);
       }

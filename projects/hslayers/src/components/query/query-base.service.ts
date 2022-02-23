@@ -74,7 +74,7 @@ export class HsQueryBaseService {
    *
    */
   async init(app): Promise<void> {
-    await this.hsMapService.loaded();
+    await this.hsMapService.loaded(app);
     if (this.apps[app] == undefined) {
       this.apps[app] = {
         queryLayer: new VectorLayer({

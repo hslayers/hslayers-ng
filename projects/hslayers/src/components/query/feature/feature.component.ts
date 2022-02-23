@@ -18,10 +18,11 @@ import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature',
-  templateUrl: './feature.component.html'
+  templateUrl: './feature.component.html',
 })
 export class HsQueryFeatureComponent implements OnDestroy {
   @Input() feature;
+  @Input() app = 'default';
   attributeName = '';
   attributeValue = '';
   newAttribVisible = false;
@@ -50,14 +51,20 @@ export class HsQueryFeatureComponent implements OnDestroy {
     public cd: ChangeDetectorRef
   ) {
     this.availableLayersSubscription =
-    this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
-      if (!this.olFeature()) {
-        //Feature from WMS getFeatureInfo
-        return;
-      }
-      const featureLayer = this.hsMapService.getLayerForFeature(this.olFeature());
-      this.availableLayers = layers.filter((layer) => layer != featureLayer);
-    });
+      this.hsFeatureCommonService.availableLayer$.subscribe(({layers, app}) => {
+        if (!this.olFeature()) {
+          //Feature from WMS getFeatureInfo
+          return;
+        }
+        const featureLayer = this.hsMapService.getLayerForFeature(
+          this.olFeature()
+        );
+        this.availableLayers = layers.filter((layer) => layer != featureLayer);
+      });
+  }
+
+  ngOnInit(): void {
+    this.hsFeatureCommonService.init(this.app);
   }
 
   ngOnDestroy(): void {

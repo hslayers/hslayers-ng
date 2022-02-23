@@ -15,7 +15,6 @@ import {setTitle} from '../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsMeasureService {
-  map;
   draw: Draw;
   data = {
     measurements: [],
@@ -45,9 +44,6 @@ export class HsMeasureService {
     public HsEventBusService: HsEventBusService
   ) {
     setTitle(this.measureVector, 'Measurement sketches');
-    HsMapService.loaded().then((m) => {
-      this.map = m;
-    });
   }
 
   /**
@@ -69,7 +65,7 @@ export class HsMeasureService {
    * @description Change geometry type of measurement without deleting of old ones
    */
   changeMeasureParams(type: string, app: string): void {
-    this.map.removeInteraction(this.draw);
+    this.HsMapService.getMap(app).removeInteraction(this.draw);
     this.sketches = [];
     this.addInteraction(type, app);
   }
@@ -92,20 +88,21 @@ export class HsMeasureService {
    * @description Start measuring interaction in app
    */
   activateMeasuring(type: string, app: string): void {
-    if (!this.map) {
+    const map = this.HsMapService.getMap(app);
+    if (!map) {
       setTimeout(() => {
         this.activateMeasuring(type, app);
       }, 500);
       return;
     }
-    this.map.addLayer(this.measureVector);
-    this.map.getViewport().addEventListener('mousemove', (evt) => {
+    map.addLayer(this.measureVector);
+    map.getViewport().addEventListener('mousemove', (evt) => {
       this.mouseMoveHandler(evt);
     });
-    this.map.getViewport().addEventListener('touchmove', (evt) => {
+    map.getViewport().addEventListener('touchmove', (evt) => {
       this.mouseMoveHandler(evt);
     });
-    this.map.getViewport().addEventListener('touchend', (evt) => {
+    map.getViewport().addEventListener('touchend', (evt) => {
       this.mouseMoveHandler(evt);
     });
 
@@ -117,7 +114,7 @@ export class HsMeasureService {
    * @description Stop measuring interaction in app
    */
   deactivateMeasuring(app: string): void {
-    this.HsMapService.loaded().then((map) => {
+    this.HsMapService.loaded(app).then((map) => {
       map.getViewport().removeEventListener('mousemove', (evt) => {
         this.mouseMoveHandler(evt);
       });
@@ -222,7 +219,7 @@ export class HsMeasureService {
       type: /** @type {GeometryType} */ drawType,
       dragVertexDelay: 150,
     });
-    this.map.addInteraction(this.draw);
+    this.HsMapService.getMap(app).addInteraction(this.draw);
 
     this.draw.on('drawstart', (evt) => {
       this.HsEventBusService.measurementStarts.next({app});

@@ -189,7 +189,7 @@ export class HsCesiumService {
       }
 
       this.HsEventBusService.mapExtentChanges.subscribe((data) => {
-        const view = this.HsMapService.getMap().getView();
+        const view = this.HsMapService.getMap(app).getView();
         if (this.HsMapService.visible) {
           this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
         }

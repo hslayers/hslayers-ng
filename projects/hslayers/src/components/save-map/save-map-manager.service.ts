@@ -56,7 +56,7 @@ export class HsSaveMapManagerService {
     organization: '',
   };
   panelOpened: Subject<any> = new Subject();
-  saveMapResulted: Subject<any> = new Subject();
+  saveMapResulted: Subject<{statusData; app: string}> = new Subject();
   endpointSelected: BehaviorSubject<any> = new BehaviorSubject(null);
   preSaveCheckCompleted: Subject<{endpoint; app: string}> = new Subject();
   changeTitle: boolean;
@@ -145,8 +145,8 @@ export class HsSaveMapManagerService {
     this.endpointSelected.next(endpoint);
   }
 
-  setCurrentBoundingBox(): void {
-    this.compoData.bbox = this.getCurrentExtent();
+  setCurrentBoundingBox(app: string): void {
+    this.compoData.bbox = this.getCurrentExtent(app);
   }
 
   //*NOTE not being used
@@ -249,7 +249,7 @@ export class HsSaveMapManagerService {
    * @param download - Used when generating json for catalogue save
    * @returns composition JSON
    */
-  generateCompositionJson(compoData?): any {
+  generateCompositionJson(app: string, compoData?): any {
     /*TODO: REFACTOR
       Workaround for composition JSON generated for download. 
       Should be handled differently and generated only once. Task for upcoming component rework
@@ -262,7 +262,7 @@ export class HsSaveMapManagerService {
     }
 
     return this.HsSaveMapService.map2json(
-      this.HsMapService.getMap(),
+      this.HsMapService.getMap(app),
       tempCompoData,
       this.userData,
       this.statusData
@@ -280,7 +280,7 @@ export class HsSaveMapManagerService {
   }
 
   private async fillCompositionData(app: string) {
-    this.fillLayers();
+    this.fillLayers(app);
     await this.fillGroups(app);
     this.statusData.groups.unshift({
       roleTitle: 'Public',
@@ -300,10 +300,10 @@ export class HsSaveMapManagerService {
     this.loadUserDetails();
   }
 
-  private fillLayers() {
+  private fillLayers(app: string) {
     this.compoData.layers = [];
-    this.compoData.bbox = this.getCurrentExtent();
-    this.compoData.layers = this.HsMapService.getMap()
+    this.compoData.bbox = this.getCurrentExtent(app);
+    this.compoData.layers = this.HsMapService.getMap(app)
       .getLayers()
       .getArray()
       .filter(
@@ -387,10 +387,10 @@ export class HsSaveMapManagerService {
    * Get current extent of map, transform it into EPSG:4326 and save it into controller model
    * Returns Extent coordinates
    */
-  getCurrentExtent() {
-    const b = this.HsMapService.getMap()
+  getCurrentExtent(app: string) {
+    const b = this.HsMapService.getMap(app)
       .getView()
-      .calculateExtent(this.HsMapService.getMap().getSize());
+      .calculateExtent(this.HsMapService.getMap(app).getSize());
     let pair1 = [b[0], b[1]];
     let pair2 = [b[2], b[3]];
     const cur_proj = this.HsMapService.getCurrentProj().getCode();

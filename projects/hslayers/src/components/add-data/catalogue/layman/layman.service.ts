@@ -41,6 +41,7 @@ export class HsLaymanBrowserService {
    */
   queryCatalog(
     endpoint: HsEndpoint,
+    app: string,
     data?: any,
     extentFeatureCreated?
   ): Observable<any> {
@@ -61,10 +62,10 @@ export class HsLaymanBrowserService {
 
       const b = transformExtent(
         this.hsMapService
-          .getMap()
+          .getMap(app)
           .getView()
-          .calculateExtent(this.hsMapService.getMap().getSize()),
-        this.hsMapService.getMap().getView().getProjection(),
+          .calculateExtent(this.hsMapService.getMap(app).getSize()),
+        this.hsMapService.getMap(app).getView().getProjection(),
         'EPSG:3857'
       );
       bbox = data.filterByExtent ? b.join(',') : '';

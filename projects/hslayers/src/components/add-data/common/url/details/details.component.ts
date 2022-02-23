@@ -43,7 +43,8 @@ export class HsUrlDetailsComponent implements AfterContentInit {
 
   srsChanged(): void {
     this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-      this.data.srs
+      this.data.srs,
+      this.app
     );
   }
 

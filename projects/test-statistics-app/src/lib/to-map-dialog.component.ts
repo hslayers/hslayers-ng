@@ -121,7 +121,7 @@ export class HsStatisticsToMapDialogComponent
   }
 
   async fillVectorLayers(): Promise<void> {
-    this.HsMapService.loaded().then((map) => {
+    this.HsMapService.loaded(this.app).then((map) => {
       this.vectorLayers = [
         ...this.HsMapService.getLayersArray()
           .filter((layer: Layer<Source>) =>

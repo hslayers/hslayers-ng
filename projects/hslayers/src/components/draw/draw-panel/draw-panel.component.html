@@ -130,7 +130,7 @@
                     <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
                         translate}}</label>
                     <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-                        (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
+                        (change)="HsDrawService.toggleBoxSelection(app);selectionTypeDropdown.close()"
                         id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
                 </div>
                 <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
@@ -147,7 +147,7 @@
         <div class="pb-2">
             <div class="form-check">
                 <input class="d-none" type="checkbox" id="hs-draw-snap" [(ngModel)]="HsDrawService.snapActive"
-                    (change)="HsDrawService.toggleSnapping()" />
+                    (change)="HsDrawService.toggleSnapping(app)" />
                 <label for="hs-draw-snap"
                     [ngClass]="{'hs-checkmark':HsDrawService.snapActive,'hs-uncheckmark':!HsDrawService.snapActive}">{{'DRAW.allowSnapping'
                     | translate}}</label>

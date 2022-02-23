@@ -94,13 +94,13 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param layer - Layer selected
    * @param collection - Layers created and retreived collection
    */
-  getLayersRecursively(layer, collection): void {
+  getLayersRecursively(layer, options, collection, app: string): void {
     if (!this.data.add_all || layer.checked) {
-      collection.push(this.getLayer(layer));
+      collection.push(this.getLayer(layer, undefined, app));
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.getLayersRecursively(sublayer, collection);
+        this.getLayersRecursively(sublayer, options, collection, app);
       }
     }
   }
@@ -122,7 +122,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.getLayersRecursively(layer, collection);
+      this.getLayersRecursively(layer, undefined, collection, app);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams();
@@ -148,7 +148,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * otherwise returns 3857 as trial(some services support 3857 matrix set even though its not clear from capabilities )
    * @param sets - Set of available matrixSets
    */
-  getPreferredMatrixSet(sets): string {
+  getPreferredMatrixSet(sets, app: string): string {
     const supportedFormats = ['3857', '4326', '5514'];
     const preferred = sets.filter((set) =>
       supportedFormats.some((v) => set.TileMatrixSet.includes(v))
@@ -156,7 +156,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     if (preferred.length != 0) {
       const preferCurrent = preferred.find((set) =>
         set.TileMatrixSet.includes(
-          this.hsMapService.getMap().getView().getProjection().getCode()
+          this.hsMapService.getMap(app).getView().getProjection().getCode()
         )
       );
       return preferCurrent
@@ -194,7 +194,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Uses previously received capabilities response as a reference for the source
    * @param response - Set of available info formats for layer
    */
-  getLayer(layer): Layer<Source> {
+  getLayer(layer, options, app: string): Layer<Source> {
     try {
       const wmts = new Tile({
         properties: {
@@ -210,7 +210,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       // Get WMTS Capabilities and create WMTS source base on it
       const options = optionsFromCapabilities(this.data.caps, {
         layer: layer.Identifier,
-        matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink),
+        matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink, app),
         format: this.getPreferredFormat(layer.Format),
       });
       // WMTS source for raster tiles layer

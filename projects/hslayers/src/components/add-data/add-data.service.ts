@@ -31,7 +31,11 @@ export class HsAddDataService {
     public hsCommonLaymanService: HsCommonLaymanService
   ) {}
 
-  addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
+  addLayer(
+    layer: Layer<Source>,
+    app: string,
+    underLayer?: Layer<Source>
+  ): void {
     if (underLayer) {
       const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();
@@ -42,9 +46,9 @@ export class HsAddDataService {
         }
       }
       const ix = layers.indexOf(underLayer);
-      this.hsMapService.getMap().getLayers().insertAt(ix, layer);
+      this.hsMapService.getMap(app).getLayers().insertAt(ix, layer);
     } else {
-      this.hsMapService.getMap().addLayer(layer);
+      this.hsMapService.getMap(app).addLayer(layer);
     }
   }
 

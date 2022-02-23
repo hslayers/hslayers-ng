@@ -122,7 +122,7 @@ export class HsCompositionsLayerParserService {
           serviceCalledFrom: 'HsCompositionsLayerParserService',
         }
       );
-      this.HsMapService.getMap().getLayers().remove(wmts);
+      this.HsMapService.getMap(app).getLayers().remove(wmts);
     }
 
     wmts.setVisible(lyr_def.visibility);
@@ -365,7 +365,8 @@ export class HsCompositionsLayerParserService {
    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
   async createVectorLayer(
-    lyr_def
+    lyr_def,
+    app: string
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     try {
       let format = '';
@@ -416,7 +417,8 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            Object.assign(options, {extractStyles})
+            Object.assign(options, {extractStyles}),
+            app
           );
           break;
         case 'ol.format.GeoJSON':
@@ -427,7 +429,8 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            options
+            options,
+            app
           );
           break;
         case 'hs.format.WFS':
@@ -440,7 +443,8 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            options
+            options,
+            app
           );
           break;
         case 'hs.format.Sparql':
@@ -467,7 +471,8 @@ export class HsCompositionsLayerParserService {
               fromComposition: lyr_def.fromComposition,
               style: lyr_def.style,
               features,
-            }
+            },
+            app
           );
       }
       setDefinition(layer, lyr_def.protocol);

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import * as polygonClipping from 'polygon-clipping';
 import Feature from 'ol/Feature';
@@ -21,7 +21,7 @@ import {defaultStyle} from '../../styles/styles';
   templateUrl: './draw-edit.component.html',
   styleUrls: ['./draw-edit.component.scss'],
 })
-export class DrawEditComponent implements OnDestroy {
+export class DrawEditComponent implements OnDestroy, OnInit {
   @Input() app = 'default';
   vectorQueryFeatureSubscription;
   editOptions = ['difference', 'union', 'intersection', 'split'];
@@ -54,14 +54,15 @@ export class DrawEditComponent implements OnDestroy {
       this.HsDrawService.previouslySelected = null;
     }
 
-    this.HsQueryVectorService.init(this.app);
     this.checkFeatureGeometryType(
       this.HsQueryVectorService.selector.getFeatures().getArray()[0]
     );
-    this.hsMapService.loaded().then((map) => {
-      map.addLayer(this.editLayer);
-    });
+  }
 
+  async ngOnInit(): Promise<void> {
+    await this.hsMapService.loaded(this.app);
+    this.hsMapService.getMap(this.app).addLayer(this.editLayer);
+    this.HsQueryVectorService.init(this.app);
     this.vectorQueryFeatureSubscription =
       this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
         const selectorFeatures = data.selector.getFeatures().getArray();
@@ -106,7 +107,7 @@ export class DrawEditComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.hsMapService.loaded().then((map) => {
+    this.hsMapService.loaded(this.app).then((map) => {
       map.removeLayer(this.editLayer);
       this.setType(this.HsDrawService.type);
       //Timeout necessary because setType triggers async deactivateDrawing

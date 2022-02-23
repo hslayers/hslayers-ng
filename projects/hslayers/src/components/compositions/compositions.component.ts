@@ -63,7 +63,7 @@ export class HsCompositionsComponent
       icon: 'icon-map',
     });
     this.loadFilteredCompositions = () =>
-      hsCompositionsCatalogueService.loadFilteredCompositions();
+      hsCompositionsCatalogueService.loadFilteredCompositions(this.data.app);
     this.notSavedCompositionLoadingSubscription =
       this.hsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
         this.hsCompositionsService.compositionToLoad = {url, title: ''};
@@ -73,6 +73,7 @@ export class HsCompositionsComponent
   ngOnInit(): void {
     //this.hsCommonEndpointsService.init(this.data.app);
     this.hsCompositionsService.init(this.data.app);
+    this.hsCompositionsMapService.init(this.data.app);
   }
 
   ngOnDestroy(): void {
@@ -152,7 +153,7 @@ export class HsCompositionsComponent
     this.themesVisible = false;
     this.keywordsVisible = false;
     this.selectedCompId = '';
-    this.hsCompositionsCatalogueService.clearFilters();
+    this.hsCompositionsCatalogueService.clearFilters(this.data.app);
   }
   changeUrlButtonVisible(): void {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;

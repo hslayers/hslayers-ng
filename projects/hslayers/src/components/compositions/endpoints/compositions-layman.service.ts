@@ -40,7 +40,8 @@ export class HsCompositionsLaymanService {
   loadList(
     endpoint: HsEndpoint,
     params,
-    extentFeatureCreated
+    extentFeatureCreated,
+    app: string
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
@@ -55,9 +56,9 @@ export class HsCompositionsLaymanService {
 
     const b = transformExtent(
       this.hsMapService
-        .getMap()
+        .getMap(app)
         .getView()
-        .calculateExtent(this.hsMapService.getMap().getSize()),
+        .calculateExtent(this.hsMapService.getMap(app).getSize()),
       this.hsMapService.getCurrentProj(),
       'EPSG:3857'
     );

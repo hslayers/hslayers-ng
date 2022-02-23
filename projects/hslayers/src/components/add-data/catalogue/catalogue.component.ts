@@ -44,12 +44,14 @@ export class HsAddDataCatalogueComponent implements OnInit {
   ) {
     this.data = hsAddDataCatalogueService.data;
     this.advancedSearch = false;
-    this.queryCatalogs = () => hsAddDataCatalogueService.queryCatalogs();
     this.loaderImage =
       this.hsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
   }
   ngOnInit(): void {
+    this.queryCatalogs = () =>
+      this.hsAddDataCatalogueService.queryCatalogs(this.data.app);
     this.hsAddDataCatalogueService.init(this.app);
+    this.hsAddDataCatalogueMapService.init(this.app);
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {

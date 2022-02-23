@@ -28,38 +28,49 @@ export interface exportFormats {
   providedIn: 'root',
 })
 export class HsFeatureCommonService {
-  private listSubject = new BehaviorSubject<Layer<Source>[]>(
-    [] as Layer<Source>[]
-  );
+  private listSubject = new BehaviorSubject<{
+    layers: Layer<Source>[];
+    app: string;
+  }>({layers: [] as Layer<Source>[], app: 'default'});
 
-  availableLayer$: Observable<Layer<Source>[]> =
-    this.listSubject.asObservable();
-
+  availableLayer$: Observable<{
+    layers: Layer<Source>[];
+    app: string;
+  }> = this.listSubject.asObservable();
+  apps: {[key: string]: boolean} = {};
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
     public hsMapService: HsMapService,
     public hsLayerUtilsService: HsLayerUtilsService
-  ) {
-    this.hsMapService.loaded().then((map) => {
-      map.getLayers().on('change:length', () => {
-        this.updateLayerList();
+  ) {}
+
+  async init(app: string): Promise<void> {
+    if (this.apps[app]) {
+      return;
+    }
+    await this.hsMapService.loaded(app);
+    this.hsMapService
+      .getMap(app)
+      .getLayers()
+      .on('change:length', () => {
+        this.updateLayerList(app);
       });
-    });
+    this.apps[app] = true;
   }
 
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
-  updateLayerList(): void {
+  updateLayerList(app: string): void {
     const layers = this.hsMapService
       .getLayersArray()
       .filter((layer: Layer<Source>) => {
         return this.hsLayerUtilsService.isLayerDrawable(layer);
       });
-    this.listSubject.next(layers);
+    this.listSubject.next({layers, app});
   }
 
   toggleExportMenu(
