@@ -156,7 +156,11 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
 
   setLayerTime(): void {
     setTimeout(() => {
-      this.hsDimensionTimeService.setLayerTime(this.layer, this.currentTime);
+      this.hsDimensionTimeService.setLayerTime(
+        this.layer,
+        this.currentTime,
+        this.app
+      );
     }, 100);
   }
 

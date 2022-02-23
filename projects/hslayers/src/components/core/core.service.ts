@@ -163,8 +163,8 @@ export class HsCoreService {
    * Do complete reset of map (view, layers) according to app config
    * @public
    */
-  resetMap(): void {
-    this.HsMapService.reset();
+  resetMap(app: string): void {
+    this.HsMapService.reset(app);
     this.HsEventBusService.mapResets.next();
   }
 
@@ -193,8 +193,8 @@ export class HsCoreService {
     this._puremapApp = value;
     if (value) {
       this.HsConfig.get(app).componentsEnabled.guiOverlay = false;
-      this.HsMapService.removeAllInteractions();
-      this.HsMapService.removeAllControls();
+      this.HsMapService.removeAllInteractions(app);
+      this.HsMapService.removeAllControls(app);
       this.HsLayoutService.sidebarVisible(app, false);
     }
   }

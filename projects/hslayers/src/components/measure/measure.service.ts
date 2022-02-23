@@ -97,13 +97,13 @@ export class HsMeasureService {
     }
     map.addLayer(this.measureVector);
     map.getViewport().addEventListener('mousemove', (evt) => {
-      this.mouseMoveHandler(evt);
+      this.mouseMoveHandler(evt, app);
     });
     map.getViewport().addEventListener('touchmove', (evt) => {
-      this.mouseMoveHandler(evt);
+      this.mouseMoveHandler(evt, app);
     });
     map.getViewport().addEventListener('touchend', (evt) => {
-      this.mouseMoveHandler(evt);
+      this.mouseMoveHandler(evt, app);
     });
 
     this.addInteraction(type, app);
@@ -116,13 +116,13 @@ export class HsMeasureService {
   deactivateMeasuring(app: string): void {
     this.HsMapService.loaded(app).then((map) => {
       map.getViewport().removeEventListener('mousemove', (evt) => {
-        this.mouseMoveHandler(evt);
+        this.mouseMoveHandler(evt, app);
       });
       map.getViewport().removeEventListener('touchmove', (evt) => {
-        this.mouseMoveHandler(evt);
+        this.mouseMoveHandler(evt, app);
       });
       map.getViewport().removeEventListener('touchend', (evt) => {
-        this.mouseMoveHandler(evt);
+        this.mouseMoveHandler(evt, app);
       });
 
       map.removeInteraction(this.draw);
@@ -136,7 +136,7 @@ export class HsMeasureService {
    * @param {object} evt Callback param for mouse move event
    * @description Callback for mouse and touch move event, compute live measurement results
    */
-  mouseMoveHandler(evt): void {
+  mouseMoveHandler(evt, app: string): void {
     if (this.sketches.length > 0) {
       let output: Measurement;
 
@@ -146,7 +146,7 @@ export class HsMeasureService {
           output = this.addMultiple(
             this.HsUtilsService.formatArea(
               geom as Polygon,
-              this.HsMapService.getCurrentProj()
+              this.HsMapService.getCurrentProj(app)
             ),
             output
           );
@@ -154,7 +154,7 @@ export class HsMeasureService {
           output = this.addMultiple(
             this.HsUtilsService.formatLength(
               geom as LineString,
-              this.HsMapService.getCurrentProj()
+              this.HsMapService.getCurrentProj(app)
             ),
             output
           );

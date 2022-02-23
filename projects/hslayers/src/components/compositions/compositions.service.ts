@@ -80,7 +80,8 @@ export class HsCompositionsService {
           this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
             e.feature,
             e.selector,
-            endpoint.compositions
+            endpoint.compositions,
+            app
           );
         if (record) {
           this.loadComposition(this.getRecordLink(record), app);
@@ -89,9 +90,9 @@ export class HsCompositionsService {
     });
   }
 
-  loadCompositions(ds: HsEndpoint, params): Observable<any> {
+  loadCompositions(ds: HsEndpoint, params, app: string): Observable<any> {
     this.hsCompositionsMapService.clearExtentLayer();
-    const bbox = this.hsMapService.getMapExtentInEpsg4326();
+    const bbox = this.hsMapService.getMapExtentInEpsg4326(app);
     const Observable = this.managerByType(ds).loadList(
       ds,
       params,
@@ -258,7 +259,11 @@ export class HsCompositionsService {
         app
       );
       for (let i = 0; i < layers.length; i++) {
-        this.hsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
+        this.hsMapService.addLayer(
+          layers[i],
+          app,
+          DuplicateHandling.RemoveOriginal
+        );
       }
     } else {
       this.$log.log('Error loading permalink layers');
@@ -288,7 +293,7 @@ export class HsCompositionsService {
         app
       );
       for (let i = 0; i < layers.length; i++) {
-        this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
+        this.hsMapService.addLayer(layers[i], app, DuplicateHandling.IgnoreNew);
       }
       localStorage.removeItem('hs_layers');
     }

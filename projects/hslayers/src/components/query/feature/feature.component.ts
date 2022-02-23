@@ -57,7 +57,8 @@ export class HsQueryFeatureComponent implements OnDestroy {
           return;
         }
         const featureLayer = this.hsMapService.getLayerForFeature(
-          this.olFeature()
+          this.olFeature(),
+          this.app
         );
         this.availableLayers = layers.filter((layer) => layer != featureLayer);
       });
@@ -77,7 +78,7 @@ export class HsQueryFeatureComponent implements OnDestroy {
 
   isFeatureRemovable(): boolean {
     return this.olFeature()
-      ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature())
+      ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature(), this.app)
       : false;
   }
 
@@ -99,12 +100,12 @@ export class HsQueryFeatureComponent implements OnDestroy {
   }
 
   removeFeature(): void {
-    this.hsQueryVectorService.removeFeature(this.olFeature());
+    this.hsQueryVectorService.removeFeature(this.olFeature(), this.app);
   }
 
   zoomToFeature(): void {
     const extent = this.olFeature().getGeometry().getExtent();
-    this.hsMapService.fitExtent(extent);
+    this.hsMapService.fitExtent(extent, this.app);
   }
 
   /**
@@ -117,10 +118,11 @@ export class HsQueryFeatureComponent implements OnDestroy {
     this[beingToggled] = !this[beingToggled];
   }
 
-  toggleExportMenu(): void {
+  toggleExportMenu(app: string): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeature()
+      this.olFeature(),
+      app
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -138,11 +140,12 @@ export class HsQueryFeatureComponent implements OnDestroy {
     this.toggleMenus('editMenuVisible', 'exportMenuVisible');
   }
 
-  moveOrCopyFeature(): void {
+  moveOrCopyFeature(app: string): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       [this.olFeature()],
-      this.selectedLayer
+      this.selectedLayer,
+      app
     );
   }
 }

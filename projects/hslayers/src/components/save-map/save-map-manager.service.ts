@@ -265,7 +265,8 @@ export class HsSaveMapManagerService {
       this.HsMapService.getMap(app),
       tempCompoData,
       this.userData,
-      this.statusData
+      this.statusData,
+      app
     );
   }
 
@@ -393,7 +394,7 @@ export class HsSaveMapManagerService {
       .calculateExtent(this.HsMapService.getMap(app).getSize());
     let pair1 = [b[0], b[1]];
     let pair2 = [b[2], b[3]];
-    const cur_proj = this.HsMapService.getCurrentProj().getCode();
+    const cur_proj = this.HsMapService.getCurrentProj(app).getCode();
     pair1 = transform(pair1, cur_proj, 'EPSG:4326');
     pair2 = transform(pair2, cur_proj, 'EPSG:4326');
     return {

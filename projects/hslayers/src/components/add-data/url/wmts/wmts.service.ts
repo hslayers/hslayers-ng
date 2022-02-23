@@ -108,9 +108,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and add them to the map
    */
-  addLayers(layers: Layer<Source>[]): void {
+  addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.addLayer(l);
+      this.hsMapService.addLayer(l, app);
     }
   }
 

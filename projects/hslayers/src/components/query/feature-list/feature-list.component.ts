@@ -74,10 +74,11 @@ export class HsQueryFeatureListComponent implements OnInit {
     this[beingToggled] = !this[beingToggled];
   }
 
-  toggleExportMenu(): void {
+  toggleExportMenu(app: string): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeatureArray()
+      this.olFeatureArray(),
+      app
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -95,15 +96,16 @@ export class HsQueryFeatureListComponent implements OnInit {
     this.editMenuVisible = !this.editMenuVisible;
   }
 
-  moveOrCopyFeature(): void {
+  moveOrCopyFeature(app: string): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       this.olFeatureArray(),
-      this.selectedLayer
+      this.selectedLayer,
+      app
     );
   }
 
-  async removeAllSelectedFeatures(): Promise<void> {
+  async removeAllSelectedFeatures(app: string): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -118,7 +120,7 @@ export class HsQueryFeatureListComponent implements OnInit {
       for (const feature of this.hsQueryBaseService.data.features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
-          this.hsQueryVectorService.removeFeature(feature.feature);
+          this.hsQueryVectorService.removeFeature(feature.feature, app);
         }, 250);
       }
     }

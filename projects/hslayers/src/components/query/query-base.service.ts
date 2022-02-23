@@ -100,7 +100,7 @@ export class HsQueryBaseService {
       this.zone.run(() => {
         this.hsEventBusService.mapClicked.next(
           Object.assign(evt, {
-            coordinates: this.getCoordinate(evt.coordinate),
+            coordinates: this.getCoordinate(evt.coordinate, app),
             app,
           })
         );
@@ -113,7 +113,11 @@ export class HsQueryBaseService {
         }
         this.dataCleared = false;
         this.currentQuery = (Math.random() + 1).toString(36).substring(7);
-        this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
+        this.setData(
+          this.getCoordinate(evt.coordinate, app),
+          'coordinates',
+          true
+        );
         this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
         this.data.selectedProj = this.data.coordinates[0].projections[0];
         this.getFeatureInfoStarted.next({evt, app});
@@ -125,7 +129,7 @@ export class HsQueryBaseService {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature);
+        const layer = this.hsMapService.getLayerForFeature(feature, app);
         return layer && layer != this.apps[app].queryLayer;
       });
   }
@@ -207,11 +211,11 @@ export class HsQueryBaseService {
   /**
    * @param coordinate -
    */
-  getCoordinate(coordinate) {
+  getCoordinate(coordinate, app: string) {
     this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
-      this.hsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(app),
       'EPSG:4326'
     );
     const coords = {
@@ -228,7 +232,7 @@ export class HsQueryBaseService {
           value: createStringXY(7)(epsg4326Coordinate),
         },
         {
-          name: this.hsMapService.getCurrentProj().getCode(),
+          name: this.hsMapService.getCurrentProj(app).getCode(),
           value: createStringXY(7)(coordinate),
         },
       ],

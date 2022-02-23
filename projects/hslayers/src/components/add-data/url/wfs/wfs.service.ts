@@ -426,7 +426,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     }
     const extent = transformExtent(bbox, 'EPSG:4326', this.data.map_projection);
     if (extent) {
-      this.hsMapService.fitExtent(extent);
+      this.hsMapService.fitExtent(extent, app);
     }
   }
 }

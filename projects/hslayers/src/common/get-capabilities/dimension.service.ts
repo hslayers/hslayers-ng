@@ -28,7 +28,7 @@ export class HsDimensionService {
     public hsUtilsService: HsUtilsService
   ) {
     this.hsDimensionTimeService.layerTimeChanges.subscribe(
-      ({layer: layerDescriptor, time: newTime}) => {
+      ({layer: layerDescriptor, time: newTime, app}) => {
         const dimensions = getDimensions(layerDescriptor.layer);
         if (dimensions && (dimensions['time'] || dimensions['TIME'])) {
           const dimensionDesc = new HsDimensionDescriptor(
@@ -36,7 +36,7 @@ export class HsDimensionService {
             dimensions['time'] ?? dimensions['TIME']
           );
           dimensionDesc.modelValue = newTime;
-          this.dimensionChanged(dimensionDesc);
+          this.dimensionChanged(dimensionDesc, app);
         }
       }
     );
@@ -102,10 +102,10 @@ export class HsDimensionService {
     }
   }
 
-  dimensionChanged(dimension: HsDimensionDescriptor): void {
+  dimensionChanged(dimension: HsDimensionDescriptor, app: string): void {
     dimension.postProcessDimensionValue();
     //Dimension can be linked to multiple layers
-    for (const layer of this.hsMapService.getLayersArray()) {
+    for (const layer of this.hsMapService.getLayersArray(app)) {
       const iteratedDimensions = getDimensions(layer);
       if (
         iteratedDimensions &&

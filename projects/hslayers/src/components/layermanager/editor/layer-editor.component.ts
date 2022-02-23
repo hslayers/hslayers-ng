@@ -129,8 +129,8 @@ export class HsLayerEditorComponent {
    * BoundingBox property of GetCapabilities request (for WMS layer)
    * @returns a promise
    */
-  zoomToLayer(): Promise<any> {
-    return this.HsLayerEditorService.zoomToLayer(this.olLayer());
+  zoomToLayer(app: string): Promise<any> {
+    return this.HsLayerEditorService.zoomToLayer(this.olLayer(), app);
   }
 
   /**

@@ -401,7 +401,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           app
         );
       }
-      this.zoomToLayers();
+      this.zoomToLayers(app);
     }
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager', app);
@@ -570,9 +570,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Zoom map to one layers or combined layer list extent
    */
-  private zoomToLayers() {
+  private zoomToLayers(app: string) {
     if (this.data.extent) {
-      this.hsMapService.fitExtent(this.data.extent);
+      this.hsMapService.fitExtent(this.data.extent, app);
     }
   }
 }

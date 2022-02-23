@@ -66,7 +66,7 @@ export class HsFeatureCommonService {
 
   updateLayerList(app: string): void {
     const layers = this.hsMapService
-      .getLayersArray()
+      .getLayersArray(app)
       .filter((layer: Layer<Source>) => {
         return this.hsLayerUtilsService.isLayerDrawable(layer);
       });
@@ -75,12 +75,14 @@ export class HsFeatureCommonService {
 
   toggleExportMenu(
     exportFormats,
-    features: Feature<Geometry>[] | Feature<Geometry>
+    features: Feature<Geometry>[] | Feature<Geometry>,
+    app: string
   ): void {
     for (const format of exportFormats) {
       format.serializedData = this.hsQueryVectorService.exportData(
         format.name,
-        features
+        features,
+        app
       );
     }
   }
@@ -88,13 +90,14 @@ export class HsFeatureCommonService {
   moveOrCopyFeature(
     type: string,
     features: Feature<Geometry>[],
-    toLayer: Layer<VectorSource<Geometry>>
+    toLayer: Layer<VectorSource<Geometry>>,
+    app: string
   ): void {
     features.forEach((feature) => {
       feature.setStyle(null); //To prevent feature from getting individual style
       toLayer.getSource().addFeature(feature.clone());
       if (type == 'move') {
-        this.hsQueryVectorService.removeFeature(feature);
+        this.hsQueryVectorService.removeFeature(feature, app);
       }
     });
 

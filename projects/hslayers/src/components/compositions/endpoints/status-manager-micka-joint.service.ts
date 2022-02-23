@@ -54,7 +54,8 @@ export class HsCompositionsStatusManagerMickaJointService {
       ds,
       params,
       extentFeatureCreated,
-      bbox
+      bbox,
+      app
     ).pipe(
       map((response: any) => {
         this.HsCompositionsStatusManagerService.loadList(ds, params, bbox, app);

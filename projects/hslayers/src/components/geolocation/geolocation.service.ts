@@ -262,7 +262,7 @@ export class HsGeolocationService {
     await this.HsMapService.loaded(app);
     const map = this.HsMapService.getMap(app);
     this.geolocation = new Geolocation({
-      projection: this.HsMapService.getCurrentProj(),
+      projection: this.HsMapService.getCurrentProj(app),
       trackingOptions: {
         enableHighAccuracy: true,
       },

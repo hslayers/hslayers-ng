@@ -55,7 +55,7 @@ export class HsShareService {
       if (this.HsLayoutService.mainpanel == 'permalink') {
         this.HsShareUrlService.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl();
-        const layers = this.HsMapService.getLayersArray()
+        const layers = this.HsMapService.getLayersArray(app)
           .filter(
             (l) =>
               getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
@@ -72,7 +72,8 @@ export class HsShareService {
                   this.HsMapService.getMap(app),
                   {layers: layers},
                   {},
-                  {}
+                  {},
+                  app
                 ),
                 permalink: true,
                 id: this.HsShareUrlService.id,

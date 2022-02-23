@@ -139,7 +139,7 @@ export class HsDrawService {
     await this.hsMapService.loaded(app);
     const map = this.hsMapService.getMap(app);
     this.fillDrawableLayers(app);
-    this.hsMapService.getLayersArray().forEach((l) =>
+    this.hsMapService.getLayersArray(app).forEach((l) =>
       l.on('change:visible', (e) => {
         if (this.draw && l == this.selectedLayer) {
           this.setType(this.type, app);
@@ -242,11 +242,11 @@ export class HsDrawService {
 
     let tmpTitle = this.hsLanguageService.getTranslation('DRAW.drawLayer');
 
-    const tmpLayer = this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE);
+    const tmpLayer = this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE, app);
     const tmpSource = tmpLayer ? tmpLayer.getSource() : new VectorSource();
 
     let i = 1;
-    while (this.hsMapService.findLayerByTitle(tmpTitle)) {
+    while (this.hsMapService.findLayerByTitle(tmpTitle, app)) {
       tmpTitle = `${this.hsLanguageService.getTranslation(
         'DRAW.drawLayer'
       )} ${i++}`;
@@ -281,7 +281,7 @@ export class HsDrawService {
       this.type = null;
       this.deactivateDrawing(app);
       const tmpLayer =
-        this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE) || null;
+        this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE, app) || null;
       if (tmpLayer) {
         this.hsMapService.getMap(app).removeLayer(tmpLayer);
         this.tmpDrawLayer = false;
@@ -370,7 +370,7 @@ export class HsDrawService {
         {workspace: layer.workspace},
         app
       );
-      lyr = this.hsMapService.findLayerByTitle(layer.title);
+      lyr = this.hsMapService.findLayerByTitle(layer.title, app);
     }
     if (lyr != this.selectedLayer) {
       if (
@@ -427,19 +427,19 @@ export class HsDrawService {
       this.hsLayoutService.setMainPanel('info', app);
     }
     setTimeout(() => {
-      this.addFeatureToSelector(e.feature);
+      this.addFeatureToSelector(e.feature, app);
     });
   }
 
   /**
    * Adds drawn feature to selection
    */
-  addFeatureToSelector(feature) {
+  addFeatureToSelector(feature, app: string) {
     //Zone is used to ensure change detection updates the view
     this.zone.run(() => {
       this.hsQueryBaseService.clearData('features');
       this.hsQueryVectorService.selector.getFeatures().push(feature);
-      this.hsQueryVectorService.createFeatureAttributeList();
+      this.hsQueryVectorService.createFeatureAttributeList(app);
     });
   }
 
@@ -574,7 +574,8 @@ export class HsDrawService {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
           (layer) => {
             return (
-              !this.hsMapService.findLayerByTitle(layer.title) && layer.editable
+              !this.hsMapService.findLayerByTitle(layer.title, app) &&
+              layer.editable
             );
           }
         );
@@ -889,7 +890,7 @@ export class HsDrawService {
   /**
    * Selects or deselects all features in this.selectedLayer
    */
-  selectAllFeatures(): void {
+  selectAllFeatures(app: string): void {
     const selectFeatures =
       this.selectedFeatures.getLength() !=
       this.selectedLayer.getSource().getFeatures().length;
@@ -904,7 +905,7 @@ export class HsDrawService {
         .getFeatures()
         .extend(this.selectedLayer.getSource().getFeatures());
     }
-    this.hsQueryVectorService.createFeatureAttributeList();
+    this.hsQueryVectorService.createFeatureAttributeList(app);
   }
 
   toggleBoxSelection(app: string): void {
@@ -931,7 +932,7 @@ export class HsDrawService {
               this.hsQueryBaseService.selector.getFeatures().push(feature);
             });
 
-          this.hsQueryVectorService.createFeatureAttributeList();
+          this.hsQueryVectorService.createFeatureAttributeList(app);
         });
 
         this.boxSelection.on('boxstart' as any, () => {

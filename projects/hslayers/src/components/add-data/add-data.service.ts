@@ -37,7 +37,7 @@ export class HsAddDataService {
     underLayer?: Layer<Source>
   ): void {
     if (underLayer) {
-      const layers = this.hsMapService.getLayersArray();
+      const layers = this.hsMapService.getLayersArray(app);
       const underZ = underLayer.getZIndex();
       layer.setZIndex(underZ);
       for (const iLayer of layers.filter((l) => !getBase(l))) {

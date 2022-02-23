@@ -103,7 +103,7 @@
                     </div>
                     <button class="btn btn-primary btn-sm hs-draw-selectAll w-100"
                         [disabled]="!HsDrawService.selectedLayer"
-                        (click)="HsDrawService.selectAllFeatures(); selectionTypeDropdown.close()" data-toggle="tooltip"
+                        (click)="HsDrawService.selectAllFeatures(data.app); selectionTypeDropdown.close()" data-toggle="tooltip"
                         [title]="'STYLER.selection' | translate">
                         {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
                     </button>

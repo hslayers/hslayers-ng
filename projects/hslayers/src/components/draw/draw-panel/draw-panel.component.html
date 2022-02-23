@@ -134,7 +134,7 @@
                         id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
                 </div>
                 <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
-                    (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()" data-toggle="tooltip"
+                    (click)="HsDrawService.selectAllFeatures(app);selectionTypeDropdown.close()" data-toggle="tooltip"
                     [title]="'DRAW.deselectAllFeatures' | translate">
                     {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
                 </button>

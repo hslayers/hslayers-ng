@@ -64,14 +64,16 @@ export class HsQueryPopupComponent
   }
 
   ngOnDestroy(): void {
-    this.hsMapService.getMap(this.data.app).removeOverlay(this.data.service.hoverPopup);
+    this.hsMapService
+      .getMap(this.data.app)
+      .removeOverlay(this.data.service.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
   popupVisible(): any {
     const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
       (f) => {
-        const layer = this.hsMapService.getLayerForFeature(f);
+        const layer = this.hsMapService.getLayerForFeature(f, this.data.app);
         if (!layer) {
           return false;
         }
@@ -83,14 +85,17 @@ export class HsQueryPopupComponent
       let tmpForHover: any[] = [];
       this.data.service.featuresUnderMouse.forEach((feature) => {
         tmpForHover = tmpForHover.concat(
-          this.data.service.serializeFeatureAttributes(feature)
+          this.data.service.serializeFeatureAttributes(feature, this.data.app)
         );
         if (getFeatures(feature)) {
           getFeatures(feature).forEach((subfeature) => {
             const subFeatureObj: any = {};
             subFeatureObj.feature = subfeature;
             subFeatureObj.attributes =
-              this.data.service.serializeFeatureAttributes(subfeature);
+              this.data.service.serializeFeatureAttributes(
+                subfeature,
+                this.data.app
+              );
             tmpForHover.push(subFeatureObj);
           });
         }

@@ -2,7 +2,7 @@
     <hs-panel-header name="feature_table" [title]="'PANEL_HEADER.FEATURE_TABLE' | translate" [app]="data.app"></hs-panel-header>
     <div class="card-body">
         <div *ngFor="let layer of layers">
-            <hs-layer-features [layer]="layer"></hs-layer-features>
+            <hs-layer-features [app]="data.app" [layer]="layer"></hs-layer-features>
         </div>
     </div>
 </div>

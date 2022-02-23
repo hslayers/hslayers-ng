@@ -81,7 +81,7 @@ export class HsCompositionsMickaService {
     tmp = this.HsUtilsService.proxify(tmp);
     return tmp;
   }
-  compositionsReceived(endpoint: HsEndpoint, response: any): void {
+  compositionsReceived(endpoint: HsEndpoint, response: any, app: string): void {
     if (!response.records) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation('COMMON.warning'),
@@ -113,7 +113,7 @@ export class HsCompositionsMickaService {
       if (response.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.HsMapService.getCurrentProj()
+          this.HsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
           record.featureId = extentFeature.getId();
@@ -127,7 +127,8 @@ export class HsCompositionsMickaService {
     endpoint: HsEndpoint,
     params: any,
     extentFeatureCreated,
-    bbox: any
+    bbox: any,
+    app: string
   ): Observable<any> {
     params = this.checkForParams(endpoint, params);
     const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
@@ -141,7 +142,7 @@ export class HsCompositionsMickaService {
         timeout(5000),
         map((response: any) => {
           response.extentFeatureCreated = extentFeatureCreated;
-          this.compositionsReceived(endpoint, response);
+          this.compositionsReceived(endpoint, response, app);
         }),
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(

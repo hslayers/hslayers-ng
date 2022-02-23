@@ -125,7 +125,8 @@ export class HsMapService {
    * @returns VectorLayer
    */
   getLayerForFeature(
-    feature
+    feature,
+    app: string
   ): VectorLayer<VectorSource<Geometry>> | VectorLayer<Cluster> {
     if (typeof feature.getId() == 'undefined') {
       feature.setId(this.HsUtilsService.generateUuid());
@@ -136,7 +137,7 @@ export class HsMapService {
     }
     const layersFound: VectorAndSource[] = [];
     const layersToLookFor = [];
-    this.getVectorLayers(layersToLookFor);
+    this.getVectorLayers(layersToLookFor, app);
     for (const obj of layersToLookFor) {
       let found = false;
       if (obj.source.getFeatureById) {
@@ -190,7 +191,7 @@ export class HsMapService {
     });
   }
 
-  getVectorLayers(layersToLookFor: VectorAndSource[], app?: string): void {
+  getVectorLayers(layersToLookFor: VectorAndSource[], app: string): void {
     const check = (layer) => {
       const source = layer.getSource();
       if (this.HsUtilsService.instOf(source, Cluster)) {
@@ -220,7 +221,7 @@ export class HsMapService {
       });
   }
 
-  getFeatureById(fid: string): Feature<Geometry> {
+  getFeatureById(fid: string, app: string): Feature<Geometry> {
     if (this.featureLayerMapping[fid]) {
       if (this.featureLayerMapping[fid].length > 1) {
         console.warn(`Multiple layers exist for feature id ${fid}`);
@@ -232,7 +233,7 @@ export class HsMapService {
         source: VectorSource<Geometry> | Cluster;
         layer: any;
       }[] = [];
-      this.getVectorLayers(layersToLookFor);
+      this.getVectorLayers(layersToLookFor, app);
       const obj = layersToLookFor.find((obj) => obj.source.getFeatureById(fid));
       if (obj) {
         return obj.source.getFeatureById(fid);
@@ -485,7 +486,7 @@ export class HsMapService {
     );
     register(proj4);
     if (this.HsConfig.get(app).componentsEnabled?.mapControls == false) {
-      this.removeAllControls();
+      this.removeAllControls(app);
     }
     this.HsEventBusService.olMapLoads.next({map, app});
   }
@@ -511,8 +512,8 @@ export class HsMapService {
    * @returns {Ol.layer} Ol.layer object
    * @description Find layer object by title of layer
    */
-  findLayerByTitle(title) {
-    const layers = this.getLayersArray();
+  findLayerByTitle(title, app: string) {
+    const layers = this.getLayersArray(app);
     let tmp = null;
     for (const layer of layers) {
       if (getTitle(layer) == title) {
@@ -574,7 +575,7 @@ export class HsMapService {
    * @param {ol/Layer} lyr A layer to check
    * @returns {boolean} True if layer is already present in the map, false otherwise
    */
-  layerAlreadyExists(lyr, app?: string) {
+  layerAlreadyExists(lyr, app: string) {
     const duplicateLayers = this.getLayersArray(app ?? DEFAULT).filter(
       (existing) => {
         const equal = this.layersEqual(existing, lyr);
@@ -584,7 +585,7 @@ export class HsMapService {
     return duplicateLayers.length > 0;
   }
 
-  removeDuplicate(lyr, app?: string) {
+  removeDuplicate(lyr, app: string) {
     this.getLayersArray(app ?? DEFAULT)
       .filter((existing) => {
         const equal = this.layersEqual(existing, lyr);
@@ -597,7 +598,7 @@ export class HsMapService {
       });
   }
 
-  getLayersArray(app?: string): Layer<Source>[] {
+  getLayersArray(app: string): Layer<Source>[] {
     return this.getMap(app ?? DEFAULT)
       .getLayers()
       .getArray() as Layer<Source>[];
@@ -659,9 +660,9 @@ export class HsMapService {
    */
   addLayer(
     lyr: Layer<Source>,
+    app: string,
     duplicateHandling?: DuplicateHandling,
-    visibleOverride?: string[],
-    app?: string
+    visibleOverride?: string[]
   ): void {
     if (this.layerAlreadyExists(lyr, app ?? DEFAULT)) {
       switch (duplicateHandling) {
@@ -669,7 +670,7 @@ export class HsMapService {
           if (getBase(lyr) == true) {
             return;
           }
-          this.removeDuplicate(lyr);
+          this.removeDuplicate(lyr, app);
           break;
         case DuplicateHandling.IgnoreNew:
           return;
@@ -699,15 +700,15 @@ export class HsMapService {
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
    */
 
-  repopulateLayers(visibilityOverrides, app?: string) {
+  repopulateLayers(visibilityOverrides, app: string) {
     if (this.HsConfig.get(app).box_layers) {
       this.HsConfig.get(app).box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
           this.addLayer(
             lyr,
+            app,
             DuplicateHandling.IgnoreNew,
-            visibilityOverrides,
-            app
+            visibilityOverrides
           );
         }
       });
@@ -718,15 +719,15 @@ export class HsMapService {
       layers.forEach((lyr: Layer<Source>) => {
         this.addLayer(
           lyr,
+          app,
           DuplicateHandling.IgnoreNew,
-          visibilityOverrides,
-          app
+          visibilityOverrides
         );
       });
     }
   }
 
-  getCurrentProj(app?: string): Projection {
+  getCurrentProj(app: string): Projection {
     return this.getMap(app ?? DEFAULT)
       .getView()
       .getProjection();
@@ -786,17 +787,17 @@ export class HsMapService {
    * @public
    * @description Reset map to state configured in app config (reload all layers and set default view)
    */
-  reset() {
-    this.removeAllLayers();
-    this.repopulateLayers(null);
-    this.resetView();
+  reset(app: string) {
+    this.removeAllLayers(app);
+    this.repopulateLayers(null, app);
+    this.resetView(app);
   }
 
   /**
    * @public
    * @description Reset map view to view configured in app config
    */
-  resetView(app?: string) {
+  resetView(app: string) {
     const view = this.getMap(app ?? DEFAULT).getView();
     view.setCenter(this.originalView.center);
     view.setZoom(this.originalView.zoom);
@@ -828,7 +829,7 @@ export class HsMapService {
     return lyr.getVisible();
   }
 
-  getCanvases(app?: string) {
+  getCanvases(app: string) {
     return this.apps[app ?? DEFAULT].mapElement.querySelectorAll(
       '.ol-layer canvas'
     );
@@ -928,13 +929,13 @@ export class HsMapService {
    * @param {number} zoom New zoom level
    * @description Move map and zoom to specified coordinate/zoom level
    */
-  moveToAndZoom(x, y, zoom, app?: string) {
+  moveToAndZoom(x, y, zoom, app: string) {
     const view = this.getMap(app ?? DEFAULT).getView();
     view.setCenter([x, y]);
     view.setZoom(zoom);
   }
 
-  getMapExtent(app?: string) {
+  getMapExtent(app: string) {
     const mapSize = this.getMap(app ?? DEFAULT).getSize();
     const mapExtent = mapSize
       ? this.getMap(app ?? DEFAULT)
@@ -944,16 +945,16 @@ export class HsMapService {
     return mapExtent;
   }
 
-  getMapExtentInEpsg4326() {
+  getMapExtentInEpsg4326(app: string) {
     const bbox = transformExtent(
-      this.getMapExtent(),
-      this.getCurrentProj(),
+      this.getMapExtent(app),
+      this.getCurrentProj(app),
       'EPSG:4326'
     );
     return bbox;
   }
 
-  fitExtent(extent: number[], app?: string): void {
+  fitExtent(extent: number[], app: string): void {
     this.getMap(app ?? DEFAULT)
       .getView()
       .fit(extent, {size: this.getMap(app ?? DEFAULT).getSize()});
@@ -968,9 +969,9 @@ export class HsMapService {
     return this.apps[app ?? DEFAULT]?.map;
   }
 
-  removeAllLayers(app?: string) {
+  removeAllLayers(app: string) {
     const to_be_removed = [];
-    this.getLayersArray()
+    this.getLayersArray(app)
       .filter((layer) => getRemovable(layer as Layer<Source>) !== false)
       .forEach((lyr) => {
         to_be_removed.push(lyr);
@@ -979,7 +980,7 @@ export class HsMapService {
       this.getMap(app ?? DEFAULT).removeLayer(to_be_removed.shift());
     }
   }
-  removeAllControls(app?: string) {
+  removeAllControls(app: string) {
     [
       ...this.getMap(app ?? DEFAULT)
         .getControls()
@@ -990,7 +991,7 @@ export class HsMapService {
     this.HsConfig.get(app).componentsEnabled.mapControls = false;
   }
 
-  removeAllInteractions(app?: string) {
+  removeAllInteractions(app: string) {
     this.getMap(app ?? DEFAULT)
       .getInteractions()
       .forEach((interaction) => {

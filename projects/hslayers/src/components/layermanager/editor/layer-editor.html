@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="btn-group" role="group" [attr.aria-label]="'LAYERMANAGER.editorButtons' | translate">
-            <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()"
+            <button class="btn btn-primary" (click)="zoomToLayer(app)" [disabled]="!layerIsZoomable()"
                 data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate"><i
                     class="icon-search"></i></button>
             <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()"

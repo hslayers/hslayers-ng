@@ -59,7 +59,7 @@ export class HsCompositionsLaymanService {
         .getMap(app)
         .getView()
         .calculateExtent(this.hsMapService.getMap(app).getSize()),
-      this.hsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(app),
       'EPSG:3857'
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
@@ -88,7 +88,7 @@ export class HsCompositionsLaymanService {
         map((response: any) => {
           if (Array.isArray(response.body)) {
             response.body.extentFeatureCreated = extentFeatureCreated;
-            this.compositionsReceived(endpoint, response);
+            this.compositionsReceived(endpoint, response, app);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
@@ -133,7 +133,7 @@ export class HsCompositionsLaymanService {
       );
     return endpoint.listLoading;
   }
-  compositionsReceived(endpoint: HsEndpoint, response): void {
+  compositionsReceived(endpoint: HsEndpoint, response, app: string): void {
     if (response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
       this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
@@ -162,7 +162,7 @@ export class HsCompositionsLaymanService {
       if (response.body.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj()
+          this.hsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
           tmp.featureId = extentFeature.getId();

@@ -78,7 +78,7 @@ export class HsStylerService {
   async init(app: string): Promise<void> {
     await this.hsMapService.loaded(app);
     for (const layer of this.hsMapService
-      .getLayersArray()
+      .getLayersArray(app)
       .filter((layer) => this.hsLayerUtilsService.isLayerVectorLayer(layer))) {
       this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
     }

@@ -57,7 +57,7 @@ export class HsLayerEditorService {
    * BoundingBox property of GetCapabilities request (for WMS layer)
    * @param layer - OpenLayers layer to zoom to
    */
-  async zoomToLayer(layer: Layer<Source>): Promise<boolean> {
+  async zoomToLayer(layer: Layer<Source>, app: string): Promise<boolean> {
     let extent = null;
     if (layer.getExtent()) {
       extent = layer.getExtent();
@@ -65,7 +65,7 @@ export class HsLayerEditorService {
       extent = (<any>layer.getSource()).getExtent();
     }
     if (extent) {
-      this.fitIfExtentSet(extent, layer);
+      this.fitIfExtentSet(extent, layer, app);
       return true;
     }
     if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
@@ -83,14 +83,22 @@ export class HsLayerEditorService {
         const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
         if (foundDef) {
           extent = foundDef.EX_GeographicBoundingBox || foundDef.BoundingBox;
-          this.fitIfExtentSet(this.transformToCurrentProj(extent), layer);
+          this.fitIfExtentSet(
+            this.transformToCurrentProj(extent, app),
+            layer,
+            app
+          );
           return true;
         }
       } else if (typeof caps.Capability.Layer == 'object') {
         extent =
           caps.Capability.Layer.EX_GeographicBoundingBox ||
           caps.Capability.Layer.BoundingBox;
-        this.fitIfExtentSet(this.transformToCurrentProj(extent), layer);
+        this.fitIfExtentSet(
+          this.transformToCurrentProj(extent, app),
+          layer,
+          app
+        );
         return true;
       } else {
         return false;
@@ -136,21 +144,21 @@ export class HsLayerEditorService {
    * @param {Extent} extent - Extent in EPSG:4326
    * @param layer
    */
-  fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
+  fitIfExtentSet(extent: number[], layer: Layer<Source>, app: string): void {
     if (extent !== null) {
       layer.setExtent(extent);
-      this.HsMapService.fitExtent(extent);
+      this.HsMapService.fitExtent(extent, app);
     }
   }
 
   /**
    * @param extent
    */
-  transformToCurrentProj(extent: number[]): number[] {
+  transformToCurrentProj(extent: number[], app: string): number[] {
     return transformExtent(
       extent,
       'EPSG:4326',
-      this.HsMapService.getCurrentProj()
+      this.HsMapService.getCurrentProj(app)
     );
   }
 

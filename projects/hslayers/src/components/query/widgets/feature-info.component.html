@@ -2,7 +2,7 @@
 <ng-template #featureHeader let-feature="feature" let-type="type">
   <div class="d-flex flex-row">
     <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
-    <a class="p-1" *ngIf="hsQueryVectorService.isFeatureRemovable(feature) && type" (click)="removeFeature(feature)"
+    <a class="p-1" *ngIf="hsQueryVectorService.isFeatureRemovable(feature, data.app) && type" (click)="removeFeature(feature)"
       data-toggle="tooltip" [title]="'QUERY.featurePopup.' + type | translate">
       <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
     </a>
@@ -52,7 +52,7 @@
       <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature, type: 'removeFeature'}">
       </ng-container>
       <ng-container
-        *ngTemplateOutlet="featureAttribute;context:{attributes: data.service.serializeFeatureAttributes(feature)}">
+        *ngTemplateOutlet="featureAttribute;context:{attributes: data.service.serializeFeatureAttributes(feature, data.app)}">
       </ng-container>
     </div>
   </ng-template>

@@ -160,7 +160,7 @@ export class HsCompositionsCatalogueService {
     this.hsMapService.loaded(app).then(() => {
       const observables = [];
       for (const endpoint of this.filteredEndpoints) {
-        observables.push(this.loadCompositionFromEndpoint(endpoint));
+        observables.push(this.loadCompositionFromEndpoint(endpoint, app));
       }
       this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
         suspendLimitCalculation
@@ -205,18 +205,22 @@ export class HsCompositionsCatalogueService {
    * (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
    * @param ep -
    */
-  loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
-    return this.hsCompositionsService.loadCompositions(ep, {
-      query: this.data.query,
-      sortBy: this.data.sortBy.value,
-      filterByExtent: this.filterByExtent,
-      keywords: this.data.keywords,
-      themes: this.data.themes,
-      type: this.data.type,
-      start: ep.compositionsPaging.start,
-      limit: ep.compositionsPaging.limit,
-      filterByOnlyMine: this.filterByOnlyMine,
-    });
+  loadCompositionFromEndpoint(ep: HsEndpoint, app: string): Observable<any> {
+    return this.hsCompositionsService.loadCompositions(
+      ep,
+      {
+        query: this.data.query,
+        sortBy: this.data.sortBy.value,
+        filterByExtent: this.filterByExtent,
+        keywords: this.data.keywords,
+        themes: this.data.themes,
+        type: this.data.type,
+        start: ep.compositionsPaging.start,
+        limit: ep.compositionsPaging.limit,
+        filterByOnlyMine: this.filterByOnlyMine,
+      },
+      app
+    );
   }
   /**
    * Clear all loaded data and filter endpoint array (if required) before loading compositions

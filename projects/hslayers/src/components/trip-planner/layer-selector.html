@@ -34,7 +34,7 @@
           *ngFor="let layer of HsTripPlannerService.vectorLayers"
           data-toggle="tooltip"
           title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
-          (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false"
+          (click)="HsTripPlannerService.selectLayer(layer, usage, app); layersExpanded = false"
           >{{HsLayerUtilsService.translateTitle(layer.title)}}</a
         >
       </div>

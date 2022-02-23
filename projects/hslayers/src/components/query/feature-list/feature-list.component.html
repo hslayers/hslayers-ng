@@ -23,7 +23,7 @@
             </div>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                    [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu()"><i
+                    [title]="'QUERY.downloadAs' | translate" (click)="toggleExportMenu(app)"><i
                         class="icon-download"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
                     <a class="dropdown-item" *ngFor="let format of exportFormats"
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <button type="button" class="btn-danger btn btn-sm border-0" [title]="'QUERY.deleteAllSelected' | translate"
-                (click)="removeAllSelectedFeatures()">
+                (click)="removeAllSelectedFeatures(app)">
                 <i class="glyphicon icon-trash"></i>
             </button>
         </div>
@@ -51,7 +51,7 @@
                 <option *ngFor="let layer of hsFeatureCommonService.availableLayer$ | async" [ngValue]="layer">
                     {{hsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
             </select>
-            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
+            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature(app)" [disabled]="!selectedLayer"><i
                     class="icon-save-floppy"></i></button>
         </div>
     </div>

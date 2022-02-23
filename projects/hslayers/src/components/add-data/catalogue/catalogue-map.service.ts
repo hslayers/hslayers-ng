@@ -173,6 +173,6 @@ export class HsAddDataCatalogueMapService {
       second_pair[0],
       second_pair[1],
     ];
-    this.hsMapService.fitExtent(extent);
+    this.hsMapService.fitExtent(extent, app);
   }
 }

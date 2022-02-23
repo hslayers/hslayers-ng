@@ -72,7 +72,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         if (
           selectorFeatures.length > 1 &&
           this.editLayer !=
-            this.hsMapService.getLayerForFeature(data.feature) &&
+            this.hsMapService.getLayerForFeature(data.feature, this.app) &&
           this.selectedType == 'split'
         ) {
           if (selectorFeatures.length == 3) {
@@ -201,7 +201,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         this.HsQueryBaseService.clearData('features');
         this.HsQueryBaseService.selector.getFeatures().clear();
         this.HsQueryBaseService.selector.getFeatures().push(feature);
-        this.HsQueryVectorService.createFeatureAttributeList();
+        this.HsQueryVectorService.createFeatureAttributeList(this.app);
       } catch (error) {
         console.error(error);
       }
@@ -214,7 +214,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       if (this.selectedType == 'split') {
         const features = this.editLayer.getSource().getFeatures();
         if (features.length > 1) {
-          this.HsQueryVectorService.removeFeature(features[0]);
+          this.HsQueryVectorService.removeFeature(features[0], this.app);
 
           this.hsToastService.createToastPopupMessage(
             this.HsLanguageService.getTranslation(
@@ -230,7 +230,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         }
       }
 
-      this.HsDrawService.addFeatureToSelector(e.feature);
+      this.HsDrawService.addFeatureToSelector(e.feature, this.app);
     });
   }
 
@@ -346,7 +346,8 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       //Remove all but the first (edited) features
       if (features.length != 1) {
         this.HsQueryVectorService.removeFeature(
-          features[features.length - 1].feature //pop() ??
+          features[features.length - 1].feature, //pop() ??
+          this.app
         );
       }
     }
@@ -358,7 +359,8 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   split(coords, properties): void {
     for (const c of coords) {
       const layer = this.hsMapService.getLayerForFeature(
-        this.features[0].feature
+        this.features[0].feature,
+        this.app
       );
       const feature = new Feature(
         Object.assign(properties, {geometry: new Polygon(c)})
@@ -367,7 +369,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       layer.getSource().addFeature(feature);
     }
     for (const feature of this.features) {
-      this.HsQueryVectorService.removeFeature(feature.feature);
+      this.HsQueryVectorService.removeFeature(feature.feature, this.app);
     }
     this.resetState();
   }
@@ -378,7 +380,8 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       this.setCoordinatesToFirstFeature(newGeom);
     } else {
       const layer = this.hsMapService.getLayerForFeature(
-        this.features[0].feature
+        this.features[0].feature,
+        this.app
       );
 
       for (const geom of newGeom) {
@@ -388,7 +391,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       }
 
       for (const feature of this.features) {
-        this.HsQueryVectorService.removeFeature(feature.feature);
+        this.HsQueryVectorService.removeFeature(feature.feature, this.app);
       }
     }
     this.resetState();

@@ -106,7 +106,7 @@ export class HsSaveMapComponent
   ngOnInit() {
     window.addEventListener('beforeunload', (e) => {
       if (this.HsConfig.get(this.data.app).saveMapStateOnReload) {
-        this.hsSaveMapService.save2storage(e);
+        this.hsSaveMapService.save2storage(e, this.data.app);
       }
     });
     this.advancedForm =

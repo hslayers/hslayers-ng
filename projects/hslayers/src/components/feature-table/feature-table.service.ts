@@ -72,27 +72,27 @@ export class HsFeatureTableService {
    * @param layer Layer from HsConfig.get(app).layersInFeatureTable
    * @description Search all layers feature attributes and map them into new objects for html table
    */
-  fillFeatureList(layer: Layer<Source>): void {
+  fillFeatureList(layer: Layer<Source>, app: string): void {
     const source: VectorSource<Geometry> =
       this.HsLayerUtilsService.isLayerClustered(layer)
         ? (layer.getSource() as Cluster).getSource()
         : (layer.getSource() as VectorSource<Geometry>);
     this.features = source
       .getFeatures()
-      .map((f) => this.describeFeature(f))
+      .map((f) => this.describeFeature(f, app))
       .filter((f) => f?.attributes?.length > 0);
   }
 
-  updateFeatureDescription(feature: Feature<Geometry>): void {
-    const newDescriptor = this.describeFeature(feature);
+  updateFeatureDescription(feature: Feature<Geometry>, app: string): void {
+    const newDescriptor = this.describeFeature(feature, app);
     const currentIx = this.features.findIndex((f) => f.feature == feature);
     if (newDescriptor && currentIx > -1) {
       this.features[currentIx] = newDescriptor;
     }
   }
 
-  addFeatureDescription(feature: Feature<Geometry>): void {
-    const newDescriptor = this.describeFeature(feature);
+  addFeatureDescription(feature: Feature<Geometry>, app: string): void {
+    const newDescriptor = this.describeFeature(feature, app);
     if (newDescriptor) {
       this.features.push(newDescriptor);
     }
@@ -105,9 +105,11 @@ export class HsFeatureTableService {
     }
   }
 
-  describeFeature(feature: Feature<Geometry>): FeatureDescriptor {
-    const attribWrapper =
-      this.HsQueryVectorService.getFeatureAttributes(feature).pop();
+  describeFeature(feature: Feature<Geometry>, app: string): FeatureDescriptor {
+    const attribWrapper = this.HsQueryVectorService.getFeatureAttributes(
+      feature,
+      app
+    ).pop();
     if (!attribWrapper) {
       return null;
     }

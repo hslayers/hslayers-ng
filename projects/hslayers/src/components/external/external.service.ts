@@ -157,7 +157,7 @@ export class HsExternalService {
     e: Event,
     app: string
   ) {
-    if (!this.hsMapService.getLayerForFeature(feature)?.getVisible()) {
+    if (!this.hsMapService.getLayerForFeature(feature, app)?.getVisible()) {
       return;
     }
     const extent = feature.getGeometry().getExtent();
@@ -165,7 +165,7 @@ export class HsExternalService {
     const map = this.hsMapService.getMap(app);
     switch (action) {
       case 'zoomToExtent':
-        this.hsMapService.fitExtent(extent);
+        this.hsMapService.fitExtent(extent, app);
         break;
       case 'panToCenter':
         map.getView().setCenter(center);

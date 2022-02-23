@@ -454,7 +454,7 @@ export class HsCompositionsLayerParserService {
           const features = lyr_def.features
             ? new GeoJSON().readFeatures(lyr_def.features, {
                 dataProjection: 'EPSG:4326',
-                featureProjection: this.HsMapService.getCurrentProj(),
+                featureProjection: this.HsMapService.getCurrentProj(app),
               })
             : undefined;
           layer = await this.HsAddDataVectorService.createVectorLayer(

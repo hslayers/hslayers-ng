@@ -65,7 +65,7 @@ export class HsShareUrlService {
     const view = this.HsMapService.getMap(app).getView();
     this.id = this.HsUtilsService.generateUuid();
 
-    const externalLayers = this.HsMapService.getLayersArray().filter(
+    const externalLayers = this.HsMapService.getLayersArray(app).filter(
       (lyr) => !(getShowInLayerManager(lyr) === false)
     );
     const visibleLayers = externalLayers
@@ -76,7 +76,7 @@ export class HsShareUrlService {
       (lyr) => !this.HsConfig.get(app).default_layers?.includes(lyr)
     );
     //This might become useful, but url size is limited, so we are not using it
-    const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
+    const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers, app);
 
     const pnlMain = this.HsLayoutService.get(app).mainpanel;
     this.push(HS_PRMS.panel, pnlMain == 'permalink' ? 'layermanager' : pnlMain);

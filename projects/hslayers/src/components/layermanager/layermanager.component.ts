@@ -186,7 +186,6 @@ export class HsLayerManagerComponent
 
   ngOnInit(): void {
     this.layerlistVisible = true;
-    this.hsMapService.loaded(this.data.app).then((map) => this.init(map));
     this.hsLayerManagerService.init(this.data.app);
   }
 
@@ -306,12 +305,8 @@ export class HsLayerManagerComponent
     return this.hsLayerUtilsService.layerLoaded(layer);
   }
 
-  /**
-   * @param m
-   */
-  init(m): void {
-    this.map = this.hsMapService.getMap(this.data.app);
-    this.hsLayerSynchronizerService.init(this.map);
+  init(): void {
+    this.hsLayerSynchronizerService.init(this.data.app);
     this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {

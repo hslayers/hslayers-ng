@@ -190,7 +190,7 @@ export class HsLayerManagerService {
             (ld) => ld.layer == olLayer
           );
           if (layerDescriptor) {
-            this.HsDimensionTimeService.setupTimeLayer(layerDescriptor);
+            this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, app);
           }
         }
       }
@@ -1257,7 +1257,7 @@ export class HsLayerManagerService {
       ).getFeatures(),
       {
         dataProjection: 'EPSG:4326',
-        featureProjection: this.HsMapService.getCurrentProj(),
+        featureProjection: this.HsMapService.getCurrentProj(app),
       }
     );
     const file = new Blob([geojson], {type: 'application/json'});
@@ -1365,7 +1365,7 @@ export class HsLayerManagerService {
     });
     setTitle(copiedLayer, newTitle);
     setName(copiedLayer, getName(this.apps[app].currentLayer.layer));
-    this.HsMapService.addLayer(copiedLayer);
+    this.HsMapService.addLayer(copiedLayer, app);
   }
 
   /*
@@ -1378,7 +1378,7 @@ export class HsLayerManagerService {
     if (newTitle && newTitle !== copyTitle) {
       copyTitle = newTitle;
     } else {
-      const layerCopies = this.HsMapService.getLayersArray().filter(
+      const layerCopies = this.HsMapService.getLayersArray(app).filter(
         (l) => getName(l) == layerName
       );
       numb = layerCopies !== undefined ? layerCopies.length : 0;

@@ -22,5 +22,5 @@ export interface HsQueryPopupServiceModel {
   fillFeatures(features: Feature<Geometry>[], app: string);
   showPopup(e: any): void;
   closePopup(): void;
-  serializeFeatureAttributes(feature: Feature<Geometry>): any[];
+  serializeFeatureAttributes(feature: Feature<Geometry>, app: string): any[];
 }

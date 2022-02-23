@@ -239,7 +239,8 @@ export class HsCompositionsParserService {
         this.loadWarningBootstrap(extent);
       } else {
         this.HsMapService.fitExtent(
-          transformExtentValue(extent, this.HsMapService.getCurrentProj())
+          transformExtentValue(extent, this.HsMapService.getCurrentProj(app)),
+          app
         );
       }
     }
@@ -249,6 +250,7 @@ export class HsCompositionsParserService {
       layers.forEach((lyr) => {
         this.HsMapService.addLayer(
           lyr as Layer<Source>,
+          app,
           DuplicateHandling.RemoveOriginal
         );
       });
@@ -302,7 +304,7 @@ export class HsCompositionsParserService {
    */
   removeCompositionLayers(app: string): void {
     const to_be_removed = [];
-    this.HsMapService.getLayersArray().forEach((lyr) => {
+    this.HsMapService.getLayersArray(app).forEach((lyr) => {
       if (getFromComposition(lyr)) {
         to_be_removed.push(lyr);
       }
@@ -478,7 +480,7 @@ export class HsCompositionsParserService {
         }
         break;
       default:
-        const existing = this.HsMapService.getLayersArray().find(
+        const existing = this.HsMapService.getLayersArray(app).find(
           (l) => getTitle(l as Layer<Source>) == lyr_def.title
         );
         if (existing != undefined) {

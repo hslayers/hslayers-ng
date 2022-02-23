@@ -45,7 +45,7 @@ export class HsQueryWmsService {
   ) {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
       this.infoCounter = 0;
-      this.hsMapService.getLayersArray().forEach((layer: Layer<Source>) => {
+      this.hsMapService.getLayersArray(app).forEach((layer: Layer<Source>) => {
         if (getBase(layer) == true || layer.get('queryable') == false) {
           return;
         }
@@ -326,7 +326,7 @@ export class HsQueryWmsService {
         viewResolution,
         source.getProjection()
           ? source.getProjection()
-          : this.hsMapService.getCurrentProj(),
+          : this.hsMapService.getCurrentProj(app),
         {
           INFO_FORMAT: source.getParams().INFO_FORMAT,
         }

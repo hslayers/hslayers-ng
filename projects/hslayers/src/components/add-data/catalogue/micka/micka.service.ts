@@ -62,7 +62,7 @@ export class HsMickaBrowserService {
         map((x: any) => {
           x.dataset = dataset;
           x.extentFeatureCreated = extentFeatureCreated;
-          this.datasetsReceived(x);
+          this.datasetsReceived(x, app);
           return x;
         }),
         catchError((e) => {
@@ -160,7 +160,7 @@ export class HsMickaBrowserService {
    * @param data - HTTP response containing all the layers
    * Callback for catalogue http query
    */
-  private datasetsReceived(data): boolean {
+  private datasetsReceived(data, app: string): boolean {
     if (!data.dataset || !data.extentFeatureCreated) {
       return;
     }
@@ -180,7 +180,7 @@ export class HsMickaBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             lyr,
-            this.hsMapService.getCurrentProj()
+            this.hsMapService.getCurrentProj(app)
           );
           if (extentFeature) {
             lyr.featureId = extentFeature.getId();

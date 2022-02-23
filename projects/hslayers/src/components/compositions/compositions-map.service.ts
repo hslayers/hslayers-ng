@@ -112,10 +112,10 @@ export class HsCompositionsMapService {
     this.extentLayer.getSource().addFeatures([extentFeature]);
   }
 
-  getFeatureRecordAndUnhighlight(feature, selector, list: any[]) {
+  getFeatureRecordAndUnhighlight(feature, selector, list: any[], app: string) {
     const record = list?.find((record) => record.featureId == feature.getId());
     if (
-      this.hsMapService.getLayerForFeature(feature) == this.extentLayer &&
+      this.hsMapService.getLayerForFeature(feature, app) == this.extentLayer &&
       record
     ) {
       setHighlighted(feature, false);

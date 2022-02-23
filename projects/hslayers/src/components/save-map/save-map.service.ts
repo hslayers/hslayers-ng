@@ -75,7 +75,7 @@ export class HsSaveMapService {
    * @param {object} statusData Metadata about permissions
    * @returns {object} JSON object with all required map composition metadata
    */
-  map2json(map, compoData, userData, statusData) {
+  map2json(map, compoData, userData, statusData, app: string) {
     const groups: any = {};
     for (const g of statusData.groups || []) {
       if (g.r || g.w) {
@@ -115,7 +115,7 @@ export class HsSaveMapService {
     };
 
     // Map properties
-    const currentProj = this.HsMapService.getCurrentProj();
+    const currentProj = this.HsMapService.getCurrentProj(app);
     json.scale = currentProj.getMetersPerUnit();
     json.projection = currentProj.getCode().toLowerCase();
     const center = map.getView().getCenter();
@@ -141,8 +141,8 @@ export class HsSaveMapService {
     //json.sphericalMercator = map.sphericalMercator;
 
     // Layers properties
-    json.layers = this.layers2json(compoData.layers);
-    json.current_base_layer = this.getCurrentBaseLayer();
+    json.layers = this.layers2json(compoData.layers, app);
+    json.current_base_layer = this.getCurrentBaseLayer(app);
     return json;
   }
   /**
@@ -150,9 +150,9 @@ export class HsSaveMapService {
    * @param {Map} map Selected map object
    * @returns {object} Returns object with current current selected base layers title as attribute
    */
-  getCurrentBaseLayer() {
+  getCurrentBaseLayer(app: string) {
     let current_base_layer = null;
-    for (const lyr of this.HsMapService.getLayersArray()) {
+    for (const lyr of this.HsMapService.getLayersArray(app)) {
       if (
         (getShowInLayerManager(lyr) == undefined ||
           getShowInLayerManager(lyr) == true) &&
@@ -173,10 +173,10 @@ export class HsSaveMapService {
    * @param {Array} layers All map layers
    * @returns {Array} JSON object representing the layers
    */
-  layers2json(layers) {
+  layers2json(layers, app: string) {
     const json = [];
     layers.forEach((layer) => {
-      const l = this.layer2json(layer);
+      const l = this.layer2json(layer, app);
       if (l) {
         json.push(l);
       }
@@ -193,8 +193,8 @@ export class HsSaveMapService {
    * @param {boolean} pretty Whether to use pretty notation
    * @returns {string} Text in JSON notation representing the layer
    */
-  layer2string(layer, pretty) {
-    const json = this.layer2json(layer);
+  layer2string(layer, pretty, app: string) {
+    const json = this.layer2json(layer, app);
     const text = JSON.stringify(json, pretty);
     return text;
   }
@@ -274,7 +274,7 @@ export class HsSaveMapService {
    * @param layer - Map layer that should be converted
    * @returns JSON object representing the layer
    */
-  layer2json(layer: Layer<Source>): any {
+  layer2json(layer: Layer<Source>, app: string): any {
     const json: any = {
       metadata: getMetadata(layer) || {},
     };
@@ -410,7 +410,8 @@ export class HsSaveMapService {
         } else {
           try {
             json.features = this.getFeaturesJson(
-              (src as VectorSource<Geometry>).getFeatures()
+              (src as VectorSource<Geometry>).getFeatures(),
+              app
             );
           } catch (ex) {
             //Do nothing
@@ -442,9 +443,9 @@ export class HsSaveMapService {
    * @param features - Array of features
    * @returns GeoJSON
    */
-  getFeaturesJson(features: Feature<Geometry>[]): any {
+  getFeaturesJson(features: Feature<Geometry>[], app: string): any {
     const f = new GeoJSON();
-    const featureProjection = this.HsMapService.getCurrentProj().getCode();
+    const featureProjection = this.HsMapService.getCurrentProj(app).getCode();
     return f.writeFeaturesObject(features, {
       dataProjection: 'EPSG:4326',
       featureProjection,
@@ -472,12 +473,12 @@ export class HsSaveMapService {
     }
   }
 
-  save2storage(evt): void {
+  save2storage(evt, app: string): void {
     const data = {
       expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
-      layers: this.HsMapService.getLayersArray()
+      layers: this.HsMapService.getLayersArray(app)
         .filter((lyr) => !this.internalLayers.includes(lyr))
-        .map((lyr: Layer<Source>) => this.layer2json(lyr)),
+        .map((lyr: Layer<Source>) => this.layer2json(lyr, app)),
     };
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good

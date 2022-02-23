@@ -100,7 +100,7 @@ export class HsLaymanBrowserService {
             x.body.matched = x.headers.get('x-total-count')
               ? x.headers.get('x-total-count')
               : x.body.length;
-            this.datasetsReceived(x.body);
+            this.datasetsReceived(x.body, app);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
@@ -152,7 +152,7 @@ export class HsLaymanBrowserService {
    * (PRIVATE) Callback for catalogue http query
    * @param data - HTTP response containing all the layers
    */
-  private datasetsReceived(data): void {
+  private datasetsReceived(data, app: string): void {
     if (!data.dataset) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation('COMMON.warning'),
@@ -190,7 +190,7 @@ export class HsLaymanBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             layer,
-            this.hsMapService.getCurrentProj()
+            this.hsMapService.getCurrentProj(app)
           );
           if (extentFeature) {
             tmp.featureId = extentFeature.getId();

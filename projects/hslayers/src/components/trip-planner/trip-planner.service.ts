@@ -141,6 +141,7 @@ export class HsTripPlannerService {
         y: coordinates.mapProjCoordinate[1],
         lon: coordinates.epsg4326Coordinate[0],
         lat: coordinates.epsg4326Coordinate[1],
+        app,
       });
     });
   }
@@ -152,7 +153,7 @@ export class HsTripPlannerService {
           layer: null,
           title: 'newLayer',
         },
-        ...this.HsMapService.getLayersArray()
+        ...this.HsMapService.getLayersArray(app)
           .filter((layer: Layer<Source>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer)
           )
@@ -208,7 +209,8 @@ export class HsTripPlannerService {
    */
   async selectLayer(
     layer: {layer: VectorLayer<VectorSource<Geometry>>; title: string},
-    usage: 'route' | 'waypoints'
+    usage: 'route' | 'waypoints',
+    app: string
   ): Promise<void> {
     if (usage == 'route') {
       this.routeLayer = layer.layer;
@@ -228,7 +230,7 @@ export class HsTripPlannerService {
       for (const feature of this.waypointSource.getFeatures()) {
         const new_cords = transform(
           feature.getGeometry().getCoordinates(),
-          this.HsMapService.getCurrentProj().getCode(),
+          this.HsMapService.getCurrentProj(app).getCode(),
           'EPSG:4326'
         );
         const wp: Waypoint = {
@@ -244,9 +246,9 @@ export class HsTripPlannerService {
         };
         this.waypoints.push(wp);
         if (this.waypointAdded !== undefined) {
-          this.waypointAdded(wp);
+          this.waypointAdded(wp, app);
         }
-        await this.calculateRoutes();
+        await this.calculateRoutes(app);
       }
     }
   }
@@ -268,7 +270,7 @@ export class HsTripPlannerService {
    * @param {number} lon Longitude number (part of Ol.coordinate Array)
    * @param {number} lat Latitude number (part of Ol.coordinate Array)
    */
-  addWaypoint({x, y, lon, lat}) {
+  addWaypoint({x, y, lon, lat, app}) {
     const wp: Waypoint = {
       lon,
       lat,
@@ -290,23 +292,23 @@ export class HsTripPlannerService {
     this.waypointSource.addFeature(feature);
     this.waypoints.push(wp);
     if (this.waypointAdded !== undefined) {
-      this.waypointAdded(wp);
+      this.waypointAdded(wp, app);
     }
-    this.calculateRoutes();
+    this.calculateRoutes(app);
   }
 
   /**
    * Handler of adding waypoint in connected service
    * @param wp - Waypoint object, with lat, lon and routes array
    */
-  waypointAdded(wp: Waypoint): void {
+  waypointAdded(wp: Waypoint, app: string): void {
     const feature = this.waypointSource.getFeatureById(wp.featureId);
     this.movable_features.push(feature);
     feature.getGeometry().on('change', (e) => {
       this.removeRoutesForWaypoint(wp);
       const new_cords = transform(
         feature.getGeometry().getCoordinates(),
-        this.HsMapService.getCurrentProj().getCode(),
+        this.HsMapService.getCurrentProj(app).getCode(),
         'EPSG:4326'
       );
       wp.lon = new_cords[0];
@@ -320,7 +322,7 @@ export class HsTripPlannerService {
         clearTimeout(this.timer);
       }
       this.timer = setTimeout(() => {
-        this.calculateRoutes();
+        this.calculateRoutes(app);
       }, 500);
     });
   }
@@ -367,7 +369,7 @@ export class HsTripPlannerService {
    * Remove selected waypoint from trip
    * @param {object} wp Waypoint object to remove
    */
-  removeWaypoint(wp) {
+  removeWaypoint(wp, app) {
     const wpIndex = this.waypoints.indexOf(wp);
     const prev_index = wpIndex - 1;
     if (prev_index > -1) {
@@ -381,7 +383,7 @@ export class HsTripPlannerService {
     }
     this.waypointRemoved(wp);
     this.waypoints.splice(this.waypoints.indexOf(wp), 1);
-    this.calculateRoutes();
+    this.calculateRoutes(app);
   }
 
   /**
@@ -404,7 +406,7 @@ export class HsTripPlannerService {
   /**
    * Calculate routes between stored waypoints
    */
-  async calculateRoutes(): Promise<void> {
+  async calculateRoutes(app: string): Promise<void> {
     for (let i = 0; i < this.waypoints.length - 1; i++) {
       const wpf = this.waypoints[i];
       if (wpf.routes.from === null) {
@@ -456,7 +458,7 @@ export class HsTripPlannerService {
         const features = format.readFeatures(response);
         features[0]
           .getGeometry()
-          .transform('EPSG:4326', this.HsMapService.getCurrentProj());
+          .transform('EPSG:4326', this.HsMapService.getCurrentProj(app));
         wpf.routes.from = features[0];
         wpt.routes.to = features[0];
         if (this.routeAdded !== undefined) {
