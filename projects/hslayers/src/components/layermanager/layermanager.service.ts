@@ -299,7 +299,7 @@ export class HsLayerManagerService {
       if (layerDescriptor.active) {
         this.changeBaseLayerVisibility(true, layerDescriptor, app);
       }
-      layerDescriptor.thumbnail = this.getImage(layer);
+      layerDescriptor.thumbnail = this.getImage(layer, app);
       this.apps[app].data.baselayers.push(
         <HsBaseLayerDescriptor>layerDescriptor
       );
@@ -377,16 +377,16 @@ export class HsLayerManagerService {
    * Function for adding baselayer thumbnail visible in basemap gallery.
    * @param layer - Base layer added to map
    */
-  getImage(layer: Layer<Source>): string {
+  getImage(layer: Layer<Source>, app: string): string {
     const thumbnail = getThumbnail(layer);
     if (thumbnail) {
       if (thumbnail.length > 10) {
         return thumbnail;
       } else {
-        return this.HsUtilsService.getAssetsPath() + 'img/' + thumbnail;
+        return this.HsUtilsService.getAssetsPath(app) + 'img/' + thumbnail;
       }
     } else {
-      return this.HsUtilsService.getAssetsPath() + 'img/default.png';
+      return this.HsUtilsService.getAssetsPath(app) + 'img/default.png';
     }
   }
 
@@ -1110,17 +1110,15 @@ export class HsLayerManagerService {
     this.toggleEditLayerByUrlParam(app);
     this.boxLayersInit(app);
 
-    this.apps[app].map
-      .getView()
-      .on(
-        'change:resolution',
-        this.HsUtilsService.debounce(
-          this.resolutionChangeDebounceCallback,
-          200,
-          false,
-          this
-        )
-      );
+    this.apps[app].map.getView().on(
+      'change:resolution',
+      this.HsUtilsService.debounce(
+        (e) => this.resolutionChangeDebounceCallback(app),
+        200,
+        false,
+        this
+      )
+    );
 
     this.apps[app].map.getLayers().on('add', (e) => {
       this.applyZIndex(e.element, app, true);

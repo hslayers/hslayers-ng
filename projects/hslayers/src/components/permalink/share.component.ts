@@ -63,7 +63,7 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
    * @description Create share post on selected social network
    */
   shareOnSocial(): void {
-    this.HsShareService.shareOnSocial(this.new_share);
+    this.HsShareService.shareOnSocial(this.new_share, this.data.app);
   }
 
   ngOnInit() {

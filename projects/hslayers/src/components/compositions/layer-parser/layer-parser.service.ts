@@ -65,10 +65,11 @@ export class HsCompositionsLayerParserService {
    * @param {object} lyr_def Layer definition object
    * @description Initiate creation of WFS layer thorough HsUrlWfsService
    */
-  async createWFSLayer(lyr_def): Promise<Layer<Source>[]> {
+  async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
-      lyr_def.protocol.url
+      lyr_def.protocol.url,
+      app
     );
     return await this.HsUrlWfsService.listLayerFromCapabilities(
       wrapper,
@@ -93,7 +94,8 @@ export class HsCompositionsLayerParserService {
 
     // Get WMTS Capabilities and create WMTS source base on it
     const wrapper = await this.HsWmtsGetCapabilitiesService.request(
-      lyr_def.url
+      lyr_def.url,
+      app
     );
     try {
       //parse the XML response and create options object...

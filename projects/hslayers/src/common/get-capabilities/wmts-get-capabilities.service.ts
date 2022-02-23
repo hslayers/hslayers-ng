@@ -81,6 +81,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
+    app: string,
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -105,7 +106,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
-      url = this.hsUtilsService.proxify(url);
+      url = this.hsUtilsService.proxify(url, app);
       const r = await lastValueFrom(
         this.httpClient
           .get(url, {

@@ -84,11 +84,12 @@ export class HsSearchService {
         } else {
           //Username will have to be set in proxy
           url = this.hsUtilsService.proxify(
-            `http://api.geonames.org/searchJSON?&name_startsWith=${query}`
+            `http://api.geonames.org/searchJSON?&name_startsWith=${query}`,
+            app
           );
         }
         if (window.location.protocol == 'https:') {
-          url = this.hsUtilsService.proxify(url);
+          url = this.hsUtilsService.proxify(url, app);
         }
       } else if (provider == 'sdi4apps_openapi') {
         url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;

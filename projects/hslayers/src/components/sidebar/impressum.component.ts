@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import packageJson from '../../package.json';
 import {HsUtilsService} from '../utils/utils.service';
@@ -8,6 +8,7 @@ import {HsUtilsService} from '../utils/utils.service';
   templateUrl: './partials/impressum.html',
 })
 export class HsImpressumComponent {
+  @Input() app = 'default';
   version = 'dev';
   logo = '';
   logoDisabled = false;

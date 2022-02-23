@@ -58,7 +58,13 @@ export class HsCompositionsStatusManagerMickaJointService {
       app
     ).pipe(
       map((response: any) => {
-        this.HsCompositionsStatusManagerService.loadList(ds, params, bbox, app);
+        this.HsCompositionsStatusManagerService.loadList(
+          ds,
+          params,
+          null,
+          bbox,
+          app
+        );
       }),
       catchError((e) => {
         if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
@@ -93,7 +99,7 @@ export class HsCompositionsStatusManagerMickaJointService {
     );
     return Observable;
   }
-  async getInfo(composition): Promise<any> {
+  async getInfo(composition, app: string): Promise<any> {
     const compLinks = composition.link || composition.links;
     if (compLinks === undefined) {
       return;
@@ -103,7 +109,7 @@ export class HsCompositionsStatusManagerMickaJointService {
     let url = '';
     Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
     try {
-      info = await this.HsCompositionsParserService.loadInfo(url);
+      info = await this.HsCompositionsParserService.loadInfo(url, app);
       //TODO: find out if this is even available
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {

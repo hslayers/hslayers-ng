@@ -206,7 +206,7 @@ export class HsSaveMapService {
    * @param s Style to convert
    * @returns {object} Converted JSON object for style
    */
-  serializeStyle(style: Style | Style[]) {
+  serializeStyle(style: Style | Style[], app: string) {
     const s = Array.isArray(style) ? style[0] : style;
     const o: any = {};
     const ima: any = {};
@@ -241,7 +241,10 @@ export class HsSaveMapService {
         typeof (style_img as Icon).getSrc() === 'string' &&
         !(style_img as Icon).getSrc().startsWith('data:image')
       ) {
-        ima.src = this.HsUtilsService.proxify((style_img as Icon).getSrc());
+        ima.src = this.HsUtilsService.proxify(
+          (style_img as Icon).getSrc(),
+          app
+        );
       }
 
       if (this.HsUtilsService.instOf(style_img, Circle)) {
@@ -430,7 +433,8 @@ export class HsSaveMapService {
         )
       ) {
         json.style = this.serializeStyle(
-          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style
+          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style,
+          app
         );
       }
     }

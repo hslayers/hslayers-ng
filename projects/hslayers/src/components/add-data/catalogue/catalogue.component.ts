@@ -44,10 +44,10 @@ export class HsAddDataCatalogueComponent implements OnInit {
   ) {
     this.data = hsAddDataCatalogueService.data;
     this.advancedSearch = false;
-    this.loaderImage =
-      this.hsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
   }
   ngOnInit(): void {
+    this.loaderImage =
+      this.hsUtilsService.getAssetsPath(this.app) + 'img/ajax-loader.gif';
     this.queryCatalogs = () =>
       this.hsAddDataCatalogueService.queryCatalogs(this.data.app);
     this.hsAddDataCatalogueService.init(this.app);

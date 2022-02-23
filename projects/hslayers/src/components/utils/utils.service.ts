@@ -33,7 +33,7 @@ export class HsUtilsService {
    * @param toEncoding - Optional parameter if UTF-8 encoding shouldn't be used for non-image URLs.
    * @returns Encoded Url with path to hsproxy.cgi script
    */
-  proxify(url: string, toEncoding?: boolean, app?: string): string {
+  proxify(url: string, app: string, toEncoding?: boolean): string {
     const laymanEp = this.HsConfig.get(app).datasources?.find(
       (ep) => ep.type == 'layman'
     );
@@ -93,13 +93,13 @@ export class HsUtilsService {
             })
         }
    */
-  async shortUrl(url: string, app?: string): Promise<any> {
+  async shortUrl(url: string, app: string): Promise<any> {
     if (this.HsConfig.get(app).shortenUrl != undefined) {
       return this.HsConfig.get(app).shortenUrl(url);
     }
     return await lastValueFrom(
       this.http.get(
-        this.proxify('http://tinyurl.com/api-create.php?url=' + url),
+        this.proxify('http://tinyurl.com/api-create.php?url=' + url, app),
         {
           responseType: 'text',
         }
@@ -490,14 +490,14 @@ export class HsUtilsService {
     return target.charAt(0).toUpperCase() + target.slice(1);
   }
 
-  getAssetsPath(app?: string) {
+  getAssetsPath(app: string) {
     let assetsPath = this.HsConfig.get(app).assetsPath || '';
     assetsPath += assetsPath.endsWith('/') ? '' : '/';
     return assetsPath;
   }
 
-  getAjaxLoaderIcon() {
-    return this.getAssetsPath() + 'img/ajax-loader.gif';
+  getAjaxLoaderIcon(app: string) {
+    return this.getAssetsPath(app) + 'img/ajax-loader.gif';
   }
 
   undefineEmptyString(str: string): any {

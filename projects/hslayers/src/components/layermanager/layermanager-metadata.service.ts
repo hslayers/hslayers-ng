@@ -309,14 +309,17 @@ export class HsLayerManagerMetadataService {
       return;
     }
     if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
-      const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
+      const wrapper = await this.HsArcgisGetCapabilitiesService.request(
+        url,
+        app
+      );
       if (wrapper.error) {
         return wrapper.response;
       } else {
         this.parseArcGisCaps(layerDescriptor, wrapper.response);
       }
     } else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
-      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
+      const wrapper = await this.HsWmsGetCapabilitiesService.request(url, app);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
         return wrapper.response;
@@ -353,7 +356,7 @@ export class HsLayerManagerMetadataService {
     }
     //WMTS
     else if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
-      const wrapper = await this.HsWmtsGetCapabilitiesService.request(url);
+      const wrapper = await this.HsWmtsGetCapabilitiesService.request(url, app);
       if (wrapper.error) {
         return wrapper.response;
       } else {
@@ -371,7 +374,10 @@ export class HsLayerManagerMetadataService {
     //WFS and vector
     else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (url) {
-        const wrapper = await this.HsWfsGetCapabilitiesService.request(url);
+        const wrapper = await this.HsWfsGetCapabilitiesService.request(
+          url,
+          app
+        );
         if (wrapper.error) {
           return wrapper.response;
         } else {

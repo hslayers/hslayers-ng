@@ -153,7 +153,7 @@ export class HsSaveMapManagerService {
   async confirmSave(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.http.post(this.HsStatusManagerService.endpointUrl(), {
+        this.http.post(this.HsStatusManagerService.endpointUrl(app), {
           project: this.HsConfig.get(app).project_name,
           title: this.compoData.title,
           request: 'rightToSave',
@@ -298,7 +298,7 @@ export class HsSaveMapManagerService {
         }
       }
     }
-    this.loadUserDetails();
+    this.loadUserDetails(app);
   }
 
   private fillLayers(app: string) {
@@ -351,10 +351,10 @@ export class HsSaveMapManagerService {
   /**
    * Get User info from server and call callback (setUserDetail)
    */
-  async loadUserDetails() {
+  async loadUserDetails(app: string) {
     const response: any = await lastValueFrom(
       this.http.get(
-        this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo'
+        this.HsStatusManagerService.endpointUrl(app) + '?request=getuserinfo'
       )
     );
     this.setUserDetails(response);

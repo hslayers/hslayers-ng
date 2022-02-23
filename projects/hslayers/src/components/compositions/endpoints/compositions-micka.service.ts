@@ -26,7 +26,7 @@ export class HsCompositionsMickaService {
     public HsLanguageService: HsLanguageService
   ) {}
 
-  getCompositionsQueryUrl(endpoint, params, bbox): string {
+  getCompositionsQueryUrl(endpoint, params, bbox, app: string): string {
     const query = params.query;
     const bboxDelimiter =
       endpoint.url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
@@ -78,7 +78,7 @@ export class HsCompositionsMickaService {
       params.start +
       '&limit=' +
       params.limit;
-    tmp = this.HsUtilsService.proxify(tmp);
+    tmp = this.HsUtilsService.proxify(tmp, app);
     return tmp;
   }
   compositionsReceived(endpoint: HsEndpoint, response: any, app: string): void {
@@ -131,7 +131,7 @@ export class HsCompositionsMickaService {
     app: string
   ): Observable<any> {
     params = this.checkForParams(endpoint, params);
-    const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
+    const url = this.getCompositionsQueryUrl(endpoint, params, bbox, app);
     endpoint.compositionsPaging.loaded = false;
 
     endpoint.httpCall = this.$http

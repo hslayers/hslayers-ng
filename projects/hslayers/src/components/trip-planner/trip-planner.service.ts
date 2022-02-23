@@ -68,39 +68,7 @@ export class HsTripPlannerService {
     waypoints?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
   } = {};
 
-  waypointRouteStyle = (feature, resolution) => {
-    return [
-      new Style({
-        fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.6)',
-        }),
-        stroke: new Stroke({
-          color: '#337AB7',
-          width: 3,
-        }),
-        image: new Icon({
-          src: getHighlighted(feature)
-            ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
-            : this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
-          crossOrigin: 'anonymous',
-          anchor: [0.5, 1],
-        }),
-        text: new Text({
-          font: '12px Calibri,sans-serif',
-          overflow: true,
-          fill: new Fill({
-            color: '#000',
-          }),
-          stroke: new Stroke({
-            color: '#fff',
-            width: 3,
-          }),
-          offsetY: -40,
-          text: this.getTextOnFeature(feature),
-        }),
-      }),
-    ];
-  };
+  waypointRouteStyle;
 
   constructor(
     public HsMapService: HsMapService,
@@ -116,6 +84,39 @@ export class HsTripPlannerService {
 
   async init(app: string) {
     await this.HsMapService.loaded(app);
+    (feature, resolution) => {
+      return [
+        new Style({
+          fill: new Fill({
+            color: 'rgba(255, 255, 255, 0.6)',
+          }),
+          stroke: new Stroke({
+            color: '#337AB7',
+            width: 3,
+          }),
+          image: new Icon({
+            src: getHighlighted(feature)
+              ? this.HsUtilsService.getAssetsPath(app) + 'img/pin_white_red32.png'
+              : this.HsUtilsService.getAssetsPath(app) + 'img/pin_white_blue32.png',
+            crossOrigin: 'anonymous',
+            anchor: [0.5, 1],
+          }),
+          text: new Text({
+            font: '12px Calibri,sans-serif',
+            overflow: true,
+            fill: new Fill({
+              color: '#000',
+            }),
+            stroke: new Stroke({
+              color: '#fff',
+              width: 3,
+            }),
+            offsetY: -40,
+            text: this.getTextOnFeature(feature),
+          }),
+        }),
+      ];
+    };
     this.HsMapService.getMap(app).addInteraction(this.modify);
     this.HsEventBusService.mapClicked.subscribe(({coordinates, app}) => {
       if (this.HsLayoutService.get(app).mainpanel != 'tripPlanner') {
@@ -413,7 +414,8 @@ export class HsTripPlannerService {
         const wpt = this.waypoints[i + 1];
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
-          'https://api.openrouteservice.org/v2/directions/driving-car/geojson'
+          'https://api.openrouteservice.org/v2/directions/driving-car/geojson',
+          app
         );
         const response = await lastValueFrom(
           this.$http

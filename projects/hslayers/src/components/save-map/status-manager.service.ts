@@ -18,7 +18,7 @@ export class HsStatusManagerService implements HsSaverService {
     public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
-  endpointUrl(app?: string) {
+  endpointUrl(app: string) {
     let hostName = location.protocol + '//' + location.host;
 
     if (this.HsConfig.get(app).hostname?.status_manager?.url) {
@@ -56,7 +56,7 @@ export class HsStatusManagerService implements HsSaverService {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await lastValueFrom(
-          this.http.post(this.endpointUrl(), {
+          this.http.post(this.endpointUrl(app), {
             data: compositionJson,
             permanent: true,
             id: compoData.id,

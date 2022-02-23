@@ -46,7 +46,7 @@ export class HsLegendService {
   ) {
     this.hsLayerSelectorService.layerSelected.subscribe(
       async ({layer, app}) => {
-        await this.getLayerLegendDescriptor(layer.layer);
+        await this.getLayerLegendDescriptor(layer.layer, app);
       }
     );
   }
@@ -142,7 +142,8 @@ export class HsLegendService {
   getLegendUrl(
     source: Source,
     layer_name: string,
-    layer: Layer<Source>
+    layer: Layer<Source>,
+    app: string
   ): string {
     if (!this.hsLayerUtilsService.isLayerWMS(layer)) {
       return '';
@@ -171,7 +172,7 @@ export class HsLegendService {
       layer_name +
       '&format=image%2Fpng';
     if (getEnableProxy(layer) === undefined || getEnableProxy(layer) == true) {
-      source_url = this.hsUtilsService.proxify(source_url, false);
+      source_url = this.hsUtilsService.proxify(source_url, app, false);
     }
     return source_url;
   }
@@ -190,7 +191,8 @@ export class HsLegendService {
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    */
   async getLayerLegendDescriptor(
-    layer: Layer<Source>
+    layer: Layer<Source>,
+    app: string
   ): Promise<HsLegendDescriptor | undefined> {
     if (getBase(layer)) {
       return;
@@ -203,7 +205,8 @@ export class HsLegendService {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),
           subLayerLegends[i],
-          layer
+          layer,
+          app
         );
       }
       return {

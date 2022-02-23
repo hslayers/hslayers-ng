@@ -153,7 +153,7 @@ export class HsMickaBrowserService {
         start: dataset.datasourcePaging.start,
         validservice: '>0',
       });
-    return this.hsUtilsService.proxify(url);
+    return this.hsUtilsService.proxify(url, app);
   }
 
   /**

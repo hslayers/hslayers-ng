@@ -46,7 +46,7 @@ export class HsLayerEditorService {
     this.HsLayerSelectorService.layerSelected.subscribe(
       async ({layer, app}) => {
         this.legendDescriptor =
-          await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
+          await this.HsLegendService.getLayerLegendDescriptor(layer.layer, app);
       }
     );
   }
@@ -70,7 +70,7 @@ export class HsLayerEditorService {
     }
     if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
       const url = this.HsLayerUtilsService.getURL(layer);
-      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
+      const wrapper = await this.HsWmsGetCapabilitiesService.request(url, app);
       const parser = new WMSCapabilities();
       const caps = parser.read(wrapper.response);
       if (Array.isArray(caps.Capability.Layer.Layer)) {

@@ -3,7 +3,7 @@
   <button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100"
     [disabled]="!data.name || !data.srs" (click)="hsAddDataCommonFileService.addAsWms(data, app)">
     <i class="icon-plus" [hidden]="hsAddDataCommonFileService.loadingToLayman"></i>
-    <img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!hsAddDataCommonFileService.loadingToLayman" />
+    <img [src]="hsUtilsService.getAjaxLoaderIcon(app)" [hidden]="!hsAddDataCommonFileService.loadingToLayman" />
     {{hsAddDataCommonFileService.getLoadingText()}}
     <ngb-progressbar *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.asyncLoading"
       showValue="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">

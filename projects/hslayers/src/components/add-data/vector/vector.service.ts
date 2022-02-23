@@ -148,7 +148,7 @@ export class HsAddDataVectorService {
       type?.toLowerCase() != 'wfs' &&
       url !== undefined
     ) {
-      url = this.hsUtilsService.proxify(url);
+      url = this.hsUtilsService.proxify(url, app);
     }
 
     if (this.hsUtilsService.undefineEmptyString(type) === undefined) {

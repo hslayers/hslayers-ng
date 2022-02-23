@@ -89,7 +89,7 @@ export class HsQueryWmsService {
     layer,
     app: string
   ): Promise<void> {
-    const req_url = this.hsUtilsService.proxify(url, true);
+    const req_url = this.hsUtilsService.proxify(url, app, true);
     const reqHash = this.hsQueryBaseService.currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});

@@ -62,7 +62,7 @@ export class HsCompositionsListItemComponent {
       await this.hsCompositionsService
         .shareComposition(record, this.app)
         .then(async () => {
-          url = await this.hsCompositionsService.getShareUrl();
+          url = await this.hsCompositionsService.getShareUrl(this.app);
           if (url !== undefined) {
             this.shareDialogBootstrap(record, url);
           } else {

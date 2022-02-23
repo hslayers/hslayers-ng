@@ -295,7 +295,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       (urlRest.endsWith('/') ? urlRest : urlRest.concat('/')) +
       ['services', service.name, service.type].join('/');
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
-      this.data.get_map_url
+      this.data.get_map_url,
+      app
     );
     await this.listLayerFromCapabilities(wrapper, app);
   }

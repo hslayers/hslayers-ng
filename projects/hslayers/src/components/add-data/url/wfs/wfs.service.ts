@@ -91,7 +91,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       return;
     }
     try {
-      const bbox = await this.parseCapabilities(wrapper.response);
+      const bbox = await this.parseCapabilities(wrapper.response, app);
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
         const collection = this.getLayers(app, true, style);
@@ -107,7 +107,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Parse information received in WFS getCapabilities response
    * @param response - A stringified XML response to getCapabilities request
    */
-  async parseCapabilities(response: string): Promise<any> {
+  async parseCapabilities(response: string, app: string): Promise<any> {
     try {
       this.loadingFeatures = false;
 
@@ -183,7 +183,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       if (!this.hsAddDataCommonService.layerToSelect) {
         setTimeout(() => {
           try {
-            this.parseFeatureCount();
+            this.parseFeatureCount(app);
           } catch (e) {
             throw new Error(e);
           }
@@ -216,7 +216,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Parse layer feature count and set feature limits
    */
-  parseFeatureCount(): void {
+  parseFeatureCount(app: string): void {
     for (const layer of this.data.layers) {
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
@@ -230,7 +230,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       ].join('?');
 
       this.http
-        .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
+        .get(this.hsUtilsService.proxify(url, app), {responseType: 'text'})
         .subscribe(
           (response: any) => {
             const oParser = new DOMParser();
@@ -379,15 +379,23 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         qml: options.qml,
         wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
       },
-      source: new WfsSource(this.hsUtilsService, this.http, {
-        data_version: this.data.version,
-        output_format: this.data.output_format,
-        crs: options.crs,
-        provided_url:
-          this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
-        layer_name: options.layerName,
-        map_projection: this.hsMapService.getMap(app).getView().getProjection(),
-      }),
+      source: new WfsSource(
+        this.hsUtilsService,
+        this.http,
+        {
+          data_version: this.data.version,
+          output_format: this.data.output_format,
+          crs: options.crs,
+          provided_url:
+            this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+          layer_name: options.layerName,
+          map_projection: this.hsMapService
+            .getMap(app)
+            .getView()
+            .getProjection(),
+        },
+        app
+      ),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });

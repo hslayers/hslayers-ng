@@ -41,6 +41,7 @@ export class HsCompositionsLaymanService {
     endpoint: HsEndpoint,
     params,
     extentFeatureCreated,
+    _bbox,
     app: string
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
@@ -179,7 +180,7 @@ export class HsCompositionsLaymanService {
     this.hsEventBusService.compositionDeletes.next(composition);
   }
 
-  async getInfo(composition: any): Promise<any> {
+  async getInfo(composition: any, app: string): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.displayWarningToast(
@@ -203,7 +204,7 @@ export class HsCompositionsLaymanService {
       return;
     }
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
-    const info = await this.hsCompositionsParserService.loadInfo(url);
+    const info = await this.hsCompositionsParserService.loadInfo(url, app);
     if (
       info.thumbnail?.status !== undefined &&
       info.thumbnail?.status == 'NOT_AVAILABLE'

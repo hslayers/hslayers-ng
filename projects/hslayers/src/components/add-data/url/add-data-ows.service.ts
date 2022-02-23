@@ -77,6 +77,7 @@ export class HsAddDataOwsService {
     });
     const wrapper = await this.typeCapabilitiesService.request(
       url,
+      app,
       opt?.owrCache
     );
     if (

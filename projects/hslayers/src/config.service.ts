@@ -277,7 +277,7 @@ export class HsConfig {
     });
   }
 
-  get(app?: string): HsConfigObject {
+  get(app: string): HsConfigObject {
     return this.apps[app ?? 'default'];
   }
 

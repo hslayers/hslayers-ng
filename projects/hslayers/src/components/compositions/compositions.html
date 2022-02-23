@@ -171,7 +171,7 @@
                     </li>
                     <li class="list-group-item text-primary text-center py-2"
                         *ngIf="hsCompositionsCatalogueService.dataLoading"><img class="pe-2"
-                            [src]="hsUtilsService.getAjaxLoaderIcon()" />{{'COMMON.loading' | translate}}</li>
+                            [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" />{{'COMMON.loading' | translate}}</li>
                     <li [hidden]="hsCompositionsCatalogueService.compositionEntries.length > 0 || hsCompositionsCatalogueService.dataLoading"
                         class="list-group-item">
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>

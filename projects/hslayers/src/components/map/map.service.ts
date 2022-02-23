@@ -329,7 +329,6 @@ export class HsMapService {
       defaultDesktopControls.push(new ScaleLine());
 
       const controls = defaultDesktopControls;
-
       map = new Map({
         controls,
         target: mapElement,
@@ -643,7 +642,8 @@ export class HsMapService {
     if (this.HsUtilsService.instOf(source, Static)) {
       //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
       (source as any).url_ = this.HsUtilsService.proxify(
-        (source as Static).getUrl()
+        (source as Static).getUrl(),
+        app
       );
     }
   }
@@ -874,7 +874,7 @@ export class HsMapService {
         if (url.indexOf(this.HsConfig.get(app).proxyPrefix) == 0) {
           return url;
         } else {
-          return this.HsUtilsService.proxify(url);
+          return this.HsUtilsService.proxify(url, app);
         }
       });
       src.setTileLoadFunction((tile, src) => {
@@ -902,7 +902,7 @@ export class HsMapService {
       if (laymanEp && src.startsWith(laymanEp.url)) {
         this.laymanWmsLoadingFunction(image, src);
       } else {
-        image.getImage().src = this.HsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+        image.getImage().src = this.HsUtilsService.proxify(src, app); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
       }
     }
   }

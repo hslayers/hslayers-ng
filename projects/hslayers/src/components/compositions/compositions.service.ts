@@ -60,7 +60,9 @@ export class HsCompositionsService {
     });
 
     this.hsEventBusService.compositionLoadStarts.subscribe(({id, app}) => {
-      id = `${this.hsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
+      id = `${this.hsStatusManagerService.endpointUrl(
+        app
+      )}?request=load&id=${id}`;
       this.hsCompositionsParserService.loadUrl(id, app);
     });
   }
@@ -98,7 +100,8 @@ export class HsCompositionsService {
       params,
       (feature: Feature<Geometry>) =>
         this.hsCompositionsMapService.addExtentFeature(feature),
-      bbox
+      bbox,
+      app
     );
     return Observable;
   }
@@ -148,7 +151,7 @@ export class HsCompositionsService {
     );
     return await lastValueFrom(
       this.http.post(
-        this.hsStatusManagerService.endpointUrl(),
+        this.hsStatusManagerService.endpointUrl(app),
         JSON.stringify({
           request: 'socialShare',
           id: this.shareId,
@@ -161,12 +164,13 @@ export class HsCompositionsService {
       )
     );
   }
-  async getShareUrl(): Promise<string> {
+  async getShareUrl(app: string): Promise<string> {
     try {
       return await this.hsUtilsService.shortUrl(
-        this.hsStatusManagerService.endpointUrl() +
+        this.hsStatusManagerService.endpointUrl(app) +
           '?request=socialshare&id=' +
-          this.shareId
+          this.shareId,
+        app
       );
     } catch (ex) {
       this.$log.log('Error creating short URL');
@@ -242,7 +246,7 @@ export class HsCompositionsService {
     if (!permalink) {
       return;
     }
-    const layersUrl = this.hsUtilsService.proxify(permalink);
+    const layersUrl = this.hsUtilsService.proxify(permalink, app);
     const response: any = await lastValueFrom(this.http.get(layersUrl));
     if (response.success == true) {
       const data: any = {};
@@ -307,7 +311,9 @@ export class HsCompositionsService {
         !id.includes(this.hsConfig.get(app).status_manager_url)
       ) {
         id =
-          this.hsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
+          this.hsStatusManagerService.endpointUrl(app) +
+          '?request=load&id=' +
+          id;
       }
       try {
         await this.hsCompositionsParserService.loadUrl(id, app);

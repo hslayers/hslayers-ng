@@ -57,7 +57,8 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
    */
   async addLayerToLegends(layer: Layer<Source>): Promise<void> {
     const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
-      layer
+      layer,
+      this.data.app
     );
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
@@ -163,7 +164,7 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
     const descriptor = this.findLayerDescriptorBySource(e.target);
     if (descriptor) {
       this.hsLegendService
-        .getLayerLegendDescriptor(descriptor.lyr)
+        .getLayerLegendDescriptor(descriptor.lyr, this.data.app)
         .then((newDescriptor) => {
           if (
             newDescriptor.subLayerLegends != descriptor.subLayerLegends ||

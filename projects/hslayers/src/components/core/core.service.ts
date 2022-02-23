@@ -114,7 +114,7 @@ export class HsCoreService {
    * Update map size.
    * @public
    */
-  updateMapSize(app?: string): void {
+  updateMapSize(app: string): void {
     const map = this.HsMapService.apps[app].mapElement;
     if (map === null) {
       return;

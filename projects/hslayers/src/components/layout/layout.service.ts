@@ -214,7 +214,7 @@ export class HsLayoutService {
     this.HsEventBusService.mainPanelChanges.next({app});
   }
 
-  get(app?: string): HsLayoutParams {
+  get(app: string): HsLayoutParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = defaultLayoutParams;
     }

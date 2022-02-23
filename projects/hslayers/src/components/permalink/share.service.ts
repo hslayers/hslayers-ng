@@ -54,7 +54,7 @@ export class HsShareService {
     this.HsEventBusService.mainPanelChanges.subscribe(async () => {
       if (this.HsLayoutService.mainpanel == 'permalink') {
         this.HsShareUrlService.statusSaving = true;
-        const status_url = this.HsStatusManagerService.endpointUrl();
+        const status_url = this.HsStatusManagerService.endpointUrl(app);
         const layers = this.HsMapService.getLayersArray(app)
           .filter(
             (l) =>
@@ -210,13 +210,13 @@ export class HsShareService {
    * @param {boolean} newShare If new share record on server should be created
    * @description Share map on social network
    */
-  async shareOnSocial(newShare: boolean): Promise<void> {
+  async shareOnSocial(newShare: boolean, app: string): Promise<void> {
     if (!this.data.shareUrlValid) {
       if (this.HsShareUrlService.shareId === null || newShare) {
         this.HsShareUrlService.shareId = this.HsUtilsService.generateUuid();
       }
       try {
-        const endpointUrl = this.HsStatusManagerService.endpointUrl();
+        const endpointUrl = this.HsStatusManagerService.endpointUrl(app);
         const headers = new HttpHeaders().set(
           'Content-Type',
           'text/plain; charset=utf-8'
@@ -237,7 +237,8 @@ export class HsShareService {
         );
 
         const shortUrl = await this.HsUtilsService.shortUrl(
-          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
+          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`,
+          app
         );
         const shareUrl = shortUrl;
         this.openInShareApi(this.data.title, this.data.abstract, shareUrl);

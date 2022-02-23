@@ -78,7 +78,7 @@ export class HsStylerComponent
   }
 
   async clear(): Promise<void> {
-    await this.hsStylerService.reset();
+    await this.hsStylerService.reset(this.data.app);
   }
 
   drop(event: CdkDragDrop<any[]>): void {

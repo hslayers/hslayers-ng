@@ -85,11 +85,11 @@ export class HsCompositionsParserService {
     app: string,
     overwrite?: boolean,
     callback?,
-    pre_parse?,
+    pre_parse?
   ): Promise<void> {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
-    url = this.HsUtilsService.proxify(url);
+    url = this.HsUtilsService.proxify(url, app);
     const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
@@ -320,9 +320,9 @@ export class HsCompositionsParserService {
    * @returns {object} Object containing composition info
    * @description Send Ajax request to selected server to gain information about composition
    */
-  async loadInfo(url: string): Promise<any> {
+  async loadInfo(url: string, app: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
-    url = this.HsUtilsService.proxify(url);
+    url = this.HsUtilsService.proxify(url, app);
     let options;
     options = {responseType: 'json'};
     let response;
@@ -470,7 +470,7 @@ export class HsCompositionsParserService {
       case 'Vector':
       case 'hs.format.LaymanWfs':
         if (lyr_def.protocol?.format == 'hs.format.externalWFS') {
-          this.HsCompositionsLayerParserService.createWFSLayer(lyr_def);
+          this.HsCompositionsLayerParserService.createWFSLayer(lyr_def, app);
         } else {
           resultLayer =
             await this.HsCompositionsLayerParserService.createVectorLayer(

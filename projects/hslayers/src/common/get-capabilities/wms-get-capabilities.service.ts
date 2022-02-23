@@ -81,6 +81,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
+    app: string,
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -101,7 +102,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     }
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsUtilsService.proxify(url, app);
 
     if (this.hsCapabilityCacheService.get(url) && !owrCache) {
       return this.hsCapabilityCacheService.get(url);
@@ -137,7 +138,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
    * @param path
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml,  app: string, path: string): Layer<Source>[] {
+  service2layers(capabilities_xml, app: string, path: string): Layer<Source>[] {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;
