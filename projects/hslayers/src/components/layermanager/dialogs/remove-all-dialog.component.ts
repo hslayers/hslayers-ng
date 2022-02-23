@@ -23,7 +23,7 @@ export class HsLayerManagerRemoveAllDialogComponent
     this.HsLayerManagerService.removeAllLayers(this.data.app);
     if (reloadComposition) {
       this.HsEventBusService.compositionLoadStarts.next(
-        this.HsLayerManagerService.composition_id
+        this.HsLayerManagerService.apps[this.data.app].composition_id
       );
     }
     this.close();

@@ -34,7 +34,8 @@ export class HsEventBusService {
    * @event mapResets
    */
   mapResets: Subject<void> = new Subject();
-  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
+  layerManagerUpdates: Subject<{layer: Layer<Source> | void; app: string}> =
+    new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
   compositionDeletes: Subject<{composition; app: string}> = new Subject();
   /**
@@ -74,6 +75,7 @@ export class HsEventBusService {
    */
   layerDimensionDefinitionChanges: Subject<{
     layer: Layer<Source>;
+    app: string;
   }> = new Subject();
   /**
    * Used to listen for changes of dimension settings in layermanager-dimensions component

@@ -30,7 +30,7 @@ export class HsLayerManagerRemoveLayerDialogComponent
     this.HsMapService.getMap().removeLayer(this.data.olLayer);
     this.HsDrawService.fillDrawableLayers(this.data.app);
 
-    this.HsEventBusService.layerManagerUpdates.next();
+    this.HsEventBusService.layerManagerUpdates.next(this.data.app);
     this.close();
   }
 

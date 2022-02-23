@@ -179,11 +179,11 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   setUploadType(type: string): void {
     this.uploadType = type;
     if (type == 'existing') {
-      this.data.vectorLayers = this.hsLayerManagerService.data.layers.filter(
-        (layer) => {
-          return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
-        }
-      );
+      this.data.vectorLayers = this.hsLayerManagerService.apps[
+        this.app
+      ].data.layers.filter((layer) => {
+        return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
+      });
     }
   }
 

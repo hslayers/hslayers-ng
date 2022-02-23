@@ -43,10 +43,12 @@ export class HsLayerEditorService {
     public HsLayerSelectorService: HsLayerSelectorService,
     public HsLayerManagerMetadataService: HsLayerManagerMetadataService
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe(async (layer) => {
-      this.legendDescriptor =
-        await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
-    });
+    this.HsLayerSelectorService.layerSelected.subscribe(
+      async ({layer, app}) => {
+        this.legendDescriptor =
+          await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
+      }
+    );
   }
 
   /**

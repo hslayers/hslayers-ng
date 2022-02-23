@@ -500,6 +500,7 @@ export class HslayersAppComponent {
       setTimeout(() => {
         this.HsEventBusService.layerDimensionDefinitionChanges.next({
           layer: opticalMap,
+          app,
         });
       }, 100);
     }

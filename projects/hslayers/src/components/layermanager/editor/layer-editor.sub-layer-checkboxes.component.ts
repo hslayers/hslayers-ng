@@ -24,8 +24,8 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;
   }
 
-  getSubLayers() {
-    return this.HsLayerEditorSublayerService.getSubLayers();
+  getSubLayers(app: string) {
+    return this.HsLayerEditorSublayerService.getSubLayers(app);
   }
 
   subLayerIsString(subLayer: any): boolean {

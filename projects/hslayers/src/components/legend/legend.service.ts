@@ -44,9 +44,11 @@ export class HsLegendService {
     public hsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer
   ) {
-    this.hsLayerSelectorService.layerSelected.subscribe(async (layer) => {
-      await this.getLayerLegendDescriptor(layer.layer);
-    });
+    this.hsLayerSelectorService.layerSelected.subscribe(
+      async ({layer, app}) => {
+        await this.getLayerLegendDescriptor(layer.layer);
+      }
+    );
   }
 
   /**

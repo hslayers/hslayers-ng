@@ -40,19 +40,28 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {
       if (!layer.active) {
-        this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
+        this.HsLayerManagerService.changeBaseLayerVisibility(
+          true,
+          layer,
+          this.app
+        );
         this.dropdown.close();
-        this.HsLayerManagerService.menuExpanded = false;
-        const olLayer = this.HsLayerManagerService.currentLayer?.layer;
+        this.HsLayerManagerService.apps[this.app].menuExpanded = false;
+        const olLayer =
+          this.HsLayerManagerService.apps[this.app].currentLayer?.layer;
         if (!olLayer || getBase(olLayer)) {
-          this.HsLayerManagerService.currentLayer = null;
+          this.HsLayerManagerService.apps[this.app].currentLayer = null;
         }
       }
     } else {
       this.dropdown.close();
-      this.HsLayerManagerService.currentLayer = null;
+      this.HsLayerManagerService.apps[this.app].currentLayer = null;
 
-      this.HsLayerManagerService.changeBaseLayerVisibility();
+      this.HsLayerManagerService.changeBaseLayerVisibility(
+        null,
+        null,
+        this.app
+      );
     }
   }
   expandMenu(layer) {
@@ -62,8 +71,8 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
       'sublayers',
       this.app
     );
-    this.HsLayerManagerService.menuExpanded =
-      !this.HsLayerManagerService.menuExpanded;
+    this.HsLayerManagerService.apps[this.app].menuExpanded =
+      !this.HsLayerManagerService.apps[this.app].menuExpanded;
   }
 
   isVisible(): boolean {

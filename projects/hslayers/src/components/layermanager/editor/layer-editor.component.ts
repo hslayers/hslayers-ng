@@ -115,7 +115,7 @@ export class HsLayerEditorComponent {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      return this.HsLayerManagerService.saveGeoJson();
+      return this.HsLayerManagerService.saveGeoJson(this.app);
     }
   }
 
@@ -222,7 +222,10 @@ export class HsLayerEditorComponent {
       layer,
     });
     setTitle(layer, this.tmpTitle);
-    this.HsEventBusService.layerManagerUpdates.next();
+    this.HsEventBusService.layerManagerUpdates.next({
+      layer: null,
+      app: this.app,
+    });
     this.toggleLayerRename();
   }
 
@@ -239,7 +242,7 @@ export class HsLayerEditorComponent {
   }
 
   getSubLayers() {
-    return this.HsLayerEditorSublayerService.getSubLayers();
+    return this.HsLayerEditorSublayerService.getSubLayers(this.app);
   }
 
   async copyLayer(): Promise<void> {

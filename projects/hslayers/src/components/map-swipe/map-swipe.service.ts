@@ -52,11 +52,9 @@ export class HsMapSwipeService {
     this.hsEventBusService.layerManagerUpdates
       .pipe(first())
       .subscribe(() => this.setInitialSwipeLayers(app));
-    this.hsEventBusService.layerManagerUpdates.subscribe(
-      (layer: Layer<Source>) => {
-        this.fillSwipeLayers(layer, app);
-      }
-    );
+    this.hsEventBusService.layerManagerUpdates.subscribe(({layer, app}) => {
+      this.fillSwipeLayers(layer, app);
+    });
   }
 
   setInitCtrlActive(app: string): void {
@@ -140,7 +138,7 @@ export class HsMapSwipeService {
    * Fill swipe control layers
    * @param layer - layer issued from layerManagerUpdates event
    */
-  fillSwipeLayers(layer: Layer<Source>, app: string): void {
+  fillSwipeLayers(layer: Layer<Source> | void, app: string): void {
     this.hsLayerShiftingService.fillLayers(app);
     if (!layer) {
       return;

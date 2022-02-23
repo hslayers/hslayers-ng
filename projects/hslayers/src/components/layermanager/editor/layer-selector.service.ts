@@ -6,7 +6,8 @@ import {Subject} from 'rxjs';
   providedIn: 'root',
 })
 export class HsLayerSelectorService {
-  layerSelected: Subject<HsLayerDescriptor> = new Subject();
+  layerSelected: Subject<{layer: HsLayerDescriptor; app: string}> =
+    new Subject();
   currentLayer: HsLayerDescriptor;
   constructor() {}
 
@@ -14,8 +15,8 @@ export class HsLayerSelectorService {
    * Multicasts new HsLayerManagerService.currentLayer to observers listening to the layerSelected subject.
    * @param hsLayer - Selected layer (HsLayerManagerService.currentLayer)
    */
-  select(hsLayer: HsLayerDescriptor): void {
+  select(hsLayer: HsLayerDescriptor, app: string): void {
     this.currentLayer = hsLayer;
-    this.layerSelected.next(hsLayer);
+    this.layerSelected.next({layer: hsLayer, app});
   }
 }

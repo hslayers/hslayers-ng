@@ -136,7 +136,8 @@ export class HsLayerManagerComponent
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((layer: Layer<Source>) => {
         if (
-          this.hsLayerManagerService?.currentLayer?.layer == layer &&
+          this.hsLayerManagerService?.apps[this.data.app].currentLayer?.layer ==
+            layer &&
           this.hsUtilsService.runningInBrowser()
         ) {
           const layerNode = document.getElementsByClassName(
@@ -146,7 +147,7 @@ export class HsLayerManagerComponent
             this.layerEditorRef.nativeElement,
             layerNode
           );
-          this.hsLayerManagerService.currentLayer = null;
+          this.hsLayerManagerService.apps[this.data.app].currentLayer = null;
         }
       });
 
@@ -155,11 +156,14 @@ export class HsLayerManagerComponent
       .subscribe((data) => {
         if (data.error == undefined) {
           if (data.data != undefined && data.data.id != undefined) {
-            this.hsLayerManagerService.composition_id = data.data.id;
+            this.hsLayerManagerService.apps[this.data.app].composition_id =
+              data.data.id;
           } else if (data.id != undefined) {
-            this.hsLayerManagerService.composition_id = data.id;
+            this.hsLayerManagerService.apps[this.data.app].composition_id =
+              data.id;
           } else {
-            this.hsLayerManagerService.composition_id = null;
+            this.hsLayerManagerService.apps[this.data.app].composition_id =
+              null;
           }
         }
       });
@@ -167,8 +171,11 @@ export class HsLayerManagerComponent
     this.hsEventBusService.compositionDeletes
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({composition, app}) => {
-        if (composition.id == this.hsLayerManagerService.composition_id) {
-          this.hsLayerManagerService.composition_id = null;
+        if (
+          composition.id ==
+          this.hsLayerManagerService.apps[this.data.app].composition_id
+        ) {
+          this.hsLayerManagerService.apps[this.data.app].composition_id = null;
         }
       });
   }
@@ -184,15 +191,23 @@ export class HsLayerManagerComponent
   }
 
   ngAfterViewInit(): void {
-    this.hsLayerManagerService.layerEditorElement =
+    this.hsLayerManagerService.apps[this.data.app].layerEditorElement =
       this.layerEditorRef.nativeElement;
   }
   changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
-    return this.hsLayerManagerService.changeBaseLayerVisibility(e, layer);
+    return this.hsLayerManagerService.changeBaseLayerVisibility(
+      e,
+      layer,
+      this.data.app
+    );
   }
 
   changeTerrainLayerVisibility(e, layer: Layer<Source>) {
-    return this.hsLayerManagerService.changeTerrainLayerVisibility(e, layer);
+    return this.hsLayerManagerService.changeTerrainLayerVisibility(
+      e,
+      layer,
+      this.data.app
+    );
   }
 
   changeLayerVisibility(toWhat: boolean, layer: HsLayerDescriptor) {
@@ -208,16 +223,19 @@ export class HsLayerManagerComponent
   }
 
   activateTheme(e) {
-    return this.hsLayerManagerService.activateTheme(e);
+    return this.hsLayerManagerService.activateTheme(e, this.data.app);
   }
 
   baselayerFilter = (item): boolean => {
-    const r = new RegExp(this.hsLayerManagerService.data.filter, 'i');
+    const r = new RegExp(
+      this.hsLayerManagerService.apps[this.data.app].data.filter,
+      'i'
+    );
     return r.test(item.title);
   };
 
   filterLayerTitles(): void {
-    this.hsEventBusService.layerManagerUpdates.next();
+    this.hsEventBusService.layerManagerUpdates.next(this.data.app);
   }
 
   toggleVisibilityForAll(): void {
@@ -228,7 +246,7 @@ export class HsLayerManagerComponent
         l,
         this.data.app
       );
-      this.hsLayerListService.toggleSublayersVisibility(l);
+      this.hsLayerListService.toggleSublayersVisibility(l, this.data.app);
     });
   }
 
@@ -256,7 +274,7 @@ export class HsLayerManagerComponent
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
-    if (!this.hsLayerManagerService.currentLayer) {
+    if (!this.hsLayerManagerService.apps[this.data.app].currentLayer) {
       return;
     } else {
       return getAttribution(layer.layer)?.onlineResource != undefined;
@@ -276,8 +294,8 @@ export class HsLayerManagerComponent
    * Test if layer (WMS) resolution is within map resolution interval
    * @param layer - Selected layer
    */
-  isLayerInResolutionInterval(layer: Layer<Source>): boolean {
-    return this.hsLayerManagerService.isLayerInResolutionInterval(layer);
+  isLayerInResolutionInterval(layer: Layer<Source>, app: string): boolean {
+    return this.hsLayerManagerService.isLayerInResolutionInterval(layer, app);
   }
 
   /**
@@ -297,7 +315,7 @@ export class HsLayerManagerComponent
     this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        this.hsLayerManagerService.composition_id = null;
+        this.hsLayerManagerService.apps[this.data.app].composition_id = null;
       });
   }
 }

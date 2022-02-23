@@ -24,12 +24,12 @@ export class HsLayerEditorSublayerService {
     public HsLayerSelectorService: HsLayerSelectorService,
     private HsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
-      this.resetSublayers(layer);
+    this.HsLayerSelectorService.layerSelected.subscribe(({layer, app}) => {
+      this.resetSublayers(layer, app);
     });
   }
-  resetSublayers(layer: HsLayerDescriptor) {
-    if (this.HsLayerManagerService.currentLayer) {
+  resetSublayers(layer: HsLayerDescriptor, app: string) {
+    if (this.HsLayerManagerService.apps[app].currentLayer) {
       this.checkedSubLayers = layer.checkedSubLayers;
       this.checkedSubLayersTmp = layer.checkedSubLayersTmp;
 
@@ -37,27 +37,28 @@ export class HsLayerEditorSublayerService {
       this.withChildrenTmp = layer.withChildrenTmp;
     }
   }
-  hasSubLayers(): boolean {
+  hasSubLayers(app: string): boolean {
     const subLayers = getCachedCapabilities(
-      this.HsLayerManagerService.currentLayer.layer
+      this.HsLayerManagerService.apps[app].currentLayer.layer
     )?.Layer;
     return subLayers != undefined && subLayers.length > 0;
   }
 
-  getSubLayers() {
-    if (this.HsLayerManagerService.currentLayer === null) {
+  getSubLayers(app: string) {
+    if (this.HsLayerManagerService.apps[app].currentLayer === null) {
       return;
     }
-    this.populateSubLayers();
+    this.populateSubLayers(app);
 
     return (
-      getCachedCapabilities(this.HsLayerManagerService.currentLayer.layer)
-        ?.Layer || []
+      getCachedCapabilities(
+        this.HsLayerManagerService.apps[app].currentLayer.layer
+      )?.Layer || []
     );
   }
 
-  populateSubLayers() {
-    const wrapper = this.HsLayerManagerService.currentLayer;
+  populateSubLayers(app: string) {
+    const wrapper = this.HsLayerManagerService.apps[app].currentLayer;
     const layer = wrapper.layer;
     if (this.populatedLayers.includes(wrapper.uid)) {
       return;
@@ -86,7 +87,7 @@ export class HsLayerEditorSublayerService {
       this.withChildrenTmp = clone(this.withChildren);
       wrapper.withChildrenTmp = this.withChildrenTmp;
 
-      if (!this.HsLayerManagerService.currentLayer.visible) {
+      if (!this.HsLayerManagerService.apps[app].currentLayer.visible) {
         for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {
           Object.keys(dict).forEach((v) => (dict[v] = true));
         }
@@ -95,7 +96,7 @@ export class HsLayerEditorSublayerService {
   }
 
   subLayerSelected(app: string): void {
-    const layer = this.HsLayerManagerService.currentLayer;
+    const layer = this.HsLayerManagerService.apps[app].currentLayer;
     const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
     params.LAYERS = Object.keys(this.checkedSubLayers)
       .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])

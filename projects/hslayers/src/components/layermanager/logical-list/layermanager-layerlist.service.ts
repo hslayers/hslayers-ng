@@ -20,13 +20,13 @@ export class HsLayerListService {
    * Controls state of layer's sublayers checkboxes with layer visibility changes
    * @param layer - Selected layer
    */
-  toggleSublayersVisibility(layer: HsLayerDescriptor): void {
+  toggleSublayersVisibility(layer: HsLayerDescriptor, app): void {
     if (!layer.visible) {
-      if (this.hsLayerManagerService.currentLayer === layer) {
-        if (this.hsLayerEditorSublayerService.hasSubLayers()) {
+      if (this.hsLayerManagerService.apps[app].currentLayer === layer) {
+        if (this.hsLayerEditorSublayerService.hasSubLayers(app)) {
           this.changeSublayerVisibilityState(
             layer,
-            this.hsLayerManagerService.currentLayer.visible
+            this.hsLayerManagerService.apps[app].currentLayer.visible
           );
         }
       } else {
@@ -51,9 +51,9 @@ export class HsLayerListService {
 
    * @returns Filtered HsLayerManagerService layers
    */
-  filterLayers(folder): Array<HsLayerDescriptor> {
+  filterLayers(folder, app): Array<HsLayerDescriptor> {
     const tmp = [];
-    for (const layer of this.hsLayerManagerService.data.layers) {
+    for (const layer of this.hsLayerManagerService.apps[app].data.layers) {
       if (
         getPath(layer.layer) == folder.hsl_path ||
         ((getPath(layer.layer) == undefined || getPath(layer.layer) == '') &&

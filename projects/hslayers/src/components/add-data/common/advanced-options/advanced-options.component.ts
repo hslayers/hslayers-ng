@@ -8,6 +8,7 @@ import {HsAddDataVectorService} from '../../vector/vector.service';
 })
 export class HsAdvancedOptionsComponent {
   @Input() data: any;
+  @Input() app = 'default';
 
   constructor(public hsAddDataVectorService: HsAddDataVectorService) {}
 }

@@ -121,7 +121,11 @@ export class HsMapSwipeComponent
       );
     }
     if (draggedLayer && replacedLayer?.layer) {
-      this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
+      this.hsLayerShiftingService.moveTo(
+        draggedLayer,
+        replacedLayer.layer,
+        this.data.app
+      );
     } else {
       this.hsMapSwipeService.fillSwipeLayers(draggedLayer.layer, this.data.app);
     }
