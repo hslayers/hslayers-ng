@@ -241,7 +241,7 @@ export class HsConfig {
     this.checkDeprecatedCesiumConfig(newConfig);
     let appConfig = this.apps[app];
     if (appConfig == undefined) {
-      this.apps[app] = defaultConfig;
+      this.apps[app] = Object.assign({}, defaultConfig);
       appConfig = this.apps[app];
     }
     appConfig.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
