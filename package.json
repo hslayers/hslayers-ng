@@ -44,7 +44,7 @@
     "@angular/localize": "^13.2.3",
     "@angular/material": "^13.2.3",
     "@angular/platform-browser": "^13.2.3",
-    "@angular/platform-browser-dynamic": "^13.2.3",
+    "@angular/platform-browser-dynamic": "^13.2.4",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
