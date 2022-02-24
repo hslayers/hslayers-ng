@@ -16,6 +16,7 @@ import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.serv
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
+import {defaultStyle} from '../styles/styles';
 import {
   getAutoLegend,
   getBase,
@@ -85,7 +86,7 @@ export class HsLegendService {
       const parser = (SLDParser as any).default
         ? new (SLDParser as any).default()
         : new SLDParser();
-      const sld = getSld(currentLayer);
+      let sld = getSld(currentLayer);
       let sldObject;
       if (!sld) {
         let layerStyle = currentLayer.getStyle();
@@ -105,6 +106,12 @@ export class HsLegendService {
           ],
         };
       } else {
+        sldObject = (await parser.readStyle(sld)).output;
+      }
+
+      //In case sld was not valid for parser, create a new one from default style
+      if (!sldObject) {
+        sld = defaultStyle;
         sldObject = (await parser.readStyle(sld)).output;
       }
       const legendOpts: any = {
