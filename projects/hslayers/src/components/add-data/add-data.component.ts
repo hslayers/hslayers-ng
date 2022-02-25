@@ -24,20 +24,10 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
-    hsSidebarService: HsSidebarService
+    private hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'addData',
-      module: 'hs.addData',
-      order: 4,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
-      description: () =>
-        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.ADDLAYERS'),
-      icon: 'icon-database',
-    });
+
     this.hsAddDataService.dsSelected = 'catalogue';
     servicesSupportedByUrl.forEach((type) =>
       this.connectServiceFromUrlParam(type as AddDataUrlType)
@@ -50,6 +40,17 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'addData',
+      module: 'hs.addData',
+      order: 4,
+      fits: true,
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
+      description: () =>
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.ADDLAYERS'),
+      icon: 'icon-database',
+    });
     this.hsCommonEndpointsService.init(this.data.app);
   }
 

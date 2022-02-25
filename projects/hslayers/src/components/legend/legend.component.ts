@@ -30,23 +30,23 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
     public hsUtilsService: HsUtilsService,
     public hsQueuesService: HsQueuesService,
     hsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    public hsLanguageService: HsLanguageService,
+    public hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+  }
+
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'legend',
       module: 'hs.legend',
       order: 1,
       fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
+      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
       description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
       icon: 'icon-dotlist',
     });
-  }
-
-  ngOnInit(): void {
     this.hsMapService.loaded(this.data.app).then((map) => this.init(map));
   }
 

@@ -90,7 +90,7 @@ export class HsMeasureComponent
     if (
       !this.HsLayoutService.componentEnabled('measureToolbar', this.data.app)
     ) {
-      this.hsSidebarService.buttons.push({
+      this.hsSidebarService.get(this.data.app).buttons.push({
         panel: 'measure',
         module: 'hs.measure',
         order: 2,

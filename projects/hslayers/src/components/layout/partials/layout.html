@@ -12,7 +12,8 @@
             <div class="hs-panelspace-wrapper me-1">
                 <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
                 <div class="hs-panelplace">
-                    <hs-mini-sidebar *ngIf="HsLayoutService.get(app).minisidebar" [app]="app" [hidden]="!panelVisible('sidebar', this)">
+                    <hs-mini-sidebar *ngIf="HsLayoutService.get(app).minisidebar" [app]="app"
+                        [hidden]="!panelVisible('sidebar',app, this)">
                     </hs-mini-sidebar>
                     <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace">
                     </hs-panel-container>
@@ -20,7 +21,8 @@
             </div>
         </div>
         <hs-toast aria-live="polite" aria-atomic="true"
-            [ngClass]="HsConfig.get(app).sidebarPosition === 'left' ? 'hs-sb-right' : 'hs-sb-left'" [app]="app"></hs-toast>
+            [ngClass]="HsConfig.get(app).sidebarPosition === 'left' ? 'hs-sb-right' : 'hs-sb-left'" [app]="app">
+        </hs-toast>
         <div class="hs-dialog-area"></div>
     </div>
     <hs-dialog-container></hs-dialog-container>

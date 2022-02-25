@@ -12,7 +12,6 @@ import {AddDataFileType} from './components/add-data/file/types/file.type';
 import {AddDataUrlType} from './components/add-data/url/types/url.type';
 import {QueryPopupWidgetsType} from './components/query/widgets/widgets.type';
 import {WidgetItem} from './components/query/widgets/widget-item.type';
-import {SignatureDeclaration} from 'typescript';
 
 export type SymbolizerIcon = {
   name: string;
@@ -30,12 +29,12 @@ export interface KeyNumberDict {
   [key: string]: number;
 }
 
-export type HsConfigObject = {
+export class HsConfigObject {
   componentsEnabled?: any;
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
-  sidebarPosition?: 'right' | 'left' | 'invisible';
+  sidebarPosition?: string;
   box_layers?: Group[];
   senslog?: {
     url: string;
@@ -86,7 +85,7 @@ export type HsConfigObject = {
       url: string;
     };
   };
-  mapSwipeOptions?: MapSwipeOptions;
+  mapSwipeOptions?: MapSwipeOptions = {};
   status_manager_url?: string;
   shortenUrl?: any;
   permalinkLocation?: {origin: string; pathname: string};
@@ -146,59 +145,58 @@ export type HsConfigObject = {
    */
   pathExclusivity?: boolean;
   ngRouter?: boolean;
-};
 
-const defaultConfig = {
-  componentsEnabled: {
-    guiOverlay: true,
-    sidebar: true,
-    toolbar: true,
-    drawToolbar: true,
-    searchToolbar: true,
-    measureToolbar: true,
-    geolocationButton: true,
-    defaultViewButton: true,
-    mapControls: true,
-    basemapGallery: false,
-    mapSwipe: false,
-  },
-  mapSwipeOptions: {},
-  pathExclusivity: false,
-  panelsEnabled: {
-    legend: true,
-    info: true,
-    composition_browser: true,
-    toolbar: true,
-    measure: true,
-    mobile_settings: false,
-    draw: true,
-    layermanager: true,
-    print: true,
-    saveMap: true,
-    language: true,
-    permalink: true,
-    compositionLoadingProgress: false,
-    sensors: true,
-    filter: false,
-    search: false,
-    tripPlanner: false,
-    addData: true,
-    mapSwipe: false,
-  },
-  queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
-  panelWidths: {
-    default: 425,
-    ows: 700,
-    composition_browser: 550,
-    addData: 700,
-    mapSwipe: 550,
-  },
-};
+  constructor() {
+    this.pathExclusivity = false;
+    this.panelsEnabled = {
+      legend: true,
+      info: true,
+      composition_browser: true,
+      toolbar: true,
+      measure: true,
+      mobile_settings: false,
+      draw: true,
+      layermanager: true,
+      print: true,
+      saveMap: true,
+      language: true,
+      permalink: true,
+      compositionLoadingProgress: false,
+      sensors: true,
+      filter: false,
+      search: false,
+      tripPlanner: false,
+      addData: true,
+      mapSwipe: false,
+    };
+    this.componentsEnabled = {
+      guiOverlay: true,
+      sidebar: true,
+      toolbar: true,
+      drawToolbar: true,
+      searchToolbar: true,
+      measureToolbar: true,
+      geolocationButton: true,
+      defaultViewButton: true,
+      mapControls: true,
+      basemapGallery: false,
+      mapSwipe: false,
+    };
+    this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
+    this.panelWidths = {
+      default: 425,
+      ows: 700,
+      composition_browser: 550,
+      addData: 700,
+      mapSwipe: 550,
+    };
+  }
+}
 
 @Injectable()
 export class HsConfig {
   apps: {[id: string]: HsConfigObject} = {
-    default: defaultConfig,
+    default: new HsConfigObject(),
   };
   configChanges?: Subject<HsConfigObject> = new Subject();
   private defaultSymbolizerIcons? = [
@@ -241,7 +239,7 @@ export class HsConfig {
     this.checkDeprecatedCesiumConfig(newConfig);
     let appConfig = this.apps[app];
     if (appConfig == undefined) {
-      this.apps[app] = Object.assign({}, defaultConfig);
+      this.apps[app] = new HsConfigObject();
       appConfig = this.apps[app];
     }
     appConfig.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {

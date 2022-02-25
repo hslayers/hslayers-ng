@@ -35,8 +35,8 @@ export class HsSaveMapComponent
     public HsCommonEndpointsService: HsCommonEndpointsService,
     //Running in background and watching observables
     public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService,
+    public hsLanguageService: HsLanguageService,
+    public hsSidebarService: HsSidebarService,
     private hsSaveMapService: HsSaveMapService
   ) {
     super(HsLayoutService);
@@ -104,6 +104,20 @@ export class HsSaveMapComponent
       });
   }
   ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'saveMap',
+      module: 'hs.save-map',
+      order: 12,
+      fits: true,
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
+      description: () =>
+        this.hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.SAVECOMPOSITION'
+        ),
+      icon: 'icon-save-floppy',
+    });
+
     window.addEventListener('beforeunload', (e) => {
       if (this.HsConfig.get(this.data.app).saveMapStateOnReload) {
         this.hsSaveMapService.save2storage(e, this.data.app);

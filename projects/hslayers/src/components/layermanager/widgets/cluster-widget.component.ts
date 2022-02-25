@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {Cluster} from 'ol/source';
 
@@ -11,7 +11,9 @@ import {HsLayerSelectorService} from '../editor/layer-selector.service';
   selector: 'hs-cluster-widget',
   templateUrl: './cluster-widget.component.html',
 })
-export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+export class HsClusterWidgetComponent
+  extends HsLayerEditorWidgetBaseComponent
+  implements OnInit {
   name = 'cluster-widget';
   distance = {
     value: 40,
@@ -23,6 +25,8 @@ export class HsClusterWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     private HsConfig: HsConfig
   ) {
     super(hsLayerSelectorService);
+  }
+  ngOnInit() {
     this.distance.value = this.setClusteringDistanceFromConfig();
   }
 

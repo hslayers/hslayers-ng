@@ -8,6 +8,7 @@ import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -45,23 +46,11 @@ export class HsCompositionsComponent
     public hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public hsLaymanService: HsLaymanService,
-    hsSidebarService: HsSidebarService,
-    hsLanguageService: HsLanguageService
+    public hsSidebarService: HsSidebarService,
+    public hsLanguageService: HsLanguageService,
+    public hsEventBusService: HsEventBusService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'composition_browser',
-      module: 'hs.compositions',
-      order: 3,
-      fits: true,
-      title: () =>
-        hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
-      description: () =>
-        hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.MAPCOMPOSITIONS'
-        ),
-      icon: 'icon-map',
-    });
     this.loadFilteredCompositions = () =>
       hsCompositionsCatalogueService.loadFilteredCompositions(this.data.app);
     this.notSavedCompositionLoadingSubscription =
@@ -71,6 +60,19 @@ export class HsCompositionsComponent
       });
   }
   ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'composition_browser',
+      module: 'hs.compositions',
+      order: 3,
+      fits: true,
+      title: () =>
+        this.hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
+      description: () =>
+        this.hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.MAPCOMPOSITIONS'
+        ),
+      icon: 'icon-map',
+    });
     //this.hsCommonEndpointsService.init(this.data.app);
     this.hsCompositionsService.init(this.data.app);
     this.hsCompositionsMapService.init(this.data.app);

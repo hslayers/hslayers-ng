@@ -26,23 +26,25 @@ export class HsFeatureTableComponent
     public HsConfig: HsConfig,
     public HsMapService: HsMapService,
     hsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    public hsLanguageService: HsLanguageService,
+    public hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
+  }
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'feature_table',
       module: 'hs.feature-table',
       order: 14,
       fits: true,
       title: () =>
-        hsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
+        this.hsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
       description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.FEATURE_TABLE'),
+        this.hsLanguageService.getTranslation(
+          'SIDEBAR.descriptions.FEATURE_TABLE'
+        ),
       icon: 'icon-indexmanager',
     });
-  }
-  ngOnInit(): void {
     this.HsMapService.loaded(this.data.app).then(() => {
       for (const layer of this.HsConfig.get(this.data.app)
         .layersInFeatureTable || []) {

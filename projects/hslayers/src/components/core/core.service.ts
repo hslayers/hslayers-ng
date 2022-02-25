@@ -33,7 +33,9 @@ export class HsCoreService {
   ) {
     this.HsEventBusService.layoutLoads.subscribe(
       ({element, innerElement, app}) => {
-        this.init(app);
+        if (!this.initCalled) {
+          this.init(app);
+        }
       }
     );
   }

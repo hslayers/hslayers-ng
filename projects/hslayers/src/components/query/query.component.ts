@@ -40,20 +40,10 @@ export class HsQueryComponent
     public hsQueryVectorService: HsQueryVectorService,
     public hsQueryWmsService: HsQueryWmsService,
     public hsDrawService: HsDrawService,
-    hsSidebarService: HsSidebarService,
-    hsLanguageService: HsLanguageService
+    public hsSidebarService: HsSidebarService,
+    public hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'info',
-      module: 'hs.query',
-      order: 7,
-      fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.INFO'),
-      description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
-      icon: 'icon-info-sign',
-    });
 
     this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
@@ -71,6 +61,16 @@ export class HsQueryComponent
       });
   }
   async ngOnInit() {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'info',
+      module: 'hs.query',
+      order: 7,
+      fits: true,
+      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.INFO'),
+      description: () =>
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
+      icon: 'icon-info-sign',
+    });
     this.hsMapService.loaded(this.data.app).then((map) => {
       map.addOverlay(this.popup);
     });

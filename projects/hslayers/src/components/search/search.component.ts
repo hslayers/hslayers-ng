@@ -24,21 +24,11 @@ export class HsSearchComponent
 
   constructor(
     private hsEventBusService: HsEventBusService,
-    hsLayoutService: HsLayoutService,
-    hsLanguageService: HsLanguageService,
-    hsSidebarService: HsSidebarService
+    public hsLayoutService: HsLayoutService,
+    public hsLanguageService: HsLanguageService,
+    public hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'search',
-      module: 'hs.search',
-      order: 15,
-      fits: true,
-      title: () => hsLanguageService.getTranslation('PANEL_HEADER.SEARCH'),
-      description: () =>
-        hsLanguageService.getTranslation('SIDEBAR.descriptions.SEARCH'),
-      icon: 'icon-search',
-    });
     this.searchResultsReceivedSubscription =
       this.hsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;
@@ -49,6 +39,16 @@ export class HsSearchComponent
   }
 
   ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'search',
+      module: 'hs.search',
+      order: 15,
+      fits: true,
+      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.SEARCH'),
+      description: () =>
+        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.SEARCH'),
+      icon: 'icon-search',
+    });
     window.innerWidth < 767
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);

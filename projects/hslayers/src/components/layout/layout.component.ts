@@ -26,8 +26,8 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
 
-  panelVisible(which, scope?): boolean {
-    return this.HsLayoutService.panelVisible(which, scope);
+  panelVisible(which, app: string, scope?): boolean {
+    return this.HsLayoutService.panelVisible(which, app, scope);
   }
 
   panelEnabled(which, status?): boolean {
@@ -69,6 +69,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
         'width=device-width, initial-scale=0.6, maximum-scale=2, user-scalable=no'
       );
     }
+
     this.HsEventBusService.layoutLoads.next({
       element: this.elementRef.nativeElement,
       innerElement: '.hs-map-space',

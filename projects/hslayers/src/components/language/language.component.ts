@@ -19,10 +19,13 @@ export class HsLanguageComponent
     public HsLanguageService: HsLanguageService,
     public hsConfig: HsConfig,
     HsLayoutService: HsLayoutService,
-    hsSidebarService: HsSidebarService
+    public hsSidebarService: HsSidebarService
   ) {
     super(HsLayoutService);
-    hsSidebarService.buttons.push({
+  }
+
+  ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
       panel: 'language',
       module: 'hs.language',
       order: 13,
@@ -35,11 +38,9 @@ export class HsLanguageComponent
         return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
       },
     });
-  }
-
-  ngOnInit(): void {
     this.available_languages = this.HsLanguageService.listAvailableLanguages();
-    this.HsLanguageService.language = this.hsConfig.get(this.data.app).language ?? 'en';
+    this.HsLanguageService.language =
+      this.hsConfig.get(this.data.app).language ?? 'en';
   }
   //$scope.$emit('scope_loaded', 'Language');
 }

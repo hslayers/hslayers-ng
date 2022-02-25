@@ -34,18 +34,18 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
       }
     }
     this.HsSidebarService.setPanelState(
-      this.HsSidebarService.buttons,
+      this.HsSidebarService.get(this.app).buttons,
       this.app
     );
     this.configChangesSubscription = this.HsConfig.configChanges.subscribe(
       (_) => {
         this.HsSidebarService.setPanelState(
-          this.HsSidebarService.buttons,
+          this.HsSidebarService.get(this.app).buttons,
           this.app
         );
       }
     );
-    this.HsSidebarService.sidebarLoad.next();
+    this.HsSidebarService.sidebarLoad.next(this.app);
   }
 
   /**
@@ -53,8 +53,8 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant =
-      !this.HsSidebarService.showUnimportant;
+    this.HsSidebarService.get(this.app).showUnimportant =
+      !this.HsSidebarService.get(this.app).showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow

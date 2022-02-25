@@ -25,7 +25,25 @@ export class HslayersAppComponent {
     private HsEventBusService: HsEventBusService,
     private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
-    const apps = ['default', 'app-2'];
+    const apps = [
+      {
+        name: 'default',
+        panelsEnabled: {
+          draw: false,
+          tripPlanner: true,
+          mapSwipe: true,
+        },
+        sidebarPosition: 'right',
+      },
+      {
+        name: 'app-2',
+        panelsEnabled: {
+          tripPlanner: false,
+          mapSwipe: false,
+        },
+        sidebarPosition: 'left',
+      },
+    ];
     for (const app of apps) {
       const count = 200;
       const features = new Array(count);
@@ -259,6 +277,7 @@ export class HslayersAppComponent {
       });
       this.HsConfig.update(
         {
+          sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
             {
@@ -278,10 +297,7 @@ export class HslayersAppComponent {
           proxyPrefix: window.location.hostname.includes('localhost')
             ? `${window.location.protocol}//${window.location.hostname}:8085/`
             : '/proxy/',
-          panelsEnabled: {
-            tripPlanner: true,
-            mapSwipe: true,
-          },
+          panelsEnabled: app.panelsEnabled,
           mapSwipeOptions: {
             orientation: 'vertical',
           },
@@ -484,7 +500,7 @@ export class HslayersAppComponent {
             opticalMap,
           ],
         },
-        app
+        app.name
       );
       const dimensions = opticalMap.get('dimensions');
       if (dimensions) {
@@ -500,7 +516,7 @@ export class HslayersAppComponent {
       setTimeout(() => {
         this.HsEventBusService.layerDimensionDefinitionChanges.next({
           layer: opticalMap,
-          app,
+          app: app.name,
         });
       }, 100);
     }

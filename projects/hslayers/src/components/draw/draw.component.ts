@@ -24,20 +24,10 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
     public HsLanguageService: HsLanguageService,
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
-    hsSidebarService: HsSidebarService,
+    public hsSidebarService: HsSidebarService,
     HsDialogContainerService: HsDialogContainerService
   ) {
     super(hsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'draw',
-      module: 'hs.draw',
-      order: 16,
-      fits: true,
-      title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
-      description: () =>
-        this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
-      icon: 'icon-pencil',
-    });
     this.HsDrawService.layerMetadataDialog.subscribe(() => {
       HsDialogContainerService.create(
         HsDrawLayerMetadataDialogComponent,
@@ -47,6 +37,16 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hsSidebarService.get(this.data.app).buttons.push({
+      panel: 'draw',
+      module: 'hs.draw',
+      order: 16,
+      fits: true,
+      title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
+      description: () =>
+        this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
+      icon: 'icon-pencil',
+    });
     this.HsDrawService.init(this.data.app);
   }
 

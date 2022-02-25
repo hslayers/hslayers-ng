@@ -21,8 +21,8 @@ export class HsMiniSidebarComponent {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant =
-      !this.HsSidebarService.showUnimportant;
+    this.HsSidebarService.get(this.app).showUnimportant =
+      !this.HsSidebarService.get(this.app).showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow

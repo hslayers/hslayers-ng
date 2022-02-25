@@ -43,7 +43,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
       this.HsPermalinkUrlService.updateCustomParams({view: '2d'});
     }
 
-    this.HsSidebarService.buttons.push({
+    this.HsSidebarService.get(this.data.app).buttons.push({
       title: '3D/2D',
       description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
       icon: 'icon-globealt',

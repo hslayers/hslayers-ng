@@ -8,7 +8,7 @@
             [ngClass]="HsLayoutService.get(app).sidebarExpanded ? (HsConfig.get(app).sidebarPosition === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (HsConfig.get(app).sidebarPosition === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </span>
 
-    <span *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'"
+    <span *ngFor="let button of HsSidebarService.get(this.app).buttons | sortBy: 'asc': 'order'"
         class="hs-sidebar-item list-group-item" [hidden]="!button.visible"
         (click)="HsSidebarService.buttonClicked(button, app)"
         [ngClass]="{'active': HsLayoutService.get(app).mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
