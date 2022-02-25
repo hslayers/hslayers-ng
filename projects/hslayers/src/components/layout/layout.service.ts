@@ -216,7 +216,7 @@ export class HsLayoutService {
 
   get(app: string): HsLayoutParams {
     if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = defaultLayoutParams;
+      this.apps[app ?? 'default'] = Object.assign({}, defaultLayoutParams);
     }
     return this.apps[app ?? 'default'];
   }
