@@ -881,5 +881,9 @@
     "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
     "waypointLayer": "Vrstva s bodmi trasy",
     "waypoints": "Body trasy"
+  },
+  "PRINT": {
+    "backgroundColor": "farba pozadia",
+    "textColor": "Farba textu"
   }
 }

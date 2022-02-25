@@ -2,10 +2,10 @@ import {Component, Input} from '@angular/core';
 
 import {ColorEvent} from 'ngx-color';
 
-import {CANVAS_SIZES, POSITION_OPTIONS} from '../utils/position-options';
+import {CANVAS_SIZES, POSITION_OPTIONS} from '../constants/position-options';
 import {HsColorPickerService} from '../../styles/symbolizers/color-picker/color-picker.service';
 import {HsLanguageService} from './../../language/language.service';
-import {LegendObj} from './../models/legend-object.model';
+import {LegendObj} from '../types/legend-object.type';
 
 @Component({
   selector: 'hs-print-legend-styler',

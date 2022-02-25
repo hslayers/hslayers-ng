@@ -11,11 +11,11 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsShareThumbnailService} from './share-thumbnail.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {ShareThumbnailService} from './share-thumbnail.service';
 import {getShowInLayerManager} from '../../common/layer-extensions';
 
 @Injectable({
@@ -49,7 +49,7 @@ export class HsShareService {
     public HsToastService: HsToastService,
     public HsLogService: HsLogService,
     private HttpClient: HttpClient,
-    public ShareThumbnailService: ShareThumbnailService
+    public HsShareThumbnailService: HsShareThumbnailService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe(async () => {
       if (this.HsLayoutService.mainpanel == 'permalink') {
@@ -302,7 +302,7 @@ export class HsShareService {
   }
 
   rendered($element, newRender?): void {
-    this.data.thumbnail = this.ShareThumbnailService.rendered(
+    this.data.thumbnail = this.HsShareThumbnailService.rendered(
       $element,
       newRender
     );

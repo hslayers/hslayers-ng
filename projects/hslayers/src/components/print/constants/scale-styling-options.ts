@@ -1,7 +1,6 @@
 export const SCALE_STYLING_OPTIONS = {
   scaleType: ['scaleline', 'scalebar'],
   scaleUnits: [
-    {name: 'imperial inch', value: 'imperial'},
     {name: 'degrees', value: 'degrees'},
     {name: 'us inch', value: 'us'},
     {name: 'nautical mile', value: 'nautical'},

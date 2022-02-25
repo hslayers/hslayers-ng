@@ -11,8 +11,8 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendLayerStaticService} from '../legend/legend-layer-static/legend-layer-static.service';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
-import {HsShareService} from '../permalink/share.service';
-import {LegendObj} from './models/legend-object.model';
+import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
+import {LegendObj} from './types/legend-object.type';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class HsPrintLegendService {
     private hsLegendService: HsLegendService,
     private hsLegendLayerStaticService: HsLegendLayerStaticService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    private hsShareService: HsShareService
+    private hsShareThumbnailService: HsShareThumbnailService
   ) {
     this.cancelRequest.subscribe(() => {
       this.loadingExternalImages = false;
@@ -50,7 +50,7 @@ export class HsPrintLegendService {
           subscriber.next(img);
           subscriber.complete();
         };
-        img.onerror = function () {
+        img.onerror = function (event) {
           subscriber.next();
           subscriber.complete();
         };
@@ -77,13 +77,17 @@ export class HsPrintLegendService {
   async drawLegendCanvas(legendObj: LegendObj): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    this.legendWidth = legendObj?.width ?? 200; //Needs to have some default width if none is set
+    this.legendWidth = legendObj.width || 200; //Needs to have some default width if none is set
     const legendImages = await this.getLegendImages();
     if (legendImages?.length > 0) {
       const canvasHeight = legendImages
         .map((img) => img.height)
         .reduce((height, img) => height + img);
-      this.hsShareService.setCanvasSize(canvas, this.legendWidth, canvasHeight);
+      this.hsShareThumbnailService.setCanvasSize(
+        canvas,
+        this.legendWidth,
+        canvasHeight
+      );
       this.styleLegendCanvas(canvas, legendObj);
       await this.fillLegendCanvas(ctx, legendImages);
       return canvas;
@@ -116,7 +120,7 @@ export class HsPrintLegendService {
     legendObj: LegendObj
   ): void {
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = legendObj.bcColor ?? 'white';
+    ctx.fillStyle = legendObj.bcColor || 'white';
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
@@ -245,7 +249,7 @@ export class HsPrintLegendService {
               <div xmlns='http://www.w3.org/1999/xhtml'>
                 ${layerTitle}
               </div>
-            ${source}
+            ${source.replace(/&nbsp;/g, '')}
             </foreignObject>
         </svg>`;
     const svg = 'data:image/svg+xml,' + encodeURIComponent(svgSource);
@@ -263,7 +267,7 @@ export class HsPrintLegendService {
             <div xmlns='http://www.w3.org/1999/xhtml'>
               ${layerTitle}
               <p>
-                <span style="background-color: ${category.color}">&nbsp;&nbsp;&nbsp;</span>&nbsp;${category.name}
+                <span style="background-color: ${category.color}" xml:space="preserve"></span>${category.name}
               </p>
             </div>
             </foreignObject>

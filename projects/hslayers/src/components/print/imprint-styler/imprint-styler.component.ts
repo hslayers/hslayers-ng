@@ -1,6 +1,6 @@
-import {CANVAS_SIZES} from './../utils/position-options';
+import {CANVAS_SIZES} from '../constants/position-options';
 import {Component, Input} from '@angular/core';
-import {ImprintObj} from './../models/imprint-object.model';
+import {ImprintObj} from '../types/imprint-object.type';
 
 @Component({
   selector: 'hs-print-imprint-styler',

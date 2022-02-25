@@ -4,8 +4,11 @@ import {Control, ScaleLine} from 'ol/control';
 
 import {HsMapService} from '../map/map.service';
 import {HsPrintLegendService} from './print-legend.service';
-import {SCALE_BAR_CLASSES, SCALE_LINE_CLASSES} from './utils/scale-svg-classes';
-import {ScaleObj} from './models/scale-object.model';
+import {
+  SCALE_BAR_CLASSES,
+  SCALE_LINE_CLASSES,
+} from './constants/scale-svg-classes';
+import {ScaleObj} from './types/scale-object.type';
 
 @Injectable({
   providedIn: 'root',
@@ -95,7 +98,7 @@ export class HsPrintScaleService {
             ${cssClasses}
             <foreignObject width='100%' height='100%'>
                 <div style="color: #eee" xmlns='http://www.w3.org/1999/xhtml'>
-                  ${scaleElem.outerHTML}
+                  ${scaleElem.outerHTML.replace(/&nbsp;/g, '.')}
                 </div>
             </foreignObject>
         </svg>`;

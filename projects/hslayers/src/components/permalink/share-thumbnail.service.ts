@@ -7,7 +7,7 @@ import {HsUtilsService} from '../utils/utils.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ShareThumbnailService {
+export class HsShareThumbnailService {
   private renderer: Renderer2;
   constructor(
     public HsUtilsService: HsUtilsService,

@@ -1,4 +1,4 @@
-import {xPos, yPos} from '../types/XY-positions.type';
+import {xPos, yPos} from './XY-positions.type';
 
 export type LegendObj = {
   include?: boolean;

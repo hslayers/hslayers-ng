@@ -1,8 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import {Subject, takeUntil} from 'rxjs';
-
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -11,17 +8,14 @@ import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintService} from './print.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {PrintModel} from './models/print-object.model';
+import {PrintModel} from './types/print-object.type';
 import {Styler} from './types/styler.type';
 
 @Component({
   selector: 'hs-print',
   templateUrl: './print.component.html',
 })
-export class HsPrintComponent
-  extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   name = 'print';
   stylers: Styler[] = [
     {name: 'title', visible: false},
@@ -30,7 +24,7 @@ export class HsPrintComponent
     {name: 'scale', visible: false},
   ];
   print: PrintModel;
-  private ngUnsubscribe = new Subject<void>();
+
   constructor(
     private hsPrintService: HsPrintService,
     private hsPrintScaleService: HsPrintScaleService,
@@ -38,8 +32,7 @@ export class HsPrintComponent
     public hsLanguageService: HsLanguageService,
     public hsSidebarService: HsSidebarService,
     public hsUtilsService: HsUtilsService,
-    private hsPrintLegendService: HsPrintLegendService,
-    private hsEventBusService: HsEventBusService
+    private hsPrintLegendService: HsPrintLegendService
   ) {
     super(hsLayoutService);
     hsSidebarService.buttons.push({
@@ -52,20 +45,9 @@ export class HsPrintComponent
         hsLanguageService.getTranslation('SIDEBAR.descriptions.PRINT'),
       icon: 'icon-print',
     });
-
-    this.hsEventBusService.mainPanelChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.setToDefault();
-      });
   }
   ngOnInit(): void {
     this.setToDefault();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   /**
@@ -76,8 +58,7 @@ export class HsPrintComponent
       titleObj: {
         text: '',
         textStyle: {
-          fillColor: '',
-          strokeColor: '',
+          textColor: '',
           textSize: '',
           fontFamily: '',
           fontStyle: '',
@@ -96,7 +77,7 @@ export class HsPrintComponent
       legendObj: {
         include: false,
         width: null,
-        bcColor: null,
+        bcColor: '',
         posX: null,
         posY: null,
       },
@@ -107,7 +88,8 @@ export class HsPrintComponent
         width: null,
         height: null,
         textStyle: {
-          fillColor: '',
+          textColor: '',
+          bcColor: '',
           textSize: '',
           fontFamily: '',
           fontStyle: '',
@@ -136,16 +118,13 @@ export class HsPrintComponent
    */
   async printLayout(complete: boolean): Promise<void> {
     await this.hsPrintService.print(this.print, complete);
-    if (complete) {
-      this.setToDefault();
-    }
   }
 
   /**
    * Download print layout as png image
    */
-  download(): void {
-    this.hsPrintService.download(this.print);
+  async download(): Promise<void> {
+    await this.hsPrintService.download(this.print);
   }
 
   isLoading(): boolean {

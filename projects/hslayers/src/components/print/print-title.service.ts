@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {TextStyle} from './models/text-style.model';
+import {TextStyle} from './types/text-style.type';
 
 @Injectable({
   providedIn: 'root',
@@ -76,11 +76,9 @@ export class HsPrintTitleService {
       ' ',
       textStyle.fontFamily
     );
-    if (textStyle.fillColor) {
-      ctx.fillStyle = textStyle.fillColor;
-    }
-    if (textStyle.strokeColor) {
-      ctx.strokeStyle = textStyle.strokeColor;
+    if (textStyle.textColor) {
+      ctx.strokeStyle = textStyle.textColor;
+      ctx.fillStyle = textStyle.textColor;
     }
   }
 }
