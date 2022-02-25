@@ -81,7 +81,7 @@ export class HsSensorsService {
     private HsSidebarService: HsSidebarService,
     private HsLanguageService: HsLanguageService
   ) {
-    this.hsSidebarService.get(this.data.app).buttons.push({
+    this.hsSidebarService.addButton({
       panel: 'sensors',
       module: 'hs.sensors',
       order: 6,

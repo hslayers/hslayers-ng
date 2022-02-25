@@ -57,17 +57,22 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'permalink',
-      module: 'hs.permalink',
-      order: 11,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
-      description: () =>
-        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.PERMALINK'),
-      icon: 'icon-share-alt',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'permalink',
+        module: 'hs.permalink',
+        order: 11,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
+        description: () =>
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.PERMALINK'
+          ),
+        icon: 'icon-share-alt',
+      },
+      this.data.app
+    );
     this.HsShareUrlService.init(this.data.app);
     this.HsShareService.init(this.data.app);
   }

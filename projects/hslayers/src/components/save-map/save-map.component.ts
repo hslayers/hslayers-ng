@@ -20,8 +20,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   endpoint = null;
   isAuthorized = false;
   name = 'saveMap';
@@ -104,19 +103,22 @@ export class HsSaveMapComponent
       });
   }
   ngOnInit() {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'saveMap',
-      module: 'hs.save-map',
-      order: 12,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
-      description: () =>
-        this.hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.SAVECOMPOSITION'
-        ),
-      icon: 'icon-save-floppy',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'saveMap',
+        module: 'hs.save-map',
+        order: 12,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
+        description: () =>
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.SAVECOMPOSITION'
+          ),
+        icon: 'icon-save-floppy',
+      },
+      this.data.app
+    );
 
     window.addEventListener('beforeunload', (e) => {
       if (this.HsConfig.get(this.data.app).saveMapStateOnReload) {

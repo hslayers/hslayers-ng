@@ -23,8 +23,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -60,19 +59,22 @@ export class HsCompositionsComponent
       });
   }
   ngOnInit(): void {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'composition_browser',
-      module: 'hs.compositions',
-      order: 3,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
-      description: () =>
-        this.hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.MAPCOMPOSITIONS'
-        ),
-      icon: 'icon-map',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'composition_browser',
+        module: 'hs.compositions',
+        order: 3,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
+        description: () =>
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.MAPCOMPOSITIONS'
+          ),
+        icon: 'icon-map',
+      },
+      this.data.app
+    );
     //this.hsCommonEndpointsService.init(this.data.app);
     this.hsCompositionsService.init(this.data.app);
     this.hsCompositionsMapService.init(this.data.app);

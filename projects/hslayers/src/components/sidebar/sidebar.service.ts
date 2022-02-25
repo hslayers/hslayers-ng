@@ -1,3 +1,6 @@
+import {BehaviorSubject, Observable, Subject, debounceTime, take} from 'rxjs';
+import {Injectable} from '@angular/core';
+
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
@@ -5,15 +8,14 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Subject, debounceTime} from 'rxjs';
 
 class HsSidebarParams {
   extraButtons: Array<HsButton> = [];
+  buttonsSubject: BehaviorSubject<HsButton[]> = new BehaviorSubject([]);
   /**
    * List of sidebar buttons
    */
-  buttons: Array<HsButton> = [];
+  buttons: Observable<HsButton[]>;
   /**
    * If buttons with importancy property exist.
    * If not, don't display expansion +/- icon
@@ -27,7 +29,9 @@ class HsSidebarParams {
   numberOfUnimportant: number;
   importantButtons: HsButton[];
 
-  constructor() {}
+  constructor() {
+    this.buttons = this.buttonsSubject.asObservable();
+  }
 }
 
 @Injectable({
@@ -69,40 +73,21 @@ export class HsSidebarService {
         this.HsCoreService.updateMapSize(app);
       }, 550);
     });
-
-    //FIXME: STILL NOT WORKING AS EXPECTED WHEN MAP HEIGHT IS SMALLER
-    //BUTTONS WHICH ARE OVERFLOWING ARE NOT HIDDEN IN MINISIDEBAR
-    this.HsEventBusService.layoutLoads.subscribe((data) => {
-      //Timeout because without it the buttons are not loaded yet
-      setTimeout(() => {
-        //Looping because layoutLoads for the first app is being triggered before the subscribtion
-        for (const [appName, value] of Object.entries(this.HsConfig.apps)) {
-          this.setButtonVisibility(appName);
-          this.setPanelState(this.get(appName).buttons, appName);
-        }
-      });
-
-      //After initial run update sidebar with each layoutResizes event
-      if (data.element) {
-        this.HsEventBusService.layoutResizes.subscribe(() => {
-          //Looping because layoutLoads for the first app is being triggered before the subscribtion
-          for (const [appName, value] of Object.entries(this.HsConfig.apps)) {
-            this.setButtonVisibility(appName);
-          }
-        });
-      }
-    });
   }
 
-  setButtonVisibility(app: string) {
-    this.get(app).importantButtons = this.get(app).buttons.filter((button) => {
+  setButtonVisibility(buttons: HsButton[], app: string) {
+    if (this.HsLayoutService.get(app).layoutElement == undefined) {
+      setTimeout(() => this.setButtonVisibility(buttons, app), 100);
+      return;
+    }
+    this.get(app).importantButtons = buttons.filter((button) => {
       return (
         button.important != false &&
         this.get(app).visibleButtons.includes(button.panel)
       );
     });
     this.get(app).numberOfUnimportant =
-      this.get(app).buttons.length - this.get(app).importantButtons.length;
+      buttons.length - this.get(app).importantButtons.length;
     for (const button of this.get(app).importantButtons) {
       button.fits = this.fitsSidebar(button, app);
     }
@@ -111,6 +96,14 @@ export class HsSidebarService {
         app
       ).importantButtons.some((b) => b.fits == false);
     }
+  }
+
+  addButton(button: HsButton, app?: string) {
+    this.get(app ?? 'default')
+      .buttons.pipe(take(1))
+      .subscribe((cur) => {
+        this.get(app ?? 'default').buttonsSubject.next([...cur, button]);
+      });
   }
 
   getButtonTitle(button): any {
@@ -129,19 +122,22 @@ export class HsSidebarService {
    * @param panelName
    * @param state
    */
-  setButtonImportancy(panelName: string, state: boolean, app: string): void {
+  setButtonImportancy(
+    buttons: HsButton[],
+    panelName: string,
+    state: boolean,
+    app: string
+  ): void {
     const backCompat = {datasource_selector: 'addData'};
     panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
-    const button = this.get(app).buttons.find((b) => b.panel == panelName);
+    const button = buttons.find((b) => b.panel == panelName);
     if (button) {
       //Unimportant buttons are automatically placed inside minisidebar
       button.fits = state;
       button.important = state;
     }
 
-    this.get(app).unimportantExist = this.get(app).buttons.some(
-      (b) => b.important == false
-    );
+    this.get(app).unimportantExist = buttons.some((b) => b.important == false);
     this.HsLayoutService.get(app).minisidebar = this.get(app).unimportantExist;
   }
   buttonClicked(button: HsButton, app: string): void {
