@@ -689,7 +689,9 @@
     "titleStylingOptions": "Title styling options",
     "top": "Top",
     "us inch": "Us inch",
-    "imprint": "Imprint"
+    "imprint": "Imprint",
+    "backgroundColor": "Background color",
+    "textColor": "Text color"
   },
   "QUERY": {
     "clusterContaining": "Cluster containing {{count}} features",

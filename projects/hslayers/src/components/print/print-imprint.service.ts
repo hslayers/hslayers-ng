@@ -1,14 +1,18 @@
 import {Injectable} from '@angular/core';
 
 import {HsPrintLegendService} from './print-legend.service';
-import {ImprintObj} from './models/imprint-object.model';
-import {TextStyle} from './models/text-style.model';
+import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
+import {ImprintObj} from './types/imprint-object.type';
+import {TextStyle} from './types/text-style.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsPrintImprintService {
-  constructor(private hsPrintLegendService: HsPrintLegendService) {}
+  constructor(
+    private hsPrintLegendService: HsPrintLegendService,
+    private hsShareThumbnailService: HsShareThumbnailService
+  ) {}
 
   /**
    * Draw imprint canvas
@@ -21,7 +25,14 @@ export class HsPrintImprintService {
       const img = await this.hsPrintLegendService.svgToImage(
         this.imprintToSvg(imprintObj)
       );
-      ctx.drawImage(img, 0, 0);
+      if (img) {
+        this.hsShareThumbnailService.setCanvasSize(
+          canvas,
+          img.width,
+          img.height
+        );
+        ctx.drawImage(img, 0, 0);
+      }
       resolve(canvas);
     });
   }
@@ -32,7 +43,7 @@ export class HsPrintImprintService {
    */
   private imprintToSvg(imprintObj: ImprintObj): string {
     const styles = this.getStyles(imprintObj.textStyle);
-    const height = imprintObj.height ?? 300;
+    const height = imprintObj.height ?? 50;
     const width = imprintObj.width ?? 150;
     const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${width}px' height='${height}px'>
             <foreignObject width='100%' height='100%'>
@@ -50,14 +61,14 @@ export class HsPrintImprintService {
    * Get styles string from textStyle object for the svg
    * @param textStyle - TextStyle object
    */
-  getStyles(textStyle: TextStyle): string {
-    let tmpStyle = 'padding: 2px;';
+  private getStyles(textStyle: TextStyle): string {
+    let tmpStyle = 'padding: 5px;';
     if (textStyle.posX === 'right') {
       tmpStyle += 'text-align:end;';
-    } else if (textStyle.posX === 'center') {
-      tmpStyle += 'text-align:center;';
-    } else {
+    } else if (textStyle.posX === 'left') {
       tmpStyle += 'text-align:start;';
+    } else {
+      tmpStyle += 'text-align:center;';
     }
     if (!textStyle.textSize) {
       textStyle.textSize = '12px';
@@ -65,13 +76,13 @@ export class HsPrintImprintService {
     if (!textStyle.fontFamily) {
       textStyle.fontFamily = 'Times New Roman';
     }
-    if (textStyle.textDraw === 'stroke' && textStyle.strokeColor) {
-      tmpStyle += `-webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color:${textStyle.strokeColor};`;
-    } else if (textStyle.fillColor) {
-      tmpStyle += `color: ${textStyle.fillColor};`;
+    if (textStyle.textColor) {
+      tmpStyle += `color: ${textStyle.textColor};`;
     } else {
       tmpStyle += `color:black;`;
+    }
+    if (textStyle.bcColor) {
+      tmpStyle += `background-color: ${textStyle.bcColor};`;
     }
     tmpStyle += `font:${textStyle.fontStyle.concat(
       ' ',

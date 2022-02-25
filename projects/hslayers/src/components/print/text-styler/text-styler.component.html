@@ -1,19 +1,19 @@
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'STYLER.fillColor' | translate}}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textColor' | translate}}:</div>
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('fill')"
-      [ngStyle]="getColorPickerStyle('fill')" [ngModelOptions]="{standalone: true}" [(ngModel)]="textStyle.fillColor" />
+      [ngStyle]="getColorPickerStyle('fill')" [ngModelOptions]="{standalone: true}" [(ngModel)]="textStyle.textColor" />
     <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event, 'fill')">
     </color-sketch>
   </div>
 </div>
-<div class="d-flex flex-row" *ngIf="textStyle.strokeColor">
-  <div class="p-1 w-50 mt-1">{{'STYLER.strokeColor' | translate}}:</div>
+<div class="d-flex flex-row" *ngIf="objectName === 'imprint'">
+  <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translate}}:</div>
   <div class="p-1 w-100">
-    <input class="form-control form-select-sm" (click)="setColorPickerVisible('stroke')"
-      [ngStyle]="getColorPickerStyle('stroke')" [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="textStyle.strokeColor" />
-    <color-sketch *ngIf="strokePickerVisible" (onChangeComplete)="onPick($event, 'stroke')">
+    <input class="form-control form-select-sm" (click)="setColorPickerVisible('background')"
+      [ngStyle]="getColorPickerStyle('background')" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="textStyle.bcColor" />
+    <color-sketch *ngIf="bcPickerVisible" (onChangeComplete)="onPick($event, 'background')">
     </color-sketch>
   </div>
 </div>
@@ -48,7 +48,7 @@
     </select>
   </div>
 </div>
-<div class="d-flex flex-row" *ngIf="textStyle.textDraw">
+<div class="d-flex flex-row" *ngIf="objectName === 'title'">
   <div class="p-1 w-50 mt-1">{{'PRINT.textDraw' | translate}}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textDraw"

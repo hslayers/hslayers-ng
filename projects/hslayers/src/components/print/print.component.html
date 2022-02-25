@@ -49,7 +49,8 @@
                 (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
                 {{'PRINT.titleStylingOptions' | translate}}
             </button>
-            <hs-print-text-styler *ngIf="getStylerVisible('title')" [textStyle]="print.titleObj.textStyle">
+            <hs-print-text-styler *ngIf="getStylerVisible('title')" [textStyle]="print.titleObj.textStyle"
+                [objectName]="'title'">
             </hs-print-text-styler>
             <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">

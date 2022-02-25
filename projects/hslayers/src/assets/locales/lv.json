@@ -689,7 +689,9 @@
     "us inch": "Amerikas collas",
     "legendStylingOptions": "Leģendas stilizēšanas iespējas",
     "imprint": "Zīmogs",
-    "imprintStylingOptions": "Zīmoga stilizēšanas iespējas"
+    "imprintStylingOptions": "Zīmoga stilizēšanas iespējas",
+    "backgroundColor": "Fona krāsa",
+    "textColor": "Teksta krāsa"
   },
   "QUERY": {
     "clusterContaining": "Objektu apvienojums, kas satur {{count}} objektus",

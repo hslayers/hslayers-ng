@@ -1,4 +1,4 @@
-import {TextStyle} from './text-style.model';
+import {TextStyle} from './text-style.type';
 
 export type TitleObj = {
   text?: string;

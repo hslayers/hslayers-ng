@@ -4,13 +4,13 @@ import {ColorEvent} from 'ngx-color';
 
 import {HsColorPickerService} from '../../styles/symbolizers/color-picker/color-picker.service';
 import {HsLanguageService} from '../../language/language.service';
-import {POSITION_OPTIONS} from '../utils/position-options';
-import {TEXT_STYLING_OPTIONS} from '../utils/text-styling-options';
-import {TextStyle} from '../models/text-style.model';
+import {POSITION_OPTIONS} from '../constants/position-options';
+import {TEXT_STYLING_OPTIONS} from '../constants/text-styling-options';
+import {TextStyle} from '../types/text-style.type';
 
-export enum TextDrawTypes {
+export enum ColorPickers {
   Fill = 'fill',
-  Stroke = 'stroke',
+  Background = 'background',
 }
 @Component({
   selector: 'hs-print-text-styler',
@@ -18,10 +18,11 @@ export enum TextDrawTypes {
 })
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;
+  @Input() objectName: string;
   fillPickerVisible = false;
-  strokePickerVisible = false;
-  fillColor = 'white';
-  strokeColor = 'white';
+  bcPickerVisible = false;
+  textColor = 'white';
+  backgroundColor = 'white';
   stylingOptions = TEXT_STYLING_OPTIONS;
   positionOptions = POSITION_OPTIONS;
   constructor(
@@ -34,7 +35,7 @@ export class HsPrintTextStylerComponent {
    * @param $event - ColorEvent
    * @param type - color picker type selected
    */
-  onPick($event: ColorEvent, type: 'fill' | 'stroke'): void {
+  onPick($event: ColorEvent, type: 'fill' | 'background'): void {
     const hex = $event.color.hex;
     const hsp = this.hsColorPickerService.generateFontColor([
       $event.color.rgb.r,
@@ -42,13 +43,13 @@ export class HsPrintTextStylerComponent {
       $event.color.rgb.b,
     ]);
     switch (type) {
-      case TextDrawTypes.Fill:
-        this.textStyle.fillColor = hex;
-        this.fillColor = hsp;
+      case ColorPickers.Fill:
+        this.textStyle.textColor = hex;
+        this.textColor = hsp;
         break;
-      case TextDrawTypes.Stroke:
-        this.textStyle.strokeColor = hex;
-        this.strokeColor = hsp;
+      case ColorPickers.Background:
+        this.textStyle.bcColor = hex;
+        this.backgroundColor = hsp;
         break;
       default:
         return;
@@ -59,18 +60,18 @@ export class HsPrintTextStylerComponent {
    * Get color picker style values for DOM styling
    * @param type - color picker type selected
    */
-  getColorPickerStyle(type: 'fill' | 'stroke'): any {
+  getColorPickerStyle(type: 'fill' | 'background'): any {
     switch (type) {
-      case TextDrawTypes.Fill:
+      case ColorPickers.Fill:
         return this.hsColorPickerService.colorPickerStyle(
-          this.textStyle.fillColor,
-          this.fillColor
+          this.textStyle.textColor,
+          this.textColor
         );
 
-      case TextDrawTypes.Stroke:
+      case ColorPickers.Background:
         return this.hsColorPickerService.colorPickerStyle(
-          this.textStyle.strokeColor,
-          this.strokeColor
+          this.textStyle.bcColor,
+          this.backgroundColor
         );
       default:
         return;
@@ -81,14 +82,14 @@ export class HsPrintTextStylerComponent {
    * Set color picker visibility
    * @param type - color picker type selected
    */
-  setColorPickerVisible(type: 'fill' | 'stroke'): void {
+  setColorPickerVisible(type: 'fill' | 'background'): void {
     switch (type) {
-      case TextDrawTypes.Fill:
+      case ColorPickers.Fill:
         this.fillPickerVisible = !this.fillPickerVisible;
-        this.strokePickerVisible = false;
+        this.bcPickerVisible = false;
         break;
-      case TextDrawTypes.Stroke:
-        this.strokePickerVisible = !this.strokePickerVisible;
+      case ColorPickers.Background:
+        this.bcPickerVisible = !this.bcPickerVisible;
         this.fillPickerVisible = false;
         break;
       default:

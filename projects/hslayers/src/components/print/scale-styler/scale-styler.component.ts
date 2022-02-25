@@ -2,8 +2,8 @@ import {Component, Input} from '@angular/core';
 
 import {HsLanguageService} from './../../language/language.service';
 import {HsPrintScaleService} from '../print-scale.service';
-import {SCALE_STYLING_OPTIONS} from '../utils/scale-styling-options';
-import {ScaleObj} from '../models/scale-object.model';
+import {SCALE_STYLING_OPTIONS} from '../constants/scale-styling-options';
+import {ScaleObj} from '../types/scale-object.type';
 
 @Component({
   selector: 'hs-print-scale-styler',

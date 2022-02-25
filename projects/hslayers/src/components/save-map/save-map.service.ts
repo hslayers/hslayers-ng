@@ -16,15 +16,15 @@ import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
+import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
-import {ShareThumbnailService} from '../permalink/share-thumbnail.service';
 import {
   getAttribution,
   getBase,
@@ -58,7 +58,7 @@ export class HsSaveMapService {
     public HsLayoutService: HsLayoutService,
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public ShareThumbnailService: ShareThumbnailService
+    public HsShareThumbnailService: HsShareThumbnailService
   ) {
     window.addEventListener('beforeunload', (e) => {
       if (hsConfig.saveMapStateOnReload) {
@@ -463,12 +463,12 @@ export class HsSaveMapService {
     }
     $element.setAttribute('crossOrigin', 'Anonymous');
     this.HsMapService.map.once('postcompose', () =>
-      this.ShareThumbnailService.rendered($element, newRender)
+      this.HsShareThumbnailService.rendered($element, newRender)
     );
     if (newRender) {
       this.HsMapService.map.renderSync();
     } else {
-      this.ShareThumbnailService.rendered($element, newRender);
+      this.HsShareThumbnailService.rendered($element, newRender);
     }
   }
 
