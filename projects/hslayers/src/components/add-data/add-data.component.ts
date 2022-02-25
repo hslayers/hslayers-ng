@@ -40,17 +40,22 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'addData',
-      module: 'hs.addData',
-      order: 4,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
-      description: () =>
-        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.ADDLAYERS'),
-      icon: 'icon-database',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'addData',
+        module: 'hs.addData',
+        order: 4,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
+        description: () =>
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.ADDLAYERS'
+          ),
+        icon: 'icon-database',
+      },
+      this.data.app
+    );
     this.hsCommonEndpointsService.init(this.data.app);
   }
 

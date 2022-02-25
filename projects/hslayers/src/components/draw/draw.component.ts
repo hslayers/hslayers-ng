@@ -37,16 +37,19 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'draw',
-      module: 'hs.draw',
-      order: 16,
-      fits: true,
-      title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
-      description: () =>
-        this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
-      icon: 'icon-pencil',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'draw',
+        module: 'hs.draw',
+        order: 16,
+        fits: true,
+        title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
+        icon: 'icon-pencil',
+      },
+      this.data.app
+    );
     this.HsDrawService.init(this.data.app);
   }
 

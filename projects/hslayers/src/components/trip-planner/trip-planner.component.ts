@@ -18,7 +18,8 @@ import {setHighlighted} from '../../common/feature-extensions';
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   loaderImage: string;
   timer: any;
   name = 'tripPlanner';
@@ -37,19 +38,22 @@ export class HsTripPlannerComponent
     super(hsLayoutService);
   }
   async ngOnInit(): Promise<void> {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'tripPlanner',
-      module: 'hs-trip-planner',
-      order: 17,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.TRIP_PLANNER'),
-      description: () =>
-        this.hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.TRIP_PLANNER'
-        ),
-      icon: 'icon-sextant',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'tripPlanner',
+        module: 'hs-trip-planner',
+        order: 17,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.TRIP_PLANNER'),
+        description: () =>
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.TRIP_PLANNER'
+          ),
+        icon: 'icon-sextant',
+      },
+      this.data.app
+    );
     await this.HsTripPlannerService.init(this.data.app);
     if (this.HsConfig.apps[this.data.app].default_layers === undefined) {
       this.HsConfig.apps[this.data.app].default_layers = [];

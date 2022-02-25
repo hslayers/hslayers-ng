@@ -41,7 +41,8 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild('layerEditor', {static: false, read: ElementRef})
   layerEditorRef: ElementRef;
   map: any;
@@ -173,16 +174,19 @@ export class HsLayerManagerComponent
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'layermanager',
-      module: 'hs.layermanager',
-      order: 0,
-      fits: true,
-      title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
-      description: () =>
-        this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
-      icon: 'icon-layers',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'layermanager',
+        module: 'hs.layermanager',
+        order: 0,
+        fits: true,
+        title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
+        description: () =>
+          this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
+        icon: 'icon-layers',
+      },
+      this.data.app
+    );
     this.layerlistVisible = true;
     this.hsLayerManagerService.init(this.data.app);
   }

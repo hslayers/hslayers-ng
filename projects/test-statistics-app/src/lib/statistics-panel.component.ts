@@ -38,7 +38,7 @@ export class HsStatisticsPanelComponent extends HsPanelBaseComponent {
   }
 
   ngOnInit() {
-    this.hsSidebarService.get(this.data.app).buttons.push({
+    this.hsSidebarService.addButton({
       panel: 'statistics',
       module: 'hs.statistics',
       order: 10,

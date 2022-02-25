@@ -17,8 +17,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   type: string;
   data;
   name = 'measure';
@@ -90,18 +89,23 @@ export class HsMeasureComponent
     if (
       !this.HsLayoutService.componentEnabled('measureToolbar', this.data.app)
     ) {
-      this.hsSidebarService.get(this.data.app).buttons.push({
-        panel: 'measure',
-        module: 'hs.measure',
-        order: 2,
-        fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
-        description: () =>
-          this.hsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
-        icon: 'icon-design',
-        condition: true,
-      });
+      this.hsSidebarService.addButton(
+        {
+          panel: 'measure',
+          module: 'hs.measure',
+          order: 2,
+          fits: true,
+          title: () =>
+            this.hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
+          description: () =>
+            this.hsLanguageService.getTranslation(
+              'SIDEBAR.descriptions.MEASURE'
+            ),
+          icon: 'icon-design',
+          condition: true,
+        },
+        this.data.app
+      );
     }
   }
 

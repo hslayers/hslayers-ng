@@ -18,7 +18,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   layers: VectorLayer<VectorSource<Geometry>>[] = [];
   name = 'feature_table';
   constructor(
@@ -32,19 +33,22 @@ export class HsFeatureTableComponent
     super(hsLayoutService);
   }
   ngOnInit(): void {
-    this.hsSidebarService.get(this.data.app).buttons.push({
-      panel: 'feature_table',
-      module: 'hs.feature-table',
-      order: 14,
-      fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
-      description: () =>
-        this.hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.FEATURE_TABLE'
-        ),
-      icon: 'icon-indexmanager',
-    });
+    this.hsSidebarService.addButton(
+      {
+        panel: 'feature_table',
+        module: 'hs.feature-table',
+        order: 14,
+        fits: true,
+        title: () =>
+          this.hsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
+        description: () =>
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.FEATURE_TABLE'
+          ),
+        icon: 'icon-indexmanager',
+      },
+      this.data.app
+    );
     this.HsMapService.loaded(this.data.app).then(() => {
       for (const layer of this.HsConfig.get(this.data.app)
         .layersInFeatureTable || []) {
