@@ -31,6 +31,7 @@ import {HsQueryBaseService} from '../../query/query-base.service';
 import {HsQueryVectorService} from '../../query/query-vector.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
+import {mockLanguageService} from '../../language/language.service.mock';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 
 class emptyMock {
@@ -70,10 +71,6 @@ describe('HsDrawPanel', () => {
     endpointsFilled: of([]),
   };
 
-  const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
-    'getTranslation',
-    'getTranslationIgnoreNonExisting',
-  ]);
   const layer = new VectorLayer({
     properties: {title: 'Point'},
     source: new VectorSource({}),
@@ -107,7 +104,7 @@ describe('HsDrawPanel', () => {
       providers: [
         HsDrawService,
         {provide: HsLayoutService, useValue: mockLayoutService},
-        {provide: HsLanguageService, useValue: mockLanguageService},
+        {provide: HsLanguageService, useValue: mockLanguageService()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsConfig, useValue: new HsConfigMock()},

@@ -16,12 +16,8 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
 import {mockHsMapSwipeService} from './map-swipe.service.mock';
+import {mockLanguageService} from '../language/language.service.mock';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
-
-const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
-  'getTranslation',
-  'getTranslationIgnoreNonExisting',
-]);
 
 describe('HsMapSwipeComponent', () => {
   let component: HsMapSwipeComponent;
@@ -40,7 +36,7 @@ describe('HsMapSwipeComponent', () => {
       providers: [
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsSidebarService, useValue: {buttons: []}},
-        {provide: HsLanguageService, useValue: mockLanguageService},
+        {provide: HsLanguageService, useValue: mockLanguageService()},
         {provide: HsMapSwipeService, useValue: mockHsMapSwipeService()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {

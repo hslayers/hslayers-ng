@@ -82,9 +82,8 @@ describe('HsPrintComponent', () => {
   });
 
   it('print layout is created', async () => {
-    spyOn(component, 'setToDefault');
     await component.printLayout(true);
-    expect(component.setToDefault).toHaveBeenCalled();
+    expect(service.print).toHaveBeenCalled();
   });
 
   it('print layout is downloaded as image', async () => {
