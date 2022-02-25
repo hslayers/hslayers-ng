@@ -250,7 +250,12 @@
     "width": "Šírka",
     "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
     "yes": "Áno",
-    "zoomTo": "zväčšiť na"
+    "zoomTo": "zväčšiť na",
+    "downloadAsPng": "Stiahnuť ako PNG",
+    "height": "Výška",
+    "preview": "Náhľad",
+    "resetToDefault": "Obnoviť východzie hodnoty",
+    "steps": "Kroky"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -884,6 +889,33 @@
   },
   "PRINT": {
     "backgroundColor": "farba pozadia",
-    "textColor": "Farba textu"
+    "textColor": "Farba textu",
+    "bold": "Tučné",
+    "bottom": "Dole",
+    "center": "Na stred",
+    "degrees": "Stupne",
+    "imperial inch": "Palec (GB)",
+    "imprint": "Tiráž",
+    "imprintStylingOptions": "Vzhľad tiráže",
+    "italic": "Kurzíva",
+    "left": "Vľavo",
+    "legendStylingOptions": "Vzhľad legendy",
+    "metric": "Metrické",
+    "middle": "Na stred",
+    "nautical mile": "Námorná míľa",
+    "normal": "Normálna",
+    "right": "Vpravo",
+    "scaleBarText": "Číselná mierka",
+    "scaleSteps": "Delenie mierky",
+    "scaleStylingOptions": "Vzhľad mierky",
+    "scaleType": "Typ mierky",
+    "scaleUnits": "Jednotky mierky",
+    "scalebar": "Plné",
+    "scaleline": "Líniové",
+    "textDraw": "Typ textu",
+    "textPosition": "Pozícia",
+    "titleStylingOptions": "Vzhľad nadpisu",
+    "top": "Hore",
+    "us inch": "Palec (US)"
   }
 }

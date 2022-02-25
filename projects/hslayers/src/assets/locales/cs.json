@@ -251,7 +251,11 @@
     "width": "Šířka",
     "wrongCombinationOfParams": "Neplatná kombinace parametrů",
     "yes": "Ano",
-    "zoomTo": "zvětšit na"
+    "zoomTo": "zvětšit na",
+    "downloadAsPng": "Stáhnout jako PNG",
+    "height": "Výška",
+    "preview": "Náhled",
+    "resetToDefault": "Obnovit výchozí hodnoty"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -676,7 +680,7 @@
     "scalebar": "Plné",
     "scaleBarText": "Číselné měřítko",
     "scaleline": "Liniové",
-    "scaleSteps": "Kroky měřítka",
+    "scaleSteps": "Dělení měřítka",
     "scaleStylingOptions": "Vzhled měřítka",
     "scaleType": "Typ měřítka",
     "scaleUnits": "Jednotky měřítka",
@@ -837,8 +841,8 @@
     "fillOpacity": "Průhlednost výplně",
     "fillSymbolizer": "Symbolika výplně",
     "filtersAndScales": "Filtry a měřítka",
-    "font": "Font",
-    "fontStyle": "Styl fontu",
+    "font": "Písmo",
+    "fontStyle": "Styl písma",
     "fontWeight": "Tloušťka písma",
     "gapWidth": "Šířka mezery",
     "graphicFill": "Grafická výplň",
