@@ -79,7 +79,7 @@ export class HsFeatureInfoComponent
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.hsQueryVectorService.removeFeature(feature, this.data.app);
-      this.data.service.featuresUnderMouse = [];
+      this.data.service.apps[this.data.app].featuresUnderMouse = [];
     }
   }
 

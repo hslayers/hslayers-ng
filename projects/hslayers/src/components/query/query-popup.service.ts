@@ -11,6 +11,7 @@ import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { HsQueryPopupData } from './popup-data';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +20,6 @@ export class HsQueryPopupService
   extends HsQueryPopupBaseService
   implements HsQueryPopupServiceModel
 {
-  map: Map;
-  featuresUnderMouse: Feature<Geometry>[] = [];
-  featureLayersUnderMouse: HsFeatureLayer[] = [];
-  hoverPopup: any;
-
   constructor(
     hsMapService: HsMapService,
     public hsConfig: HsConfig,
@@ -41,20 +37,22 @@ export class HsQueryPopupService
     );
   }
 
-  registerPopup(nativeElement: any) {
-    this.hoverPopup = new Overlay({
+  registerPopup(nativeElement: any, app: string) {
+    this.setAppIfNeeded(app);
+    this.apps[app].hoverPopup = new Overlay({
       element: nativeElement,
     });
   }
 
   async init(app: string) {
     await this.hsMapService.loaded(app);
-    this.map = this.hsMapService.getMap(app);
+    this.setAppIfNeeded(app);
+    this.apps[app].map = this.hsMapService.getMap(app);
     if (
       this.hsConfig.get(app).popUpDisplay &&
       this.hsConfig.get(app).popUpDisplay === 'hover'
     ) {
-      this.map.on(
+      this.apps[app].map.on(
         'pointermove',
         this.hsUtilsService.debounce(
           (e) => this.preparePopup(e, app),
@@ -67,7 +65,7 @@ export class HsQueryPopupService
       this.hsConfig.get(app).popUpDisplay &&
       this.hsConfig.get(app).popUpDisplay === 'click'
     ) {
-      this.map.on(
+      this.apps[app].map.on(
         'singleclick',
         this.hsUtilsService.debounce(
           (e) => this.preparePopup(e, app),
@@ -77,6 +75,12 @@ export class HsQueryPopupService
         )
       );
     } /* else none */
+  }
+
+  private setAppIfNeeded(app: string) {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new HsQueryPopupData();
+    }
   }
 
   /**
@@ -108,27 +112,30 @@ export class HsQueryPopupService
     );
     if (
       tmpFeatures.some(
-        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>)
+        (f) =>
+          !this.apps[app].featuresUnderMouse.includes(f as Feature<Geometry>)
       ) ||
-      this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
+      this.apps[app].featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
     ) {
       this.fillFeatures(tmpFeatures as Feature<Geometry>[], app);
     }
-    this.showPopup(e);
+    this.showPopup(e, app);
   }
 
   /**
    * Set popups position according to pixel where mouse is
    * @param e - Event, which triggered this function
    */
-  showPopup(e: any): void {
+  showPopup(e: any, app: string): void {
     const map = e.map;
 
     const pixel = e.pixel;
     pixel[0] += 2;
     pixel[1] += 4;
-    if (this.hoverPopup) {
-      this.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+    if (this.apps[app].hoverPopup) {
+      this.apps[app].hoverPopup.setPosition(
+        map.getCoordinateFromPixel(e.pixel)
+      );
     }
   }
 }

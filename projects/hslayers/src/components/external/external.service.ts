@@ -173,10 +173,10 @@ export class HsExternalService {
       case 'showPopup':
         this.hsQueryPopupService.fillFeatures([feature], app);
         const pixel = map.getPixelFromCoordinate(center);
-        this.hsQueryPopupService.showPopup({pixel, map});
+        this.hsQueryPopupService.showPopup({pixel, map}, app);
         break;
       case 'hidePopup':
-        this.hsQueryPopupService.closePopup();
+        this.hsQueryPopupService.closePopup(app);
         break;
       default:
         if (typeof action == 'function') {

@@ -5,6 +5,7 @@ import {Geometry} from 'ol/geom';
 import {ReplaySubject} from 'rxjs';
 
 import {HsPanelItem} from '../layout/panels/panel-item';
+import {HsQueryPopupData} from './popup-data';
 
 export type HsFeatureLayer = {
   title: string;
@@ -14,13 +15,12 @@ export type HsFeatureLayer = {
 };
 
 export interface HsQueryPopupServiceModel {
-  registerPopup(nativeElement: any);
-  featuresUnderMouse: Feature<Geometry>[];
-  featureLayersUnderMouse: HsFeatureLayer[];
-  hoverPopup: any;
-
+  registerPopup(nativeElement: any, app: string);
+  apps: {
+    [key: string]: HsQueryPopupData;
+  };
   fillFeatures(features: Feature<Geometry>[], app: string);
-  showPopup(e: any): void;
-  closePopup(): void;
+  showPopup(e: any, app: string): void;
+  closePopup(app: string): void;
   serializeFeatureAttributes(feature: Feature<Geometry>, app: string): any[];
 }
