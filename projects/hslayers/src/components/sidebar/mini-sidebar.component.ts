@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
@@ -8,7 +8,7 @@ import {HsSidebarService} from './sidebar.service';
   selector: 'hs-mini-sidebar',
   templateUrl: './partials/sidebar.html',
 })
-export class HsMiniSidebarComponent {
+export class HsMiniSidebarComponent implements OnInit {
   @Input() app = 'default';
   buttons: HsButton[];
   constructor(
@@ -16,7 +16,8 @@ export class HsMiniSidebarComponent {
     public HsSidebarService: HsSidebarService,
     public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig
-  ) {
+  ) {}
+  ngOnInit() {
     this.HsSidebarService.apps[this.app].buttons.subscribe((buttons) => {
       this.buttons = buttons;
     });

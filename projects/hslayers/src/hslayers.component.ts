@@ -38,10 +38,6 @@ import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.com
 import {HsOverlayPanelContainerService} from './components/layout/overlay-panel-container.service';
 import {HsPanelContainerService} from './components/layout/panels/panel-container.service';
 
-export const indexCounter = {
-  id: 0,
-};
-
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',
