@@ -46,7 +46,7 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
               (widget) => widget.name == widgetName
             );
         }
-        this.create(widgetFound.component, {app}, panelObserver);
+        this.create(widgetFound.component, undefined, panelObserver);
       }
     }
   }

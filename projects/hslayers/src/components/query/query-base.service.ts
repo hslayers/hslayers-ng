@@ -20,26 +20,85 @@ import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
 
+class HsQueryData {
+  attributes = [];
+  features = [];
+  featureInfoHtmls = [];
+  customFeatures = [];
+  coordinates = [];
+  selectedProj;
+  queryLayer;
+  featureLayersUnderMouse = [];
+  dataCleared = true;
+  hsEventBusService;
+  invisiblePopup;
+  queryPoint = new Point([0, 0]);
+
+  constructor(queryLayerStyle, hsEventBusService, invisiblePopup) {
+    this.queryLayer = new VectorLayer({
+      properties: {
+        title: 'Point clicked',
+        queryable: false,
+        showInLayerManager: false,
+        removable: false,
+      },
+      source: new Vector({
+        features: [
+          new Feature({
+            geometry: this.queryPoint,
+          }),
+        ],
+      }),
+      style: queryLayerStyle,
+    });
+    this.hsEventBusService = hsEventBusService;
+    this.invisiblePopup = invisiblePopup;
+  }
+
+  set(data: any, type: string, overwrite?: boolean): void {
+    if (type) {
+      if (overwrite) {
+        this[type].length = 0;
+      }
+      if (Array.isArray(data)) {
+        this[type] = this[type].concat(data);
+      } else {
+        this[type].push(data);
+      }
+      this.hsEventBusService.queryDataUpdated.next(this);
+    } else if (console) {
+      console.log('Query.BaseService.setData type not passed');
+    }
+  }
+
+  clear(type?: string): void {
+    if (type) {
+      this[type].length = 0;
+    } else {
+      this.attributes.length = 0;
+      this.features.length = 0;
+      this.coordinates.length = 0;
+      this.featureInfoHtmls = [];
+      this.customFeatures = [];
+    }
+    if (this.invisiblePopup) {
+      this.invisiblePopup.contentDocument.body.innerHTML = '';
+      this.invisiblePopup.style.height = '0px';
+      this.invisiblePopup.style.width = '0px';
+    }
+    this.dataCleared = true;
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsQueryBaseService {
-  data = {
-    attributes: [],
-    features: [],
-    featureInfoHtmls: [],
-    customFeatures: [],
-    coordinates: [],
-    selectedProj: undefined,
-  };
-
   queryActive = false;
   popupClassname = '';
   selector = null;
   currentQuery = null;
-  dataCleared = true;
-  queryPoint = new Point([0, 0]);
-  featureLayersUnderMouse = [];
+
   nonQueryablePanels = [
     'measure',
     'composition_browser',
@@ -53,7 +112,7 @@ export class HsQueryBaseService {
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
   vectorSelectorCreated: Subject<Select> = new Subject();
-  apps: {[key: string]: {queryLayer}} = {};
+  apps: {[key: string]: HsQueryData} = {};
 
   constructor(
     public hsMapService: HsMapService,
@@ -76,24 +135,11 @@ export class HsQueryBaseService {
   async init(app): Promise<void> {
     await this.hsMapService.loaded(app);
     if (this.apps[app] == undefined) {
-      this.apps[app] = {
-        queryLayer: new VectorLayer({
-          properties: {
-            title: 'Point clicked',
-            queryable: false,
-            showInLayerManager: false,
-            removable: false,
-          },
-          source: new Vector({
-            features: [
-              new Feature({
-                geometry: this.queryPoint,
-              }),
-            ],
-          }),
-          style: () => this.pointClickedStyle(app),
-        }),
-      };
+      this.apps[app] = new HsQueryData(
+        () => this.pointClickedStyle(app),
+        this.hsEventBusService,
+        this.getInvisiblePopup()
+      );
     }
     this.activateQueries(app);
     this.hsMapService.getMap(app).on('singleclick', (evt) => {
@@ -108,18 +154,19 @@ export class HsQueryBaseService {
           return;
         }
         this.popupClassname = '';
-        if (!this.dataCleared) {
-          this.clearData();
+        if (!this.apps[app]) {
+          this.apps[app].clear();
         }
-        this.dataCleared = false;
+        this.apps[app].dataCleared = false;
         this.currentQuery = (Math.random() + 1).toString(36).substring(7);
-        this.setData(
+        this.apps[app].set(
           this.getCoordinate(evt.coordinate, app),
           'coordinates',
           true
         );
         this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-        this.data.selectedProj = this.data.coordinates[0].projections[0];
+        this.apps[app].selectedProj =
+          this.apps[app].coordinates[0].projections[0];
         this.getFeatureInfoStarted.next({evt, app});
       });
     });
@@ -134,52 +181,17 @@ export class HsQueryBaseService {
       });
   }
 
-  setData(data: any, type: string, overwrite?: boolean): void {
-    if (type) {
-      if (overwrite) {
-        this.data[type].length = 0;
-      }
-      if (Array.isArray(data)) {
-        this.data[type] = this.data[type].concat(data);
-      } else {
-        this.data[type].push(data);
-      }
-      this.hsEventBusService.queryDataUpdated.next(this.data);
-    } else if (console) {
-      console.log('Query.BaseService.setData type not passed');
-    }
-  }
-
-  clearData(type?: string): void {
-    if (type) {
-      this.data[type].length = 0;
-    } else {
-      this.data.attributes.length = 0;
-      this.data.features.length = 0;
-      this.data.coordinates.length = 0;
-      this.data.featureInfoHtmls = [];
-      this.data.customFeatures = [];
-    }
-    const invisiblePopup: any = this.getInvisiblePopup();
-    if (invisiblePopup) {
-      invisiblePopup.contentDocument.body.innerHTML = '';
-      invisiblePopup.style.height = '0px';
-      invisiblePopup.style.width = '0px';
-    }
-    this.dataCleared = true;
-  }
-
   getInvisiblePopup(): HTMLIFrameElement {
     if (this.hsUtilsService.runningInBrowser()) {
       return <HTMLIFrameElement>document.getElementById('invisible_popup');
     }
   }
 
-  pushFeatureInfoHtml(html): void {
-    this.data.featureInfoHtmls.push(
+  pushFeatureInfoHtml(html, app: string): void {
+    this.apps[app].featureInfoHtmls.push(
       this.domSanitizer.bypassSecurityTrustHtml(html)
     );
-    this.dataCleared = false;
+    this.apps[app].dataCleared = false;
   }
 
   fillIframeAndResize(response, append: boolean, app: string): void {
@@ -212,7 +224,7 @@ export class HsQueryBaseService {
    * @param coordinate -
    */
   getCoordinate(coordinate, app: string) {
-    this.queryPoint.setCoordinates(coordinate, 'XY');
+    this.apps[app].queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
       this.hsMapService.getCurrentProj(app),

@@ -16,6 +16,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from '../query-popup-widget-container.service';
+import {HsQueryVectorService} from '../query-vector.service';
 import {getFeatures} from '../../../common/feature-extensions';
 import {getPopUp} from '../../../common/layer-extensions';
 
@@ -24,7 +25,8 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './query-popup.component.html',
 })
 export class HsQueryPopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit {
+  implements OnDestroy, HsDialogComponent, AfterViewInit
+{
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -41,7 +43,8 @@ export class HsQueryPopupComponent
     public hsMapService: HsMapService,
     private ElementRef: ElementRef,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
+    private HsQueryVectorService: HsQueryVectorService
   ) {
     this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
       ({map, app}) => {
@@ -57,6 +60,7 @@ export class HsQueryPopupComponent
   }
 
   ngOnInit() {
+    this.HsQueryVectorService.init(this.data.app);
     this.hsQueryPopupWidgetContainerService.initWidgets(
       this.hsConfig.get(this.data.app).queryPopupWidgets,
       this.data.app

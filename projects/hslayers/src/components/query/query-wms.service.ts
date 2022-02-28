@@ -71,13 +71,13 @@ export class HsQueryWmsService {
    * @param customInfoTemplate -
    * @param group -
    */
-  updateFeatureList(updated, customInfoTemplate, group): void {
+  updateFeatureList(updated, customInfoTemplate, group, app: string): void {
     if (updated) {
       if (customInfoTemplate) {
-        this.hsQueryBaseService.setData(group, 'customFeatures');
-        this.hsQueryBaseService.dataCleared = false;
+        this.hsQueryBaseService.apps[app].set(group, 'customFeatures');
+        this.hsQueryBaseService.apps[app].dataCleared = false;
       } else {
-        this.hsQueryBaseService.setData(group, 'features');
+        this.hsQueryBaseService.apps[app].set(group, 'features');
       }
     }
   }
@@ -109,7 +109,7 @@ export class HsQueryWmsService {
       if (reqHash != this.hsQueryBaseService.currentQuery) {
         return;
       }
-      this.featureInfoError(coordinate, exception);
+      this.featureInfoError(coordinate, exception, app);
     }
   }
 
@@ -118,11 +118,11 @@ export class HsQueryWmsService {
    * @param exception -
    * @param coordinate -
    */
-  featureInfoError(coordinate, exception): void {
+  featureInfoError(coordinate, exception, app: string): void {
     this.infoCounter--;
     this.hsLogService.warn(exception);
     if (this.infoCounter === 0) {
-      this.queriesCollected(coordinate);
+      this.queriesCollected(coordinate, app);
     }
   }
 
@@ -155,7 +155,7 @@ export class HsQueryWmsService {
         infoFormat.includes('gml') ||
         this.hsUtilsService.instOf(layer.getSource(), WMTS)
       ) {
-        this.parseGmlResponse(doc, layer, customInfoTemplate);
+        this.parseGmlResponse(doc, layer, customInfoTemplate, app);
       } else if (
         infoFormat == 'text/xml' ||
         infoFormat === 'application/vnd.ogc.wms_xml'
@@ -168,10 +168,10 @@ export class HsQueryWmsService {
             customInfoTemplate: customInfoTemplate,
           };
           if (customInfoTemplate) {
-            this.hsQueryBaseService.setData(group, 'customFeatures');
-            this.hsQueryBaseService.dataCleared = false;
+            this.hsQueryBaseService.apps[app].set(group, 'customFeatures');
+            this.hsQueryBaseService.apps[app].dataCleared = false;
           } else {
-            this.hsQueryBaseService.setData(group, 'features');
+            this.hsQueryBaseService.apps[app].set(group, 'features');
           }
         } else {
           return;
@@ -183,7 +183,7 @@ export class HsQueryWmsService {
         return;
       }
       if (getFeatureInfoTarget(layer) == 'info-panel') {
-        this.hsQueryBaseService.pushFeatureInfoHtml(response);
+        this.hsQueryBaseService.pushFeatureInfoHtml(response, app);
       } else {
         this.hsQueryBaseService.fillIframeAndResize(response, true, app);
         if (getPopupClass(layer) != undefined) {
@@ -194,16 +194,21 @@ export class HsQueryWmsService {
     }
     if (infoFormat.includes('json')) {
       const resJSON = JSON.parse(response);
-      this.hsQueryBaseService.setData(resJSON.features, 'customFeatures');
+      this.hsQueryBaseService.apps[app].set(resJSON.features, 'customFeatures');
       console.log('jsonquery');
     }
     this.infoCounter--;
     if (this.infoCounter === 0) {
-      this.queriesCollected(coordinate);
+      this.queriesCollected(coordinate, app);
     }
   }
 
-  parseGmlResponse(doc, layer: Layer<Source>, customInfoTemplate): void {
+  parseGmlResponse(
+    doc,
+    layer: Layer<Source>,
+    customInfoTemplate,
+    app: string
+  ): void {
     let updated = false;
     let features = doc.querySelectorAll('gml\\:featureMember');
     if (features.length == 0) {
@@ -228,7 +233,7 @@ export class HsQueryWmsService {
           attributes: attributes,
           customInfoTemplate: customInfoTemplate,
         };
-        this.updateFeatureList(updated, customInfoTemplate, group);
+        this.updateFeatureList(updated, customInfoTemplate, group, app);
       }
       const featureNode = feature.firstChild;
       const group = {
@@ -245,7 +250,7 @@ export class HsQueryWmsService {
           updated = true;
         }
       }
-      this.updateFeatureList(updated, customInfoTemplate, group);
+      this.updateFeatureList(updated, customInfoTemplate, group, app);
     }
     doc.querySelectorAll('msGMLOutput').forEach(($this) => {
       for (const layer_i in $this.children) {
@@ -276,7 +281,7 @@ export class HsQueryWmsService {
                 updated = true;
               }
             }
-            this.updateFeatureList(updated, customInfoTemplate, group);
+            this.updateFeatureList(updated, customInfoTemplate, group, app);
           }
         }
       }
@@ -286,10 +291,10 @@ export class HsQueryWmsService {
   /**
    * @param coordinate -
    */
-  queriesCollected(coordinate: number[]): void {
+  queriesCollected(coordinate: number[], app: string): void {
     const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
     if (
-      this.hsQueryBaseService.data.features.length > 0 ||
+      this.hsQueryBaseService.apps[app].features.length > 0 ||
       invisiblePopup.contentDocument.body.innerHTML.length > 30
     ) {
       this.hsQueryBaseService.getFeatureInfoCollected.next(coordinate);

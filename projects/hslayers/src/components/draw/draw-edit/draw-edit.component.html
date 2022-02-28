@@ -1,5 +1,5 @@
 <div class="alert alert-info w-75 m-auto mt-3 text-center" role="alert"
-    *ngIf="HsQueryBaseService.data.features.length === 0; else editOptionsTemplate">
+    *ngIf="HsQueryBaseService.apps[app].features.length === 0; else editOptionsTemplate">
     {{'DRAW.featureEditor.selectFeatureToEdit' | translate}}
 </div>
 <ng-template #editOptionsTemplate>
@@ -37,6 +37,6 @@
         </div>
 
         <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)" *ngIf="selectedType"
-            [disabled]="HsQueryBaseService.data.features.length < 2">{{'COMMON.continue' | translate}}: {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType)}}</button>
+            [disabled]="HsQueryBaseService.apps[app].features.length < 2">{{'COMMON.continue' | translate}}: {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType)}}</button>
     </div>
 </ng-template>

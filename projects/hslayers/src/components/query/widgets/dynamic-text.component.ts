@@ -21,6 +21,7 @@ export class HsDynamicTextComponent
 
   @Input() data: {
     layerDescriptor: any;
+    app: string;
   };
 
   constructor(

@@ -37,8 +37,8 @@ type AttributeValuePair = {
   providedIn: 'root',
 })
 export class HsQueryVectorService {
-  selector: Select;
   featureRemovals: Subject<Feature<Geometry>> = new Subject();
+  apps: {[key: string]: {selector}} = {};
 
   constructor(
     public hsQueryBaseService: HsQueryBaseService,
@@ -48,10 +48,21 @@ export class HsQueryVectorService {
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     private domSanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
+      this.hsQueryBaseService.apps[app].clear('features');
+      if (!this.hsQueryBaseService.queryActive) {
+        return;
+      }
+      this.createFeatureAttributeList(app);
+    });
+  }
 
   init(_app: string): void {
-    this.selector = new Select({
+    if (this.apps[_app] == undefined) {
+      this.apps[_app] = {selector: undefined};
+    }
+    const selector = new Select({
       condition: click,
       multi: this.hsConfig.get(_app).query?.multi
         ? this.hsConfig.get(_app).query.multi
@@ -67,11 +78,12 @@ export class HsQueryVectorService {
         }
       },
     });
-    this.hsQueryBaseService.vectorSelectorCreated.next(this.selector);
+    this.apps[_app].selector = selector;
+    this.hsQueryBaseService.vectorSelectorCreated.next(selector);
 
     this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
       if (_app == app) {
-        map.addInteraction(this.selector);
+        map.addInteraction(selector);
       }
     });
 
@@ -80,17 +92,17 @@ export class HsQueryVectorService {
             else OlMap.map.removeInteraction(this.selector);*/
     });
 
-    this.selector.getFeatures().on('add', (e) => {
+    selector.getFeatures().on('add', (e) => {
       this.hsEventBusService.vectorQueryFeatureSelection.next({
         feature: e.element,
-        selector: this.selector,
+        selector,
       });
     });
 
-    this.selector.getFeatures().on('remove', (e) => {
+    selector.getFeatures().on('remove', (e) => {
       this.hsEventBusService.vectorQueryFeatureDeselection.next({
         feature: e.element,
-        selector: this.selector,
+        selector,
       });
     });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
@@ -103,13 +115,6 @@ export class HsQueryVectorService {
           }
         }
       }
-    });
-    this.hsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
-      this.hsQueryBaseService.clearData('features');
-      if (!this.hsQueryBaseService.queryActive) {
-        return;
-      }
-      this.createFeatureAttributeList(_app);
     });
   }
 
@@ -129,15 +134,15 @@ export class HsQueryVectorService {
     return original;
   }
   createFeatureAttributeList(app: string) {
-    this.hsQueryBaseService.data.attributes.length = 0;
-    const features = this.selector.getFeatures().getArray();
+    this.hsQueryBaseService.apps[app].attributes.length = 0;
+    const features = this.apps[app].selector.getFeatures().getArray();
     let featureDescriptions = [];
     for (const feature of features) {
       featureDescriptions = featureDescriptions.concat(
         this.getFeatureAttributes(feature, app)
       );
     }
-    this.hsQueryBaseService.setData(featureDescriptions, 'features');
+    this.hsQueryBaseService.apps[app].set(featureDescriptions, 'features');
     this.hsQueryBaseService.getFeatureInfoCollected.next();
   }
 
@@ -253,7 +258,7 @@ export class HsQueryVectorService {
     if (this.hsUtilsService.instOf(source, VectorSource)) {
       source.removeFeature(feature);
     }
-    this.selector.getFeatures().remove(feature);
+    this.apps[app].selector.getFeatures().remove(feature);
     this.featureRemovals.next(feature);
   }
 

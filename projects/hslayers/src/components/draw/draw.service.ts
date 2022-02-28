@@ -437,8 +437,8 @@ export class HsDrawService {
   addFeatureToSelector(feature, app: string) {
     //Zone is used to ensure change detection updates the view
     this.zone.run(() => {
-      this.hsQueryBaseService.clearData('features');
-      this.hsQueryVectorService.selector.getFeatures().push(feature);
+      this.hsQueryBaseService.apps[app].clear('features');
+      this.hsQueryVectorService.apps[app].selector.getFeatures().push(feature);
       this.hsQueryVectorService.createFeatureAttributeList(app);
     });
   }
@@ -897,7 +897,7 @@ export class HsDrawService {
     this.toggleSelectionString = selectFeatures
       ? 'deselectAllFeatures'
       : 'selectAllFeatures';
-    this.hsQueryBaseService.clearData('features');
+    this.hsQueryBaseService.apps[app].clear('features');
     this.hsQueryBaseService.selector.getFeatures().clear();
 
     if (selectFeatures) {
@@ -923,7 +923,7 @@ export class HsDrawService {
           if (!this.selectedLayer) {
             return;
           }
-          this.hsQueryBaseService.clearData('features');
+          this.hsQueryBaseService.apps[app].clear('features');
 
           const extent = this.boxSelection.getGeometry().getExtent();
           this.selectedLayer
