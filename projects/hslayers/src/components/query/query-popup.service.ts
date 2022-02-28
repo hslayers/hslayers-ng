@@ -56,7 +56,12 @@ export class HsQueryPopupService
     ) {
       this.map.on(
         'pointermove',
-        this.hsUtilsService.debounce(this.preparePopup, 200, false, this)
+        this.hsUtilsService.debounce(
+          (e) => this.preparePopup(e, app),
+          200,
+          false,
+          this
+        )
       );
     } else if (
       this.hsConfig.get(app).popUpDisplay &&
@@ -64,7 +69,12 @@ export class HsQueryPopupService
     ) {
       this.map.on(
         'singleclick',
-        this.hsUtilsService.debounce(this.preparePopup, 200, false, this)
+        this.hsUtilsService.debounce(
+          (e) => this.preparePopup(e, app),
+          200,
+          false,
+          this
+        )
       );
     } /* else none */
   }

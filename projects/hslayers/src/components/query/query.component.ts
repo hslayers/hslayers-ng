@@ -53,8 +53,8 @@ export class HsQueryComponent
     this.hsQueryVectorService.featureRemovals
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((feature) => {
-        this.hsQueryBaseService.data.features.splice(
-          this.hsQueryBaseService.data.features.indexOf(feature),
+        this.hsQueryBaseService.apps[this.data.app].features.splice(
+          this.hsQueryBaseService.apps[this.data.app].features.indexOf(feature),
           1
         );
       });
@@ -157,10 +157,11 @@ export class HsQueryComponent
     });
   }
   noFeatureSelected(): boolean {
+    const app = this.hsQueryBaseService.apps[this.data.app];
     return (
-      this.hsQueryBaseService.data.features.length == 0 &&
-      (this.hsQueryBaseService.data.coordinates === undefined ||
-        this.hsQueryBaseService.data.coordinates.length == 0)
+      app == undefined ||
+      (app.features.length == 0 &&
+        (app.coordinates === undefined || app.coordinates.length == 0))
     );
   }
   showQueryDialog(ev) {

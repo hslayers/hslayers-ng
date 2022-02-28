@@ -53,16 +53,17 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     } else {
       this.HsDrawService.previouslySelected = null;
     }
-
-    this.checkFeatureGeometryType(
-      this.HsQueryVectorService.selector.getFeatures().getArray()[0]
-    );
   }
 
   async ngOnInit(): Promise<void> {
     await this.hsMapService.loaded(this.app);
     this.hsMapService.getMap(this.app).addLayer(this.editLayer);
     this.HsQueryVectorService.init(this.app);
+    this.checkFeatureGeometryType(
+      this.HsQueryVectorService.apps[this.app].selector
+        .getFeatures()
+        .getArray()[0]
+    );
     this.vectorQueryFeatureSubscription =
       this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
         const selectorFeatures = data.selector.getFeatures().getArray();
@@ -150,7 +151,8 @@ export class DrawEditComponent implements OnDestroy, OnInit {
    * Selects geometry operation (one of editOptions)
    */
   selectGeomOperation(option): void {
-    const features = this.HsQueryVectorService.selector.getFeatures();
+    const features =
+      this.HsQueryVectorService.apps[this.app].selector.getFeatures();
     this.selectedType = option;
 
     if (this.HsDrawService.draw) {
@@ -198,7 +200,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         const feature = this.HsQueryBaseService.selector
           .getFeatures()
           .getArray()[index];
-        this.HsQueryBaseService.clearData('features');
+        this.HsQueryBaseService.apps[this.app].clear('features');
         this.HsQueryBaseService.selector.getFeatures().clear();
         this.HsQueryBaseService.selector.getFeatures().push(feature);
         this.HsQueryVectorService.createFeatureAttributeList(this.app);
@@ -269,7 +271,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   }
 
   get features() {
-    return this.HsQueryBaseService.data.features;
+    return this.HsQueryBaseService.apps[this.app].features;
   }
 
   modify(type): void | boolean {
@@ -400,7 +402,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   resetState() {
     this.editLayer.getSource().clear();
     this.setType(this.HsDrawService.type);
-    this.HsQueryBaseService.clearData('features');
+    this.HsQueryBaseService.apps[this.app].clear('features');
     this.HsQueryBaseService.selector.getFeatures().clear();
     this.HsQueryBaseService.selector.setActive(true);
   }

@@ -59,7 +59,7 @@ export class HsQueryFeatureListComponent implements OnInit {
   }
 
   olFeatureArray(): Feature<Geometry>[] {
-    return this.hsQueryBaseService.data.features
+    return this.hsQueryBaseService.apps[this.app].features
       .map((feature) => feature.feature)
       .filter((f) => f);
   }
@@ -117,7 +117,7 @@ export class HsQueryFeatureListComponent implements OnInit {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      for (const feature of this.hsQueryBaseService.data.features) {
+      for (const feature of this.hsQueryBaseService.apps[this.app].features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
           this.hsQueryVectorService.removeFeature(feature.feature, app);
