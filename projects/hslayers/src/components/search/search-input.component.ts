@@ -62,7 +62,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
     this.query = '';
     this.clearVisible = false;
     this.hsSearchService.cleanResults(this.app);
-    this.hsEventBusService.clearSearchResults.next();
+    this.hsEventBusService.clearSearchResults.next({app: this.app});
   }
   toggleSearchInput(): void {
     this.searchInputVisible = !this.searchInputVisible;
