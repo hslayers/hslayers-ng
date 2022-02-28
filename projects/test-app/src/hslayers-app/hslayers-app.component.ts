@@ -475,7 +475,7 @@ export class HslayersAppComponent {
               source: new TileWMS({
                 url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
                 params: {
-                  LAYERS: 'public:LV_admin_vienibas',
+                  LAYERS: 'publicwfs:LV_admin_vienibas',
                   INFO_FORMAT: undefined,
                   FORMAT: 'image/png; mode=8bit',
                 },
@@ -485,12 +485,12 @@ export class HslayersAppComponent {
             new Tile({
               properties: {
                 title: 'Latvian municipalities (1 sub-layer)',
-                sublayers: 'public:Pagasti',
+                sublayers: 'publicwfs:arisparish',
               },
               source: new TileWMS({
                 url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
                 params: {
-                  LAYERS: 'public:LV_admin_vienibas',
+                  LAYERS: 'publicwfs:LV_admin_vienibas',
                   INFO_FORMAT: undefined,
                   FORMAT: 'image/png; mode=8bit',
                 },
