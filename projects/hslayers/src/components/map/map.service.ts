@@ -64,16 +64,23 @@ type VectorAndSource = {
 };
 
 const DEFAULT = 'default';
+class AppData {
+  map: Map;
+  mapElement?: any;
+  renderer?: Renderer2;
+  featureLayerMapping: {
+    [key: string]: VectorAndSource[];
+  } = {};
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsMapService {
-  apps: {[id: string]: {map: Map; mapElement?: any; renderer?: Renderer2}} = {
-    default: {
-      map: undefined,
-      mapElement: undefined,
-      renderer: undefined,
-    },
+  apps: {
+    [id: string]: AppData;
+  } = {
+    default: new AppData(),
   };
   visibleLayersInUrl;
   //timer variable for extent change event
@@ -103,9 +110,6 @@ export class HsMapService {
 
   element: any;
   visible: boolean;
-  featureLayerMapping: {
-    [key: string]: VectorAndSource[];
-  } = {};
   /** Copy of the default_view for map resetting purposes */
   originalView: {center: number[]; zoom: number; rotation: number};
 
@@ -132,8 +136,11 @@ export class HsMapService {
       feature.setId(this.HsUtilsService.generateUuid());
     }
     const fid = feature.getId();
-    if (this.featureLayerMapping[fid]) {
-      return this.refineLayerSearch(this.featureLayerMapping[fid], feature);
+    if (this.apps[app].featureLayerMapping[fid]) {
+      return this.refineLayerSearch(
+        this.apps[app].featureLayerMapping[fid],
+        feature
+      );
     }
     const layersFound: VectorAndSource[] = [];
     const layersToLookFor = [];
@@ -152,9 +159,9 @@ export class HsMapService {
         //break; Tempting to use break, but if multiple layers contain features with same id we won't find them all.
       }
     }
-    if (layersFound && !this.featureLayerMapping[fid]) {
+    if (layersFound && !this.apps[app].featureLayerMapping[fid]) {
       //TODO: Will have to delete the mapping at some point when layer is cleared or feature removed
-      this.featureLayerMapping[fid] = layersFound;
+      this.apps[app].featureLayerMapping[fid] = layersFound;
     }
     return this.refineLayerSearch(layersFound, feature);
   }
@@ -222,11 +229,13 @@ export class HsMapService {
   }
 
   getFeatureById(fid: string, app: string): Feature<Geometry> {
-    if (this.featureLayerMapping[fid]) {
-      if (this.featureLayerMapping[fid].length > 1) {
+    if (this.apps[app].featureLayerMapping[fid]) {
+      if (this.apps[app].featureLayerMapping[fid].length > 1) {
         console.warn(`Multiple layers exist for feature id ${fid}`);
       } else {
-        return this.featureLayerMapping[fid][0].source.getFeatureById(fid);
+        return this.apps[app].featureLayerMapping[fid][0].source.getFeatureById(
+          fid
+        );
       }
     } else {
       const layersToLookFor: {
@@ -351,6 +360,7 @@ export class HsMapService {
         mapElement,
         map,
         renderer: this.rendererFactory.createRenderer(null, null),
+        featureLayerMapping: {},
       };
       const view = map.getView();
       this.originalView = {

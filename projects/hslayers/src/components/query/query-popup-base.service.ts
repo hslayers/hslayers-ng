@@ -1,13 +1,13 @@
 import {Injectable, NgZone} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 
-import {Feature, Map} from 'ol';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfig} from '../../config.service';
-import {HsFeatureLayer} from './query-popup.service.model';
 import {HsMapService} from '../map/map.service';
 import {HsPanelItem} from '../layout/panels/panel-item';
+import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
@@ -16,11 +16,9 @@ import {getPopUp, getTitle} from '../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsQueryPopupBaseService {
-  map: Map;
-  featuresUnderMouse: Feature<Geometry>[] = [];
-  featureLayersUnderMouse: HsFeatureLayer[] = [];
-  hoverPopup: any;
-
+  apps: {
+    [key: string]: HsQueryPopupData;
+  } = {};
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
@@ -32,15 +30,15 @@ export class HsQueryPopupBaseService {
   fillFeatures(features: Feature<Geometry>[], app: string) {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
     this.zone.run(() => {
-      this.featuresUnderMouse = features;
-      if (this.featuresUnderMouse.length) {
+      this.apps[app].featuresUnderMouse = features;
+      if (this.apps[app].featuresUnderMouse.length) {
         const layersFound = this.hsUtilsService.removeDuplicates(
-          this.featuresUnderMouse.map((f) =>
+          this.apps[app].featuresUnderMouse.map((f) =>
             this.hsMapService.getLayerForFeature(f, app)
           ),
           'title'
         );
-        this.featureLayersUnderMouse = layersFound
+        this.apps[app].featureLayersUnderMouse = layersFound
           .filter((l) => getPopUp(l)) //Only list the layers which have popUp defined
           .map((l) => {
             const needSpecialWidgets =
@@ -48,7 +46,7 @@ export class HsQueryPopupBaseService {
             const layer = {
               title: getTitle(l),
               layer: l,
-              features: this.featuresUnderMouse.filter(
+              features: this.apps[app].featuresUnderMouse.filter(
                 (f) => this.hsMapService.getLayerForFeature(f, app) == l
               ),
               panelObserver: needSpecialWidgets
@@ -57,7 +55,7 @@ export class HsQueryPopupBaseService {
             };
             return layer;
           });
-        for (const layer of this.featureLayersUnderMouse) {
+        for (const layer of this.apps[app].featureLayersUnderMouse) {
           if (layer.panelObserver) {
             const popupDef = getPopUp(layer.layer);
             let widgets = popupDef?.widgets;
@@ -72,13 +70,13 @@ export class HsQueryPopupBaseService {
           }
         }
       } else {
-        this.featuresUnderMouse = [];
+        this.apps[app].featuresUnderMouse = [];
       }
     });
   }
 
-  closePopup(): void {
-    this.featuresUnderMouse = [];
+  closePopup(app: string): void {
+    this.apps[app].featuresUnderMouse = [];
   }
 
   /**

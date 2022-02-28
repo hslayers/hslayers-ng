@@ -21,6 +21,7 @@ export class HsClearLayerComponent
   @Input() data: {
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;
+    app: string;
   };
   name = 'clear-layer';
   layerDescriptor: any;
@@ -53,7 +54,7 @@ export class HsClearLayerComponent
         layer.getSource().getSource().clear();
       }
       layer.getSource().clear();
-      this.data.service.featuresUnderMouse = [];
+      this.data.service.apps[this.data.app].featuresUnderMouse = [];
     }
   }
 }
