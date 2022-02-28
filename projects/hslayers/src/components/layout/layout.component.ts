@@ -46,11 +46,11 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     private HsUtilsService: HsUtilsService,
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService
-  ) {
-    this.HsLayoutService.get(this.app).layoutElement = elementRef.nativeElement;
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.HsLayoutService.get(this.app).layoutElement =
+      this.elementRef.nativeElement;
     this.HsLayoutService.init(this.app);
     this.HsLayoutService.get(this.app).contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
