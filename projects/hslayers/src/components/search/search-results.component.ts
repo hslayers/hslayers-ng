@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
@@ -16,26 +16,33 @@ import {setHighlighted} from '../../common/feature-extensions';
   selector: 'hs-search-results',
   templateUrl: './partials/search-results.component.html',
 })
-export class HsSearchResultsComponent implements OnDestroy {
+export class HsSearchResultsComponent implements OnDestroy, OnInit {
   searchResultsVisible: boolean;
-  data: any = {};
+  @Input() app = 'default';
   fcode_zoom_map: any;
   private ngUnsubscribe = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
-    private hsSearchService: HsSearchService
+    public hsSearchService: HsSearchService
   ) {
     this.hsEventBusService.searchResultsReceived
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((_) => {
-        this.searchResultsReceived();
+      .subscribe(({app}) => {
+        if (app == this.app) {
+          this.searchResultsReceived();
+        }
       });
 
     this.hsEventBusService.clearSearchResults
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((_) => {
-        this.clear();
+      .subscribe(({app}) => {
+        if (app == this.app) {
+          this.clear();
+        }
       });
+  }
+  ngOnInit(): void {
+    this.hsSearchService.init(this.app);
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
@@ -45,9 +52,8 @@ export class HsSearchResultsComponent implements OnDestroy {
    * Handler for receiving results of search request, sends results to correct parser
    */
   searchResultsReceived(): void {
-    this.data = this.hsSearchService.data;
     this.searchResultsVisible = true;
-    this.hsSearchService.showResultsLayer(this.data.app);
+    this.hsSearchService.showResultsLayer(this.app);
   }
   clear(): void {
     this.searchResultsVisible = false;
@@ -58,7 +64,7 @@ export class HsSearchResultsComponent implements OnDestroy {
    * Finds feature from search result layer based on featureId
    */
   findFeature(featureId: string): Feature<Geometry> {
-    return this.hsSearchService.searchResultsLayer
+    return this.hsSearchService.apps[this.app].searchResultsLayer
       .getSource()
       .getFeatureById(featureId);
   }
@@ -102,6 +108,6 @@ export class HsSearchResultsComponent implements OnDestroy {
     ) {
       zoom_level = this.fcode_zoom_map[result.fcode];
     }
-    this.hsSearchService.selectResult(result, zoom_level, this.data.app);
+    this.hsSearchService.selectResult(result, zoom_level, this.app);
   }
 }

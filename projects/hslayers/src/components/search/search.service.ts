@@ -18,18 +18,28 @@ import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 import {unByKey} from 'ol/Observable';
+class HsSearchData {
+  canceler: Subject<any> = new Subject();
+  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
+  pointerMoveEventKey;
+  providers = {};
 
+  constructor(resultsLayerStyle) {
+    this.searchResultsLayer = new VectorLayer({
+      source: new Vector({}),
+      style: resultsLayerStyle,
+    });
+    setTitle(this.searchResultsLayer, 'Search results');
+    setShowInLayerManager(this.searchResultsLayer, false);
+  }
+}
 @Injectable({
   providedIn: 'root',
 })
 export class HsSearchService {
-  data: any = {
-    providers: {},
-  };
   formatWKT = new WKT();
-  canceler: Subject<any> = new Subject();
-  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
-  pointerMoveEventKey;
+  apps: {[key: string]: HsSearchData} = {};
+
   constructor(
     private http: HttpClient,
     public hsUtilsService: HsUtilsService,
@@ -38,15 +48,15 @@ export class HsSearchService {
     public hsStylerService: HsStylerService,
     public hsEventBusService: HsEventBusService,
     public hsLayerUtilsService: HsLayerUtilsService
-  ) {
-    this.searchResultsLayer = new VectorLayer({
-      source: new Vector({}),
-      style: this.hsStylerService.pin_white_blue_highlight,
-    });
-    setTitle(this.searchResultsLayer, 'Search results');
-    setShowInLayerManager(this.searchResultsLayer, false);
-  }
+  ) {}
 
+  init(app: string) {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new HsSearchData(
+        this.hsStylerService.pin_white_blue_highlight
+      );
+    }
+  }
   /**
    * @public
    * @param query - Place name or part of it
@@ -103,10 +113,11 @@ export class HsSearchService {
         }
       }
       //url = utils.proxify(url);
-      if (this.canceler[providerId] !== undefined) {
-        this.canceler[providerId].unsubscribe();
+      const canceler = this.apps[app].canceler[providerId];
+      if (canceler !== undefined) {
+        canceler.unsubscribe();
       }
-      this.canceler[providerId] = this.http.get(url).subscribe(
+      this.apps[app].canceler[providerId] = this.http.get(url).subscribe(
         (data) => {
           this.searchResultsReceived(data, providerId, app);
         },
@@ -127,13 +138,13 @@ export class HsSearchService {
     providerName: string,
     app: string
   ): void {
-    if (this.data.providers[providerName] === undefined) {
-      this.data.providers[providerName] = {
+    if (this.apps[app].providers[providerName] === undefined) {
+      this.apps[app].providers[providerName] = {
         results: [],
         name: providerName,
       };
     }
-    const provider = this.data.providers[providerName];
+    const provider = this.apps[app].providers[providerName];
     if (providerName.indexOf('geonames') > -1) {
       this.parseGeonamesResults(response, provider, app);
     } else if (providerName == 'sdi4apps_openapi') {
@@ -141,12 +152,11 @@ export class HsSearchService {
     } else {
       this.parseGeonamesResults(response, provider, app);
     }
-    this.pointerMoveEventKey = this.hsMapService
+    this.apps[app].pointerMoveEventKey = this.hsMapService
       .getMap(app)
       .on('pointermove', (e) => this.mapPointerMoved(e, app));
     this.hsEventBusService.searchResultsReceived.next({
-      layer: this.searchResultsLayer,
-      providers: this.data.providers,
+      app,
     });
   }
   /**
@@ -154,7 +164,9 @@ export class HsSearchService {
    * Remove results layer from map
    */
   hideResultsLayer(app: string): void {
-    this.hsMapService.getMap(app).removeLayer(this.searchResultsLayer);
+    this.hsMapService
+      .getMap(app)
+      .removeLayer(this.apps[app].searchResultsLayer);
   }
   /**
    * @public
@@ -162,23 +174,23 @@ export class HsSearchService {
    */
   showResultsLayer(app: string): void {
     this.hideResultsLayer(app);
-    this.hsMapService.getMap(app).addLayer(this.searchResultsLayer);
+    this.hsMapService.getMap(app).addLayer(this.apps[app].searchResultsLayer);
   }
   /**
    * @public
    * Clean all search results from results variable and results layer
    */
   cleanResults(app: string): void {
-    if (this.data.providers !== undefined) {
-      for (const key of Object.keys(this.data.providers)) {
-        const provider = this.data.providers[key];
+    if (this.apps[app].providers !== undefined) {
+      for (const key of Object.keys(this.apps[app].providers)) {
+        const provider = this.apps[app].providers[key];
         if (provider.results !== undefined) {
           provider.results.length = 0;
         }
       }
-      this.searchResultsLayer.getSource().clear();
+      this.apps[app].searchResultsLayer.getSource().clear();
       this.hideResultsLayer(app);
-      unByKey(this.pointerMoveEventKey);
+      unByKey(this.apps[app].pointerMoveEventKey);
     }
   }
 
@@ -193,14 +205,14 @@ export class HsSearchService {
       .getFeaturesAtPixel(evt.pixel)
       .filter((feature: Feature<Geometry>) => {
         const layer = this.hsMapService.getLayerForFeature(feature, app);
-        return layer && layer == this.searchResultsLayer;
+        return layer && layer == this.apps[app].searchResultsLayer;
       });
-    for (const provider of Object.keys(this.data.providers)
-      .map((key) => this.data.providers[key])
+    for (const provider of Object.keys(this.apps[app].providers)
+      .map((key) => this.apps[app].providers[key])
       .filter((provider) => provider?.results)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse as Feature<Geometry>[],
-        this.searchResultsLayer,
+        this.apps[app].searchResultsLayer,
         provider.results
       );
     }
@@ -268,7 +280,7 @@ export class HsSearchService {
    * @param provider -
    */
   generateGeonamesFeatures(provider: any, app: string): void {
-    const src = this.searchResultsLayer.getSource();
+    const src = this.apps[app].searchResultsLayer.getSource();
     for (const result of provider.results) {
       result.provider_name = provider.name;
       const feature = new Feature({
@@ -295,7 +307,7 @@ export class HsSearchService {
    * @param provider -
    */
   generateOpenApiFeatures(provider: any, app: string): void {
-    const src = this.searchResultsLayer.getSource();
+    const src = this.apps[app].searchResultsLayer.getSource();
     for (const result of provider.results) {
       result.provider_name = provider.name;
       const feature = new Feature({

@@ -138,9 +138,9 @@ export class HsEventBusService {
   /**
    * replaces 'search.resultsReceived'
    */
-  searchResultsReceived: Subject<any> = new Subject();
+  searchResultsReceived: Subject<{app}> = new Subject();
   searchZoomTo: Subject<any> = new Subject();
-  clearSearchResults: Subject<void> = new Subject();
+  clearSearchResults: Subject<{app}> = new Subject();
   /**
    * replaces 'query.dataUpdated'
    */
