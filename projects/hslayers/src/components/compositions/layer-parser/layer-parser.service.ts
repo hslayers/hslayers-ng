@@ -119,6 +119,7 @@ export class HsCompositionsLayerParserService {
           'ERRORMESSAGES',
           error
         ),
+        app,
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsLayerParserService',

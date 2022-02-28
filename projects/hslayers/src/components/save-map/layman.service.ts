@@ -617,7 +617,10 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer -
    */
-  async removeLayer(layer?: Layer<Source> | string): Promise<void> {
+  async removeLayer(
+    app: string,
+    layer?: Layer<Source> | string
+  ): Promise<void> {
     return new Promise((resolve, reject): void => {
       if (this.deleteQuery) {
         this.deleteQuery.unsubscribe();
@@ -648,7 +651,8 @@ export class HsLaymanService implements HsSaverService {
                   this.HsToastService.removeByText(
                     this.HsLanguageService.getTranslation(
                       'LAYMAN.deletionInProgress'
-                    )
+                    ),
+                    app
                   );
                   let message = 'LAYMAN.layerSuccessfullyRemoved';
                   if (!layer) {
@@ -657,6 +661,7 @@ export class HsLaymanService implements HsSaverService {
                   this.HsToastService.createToastPopupMessage(
                     'LAYMAN.deleteLayersRequest',
                     message,
+                    app,
                     {
                       toastStyleClasses: 'bg-success text-light',
                       details: (res as DeleteSingleLayerResponse)?.name
@@ -680,6 +685,7 @@ export class HsLaymanService implements HsSaverService {
                           : layer,
                     }
                   ),
+                  app,
                   {serviceCalledFrom: 'HsLaymanService'}
                 );
                 return of(e);

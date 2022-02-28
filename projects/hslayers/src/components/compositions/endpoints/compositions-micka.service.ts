@@ -88,6 +88,7 @@ export class HsCompositionsMickaService {
         endpoint.title +
           ': ' +
           this.HsLanguageService.getTranslation('COMMON.noDataReceived'),
+        app,
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
@@ -156,6 +157,7 @@ export class HsCompositionsMickaService {
                 e.status ? e.status.toString() : e.message,
                 {url: url}
               ),
+            app,
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsMickaService',

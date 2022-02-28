@@ -172,6 +172,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
             'ADDLAYERS',
             'couldNotUploadSelectedFile'
           ),
+          this.app,
           {disableLocalization: true}
         );
       }

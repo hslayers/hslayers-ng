@@ -60,7 +60,8 @@ export class HsAddDataOwsService {
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
       if (this.hsUrlArcGisService.isGpService(url)) {
         this.hsAddDataCommonService.throwParsingError(
-          'GPServerServicesAreNotSupported'
+          'GPServerServicesAreNotSupported',
+          app
         );
         return;
       }
@@ -84,7 +85,7 @@ export class HsAddDataOwsService {
       typeof wrapper.response === 'string' &&
       wrapper.response?.includes('Unsuccessful OAuth2')
     ) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response);
+      this.hsAddDataCommonService.throwParsingError(wrapper.response, app);
       return [];
     } else {
       const response = await this.typeService.listLayerFromCapabilities(

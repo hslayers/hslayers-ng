@@ -241,7 +241,7 @@ export class HsShareService {
           app
         );
         const shareUrl = shortUrl;
-        this.openInShareApi(this.data.title, this.data.abstract, shareUrl);
+        this.openInShareApi(this.data.title, this.data.abstract, shareUrl, app);
         this.data.shareUrlValid = true;
       } catch (ex) {
         this.HsLogService.log('Error creating short URL', ex);
@@ -250,12 +250,13 @@ export class HsShareService {
       this.openInShareApi(
         this.data.title,
         this.data.abstract,
-        this.getShareUrl()
+        this.getShareUrl(),
+        app
       );
     }
   }
 
-  openInShareApi(title, abstract, url): void {
+  openInShareApi(title, abstract, url, app: string): void {
     (<any>navigator)
       .share({
         title,
@@ -274,6 +275,7 @@ export class HsShareService {
             'ERRORMESSAGES',
             error
           ),
+          app,
           {disableLocalization: true, serviceCalledFrom: 'HsShareService'}
         );
       });

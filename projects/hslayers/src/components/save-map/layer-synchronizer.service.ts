@@ -270,7 +270,7 @@ export class HsLayerSynchronizerService {
       this.HsLaymanService.sync({ep, add, upd, del, layer}, app).then(
         (response: string) => {
           if (response?.includes('Exception')) {
-            this.displaySyncErrorDialog(response);
+            this.displaySyncErrorDialog(response, app);
             return;
           }
           if (add[0]) {
@@ -293,7 +293,7 @@ export class HsLayerSynchronizerService {
     }
   }
 
-  displaySyncErrorDialog(error: string): void {
+  displaySyncErrorDialog(error: string, app: string): void {
     const exception: any = xml2Json.xml2js(error, {compact: true});
     this.HsToastService.createToastPopupMessage(
       this.HsLanguageService.getTranslation(
@@ -301,6 +301,7 @@ export class HsLayerSynchronizerService {
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
+      app,
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsLayerSynchronizerService',

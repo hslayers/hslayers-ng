@@ -64,12 +64,13 @@ export class HsAddDataCommonService {
     }
   }
 
-  displayParsingError(e: any): void {
+  displayParsingError(e: any, app: string): void {
     if (e?.status === 401) {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
 
         'ADDLAYERS.unauthorizedAccess',
+        app,
         {serviceCalledFrom: 'HsAddDataCommonUrlService'}
       );
     } else {
@@ -77,9 +78,9 @@ export class HsAddDataCommonService {
     }
   }
 
-  throwParsingError(e): void {
+  throwParsingError(e, app: string): void {
     this.clearParams();
-    this.displayParsingError(e);
+    this.displayParsingError(e, app);
   }
 
   //NOTE* - Is this method even needed?

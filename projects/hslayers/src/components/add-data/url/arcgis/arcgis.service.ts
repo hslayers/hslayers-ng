@@ -64,7 +64,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonService.throwParsingError(
+        wrapper.response.message,
+        app
+      );
       return;
     }
     try {
@@ -74,7 +77,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         return this.getLayers(app);
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
   /**
@@ -152,15 +155,19 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     const checkedLayers = this.data.layers?.filter((l) => l.checked);
     const collection = [
-      this.getLayer(checkedLayers, {
-        layerTitle: this.data.title.replace(/\//g, '&#47;'),
-        path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-        imageFormat: this.data.image_format,
-        queryFormat: this.data.query_format,
-        tileSize: this.data.tile_size,
-        crs: this.data.srs,
-        base: this.data.base,
-      }),
+      this.getLayer(
+        checkedLayers,
+        {
+          layerTitle: this.data.title.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+          imageFormat: this.data.image_format,
+          queryFormat: this.data.query_format,
+          tileSize: this.data.tile_size,
+          crs: this.data.srs,
+          base: this.data.base,
+        },
+        app
+      ),
     ];
 
     this.data.base = false;
@@ -194,7 +201,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       subLayerIds: number[];
       type: string;
     }[],
-    options: addLayerOptions
+    options: addLayerOptions,
+    app: string
   ): Layer<Source> {
     const attributions = [];
     const dimensions = {};
@@ -239,6 +247,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
         'ADDLAYERS.OlDoesNotRecognizeProjection',
+        app,
         {
           serviceCalledFrom: 'HsUrlArcGisService',
           details: [`${options.layerTitle}`, `EPSG: ${this.data.srs}`],

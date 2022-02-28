@@ -54,7 +54,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       return;
     }
     if (error) {
-      this.hsAddDataCommonService.throwParsingError(response.message);
+      this.hsAddDataCommonService.throwParsingError(response.message, app);
       return;
     }
     try {
@@ -65,7 +65,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
         return this.getLayers(app, true);
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
 

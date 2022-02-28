@@ -38,7 +38,7 @@ export class HsFileShpComponent
     super.ngOnInit();
   }
 
-  async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileService.read(evt);
+  async handleFileUpload(evt: HsUploadedFiles, app: string): Promise<void> {
+    await this.hsFileService.read(evt, app);
   }
 }

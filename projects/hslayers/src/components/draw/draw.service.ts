@@ -652,6 +652,7 @@ export class HsDrawService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation('LAYMAN.deleteLayersRequest'),
         this.hsLanguageService.getTranslation('LAYMAN.deletionInProgress'),
+        app,
         {
           toastStyleClasses: 'bg-info text-white',
           serviceCalledFrom: 'HsDrawService',
@@ -668,7 +669,7 @@ export class HsDrawService {
         drawableLaymanRm?.length == this.drawableLaymanLayers?.length &&
         this.drawableLaymanLayers?.length != 0
       ) {
-        await this.hsLaymanService.removeLayer();
+        await this.hsLaymanService.removeLayer(app);
         for (const l of drawableRm) {
           await this.completeLayerRemoval(l, app);
         }
@@ -808,6 +809,7 @@ export class HsDrawService {
                 panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
               }
             )}`,
+            app,
             {
               serviceCalledFrom: 'HsDrawService',
             }
@@ -946,6 +948,7 @@ export class HsDrawService {
               platformModifierKey: 'CTRL/META',
             }
           )}`,
+          app,
           {
             toastStyleClasses: 'bg-info text-white',
             serviceCalledFrom: 'HsDrawService',

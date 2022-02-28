@@ -386,7 +386,8 @@ export class HsAddDataCatalogueService {
     } else if (ds.type == 'layman') {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
-        layer
+        layer,
+        app
       );
     } else {
       whatToAdd = {type: 'none'};

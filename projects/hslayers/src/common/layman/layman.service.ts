@@ -82,7 +82,8 @@ export class HsCommonLaymanService {
   displayLaymanError(
     endpoint: HsEndpoint,
     errorMsg: string,
-    responseBody: {code?: number; message?: string; detail?: string}
+    responseBody: {code?: number; message?: string; detail?: string},
+    app: string
   ): void {
     let simplifiedResponse = '';
     if (responseBody.code === undefined) {
@@ -108,6 +109,7 @@ export class HsCommonLaymanService {
           'COMMON',
           simplifiedResponse
         ),
+      app,
       {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}
     );
   }

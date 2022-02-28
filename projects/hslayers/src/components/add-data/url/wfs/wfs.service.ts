@@ -87,7 +87,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonService.throwParsingError(
+        wrapper.response.message,
+        app
+      );
       return;
     }
     try {
@@ -99,7 +102,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         return collection;
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
 
@@ -247,7 +250,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
               : (layer.limitFeatureCount = false);
           },
           (e) => {
-            this.hsAddDataCommonService.throwParsingError(e);
+            this.hsAddDataCommonService.throwParsingError(e, app);
           }
         );
     }

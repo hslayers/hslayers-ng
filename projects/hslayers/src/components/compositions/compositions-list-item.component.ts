@@ -79,6 +79,7 @@ export class HsCompositionsListItemComponent {
           e.message,
           {url: url}
         ),
+        this.app,
         {disableLocalization: true}
       );
     }
