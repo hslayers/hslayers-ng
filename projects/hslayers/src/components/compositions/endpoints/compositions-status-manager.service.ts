@@ -84,6 +84,7 @@ export class HsCompositionsStatusManagerService {
                   e.status ? e.status.toString() : e.message,
                   {url: url}
                 ),
+              app,
               {
                 disableLocalization: true,
                 serviceCalledFrom: 'HsCompositionsStatusManagerService',

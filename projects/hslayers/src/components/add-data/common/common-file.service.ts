@@ -102,24 +102,30 @@ export class HsAddDataCommonFileService {
     }
   }
 
-  filesValid(files: File[]): boolean {
+  filesValid(files: File[], app: string): boolean {
     let isValid = true;
     if (files.filter((f) => f.size > FILE_UPLOAD_SIZE_LIMIT).length > 0) {
-      this.catchError({
-        message: 'ADDDATA.FILE.someOfTheUploadedFiles',
-      });
+      this.catchError(
+        {
+          message: 'ADDDATA.FILE.someOfTheUploadedFiles',
+        },
+        app
+      );
       return false;
     }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
     if (zipFilesCount === 1 && files.length > 1) {
-      this.catchError({
-        message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
-      });
+      this.catchError(
+        {
+          message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
+        },
+        app
+      );
       isValid = false;
     }
     if (zipFilesCount > 1) {
       isValid = false;
-      this.catchError({message: 'ADDDATA.FILE.onlyOneZipFileCan'});
+      this.catchError({message: 'ADDDATA.FILE.onlyOneZipFileCan'}, app);
     }
     return isValid;
   }
@@ -285,6 +291,7 @@ export class HsAddDataCommonFileService {
                 'LAYMAN.ERROR',
                 descriptor.file.error.code.toString()
               ),
+              app,
               {
                 serviceCalledFrom: 'HsAddDataCommonFileService',
                 disableLocalization: true,
@@ -320,10 +327,10 @@ export class HsAddDataCommonFileService {
           const errorDetails = err?.detail?.missing_extensions
             ? Object.values(err.detail?.missing_extensions)
             : [];
-          this.catchError({message: errorMessage, details: errorDetails});
+          this.catchError({message: errorMessage, details: errorDetails}, app);
         });
     } catch (err) {
-      this.catchError({message: err.message, details: null});
+      this.catchError({message: err.message, details: null}, app);
     }
   }
 
@@ -360,10 +367,11 @@ export class HsAddDataCommonFileService {
     }
   }
 
-  displayErrorMessage(_options: errorMessageOptions = {}): void {
+  displayErrorMessage(_options: errorMessageOptions = {}, app: string): void {
     this.hsToastService.createToastPopupMessage(
       _options.header,
       _options.message,
+      app,
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
         details: _options.details,
@@ -371,12 +379,15 @@ export class HsAddDataCommonFileService {
     );
   }
 
-  catchError(_options: errorMessageOptions = {}): void {
-    this.displayErrorMessage({
-      message: _options.message,
-      header: _options.header ?? 'ADDLAYERS.ERROR.someErrorHappened',
-      details: _options.details,
-    });
+  catchError(_options: errorMessageOptions = {}, app: string): void {
+    this.displayErrorMessage(
+      {
+        message: _options.message,
+        header: _options.header ?? 'ADDLAYERS.ERROR.someErrorHappened',
+        details: _options.details,
+      },
+      app
+    );
     this.layerAddedAsWms.next(false);
   }
 

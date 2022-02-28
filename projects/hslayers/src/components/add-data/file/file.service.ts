@@ -13,13 +13,13 @@ export class HsFileService {
     public hsAddDataCommonFileService: HsAddDataCommonFileService
   ) {}
 
-  async read(evt: HsUploadedFiles): Promise<void> {
+  async read(evt: HsUploadedFiles, app: string): Promise<void> {
     const filesRead = [];
     const files = Array.from(evt.fileList);
     const promises = [];
     const data: fileDataObject = {};
     try {
-      if (!this.hsAddDataCommonFileService.filesValid(files)) {
+      if (!this.hsAddDataCommonFileService.filesValid(files, app)) {
         return;
       }
       for (const file of files) {
@@ -41,7 +41,7 @@ export class HsFileService {
       switch (evt.uploader) {
         case 'shpdbfshx':
           data.files = filesRead;
-          this.checkShpFiles(data);
+          this.checkShpFiles(data, app);
           break;
         case 'sld':
           data.sld = filesRead[0];
@@ -49,35 +49,41 @@ export class HsFileService {
           break;
         case 'hs-file-raster':
           data.files = filesRead;
-          this.checkRasterFiles(data);
+          this.checkRasterFiles(data, app);
           break;
         default:
           return;
       }
     } catch (e) {
-      this.hsAddDataCommonFileService.catchError({
-        message: e.message,
-        header: this.fileUploadErrorHeader,
-      });
+      this.hsAddDataCommonFileService.catchError(
+        {
+          message: e.message,
+          header: this.fileUploadErrorHeader,
+        },
+        app
+      );
     }
   }
-  checkShpFiles(data: fileDataObject): void {
+  checkShpFiles(data: fileDataObject, app: string): void {
     if (
       data.files.length == 3 ||
       this.hsAddDataCommonFileService.isZip(data.files[0].type)
     ) {
       this.hsAddDataCommonFileService.setDataName(data);
     } else if (data.files.length > 3) {
-      this.tooManyFiles(3, data.files.length);
+      this.tooManyFiles(3, data.files.length, app);
     } else {
-      this.hsAddDataCommonFileService.catchError({
-        message: 'ADDLAYERS.SHP.missingOneOrMore',
-        header: this.fileUploadErrorHeader,
-      });
+      this.hsAddDataCommonFileService.catchError(
+        {
+          message: 'ADDLAYERS.SHP.missingOneOrMore',
+          header: this.fileUploadErrorHeader,
+        },
+        app
+      );
     }
   }
 
-  checkRasterFiles(data: fileDataObject): void {
+  checkRasterFiles(data: fileDataObject, app: string): void {
     if (
       data.files.length == 2 ||
       this.hsAddDataCommonFileService.isZip(data.files[0].type) ||
@@ -86,23 +92,29 @@ export class HsFileService {
     ) {
       this.hsAddDataCommonFileService.setDataName(data);
     } else if (data.files.length > 2) {
-      this.tooManyFiles(2, data.files.length);
+      this.tooManyFiles(2, data.files.length, app);
     } else {
-      this.hsAddDataCommonFileService.catchError({
-        message: 'ADDLAYERS.missingImageorWorldFile',
-        header: this.fileUploadErrorHeader,
-      });
+      this.hsAddDataCommonFileService.catchError(
+        {
+          message: 'ADDLAYERS.missingImageorWorldFile',
+          header: this.fileUploadErrorHeader,
+        },
+        app
+      );
     }
   }
 
-  tooManyFiles(allowed: number, length: number): void {
-    this.hsAddDataCommonFileService.catchError({
-      message: this.hsLanguageService.getTranslationIgnoreNonExisting(
-        'ADDLAYERS.SHP',
-        'maximumNumberOf',
-        {allowed, length}
-      ),
-      header: this.fileUploadErrorHeader,
-    });
+  tooManyFiles(allowed: number, length: number, app: string): void {
+    this.hsAddDataCommonFileService.catchError(
+      {
+        message: this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS.SHP',
+          'maximumNumberOf',
+          {allowed, length}
+        ),
+        header: this.fileUploadErrorHeader,
+      },
+      app
+    );
   }
 }

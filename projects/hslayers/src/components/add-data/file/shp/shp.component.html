@@ -1,9 +1,10 @@
 <form class="form-horizontal m-3" role="form">
     <div class="form-group justify-content-center">
-        <hs-file-upload (uploaded)="handleFileUpload($event)" [acceptedFormats]="acceptedFormats" uploader="shpdbfshx">
+        <hs-file-upload (uploaded)="handleFileUpload($event,app)" [acceptedFormats]="acceptedFormats"
+            uploader="shpdbfshx">
         </hs-file-upload>
     </div>
-    <div *ngIf="hsAddDataCommonService.showDetails">
+    <div *ngIf="hsAddDataCommonService.get(app).showDetails">
         <div class="d-flex flex-row justify-content-around">
             <div class="d-flex flex-column justify-content-center">
                 <p class="p-2 bg-success rounded" style="color: white;"> {{data.files.length}}

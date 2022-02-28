@@ -94,7 +94,8 @@ export class HsCompositionsLaymanService {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'COMPOSITIONS.errorWhileRequestingCompositions',
-              response.body
+              response.body,
+              app
             );
           }
         }),
@@ -122,6 +123,7 @@ export class HsCompositionsLaymanService {
                     e.status ? e.status.toString() : e.message,
                     {url: endpoint.url}
                   ),
+                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsCompositionsLaymanService',
@@ -137,7 +139,7 @@ export class HsCompositionsLaymanService {
   compositionsReceived(endpoint: HsEndpoint, response, app: string): void {
     if (response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
-      this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
+      this.displayWarningToast(endpoint, 'COMMON.noDataReceived', app);
       return;
     }
     endpoint.compositionsPaging.loaded = true;
@@ -185,21 +187,24 @@ export class HsCompositionsLaymanService {
     if (composition.name == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.compostionsNameAttributeIsNotDefined'
+        'COMPOSITIONS.compostionsNameAttributeIsNotDefined',
+        app
       );
       return;
     }
     if (endpoint.user == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.endpointUserIsNotDefined'
+        'COMPOSITIONS.endpointUserIsNotDefined',
+        app
       );
       return;
     }
     if (endpoint.url == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.endpointUrlIsNotDefined'
+        'COMPOSITIONS.endpointUrlIsNotDefined',
+        app
       );
       return;
     }
@@ -220,10 +225,15 @@ export class HsCompositionsLaymanService {
     endpoint.compositionsPaging.next = this.data.limit;
     endpoint.compositionsPaging.matched = 0;
   }
-  displayWarningToast(endpoint: HsEndpoint, message: string): void {
+  displayWarningToast(
+    endpoint: HsEndpoint,
+    message: string,
+    app: string
+  ): void {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation('COMMON.warning'),
       endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
+      app,
       {
         disableLocalization: true,
         toastStyleClasses: 'bg-warning text-light',

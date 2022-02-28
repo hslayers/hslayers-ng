@@ -64,17 +64,23 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonService.throwParsingError(
+        wrapper.response.message,
+        app
+      );
       return;
     }
     try {
       await this.createLayer(wrapper.response, app);
-      if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
+      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(
+          this.data.layers,
+          app
+        );
         return this.getLayers(app);
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
   /**
@@ -108,7 +114,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       );
       this.data.layers = caps.layers;
       this.hsAddDataUrlService.searchForChecked(
-        this.data.layers ?? this.data.services
+        this.data.layers ?? this.data.services,
+        app
       );
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
@@ -133,7 +140,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         'geoJSON',
         'JSON',
       ]);
-      this.hsAddDataCommonService.loadingInfo = false;
+      this.hsAddDataCommonService.get(app).loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }
@@ -152,22 +159,26 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     const checkedLayers = this.data.layers?.filter((l) => l.checked);
     const collection = [
-      this.getLayer(checkedLayers, {
-        layerTitle: this.data.title.replace(/\//g, '&#47;'),
-        path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-        imageFormat: this.data.image_format,
-        queryFormat: this.data.query_format,
-        tileSize: this.data.tile_size,
-        crs: this.data.srs,
-        base: this.data.base,
-      }),
+      this.getLayer(
+        checkedLayers,
+        {
+          layerTitle: this.data.title.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+          imageFormat: this.data.image_format,
+          queryFormat: this.data.query_format,
+          tileSize: this.data.tile_size,
+          crs: this.data.srs,
+          base: this.data.base,
+        },
+        app
+      ),
     ];
 
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager', app);
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(app);
     this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
   }
 
@@ -194,7 +205,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       subLayerIds: number[];
       type: string;
     }[],
-    options: addLayerOptions
+    options: addLayerOptions,
+    app: string
   ): Layer<Source> {
     const attributions = [];
     const dimensions = {};
@@ -239,6 +251,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
         'ADDLAYERS.OlDoesNotRecognizeProjection',
+        app,
         {
           serviceCalledFrom: 'HsUrlArcGisService',
           details: [`${options.layerTitle}`, `EPSG: ${this.data.srs}`],
@@ -285,7 +298,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param service - Service URL
    */
   async expandService(service: Service, app: string): Promise<void> {
-    let urlRest = this.hsAddDataCommonService.url.toLowerCase();
+    let urlRest = this.hsAddDataCommonService.get(app).url.toLowerCase();
     //There are cases when loaded services are loaded from folders, problem is that folder name is also included inside the service.name
     //to avoid any uncertainties, lets remove everything starting from 'services' inside the url and rebuild it
     if (urlRest.includes('services')) {
@@ -305,9 +318,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param services - Services selected
    */
   async addServices(services: Service[], app: string): Promise<void> {
-    const originalRestUrl = this.hsAddDataCommonService.url;
+    const originalRestUrl = this.hsAddDataCommonService.get(app).url;
     for (const service of services.filter((s) => s.checked)) {
-      this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
+      this.hsAddDataCommonService.get(app).url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service, app);
       const layers = this.getLayers(app);
       this.addLayers(layers, app);

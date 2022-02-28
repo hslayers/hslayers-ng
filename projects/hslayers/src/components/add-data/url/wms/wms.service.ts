@@ -86,21 +86,27 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonService.throwParsingError(
+        wrapper.response.message,
+        app
+      );
       return;
     }
     try {
       await this.capabilitiesReceived(
         wrapper.response,
-        this.hsAddDataCommonService.layerToSelect,
+        this.hsAddDataCommonService.get(app).layerToSelect,
         app
       );
-      if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
+      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(
+          this.data.layers,
+          app
+        );
         return this.getLayers(app, true);
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
 
@@ -122,7 +128,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Fills list of available projections
    */
-  fillProjections(caps, response): void {
+  fillProjections(caps, response, app: string): void {
     if (caps.Capability.Layer.CRS !== undefined) {
       this.data.srss = caps.Capability.Layer.CRS;
     } else if (
@@ -152,7 +158,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (this.data.srss.length == 0) {
       this.data.srss = ['EPSG:4326'];
       this.hsAddDataCommonService.throwParsingError(
-        "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
+        "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct.",
+        app
       );
     }
   }
@@ -185,7 +192,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         : [];
       this.data.exceptions = caps.Capability.Exception;
       this.data.srss = [];
-      this.fillProjections(caps, response);
+      this.fillProjections(caps, response, app);
       // //TODO: WHY?
       // if (this.data.srss.includes('CRS:84')) {
       //   this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
@@ -228,7 +235,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.data.layers,
         'Name'
       );
-      this.hsAddDataUrlService.searchForChecked(this.data.layers);
+      this.hsAddDataUrlService.searchForChecked(this.data.layers, app);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
         this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs, app);
@@ -254,7 +261,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         'text/plain',
         'text/html',
       ]);
-      this.hsAddDataCommonService.loadingInfo = false;
+      this.hsAddDataCommonService.get(app).loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }
@@ -405,9 +412,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager', app);
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(app);
     this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
   }
 

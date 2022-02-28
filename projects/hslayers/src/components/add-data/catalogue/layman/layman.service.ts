@@ -105,7 +105,8 @@ export class HsLaymanBrowserService {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-              x.body
+              x.body,
+              app
             );
           }
 
@@ -135,6 +136,7 @@ export class HsLaymanBrowserService {
                     e.status ? e.status.toString() : e.message,
                     {url: url}
                   ),
+                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsLaymanBrowserService',
@@ -159,6 +161,7 @@ export class HsLaymanBrowserService {
         data.dataset.title +
           ': ' +
           this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
+        app,
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
@@ -244,7 +247,8 @@ export class HsLaymanBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
+    app: string
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
     let style: string = undefined;
@@ -279,6 +283,7 @@ export class HsLaymanBrowserService {
           'ADDLAYERS.ERROR.errorWhileRequestingLayers'
         ),
         this.hsLanguageService.getTranslation('ADDLAYERS.ERROR.urlInvalid'),
+        app,
         {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
       );
       return false;

@@ -96,8 +96,10 @@ export class HsTripPlannerService {
           }),
           image: new Icon({
             src: getHighlighted(feature)
-              ? this.HsUtilsService.getAssetsPath(app) + 'img/pin_white_red32.png'
-              : this.HsUtilsService.getAssetsPath(app) + 'img/pin_white_blue32.png',
+              ? this.HsUtilsService.getAssetsPath(app) +
+                'img/pin_white_red32.png'
+              : this.HsUtilsService.getAssetsPath(app) +
+                'img/pin_white_blue32.png',
             crossOrigin: 'anonymous',
             anchor: [0.5, 1],
           }),
@@ -443,6 +445,7 @@ export class HsTripPlannerService {
                     e.message,
                     {url: url}
                   ),
+                  app,
                   {
                     disableLocalization: true,
                     serviceCalledFrom: 'HsTripPlannerService',

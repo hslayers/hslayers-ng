@@ -41,24 +41,40 @@ export type customToastOptions = {
   providedIn: 'root',
 })
 export class HsToastService {
+  apps: {
+    [id: string]: {toasts: Toast[]};
+  } = {
+    default: {
+      toasts: [],
+    },
+  };
+
+  get(app: string) {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = {
+        toasts: [],
+      };
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   constructor(
     public HsLanguageService: HsLanguageService,
     private HsLayoutService: HsLayoutService
   ) {}
-  toasts: Toast[] = [];
   /**
    * @param toast - Toast pop up
    * Callback method to remove Toast DOM element from view
    */
-  remove(toast): void {
-    this.toasts = this.toasts.filter((t) => t !== toast);
+  remove(toast: Toast, app: string): void {
+    this.apps[app].toasts = this.apps[app].toasts.filter((t) => t !== toast);
   }
 
-  removeByText(text: string): void {
-    const found = this.toasts.filter((t) => t.textOrTpl === text);
+  removeByText(text: string, app: string): void {
+    const found = this.apps[app].toasts.filter((t) => t.textOrTpl === text);
     if (found?.length > 0) {
       for (const f of found) {
-        this.remove(f);
+        this.remove(f, app);
       }
     }
   }
@@ -67,18 +83,22 @@ export class HsToastService {
    * @param options - Toast window options
    * Pushes new Toasts to array with content and options
    */
-  show(textOrTpl: string | TemplateRef<any>, options: any = {}): void {
-    if (this.toasts.length >= 5) {
-      this.toasts = this.toasts.slice(-4);
+  show(
+    textOrTpl: string | TemplateRef<any>,
+    app: string,
+    options: any = {}
+  ): void {
+    if (this.apps[app].toasts.length >= 5) {
+      this.apps[app].toasts = this.apps[app].toasts.slice(-4);
     }
     if (
-      !this.toasts.some(
+      !this.apps[app].toasts.some(
         (toast) =>
           toast.textOrTpl === textOrTpl &&
           toast?.serviceCalledFrom === options.serviceCalledFrom
       )
     ) {
-      this.toasts.push({textOrTpl, ...options});
+      this.apps[app].toasts.push({textOrTpl, ...options});
     }
   }
   /**
@@ -86,17 +106,20 @@ export class HsToastService {
    * @param header - Header text to display
    * @param text - Toast body text to display
    * @param options - Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number, serviceCalledFrom: string)
+   * @param app - Application id
    */
 
   createToastPopupMessage(
     header: string,
     text: string,
+    app: string,
     options: customToastOptions = {}
   ): void {
     this.show(
       options.disableLocalization
         ? text
         : this.HsLanguageService.getTranslation(text),
+      app,
       {
         header: options.disableLocalization
           ? header

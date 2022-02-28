@@ -106,6 +106,7 @@ export class HsFeatureCommonService {
       this.hsLanguageService.getTranslation(
         `QUERY.feature.feature${type}Succ`
       ) + getTitle(toLayer),
+      app,
       {
         toastStyleClasses: 'bg-success text-light',
         serviceCalledFrom: 'HsFeatureCommonService',

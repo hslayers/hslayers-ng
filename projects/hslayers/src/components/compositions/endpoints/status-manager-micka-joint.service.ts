@@ -87,6 +87,7 @@ export class HsCompositionsStatusManagerMickaJointService {
                   e.status ? e.status.toString() : e.message,
                   {url: ds.url}
                 ),
+              app,
               {
                 disableLocalization: true,
                 serviceCalledFrom:
@@ -128,6 +129,7 @@ export class HsCompositionsStatusManagerMickaJointService {
           e.status ? e.status.toString() : e.message,
           {url: url}
         ),
+        app,
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsStatusManagerMickaJointService',

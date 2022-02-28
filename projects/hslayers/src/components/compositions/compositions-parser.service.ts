@@ -419,6 +419,7 @@ export class HsCompositionsParserService {
             this.HsLanguageService.getTranslation(
               'COMPOSITIONS.notAbleToParseLayerFromComposition'
             ) + lyr_def.title,
+            app,
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsParserService',

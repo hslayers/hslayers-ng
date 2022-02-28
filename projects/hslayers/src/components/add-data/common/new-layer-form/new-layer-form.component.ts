@@ -32,6 +32,6 @@ export class HsNewLayerFormComponent {
   }
 
   async read(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileService.read(evt);
+    await this.hsFileService.read(evt, this.app);
   }
 }

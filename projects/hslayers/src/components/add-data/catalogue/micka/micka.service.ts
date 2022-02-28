@@ -89,6 +89,7 @@ export class HsMickaBrowserService {
                     e.status ? e.status.toString() : e.message,
                     {url: url}
                   ),
+                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsMickaBrowserService',

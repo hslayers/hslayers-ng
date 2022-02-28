@@ -54,18 +54,21 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       return;
     }
     if (error) {
-      this.hsAddDataCommonService.throwParsingError(response.message);
+      this.hsAddDataCommonService.throwParsingError(response.message, app);
       return;
     }
     try {
       //TODO AWAIT and add-layer if layerToSelect
-      await this.capabilitiesReceived(response);
-      if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
+      await this.capabilitiesReceived(response, app);
+      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(
+          this.data.layers,
+          app
+        );
         return this.getLayers(app, true);
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
 
@@ -73,7 +76,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Parse information received in WMTS getCapabilities response
    * @param response - Url of requested service
    */
-  async capabilitiesReceived(response: string): Promise<any> {
+  async capabilitiesReceived(response: string, app: string): Promise<any> {
     try {
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
@@ -83,7 +86,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.Version || caps.version;
       this.data.layers = caps.Contents.Layer;
-      this.hsAddDataCommonService.loadingInfo = false;
+      this.hsAddDataCommonService.get(app).loadingInfo = false;
       return this.data.title;
     } catch (e) {
       throw new Error(e);
@@ -125,9 +128,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       this.getLayersRecursively(layer, undefined, collection, app);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(app);
     this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
     //FIX ME: to implement
     // this.zoomToLayers();

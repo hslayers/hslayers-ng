@@ -386,7 +386,8 @@ export class HsAddDataCatalogueService {
     } else if (ds.type == 'layman') {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
-        layer
+        layer,
+        app
       );
     } else {
       whatToAdd = {type: 'none'};
@@ -517,7 +518,8 @@ export class HsAddDataCatalogueService {
 
   calcExtentLayerVisibility(app: string): void {
     this.hsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible(app) && this.hsAddDataService.dsSelected == 'catalogue'
+      this.panelVisible(app) &&
+        this.hsAddDataService.get(app).dsSelected == 'catalogue'
     );
   }
 }

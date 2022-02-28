@@ -87,19 +87,25 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       return;
     }
     if (wrapper.error) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response.message);
+      this.hsAddDataCommonService.throwParsingError(
+        wrapper.response.message,
+        app
+      );
       return;
     }
     try {
       const bbox = await this.parseCapabilities(wrapper.response, app);
-      if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
+      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(
+          this.data.layers,
+          app
+        );
         const collection = this.getLayers(app, true, style);
         this.zoomToBBox(bbox, app);
         return collection;
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e);
+      this.hsAddDataCommonService.throwParsingError(e, app);
     }
   }
 
@@ -123,7 +129,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType.find(
-            (layer) => layer.Name == this.hsAddDataCommonService.layerToSelect
+            (layer) =>
+              layer.Name == this.hsAddDataCommonService.get(app).layerToSelect
           )
         : caps.FeatureTypeList.FeatureType;
       this.data.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
@@ -180,7 +187,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         return this.data.srss[0];
       })();
 
-      if (!this.hsAddDataCommonService.layerToSelect) {
+      if (!this.hsAddDataCommonService.get(app).layerToSelect) {
         setTimeout(() => {
           try {
             this.parseFeatureCount(app);
@@ -189,7 +196,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           }
         });
       }
-      this.hsAddDataCommonService.loadingInfo = false;
+      this.hsAddDataCommonService.get(app).loadingInfo = false;
       return this.data.bbox;
     } catch (e) {
       throw new Error(e);
@@ -247,7 +254,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
               : (layer.limitFeatureCount = false);
           },
           (e) => {
-            this.hsAddDataCommonService.throwParsingError(e);
+            this.hsAddDataCommonService.throwParsingError(e, app);
           }
         );
     }
@@ -312,9 +319,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     for (const layer of this.data.layers) {
       this.getLayersRecursively(layer, {style}, collection, app);
     }
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(app);
     this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
   }
 

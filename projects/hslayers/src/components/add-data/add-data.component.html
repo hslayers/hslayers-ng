@@ -1,31 +1,38 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="datasource_selector" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translate" [app]="data.app">
+    <hs-panel-header name="datasource_selector" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translate"
+        [app]="data.app">
     </hs-panel-header>
     <div class="card-body">
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'btn-primary active': hsAddDataService.dsSelected === 'catalogue'}"
+                <a class="nav-link"
+                    [ngClass]="{'btn-primary active': hsAddDataService.apps[data.app].dsSelected === 'catalogue'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('catalogue')">
                     {{'ADDDATA.catalogue' | translate}}
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link"
-                    [ngClass]="{'btn-primary active': hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'}"
+                    [ngClass]="{'btn-primary active': hsAddDataService.apps[data.app].dsSelected === 'url' || hsAddDataService.apps[data.app].dsSelected === 'OWS'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('url')">
                     URL
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'btn-primary active': hsAddDataService.dsSelected === 'file'}"
-                    role="tab" data-toggle="tab" (click)="datasetSelect('file')">
+                <a class="nav-link"
+                    [ngClass]="{'btn-primary active': hsAddDataService.apps[data.app].dsSelected === 'file'}" role="tab"
+                    data-toggle="tab" (click)="datasetSelect('file')">
                     {{'ADDDATA.file' | translate}}
                 </a>
             </li>
         </ul>
-        <hs-add-data-url *ngIf="hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'" [app]="data.app">
+        <hs-add-data-url
+            *ngIf="hsAddDataService.apps[data.app].dsSelected === 'url' || hsAddDataService.apps[data.app].dsSelected === 'OWS'"
+            [app]="data.app">
         </hs-add-data-url>
-        <hs-add-data-file *ngIf="hsAddDataService.dsSelected === 'file'" [app]="data.app"></hs-add-data-file>
-        <hs-add-data-catalogue *ngIf="hsAddDataService.dsSelected === 'catalogue'" [app]="data.app"></hs-add-data-catalogue>
+        <hs-add-data-file *ngIf="hsAddDataService.apps[data.app].dsSelected === 'file'" [app]="data.app">
+        </hs-add-data-file>
+        <hs-add-data-catalogue *ngIf="hsAddDataService.apps[data.app].dsSelected === 'catalogue'" [app]="data.app">
+        </hs-add-data-catalogue>
     </div>
 </div>

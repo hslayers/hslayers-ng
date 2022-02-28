@@ -9,12 +9,19 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 
-@Injectable({providedIn: 'root'})
-export class HsAddDataCommonService {
+class HsAddDataCommonParams {
   layerToSelect: string;
   loadingInfo = false;
   showDetails = false;
   url: string;
+}
+
+@Injectable({providedIn: 'root'})
+export class HsAddDataCommonService {
+  apps: {
+    [id: string]: HsAddDataCommonParams;
+  } = {default: new HsAddDataCommonParams()};
+
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
   serviceLayersCalled: Subject<{url: string; app: string}> = new Subject();
@@ -26,31 +33,39 @@ export class HsAddDataCommonService {
     public hsDimensionService: HsDimensionService,
     public hsEventBusService: HsEventBusService
   ) {
-    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
-      this.clearParams();
+    this.hsAddDataService.cancelUrlRequest.subscribe((app) => {
+      this.clearParams(app);
     });
   }
-  clearParams(): void {
-    this.layerToSelect = '';
-    this.loadingInfo = false;
-    this.showDetails = false;
-    this.url = '';
-    this.hsAddDataUrlService.typeSelected = null;
+
+  get(app: string): HsAddDataCommonParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsAddDataCommonParams();
+    }
+    return this.apps[app ?? 'default'];
   }
 
-  setPanelToCatalogue(): void {
-    this.hsAddDataService.dsSelected = 'catalogue';
+  clearParams(app: string): void {
+    this.get(app).layerToSelect = '';
+    this.get(app).loadingInfo = false;
+    this.get(app).showDetails = false;
+    this.get(app).url = '';
+    this.hsAddDataUrlService.get(app).typeSelected = null;
+  }
+
+  setPanelToCatalogue(app: string): void {
+    this.hsAddDataService.apps[app].dsSelected = 'catalogue';
   }
 
   /**
    * For the sake of possible future implementation changes
    * @param url - URL to be set
    */
-  updateUrl(url: string): void {
-    this.url = url;
+  updateUrl(url: string, app: string): void {
+    this.get(app).url = url;
   }
 
-  checkTheSelectedLayer(services: any) {
+  checkTheSelectedLayer(services: any, app: string) {
     if (!services) {
       return;
     }
@@ -58,18 +73,19 @@ export class HsAddDataCommonService {
       //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
       const layerName = layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase();
-      if (layerName === this.layerToSelect.toLowerCase()) {
+      if (layerName === this.get(app).layerToSelect.toLowerCase()) {
         layer.checked = true;
       }
     }
   }
 
-  displayParsingError(e: any): void {
+  displayParsingError(e: any, app: string): void {
     if (e?.status === 401) {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
 
         'ADDLAYERS.unauthorizedAccess',
+        app,
         {serviceCalledFrom: 'HsAddDataCommonUrlService'}
       );
     } else {
@@ -77,9 +93,9 @@ export class HsAddDataCommonService {
     }
   }
 
-  throwParsingError(e): void {
-    this.clearParams();
-    this.displayParsingError(e);
+  throwParsingError(e, app: string): void {
+    this.clearParams(app);
+    this.displayParsingError(e, app);
   }
 
   //NOTE* - Is this method even needed?

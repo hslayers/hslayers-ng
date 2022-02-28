@@ -50,7 +50,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
 
   searchForChecked(layer): void {
     this.checkedSubLayers[layer.Name] = layer.checked;
-    this.hsAddDataUrlService.addingAllowed = Object.values(
+    this.hsAddDataUrlService.apps[this.app].addingAllowed = Object.values(
       this.checkedSubLayers
     ).some((value) => value === true);
   }
@@ -67,10 +67,10 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   }
   changed(whichArray: 'layers' | 'services'): void {
     if (whichArray == 'layers') {
-      this.hsAddDataUrlService.searchForChecked(this.data.layers);
+      this.hsAddDataUrlService.searchForChecked(this.data.layers, this.app);
     }
     if (whichArray == 'services') {
-      this.hsAddDataUrlService.searchForChecked(this.data.services);
+      this.hsAddDataUrlService.searchForChecked(this.data.services, this.app);
     }
   }
 

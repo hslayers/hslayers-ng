@@ -28,7 +28,6 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   ) {
     super(hsLayoutService);
 
-    this.hsAddDataService.dsSelected = 'catalogue';
     servicesSupportedByUrl.forEach((type) =>
       this.connectServiceFromUrlParam(type as AddDataUrlType)
     );
@@ -40,6 +39,8 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hsAddDataService.get(this.data.app).dsSelected = 'catalogue';
+
     this.hsSidebarService.addButton(
       {
         panel: 'addData',
@@ -63,8 +64,8 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
     if (url) {
       this.hsLayoutService.setMainPanel('addData', this.data.app);
-      this.hsAddDataService.dsSelected = 'url';
-      this.hsAddDataUrlService.typeSelected = type;
+      this.hsAddDataService.apps[this.data.app].dsSelected = 'url';
+      this.hsAddDataUrlService.apps[this.data.app].typeSelected = type;
     }
   }
 }

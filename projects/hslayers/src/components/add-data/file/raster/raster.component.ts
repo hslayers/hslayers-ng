@@ -34,6 +34,6 @@ export class HsFileRasterComponent
   }
 
   async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileService.read(evt);
+    await this.hsFileService.read(evt, this.app);
   }
 }

@@ -87,6 +87,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
                 this.HsLanguageService.getTranslation(
                   'DRAW.featureEditor.onlyOneSplitLine'
                 ),
+                this.app,
                 {
                   toastStyleClasses: 'bg-info text-light',
                 }
@@ -140,7 +141,8 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         this.HsLanguageService.getTranslation(
           'DRAW.featureEditor.featureEditor'
         ),
-        'Only polygon geometry can be edited'
+        'Only polygon geometry can be edited',
+        this.app
       );
       this.resetState();
     }
@@ -191,6 +193,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       this.HsLanguageService.getTranslation(
         'DRAW.featureEditor.onlyOneFeatureToEdit'
       ),
+      this.app,
       {
         toastStyleClasses: 'bg-info text-light',
       }
@@ -225,6 +228,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
             this.HsLanguageService.getTranslation(
               'DRAW.featureEditor.onlyOneSplitLine'
             ),
+            this.app,
             {
               toastStyleClasses: 'bg-info text-light',
             }
@@ -334,6 +338,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         this.HsLanguageService.getTranslation(
           'DRAW.featureEditor.noIntersection'
         ),
+        this.app,
         {
           toastStyleClasses: 'bg-warning text-light',
         }

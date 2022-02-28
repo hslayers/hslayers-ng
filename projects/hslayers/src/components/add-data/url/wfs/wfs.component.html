@@ -1,10 +1,12 @@
 <form class="form-horizontal" name="frmConnectWfs" role="form">
-    <hs-common-url type="wfs" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect(app)">
+    <hs-common-url type="wfs" [(url)]="hsAddDataCommonService.get(app).url"
+        (connect)="hsAddDataOwsService.connect(app)">
     </hs-common-url>
 
-    <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo" [app]="app"></hs-url-progress>
+    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
 
-    <div *ngIf="hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo" class="card p-2">
+    <div *ngIf="hsAddDataCommonService.get(app).showDetails && !hsAddDataCommonService.get(app).loadingInfo"
+        class="card p-2">
 
         <!-- FIXME: unused -->
         <div class="card-title text-center fw-bold">{{title}}</div>
@@ -19,7 +21,7 @@
                 <div>
                     <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer"
                         [ngModelOptions]="{standalone: true}"
-                        (change)="hsAddDataOwsService.changed(hsUrlWfsService.data)" />
+                        (change)="hsAddDataOwsService.changed(hsUrlWfsService.data,app)" />
                     {{layer.Title}}
                 </div>
                 <div class="alert alert-primary d-flex m-1" role="alert"
@@ -34,8 +36,8 @@
             </li>
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
                 <div class="d-flex justify-content-center">
-                    <hs-url-add class="w-100" [injectedService]="hsUrlWfsService"
-                        [layers]="hsUrlWfsService.data.layers" [app]="app">
+                    <hs-url-add class="w-100" [injectedService]="hsUrlWfsService" [layers]="hsUrlWfsService.data.layers"
+                        [app]="app">
                     </hs-url-add>
                     <button *ngIf="hsUrlWfsService.loadingFeatures"
                         class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img

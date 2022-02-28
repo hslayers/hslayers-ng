@@ -13,16 +13,24 @@ import {getBase} from '../../common/layer-extensions';
 
 export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 
+class HsAddDataParams {
+  sidebarLoad: Subject<string> = new Subject();
+  dsSelected: DatasetType = undefined;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataService {
-  dsSelected: DatasetType;
+  apps: {
+    [id: string]: HsAddDataParams;
+  } = {default: new HsAddDataParams()};
+
   datasetSelected: Subject<{type: DatasetType; app: string}> = new Subject();
   /**
    * Cancels any external url data request from datasources panel
    */
-  cancelUrlRequest: Subject<void> = new Subject<void>();
+  cancelUrlRequest: Subject<string> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
@@ -30,6 +38,13 @@ export class HsAddDataService {
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsCommonLaymanService: HsCommonLaymanService
   ) {}
+
+  get(app: string): HsAddDataParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsAddDataParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
 
   addLayer(
     layer: Layer<Source>,
@@ -53,7 +68,7 @@ export class HsAddDataService {
   }
 
   selectType(type: DatasetType, app: string): void {
-    this.dsSelected = type;
+    this.apps[app].dsSelected = type;
     this.datasetSelected.next({type, app});
   }
 }

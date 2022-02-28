@@ -81,7 +81,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       ? await this.hsAddDataVectorService.addNewLayer(this.data, this.app)
       : await this.updateExistingLayer();
     this.hsLayoutService.setMainPanel('layermanager', this.app);
-    this.hsAddDataVectorService.setPanelToCatalogue();
+    this.hsAddDataVectorService.setPanelToCatalogue(this.app);
     this.setToDefault();
   }
 
@@ -172,6 +172,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
             'ADDLAYERS',
             'couldNotUploadSelectedFile'
           ),
+          this.app,
           {disableLocalization: true}
         );
       }
