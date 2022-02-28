@@ -518,7 +518,8 @@ export class HsAddDataCatalogueService {
 
   calcExtentLayerVisibility(app: string): void {
     this.hsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible(app) && this.hsAddDataService.dsSelected == 'catalogue'
+      this.panelVisible(app) &&
+        this.hsAddDataService.get(app).dsSelected == 'catalogue'
     );
   }
 }

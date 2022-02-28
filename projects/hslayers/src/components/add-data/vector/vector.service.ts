@@ -204,8 +204,8 @@ export class HsAddDataVectorService {
     }
   }
 
-  setPanelToCatalogue(): void {
-    this.hsAddDataService.dsSelected = 'catalogue';
+  setPanelToCatalogue(app: string): void {
+    this.hsAddDataService.apps[app].dsSelected = 'catalogue';
   }
 
   changeListener(src, app: string): any {

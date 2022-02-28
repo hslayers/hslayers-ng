@@ -20,12 +20,19 @@ import {IGetCapabilities} from '../../../common/get-capabilities/get-capabilitie
 import {owsConnection} from './types/ows-connection.type';
 import {urlDataObject} from './types/data-object.type';
 
+class HsAddDataOwsParams {
+  typeService: HsUrlTypeServiceModel;
+  typeCapabilitiesService: IGetCapabilities;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataOwsService {
-  typeService: HsUrlTypeServiceModel;
-  typeCapabilitiesService: IGetCapabilities;
+  apps: {
+    [id: string]: HsAddDataOwsParams;
+  } = {default: new HsAddDataOwsParams()};
+
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -43,6 +50,14 @@ export class HsAddDataOwsService {
       this.setUrlAndConnect({uri: url}, app);
     });
   }
+
+  get(app: string): HsAddDataOwsParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsAddDataOwsParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   async connect(
     app: string,
     opt?: {
@@ -51,13 +66,13 @@ export class HsAddDataOwsService {
       getOnly?: boolean;
     }
   ): Promise<Layer<Source>[]> {
-    await this.setTypeServices();
-    const url = this.hsAddDataCommonService.url;
+    await this.setTypeServices(app);
+    const url = this.hsAddDataCommonService.get(app).url;
     if (!url || url === '') {
       return;
     }
-    this.hsAddDataUrlService.addingAllowed = false;
-    if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
+    this.hsAddDataUrlService.apps[app].addingAllowed = false;
+    if (this.hsAddDataUrlService.apps[app].typeSelected === 'arcgis') {
       if (this.hsUrlArcGisService.isGpService(url)) {
         this.hsAddDataCommonService.throwParsingError(
           'GPServerServicesAreNotSupported',
@@ -65,18 +80,18 @@ export class HsAddDataOwsService {
         );
         return;
       }
-      this.typeService.data.get_map_url = url;
-      this.hsAddDataUrlService.addingAllowed = true;
+      this.get(app).typeService.data.get_map_url = url;
+      this.hsAddDataUrlService.apps[app].addingAllowed = true;
     }
     this.hsHistoryListService.addSourceHistory(
-      this.hsAddDataUrlService.typeSelected,
+      this.hsAddDataUrlService.apps[app].typeSelected,
       url
     );
     Object.assign(this.hsAddDataCommonService, {
       loadingInfo: true,
       showDetails: true,
     });
-    const wrapper = await this.typeCapabilitiesService.request(
+    const wrapper = await this.get(app).typeCapabilitiesService.request(
       url,
       app,
       opt?.owrCache
@@ -88,13 +103,12 @@ export class HsAddDataOwsService {
       this.hsAddDataCommonService.throwParsingError(wrapper.response, app);
       return [];
     } else {
-      const response = await this.typeService.listLayerFromCapabilities(
-        wrapper,
-        opt?.style
-      );
+      const response = await this.get(
+        app
+      ).typeService.listLayerFromCapabilities(wrapper, opt?.style);
       if (!opt?.getOnly) {
         if (response?.length > 0) {
-          this.typeService.addLayers(response, app);
+          this.get(app).typeService.addLayers(response, app);
         }
         if (this.hsUrlArcGisService.isImageService()) {
           const layers = this.hsUrlArcGisService.getLayers(app);
@@ -116,8 +130,8 @@ export class HsAddDataOwsService {
     params: owsConnection,
     app: string
   ): Promise<Layer<Source>[]> {
-    this.hsAddDataCommonService.layerToSelect = params.layer;
-    this.hsAddDataCommonService.updateUrl(params.uri);
+    this.hsAddDataCommonService.get(app).layerToSelect = params.layer;
+    this.hsAddDataCommonService.updateUrl(params.uri, app);
     return await this.connect(app, {
       style: params.style,
       owrCache: params.owrCache,
@@ -125,8 +139,8 @@ export class HsAddDataOwsService {
     });
   }
 
-  changed(data: urlDataObject): void {
-    this.hsAddDataUrlService.searchForChecked(data.layers);
+  changed(data: urlDataObject, app: string): void {
+    this.hsAddDataUrlService.searchForChecked(data.layers, app);
   }
 
   /**
@@ -136,27 +150,32 @@ export class HsAddDataOwsService {
     params: owsConnection,
     app: string
   ): Promise<Layer<Source>[]> {
-    this.hsAddDataUrlService.typeSelected = params.type as AddDataUrlType;
+    this.hsAddDataUrlService.apps[app].typeSelected =
+      params.type as AddDataUrlType;
     return await this.setUrlAndConnect(params, app);
   }
 
-  async setTypeServices(): Promise<void> {
-    switch (this.hsAddDataUrlService.typeSelected) {
+  async setTypeServices(app: string): Promise<void> {
+    switch (this.hsAddDataUrlService.apps[app].typeSelected) {
       case 'wmts':
-        this.typeService = this.hsUrlWmtsService;
-        this.typeCapabilitiesService = this.hsWmtsGetCapabilitiesService;
+        this.get(app).typeService = this.hsUrlWmtsService;
+        this.get(app).typeCapabilitiesService =
+          this.hsWmtsGetCapabilitiesService;
         return;
       case 'wms':
-        this.typeService = this.hsUrlWmsService;
-        this.typeCapabilitiesService = this.hsWmsGetCapabilitiesService;
+        this.get(app).typeService = this.hsUrlWmsService;
+        this.get(app).typeCapabilitiesService =
+          this.hsWmsGetCapabilitiesService;
         return;
       case 'wfs':
-        this.typeService = this.hsUrlWfsService;
-        this.typeCapabilitiesService = this.hsWfsGetCapabilitiesService;
+        this.get(app).typeService = this.hsUrlWfsService;
+        this.get(app).typeCapabilitiesService =
+          this.hsWfsGetCapabilitiesService;
         return;
       case 'arcgis':
-        this.typeService = this.hsUrlArcGisService;
-        this.typeCapabilitiesService = this.hsArcgisGetCapabilitiesService;
+        this.get(app).typeService = this.hsUrlArcGisService;
+        this.get(app).typeCapabilitiesService =
+          this.hsArcgisGetCapabilitiesService;
         return;
       default:
         return;

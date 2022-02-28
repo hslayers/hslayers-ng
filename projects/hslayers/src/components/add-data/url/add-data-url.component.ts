@@ -35,18 +35,20 @@ export class HsAddDataUrlComponent {
       this.types = AddDataUrlValues;
     }
     //This component initializes after add-data.component which already set the typeSelected so *should* be fine to connect now
-    if (this.hsAddDataUrlService.typeSelected) {
-      this.connectServiceFromUrlParam(this.hsAddDataUrlService.typeSelected);
+    if (this.hsAddDataUrlService.get(this.app).typeSelected) {
+      this.connectServiceFromUrlParam(
+        this.hsAddDataUrlService.get(this.app).typeSelected
+      );
     }
   }
 
-  selectType(type: AddDataUrlType): void {
-    this.hsAddDataCommonService.clearParams();
-    this.hsAddDataUrlService.typeSelected = type;
+  selectType(type: AddDataUrlType, app: string): void {
+    this.hsAddDataCommonService.clearParams(app);
+    this.hsAddDataUrlService.get(this.app).typeSelected = type;
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {
-    if (!this.hsAddDataUrlService.connectFromParams) {
+    if (!this.hsAddDataUrlService.get(this.app).connectFromParams) {
       return;
     }
     const layers = this.hsShareUrlService.getParamValue(`hs-${type}-layers`);
@@ -68,6 +70,6 @@ export class HsAddDataUrlComponent {
     } else {
       this.hsAddDataOwsService.connectToOWS({type, uri: url}, this.app);
     }
-    this.hsAddDataUrlService.connectFromParams = false;
+    this.hsAddDataUrlService.get(this.app).connectFromParams = false;
   }
 }

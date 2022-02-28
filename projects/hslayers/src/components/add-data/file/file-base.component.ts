@@ -42,7 +42,7 @@ export class HsAddDataFileBaseComponent
     this.hsAddDataCommonFileService.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
-        this.hsAddDataCommonService.showDetails = true;
+        this.hsAddDataCommonService.get(this.app).showDetails = true;
         Object.assign(this.data, data);
         this.clearInput();
       });
@@ -52,7 +52,7 @@ export class HsAddDataFileBaseComponent
       .subscribe((success) => {
         if (success) {
           this.hsLayoutService.setMainPanel('layermanager', this.app);
-          this.hsAddDataCommonService.setPanelToCatalogue();
+          this.hsAddDataCommonService.setPanelToCatalogue(this.app);
         }
         this.setDataToDefault();
         this.clearInput();
@@ -99,7 +99,7 @@ export class HsAddDataFileBaseComponent
       type: this.baseDataType,
     };
     this.hsAddDataCommonFileService.clearParams();
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(this.app);
   }
 
   ngOnDestroy(): void {

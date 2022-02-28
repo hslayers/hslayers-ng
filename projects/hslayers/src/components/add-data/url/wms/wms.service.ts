@@ -95,11 +95,14 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     try {
       await this.capabilitiesReceived(
         wrapper.response,
-        this.hsAddDataCommonService.layerToSelect,
+        this.hsAddDataCommonService.get(app).layerToSelect,
         app
       );
-      if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
+      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(
+          this.data.layers,
+          app
+        );
         return this.getLayers(app, true);
       }
     } catch (e) {
@@ -232,7 +235,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.data.layers,
         'Name'
       );
-      this.hsAddDataUrlService.searchForChecked(this.data.layers);
+      this.hsAddDataUrlService.searchForChecked(this.data.layers, app);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
         this.data.extent = this.getLayerBBox(serviceLayer, this.data.srs, app);
@@ -258,7 +261,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         'text/plain',
         'text/html',
       ]);
-      this.hsAddDataCommonService.loadingInfo = false;
+      this.hsAddDataCommonService.get(app).loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }
@@ -409,9 +412,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager', app);
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(app);
     this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
   }
 

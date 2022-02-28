@@ -55,9 +55,9 @@ export class HsUrlAddComponent {
   }
 
   changed(): void {
-    this.hsAddDataUrlService.searchForChecked([
-      ...(this.layers ?? []),
-      ...(this.services ?? []),
-    ]);
+    this.hsAddDataUrlService.searchForChecked(
+      [...(this.layers ?? []), ...(this.services ?? [])],
+      this.app
+    );
   }
 }

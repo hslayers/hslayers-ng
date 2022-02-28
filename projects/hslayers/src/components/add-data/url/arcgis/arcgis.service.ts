@@ -72,8 +72,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     try {
       await this.createLayer(wrapper.response, app);
-      if (this.hsAddDataCommonService.layerToSelect) {
-        this.hsAddDataCommonService.checkTheSelectedLayer(this.data.layers);
+      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+        this.hsAddDataCommonService.checkTheSelectedLayer(
+          this.data.layers,
+          app
+        );
         return this.getLayers(app);
       }
     } catch (e) {
@@ -111,7 +114,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       );
       this.data.layers = caps.layers;
       this.hsAddDataUrlService.searchForChecked(
-        this.data.layers ?? this.data.services
+        this.data.layers ?? this.data.services,
+        app
       );
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
@@ -136,7 +140,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         'geoJSON',
         'JSON',
       ]);
-      this.hsAddDataCommonService.loadingInfo = false;
+      this.hsAddDataCommonService.get(app).loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }
@@ -172,9 +176,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
     this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager', app);
-    this.hsAddDataCommonService.clearParams();
+    this.hsAddDataCommonService.clearParams(app);
     this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
   }
 
@@ -294,7 +298,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param service - Service URL
    */
   async expandService(service: Service, app: string): Promise<void> {
-    let urlRest = this.hsAddDataCommonService.url.toLowerCase();
+    let urlRest = this.hsAddDataCommonService.get(app).url.toLowerCase();
     //There are cases when loaded services are loaded from folders, problem is that folder name is also included inside the service.name
     //to avoid any uncertainties, lets remove everything starting from 'services' inside the url and rebuild it
     if (urlRest.includes('services')) {
@@ -314,9 +318,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param services - Services selected
    */
   async addServices(services: Service[], app: string): Promise<void> {
-    const originalRestUrl = this.hsAddDataCommonService.url;
+    const originalRestUrl = this.hsAddDataCommonService.get(app).url;
     for (const service of services.filter((s) => s.checked)) {
-      this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
+      this.hsAddDataCommonService.get(app).url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service, app);
       const layers = this.getLayers(app);
       this.addLayers(layers, app);

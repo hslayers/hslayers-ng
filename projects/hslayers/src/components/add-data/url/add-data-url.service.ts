@@ -9,14 +9,21 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 
+class HsAddDataUrlParams {
+  typeSelected: AddDataUrlType;
+  addingAllowed: boolean;
+  connectFromParams = true;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataUrlService {
+  apps: {
+    [id: string]: HsAddDataUrlParams;
+  } = {default: new HsAddDataUrlParams()};
+
   addDataCapsParsingError: Subject<any> = new Subject();
-  addingAllowed: boolean;
-  typeSelected: AddDataUrlType;
-  connectFromParams = true;
   constructor(
     public hsLog: HsLogService,
     public hsLanguageService: HsLanguageService,
@@ -47,6 +54,13 @@ export class HsAddDataUrlService {
         error
       );
     });
+  }
+
+  get(app: string): HsAddDataUrlParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsAddDataUrlParams();
+    }
+    return this.apps[app ?? 'default'];
   }
 
   /**
@@ -121,8 +135,8 @@ export class HsAddDataUrlService {
     return serviceLayer;
   }
 
-  searchForChecked(records: Array<any>): void {
-    this.addingAllowed =
-      records?.some((l) => l.checked) ?? this.typeSelected == 'arcgis';
+  searchForChecked(records: Array<any>, app: string): void {
+    this.get(app).addingAllowed =
+      records?.some((l) => l.checked) ?? this.get(app).typeSelected == 'arcgis';
   }
 }

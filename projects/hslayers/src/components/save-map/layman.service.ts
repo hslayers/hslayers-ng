@@ -700,7 +700,8 @@ export class HsLaymanService implements HsSaverService {
   }
 
   getLaymanEndpoint(): HsEndpoint {
-    return this.HsCommonEndpointsService.endpoints.find(
+    return this.HsCommonEndpointsService.endpoints?.find(
+      //FIXME..."?" was not there before multiple apps. Added to bypass while refactoring other
       (e) => e.type == 'layman'
     );
   }
