@@ -31,6 +31,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
   dataTypes = ['all', 'service', 'dataset'];
   sortbyTypes = ['date', 'title', 'bbox'];
   optionsButtonLabel = 'more';
+  appRef;
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -42,10 +43,12 @@ export class HsAddDataCatalogueComponent implements OnInit {
     public hsUtilsService: HsUtilsService,
     public hsLaymanService: HsLaymanService //Used in template
   ) {
-    this.data = hsAddDataCatalogueService.data;
     this.advancedSearch = false;
   }
   ngOnInit(): void {
+    this.appRef = this.hsAddDataCatalogueService.get(this.app);
+    this.data = this.hsAddDataCatalogueService.get(this.app).data;
+
     this.loaderImage =
       this.hsUtilsService.getAssetsPath(this.app) + 'img/ajax-loader.gif';
     this.queryCatalogs = () =>
@@ -55,8 +58,8 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
-    this.hsAddDataCatalogueService.selectedLayer =
-      this.hsAddDataCatalogueService.selectedLayer == layer
+    this.hsAddDataCatalogueService.get(this.app).selectedLayer =
+      this.hsAddDataCatalogueService.get(this.app).selectedLayer == layer
         ? <HsAddDataLayerDescriptor>{}
         : layer;
   }
@@ -99,7 +102,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
   datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {
     this.hsAddDataCatalogueService.datasetSelect(id_selected, this.app);
     if (endpoint) {
-      this.hsAddDataCatalogueService.selectedEndpoint = endpoint;
+      this.hsAddDataCatalogueService.get(this.app).selectedEndpoint = endpoint;
     }
   }
 }

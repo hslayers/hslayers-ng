@@ -2,8 +2,7 @@
     <div class="">
         <a data-toggle="tooltip" [title]="layer.description || ''">{{layer.title || layer.description}}</a>
     </div>
-    <div class="d-flex flex-column w-100 justify-content-around mt-2"
-        *ngIf="hsAddDataCatalogueService.selectedLayer?.id === layer.id">
+    <div class="d-flex flex-column w-100 justify-content-around mt-2" *ngIf="appRef.selectedLayer?.id === layer.id">
         <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
             <!-- <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
@@ -42,9 +41,8 @@
     </div>
     <div class="d-none">
         <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
-            <a class="btn btn-sm btn-secondary"
-                [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)' data-toggle="tooltip"
-                [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
+            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
+                data-toggle="tooltip" [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
         </div>
         <!-- <div class="p-0" [hidden]='getEndpoint(layer.endpoint).type != "micka" || layerRDF(layer.endpoint, layer) == "#"'>
             <a class="btn btn-sm btn-secondary" [href]='layerRDF(layer.endpoint, layer)'
