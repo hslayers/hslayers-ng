@@ -190,7 +190,7 @@ export class HsAddDataCatalogueService {
 
       this.hsMapService.loaded(app).then(() => {
         appRef.dataLoading = true;
-        this.hsAddDataCatalogueMapService.clearExtentLayer();
+        this.hsAddDataCatalogueMapService.clearExtentLayer(app);
         const observables = [];
 
         //TODO Mark non functional endpoint
@@ -337,7 +337,7 @@ export class HsAddDataCatalogueService {
    * @param catalog - Configuration of selected datasource (from app config)
    */
   queryCatalog(catalog: HsEndpoint, app: string): any {
-    this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
+    this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog, app);
     let query;
     switch (catalog.type) {
       case 'micka':
@@ -345,7 +345,7 @@ export class HsAddDataCatalogueService {
           catalog,
           this.get(app).data,
           (feature: Feature<Geometry>) =>
-            this.hsAddDataCatalogueMapService.addExtentFeature(feature),
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature, app),
           this.get(app).data.textField,
           app
         );
@@ -356,7 +356,7 @@ export class HsAddDataCatalogueService {
           app,
           this.get(app).data,
           (feature: Feature<Geometry>) =>
-            this.hsAddDataCatalogueMapService.addExtentFeature(feature)
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature, app)
         );
         return query;
       default:
@@ -544,9 +544,11 @@ export class HsAddDataCatalogueService {
   }
 
   calcExtentLayerVisibility(app: string): void {
-    this.hsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible(app) &&
-        this.hsAddDataService.get(app).dsSelected == 'catalogue'
-    );
+    this.hsAddDataCatalogueMapService
+      .get(app)
+      .extentLayer.setVisible(
+        this.panelVisible(app) &&
+          this.hsAddDataService.get(app).dsSelected == 'catalogue'
+      );
   }
 }

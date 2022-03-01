@@ -196,6 +196,12 @@ export class HsLayerManagerService {
       }
     );
   }
+  get(app: string): HsLayermanagerAppObject {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsLayermanagerAppObject();
+    }
+    return this.apps[app ?? 'default'];
+  }
 
   /**
    * Function for adding layer added to map into layer manager structure.
@@ -451,10 +457,9 @@ export class HsLayerManagerService {
    * Hence the whole array is copied so an "immutable" change happens and Angular detects that.
    */
   refreshLists(app: string): void {
-    this.apps[app].data.baselayers = Array.from(this.apps[app].data.baselayers);
-    this.apps[app].data.terrainlayers = Array.from(
-      this.apps[app].data.terrainlayers
-    );
+    const appRef = this.get(app);
+    appRef.data.baselayers = Array.from(appRef.data.baselayers);
+    appRef.data.terrainlayers = Array.from(appRef.data.terrainlayers);
   }
 
   /**
@@ -464,7 +469,7 @@ export class HsLayerManagerService {
    */
   getLayerByTitle(title: string, app: string): HsLayerDescriptor | undefined {
     let tmp;
-    for (const layer of this.apps[app].data.layers) {
+    for (const layer of this.get(app).data.layers) {
       if (layer.title == title) {
         tmp = layer;
       }

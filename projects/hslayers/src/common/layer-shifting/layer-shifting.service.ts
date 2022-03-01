@@ -29,7 +29,7 @@ export class HsLayerShiftingService {
   ) {}
 
   private getAvailableLayers(app: string) {
-    return this.hsLayerManagerService.apps[app].data.layers;
+    return this.hsLayerManagerService.get(app).data.layers;
   }
 
   private getMapLayers(app: string): Layer<Source>[] {
