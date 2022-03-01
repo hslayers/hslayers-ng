@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {AddDataUrlType, servicesSupportedByUrl} from './types/url.type';
 import {AddDataUrlValues} from './add-data-url-values';
@@ -6,17 +6,22 @@ import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataOwsService} from './add-data-ows.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsConfig} from '../../../config.service';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsShareUrlService} from '../../permalink/share-url.service';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.component.html',
 })
-export class HsAddDataUrlComponent {
+export class HsAddDataUrlComponent implements OnInit {
   types: {id: AddDataUrlType; text: string}[];
   @Input() app = 'default';
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
@@ -24,7 +29,8 @@ export class HsAddDataUrlComponent {
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataOwsService: HsAddDataOwsService,
-    public hsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsDialogContainerService: HsDialogContainerService
   ) {
     if (Array.isArray(this.hsConfig.get(this.app).connectTypes)) {
       this.types = this.hsConfig
@@ -40,6 +46,41 @@ export class HsAddDataUrlComponent {
         this.hsAddDataUrlService.get(this.app).typeSelected
       );
     }
+  }
+
+  ngOnInit() {
+    this.hsAddDataUrlService.apps[this.app].addDataCapsParsingError
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((e) => {
+        console.warn(this.app);
+        let error = e.toString();
+        if (error?.includes('Unsuccessful OAuth2')) {
+          error = this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'COMMON',
+            'Authentication failed. Login to the catalogue.'
+          );
+        } else if (error.includes('property')) {
+          error = this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'ADDLAYERS',
+            'serviceTypeNotMatching'
+          );
+        } else {
+          error = this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'ADDLAYERS',
+            error
+          );
+        }
+        this.hsDialogContainerService.create(
+          HsGetCapabilitiesErrorComponent,
+          error,
+          this.app
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   selectType(type: AddDataUrlType, app: string): void {

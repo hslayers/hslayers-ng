@@ -236,7 +236,7 @@ export class HsCompositionsParserService {
         (extent[0][0] < -90 && extent[0][1] < -180) ||
         (extent[1][0] > 90 && extent[1][1] > 180)
       ) {
-        this.loadWarningBootstrap(extent);
+        this.loadWarningBootstrap(extent, app);
       } else {
         this.HsMapService.fitExtent(
           transformExtentValue(extent, this.HsMapService.getCurrentProj(app)),
@@ -383,15 +383,19 @@ export class HsCompositionsParserService {
     return infoDetails;
   }
 
-  loadWarningBootstrap(extent): void {
-    this.HsDialogContainerService.create(HsCompositionsWarningDialogComponent, {
-      extent: extent,
-      composition_title: this.current_composition_title,
-      message: this.HsLanguageService.getTranslationIgnoreNonExisting(
-        'COMPOSITIONS.dialogWarning',
-        'outOfBounds'
-      ),
-    });
+  loadWarningBootstrap(extent, app: string): void {
+    this.HsDialogContainerService.create(
+      HsCompositionsWarningDialogComponent,
+      {
+        extent: extent,
+        composition_title: this.current_composition_title,
+        message: this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'COMPOSITIONS.dialogWarning',
+          'outOfBounds'
+        ),
+      },
+      app
+    );
   }
   /**
    * @public

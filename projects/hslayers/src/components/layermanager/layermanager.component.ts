@@ -266,7 +266,8 @@ export class HsLayerManagerComponent
   removeAllLayers(): void {
     this.hsDialogContainerService.create(
       HsLayerManagerRemoveAllDialogComponent,
-      {app: this.data.app}
+      {app: this.data.app},
+      this.data.app
     );
   }
 

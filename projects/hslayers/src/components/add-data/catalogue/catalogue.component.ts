@@ -94,9 +94,9 @@ export class HsAddDataCatalogueComponent implements OnInit {
     this.filterTypeMenu = !this.filterTypeMenu;
   }
 
-  highlightLayer(layer, state: boolean): void {
+  highlightLayer(layer, state: boolean, app: string): void {
     layer.highlighted = state;
-    this.hsAddDataCatalogueMapService.highlightLayer(layer, state);
+    this.hsAddDataCatalogueMapService.highlightLayer(layer, state, app);
   }
 
   datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {

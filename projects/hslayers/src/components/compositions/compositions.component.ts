@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -23,7 +23,9 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
+  @Input() app: string;
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -138,7 +140,8 @@ export class HsCompositionsComponent
       {
         composition_name_to_be_loaded: title,
         app: this.data.app,
-      }
+      },
+      this.data.app
     );
   }
 

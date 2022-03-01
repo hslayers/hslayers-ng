@@ -15,19 +15,27 @@ export class HsSaveMapDialogSpawnerService {
     this.HsSaveMapManagerService.saveMapResulted.subscribe(
       ({statusData, app}) => {
         if (typeof statusData != 'string') {
-          this.HsDialogContainerService.create(HsSaveMapResultDialogComponent, {
-            app,
-            statusData,
-          });
+          this.HsDialogContainerService.create(
+            HsSaveMapResultDialogComponent,
+            {
+              app,
+              statusData,
+            },
+            app
+          );
         }
       }
     );
     this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(
       ({endpoint, app}) => {
-        this.HsDialogContainerService.create(HsSaveMapDialogComponent, {
-          endpoint,
-          app,
-        });
+        this.HsDialogContainerService.create(
+          HsSaveMapDialogComponent,
+          {
+            endpoint,
+            app,
+          },
+          app
+        );
       }
     );
   }

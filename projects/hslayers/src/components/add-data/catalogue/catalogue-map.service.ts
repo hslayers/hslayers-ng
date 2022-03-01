@@ -18,10 +18,7 @@ import {
   setHighlighted,
 } from '../../../common/feature-extensions';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsAddDataCatalogueMapService {
+class HsAddDataCatalogueMapParams {
   extentLayer: VectorLayer<VectorSource<Geometry>> = new VectorLayer({
     source: new Vector(),
     properties: {
@@ -43,6 +40,16 @@ export class HsAddDataCatalogueMapService {
       ];
     },
   });
+  initRun = false;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HsAddDataCatalogueMapService {
+  apps: {
+    [id: string]: HsAddDataCatalogueMapParams;
+  } = {default: new HsAddDataCatalogueMapParams()};
 
   constructor(
     public hsMapService: HsMapService,
@@ -52,19 +59,26 @@ export class HsAddDataCatalogueMapService {
     private hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
+  get(app: string): HsAddDataCatalogueMapParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsAddDataCatalogueMapParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   /**
    * @param evt -
    */
-  mapPointerMoved(evt): void {
-    const featuresUnderMouse = this.extentLayer
-      .getSource()
+  mapPointerMoved(evt, app: string): void {
+    const featuresUnderMouse = this.get(app)
+      .extentLayer.getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.layers
     )) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
-        this.extentLayer,
+        this.get(app).extentLayer,
         endpoint.layers
       );
     }
@@ -74,27 +88,30 @@ export class HsAddDataCatalogueMapService {
    * @param map -
    */
   async init(app): Promise<void> {
-    await this.hsMapService.loaded(app);
-    const map = this.hsMapService.getMap(app);
-    map.on('pointermove', (evt) => this.mapPointerMoved(evt));
-    map.addLayer(this.extentLayer);
-    this.hsSaveMapService.internalLayers.push(this.extentLayer);
+    if (!this.apps[app].initRun) {
+      await this.hsMapService.loaded(app);
+      const map = this.hsMapService.getMap(app);
+      map.on('pointermove', (evt) => this.mapPointerMoved(evt, app));
+      map.addLayer(this.get(app).extentLayer);
+      this.hsSaveMapService.internalLayers.push(this.get(app).extentLayer);
+      this.apps[app].initRun = true;
+    }
   }
 
-  clearExtentLayer(): void {
-    this.extentLayer.getSource().clear();
+  clearExtentLayer(app: string): void {
+    this.get(app).extentLayer.getSource().clear();
   }
 
   /**
    * @param dataset - Configuration of selected datasource (from app config)
    * Remove layer extent features from map
    */
-  clearDatasetFeatures(dataset): void {
+  clearDatasetFeatures(dataset, app: string): void {
     if (dataset.layers) {
       dataset.layers.forEach((val) => {
         try {
           if (val) {
-            this.extentLayer.getSource().clear();
+            this.get(app).extentLayer.getSource().clear();
           }
         } catch (ex) {
           this.hsLogService.warn(ex);
@@ -118,14 +135,14 @@ export class HsAddDataCatalogueMapService {
    * is created. It should add the feature to vector layer source
    * @param extentFeature - OpenLayers Feature
    */
-  addExtentFeature(extentFeature: Feature<Geometry>): void {
-    this.extentLayer.getSource().addFeatures([extentFeature]);
+  addExtentFeature(extentFeature: Feature<Geometry>, app: string): void {
+    this.get(app).extentLayer.getSource().addFeatures([extentFeature]);
   }
 
-  highlightLayer(composition, state): void {
+  highlightLayer(composition, state, app: string): void {
     if (composition.featureId !== undefined) {
-      const found = this.extentLayer
-        .getSource()
+      const found = this.get(app)
+        .extentLayer.getSource()
         .getFeatureById(composition.featureId);
       if (found) {
         setHighlighted(found, state);

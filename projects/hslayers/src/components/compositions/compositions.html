@@ -10,8 +10,8 @@
             </button>
             <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;"
                 [title]="'COMPOSITIONS.import'|translate">
-                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event, data.app)" accept=".json"
-                    style="display: none;">
+                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event, data.app)"
+                    accept=".json" style="display: none;">
             </label>
             <button class="but-title-sm hs-extra-buttons" [title]="'COMPOSITIONS.addByAddress'|translate"
                 (click)="changeUrlButtonVisible()">
@@ -36,7 +36,7 @@
                 <i class="icon-search icon-primary"></i>
             </button>
         </div>
-        <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+        <hs-layman-current-user [app]="app" [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
@@ -166,7 +166,8 @@
                         (mouseleave)="highlightComposition(composition, false)"
                         (click)="compositionClicked(composition)" data-container="body" data-placement="bottom"
                         [attr.title]="composition.mdAbstract">
-                        <hs-compositions-list-item [composition]="composition" [app]="data.app" [selectedCompId]="selectedCompId">
+                        <hs-compositions-list-item [composition]="composition" [app]="data.app"
+                            [selectedCompId]="selectedCompId">
                         </hs-compositions-list-item>
                     </li>
                     <li class="list-group-item text-primary text-center py-2"
@@ -177,7 +178,8 @@
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                 </ul>
             </div>
-            <ng-container *ngIf="hsCompositionsCatalogueService.matchedRecords !== 0 && !hsCompositionsCatalogueService.dataLoading">
+            <ng-container
+                *ngIf="hsCompositionsCatalogueService.matchedRecords !== 0 && !hsCompositionsCatalogueService.dataLoading">
                 <hs-pager [pagerService]="hsCompositionsCatalogueService"></hs-pager>
             </ng-container>
         </div>

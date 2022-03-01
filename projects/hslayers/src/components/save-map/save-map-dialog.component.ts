@@ -16,6 +16,6 @@ export class HsSaveMapDialogComponent implements HsDialogComponent {
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 }

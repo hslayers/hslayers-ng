@@ -9,7 +9,7 @@ import {HsShareService} from '../../permalink/share.service';
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   @Input() app: string;
   viewRef: ViewRef;
-  data: {url; title; abstract};
+  data: {url; title; abstract; app: string};
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
@@ -17,7 +17,7 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   shareOnSocial() {

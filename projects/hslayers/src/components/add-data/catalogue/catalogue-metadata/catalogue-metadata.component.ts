@@ -56,6 +56,6 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
   }
 
   close(): void {
-    this.hsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this, this.data.app);
   }
 }

@@ -62,7 +62,8 @@ export class HsDrawLayerMetadataDialogComponent
     const dic = {};
 
     setName(this.layer, getLaymanFriendlyLayerName(getTitle(this.layer)));
-    const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer', this.data.app) || null;
+    const tmpLayer =
+      this.HsMapService.findLayerByTitle('tmpDrawLayer', this.data.app) || null;
     if (tmpLayer) {
       this.HsMapService.getMap(this.data.app).removeLayer(tmpLayer);
     }
@@ -93,7 +94,7 @@ export class HsDrawLayerMetadataDialogComponent
       this.layer.getSource().dispatchEvent(event);
     });
     this.data.tmpDrawLayer = false;
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   getEventType() {
@@ -106,7 +107,7 @@ export class HsDrawLayerMetadataDialogComponent
 
   cancel(): void {
     this.data.selectedLayer = this.data.previouslySelected;
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   async awaitLayerSync(layer): Promise<any> {
@@ -126,6 +127,6 @@ export class HsDrawLayerMetadataDialogComponent
 
   selectLayer(layer): void {
     this.data.selectLayer(layer);
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 }
