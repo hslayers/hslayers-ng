@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {HsAddDataCatalogueService} from '../catalogue.service';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
@@ -19,10 +19,10 @@ import {HsUtilsService} from '../../../utils/utils.service';
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
 })
-export class HsCatalogueListItemComponent {
+export class HsCatalogueListItemComponent implements OnInit {
   @Input() layer;
   @Input() app = 'default';
-
+  appRef;
   explanationsVisible: boolean;
   metadata;
   selected_ds;
@@ -43,6 +43,10 @@ export class HsCatalogueListItemComponent {
     public hsUtilsService: HsUtilsService,
     public hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
+
+  ngOnInit() {
+    this.appRef = this.hsAddDataCatalogueService.get(this.app);
+  }
 
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
@@ -158,10 +162,9 @@ export class HsCatalogueListItemComponent {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       await this.hsLaymanService.removeLayer(layer.name);
-      this.hsAddDataCatalogueService.catalogEntries =
-        this.hsAddDataCatalogueService.catalogEntries.filter((item) => {
-          return item.id != layer.id;
-        });
+      this.appRef.catalogEntries = this.appRef.catalogEntries.filter((item) => {
+        return item.id != layer.id;
+      });
     }
   }
 }

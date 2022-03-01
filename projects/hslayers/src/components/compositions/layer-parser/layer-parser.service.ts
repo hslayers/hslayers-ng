@@ -73,6 +73,7 @@ export class HsCompositionsLayerParserService {
     );
     return await this.HsUrlWfsService.listLayerFromCapabilities(
       wrapper,
+      app,
       lyr_def.style
     );
   }

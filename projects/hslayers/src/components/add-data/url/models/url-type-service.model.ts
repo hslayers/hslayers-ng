@@ -17,6 +17,7 @@ export interface HsUrlTypeServiceModel {
 
   listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
+    app: string,
     sld?: string
   ): Promise<Layer<Source>[]>;
   getLayers(

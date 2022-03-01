@@ -105,7 +105,7 @@ export class HsAddDataOwsService {
     } else {
       const response = await this.get(
         app
-      ).typeService.listLayerFromCapabilities(wrapper, opt?.style);
+      ).typeService.listLayerFromCapabilities(wrapper, app, opt?.style);
       if (!opt?.getOnly) {
         if (response?.length > 0) {
           this.get(app).typeService.addLayers(response, app);

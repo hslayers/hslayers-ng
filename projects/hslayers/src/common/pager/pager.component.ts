@@ -1,21 +1,28 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'hs-pager',
   templateUrl: './pager.component.html',
 })
-export class HsPagerComponent {
+export class HsPagerComponent implements OnInit {
+  @Input() app: string;
   @Input() pagerService: any;
+
+  appRef;
   recordsPerPageArray = [5, 10, 15, 20, 25, 50, 100];
   constructor() {}
+
+  ngOnInit() {
+    this.appRef = this.pagerService.get(this.app);
+  }
 
   /**
    * Checks if next page for pagination is available
    */
   nextPageAvailable(): boolean {
     if (
-      this.pagerService.listNext == this.pagerService.matchedRecords ||
-      this.pagerService.matchedRecords == 0
+      this.appRef.listNext == this.appRef.matchedRecords ||
+      this.appRef.matchedRecords == 0
     ) {
       return true;
     } else {
@@ -29,25 +36,25 @@ export class HsPagerComponent {
     if (this.pagerService.getPreviousRecords) {
       this.pagerService.getPreviousRecords();
     } else {
-      if (this.pagerService.listStart - this.pagerService.recordsPerPage <= 0) {
-        this.pagerService.listStart = 0;
-        this.pagerService.listNext = this.pagerService.recordsPerPage;
+      if (this.appRef.listStart - this.appRef.recordsPerPage <= 0) {
+        this.appRef.listStart = 0;
+        this.appRef.listNext = this.appRef.recordsPerPage;
       } else {
-        this.pagerService.listStart -= this.pagerService.recordsPerPage;
-        this.pagerService.listNext =
-          this.pagerService.listStart + this.pagerService.recordsPerPage;
+        this.appRef.listStart -= this.appRef.recordsPerPage;
+        this.appRef.listNext =
+          this.appRef.listStart + this.appRef.recordsPerPage;
       }
     }
   }
 
   changeRecordsPerPage(perPage: number): void {
-    if (perPage > this.pagerService.matchedRecords) {
-      this.pagerService.recordsPerPage = this.pagerService.matchedRecords;
+    if (perPage > this.appRef.matchedRecords) {
+      this.appRef.recordsPerPage = this.appRef.matchedRecords;
     } else {
-      this.pagerService.recordsPerPage = perPage;
+      this.appRef.recordsPerPage = perPage;
     }
-    this.pagerService.listStart = 0;
-    this.pagerService.listNext = this.pagerService.recordsPerPage;
+    this.appRef.listStart = 0;
+    this.appRef.listNext = this.appRef.recordsPerPage;
     if (this.pagerService.changeRecordsPerPage) {
       this.pagerService.changeRecordsPerPage();
     }
@@ -60,17 +67,15 @@ export class HsPagerComponent {
     if (this.pagerService.getNextRecords) {
       this.pagerService.getNextRecords();
     } else {
-      this.pagerService.listStart += this.pagerService.recordsPerPage;
-      this.pagerService.listNext += this.pagerService.recordsPerPage;
-      if (this.pagerService.listNext > this.pagerService.matchedRecords) {
-        this.pagerService.listNext = this.pagerService.matchedRecords;
+      this.appRef.listStart += this.appRef.recordsPerPage;
+      this.appRef.listNext += this.appRef.recordsPerPage;
+      if (this.appRef.listNext > this.appRef.matchedRecords) {
+        this.appRef.listNext = this.appRef.matchedRecords;
       }
     }
   }
 
   resultsVisible(): boolean {
-    return this.pagerService.listNext && this.pagerService.matchedRecords
-      ? true
-      : false;
+    return this.appRef.listNext && this.appRef.matchedRecords ? true : false;
   }
 }

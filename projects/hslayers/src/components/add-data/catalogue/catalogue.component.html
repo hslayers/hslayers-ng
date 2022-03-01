@@ -109,23 +109,22 @@
                     </div>
                 -->
                 <ul class="list-group">
-                    <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
-                        *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )"
+                    <li [hidden]="appRef.dataLoading" style="cursor: pointer;"
+                        *ngFor="let layer of appRef.catalogEntries; trackBy:( 'id' | trackByProperty )"
                         class="clearfix list-group-item" [ngClass]="{'hs-endpoint-item-active': layer.highlighted}"
                         (click)="layerSelected(layer)" (mouseover)="highlightLayer(layer, true)"
                         (mouseleave)="highlightLayer(layer, false)">
-                        <hs-catalogue-list-item [layer]="layer" [app]="data.app"></hs-catalogue-list-item>
+                        <hs-catalogue-list-item [layer]="layer" [app]="app"></hs-catalogue-list-item>
                     </li>
-                    <li class='list-group-item text-primary text-center py-2'
-                        [hidden]="!hsAddDataCatalogueService.dataLoading"><img class="pe-2"
-                            [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
-                    <li [hidden]='hsAddDataCatalogueService.catalogEntries.length > 0 || hsAddDataCatalogueService.dataLoading'
-                        class='list-group-item' style="border-top-width: 1px; border-radius: inherit">
+                    <li class='list-group-item text-primary text-center py-2' [hidden]="!appRef.dataLoading"><img
+                            class="pe-2" [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
+                    <li [hidden]='appRef.catalogEntries.length > 0 || appRef.dataLoading' class='list-group-item'
+                        style="border-top-width: 1px; border-radius: inherit">
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                 </ul>
             </div>
-            <ng-container *ngIf="hsAddDataCatalogueService.matchedRecords !== 0 && !hsAddDataCatalogueService.dataLoading">
-                <hs-pager [pagerService]="hsAddDataCatalogueService"></hs-pager>
+            <ng-container *ngIf="appRef.matchedRecords !== 0 && !appRef.dataLoading">
+                <hs-pager [app]="app" [pagerService]="hsAddDataCatalogueService"></hs-pager>
             </ng-container>
         </div>
     </div>
