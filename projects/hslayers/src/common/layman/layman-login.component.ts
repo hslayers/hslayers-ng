@@ -35,6 +35,6 @@ export class HsLaymanLoginComponent
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data);
   }
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 }

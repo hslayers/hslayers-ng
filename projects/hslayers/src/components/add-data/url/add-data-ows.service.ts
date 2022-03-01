@@ -87,7 +87,7 @@ export class HsAddDataOwsService {
       this.hsAddDataUrlService.apps[app].typeSelected,
       url
     );
-    Object.assign(this.hsAddDataCommonService, {
+    Object.assign(this.hsAddDataCommonService.get(app), {
       loadingInfo: true,
       showDetails: true,
     });

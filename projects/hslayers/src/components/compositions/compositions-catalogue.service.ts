@@ -127,13 +127,17 @@ export class HsCompositionsCatalogueService {
       }
     );
 
-    this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
-      this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
-        info: {
-          title: 'Composition not found',
-          abstract: error.message,
+    this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((data) => {
+      this.hsDialogContainerService.create(
+        HsCompositionsInfoDialogComponent,
+        {
+          info: {
+            title: 'Composition not found',
+            abstract: data.error.message,
+          },
         },
-      });
+        data.app
+      );
     });
 
     this.hsCommonLaymanService.authChange.subscribe(({endpoint, app}) => {

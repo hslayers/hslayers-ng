@@ -111,7 +111,8 @@ export class HsLayerEditorComponent {
             'LAYERMANAGER.layerEditor.savegeojson'
           ) + '?',
         title: this.HsLanguageService.getTranslation('COMMON.confirm'),
-      }
+      },
+      this.app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
@@ -181,7 +182,8 @@ export class HsLayerEditorComponent {
   removeLayer(): void {
     this.HsDialogContainerService.create(
       HsLayerManagerRemoveLayerDialogComponent,
-      {olLayer: this.olLayer()}
+      {olLayer: this.olLayer()},
+      this.app
     );
   }
 
@@ -255,7 +257,9 @@ export class HsLayerEditorComponent {
           ) + '?',
         title: this.HsLanguageService.getTranslation('COMMON.copyLayer'),
         layerTitle: getTitle(this.currentLayer.layer),
-      }
+        app: this.app,
+      },
+      this.app
     );
     const result = await dialog.waitResult();
     if (result.confirmed == 'yes') {

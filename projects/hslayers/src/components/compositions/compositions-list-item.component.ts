@@ -98,28 +98,40 @@ export class HsCompositionsListItemComponent {
    * @param composition
    */
   deleteDialogBootstrap(composition): void {
-    this.hsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
-      compositionToDelete: composition,
-    });
+    this.hsDialogContainerService.create(
+      HsCompositionsDeleteDialogComponent,
+      {
+        compositionToDelete: composition,
+      },
+      this.app
+    );
   }
   /**
    * @param record
    * @param url
    */
   shareDialogBootstrap(record, url): void {
-    this.hsDialogContainerService.create(HsCompositionsShareDialogComponent, {
-      url,
-      title:
-        this.hsConfig.get(this.app).social_hashtag &&
-        !record.title.includes(this.hsConfig.get(this.app).social_hashtag)
-          ? record.title + ' ' + this.hsConfig.get(this.app).social_hashtag
-          : record.title,
-      abstract: record.abstract,
-    });
+    this.hsDialogContainerService.create(
+      HsCompositionsShareDialogComponent,
+      {
+        url,
+        title:
+          this.hsConfig.get(this.app).social_hashtag &&
+          !record.title.includes(this.hsConfig.get(this.app).social_hashtag)
+            ? record.title + ' ' + this.hsConfig.get(this.app).social_hashtag
+            : record.title,
+        abstract: record.abstract,
+      },
+      this.app
+    );
   }
   infoDialogBootstrap(info): void {
-    this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
-      info,
-    });
+    this.hsDialogContainerService.create(
+      HsCompositionsInfoDialogComponent,
+      {
+        info,
+      },
+      this.app
+    );
   }
 }

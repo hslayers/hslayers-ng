@@ -30,7 +30,7 @@ export class HsCompositionsService {
   data: any = {};
   compositionToLoad: {url: string; title: string};
   notSavedCompositionLoading: Subject<string> = new Subject();
-  compositionNotFoundAtUrl: Subject<any> = new Subject();
+  compositionNotFoundAtUrl: Subject<{error: any; app: string}> = new Subject();
   shareId: string;
   constructor(
     private http: HttpClient,
@@ -317,9 +317,9 @@ export class HsCompositionsService {
       }
       try {
         await this.hsCompositionsParserService.loadUrl(id, app);
-      } catch (e) {
-        this.compositionNotFoundAtUrl.next(e);
-        this.$log.warn(e);
+      } catch (error) {
+        this.compositionNotFoundAtUrl.next({error, app});
+        this.$log.warn(error);
       }
     }
   }

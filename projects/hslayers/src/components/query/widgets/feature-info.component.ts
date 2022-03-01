@@ -74,7 +74,8 @@ export class HsFeatureInfoComponent
       {
         message: this.hsLanguageService.getTranslation('QUERY.reallyDelete'),
         title: this.hsLanguageService.getTranslation('QUERY.confirmDelete'),
-      }
+      },
+      this.data.app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {

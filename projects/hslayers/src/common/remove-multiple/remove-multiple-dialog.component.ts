@@ -24,6 +24,7 @@ export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
     message: string;
     note?: string;
     items?: any[];
+    app: string;
   };
 
   ngOnInit(): void {
@@ -32,12 +33,12 @@ export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
     }
   }
   yes(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
     this.dialogItem.resolve('yes');
   }
 
   no(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
     this.dialogItem.resolve('no');
   }
 

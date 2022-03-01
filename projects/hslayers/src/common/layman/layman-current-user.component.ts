@@ -11,6 +11,7 @@ import {Input} from '@angular/core';
 })
 export class HsLaymanCurrentUserComponent {
   @Input() endpoint;
+  @Input() app: string;
   monitorTries = 0;
   DEFAULT_TIMER_INTERVAL = 2000;
   MAX_MONITOR_TRIES = 100;
@@ -80,7 +81,8 @@ export class HsLaymanCurrentUserComponent {
     }
     this.HsDialogContainerService.create(
       HsLaymanLoginComponent,
-      this.authUrl()
+      this.authUrl(),
+      this.app
     );
   }
 }

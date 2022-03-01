@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentFactoryResolver,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -19,6 +20,7 @@ import {HsDialogItem} from './dialog-item';
   templateUrl: './dialog-container.html',
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {
+  @Input() app: string;
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
@@ -32,14 +34,14 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
-    this.HsDialogContainerService.dialogObserver
-      .pipe(takeUntil(this.ngUnsubscribe))
+    this.HsDialogContainerService.get(this.app)
+      .dialogObserver.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsDialogItem) => {
         this.loadDialog(item);
       });
 
-    this.HsDialogContainerService.dialogDestroyObserver
-      .pipe(takeUntil(this.ngUnsubscribe))
+    this.HsDialogContainerService.get(this.app)
+      .dialogDestroyObserver.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsDialogComponent) => {
         this.destroyDialog(item);
       });

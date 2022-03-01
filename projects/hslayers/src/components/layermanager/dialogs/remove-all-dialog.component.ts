@@ -30,6 +30,6 @@ export class HsLayerManagerRemoveAllDialogComponent
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 }

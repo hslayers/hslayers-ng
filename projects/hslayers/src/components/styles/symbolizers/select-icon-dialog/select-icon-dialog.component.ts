@@ -22,7 +22,7 @@ export class HsSelectIconDialogComponent implements HsDialogComponent {
 
   cancel(): void {
     this.data.selectedIcon = null;
-    this.hsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this, this.data.app);
   }
 
   confirm(): void {
@@ -30,7 +30,7 @@ export class HsSelectIconDialogComponent implements HsDialogComponent {
       this.data.symbolizer.image = this.data.selectedIcon.url;
       this.data.emitChange();
     }
-    this.hsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this, this.data.app);
   }
 
   iconSelected(icon: SymbolizerIcon): void {

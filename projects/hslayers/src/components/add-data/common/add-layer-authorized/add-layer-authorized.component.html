@@ -13,5 +13,5 @@
 <div *ngIf="!hsAddDataCommonFileService.isAuthorized()"
   class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
   <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate}}</p>
-  <hs-layman-current-user [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+  <hs-layman-current-user [app]="app" [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
 </div>

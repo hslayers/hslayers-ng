@@ -113,7 +113,8 @@ export class HsQueryFeatureListComponent implements OnInit {
           'QUERY.reallyDeleteAllSelectedLayers'
         ),
         title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
-      }
+      },
+      this.app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {

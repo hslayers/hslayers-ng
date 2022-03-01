@@ -124,11 +124,15 @@ export class HsCatalogueListItemComponent implements OnInit {
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
 
-    this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
-      selectedLayer: this.selected_layer,
-      selectedDS: this.selected_ds,
-      app: this.app,
-    });
+    this.hsDialogContainerService.create(
+      HsCatalogueMetadataComponent,
+      {
+        selectedLayer: this.selected_layer,
+        selectedDS: this.selected_ds,
+        app: this.app,
+      },
+      this.app
+    );
   }
 
   /**
@@ -157,7 +161,8 @@ export class HsCatalogueListItemComponent implements OnInit {
         ),
         note: this.hsLanguageService.getTranslation('DRAW.deleteNote'),
         title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
-      }
+      },
+      this.app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {

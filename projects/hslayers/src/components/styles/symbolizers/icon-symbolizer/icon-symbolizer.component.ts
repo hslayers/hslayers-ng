@@ -34,6 +34,10 @@ export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   ];
 
   showIconSelector(): void {
-    this.hsDialogContainerService.create(HsSelectIconDialogComponent, this);
+    this.hsDialogContainerService.create(
+      HsSelectIconDialogComponent,
+      this,
+      this.app
+    );
   }
 }

@@ -46,10 +46,11 @@ export class HsAddDataCommonService {
   }
 
   clearParams(app: string): void {
-    this.get(app).layerToSelect = '';
-    this.get(app).loadingInfo = false;
-    this.get(app).showDetails = false;
-    this.get(app).url = '';
+    const appRef = this.get(app);
+    appRef.layerToSelect = '';
+    appRef.loadingInfo = false;
+    appRef.showDetails = false;
+    appRef.url = '';
     this.hsAddDataUrlService.get(app).typeSelected = null;
   }
 
@@ -89,7 +90,7 @@ export class HsAddDataCommonService {
         {serviceCalledFrom: 'HsAddDataCommonUrlService'}
       );
     } else {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+      this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(e);
     }
   }
 

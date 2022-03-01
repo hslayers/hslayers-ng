@@ -45,7 +45,8 @@ export class HsClearLayerComponent
           .getTranslation('QUERY.reallyDeleteAllFeaturesFrom')
           .replace('{0}', getTitle(layer)),
         title: this.hsLanguageService.getTranslation('QUERY.confirmClear'),
-      }
+      },
+      this.data.app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {

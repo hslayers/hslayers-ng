@@ -340,7 +340,8 @@ export class HsDrawService {
             'DRAW.thisLayerDoesNotSupportDrawing'
           ),
           title: this.hsLanguageService.getTranslation('DRAW.notAVectorLayer'),
-        }
+        },
+        app
       );
       const confirmed = await dialog.waitResult();
       if (confirmed == 'yes') {
@@ -617,7 +618,8 @@ export class HsDrawService {
         ),
         note: this.getDeleteNote(),
         title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
-      }
+      },
+      app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
@@ -645,7 +647,8 @@ export class HsDrawService {
           ...(this.drawableLayers ?? []),
           ...(this.drawableLaymanLayers ?? []),
         ],
-      }
+      },
+      app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
