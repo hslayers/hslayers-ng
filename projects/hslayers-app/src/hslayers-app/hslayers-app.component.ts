@@ -13,7 +13,7 @@ import {
   XYZ,
 } from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Component} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {
   Group,
   Image as ImageLayer,
@@ -30,7 +30,8 @@ import {HsConfig} from 'hslayers-ng/src/config.service';
   styleUrls: [],
 })
 export class HslayersAppComponent {
-  constructor(public HsConfig: HsConfig) {
+  id;
+  constructor(public HsConfig: HsConfig, private elementRef: ElementRef) {
     const w: any = window;
     w.ol = {
       layer: {
@@ -65,8 +66,14 @@ export class HslayersAppComponent {
       proj,
     };
 
+    if (this.elementRef.nativeElement.id) {
+      this.id = this.elementRef.nativeElement.id;
+    } else {
+      this.id = 'default';
+    }
+
     if (w.hslayersNgConfig) {
-      this.HsConfig.update(w.hslayersNgConfig(w.ol));
+      this.HsConfig.update(w.hslayersNgConfig(w.ol, this.id), this.id);
     }
   }
   title = 'hslayers-workspace';
