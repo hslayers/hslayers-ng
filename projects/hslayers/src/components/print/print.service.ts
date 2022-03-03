@@ -29,10 +29,14 @@ export class HsPrintService {
    * @param print - Print object
    * @param complete - If true, generated image will be opened and printing interface will be created
    */
-  async print(print: PrintModel, complete?: boolean): Promise<void> {
+  async print(
+    print: PrintModel,
+    app: string,
+    complete?: boolean
+  ): Promise<void> {
     const obs = from(
       new Promise<string>(async (resolve, reject) => {
-        const img = await this.createMapImage(print);
+        const img = await this.createMapImage(print, app);
         resolve(img);
       })
     );
@@ -58,8 +62,8 @@ export class HsPrintService {
    * Download map print layout as png image
    * @param print - Print object
    */
-  async download(print: PrintModel): Promise<void> {
-    const img = await this.createMapImage(print);
+  async download(print: PrintModel, app: string): Promise<void> {
+    const img = await this.createMapImage(print, app);
     if (!document) {
       return;
     }
@@ -77,9 +81,9 @@ export class HsPrintService {
    * Create map image with additional styled text, optional scale, legend or imprint
    * @param print - Print object
    */
-  async createMapImage(print: PrintModel): Promise<string> {
-    await this.hsMapService.loaded();
-    const canvases = this.hsMapService.getCanvases();
+  async createMapImage(print: PrintModel, app: string): Promise<string> {
+    await this.hsMapService.loaded(app);
+    const canvases = this.hsMapService.getCanvases(app);
     const composition = document.createElement('canvas');
     const ctx = composition.getContext('2d');
     const res = [canvases[0].clientWidth, canvases[0].clientHeight];
@@ -107,7 +111,8 @@ export class HsPrintService {
     }
     if (print.scaleObj?.include) {
       const sCanvas = await this.hsPrintScaleService.drawScaleCanvas(
-        print.scaleObj
+        print.scaleObj,
+        app
       );
       if (sCanvas) {
         ctx.drawImage(sCanvas, 3, composition.height - sCanvas.height);
@@ -116,7 +121,8 @@ export class HsPrintService {
 
     if (print.legendObj?.include) {
       const lCanvas = await this.hsPrintLegendService.drawLegendCanvas(
-        print.legendObj
+        print.legendObj,
+        app
       );
       if (lCanvas) {
         const legendPos = this.getChildPosition(

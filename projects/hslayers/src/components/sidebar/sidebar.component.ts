@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {delay, startWith, Subscription} from 'rxjs';
 
 import {HS_PRMS} from '../permalink/get-params';
 import {HsButton} from './button.interface';
@@ -17,7 +17,7 @@ import {HsSidebarService} from './sidebar.service';
 export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;
   @Input() app = 'default';
-  buttons: HsButton[];
+  buttons: HsButton[] = [];
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
@@ -35,11 +35,13 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
         this.HsLayoutService.setMainPanel(panel, this.app);
       }
     }
-    this.HsSidebarService.get(this.app).buttons.subscribe((buttons) => {
-      this.buttons = buttons;
-      this.HsSidebarService.setPanelState(buttons, this.app);
-      this.HsSidebarService.setButtonVisibility(buttons, this.app);
-    });
+    this.HsSidebarService.get(this.app)
+      .buttons.pipe(startWith([]), delay(0))
+      .subscribe((buttons) => {
+        this.buttons = buttons;
+        this.HsSidebarService.setPanelState(buttons, this.app);
+        this.HsSidebarService.setButtonVisibility(buttons, this.app);
+      });
     this.configChangesSubscription = this.HsConfig.configChanges.subscribe(
       (_) => {
         this.HsSidebarService.setPanelState(this.buttons, this.app);

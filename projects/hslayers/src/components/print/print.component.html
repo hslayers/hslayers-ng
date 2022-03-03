@@ -70,7 +70,7 @@
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.scaleStylingOptions' | translate}}
             </button>
-            <hs-print-scale-styler *ngIf="getStylerVisible('scale') && print.scaleObj.include"
+            <hs-print-scale-styler *ngIf="getStylerVisible('scale') && print.scaleObj.include" [app]="data.app"
                 [scaleObj]="print.scaleObj">
             </hs-print-scale-styler>
             <div class="mb-2 mt-2 d-flex justify-content-start" *ngIf="!isLoading()">
@@ -83,7 +83,7 @@
             </div>
             <div class="d-flex justify-content-center btn-group w-75 m-auto" *ngIf="isLoading()">
                 <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}...<img class="ms-2"
-                        [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
+                        [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" /></button>
                 <button class="btn btn-secondary" (click)="cancelLoading()">&#10006;
                 </button>
             </div>

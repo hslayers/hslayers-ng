@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
+import {HsConfig} from './../../config.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -30,12 +31,16 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
     public HsConfig: HsConfig,
     HsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService
+    public hsSidebarService: HsSidebarService,
+    public hsUtilsService: HsUtilsService,
+    private hsPrintService: HsPrintService,
+    private hsPrintScaleService: HsPrintScaleService,
+    private hsPrintLegendService: HsPrintLegendService
   ) {
     super(HsLayoutService);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.hsSidebarService.addButton(
       {
         panel: 'print',
@@ -50,9 +55,8 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
       },
       this.data.app
     );
-  }
-  ngOnInit(): void {
     this.setToDefault();
+    this.hsPrintScaleService.init(this.data.app);
   }
 
   /**
@@ -106,7 +110,7 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
     this.stylers.forEach((s) => {
       s.visible = false;
     });
-    this.hsPrintScaleService.setToDefaultScale();
+    this.hsPrintScaleService.setToDefaultScale(this.data.app);
     this.hsPrintLegendService.loadingExternalImages = false;
   }
 
@@ -122,14 +126,14 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
    * @param complete - Indicates whether the user wants to print or preview the image
    */
   async printLayout(complete: boolean): Promise<void> {
-    await this.hsPrintService.print(this.print, complete);
+    await this.hsPrintService.print(this.print, this.data.app, complete);
   }
 
   /**
    * Download print layout as png image
    */
   async download(): Promise<void> {
-    await this.hsPrintService.download(this.print);
+    await this.hsPrintService.download(this.print, this.data.app);
   }
 
   isLoading(): boolean {

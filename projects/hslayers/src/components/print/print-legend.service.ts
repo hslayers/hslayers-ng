@@ -74,11 +74,14 @@ export class HsPrintLegendService {
    * Draw legend canvas
    * @param legendObj - Legend object
    */
-  async drawLegendCanvas(legendObj: LegendObj): Promise<HTMLCanvasElement> {
+  async drawLegendCanvas(
+    legendObj: LegendObj,
+    app: string
+  ): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     this.legendWidth = legendObj.width || 200; //Needs to have some default width if none is set
-    const legendImages = await this.getLegendImages();
+    const legendImages = await this.getLegendImages(app);
     if (legendImages?.length > 0) {
       const canvasHeight = legendImages
         .map((img) => img.height)
@@ -128,15 +131,18 @@ export class HsPrintLegendService {
   /**
    * Get legend images from layer legend descriptors
    */
-  private async getLegendImages(): Promise<HTMLImageElement[]> {
+  private async getLegendImages(app: string): Promise<HTMLImageElement[]> {
     const svgSources: string[] = [];
     const images: HTMLImageElement[] = [];
     const layers = this.hsMapService
-      .getLayersArray()
+      .getLayersArray(app)
       .filter((l) => l.getVisible());
     for (const layer of layers) {
       let svgSource: string;
-      const desc = await this.hsLegendService.getLayerLegendDescriptor(layer);
+      const desc = await this.hsLegendService.getLayerLegendDescriptor(
+        layer,
+        app
+      );
       if (desc) {
         switch (desc.type) {
           case 'vector':

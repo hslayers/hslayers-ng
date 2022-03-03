@@ -59,13 +59,7 @@ export class HsSaveMapService {
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsShareThumbnailService: HsShareThumbnailService
-  ) {
-    window.addEventListener('beforeunload', (e) => {
-      if (hsConfig.saveMapStateOnReload) {
-        this.save2storage(e);
-      }
-    });
-  }
+  ) {}
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
@@ -462,18 +456,19 @@ export class HsSaveMapService {
    * @param {object} localThis Context to be passed to postcompose event handler
    * @param {boolean} newRender Force new render?
    */
-  generateThumbnail($element, localThis, newRender?) {
+  generateThumbnail($element, localThis, app: string, newRender?) {
     if ($element === null) {
       return;
     }
     $element.setAttribute('crossOrigin', 'Anonymous');
-    this.HsMapService.map.once('postcompose', () =>
-      this.HsShareThumbnailService.rendered($element, newRender)
+    const map = this.HsMapService.getMap(app);
+    map.once('postcompose', () =>
+      this.HsShareThumbnailService.rendered($element, app, newRender)
     );
     if (newRender) {
-      this.HsMapService.map.renderSync();
+      map.renderSync();
     } else {
-      this.HsShareThumbnailService.rendered($element, newRender);
+      this.HsShareThumbnailService.rendered($element, app, newRender);
     }
   }
 

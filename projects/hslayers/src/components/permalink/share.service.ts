@@ -51,8 +51,21 @@ export class HsShareService {
     private HttpClient: HttpClient,
     public HsShareThumbnailService: HsShareThumbnailService
   ) {
-    this.HsEventBusService.mainPanelChanges.subscribe(async () => {
-      if (this.HsLayoutService.mainpanel == 'permalink') {
+    this.HsEventBusService.compositionLoads.subscribe(({data, app}) => {
+      if (data.data) {
+        data = data.data;
+        this.data.title = data.title;
+        if (this.HsConfig.get(app).social_hashtag) {
+          this.data.title += ' ' + this.HsConfig.get(app).social_hashtag;
+        }
+        this.data.abstract = data.abstract;
+      }
+    });
+  }
+
+  init(app1: string): void {
+    this.HsEventBusService.mainPanelChanges.subscribe(async ({which, app}) => {
+      if (this.HsLayoutService.apps[app].mainpanel == 'permalink') {
         this.HsShareUrlService.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl(app);
         const layers = this.HsMapService.getLayersArray(app)
@@ -95,48 +108,52 @@ export class HsShareService {
 
     this.HsShareUrlService.browserUrlUpdated.subscribe(async () => {
       if (
-        this.HsLayoutService.mainpanel == 'permalink' ||
-        this.HsLayoutService.mainpanel == 'shareMap'
+        this.HsLayoutService.apps[app1].mainpanel == 'permalink' ||
+        this.HsLayoutService.apps[app1].mainpanel == 'shareMap'
       ) {
         this.data.shareUrlValid = false;
         try {
           this.data.pureMapUrl = await this.HsUtilsService.shortUrl(
-            this.HsShareUrlService.getPureMapUrl()
+            this.HsShareUrlService.getPureMapUrl(app1),
+            app1
           );
           this.data.permalinkUrl = await this.HsUtilsService.shortUrl(
-            this.HsShareUrlService.getPermalinkUrl()
+            this.HsShareUrlService.getPermalinkUrl(app1),
+            app1
           );
           this.getEmbedCode();
         } catch (ex) {
           this.HsLogService.log('Error creating short URL', ex);
-          this.data.pureMapUrl = this.HsShareUrlService.getPureMapUrl();
-          this.data.permalinkUrl = this.HsShareUrlService.getPermalinkUrl();
+          this.data.pureMapUrl = this.HsShareUrlService.getPureMapUrl(app1);
+          this.data.permalinkUrl = this.HsShareUrlService.getPermalinkUrl(app1);
         }
       }
     });
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
-      if (this.HsLayoutService.mainpanel == 'permalink') {
+    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
+      if (this.HsLayoutService.get(app).mainpanel == 'permalink') {
         this.generateThumbnail(
-          this.HsLayoutService.contentWrapper.querySelector(
+          this.HsLayoutService.get(app).contentWrapper.querySelector(
             '.hs-permalink-thumbnail'
           ),
-          false
+          false,
+          app
         );
       }
     });
 
-    this.HsEventBusService.olMapLoads.subscribe((map) => {
+    this.HsEventBusService.olMapLoads.subscribe(({map, app}) => {
       map.on(
         'postcompose',
         this.HsUtilsService.debounce(
           () => {
-            if (this.HsLayoutService.mainpanel == 'permalink') {
+            if (this.HsLayoutService.get(app).mainpanel == 'permalink') {
               this.generateThumbnail(
-                this.HsLayoutService.contentWrapper.querySelector(
+                this.HsLayoutService.get(app).contentWrapper.querySelector(
                   '.hs-permalink-thumbnail'
                 ),
-                false
+                false,
+                app
               );
             }
           },
@@ -145,17 +162,6 @@ export class HsShareService {
           this
         )
       );
-    });
-
-    this.HsEventBusService.compositionLoads.subscribe((data) => {
-      if (data.data) {
-        data = data.data;
-        this.data.title = data.title;
-        if (this.HsConfig.social_hashtag) {
-          this.data.title += ' ' + this.HsConfig.social_hashtag;
-        }
-        this.data.abstract = data.abstract;
-      }
     });
   }
 
@@ -287,27 +293,26 @@ export class HsShareService {
    * @param {boolean} newRender Force synchronous rendering again or use last canvas state
    * @description Generate thumbnail of current map and save it to variable and selected element
    */
-  generateThumbnail($element, newRender: boolean): void {
-    this.rendered($element, newRender);
+  generateThumbnail($element, newRender: boolean, app: string): void {
+    this.rendered($element, app, newRender);
 
     if ($element === null) {
       return;
     }
     $element.setAttribute('crossOrigin', 'Anonymous');
-
+    const map = this.HsMapService.getMap(app);
     if (newRender) {
-      this.HsMapService.map.once('postcompose', () =>
-        this.rendered($element, newRender)
-      );
-      this.HsMapService.map.renderSync();
+      map.once('postcompose', () => this.rendered($element, app, newRender));
+      map.renderSync();
     } else {
-      this.rendered($element, newRender);
+      this.rendered($element, app, newRender);
     }
   }
 
-  rendered($element, newRender?): void {
+  rendered($element, app: string, newRender?): void {
     this.data.thumbnail = this.HsShareThumbnailService.rendered(
       $element,
+      app,
       newRender
     );
   }

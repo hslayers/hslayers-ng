@@ -20,18 +20,20 @@ export class HsPrintScaleService {
   constructor(
     private hsMapService: HsMapService,
     private hsPrintLegendService: HsPrintLegendService
-  ) {
-    this.hsMapService.loaded().then((_) => {
-      this.defaultScaleLine = this.getMapScale();
+  ) {}
+
+  init(app: string): void {
+    this.hsMapService.loaded(app).then((_) => {
+      this.defaultScaleLine = this.getMapScale(app);
     });
   }
 
   /**
    * Set original map scale if it exists
    */
-  setToDefaultScale(): void {
-    if (this.defaultScaleLine && this.hsMapService.map) {
-      this.setMapScale(this.defaultScaleLine);
+  setToDefaultScale(app: string): void {
+    if (this.defaultScaleLine && this.hsMapService.getMap(app)) {
+      this.setMapScale(this.defaultScaleLine, app);
     }
   }
 
@@ -39,20 +41,23 @@ export class HsPrintScaleService {
    * Triggered when the scale type or its values have been changed by the user
    * @param scaleObj - Scale object
    */
-  scaleChanged(scaleObj: ScaleObj): void {
-    this.setMapScale(this.createNewScaleControl(scaleObj));
+  scaleChanged(scaleObj: ScaleObj, app: string): void {
+    this.setMapScale(this.createNewScaleControl(scaleObj), app);
   }
 
   /**
    * Draw canvas with scale DOM element
    * @param scaleObj - Scale object
    */
-  async drawScaleCanvas(scaleObj: ScaleObj): Promise<HTMLCanvasElement> {
+  async drawScaleCanvas(
+    scaleObj: ScaleObj,
+    app: string
+  ): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
 
     let cssClasses: string;
     const type = scaleObj?.scaleType;
-    const scaleElem = this.hsMapService.getScaleLineElement(type);
+    const scaleElem = this.hsMapService.getScaleLineElement(type, app);
     if (!scaleElem) {
       return;
     }
@@ -128,8 +133,11 @@ export class HsPrintScaleService {
   /**
    * Get current map scale Control
    */
-  private getMapScale(): Control {
-    for (const control of this.hsMapService.map.getControls().getArray()) {
+  private getMapScale(app: string): Control {
+    for (const control of this.hsMapService
+      .getMap(app)
+      .getControls()
+      .getArray()) {
       if (control instanceof ScaleLine) {
         return control;
       }
@@ -161,11 +169,11 @@ export class HsPrintScaleService {
    * Set map scale to a new scale object
    * @param newControl - Control
    */
-  private setMapScale(newControl: Control): void {
-    const currentScaleControl = this.getMapScale();
+  private setMapScale(newControl: Control, app: string): void {
+    const currentScaleControl = this.getMapScale(app);
     if (currentScaleControl) {
-      this.hsMapService.map.removeControl(currentScaleControl);
+      this.hsMapService.getMap(app).removeControl(currentScaleControl);
     }
-    this.hsMapService.map.addControl(newControl);
+    this.hsMapService.getMap(app).addControl(newControl);
   }
 }

@@ -42,7 +42,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
     private HsUtilsService: HsUtilsService,
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService
