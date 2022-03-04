@@ -38,7 +38,7 @@ export class HslayersAppComponent {
       {
         name: 'app-2',
         panelsEnabled: {
-          tripPlanner: false,
+          tripPlanner: true,
           mapSwipe: false,
         },
         sidebarPosition: 'left',

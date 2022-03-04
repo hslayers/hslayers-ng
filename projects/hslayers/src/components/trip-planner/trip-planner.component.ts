@@ -59,7 +59,7 @@ export class HsTripPlannerComponent
       this.HsConfig.apps[this.data.app].default_layers = [];
     } else {
       this.HsConfig.apps[this.data.app].default_layers.push(
-        this.HsTripPlannerService.routeLayer
+        this.HsTripPlannerService.apps[this.data.app].routeLayer
       );
     }
     this.HsTripPlannerService.fillVectorLayers(this.data.app);
@@ -80,11 +80,13 @@ export class HsTripPlannerComponent
    */
   totalDistance(): string {
     let tmp = 0;
-    this.HsTripPlannerService.waypoints.forEach((wp: Waypoint) => {
-      if (wp.routes.from) {
-        tmp += wp.routes.from.get('summary').distance / 1000.0;
+    this.HsTripPlannerService.apps[this.data.app].waypoints.forEach(
+      (wp: Waypoint) => {
+        if (wp.routes.from) {
+          tmp += wp.routes.from.get('summary').distance / 1000.0;
+        }
       }
-    });
+    );
     return tmp.toFixed(2) + 'km';
   }
 
@@ -94,7 +96,8 @@ export class HsTripPlannerComponent
    */
   toggleEdit(waypoint: Waypoint): void {
     waypoint.editMode = !waypoint.editMode;
-    const src = this.HsTripPlannerService.waypointLayer.getSource();
+    const src =
+      this.HsTripPlannerService.apps[this.data.app].waypointLayer.getSource();
     setHighlighted(src.getFeatureById(waypoint.featureId), waypoint.editMode);
   }
 }
