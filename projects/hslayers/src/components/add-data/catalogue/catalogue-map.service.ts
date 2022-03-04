@@ -88,7 +88,7 @@ export class HsAddDataCatalogueMapService {
    * @param map -
    */
   async init(app): Promise<void> {
-    if (!this.apps[app].initRun) {
+    if (!this.get(app).initRun) {
       await this.hsMapService.loaded(app);
       const map = this.hsMapService.getMap(app);
       map.on('pointermove', (evt) => this.mapPointerMoved(evt, app));
