@@ -55,7 +55,7 @@ export class HsPrintLegendService {
           subscriber.complete();
         };
         if (
-          svgSource.indexOf('data') !== 0 &&
+          svgSource?.indexOf('data') !== 0 &&
           img.getAttribute('crossOrigin') !== undefined
         ) {
           img.setAttribute('crossOrigin', 'anonymous');
@@ -291,27 +291,34 @@ export class HsPrintLegendService {
         const img = new Image();
         const width = this.legendWidth;
         if (
-          imageUrl.indexOf('data') !== 0 &&
+          imageUrl?.indexOf('data') !== 0 &&
           img.getAttribute('crossOrigin') !== undefined
         ) {
           img.setAttribute('crossOrigin', 'anonymous');
         }
-        img.onload = function () {
+        img.onload = () => {
           const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-
+          this.hsShareThumbnailService.setCanvasSize(
+            canvas,
+            this.legendWidth,
+            img.height
+          );
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
+          ctx.font = '14px sans-serif';
+          const additionalHeight =
+            Math.ceil(ctx.measureText(layerTitle).width) > width ? 40 : 20;
           const dataURL = canvas.toDataURL('image/png');
           const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${
-            canvas.height + 40
+            canvas.height + additionalHeight
           }'>
             <foreignObject width='100%' height='100%'>
                 <div xmlns='http://www.w3.org/1999/xhtml'>
                     ${layerTitle}
                 </div>
-              <svg><image href="${dataURL}"></image></svg>
+              <svg width='${width}' height='${
+            canvas.height
+          }'><image href="${dataURL}"></image></svg>
             </foreignObject>
         </svg>`;
           const svg = 'data:image/svg+xml,' + encodeURIComponent(svgSource);
