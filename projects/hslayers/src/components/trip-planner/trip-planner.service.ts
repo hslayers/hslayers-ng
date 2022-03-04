@@ -47,16 +47,11 @@ export function getWaypoint(feature: Feature<Geometry>): Waypoint {
   return feature.get(WAYPOINT);
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsTripPlannerService {
+class HsTripPlannerData {
   waypoints: Waypoint[] = [];
   trip: any = {};
   movable_features = new Collection<Feature<Geometry>>();
-  modify = new Modify({
-    features: this.movable_features,
-  });
+  modify: Modify;
   waypointSource: VectorSource<Point>;
   waypointLayer: VectorLayer<VectorSource<Point>>;
   routeSource: VectorSource<Geometry>;
@@ -68,7 +63,19 @@ export class HsTripPlannerService {
     waypoints?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
   } = {};
 
+  constructor() {
+    this.modify = new Modify({
+      features: this.movable_features,
+    });
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HsTripPlannerService {
   waypointRouteStyle;
+  apps: {[key: string]: HsTripPlannerData} = {};
 
   constructor(
     public HsMapService: HsMapService,
@@ -82,8 +89,11 @@ export class HsTripPlannerService {
     private HsLayoutService: HsLayoutService
   ) {}
 
-  async init(app: string) {
-    await this.HsMapService.loaded(app);
+  async init(_app: string) {
+    if (this.apps[_app] == undefined) {
+      this.apps[_app] = new HsTripPlannerData();
+    }
+    await this.HsMapService.loaded(_app);
     (feature, resolution) => {
       return [
         new Style({
@@ -96,9 +106,9 @@ export class HsTripPlannerService {
           }),
           image: new Icon({
             src: getHighlighted(feature)
-              ? this.HsUtilsService.getAssetsPath(app) +
+              ? this.HsUtilsService.getAssetsPath(_app) +
                 'img/pin_white_red32.png'
-              : this.HsUtilsService.getAssetsPath(app) +
+              : this.HsUtilsService.getAssetsPath(_app) +
                 'img/pin_white_blue32.png',
             crossOrigin: 'anonymous',
             anchor: [0.5, 1],
@@ -119,15 +129,18 @@ export class HsTripPlannerService {
         }),
       ];
     };
-    this.HsMapService.getMap(app).addInteraction(this.modify);
+    this.HsMapService.getMap(_app).addInteraction(this.apps[_app].modify);
     this.HsEventBusService.mapClicked.subscribe(({coordinates, app}) => {
+      if (app != _app) {
+        return;
+      }
       if (this.HsLayoutService.get(app).mainpanel != 'tripPlanner') {
         return;
       }
-      if (!this.waypointLayer) {
+      if (!this.apps[app].waypointLayer) {
         this.createWaypointLayer(app);
       }
-      if (!this.routeLayer) {
+      if (!this.apps[app].routeLayer) {
         this.createRouteLayer(app);
       }
       //Don't add waypoints when drawing and measuring
@@ -151,7 +164,7 @@ export class HsTripPlannerService {
 
   async fillVectorLayers(app): Promise<void> {
     this.HsMapService.loaded(app).then((map) => {
-      this.vectorLayers = [
+      this.apps[app].vectorLayers = [
         {
           layer: null,
           title: 'newLayer',
@@ -164,45 +177,48 @@ export class HsTripPlannerService {
             return {layer, title: getTitle(layer)};
           }),
       ];
-      this.fillDefaultLayerWrapper('route');
-      this.fillDefaultLayerWrapper('waypoints');
+      this.fillDefaultLayerWrapper('route', app);
+      this.fillDefaultLayerWrapper('waypoints', app);
     });
   }
 
-  private fillDefaultLayerWrapper(usage: 'route' | 'waypoints') {
-    if (this.selectedLayerWrapper[usage]) {
-      this.selectedLayerWrapper[usage] = this.vectorLayers.find(
-        (w) => w.layer == this.selectedLayerWrapper[usage].layer
+  private fillDefaultLayerWrapper(usage: 'route' | 'waypoints', app: string) {
+    if (this.apps[app].selectedLayerWrapper[usage]) {
+      this.apps[app].selectedLayerWrapper[usage] = this.apps[
+        app
+      ].vectorLayers.find(
+        (w) => w.layer == this.apps[app].selectedLayerWrapper[usage].layer
       );
     } else {
-      this.selectedLayerWrapper[usage] = this.vectorLayers[0];
+      this.apps[app].selectedLayerWrapper[usage] =
+        this.apps[app].vectorLayers[0];
     }
   }
 
   createWaypointLayer(app: string): void {
-    this.waypointSource = new VectorSource();
-    this.waypointLayer = new VectorLayer({
-      source: this.waypointSource,
+    this.apps[app].waypointSource = new VectorSource();
+    this.apps[app].waypointLayer = new VectorLayer({
+      source: this.apps[app].waypointSource,
       style: this.waypointRouteStyle,
     });
     setTitle(
-      this.waypointLayer,
+      this.apps[app].waypointLayer,
       this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints')
     );
-    this.HsMapService.getMap(app).addLayer(this.waypointLayer);
+    this.HsMapService.getMap(app).addLayer(this.apps[app].waypointLayer);
   }
 
   createRouteLayer(app: string): void {
-    this.routeSource = new VectorSource();
-    this.routeLayer = new VectorLayer({
-      source: this.routeSource,
+    this.apps[app].routeSource = new VectorSource();
+    this.apps[app].routeLayer = new VectorLayer({
+      source: this.apps[app].routeSource,
       style: this.waypointRouteStyle,
     });
     setTitle(
-      this.routeLayer,
+      this.apps[app].routeLayer,
       this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute')
     );
-    this.HsMapService.getMap(app).addLayer(this.routeLayer);
+    this.HsMapService.getMap(app).addLayer(this.apps[app].routeLayer);
   }
 
   /**
@@ -216,21 +232,24 @@ export class HsTripPlannerService {
     app: string
   ): Promise<void> {
     if (usage == 'route') {
-      this.routeLayer = layer.layer;
-      if (this.routeLayer) {
-        this.routeSource = this.routeLayer.getSource();
+      this.apps[app].routeLayer = layer.layer;
+      if (this.apps[app].routeLayer) {
+        this.apps[app].routeSource = this.apps[app].routeLayer.getSource();
       }
-      this.selectedLayerWrapper.route = layer;
+      this.apps[app].selectedLayerWrapper.route = layer;
     }
     if (usage == 'waypoints') {
-      this.waypointLayer = layer.layer as VectorLayer<VectorSource<Point>>;
-      if (this.waypointLayer) {
-        this.waypointSource = this.waypointLayer.getSource();
+      this.apps[app].waypointLayer = layer.layer as VectorLayer<
+        VectorSource<Point>
+      >;
+      if (this.apps[app].waypointLayer) {
+        this.apps[app].waypointSource =
+          this.apps[app].waypointLayer.getSource();
       }
-      this.routeSource.clear();
-      this.waypoints.length = 0;
-      this.selectedLayerWrapper.waypoints = layer;
-      for (const feature of this.waypointSource.getFeatures()) {
+      this.apps[app].routeSource.clear();
+      this.apps[app].waypoints.length = 0;
+      this.apps[app].selectedLayerWrapper.waypoints = layer;
+      for (const feature of this.apps[app].waypointSource.getFeatures()) {
         const new_cords = transform(
           feature.getGeometry().getCoordinates(),
           this.HsMapService.getCurrentProj(app).getCode(),
@@ -239,15 +258,17 @@ export class HsTripPlannerService {
         const wp: Waypoint = {
           lon: new_cords[0],
           lat: new_cords[1],
-          name: 'Waypoint ' + (this.waypoints.length + 1),
+          name: 'Waypoint ' + (this.apps[app].waypoints.length + 1),
           hash: this.HsUtilsService.hashCode(
-            JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
+            JSON.stringify(
+              'Waypoint ' + this.apps[app].waypoints.length + Math.random()
+            )
           ),
           routes: {from: null, to: null},
           featureId: feature.getId(),
           loading: false,
         };
-        this.waypoints.push(wp);
+        this.apps[app].waypoints.push(wp);
         if (this.waypointAdded !== undefined) {
           this.waypointAdded(wp, app);
         }
@@ -277,9 +298,11 @@ export class HsTripPlannerService {
     const wp: Waypoint = {
       lon,
       lat,
-      name: 'Waypoint ' + (this.waypoints.length + 1),
+      name: 'Waypoint ' + (this.apps[app].waypoints.length + 1),
       hash: this.HsUtilsService.hashCode(
-        JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
+        JSON.stringify(
+          'Waypoint ' + this.apps[app].waypoints.length + Math.random()
+        )
       ),
       routes: {from: null, to: null},
       featureId: null,
@@ -292,8 +315,8 @@ export class HsTripPlannerService {
     }) as Feature<Point>;
     feature.setId(feature.get('id'));
     wp.featureId = feature.getId();
-    this.waypointSource.addFeature(feature);
-    this.waypoints.push(wp);
+    this.apps[app].waypointSource.addFeature(feature);
+    this.apps[app].waypoints.push(wp);
     if (this.waypointAdded !== undefined) {
       this.waypointAdded(wp, app);
     }
@@ -305,10 +328,10 @@ export class HsTripPlannerService {
    * @param wp - Waypoint object, with lat, lon and routes array
    */
   waypointAdded(wp: Waypoint, app: string): void {
-    const feature = this.waypointSource.getFeatureById(wp.featureId);
-    this.movable_features.push(feature);
+    const feature = this.apps[app].waypointSource.getFeatureById(wp.featureId);
+    this.apps[app].movable_features.push(feature);
     feature.getGeometry().on('change', (e) => {
-      this.removeRoutesForWaypoint(wp);
+      this.removeRoutesForWaypoint(wp, app);
       const new_cords = transform(
         feature.getGeometry().getCoordinates(),
         this.HsMapService.getCurrentProj(app).getCode(),
@@ -316,15 +339,18 @@ export class HsTripPlannerService {
       );
       wp.lon = new_cords[0];
       wp.lat = new_cords[1];
-      const prev_index = this.waypoints.indexOf(wp) - 1;
+      const prev_index = this.apps[app].waypoints.indexOf(wp) - 1;
       if (prev_index > -1) {
-        this.waypoints[prev_index].routes.from = null;
-        this.routeRemoved(this.waypoints[prev_index].routes.from);
+        this.apps[app].waypoints[prev_index].routes.from = null;
+        this.routeRemoved(
+          this.apps[app].waypoints[prev_index].routes.from,
+          app
+        );
       }
-      if (this.timer !== null) {
-        clearTimeout(this.timer);
+      if (this.apps[app].timer !== null) {
+        clearTimeout(this.apps[app].timer);
       }
-      this.timer = setTimeout(() => {
+      this.apps[app].timer = setTimeout(() => {
         this.calculateRoutes(app);
       }, 500);
     });
@@ -334,10 +360,10 @@ export class HsTripPlannerService {
    * Remove selected route from source
    * @param feature - Route feature to remove
    */
-  routeRemoved(feature: Feature<Geometry>): void {
+  routeRemoved(feature: Feature<Geometry>, app: string): void {
     try {
       if (feature) {
-        this.routeSource.removeFeature(feature);
+        this.apps[app].routeSource.removeFeature(feature);
       }
     } catch (ex) {
       throw ex;
@@ -348,9 +374,9 @@ export class HsTripPlannerService {
    * (PRIVATE) Remove routes from selected waypoint
    * @param wp - Waypoint to remove routes
    */
-  removeRoutesForWaypoint(wp: Waypoint): void {
-    this.routeRemoved(wp.routes.from);
-    this.routeRemoved(wp.routes.to);
+  removeRoutesForWaypoint(wp: Waypoint, app: string): void {
+    this.routeRemoved(wp.routes.from, app);
+    this.routeRemoved(wp.routes.to, app);
     wp.routes = {from: null, to: null};
   }
 
@@ -358,10 +384,10 @@ export class HsTripPlannerService {
    * Remove selected waypoint from source
    * @param wp - Waypoint feature to remove
    */
-  waypointRemoved(wp: Waypoint): void {
+  waypointRemoved(wp: Waypoint, app: string): void {
     try {
-      this.waypointSource.removeFeature(
-        this.waypointSource.getFeatureById(wp.featureId)
+      this.apps[app].waypointSource.removeFeature(
+        this.apps[app].waypointSource.getFeatureById(wp.featureId)
       );
     } catch (ex) {
       throw ex;
@@ -373,47 +399,47 @@ export class HsTripPlannerService {
    * @param {object} wp Waypoint object to remove
    */
   removeWaypoint(wp, app) {
-    const wpIndex = this.waypoints.indexOf(wp);
+    const wpIndex = this.apps[app].waypoints.indexOf(wp);
     const prev_index = wpIndex - 1;
     if (prev_index > -1) {
-      this.waypoints[prev_index].routes.from = null;
+      this.apps[app].waypoints[prev_index].routes.from = null;
     }
-    this.routeRemoved(wp.routes.from);
-    this.routeRemoved(wp.routes.to);
+    this.routeRemoved(wp.routes.from, app);
+    this.routeRemoved(wp.routes.to, app);
     const next_index = wpIndex + 1;
-    if (next_index < this.waypoints.length) {
-      this.waypoints[next_index].routes.to = null;
+    if (next_index < this.apps[app].waypoints.length) {
+      this.apps[app].waypoints[next_index].routes.to = null;
     }
-    this.waypointRemoved(wp);
-    this.waypoints.splice(this.waypoints.indexOf(wp), 1);
+    this.waypointRemoved(wp, app);
+    this.apps[app].waypoints.splice(this.apps[app].waypoints.indexOf(wp), 1);
     this.calculateRoutes(app);
   }
 
   /**
    * Clear all waypoints from service and layer
    */
-  clearAll(): void {
-    this.waypoints = [];
-    this.waypointSource.clear();
-    this.routeSource.clear();
+  clearAll(app: string): void {
+    this.apps[app].waypoints = [];
+    this.apps[app].waypointSource.clear();
+    this.apps[app].routeSource.clear();
   }
 
   /**
    * Handler of adding computed route to layer
    * @param feature - Route to add
    */
-  routeAdded(features: Feature<Geometry>[]): void {
-    this.routeSource.addFeatures(features);
+  routeAdded(features: Feature<Geometry>[], app: string): void {
+    this.apps[app].routeSource.addFeatures(features);
   }
 
   /**
    * Calculate routes between stored waypoints
    */
   async calculateRoutes(app: string): Promise<void> {
-    for (let i = 0; i < this.waypoints.length - 1; i++) {
-      const wpf = this.waypoints[i];
+    for (let i = 0; i < this.apps[app].waypoints.length - 1; i++) {
+      const wpf = this.apps[app].waypoints[i];
       if (wpf.routes.from === null) {
-        const wpt = this.waypoints[i + 1];
+        const wpt = this.apps[app].waypoints[i + 1];
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
           'https://api.openrouteservice.org/v2/directions/driving-car/geojson',
@@ -467,7 +493,7 @@ export class HsTripPlannerService {
         wpf.routes.from = features[0];
         wpt.routes.to = features[0];
         if (this.routeAdded !== undefined) {
-          this.routeAdded(features);
+          this.routeAdded(features, app);
         }
       }
     }

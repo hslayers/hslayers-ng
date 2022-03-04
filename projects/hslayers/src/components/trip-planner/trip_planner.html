@@ -5,11 +5,11 @@
     [app]="data.app"
   ></hs-panel-header>
   <div class="card-body">
-    <hs-trip-planner-layer-selector usage="route" [app]="data.app" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
-    <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app" label="{{'TRIP_PLANNER.waypointLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="route" [app]="data.app" label="{{'TRIP_PLANNER.routerLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app" label="{{'TRIP_PLANNER.waypointLayer' | translate}}" [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
 
     <div
-      *ngFor="let waypoint of HsTripPlannerService.waypoints"
+      *ngFor="let waypoint of HsTripPlannerService.apps[data.app].waypoints"
       class="d-flex flex-row"
     >
       <div class="p-1 flex-grow-1">
@@ -47,12 +47,12 @@
     <div
       class="alert alert-primary"
       role="alert"
-      *ngIf="HsTripPlannerService.waypoints.length===0"
+      *ngIf="HsTripPlannerService.apps[data.app].waypoints.length===0"
     >
       {{'TRIP_PLANNER.waypointDrawingHint' | translate}}
     </div>
     <br />
-    <a (click)="HsTripPlannerService.clearAll()"
+    <a (click)="HsTripPlannerService.clearAll(data.app)"
       >{{'TRIP_PLANNER.clearWaypoints' | translate}}</a
     >
     <br />

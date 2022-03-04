@@ -31,7 +31,7 @@
       <div class="d-flex align-items-center w-100 flex-column">
         <a
           class="dropdown-item text-truncate"
-          *ngFor="let layer of HsTripPlannerService.vectorLayers"
+          *ngFor="let layer of HsTripPlannerService.apps[app].vectorLayers"
           data-toggle="tooltip"
           title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
           (click)="HsTripPlannerService.selectLayer(layer, usage, app); layersExpanded = false"
