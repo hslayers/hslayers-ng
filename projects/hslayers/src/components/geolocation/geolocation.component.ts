@@ -9,7 +9,8 @@ import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 })
 export class HsGeolocationComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   collapsed: boolean;
   constructor(
     private hsGeolocationService: HsGeolocationService,
@@ -48,7 +49,7 @@ export class HsGeolocationComponent
    * Get localization
    */
   getLocalization(): boolean {
-    return this.hsGeolocationService.apps[this.data.app].localization;
+    return this.hsGeolocationService.get(this.data.app).localization;
   }
 
   /**
@@ -62,6 +63,6 @@ export class HsGeolocationComponent
    * Determine state of tracking
    */
   isFollowing(): boolean {
-    return this.hsGeolocationService.apps[this.data.app].following;
+    return this.hsGeolocationService.get(this.data.app).following;
   }
 }
