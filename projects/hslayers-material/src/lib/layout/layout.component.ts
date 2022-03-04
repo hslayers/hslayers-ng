@@ -45,9 +45,8 @@ export class HsMatLayoutComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.HsLayoutService.contentWrapper = this.elementRef.nativeElement.querySelector(
-      '.hs-content-wrapper'
-    );
+    this.HsLayoutService.contentWrapper =
+      this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
     if (this.HsConfig.get(app).sidebarPosition === 'left') {
       this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
       this.HsLayoutService.sidebarRight = false;
@@ -110,6 +109,6 @@ export class HsMatLayoutComponent implements AfterViewInit {
       innerElement: '.hs-map-space',
     });
     this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
-    this.cdr.detectChanges();
+    //this.cdr.detectChanges();
   }
 }
