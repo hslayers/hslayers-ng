@@ -33,7 +33,7 @@ export class HsEventBusService {
    * Fires when map completely reset
    * @event mapResets
    */
-  mapResets: Subject<void> = new Subject();
+  mapResets: Subject<{app}> = new Subject();
   layerManagerUpdates: Subject<{layer: Layer<Source> | void; app: string}> =
     new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
@@ -48,10 +48,11 @@ export class HsEventBusService {
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
-  layerLoads: Subject<any> = new Subject();
+  layerLoads: Subject<{layer: Layer<Source>; app: string}> = new Subject();
   layerLoadings: Subject<{
     layer: Layer<Source>;
     progress: HsLayerLoadProgress;
+    app: string;
   }> = new Subject();
   /**
    * Fires when user enables layer time synchronization in the UI

@@ -869,11 +869,12 @@ export class HsLayerManagerService {
       source.on('propertychange', (event) => {
         if (event.key == 'loaded') {
           if (event.oldValue == false) {
-            this.HsEventBusService.layerLoads.next(olLayer);
+            this.HsEventBusService.layerLoads.next({layer: olLayer, app});
           } else {
             this.HsEventBusService.layerLoadings.next({
               layer: olLayer,
               progress: loadProgress,
+              app,
             });
           }
         }
@@ -890,7 +891,7 @@ export class HsLayerManagerService {
       source.on('imageloaderror', (event) => {
         loadProgress.loaded = true;
         loadProgress.error = true;
-        this.HsEventBusService.layerLoads.next(olLayer);
+        this.HsEventBusService.layerLoads.next({layer: olLayer, app});
       });
     } else if (this.HsUtilsService.instOf(olLayer, Tile)) {
       source.on('tileloadstart', (event) => {
@@ -930,7 +931,7 @@ export class HsLayerManagerService {
         if (progress.loadCounter == 0) {
           this.zone.run(() => {
             progress.loadTotal = 0;
-            this.HsEventBusService.layerLoads.next(layer);
+            this.HsEventBusService.layerLoads.next({layer, app});
             progress.percents = 100;
           });
         }
@@ -946,7 +947,7 @@ export class HsLayerManagerService {
       );
     }
     progress.percents = percents;
-    this.HsEventBusService.layerLoadings.next({layer, progress});
+    this.HsEventBusService.layerLoadings.next({layer, progress, app});
     //Throttle updating UI a bit for many layers * many tiles
     const delta = new Date().getTime() - this.apps[app].lastProgressUpdate;
     if (percents == 100 || delta > 1000) {

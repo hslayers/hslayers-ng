@@ -29,6 +29,7 @@ export class HslayersAppComponent {
       {
         name: 'default',
         panelsEnabled: {
+          compositionLoadingProgress: true,
           draw: false,
           tripPlanner: true,
           mapSwipe: true,
@@ -38,6 +39,7 @@ export class HslayersAppComponent {
       {
         name: 'app-2',
         panelsEnabled: {
+          compositionLoadingProgress: true,
           tripPlanner: true,
           mapSwipe: false,
         },

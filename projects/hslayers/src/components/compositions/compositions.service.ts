@@ -50,11 +50,6 @@ export class HsCompositionsService {
     public hsCompositionsMapService: HsCompositionsMapService,
     public hsEventBusService: HsEventBusService
   ) {
-    this.hsEventBusService.mapResets.subscribe(() => {
-      this.hsCompositionsParserService.composition_loaded = null;
-      this.hsCompositionsParserService.composition_edited = false;
-    });
-
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
     });
@@ -67,15 +62,21 @@ export class HsCompositionsService {
     });
   }
 
-  init(app: string) {
-    this.tryParseCompositionFromUrlParam(app);
-    this.parsePermalinkLayers(app);
-    if (this.hsConfig.get(app).saveMapStateOnReload) {
+  init(_app: string) {
+    this.tryParseCompositionFromUrlParam(_app);
+    this.parsePermalinkLayers(_app);
+    if (this.hsConfig.get(_app).saveMapStateOnReload) {
       //Load composition data from cookies only if it is anticipated
       setTimeout(() => {
-        this.tryParseCompositionFromCookie(app);
+        this.tryParseCompositionFromCookie(_app);
       }, 500);
     }
+    this.hsEventBusService.mapResets.subscribe(({app}) => {
+      if (app == _app) {
+        this.hsCompositionsParserService.composition_loaded = null;
+        this.hsCompositionsParserService.composition_edited = false;
+      }
+    });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
         const record =
@@ -83,10 +84,10 @@ export class HsCompositionsService {
             e.feature,
             e.selector,
             endpoint.compositions,
-            app
+            _app
           );
         if (record) {
-          this.loadComposition(this.getRecordLink(record), app);
+          this.loadComposition(this.getRecordLink(record), _app);
         }
       }
     });

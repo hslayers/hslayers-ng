@@ -76,44 +76,52 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
 
     this.HsEventBusService.layerLoadings
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({layer, progress}) => {
-        if (!this.layer_loading.includes(getTitle(layer))) {
-          this.layer_loading.push(getTitle(layer));
-          this.composition_loaded = false;
+      .subscribe(({layer, progress, app}) => {
+        if (app == this.data.app) {
+          if (!this.layer_loading.includes(getTitle(layer))) {
+            this.layer_loading.push(getTitle(layer));
+            this.composition_loaded = false;
+          }
         }
       });
 
     this.HsEventBusService.layerLoads
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer) => {
-        for (let i = 0; i < this.layer_loading.length; i++) {
-          if (this.layer_loading[i] == getTitle(layer)) {
-            this.layer_loading.splice(i, 1);
+      .subscribe(({layer, app}) => {
+        if (app == this.data.app) {
+          for (let i = 0; i < this.layer_loading.length; i++) {
+            if (this.layer_loading[i] == getTitle(layer)) {
+              this.layer_loading.splice(i, 1);
+            }
           }
-        }
 
-        if (this.layer_loading.length == 0 && !this.composition_loaded) {
-          this.composition_loaded = true;
+          if (this.layer_loading.length == 0 && !this.composition_loaded) {
+            this.composition_loaded = true;
+          }
         }
       });
 
     this.HsEventBusService.compositionDeletes
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({composition, app}) => {
-        if (composition.id == this.composition_id) {
-          delete this.composition_title;
-          delete this.composition_abstract;
+        if (app == this.data.app) {
+          if (composition.id == this.composition_id) {
+            delete this.composition_title;
+            delete this.composition_abstract;
+          }
         }
       });
 
     this.HsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        delete this.composition_title;
-        delete this.composition_abstract;
-        this.layer_loading.length = 0;
-        this.composition_loaded = true;
-        this.composition_edited = false;
+      .subscribe(({app}) => {
+        if (app == this.data.app) {
+          delete this.composition_title;
+          delete this.composition_abstract;
+          this.layer_loading.length = 0;
+          this.composition_loaded = true;
+          this.composition_edited = false;
+        }
       });
 
     this.HsEventBusService.compositionEdits
