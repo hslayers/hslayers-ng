@@ -376,10 +376,10 @@ export class HsLayerUtilsService {
       .map((record) => layer.getSource().getFeatureById(record.featureId));
 
     const dontHighlight = highlightedFeatures
-      .filter((feature) => !featuresUnder.includes(feature))
+      .filter((feature) => feature && !featuresUnder.includes(feature))
       .map((f) => f.getId());
     const highlight = featuresUnder
-      .filter((feature) => !highlightedFeatures.includes(feature))
+      .filter((feature) => feature && !highlightedFeatures.includes(feature))
       .map((f) => f.getId());
     if (dontHighlight.length > 0 || highlight.length > 0) {
       this.zone.run(() => {
