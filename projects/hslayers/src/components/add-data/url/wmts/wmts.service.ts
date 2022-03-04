@@ -14,21 +14,9 @@ import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {urlDataObject} from '../types/data-object.type';
 
-@Injectable({providedIn: 'root'})
-export class HsUrlWmtsService implements HsUrlTypeServiceModel {
+class HsUrlWmtsParams {
   data: urlDataObject;
-  constructor(
-    public hsMapService: HsMapService,
-    public hsLayoutService: HsLayoutService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService
-  ) {
-    this.setDataToDefault();
-  }
-  /**
-   * Reset data object to its default values
-   */
-  setDataToDefault(): void {
+  constructor() {
     this.data = {
       add_all: null,
       caps: null,
@@ -40,6 +28,28 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       version: '',
     };
   }
+}
+
+@Injectable({providedIn: 'root'})
+export class HsUrlWmtsService implements HsUrlTypeServiceModel {
+  apps: {
+    [id: string]: any;
+  } = {default: new HsUrlWmtsParams()};
+
+  constructor(
+    public hsMapService: HsMapService,
+    public hsLayoutService: HsLayoutService,
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataCommonService: HsAddDataCommonService
+  ) {}
+
+  get(app: string): HsUrlWmtsParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsUrlWmtsParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   /**
    * List and return layers from WMTS getCapabilities response
    * @param wrapper - Capabilities response wrapper
@@ -62,7 +72,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       await this.capabilitiesReceived(response, app);
       if (this.hsAddDataCommonService.get(app).layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
-          this.data.layers,
+          this.get(app).data.layers,
           app
         );
         return this.getLayers(app, true);
@@ -78,16 +88,17 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    */
   async capabilitiesReceived(response: string, app: string): Promise<any> {
     try {
+      const appRef = this.get(app);
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
-      this.data.caps = caps;
-      this.data.title = caps.ServiceIdentification.Title || 'Wmts layer';
+      appRef.data.caps = caps;
+      appRef.data.title = caps.ServiceIdentification.Title || 'Wmts layer';
 
-      this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
-      this.data.version = caps.Version || caps.version;
-      this.data.layers = caps.Contents.Layer;
+      appRef.data.description = addAnchors(caps.ServiceIdentification.Abstract);
+      appRef.data.version = caps.Version || caps.version;
+      appRef.data.layers = caps.Contents.Layer;
       this.hsAddDataCommonService.get(app).loadingInfo = false;
-      return this.data.title;
+      return appRef.data.title;
     } catch (e) {
       throw new Error(e);
     }
@@ -98,7 +109,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param collection - Layers created and retreived collection
    */
   getLayersRecursively(layer, options, collection, app: string): void {
-    if (!this.data.add_all || layer.checked) {
+    if (!this.get(app).data.add_all || layer.checked) {
       collection.push(this.getLayer(layer, undefined, app));
     }
     if (layer.Layer) {
@@ -122,14 +133,14 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
   getLayers(app: string, checkedOnly: boolean): Layer<Source>[] {
-    this.data.add_all = checkedOnly;
+    this.get(app).data.add_all = checkedOnly;
     const collection = [];
-    for (const layer of this.data.layers) {
+    for (const layer of this.get(app).data.layers) {
       this.getLayersRecursively(layer, undefined, collection, app);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams(app);
-    this.setDataToDefault();
+    this.apps[app] = new HsUrlWmtsParams(); //Replaces setDataToDefault
     this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
     //FIX ME: to implement
@@ -211,7 +222,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
         source: new WMTS({} as any),
       });
       // Get WMTS Capabilities and create WMTS source base on it
-      const options = optionsFromCapabilities(this.data.caps, {
+      const options = optionsFromCapabilities(this.get(app).data.caps, {
         layer: layer.Identifier,
         matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink, app),
         format: this.getPreferredFormat(layer.Format),

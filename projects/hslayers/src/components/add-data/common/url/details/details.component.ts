@@ -36,7 +36,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
     public hsAddDataCommonService: HsAddDataCommonService
   ) {}
   ngAfterContentInit(): void {
-    this.data = this.injectedService.data;
+    this.data = this.injectedService.get(this.app).data;
     this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
   }
@@ -79,7 +79,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
       this.injectedService.expandService(service, this.app);
       if (
         this.injectedService.isImageService &&
-        this.injectedService.isImageService()
+        this.injectedService.isImageService(this.app)
       ) {
         const layers = this.injectedService.getLayers(this.app);
         this.injectedService.addLayers(layers, this.app);

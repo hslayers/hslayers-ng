@@ -80,7 +80,7 @@ export class HsAddDataOwsService {
         );
         return;
       }
-      this.get(app).typeService.data.get_map_url = url;
+      this.get(app).typeService.get(app).data.get_map_url = url;
       this.hsAddDataUrlService.apps[app].addingAllowed = true;
     }
     this.hsHistoryListService.addSourceHistory(
@@ -110,7 +110,7 @@ export class HsAddDataOwsService {
         if (response?.length > 0) {
           this.get(app).typeService.addLayers(response, app);
         }
-        if (this.hsUrlArcGisService.isImageService()) {
+        if (this.hsUrlArcGisService.isImageService(app)) {
           const layers = this.hsUrlArcGisService.getLayers(app);
           this.hsUrlArcGisService.addLayers(layers, app);
         }
@@ -150,32 +150,29 @@ export class HsAddDataOwsService {
     params: owsConnection,
     app: string
   ): Promise<Layer<Source>[]> {
-    this.hsAddDataUrlService.apps[app].typeSelected =
+    this.hsAddDataUrlService.get(app).typeSelected =
       params.type as AddDataUrlType;
     return await this.setUrlAndConnect(params, app);
   }
 
   async setTypeServices(app: string): Promise<void> {
+    const appRef = this.get(app);
     switch (this.hsAddDataUrlService.apps[app].typeSelected) {
       case 'wmts':
-        this.get(app).typeService = this.hsUrlWmtsService;
-        this.get(app).typeCapabilitiesService =
-          this.hsWmtsGetCapabilitiesService;
+        appRef.typeService = this.hsUrlWmtsService;
+        appRef.typeCapabilitiesService = this.hsWmtsGetCapabilitiesService;
         return;
       case 'wms':
-        this.get(app).typeService = this.hsUrlWmsService;
-        this.get(app).typeCapabilitiesService =
-          this.hsWmsGetCapabilitiesService;
+        appRef.typeService = this.hsUrlWmsService;
+        appRef.typeCapabilitiesService = this.hsWmsGetCapabilitiesService;
         return;
       case 'wfs':
-        this.get(app).typeService = this.hsUrlWfsService;
-        this.get(app).typeCapabilitiesService =
-          this.hsWfsGetCapabilitiesService;
+        appRef.typeService = this.hsUrlWfsService;
+        appRef.typeCapabilitiesService = this.hsWfsGetCapabilitiesService;
         return;
       case 'arcgis':
-        this.get(app).typeService = this.hsUrlArcGisService;
-        this.get(app).typeCapabilitiesService =
-          this.hsArcgisGetCapabilitiesService;
+        appRef.typeService = this.hsUrlArcGisService;
+        appRef.typeCapabilitiesService = this.hsArcgisGetCapabilitiesService;
         return;
       default:
         return;

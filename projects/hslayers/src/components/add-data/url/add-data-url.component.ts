@@ -20,6 +20,7 @@ import {Subject, takeUntil} from 'rxjs';
 export class HsAddDataUrlComponent implements OnInit {
   types: {id: AddDataUrlType; text: string}[];
   @Input() app = 'default';
+  appRef;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -49,8 +50,10 @@ export class HsAddDataUrlComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hsAddDataUrlService.apps[this.app].addDataCapsParsingError
-      .pipe(takeUntil(this.ngUnsubscribe))
+    this.appRef = this.hsAddDataUrlService.get(this.app);
+    this.hsAddDataUrlService
+      .get(this.app)
+      .addDataCapsParsingError.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((e) => {
         console.warn(this.app);
         let error = e.toString();
