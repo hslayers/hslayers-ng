@@ -14,8 +14,7 @@ import {HsToolbarPanelContainerService} from './toolbar-panel-container.service'
 })
 export class HsToolbarComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   collapsed = false;
   composition_title: any;
   composition_abstract: any;
@@ -28,10 +27,12 @@ export class HsToolbarComponent
   ) {
     super(HsLayoutService);
     this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
-      () => {
+      ({app}) => {
         setTimeout(() => {
-          delete this.composition_title;
-          delete this.composition_abstract;
+          if (this.data.app == app) {
+            delete this.composition_title;
+            delete this.composition_abstract;
+          }
         });
       }
     );

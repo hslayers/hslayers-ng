@@ -135,16 +135,16 @@ export class HsDrawService {
   /**
    * initial function if the draw panel is loaded as first panel
    */
-  async init(app: string): Promise<void> {
-    await this.hsMapService.loaded(app);
-    const map = this.hsMapService.getMap(app);
-    this.fillDrawableLayers(app);
-    this.hsMapService.getLayersArray(app).forEach((l) =>
+  async init(_app: string): Promise<void> {
+    await this.hsMapService.loaded(_app);
+    const map = this.hsMapService.getMap(_app);
+    this.fillDrawableLayers(_app);
+    this.hsMapService.getLayersArray(_app).forEach((l) =>
       l.on('change:visible', (e) => {
         if (this.draw && l == this.selectedLayer) {
-          this.setType(this.type, app);
+          this.setType(this.type, _app);
         }
-        this.fillDrawableLayers(app);
+        this.fillDrawableLayers(_app);
       })
     );
 
@@ -179,9 +179,11 @@ export class HsDrawService {
       this.pendingLayers = pendingLayers;
     });
 
-    this.hsEventBusService.mapResets.subscribe(() => {
-      this.addedLayersRemoved = true;
-      this.fillDrawableLayers(app);
+    this.hsEventBusService.mapResets.subscribe(({app}) => {
+      if (app == _app) {
+        this.addedLayersRemoved = true;
+        this.fillDrawableLayers(app);
+      }
     });
 
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
@@ -191,7 +193,7 @@ export class HsDrawService {
     });
 
     this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
-      this.fillDrawableLayers(app);
+      this.fillDrawableLayers(_app);
       this.isAuthorized = endpoint.authenticated;
       //When metadata dialog window opened. Layer is being added
       if (this.selectedLayer && this.tmpDrawLayer) {

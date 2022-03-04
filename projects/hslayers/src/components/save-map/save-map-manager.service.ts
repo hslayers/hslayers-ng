@@ -92,10 +92,6 @@ export class HsSaveMapManagerService {
       }
     });
 
-    this.HsEventBusService.mapResets.subscribe(() => {
-      this.resetCompoData();
-    });
-
     this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (
         this.HsLayoutService.apps[app].mainpanel == 'saveMap' ||
@@ -130,16 +126,21 @@ export class HsSaveMapManagerService {
     });
   }
 
-  init(app: string): void {
-    this.HsMapService.loaded(app).then(() => {
-      this.fillCompositionData(app);
+  init(_app: string): void {
+    this.HsMapService.loaded(_app).then(() => {
+      this.fillCompositionData(_app);
       this.HsSaveMapService.generateThumbnail(
-        this.HsLayoutService.apps[app].contentWrapper.querySelector(
+        this.HsLayoutService.apps[_app].contentWrapper.querySelector(
           '.hs-stc-thumbnail'
         ),
         this,
-        app
+        _app
       );
+    });
+    this.HsEventBusService.mapResets.subscribe(({app}) => {
+      if (app == _app) {
+        this.resetCompoData();
+      }
     });
   }
 

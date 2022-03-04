@@ -41,8 +41,7 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('layerEditor', {static: false, read: ElementRef})
   layerEditorRef: ElementRef;
   map: any;
@@ -312,8 +311,10 @@ export class HsLayerManagerComponent
     this.hsLayerSynchronizerService.init(this.data.app);
     this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.hsLayerManagerService.apps[this.data.app].composition_id = null;
+      .subscribe(({app}) => {
+        if (app == this.data.app) {
+          this.hsLayerManagerService.apps[this.data.app].composition_id = null;
+        }
       });
   }
 }

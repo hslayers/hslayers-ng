@@ -167,7 +167,7 @@ export class HsCoreService {
    */
   resetMap(app: string): void {
     this.HsMapService.reset(app);
-    this.HsEventBusService.mapResets.next();
+    this.HsEventBusService.mapResets.next({app});
   }
 
   /**
