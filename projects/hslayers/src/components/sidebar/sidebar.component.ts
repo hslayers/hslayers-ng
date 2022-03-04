@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
-import {delay, startWith, Subscription} from 'rxjs';
+import {Subscription, delay, startWith} from 'rxjs';
 
 import {HS_PRMS} from '../permalink/get-params';
 import {HsButton} from './button.interface';
@@ -30,11 +30,6 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
-    if (panel) {
-      if (!this.HsLayoutService.get(this.app).minisidebar) {
-        this.HsLayoutService.setMainPanel(panel, this.app);
-      }
-    }
     this.HsSidebarService.get(this.app)
       .buttons.pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
@@ -42,6 +37,14 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
         this.HsSidebarService.setPanelState(buttons, this.app);
         this.HsSidebarService.setButtonVisibility(buttons, this.app);
       });
+    if (panel) {
+      setTimeout(() => {
+        //Without timeout we get ExpressionChangedAfterItHasBeenCheckedError
+        if (!this.HsLayoutService.get(this.app).minisidebar) {
+          this.HsLayoutService.setMainPanel(panel, this.app);
+        }
+      });
+    }
     this.configChangesSubscription = this.HsConfig.configChanges.subscribe(
       (_) => {
         this.HsSidebarService.setPanelState(this.buttons, this.app);
