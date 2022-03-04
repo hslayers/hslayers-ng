@@ -25,8 +25,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private ngUnsubscribe = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
@@ -71,7 +70,7 @@ export class HsMapSwipeComponent
    * Return label for button changing map swipe state from enabled to disabled
    */
   getEnabledButtonString(): string {
-    if (this.hsMapSwipeService.apps[this.data.app].swipeControlActive) {
+    if (this.hsMapSwipeService.get(this.data.app).swipeControlActive) {
       return 'MAP_SWIPE.disableSwipe';
     } else {
       return 'MAP_SWIPE.enableSwipe';
@@ -82,7 +81,7 @@ export class HsMapSwipeComponent
    * Return label for button changing swipe orientation from horizontal swipe to vertical swipe
    */
   getOrientationButtonString(): string {
-    if (this.hsMapSwipeService.apps[this.data.app].orientationVertical) {
+    if (this.hsMapSwipeService.get(this.data.app).orientationVertical) {
       return 'MAP_SWIPE.horizontalSwipe';
     } else {
       return 'MAP_SWIPE.verticalSwipe';
@@ -93,7 +92,7 @@ export class HsMapSwipeComponent
    * Reset swipe slider position to default
    */
   resetSwipePos(): void {
-    this.hsMapSwipeService.apps[this.data.app].swipeCtrl.set('position', 0.5);
+    this.hsMapSwipeService.get(this.data.app).swipeCtrl.set('position', 0.5);
   }
 
   ngOnDestroy(): void {
@@ -108,8 +107,8 @@ export class HsMapSwipeComponent
   drop(event: CdkDragDrop<string[]>, side?: SwipeSide): void {
     let draggedLayer;
     let replacedLayer;
-    this.hsMapSwipeService.apps[this.data.app].movingSide = side;
-    this.hsMapSwipeService.apps[this.data.app].wasMoved = true;
+    this.hsMapSwipeService.get(this.data.app).movingSide = side;
+    this.hsMapSwipeService.get(this.data.app).wasMoved = true;
     if (event.previousContainer === event.container) {
       draggedLayer = event.container.data[event.previousIndex];
       replacedLayer = event.container.data[event.currentIndex];
@@ -158,14 +157,14 @@ export class HsMapSwipeComponent
    * Get map-swipe swipe element orientation
    */
   getOrientation(): string {
-    return this.hsMapSwipeService.apps[this.data.app].orientation;
+    return this.hsMapSwipeService.get(this.data.app).orientation;
   }
 
   /**
    * Get map-swipe control active state
    */
   getSwipeControlActive(): boolean {
-    return this.hsMapSwipeService.apps[this.data.app].swipeControlActive;
+    return this.hsMapSwipeService.get(this.data.app).swipeControlActive;
   }
 
   /**
@@ -186,20 +185,20 @@ export class HsMapSwipeComponent
    * Get EntireMapLayers for map-swipe component
    */
   getEntireMapLayers(): LayerListItem[] {
-    return this.hsMapSwipeService.apps[this.data.app].entireMapLayers;
+    return this.hsMapSwipeService.get(this.data.app).entireMapLayers;
   }
 
   /**
    * Get leftLayers for map-swipe component
    */
   getLeftLayers(): LayerListItem[] {
-    return this.hsMapSwipeService.apps[this.data.app].leftLayers;
+    return this.hsMapSwipeService.get(this.data.app).leftLayers;
   }
 
   /**
    * Get rightLayers for map-swipe component
    */
   getRightLayers(): LayerListItem[] {
-    return this.hsMapSwipeService.apps[this.data.app].rightLayers;
+    return this.hsMapSwipeService.get(this.data.app).rightLayers;
   }
 }
