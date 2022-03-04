@@ -75,7 +75,6 @@ export class HsSaveMapManagerService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
   ) {
-    this.init();
     this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
         const responseData = data.data ?? data;
@@ -97,28 +96,29 @@ export class HsSaveMapManagerService {
       this.resetCompoData();
     });
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (
-        this.HsLayoutService.mainpanel == 'saveMap' ||
-        this.HsLayoutService.mainpanel == 'statusCreator'
+        this.HsLayoutService.apps[app].mainpanel == 'saveMap' ||
+        this.HsLayoutService.apps[app].mainpanel == 'statusCreator'
       ) {
-        this.init();
+        this.init(app);
       }
     });
 
-    this.HsEventBusService.olMapLoads.subscribe((map) => {
-      this.setCurrentBoundingBox();
+    this.HsEventBusService.olMapLoads.subscribe(({map, app}) => {
+      this.setCurrentBoundingBox(app);
       map.on(
         'postcompose',
         this.HsUtilsService.debounce(
           () => {
-            if (this.HsLayoutService.mainpanel == 'saveMap') {
-              this.setCurrentBoundingBox();
+            if (this.HsLayoutService.apps[app].mainpanel == 'saveMap') {
+              this.setCurrentBoundingBox(app);
               this.HsSaveMapService.generateThumbnail(
-                this.HsLayoutService.contentWrapper.querySelector(
+                this.HsLayoutService.apps[app].contentWrapper.querySelector(
                   '.hs-stc-thumbnail'
                 ),
-                this
+                this,
+                app
               );
             }
           },
@@ -130,12 +130,15 @@ export class HsSaveMapManagerService {
     });
   }
 
-  init(): void {
-    this.HsMapService.loaded().then(() => {
-      this.fillCompositionData();
+  init(app: string): void {
+    this.HsMapService.loaded(app).then(() => {
+      this.fillCompositionData(app);
       this.HsSaveMapService.generateThumbnail(
-        this.HsLayoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
-        this
+        this.HsLayoutService.apps[app].contentWrapper.querySelector(
+          '.hs-stc-thumbnail'
+        ),
+        this,
+        app
       );
     });
   }
@@ -150,7 +153,7 @@ export class HsSaveMapManagerService {
   }
 
   //*NOTE not being used
-  async confirmSave(): Promise<void> {
+  async confirmSave(app: string): Promise<void> {
     try {
       const response: any = await lastValueFrom(
         this.http.post(this.HsStatusManagerService.endpointUrl(app), {
@@ -330,7 +333,7 @@ export class HsSaveMapManagerService {
   async fillGroups(app: string): Promise<void> {
     this.statusData.groups = [];
     const response: any = await lastValueFrom(
-      this.http.get(this.HsStatusManagerService.endpointUrl(), {
+      this.http.get(this.HsStatusManagerService.endpointUrl(app), {
         params: new HttpParams({
           fromObject: {
             request: 'getGroups',
@@ -434,7 +437,7 @@ export class HsSaveMapManagerService {
     this.compoData.currentComposition = '';
   }
 
-  async initiateSave(saveAsNew) {
+  async initiateSave(saveAsNew, app: string) {
     if (!this.validateForm()) {
       return;
     }

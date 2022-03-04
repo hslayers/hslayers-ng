@@ -40,7 +40,7 @@ export class HsShareThumbnailService {
     ctx.imageSmoothingEnabled = false;
   }
 
-  rendered($element, newRender?): void {
+  rendered($element, app: string, newRender?): void {
     if (!$element) {
       return;
     }
@@ -50,7 +50,7 @@ export class HsShareThumbnailService {
     const width = 256,
       height = 256;
     const firstCanvas =
-      this.HsMapService.mapElement.querySelector('.ol-layer canvas');
+      this.HsMapService.apps[app].mapElement.querySelector('.ol-layer canvas');
     this.setCanvasSize(targetCanvas, width, height);
     this.setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
     const ctxCollector = collectorCanvas.getContext('2d');
@@ -58,7 +58,9 @@ export class HsShareThumbnailService {
     this.setupContext(ctxTarget);
     this.setupContext(ctxCollector);
     Array.prototype.forEach.call(
-      this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
+      this.HsMapService.apps[app].mapElement.querySelectorAll(
+        '.ol-layer canvas'
+      ),
       (canvas) => {
         if (canvas.width > 0) {
           //console.log('canvas loop', this.isCanvasTainted(canvas), canvas);
@@ -115,7 +117,7 @@ export class HsShareThumbnailService {
       this.HsLogService.warn(e);
       $element.setAttribute(
         'src',
-        this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
+        this.HsUtilsService.getAssetsPath(app) + 'img/notAvailable.png'
       );
     }
     $element.style.width = width + 'px';

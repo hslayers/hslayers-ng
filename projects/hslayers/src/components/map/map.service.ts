@@ -856,15 +856,15 @@ export class HsMapService {
     );
   }
 
-  getScaleLineElement(type: 'scaleline' | 'scalebar'): Element {
+  getScaleLineElement(type: 'scaleline' | 'scalebar', app: string): Element {
     switch (type) {
       case 'scalebar':
-        return this.mapElement.querySelectorAll(
+        return this.apps[app].mapElement.querySelectorAll(
           '.ol-scale-bar.ol-unselectable'
         )?.[0];
       case 'scaleline':
       default:
-        return this.mapElement.querySelectorAll(
+        return this.apps[app].mapElement.querySelectorAll(
           '.ol-scale-line.ol-unselectable'
         )?.[0];
     }

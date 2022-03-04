@@ -39,19 +39,6 @@ export class HsSaveMapComponent
     private hsSaveMapService: HsSaveMapService
   ) {
     super(HsLayoutService);
-    hsSidebarService.buttons.push({
-      panel: 'saveMap',
-      module: 'hs.save-map',
-      order: 12,
-      fits: true,
-      title: () =>
-        hsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
-      description: () =>
-        hsLanguageService.getTranslation(
-          'SIDEBAR.descriptions.SAVECOMPOSITION'
-        ),
-      icon: 'icon-save-floppy',
-    });
 
     this.HsSaveMapManagerService.panelOpened
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -125,11 +112,6 @@ export class HsSaveMapComponent
         this.hsSaveMapService.save2storage(e, this.data.app);
       }
     });
-    this.advancedForm =
-      this.HsConfig.get(this.data.app).advancedForm == undefined ||
-      this.HsConfig.get(this.data.app).advancedForm
-        ? true
-        : false;
     this.HsSaveMapManagerService.panelOpened
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((composition) => {

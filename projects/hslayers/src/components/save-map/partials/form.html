@@ -93,7 +93,7 @@
                 </div>
             </div>
             <button type="button" class="mt-1 btn btn-secondary w-100"
-                (click)="HsSaveMapManagerService.setCurrentBoundingBox()">{{'SAVECOMPOSITION.form.userCurrentMapExtent'
+                (click)="HsSaveMapManagerService.setCurrentBoundingBox(app)">{{'SAVECOMPOSITION.form.userCurrentMapExtent'
                 | translate}}</button>
         </div>
         <div class="form-group">
@@ -201,7 +201,7 @@
     </div>
     <div class="mb-2 d-flex justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="stc-saveas" [hidden]="!(isAllowed())"
-            (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
+            (click)="HsSaveMapManagerService.initiateSave(true, app)">{{'COMMON.save' | translate}}</button>
         <a type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
             |
             translate}}</a>
