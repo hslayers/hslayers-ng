@@ -29,12 +29,15 @@ export class HsDialogContainerService {
   }
 
   create(component: Type<any>, data: any, app: string): HsDialogItem {
+    data.app = app;
     const item = new HsDialogItem(component, data, app);
     this.get(app).dialogObserver.next(item);
     return item;
   }
 
   destroy(component: HsDialogComponent, app: string): void {
+    console.log('destroy', app);
+
     this.get(app).dialogDestroyObserver.next(component);
   }
 }

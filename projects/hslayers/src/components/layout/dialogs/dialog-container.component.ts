@@ -37,6 +37,7 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
     this.HsDialogContainerService.get(this.app)
       .dialogObserver.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsDialogItem) => {
+        console.log(item);
         this.loadDialog(item);
       });
 
