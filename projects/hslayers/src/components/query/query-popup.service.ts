@@ -45,8 +45,8 @@ export class HsQueryPopupService
   }
 
   async init(app: string) {
-    await this.hsMapService.loaded(app);
     this.setAppIfNeeded(app);
+    await this.hsMapService.loaded(app);
     this.apps[app].map = this.hsMapService.getMap(app);
     if (
       this.hsConfig.get(app).popUpDisplay &&
