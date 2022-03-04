@@ -77,15 +77,18 @@ export class HsQueryPopupComponent
   }
 
   popupVisible(): any {
+    const DISPLAY_NONE = {
+      'display': 'none',
+    };
     if (this.data.service.apps[this.data.app] == undefined) {
-      return false;
+      return DISPLAY_NONE;
     }
     const featuresWithPopup = this.data.service.apps[
       this.data.app
     ].featuresUnderMouse.filter((f) => {
       const layer = this.hsMapService.getLayerForFeature(f, this.data.app);
       if (!layer) {
-        return false;
+        return DISPLAY_NONE;
       }
       return getPopUp(layer) != undefined;
     });

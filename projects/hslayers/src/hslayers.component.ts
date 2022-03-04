@@ -126,11 +126,11 @@ export class HslayersComponent implements OnInit {
     this.HsOverlayPanelContainerService.create(HsToolbarComponent, {
       app: this.id,
     });
+    this.hsQueryPopupService.init(this.id);
     this.HsOverlayPanelContainerService.create(HsQueryPopupComponent, {
       service: this.hsQueryPopupService,
       app: this.id,
     });
     this.hsExternalService.init(this.id);
-    this.hsQueryPopupService.init(this.id);
   }
 }
