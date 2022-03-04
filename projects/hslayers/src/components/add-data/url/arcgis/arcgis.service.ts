@@ -24,9 +24,27 @@ import {addAnchors} from '../../../../common/attribution-utils';
 import {addLayerOptions} from '../types/layer-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
 import {urlDataObject} from '../types/data-object.type';
+
+class HsUrlArcGisParams {
+  data: urlDataObject;
+
+  constructor() {
+    this.data = {
+      map_projection: '',
+      register_metadata: true,
+      tile_size: 512,
+      use_resampling: false,
+      use_tiles: true,
+    };
+  }
+}
+
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
-  data: urlDataObject;
+  apps: {
+    [id: string]: any;
+  } = {default: new HsUrlArcGisParams()};
+
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsLayoutService: HsLayoutService,
@@ -36,22 +54,15 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsToastService: HsToastService
-  ) {
-    this.setDataToDefault();
+  ) {}
+
+  get(app: string): HsUrlArcGisParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsUrlArcGisParams();
+    }
+    return this.apps[app ?? 'default'];
   }
 
-  /**
-   * Reset data object to its default values
-   */
-  setDataToDefault(): void {
-    this.data = {
-      map_projection: '',
-      register_metadata: true,
-      tile_size: 512,
-      use_resampling: false,
-      use_tiles: true,
-    };
-  }
   /**
    * List and return layers from Arcgis getCapabilities response
    * @param wrapper - Capabilities response wrapper
@@ -74,7 +85,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       await this.createLayer(wrapper.response, app);
       if (this.hsAddDataCommonService.get(app).layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
-          this.data.layers,
+          this.get(app).data.layers,
           app
         );
         return this.getLayers(app);
@@ -89,54 +100,55 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async createLayer(response, app: string): Promise<void> {
     try {
+      const appRef = this.get(app);
       const caps = response;
-      this.data.map_projection = this.hsMapService
+      appRef.data.map_projection = this.hsMapService
         .getMap(app)
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
-      this.data.title =
+      appRef.data.title =
         caps.documentInfo?.Title || caps.mapName || caps.name || 'Arcgis layer';
-      this.data.description = addAnchors(caps.description);
-      this.data.version = caps.currentVersion;
-      this.data.image_formats = caps.supportedImageFormatTypes
+      appRef.data.description = addAnchors(caps.description);
+      appRef.data.version = caps.currentVersion;
+      appRef.data.image_formats = caps.supportedImageFormatTypes
         ? caps.supportedImageFormatTypes.split(',')
         : [];
-      this.data.query_formats = caps.supportedQueryFormats
+      appRef.data.query_formats = caps.supportedQueryFormats
         ? caps.supportedQueryFormats.split(',')
         : [];
-      this.data.srss = caps.spatialReference?.latestWkid
+      appRef.data.srss = caps.spatialReference?.latestWkid
         ? [caps.spatialReference.latestWkid.toString()]
         : [];
-      this.data.services = caps.services?.filter(
+      appRef.data.services = caps.services?.filter(
         (s: Service) => !this.isGpService(s.type)
       );
-      this.data.layers = caps.layers;
+      appRef.data.layers = caps.layers;
       this.hsAddDataUrlService.searchForChecked(
-        this.data.layers ?? this.data.services,
+        appRef.data.layers ?? appRef.data.services,
         app
       );
-      this.data.srs = (() => {
-        for (const srs of this.data.srss) {
+      appRef.data.srs = (() => {
+        for (const srs of appRef.data.srss) {
           if (srs.includes('3857')) {
             return srs;
           }
         }
-        return this.data.srss[0];
+        return appRef.data.srss[0];
       })();
-      this.data.extent = caps.fullExtent;
-      this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs,
+      appRef.data.extent = caps.fullExtent;
+      appRef.data.resample_warning = this.hsAddDataCommonService.srsChanged(
+        appRef.data.srs,
         app
       );
-      this.data.image_format = getPreferredFormat(this.data.image_formats, [
+      appRef.data.image_format = getPreferredFormat(appRef.data.image_formats, [
         'PNG32',
         'PNG',
         'GIF',
         'JPG',
       ]);
-      this.data.query_format = getPreferredFormat(this.data.query_formats, [
+      appRef.data.query_format = getPreferredFormat(appRef.data.query_formats, [
         'geoJSON',
         'JSON',
       ]);
@@ -150,34 +162,38 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer
    */
   getLayers(app: string): Layer<Source>[] {
+    const appRef = this.get(app);
+
     if (
-      this.data.layers === undefined &&
-      this.data.services === undefined &&
-      !this.isImageService()
+      appRef.data.layers === undefined &&
+      appRef.data.services === undefined &&
+      !this.isImageService(app)
     ) {
       return;
     }
-    const checkedLayers = this.data.layers?.filter((l) => l.checked);
+    const checkedLayers = appRef.data.layers?.filter((l) => l.checked);
     const collection = [
       this.getLayer(
         checkedLayers,
         {
-          layerTitle: this.data.title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
-          imageFormat: this.data.image_format,
-          queryFormat: this.data.query_format,
-          tileSize: this.data.tile_size,
-          crs: this.data.srs,
-          base: this.data.base,
+          layerTitle: appRef.data.title.replace(/\//g, '&#47;'),
+          path: this.hsUtilsService.undefineEmptyString(
+            appRef.data.folder_name
+          ),
+          imageFormat: appRef.data.image_format,
+          queryFormat: appRef.data.query_format,
+          tileSize: appRef.data.tile_size,
+          crs: appRef.data.srs,
+          base: appRef.data.base,
         },
         app
       ),
     ];
 
-    this.data.base = false;
+    appRef.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams(app);
-    this.setDataToDefault();
+    this.apps[app] = new HsUrlArcGisParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
     return collection;
   }
@@ -208,12 +224,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     options: addLayerOptions,
     app: string
   ): Layer<Source> {
+    const appRef = this.get(app);
     const attributions = [];
     const dimensions = {};
     //Not being used right now
     // const legends = [];
     const sourceParams = {
-      url: this.data.get_map_url,
+      url: appRef.data.get_map_url,
       attributions,
       //projection: me.data.srs,
       params: Object.assign(
@@ -224,14 +241,14 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       ),
       crossOrigin: 'anonymous',
     };
-    if (!this.isImageService()) {
+    if (!this.isImageService(app)) {
       const LAYERS =
         layers.length > 0
           ? `show:${layers.map((l) => l.id).join(',')}`
           : undefined;
       Object.assign(sourceParams.params, {LAYERS});
     }
-    const source = this.data.use_tiles
+    const source = appRef.data.use_tiles
       ? new TileArcGISRest(sourceParams)
       : new ImageArcGISRest(sourceParams);
 
@@ -239,13 +256,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     try {
       mapExtent = transformExtent(
         [
-          this.data.extent.xmin,
-          this.data.extent.ymin,
-          this.data.extent.xmax,
-          this.data.extent.ymax,
+          appRef.data.extent.xmin,
+          appRef.data.extent.ymin,
+          appRef.data.extent.xmax,
+          appRef.data.extent.ymax,
         ],
-        'EPSG:' + this.data.srs,
-        this.data.map_projection
+        'EPSG:' + appRef.data.srs,
+        appRef.data.map_projection
       );
     } catch (error) {
       this.hsToastService.createToastPopupMessage(
@@ -254,7 +271,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         app,
         {
           serviceCalledFrom: 'HsUrlArcGisService',
-          details: [`${options.layerTitle}`, `EPSG: ${this.data.srs}`],
+          details: [`${options.layerTitle}`, `EPSG: ${appRef.data.srs}`],
         }
       );
     }
@@ -265,18 +282,18 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         name: options.layerTitle,
         removable: true,
         path: options.path,
-        base: this.data.base,
+        base: appRef.data.base,
         extent: mapExtent,
         dimensions,
       },
       source,
     };
-    if (!this.isImageService()) {
+    if (!this.isImageService(app)) {
       Object.assign(layerParams.properties, {
         subLayers: layers?.map((l) => l.id).join(','),
       });
     }
-    const new_layer = this.data.use_tiles
+    const new_layer = appRef.data.use_tiles
       ? new Tile(layerParams as TileOptions<TileSource>)
       : new ImageLayer(layerParams as ImageOptions<ImageSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
@@ -304,11 +321,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     if (urlRest.includes('services')) {
       urlRest = urlRest.slice(0, urlRest.indexOf('services'));
     }
-    this.data.get_map_url =
+    this.get(app).data.get_map_url =
       (urlRest.endsWith('/') ? urlRest : urlRest.concat('/')) +
       ['services', service.name, service.type].join('/');
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
-      this.data.get_map_url,
+      this.get(app).data.get_map_url,
       app
     );
     await this.listLayerFromCapabilities(wrapper, app);
@@ -329,8 +346,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   /**
    * Check if getCapabilities response is Image service layer
    */
-  isImageService(): boolean {
-    return this.data.get_map_url?.toLowerCase().includes('imageserver');
+  isImageService(app: string): boolean {
+    return this.get(app)
+      .data.get_map_url?.toLowerCase()
+      .includes('imageserver');
   }
   /**
    * Check if getCapabilities response is Gp service layer

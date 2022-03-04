@@ -13,8 +13,8 @@ export type Service = {
 };
 
 export interface HsUrlTypeServiceModel {
-  data: urlDataObject;
-
+  apps: any;
+  get(app: string);
   listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
     app: string,
@@ -35,6 +35,5 @@ export interface HsUrlTypeServiceModel {
   ): void;
   expandService?(service: Service, app: string): void;
   addServices?(services: Service[], app: string);
-  setDataToDefault(): void;
-  isImageService?(): boolean;
+  isImageService?(app: string): boolean;
 }

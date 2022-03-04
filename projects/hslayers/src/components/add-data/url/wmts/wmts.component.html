@@ -8,12 +8,12 @@
         class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
-                <div>{{hsUrlWmtsService.data.title}}</div>
+                <div>{{appRef.data.title}}</div>
             </li>
-            <li *ngFor="let layer of hsUrlWmtsService.data.layers; trackBy:( 'Identifier' | trackByProperty ); let index = index"
+            <li *ngFor="let layer of appRef.data.layers; trackBy:( 'Identifier' | trackByProperty ); let index = index"
                 class="list-group-item clearfix">
                 <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}"
-                    (change)="hsAddDataOwsService.changed(hsUrlWmtsService.data,app)" [attr.id]="'wmtslayer-'+index"
+                    (change)="hsAddDataOwsService.changed(appRef.data,app)" [attr.id]="'wmtslayer-'+index"
                     name="wmtslayer-{{index}}" />
                 <label class="form-check-label m-0 ps-4 mw-100 d-flex align-items-center"
                     [attr.for]="'wmtslayer-'+index"
@@ -38,7 +38,7 @@
         <li class="list-group-item hs-ows-layerlistheading clearfix bg-white" style="position: sticky;
         bottom: 0; z-index:10">
             <div class="d-flex justify-content-center">
-                <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService" [layers]="hsUrlWmtsService.data.layers"
+                <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService" [layers]="appRef.data.layers"
                     [app]="app">
                 </hs-url-add>
             </div>
