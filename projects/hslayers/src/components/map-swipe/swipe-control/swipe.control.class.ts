@@ -10,25 +10,27 @@ import {LayerListItem} from '../../../common/layer-shifting/layer-shifting.servi
 
 /**
  * Initialization options for SwipeControl
- *  @param layers - layer to swipe
+ *  @param leftLayers - layer to swipe on the left side
  *  @param rightLayer - layer to swipe on right side
  *  @param className - control class name
  *  @param position - position property of the swipe [0,1], default 0.5
  *  @param orientation - orientation property (vertical|horizontal), default vertical
  */
 export type SwipeControlOptions = {
-  layers?: LayerListItem[];
+  leftLayers?: LayerListItem[];
   rightLayers?: LayerListItem[];
   className?: string;
   position?: number;
   orientation?: string;
+  app?: string;
 };
 
 export class SwipeControl extends Control {
   options: SwipeControlOptions;
-  layers: LayerListItem[];
+  leftLayers: LayerListItem[];
   rightLayers: LayerListItem[];
   isMoving: boolean;
+  app: string;
   constructor(options?: SwipeControlOptions) {
     const button = document.createElement('button');
     const element = document.createElement('div');
@@ -45,15 +47,15 @@ export class SwipeControl extends Control {
     this.precomposeLeft = this.precomposeLeft.bind(this);
     this.postcompose = this.postcompose.bind(this);
 
-    this.layers = [];
+    this.leftLayers = [];
     this.rightLayers = [];
-    if (options?.layers) {
-      this.addLayers(options.layers);
+    if (options?.leftLayers) {
+      this.addLayers(options.leftLayers);
     }
     if (options?.rightLayers) {
       this.addLayers(options.rightLayers, true);
     }
-    const storagePos = localStorage.getItem('hs_map_swipe_pos');
+    const storagePos = localStorage.getItem(`${this.app}:hs_map_swipe_pos`);
     this.on('propertychange', () => {
       if (this.getMap()) {
         try {
@@ -74,7 +76,10 @@ export class SwipeControl extends Control {
       }
       this.element.classList.remove('horizontal', 'vertical');
       this.element.classList.add(this.get('orientation'));
-      localStorage.setItem('hs_map_swipe_pos', this.get('position'));
+      localStorage.setItem(
+        `${this.app}:hs_map_swipe_pos`,
+        this.get('position')
+      );
     });
 
     this.set('position', storagePos ?? options?.position ?? 0.5);
@@ -90,7 +95,7 @@ export class SwipeControl extends Control {
       this.setMap(map);
     }
     if (this.getMap()) {
-      for (const l of this.layers) {
+      for (const l of this.leftLayers) {
         this.disableEvents(l);
       }
       for (const l of this.rightLayers) {
@@ -125,13 +130,13 @@ export class SwipeControl extends Control {
   private isLayerAdded(lyr: LayerListItem, right?: boolean) {
     const found = right
       ? this.rightLayers.find((l) => l.layer == lyr.layer)
-      : this.layers.find((l) => l.layer == lyr.layer);
+      : this.leftLayers.find((l) => l.layer == lyr.layer);
     if (!found) {
       return -1;
     } else {
       const index = right
         ? this.rightLayers.indexOf(found)
-        : this.layers.indexOf(found);
+        : this.leftLayers.indexOf(found);
       return index;
     }
   }
@@ -154,7 +159,7 @@ export class SwipeControl extends Control {
    */
   addLayer(layer: LayerListItem, right?: boolean) {
     if (this.isLayerAdded(layer, right) < 0) {
-      right ? this.rightLayers.push(layer) : this.layers.push(layer);
+      right ? this.rightLayers.push(layer) : this.leftLayers.push(layer);
       if (this.getMap()) {
         this.enableEvents(layer, right);
         try {
@@ -170,7 +175,7 @@ export class SwipeControl extends Control {
    * @param enabled - (Optional) If true, map swipe control is enabled, else it is removed
    */
   setEvents(enabled?: boolean): void {
-    this.layers.forEach((l) => {
+    this.leftLayers.forEach((l) => {
       enabled ? this.enableEvents(l) : this.disableEvents(l);
     });
     this.rightLayers.forEach((l) => {
@@ -181,7 +186,7 @@ export class SwipeControl extends Control {
   /** Remove all layers
    */
   removeLayers() {
-    this.layers.forEach((l) => {
+    this.leftLayers.forEach((l) => {
       this.removeLayer(l);
     });
     this.rightLayers.forEach((l) => {
@@ -193,7 +198,7 @@ export class SwipeControl extends Control {
    */
   removeCompletely(layerToRm: Layer<Source>): void {
     let layerFound;
-    layerFound = this.layers.find((l) => l.layer == layerToRm);
+    layerFound = this.leftLayers.find((l) => l.layer == layerToRm);
     if (layerFound) {
       this.removeLayer(layerFound);
     } else {
@@ -212,7 +217,7 @@ export class SwipeControl extends Control {
     const k = this.isLayerAdded(layer, right);
     if (k > -1) {
       this.disableEvents(layer, right);
-      right ? this.rightLayers.splice(k, 1) : this.layers.splice(k, 1);
+      right ? this.rightLayers.splice(k, 1) : this.leftLayers.splice(k, 1);
     }
     if (this.getMap()) {
       try {
