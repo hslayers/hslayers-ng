@@ -47,6 +47,7 @@ export class HsConfigObject {
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
   default_layers?: Layer<Source>[];
+  defaultComposition?: string;
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;
