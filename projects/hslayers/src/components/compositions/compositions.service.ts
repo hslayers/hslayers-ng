@@ -305,7 +305,7 @@ export class HsCompositionsService {
   }
 
   async tryParseCompositionFromUrlParam(app: string): Promise<void> {
-    let id = this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
+    let id = this.hsConfig.get(app).defaultComposition || this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
     if (id) {
       if (
         !id.includes('http') &&
