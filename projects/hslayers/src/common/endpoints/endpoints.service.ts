@@ -9,7 +9,8 @@ import {HsUtilsService} from '../../components/utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsCommonEndpointsService {
-  endpointsFilled: BehaviorSubject<any> = new BehaviorSubject(null);
+  endpointsFilled: BehaviorSubject<{endpoints: HsEndpoint[]; app: string}> =
+    new BehaviorSubject(null);
   endpoints: HsEndpoint[];
 
   constructor(
@@ -58,7 +59,7 @@ export class HsCommonEndpointsService {
           user: ds.user,
           originalConfiguredUser: ds.user,
           getCurrentUserIfNeeded: async () =>
-            await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp),
+            await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp, app),
         };
         return tmp;
       }),
@@ -70,7 +71,7 @@ export class HsCommonEndpointsService {
       .sort((a, b) => a.type.localeCompare(b.type));
 
     if (this.endpoints) {
-      this.endpointsFilled.next(this.endpoints);
+      this.endpointsFilled.next({endpoints: this.endpoints, app});
     }
   }
   getItemsPerPageConfig(endpoint): number {

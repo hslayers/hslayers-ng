@@ -159,7 +159,7 @@ export class HsDrawService {
       }
     });
 
-    this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+    this.hsCommonLaymanService.authChange.subscribe(({endpoint}) => {
       this.fillDrawableLayers(_app);
       appRef.isAuthorized = endpoint.authenticated;
       //When metadata dialog window opened. Layer is being added

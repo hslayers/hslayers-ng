@@ -30,7 +30,7 @@ export class HsLaymanCurrentUserComponent {
 
   logout(): void {
     this.monitorUser();
-    this.HsCommonLaymanService.logout(this.endpoint);
+    this.HsCommonLaymanService.logout(this.endpoint, this.app);
   }
 
   sameDomain() {
@@ -57,7 +57,7 @@ export class HsLaymanCurrentUserComponent {
     this.monitorTries = 0;
     this.timerInterval = this.DEFAULT_TIMER_INTERVAL;
     const poll = () => {
-      this.HsCommonLaymanService.detectAuthChange(this.endpoint).then(
+      this.HsCommonLaymanService.detectAuthChange(this.endpoint, this.app).then(
         (somethingChanged) => {
           if (somethingChanged && this.getCurrentUserTimer) {
             clearTimeout(this.getCurrentUserTimer);

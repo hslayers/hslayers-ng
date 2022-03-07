@@ -25,8 +25,7 @@ import {fileDataObject} from './types/file-data-object.type';
   template: '<div></div>',
 })
 export class HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   @Input() app = 'default';
   data: fileDataObject;
   fileInput: ElementRef;
@@ -72,7 +71,7 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnInit(): void {
-    this.hsAddDataCommonFileService.pickEndpoint();
+    this.hsAddDataCommonFileService.pickEndpoint(this.app);
     this.setDataToDefault();
   }
 
