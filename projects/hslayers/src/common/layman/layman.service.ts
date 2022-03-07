@@ -23,9 +23,10 @@ export class HsCommonLaymanService {
    *  Monitor if authorization state has changed and
    * return true and broadcast authChange event if so .
    * @param endpoint - Endpoint definition - usually Layman
+   * @param app - App identifier
    * @returns Promise<boolean> true if authorization state changed (user logged in or out)
    */
-  async detectAuthChange(endpoint): Promise<boolean> {
+  async detectAuthChange(endpoint, app: string): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
       const res: CurrentUserResponse = await lastValueFrom(
@@ -42,7 +43,7 @@ export class HsCommonLaymanService {
           endpoint.user = res.username;
           endpoint.authenticated = res.authenticated;
           somethingChanged = true;
-          this.authChange.next(endpoint);
+          this.authChange.next({endpoint, app});
         }
       } else {
         if (endpoint.user != endpoint.originalConfiguredUser) {
@@ -57,16 +58,16 @@ export class HsCommonLaymanService {
     }
   }
 
-  async getCurrentUserIfNeeded(endpoint): Promise<void> {
+  async getCurrentUserIfNeeded(endpoint, app: string): Promise<void> {
     if (
       endpoint.user === undefined ||
       ['anonymous', 'browser'].includes(endpoint.user)
     ) {
-      await this.detectAuthChange(endpoint);
+      await this.detectAuthChange(endpoint, app);
     }
   }
 
-  async logout(endpoint): Promise<void> {
+  async logout(endpoint, app: string): Promise<void> {
     const url = `${endpoint.url}/logout`;
     try {
       await lastValueFrom(this.$http.get(url, {withCredentials: true}));
@@ -75,7 +76,7 @@ export class HsCommonLaymanService {
     } finally {
       endpoint.user = 'anonymous';
       endpoint.authenticated = false;
-      this.authChange.next(endpoint);
+      this.authChange.next({endpoint, app});
     }
   }
 
@@ -95,7 +96,7 @@ export class HsCommonLaymanService {
         break;
       case 32:
         simplifiedResponse = 'Authentication failed. Login to the catalogue.';
-        this.detectAuthChange(endpoint);
+        this.detectAuthChange(endpoint, app);
         break;
       default:
         simplifiedResponse = responseBody.message + ' ' + responseBody.detail;

@@ -45,7 +45,7 @@ export class HsLaymanBrowserService {
     data?: any,
     extentFeatureCreated?
   ): Observable<any> {
-    endpoint.getCurrentUserIfNeeded(endpoint);
+    endpoint.getCurrentUserIfNeeded(endpoint, app);
     const withPermissionOrMine = data?.onlyMine
       ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
         ? `workspaces/${endpoint.user}/`

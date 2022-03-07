@@ -56,16 +56,22 @@ export class HsSaveMapComponent
 
     this.HsCommonEndpointsService.endpointsFilled
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value) => {
-        if (value?.length > 0 && !this.endpoint) {
-          const laymans = value.filter((ep) => ep.type == 'layman');
+      .subscribe((filled) => {
+        if (!filled) {
+          return;
+        }
+        if (filled.endpoints?.length > 0 && !this.endpoint) {
+          const laymans = filled.endpoints.filter((ep) => ep.type == 'layman');
           if (laymans.length > 0) {
             this.HsSaveMapManagerService.selectEndpoint(laymans[0]);
           } else {
-            this.HsSaveMapManagerService.selectEndpoint(value[0]);
+            this.HsSaveMapManagerService.selectEndpoint(filled.endpoints[0]);
           }
           if (this.endpoint && this.endpoint.type == 'layman') {
-            this.HsCommonLaymanService.detectAuthChange(this.endpoint);
+            this.HsCommonLaymanService.detectAuthChange(
+              this.endpoint,
+              this.data.app
+            );
           }
         }
       });
@@ -83,7 +89,7 @@ export class HsSaveMapComponent
 
     this.HsCommonLaymanService.authChange
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((endpoint: any) => {
+      .subscribe(({endpoint}) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
         this.HsSaveMapManagerService.currentUser = endpoint.user;
