@@ -33,13 +33,15 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
     );
   }
   name = 'addData';
+  appRef;
 
   datasetSelect(type: DatasetType): void {
     this.hsAddDataService.selectType(type, this.data.app);
   }
 
   ngOnInit(): void {
-    this.hsAddDataService.get(this.data.app).dsSelected = 'catalogue';
+    this.appRef = this.hsAddDataService.get(this.data.app);
+    this.appRef.dsSelected = 'catalogue';
 
     this.hsSidebarService.addButton(
       {
