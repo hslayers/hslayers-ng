@@ -23,35 +23,40 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsCompositionsService {
+class HsCompositionsParams {
   data: any = {};
   compositionToLoad: {url: string; title: string};
   notSavedCompositionLoading: Subject<string> = new Subject();
   compositionNotFoundAtUrl: Subject<{error: any; app: string}> = new Subject();
   shareId: string;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCompositionsService {
+  apps: {
+    [id: string]: HsCompositionsParams;
+  } = {default: new HsCompositionsParams()};
   constructor(
     private http: HttpClient,
-    public hsMapService: HsMapService,
-    public hsCore: HsCoreService,
-    public hsCompositionsParserService: HsCompositionsParserService,
-    public hsConfig: HsConfig,
-    public hsPermalinkUrlService: HsShareUrlService,
-    public hsUtilsService: HsUtilsService,
-    public hsStatusManagerService: HsStatusManagerService,
-    public hsCompositionsMickaService: HsCompositionsMickaService,
-    public hsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
-    public hsCompositionsLaymanService: HsCompositionsLaymanService,
-    public hsLanguageService: HsLanguageService,
-    public $log: HsLogService,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsCompositionsMapService: HsCompositionsMapService,
-    public hsEventBusService: HsEventBusService
+    private hsMapService: HsMapService,
+    private hsCore: HsCoreService,
+    private hsCompositionsParserService: HsCompositionsParserService,
+    private hsConfig: HsConfig,
+    private hsPermalinkUrlService: HsShareUrlService,
+    private hsUtilsService: HsUtilsService,
+    private hsStatusManagerService: HsStatusManagerService,
+    private hsCompositionsMickaService: HsCompositionsMickaService,
+    private hsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
+    private hsCompositionsLaymanService: HsCompositionsLaymanService,
+    private hsLanguageService: HsLanguageService,
+    private $log: HsLogService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsCompositionsMapService: HsCompositionsMapService,
+    private hsEventBusService: HsEventBusService
   ) {
-    this.hsEventBusService.compositionEdits.subscribe(() => {
-      this.hsCompositionsParserService.composition_edited = true;
+    this.hsEventBusService.compositionEdits.subscribe(({app}) => {
+      this.hsCompositionsParserService.get(app).composition_edited = true;
     });
 
     this.hsEventBusService.compositionLoadStarts.subscribe(({id, app}) => {
@@ -61,7 +66,20 @@ export class HsCompositionsService {
       this.hsCompositionsParserService.loadUrl(id, app);
     });
   }
-
+  /**
+   * Get the params saved by the composition service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): HsCompositionsParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsCompositionsParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+  /**
+   * Initialize the values and functions of the composition service that are required for the service to function properly
+   * @param _app - App identifier
+   */
   init(_app: string) {
     this.tryParseCompositionFromUrlParam(_app);
     this.parsePermalinkLayers(_app);
@@ -73,8 +91,8 @@ export class HsCompositionsService {
     }
     this.hsEventBusService.mapResets.subscribe(({app}) => {
       if (app == _app) {
-        this.hsCompositionsParserService.composition_loaded = null;
-        this.hsCompositionsParserService.composition_edited = false;
+        this.hsCompositionsParserService.get(app).composition_loaded = null;
+        this.hsCompositionsParserService.get(app).composition_edited = false;
       }
     });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
@@ -93,34 +111,51 @@ export class HsCompositionsService {
     });
   }
 
+  /**
+   * Load composition list
+   * @param ds - Datasource endpoint
+   * @param params - Provided params for querying list items
+   * @param app - App identifier
+   */
   loadCompositions(ds: HsEndpoint, params, app: string): Observable<any> {
-    this.hsCompositionsMapService.clearExtentLayer();
+    this.hsCompositionsMapService.clearExtentLayer(app);
     const bbox = this.hsMapService.getMapExtentInEpsg4326(app);
     const Observable = this.managerByType(ds).loadList(
       ds,
       params,
       (feature: Feature<Geometry>) =>
-        this.hsCompositionsMapService.addExtentFeature(feature),
+        this.hsCompositionsMapService.addExtentFeature(feature, app),
       bbox,
       app
     );
     return Observable;
   }
 
-  resetCompositionCounter(): void {
+  /**
+   * Reset composition counters for datasource endpoints
+   * @param app - App identifier
+   */
+  resetCompositionCounter(app: string): void {
     this.hsCommonEndpointsService.endpoints.forEach((ep) => {
       switch (ep.type) {
         case 'micka':
           return this.hsCompositionsMickaService.resetCompositionCounter(ep);
         case 'layman':
-          return this.hsCompositionsLaymanService.resetCompositionCounter(ep);
+          return this.hsCompositionsLaymanService.resetCompositionCounter(
+            ep,
+            app
+          );
         default:
           this.$log.warn(`Endpoint type '${ep.type} not supported`);
       }
     });
   }
 
-  managerByType(endpoint): any {
+  /**
+   * Find and return required service reference for each endpoint type
+   * @param endpoint - Datasource endpoint
+   */
+  managerByType(endpoint: HsEndpoint): any {
     switch (endpoint.type) {
       case 'micka':
         return this.hsCompositionsStatusManagerMickaJointService;
@@ -131,6 +166,10 @@ export class HsCompositionsService {
     }
   }
 
+  /**
+   * Delete composition from datasource database
+   * @param composition - Composition selected
+   */
   async deleteComposition(composition): Promise<void> {
     await this.managerByType(composition.endpoint)?.delete(
       composition.endpoint,
@@ -138,6 +177,11 @@ export class HsCompositionsService {
     );
   }
 
+  /**
+   * Share composition to other platforms
+   * @param record - Datasource record selected
+   * @param app - App identifier
+   */
   async shareComposition(record, app: string): Promise<any> {
     const recordLink = encodeURIComponent(this.getRecordLink(record));
     const permalinkOverride = this.hsConfig.get(app).permalinkLocation;
@@ -145,7 +189,7 @@ export class HsCompositionsService {
       this.hsCore.isMobile() && permalinkOverride
         ? permalinkOverride.origin + permalinkOverride.pathname
         : `${location.origin}${location.pathname}?composition=${recordLink}`;
-    this.shareId = this.hsUtilsService.generateUuid();
+    this.get(app).shareId = this.hsUtilsService.generateUuid();
     const headers = new HttpHeaders().set(
       'Content-Type',
       'text/plain; charset=utf-8'
@@ -155,7 +199,7 @@ export class HsCompositionsService {
         this.hsStatusManagerService.endpointUrl(app),
         JSON.stringify({
           request: 'socialShare',
-          id: this.shareId,
+          id: this.get(app).shareId,
           url: encodeURIComponent(compositionUrl),
           title: record.title,
           description: record.abstract,
@@ -165,26 +209,39 @@ export class HsCompositionsService {
       )
     );
   }
+  /**
+   * Get composition share url
+   * @param app - App identifier
+   */
   async getShareUrl(app: string): Promise<string> {
     try {
       return await this.hsUtilsService.shortUrl(
         this.hsStatusManagerService.endpointUrl(app) +
           '?request=socialshare&id=' +
-          this.shareId,
+          this.get(app).shareId,
         app
       );
     } catch (ex) {
       this.$log.log('Error creating short URL');
     }
   }
-  async getCompositionInfo(composition): Promise<any> {
+  /**
+   * Get composition information
+   * @param composition - Composition selected
+   * @param app - App identifier
+   */
+  async getCompositionInfo(composition, app: string): Promise<any> {
     const info = await this.managerByType(composition.endpoint).getInfo(
       composition
     );
-    this.data.info = info;
+    this.get(app).data.info = info;
     return info;
   }
 
+  /**
+   * Get record external link
+   * @param record - Datasource record selected
+   */
   getRecordLink(record): string {
     try {
       let url;
@@ -204,6 +261,11 @@ export class HsCompositionsService {
     }
   }
 
+  /**
+   * Load composition from datasource record url
+   * @param record - Datasource record selected
+   * @param app - App identifier
+   */
   loadCompositionParser(record, app: string): Promise<void> {
     const recordEndpoint = record.endpoint;
     return new Promise((resolve, reject) => {
@@ -222,10 +284,15 @@ export class HsCompositionsService {
       }
       if (url) {
         //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
-        this.hsCompositionsParserService.current_composition_workspace =
-          record.editable ? record.workspace : null;
-        if (this.hsCompositionsParserService.composition_edited == true) {
-          this.notSavedCompositionLoading.next(url);
+        this.hsCompositionsParserService.get(
+          app
+        ).current_composition_workspace = record.editable
+          ? record.workspace
+          : null;
+        if (
+          this.hsCompositionsParserService.get(app).composition_edited == true
+        ) {
+          this.get(app).notSavedCompositionLoading.next(url);
           reject();
         } else {
           this.loadComposition(url, app, true).then(() => {
@@ -238,6 +305,7 @@ export class HsCompositionsService {
 
   /**
    * Load layers received through permalink to map
+   * @param app - App identifier
    */
   async parsePermalinkLayers(app: string): Promise<void> {
     await this.hsMapService.loaded(app);
@@ -275,10 +343,20 @@ export class HsCompositionsService {
     }
   }
 
+  /**
+   * Load composition from composition list
+   * @param url - URL
+   * @param app - App identifier
+   * @param overwrite - Overwrite existing map composition with the new one
+   */
   loadComposition(url, app: string, overwrite?: boolean): Promise<void> {
     return this.hsCompositionsParserService.loadUrl(url, app, overwrite);
   }
 
+  /**
+   * Parse and load composition from cookies
+   * @param app - App identifier
+   */
   async tryParseCompositionFromCookie(app: string): Promise<void> {
     if (
       localStorage.getItem('hs_layers') &&
@@ -304,8 +382,14 @@ export class HsCompositionsService {
     }
   }
 
+  /**
+   * Parse and load composition from browser URL
+   * @param app - App identifier
+   */
   async tryParseCompositionFromUrlParam(app: string): Promise<void> {
-    let id = this.hsConfig.get(app).defaultComposition || this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
+    let id =
+      this.hsConfig.get(app).defaultComposition ||
+      this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
     if (id) {
       if (
         !id.includes('http') &&
@@ -319,11 +403,16 @@ export class HsCompositionsService {
       try {
         await this.hsCompositionsParserService.loadUrl(id, app);
       } catch (error) {
-        this.compositionNotFoundAtUrl.next({error, app});
+        this.get(app).compositionNotFoundAtUrl.next({error, app});
         this.$log.warn(error);
       }
     }
   }
+
+  /**
+   * Get composition common id value
+   * @param composition - Composition selected
+   */
   commonId(composition): string {
     if (composition === undefined) {
       return '';
@@ -331,6 +420,12 @@ export class HsCompositionsService {
     return composition.uuid || composition.id;
   }
 
+  /**
+   * Translate string value to the selected UI language
+   * @param module - Locales json key
+   * @param text - Locales json key value
+   * @returns Translated text value
+   */
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }

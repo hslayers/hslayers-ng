@@ -28,7 +28,6 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataCommonService} from '../../add-data/common/common.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
-import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
 import {HsMapService} from '../../map/map.service';
@@ -44,26 +43,24 @@ import {setDefinition} from '../../../common/layer-extensions';
   providedIn: 'root',
 })
 export class HsCompositionsLayerParserService {
-  currentUser;
-
   constructor(
-    public HsMapService: HsMapService,
-    public HsAddDataVectorService: HsAddDataVectorService,
-    public HsStylerService: HsStylerService,
-    public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
-    public HsLanguageService: HsLanguageService,
-    public HsToastService: HsToastService,
-    public HsEventBusService: HsEventBusService,
-    public HsUrlWfsService: HsUrlWfsService,
-    public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsAddDataCommonService: HsAddDataCommonService,
+    private HsMapService: HsMapService,
+    private HsAddDataVectorService: HsAddDataVectorService,
+    private HsStylerService: HsStylerService,
+    private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
+    private HsLanguageService: HsLanguageService,
+    private HsToastService: HsToastService,
+    private HsUrlWfsService: HsUrlWfsService,
+    private hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    private hsAddDataCommonService: HsAddDataCommonService,
     private HsLaymanBrowserService: HsLaymanBrowserService
   ) {}
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @description Initiate creation of WFS layer thorough HsUrlWfsService
+   * @param lyr_def - Layer definition object
+   * @param app - App identifier
+   * Initiate creation of WFS layer thorough HsUrlWfsService
    */
   async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.get(app).layerToSelect = lyr_def.name;
@@ -80,9 +77,10 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Tile layer
-   * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
+   * Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
+   * @param lyr_def - Layer definition object
+   * @param app - App identifier
+   * @returns Ol Tile layer
    */
   async createWMTSLayer(lyr_def, app: string): Promise<Tile<TileSource>> {
     const wmts = new Tile({
@@ -135,9 +133,10 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
-   * @description Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
+   * Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
+   * @param lyr_def - Layer definition object
+   * @param app - App identifier
+   * @returns Ol Image or Tile layer
    */
   createWmsLayer(lyr_def, app: string) {
     const params = lyr_def.params;
@@ -185,9 +184,9 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
-   * @description Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
+   * Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
+   * @param lyr_def - Layer definition object
+   * @returns Ol Image or Tile layer
    */
   createArcGISLayer(lyr_def) {
     const params = lyr_def.params;
@@ -236,9 +235,9 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
-   * @description Parse definition object to create XYZ Ol.layer
+   * @param lyr_def - Layer definition object
+   * @returns Ol Image or Tile layer
+   * Parse definition object to create XYZ Ol.layer
    */
   createXYZLayer(lyr_def) {
     const legends = this.getLegends(lyr_def);
@@ -278,9 +277,9 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
-   * @description Parse definition object to create ImageStatic Ol.layer
+   * @param lyr_def - Layer definition object
+   * @returns Ol Image or Tile layer
+   * Parse definition object to create ImageStatic Ol.layer
    */
   createStaticImageLayer(lyr_def) {
     const legends = this.getLegends(lyr_def);
@@ -318,8 +317,8 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @description  Parse definition object to create Sparql layer
+   * @param lyr_def - Layer definition object
+   * Parse definition object to create Sparql layer
    */
   async createSparqlLayer(
     lyr_def
@@ -355,6 +354,11 @@ export class HsCompositionsLayerParserService {
     return lyr;
   }
 
+  /**
+   * @public
+   * @param lyr_def - Layer definition object
+   * Get layer legends
+   */
   getLegends(lyr_def): string[] {
     if (lyr_def.legends) {
       return lyr_def.legends.map((legend) => decodeURIComponent(legend));
@@ -364,9 +368,9 @@ export class HsCompositionsLayerParserService {
 
   /**
    * @public
-   * @param {object} lyr_def Layer definition object
-   * @returns {ol.layer.Vector|Function} Either valid vector layer or function for creation of other supported vector file types)
-   * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
+   * @param lyr_def - Layer definition object
+   * @returns Either valid vector layer or function for creation of other supported vector file types)
+   * Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
   async createVectorLayer(
     lyr_def,

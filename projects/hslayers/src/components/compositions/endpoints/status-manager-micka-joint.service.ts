@@ -9,39 +9,34 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsStatusManagerService} from './compositions-status-manager.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsToastService} from '../../layout/toast/toast.service';
-import {HsUtilsService} from '../../utils/utils.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsStatusManagerMickaJointService {
   constructor(
-    public HsCompositionsStatusManagerService: HsCompositionsStatusManagerService,
-    public HsCompositionsMickaService: HsCompositionsMickaService,
-    public HsCompositionsMapService: HsCompositionsMapService,
-    public HsCompositionsParserService: HsCompositionsParserService,
-    public HsUtilsService: HsUtilsService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService,
-    public HsCommonEndpointsService: HsCommonEndpointsService
+    private hsCompositionsStatusManagerService: HsCompositionsStatusManagerService,
+    private hsCompositionsMickaService: HsCompositionsMickaService,
+    private hsCompositionsParserService: HsCompositionsParserService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService
   ) {}
   /**
    * @public
-   * @description Load list of compositions according to current
+   * Load list of compositions according to current
    * filter values and pager position (filter, keywords, current
    * extent, start composition, compositions number per page).
    * Display compositions extent in map. Loops through the existing
    * list of compositions, and when a composition is
    * found in statusmanagers list, then it becomes editable.
-   * @param ds
-   * @param params
-   * @param bbox
+   * @param ds - Datasource selected
+   * @param params - HTML query params
+   * @param bbox - Bounding box
    */
   loadList(
     ds: HsEndpoint,
@@ -50,56 +45,56 @@ export class HsCompositionsStatusManagerMickaJointService {
     bbox,
     app: string
   ): Observable<any> {
-    const Observable = this.HsCompositionsMickaService.loadList(
-      ds,
-      params,
-      extentFeatureCreated,
-      bbox,
-      app
-    ).pipe(
-      map((response: any) => {
-        this.HsCompositionsStatusManagerService.loadList(
-          ds,
-          params,
-          null,
-          bbox,
-          app
-        );
-      }),
-      catchError((e) => {
-        if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
-          (<EndpointErrorHandler>ds.onError?.compositionLoad).handle(ds, e);
-          return of(e);
-        }
-        switch (ds.onError?.compositionLoad) {
-          case EndpointErrorHandling.ignore:
-            break;
-          case EndpointErrorHandling.toast:
-          default:
-            this.HsToastService.createToastPopupMessage(
-              this.HsLanguageService.getTranslation(
-                'COMPOSITIONS.errorWhileRequestingCompositions'
-              ),
-              ds.title +
-                ': ' +
-                this.HsLanguageService.getTranslationIgnoreNonExisting(
-                  'ERRORMESSAGES',
-                  e.status ? e.status.toString() : e.message,
-                  {url: ds.url}
+    const Observable = this.hsCompositionsMickaService
+      .loadList(ds, params, extentFeatureCreated, bbox, app)
+      .pipe(
+        map((response: any) => {
+          this.hsCompositionsStatusManagerService.loadList(
+            ds,
+            params,
+            bbox,
+            app
+          );
+        }),
+        catchError((e) => {
+          if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
+            (<EndpointErrorHandler>ds.onError?.compositionLoad).handle(ds, e);
+            return of(e);
+          }
+          switch (ds.onError?.compositionLoad) {
+            case EndpointErrorHandling.ignore:
+              break;
+            case EndpointErrorHandling.toast:
+            default:
+              this.hsToastService.createToastPopupMessage(
+                this.hsLanguageService.getTranslation(
+                  'COMPOSITIONS.errorWhileRequestingCompositions'
                 ),
-              app,
-              {
-                disableLocalization: true,
-                serviceCalledFrom:
-                  'HsCompositionsStatusManagerMickaJointService',
-              }
-            );
-        }
-        return of(e);
-      })
-    );
+                ds.title +
+                  ': ' +
+                  this.hsLanguageService.getTranslationIgnoreNonExisting(
+                    'ERRORMESSAGES',
+                    e.status ? e.status.toString() : e.message,
+                    {url: ds.url}
+                  ),
+                app,
+                {
+                  disableLocalization: true,
+                  serviceCalledFrom:
+                    'HsCompositionsStatusManagerMickaJointService',
+                }
+              );
+          }
+          return of(e);
+        })
+      );
     return Observable;
   }
+  /**
+   * Get information about the selected composition
+   * @param composition - Composition selected
+   * @param app - App identifier
+   */
   async getInfo(composition, app: string): Promise<any> {
     const compLinks = composition.link || composition.links;
     if (compLinks === undefined) {
@@ -110,7 +105,7 @@ export class HsCompositionsStatusManagerMickaJointService {
     let url = '';
     Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
     try {
-      info = await this.HsCompositionsParserService.loadInfo(url, app);
+      info = await this.hsCompositionsParserService.loadInfo(url, app);
       //TODO: find out if this is even available
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {
@@ -120,11 +115,11 @@ export class HsCompositionsStatusManagerMickaJointService {
       };
       return info;
     } catch (e) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation(
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileLoadingCompositionMetadata'
         ),
-        this.HsLanguageService.getTranslationIgnoreNonExisting(
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.status ? e.status.toString() : e.message,
           {url: url}
@@ -138,13 +133,23 @@ export class HsCompositionsStatusManagerMickaJointService {
     }
   }
 
+  /**
+   * Delete selected composition from endpoint database
+   * @param endpoint - Endpoint selected
+   * @param composition - Composition to be deleted
+   * @param app - App identifier
+   */
   async delete(endpoint, composition, app): Promise<void> {
-    await this.HsCompositionsStatusManagerService.delete(
+    await this.hsCompositionsStatusManagerService.delete(
       endpoint,
       composition,
       app
     );
   }
+  /**
+   * Get composition urls
+   * @param compData - Composition data
+   */
   getCompositionUrls(compData: any): string | Array<string> {
     if (typeof compData == 'string') {
       return compData;

@@ -21,6 +21,7 @@ import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig} from '../../../../config.service';
+import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
@@ -42,7 +43,8 @@ class HsCommonLaymanServiceMock {
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<any> = new Subject();
+  endpointsFilled: Subject<{endpoints: HsEndpoint[]; app: string}> =
+    new Subject();
   endpoints = [];
 }
 
@@ -125,7 +127,7 @@ describe('add-layers-vector', () => {
     component.data.srs = '';
     component.data.extract_styles = false;
 
-    const layer: Layer<Source> = await service.addNewLayer(component.data);
+    const layer: Layer<Source> = await service.addNewLayer(component.data, '');
     expect(layer).toBeDefined();
     expect(getTitle(layer)).toEqual('Cancer rates');
   });

@@ -93,10 +93,10 @@ export class HsCatalogueListItemComponent implements OnInit {
   }
 
   /**
-   * For a stringified type of service, it returns its description
-   * @param module -
-   * @param text -
-   * @returns A brief description of a given type with its main advantage and disadvantage notes
+   * Translate string value to the selected UI language
+   * @param module - Locales json key
+   * @param text - Locales json key value
+   * @returns Translated text value
    */
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);

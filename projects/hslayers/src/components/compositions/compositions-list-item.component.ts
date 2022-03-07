@@ -11,19 +11,19 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsToastService} from '../layout/toast/toast.service';
 @Component({
   selector: 'hs-compositions-list-item',
-  templateUrl: 'compositions-list-item.html',
+  templateUrl: 'compositions-list-item.component.html',
 })
 export class HsCompositionsListItemComponent {
   @Input() composition;
   @Input() selectedCompId;
   @Input() app = 'default';
   constructor(
-    public hsCompositionsService: HsCompositionsService,
-    public hsLayoutService: HsLayoutService,
-    public hsToastService: HsToastService,
-    public hsDialogContainerService: HsDialogContainerService,
-    public hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService
+    private hsCompositionsService: HsCompositionsService,
+    private hsLayoutService: HsLayoutService,
+    private hsToastService: HsToastService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsConfig: HsConfig,
+    private hsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -43,17 +43,20 @@ export class HsCompositionsListItemComponent {
       });
   }
   /**
-   * @param record Composition to show details
+   * @param record - Composition to show details
    * Load info about composition through service and display composition info dialog
    */
   async detailComposition(record): Promise<void> {
-    const info = await this.hsCompositionsService.getCompositionInfo(record);
+    const info = await this.hsCompositionsService.getCompositionInfo(
+      record,
+      this.app
+    );
     if (info !== undefined) {
       this.infoDialogBootstrap(info);
     }
   }
   /**
-   * @param record Composition to share
+   * @param record - Composition to share
    * Prepare share object on server and display share dialog to share composition
    */
   async shareComposition(record): Promise<void> {
@@ -85,8 +88,8 @@ export class HsCompositionsListItemComponent {
     }
   }
   /**
-   * @param composition Composition selected for deletion
-   * @description Display delete dialog of composition
+   * @param composition - Composition selected for deletion
+   * Display delete dialog of composition
    */
   confirmDelete(composition): void {
     if (!composition.editable) {
@@ -95,7 +98,7 @@ export class HsCompositionsListItemComponent {
     this.deleteDialogBootstrap(composition);
   }
   /**
-   * @param composition
+   * @param composition -
    */
   deleteDialogBootstrap(composition): void {
     this.hsDialogContainerService.create(
@@ -107,8 +110,8 @@ export class HsCompositionsListItemComponent {
     );
   }
   /**
-   * @param record
-   * @param url
+   * @param record -
+   * @param url -
    */
   shareDialogBootstrap(record, url): void {
     this.hsDialogContainerService.create(
@@ -125,6 +128,11 @@ export class HsCompositionsListItemComponent {
       this.app
     );
   }
+
+  /**
+   * Display composition info dialog
+   * @param info - Composition info
+   */
   infoDialogBootstrap(info): void {
     this.hsDialogContainerService.create(
       HsCompositionsInfoDialogComponent,
@@ -133,5 +141,13 @@ export class HsCompositionsListItemComponent {
       },
       this.app
     );
+  }
+
+  /**
+   * Get composition common id
+   * @param composition - Composition item
+   */
+  getCommonId(composition): string {
+    return this.hsCompositionsService.commonId(composition);
   }
 }

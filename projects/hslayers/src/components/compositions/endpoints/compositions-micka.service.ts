@@ -1,10 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Observable, Subscription, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
 
-import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from './../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
@@ -16,16 +15,21 @@ import {addExtentFeature} from '../../../common/extent-utils';
   providedIn: 'root',
 })
 export class HsCompositionsMickaService {
-  listLoading: Subscription;
   constructor(
-    public HsCompositionsParserService: HsCompositionsParserService,
     private $http: HttpClient,
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    private hsMapService: HsMapService,
+    private hsUtilsService: HsUtilsService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService
   ) {}
 
+  /**
+   * Get Micka compositions query url
+   * @param endpoint - Micka endpoint selected
+   * @param params - HTTP request query params
+   * @param bbox - Bounding box
+   * @param app - App identifier
+   */
   getCompositionsQueryUrl(endpoint, params, bbox, app: string): string {
     const query = params.query;
     const bboxDelimiter =
@@ -78,16 +82,22 @@ export class HsCompositionsMickaService {
       params.start +
       '&limit=' +
       params.limit;
-    tmp = this.HsUtilsService.proxify(tmp, app);
+    tmp = this.hsUtilsService.proxify(tmp, app);
     return tmp;
   }
+  /**
+   * Middleware function before returning compositions list to the rest of the app
+   * @param endpoint - Micka endpoint selected
+   * @param response - HTTP request response
+   * @param app - App identifier
+   */
   compositionsReceived(endpoint: HsEndpoint, response: any, app: string): void {
     if (!response.records) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation('COMMON.warning'),
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation('COMMON.warning'),
         endpoint.title +
           ': ' +
-          this.HsLanguageService.getTranslation('COMMON.noDataReceived'),
+          this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
         app,
         {
           disableLocalization: true,
@@ -114,7 +124,7 @@ export class HsCompositionsMickaService {
       if (response.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.HsMapService.getCurrentProj(app)
+          this.hsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
           record.featureId = extentFeature.getId();
@@ -124,6 +134,14 @@ export class HsCompositionsMickaService {
     }
   }
 
+  /**
+   * Load composition list from the external Micka server
+   * @param endpoint - Micka endpoint selected
+   * @param params - HTTP request query params
+   * @param extentFeatureCreated - Function for creating extent vector feature that will reference all listed composition from the response
+   * @param bbox - Bounding box
+   * @param app - App identifier
+   */
   loadList(
     endpoint: HsEndpoint,
     params: any,
@@ -146,13 +164,13 @@ export class HsCompositionsMickaService {
           this.compositionsReceived(endpoint, response, app);
         }),
         catchError((e) => {
-          this.HsToastService.createToastPopupMessage(
-            this.HsLanguageService.getTranslation(
+          this.hsToastService.createToastPopupMessage(
+            this.hsLanguageService.getTranslation(
               'COMPOSITIONS.errorWhileRequestingCompositions'
             ),
             endpoint.title +
               ': ' +
-              this.HsLanguageService.getTranslationIgnoreNonExisting(
+              this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status ? e.status.toString() : e.message,
                 {url: url}
@@ -170,11 +188,22 @@ export class HsCompositionsMickaService {
     return endpoint.httpCall;
   }
 
+  /**
+   * Reset Micka composition paging values
+   * @param endpoint - Micka endpoint selected
+   * @param app - App identifier
+   */
   resetCompositionCounter(endpoint) {
     endpoint.compositionsPaging.start = 0;
     endpoint.compositionsPaging.next = endpoint.compositionsPaging.limit;
     endpoint.compositionsPaging.matched = 0;
   }
+
+  /**
+   * Check if query params are correct and defined
+   * @param endpoint - Micka endpoint selected
+   * @param params - HTTP request query params
+   */
   checkForParams(endpoint: HsEndpoint, params: any): any {
     if (params.sortBy == undefined || params.sortBy === 'None') {
       params.sortBy = 'date:D';

@@ -20,28 +20,29 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsCompositionsStatusManagerService {
   constructor(
-    public HsStatusManagerService: HsStatusManagerService,
-    public HsConfig: HsConfig,
-    public HsUtilsService: HsUtilsService,
+    private hsStatusManagerService: HsStatusManagerService,
+    private hsConfig: HsConfig,
+    private hsUtilsService: HsUtilsService,
     private $http: HttpClient,
-    public HsEventBusService: HsEventBusService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    private hsEventBusService: HsEventBusService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService
   ) {}
   /**
    * @public
-   * @description Load list of compositions according to current
+   * Load list of compositions according to current
    * filter values and pager position (filter, keywords, current
    * extent, start composition, compositions number per page).
    * Display compositions extent in map. Loops through the existing
    * list of compositions, and when a composition is
    * found in statusmanagers list, then it becomes editable.
-   * @param ds
-   * @param params
-   * @param bbox
+   * @param ds - Datasource selected
+   * @param params - HTML query params
+   * @param bbox - Bounding box
+   * @param app - App identifier
    */
-  loadList(ds, params, extentFeatureCreated, bbox, app: string) {
-    let url = this.HsStatusManagerService.endpointUrl(app);
+  loadList(ds, params, bbox, app: string) {
+    let url = this.hsStatusManagerService.endpointUrl(app);
     const query = params.query;
     const textFilter =
       query && query.title !== undefined && query.title != ''
@@ -49,13 +50,13 @@ export class HsCompositionsStatusManagerService {
         : '';
     url +=
       '?request=list&project=' +
-      encodeURIComponent(this.HsConfig.get(app).project_name) +
+      encodeURIComponent(this.hsConfig.get(app).project_name) +
       '&extent=' +
       bbox.join(',') +
       textFilter +
       '&start=0&limit=1000&sort=' +
       getStatusSortAttr(params.sortBy);
-    url = this.HsUtilsService.proxify(url, app);
+    url = this.hsUtilsService.proxify(url, app);
     if (ds.listLoading) {
       ds.listLoading.unsubscribe();
       delete ds.listLoading;
@@ -73,13 +74,13 @@ export class HsCompositionsStatusManagerService {
             break;
           case EndpointErrorHandling.toast:
           default:
-            this.HsToastService.createToastPopupMessage(
-              this.HsLanguageService.getTranslation(
+            this.hsToastService.createToastPopupMessage(
+              this.hsLanguageService.getTranslation(
                 'COMPOSITIONS.errorWhileRequestingCompositions'
               ),
               ds.title +
                 ': ' +
-                this.HsLanguageService.getTranslationIgnoreNonExisting(
+                this.hsLanguageService.getTranslationIgnoreNonExisting(
                   'ERRORMESSAGES',
                   e.status ? e.status.toString() : e.message,
                   {url: url}
@@ -120,13 +121,13 @@ export class HsCompositionsStatusManagerService {
             }
             if (record.link == undefined) {
               record.link =
-                this.HsStatusManagerService.endpointUrl(app) +
+                this.hsStatusManagerService.endpointUrl(app) +
                 '?request=load&id=' +
                 record.id;
             }
             if (record.thumbnail == undefined) {
               record.thumbnail =
-                this.HsStatusManagerService.endpointUrl(app) +
+                this.hsStatusManagerService.endpointUrl(app) +
                 '?request=loadthumb&id=' +
                 record.id;
             }
@@ -148,21 +149,28 @@ export class HsCompositionsStatusManagerService {
     );
   }
 
+  /**
+   * Delete selected composition
+   * @param endpoint - Endpoint selected
+   * @param composition - Composition to be deleted
+   * @param app - App identifier
+   */
   async delete(endpoint, composition, app: string): Promise<void> {
     let url =
-      this.HsStatusManagerService.endpointUrl(app) +
+      this.hsStatusManagerService.endpointUrl(app) +
       '?request=delete&id=' +
       composition.id +
       '&project=' +
-      encodeURIComponent(this.HsConfig.get(app).project_name);
-    url = this.HsUtilsService.proxify(url, app);
+      encodeURIComponent(this.hsConfig.get(app).project_name);
+    url = this.hsUtilsService.proxify(url, app);
     await lastValueFrom(this.$http.get(url));
-    this.HsEventBusService.compositionDeletes.next(composition);
+    this.hsEventBusService.compositionDeletes.next(composition);
   }
 }
 
 /**
- * @param sortBy
+ * Get status manager sort attribute value
+ * @param sortBy - Sorting value
  */
 function getStatusSortAttr(sortBy) {
   const sortMap = {
