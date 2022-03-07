@@ -10,7 +10,6 @@ import {HsLayerSelectorService} from '../editor/layer-selector.service';
 })
 export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'opacity-widget';
-
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
     private hsEventBusService: HsEventBusService
@@ -27,7 +26,7 @@ export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     this.olLayer().setOpacity(newValue);
-    this.hsEventBusService.compositionEdits.next();
+    this.hsEventBusService.compositionEdits.next(this.data.app);
   }
 
   get opacity() {

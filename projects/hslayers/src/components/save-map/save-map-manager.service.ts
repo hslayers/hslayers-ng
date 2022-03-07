@@ -75,7 +75,7 @@ export class HsSaveMapManagerService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
   ) {
-    this.HsEventBusService.compositionLoads.subscribe((data) => {
+    this.HsEventBusService.compositionLoads.subscribe(({data}) => {
       if (data.error == undefined) {
         const responseData = data.data ?? data;
         this.compoData.id = responseData.id;
@@ -231,7 +231,7 @@ export class HsSaveMapManagerService {
             }
           } else {
             this.HsEventBusService.compositionLoading.next(compInfo);
-            this.HsEventBusService.compositionLoads.next(compInfo);
+            this.HsEventBusService.compositionLoads.next({data: compInfo, app});
           }
           //const saveStatus = this.status ? 'ok' : 'not-saved';
           //this.statusData.success = this.status;

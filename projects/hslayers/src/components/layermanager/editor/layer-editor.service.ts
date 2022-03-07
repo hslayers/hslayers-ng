@@ -133,7 +133,7 @@ export class HsLayerEditorService {
         ),
         app
       );
-      this.HsEventBusService.compositionEdits.next();
+      this.HsEventBusService.compositionEdits.next({app});
     } else {
       return getCluster(layer);
     }

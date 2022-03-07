@@ -14,6 +14,7 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -43,7 +44,7 @@ class HsCommonLaymanServiceMock {
 
 class HsEventBusServiceMock {
   constructor() {}
-  compositionLoads: Subject<any> = new Subject();
+  compositionLoads: Subject<{data: any; app: string}> = new Subject();
   mapResets: Subject<any> = new Subject();
   mainPanelChanges: Subject<any> = new Subject();
   olMapLoads: Subject<{map; app}> = new Subject();
@@ -52,7 +53,8 @@ class HsEventBusServiceMock {
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<any> = new Subject();
+  endpointsFilled: Subject<{endpoints: HsEndpoint[]; app: string}> =
+    new Subject();
 }
 
 describe('HsSaveMap', () => {

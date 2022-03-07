@@ -324,7 +324,7 @@ export class HsLayerManagerService {
     if (!suspendEvents) {
       this.HsEventBusService.layerAdditions.next(layerDescriptor);
       this.HsEventBusService.layerManagerUpdates.next({layer, app});
-      this.HsEventBusService.compositionEdits.next();
+      this.HsEventBusService.compositionEdits.next({app});
     }
   }
 
@@ -632,7 +632,7 @@ export class HsLayerManagerService {
     );
     this.HsEventBusService.layerManagerUpdates.next(e.element);
     this.HsEventBusService.layerRemovals.next(e.element);
-    this.HsEventBusService.compositionEdits.next();
+    this.HsEventBusService.compositionEdits.next({app});
     const layers = this.HsMapService.getMap(app).getLayers().getArray();
     if (this.apps[app].zIndexValue > layers.length) {
       this.apps[app].zIndexValue--;

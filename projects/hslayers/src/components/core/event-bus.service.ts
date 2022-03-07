@@ -42,9 +42,9 @@ export class HsEventBusService {
    * Fires when composition is loaded or not loaded with Error message
    * @event compositionLoads
    */
-  compositionLoads: Subject<any> = new Subject();
+  compositionLoads: Subject<{data: any; app: string}> = new Subject();
   layerRemovals: Subject<Layer<Source>> = new Subject();
-  compositionEdits: Subject<void> = new Subject();
+  compositionEdits: Subject<{app: string}> = new Subject();
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
