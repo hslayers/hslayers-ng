@@ -25,11 +25,11 @@ export class HsCompositionsOverwriteDialogComponent
 
   /**
    * @public
-   * @description Load new composition without saving old composition
+   * Load new composition without saving old composition
    */
   overwrite() {
     this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.compositionToLoad.url,
+      this.HsCompositionsService.get(this.data.app).compositionToLoad.url,
       this.data.app,
       true
     );
@@ -38,7 +38,7 @@ export class HsCompositionsOverwriteDialogComponent
 
   /**
    * @public
-   * @description Save currently loaded composition first
+   * Save currently loaded composition first
    */
   save() {
     this.HsSaveMapManagerService.openPanel(null, this.data.app);
@@ -47,11 +47,11 @@ export class HsCompositionsOverwriteDialogComponent
 
   /**
    * @public
-   * @description Load new composition (with service_parser Load function) and merge it with old composition
+   * Load new composition (with service_parser Load function) and merge it with old composition
    */
   add() {
     this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.compositionToLoad.url,
+      this.HsCompositionsService.get(this.data.app).compositionToLoad.url,
       this.data.app,
       false
     );

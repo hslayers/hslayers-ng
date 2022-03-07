@@ -10,33 +10,36 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
-import {HsUtilsService} from '../../utils/utils.service';
 import {addExtentFeature} from '../../../common/extent-utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsLaymanService {
-  data: any = {};
   constructor(
     private $http: HttpClient,
-    public hsUtilsService: HsUtilsService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    public hsCompositionsParserService: HsCompositionsParserService,
-    public hsEventBusService: HsEventBusService,
-    public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService,
-    public hsCommonEndpointsService: HsCommonEndpointsService
+    private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCompositionsParserService: HsCompositionsParserService,
+    private hsEventBusService: HsEventBusService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService,
+    private hsMapService: HsMapService
   ) {}
 
+  /**
+   * Load composition list from the external Layman server
+   * @param endpoint - Layman endpoint selected
+   * @param params - HTTP request query params
+   * @param extentFeatureCreated - Function for creating extent vector feature that will reference all listed composition from the response
+   * @param _bbox - Bounding box
+   * @param app - App identifier
+   */
   loadList(
     endpoint: HsEndpoint,
     params,
@@ -44,7 +47,7 @@ export class HsCompositionsLaymanService {
     _bbox,
     app: string
   ): Observable<any> {
-    endpoint.getCurrentUserIfNeeded(endpoint);
+    endpoint.getCurrentUserIfNeeded(endpoint, app);
     endpoint.compositionsPaging.loaded = false;
 
     const query = params.query.title ? params.query.title : '';
@@ -136,6 +139,12 @@ export class HsCompositionsLaymanService {
       );
     return endpoint.listLoading;
   }
+  /**
+   * Middleware function before returning compositions list to the rest of the app
+   * @param endpoint - Layman endpoint selected
+   * @param response - HTTP request response
+   * @param app - App identifier
+   */
   compositionsReceived(endpoint: HsEndpoint, response, app: string): void {
     if (response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
@@ -176,12 +185,22 @@ export class HsCompositionsLaymanService {
       return tmp;
     });
   }
+  /**
+   * Delete selected composition from Layman database
+   * @param endpoint - Layman endpoint selected
+   * @param composition - Composition to be deleted
+   */
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     await lastValueFrom(this.$http.delete(url, {withCredentials: true}));
     this.hsEventBusService.compositionDeletes.next(composition);
   }
 
+  /**
+   * Get information about the selected composition
+   * @param composition - Composition selected
+   * @param app - App identifier
+   */
   async getInfo(composition: any, app: string): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
@@ -220,11 +239,22 @@ export class HsCompositionsLaymanService {
     return info;
   }
 
-  resetCompositionCounter(endpoint: HsEndpoint): void {
+  /**
+   * Reset Layman composition paging values
+   * @param endpoint - Layman endpoint selected
+   * @param app - App identifier
+   */
+  resetCompositionCounter(endpoint: HsEndpoint, app: string): void {
     endpoint.compositionsPaging.start = 0;
-    endpoint.compositionsPaging.next = this.data.limit;
+    endpoint.compositionsPaging.next = endpoint.compositionsPaging.limit;
     endpoint.compositionsPaging.matched = 0;
   }
+  /**
+   * Display warning toast about some error while requesting compositions
+   * @param endpoint - Layman endpoint selected
+   * @param message - Message to be displayed when warning is issued
+   * @param app - App identifier
+   */
   displayWarningToast(
     endpoint: HsEndpoint,
     message: string,

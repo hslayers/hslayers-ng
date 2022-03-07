@@ -30,32 +30,30 @@
     <div class="mx-3 ps-1 d-flex justify-content-between">
         <div class="input-group" style="width: 55% !important;">
             <input type="search" class="form-control border-end-0" [placeholder]="'COMMON.search'|translate"
-                name="search" [(ngModel)]="hsCompositionsCatalogueService.data.query.title"
-                (ngModelChange)="loadFilteredCompositions()">
+                name="search" [(ngModel)]="catalogueRef.data.query.title" (ngModelChange)="loadFilteredCompositions()">
             <button class="input-group-text text-secondary border-start-0" (click)="loadFilteredCompositions()">
                 <i class="icon-search icon-primary"></i>
             </button>
         </div>
-        <hs-layman-current-user [app]="app" [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+        <hs-layman-current-user [app]="data.app" [endpoint]="getLaymanEndpoint()">
+        </hs-layman-current-user>
     </div>
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
             <div class="input-group-text border-0">
-                <input type="checkbox" [(ngModel)]="hsCompositionsCatalogueService.filterByExtent"
-                    (change)='loadFilteredCompositions()' name="hsCompositionsCatalogueService.filterByExtent">
+                <input type="checkbox" [(ngModel)]="catalogueRef.filterByExtent" (change)='loadFilteredCompositions()'
+                    name="catalogueRef.filterByExtent">
                 <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
-            <div class="input-group-text border-0 ms-1"
-                *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
-                <input type="checkbox" [(ngModel)]="hsCompositionsCatalogueService.filterByOnlyMine"
-                    (change)='loadFilteredCompositions()' name="hsCompositionsCatalogueService.filterByOnlyMine">
+            <div class="input-group-text border-0 ms-1" *ngIf="getLaymanEndpoint() && !isLaymanGuest()">
+                <input type="checkbox" [(ngModel)]="catalogueRef.filterByOnlyMine" (change)='loadFilteredCompositions()'
+                    name="catalogueRef.filterByOnlyMine">
                 <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
             </div>
         </div>
         <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
             <button class="btn btn-light hs-white-background hs-custom-toggle" (click)="openOptionsMenu()"
-                ngbDropdownToggle>{{hsCompositionsService.translateString('COMMON',
-                optionsButtonLabel)}}</button>
+                ngbDropdownToggle>{{translateString('COMMON', optionsButtonLabel)}}</button>
             <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1"
                 style="min-width: 23rem; max-width: 23rem;  overflow: visible" aria-labelledby="filtersDropdown">
                 <table class="p-1 ps-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
@@ -66,12 +64,12 @@
                                     </td>
                                     <td>
                                         <select class="form-control hs-background-alfa ps-1" name="type"
-                                            [(ngModel)]="hsCompositionsCatalogueService.data.type"
+                                            [(ngModel)]="catalogueRef.data.type"
                                             (change)="loadFilteredCompositions()"
                                             style="min-width: 11rem; max-width: 11rem;border:0px">
-                                            <option *ngFor="let type of hsCompositionsCatalogueService.types"
+                                            <option *ngFor="let type of catalogueRef.types"
                                                 [ngValue]="type.value">
-                                                {{hsCompositionsService.translateString('COMPOSITONTYPES', type.name)}}</option>
+                                                {{translateString('COMPOSITONTYPES', type.name)}}</option>
                                         </select>
                                     </td>
                                 </tr> -->
@@ -87,11 +85,10 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="keywords" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width: 15rem">
-                                    <li
-                                        *ngFor="let keyword of hsCompositionsCatalogueService.data.keywords, let index = index;">
+                                    <li *ngFor="let keyword of catalogueRef.data.keywords, let index = index;">
                                         <label style="cursor: pointer;"><input class="me-2" type="checkbox"
                                                 [(ngModel)]="keyword.selected" name="keyword[index]"
-                                                (change)="loadFilteredCompositions()">{{hsCompositionsService.translateString('COMPOSITONKEYWORDS',
+                                                (change)="loadFilteredCompositions()">{{translateString('COMPOSITONKEYWORDS',
                                             keyword.name)}}</label>
                                     </li>
                                 </ul>
@@ -109,11 +106,10 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="inspireThemes" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width: 20rem">
-                                    <li
-                                        *ngFor="let theme of hsCompositionsCatalogueService.data.themes, let index = index;">
+                                    <li *ngFor="let theme of catalogueRef.data.themes, let index = index;">
                                         <label style="cursor: pointer;"><input class="me-2" type="checkbox"
                                                 [(ngModel)]="theme.selected" name="theme[index]"
-                                                (change)="loadFilteredCompositions()">{{hsCompositionsService.translateString('COMPOSITONINSPIRETHEMES',
+                                                (change)="loadFilteredCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
                                             theme.name)}}</label>
                                     </li>
                                 </ul>
@@ -128,16 +124,15 @@
                                 <button type="button" ngbDropdownToggle
                                     class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 ps-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
-                                    {{hsCompositionsService.translateString('COMPOSITONSORTVALUES',
-                                    hsCompositionsCatalogueService.data.sortBy.name)}}
+                                    {{translateString('COMPOSITONSORTVALUES',
+                                    catalogueRef.data.sortBy.name)}}
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="sortBy" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
-                                    <li
-                                        *ngFor="let item of hsCompositionsCatalogueService.sortByValues, let index = index;">
+                                    <li *ngFor="let item of catalogueRef.sortByValues, let index = index;">
                                         <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="sort-index" [checked]="(index === 0)"
-                                                (change)="sortByValueChanged(item);sortByDrop.close()">{{hsCompositionsService.translateString('COMPOSITONSORTVALUES',
+                                                (change)="sortByValueChanged(item);sortByDrop.close()">{{translateString('COMPOSITONSORTVALUES',
                                             item.name)}}</label>
                                     </li>
                                 </ul>
@@ -159,9 +154,9 @@
         <div class="card d-flex" style="font-size: 1rem !important;">
             <div class="card-body">
                 <ul class="list-group">
-                    <li *ngFor="let composition of hsCompositionsCatalogueService.compositionEntries"
-                        [hidden]="hsCompositionsCatalogueService.dataLoading" class="list-group-item clearfix"
-                        style="cursor: pointer;" [ngClass]="{'hs-endpoint-item-active' : composition.highlighted}"
+                    <li *ngFor="let composition of catalogueRef.compositionEntries" [hidden]="catalogueRef.dataLoading"
+                        class="list-group-item clearfix" style="cursor: pointer;"
+                        [ngClass]="{'hs-endpoint-item-active' : composition.highlighted}"
                         (mouseover)="highlightComposition(composition, true)"
                         (mouseleave)="highlightComposition(composition, false)"
                         (click)="compositionClicked(composition)" data-container="body" data-placement="bottom"
@@ -170,17 +165,16 @@
                             [selectedCompId]="selectedCompId">
                         </hs-compositions-list-item>
                     </li>
-                    <li class="list-group-item text-primary text-center py-2"
-                        *ngIf="hsCompositionsCatalogueService.dataLoading"><img class="pe-2"
-                            [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" />{{'COMMON.loading' | translate}}</li>
-                    <li [hidden]="hsCompositionsCatalogueService.compositionEntries.length > 0 || hsCompositionsCatalogueService.dataLoading"
+                    <li class="list-group-item text-primary text-center py-2" *ngIf="catalogueRef.dataLoading"><img
+                            class="pe-2" [src]="getAjaxLoaderIcon()" />{{'COMMON.loading' |
+                        translate}}</li>
+                    <li [hidden]="catalogueRef.compositionEntries.length > 0 || catalogueRef.dataLoading"
                         class="list-group-item">
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                 </ul>
             </div>
-            <ng-container
-                *ngIf="hsCompositionsCatalogueService.matchedRecords !== 0 && !hsCompositionsCatalogueService.dataLoading">
-                <hs-pager [pagerService]="hsCompositionsCatalogueService"></hs-pager>
+            <ng-container *ngIf="catalogueRef.matchedRecords !== 0 && !catalogueRef.dataLoading">
+                <hs-pager [app]="data.app" [pagerService]="hsCompositionsCatalogueService"></hs-pager>
             </ng-container>
         </div>
     </div>

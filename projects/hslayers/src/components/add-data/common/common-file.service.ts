@@ -62,8 +62,9 @@ export class HsAddDataCommonFileService {
   /**
    * From available endpoints picks one
    * - either Layman endpoint if available or any other if not
+   * @param app - App identifier
    */
-  pickEndpoint(): void {
+  pickEndpoint(app: string): void {
     const endpoints = this.hsCommonEndpointsService.endpoints;
     if (endpoints && endpoints.length > 0) {
       const laymans = endpoints.filter((ep) => ep.type == 'layman');
@@ -73,7 +74,7 @@ export class HsAddDataCommonFileService {
         this.endpoint = endpoints[0];
       }
       if (this.endpoint && this.endpoint.type == 'layman') {
-        this.endpoint.getCurrentUserIfNeeded(this.endpoint);
+        this.endpoint.getCurrentUserIfNeeded(this.endpoint, app);
       }
     }
   }
@@ -257,7 +258,7 @@ export class HsAddDataCommonFileService {
     try {
       this.loadingToLayman = true;
       if (!this.endpoint) {
-        this.pickEndpoint();
+        this.pickEndpoint(app);
       }
       if (!this.isSRSSupported(data)) {
         throw new Error(
