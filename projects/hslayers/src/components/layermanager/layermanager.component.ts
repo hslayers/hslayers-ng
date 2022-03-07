@@ -103,6 +103,7 @@ export class HsLayerManagerComponent
   getTitle = getTitle;
   getThumbnail = getThumbnail;
   name = 'layermanager';
+  appRef;
   private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsCore: HsCoreService,
@@ -173,6 +174,7 @@ export class HsLayerManagerComponent
   }
 
   ngOnInit(): void {
+    this.appRef = this.hsLayerManagerService.get(this.data.app);
     this.hsSidebarService.addButton(
       {
         panel: 'layermanager',

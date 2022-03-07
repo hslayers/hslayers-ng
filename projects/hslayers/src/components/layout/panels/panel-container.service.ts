@@ -2,7 +2,10 @@ import {Injectable, Type} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
 import {HsPanelComponent} from './panel-component.interface';
-import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
+import {
+  HsPanelContainerParams,
+  HsPanelContainerServiceInterface,
+} from './panel-container.service.interface';
 import {HsPanelItem} from './panel-item';
 import {KeyNumberDict} from '../../../config.service';
 
@@ -10,12 +13,17 @@ import {KeyNumberDict} from '../../../config.service';
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface {
-  panels: HsPanelComponent[] = [];
-  panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
-  panelDestroyObserver: Subject<any> = new Subject();
-
+  implements HsPanelContainerServiceInterface
+{
+  apps: any = {default: new HsPanelContainerParams()};
   constructor() {}
+
+  get(app: string): HsPanelContainerParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsPanelContainerParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
 
   /**
    * Create new dynamic panels. They are replayed in the PanelContainerComponent
@@ -23,20 +31,22 @@ export class HsPanelContainerService
    * container component is even added to the dom.
    * @param component PanelComponent class
    * @param data Extra data to give the new panel
+   * @param app App id
    * @param panelObserver ReplaySubject to which you need to add the panel components. This is used when panels in this service are used only sometimes (for particular layers)
    */
   create(
     component: Type<any>,
     data: any,
+    app: string,
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
-    (panelObserver ?? this.panelObserver).next(
+    (panelObserver ?? this.get(app).panelObserver).next(
       new HsPanelItem(component, data)
     );
   }
 
-  destroy(component: HsPanelComponent): void {
-    this.panelDestroyObserver.next(component);
+  destroy(component: HsPanelComponent, app: string): void {
+    this.get(app).panelDestroyObserver.next(component);
   }
 
   /**

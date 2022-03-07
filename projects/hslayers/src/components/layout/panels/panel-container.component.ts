@@ -44,27 +44,29 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     private HsConfig: HsConfig
   ) {}
   ngOnDestroy(): void {
-    if (this.service.panelObserver && this.reusePanelObserver !== true) {
-      this.service.panelObserver.complete();
-      this.service.panelObserver = new ReplaySubject<HsPanelItem>();
+    const appRef = this.service.get(this.app);
+    if (appRef.panelObserver && this.reusePanelObserver !== true) {
+      appRef.panelObserver.complete();
+      appRef.panelObserver = new ReplaySubject<HsPanelItem>();
     }
-    for (const p of this.service.panels) {
+    for (const p of appRef.panels) {
       if (p.cleanup) {
         p.cleanup();
       }
-      this.service.destroy(p);
+      this.service.destroy(p, this.app);
     }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
-    this.service.panels = [];
-    (this.panelObserver ?? this.service.panelObserver)
+    const appRef = this.service.get(this.app);
+    appRef.panels = [];
+    (this.panelObserver ?? appRef.panelObserver)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelItem) => {
         this.loadPanel(item);
       });
-    this.service.panelDestroyObserver
+    appRef.panelDestroyObserver
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((item: HsPanelComponent) => {
         this.destroyPanel(item);
@@ -101,6 +103,8 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     if (componentRefInstance.data == undefined) {
       componentRefInstance.data = panelItem.data || this.data;
     }
-    this.service.panels.push(componentRef.instance as HsPanelComponent);
+    this.service
+      .get(this.app)
+      .panels.push(componentRef.instance as HsPanelComponent);
   }
 }

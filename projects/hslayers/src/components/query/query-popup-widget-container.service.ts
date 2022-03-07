@@ -28,7 +28,7 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
   initWidgets(
     widgetNames: string[],
     app: string,
-    panelObserver?: ReplaySubject<HsPanelItem>,
+    panelObserver?: ReplaySubject<HsPanelItem>
   ) {
     if (widgetNames?.length > 0) {
       for (const widgetName of widgetNames) {
@@ -46,7 +46,7 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
               (widget) => widget.name == widgetName
             );
         }
-        this.create(widgetFound.component, undefined, panelObserver);
+        this.create(widgetFound.component, undefined, app, panelObserver);
       }
     }
   }
