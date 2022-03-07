@@ -59,7 +59,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
 
     this.HsEventBusService.compositionLoads
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data) => {
+      .subscribe(({data}) => {
         if (data.error !== undefined) {
           const temp_abstract = this.composition_abstract;
           const temp_title = this.composition_title;
