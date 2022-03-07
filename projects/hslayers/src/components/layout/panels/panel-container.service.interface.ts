@@ -5,16 +5,20 @@ import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelItem} from './panel-item';
 import {KeyNumberDict} from '../../../config.service';
 
+export class HsPanelContainerParams {
+  panels: HsPanelComponent[] = [];
+  panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
+  panelDestroyObserver: Subject<any> = new Subject();
+}
+
 export interface HsPanelContainerServiceInterface {
+  apps: {[id: string]: HsPanelContainerParams};
   setPanelWidth?(
     panelWidths: KeyNumberDict,
     componentRefInstance: HsPanelComponent
   );
-  panels: HsPanelComponent[];
-  panelObserver: ReplaySubject<HsPanelItem>;
-  panelDestroyObserver: Subject<any>;
+  get(app: string);
+  create(component: Type<any>, app: string, data: any): void;
 
-  create(component: Type<any>, data: any): void;
-
-  destroy(component: HsPanelComponent): void;
+  destroy(component: HsPanelComponent, app: string): void;
 }

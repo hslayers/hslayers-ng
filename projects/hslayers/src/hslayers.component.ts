@@ -43,11 +43,6 @@ import {HsPanelContainerService} from './components/layout/panels/panel-containe
   selector: 'hslayers',
   templateUrl: './hslayers.html',
   styles: [],
-  providers: [
-    HsPanelContainerService,
-    HsOverlayPanelContainerService,
-    HsToolbarPanelContainerService,
-  ],
 })
 export class HslayersComponent implements OnInit {
   @Input() config: HsConfigObject;
@@ -74,9 +69,14 @@ export class HslayersComponent implements OnInit {
    * @param panelComponent - Class defining panel
    * @param data - Extra misc data object to be stored in panel
    */
-  createPanel(name: string, panelComponent: Type<any>, data?: any): void {
+  createPanel(
+    name: string,
+    panelComponent: Type<any>,
+    app: string,
+    data?: any
+  ): void {
     if (this.hsConfig.apps[this.id].panelsEnabled[name]) {
-      this.HsPanelContainerService.create(panelComponent, data || {});
+      this.HsPanelContainerService.create(panelComponent, data || {}, app);
     }
   }
   ngOnInit(): void {
@@ -86,51 +86,95 @@ export class HslayersComponent implements OnInit {
     if (this.id == undefined) {
       this.id = 'default';
     }
-    this.createPanel('tripPlanner', HsTripPlannerComponent, {app: this.id});
-    this.createPanel('addData', HsAddDataComponent, {app: this.id});
-    this.createPanel('draw', HsDrawComponent, {app: this.id});
-    this.createPanel('search', HsSearchComponent, {app: this.id});
-    this.createPanel('feature_table', HsFeatureTableComponent, {app: this.id});
-    this.createPanel('saveMap', HsSaveMapComponent, {app: this.id});
-    this.createPanel('language', HsLanguageComponent, {app: this.id});
-    this.createPanel('info', HsQueryComponent, {app: this.id});
-    this.createPanel('permalink', HsShareComponent, {app: this.id});
-    this.createPanel('print', HsPrintComponent, {app: this.id});
-    this.createPanel('measure', HsMeasureComponent, {app: this.id});
-    this.createPanel('composition_browser', HsCompositionsComponent, {
+    this.createPanel('tripPlanner', HsTripPlannerComponent, this.id, {
       app: this.id,
     });
-    this.createPanel('legend', HsLegendComponent, {app: this.id});
-    this.createPanel('layermanager', HsLayerManagerComponent, {app: this.id});
-    this.createPanel('mapSwipe', HsMapSwipeComponent, {app: this.id});
+    this.createPanel('addData', HsAddDataComponent, this.id, {app: this.id});
+    this.createPanel('draw', HsDrawComponent, this.id, {app: this.id});
+    this.createPanel('search', HsSearchComponent, this.id, {app: this.id});
+    this.createPanel('feature_table', HsFeatureTableComponent, this.id, {
+      app: this.id,
+    });
+    this.createPanel('saveMap', HsSaveMapComponent, this.id, {app: this.id});
+    this.createPanel('language', HsLanguageComponent, this.id, {app: this.id});
+    this.createPanel('info', HsQueryComponent, this.id, {app: this.id});
+    this.createPanel('permalink', HsShareComponent, this.id, {app: this.id});
+    this.createPanel('print', HsPrintComponent, this.id, {app: this.id});
+    this.createPanel('measure', HsMeasureComponent, this.id, {app: this.id});
+    this.createPanel('composition_browser', HsCompositionsComponent, this.id, {
+      app: this.id,
+    });
+    this.createPanel('legend', HsLegendComponent, this.id, {app: this.id});
+    this.createPanel('layermanager', HsLayerManagerComponent, this.id, {
+      app: this.id,
+    });
+    this.createPanel('mapSwipe', HsMapSwipeComponent, this.id, {app: this.id});
 
-    this.HsPanelContainerService.create(HsStylerComponent, {app: this.id});
+    this.HsPanelContainerService.create(
+      HsStylerComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
 
-    this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {
-      app: this.id,
-    });
-    this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {
-      app: this.id,
-    });
-    this.hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {
-      app: this.id,
-    });
+    this.hsToolbarPanelContainerService.create(
+      HsSearchToolbarComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
+    this.hsToolbarPanelContainerService.create(
+      HsDrawToolbarComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
+    this.hsToolbarPanelContainerService.create(
+      HsMeasureToolbarComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
 
-    this.HsOverlayPanelContainerService.create(HsGeolocationComponent, {
-      app: this.id,
-    });
-    this.HsOverlayPanelContainerService.create(HsInfoComponent, {app: this.id});
-    this.HsOverlayPanelContainerService.create(HsLayerManagerGalleryComponent, {
-      app: this.id,
-    });
-    this.HsOverlayPanelContainerService.create(HsToolbarComponent, {
-      app: this.id,
-    });
+    this.HsOverlayPanelContainerService.create(
+      HsGeolocationComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
+    this.HsOverlayPanelContainerService.create(
+      HsInfoComponent,
+      {app: this.id},
+      this.id
+    );
+    this.HsOverlayPanelContainerService.create(
+      HsLayerManagerGalleryComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
+    this.HsOverlayPanelContainerService.create(
+      HsToolbarComponent,
+      {
+        app: this.id,
+      },
+      this.id
+    );
     this.hsQueryPopupService.init(this.id);
-    this.HsOverlayPanelContainerService.create(HsQueryPopupComponent, {
-      service: this.hsQueryPopupService,
-      app: this.id,
-    });
+    this.HsOverlayPanelContainerService.create(
+      HsQueryPopupComponent,
+      {
+        service: this.hsQueryPopupService,
+        app: this.id,
+      },
+      this.id
+    );
     this.hsExternalService.init(this.id);
   }
 }

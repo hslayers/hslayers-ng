@@ -17,6 +17,7 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   onlyMineFilterVisible = false;
   name = 'drawToolbar';
   getTitle = getTitle;
+  appRef;
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
@@ -26,9 +27,12 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   ) {
     super(HsLayoutService);
   }
+  ngOnInit() {
+    this.appRef = this.HsDrawService.get(this.data.app);
+  }
 
   selectionMenuToggled(): void {
-    this.setType(this.HsDrawService.type);
+    this.setType(this.appRef.type);
   }
 
   translateString(module: string, text: string): string {
@@ -36,7 +40,7 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   }
 
   toggleDrawToolbar(app: string): void {
-    this.HsDrawService.highlightDrawButton = false;
+    this.appRef.highlightDrawButton = false;
     if (
       this.HsLayoutService.get(app).layoutElement.clientWidth > 767 &&
       this.HsLayoutService.get(app).layoutElement.clientWidth < 870 &&
@@ -55,10 +59,7 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   }
 
   controlLayerListAction() {
-    if (
-      !this.HsDrawService.hasSomeDrawables &&
-      this.HsDrawService.tmpDrawLayer
-    ) {
+    if (!this.appRef.hasSomeDrawables && this.appRef.tmpDrawLayer) {
       this.HsDrawService.saveDrawingLayer(this.data.app);
     }
   }

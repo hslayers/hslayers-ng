@@ -36,8 +36,6 @@ export class HsDialogContainerService {
   }
 
   destroy(component: HsDialogComponent, app: string): void {
-    console.log('destroy', app);
-
     this.get(app).dialogDestroyObserver.next(component);
   }
 }

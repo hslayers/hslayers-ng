@@ -85,7 +85,7 @@ export class HsQueryComponent
           if (this.hsQueryBaseService.currentPanelQueryable(this.data.app)) {
             if (
               !this.hsQueryBaseService.queryActive &&
-              !this.hsDrawService.drawActive
+              !this.hsDrawService.get(app).drawActive
             ) {
               this.hsQueryBaseService.activateQueries(this.data.app);
             }

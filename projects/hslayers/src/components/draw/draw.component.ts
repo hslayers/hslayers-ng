@@ -17,7 +17,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   name = 'draw';
   selectedOption = 'draw';
-
+  appRef;
   constructor(
     public HsDrawService: HsDrawService,
     public hsLayoutService: HsLayoutService,
@@ -25,19 +25,21 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
     public hsSidebarService: HsSidebarService,
-    HsDialogContainerService: HsDialogContainerService
+    public HsDialogContainerService: HsDialogContainerService
   ) {
     super(hsLayoutService);
-    this.HsDrawService.layerMetadataDialog.subscribe(() => {
-      HsDialogContainerService.create(
+  }
+
+  ngOnInit(): void {
+    this.appRef = this.HsDrawService.get(this.data.app);
+    this.appRef.layerMetadataDialog.subscribe(() => {
+      this.HsDialogContainerService.create(
         HsDrawLayerMetadataDialogComponent,
         this.HsDrawService,
         this.data.app
       );
     });
-  }
 
-  ngOnInit(): void {
     this.hsSidebarService.addButton(
       {
         panel: 'draw',
@@ -57,7 +59,7 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   componentOptionSelected(option) {
     this.selectedOption = option;
     if (this.selectedOption == 'edit') {
-      this.HsDrawService.setType(this.HsDrawService.type, this.data.app);
+      this.HsDrawService.setType(this.appRef.type, this.data.app);
     }
   }
 }

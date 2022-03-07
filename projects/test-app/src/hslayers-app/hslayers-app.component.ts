@@ -30,7 +30,7 @@ export class HslayersAppComponent {
         name: 'default',
         panelsEnabled: {
           compositionLoadingProgress: true,
-          draw: false,
+          draw: true,
           tripPlanner: true,
           mapSwipe: true,
         },
@@ -514,6 +514,12 @@ export class HslayersAppComponent {
           '2019-04-18',
         ];
       }
+      this.HsQueryPopupWidgetContainerService.create(
+        PopupWidgetComponent,
+        app,
+        undefined
+      );
+
       //Simulating ajax
       setTimeout(() => {
         this.HsEventBusService.layerDimensionDefinitionChanges.next({
@@ -522,10 +528,6 @@ export class HslayersAppComponent {
         });
       }, 100);
     }
-    this.HsQueryPopupWidgetContainerService.create(
-      PopupWidgetComponent,
-      undefined
-    );
   }
   title = 'hslayers-workspace';
 }

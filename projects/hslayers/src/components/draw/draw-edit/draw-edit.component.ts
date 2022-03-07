@@ -28,7 +28,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   selectedType: 'difference' | 'union' | 'intersection' | 'split';
 
   selectedFeature;
-
+  appRef;
   editLayer = new VectorLayer({
     properties: {
       title: 'Layer editor helper',
@@ -47,15 +47,17 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     public hsMapService: HsMapService,
     public hsToastService: HsToastService,
     public hsEventBusService: HsEventBusService
-  ) {
-    if (this.HsDrawService.selectedLayer) {
-      this.HsDrawService.previouslySelected = this.HsDrawService.selectedLayer;
-    } else {
-      this.HsDrawService.previouslySelected = null;
-    }
-  }
+  ) {}
 
   async ngOnInit(): Promise<void> {
+    this.appRef = this.HsDrawService.get(this.app);
+
+    if (this.appRef.selectedLayer) {
+      this.appRef.previouslySelected = this.appRef.selectedLayer;
+    } else {
+      this.appRef.previouslySelected = null;
+    }
+
     await this.hsMapService.loaded(this.app);
     this.hsMapService.getMap(this.app).addLayer(this.editLayer);
     this.HsQueryVectorService.init(this.app);
@@ -111,13 +113,12 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.hsMapService.loaded(this.app).then((map) => {
       map.removeLayer(this.editLayer);
-      this.setType(this.HsDrawService.type);
+      this.setType(this.appRef.type);
       //Timeout necessary because setType triggers async deactivateDrawing
       //HsDrawService.draw needs to be null in order to change draw soruce properly
       setTimeout(() => {
-        if (this.HsDrawService.previouslySelected) {
-          this.HsDrawService.selectedLayer =
-            this.HsDrawService.previouslySelected;
+        if (this.appRef.previouslySelected) {
+          this.appRef.selectedLayer = this.appRef.previouslySelected;
           this.HsDrawService.changeDrawSource(this.app);
         } else {
           this.HsDrawService.fillDrawableLayers(this.app);
@@ -157,9 +158,9 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       this.HsQueryVectorService.apps[this.app].selector.getFeatures();
     this.selectedType = option;
 
-    if (this.HsDrawService.draw) {
+    if (this.appRef.draw) {
       const drawTypeRequired = option == 'split' ? 'LineString' : 'Polygon';
-      if (this.HsDrawService.type != drawTypeRequired) {
+      if (this.appRef.type != drawTypeRequired) {
         this.setType(drawTypeRequired);
       }
     }
@@ -241,17 +242,15 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   }
 
   selectionMenuToggled(): void {
-    this.setType(this.HsDrawService.type);
+    this.setType(this.appRef.type);
     this.editLayer.getSource().clear();
   }
 
   setType(what): void {
-    this.HsDrawService.selectedLayer = this.editLayer;
+    this.appRef.selectedLayer = this.editLayer;
 
-    this.HsQueryBaseService.selector.setActive(
-      what === this.HsDrawService.type
-    );
-    this.HsDrawService.modify.setActive(what === this.HsDrawService.type);
+    this.HsQueryBaseService.selector.setActive(what === this.appRef.type);
+    this.appRef.modify.setActive(what === this.appRef.type);
 
     const type = this.HsDrawService.setType(what, this.app);
     if (type) {
@@ -406,7 +405,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
 
   resetState() {
     this.editLayer.getSource().clear();
-    this.setType(this.HsDrawService.type);
+    this.setType(this.HsDrawService.get(this.app).type);
     this.HsQueryBaseService.apps[this.app].clear('features');
     this.HsQueryBaseService.selector.getFeatures().clear();
     this.HsQueryBaseService.selector.setActive(true);

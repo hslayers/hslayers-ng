@@ -75,27 +75,55 @@ export class HsLayerEditorComponent {
   ) {}
 
   createWidgets() {
-    this.hsWidgetContainerService.create(HsTypeWidgetComponent, {
-      app: this.app,
-    });
-    this.hsWidgetContainerService.create(HsMetadataWidgetComponent, {
-      app: this.app,
-    });
-    this.hsWidgetContainerService.create(HsScaleWidgetComponent, {
-      app: this.app,
-    });
-    this.hsWidgetContainerService.create(HsClusterWidgetComponent, {
-      app: this.app,
-    });
-    this.hsWidgetContainerService.create(HsLegendWidgetComponent, {
-      app: this.app,
-    });
-    this.hsWidgetContainerService.create(HsLayerEditorDimensionsComponent, {
-      app: this.app,
-    });
-    this.hsWidgetContainerService.create(HsOpacityWidgetComponent, {
-      app: this.app,
-    });
+    this.hsWidgetContainerService.create(
+      HsTypeWidgetComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
+    this.hsWidgetContainerService.create(
+      HsMetadataWidgetComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
+    this.hsWidgetContainerService.create(
+      HsScaleWidgetComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
+    this.hsWidgetContainerService.create(
+      HsClusterWidgetComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
+    this.hsWidgetContainerService.create(
+      HsLegendWidgetComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
+    this.hsWidgetContainerService.create(
+      HsLayerEditorDimensionsComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
+    this.hsWidgetContainerService.create(
+      HsOpacityWidgetComponent,
+      {
+        app: this.app,
+      },
+      this.app
+    );
   }
 
   /**

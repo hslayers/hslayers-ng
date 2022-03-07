@@ -314,9 +314,9 @@ export class HsLayoutService {
       this.get(app).sidebarLabels = false;
     }
     this.get(app).mainpanel = which;
-    const componentRefInstance = this.hsPanelContainerService.panels.find(
-      (p) => p.name == which
-    );
+    const componentRefInstance = this.hsPanelContainerService
+      .get(app)
+      .panels.find((p) => p.name == which);
     this.hsPanelContainerService.setPanelWidth(
       this.HsConfig.get(app).panelWidths,
       componentRefInstance
@@ -469,11 +469,11 @@ export class HsLayoutService {
     });
   }
 
-  createPanel(panelComponent: Type<any>, data?: any): void {
-    this.hsPanelContainerService.create(panelComponent, data || {});
+  createPanel(panelComponent: Type<any>, app: string, data?: any): void {
+    this.hsPanelContainerService.create(panelComponent, data || {}, app);
   }
 
-  createOverlay(panelComponent: Type<any>, data?: any): void {
-    this.hsOverlayPanelContainerService.create(panelComponent, data || {});
+  createOverlay(panelComponent: Type<any>, app: string, data?: any): void {
+    this.hsOverlayPanelContainerService.create(panelComponent, data || {}, app);
   }
 }

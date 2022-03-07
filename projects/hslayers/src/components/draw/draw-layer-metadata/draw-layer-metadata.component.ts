@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsDrawService} from '../draw.service';
 import {HsMapService} from '../../map/map.service';
 import {accessRightsModel} from '../../add-data/common/access-rights.model';
 import {
@@ -39,7 +40,7 @@ export class HsDrawLayerMetadataDialogComponent
   };
   onlyMineFilterVisible = false;
   tmpFeatures: any;
-
+  appRef;
   constructor(
     public HsMapService: HsMapService,
     public HsDialogContainerService: HsDialogContainerService
@@ -47,10 +48,11 @@ export class HsDrawLayerMetadataDialogComponent
 
   viewRef: ViewRef;
   ngOnInit(): void {
-    this.layer = this.data.selectedLayer;
+    this.appRef = this.data.get(this.data.app);
+    this.layer = this.appRef.selectedLayer;
     this.title = getTitle(this.layer);
     this.path = getPath(this.layer);
-    this.endpoint = this.data.laymanEndpoint;
+    this.endpoint = this.appRef.laymanEndpoint;
     this.type = 'draw';
   }
 
@@ -83,17 +85,17 @@ export class HsDrawLayerMetadataDialogComponent
     });
 
     setAccessRights(this.layer, this.access_rights);
-    this.data.changeDrawSource();
+    this.data.changeDrawSource(this.data.app);
 
-    this.data.addDrawLayer(this.layer);
-    this.data.fillDrawableLayers();
+    this.data.addDrawLayer(this.layer, this.data.app);
+    this.data.fillDrawableLayers(this.data.app);
     this.tmpFeatures = this.layer.getSource().getFeatures();
     //Dispatch add feature event in order to trigger sync
     this.awaitLayerSync(this.layer).then(() => {
       const event = this.tmpFeatures ? this.getEventType() : 'addfeature';
       this.layer.getSource().dispatchEvent(event);
     });
-    this.data.tmpDrawLayer = false;
+    this.appRef.tmpDrawLayer = false;
     this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
@@ -106,7 +108,7 @@ export class HsDrawLayerMetadataDialogComponent
   }
 
   cancel(): void {
-    this.data.selectedLayer = this.data.previouslySelected;
+    this.appRef.selectedLayer = this.appRef.previouslySelected;
     this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
@@ -126,7 +128,7 @@ export class HsDrawLayerMetadataDialogComponent
   }
 
   selectLayer(layer): void {
-    this.data.selectLayer(layer);
+    this.data.selectLayer(layer, this.data.app);
     this.HsDialogContainerService.destroy(this, this.data.app);
   }
 }

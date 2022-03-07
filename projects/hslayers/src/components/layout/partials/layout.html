@@ -15,7 +15,7 @@
                     <hs-mini-sidebar *ngIf="HsLayoutService.apps[app].minisidebar" [app]="app"
                         [hidden]="!panelVisible('sidebar',app, this)">
                     </hs-mini-sidebar>
-                    <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace">
+                    <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace" [app]="app">
                     </hs-panel-container>
                 </div>
             </div>

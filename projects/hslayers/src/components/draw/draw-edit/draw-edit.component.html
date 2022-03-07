@@ -19,24 +19,25 @@
         <div class="d-flex flex-column align-items-center border border-start-0 border-end-0 py-3 w-100">
             {{'DRAW.featureEditor.drawNewFeature' | translate}}
             <button *ngIf="selectedType !== 'split'" class="w-50 btn btn-sm btn-light btn-outline-primary"
-                (click)="setType('Polygon')" [ngClass]="{active: HsDrawService.type==='Polygon' }"
+                (click)="setType('Polygon')" [ngClass]="{active: appRef.type==='Polygon' }"
                 [title]="'COMMON.polygon' | translate">
                 <i class="icon-polygonlasso"></i>
             </button>
             <button *ngIf="selectedType === 'split'" class="w-50 btn btn-sm btn-light btn-outline-primary"
-                [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString')"
-                data-toggle="tooltip" [title]="'COMMON.line' | translate">
+                [ngClass]="{active: appRef.type==='LineString' }" (click)="setType('LineString')" data-toggle="tooltip"
+                [title]="'COMMON.line' | translate">
                 <i class="icon-line"></i>
             </button>
             <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translate}}
             </span>
-            <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
-                (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translate">
+            <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !appRef.type }"
+                (click)="setType(appRef.type)" data-toggle="tooltip" [title]="'COMMON.line' | translate">
                 <i class="icon-cursor"></i>
             </button>
         </div>
 
         <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)" *ngIf="selectedType"
-            [disabled]="HsQueryBaseService.apps[app].features.length < 2">{{'COMMON.continue' | translate}}: {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType)}}</button>
+            [disabled]="HsQueryBaseService.apps[app].features.length < 2">{{'COMMON.continue' | translate}}:
+            {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType)}}</button>
     </div>
 </ng-template>

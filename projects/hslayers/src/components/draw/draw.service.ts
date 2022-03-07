@@ -48,6 +48,8 @@ import {
   setWorkspace,
 } from '../../common/layer-extensions';
 
+import {HsDrawServiceParams} from './draw.service.params';
+
 type activateParams = {
   onDrawStart?;
   onDrawEnd?;
@@ -63,52 +65,9 @@ const TMP_LAYER_TITLE = 'tmpDrawLayer';
   providedIn: 'root',
 })
 export class HsDrawService {
-  drawableLayers: Array<any> = [];
-  drawableLaymanLayers: Array<any> = [];
-  hasSomeDrawables = false;
-  moreThenOneDrawable = false;
-  draw: Draw;
-  modify: Modify;
-
-  boxSelection: DragBox;
-  boxSelectionActive = false;
-  //Snap interaction
-  snap: Snap;
-  snapActive = false;
-  snapSource: VectorSource<Geometry>;
-  snapLayer: VectorLayer<VectorSource<Geometry>>;
-
-  type: 'Point' | 'Polygon' | 'LineString' | 'Circle'; //string of type GeometryType
-  selectedLayer: VectorLayer<VectorSource<Geometry>>;
-  tmpDrawLayer: any;
-  source: VectorSource<Geometry>;
-  drawActive = false;
-  selectedFeatures: any = new Collection();
-  toggleSelectionString = 'selectAllFeatures';
-  onSelected: any;
-  currentStyle: any;
-  highlightDrawButton = false; // Toggles toolbar button 'Draw' class
-  onDeselected: any;
-  public drawingLayerChanges: Subject<{
-    layer: Layer<Source>;
-    source: VectorSource<Geometry>;
-  }> = new Subject();
-  laymanEndpoint: any;
-  previouslySelected: any;
-  isAuthorized: boolean;
-  onlyMine = true;
-  addedLayersRemoved = false;
-  layerMetadataDialog: Subject<void> = new Subject();
-
-  //Layer being loaded from layman (endpoint url pending)
-  pendingLayers = [];
-
-  requiredSymbolizer = {
-    Point: ['Point'],
-    Polygon: ['Fill', 'Line'],
-    LineString: ['Line'],
-    Circle: ['Fill', 'Line'],
-  };
+  apps: {
+    [id: string]: HsDrawServiceParams;
+  } = {default: new HsDrawServiceParams()};
 
   constructor(
     public hsMapService: HsMapService,
@@ -132,56 +91,64 @@ export class HsDrawService {
   ) {
     this.keyUp = this.keyUp.bind(this);
   }
+
+  get(app: string): HsDrawServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsDrawServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
   /**
    * initial function if the draw panel is loaded as first panel
    */
   async init(_app: string): Promise<void> {
+    const appRef = this.get(_app);
     await this.hsMapService.loaded(_app);
     const map = this.hsMapService.getMap(_app);
     this.fillDrawableLayers(_app);
     this.hsMapService.getLayersArray(_app).forEach((l) =>
       l.on('change:visible', (e) => {
-        if (this.draw && l == this.selectedLayer) {
-          this.setType(this.type, _app);
+        if (appRef.draw && l == appRef.selectedLayer) {
+          this.setType(appRef.type, _app);
         }
         this.fillDrawableLayers(_app);
       })
     );
 
-    this.modify = new Modify({
-      features: this.selectedFeatures,
+    appRef.modify = new Modify({
+      features: appRef.selectedFeatures,
     });
-    map.addInteraction(this.modify);
+    map.addInteraction(appRef.modify);
 
-    this.selectedFeatures.on('add', (e) => {
-      if (this.onSelected) {
-        this.onSelected(e);
+    appRef.selectedFeatures.on('add', (e) => {
+      if (appRef.onSelected) {
+        appRef.onSelected(e);
       }
-      this.modify.setActive(true);
+      appRef.modify.setActive(true);
     });
 
-    this.selectedFeatures.on('remove', (e) => {
-      if (this.selectedFeatures.length == 0) {
-        this.modify.setActive(false);
+    appRef.selectedFeatures.on('remove', (e) => {
+      if (appRef.selectedFeatures.length == 0) {
+        appRef.modify.setActive(false);
       }
     });
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
-      this.selectedFeatures.push(event.feature);
+      appRef.selectedFeatures.push(event.feature);
     });
 
     this.hsEventBusService.vectorQueryFeatureDeselection.subscribe(
       ({feature, selector}) => {
-        this.selectedFeatures.remove(feature);
+        appRef.selectedFeatures.remove(feature);
       }
     );
     this.hsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
-      this.pendingLayers = pendingLayers;
+      appRef.pendingLayers = pendingLayers;
     });
 
     this.hsEventBusService.mapResets.subscribe(({app}) => {
       if (app == _app) {
-        this.addedLayersRemoved = true;
+        appRef.addedLayersRemoved = true;
         this.fillDrawableLayers(app);
       }
     });
@@ -194,17 +161,17 @@ export class HsDrawService {
 
     this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
       this.fillDrawableLayers(_app);
-      this.isAuthorized = endpoint.authenticated;
+      appRef.isAuthorized = endpoint.authenticated;
       //When metadata dialog window opened. Layer is being added
-      if (this.selectedLayer && this.tmpDrawLayer) {
-        setWorkspace(this.selectedLayer, endpoint.user);
+      if (appRef.selectedLayer && appRef.tmpDrawLayer) {
+        setWorkspace(appRef.selectedLayer, endpoint.user);
         const definition = {
-          format: this.isAuthorized ? 'hs.format.WFS' : null,
-          url: this.isAuthorized
+          format: appRef.isAuthorized ? 'hs.format.WFS' : null,
+          url: appRef.isAuthorized
             ? this.hsLaymanService.getLaymanEndpoint().url + '/wfs'
             : null,
         };
-        setDefinition(this.selectedLayer, definition);
+        setDefinition(appRef.selectedLayer, definition);
       }
     });
   }
@@ -212,13 +179,14 @@ export class HsDrawService {
    * selectedLayerString
    * @returns Possibly translated name of layer selected for drawing
    */
-  selectedLayerString(): string {
-    if (this.selectedLayer) {
-      const title = getTitle(this.selectedLayer);
+  selectedLayerString(app: string): string {
+    const appRef = this.get(app);
+    if (appRef.selectedLayer) {
+      const title = getTitle(appRef.selectedLayer);
       return title == TMP_LAYER_TITLE
         ? this.hsLanguageService.getTranslation('DRAW.unsavedDrawing')
         : this.hsLayerUtilsService.translateTitle(title) ||
-            getName(this.selectedLayer);
+            getName(appRef.selectedLayer);
     } else {
       return this.hsLanguageService.getTranslation('DRAW.Select layer');
     }
@@ -227,19 +195,21 @@ export class HsDrawService {
    * snapLayerString
    * @returns Possibly translated name of layer selected for snapping
    */
-  snapLayerString(): string {
-    if (this.snapLayer) {
-      const title = getTitle(this.snapLayer);
+  snapLayerString(app: string): string {
+    const appRef = this.get(app);
+    if (appRef.snapLayer) {
+      const title = getTitle(appRef.snapLayer);
       return (
         this.hsLayerUtilsService.translateTitle(title) ||
-        getName(this.snapLayer)
+        getName(appRef.snapLayer)
       );
     }
   }
 
   saveDrawingLayer(app: string): void {
-    if (this.selectedLayer) {
-      this.previouslySelected = this.selectedLayer;
+    const appRef = this.get(app);
+    if (appRef.selectedLayer) {
+      appRef.previouslySelected = appRef.selectedLayer;
     }
 
     let tmpTitle = this.hsLanguageService.getTranslation('DRAW.drawLayer');
@@ -269,31 +239,33 @@ export class HsDrawService {
       this.hsConfig.get(app).defaultDrawLayerPath || 'User generated'
     ); //TODO: Translate this
     setDefinition(drawLayer, {
-      format: this.isAuthorized ? 'hs.format.WFS' : null,
-      url: this.isAuthorized ? layman.url + '/wfs' : null,
+      format: appRef.isAuthorized ? 'hs.format.WFS' : null,
+      url: appRef.isAuthorized ? layman.url + '/wfs' : null,
     });
     setWorkspace(drawLayer, layman?.user);
-    this.tmpDrawLayer = true;
-    this.selectedLayer = drawLayer;
-    this.layerMetadataDialog.next();
+    appRef.tmpDrawLayer = true;
+    appRef.selectedLayer = drawLayer;
+    appRef.layerMetadataDialog.next();
   }
 
   setType(what, app: string): boolean {
-    if (this.type == what) {
-      this.type = null;
+    const appRef = this.get(app);
+
+    if (appRef.type == what) {
+      appRef.type = null;
       this.deactivateDrawing(app);
       const tmpLayer =
         this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE, app) || null;
       if (tmpLayer) {
         this.hsMapService.getMap(app).removeLayer(tmpLayer);
-        this.tmpDrawLayer = false;
+        appRef.tmpDrawLayer = false;
       }
       this.hsQueryBaseService.activateQueries(app);
       return false;
     }
     //console.log(this.drawableLayers);
     //console.log(this.selectedLayer);
-    if (this.drawableLayers.length == 0 && !this.tmpDrawLayer) {
+    if (appRef.drawableLayers.length == 0 && !appRef.tmpDrawLayer) {
       const drawLayer = new VectorLayer({
         source: new VectorSource(),
         visible: true,
@@ -306,17 +278,17 @@ export class HsDrawService {
         drawLayer,
         this.hsConfig.get(app).defaultDrawLayerPath || 'User generated'
       );
-      this.tmpDrawLayer = true;
-      this.selectedLayer = drawLayer;
+      appRef.tmpDrawLayer = true;
+      appRef.selectedLayer = drawLayer;
       this.addDrawLayer(drawLayer, app);
     }
-    this.type = what;
-    if (this.selectedLayer) {
-      this.source = this.hsLayerUtilsService.isLayerClustered(
-        this.selectedLayer
+    appRef.type = what;
+    if (appRef.selectedLayer) {
+      appRef.source = this.hsLayerUtilsService.isLayerClustered(
+        appRef.selectedLayer
       )
-        ? (this.selectedLayer.getSource() as Cluster).getSource() //Is it clustered vector layer?
-        : this.selectedLayer.getSource();
+        ? (appRef.selectedLayer.getSource() as Cluster).getSource() //Is it clustered vector layer?
+        : appRef.selectedLayer.getSource();
     }
     return true;
   }
@@ -328,9 +300,11 @@ export class HsDrawService {
    */
   async selectLayer(layer, app: string) {
     let metadata;
+    const appRef = this.get(app);
+
     if (!(layer instanceof Layer)) {
       metadata = await this.hsLaymanBrowserService.fillLayerMetadata(
-        this.laymanEndpoint,
+        appRef.laymanEndpoint,
         layer
       );
     }
@@ -355,7 +329,7 @@ export class HsDrawService {
           },
           app
         );
-        this.selectedLayer = null;
+        appRef.selectedLayer = null;
         this.fillDrawableLayers(app);
       }
       return;
@@ -365,7 +339,7 @@ export class HsDrawService {
     if (layer.workspace) {
       lyr = await this.hsAddDataVectorService.addVectorLayer(
         'wfs',
-        this.laymanEndpoint.url,
+        appRef.laymanEndpoint.url,
         layer.name,
         layer.title,
         undefined,
@@ -375,16 +349,16 @@ export class HsDrawService {
       );
       lyr = this.hsMapService.findLayerByTitle(layer.title, app);
     }
-    if (lyr != this.selectedLayer) {
+    if (lyr != appRef.selectedLayer) {
       if (
-        this.selectedLayer &&
-        getTitle(this.selectedLayer) == TMP_LAYER_TITLE
+        appRef.selectedLayer &&
+        getTitle(appRef.selectedLayer) == TMP_LAYER_TITLE
       ) {
-        this.tmpDrawLayer = false;
-        this.hsMapService.getMap(app).removeLayer(this.selectedLayer);
+        appRef.tmpDrawLayer = false;
+        this.hsMapService.getMap(app).removeLayer(appRef.selectedLayer);
       }
 
-      this.selectedLayer = lyr;
+      appRef.selectedLayer = lyr;
       this.changeDrawSource(app);
     }
     this.fillDrawableLayers(app);
@@ -402,18 +376,20 @@ export class HsDrawService {
    * @param changeStyle - controller callback function
    * Update draw style without neccessity to reactivate drawing interaction
    */
-  updateStyle(changeStyle): void {
-    if (this.draw) {
-      this.currentStyle = changeStyle();
-      this.draw.getOverlay().setStyle(this.currentStyle);
+  updateStyle(changeStyle, app: string): void {
+    const appRef = this.get(app);
+
+    if (appRef.draw) {
+      appRef.currentStyle = changeStyle();
+      appRef.draw.getOverlay().setStyle(appRef.currentStyle);
     }
   }
 
   onDrawEnd(e, app: string): void {
-    if (!getEditor(this.selectedLayer)) {
+    if (!getEditor(this.get(app).selectedLayer)) {
       return;
     }
-    const editorConfig = getEditor(this.selectedLayer);
+    const editorConfig = getEditor(this.get(app).selectedLayer);
     if (editorConfig.defaultAttributes) {
       for (const key in editorConfig.defaultAttributes) {
         const value = editorConfig.defaultAttributes[key];
@@ -440,7 +416,7 @@ export class HsDrawService {
   addFeatureToSelector(feature, app: string) {
     //Zone is used to ensure change detection updates the view
     this.zone.run(() => {
-      this.hsQueryBaseService.apps[app].clear('features');
+      this.hsQueryBaseService.get(app).clear('features');
       this.hsQueryVectorService.apps[app].selector.getFeatures().push(feature);
       this.hsQueryVectorService.createFeatureAttributeList(app);
     });
@@ -449,33 +425,39 @@ export class HsDrawService {
   /**
    * Re-enables getFeatureInfo info and cleans up after drawing
    */
-  afterDrawEnd(): void {
-    if (this.draw) {
-      this.draw.setActive(false);
+  afterDrawEnd(app: string): void {
+    const appRef = this.get(app);
+
+    if (appRef.draw) {
+      appRef.draw.setActive(false);
     }
-    this.drawActive = false;
+    appRef.drawActive = false;
   }
 
-  removeLastPoint(): void {
-    this.draw.removeLastPoint();
+  removeLastPoint(app: string): void {
+    this.get(app).draw.removeLastPoint();
   }
 
   /**
    * Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
    */
   changeDrawSource(app: string): void {
-    if (this.selectedLayer.getSource === undefined) {
+    const appRef = this.get(app);
+
+    if (appRef.selectedLayer.getSource === undefined) {
       return;
     }
-    this.source = this.hsLayerUtilsService.isLayerClustered(this.selectedLayer)
-      ? (this.selectedLayer.getSource() as Cluster).getSource()
-      : this.selectedLayer.getSource();
+    appRef.source = this.hsLayerUtilsService.isLayerClustered(
+      appRef.selectedLayer
+    )
+      ? (appRef.selectedLayer.getSource() as Cluster).getSource()
+      : appRef.selectedLayer.getSource();
 
-    this.drawingLayerChanges.next({
-      layer: this.selectedLayer,
-      source: this.source,
+    appRef.drawingLayerChanges.next({
+      layer: appRef.selectedLayer,
+      source: appRef.source,
     });
-    if (this.draw) {
+    if (appRef.draw) {
       //Reactivate drawing with updated source
       this.activateDrawing(
         {
@@ -485,8 +467,8 @@ export class HsDrawService {
         app
       );
       //Set snapLayer and snap interaction source
-      this.snapLayer = this.selectedLayer;
-      this.toggleSnapping(app, this.source);
+      appRef.snapLayer = appRef.selectedLayer;
+      this.toggleSnapping(app, appRef.source);
     }
   }
 
@@ -495,12 +477,14 @@ export class HsDrawService {
    * @returns {Promise}
    */
   deactivateDrawing(app: string): Promise<undefined> {
+    const appRef = this.get(app);
+
     return new Promise((resolve, reject) => {
       this.hsMapService.loaded(app).then((map) => {
-        this.afterDrawEnd();
-        if (this.draw) {
-          map.removeInteraction(this.draw);
-          this.draw = null;
+        this.afterDrawEnd(app);
+        if (appRef.draw) {
+          map.removeInteraction(appRef.draw);
+          appRef.draw = null;
         }
         resolve(null);
       });
@@ -508,32 +492,35 @@ export class HsDrawService {
   }
 
   stopDrawing(app: string): void {
-    if (!this.draw || this.draw === null) {
+    const appRef = this.get(app);
+
+    if (!appRef.draw || appRef.draw === null) {
       return;
     }
     try {
-      if (this.draw.getActive()) {
-        this.draw.finishDrawing();
+      if (appRef.draw.getActive()) {
+        appRef.draw.finishDrawing();
       }
     } catch (ex) {
       this.hsLogService.warn(ex);
     }
-    this.draw.setActive(false);
-    this.modify.setActive(false);
+    appRef.draw.setActive(false);
+    appRef.modify.setActive(false);
     this.hsQueryBaseService.activateQueries(app);
-    this.type = null;
-    this.drawActive = false;
+    appRef.type = null;
+    appRef.drawActive = false;
   }
 
-  startDrawing(): void {
+  startDrawing(app: string): void {
+    const draw = this.get(app).draw;
     try {
-      if (this.draw.getActive()) {
-        this.draw.finishDrawing();
+      if (draw.getActive()) {
+        draw.finishDrawing();
       }
     } catch (ex) {
       this.hsLogService.warn(ex);
     }
-    this.draw.setActive(true);
+    draw.setActive(true);
   }
 
   /**
@@ -541,6 +528,8 @@ export class HsDrawService {
    * a list of available server possibilities.
    */
   async fillDrawableLayers(app: string): Promise<void> {
+    const appRef = this.get(app);
+
     let drawables = [];
     await this.hsMapService.loaded(app);
     drawables = this.hsMapService
@@ -551,30 +540,30 @@ export class HsDrawService {
         this.hsLayerUtilsService.isLayerDrawable(layer)
       );
 
-    if (drawables.length == 0 && !this.tmpDrawLayer) {
-      this.type = null;
+    if (drawables.length == 0 && !appRef.tmpDrawLayer) {
+      appRef.type = null;
       this.deactivateDrawing(app);
-      this.selectedLayer = null;
-      this.snapSource = null;
+      appRef.selectedLayer = null;
+      appRef.snapSource = null;
     } else if (drawables.length > 0) {
-      if (this.selectedLayerNotAvailable(drawables)) {
-        this.selectedLayer = drawables[0];
+      if (this.selectedLayerNotAvailable(drawables, app)) {
+        appRef.selectedLayer = drawables[0];
         this.changeDrawSource(app);
       }
     }
-    this.addedLayersRemoved = false;
-    this.drawableLayers = drawables;
-    this.laymanEndpoint = this.hsLaymanService.getLaymanEndpoint();
-    if (this.laymanEndpoint) {
+    appRef.addedLayersRemoved = false;
+    appRef.drawableLayers = drawables;
+    appRef.laymanEndpoint = this.hsLaymanService.getLaymanEndpoint();
+    if (appRef.laymanEndpoint) {
       await lastValueFrom(
-        this.hsLaymanBrowserService.queryCatalog(this.laymanEndpoint, app, {
-          onlyMine: this.onlyMine,
+        this.hsLaymanBrowserService.queryCatalog(appRef.laymanEndpoint, app, {
+          onlyMine: appRef.onlyMine,
           limit: '',
           query: {},
         })
       );
-      if (this.laymanEndpoint.layers) {
-        this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
+      if (appRef.laymanEndpoint.layers) {
+        appRef.drawableLaymanLayers = appRef.laymanEndpoint.layers.filter(
           (layer) => {
             return (
               !this.hsMapService.findLayerByTitle(layer.title, app) &&
@@ -584,26 +573,28 @@ export class HsDrawService {
         );
       }
     }
-    this.hasSomeDrawables =
-      this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
+    appRef.hasSomeDrawables =
+      appRef.drawableLayers.length > 0 ||
+      appRef.drawableLaymanLayers.length > 0;
 
-    this.moreThenOneDrawable =
-      this.drawableLayers?.length + this.drawableLaymanLayers?.length > 1;
+    appRef.moreThenOneDrawable =
+      appRef.drawableLayers?.length + appRef.drawableLaymanLayers?.length > 1;
   }
 
-  private selectedLayerNotAvailable(drawables) {
-    if (this.addedLayersRemoved) {
+  private selectedLayerNotAvailable(drawables, app: string) {
+    const appRef = this.get(app);
+    if (appRef.addedLayersRemoved) {
       return true;
     } else {
       return (
         //Don't want to change after authChange when layer is being added
-        (!this.tmpDrawLayer &&
+        (!appRef.tmpDrawLayer &&
           !drawables.some(
             (layer) =>
-              this.selectedLayer &&
-              getTitle(layer) == getTitle(this.selectedLayer)
+              appRef.selectedLayer &&
+              getTitle(layer) == getTitle(appRef.selectedLayer)
           )) ||
-        !this.selectedLayer
+        !appRef.selectedLayer
       );
     }
   }
@@ -618,15 +609,15 @@ export class HsDrawService {
         message: this.hsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer'
         ),
-        note: this.getDeleteNote(),
+        note: this.getDeleteNote(app),
         title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
       },
       app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      await this.completeLayerRemoval(this.selectedLayer, app);
-      this.selectedLayer = null;
+      await this.completeLayerRemoval(this.get(app).selectedLayer, app);
+      this.get(app).selectedLayer = null;
       this.fillDrawableLayers(app);
     }
   }
@@ -635,19 +626,20 @@ export class HsDrawService {
    * Removes multiple selected layers from both Layermanager and Layman
    */
   async removeMultipleLayers(app: string): Promise<void> {
+    const appRef = this.get(app);
     const dialog = this.hsDialogContainerService.create(
       HsRmMultipleDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
           'DRAW.pleaseCheckTheLayers'
         ),
-        note: this.getDeleteNote(true),
+        note: this.getDeleteNote(app, true),
         title: this.hsLanguageService.getTranslation(
           'COMMON.selectAndConfirmToDeleteMultiple'
         ),
         items: [
-          ...(this.drawableLayers ?? []),
-          ...(this.drawableLaymanLayers ?? []),
+          ...(appRef.drawableLayers ?? []),
+          ...(appRef.drawableLaymanLayers ?? []),
         ],
       },
       app
@@ -665,14 +657,14 @@ export class HsDrawService {
           customDelay: 600000,
         }
       );
-      const drawableLaymanRm = this.drawableLaymanLayers.filter(
+      const drawableLaymanRm = appRef.drawableLaymanLayers.filter(
         (l) => l.toRemove
       );
-      const drawableRm = this.drawableLayers.filter((l) => l.toRemove);
+      const drawableRm = appRef.drawableLayers.filter((l) => l.toRemove);
 
       if (
-        drawableLaymanRm?.length == this.drawableLaymanLayers?.length &&
-        this.drawableLaymanLayers?.length != 0
+        drawableLaymanRm?.length == appRef.drawableLaymanLayers?.length &&
+        appRef.drawableLaymanLayers?.length != 0
       ) {
         await this.hsLaymanService.removeLayer(app);
         for (const l of drawableRm) {
@@ -684,7 +676,7 @@ export class HsDrawService {
           await this.completeLayerRemoval(l, app);
         }
       }
-      this.selectedLayer = null;
+      appRef.selectedLayer = null;
       this.fillDrawableLayers(app);
     }
   }
@@ -699,7 +691,7 @@ export class HsDrawService {
       this.hsMapService.getMap(app).removeLayer(layerToRemove);
       definition = getDefinition(layerToRemove);
       if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
-        this.tmpDrawLayer = false;
+        this.get(app).tmpDrawLayer = false;
       }
     }
     if (
@@ -710,8 +702,8 @@ export class HsDrawService {
     }
   }
 
-  getDeleteNote(plural?: boolean): string {
-    return this.isAuthorized
+  getDeleteNote(app: string, plural?: boolean): string {
+    return this.get(app).isAuthorized
       ? this.hsLanguageService.getTranslation(
           plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote'
         )
@@ -721,9 +713,9 @@ export class HsDrawService {
   /**
    * @param event -
    */
-  keyUp(event) {
+  keyUp(event, app: string) {
     if (event.key == 'Backspace') {
-      this.removeLastPoint();
+      this.removeLastPoint(app);
     }
   }
 
@@ -743,9 +735,9 @@ export class HsDrawService {
     if (vertexCount >= minVertexCount) {
       setTimeout(() => {
         if (minPoints == 0) {
-          this.removeLastPoint();
+          this.removeLastPoint(app);
         }
-        this.draw.finishDrawing();
+        this.get(app).draw.finishDrawing();
       }, 250);
       return true;
     }
@@ -773,44 +765,46 @@ export class HsDrawService {
     }: activateParams,
     app: string
   ): void {
-    this.onDeselected = onDeselected;
-    this.onSelected = onSelected;
+    const appRef = this.get(app);
+    appRef.onDeselected = onDeselected;
+    appRef.onSelected = onSelected;
     this.deactivateDrawing(app).then(() => {
       this.hsQueryBaseService.deactivateQueries(app);
-      this.draw = new Draw({
-        source: this.source,
-        type: /** GeometryType */ this.type,
+      appRef.draw = new Draw({
+        source: appRef.source,
+        type: /** GeometryType */ appRef.type,
         condition: (e) => {
           if (e.originalEvent.buttons === 1) {
             //left click
             return true;
           } else if (e.originalEvent.buttons === 2) {
             //right click
-            if (this.type == 'Polygon') {
-              const vertexCount = (this.draw as any).sketchLineCoords_?.length;
+            if (appRef.type == 'Polygon') {
+              const vertexCount = (appRef.draw as any).sketchLineCoords_
+                ?.length;
               return this.rightClickCondition(4, vertexCount, app);
-            } else if (this.type == 'LineString') {
-              const vertexCount = (this.draw as any).sketchCoords_?.length;
+            } else if (appRef.type == 'LineString') {
+              const vertexCount = (appRef.draw as any).sketchCoords_?.length;
               return this.rightClickCondition(2, vertexCount - 1, app);
             }
           }
         },
       });
 
-      this.draw.setActive(drawState);
+      appRef.draw.setActive(drawState);
       this.hsMapService.loaded(app).then((map) => {
-        map.addInteraction(this.draw);
+        map.addInteraction(appRef.draw);
       });
 
-      this.draw.on('drawstart', (e: DrawEvent) => {
-        if (!this.hasRequiredSymbolizer()) {
+      appRef.draw.on('drawstart', (e: DrawEvent) => {
+        if (!this.hasRequiredSymbolizer(app)) {
           this.hsToastService.createToastPopupMessage(
             this.hsLanguageService.getTranslation('DRAW.stylingMissing'),
             `${this.hsLanguageService.getTranslation(
               'DRAW.stylingMissingWarning',
               {
-                type: this.type,
-                symbolizer: this.requiredSymbolizer[this.type].join(' or '),
+                type: appRef.type,
+                symbolizer: appRef.requiredSymbolizer[appRef.type].join(' or '),
                 panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
               }
             )}`,
@@ -820,32 +814,32 @@ export class HsDrawService {
             }
           );
         }
-        this.drawActive = true;
-        this.modify.setActive(false);
+        appRef.drawActive = true;
+        appRef.modify.setActive(false);
         if (onDrawStart) {
           onDrawStart(e);
         }
         if (this.hsUtilsService.runningInBrowser()) {
-          document.addEventListener('keyup', this.keyUp);
+          document.addEventListener('keyup', this.keyUp.bind(this, e, app));
         }
       });
 
-      this.draw.on('drawend', (e: DrawEvent) => {
-        if (this.type == 'Circle') {
+      appRef.draw.on('drawend', (e: DrawEvent) => {
+        if (appRef.type == 'Circle') {
           e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
         }
         if (onDrawEnd) {
           onDrawEnd(e);
         }
         if (this.hsUtilsService.runningInBrowser()) {
-          document.removeEventListener('keyup', this.keyUp);
+          document.removeEventListener('keyup', this.keyUp.bind(this, e, app));
         }
       });
 
       //Add snap interaction -  must be added after the Modify and Draw interactions
-      const snapSourceToBeUsed = this.snapSource
-        ? this.snapSource
-        : this.source;
+      const snapSourceToBeUsed = appRef.snapSource
+        ? appRef.snapSource
+        : appRef.source;
       this.toggleSnapping(app, snapSourceToBeUsed);
     });
   }
@@ -853,9 +847,10 @@ export class HsDrawService {
   /**
    * Checks whether selected geometry can be properly visualized on selected layer
    */
-  hasRequiredSymbolizer(): boolean {
-    const sld = getSld(this.selectedLayer);
-    return this.requiredSymbolizer[this.type].some((symbolizer) => {
+  hasRequiredSymbolizer(app: string): boolean {
+    const appRef = this.get(app);
+    const sld = getSld(appRef.selectedLayer);
+    return appRef.requiredSymbolizer[appRef.type].some((symbolizer) => {
       return sld.includes(`${symbolizer}Symbolizer`);
     });
   }
@@ -865,17 +860,18 @@ export class HsDrawService {
    * Remove snap interaction if it already exists, recreate it if source is provided.
    */
   toggleSnapping(app: string, source?: VectorSource<Geometry>): void {
+    const appRef = this.get(app);
     this.hsMapService.loaded(app).then((map) => {
-      this.snapSource = source ? source : this.snapSource;
-      if (this.snap) {
-        map.removeInteraction(this.snap);
-        // this.snapLayer = null;
+      appRef.snapSource = source ? source : appRef.snapSource;
+      if (appRef.snap) {
+        map.removeInteraction(appRef.snap);
+        // appRef.snapLayer = null;
       }
-      if (this.snapActive && this.snapSource) {
-        this.snap = new Snap({
-          source: this.snapSource,
+      if (appRef.snapActive && appRef.snapSource) {
+        appRef.snap = new Snap({
+          source: appRef.snapSource,
         });
-        map.addInteraction(this.snap);
+        map.addInteraction(appRef.snap);
       }
     });
   }
@@ -890,7 +886,7 @@ export class HsDrawService {
     const snapSourceToBeUsed = this.hsLayerUtilsService.isLayerClustered(layer)
       ? (layer.getSource() as Cluster).getSource()
       : layer.getSource();
-    this.snapLayer = layer;
+    this.get(app).snapLayer = layer;
     this.toggleSnapping(app, snapSourceToBeUsed);
   }
 
@@ -898,10 +894,11 @@ export class HsDrawService {
    * Selects or deselects all features in this.selectedLayer
    */
   selectAllFeatures(app: string): void {
+    const appRef = this.get(app);
     const selectFeatures =
-      this.selectedFeatures.getLength() !=
-      this.selectedLayer.getSource().getFeatures().length;
-    this.toggleSelectionString = selectFeatures
+      appRef.selectedFeatures.getLength() !=
+      appRef.selectedLayer.getSource().getFeatures().length;
+    appRef.toggleSelectionString = selectFeatures
       ? 'deselectAllFeatures'
       : 'selectAllFeatures';
     this.hsQueryBaseService.apps[app].clear('features');
@@ -910,30 +907,31 @@ export class HsDrawService {
     if (selectFeatures) {
       this.hsQueryBaseService.selector
         .getFeatures()
-        .extend(this.selectedLayer.getSource().getFeatures());
+        .extend(appRef.selectedLayer.getSource().getFeatures());
     }
     this.hsQueryVectorService.createFeatureAttributeList(app);
   }
 
   toggleBoxSelection(app: string): void {
+    const appRef = this.get(app);
     this.hsMapService.loaded(app).then((map) => {
-      if (this.boxSelection) {
-        map.removeInteraction(this.boxSelection);
+      if (appRef.boxSelection) {
+        map.removeInteraction(appRef.boxSelection);
       }
-      if (this.boxSelectionActive) {
-        this.boxSelection = new DragBox({
+      if (appRef.boxSelectionActive) {
+        appRef.boxSelection = new DragBox({
           condition: platformModifierKeyOnly,
         });
-        map.addInteraction(this.boxSelection);
+        map.addInteraction(appRef.boxSelection);
 
-        this.boxSelection.on('boxend', () => {
-          if (!this.selectedLayer) {
+        appRef.boxSelection.on('boxend', () => {
+          if (!appRef.selectedLayer) {
             return;
           }
           this.hsQueryBaseService.apps[app].clear('features');
 
-          const extent = this.boxSelection.getGeometry().getExtent();
-          this.selectedLayer
+          const extent = appRef.boxSelection.getGeometry().getExtent();
+          appRef.selectedLayer
             .getSource()
             .forEachFeatureIntersectingExtent(extent, (feature) => {
               this.hsQueryBaseService.selector.getFeatures().push(feature);
@@ -942,7 +940,7 @@ export class HsDrawService {
           this.hsQueryVectorService.createFeatureAttributeList(app);
         });
 
-        this.boxSelection.on('boxstart' as any, () => {
+        appRef.boxSelection.on('boxstart' as any, () => {
           this.hsQueryBaseService.selector.getFeatures().clear();
         });
         this.hsToastService.createToastPopupMessage(

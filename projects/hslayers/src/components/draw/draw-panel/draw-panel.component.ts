@@ -1,5 +1,5 @@
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {HsDrawService} from '../draw.service';
 import {HsLanguageService} from '../../language/language.service';
@@ -12,7 +12,7 @@ import {getTitle} from '../../../common/layer-extensions';
   templateUrl: './draw-panel.component.html',
   styleUrls: ['./draw-panel.component.scss'],
 })
-export class DrawPanelComponent {
+export class DrawPanelComponent implements OnInit {
   onFeatureSelected: any;
   onFeatureDeselected: any;
   drawToolbarExpanded: any;
@@ -20,6 +20,7 @@ export class DrawPanelComponent {
   linewidth = 1;
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
   onlyMineFilterVisible = false;
+  appRef;
   getTitle = getTitle;
   @Input() app = 'default';
 
@@ -29,6 +30,10 @@ export class DrawPanelComponent {
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService
   ) {}
+
+  ngOnInit() {
+    this.appRef = this.HsDrawService.get(this.app);
+  }
 
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
@@ -59,7 +64,7 @@ export class DrawPanelComponent {
   }
 
   updateStyle(): void {
-    this.HsDrawService.updateStyle(() => this.changeStyle());
+    this.appRef.updateStyle(() => this.changeStyle());
   }
 
   /**
