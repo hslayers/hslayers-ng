@@ -48,6 +48,10 @@ export class HsMapSwipeService {
     public hsShareUrlService: HsShareUrlService
   ) {}
 
+  /**
+   * Initialize the values and functions of the map swipe service that are required for the service to function properly
+   * @param app - App identifier
+   */
   init(app: string) {
     this.apps[app] = {
       swipeCtrl: null,
@@ -73,6 +77,10 @@ export class HsMapSwipeService {
     });
   }
 
+  /**
+   * Set initial map-swipe control state
+   * @param app - App identifier
+   */
   setInitCtrlActive(app: string): void {
     const param = this.hsShareUrlService.getParamValue('map-swipe');
     if (param) {
@@ -91,6 +99,10 @@ export class HsMapSwipeService {
     this.updateUrlParam(app);
   }
 
+  /**
+   * Set initial orientation value
+   * @param app - App identifier
+   */
   setInitOri(app: string): void {
     const storageOri = localStorage.getItem(`${app}:hs_map_swipe_ori`);
     if (storageOri) {
@@ -106,6 +118,7 @@ export class HsMapSwipeService {
   }
   /**
    * Initializes swipe control add adds it to the map
+   * @param app - App identifier
    */
   initSwipeControl(app: string): void {
     this.get(app).swipeCtrl = new SwipeControl({
@@ -118,10 +131,18 @@ export class HsMapSwipeService {
     }
   }
 
+  /**
+   * Update local storage orientation value
+   * @param app - App identifier
+   */
   updateStorageOri(app: string): void {
     localStorage.setItem(`${app}:hs_map_swipe_ori`, this.get(app).orientation);
   }
 
+  /**
+   * Update url params to include map swipe state
+   * @param app - App identifier
+   */
   updateUrlParam(app: string): void {
     this.hsShareUrlService.updateCustomParams(
       {
@@ -133,6 +154,7 @@ export class HsMapSwipeService {
 
   /**
    * Check if any layers are added to the swipe control
+   * @param app - App identifier
    */
   layersAvailable(app: string): boolean {
     if (this.get(app) == undefined) {
@@ -147,6 +169,7 @@ export class HsMapSwipeService {
 
   /**
    * Set swipe control orientation
+   * @param app - App identifier
    */
   setOrientation(app: string): void {
     this.get(app).orientationVertical = !this.get(app).orientationVertical;
@@ -159,6 +182,7 @@ export class HsMapSwipeService {
   /**
    * Fill swipe control layers
    * @param layer - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   fillSwipeLayers(layer: Layer<Source> | void, app: string): void {
     this.hsLayerShiftingService.fillLayers(app);
@@ -184,9 +208,13 @@ export class HsMapSwipeService {
 
   /**
    * Move a layer to swipe control
-   * @param layer - layer issued from layerManagerUpdates event
+   * @param layerItem - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   addSwipeLayer(layerItem: LayerListItem, app: string): void {
+    if (!this.get(app).swipeCtrl) {
+      this.initSwipeControl(app);
+    }
     if (!this.findLayer(layerItem.layer, app)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeSide(layerItem.layer) === 'right') {
@@ -205,7 +233,8 @@ export class HsMapSwipeService {
   }
   /**
    * Move a layer to swipe control
-   * @param layer - layer issued from layerManagerUpdates event
+   * @param lyrListItem - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   moveSwipeLayer(lyrListItem: LayerListItem, app: string): void {
     if (this.get(app).movingSide === SwipeSide.Right) {
@@ -224,6 +253,7 @@ export class HsMapSwipeService {
   /**
    * Move a layer to swipe control right side
    * @param layer - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   moveRight(layer: LayerListItem, app: string): void {
     this.get(app).swipeCtrl.removeLayer(layer);
@@ -232,6 +262,7 @@ export class HsMapSwipeService {
   /**
    * Move a layer to swipe control left side
    * @param layer - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   moveLeft(layer: LayerListItem, app: string): void {
     this.get(app).swipeCtrl.removeLayer(layer, true);
@@ -240,6 +271,7 @@ export class HsMapSwipeService {
 
   /**
    * Set map swipe control status enabled/disabled
+   * @param app - App identifier
    */
   setControl(app: string): void {
     this.get(app).swipeControlActive = !this.get(app).swipeControlActive;
@@ -264,6 +296,7 @@ export class HsMapSwipeService {
   /**
    * Remove layer completely
    * @param layer - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   removeCompletely(layerToRm: Layer<Source>, app: string): void {
     const layerFound = this.findLayer(layerToRm, app);
@@ -289,6 +322,7 @@ export class HsMapSwipeService {
   /**
    * Set layer as active (last dragged)
    * @param layer - layer issued from layerManagerUpdates event
+   * @param app - App identifier
    */
   setLayerActive(layer: LayerListItem, app: string): void {
     const layerFound = this.findLayer(layer.layer, app);
@@ -301,6 +335,7 @@ export class HsMapSwipeService {
   }
   /**
    * Set and add initial swipe control layers
+   * @param app - App identifier
    */
   setInitialSwipeLayers(app: string): void {
     this.get(app).leftLayers = [];
@@ -317,6 +352,7 @@ export class HsMapSwipeService {
   }
   /**
    * Check if any layer is left out from swipe control and add it
+   * @param app - App identifier
    */
   checkForMissingLayers(app: string): void {
     const missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
@@ -330,6 +366,7 @@ export class HsMapSwipeService {
 
   /**
    * Sort layers to resemple layer order by ZIndex on the map
+   * @param app - App identifier
    */
   sortLayers(app: string): void {
     this.get(app).leftLayers = this.hsLayerManagerService.sortLayersByZ(
@@ -348,6 +385,7 @@ export class HsMapSwipeService {
 
   /**
    * Change layer visibility
+   * @param layerItem - Layer item selected
    */
   changeLayerVisibility(layerItem: LayerListItem): void {
     layerItem.layer.setVisible(!layerItem.layer.getVisible());
@@ -357,6 +395,7 @@ export class HsMapSwipeService {
   /**
    * Act upon layer visibility changes
    * @param e - Event description
+   * @param app - App identifier
    */
   layerVisibilityChanged(e, app: string): void {
     const found = this.findLayer(e.target, app);
@@ -367,6 +406,8 @@ export class HsMapSwipeService {
 
   /**
    * Find layer based on layer source
+   * @param targetLayer - Layer to be found
+   * @param app - App identifier
    */
   findLayer(
     targetLayer: Layer<Source>,
@@ -390,6 +431,10 @@ export class HsMapSwipeService {
     return found;
   }
 
+  /**
+   * Get the params saved by the map swipe service for the current app
+   * @param app - App identifier
+   */
   get(app: string): HsMapSwipeParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new HsMapSwipeParams();
