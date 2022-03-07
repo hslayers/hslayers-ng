@@ -306,7 +306,11 @@
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
     "selectThemes": "Izvēlēties tēmas",
-    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!"
+    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!",
+    "compositionNotFound": "Kompozīcija nav atrasta",
+    "compositionNotLoaded": "Kompozīcija nav ielādēta",
+    "sorryButComposition": "Atvainojiet, bet kompozīcija tika izdzēsta vai nepareizi saglabāta",
+    "weAreSorryBut": "Atvainojiet, kompozīcija netika ielādēta kļūdas dēļ"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",

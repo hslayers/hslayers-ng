@@ -306,7 +306,11 @@
     "onlyMine": "Only mine",
     "selectKeywords": "Select keywords",
     "selectThemes": "Select themes",
-    "sharingUrlIsNotAvailable": "Sharing URL is not available!"
+    "sharingUrlIsNotAvailable": "Sharing URL is not available!",
+    "compositionNotFound": "Composition not found",
+    "sorryButComposition": "Sorry, but composition was deleted or incorrectly saved",
+    "compositionNotLoaded": "Composition not loaded",
+    "weAreSorryBut": "We are sorry, but composition was not loaded due to some error"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
