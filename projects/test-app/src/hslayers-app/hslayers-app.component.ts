@@ -30,7 +30,7 @@ export class HslayersAppComponent {
         name: 'default',
         panelsEnabled: {
           compositionLoadingProgress: true,
-          draw: false,
+          draw: true,
           tripPlanner: true,
           mapSwipe: true,
         },

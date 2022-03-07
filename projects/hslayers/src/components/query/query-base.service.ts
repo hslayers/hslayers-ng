@@ -129,6 +129,17 @@ export class HsQueryBaseService {
       this.selector = selector;
     });
   }
+
+  get(app: string): HsQueryData {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsQueryData(
+        () => this.pointClickedStyle(app),
+        this.hsEventBusService,
+        this.getInvisiblePopup()
+      );
+    }
+    return this.apps[app ?? 'default'];
+  }
   /**
    *
    */

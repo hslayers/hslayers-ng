@@ -821,7 +821,7 @@ export class HsLayerManagerService {
     while (to_be_removed.length > 0) {
       this.HsMapService.getMap(app).removeLayer(to_be_removed.shift());
     }
-    this.HsDrawService.addedLayersRemoved = true;
+    this.HsDrawService.get(app).addedLayersRemoved = true;
     this.HsDrawService.fillDrawableLayers(app);
   }
 
