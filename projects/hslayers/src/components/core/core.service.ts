@@ -57,8 +57,7 @@ export class HsCoreService {
           .enabledLanguages.split(',')
           .map((lang) => lang.trim())
       : ['cs', 'lv'];
-    const translateService =
-      this.hsLanguageService.apps[app].translationService;
+    const translateService = this.hsLanguageService.getTranslator(app);
     translateService.addLangs(languages.map((l) => `${app}|${l}`));
     translateService.setDefaultLang(`${app}|en`);
     if (this.HsConfig.get(app).language) {

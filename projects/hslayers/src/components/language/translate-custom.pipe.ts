@@ -48,7 +48,8 @@ export class TranslateCustomPipe
       this.value = res !== undefined ? res : query;
       this.lastKey = query;
     };
-    this.hsLanguageService.apps[interpolateParams.app].translationService
+    this.hsLanguageService
+      .getTranslator(interpolateParams.app)
       .get(query)
       .subscribe(onTranslation);
     return this.value;
