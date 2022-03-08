@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnectWfs" role="form">
-    <hs-common-url type="wfs" [(url)]="hsAddDataCommonService.get(app).url"
+    <hs-common-url type="wfs" [app]="app" [(url)]="hsAddDataCommonService.get(app).url"
         (connect)="hsAddDataOwsService.connect(app)">
     </hs-common-url>
 
@@ -12,8 +12,8 @@
         <div class="card-title text-center fw-bold">{{title}}</div>
         <div class="form-floating mb-2">
             <input class="form-control" [(ngModel)]="appRef.data.folder_name" name="hs-addData-wfs-folder"
-                placeholder="'ADDLAYERS.folderName' | translate" />
-            <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translate}}</label>
+                placeholder="'ADDLAYERS.folderName' | translateHs: {app} " />
+            <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translateHs: {app} }}</label>
         </div>
         <ul class="list-group">
             <li *ngFor="let layer of appRef.data.layers; trackBy:( 'Name' | trackByProperty )"
@@ -27,8 +27,8 @@
                     *ngIf="layer.featureCount > 1000 && layer.checked">
                     <div class="w-100">
                         <p class="mb-0" [hidden]="!layer.limitFeatureCount">{{'ADDLAYERS.WFS.selectedLayerContains' |
-                            translate}}
-                            {{layer.featureCount}} {{'ADDLAYERS.WFS.loadingToManyAtOnce' | translate}}
+                            translateHs: {app} }}
+                            {{layer.featureCount}} {{'ADDLAYERS.WFS.loadingToManyAtOnce' | translateHs: {app} }}
                         </p>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         [app]="app">
                     </hs-url-add>
                     <button *ngIf="appRef.loadingFeatures"
-                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img
+                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs: {app} }}<img
                             class="ms-2" [src]="hsUtilsService.getAjaxLoaderIcon(app)" /></button>
                 </div>
             </li>

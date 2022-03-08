@@ -1,9 +1,9 @@
 <div *ngIf="olLayer()">
   <div *ngIf="HsLayerEditorService.legendVisible(data.app)">
     <p style="text-align: center; font-weight: bold">
-      {{ "COMMON.legend" | translate }}
+      {{ "COMMON.legend" | translateHs : data }}
     </p>
-    <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor">
+    <hs-legend-layer-directive [app]="data.app" [layer]="HsLayerEditorService.legendDescriptor">
     </hs-legend-layer-directive>
     <hr />
   </div>

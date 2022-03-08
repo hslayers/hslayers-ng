@@ -1,12 +1,12 @@
 <div class="form-group" [hidden]="!isScaleVisible()">
-  <label>{{ "COMMON.scale" | translate }}</label>
+  <label>{{ "COMMON.scale" | translateHs : data }}</label>
   <span *ngIf="minResolutionValid()"
-    ><span class="ms-1">{{ "COMMON.from" | translate }}</span> 1:{{
+    ><span class="ms-1">{{ "COMMON.from" | translateHs : data }}</span> 1:{{
       minResolution
     }}</span
   >
   <span *ngIf="maxResolutionValid()"
-    ><span class="ms-1">{{ "COMMON.to" | translate }}</span> 1:{{
+    ><span class="ms-1">{{ "COMMON.to" | translateHs : data }}</span> 1:{{
       maxResolution
     }}</span
   >
@@ -14,11 +14,11 @@
   <!-- TODO This editor need to be toggle-able-->
   <div class="form">
     <br />
-    <label>{{ "COMMON.scale" | translate }}</label>
+    <label>{{ "COMMON.scale" | translateHs : data }}</label>
     <div *ngIf="minResolutionValid()">
       <div class="input-group">
         <span class="input-group-text"
-          ><span>{{ "COMMON.from" | translate }}</span
+          ><span>{{ "COMMON.from" | translateHs : data }}</span
           >&nbsp;1</span
         >
         <input
@@ -32,7 +32,7 @@
     <div *ngIf="maxResolutionValid()">
       <div class="input-group">
         <span class="input-group-text">
-          <span>{{ "COMMON.to" | translate }}</span
+          <span>{{ "COMMON.to" | translateHs : data }}</span
           >&nbsp;1</span
         >
         <input

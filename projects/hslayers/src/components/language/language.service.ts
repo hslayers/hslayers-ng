@@ -1,45 +1,77 @@
-import {Injectable} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import {HttpClient} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
+
+import {HsConfig} from '../../config.service';
+import {CustomTranslationService as HsCustomTranslationService} from './custom-translate.service';
+class HsLangageObject {
+  language: string;
+  translationService: HsCustomTranslationService;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLanguageService {
-  language: string;
-  constructor(private TranslateService: TranslateService) {}
+  translateServiceFactory: any;
+  apps: {
+    [id: string]: HsLangageObject;
+  } = {};
+  constructor(
+    @Inject(HsCustomTranslationService) translateServiceFactory: any,
+    private HttpClient: HttpClient,
+    private hsConfig: HsConfig
+  ) {
+    this.translateServiceFactory = translateServiceFactory;
+  }
 
   /**
    * @public
-   * @param {string} lang Language code
+   * @param lang - Language code
    * @description Set language
    */
-  setLanguage(lang: string): void {
-    this.language = lang;
-    this.TranslateService.use(lang);
+  setLanguage(lang: string, app: string): void {
+    this.getTranslator(app).use(lang);
+    this.apps[app].language = lang;
     // this.HsEventBusService.updateLanguageButton.next({
     //   language: lang,
     // });
   }
 
-  /**
-   * @public
-   * @returns {string} Returns language code
-   * @description Get code of current language
-   */
-  getCurrentLanguageCode(): string {
-    if (typeof this.language == 'undefined' || this.language == '') {
-      return 'en';
+  getTranslator(app): HsCustomTranslationService {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = {
+        language: 'en',
+        translationService: this.translateServiceFactory(
+          this.hsConfig,
+          this.HttpClient
+        ),
+      };
     }
-    return this.language.substr(0, 2).toLowerCase();
+    return this.apps[app].translationService;
   }
 
   /**
    * @public
-   * @returns {Object} Returns available languages
+   * @returns Returns language code
+   * @description Get code of current language
+   */
+  getCurrentLanguageCode(app: string): string {
+    if (
+      typeof this.apps[app].language == 'undefined' ||
+      this.apps[app].language == ''
+    ) {
+      return 'en';
+    }
+    return this.apps[app].language.split('|').pop().substr(0, 2).toLowerCase();
+  }
+
+  /**
+   * @public
+   * @returns Returns available languages
    * @description Get array of available languages based
    */
-  listAvailableLanguages(): any {
+  listAvailableLanguages(app: string): any {
     const language_code_name_map = {
       'en': 'English',
       'cs': 'Česky',
@@ -49,7 +81,9 @@ export class HsLanguageService {
       'sk': 'Slovensky',
     };
     const langs = [{key: 'en', name: 'English'}];
-    for (const lang of this.TranslateService.getLangs()) {
+    for (const lang of this.getTranslator(app)
+      .getLangs()
+      .map((l) => l.split('|')[1])) {
       if (
         language_code_name_map.hasOwnProperty(lang) &&
         langs.filter((l) => l.key == lang).length == 0
@@ -65,16 +99,26 @@ export class HsLanguageService {
    * @param params -
    * @returns Translation
    */
-  getTranslation(str: string, params?: any): string {
-    return this.TranslateService.instant(str, params);
+  getTranslation(str: string, params?: any, app?: string): string {
+    if (app == undefined) {
+      app = Object.keys(this.apps)[0];
+    }
+    return this.getTranslator(app).instant(str, params);
   }
 
   /**
    * Async variant of getTranslation function for translations which might
    * be needed immediately after application init before locales are even loaded
    */
-  async awaitTranslation(str: string, params?: any): Promise<string> {
-    return await lastValueFrom(this.TranslateService.get(str, params));
+  async awaitTranslation(
+    str: string,
+    params?: any,
+    app?: string
+  ): Promise<string> {
+    if (app == undefined) {
+      app = Object.keys(this.apps)[0];
+    }
+    return await lastValueFrom(this.getTranslator(app).get(str, params));
   }
 
   /**
@@ -88,8 +132,12 @@ export class HsLanguageService {
   getTranslationIgnoreNonExisting(
     module: string,
     text: string,
-    params?: any
+    params?: any,
+    app?: string
   ): string {
+    if (app == undefined) {
+      app = Object.keys(this.apps)[0];
+    }
     const tmp = this.getTranslation(module + '.' + text, params || undefined);
     if (tmp.includes(module + '.')) {
       return text;

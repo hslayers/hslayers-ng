@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
 @Component({
@@ -11,16 +12,26 @@ import {HsSidebarService} from './sidebar.service';
 export class HsMiniSidebarComponent implements OnInit {
   @Input() app = 'default';
   buttons: HsButton[];
+  miniSidebarButton: {title: () => string};
   constructor(
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
     public HsLayoutService: HsLayoutService,
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
+    private HsLanguageService: HsLanguageService
   ) {}
   ngOnInit() {
     this.HsSidebarService.apps[this.app].buttons.subscribe((buttons) => {
       this.buttons = buttons;
     });
+    this.miniSidebarButton = {
+      title: () =>
+        this.HsLanguageService.getTranslation(
+          'SIDEBAR.additionalPanels',
+          undefined,
+          this.app
+        ),
+    };
   }
 
   /**

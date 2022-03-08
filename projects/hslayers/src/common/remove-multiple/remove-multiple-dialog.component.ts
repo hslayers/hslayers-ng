@@ -60,7 +60,11 @@ export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
   getTitle(item): string {
     let title = item instanceof Layer ? getTitle(item) : item.name;
     if (!title) {
-      title = this.hsLanguageService.getTranslation('COMMON.unknown');
+      title = this.hsLanguageService.getTranslation(
+        'COMMON.unknown',
+        undefined,
+        this.data.app
+      );
     }
     return title;
   }

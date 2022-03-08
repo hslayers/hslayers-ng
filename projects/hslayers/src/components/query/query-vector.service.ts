@@ -58,6 +58,13 @@ export class HsQueryVectorService {
     });
   }
 
+  get(app: string) {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = {selector: undefined};
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   init(_app: string): void {
     if (this.apps[_app] == undefined) {
       this.apps[_app] = {selector: undefined};

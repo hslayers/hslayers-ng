@@ -61,19 +61,35 @@ export class HsFeatureInfoComponent
       return getFeatureLabel(feature);
     }
     if (getFeatures(feature)) {
-      return this.hsLanguageService.getTranslation('QUERY.clusterContaining', {
-        count: getFeatures(feature).length,
-      });
+      return this.hsLanguageService.getTranslation(
+        'QUERY.clusterContaining',
+        {
+          count: getFeatures(feature).length,
+        },
+        this.data.app
+      );
     }
-    return this.hsLanguageService.getTranslation('QUERY.untitledFeature');
+    return this.hsLanguageService.getTranslation(
+      'QUERY.untitledFeature',
+      undefined,
+      this.data.app
+    );
   }
 
   async removeFeature(feature): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.hsLanguageService.getTranslation('QUERY.reallyDelete'),
-        title: this.hsLanguageService.getTranslation('QUERY.confirmDelete'),
+        message: this.hsLanguageService.getTranslation(
+          'QUERY.reallyDelete',
+          undefined,
+          this.data.app
+        ),
+        title: this.hsLanguageService.getTranslation(
+          'QUERY.confirmDelete',
+          undefined,
+          this.data.app
+        ),
       },
       this.data.app
     );

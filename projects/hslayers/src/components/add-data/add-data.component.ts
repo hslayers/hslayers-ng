@@ -50,10 +50,16 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
         order: 4,
         fits: true,
         title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.ADDLAYERS',
+            undefined,
+            this.data.app
+          ),
         description: () =>
           this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.ADDLAYERS'
+            'SIDEBAR.descriptions.ADDLAYERS',
+            undefined,
+            this.data.app
           ),
         icon: 'icon-database',
       },

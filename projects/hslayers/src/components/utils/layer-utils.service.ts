@@ -425,10 +425,12 @@ export class HsLayerUtilsService {
       : false;
   }
 
-  translateTitle(title: string): string {
+  translateTitle(title: string, app: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(
       'LAYERS',
-      title
+      title,
+      undefined,
+      app
     );
   }
 

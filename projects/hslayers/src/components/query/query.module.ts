@@ -3,12 +3,12 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsClearLayerComponent} from './widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
 import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row/attribute-row.component';
@@ -38,7 +38,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     CommonModule,
     HsPanelHelpersModule,
     FormsModule,
-    TranslateModule,
+    HsLanguageModule,
     HsDownloadModule,
     NgbDropdownModule,
   ],

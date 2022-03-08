@@ -145,5 +145,10 @@
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypoints": "Waypoints"
+  },
+  "QUERY": {
+    "feature": {
+      "inLayer": "en couche"
+    }
   }
 }

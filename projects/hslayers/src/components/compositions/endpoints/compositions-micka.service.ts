@@ -94,10 +94,14 @@ export class HsCompositionsMickaService {
   compositionsReceived(endpoint: HsEndpoint, response: any, app: string): void {
     if (!response.records) {
       this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation('COMMON.warning'),
+        this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
         endpoint.title +
           ': ' +
-          this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
+          this.hsLanguageService.getTranslation(
+            'COMMON.noDataReceived',
+            undefined,
+            app
+          ),
         app,
         {
           disableLocalization: true,
@@ -166,14 +170,17 @@ export class HsCompositionsMickaService {
         catchError((e) => {
           this.hsToastService.createToastPopupMessage(
             this.hsLanguageService.getTranslation(
-              'COMPOSITIONS.errorWhileRequestingCompositions'
+              'COMPOSITIONS.errorWhileRequestingCompositions',
+              undefined,
+              app
             ),
             endpoint.title +
               ': ' +
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status ? e.status.toString() : e.message,
-                {url: url}
+                {url: url},
+                app
               ),
             app,
             {

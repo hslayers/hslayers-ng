@@ -189,7 +189,7 @@ export class HsAddDataVectorService {
     descriptor.layerParams.source = src;
     Object.assign(
       descriptor.layerParams,
-      await this.hsStylerService.parseStyle(descriptor.layerParams.style)
+      await this.hsStylerService.parseStyle(descriptor.layerParams.style, app)
     );
     const lyr = new VectorLayer(descriptor.layerParams);
     return lyr;

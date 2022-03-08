@@ -53,7 +53,7 @@ export class HsSearchService {
   init(app: string) {
     if (this.apps[app] == undefined) {
       this.apps[app] = new HsSearchData(
-        this.hsStylerService.pin_white_blue_highlight
+        this.hsStylerService.get(app).pin_white_blue_highlight
       );
     }
   }

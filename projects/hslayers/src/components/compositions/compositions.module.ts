@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
@@ -13,6 +12,7 @@ import {HsCompositionsListItemComponent} from './compositions-list-item.componen
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPagerModule} from '../../common/pager/pager.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -32,7 +32,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    TranslateModule,
+    HsLanguageModule,
     HsCompositionsLayerParserModule,
     NgbDropdownModule,
     HsLaymanModule,

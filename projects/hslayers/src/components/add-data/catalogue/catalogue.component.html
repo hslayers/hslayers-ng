@@ -1,7 +1,7 @@
 <div class="card hs-main-panel">
     <div class="mt-3 mx-3 ps-1 d-flex justify-content-between">
         <div class="input-group w-50">
-            <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translate" name="search"
+            <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translateHs : {app}  " name="search"
                 [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
             <button class="input-group-text text-secondary border-start-0" (click)="queryByFilter()">
                 <i class="icon-search icon-primary"></i>
@@ -14,12 +14,12 @@
             <div class="input-group-text border-0">
                 <input type="checkbox" [(ngModel)]="data.filterByExtent" (change)="queryByFilter()"
                     name="filterByExtent">
-                <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
+                <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs : {app}  }}</span>
             </div>
             <div class="input-group-text border-0 ms-1"
                 *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
                 <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
-                <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
+                <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs : {app}  }}</span>
             </div>
         </div>
 
@@ -32,7 +32,7 @@
                     <tbody>
                         <tr>
                             <td class="tdbreak">
-                                {{'ADDDATA.CATALOGUE.filterType' | translate}}
+                                {{'ADDDATA.CATALOGUE.filterType' | translateHs : {app}  }}
                             </td>
                             <td ngbDropdown display="dynamic" placement="bottom-right"
                                 #searchTypeDropdown="ngbDropdown">
@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <td class="tdbreak">
-                                {{'ADDDATA.CATALOGUE.resourceType' | translate}}
+                                {{'ADDDATA.CATALOGUE.resourceType' | translateHs : {app}  }}
                             </td>
                             <td ngbDropdown display="dynamic" placement="bottom-right" #resourceType="ngbDropdown">
                                 <button type="button" ngbDropdownToggle
@@ -77,7 +77,7 @@
                         </tr>
                         <tr>
                             <td class="tdbreak">
-                                {{'COMMON.sortBy' | translate}}
+                                {{'COMMON.sortBy' | translateHs : {app}  }}
                             </td>
                             <td ngbDropdown display="dynamic" placement="bottom-right" #sortByDrop="ngbDropdown">
                                 <button type="button" ngbDropdownToggle
@@ -117,10 +117,10 @@
                         <hs-catalogue-list-item [layer]="layer" [app]="app"></hs-catalogue-list-item>
                     </li>
                     <li class='list-group-item text-primary text-center py-2' [hidden]="!appRef.dataLoading"><img
-                            class="pe-2" [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
+                            class="pe-2" [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}</li>
                     <li [hidden]='appRef.catalogEntries.length > 0 || appRef.dataLoading' class='list-group-item'
                         style="border-top-width: 1px; border-radius: inherit">
-                        {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
+                        {{'DATASOURCE_SELECTOR.noResults' | translateHs : {app}  }}</li>
                 </ul>
             </div>
             <ng-container *ngIf="appRef.matchedRecords !== 0 && !appRef.dataLoading">

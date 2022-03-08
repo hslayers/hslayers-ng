@@ -60,17 +60,23 @@ export class HsAddDataUrlComponent implements OnInit {
         if (error?.includes('Unsuccessful OAuth2')) {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'COMMON',
-            'Authentication failed. Login to the catalogue.'
+            'Authentication failed. Login to the catalogue.',
+            undefined,
+            this.app
           );
         } else if (error.includes('property')) {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
-            'serviceTypeNotMatching'
+            'serviceTypeNotMatching',
+            undefined,
+            this.app
           );
         } else {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
-            error
+            error,
+            undefined,
+            this.app
           );
         }
         this.hsDialogContainerService.create(

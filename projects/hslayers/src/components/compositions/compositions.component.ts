@@ -59,10 +59,16 @@ export class HsCompositionsComponent
         order: 3,
         fits: true,
         title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.MAPCOMPOSITIONS',
+            undefined,
+            this.data.app
+          ),
         description: () =>
           this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.MAPCOMPOSITIONS'
+            'SIDEBAR.descriptions.MAPCOMPOSITIONS',
+            undefined,
+            this.data.app
           ),
         icon: 'icon-map',
       },
@@ -258,6 +264,11 @@ export class HsCompositionsComponent
    * @returns Translated text value
    */
   translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.data.app
+    );
   }
 }

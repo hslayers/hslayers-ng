@@ -6,13 +6,13 @@
     </li>
     <li class="page-item" *ngIf="appRef.listNext !== appRef.matchedRecords">
       <span class="page-link">
-        {{'COMMON.results' | translate}}
+        {{'COMMON.results' | translateHs: {app} }}
         {{appRef.listStart + 1}} -
         {{appRef.listNext}}</span>
     </li>
     <li class="page-item" *ngIf="appRef.listNext === appRef.matchedRecords">
       <span class="page-link">
-        {{'COMMON.results' | translate}}
+        {{'COMMON.results' | translateHs: {app} }}
         {{appRef.listStart + 1}} -
         {{appRef.matchedRecords}}</span>
     </li>
@@ -24,12 +24,12 @@
     right: 0;">
       <div class="btn-group">
         <button class="but-title-sm m-1" data-toggle="tooltip"
-          [title]="'ADDDATA.CATALOGUE.theNumberOfRecords' | translate">
+          [title]="'ADDDATA.CATALOGUE.theNumberOfRecords' | translateHs: {app} ">
           <i class="icon-question-sign"></i>
         </button>
         <button ngbDropdownToggle type="button"
           class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split rounded-0"
-          [title]="'COMMON.selectRecordCountPerPage' | translate" aria-haspopup="true" aria-expanded="false">
+          [title]="'COMMON.selectRecordCountPerPage' | translateHs: {app} " aria-haspopup="true" aria-expanded="false">
         </button>
       </div>
       <div ngbDropdownMenu class="dropdown-menu">

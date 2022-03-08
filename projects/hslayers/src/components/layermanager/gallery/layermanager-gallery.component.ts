@@ -1,8 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-
 import {HsConfig} from '../../../config.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager.service';

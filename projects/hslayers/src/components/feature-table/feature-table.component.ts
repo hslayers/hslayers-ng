@@ -18,8 +18,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   layers: VectorLayer<VectorSource<Geometry>>[] = [];
   name = 'feature_table';
   constructor(
@@ -40,10 +39,16 @@ export class HsFeatureTableComponent
         order: 14,
         fits: true,
         title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.FEATURE_TABLE',
+            undefined,
+            this.data.app
+          ),
         description: () =>
           this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.FEATURE_TABLE'
+            'SIDEBAR.descriptions.FEATURE_TABLE',
+            undefined,
+            this.data.app
           ),
         icon: 'icon-indexmanager',
       },

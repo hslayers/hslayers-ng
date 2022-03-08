@@ -17,6 +17,7 @@ export class HsLayerNameComponent
 
   @Input() data: {
     layerDescriptor: any;
+    app: string;
   };
 
   constructor(public hsLayerUtilsService: HsLayerUtilsService) {

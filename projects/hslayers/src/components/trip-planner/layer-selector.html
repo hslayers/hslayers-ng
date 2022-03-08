@@ -20,7 +20,7 @@
       [attr.aria-expanded]="layersExpanded"
     >
       <div class="text-truncate" *ngIf="selectedwrapper !== undefined">
-        {{HsLayerUtilsService.translateTitle(selectedwrapper.title)}}
+        {{HsLayerUtilsService.translateTitle(selectedwrapper.title, app)}}
       </div>
     </button>
     <div
@@ -33,9 +33,9 @@
           class="dropdown-item text-truncate"
           *ngFor="let layer of HsTripPlannerService.apps[app].vectorLayers"
           data-toggle="tooltip"
-          title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
+          title="{{HsLayerUtilsService.translateTitle(layer.title, app)}}"
           (click)="HsTripPlannerService.selectLayer(layer, usage, app); layersExpanded = false"
-          >{{HsLayerUtilsService.translateTitle(layer.title)}}</a
+          >{{HsLayerUtilsService.translateTitle(layer.title, app)}}</a
         >
       </div>
     </div>

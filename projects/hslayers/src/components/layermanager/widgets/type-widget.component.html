@@ -3,14 +3,18 @@
     {{
       HsLanguageService.getTranslationIgnoreNonExisting(
         "LAYERMANAGER.layerEditor",
-        currentLayer.type
+        currentLayer.type,
+        undefined, 
+        data.app
       )
     }}
-    {{ "LAYERMANAGER.layerEditor.layerFrom" | translate }}
+    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : data }}
     {{
       HsLanguageService.getTranslationIgnoreNonExisting(
         "LAYERMANAGER.layerEditor",
-        currentLayer.source
+        currentLayer.source,
+        undefined,
+        data.app
       )
     }}
   </small>

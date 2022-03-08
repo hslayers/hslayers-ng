@@ -4,7 +4,7 @@
             *ngFor="let layer of hsLayerShiftingService.layersCopy;" cdkDrag>
                 <div class="d-flex align-items-center justify-content-between p-0 hs-lm-item-title flex-grow-1"
                     style="word-break:break-all; cursor:move">
-                    <p class="m-0">{{hsLayerUtilsService.translateTitle(layer.title)}}</p>
+                    <p class="m-0">{{hsLayerUtilsService.translateTitle(layer.title, app)}}</p>
                     <i class="icon-move text-secondary"></i>
                 </div>
                 <!-- <div *cdkDragPreview class="mw-100 physical-layerlist-preview">

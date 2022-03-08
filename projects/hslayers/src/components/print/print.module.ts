@@ -4,8 +4,8 @@ import {FormsModule} from '@angular/forms';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
+import {HsLanguageModule} from '../language/language.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsPrintComponent} from './print.component';
 import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.component';
@@ -29,7 +29,7 @@ import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    TranslateModule,
+    HsLanguageModule,
     ColorSketchModule,
     NgbDropdownModule,
   ],

@@ -3,7 +3,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
     <a class="p-1" *ngIf="hsQueryVectorService.isFeatureRemovable(feature, data.app) && type" (click)="removeFeature(feature)"
-      data-toggle="tooltip" [title]="'QUERY.featurePopup.' + type | translate">
+      data-toggle="tooltip" [title]="'QUERY.featurePopup.' + type | translateHs : data">
       <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
     </a>
   </div>
@@ -16,7 +16,9 @@
       <div class="p-1 flex-grow-1">
         {{hsLanguageService.getTranslationIgnoreNonExisting(
         'FEATURE_TABLE',
-        attribute.key
+        attribute.key,
+        undefined,
+        data.app
         )}} 
       </div>
     </ng-container>

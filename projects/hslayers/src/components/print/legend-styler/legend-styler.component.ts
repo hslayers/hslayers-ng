@@ -17,6 +17,7 @@ export class HsPrintLegendStylerComponent {
   positionOptions = POSITION_OPTIONS;
   legendWidths = CANVAS_SIZES;
   @Input() legendObj: LegendObj;
+  @Input() app = 'default';
 
   constructor(
     public hsLanguageService: HsLanguageService,
@@ -52,6 +53,11 @@ export class HsPrintLegendStylerComponent {
    * Get translation for the value string
    */
   getTranslation(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.app
+    );
   }
 }

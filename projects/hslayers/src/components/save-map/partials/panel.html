@@ -1,10 +1,10 @@
 <div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" [hidden]="!isVisible()">
-    <hs-panel-header name="saveMap" [title]="'PANEL_HEADER.SAVECOMPOSITION' | translate" [app]="data.app">
+    <hs-panel-header name="saveMap" [title]="'PANEL_HEADER.SAVECOMPOSITION' | translateHs : data" [app]="data.app">
     </hs-panel-header>
     <div class="card-body">
         <div class="form-group">
             <div class="input-group">
-                <span class="input-group-text control-label">{{'COMMON.saveTo' | translate}}</span>
+                <span class="input-group-text control-label">{{'COMMON.saveTo' | translateHs : data}}</span>
                 <select class="form-control form-select" [(ngModel)]="endpoint"
                     (change)="HsSaveMapManagerService.selectEndpoint(endpoint, data.app)" name="endpoint">
                     <option *ngFor="let e of HsCommonEndpointsService.endpoints" [ngValue]="e">{{e.title}}</option>
@@ -12,8 +12,8 @@
             </div>
         </div>
         <div [hidden]="endpoint?.type !== 'layman' || isAuthorized">
-            <div class="alert alert-info text-gray" translate>
-                {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translate}} </div>
+            <div class="alert alert-info text-gray">
+                {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs : data}} </div>
         </div>
         <hs-layman-current-user class="d-block pb-5" *ngIf="endpoint?.type === 'layman'" [endpoint]="endpoint">
         </hs-layman-current-user>

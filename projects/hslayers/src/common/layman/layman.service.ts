@@ -103,12 +103,14 @@ export class HsCommonLaymanService {
     }
     //If response is object, it is an error response
     this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(errorMsg),
+      this.hsLanguageService.getTranslation(errorMsg, undefined, app),
       endpoint.title +
         ': ' +
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
-          simplifiedResponse
+          simplifiedResponse,
+          undefined,
+          app
         ),
       app,
       {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}

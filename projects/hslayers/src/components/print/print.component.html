@@ -1,8 +1,8 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="print" [title]="'PANEL_HEADER.PRINT' | translate">
+    <hs-panel-header name="print" [title]="'PANEL_HEADER.PRINT' | translateHs : data">
         <extra-buttons>
             <button class="but-title-sm hs-extra-buttons mt-1" (click)="setToDefault()"
-                [title]="'COMMON.resetToDefault' | translate">
+                [title]="'COMMON.resetToDefault' | translateHs : data">
                 <i class="glyphicon icon-fatredo"></i>
             </button>
         </extra-buttons>
@@ -11,32 +11,32 @@
         <div class="card-body">
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="print-title" [(ngModel)]="print.titleObj.text"
-                    placeholder="'COMMON.title' | translate" />
-                <label for="print-title" class="control-label">{{'COMMON.title' | translate}}</label>
+                    placeholder="'COMMON.title' | translateHs : data" />
+                <label for="print-title" class="control-label">{{'COMMON.title' | translateHs : data}}</label>
             </div>
             <div class="d-flex justify-content-around mb-2">
                 <div class="form-check border-0">
                     <input type="checkbox" class="form-check-input" [(ngModel)]="print.legendObj.include"
                         name="includeLegend" id="includeLegend">
                     <label class="form-check-label pt-1" for="includeLegend" style="cursor:pointer">{{'COMMON.legend' |
-                        translate}}</label>
+                        translateHs : data}}</label>
                 </div>
                 <div class="form-check border-0">
                     <input type="checkbox" class="form-check-input" [(ngModel)]="print.imprintObj.include"
                         name="includeImprint" id="includeImprint">
                     <label class="form-check-label pt-1" for="includeImprint" style="cursor:pointer">{{'PRINT.imprint' |
-                        translate}}</label>
+                        translateHs : data}}</label>
                 </div>
                 <div class="form-check border-0">
                     <input type="checkbox" class="form-check-input" [(ngModel)]="print.scaleObj.include"
                         name="includeScale" id="includeScale">
                     <label class="form-check-label pt-1" for="includeScale" style="cursor:pointer">{{'COMMON.scale' |
-                        translate}}</label>
+                        translateHs : data}}</label>
                 </div>
             </div>
             <!-- <div class="form-group">
                 <div class="input-group">
-                    <span class="input-group-text control-label">{{'Resolution' | translate}}</span>
+                    <span class="input-group-text control-label">{{'Resolution' | translateHs : data}}</span>
                     <select class="form-control form-select" [(ngModel)]="print.resolution" name="resolution"
                         style="flex-grow: 1;" [ngModelOptions]="{standalone: true}">
                         <option [ngValue]="deviceRes">{{deviceRes}}</option>
@@ -47,42 +47,42 @@
             </div> -->
             <button type="button" class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
                 (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
-                {{'PRINT.titleStylingOptions' | translate}}
+                {{'PRINT.titleStylingOptions' | translateHs : data}}
             </button>
-            <hs-print-text-styler *ngIf="getStylerVisible('title')" [textStyle]="print.titleObj.textStyle"
+            <hs-print-text-styler *ngIf="getStylerVisible('title')" [app]="data.app" [textStyle]="print.titleObj.textStyle"
                 [objectName]="'title'">
             </hs-print-text-styler>
             <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                {{'PRINT.legendStylingOptions' | translate}}
+                {{'PRINT.legendStylingOptions' | translateHs : data}}
             </button>
-            <hs-print-legend-styler *ngIf="getStylerVisible('legend') && print.legendObj.include"
+            <hs-print-legend-styler *ngIf="getStylerVisible('legend') && print.legendObj.include" [app]="data.app"
                 [legendObj]="print.legendObj">
             </hs-print-legend-styler>
             <button [disabled]="!print.imprintObj.include" type="button" (click)="setStylerVisible('imprint')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                {{'PRINT.imprintStylingOptions' | translate}}
+                {{'PRINT.imprintStylingOptions' | translateHs : data}}
             </button>
-            <hs-print-imprint-styler *ngIf="getStylerVisible('imprint') && print.imprintObj.include"
+            <hs-print-imprint-styler *ngIf="getStylerVisible('imprint') && print.imprintObj.include" [app]="data.app"
                 [imprintObj]="print.imprintObj">
             </hs-print-imprint-styler>
             <button [disabled]="!print.scaleObj.include" type="button" (click)="setStylerVisible('scale')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                {{'PRINT.scaleStylingOptions' | translate}}
+                {{'PRINT.scaleStylingOptions' | translateHs : data}}
             </button>
             <hs-print-scale-styler *ngIf="getStylerVisible('scale') && print.scaleObj.include" [app]="data.app"
                 [scaleObj]="print.scaleObj">
             </hs-print-scale-styler>
             <div class="mb-2 mt-2 d-flex justify-content-start" *ngIf="!isLoading()">
                 <button type="button" class="btn btn-primary me-2 w-50" (click)="printLayout(true)">{{'COMMON.print' |
-                    translate}}</button>
+                    translateHs : data}}</button>
                 <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
-                    translate}}</button>
+                    translateHs : data}}</button>
                 <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
-                    [title]="'COMMON.downloadAsPng' | translate"><i class="icon-download"></i></button>
+                    [title]="'COMMON.downloadAsPng' | translateHs : data"><i class="icon-download"></i></button>
             </div>
             <div class="d-flex justify-content-center btn-group w-75 m-auto" *ngIf="isLoading()">
-                <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}...<img class="ms-2"
+                <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs : data}}...<img class="ms-2"
                         [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" /></button>
                 <button class="btn btn-secondary" (click)="cancelLoading()">&#10006;
                 </button>

@@ -43,11 +43,6 @@ export class HsSidebarService {
   } = {default: new HsSidebarParams()};
   sidebarLoad: Subject<string> = new Subject();
 
-  miniSidebarButton = {
-    title: () =>
-      this.HsLanguageService.getTranslation('SIDEBAR.additionalPanels'),
-  };
-
   get(app: string): HsSidebarParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new HsSidebarParams();

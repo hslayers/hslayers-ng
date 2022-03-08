@@ -10,14 +10,14 @@
         *ngFor="let metadataUrl of metadataService.metadataArray(currentLayer)"
         href="{{ metadataUrl.onlineResource }}"
         target="_blank"
-        [title]="'COMMON.metadata' | translate"
+        [title]="'COMMON.metadata' | translateHs : data"
       >
         <span [hidden]="!metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translate }}
+          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : data }}
           {{ metadataUrl.type }}
         </span>
         <span [hidden]="metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translate }}
+          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs : data }}
         </span>
       </a>
     </div>
@@ -27,18 +27,18 @@
         class="card-href"
         href="{{ getAttribution(currentLayer.layer).onlineResource }}"
         target="_blank"
-        [title]="'LAYERMANAGER.layerEditor.copyright' | translate"
+        [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs : data"
       >
-        {{ "LAYERMANAGER.layerEditor.copyright" | translate }}</a
+        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : data }}</a
       >
     </div>
   </div>
 
   <div class="form-group" [hidden]="!abstract">
-    <label>{{ "COMMON.abstract" | translate }}</label>
+    <label>{{ "COMMON.abstract" | translateHs : data }}</label>
     <p
       [innerHtml]="
-        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
+        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract, data.app)
       "
     ></p>
   </div>

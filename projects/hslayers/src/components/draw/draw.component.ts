@@ -46,9 +46,18 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
         module: 'hs.draw',
         order: 16,
         fits: true,
-        title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
+        title: () =>
+          this.HsLanguageService.getTranslation(
+            'PANEL_HEADER.DRAW',
+            undefined,
+            this.data.app
+          ),
         description: () =>
-          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.DRAW',
+            undefined,
+            this.data.app
+          ),
         icon: 'icon-pencil',
       },
       this.data.app

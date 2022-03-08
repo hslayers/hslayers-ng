@@ -76,14 +76,17 @@ export class HsCompositionsStatusManagerService {
           default:
             this.hsToastService.createToastPopupMessage(
               this.hsLanguageService.getTranslation(
-                'COMPOSITIONS.errorWhileRequestingCompositions'
+                'COMPOSITIONS.errorWhileRequestingCompositions',
+                undefined,
+                app
               ),
               ds.title +
                 ': ' +
                 this.hsLanguageService.getTranslationIgnoreNonExisting(
                   'ERRORMESSAGES',
                   e.status ? e.status.toString() : e.message,
-                  {url: url}
+                  {url: url},
+                  app
                 ),
               app,
               {

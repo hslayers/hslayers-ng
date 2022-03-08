@@ -3,17 +3,17 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
-          {{'PANEL_HEADER.LM' | translate}}
+          {{'PANEL_HEADER.LM' | translateHs : data}}
         </h4>
-        <button (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translate}}">
+        <button (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translateHs : data}}">
         </button>
       </div>
       <div class="modal-body" style="max-height:600px; overflow-y:auto">
-        {{'LAYERMANAGER.dialogRemoveLayer.dialogMessage' | translate}}</div>
+        {{'LAYERMANAGER.dialogRemoveLayer.dialogMessage' | translateHs : data}}</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="removeLayer();"
-          data-dismiss="modal">{{'COMMON.removeLayer' | translate}}</button>
-        <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>
+          data-dismiss="modal">{{'COMMON.removeLayer' | translateHs : data}}</button>
+        <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' | translateHs : data}}</button>
       </div>
     </div>
   </div>

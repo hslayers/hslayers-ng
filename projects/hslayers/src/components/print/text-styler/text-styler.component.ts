@@ -19,6 +19,7 @@ export enum ColorPickers {
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;
   @Input() objectName: string;
+  @Input() app = 'default';
   fillPickerVisible = false;
   bcPickerVisible = false;
   textColor = 'white';
@@ -100,7 +101,12 @@ export class HsPrintTextStylerComponent {
   /**
    * Get translation for the value string
    */
-  getTranslation(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+  getTranslation(module: string, text: string, app: string): string {
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.app
+    );
   }
 }

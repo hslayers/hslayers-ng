@@ -127,14 +127,17 @@ export class HsLaymanBrowserService {
             default:
               this.hsToastService.createToastPopupMessage(
                 await this.hsLanguageService.awaitTranslation(
-                  'ADDLAYERS.ERROR.errorWhileRequestingLayers'
+                  'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+                  undefined,
+                  app
                 ),
                 endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url: url}
+                    {url},
+                    app
                   ),
                 app,
                 {
@@ -157,10 +160,14 @@ export class HsLaymanBrowserService {
   private datasetsReceived(data, app: string): void {
     if (!data.dataset) {
       this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation('COMMON.warning'),
+        this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
         data.dataset.title +
           ': ' +
-          this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
+          this.hsLanguageService.getTranslation(
+            'COMMON.noDataReceived',
+            undefined,
+            app
+          ),
         app,
         {
           disableLocalization: true,
@@ -280,9 +287,15 @@ export class HsLaymanBrowserService {
     } else {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
-          'ADDLAYERS.ERROR.errorWhileRequestingLayers'
+          'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+          undefined,
+          app
         ),
-        this.hsLanguageService.getTranslation('ADDLAYERS.ERROR.urlInvalid'),
+        this.hsLanguageService.getTranslation(
+          'ADDLAYERS.ERROR.urlInvalid',
+          undefined,
+          app
+        ),
         app,
         {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
       );

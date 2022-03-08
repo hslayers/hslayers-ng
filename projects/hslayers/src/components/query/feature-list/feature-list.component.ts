@@ -110,9 +110,15 @@ export class HsQueryFeatureListComponent implements OnInit {
       HsConfirmDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
-          'QUERY.reallyDeleteAllSelectedLayers'
+          'QUERY.reallyDeleteAllSelectedLayers',
+          undefined,
+          this.app
         ),
-        title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
+        title: this.hsLanguageService.getTranslation(
+          'COMMON.confirmDelete',
+          undefined,
+          this.app
+        ),
       },
       this.app
     );

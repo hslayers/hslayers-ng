@@ -9,6 +9,7 @@ import {HsStylerService} from '../../styler.service';
 })
 export class HsRuleListItemComponent {
   @Input() rule: any;
+  @Input() app = 'default';
   ruleVisible = false;
   constructor(public hsStylerService: HsStylerService) {}
 }

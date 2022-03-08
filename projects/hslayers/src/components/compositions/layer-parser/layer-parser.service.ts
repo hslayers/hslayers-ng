@@ -112,11 +112,14 @@ export class HsCompositionsLayerParserService {
     } catch (error) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
-          'ADDLAYERS.capabilitiesParsingProblem'
+          'ADDLAYERS.capabilitiesParsingProblem',
+          undefined,
+          app
         ),
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
-          error
+          error,
+          app
         ),
         app,
         {
@@ -321,7 +324,8 @@ export class HsCompositionsLayerParserService {
    * Parse definition object to create Sparql layer
    */
   async createSparqlLayer(
-    lyr_def
+    lyr_def,
+    app: string
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     const url = decodeURIComponent(lyr_def.protocol.url);
     const definition: any = {};
@@ -330,7 +334,7 @@ export class HsCompositionsLayerParserService {
 
     let style = null;
     if (lyr_def.style) {
-      style = (await this.HsStylerService.parseStyle(lyr_def.style)).style;
+      style = (await this.HsStylerService.parseStyle(lyr_def.style, app)).style;
     }
 
     const src = new SparqlJson({
@@ -410,7 +414,7 @@ export class HsCompositionsLayerParserService {
         }
         Object.assign(
           options,
-          await this.HsStylerService.parseStyle(lyr_def.style)
+          await this.HsStylerService.parseStyle(lyr_def.style, app)
         );
         extractStyles = false;
       }
@@ -456,7 +460,7 @@ export class HsCompositionsLayerParserService {
           );
           break;
         case 'hs.format.Sparql':
-          layer = await this.createSparqlLayer(lyr_def);
+          layer = await this.createSparqlLayer(lyr_def, app);
           break;
         default:
           const features = lyr_def.features

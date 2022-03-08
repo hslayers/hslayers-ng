@@ -3,10 +3,9 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
-import {TranslateModule} from '@ngx-translate/core';
-
 import {HsCommonUrlComponent} from './url.component';
 import {HsHistoryListModule} from './../../../../common/history-list/history-list.module';
+import {HsLanguageModule} from '../../../language/language.module';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
 import {HsUiExtensionsModule} from './../../../../common/widgets/ui-extensions.module';
 import {HsUrlAddComponent} from './add/add.component';
@@ -19,7 +18,7 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
   imports: [
     CommonModule,
     FormsModule,
-    TranslateModule,
+    HsLanguageModule,
     HsHistoryListModule,
     HsUiExtensionsModule,
   ],

@@ -1,10 +1,10 @@
 <div class="w-100 mt-2" style="display: inline-block;" data-toggle="tooltip" data-placement="top"
-  title="{{hsAddDataCommonFileService.addTooltip(data)}}">
+  title="{{hsAddDataCommonFileService.addTooltip(data, app)}}">
   <button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100"
     [disabled]="!data.name || !data.srs" (click)="hsAddDataCommonFileService.addAsWms(data, app)">
     <i class="icon-plus" [hidden]="hsAddDataCommonFileService.loadingToLayman"></i>
     <img [src]="hsUtilsService.getAjaxLoaderIcon(app)" [hidden]="!hsAddDataCommonFileService.loadingToLayman" />
-    {{hsAddDataCommonFileService.getLoadingText()}}
+    {{hsAddDataCommonFileService.getLoadingText(app)}}
     <ngb-progressbar *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.asyncLoading"
       showValue="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
     </ngb-progressbar>
@@ -12,6 +12,6 @@
 </div>
 <div *ngIf="!hsAddDataCommonFileService.isAuthorized()"
   class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-  <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate}}</p>
+  <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs : {app} }}</p>
   <hs-layman-current-user [app]="app" [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
 </div>

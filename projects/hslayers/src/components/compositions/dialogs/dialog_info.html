@@ -3,21 +3,21 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{data.info.title}} <span>{{'COMPOSITIONS.dialogInfo.details' | translate}}</span>
+                    {{data.info.title}} <span>{{'COMPOSITIONS.dialogInfo.details' | translateHs: {data} }}</span>
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translate}}">
+                    attr.aria-label="{{'COMMON.close' | translateHs: {data} }}">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row" style="text-align: justify; text-justify: inter-word;">
-                    <div class="col-md-3"><b>{{'COMMON.abstract' | translate}}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.abstract' | translateHs: {data} }}</b></div>
                     <div class="col-md-9">{{data.info.abstract}}</div>
                 </div>
                 <div *ngIf="data.info.keywords">
                     <div *ngFor="let keyword of data.info.keywords;let first = first;">
                         <div class="row" *ngIf="first">
-                            <div class="col-md-3"><b>{{'COMMON.keywords' | translate}}</b></div>
+                            <div class="col-md-3"><b>{{'COMMON.keywords' | translateHs: {data} }}</b></div>
                             <div class="col-md-9">{{keyword}}</div>
                         </div>
                         <div class="row" *ngIf="!first">
@@ -27,26 +27,26 @@
                     <br>
                 </div>
                 <div class="row" *ngIf="data.info.thumbnail">
-                    <div class="col-md-3"><b>{{'COMMON.thumbnail' | translate}}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.thumbnail' | translateHs: {data} }}</b></div>
                     <div class="col-md-9"><img
                             src="{{data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail}}"></div>
                 </div>
                 <div class="row" *ngIf="data.info.url && data.info">
-                    <div class="col-md-3"><b>{{'COMMON.url' | translate}}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.url' | translateHs: {data} }}</b></div>
                     <div class="col-md-9">{{data.info.url}}</div>
                 </div>
                 <div class="row" *ngIf="data.info.srs">
-                    <div class="col-md-3"><b>{{'ADDLAYERS.srs' | translate}}</b></div>
+                    <div class="col-md-3"><b>{{'ADDLAYERS.srs' | translateHs: {data} }}</b></div>
                     <div class="col-md-9">{{data.info.srs}}</div>
                 </div>
                 <div class="row" *ngIf="data.info.extent">
-                    <div class="col-md-3"><b>{{'COMMON.extent' | translate}}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.extent' | translateHs: {data} }}</b></div>
                     <div class="col-md-9" style="word-break:break-all">{{data.info.extent}}</div>
                 </div>
                 <div *ngIf="data.info.layers">
                     <div *ngFor="let layer of data.info.layers;let first = first;">
                         <div class="row" *ngIf="first">
-                            <div class="col-md-3"><b>{{'COMMON.layers' | translate}}</b></div>
+                            <div class="col-md-3"><b>{{'COMMON.layers' | translateHs: {data} }}</b></div>
                             <div class="col-md-9">{{layer.title}}</div>
                         </div>
                         <div class="row" *ngIf="!first">
@@ -57,7 +57,7 @@
                 </div>
                 <!-- <div *ngIf="data.info.metadata">
                     <div class="row">
-                         <div class="col"><b>{{'COMPOSITIONS.dialogInfo.metadataAboutMetadata' | translate}}</b></div>
+                         <div class="col"><b>{{'COMPOSITIONS.dialogInfo.metadataAboutMetadata' | translateHs: {data} }}</b></div>
                     </div>
                      <div *ngFor="let metadata of data.info.metadata | keyvalue">
                          <div class="row" *ngIf="metadata.value">
@@ -67,13 +67,13 @@
                      </div>
                 </div> -->
                 <div class="row" *ngIf="data.info.contactAddress || data.info.contactPersonPrimary">
-                    <div class="col"><b>{{'COMMON.contactInformation' | translate}}</b></div>
+                    <div class="col"><b>{{'COMMON.contactInformation' | translateHs: {data} }}</b></div>
                 </div>
                 <div *ngIf="data.info.contactAddress">
                     <div *ngFor="let data of data.info.contactAddress | keyvalue">
                         <div class="row" *ngIf="data.value">
                             <div class="col-md-4"><b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form',
-                                    data.key)}}</b></div>
+                                    data.key, data.app)}}</b></div>
                             <div class="col-md-8">{{data.value}}</div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     <div *ngFor="let data of data.info.contactPersonPrimary | keyvalue">
                         <div class="row" *ngIf="data.value">
                             <div class="col-md-4" style="word-break:break-all">
-                                <b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b>
+                                <b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key, data.app)}}</b>
                             </div>
                             <div class="col-md-8">{{data.value}}</div>
                         </div>
@@ -96,7 +96,7 @@
                         full metadata record <i class="icon icon-opennewwindow"></i></a>
                 </ng-container>
                 <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close' |
-                    translate}}</button>
+                    translateHs: {data} }}</button>
             </div>
         </div>
     </div>

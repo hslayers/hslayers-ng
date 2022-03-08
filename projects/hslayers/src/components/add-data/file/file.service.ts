@@ -110,7 +110,8 @@ export class HsFileService {
         message: this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.SHP',
           'maximumNumberOf',
-          {allowed, length}
+          {allowed, length},
+          app
         ),
         header: this.fileUploadErrorHeader,
       },

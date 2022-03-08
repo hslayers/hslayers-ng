@@ -4,9 +4,9 @@ import {NgModule} from '@angular/core';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
+import {HsLanguageModule} from '../language/language.module';
 import {HsMapSwipeComponent} from './map-swipe.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HsMapSwipeComponent],
@@ -14,7 +14,7 @@ import {TranslateModule} from '@ngx-translate/core';
     CommonModule,
     HsPanelHelpersModule,
     FormsModule,
-    TranslateModule,
+    HsLanguageModule,
     DragDropModule,
   ],
   exports: [HsMapSwipeComponent],

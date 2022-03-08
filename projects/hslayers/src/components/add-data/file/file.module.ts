@@ -2,8 +2,6 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
-import {TranslateModule} from '@ngx-translate/core';
-
 import {HsAddDataFileBaseComponent} from './file-base.component';
 import {HsAddDataFileComponent} from './file.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
@@ -16,7 +14,6 @@ import {HsFileShpModule} from './shp/shp.module';
   imports: [
     CommonModule,
     FormsModule,
-    TranslateModule,
     HsFileShpModule,
     HsAddDataVectorModule,
     HsFileRasterModule,

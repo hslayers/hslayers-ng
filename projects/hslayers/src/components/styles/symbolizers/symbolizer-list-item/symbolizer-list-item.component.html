@@ -5,12 +5,12 @@
     <button type="button" style="border: none; background-color: transparent; cursor: move">
       <i class="icon-move text-secondary"></i>
     </button>
-    <span>{{getSymbolizerName(symbolizer) | translate}}&nbsp;</span>
+    <span>{{getSymbolizerName(symbolizer) | translateHs : {app} }}&nbsp;</span>
   </div>
   <div>
     <span class="glyphicon me-2" [ngClass]="symbolizerVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
     <button class="btn btn-danger btn-sm" (click)="removeSymbolizer(symbolizer)" data-toggle="tooltip"
-      [title]="'STYLER.removeSymbolizer' | translate">
+      [title]="'STYLER.removeSymbolizer' | translateHs : {app} ">
       <i class="icon-trash"></i>
     </button>
   </div>

@@ -678,7 +678,8 @@
       "featureEdited": "Zmena prvku bola úspešná",
       "featuremoveSucc": "Prvok bol úspešne presunutý do vrstvy: ",
       "moveFeature": "Presunúť prvok",
-      "moveFeatures": "Presunúť prvky"
+      "moveFeatures": "Presunúť prvky",
+      "inLayer": "vo vrstve"
     },
     "featureInfo": "Informácie o funkcii",
     "featurePopup": {

@@ -713,7 +713,8 @@
       "featureEdited": "Grafiskā objekta rediģēšana veiksmīga",
       "featuremoveSucc": "Grafiskais objekts tika veiksmīgi pārvietots uz slāni:",
       "moveFeature": "Pārvietot grafisko objektu",
-      "moveFeatures": "Pārvietot grafiskos objektus"
+      "moveFeatures": "Pārvietot grafiskos objektus",
+      "inLayer": "slānī"
     },
     "featureInfo": "Objektu informācija",
     "featurePopup": {

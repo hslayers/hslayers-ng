@@ -4,23 +4,23 @@
     <div class="btn-group w-100" role="group">
         <a class="btn btn-sm" (click)="$event.stopPropagation();openComposition(composition)">
             <i class="icon-map icon-primary"></i><span class="ms-1">{{'COMMON.open' |
-                translate}}</span>
+                translateHs: {app} }}</span>
         </a>
         <a class="btn btn-sm" (click)="$event.stopPropagation();detailComposition(composition)">
             <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
-                translate}}</span>
+                translateHs: {app} }}</span>
         </a>
         <a class="btn btn-sm" (click)="$event.stopPropagation();shareComposition(composition)">
             <i class="icon-share-alt icon-primary"></i><span class="ms-1">{{'COMMON.share' |
-                translate}}</span>
+                translateHs: {app} }}</span>
         </a>
         <a class="btn btn-sm" (click)="$event.stopPropagation();confirmDelete(composition)" data-toggle="tooltip"
             data-placement="bottom"
-            [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translate">
+            [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translateHs: {app} ">
             <i class="icon-trash icon-primary" [ngClass]="{'text-muted': !composition.editable}"
                 [ngStyle]="{'cursor' : composition.editable ? 'pointer' : 'default'}"></i><span
                 [hidden]="!composition.editable" class="ms-1">{{'COMMON.delete' |
-                translate}}</span>
+                translateHs: {app} }}</span>
         </a>
     </div>
 </div>

@@ -6,6 +6,7 @@ import {HS_PRMS} from '../permalink/get-params';
 import {HsButton} from './button.interface';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from './sidebar.service';
@@ -18,12 +19,14 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;
   @Input() app = 'default';
   buttons: HsButton[] = [];
+  miniSidebarButton: {title: () => string};
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
     public HsPermalinkUrlService: HsShareUrlService,
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
+    private HsLanguageService: HsLanguageService
   ) {}
   ngOnDestroy(): void {
     this.configChangesSubscription.unsubscribe();
@@ -37,6 +40,14 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
         this.HsSidebarService.setPanelState(buttons, this.app);
         this.HsSidebarService.setButtonVisibility(buttons, this.app);
       });
+    this.miniSidebarButton = {
+      title: () =>
+        this.HsLanguageService.getTranslation(
+          'SIDEBAR.additionalPanels',
+          undefined,
+          this.app
+        ),
+    };
     if (panel) {
       setTimeout(() => {
         //Without timeout we get ExpressionChangedAfterItHasBeenCheckedError

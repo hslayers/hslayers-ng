@@ -118,12 +118,12 @@ export class HsToastService {
     this.show(
       options.disableLocalization
         ? text
-        : this.HsLanguageService.getTranslation(text),
+        : this.HsLanguageService.getTranslation(text, undefined, app),
       app,
       {
         header: options.disableLocalization
           ? header
-          : this.HsLanguageService.getTranslation(header),
+          : this.HsLanguageService.getTranslation(header, undefined, app),
         delay: options.customDelay || 7000,
         autohide: true,
         classname: options.toastStyleClasses || `bg-danger text-light`,

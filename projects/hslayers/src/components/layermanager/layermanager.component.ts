@@ -182,9 +182,18 @@ export class HsLayerManagerComponent
         module: 'hs.layermanager',
         order: 0,
         fits: true,
-        title: () => this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
+        title: () =>
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.LM',
+            undefined,
+            this.data.app
+          ),
         description: () =>
-          this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.LM',
+            undefined,
+            this.data.app
+          ),
         icon: 'icon-layers',
       },
       this.data.app

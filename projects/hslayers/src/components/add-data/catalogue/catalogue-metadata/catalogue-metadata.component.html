@@ -3,9 +3,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'DATASOURCE_SELECTOR.metadataFor' | translate}} {{ selectedLayer.title}}
+                    {{'DATASOURCE_SELECTOR.metadataFor' | translateHs: data}} {{ selectedLayer.title}}
                 </h4>
-                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translate}}"></button>
+                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translateHs: data}}"></button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
                 <ng-container *ngFor="let key of selectedLayerKeys">
@@ -25,17 +25,17 @@
                 <button type="button" class="btn btn-success"
                     [hidden]="!hsAddDataCatalogueMapService.isZoomable(selectedLayer)"
                     (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox, data.app)">{{'COMMON.zoomTo' |
-                    translate}}</button>
+                    translateHs: data}}</button>
                 <div *ngIf="selectedDS.type === 'layman'">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
-                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translate}}
+                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs: data}}
                             {{type}}</span>
                     </button>
                 </div>
                 <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal"
-                    [title]="'COMMON.close' | translate">
-                    {{'COMMON.close' | translate}}
+                    [title]="'COMMON.close' | translateHs: data">
+                    {{'COMMON.close' | translateHs: data}}
                 </button>
             </div>
         </div>

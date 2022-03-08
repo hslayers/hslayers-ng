@@ -327,18 +327,26 @@ export class HsCompositionsParserService {
     switch (response.error) {
       case 'no data':
         respError.title = this.hsLanguageService.getTranslation(
-          'COMPOSITIONS.compositionNotFound'
+          'COMPOSITIONS.compositionNotFound',
+          undefined,
+          app
         );
         respError.abstract = this.hsLanguageService.getTranslation(
-          'COMPOSITIONS.sorryButComposition'
+          'COMPOSITIONS.sorryButComposition',
+          undefined,
+          app
         );
         break;
       default:
         respError.title = this.hsLanguageService.getTranslation(
-          'COMPOSITIONS.compositionNotLoaded'
+          'COMPOSITIONS.compositionNotLoaded',
+          undefined,
+          app
         );
         respError.abstract = this.hsLanguageService.getTranslation(
-          'COMPOSITIONS.weAreSorryBut'
+          'COMPOSITIONS.weAreSorryBut',
+          undefined,
+          app
         );
         break;
     }
@@ -450,7 +458,9 @@ export class HsCompositionsParserService {
         composition_title: this.get(app).current_composition_title,
         message: this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMPOSITIONS.dialogWarning',
-          'outOfBounds'
+          'outOfBounds',
+          undefined,
+          app
         ),
       },
       app

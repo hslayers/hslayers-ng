@@ -146,13 +146,13 @@ export class HsPrintLegendService {
       if (desc) {
         switch (desc.type) {
           case 'vector':
-            svgSource = await this.getVectorSvgSource(desc);
+            svgSource = await this.getVectorSvgSource(desc, app);
             break;
           case 'wms':
             for (const sublayer of desc.subLayerLegends) {
               const wmsSvg = await this.legendImageToSvg(
                 sublayer,
-                this.hsLayerUtilsService.translateTitle(desc.title)
+                this.hsLayerUtilsService.translateTitle(desc.title, app)
               );
               if (wmsSvg) {
                 svgSources.push(wmsSvg);
@@ -160,7 +160,7 @@ export class HsPrintLegendService {
             }
             break;
           case 'static':
-            svgSource = await this.getStaticSvgSource(desc);
+            svgSource = await this.getStaticSvgSource(desc, app);
             break;
           default:
             return;
@@ -188,7 +188,10 @@ export class HsPrintLegendService {
    * Get Vector layer legend svg source
    * @param desc - HsLegendDescriptor
    */
-  private async getVectorSvgSource(desc: HsLegendDescriptor): Promise<string> {
+  private async getVectorSvgSource(
+    desc: HsLegendDescriptor,
+    app: string
+  ): Promise<string> {
     let svgSource = '';
     if (!desc.svg) {
       return;
@@ -202,7 +205,7 @@ export class HsPrintLegendService {
       }
       svgSource = this.legendToSvg(
         legendSource,
-        this.hsLayerUtilsService.translateTitle(desc.title)
+        this.hsLayerUtilsService.translateTitle(desc.title, app)
       );
     } else {
       for (const category of (desc.lyr.getSource() as SparqlJson)
@@ -217,20 +220,23 @@ export class HsPrintLegendService {
    * Get Static layer legend svg source
    * @param desc - HsLegendDescriptor
    */
-  private async getStaticSvgSource(desc: HsLegendDescriptor): Promise<string> {
+  private async getStaticSvgSource(
+    desc: HsLegendDescriptor,
+    app: string
+  ): Promise<string> {
     let svgSource = '';
     const layerLegend = this.hsLegendLayerStaticService.fillContent(desc.lyr);
     switch (layerLegend.legendType) {
       case 'image':
         svgSource = await this.legendImageToSvg(
           layerLegend.lastLegendImage,
-          this.hsLayerUtilsService.translateTitle(desc.title)
+          this.hsLayerUtilsService.translateTitle(desc.title, app)
         );
         break;
       case 'svg':
         svgSource = this.legendToSvg(
           layerLegend.lastLegendImage,
-          this.hsLayerUtilsService.translateTitle(desc.title)
+          this.hsLayerUtilsService.translateTitle(desc.title, app)
         );
 
         break;

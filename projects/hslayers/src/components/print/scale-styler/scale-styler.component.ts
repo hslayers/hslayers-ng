@@ -30,6 +30,11 @@ export class HsPrintScaleStylerComponent {
    * Get translation for the value string
    */
   getTranslation(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.app
+    );
   }
 }

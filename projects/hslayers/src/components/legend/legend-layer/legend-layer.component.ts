@@ -14,6 +14,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLegendLayerComponent implements OnDestroy {
   @Input() layer: any;
+  @Input() app: string;
   svg: SafeHtml;
   private ngUnsubscribe = new Subject<void>();
   constructor(
@@ -21,8 +22,9 @@ export class HsLegendLayerComponent implements OnDestroy {
     public hsLegendService: HsLegendService,
     public hsStylerService: HsStylerService
   ) {
-    this.hsStylerService.onSet
-      .pipe(takeUntil(this.ngUnsubscribe))
+    this.hsStylerService
+      .get(this.app)
+      .onSet.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (layer) => {
         if (this.layer.lyr == layer) {
           this.layer.svg = await this.hsLegendService.setSvg(layer);

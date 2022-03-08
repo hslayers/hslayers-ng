@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {Input, OnDestroy} from '@angular/core';
 
 import {Feature} from 'ol';

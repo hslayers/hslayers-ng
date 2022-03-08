@@ -203,7 +203,11 @@ export class HsTripPlannerService {
     });
     setTitle(
       this.apps[app].waypointLayer,
-      this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints')
+      this.HsLanguageService.getTranslation(
+        'TRIP_PLANNER.waypoints',
+        undefined,
+        app
+      )
     );
     this.HsMapService.getMap(app).addLayer(this.apps[app].waypointLayer);
   }
@@ -216,7 +220,11 @@ export class HsTripPlannerService {
     });
     setTitle(
       this.apps[app].routeLayer,
-      this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute')
+      this.HsLanguageService.getTranslation(
+        'TRIP_PLANNER.travelRoute',
+        undefined,
+        app
+      )
     );
     this.HsMapService.getMap(app).addLayer(this.apps[app].routeLayer);
   }
@@ -457,11 +465,15 @@ export class HsTripPlannerService {
               timeout(10000),
               catchError((e) => {
                 let title = this.HsLanguageService.getTranslation(
-                  'TRIP_PLANNER.serviceDown'
+                  'TRIP_PLANNER.serviceDown',
+                  undefined,
+                  app
                 );
                 if (e.status == 404) {
                   title = this.HsLanguageService.getTranslation(
-                    'TRIP_PLANNER.missingAuth'
+                    'TRIP_PLANNER.missingAuth',
+                    undefined,
+                    app
                   );
                 }
                 this.HsToastService.createToastPopupMessage(
@@ -469,7 +481,8 @@ export class HsTripPlannerService {
                   this.HsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.message,
-                    {url: url}
+                    {url: url},
+                    app
                   ),
                   app,
                   {
