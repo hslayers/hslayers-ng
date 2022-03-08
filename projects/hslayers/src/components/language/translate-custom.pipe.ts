@@ -4,8 +4,14 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
+import {CustomTranslationService} from './custom-translate.service';
 import {HsLanguageService} from './language.service';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {
+  LangChangeEvent,
+  TranslatePipe,
+  TranslateService,
+  TranslationChangeEvent,
+} from '@ngx-translate/core';
 @Injectable()
 @Pipe({
   name: 'translateHs',
@@ -47,20 +53,52 @@ export class TranslateCustomPipe
       }
     }
 
+    const translator = this.hsLanguageService.getTranslator(
+      interpolateParams.app
+    );
+
+    if (!this.onTranslationChange) {
+      this.onTranslationChange = translator.onTranslationChange.subscribe(
+        (event: TranslationChangeEvent) => {
+          if (this.lastKey && event.lang === translator.currentLang) {
+            this.lastKey = null;
+            this.updateTranslation(query, translator);
+          }
+        }
+      );
+    }
+
+    // subscribe to onLangChange event, in case the language changes
+    if (!this.onLangChange) {
+      this.onLangChange = translator.onLangChange.subscribe(
+        (event: LangChangeEvent) => {
+          if (this.lastKey) {
+            this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
+            this.updateTranslation(query, translator);
+          }
+        }
+      );
+    }
+
     this.lastKey = query;
 
     // store the params, in case they change
     this.lastParams = args;
 
+    this.updateTranslation(query, translator);
+    return this.value;
+  }
+
+  private updateTranslation(
+    query: string,
+    translator: CustomTranslationService
+  ) {
     const onTranslation = (res: string) => {
       this.value = res !== undefined ? res : query;
       this.lastKey = query;
     };
-    this.hsLanguageService
-      .getTranslator(interpolateParams.app)
-      .get(query)
-      .subscribe(onTranslation);
-    return this.value;
+
+    translator.get(query).subscribe(onTranslation);
   }
 }
 
