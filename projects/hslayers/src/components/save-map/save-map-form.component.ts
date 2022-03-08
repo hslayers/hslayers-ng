@@ -1,10 +1,11 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsCoreService} from '../core/core.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -12,37 +13,46 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-save-map-form',
   templateUrl: './partials/form.html',
 })
-export class HsSaveMapAdvancedFormComponent implements OnDestroy {
+export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   btnSelectDeselectClicked = true;
   endpoint: any;
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
   @Input() app = 'default';
+  appRef;
+
   private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsCoreService: HsCoreService,
     public HsUtilsService: HsUtilsService,
-    public HsLayerUtilsService: HsLayerUtilsService //Used in template
-  ) {
-    this.HsSaveMapManagerService.endpointSelected
+    public HsLayerUtilsService: HsLayerUtilsService, //Used in template
+    public HsLayoutService: HsLayoutService
+  ) {}
+
+  ngOnInit() {
+    this.appRef = this.HsSaveMapManagerService.get(this.app);
+    this.appRef.endpointSelected
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((endpoint) => {
         this.endpoint = endpoint;
       });
 
-    this.HsSaveMapManagerService.saveMapResulted
+    this.appRef.saveMapResulted
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({statusData, app}) => {
         if (statusData.overWriteNeeded) {
           this.overwrite = true;
         }
         if (statusData == 'rename') {
-          document.getElementsByName('hs-save-map-name')[0].focus();
+          this.HsLayoutService.get(app)
+            .layoutElement.querySelector('[name="hs-save-map-name"]')
+            .focus();
         }
       });
   }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -74,7 +84,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
 
   selectDeselectAllLayers(): void {
     this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
-    this.HsSaveMapManagerService.compoData.layers.forEach(
+    this.appRef.compoData.layers.forEach(
       (layer) => (layer.checked = this.btnSelectDeselectClicked)
     );
   }
@@ -86,12 +96,12 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
 
   titleChanged(): void {
     this.overwrite = false;
-    this.HsSaveMapManagerService.missingTitle = false;
-    this.HsSaveMapManagerService.missingName = false;
+    this.appRef.missingTitle = false;
+    this.appRef.missingName = false;
   }
 
   abstractChanged(): void {
-    this.HsSaveMapManagerService.missingAbstract = false;
+    this.appRef.missingAbstract = false;
   }
 
   isAllowed(): boolean {

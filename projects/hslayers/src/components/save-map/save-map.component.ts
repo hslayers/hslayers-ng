@@ -20,7 +20,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   endpoint = null;
   isAuthorized = false;
   name = 'saveMap';
@@ -40,20 +41,6 @@ export class HsSaveMapComponent
   ) {
     super(HsLayoutService);
 
-    this.HsSaveMapManagerService.panelOpened
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((composition) => {
-        if (composition && composition.endpoint) {
-          const openedType = composition.endpoint.type;
-          const found = this.HsCommonEndpointsService.endpoints.filter(
-            (ep) => ep.type == openedType
-          );
-          if (found.length > 0) {
-            this.HsSaveMapManagerService.selectEndpoint(found[0]);
-          }
-        }
-      });
-
     this.HsCommonEndpointsService.endpointsFilled
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((filled) => {
@@ -63,9 +50,15 @@ export class HsSaveMapComponent
         if (filled.endpoints?.length > 0 && !this.endpoint) {
           const laymans = filled.endpoints.filter((ep) => ep.type == 'layman');
           if (laymans.length > 0) {
-            this.HsSaveMapManagerService.selectEndpoint(laymans[0]);
+            this.HsSaveMapManagerService.selectEndpoint(
+              laymans[0],
+              this.data.app
+            );
           } else {
-            this.HsSaveMapManagerService.selectEndpoint(filled.endpoints[0]);
+            this.HsSaveMapManagerService.selectEndpoint(
+              filled.endpoints[0],
+              this.data.app
+            );
           }
           if (this.endpoint && this.endpoint.type == 'layman') {
             this.HsCommonLaymanService.detectAuthChange(
@@ -76,23 +69,12 @@ export class HsSaveMapComponent
         }
       });
 
-    this.HsSaveMapManagerService.endpointSelected
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((endpoint) => {
-        if (endpoint) {
-          this.endpoint = endpoint;
-          if (endpoint.getCurrentUserIfNeeded) {
-            endpoint.getCurrentUserIfNeeded(endpoint);
-          }
-        }
-      });
-
     this.HsCommonLaymanService.authChange
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({endpoint}) => {
+      .subscribe(({endpoint, app}) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
-        this.HsSaveMapManagerService.currentUser = endpoint.user;
+        this.HsSaveMapManagerService.get(app).currentUser = endpoint.user;
       });
   }
   ngOnInit() {
@@ -113,13 +95,19 @@ export class HsSaveMapComponent
       this.data.app
     );
 
-    window.addEventListener('beforeunload', (e) => {
-      if (this.HsConfig.get(this.data.app).saveMapStateOnReload) {
-        this.hsSaveMapService.save2storage(e, this.data.app);
-      }
-    });
-    this.HsSaveMapManagerService.panelOpened
-      .pipe(takeUntil(this.ngUnsubscribe))
+    this.HsSaveMapManagerService.get(this.data.app)
+      .endpointSelected.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((endpoint) => {
+        if (endpoint) {
+          this.endpoint = endpoint;
+          if (endpoint.getCurrentUserIfNeeded) {
+            endpoint.getCurrentUserIfNeeded(endpoint);
+          }
+        }
+      });
+
+    this.HsSaveMapManagerService.get(this.data.app)
+      .panelOpened.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
@@ -127,10 +115,20 @@ export class HsSaveMapComponent
             (ep) => ep.type == openedType
           );
           if (found.length > 0) {
-            this.HsSaveMapManagerService.selectEndpoint(found[0]);
+            this.HsSaveMapManagerService.selectEndpoint(
+              found[0],
+              this.data.app
+            );
           }
         }
       });
+
+    window.addEventListener('beforeunload', (e) => {
+      if (this.HsConfig.get(this.data.app).saveMapStateOnReload) {
+        this.hsSaveMapService.save2storage(e, this.data.app);
+      }
+    });
+
     this.HsSaveMapManagerService.init(this.data.app);
   }
   ngOnDestroy(): void {
