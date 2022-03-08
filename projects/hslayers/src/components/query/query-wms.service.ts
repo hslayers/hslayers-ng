@@ -338,17 +338,17 @@ export class HsQueryWmsService {
       );
       if (
         getFeatureInfoLang(layer) &&
-        getFeatureInfoLang(layer)[this.hsLanguageService.language]
+        getFeatureInfoLang(layer)[this.hsLanguageService.apps[app].language]
       ) {
         if (this.hsUtilsService.instOf(source, TileWMS)) {
           url = url.replace(
             (source as TileWMS).getUrls()[0],
-            getFeatureInfoLang(layer)[this.hsLanguageService.language]
+            getFeatureInfoLang(layer)[this.hsLanguageService.apps[app].language]
           );
         } else {
           url = url.replace(
             (source as ImageWMS).getUrl(),
-            getFeatureInfoLang(layer)[this.hsLanguageService.language]
+            getFeatureInfoLang(layer)[this.hsLanguageService.apps[app].language]
           );
         }
       }

@@ -84,8 +84,8 @@ export class HsShareUrlService {
     this.push(HS_PRMS.x, view.getCenter()[0]);
     this.push(HS_PRMS.y, view.getCenter()[1]);
     this.push(HS_PRMS.zoom, view.getZoom());
-    if (this.HsLanguageService.language) {
-      this.push(HS_PRMS.lang, this.HsLanguageService.language);
+    if (this.HsLanguageService.apps[app].language) {
+      this.push(HS_PRMS.lang, this.HsLanguageService.apps[app].language);
     }
     this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'));
     if (this.HsCore.puremapApp) {
@@ -343,7 +343,11 @@ export class HsShareUrlService {
       });
       const lang = this.getParamValue(HS_PRMS.lang);
       if (lang) {
-        this.HsLanguageService.setLanguage(lang);
+        //Add app name for backwards compatibility of urls where app is not specified together with lang code
+        this.HsLanguageService.setLanguage(
+          (!lang.includes('|') ? app + '|' : '') + lang,
+          app
+        );
       }
       const view = this.getParamValue(HS_PRMS.view);
       // this.HsMapService.visible = !(view == '3d');
