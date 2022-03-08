@@ -12,31 +12,33 @@ export class HsSaveMapDialogSpawnerService {
     public HsDialogContainerService: HsDialogContainerService,
     public HsSaveMapManagerService: HsSaveMapManagerService
   ) {
-    this.HsSaveMapManagerService.saveMapResulted.subscribe(
-      ({statusData, app}) => {
-        if (typeof statusData != 'string') {
+    this.HsSaveMapManagerService.saveMapManagerAppCreated.subscribe((app) => {
+      this.HsSaveMapManagerService.get(app).saveMapResulted.subscribe(
+        ({statusData, app}) => {
+          if (typeof statusData != 'string') {
+            this.HsDialogContainerService.create(
+              HsSaveMapResultDialogComponent,
+              {
+                app,
+                statusData,
+              },
+              app
+            );
+          }
+        }
+      );
+      this.HsSaveMapManagerService.get(app).preSaveCheckCompleted.subscribe(
+        ({endpoint, app}) => {
           this.HsDialogContainerService.create(
-            HsSaveMapResultDialogComponent,
+            HsSaveMapDialogComponent,
             {
+              endpoint,
               app,
-              statusData,
             },
             app
           );
         }
-      }
-    );
-    this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(
-      ({endpoint, app}) => {
-        this.HsDialogContainerService.create(
-          HsSaveMapDialogComponent,
-          {
-            endpoint,
-            app,
-          },
-          app
-        );
-      }
-    );
+      );
+    });
   }
 }

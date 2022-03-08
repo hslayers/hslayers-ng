@@ -9,11 +9,16 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
   data: any;
+  appRef;
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public HsSaveMapManagerService: HsSaveMapManagerService
   ) {}
+
+  ngOnInit() {
+    this.appRef = this.HsSaveMapManagerService.get(this.data.app);
+  }
 
   close(): void {
     this.HsDialogContainerService.destroy(this, this.data.app);
@@ -25,7 +30,7 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   }
 
   changeName() {
-    this.HsSaveMapManagerService.saveMapResulted.next({
+    this.HsSaveMapManagerService.get(this.data.app).saveMapResulted.next({
       statusData: 'rename',
       app: this.data.app,
     });

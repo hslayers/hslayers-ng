@@ -18,10 +18,7 @@ import {Source} from 'ol/source';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsSaveMapManagerService {
+class HsSaveMapManagerParams {
   statusData: any = {
     titleFree: undefined,
     hasPermission: undefined,
@@ -64,6 +61,27 @@ export class HsSaveMapManagerService {
   missingTitle = false;
   missingName = false;
   missingAbstract = false;
+
+  /*Very dirty tricky */
+  constructor(HsSaveMapManagerService, app: string) {
+    setTimeout(() => {
+      HsSaveMapManagerService.saveMapManagerAppCreated.next(app);
+    });
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HsSaveMapManagerService {
+  apps: {
+    [id: string]: HsSaveMapManagerParams;
+  } = {
+    default: new HsSaveMapManagerParams(this, 'default'),
+  };
+
+  saveMapManagerAppCreated: Subject<string> = new Subject();
+
   constructor(
     public HsMapService: HsMapService,
     public HsSaveMapService: HsSaveMapService,
@@ -75,19 +93,20 @@ export class HsSaveMapManagerService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
   ) {
-    this.HsEventBusService.compositionLoads.subscribe(({data}) => {
+    this.HsEventBusService.compositionLoads.subscribe(({data, app}) => {
       if (data.error == undefined) {
+        const appRef = this.get(app);
         const responseData = data.data ?? data;
-        this.compoData.id = responseData.id;
-        this.compoData.abstract = responseData.abstract;
-        this.compoData.title = responseData.title;
-        this.compoData.name = responseData.name;
-        this.compoData.keywords = responseData.keywords;
-        this.compoData.currentComposition = responseData;
-        this.compoData.workspace = responseData.workspace;
-        this.compoData.currentCompositionTitle = this.compoData.title;
+        appRef.compoData.id = responseData.id;
+        appRef.compoData.abstract = responseData.abstract;
+        appRef.compoData.title = responseData.title;
+        appRef.compoData.name = responseData.name;
+        appRef.compoData.keywords = responseData.keywords;
+        appRef.compoData.currentComposition = responseData;
+        appRef.compoData.workspace = responseData.workspace;
+        appRef.compoData.currentCompositionTitle = appRef.compoData.title;
         if (Object.keys(data).length !== 0) {
-          this.validateForm();
+          this.validateForm(app);
         }
       }
     });
@@ -126,6 +145,13 @@ export class HsSaveMapManagerService {
     });
   }
 
+  get(app: string): HsSaveMapManagerParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsSaveMapManagerParams(this, app);
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   init(_app: string): void {
     this.HsMapService.loaded(_app).then(() => {
       this.fillCompositionData(_app);
@@ -139,66 +165,67 @@ export class HsSaveMapManagerService {
     });
     this.HsEventBusService.mapResets.subscribe(({app}) => {
       if (app == _app) {
-        this.resetCompoData();
+        this.resetCompoData(app);
       }
     });
   }
 
   //TODO: Add interface to describe Endpoint instead of any
-  selectEndpoint(endpoint: any): void {
-    this.endpointSelected.next(endpoint);
+  selectEndpoint(endpoint: any, app: string): void {
+    this.get(app).endpointSelected.next(endpoint);
   }
 
   setCurrentBoundingBox(app: string): void {
-    this.compoData.bbox = this.getCurrentExtent(app);
+    this.get(app).compoData.bbox = this.getCurrentExtent(app);
   }
 
   //*NOTE not being used
   async confirmSave(app: string): Promise<void> {
     try {
+      const appRef = this.get(app);
       const response: any = await lastValueFrom(
         this.http.post(this.HsStatusManagerService.endpointUrl(app), {
           project: this.HsConfig.get(app).project_name,
-          title: this.compoData.title,
+          title: appRef.compoData.title,
           request: 'rightToSave',
         })
       );
       const j = response.data;
-      this.statusData.hasPermission = j.results.hasPermission;
-      this.statusData.titleFree = j.results.titleFree;
+      appRef.statusData.hasPermission = j.results.hasPermission;
+      appRef.statusData.titleFree = j.results.titleFree;
       if (j.results.guessedTitle) {
-        this.statusData.guessedTitle = j.results.guessedTitle;
+        appRef.statusData.guessedTitle = j.results.guessedTitle;
       }
-      if (!this.statusData.titleFree) {
-        this.statusData.changeTitle = false;
+      if (!appRef.statusData.titleFree) {
+        appRef.statusData.changeTitle = false;
       }
-      if (this.statusData.titleFree && this.statusData.hasPermission) {
+      if (appRef.statusData.titleFree && appRef.statusData.hasPermission) {
         this.save(
           true,
           this.HsStatusManagerService.findStatusmanagerEndpoint(),
           app
         );
       }
-      this.preSaveCheckCompleted.next({
+      appRef.preSaveCheckCompleted.next({
         endpoint: this.HsStatusManagerService.findStatusmanagerEndpoint(),
         app,
       });
     } catch (ex) {
-      this.statusData.success = false;
+      this.get(app).statusData.success = false;
     }
   }
 
   save(saveAsNew, endpoint, app: string) {
     return new Promise((resolve, reject) => {
       const tempCompoData: any = {};
-      Object.assign(tempCompoData, this.compoData);
+      Object.assign(tempCompoData, this.get(app).compoData);
       // Check whether layers were already formatted
       if (tempCompoData.layers[0].layer) {
         tempCompoData.layers = tempCompoData.layers
           .filter((l) => l.checked)
           .map((l) => l.layer);
       }
-      const compositionJson = this.generateCompositionJson(tempCompoData);
+      const compositionJson = this.generateCompositionJson(app, tempCompoData);
       let saver: HsSaverService = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {
         saver = this.HsLaymanService;
@@ -258,7 +285,8 @@ export class HsSaveMapManagerService {
       Workaround for composition JSON generated for download. 
       Should be handled differently and generated only once. Task for upcoming component rework
     */
-    const tempCompoData: any = {...(compoData ?? this.compoData)};
+    const appRef = this.get(app);
+    const tempCompoData: any = {...(compoData ?? appRef.compoData)};
     if (!compoData) {
       tempCompoData.layers = tempCompoData.layers
         .filter((l) => l.checked)
@@ -268,8 +296,8 @@ export class HsSaveMapManagerService {
     return this.HsSaveMapService.map2json(
       this.HsMapService.getMap(app),
       tempCompoData,
-      this.userData,
-      this.statusData,
+      appRef.userData,
+      appRef.statusData,
       app
     );
   }
@@ -281,21 +309,22 @@ export class HsSaveMapManagerService {
   openPanel(composition, app: string) {
     this.HsLayoutService.setMainPanel('saveMap', app, true);
     this.fillCompositionData(app);
-    this.panelOpened.next({composition});
+    this.get(app).panelOpened.next({composition});
   }
 
   private async fillCompositionData(app: string) {
+    const appRef = this.get(app);
     this.fillLayers(app);
     await this.fillGroups(app);
-    this.statusData.groups.unshift({
+    appRef.statusData.groups.unshift({
       roleTitle: 'Public',
       roleName: 'guest',
       w: false,
       r: false,
     });
-    const cc = this.compoData.currentComposition;
-    if (this.compoData.currentComposition && cc != '') {
-      for (const g of this.statusData.groups) {
+    const cc = appRef.compoData.currentComposition;
+    if (appRef.compoData.currentComposition && cc != '') {
+      for (const g of appRef.statusData.groups) {
         if (cc.groups && cc.groups[g.roleName]) {
           g.w = cc.groups[g.roleName].indexOf('w') > -1;
           g.r = cc.groups[g.roleName].indexOf('r') > -1;
@@ -306,9 +335,10 @@ export class HsSaveMapManagerService {
   }
 
   private fillLayers(app: string) {
-    this.compoData.layers = [];
-    this.compoData.bbox = this.getCurrentExtent(app);
-    this.compoData.layers = this.HsMapService.getMap(app)
+    const compoData = this.get(app).compoData;
+    compoData.layers = [];
+    compoData.bbox = this.getCurrentExtent(app);
+    compoData.layers = this.HsMapService.getMap(app)
       .getLayers()
       .getArray()
       .filter(
@@ -332,7 +362,8 @@ export class HsSaveMapManagerService {
    * Send getGroups request to status manager server and process response
    */
   async fillGroups(app: string): Promise<void> {
-    this.statusData.groups = [];
+    const appRef = this.get(app);
+    appRef.statusData.groups = [];
     const response: any = await lastValueFrom(
       this.http.get(this.HsStatusManagerService.endpointUrl(app), {
         params: new HttpParams({
@@ -344,8 +375,8 @@ export class HsSaveMapManagerService {
     );
     const j = response.data;
     if (j.success) {
-      this.statusData.groups = j.result;
-      for (const g of this.statusData.groups) {
+      appRef.statusData.groups = j.result;
+      for (const g of appRef.statusData.groups) {
         g.w = false;
         g.r = false;
       }
@@ -361,29 +392,30 @@ export class HsSaveMapManagerService {
         this.HsStatusManagerService.endpointUrl(app) + '?request=getuserinfo'
       )
     );
-    this.setUserDetails(response);
+    this.setUserDetails(response, app);
   }
 
   /**
    * Process user info into controller model, so they can be used in Save composition forms
    * @param response - Http response containing user data
    */
-  setUserDetails(response) {
+  setUserDetails(response, app: string) {
+    const appRef = this.get(app);
     const user = response.data;
     if (user && user.success == true) {
       // set the values
       if (user.userInfo) {
-        this.userData.email = user.userInfo.email;
-        this.userData.phone = user.userInfo.phone;
-        this.userData.name =
+        appRef.userData.email = user.userInfo.email;
+        appRef.userData.phone = user.userInfo.phone;
+        appRef.userData.name =
           user.userInfo.firstName + ' ' + user.userInfo.lastName;
       }
       if (user.userInfo && user.userInfo.org) {
-        this.userData.address = user.userInfo.org.street;
-        this.userData.country = user.userInfo.org.state;
-        this.userData.postalcode = user.userInfo.org.zip;
-        this.userData.city = user.userInfo.org.city;
-        this.userData.organization = user.userInfo.org.name;
+        appRef.userData.address = user.userInfo.org.street;
+        appRef.userData.country = user.userInfo.org.state;
+        appRef.userData.postalcode = user.userInfo.org.zip;
+        appRef.userData.city = user.userInfo.org.city;
+        appRef.userData.organization = user.userInfo.org.name;
       }
     }
   }
@@ -412,70 +444,77 @@ export class HsSaveMapManagerService {
   /**
    * Callback for saving with new title
    */
-  selectNewTitle() {
-    this.compoData.title = this.statusData.guessedTitle;
-    this.changeTitle = true;
+  selectNewTitle(app: string) {
+    const appRef = this.get(app);
+    appRef.compoData.title = appRef.statusData.guessedTitle;
+    appRef.changeTitle = true;
   }
 
-  validateForm() {
-    this.missingTitle = !this.compoData.title;
-    this.missingName = !this.compoData.name;
-    this.missingAbstract = !this.compoData.abstract;
+  validateForm(app: string) {
+    const appRef = this.get(app);
+    appRef.missingTitle = !appRef.compoData.title;
+    appRef.missingName = !appRef.compoData.name;
+    appRef.missingAbstract = !appRef.compoData.abstract;
     return (
-      !!this.compoData.title &&
-      !!this.compoData.name &&
-      !!this.compoData.abstract
+      !!appRef.compoData.title &&
+      !!appRef.compoData.name &&
+      !!appRef.compoData.abstract
     );
   }
 
-  resetCompoData() {
-    this.compoData.id = '';
-    this.compoData.abstract = '';
-    this.compoData.title = '';
-    this.compoData.name = '';
-    this.compoData.currentCompositionTitle = '';
-    this.compoData.keywords = '';
-    this.compoData.currentComposition = '';
+  resetCompoData(app: string) {
+    const appRef = this.get(app);
+    appRef.compoData.id = '';
+    appRef.compoData.abstract = '';
+    appRef.compoData.title = '';
+    appRef.compoData.name = '';
+    appRef.compoData.currentCompositionTitle = '';
+    appRef.compoData.keywords = '';
+    appRef.compoData.currentComposition = '';
   }
 
   async initiateSave(saveAsNew, app: string) {
-    if (!this.validateForm()) {
+    if (!this.validateForm(app)) {
+      console.log('validationfailed');
       return;
     }
     try {
       const augmentedResponse = await this.save(
         saveAsNew,
-        this.endpointSelected.getValue(),
+        this.get(app).endpointSelected.getValue(),
         app
       );
       this.processSaveCallback(augmentedResponse, app);
     } catch (ex) {
+      console.error(ex);
       this.processSaveCallback(ex, app);
     }
   }
 
   processSaveCallback(response, app) {
-    this.statusData.status = response.status;
+    const appRef = this.get(app);
+    appRef.statusData.status = response.status;
     if (!response.status) {
       if (response.code == 24) {
-        this.statusData.overWriteNeeded = true;
-        this.compoData.name = response.detail.mapname;
-        this.statusData.resultCode = 'exists';
+        appRef.statusData.overWriteNeeded = true;
+        appRef.compoData.name = response.detail.mapname;
+        appRef.statusData.resultCode = 'exists';
       } else if (response.code == 32) {
-        this.statusData.resultCode = 'not-saved';
+        appRef.statusData.resultCode = 'not-saved';
       } else {
-        this.statusData.resultCode = 'error';
+        appRef.statusData.resultCode = 'error';
       }
-      this.statusData.error = response;
+      appRef.statusData.error = response;
     } else {
       this.HsLayoutService.setMainPanel('layermanager', app, true);
     }
-    this.saveMapResulted.next(this.statusData);
+    appRef.saveMapResulted.next({statusData: appRef.statusData, app});
   }
 
   focusTitle(app: string) {
-    if (this.statusData.guessedTitle) {
-      this.compoData.title = this.statusData.guessedTitle;
+    const appRef = this.get(app);
+    if (appRef.statusData.guessedTitle) {
+      appRef.compoData.title = appRef.statusData.guessedTitle;
     }
     //TODO Check if this works and input is focused
     this.HsLayoutService.get(app)
