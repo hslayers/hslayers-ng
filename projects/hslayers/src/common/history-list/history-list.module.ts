@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 import {CookieService} from 'ngx-cookie-service';
 import {FormsModule} from '@angular/forms';
 import {HsHistoryListComponent} from './history-list.component';
+import {HsLanguageModule} from '../../components/language/language.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [HsHistoryListComponent],
-  imports: [FormsModule, CommonModule, TranslateModule, NgbDropdownModule],
+  imports: [FormsModule, CommonModule, HsLanguageModule, NgbDropdownModule],
   exports: [HsHistoryListComponent],
   providers: [CookieService],
 })

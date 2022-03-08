@@ -7,11 +7,11 @@ import {
   NgbDropdownModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor.sub-layer-checkboxes.component';
@@ -58,7 +58,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsOpacityWidgetComponent,
   ],
   imports: [
-    TranslateModule,
+    HsLanguageModule,
     CommonModule,
     FormsModule,
     HsGetCapabilitiesModule,

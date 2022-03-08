@@ -1,19 +1,19 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-  <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translate" [app]="data.app">
-    <extra-title>&nbsp;<span [hidden]="!HsMeasureService.data.multipleShapeMode">{{'MEASURE.multipleShapes' | translate}}</span></extra-title>
+  <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translateHs : data" [app]="data.app">
+    <extra-title>&nbsp;<span [hidden]="!HsMeasureService.data.multipleShapeMode">{{'MEASURE.multipleShapes' | translateHs : data}}</span></extra-title>
   </hs-panel-header>
   <div class="card-body p-2">
     <div class="btn-group btn-group-toggle" style="margin-bottom: 10px">
       <label class="btn btn-secondary" [ngClass]="{'active': type === 'distance'}" for="hs-measure-distance">
-        {{'COMMON.distance' | translate}}
+        {{'COMMON.distance' | translateHs : data}}
         <input type="radio" name="type" id="hs-measure-distance" value="distance" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
       </label>
       <label class="btn btn-secondary" [ngClass]="{'active': type === 'area'}" for="hs-measure-area">
-        {{'COMMON.area' | translate}}
+        {{'COMMON.area' | translateHs : data}}
         <input type="radio" name="type" id="hs-measure-area" value="area" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
       </label>
     </div>
-    <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.clear' | translate}}</button>
+    <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.clear' | translateHs : data}}</button>
     <ul class="list-group">
       <li *ngFor="let measurement of data.measurements" class="list-group-item">
         {{measurement.size}}&nbsp;{{measurement.unit}}<span *ngIf="measurement.type === 'Area'"><sup>2</sup></span>

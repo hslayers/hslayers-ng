@@ -2,7 +2,7 @@
   <ng-container>
     <div class="form-group">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs: {app} }}</span>
         <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
           <option *ngFor="let format of data.image_formats">{{format}}</option>
         </select>
@@ -11,7 +11,7 @@
 
     <div class="form-group">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate}}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translateHs: {app} }}</span>
         <select class="form-control form-select" name="queryFormat" [(ngModel)]="data.query_format">
           <option *ngFor="let format of data.query_formats">{{format}}</option>
         </select>
@@ -20,7 +20,7 @@
 
     <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs: {app} }}</span>
         <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
           <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
         </select>
@@ -30,13 +30,13 @@
 
   <div class="form-group" [hidden]="data.base === true">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate}}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs: {app} }}</span>
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
   <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
     <p class="col-sm-12 alert alert-danger" [hidden]="!data.use_resampling">
-      {{'ADDLAYERS.mapAndLayerProjection' | translate}}
+      {{'ADDLAYERS.mapAndLayerProjection' | translateHs: {app} }}
     </p>
   </ng-container>
   <div class="form-group">
@@ -44,44 +44,44 @@
       <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
         <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
             [(ngModel)]="data.use_tiles" />
-          {{'ADDLAYERS.useTiles' | translate}}
+          {{'ADDLAYERS.useTiles' | translateHs: {app} }}
         </label>
       </ng-container>
 
       <label class="capabilities_label control-label"> <input type="checkbox" class="me-2 checkbox-lg"
           [(ngModel)]="data.register_metadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' |
-        translate}}</label>
+        translateHs: {app} }}</label>
     </div>
   </div>
   <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
     <p class="col-sm-12 alert alert-warning" [hidden]="data.use_tiles">
-      {{'ADDLAYERS.considerUsingTiles' | translate}}
+      {{'ADDLAYERS.considerUsingTiles' | translateHs: {app} }}
     </p>
   </ng-container>
   <ng-container *ngIf="type === 'wms'">
     <div class="form-group">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translate}}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translateHs: {app} }}</span>
         <input class="form-control" name="tileSize" [(ngModel)]="data.tile_size" />
       </div>
     </div>
   </ng-container>
   <div class="d-flex flex-column my-3">
     <div class="d-flex flex-row justify-content-start align-items-baseline mb-1">
-      {{'ADDDATA.CATALOGUE.addAs' | translate}}
+      {{'ADDDATA.CATALOGUE.addAs' | translateHs: {app} }}
       <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = true"
           [ngClass]="{'active':data.base}">
-          {{'COMPOSITONKEYWORDS.Basemap' | translate}}
+          {{'COMPOSITONKEYWORDS.Basemap' | translateHs: {app} }}
         </button>
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = false"
           [ngClass]="{'active': !data.base}">
-          {{'COMMON.layer' | translate}}
+          {{'COMMON.layer' | translateHs: {app} }}
         </button>
       </div>
     </div>
     <div class="input-group">
-      <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
+      <span class="input-group-text control-label">{{'COMMON.title' | translateHs: {app} }}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
   </div>
@@ -93,9 +93,9 @@
     <table class="table table-sm table-striped table-bordered hs-url-table">
       <thead class="bg-secondary text-light">
         <th style="width:1.5em">&nbsp;</th>
-        <th>{{'COMMON.title' | translate}}</th>
-        <!-- <th style="width:30%">{{'COMMON.name' | translate}}</th> -->
-        <th>{{'COMMON.abstract' | translate}}</th>
+        <th>{{'COMMON.title' | translateHs: {app} }}</th>
+        <!-- <th style="width:30%">{{'COMMON.name' | translateHs: {app} }}</th> -->
+        <th>{{'COMMON.abstract' | translateHs: {app} }}</th>
       </thead>
       <tbody *ngFor="let layer of data.layers | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
         <tr>
@@ -115,7 +115,7 @@
           <td colspan="3">
             <div class="d-flex align-items-baseline px-2 w-100">
               <div class="d-flex align-items-baseline" style="flex-grow: 1;">
-                <label class="control-label">{{'COMMON.style' | translate}}:</label>
+                <label class="control-label">{{'COMMON.style' | translateHs: {app} }}:</label>
                 <select class="form-control form-select-sm form-select" [(ngModel)]="layer.styleSelected"
                   [ngModelOptions]="{standalone: true}">
                   <option *ngFor="let style of layer.Style" [ngValue]="style">{{style.Name}}
@@ -127,7 +127,7 @@
         </tr>
         <tr [hidden]="!hasNestedLayers(layer)">
           <td colspan="3" style="padding-left: 1em">
-            <hs-nested-layers-table style="display: block;" [layers]="layer.Layer"
+            <hs-nested-layers-table style="display: block;" [app]="app" [layers]="layer.Layer"
               (layerChecked)="searchForChecked($event)">
             </hs-nested-layers-table>
           </td>
@@ -139,7 +139,7 @@
     <table class="table table-sm table-striped table-bordered">
       <thead>
         <th style="width:1em">&nbsp;</th>
-        <th>{{'COMMON.name' | translate}}</th>
+        <th>{{'COMMON.name' | translateHs: {app} }}</th>
       </thead>
       <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
         <tr>
@@ -148,7 +148,7 @@
               style="cursor: pointer;" [(ngModel)]="service.checked" />
           </td>
           <td (click)="expandService(service)" data-toggle="tooltip"
-            [title]="'ADDDATA.requestServiceLayers' | translate" style="cursor: pointer;">
+            [title]="'ADDDATA.requestServiceLayers' | translateHs: {app} " style="cursor: pointer;">
             {{service.name}}
             <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
           </td>
@@ -165,16 +165,16 @@
   </ng-template>
   <ng-container *ngIf="type === 'wms'">
     <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span
-        [translate]="'ADDDATA.CATALOGUE.showingSubset'"
-        [translateParams]="{limitShown: limitShown, total: data.layers.length}"></span>
+        [translateHs: {app} ]="'ADDDATA.CATALOGUE.showingSubset'"
+        [translateHs: {app} Params]="{limitShown: limitShown, total: data.layers.length}"></span>
       <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
           (click)="limitShown = limitShown + 100">
-          {{'ADDDATA.CATALOGUE.showNext100' | translate}}
+          {{'ADDDATA.CATALOGUE.showNext100' | translateHs: {app} }}
         </button>
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
           (click)="limitShown = data.layers.length">
-          {{'ADDDATA.CATALOGUE.showAll' | translate}}
+          {{'ADDDATA.CATALOGUE.showAll' | translateHs: {app} }}
         </button>
       </div>
     </div>

@@ -1,39 +1,39 @@
 <div>
 
-  <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
+  <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translateHs : {app} }}</sub></p>
 
   <div *ngIf="data.type === 'raster'"
     class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-    <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translate}}</p>
+    <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translateHs : {app} }}</p>
   </div>
 
   <div class="form-floating mb-3">
-    <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translate" class="form-control" name="title"
+    <input [placeholder]="'ADDDATA.URL.submitLayerTitle' | translateHs : {app} " class="form-control" name="title"
       [(ngModel)]="data.title" />
-    <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+    <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translateHs : {app} }}</label>
 
   </div>
   <div *ngIf="hsAddDataCommonFileService.layerNameExists">
-    <p><sub class="text-danger">{{'ADDLAYERS.layerNameAlreadyExists' | translate}}</sub></p>
+    <p><sub class="text-danger">{{'ADDLAYERS.layerNameAlreadyExists' | translateHs : {app} }}</sub></p>
   </div>
   <div class="form-floating mb-3">
-    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate" class="form-control" name="name"
+    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translateHs : {app} " class="form-control" name="name"
       [(ngModel)]="data.name" (change)="hsAddDataCommonFileService.layerNameExists = false" />
-    <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+    <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translateHs : {app} }}</label>
 
   </div>
   <div class="form-floating mb-3">
-    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
+    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs : {app} "
       name="abstract" [(ngModel)]="data.abstract">
                               </textarea>
-    <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
+    <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs : {app} }}</label>
 
   </div>
   <div class="form-group">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs : {app} }}</span>
       <select class="form-control form-select" [(ngModel)]="data.srs" name="srs">
-        <option [ngValue]="null" disabled selected hidden>{{'ADDLAYERS.SRSRequired' | translate}}</option>
+        <option [ngValue]="null" disabled selected hidden>{{'ADDLAYERS.SRSRequired' | translateHs : {app} }}</option>
         <option [ngValue]="'EPSG:3857'">EPSG:3857</option>
         <option [ngValue]="'EPSG:4326'">EPSG:4326</option>
       </select>
@@ -45,7 +45,7 @@
   </ng-container>
   <ng-container *ngIf="data.type === 'shp' || data.type === 'raster'">
     <div class="d-flex justify-content-between align-items-center">
-      <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</p>
+      <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translateHs : {app} }}</p>
       <label class="dropzone-label">
         <input name="file" type="file" accept=".sld" class="inputfile"
           (change)="read({fileList: $event.target.files, uploader: 'sld', dropped: false})" id="sld">
@@ -57,7 +57,7 @@
 
   <button type="button" class="btn w-100 mt-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
     (click)="advancedPanelVisible = !advancedPanelVisible">
-    {{'COMMON.advancedOptions' | translate}}
+    {{'COMMON.advancedOptions' | translateHs : {app} }}
   </button>
   <ng-container *ngIf="advancedPanelVisible">
     <hs-advanced-options [data]="data" [app]="app"></hs-advanced-options>

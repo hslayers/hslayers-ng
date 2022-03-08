@@ -1,19 +1,19 @@
 <ng-container *ngIf="data.type !== 'shp' && data.type !== 'raster'">
   <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
-    {{'ADDDATA.saveToDatabase' | translate}}
+    {{'ADDDATA.saveToDatabase' | translateHs : data}}
     <div class="btn-group ms-2">
       <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.saveToLayman = true"
         [ngClass]="{'active':data.saveToLayman}">
-        {{'COMMON.yes' | translate}}
+        {{'COMMON.yes' | translateHs : data}}
       </button>
       <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.saveToLayman = false"
         [ngClass]="{'active': !data.saveToLayman}">
-        {{'COMMON.no' | translate}}
+        {{'COMMON.no' | translateHs : data}}
       </button>
     </div>
   </div>
 </ng-container>
 <div class="ps-4 mt-3">
-  <hs-layman-access-rights *ngIf="data.saveToLayman" [(access_rights)]="data.access_rights">
+  <hs-layman-access-rights *ngIf="data.saveToLayman" [app]="data.app" [(access_rights)]="data.access_rights">
   </hs-layman-access-rights>
 </div>

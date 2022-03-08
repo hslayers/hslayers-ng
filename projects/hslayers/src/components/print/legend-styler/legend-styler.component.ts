@@ -17,6 +17,7 @@ export class HsPrintLegendStylerComponent {
   positionOptions = POSITION_OPTIONS;
   legendWidths = CANVAS_SIZES;
   @Input() legendObj: LegendObj;
+  @Input() app = 'default';
 
   constructor(
     public hsLanguageService: HsLanguageService,

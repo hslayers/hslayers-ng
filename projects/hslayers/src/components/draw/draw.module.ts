@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {DrawEditComponent} from './draw-edit/draw-edit.component';
 import {DrawPanelComponent} from './draw-panel/draw-panel.component';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawToolbarComponent} from './draw-toolbar/draw-toolbar.component';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryModule} from '../query/query.module';
@@ -31,7 +31,7 @@ import {HsStylerModule} from '../styles/styles.module';
     FormsModule,
     NgbDropdownModule,
     HsStylerModule,
-    TranslateModule,
+    HsLanguageModule,
     HsQueryModule,
     HsLaymanModule,
     HsRmMultipleModule,

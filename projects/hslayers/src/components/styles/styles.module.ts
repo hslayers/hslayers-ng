@@ -5,7 +5,6 @@ import {FormsModule} from '@angular/forms';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
@@ -15,6 +14,7 @@ import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symb
 import {HsFilterComponent} from './filters/filter.component';
 import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -59,7 +59,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsPanelHelpersModule,
     FormsModule,
     NgbDropdownModule,
-    TranslateModule,
+    HsLanguageModule,
     HsUploadModule,
     HsDownloadModule,
     DragDropModule,

@@ -25,6 +25,7 @@ export class HsDrawLayerMetadataDialogComponent
   implements HsDialogComponent, OnInit
 {
   @Input() data: any;
+  @Input() app = 'default';
 
   newLayerPath: string;
   attributes: Array<any> = [];

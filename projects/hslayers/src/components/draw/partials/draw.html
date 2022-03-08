@@ -1,7 +1,7 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translate" [app]="data.app">
+    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translateHs: data " [app]="data.app">
         <extra-buttons>
-            <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translate">
+            <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs: data ">
                 <i class="icon-question-sign"></i>
             </button>
         </extra-buttons>
@@ -12,11 +12,11 @@
         <li class="nav-item" (click)="componentOptionSelected('draw')">
             <a [ngClass]="{'active': selectedOption === 'draw'}" class="nav-link "
                 aria-current="page">{{'PANEL_HEADER.DRAW' |
-                translate}}</a>
+                translateHs: data }}</a>
         </li>
         <li class="nav-item" (click)="componentOptionSelected('edit')">
             <a [ngClass]="{'active': selectedOption === 'edit'}" class="nav-link " aria-current="page">{{'COMMON.edit' |
-                translate}}</a>
+                translateHs: data }}</a>
         </li>
     </ul>
     <hs-draw-panel *ngIf="selectedOption === 'draw'" [app]="data.app"></hs-draw-panel>
@@ -26,10 +26,10 @@
         <div class="alert alert-warning text-justify">
             <ol>
                 <li *ngFor="let layer of appRef.pendingLayers">
-                    {{'DRAW.loadingLayer' | translate}} <strong>{{layer}}</strong>
+                    {{'DRAW.loadingLayer' | translateHs: data }} <strong>{{layer}}</strong>
                 </li>
             </ol>
-            {{'DRAW.longerLoading' | translate}}
+            {{'DRAW.longerLoading' | translateHs: data }}
             <div class="d-flex justify-content-center pt-3">
                 <img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" />
             </div>

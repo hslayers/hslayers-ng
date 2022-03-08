@@ -8,8 +8,8 @@
       {{currentTime | date:timeDisplayFormat:'cs'}}
     </span>
     <span [hidden]="currentTimeDefined()" class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
-    [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translate" [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
-      {{'LAYERMANAGER.time.outOfRange' | translate}}
+    [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs : {app} " [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
+      {{'LAYERMANAGER.time.outOfRange' | translateHs : {app} }}
     </span>
   </button>
   <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime"
@@ -25,8 +25,8 @@
 <div class="p-0">
   <button type="button" class="btn btn-sm px-0"
     [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}"
-    (click)="synchronizeTimes()" title="{{'LAYERMANAGER.time.syncTimesTooltip' | translate}}">
+    (click)="synchronizeTimes()" title="{{'LAYERMANAGER.time.syncTimesTooltip' | translateHs : {app} }}">
     <i class="glyphicon icon-timeline"></i>
-    <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translate}}</span>
+    <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs : {app} }}</span>
   </button>
 </div>

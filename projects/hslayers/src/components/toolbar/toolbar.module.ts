@@ -1,7 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -16,7 +15,6 @@ import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
     CommonModule,
     FormsModule,
     NgbDropdownModule,
-    TranslateModule,
     HsPanelHelpersModule,
   ],
   exports: [HsToolbarComponent, HsToolbarPanelBaseComponent],

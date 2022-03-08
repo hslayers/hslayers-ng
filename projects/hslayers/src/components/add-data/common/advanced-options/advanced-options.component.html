@@ -1,14 +1,14 @@
 <div class="hs-advanced-options">
   <div class="form-floating mb-3">
     <input class="form-control" name="folder" [(ngModel)]="data.folder_name"
-      placeholder="'ADDLAYERS.folderName' | translate" />
-    <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
+      placeholder="'ADDLAYERS.folderName' | translateHs : {app} " />
+    <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translateHs : {app} }}</label>
   </div>
 
   <div class="form-group" *ngIf="hsAddDataVectorService.isKml(data.type, data.url)">
     <input type="checkbox" name="extractStyles" [(ngModel)]="data.extract_styles" />
     <label class="capabilities_label control-label ms-1">{{'ADDLAYERS.VECTOR.extractStyles' |
-      translate}}</label>
+      translateHs : {app} }}</label>
   </div>
   <hs-target-position [(addUnder)]="data.addUnder" [app]="app"></hs-target-position>
 </div>

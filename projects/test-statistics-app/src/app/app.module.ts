@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {HsCoreModule} from 'hslayers-ng';
+import {HsCoreModule, HsLanguageModule} from 'hslayers-ng';
 import {HsLayoutModule} from 'hslayers-ng';
 import {HsSearchModule} from 'hslayers-ng';
 //import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
@@ -9,14 +9,13 @@ import {HsSearchModule} from 'hslayers-ng';
 import {HsLayerManagerModule, HsQueryModule, HsStylerModule} from 'hslayers-ng';
 import {HsStatisticsModule} from '../lib/statistics.module';
 import {HslayersAppComponent} from './app.component';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HslayersAppComponent],
   imports: [
     BrowserModule,
     HsCoreModule,
-    TranslateModule,
+    HsLanguageModule,
     HsLayoutModule,
     //HsDrawModule,
     //HsMeasureModule,

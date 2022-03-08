@@ -7,6 +7,7 @@ import {accessRightsModel} from '../../../components/add-data/common/access-righ
 })
 export class HsCommonLaymanAccessRightsComponent {
   @Input() access_rights: accessRightsModel;
+  @Input() app = 'default';
   constructor() {}
 
   accessRightChanged(

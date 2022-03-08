@@ -1,11 +1,11 @@
 import {CommonModule} from '@angular/common';
+import {HsLanguageModule} from '../../components/language/language.module';
 import {HsRmMultipleDialogComponent} from './remove-multiple-dialog.component';
 import {NgModule} from '@angular/core';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HsRmMultipleDialogComponent],
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, HsLanguageModule],
   exports: [HsRmMultipleDialogComponent],
 })
 export class HsRmMultipleModule {}

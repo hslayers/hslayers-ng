@@ -3,12 +3,12 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCatalogueComponent} from './catalogue.component';
 import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
 import {HsCatalogueMetadataComponent} from './catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataModule} from './catalogue-metadata/catalogue-metadata.module';
+import {HsLanguageModule} from '../../language/language.module';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsPagerModule} from '../../../common/pager/pager.module';
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
@@ -19,7 +19,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
   imports: [
     CommonModule,
     FormsModule,
-    TranslateModule,
+    HsLanguageModule,
     HsUiExtensionsModule,
     HsLaymanModule,
     NgbDropdownModule,

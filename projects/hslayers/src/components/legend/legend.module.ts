@@ -1,8 +1,8 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
 
+import {HsLanguageModule} from '../language/language.module';
 import {HsLegendComponent} from './legend.component';
 import {HsLegendLayerComponent} from './legend-layer/legend-layer.component';
 import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-static.component';
@@ -23,7 +23,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     FormsModule,
     HsPanelHelpersModule,
     HsUiExtensionsModule,
-    TranslateModule,
+    HsLanguageModule,
     HsQueuesModule,
   ],
   exports: [HsLegendComponent, HsLegendLayerComponent],

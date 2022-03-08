@@ -1,12 +1,6 @@
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
-import {
-  TranslateModule,
-  TranslateService,
-  TranslateStore,
-} from '@ngx-translate/core';
-
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
@@ -29,8 +23,8 @@ import {HsUtilsModule} from './../utils/utils.module';
     HsMapModule,
     HsCommonEndpointsModule,
   ],
-  exports: [TranslateModule],
-  providers: [TranslateStore, TranslateService, HsConfig],
+  exports: [],
+  providers: [HsConfig],
 })
 export class HsCoreModule {
   constructor() {}

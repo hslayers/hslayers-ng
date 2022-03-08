@@ -1,5 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
@@ -10,8 +11,6 @@ import {HsMapModule} from '../map/map.module';
 import {HsPanelHelpersModule} from './panels/panel-helpers.module';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsToastModule} from './toast/toast.module';
-
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import {TranslateModule} from '@ngx-translate/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
-    TranslateModule,
     HsConfirmModule,
     HsMapModule,
     HsSidebarModule,

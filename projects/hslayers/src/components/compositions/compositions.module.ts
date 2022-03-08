@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
@@ -33,7 +32,6 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    TranslateModule,
     HsLanguageModule,
     HsCompositionsLayerParserModule,
     NgbDropdownModule,

@@ -1,6 +1,6 @@
 <div *ngIf="hsDimensionService.isLayerWithDimensions(olLayer())">
   <p style="text-align: center; font-weight: bold">
-    {{'LAYERMANAGER.dimensions' | translate}}
+    {{'LAYERMANAGER.dimensions' | translateHs : data}}
   </p>
   <div class="form-inline" *ngFor="let dimension of dimensions">
     <label class="control-label" style="width: 100%; justify-content: left"
@@ -24,7 +24,7 @@
 
     <!-- Time slider replaced by layermanger-time-editor component -->
     <div class="form-group" [hidden]="!dimensionIsTime(dimension)">
-      <label>{{'COMMON.date' | translate}}</label>
+      <label>{{'COMMON.date' | translateHs : data}}</label>
     </div>
 
     <div

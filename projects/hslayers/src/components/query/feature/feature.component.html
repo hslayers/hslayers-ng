@@ -11,14 +11,14 @@
     <div class="row">
         <div class="input-group m-1" [hidden]="!newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translate" [(ngModel)]="attributeName" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translateHs : {app} " [(ngModel)]="attributeName" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="input-group m-1" [hidden]="!(attributeName && newAttribVisible)">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translate" [(ngModel)]="attributeValue" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translateHs : {app} " [(ngModel)]="attributeValue" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
     </div>
@@ -33,9 +33,9 @@
     
     <div [hidden]="!editType" class="row p-2 ">
         <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
-            <label for="selectedLayer" class="px-2">{{hsFeatureCommonService.translateString('QUERY.feature',editType+'Feature')}} {{'COMMON.into' | translate}}:</label>
-            <select class="form-control text-truncate"  [title]="'ADDLAYERS.Vector.chooseLayer' | translate" [(ngModel)]="selectedLayer" name="selectedLayer">
-                <option  [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' | translate}}</option>
+            <label for="selectedLayer" class="px-2">{{hsFeatureCommonService.translateString('QUERY.feature',editType+'Feature')}} {{'COMMON.into' | translateHs : {app} }}:</label>
+            <select class="form-control text-truncate"  [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs : {app} " [(ngModel)]="selectedLayer" name="selectedLayer">
+                <option  [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' | translateHs : {app} }}</option>
                 <option *ngFor="let layer of availableLayers" [ngValue]="layer">
                     {{hsLayerUtilsService.translateTitle(getTitle(layer))}}</option>
             </select>
@@ -53,13 +53,13 @@
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" (click)="toggleEditMenu()"><i
                     class="icon-settingsthree-gears"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
-                    <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' | translate}}</a>
-                    <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' | translate}}</a>
+                    <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' | translateHs : {app} }}</a>
+                    <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' | translateHs : {app} }}</a>
                 </div>
             </div>  
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                    (click)="toggleExportMenu(app)" [title]="'QUERY.downloadAs' | translate"
+                    (click)="toggleExportMenu(app)" [title]="'QUERY.downloadAs' | translateHs : {app} "
                     ><i
                         class="icon-download"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">

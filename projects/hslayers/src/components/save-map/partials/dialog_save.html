@@ -3,14 +3,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'SAVECOMPOSITION.dialogSave.saveComposition' | translate}}
+                    {{'SAVECOMPOSITION.dialogSave.saveComposition' | translateHs : data}}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translate}}"></button>
+                    attr.aria-label="{{'COMMON.close' | translateHs : data}}"></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto; text-align: center; font-size: 16px">
                 <div>
-                    {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translate}}
+                    {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translateHs : data}}
                 </div>
                 <div>
                     <b>{{appRef.compoData.title}}</b>
@@ -18,47 +18,47 @@
                 <div
                     *ngIf="!appRef.statusData?.titleFree && appRef.statusData?.hasPermission && !appRef.statusData?.changeTitle">
                     <div>
-                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translate}}
+                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translateHs : data}}
                         <b>{{appRef.compoData.title}}</b>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="HsSaveMapManagerService.save(false, data.endpoint, data.app); close()">{{'SAVECOMPOSITION.dialogSave.yesSave'
-                            | translate}}</button>
+                            | translateHs : data}}</button>
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg"
                             (click)="HsSaveMapManagerService.selectNewTitle(data.app)">{{'SAVECOMPOSITION.dialogSave.noSaveAs'
-                            | translate}}</button>
+                            | translateHs : data}}</button>
                     </p>
                 </div>
 
                 <div
                     *ngIf="!appRef.statusData?.titleFree && appRef.statusData?.hasPermission && appRef.statusData?.changeTitle">
-                    <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translate}}</div>
+                    <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translateHs : data}}</div>
                     <p>
                         <input type="text" class="form-control hs-stc-title" [(ngModel)]="appRef.compoData.title">
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="HsSaveMapManagerService.save(true, data.endpoint, data.app); close()">{{'COMMON.save'
-                            | translate}}</button>
+                            | translateHs : data}}</button>
                     </p>
                 </div>
 
                 <div *ngIf="!appRef.statusData?.titleFree || !appRef.statusData?.hasPermission">
                     <div>
                         <p *ngIf="!appRef.statusData?.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' |
-                            translate}}
+                            translateHs : data}}
                         </p>
                         <p *ngIf="!appRef.statusData?.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' |
-                            translate}}
+                            translateHs : data}}
                         </p>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="HsSaveMapManagerService.focusTitle(data.app); close()">{{'COMMON.ok' |
-                            translate}}</button>
+                            translateHs : data}}</button>
                     </p>
                 </div>
 
