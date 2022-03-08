@@ -37,13 +37,17 @@ export class HsLanguageComponent
             'SIDEBAR.descriptions.LANGUAGE'
           ),
         content: () => {
-          return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
+          return this.HsLanguageService.getCurrentLanguageCode(
+            this.data.app
+          ).toUpperCase();
         },
       },
       this.data.app
     );
-    this.available_languages = this.HsLanguageService.listAvailableLanguages();
-    this.HsLanguageService.language =
+    this.available_languages = this.HsLanguageService.listAvailableLanguages(
+      this.data.app
+    );
+    this.HsLanguageService.apps[this.data.app].language =
       this.hsConfig.get(this.data.app).language ?? 'en';
   }
   //$scope.$emit('scope_loaded', 'Language');

@@ -6,7 +6,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 
-import {TranslateService} from '@ngx-translate/core';
+import {HsLanguageService} from '../language/language.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,7 @@ export class HsCoreService {
     public HsUtilsService: HsUtilsService,
     private log: HsLogService,
     public HsEventBusService: HsEventBusService,
-    private translate: TranslateService
+    private hsLanguageService: HsLanguageService
   ) {
     this.HsEventBusService.layoutLoads.subscribe(
       ({element, innerElement, app}) => {
@@ -48,7 +48,6 @@ export class HsCoreService {
   init(app: string): void {
     if (window.innerWidth < 767 || this.HsConfig.get(app).sidebarClosed) {
       this.HsLayoutService.get(app).sidebarExpanded = false;
-      // debugger;
       this.HsLayoutService.get(app).sidebarLabels = false;
     } else {
       this.HsLayoutService.get(app).sidebarExpanded = true;
@@ -58,10 +57,12 @@ export class HsCoreService {
           .enabledLanguages.split(',')
           .map((lang) => lang.trim())
       : ['cs', 'lv'];
-    this.translate.addLangs(languages);
-    this.translate.setDefaultLang('en');
+    const translateService =
+      this.hsLanguageService.apps[app].translationService;
+    translateService.addLangs(languages.map((l) => `${app}|${l}`));
+    translateService.setDefaultLang(`${app}|en`);
     if (this.HsConfig.get(app).language) {
-      this.translate.use(this.HsConfig.get(app).language);
+      translateService.use(`${app}|${this.HsConfig.get(app).language}`);
     }
 
     if (this.initCalled) {
