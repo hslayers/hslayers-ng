@@ -5,9 +5,11 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsConfig} from './../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
@@ -36,17 +38,18 @@ describe('HsMeasure', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule, HsLanguageModule, HttpClientTestingModule],
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        HsConfig,
+        {provide: HsConfig, useValue: new HsConfigMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMeasureComponent);
+    fixture.componentInstance.data = {app: 'default'};
     service = TestBed.inject(HsMeasureService);
     component = fixture.componentInstance;
     fixture.detectChanges();

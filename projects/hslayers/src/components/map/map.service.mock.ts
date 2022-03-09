@@ -3,33 +3,44 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 export class HsMapServiceMock {
-  map = new Map({
-    target: 'div',
-    interactions: [],
-  });
+  apps: {
+    [id: string]: {map: Map};
+  } = {
+    default: {
+      map: new Map({
+        target: 'div',
+        interactions: [],
+      }),
+    },
+  };
+
   constructor() {}
 
-  loaded() {
+  loaded(app: string) {
     return new Promise((resolve, reject) => {
-      resolve(this.map);
+      resolve(this.getMap(app));
     });
+  }
+
+  getMap(app: string) {
+    return this.apps[app ?? 'default'].map;
   }
 
   getMapExtentInEpsg4326() {
     return [0, 0, 100, 100];
   }
 
-  addLayer(layer): Layer<Source> {
+  addLayer(layer, app: string): Layer<Source> {
     try {
-      this.map.addLayer(layer);
+      this.getMap(app).addLayer(layer);
       return layer;
     } catch (ex) {
       //
     }
   }
 
-  getCurrentProj() {
-    return this.map.getView().getProjection();
+  getCurrentProj(app: string) {
+    return this.getMap(app).getView().getProjection();
   }
 
   getMapExtent() {

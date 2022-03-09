@@ -41,3 +41,24 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace Cypress {
+  interface Chainable {
+    getBySel(
+      dataTestAttribute: string,
+      args?: any
+    ): Chainable<JQuery<HTMLElement>>;
+    getBySelLike(
+      dataTestPrefixAttribute: string,
+      args?: any
+    ): Chainable<JQuery<HTMLElement>>;
+  }
+}
+Cypress.Commands.add('getBySel', (selector, ...args) => {
+  return cy.get(`[data-cy=${selector}]`, ...args);
+});
+
+Cypress.Commands.add('getBySelLike', (selector, ...args) => {
+  return cy.get(`[data-cy*=${selector}]`, ...args);
+});

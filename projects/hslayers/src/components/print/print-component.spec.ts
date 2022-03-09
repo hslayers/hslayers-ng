@@ -2,14 +2,16 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
+import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLanguageService} from '../language/language.service';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -27,7 +29,6 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {mockHsPrintLegendService} from './mocks/print-legend.service.mock';
 import {mockHsPrintScaleService} from './mocks/print-scale.service.mock';
 import {mockHsPrintService} from './mocks/print.service.mock';
-import {mockLanguageService} from '../language/language.service.mock';
 
 describe('HsPrintComponent', () => {
   let component: HsPrintComponent;
@@ -47,14 +48,22 @@ describe('HsPrintComponent', () => {
         CommonModule,
         FormsModule,
         HsPanelHelpersModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
         ColorSketchModule,
         NgbDropdownModule,
+        HttpClientTestingModule,
       ],
       providers: [
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
-        {provide: HsSidebarService, useValue: {buttons: []}},
-        {provide: HsLanguageService, useValue: mockLanguageService()},
+        {
+          provide: HsSidebarService,
+          useValue: {
+            buttons: [],
+            addButton: () => {
+              return true;
+            },
+          },
+        },
         {provide: HsPrintService, useValue: mockHsPrintService()},
         {
           provide: HsPrintScaleService,
@@ -65,6 +74,7 @@ describe('HsPrintComponent', () => {
           useValue: mockHsPrintLegendService(),
         },
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
       ],
     }).compileComponents();
@@ -72,6 +82,7 @@ describe('HsPrintComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsPrintComponent);
+    fixture.componentInstance.data = {app: 'default'};
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(HsPrintService);

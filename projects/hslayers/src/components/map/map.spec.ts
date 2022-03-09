@@ -12,10 +12,12 @@ import VectorLayer from 'ol/layer/Vector';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapComponent} from './map.component';
 import {HsMapDirective} from './map.directive';
 import {HsMapService} from './map.service';
@@ -23,12 +25,9 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsShareUrlServiceMock} from '../permalink/share-url.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {mockLanguageService} from '../language/language.service.mock';
 
 class emptyMock {
-  constructor() {}
-}
-
-class HsConfigMock {
   constructor() {}
 }
 
@@ -36,7 +35,7 @@ describe('HsMapService', () => {
   let fixture: ComponentFixture<HsMapComponent>;
   let component: HsMapComponent;
   let service: HsMapService;
-
+  const app = 'default';
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -56,14 +55,15 @@ describe('HsMapService', () => {
         {provide: HsShareUrlService, useValue: new HsShareUrlServiceMock()},
         {provide: HsCoreService, useValue: new emptyMock()},
         HsMapService,
-        {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         HsEventBusService,
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
-        {provide: HsLanguageService, useValue: new emptyMock()},
+        {provide: HsLanguageService, useValue: mockLanguageService()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMapComponent);
+    fixture.componentInstance.app = app;
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(HsMapService);
@@ -74,36 +74,36 @@ describe('HsMapService', () => {
   });
 
   it('should create map object', async () => {
-    const map = await service.loaded();
+    const map = await service.loaded(app);
     expect(map).toBeDefined();
   });
 
   it('should not add duplicate layers', async () => {
-    await service.loaded();
+    await service.loaded(app);
     const layer1 = new VectorLayer({
       properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
     });
-    service.map.addLayer(layer1);
+    service.apps[app].map.addLayer(layer1);
 
     const layer2 = new VectorLayer({
       properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
     });
-    const exists = service.layerAlreadyExists(layer2);
+    const exists = service.layerAlreadyExists(layer2, app);
     expect(exists).toBe(true);
   });
 
   it('find layer for feature', async () => {
-    await service.loaded();
+    await service.loaded(app);
     const featureLayer = new VectorLayer({
       properties: {title: 'Feature layer'},
       source: new VectorSource({}),
     });
-    service.map.addLayer(featureLayer);
+    service.apps[app].map.addLayer(featureLayer);
     const feature = new Feature({geometry: new Point([0, 0]), name: 'test'});
     featureLayer.getSource().addFeatures([feature]);
-    const foundLayer = service.getLayerForFeature(feature);
+    const foundLayer = service.getLayerForFeature(feature, app);
     expect(foundLayer).toBe(featureLayer);
   });
 });

@@ -1,11 +1,12 @@
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule} from '@angular/forms';
-
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {TranslateModule} from '@ngx-translate/core';
+import {FormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {HsLanguageService} from '../language/language.service';
+import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -14,9 +15,9 @@ import {HsMapSwipeComponent} from './map-swipe.component';
 import {HsMapSwipeService} from './map-swipe.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
-import {mockHsMapSwipeService} from './map-swipe.service.mock';
-import {mockLanguageService} from '../language/language.service.mock';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 describe('HsMapSwipeComponent', () => {
@@ -28,17 +29,27 @@ describe('HsMapSwipeComponent', () => {
       declarations: [HsMapSwipeComponent],
       imports: [
         HsPanelHelpersModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
+        HttpClientTestingModule,
         FormsModule,
         DragDropModule,
         CommonModule,
       ],
       providers: [
+        HsMapSwipeService,
+        {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
-        {provide: HsSidebarService, useValue: {buttons: []}},
-        {provide: HsLanguageService, useValue: mockLanguageService()},
-        {provide: HsMapSwipeService, useValue: mockHsMapSwipeService()},
+        {
+          provide: HsSidebarService,
+          useValue: {
+            buttons: [],
+            addButton: () => {
+              return true;
+            },
+          },
+        },
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
+        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayerShiftingService,
           useValue: mockHsLayerShiftingService(),
@@ -49,6 +60,7 @@ describe('HsMapSwipeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsMapSwipeComponent);
+    fixture.componentInstance.data = {app: 'default'};
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

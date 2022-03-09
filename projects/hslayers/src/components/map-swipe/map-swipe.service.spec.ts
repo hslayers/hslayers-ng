@@ -1,6 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 
 import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
@@ -11,13 +12,6 @@ import {HsMapSwipeService} from './map-swipe.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
-
-class HsConfigMock {
-  componentsEnabled = {
-    mapSwipe: true,
-  };
-  constructor() {}
-}
 
 class HsToastServiceMock {
   constructor() {}
@@ -32,7 +26,7 @@ const HsLayerManagerServiceMock = {
 
 describe('HsMapSwipeService', () => {
   let service: HsMapSwipeService;
-
+  let hsConfig: HsConfig;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -58,6 +52,10 @@ describe('HsMapSwipeService', () => {
       ],
     });
     service = TestBed.inject(HsMapSwipeService);
+    hsConfig = TestBed.inject(HsConfig);
+    hsConfig.get('default').componentsEnabled = {
+      mapSwipe: true,
+    };
   });
 
   it('should be created', () => {

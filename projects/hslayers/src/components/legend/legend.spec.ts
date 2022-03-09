@@ -10,11 +10,14 @@ import {
   tick,
 } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
@@ -45,14 +48,14 @@ describe('HsLegendComponent', () => {
 
   let component: HsLegendComponent;
   let fixture: ComponentFixture<HsLegendComponent>;
-
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         HsPanelHelpersModule,
         HsUiExtensionsModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
+        HttpClientTestingModule,
         FormsModule,
       ],
       declarations: [
@@ -62,7 +65,7 @@ describe('HsLegendComponent', () => {
         HsLegendLayerStaticComponent,
       ],
       providers: [
-        {provide: HsConfig, useValue: {}},
+        {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
@@ -74,6 +77,7 @@ describe('HsLegendComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLegendComponent);
+    fixture.componentInstance.data = {app: 'default'};
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

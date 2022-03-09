@@ -2,7 +2,8 @@
   "extends": "../tsconfig.json",
   "include": ["**/*.ts"],
   "compilerOptions": {
-    "sourceMap": false,
+    "target": "es2020",
+    "sourceMap": true,
     "types": ["cypress"]
   }
 }
