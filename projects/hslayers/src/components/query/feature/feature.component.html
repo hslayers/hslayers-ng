@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 m-2"><strong>{{feature.name}} <span *ngIf="feature.layer">in layer</span>
+        <div class="col-12 m-2"><strong>{{feature.name}} <span *ngIf="feature.layer">{{'in layer' | translateHs : {app} }}</span>
                 {{feature.layer}}</strong></div>
     </div>
     <hs-query-attribute-row *ngFor="let attribute of feature.attributes" [template]="feature.hstemplate"
