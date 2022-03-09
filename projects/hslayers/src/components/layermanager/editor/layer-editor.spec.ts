@@ -6,22 +6,25 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfig} from '../../../config.service';
+import {HsConfigMock} from '../../../config.service.mock';
 import {HsDrawService} from '../../draw/draw.service';
+import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from '../editor/layer-editor.sub-layer.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
 import {HsMapService} from '../../map/map.service';
 import {HsMapServiceMock} from '../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../layout/panels/panel-helpers.module';
@@ -36,29 +39,23 @@ import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmt
 import {getCluster} from '../../../common/layer-extensions';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 
-class HsConfigMock {
-  reverseLayerList = true;
-  layersInFeatureTable = [];
-  constructor() {}
-}
-
 class emptyMock {
   constructor() {}
 }
 
-describe('layermanager', () => {
+describe('layermanager editor', () => {
   let component: HsLayerEditorComponent;
   let fixture: ComponentFixture<HsLayerEditorComponent>;
   let clusterWidgetComponent: HsClusterWidgetComponent;
   let clusterWidgetFixture: ComponentFixture<HsClusterWidgetComponent>;
-
   const layerForCluster = new VectorLayer({
     properties: {
       title: 'Bookmarks',
     },
     source: new VectorSource({}),
   });
-
+  let hsConfig: HsConfig;
+  const app = 'default';
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -77,7 +74,8 @@ describe('layermanager', () => {
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
+        HttpClientTestingModule,
       ],
       declarations: [HsLayerEditorComponent, HsClusterWidgetComponent],
       providers: [
@@ -104,7 +102,7 @@ describe('layermanager', () => {
         {provide: HsDrawService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
-        {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
     });
     //bed.compileComponents();
@@ -112,12 +110,17 @@ describe('layermanager', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerEditorComponent);
+    fixture.componentInstance.app = app;
     component = fixture.componentInstance;
+    hsConfig = TestBed.inject(HsConfig);
     clusterWidgetFixture = TestBed.createComponent(HsClusterWidgetComponent);
+    clusterWidgetFixture.componentInstance.data = {app};
     clusterWidgetComponent = clusterWidgetFixture.componentInstance;
     fixture.detectChanges();
     component.currentLayer = {layer: layerForCluster};
     clusterWidgetComponent.currentLayer = {layer: layerForCluster};
+    hsConfig.get(app).reverseLayerList = true;
+    hsConfig.get(app).layersInFeatureTable = [];
   });
 
   it('should create', () => {

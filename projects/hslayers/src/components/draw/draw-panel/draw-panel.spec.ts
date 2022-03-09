@@ -5,11 +5,10 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import VectorLayer from 'ol/layer/Vector';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 import {of} from 'rxjs';
 
@@ -19,25 +18,23 @@ import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig} from '../../../config.service';
+import {HsConfigMock} from '../../../config.service.mock';
 import {HsDrawService} from '../draw.service';
+import {HsLanguageModule} from '../../language/language.module';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
 import {HsMapService} from '../../map/map.service';
 import {HsMapServiceMock} from '../../map/map.service.mock';
 import {HsQueryBaseService} from '../../query/query-base.service';
 import {HsQueryVectorService} from '../../query/query-vector.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
-import {mockLanguageService} from '../../language/language.service.mock';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
-
 class emptyMock {
-  constructor() {}
-}
-class HsConfigMock {
   constructor() {}
 }
 
@@ -53,10 +50,6 @@ class HsCommonEndpointsServiceMock {
 }
 
 describe('HsDrawPanel', () => {
-  const mockLayoutService = jasmine.createSpyObj('HsLayoutService', [
-    'sidebarBottom',
-    'panelVisible',
-  ]);
   const mockQueryBaseService = jasmine.createSpyObj('HsQueryBaseService', [
     'activateQueries',
     'deactivateQueries',
@@ -90,21 +83,21 @@ describe('HsDrawPanel', () => {
   let fixture: ComponentFixture<DrawPanelComponent>;
   let component: DrawPanelComponent;
   let service: HsDrawService;
-
+  const app = 'default';
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         FormsModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
         NgbDropdownModule,
-        HttpClientModule,
+        HttpClientTestingModule,
       ],
       declarations: [DrawPanelComponent],
       providers: [
         HsDrawService,
-        {provide: HsLayoutService, useValue: mockLayoutService},
-        {provide: HsLanguageService, useValue: mockLanguageService()},
+        HsLanguageService,
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsConfig, useValue: new HsConfigMock()},
@@ -131,6 +124,7 @@ describe('HsDrawPanel', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(DrawPanelComponent);
+    fixture.componentInstance.app = app;
     service = TestBed.inject(HsDrawService);
     component = fixture.componentInstance;
 
@@ -146,14 +140,14 @@ describe('HsDrawPanel', () => {
 
     component.setType('polygon');
 
-    expect(service.tmpDrawLayer).toBeDefined();
-    expect(service.type).toBe('polygon');
-    expect(service.selectedLayer).toBeDefined();
+    expect(service.get(app).tmpDrawLayer).toBeDefined();
+    expect(service.get(app).type).toBe('polygon');
+    expect(service.get(app).selectedLayer).toBeDefined();
     expect(service.activateDrawing).toHaveBeenCalled();
   });
 
   it('Select layer', () => {
     component.selectLayer(layer);
-    expect(service.source).toBeDefined();
+    expect(service.get(app).source).toBeDefined();
   });
 });

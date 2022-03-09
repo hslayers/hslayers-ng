@@ -19,7 +19,8 @@ import {
 })
 export class TranslateCustomPipe
   extends TranslatePipe
-  implements PipeTransform {
+  implements PipeTransform
+{
   onLangChangeOverridden: boolean;
   constructor(
     private translate2: TranslateService,

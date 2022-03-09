@@ -1,5 +1,4 @@
 /* eslint-disable prefer-arrow-callback */
-import {BehaviorSubject} from 'rxjs';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -8,6 +7,11 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+
+import {BehaviorSubject} from 'rxjs';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
@@ -18,7 +22,9 @@ import {HsCompositionsMickaService} from './endpoints/compositions-micka.service
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
 import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
+import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLaymanBrowserService} from '../add-data/catalogue/layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -32,26 +38,16 @@ import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {HttpClientModule} from '@angular/common/http';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
-class HsConfigMock {
-  reverseLayerList = true;
-  constructor() {}
-}
+
 class HsCompositionsMickaServiceMock {
   constructor() {}
   loadList() {
     return;
   }
-}
-
-class emptyMock {
-  constructor() {}
 }
 
 class HsLaymanBrowserServiceMock {
@@ -108,13 +104,13 @@ class HsLaymanBrowserServiceMock {
 }
 
 let mockedMapService;
+let hsConfig: HsConfig;
 let CompositionsCatalogueService;
-
 const layerUtilsMock = mockLayerUtilsService();
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
-
+  const app = 'default';
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -127,17 +123,16 @@ describe('compositions', () => {
   });
 
   beforeEach(() => {
-    mockedMapService = new HsMapServiceMock();
     const mockedUtilsService: any = new HsUtilsServiceMock();
     const mockedEventBusService: any = new HsEventBusServiceMock();
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         CommonModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         HsPanelHelpersModule,
         FormsModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
         HsStylerModule,
         NgbDropdownModule,
       ],
@@ -152,7 +147,7 @@ describe('compositions', () => {
           useValue: new HsSaveMapServiceMock(),
         },
         {provide: HsUtilsService, useValue: mockedUtilsService},
-        {provide: HsMapService, useValue: mockedMapService},
+        {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
         {
           provide: HsCompositionsMickaService,
@@ -209,6 +204,8 @@ describe('compositions', () => {
     const hsCompositionsMickaService = TestBed.inject(
       HsCompositionsMickaServiceMock
     );
+    hsConfig = TestBed.inject(HsConfig);
+    hsConfig.get(app).reverseLayerList = true;
     //Mock server response
     hsCompositionsMickaService.loadList = () => {
       return new Promise((resolve, reject) => {
@@ -222,6 +219,8 @@ describe('compositions', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsCompositionsComponent);
+    mockedMapService = TestBed.inject(HsMapService);
+    fixture.componentInstance.data = {app};
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -231,7 +230,7 @@ describe('compositions', () => {
   });
 
   it('compositions list should load', function () {
-    CompositionsCatalogueService.filterByExtent = false;
+    CompositionsCatalogueService.get(app).filterByExtent = false;
     const ds: any = {
       url: 'https://www.agrihub.cz/micka/csw',
       type: 'micka',
@@ -242,44 +241,48 @@ describe('compositions', () => {
         loaded: false,
       },
     };
-    CompositionsCatalogueService.loadCompositions();
+    CompositionsCatalogueService.loadCompositions(app);
     //NOTE: have to make this check to work
     // expect(ds.compositions).toBeDefined();
     expect(ds).toBeDefined();
   });
 
   /**
-   * @param scope
-   * @param component
+   * @param component -
    */
   async function loadComposition(component) {
     await component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,
-      true
+      true,
+      app
     );
   }
 
   it('should load composition from json', async function () {
     await loadComposition(component);
-    expect(mockedMapService.getMap().getLayers().getLength()).toBe(8);
-    expect(getTitle(mockedMapService.getMap().getLayers().item(2))).toBe(
+    expect(mockedMapService.getMap(app).getLayers().getLength()).toBe(7);
+    expect(getTitle(mockedMapService.getMap(app).getLayers().item(1))).toBe(
       'Measurement sketches'
     );
     expect(
-      mockedMapService.getMap().getLayers().item(5).getSource().getFeatures().length
+      mockedMapService.getMap(app).getLayers().item(5).getSource().getFeatures()
+        .length
     ).toBe(1);
     expect(
-      mockedMapService.getMap().getLayers().item(6).getSource().getFeatures().length
-    ).toBe(1);
+      mockedMapService.getMap(app).getLayers().item(6).getSource().getFeatures()
+        .length
+    ).toBe(0);
   });
 
   it('if should parse composition layer style', async function () {
     await loadComposition(component);
-    expect(mockedMapService.getMap().getLayers().item(2).getStyle()).toBeDefined();
+    const layer = mockedMapService.getMap(app).getLayers().item(1);
+    expect(layer.getStyle()).toBeDefined();
     expect(
-      mockedMapService.getMap()
+      mockedMapService
+        .getMap(app)
         .getLayers()
-        .item(7)
+        .item(6)
         .getStyle()[2]
         .getStroke()
         .getColor()

@@ -8,13 +8,12 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {Layer} from 'ol/layer';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
-import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataVectorFileComponent} from './vector-file.component';
 import {HsAddDataVectorService} from '../vector.service';
@@ -22,8 +21,10 @@ import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.s
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig} from '../../../../config.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
+import {HsLanguageModule} from '../../../language/language.module';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
+import {HsLayoutServiceMock} from '../../../layout/layout.service.mock';
 import {HsMapService} from '../../../map/map.service';
 import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsUploadComponent} from '../../../../common/upload/upload.component';
@@ -72,9 +73,9 @@ describe('add-layers-vector', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         CommonModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         FormsModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
         NgbDropdownModule,
       ],
       declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
@@ -85,12 +86,7 @@ describe('add-layers-vector', () => {
         {provide: HsConfig, useValue: new HsConfigMock()},
         {
           provide: HsLayoutService,
-          useValue: {
-            contentWrapper: document.createElement('div'),
-            setMainPanel: function () {
-              ///
-            },
-          },
+          useValue: new HsLayoutServiceMock(),
         },
         {
           provide: HsCommonLaymanService,
@@ -108,6 +104,7 @@ describe('add-layers-vector', () => {
   beforeEach(() => {
     service = TestBed.inject(HsAddDataVectorService);
     fixture = TestBed.createComponent(HsAddDataVectorFileComponent);
+    fixture.componentInstance.app = 'default';
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

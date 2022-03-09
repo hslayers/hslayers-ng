@@ -5,21 +5,24 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {ImageWMS, Vector as VectorSource} from 'ol/source';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsConfig} from '../../../config.service';
+import {HsConfigMock} from '../../../config.service.mock';
 import {HsDrawService} from '../../draw/draw.service';
+import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerListComponent} from './layermanager-layerlist.component';
 import {HsLayerListService} from './layermanager-layerlist.service';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
 import {HsMapService} from '../../map/map.service';
 import {HsMapServiceMock} from '../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../layout/panels/panel-helpers.module';
@@ -33,11 +36,6 @@ import {mockHsLayerListService} from './layermanager-layerlist.service.mock';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 import {wmsGetCapabilitiesResponse} from '../../../../test/data/wms-capabilities';
 
-class HsConfigMock {
-  reverseLayerList = true;
-  constructor() {}
-}
-
 class emptyMock {
   constructor() {}
 }
@@ -46,12 +44,6 @@ const layerUtilsMock = mockLayerUtilsService();
 describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
-
-  const layerForCluster = new VectorLayer({
-    properties: {title: 'Bookmarks'},
-    source: new VectorSource({}),
-  });
-
   const params = {'LAYERS': 'BSS', 'TILED': true};
   const subLayerContainerLayer = new ImageLayer({
     properties: {title: 'test'},
@@ -62,7 +54,7 @@ describe('layermanager-layer-list', () => {
     }),
   });
   layerUtilsMock.getLayerParams.and.returnValue(params);
-
+  let hsConfig: HsConfig;
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -81,7 +73,8 @@ describe('layermanager-layer-list', () => {
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
+        HttpClientTestingModule,
       ],
       declarations: [HsLayerListComponent],
       providers: [
@@ -117,8 +110,8 @@ describe('layermanager-layer-list', () => {
           },
         },
         {provide: HsConfig, useValue: new HsConfigMock()},
-        {provide: HsDrawService, useValue: new HsConfigMock()},
-        {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsDrawService, useValue: new emptyMock()},
+        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
     });
     //bed.compileComponents();
@@ -126,9 +119,12 @@ describe('layermanager-layer-list', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerListComponent);
+    fixture.componentInstance.app = 'default';
+    hsConfig = TestBed.inject(HsConfig);
     component = fixture.componentInstance;
     component.folder = {layers: []};
     fixture.detectChanges();
+    hsConfig.get(component.app).reverseLayerList = true;
   });
 
   it('should create', () => {
@@ -140,6 +136,7 @@ describe('layermanager-layer-list', () => {
       {
         element: subLayerContainerLayer,
       },
+      'default',
       true
     );
     expect(component).toBeTruthy();

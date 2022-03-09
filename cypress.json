@@ -1,5 +1,5 @@
 {
-  "integrationFolder": "cypress/integration",
+  "integrationFolder": "cypress/tests",
   "supportFile": "cypress/support/index.ts",
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",

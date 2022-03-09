@@ -135,6 +135,7 @@ export class HsSaveMapComponent
     });
 
     this.HsSaveMapManagerService.init(this.data.app);
+    this.HsSaveMapDialogSpawnerService.init(this.data.app);
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

@@ -18,7 +18,7 @@ import {Source} from 'ol/source';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
-class HsSaveMapManagerParams {
+export class HsSaveMapManagerParams {
   statusData: any = {
     titleFree: undefined,
     hasPermission: undefined,
@@ -62,12 +62,7 @@ class HsSaveMapManagerParams {
   missingName = false;
   missingAbstract = false;
 
-  /*Very dirty tricky */
-  constructor(HsSaveMapManagerService, app: string) {
-    setTimeout(() => {
-      HsSaveMapManagerService.saveMapManagerAppCreated.next(app);
-    });
-  }
+  constructor() {}
 }
 
 @Injectable({
@@ -77,10 +72,8 @@ export class HsSaveMapManagerService {
   apps: {
     [id: string]: HsSaveMapManagerParams;
   } = {
-    default: new HsSaveMapManagerParams(this, 'default'),
+    default: new HsSaveMapManagerParams(),
   };
-
-  saveMapManagerAppCreated: Subject<string> = new Subject();
 
   constructor(
     public HsMapService: HsMapService,
@@ -147,7 +140,7 @@ export class HsSaveMapManagerService {
 
   get(app: string): HsSaveMapManagerParams {
     if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsSaveMapManagerParams(this, app);
+      this.apps[app ?? 'default'] = new HsSaveMapManagerParams();
     }
     return this.apps[app ?? 'default'];
   }

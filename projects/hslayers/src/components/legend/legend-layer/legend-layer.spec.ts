@@ -6,7 +6,7 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
@@ -15,6 +15,7 @@ import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../../config.service';
+import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
@@ -54,7 +55,8 @@ describe('HsLegendLayerComponent', () => {
       imports: [
         HsPanelHelpersModule,
         HsUiExtensionsModule,
-        TranslateModule.forRoot(),
+        HsLanguageModule,
+        HttpClientTestingModule,
         FormsModule,
       ],
       declarations: [
@@ -76,6 +78,7 @@ describe('HsLegendLayerComponent', () => {
 
   beforeEach(() => {
     parentFixture = TestBed.createComponent(HsLegendComponent);
+    parentFixture.componentInstance.data = {app: 'default'};
     parentComponent = parentFixture.componentInstance;
     parentFixture.detectChanges();
     fixture = TestBed.createComponent(HsLegendLayerComponent);

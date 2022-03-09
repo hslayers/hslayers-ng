@@ -6,16 +6,19 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Subject} from 'rxjs';
-import {TranslateModule} from '@ngx-translate/core';
 
 import VectorLayer from 'ol/layer/Vector';
+import {Subject} from 'rxjs';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
+import {HsConfigMock} from '../../config.service.mock';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageModule} from '../language/language.module';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
@@ -24,17 +27,14 @@ import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
+import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {getLayerName, getLaymanFriendlyLayerName} from './layman-utils';
+import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class emptyMock {
   constructor() {}
-}
-class HsSaveMapManagerServiceMock {
-  constructor() {}
-  panelOpened: Subject<any> = new Subject();
-  endpointSelected: Subject<any> = new Subject();
 }
 
 class HsCommonLaymanServiceMock {
@@ -78,8 +78,9 @@ describe('HsSaveMap', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         FormsModule,
-        TranslateModule.forRoot(),
         HttpClientTestingModule,
+        HttpClientTestingModule,
+        HsLanguageModule,
       ],
       declarations: [HsSaveMapComponent],
       providers: [
@@ -92,14 +93,16 @@ describe('HsSaveMap', () => {
           provide: HsEventBusService,
           useValue: new HsEventBusServiceMock(),
         },
-        {provide: HsConfig, useValue: new emptyMock()},
+        {provide: HsConfig, useValue: new HsConfigMock()},
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),
         },
         {
           provide: HsSaveMapDialogSpawnerService,
-          useValue: new emptyMock(),
+          useValue: jasmine.createSpyObj('HsSaveMapDialogSpawnerService', [
+            'init',
+          ]),
         },
         {provide: HsDialogContainerService, useValue: new emptyMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
@@ -109,9 +112,11 @@ describe('HsSaveMap', () => {
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsSaveMapComponent);
+    fixture.componentInstance.data = {app: 'default'};
     service = TestBed.inject(HsLaymanService);
     component = fixture.componentInstance;
     fixture.detectChanges();

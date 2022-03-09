@@ -1,12 +1,12 @@
 <div class="basemapGallery" style="z-index: 101;" [hidden]="!isVisible()">
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
-        #galleryDropdown="ngbDropdown">
+        [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
         <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" aria-haspopup="true">
             <i class="glyphicon icon-map x-large p-0"></i>
         </button>
         <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
-            <div *ngFor="let layer of HsLayerManagerService.apps[app].data.baselayers" (click)="toggleBasemap(layer);"
-                [ngStyle]="{'position':'relative'}" class="m-0">
+            <div *ngFor="let layer of HsLayerManagerService.apps[app].data.baselayers" [attr.data-cy]="layer.title"
+                (click)="toggleBasemap(layer);" [ngStyle]="{'position':'relative'}" class="m-0">
                 <div style="position:absolute;top:5px; right:5px;z-index:5"
                     [ngClass]="layer.galleryMiniMenu ? 'text-white' : 'text-primary'" *ngIf="layer.active"
                     (click)="$event.preventDefault();toggleMiniMenu(layer)">
@@ -34,7 +34,8 @@
                 <img [ngClass]="{'active': layer.active, 'hs-ale': !layer.active}" src="{{layer.thumbnail}}"
                     alt="Basemap thumbnail" style="width:100%">
                 <a class="dropdown-item" [ngClass]="{'active': layer.active}"
-                    style="white-space: pre-line; overflow-wrap: anywhere;">{{HsLayerUtilsService.translateTitle(layer.title, app)}}</a>
+                    style="white-space: pre-line; overflow-wrap: anywhere;">{{HsLayerUtilsService.translateTitle(layer.title,
+                    app)}}</a>
             </div>
             <div (click)="toggleBasemap()">
                 <div style="height: 4em; width: 100%; background: white"

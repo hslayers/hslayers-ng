@@ -28,7 +28,7 @@ export class HsLanguageService {
   /**
    * @public
    * @param lang - Language code
-   * @description Set language
+   * Set language
    */
   setLanguage(lang: string, app: string): void {
     this.getTranslator(app).use(lang);
@@ -54,7 +54,7 @@ export class HsLanguageService {
   /**
    * @public
    * @returns Returns language code
-   * @description Get code of current language
+   * Get code of current language
    */
   getCurrentLanguageCode(app: string): string {
     if (
@@ -69,7 +69,7 @@ export class HsLanguageService {
   /**
    * @public
    * @returns Returns available languages
-   * @description Get array of available languages based
+   * Get array of available languages based
    */
   listAvailableLanguages(app: string): any {
     const language_code_name_map = {
@@ -138,7 +138,11 @@ export class HsLanguageService {
     if (app == undefined) {
       app = Object.keys(this.apps)[0];
     }
-    const tmp = this.getTranslation(module + '.' + text, params || undefined);
+    const tmp = this.getTranslation(
+      module + '.' + text,
+      params || undefined,
+      app
+    );
     if (tmp.includes(module + '.')) {
       return text;
     }

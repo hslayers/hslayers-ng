@@ -3,7 +3,7 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 
 import VectorLayer from 'ol/layer/Vector';
@@ -34,6 +34,7 @@ describe('HsUtilsService', () => {
   });
   let hsUtilsService: HsUtilsService;
   let hsConfig: HsConfig;
+  const app = 'default';
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -47,7 +48,7 @@ describe('HsUtilsService', () => {
 
         {provide: HsLogService, userValue: new EmptyMock()},
       ],
-      imports: [HttpClientModule],
+      imports: [HttpClientTestingModule],
     });
     hsUtilsService = TestBed.inject(HsUtilsService);
     hsConfig = TestBed.inject(HsConfig);
@@ -130,14 +131,14 @@ describe('HsUtilsService', () => {
     const simpleUrl = 'http://gisserver.domain.com';
     const base64Url =
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T';
-    let url = hsUtilsService.proxify(urlWMS, true);
+    let url = hsUtilsService.proxify(urlWMS, app, true);
     expect(url).toEqual(
       '/proxy/http://gisserver.domain.com/request=GetFeatureInfo'
     );
     hsConfig.get('default').proxyPrefix = 'http://localhost:8085/';
-    url = hsUtilsService.proxify(simpleUrl, false);
+    url = hsUtilsService.proxify(simpleUrl, app, false);
     expect(url).toEqual('http://localhost:8085/http://gisserver.domain.com');
-    url = hsUtilsService.proxify(base64Url);
+    url = hsUtilsService.proxify(base64Url, app);
     expect(url).toEqual(
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T'
     );
@@ -149,7 +150,7 @@ describe('HsUtilsService', () => {
     };
     const url =
       'http://localhost:8080/?hs_x=1945211.1423359748&hs_y=6904584.935889341&hs_z=4&visible_layers=%26%2347%3BOpenStreetMap%3BSwiss%3B%3BBookmarks&hs_panel=layermanager';
-    const shortUrl = await hsUtilsService.shortUrl(url);
+    const shortUrl = await hsUtilsService.shortUrl(url, app);
     expect(shortUrl).toEqual('http://customShortUrl.com/shorturl');
   });
   it('try to get port number from url', () => {
