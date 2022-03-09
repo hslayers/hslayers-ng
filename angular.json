@@ -110,18 +110,6 @@
             ],
             "scripts": []
           }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "hslayers-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "hslayers-app:serve:production"
-            }
-          }
         }
       }
     },
@@ -251,11 +239,30 @@
             "scripts": []
           }
         },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
             "devServerTarget": "test-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "test-app:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "test-app:serve",
+            "watch": true,
+            "headless": false
           },
           "configurations": {
             "production": {
@@ -373,18 +380,6 @@
               "projects/decoupling-test-app/src/styles.sass"
             ],
             "scripts": []
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "decoupling-test-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "decoupling-test-app:serve:production"
-            }
           }
         }
       }
@@ -510,18 +505,6 @@
               "projects/test-statistics-app/src/styles.sass"
             ],
             "scripts": []
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "test-statistics-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "test-statistics-app:serve:production"
-            }
           }
         }
       }
@@ -653,18 +636,6 @@
               "projects/hslayers-cesium-app/src/styles.sass"
             ],
             "scripts": []
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "hslayers-cesium-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "hslayers-cesium-app:serve:production"
-            }
           }
         }
       }
@@ -810,18 +781,6 @@
               "projects/cesium-test-app/src/styles.sass"
             ],
             "scripts": []
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "cesium-test-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "cesium-test-app:serve:production"
-            }
           }
         }
       }
@@ -1055,18 +1014,6 @@
               "projects/hslayers-material-app/**/*.ts",
               "projects/hslayers-material-app/**/*.html"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/hslayers-material-app/e2e/protractor.conf.js",
-            "devServerTarget": "hslayers-material-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "hslayers-material-app:serve:production"
-            }
           }
         }
       }
