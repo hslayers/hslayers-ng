@@ -60,8 +60,13 @@ export class HsFeatureCommonService {
     this.apps[app] = true;
   }
 
-  translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+  translateString(module: string, text: string, app: string): string {
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      app
+    );
   }
 
   updateLayerList(app: string): void {
@@ -104,7 +109,9 @@ export class HsFeatureCommonService {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation('QUERY.feature.featureEdited'),
       this.hsLanguageService.getTranslation(
-        `QUERY.feature.feature${type}Succ`
+        `QUERY.feature.feature${type}Succ`,
+        undefined,
+        app
       ) + getTitle(toLayer),
       app,
       {

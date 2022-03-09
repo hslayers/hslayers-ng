@@ -65,7 +65,12 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
 
   translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.data.app
+    );
   }
   openOptionsMenu(): void {
     this.filterTypeMenu = !this.filterTypeMenu;

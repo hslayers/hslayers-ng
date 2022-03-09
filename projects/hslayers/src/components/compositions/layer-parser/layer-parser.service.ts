@@ -112,11 +112,14 @@ export class HsCompositionsLayerParserService {
     } catch (error) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
-          'ADDLAYERS.capabilitiesParsingProblem'
+          'ADDLAYERS.capabilitiesParsingProblem',
+          undefined,
+          app
         ),
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
-          error
+          error,
+          app
         ),
         app,
         {

@@ -184,11 +184,19 @@ export class HsDrawService {
     if (appRef.selectedLayer) {
       const title = getTitle(appRef.selectedLayer);
       return title == TMP_LAYER_TITLE
-        ? this.hsLanguageService.getTranslation('DRAW.unsavedDrawing')
-        : this.hsLayerUtilsService.translateTitle(title) ||
+        ? this.hsLanguageService.getTranslation(
+            'DRAW.unsavedDrawing',
+            undefined,
+            app
+          )
+        : this.hsLayerUtilsService.translateTitle(title, app) ||
             getName(appRef.selectedLayer);
     } else {
-      return this.hsLanguageService.getTranslation('DRAW.Select layer');
+      return this.hsLanguageService.getTranslation(
+        'DRAW.Select layer',
+        undefined,
+        app
+      );
     }
   }
   /**
@@ -200,7 +208,7 @@ export class HsDrawService {
     if (appRef.snapLayer) {
       const title = getTitle(appRef.snapLayer);
       return (
-        this.hsLayerUtilsService.translateTitle(title) ||
+        this.hsLayerUtilsService.translateTitle(title, app) ||
         getName(appRef.snapLayer)
       );
     }
@@ -212,7 +220,11 @@ export class HsDrawService {
       appRef.previouslySelected = appRef.selectedLayer;
     }
 
-    let tmpTitle = this.hsLanguageService.getTranslation('DRAW.drawLayer');
+    let tmpTitle = this.hsLanguageService.getTranslation(
+      'DRAW.drawLayer',
+      undefined,
+      app
+    );
 
     const tmpLayer = this.hsMapService.findLayerByTitle(TMP_LAYER_TITLE, app);
     const tmpSource = tmpLayer ? tmpLayer.getSource() : new VectorSource();
@@ -313,9 +325,15 @@ export class HsDrawService {
         HsConfirmDialogComponent,
         {
           message: this.hsLanguageService.getTranslation(
-            'DRAW.thisLayerDoesNotSupportDrawing'
+            'DRAW.thisLayerDoesNotSupportDrawing',
+            undefined,
+            app
           ),
-          title: this.hsLanguageService.getTranslation('DRAW.notAVectorLayer'),
+          title: this.hsLanguageService.getTranslation(
+            'DRAW.notAVectorLayer',
+            undefined,
+            app
+          ),
         },
         app
       );
@@ -607,10 +625,16 @@ export class HsDrawService {
       HsConfirmDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
-          'DRAW.reallyDeleteThisLayer'
+          'DRAW.reallyDeleteThisLayer',
+          undefined,
+          app
         ),
         note: this.getDeleteNote(app),
-        title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
+        title: this.hsLanguageService.getTranslation(
+          'COMMON.confirmDelete',
+          undefined,
+          app
+        ),
       },
       app
     );
@@ -631,11 +655,15 @@ export class HsDrawService {
       HsRmMultipleDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
-          'DRAW.pleaseCheckTheLayers'
+          'DRAW.pleaseCheckTheLayers',
+          undefined,
+          app
         ),
         note: this.getDeleteNote(app, true),
         title: this.hsLanguageService.getTranslation(
-          'COMMON.selectAndConfirmToDeleteMultiple'
+          'COMMON.selectAndConfirmToDeleteMultiple',
+          undefined,
+          app
         ),
         items: [
           ...(appRef.drawableLayers ?? []),
@@ -647,8 +675,16 @@ export class HsDrawService {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation('LAYMAN.deleteLayersRequest'),
-        this.hsLanguageService.getTranslation('LAYMAN.deletionInProgress'),
+        this.hsLanguageService.getTranslation(
+          'LAYMAN.deleteLayersRequest',
+          undefined,
+          app
+        ),
+        this.hsLanguageService.getTranslation(
+          'LAYMAN.deletionInProgress',
+          undefined,
+          app
+        ),
         app,
         {
           toastStyleClasses: 'bg-info text-white',
@@ -705,7 +741,9 @@ export class HsDrawService {
   getDeleteNote(app: string, plural?: boolean): string {
     return this.get(app).isAuthorized
       ? this.hsLanguageService.getTranslation(
-          plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote'
+          plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote',
+          undefined,
+          app
         )
       : '';
   }
@@ -799,14 +837,19 @@ export class HsDrawService {
       appRef.draw.on('drawstart', (e: DrawEvent) => {
         if (!this.hasRequiredSymbolizer(app)) {
           this.hsToastService.createToastPopupMessage(
-            this.hsLanguageService.getTranslation('DRAW.stylingMissing'),
+            this.hsLanguageService.getTranslation(
+              'DRAW.stylingMissing',
+              undefined,
+              app
+            ),
             `${this.hsLanguageService.getTranslation(
               'DRAW.stylingMissingWarning',
               {
                 type: appRef.type,
                 symbolizer: appRef.requiredSymbolizer[appRef.type].join(' or '),
                 panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
-              }
+              },
+              app
             )}`,
             app,
             {
@@ -944,7 +987,11 @@ export class HsDrawService {
           this.hsQueryBaseService.selector.getFeatures().clear();
         });
         this.hsToastService.createToastPopupMessage(
-          this.hsLanguageService.getTranslation('DRAW.boxSelectionActivated'),
+          this.hsLanguageService.getTranslation(
+            'DRAW.boxSelectionActivated',
+            undefined,
+            app
+          ),
           `${this.hsLanguageService.getTranslation(
             'DRAW.useModifierToSelectWithBox',
             {

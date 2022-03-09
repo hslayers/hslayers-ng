@@ -16,7 +16,9 @@
       <div class="p-1 flex-grow-1">
         {{hsLanguageService.getTranslationIgnoreNonExisting(
         'FEATURE_TABLE',
-        attribute.key
+        attribute.key,
+        undefined,
+        data.app
         )}} 
       </div>
     </ng-container>

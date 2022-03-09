@@ -25,7 +25,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   private ngUnsubscribe = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
@@ -54,10 +55,16 @@ export class HsMapSwipeComponent
         order: 18,
         fits: true,
         title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.MAP_SWIPE'),
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.MAP_SWIPE',
+            undefined,
+            this.data.app
+          ),
         description: () =>
           this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.MAP_SWIPE'
+            'SIDEBAR.descriptions.MAP_SWIPE',
+            undefined,
+            this.data.app
           ),
         icon: 'icon-resizehorizontalalt',
       },

@@ -66,13 +66,13 @@
                             [ngClass]="(appRef.data.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
-                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, data.app)"></span>
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted' : layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
                         [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0">
-                        {{hsLayerUtilsService.translateTitle(layer.title)}}
+                        {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
                     </div>
                     <div class="ps-1 info_btn" style="cursor: pointer;">
                         <span class="icon-settingsthree-gears text-secondary"
@@ -110,13 +110,13 @@
                             [ngClass]="(appRef.data.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
-                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, data.app)"></span>
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
                         [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0">
-                        {{hsLayerUtilsService.translateTitle(layer.title)}}
+                        {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
                     </div>
                 </div>
             </li>
@@ -131,7 +131,7 @@
                 [hidden]="physicalLayerListEnabled">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="appRef.data.folders.sub_folders.length > 1" (click)="value.visible = !value.visible">
-                    <span>{{hsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}&nbsp;</span>
+                    <span>{{hsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name, undefined, data.app)}}&nbsp;</span>
                     <span class="glyphicon"
                         [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>

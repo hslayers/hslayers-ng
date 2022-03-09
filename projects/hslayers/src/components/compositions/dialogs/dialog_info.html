@@ -73,7 +73,7 @@
                     <div *ngFor="let data of data.info.contactAddress | keyvalue">
                         <div class="row" *ngIf="data.value">
                             <div class="col-md-4"><b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form',
-                                    data.key)}}</b></div>
+                                    data.key, data.app)}}</b></div>
                             <div class="col-md-8">{{data.value}}</div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     <div *ngFor="let data of data.info.contactPersonPrimary | keyvalue">
                         <div class="row" *ngIf="data.value">
                             <div class="col-md-4" style="word-break:break-all">
-                                <b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b>
+                                <b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key, data.app)}}</b>
                             </div>
                             <div class="col-md-8">{{data.value}}</div>
                         </div>

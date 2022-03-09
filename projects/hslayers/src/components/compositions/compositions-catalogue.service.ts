@@ -156,7 +156,8 @@ export class HsCompositionsCatalogueService {
             info: {
               title: this.hsCompositionsService.translateString(
                 'COMPOSITIONS',
-                'compositionNotFound'
+                'compositionNotFound',
+                app
               ),
               abstract: data.error.message,
             },

@@ -10,14 +10,14 @@
                         [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
                 <ng-template #abstractTooltip>
-                    <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                    <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, app)"></span>
                 </ng-template>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
                     (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings', app)"
                     style="word-break:break-word;" [ngClass]="{'hover': layer.hasSublayers === true}"
                     [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
                     [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
-                    {{hsLayerUtilsService.translateTitle(layer.title)}}
+                    {{hsLayerUtilsService.translateTitle(layer.title, app)}}
                 </div>
                 <div class="p-0 me-1 ms-1 info_btn" *ngIf="layer.hasSublayers"
                     style="font-size: x-small; flex-grow: 20;"

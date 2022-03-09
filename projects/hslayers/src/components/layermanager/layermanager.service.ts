@@ -515,7 +515,9 @@ export class HsLayerManagerService {
       } else {
         path = this.HsLanguageService.getTranslationIgnoreNonExisting(
           'LAYERMANAGER',
-          'other'
+          'other',
+          undefined,
+          app
         );
       }
       setPath(lyr, path);
@@ -1225,10 +1227,12 @@ export class HsLayerManagerService {
     }
   }
 
-  makeSafeAndTranslate(group: string, input: string): SafeHtml {
+  makeSafeAndTranslate(group: string, input: string, app: string): SafeHtml {
     const translation = this.HsLanguageService.getTranslationIgnoreNonExisting(
       group,
-      input
+      input,
+      undefined,
+      app
     );
     if (translation) {
       return this.sanitizer.bypassSecurityTrustHtml(translation);

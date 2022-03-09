@@ -650,7 +650,9 @@ export class HsLaymanService implements HsSaverService {
                 ) => {
                   this.HsToastService.removeByText(
                     this.HsLanguageService.getTranslation(
-                      'LAYMAN.deletionInProgress'
+                      'LAYMAN.deletionInProgress',
+                      undefined,
+                      app
                     ),
                     app
                   );
@@ -673,7 +675,11 @@ export class HsLaymanService implements HsSaverService {
               ),
               catchError((e) => {
                 this.HsToastService.createToastPopupMessage(
-                  this.HsLanguageService.getTranslation('COMMON.warning'),
+                  this.HsLanguageService.getTranslation(
+                    'COMMON.warning',
+                    undefined,
+                    app
+                  ),
                   this.HsLanguageService.getTranslationIgnoreNonExisting(
                     'SAVECOMPOSITION',
                     'removeLayerError',
@@ -683,7 +689,8 @@ export class HsLaymanService implements HsSaverService {
                         layer instanceof Layer
                           ? (layer as Layer<Source>).get('title')
                           : layer,
-                    }
+                    },
+                    app
                   ),
                   app,
                   {serviceCalledFrom: 'HsLaymanService'}

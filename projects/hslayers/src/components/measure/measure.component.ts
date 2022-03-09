@@ -17,7 +17,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   type: string;
   data;
   name = 'measure';
@@ -96,10 +97,16 @@ export class HsMeasureComponent
           order: 2,
           fits: true,
           title: () =>
-            this.hsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
+            this.hsLanguageService.getTranslation(
+              'PANEL_HEADER.MEASURE',
+              undefined,
+              this.data.app
+            ),
           description: () =>
             this.hsLanguageService.getTranslation(
-              'SIDEBAR.descriptions.MEASURE'
+              'SIDEBAR.descriptions.MEASURE',
+              undefined,
+              this.data.app
             ),
           icon: 'icon-design',
           condition: true,

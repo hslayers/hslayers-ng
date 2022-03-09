@@ -97,8 +97,8 @@
                     <div class="form-check text-truncat">
                         <input type="checkbox" class="form-check-input mt-0" name="hs-stclayer-{{i}}"
                             id="hs-stclayer-{{i}}" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}">
-                        <label for="hs-stclayer-{{i}}" title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
-                            class="form-check-label mw-100 text-truncate">{{HsLayerUtilsService.translateTitle(layer.title)}}</label>
+                        <label for="hs-stclayer-{{i}}" title="{{HsLayerUtilsService.translateTitle(layer.title, app)}}"
+                            class="form-check-label mw-100 text-truncate">{{HsLayerUtilsService.translateTitle(layer.title, app)}}</label>
                     </div>
                 </li>
                 <li class="list-group-item" style="padding: 3px">

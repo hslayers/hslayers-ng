@@ -6,7 +6,7 @@
   <div *ngIf="data.showDetails">
     <div class="border-bottom d-flex flex-row justify-content-between">
       <p class="align-self-center m-0">
-        {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount})}}
+        {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount}, app)}}
       </p>
       <ul class="nav nav-tabs justify-content-end">
         <li class="nav-item">

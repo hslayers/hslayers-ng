@@ -273,7 +273,11 @@ export class HsMapService {
     rendered.setAttribute(
       this.element,
       'title',
-      this.HsLanguageService.getTranslation('MAP.zoomToInitialWindow')
+      this.HsLanguageService.getTranslation(
+        'MAP.zoomToInitialWindow',
+        undefined,
+        app
+      )
     );
 
     rendered.appendChild(button, icon);
@@ -465,9 +469,13 @@ export class HsMapService {
             `position: absolute; right:15px; top:0.6em;z-index:101`
           );
           const text = renderer.createText(
-            `${this.HsLanguageService.getTranslation('MAP.zoomKeyModifier', {
-              platformModifierKey: platformModifierKey,
-            })}`
+            `${this.HsLanguageService.getTranslation(
+              'MAP.zoomKeyModifier',
+              {
+                platformModifierKey: platformModifierKey,
+              },
+              app
+            )}`
           );
           renderer.appendChild(html, text);
           renderer.appendChild(

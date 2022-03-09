@@ -426,7 +426,12 @@ export class HsCompositionsService {
    * @param text - Locales json key value
    * @returns Translated text value
    */
-  translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+  translateString(module: string, text: string, app: string): string {
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      app
+    );
   }
 }

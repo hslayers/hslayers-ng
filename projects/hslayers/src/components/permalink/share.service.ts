@@ -275,11 +275,15 @@ export class HsShareService {
       .catch((error) => {
         this.HsToastService.createToastPopupMessage(
           this.HsLanguageService.getTranslation(
-            'COMPOSITIONS.errorWhileSharingOnSocialNetwork'
+            'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
+            undefined,
+            this.data.app
           ),
           this.HsLanguageService.getTranslationIgnoreNonExisting(
             'ERRORMESSAGES',
-            error
+            error,
+            undefined,
+            app
           ),
           app,
           {disableLocalization: true, serviceCalledFrom: 'HsShareService'}

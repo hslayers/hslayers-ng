@@ -75,12 +75,15 @@ export class HsCompositionsListItemComponent {
     } catch (e) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
-          'COMPOSITIONS.errorWhileSharingOnSocialNetwork'
+          'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
+          undefined,
+          this.app
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.message,
-          {url: url}
+          {url: url},
+          this.app
         ),
         this.app,
         {disableLocalization: true}

@@ -10,7 +10,7 @@
             <li *ngFor="let layer of filterDescriptors() | filter:legendFilter" class="list-group-item"
                 [hidden]="!hsLegendService.legendValid(layer)">
                 <div>
-                    {{hsLayerUtilsService.translateTitle(layer.title)}}
+                    {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
                     <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
                 </div>
 

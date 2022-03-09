@@ -44,9 +44,17 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
         order: 1,
         fits: true,
         title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.LEGEND',
+            undefined,
+            this.data.app
+          ),
         description: () =>
-          this.hsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
+          this.hsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.LEGEND',
+            undefined,
+            this.data.app
+          ),
         icon: 'icon-dotlist',
       },
       this.data.app

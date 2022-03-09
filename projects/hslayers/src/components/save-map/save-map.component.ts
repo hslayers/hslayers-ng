@@ -20,8 +20,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   endpoint = null;
   isAuthorized = false;
   name = 'saveMap';
@@ -85,10 +84,16 @@ export class HsSaveMapComponent
         order: 12,
         fits: true,
         title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
+          this.hsLanguageService.getTranslation(
+            'PANEL_HEADER.SAVECOMPOSITION',
+            undefined,
+            this.data.app
+          ),
         description: () =>
           this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.SAVECOMPOSITION'
+            'SIDEBAR.descriptions.SAVECOMPOSITION',
+            undefined,
+            this.data.app
           ),
         icon: 'icon-save-floppy',
       },

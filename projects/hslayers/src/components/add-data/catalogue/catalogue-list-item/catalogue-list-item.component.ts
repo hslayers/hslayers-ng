@@ -99,7 +99,12 @@ export class HsCatalogueListItemComponent implements OnInit {
    * @returns Translated text value
    */
   translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.app
+    );
   }
 
   toggleExplanations(): void {
@@ -157,10 +162,20 @@ export class HsCatalogueListItemComponent implements OnInit {
       HsConfirmDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
-          'DRAW.reallyDeleteThisLayer'
+          'DRAW.reallyDeleteThisLayer',
+          undefined,
+          this.app
         ),
-        note: this.hsLanguageService.getTranslation('DRAW.deleteNote'),
-        title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
+        note: this.hsLanguageService.getTranslation(
+          'DRAW.deleteNote',
+          undefined,
+          this.app
+        ),
+        title: this.hsLanguageService.getTranslation(
+          'COMMON.confirmDelete',
+          undefined,
+          this.app
+        ),
       },
       this.app
     );

@@ -84,10 +84,14 @@ export class DrawEditComponent implements OnDestroy, OnInit {
               data.selector.getFeatures().remove(selectorFeatures[1]);
               this.hsToastService.createToastPopupMessage(
                 this.HsLanguageService.getTranslation(
-                  'DRAW.featureEditor.featureEditor'
+                  'DRAW.featureEditor.featureEditor',
+                  undefined,
+                  this.app
                 ),
                 this.HsLanguageService.getTranslation(
-                  'DRAW.featureEditor.onlyOneSplitLine'
+                  'DRAW.featureEditor.onlyOneSplitLine',
+                  undefined,
+                  this.app
                 ),
                 this.app,
                 {
@@ -140,7 +144,9 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     if (!isValidType) {
       this.hsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
-          'DRAW.featureEditor.featureEditor'
+          'DRAW.featureEditor.featureEditor',
+          undefined,
+          this.app
         ),
         'Only polygon geometry can be edited',
         this.app
@@ -192,7 +198,9 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     this.hsToastService.createToastPopupMessage(
       this.HsLanguageService.getTranslation('DRAW.featureEditor.featureEditor'),
       this.HsLanguageService.getTranslation(
-        'DRAW.featureEditor.onlyOneFeatureToEdit'
+        'DRAW.featureEditor.onlyOneFeatureToEdit',
+        undefined,
+        this.app
       ),
       this.app,
       {
@@ -224,10 +232,14 @@ export class DrawEditComponent implements OnDestroy, OnInit {
 
           this.hsToastService.createToastPopupMessage(
             this.HsLanguageService.getTranslation(
-              'DRAW.featureEditor.featureEditor'
+              'DRAW.featureEditor.featureEditor',
+              undefined,
+              this.app
             ),
             this.HsLanguageService.getTranslation(
-              'DRAW.featureEditor.onlyOneSplitLine'
+              'DRAW.featureEditor.onlyOneSplitLine',
+              undefined,
+              this.app
             ),
             this.app,
             {
@@ -332,10 +344,14 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     } else {
       this.hsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
-          'DRAW.featureEditor.featureEditor'
+          'DRAW.featureEditor.featureEditor',
+          undefined,
+          this.app
         ),
         this.HsLanguageService.getTranslation(
-          'DRAW.featureEditor.noIntersection'
+          'DRAW.featureEditor.noIntersection',
+          undefined,
+          this.app
         ),
         this.app,
         {

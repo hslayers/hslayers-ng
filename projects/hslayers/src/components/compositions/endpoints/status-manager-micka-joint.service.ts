@@ -68,14 +68,17 @@ export class HsCompositionsStatusManagerMickaJointService {
             default:
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
-                  'COMPOSITIONS.errorWhileRequestingCompositions'
+                  'COMPOSITIONS.errorWhileRequestingCompositions',
+                  undefined,
+                  app
                 ),
                 ds.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url: ds.url}
+                    {url: ds.url},
+                    app
                   ),
                 app,
                 {
@@ -117,12 +120,15 @@ export class HsCompositionsStatusManagerMickaJointService {
     } catch (e) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
-          'COMPOSITIONS.errorWhileLoadingCompositionMetadata'
+          'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
+          undefined,
+          app
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.status ? e.status.toString() : e.message,
-          {url: url}
+          {url: url},
+          app
         ),
         app,
         {

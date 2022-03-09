@@ -297,7 +297,9 @@ export class HsLayerSynchronizerService {
     const exception: any = xml2Json.xml2js(error, {compact: true});
     this.HsToastService.createToastPopupMessage(
       this.HsLanguageService.getTranslation(
-        'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing'
+        'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing',
+        undefined,
+        app
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,

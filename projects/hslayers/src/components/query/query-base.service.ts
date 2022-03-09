@@ -242,7 +242,11 @@ export class HsQueryBaseService {
       'EPSG:4326'
     );
     const coords = {
-      name: this.hsLanguageService.getTranslation('QUERY.coordinates'),
+      name: this.hsLanguageService.getTranslation(
+        'QUERY.coordinates',
+        undefined,
+        app
+      ),
       mapProjCoordinate: coordinate,
       epsg4326Coordinate,
       projections: [

@@ -10,7 +10,7 @@
     <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center">
         <button *ngFor="let option of editOptions" class="btn btn-sm btn-light btn-outline-primary"
             [ngClass]="{active: selectedType === option }" (click)="selectGeomOperation(option)">
-            {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',option)}}
+            {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',option, undefined, app)}}
         </button>
     </div>
 
@@ -38,6 +38,6 @@
 
         <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)" *ngIf="selectedType"
             [disabled]="HsQueryBaseService.apps[app].features.length < 2">{{'COMMON.continue' | translateHs: {app} }}:
-            {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType)}}</button>
+            {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType, undefined, app)}}</button>
     </div>
 </ng-template>

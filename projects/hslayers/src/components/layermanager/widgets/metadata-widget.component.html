@@ -38,7 +38,7 @@
     <label>{{ "COMMON.abstract" | translateHs : data }}</label>
     <p
       [innerHtml]="
-        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
+        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract, data.app)
       "
     ></p>
   </div>

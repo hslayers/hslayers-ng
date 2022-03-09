@@ -50,13 +50,20 @@ export class HsAddDataCommonFileService {
     this.hsLaymanService.totalProgress = 0;
   }
 
-  getLoadingText(): string {
+  getLoadingText(app: string): string {
     return this.loadingToLayman
       ? this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
-          'uploading'
+          'uploading',
+          undefined,
+          app
         )
-      : this.hsLanguageService.getTranslationIgnoreNonExisting('COMMON', 'add');
+      : this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          'add',
+          undefined,
+          app
+        );
   }
 
   /**
@@ -79,7 +86,7 @@ export class HsAddDataCommonFileService {
     }
   }
 
-  addTooltip(data: fileDataObject): string {
+  addTooltip(data: fileDataObject, app: string): string {
     let tooltipString;
     if (!data.srs && !data.name) {
       tooltipString = 'nameAndSRSRequired';
@@ -93,12 +100,16 @@ export class HsAddDataCommonFileService {
     if (tooltipString) {
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'ADDLAYERS',
-        tooltipString
+        tooltipString,
+        undefined,
+        app
       );
     } else {
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'DRAW.drawToolbar',
-        'addLayer'
+        'addLayer',
+        undefined,
+        app
       );
     }
   }
@@ -264,7 +275,9 @@ export class HsAddDataCommonFileService {
         throw new Error(
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS.ERROR',
-            'srsNotSupported'
+            'srsNotSupported',
+            undefined,
+            app
           )
         );
       }
@@ -286,11 +299,15 @@ export class HsAddDataCommonFileService {
           if (descriptor?.file.error) {
             this.hsToastService.createToastPopupMessage(
               this.hsLanguageService.getTranslation(
-                'ADDLAYERS.ERROR.someErrorHappened'
+                'ADDLAYERS.ERROR.someErrorHappened',
+                undefined,
+                app
               ),
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'LAYMAN.ERROR',
-                descriptor.file.error.code.toString()
+                descriptor.file.error.code.toString(),
+                undefined,
+                app
               ),
               app,
               {

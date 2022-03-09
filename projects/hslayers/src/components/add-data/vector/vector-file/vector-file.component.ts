@@ -166,11 +166,15 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
 
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation(
-            'ADDLAYERS.ERROR.someErrorHappened'
+            'ADDLAYERS.ERROR.someErrorHappened',
+            undefined,
+            this.app
           ),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
-            'couldNotUploadSelectedFile'
+            'couldNotUploadSelectedFile',
+            undefined,
+            this.app
           ),
           this.app,
           {disableLocalization: true}

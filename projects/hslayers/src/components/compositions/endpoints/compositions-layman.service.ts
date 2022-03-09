@@ -117,14 +117,17 @@ export class HsCompositionsLaymanService {
             default:
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
-                  'COMPOSITIONS.errorWhileRequestingCompositions'
+                  'COMPOSITIONS.errorWhileRequestingCompositions',
+                  undefined,
+                  app
                 ),
                 endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url: endpoint.url}
+                    {url: endpoint.url},
+                    app
                   ),
                 app,
                 {
@@ -261,7 +264,7 @@ export class HsCompositionsLaymanService {
     app: string
   ): void {
     this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation('COMMON.warning'),
+      this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
       endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
       app,
       {

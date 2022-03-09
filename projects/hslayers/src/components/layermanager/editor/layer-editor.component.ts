@@ -136,9 +136,15 @@ export class HsLayerEditorComponent {
       {
         message:
           this.HsLanguageService.getTranslation(
-            'LAYERMANAGER.layerEditor.savegeojson'
+            'LAYERMANAGER.layerEditor.savegeojson',
+            undefined,
+            this.app
           ) + '?',
-        title: this.HsLanguageService.getTranslation('COMMON.confirm'),
+        title: this.HsLanguageService.getTranslation(
+          'COMMON.confirm',
+          undefined,
+          this.app
+        ),
       },
       this.app
     );
@@ -281,9 +287,15 @@ export class HsLayerEditorComponent {
       {
         message:
           this.HsLanguageService.getTranslation(
-            'LAYERMANAGER.layerEditor.copyLayer'
+            'LAYERMANAGER.layerEditor.copyLayer',
+            undefined,
+            this.app
           ) + '?',
-        title: this.HsLanguageService.getTranslation('COMMON.copyLayer'),
+        title: this.HsLanguageService.getTranslation(
+          'COMMON.copyLayer',
+          undefined,
+          this.app
+        ),
         layerTitle: getTitle(this.currentLayer.layer),
         app: this.app,
       },
