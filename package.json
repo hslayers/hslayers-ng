@@ -71,7 +71,7 @@
     "proj4": "^2.7.5",
     "queue": "^6.0.2",
     "resumablejs": "^1.1.0",
-    "rxjs": "^7.5.4",
+    "rxjs": "^7.5.5",
     "share-api-polyfill": "^1.1.0",
     "simple-statistics": "^7.7.5",
     "tslib": "^2.3.0",
@@ -79,7 +79,7 @@
     "vega-embed": "6.20.8",
     "vega-lite": "~5.2.0",
     "xml-js": "^1.6.11",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.5"
   },
   "devDependencies": {
     "@angular-architects/module-federation": "^14.1.1",
@@ -102,10 +102,10 @@
     "@typescript-eslint/parser": "5.13.0",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "eslint-config-openlayers": "14.0.0",
     "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-jsdoc": "37.9.4",
+    "eslint-plugin-jsdoc": "37.9.7",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-tsdoc": "^0.2.14",
