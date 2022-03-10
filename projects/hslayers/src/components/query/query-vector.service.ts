@@ -66,63 +66,67 @@ export class HsQueryVectorService {
   }
 
   init(_app: string): void {
-    if (this.apps[_app] == undefined) {
+    if (this.apps[_app]) {
+      return;
+    } else {
       this.apps[_app] = {selector: undefined};
-    }
-    const selector = new Select({
-      condition: click,
-      multi: this.hsConfig.get(_app).query?.multi
-        ? this.hsConfig.get(_app).query.multi
-        : false,
-      filter: function (feature, layer) {
-        if (layer === null) {
-          return;
-        }
-        if (getQueryable(layer) === false) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-    });
-    this.apps[_app].selector = selector;
-    this.hsQueryBaseService.vectorSelectorCreated.next(selector);
 
-    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
-      if (_app == app) {
-        map.addInteraction(selector);
-      }
-    });
+      const selector = new Select({
+        condition: click,
+        multi: this.hsConfig.get(_app).query?.multi
+          ? this.hsConfig.get(_app).query.multi
+          : false,
+        filter: function (feature, layer) {
+          if (layer === null) {
+            return;
+          }
+          if (getQueryable(layer) === false) {
+            return false;
+          } else {
+            return true;
+          }
+        },
+      });
+      this.apps[_app].selector = selector;
+      this.hsQueryBaseService.vectorSelectorCreated.next({selector, app: _app});
 
-    this.hsQueryBaseService.queryStatusChanges.subscribe(() => {
-      /*if (Base.queryActive) OlMap.map.addInteraction(this.selector);
+      this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
+        if (_app == app) {
+          map.addInteraction(selector);
+        }
+      });
+
+      this.hsQueryBaseService.queryStatusChanges.subscribe(() => {
+        /*if (Base.queryActive) OlMap.map.addInteraction(this.selector);
             else OlMap.map.removeInteraction(this.selector);*/
-    });
-
-    selector.getFeatures().on('add', (e) => {
-      this.hsEventBusService.vectorQueryFeatureSelection.next({
-        feature: e.element,
-        selector,
       });
-    });
 
-    selector.getFeatures().on('remove', (e) => {
-      this.hsEventBusService.vectorQueryFeatureDeselection.next({
-        feature: e.element,
-        selector,
+      selector.getFeatures().on('add', (e) => {
+        this.hsEventBusService.vectorQueryFeatureSelection.next({
+          feature: e.element,
+          selector,
+          app: _app,
+        });
       });
-    });
-    this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      if (e?.feature) {
-        const layer = this.hsMapService.getLayerForFeature(e.feature, _app);
-        if (layer && getOnFeatureSelected(layer)) {
-          const originalFeature = this.getSelectedFeature(e.feature);
-          if (originalFeature) {
-            getOnFeatureSelected(layer)(originalFeature);
+
+      selector.getFeatures().on('remove', (e) => {
+        this.hsEventBusService.vectorQueryFeatureDeselection.next({
+          feature: e.element,
+          selector,
+        });
+      });
+      this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
+        if (e?.feature && e.app == _app) {
+          const layer = this.hsMapService.getLayerForFeature(e.feature, _app);
+          if (layer && getOnFeatureSelected(layer)) {
+            const originalFeature = this.getSelectedFeature(e.feature);
+            if (originalFeature) {
+              getOnFeatureSelected(layer)(originalFeature);
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 
   getFeaturesUnderMouse(map: Map, pixel: any, app: string) {

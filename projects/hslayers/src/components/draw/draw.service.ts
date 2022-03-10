@@ -134,7 +134,9 @@ export class HsDrawService {
     });
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
-      appRef.selectedFeatures.push(event.feature);
+      if (this.get(event.app) == appRef) {
+        appRef.selectedFeatures.push(event.feature);
+      }
     });
 
     this.hsEventBusService.vectorQueryFeatureDeselection.subscribe(
@@ -404,7 +406,6 @@ export class HsDrawService {
   }
 
   onDrawEnd(e, app: string): void {
-    console.log(this.get(app));
     if (!getEditor(this.get(app).selectedLayer)) {
       return;
     }
@@ -436,7 +437,8 @@ export class HsDrawService {
     //Zone is used to ensure change detection updates the view
     this.zone.run(() => {
       this.hsQueryBaseService.get(app).clear('features');
-      this.hsQueryVectorService.get(app).selector.getFeatures().push(feature);
+      this.hsQueryVectorService.init(app);
+      this.hsQueryVectorService.apps[app].selector.getFeatures().push(feature);
       this.hsQueryVectorService.createFeatureAttributeList(app);
     });
   }
@@ -945,11 +947,12 @@ export class HsDrawService {
       ? 'deselectAllFeatures'
       : 'selectAllFeatures';
     this.hsQueryBaseService.apps[app].clear('features');
-    this.hsQueryBaseService.selector.getFeatures().clear();
+    this.hsQueryBaseService.get(app).selector.getFeatures().clear();
 
     if (selectFeatures) {
-      this.hsQueryBaseService.selector
-        .getFeatures()
+      this.hsQueryBaseService
+        .get(app)
+        .selector.getFeatures()
         .extend(appRef.selectedLayer.getSource().getFeatures());
     }
     this.hsQueryVectorService.createFeatureAttributeList(app);
@@ -977,14 +980,17 @@ export class HsDrawService {
           appRef.selectedLayer
             .getSource()
             .forEachFeatureIntersectingExtent(extent, (feature) => {
-              this.hsQueryBaseService.selector.getFeatures().push(feature);
+              this.hsQueryBaseService
+                .get(app)
+                .selector.getFeatures()
+                .push(feature);
             });
 
           this.hsQueryVectorService.createFeatureAttributeList(app);
         });
 
         appRef.boxSelection.on('boxstart' as any, () => {
-          this.hsQueryBaseService.selector.getFeatures().clear();
+          this.hsQueryBaseService.get(app).selector.getFeatures().clear();
         });
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation(

@@ -127,6 +127,9 @@ export class HsExternalService {
       });
     }
     source.on('removefeature', (event) => {
+      if (!event.features) {
+        return;
+      }
       for (const removedFeature of event.features) {
         const linkage = this.featureLinks[removedFeature.getId()];
         if (linkage) {

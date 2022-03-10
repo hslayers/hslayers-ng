@@ -34,6 +34,7 @@ export class HsQueryFeatureListComponent implements OnInit {
   editType = null;
   editMenuVisible = false;
   selectedLayer = null;
+  queryBaseAppRef;
   getTitle = getTitle;
 
   trackById(index, item) {
@@ -55,6 +56,7 @@ export class HsQueryFeatureListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.queryBaseAppRef = this.hsQueryBaseService.get(this.app);
     this.hsFeatureCommonService.init(this.app);
   }
 

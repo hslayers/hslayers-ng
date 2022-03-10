@@ -34,6 +34,8 @@ class HsQueryData {
   invisiblePopup;
   queryPoint = new Point([0, 0]);
 
+  selector = null;
+
   constructor(queryLayerStyle, hsEventBusService, invisiblePopup) {
     this.queryLayer = new VectorLayer({
       properties: {
@@ -96,7 +98,6 @@ class HsQueryData {
 export class HsQueryBaseService {
   queryActive = false;
   popupClassname = '';
-  selector = null;
   currentQuery = null;
 
   nonQueryablePanels = [
@@ -111,7 +112,8 @@ export class HsQueryBaseService {
   getFeatureInfoStarted: Subject<{evt; app: string}> = new Subject();
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
-  vectorSelectorCreated: Subject<Select> = new Subject();
+  vectorSelectorCreated: Subject<{selector: Select; app: string}> =
+    new Subject();
   apps: {[key: string]: HsQueryData} = {};
 
   constructor(
@@ -125,8 +127,8 @@ export class HsQueryBaseService {
     private domSanitizer: DomSanitizer,
     private zone: NgZone
   ) {
-    this.vectorSelectorCreated.subscribe((selector) => {
-      this.selector = selector;
+    this.vectorSelectorCreated.subscribe((data) => {
+      this.get(data.app).selector = data.selector;
     });
   }
 
@@ -312,7 +314,7 @@ export class HsQueryBaseService {
       if (this.hsConfig.get(app).queryPoint == 'hidden') {
         circle.setRadius(0);
       } else if (this.hsConfig.get(app).queryPoint == 'notWithin') {
-        if (this.selector.getFeatures().getLength() > 0) {
+        if (this.get(app).selector.getFeatures().getLength() > 0) {
           circle.setRadius(0);
         }
       }
