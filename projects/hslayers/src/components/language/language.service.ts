@@ -32,6 +32,7 @@ export class HsLanguageService {
    */
   setLanguage(lang: string, app: string): void {
     this.getTranslator(app).use(lang);
+    this.apps[app].language = lang;
     // this.HsEventBusService.updateLanguageButton.next({
     //   language: lang,
     // });

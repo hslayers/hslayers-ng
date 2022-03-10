@@ -16,12 +16,12 @@ export class HsLanguageComponent
   available_languages: any;
   name = 'language';
   constructor(
-    public HsLanguageService: HsLanguageService,
-    public hsConfig: HsConfig,
-    HsLayoutService: HsLayoutService,
-    public hsSidebarService: HsSidebarService
+    private hsLanguageService: HsLanguageService,
+    private hsConfig: HsConfig,
+    hsLayoutService: HsLayoutService,
+    private hsSidebarService: HsSidebarService
   ) {
-    super(HsLayoutService);
+    super(hsLayoutService);
   }
 
   ngOnInit(): void {
@@ -32,30 +32,51 @@ export class HsLanguageComponent
         order: 13,
         fits: true,
         title: () =>
-          this.HsLanguageService.getTranslation(
+          this.hsLanguageService.getTranslation(
             'PANEL_HEADER.LANGUAGE',
             undefined,
             this.data.app
           ),
         description: () =>
-          this.HsLanguageService.getTranslation(
+          this.hsLanguageService.getTranslation(
             'SIDEBAR.descriptions.LANGUAGE',
             undefined,
             this.data.app
           ),
         content: () => {
-          return this.HsLanguageService.getCurrentLanguageCode(
-            this.data.app
-          ).toUpperCase();
+          return this.hsLanguageService
+            .getCurrentLanguageCode(this.data.app)
+            .toUpperCase();
         },
       },
       this.data.app
     );
-    this.available_languages = this.HsLanguageService.listAvailableLanguages(
+    this.available_languages = this.hsLanguageService.listAvailableLanguages(
       this.data.app
     );
-    this.HsLanguageService.apps[this.data.app].language =
+    this.hsLanguageService.apps[this.data.app].language =
       this.hsConfig.get(this.data.app).language ?? 'en';
   }
-  //$scope.$emit('scope_loaded', 'Language');
+
+  /**
+   * Check if provided language is active language
+   * @param langCode - Language code
+   * @returns True, if current language is active
+   */
+  isCurrentLang(langCode: string): boolean {
+    return this.hsLanguageService.apps[this.data.app]?.language.endsWith(
+      langCode.toLowerCase()
+    );
+  }
+
+  /**
+   * Set UI language to provided one
+   * @param langCode - Language code
+   */
+  setLanguage(langCode: string): void {
+    this.hsLanguageService.setLanguage(
+      this.data.app + '|' + langCode,
+      this.data.app
+    );
+  }
 }
