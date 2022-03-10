@@ -71,7 +71,7 @@
     "proj4": "^2.7.5",
     "queue": "^6.0.2",
     "resumablejs": "^1.1.0",
-    "rxjs": "^7.5.4",
+    "rxjs": "^7.5.5",
     "share-api-polyfill": "^1.1.0",
     "simple-statistics": "^7.7.5",
     "tslib": "^2.3.0",
@@ -119,7 +119,7 @@
     "ng-packagr": "^13.2.1",
     "prettier": "^2.5.1",
     "protractor": "~7.0.0",
-    "puppeteer": "^13.4.0",
+    "puppeteer": "^13.5.1",
     "sass": "^1.49.9",
     "ts-node": "^10.5.0",
     "typescript": "4.5.5"
