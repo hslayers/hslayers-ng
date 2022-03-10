@@ -49,7 +49,7 @@ export class HsMapSwipeService {
   ) {}
 
   /**
-   * Initialize the values and functions of the map swipe service that are required for the service to function properly
+   * Initialize the map swipe service data and subscribers
    * @param app - App identifier
    */
   init(app: string) {

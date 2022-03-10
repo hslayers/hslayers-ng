@@ -49,7 +49,7 @@ export class HsCompositionsMapService {
   }
 
   /**
-   * Initialize compositions map service that are required for the service to function properly
+   * Initialize compositions map service data and listeners
    * @param app - App identifier
    */
   init(app: string) {
