@@ -77,7 +77,7 @@ export class HsCompositionsService {
     return this.apps[app ?? 'default'];
   }
   /**
-   * Initialize the values and functions of the composition service that are required for the service to function properly
+   * Initialize the composition service data and subscribers
    * @param _app - App identifier
    */
   init(_app: string) {

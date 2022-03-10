@@ -1,102 +1,178 @@
-import {Component, ElementRef, Inject, ViewRef} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewRef} from '@angular/core';
+
 import {HsDialogComponent} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
-import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {HsUtilsService} from 'hslayers-ng';
+
+import {Aggregate} from './types/aggregate.type';
+import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {Interval} from './types/interval.type';
 
 @Component({
   selector: 'hs-sensor-unit',
-  templateUrl: './partials/unit-dialog.html',
+  templateUrl: './partials/unit-dialog.component.html',
 })
-export class HsSensorsUnitDialogComponent implements HsDialogComponent {
+export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
 
   constructor(
-    public HsLayoutService: HsLayoutService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    public HsUtilsService: HsUtilsService,
-    elementRef: ElementRef
-  ) {
-    this.HsSensorsUnitDialogService.unitDialogVisible = true;
-    this.HsSensorsUnitDialogService.dialogElement = elementRef;
-  }
+    private hsLayoutService: HsLayoutService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    private hsUtilsService: HsUtilsService,
+    public elementRef: ElementRef
+  ) {}
   viewRef: ViewRef;
   data: any;
 
   ngOnInit(): void {
-    this.timeButtonClicked(this.HsSensorsUnitDialogService.intervals[2]);
+    this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible = true;
+    this.hsSensorsUnitDialogService.get(this.data.app).dialogElement =
+      this.elementRef;
+    this.timeButtonClicked(
+      this.hsSensorsUnitDialogService.get(this.data.app).intervals[2]
+    );
   }
 
   /**
-   * @param {object} sensor Clicked sensor
-   * @description Regenerate chart for sensor is clicked. If no
+   * @param sensor - Clicked sensor
+   * Regenerate chart for sensor is clicked. If no
    * interval was clicked before use 1 day timeframe by default.
    */
   sensorClicked(sensor): void {
-    this.HsSensorsUnitDialogService.selectSensor(sensor);
-    if (this.HsSensorsUnitDialogService.currentInterval == undefined) {
+    this.hsSensorsUnitDialogService.selectSensor(sensor, this.data.app);
+    if (
+      this.hsSensorsUnitDialogService.get(this.data.app).currentInterval ==
+      undefined
+    ) {
       this.timeButtonClicked({amount: 1, unit: 'days'});
     } else {
-      this.HsSensorsUnitDialogService.createChart(
-        this.HsSensorsUnitDialogService.unit
+      this.hsSensorsUnitDialogService.createChart(
+        this.hsSensorsUnitDialogService.get(this.data.app).unit,
+        this.data.app
       );
     }
   }
 
   /**
-   * @param {object} interval Clicked interval button
-   * @description Get data for different time interval and regenerate
+   * Get unit aggregations
+   */
+  getAggregations(): Aggregate[] {
+    return this.hsSensorsUnitDialogService.get(this.data.app).aggregations;
+  }
+
+  /**
+   * Get unit intervals
+   */
+  getIntervals(): Interval[] {
+    return this.hsSensorsUnitDialogService.get(this.data.app).intervals;
+  }
+
+  /**
+   * Get current interval
+   */
+  getCurrentInterval() {
+    return this.hsSensorsUnitDialogService.get(this.data.app).currentInterval;
+  }
+
+  /**
+   * Get translations to local
+   * @param text - Text to translate
+   */
+  getTranslation(text: string): string {
+    return this.hsSensorsUnitDialogService.translate(text, 'SENSORNAMES');
+  }
+
+  /**
+   * Get ajax loader icon
+   */
+  getAjaxLoader(): string {
+    return this.hsUtilsService.getAjaxLoaderIcon(this.data.app);
+  }
+
+  /**
+   * @param interval - Clicked interval button
+   * Get data for different time interval and regenerate
    * chart
    */
   timeButtonClicked(interval): void {
-    this.HsSensorsUnitDialogService.currentInterval = interval;
-    const fromTo = this.HsSensorsUnitDialogService.getTimeForInterval(interval);
+    this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
+      interval;
+    const fromTo = this.hsSensorsUnitDialogService.getTimeForInterval(interval);
     Object.assign(this.customInterval, {
       fromTime: fromTo.from_time.toDate(),
       toTime: fromTo.to_time.toDate(),
     });
-    this.HsSensorsUnitDialogService.getObservationHistory(
-      this.HsSensorsUnitDialogService.unit,
-      interval
-    ).then((_) => {
-      this.HsSensorsUnitDialogService.createChart(
-        this.HsSensorsUnitDialogService.unit
-      );
-    });
-  }
-
-  customIntervalChanged(): void {
-    this.HsSensorsUnitDialogService.currentInterval = this.customInterval;
-    this.HsSensorsUnitDialogService.getObservationHistory(
-      this.HsSensorsUnitDialogService.unit,
-      this.customInterval
-    ).then((_) =>
-      this.HsSensorsUnitDialogService.createChart(
-        this.HsSensorsUnitDialogService.unit
+    this.hsSensorsUnitDialogService
+      .getObservationHistory(
+        this.hsSensorsUnitDialogService.get(this.data.app).unit,
+        interval,
+        this.data.app
       )
-    );
+      .then((_) => {
+        this.hsSensorsUnitDialogService.createChart(
+          this.hsSensorsUnitDialogService.get(this.data.app).unit,
+          this.data.app
+        );
+      });
   }
 
+  /**
+   * Act on custom interval data change
+   */
+  customIntervalChanged(): void {
+    this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
+      this.customInterval;
+    this.hsSensorsUnitDialogService
+      .getObservationHistory(
+        this.hsSensorsUnitDialogService.get(this.data.app).unit,
+        this.customInterval,
+        this.data.app
+      )
+      .then((_) =>
+        this.hsSensorsUnitDialogService.createChart(
+          this.hsSensorsUnitDialogService.get(this.data.app).unit,
+          this.data.app
+        )
+      );
+  }
+
+  /**
+   * Set unit dialog style
+   */
   dialogStyle() {
     return {
-      'visibility': this.HsSensorsUnitDialogService.unitDialogVisible
+      'visibility': this.hsSensorsUnitDialogService.get(this.data.app)
+        .unitDialogVisible
         ? 'visible'
         : 'hidden',
-      'left': this.HsLayoutService.sidebarBottom()
+      'left': this.hsLayoutService.sidebarBottom()
         ? '3px'
-        : this.HsLayoutService.panelSpaceWidth() + 10 + 'px',
-      'width': this.HsLayoutService.sidebarBottom()
+        : this.hsLayoutService.panelSpaceWidth(this.data.app) + 10 + 'px',
+      'width': this.hsLayoutService.sidebarBottom()
         ? '100%'
-        : 'calc(' + this.HsLayoutService.widthWithoutPanelSpace() + ')',
-      'bottom': this.HsLayoutService.sidebarBottom() ? '46.5em' : '0',
-      'height': this.HsLayoutService.sidebarBottom() ? '5em' : 'auto',
+        : 'calc(' +
+          this.hsLayoutService.widthWithoutPanelSpace(this.data.app) +
+          ')',
+      'bottom': this.hsLayoutService.sidebarBottom() ? '46.5em' : '0',
+      'height': this.hsLayoutService.sidebarBottom() ? '5em' : 'auto',
     };
   }
 
+  /**
+   * Close unit dialog
+   */
   close(): void {
-    this.HsDialogContainerService.destroy(this);
-    this.HsSensorsUnitDialogService.unitDialogVisible = false;
+    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible =
+      false;
+  }
+
+  /**
+   * Get unit description
+   */
+  getUnitDescription(): string {
+    return this.hsSensorsUnitDialogService.get(this.data.app).unit.description;
   }
 }

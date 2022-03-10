@@ -1,31 +1,21 @@
 import {ElementRef, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-
 import {HsLanguageService} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
 import {HsLogService} from 'hslayers-ng';
-import {HsSensorUnit} from './sensor-unit.class';
 import {HsUtilsService} from 'hslayers-ng';
-import {HttpClient} from '@angular/common/http';
-import {SensLogEndpoint} from './senslog-endpoint';
 import {default as vegaEmbed} from 'vega-embed';
+
+import {Aggregate} from './types/aggregate.type';
+import {HsSensorUnit} from './sensor-unit.class';
+import {Interval} from './types/interval.type';
+import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
 
-type Aggregate = {
-  sensor_id;
-  max;
-  min;
-  avg;
-  sensor_name;
-};
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HsSensorsUnitDialogService {
+class SensorsUnitDialogServiceParams {
   unit: HsSensorUnit;
   unitDialogVisible: boolean;
   currentInterval: any;
@@ -34,43 +24,78 @@ export class HsSensorsUnitDialogService {
   endpoint: SensLogEndpoint;
   observations: any;
   sensorById = {};
-  intervals = [
+  dialogElement: ElementRef;
+  aggregations: Aggregate[];
+  intervals: Interval[] = [
     {name: '1H', amount: 1, unit: 'hours'},
     {name: '1D', amount: 1, unit: 'days'},
     {name: '1W', amount: 1, unit: 'weeks'},
     {name: '1M', amount: 1, unit: 'months'},
     {name: '6M', amount: 6, unit: 'months'},
   ];
-  dialogElement: ElementRef;
-  aggregations: Aggregate[];
+}
 
+@Injectable({
+  providedIn: 'root',
+})
+export class HsSensorsUnitDialogService {
+  apps: {
+    [id: string]: SensorsUnitDialogServiceParams;
+  } = {default: new SensorsUnitDialogServiceParams()};
   constructor(
     private http: HttpClient,
-    public HsUtilsService: HsUtilsService,
-    public HsLogService: HsLogService,
-    public HsLayoutService: HsLayoutService,
-    public HsLanguageService: HsLanguageService
+    private hsUtilsService: HsUtilsService,
+    private hsLogService: HsLogService,
+    private hsLanguageService: HsLanguageService
   ) {}
 
-  selectSensor(sensor: any) {
-    this.sensorsSelected.forEach((s) => (s.checked = false));
-    this.sensorsSelected = [sensor];
-    this.sensorIdsSelected = [sensor.sensor_id];
+  /**
+   * Get the params saved by the sensors unit dialog service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): SensorsUnitDialogServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new SensorsUnitDialogServiceParams();
+    }
+    return this.apps[app ?? 'default'];
   }
 
-  toggleSensor(sensor) {
+  /**
+   * Select sensor from the list
+   * @param sensor - Sensor selected
+   * @param app - App identifier
+   */
+  selectSensor(sensor: any, app: string) {
+    this.get(app).sensorsSelected.forEach((s) => (s.checked = false));
+    this.get(app).sensorsSelected = [sensor];
+    this.get(app).sensorIdsSelected = [sensor.sensor_id];
+  }
+
+  /**
+   * Toggle selected sensor
+   * @param sensor - Sensor selected
+   * @param app - App identifier
+   */
+  toggleSensor(sensor, app: string) {
     if (sensor.checked) {
-      this.sensorsSelected.push(sensor);
-      this.sensorIdsSelected.push(sensor.sensor_id);
+      this.get(app).sensorsSelected.push(sensor);
+      this.get(app).sensorIdsSelected.push(sensor.sensor_id);
     } else {
-      this.sensorsSelected.splice(this.sensorsSelected.indexOf(sensor), 1);
-      this.sensorIdsSelected.splice(
-        this.sensorIdsSelected.indexOf(sensor.sensor_id),
+      this.get(app).sensorsSelected.splice(
+        this.get(app).sensorsSelected.indexOf(sensor),
+        1
+      );
+      this.get(app).sensorIdsSelected.splice(
+        this.get(app).sensorIdsSelected.indexOf(sensor.sensor_id),
         1
       );
     }
   }
 
+  /**
+   * Get human readable time for interval value
+   * @param interval - Interval selected
+   */
   getTimeForInterval(interval): {from_time; to_time} {
     const tmp = {
       from_time: dayjs().subtract(interval.amount, interval.unit),
@@ -81,6 +106,11 @@ export class HsSensorsUnitDialogService {
     return tmp;
   }
 
+  /**
+   * @param part - Part selected
+   * @param interval - Interval selected
+   * @param result - Result value
+   */
   private convertPartToDayjs(
     part: string,
     interval: any,
@@ -104,19 +134,23 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
-   * @param {object} unit Object containing
+   * @param unit - Object containing
    * {description, is_mobile, sensors, unit_id, unit_type}
-   * @param {object} interval Object {amount, unit}. Used to substract time
+   * @param interval - Object {amount, unit}. Used to substract time
    * from current time, like 6 months before now
-   * @description Gets list of observations in a given time frame for all
+   * Gets list of observations in a given time frame for all
    * the sensors on a sensor unit (meteostation).
-   * @returns {Promise} Promise which resolves when observation history data is received
+   * @param app - App identifier
+   * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit, interval) {
+  getObservationHistory(unit, interval, app: string) {
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
-      const url = this.HsUtilsService.proxify(
-        `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`
+      const url = this.hsUtilsService.proxify(
+        `${this.get(app).endpoint.url}/${
+          this.get(app).endpoint.liteApiPath
+        }/rest/observation`,
+        app
       );
       const time = this.getTimeForInterval(interval);
       const from_time = `${time.from_time.format(
@@ -129,7 +163,7 @@ export class HsSensorsUnitDialogService {
       this.http
         .get(
           `${url}?user_id=${encodeURIComponent(
-            this.endpoint.user_id
+            this.get(app).endpoint.user_id
           )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(
             from_time
           )}&to_time=${encodeURIComponent(to_time)}`
@@ -137,7 +171,7 @@ export class HsSensorsUnitDialogService {
         .subscribe(
           (response) => {
             interval.loading = false;
-            this.observations = response;
+            this.get(app).observations = response;
             resolve(null);
           },
           (err) => {
@@ -148,30 +182,33 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
-   * @param {object} unit Unit description
-   * @description Create vega chart definition and use it in vegaEmbed
+   * @param unit - Unit description
+   * @param app - App identifier
+   * Create vega chart definition and use it in vegaEmbed
    * chart library. Observations for a specific unit from Senslog come
    * in a hierarchy, where 1st level contains object with timestamp and
    * for each timestamp there exist multiple sensor observations for
    * varying count of sensors. This nested list is flatened to simple
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
-  createChart(unit) {
+  createChart(unit, app: string) {
     let sensorDesc = unit.sensors.filter(
-      (s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1
+      (s) => this.get(app).sensorIdsSelected.indexOf(s.sensor_id) > -1
     );
     if (sensorDesc.length > 0) {
       sensorDesc = sensorDesc[0];
     }
-    const observations = this.observations.reduce(
+    const observations = this.get(app).observations.reduce(
       (acc, val) =>
         acc.concat(
           val.sensors
-            .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
+            .filter(
+              (s) => this.get(app).sensorIdsSelected.indexOf(s.sensor_id) > -1
+            )
             .map((s) => {
               const time = dayjs(val.time_stamp);
               s.sensor_name = this.translate(
-                this.sensorById[s.sensor_id].sensor_name,
+                this.get(app).sensorById[s.sensor_id].sensor_name,
                 'SENSORNAMES'
               );
               s.time = time.format('DD.MM.YYYY HH:mm');
@@ -181,7 +218,11 @@ export class HsSensorsUnitDialogService {
         ),
       []
     );
-    this.aggregations = this.calculateAggregates(unit, observations);
+    this.get(app).aggregations = this.calculateAggregates(
+      unit,
+      observations,
+      app
+    );
     observations.sort((a, b) => {
       if (a.time_stamp > b.time_stamp) {
         return 1;
@@ -200,8 +241,9 @@ export class HsSensorsUnitDialogService {
         },
       },
       'width':
-        this.dialogElement.nativeElement.querySelector('.hs-chartplace')
-          .parentElement.offsetWidth - 40,
+        this.get(app).dialogElement.nativeElement.querySelector(
+          '.hs-chartplace'
+        ).parentElement.offsetWidth - 40,
       'autosize': {
         'type': 'fit',
         'contains': 'padding',
@@ -216,7 +258,7 @@ export class HsSensorsUnitDialogService {
         'color': {
           'field': 'sensor_name',
           'legend': {
-            'title': this.HsLanguageService.getTranslation('SENSORS.sensors'),
+            'title': this.hsLanguageService.getTranslation('SENSORS.sensors'),
           },
           'type': 'nominal',
           'sort': 'sensor_id',
@@ -252,17 +294,29 @@ export class HsSensorsUnitDialogService {
     };
     try {
       vegaEmbed(
-        this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
+        this.get(app).dialogElement.nativeElement.querySelector(
+          '.hs-chartplace'
+        ),
         chartData
       );
     } catch (ex) {
-      this.HsLogService.warn('Could not create vega chart:', ex);
+      this.hsLogService.warn('Could not create vega chart:', ex);
     }
   }
 
-  private calculateAggregates(unit: any, observations: any): Aggregate[] {
+  /**
+   * @param unit - Unit description
+   * @param observations - Observations selected
+   * @param app - App identifier
+   * Calculate aggregates for selected unit
+   */
+  private calculateAggregates(
+    unit: any,
+    observations: any,
+    app: string
+  ): Aggregate[] {
     const aggregates: Aggregate[] = unit.sensors
-      .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
+      .filter((s) => this.get(app).sensorIdsSelected.indexOf(s.sensor_id) > -1)
       .map((sensor): Aggregate => {
         const tmp: Aggregate = {
           min: 0,
@@ -295,7 +349,7 @@ export class HsSensorsUnitDialogService {
   }
 
   translate(text: string, group?: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
       'SENSORS' + (group != undefined ? '.' + group : ''),
       text
     );

@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
+
 import {HsDialogContainerService} from 'hslayers-ng';
+
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
@@ -7,56 +9,74 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
-  templateUrl: './partials/unit-list-item.html',
+  templateUrl: './partials/unit-list-item.component.html',
 })
 export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;
   @Input() expanded: boolean;
   @Input('view-mode') viewMode: string;
+  @Input() app = 'default';
 
   constructor(
-    public HsSensorsService: HsSensorsService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsSensorsUnitDialogService: HsSensorsUnitDialogService
+    private hsSensorsService: HsSensorsService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {}
 
   /**
-   * @description When unit is clicked, create a dialog window for
+   * When unit is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
    */
   unitClicked(): void {
-    this.HsSensorsService.selectUnit(this.unit);
+    this.hsSensorsService.selectUnit(this.unit, this.app);
   }
 
   /**
-   * @param {object} sensor Clicked sensor
-   * @description When sensor is clicked, create a dialog window for
+   * @param sensor - Clicked sensor
+   * When sensor is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
    */
   sensorClicked(sensor): void {
-    this.HsSensorsUnitDialogService.unit = this.unit;
-    this.HsSensorsService.selectSensor(sensor);
+    this.hsSensorsUnitDialogService.get(this.app).unit = this.unit;
+    this.hsSensorsService.selectSensor(sensor, this.app);
     this.generateDialog();
   }
 
   /**
-   * @param {object} sensor Clicked to be toggled
-   * @description When sensor is toggled, create a dialog window for
+   * Get data translation to local
+   * @param text - Text to translate
+   * @param module - Locales json object where to look for the translation
+   */
+  getTranslation(text: string, module?: string): string {
+    return this.hsSensorsUnitDialogService.translate(text, module);
+  }
+
+  /**
+   * @param sensor - Clicked to be toggled
+   * When sensor is toggled, create a dialog window for
    * displaying charts or reopen already existing one.
    */
   sensorToggleSelected(sensor): void {
-    this.HsSensorsUnitDialogService.unit = this.unit;
+    this.hsSensorsUnitDialogService.get(this.app).unit = this.unit;
     sensor.checked = !sensor.checked;
-    this.HsSensorsUnitDialogService.toggleSensor(sensor);
+    this.hsSensorsUnitDialogService.toggleSensor(sensor, this.app);
     this.generateDialog();
   }
 
+  /**
+   * Display sensors unit dialog
+   */
   generateDialog(): void {
-    if (!this.HsSensorsUnitDialogService.unitDialogVisible) {
-      this.HsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
+    if (!this.hsSensorsUnitDialogService.get(this.app).unitDialogVisible) {
+      this.hsDialogContainerService.create(
+        HsSensorsUnitDialogComponent,
+        {},
+        this.app
+      );
     } else {
-      this.HsSensorsUnitDialogService.createChart(
-        this.HsSensorsUnitDialogService.unit
+      this.hsSensorsUnitDialogService.createChart(
+        this.hsSensorsUnitDialogService.get(this.app).unit,
+        this.app
       );
     }
   }

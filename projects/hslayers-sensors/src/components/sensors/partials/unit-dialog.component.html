@@ -1,0 +1,69 @@
+<div [ngStyle]="dialogStyle()" class="hs-sensor-unit-dialog" tabindex="-1" role="dialog" aria-hidden="true" style="position: fixed;
+    bottom: 5px;
+    ">
+    <div class="modal-dialog modal-lg" style="margin-right: 15px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.2rem 0.3rem;">
+                <h4 class="modal-title">
+                    {{'SENSORS.sensorUnit' | translate}} {{getUnitDescription()}}
+                </h4>
+                <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
+                    attr.aria-label="{{'COMMON.close' | translate}}"></button>
+            </div>
+            <div class="modal-body" style="max-height: 260px; overflow-y: auto">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hs-chartplace" style="min-width: 400px; min-height: 50px"></div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-sm table-striped table-hover">
+                    <tr>
+                        <th>{{'SENSORS.sensors' | translate}}</th>
+                        <th>{{'SENSORS.min' | translate}}</th>
+                        <th>{{'SENSORS.max' | translate}}</th>
+                        <th>{{'SENSORS.avg' | translate}}</th>
+                    </tr>
+                    <tr *ngFor="let aggr of getAggregations()">
+                        <td>{{getTranslation(aggr.sensor_name)}}</td>
+                        <td>{{aggr.min}}</td>
+                        <td>{{aggr.max}}</td>
+                        <td>{{aggr.avg}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer" style="padding: 0.2rem 0.3rem;">
+                <div class="d-flex w-100">
+                    <div class="m-1">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-"
+                                [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
+                                (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"
+                                [attr.aria-label]="'SENSORS.oneHour' | translate">{{getTranslation(interval.name)}}<img
+                                    [src]="getAjaxLoader()" [hidden]="!interval.loading"></button>
+                        </div>
+                    </div>
+                    <div class="m-1">
+                        <div class="input-group">
+                            <input type="text" style="width: 6em;" ngbDatepicker
+                                [placeholder]="'COMMON.from' | translate" #d="ngbDatepicker"
+                                [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
+                                    class="icon-calendarthree"></i></button>
+                        </div>
+                    </div>
+                    <div class="m-1">
+                        <div class="input-group">
+                            <input type="text" style="width: 6em;" ngbDatepicker
+                                [placeholder]="'COMMON.until' | translate" #d2="ngbDatepicker"
+                                [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
+                            <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
+                                    class="icon-calendarthree"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

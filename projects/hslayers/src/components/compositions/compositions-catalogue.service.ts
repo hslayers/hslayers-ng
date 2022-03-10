@@ -144,6 +144,10 @@ export class HsCompositionsCatalogueService {
     });
   }
 
+  /**
+   * Initialize compositions catalogue service data and subscribers
+   * @param app - App identifier
+   */
   init(app: string): void {
     this.get(app).filteredEndpoints =
       this.getFilteredEndpointsForCompositions();
