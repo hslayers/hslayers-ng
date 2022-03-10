@@ -40,7 +40,8 @@ export class HsLayerEditorVectorLayerService {
         layer.setSource(this.createClusteredSource(layer, distance));
         if (generateStyle) {
           await this.HsStylerService.styleClusteredLayer(
-            layer as VectorLayer<Cluster>
+            layer as VectorLayer<Cluster>,
+            app
           );
         }
         this.updateFeatureTableLayers(

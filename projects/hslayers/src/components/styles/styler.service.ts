@@ -39,10 +39,7 @@ import {
 import {getHighlighted} from '../../common/feature-extensions';
 import {parseStyle} from './backwards-compatibility';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsStylerService {
+class HsStylerParams {
   layer: VectorLayer<VectorSource<Geometry>> = null;
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
@@ -58,6 +55,15 @@ export class HsStylerService {
 
   pin_white_blue;
   pin_white_blue_highlight;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HsStylerService {
+  apps: {
+    [id: string]: HsStylerParams;
+  } = {default: new HsStylerParams()};
 
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
@@ -70,9 +76,16 @@ export class HsStylerService {
     private hsSaveMapService: HsSaveMapService
   ) {}
 
+  get(app: string): HsStylerParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsStylerParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   async init(app: string): Promise<void> {
     await this.hsMapService.loaded(app);
-    this.pin_white_blue = new Style({
+    this.get(app).pin_white_blue = new Style({
       image: new Icon({
         src:
           this.hsUtilsService.getAssetsPath(app) + 'img/pin_white_blue32.png',
@@ -80,7 +93,7 @@ export class HsStylerService {
         anchor: [0.5, 1],
       }),
     });
-    this.pin_white_blue_highlight = (
+    this.get(app).pin_white_blue_highlight = (
       feature: Feature<Geometry>,
       resolution
     ): Array<Style> => {
@@ -151,12 +164,13 @@ export class HsStylerService {
    * @param layer - Any vector layer
    */
   async styleClusteredLayer(
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
+    app: string
   ): Promise<void> {
-    await this.fill(layer);
+    await this.fill(layer, app);
     //Check if layer already has SLD style for clusters
     if (
-      !this.styleObject.rules.find((r) => {
+      !this.get(app).styleObject.rules.find((r) => {
         try {
           /* 
           For clusters SLD styles created by Hslayers have 'AND' rule where the 
@@ -176,18 +190,18 @@ export class HsStylerService {
         ['==', 'features', 'undefined'],
         ['==', 'features', '[object Object]'],
       ];
-      for (const rule of this.styleObject.rules) {
+      for (const rule of this.get(app).styleObject.rules) {
         // Set filter so the original style is applied to features which are not clusters
         rule.filter =
           rule.filter?.length > 0
             ? ['&&', [...singleFeatureFilter], rule.filter]
             : [...singleFeatureFilter];
       }
-      await this.addRule('Cluster');
+      await this.addRule('Cluster', app);
     }
     let style = layer.getStyle();
     if (
-      this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
+      this.hsUtilsService.instOf(this.get(app).layer.getSource(), Cluster) &&
       this.hsUtilsService.isFunction(style)
     ) {
       style = this.wrapStyleForClusters(style as StyleFunction);
@@ -217,12 +231,12 @@ export class HsStylerService {
       setSld(layer, defaultStyle);
     }
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
-      style = (await this.parseStyle(sld ?? qml)).style;
+      style = (await this.parseStyle(sld ?? qml, app)).style;
       if (style) {
         layer.setStyle(style);
       }
       if (getCluster(layer)) {
-        await this.styleClusteredLayer(layer);
+        await this.styleClusteredLayer(layer, app);
       }
     } else if (
       style &&
@@ -235,12 +249,12 @@ export class HsStylerService {
         style as Style,
         app
       );
-      const sld = (await this.parseStyle(customJson)).sld;
+      const sld = (await this.parseStyle(customJson, app)).sld;
       if (sld) {
         setSld(layer, sld);
       }
     }
-    this.sld = sld;
+    this.get(app).sld = sld;
   }
 
   /**
@@ -250,19 +264,20 @@ export class HsStylerService {
    * @returns OL style object
    */
   async parseStyle(
-    style: any
+    style: any,
+    app: string
   ): Promise<{sld?: string; qml?: string; style: StyleLike}> {
     if (!style) {
-      return {style: await this.sldToOlStyle(defaultStyle)};
+      return {style: await this.sldToOlStyle(defaultStyle, app)};
     }
     if (
       typeof style == 'string' &&
       (style as string).includes('StyledLayerDescriptor')
     ) {
-      return {sld: style, style: await this.sldToOlStyle(style)};
+      return {sld: style, style: await this.sldToOlStyle(style, app)};
     }
     if (typeof style == 'string' && (style as string).includes('<qgis')) {
-      return {qml: style, style: await this.qmlToOlStyle(style)};
+      return {qml: style, style: await this.qmlToOlStyle(style, app)};
     } else if (
       typeof style == 'object' &&
       !this.hsUtilsService.instOf(style, Style)
@@ -280,23 +295,27 @@ export class HsStylerService {
    *
    * @param layer - OL layer
    */
-  async fill(layer: VectorLayer<VectorSource<Geometry>>): Promise<void> {
+  async fill(
+    layer: VectorLayer<VectorSource<Geometry>>,
+    app: string
+  ): Promise<void> {
     try {
+      const appRef = this.get(app);
       if (!layer) {
         return;
       }
-      this.layer = layer;
-      this.layerTitle = getTitle(layer);
+      appRef.layer = layer;
+      appRef.layerTitle = getTitle(layer);
       const sld = getSld(layer);
       const qml = getQml(layer);
       if (sld != undefined) {
-        this.styleObject = await this.sldToJson(sld);
+        appRef.styleObject = await this.sldToJson(sld, app);
       } else if (qml != undefined) {
-        this.styleObject = await this.qmlToJson(qml);
+        appRef.styleObject = await this.qmlToJson(qml, app);
       } else {
-        this.styleObject = {name: 'untitled style', rules: []};
+        appRef.styleObject = {name: 'untitled style', rules: []};
       }
-      this.geostylerWorkaround();
+      this.geostylerWorkaround(app);
     } catch (ex) {
       this.hsLogService.error(ex.message);
     }
@@ -306,9 +325,10 @@ export class HsStylerService {
    * Tweak geostyler object attributes to mitigate
    * some discrepancies between opacity and fillOpacity usage
    */
-  geostylerWorkaround(): void {
-    if (this.styleObject.rules) {
-      for (const rule of this.styleObject.rules) {
+  geostylerWorkaround(app: string): void {
+    const appRef = this.get(app);
+    if (appRef.styleObject.rules) {
+      for (const rule of appRef.styleObject.rules) {
         if (rule.symbolizers) {
           for (const symbol of rule.symbolizers.filter(
             (symb) => symb.kind == 'Fill'
@@ -323,9 +343,9 @@ export class HsStylerService {
   /**
    * Convert SLD to OL style object
    */
-  async sldToOlStyle(sld: string): Promise<StyleLike> {
+  async sldToOlStyle(sld: string, app: string): Promise<StyleLike> {
     try {
-      const sldObject = await this.sldToJson(sld);
+      const sldObject = await this.sldToJson(sld, app);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
       this.hsLogService.error(ex);
@@ -335,9 +355,9 @@ export class HsStylerService {
   /**
    * Convert QML to OL style object
    */
-  async qmlToOlStyle(qml: string): Promise<StyleLike> {
+  async qmlToOlStyle(qml: string, app: string): Promise<StyleLike> {
     try {
-      const styleObject = await this.qmlToJson(qml);
+      const styleObject = await this.qmlToJson(qml, app);
       return await this.geoStylerStyleToOlStyle(styleObject);
     } catch (ex) {
       this.hsLogService.error(ex);
@@ -359,8 +379,8 @@ export class HsStylerService {
    * @param sld -
    * @returns
    */
-  private async sldToJson(sld: string): Promise<GeoStylerStyle> {
-    const {output: sldObject} = await this.sldParser.readStyle(sld);
+  private async sldToJson(sld: string, app: string): Promise<GeoStylerStyle> {
+    const {output: sldObject} = await this.get(app).sldParser.readStyle(sld);
     return sldObject;
   }
 
@@ -369,8 +389,8 @@ export class HsStylerService {
    * @param qml -
    * @returns
    */
-  private async qmlToJson(qml: string): Promise<GeoStylerStyle> {
-    const result = await this.qmlParser.readStyle(qml);
+  private async qmlToJson(qml: string, app: string): Promise<GeoStylerStyle> {
+    const result = await this.get(app).qmlParser.readStyle(qml);
     if (result.output) {
       return result.output;
     } else {
@@ -378,17 +398,21 @@ export class HsStylerService {
     }
   }
 
-  private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
-    const {output: sld} = await this.sldParser.writeStyle(styleObject);
+  private async jsonToSld(
+    styleObject: GeoStylerStyle,
+    app: string
+  ): Promise<string> {
+    const {output: sld} = await this.get(app).sldParser.writeStyle(styleObject);
     return sld;
   }
 
   async addRule(
-    kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale' | 'Cluster'
+    kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale' | 'Cluster',
+    app: string
   ): Promise<void> {
     switch (kind) {
       case 'Cluster':
-        this.styleObject.rules.push({
+        this.get(app).styleObject.rules.push({
           name: 'Cluster rule',
           filter: [
             '&&',
@@ -418,17 +442,20 @@ export class HsStylerService {
         break;
       case 'Simple':
       default:
-        this.styleObject.rules.push({
+        this.get(app).styleObject.rules.push({
           name: 'Untitled rule',
           symbolizers: [],
         });
     }
-    await this.save();
+    await this.save(app);
   }
 
-  async removeRule(rule: Rule): Promise<void> {
-    this.styleObject.rules.splice(this.styleObject.rules.indexOf(rule), 1);
-    await this.save();
+  async removeRule(rule: Rule, app: string): Promise<void> {
+    this.get(app).styleObject.rules.splice(
+      this.get(app).styleObject.rules.indexOf(rule),
+      1
+    );
+    await this.save(app);
   }
 
   encodeTob64(str: string): string {
@@ -449,28 +476,29 @@ export class HsStylerService {
     );
   }
 
-  async save(): Promise<void> {
+  async save(app: string): Promise<void> {
     try {
+      const appRef = this.get(app);
       let style: Style | Style[] | StyleFunction =
-        await this.geoStylerStyleToOlStyle(this.styleObject);
-      if (this.styleObject.rules.length == 0) {
-        this.hsLogService.warn('Missing style rules for layer', this.layer);
+        await this.geoStylerStyleToOlStyle(appRef.styleObject);
+      if (appRef.styleObject.rules.length == 0) {
+        this.hsLogService.warn('Missing style rules for layer', appRef.layer);
         style = createDefaultStyle;
       }
       /* style is a function when text symbolizer is used. We need some hacking 
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
       if (
-        this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
+        this.hsUtilsService.instOf(appRef.layer.getSource(), Cluster) &&
         this.hsUtilsService.isFunction(style)
       ) {
         style = this.wrapStyleForClusters(style as StyleFunction);
       }
-      this.layer.setStyle(style);
-      const sld = await this.jsonToSld(this.styleObject);
-      setSld(this.layer, sld);
-      this.sld = sld;
-      this.onSet.next(this.layer);
+      appRef.layer.setStyle(style);
+      const sld = await this.jsonToSld(appRef.styleObject, app);
+      setSld(appRef.layer, sld);
+      appRef.sld = sld;
+      appRef.onSet.next(appRef.layer);
     } catch (ex) {
       this.hsLogService.error(ex);
     }
@@ -510,19 +538,21 @@ export class HsStylerService {
   }
 
   async reset(app: string): Promise<void> {
-    setSld(this.layer, undefined);
-    this.layer.setStyle(createDefaultStyle);
-    await this.initLayerStyle(this.layer, app);
-    await this.fill(this.layer);
-    await this.save();
+    const appRef = this.get(app);
+    setSld(appRef.layer, undefined);
+    appRef.layer.setStyle(createDefaultStyle);
+    await this.initLayerStyle(appRef.layer, app);
+    await this.fill(appRef.layer, app);
+    await this.save(app);
   }
 
-  async loadSld(sld: string): Promise<void> {
+  async loadSld(sld: string, app: string): Promise<void> {
     try {
-      await this.sldParser.readStyle(sld);
-      setSld(this.layer, sld);
-      await this.fill(this.layer);
-      await this.save();
+      const appRef = this.get(app);
+      await appRef.sldParser.readStyle(sld);
+      setSld(appRef.layer, sld);
+      await this.fill(appRef.layer, app);
+      await this.save(app);
     } catch (err) {
       console.warn('SLD could not be parsed');
     }

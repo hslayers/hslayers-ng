@@ -1,5 +1,6 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="legend" [title]="'PANEL_HEADER.LEGEND' | translateHs : data" [app]="data.app"></hs-panel-header>
+    <hs-panel-header name="legend" [title]="'PANEL_HEADER.LEGEND' | translateHs : data" [app]="data.app">
+    </hs-panel-header>
     <div class="card-body">
         <p><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs : data"
                 [(ngModel)]="titleSearch" (input)="refreshList()"></p>
@@ -11,15 +12,15 @@
                 [hidden]="!hsLegendService.legendValid(layer)">
                 <div>
                     {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
-                    <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
+                    <hs-legend-layer-directive [app]="data.app" [layer]="layer"></hs-legend-layer-directive>
                 </div>
 
             </li>
         </ul>
         <div class="row justify-content-center">
             <div class="col col-md-2 d-flex justify-content-center">
-                <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translateHs : data"
-                    (click)="rebuildLegends(data.app)">
+                <button type="button" class="btn btn-light btn-outline ng-scope"
+                    [title]="'COMMON.reload' | translateHs : data" (click)="rebuildLegends(data.app)">
                     <i class="icon-refresh"></i>
                 </button>
             </div>

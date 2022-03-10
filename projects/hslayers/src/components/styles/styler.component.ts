@@ -33,6 +33,7 @@ export class HsStylerComponent
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';
+  appRef;
   constructor(
     public hsStylerService: HsStylerService,
     public hsLayoutService: HsLayoutService,
@@ -48,7 +49,8 @@ export class HsStylerComponent
       .subscribe((layer: Layer<Source>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
           this.hsStylerService.fill(
-            layer as VectorLayer<VectorSource<Geometry>>
+            layer as VectorLayer<VectorSource<Geometry>>,
+            this.data.app
           );
         }
       });
@@ -56,11 +58,12 @@ export class HsStylerComponent
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({which, app}) => {
         if (which == 'styler' && app == this.data.app) {
-          this.hsStylerService.fill(this.hsStylerService.layer);
+          this.hsStylerService.fill(this.appRef.layer, this.data.app);
         }
       });
   }
   ngOnInit(): void {
+    this.appRef = this.hsStylerService.get(this.data.app);
     this.hsStylerService.init(this.data.app);
   }
 
@@ -83,7 +86,7 @@ export class HsStylerComponent
 
   drop(event: CdkDragDrop<any[]>): void {
     moveItemInArray(
-      this.hsStylerService.styleObject.rules,
+      this.appRef.styleObject.rules,
       event.previousIndex,
       event.currentIndex
     );
@@ -100,7 +103,7 @@ export class HsStylerComponent
     });
     Promise.all(promises).then(async (fileContents) => {
       const sld = fileContents[0] as string;
-      await this.hsStylerService.loadSld(sld);
+      await this.appRef.loadSld(sld);
     });
   }
 }

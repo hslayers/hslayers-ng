@@ -404,6 +404,7 @@ export class HsDrawService {
   }
 
   onDrawEnd(e, app: string): void {
+    console.log(this.get(app));
     if (!getEditor(this.get(app).selectedLayer)) {
       return;
     }
@@ -435,7 +436,7 @@ export class HsDrawService {
     //Zone is used to ensure change detection updates the view
     this.zone.run(() => {
       this.hsQueryBaseService.get(app).clear('features');
-      this.hsQueryVectorService.apps[app].selector.getFeatures().push(feature);
+      this.hsQueryVectorService.get(app).selector.getFeatures().push(feature);
       this.hsQueryVectorService.createFeatureAttributeList(app);
     });
   }
@@ -480,7 +481,6 @@ export class HsDrawService {
       this.activateDrawing(
         {
           drawState: true,
-          onDrawEnd: (e) => this.onDrawEnd(e, app),
         },
         app
       );
@@ -872,7 +872,7 @@ export class HsDrawService {
           e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
         }
         if (onDrawEnd) {
-          onDrawEnd(e);
+          onDrawEnd(e, app);
         }
         if (this.hsUtilsService.runningInBrowser()) {
           document.removeEventListener('keyup', this.keyUp.bind(this, e, app));

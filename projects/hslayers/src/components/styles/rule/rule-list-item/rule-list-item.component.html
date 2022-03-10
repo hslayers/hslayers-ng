@@ -9,7 +9,7 @@
   </div>
   <div>
     <span class="glyphicon me-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
-    <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
+    <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule,app)" data-toggle="tooltip"
       [title]="'STYLER.removeRule' | translateHs : {app} ">
       <i class="icon-trash"></i>
     </button>
@@ -17,5 +17,6 @@
 </li>
 
 <ng-container *ngIf="ruleVisible">
-  <hs-rule [rule]="rule" (changes)="hsStylerService.save()" [app]="app" (mousedown)="$event.stopPropagation()"></hs-rule>
+  <hs-rule [rule]="rule" (changes)="hsStylerService.save(app)" [app]="app" (mousedown)="$event.stopPropagation()">
+  </hs-rule>
 </ng-container>
