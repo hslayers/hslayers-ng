@@ -199,6 +199,7 @@ export class HsLayerManagerComponent
       this.data.app
     );
     this.layerlistVisible = true;
+    this.init();
     this.hsLayerManagerService.init(this.data.app);
   }
 

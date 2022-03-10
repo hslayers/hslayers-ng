@@ -88,6 +88,7 @@ export class HsEventBusService {
   vectorQueryFeatureSelection: Subject<{
     feature: Feature<Geometry>;
     selector: Select;
+    app: string;
   }> = new Subject();
   vectorQueryFeatureDeselection: Subject<{
     feature: Feature<Geometry>;

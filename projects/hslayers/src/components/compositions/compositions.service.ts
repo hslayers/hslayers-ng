@@ -96,16 +96,18 @@ export class HsCompositionsService {
       }
     });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-        const record =
-          this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
-            e.feature,
-            e.selector,
-            endpoint.compositions,
-            _app
-          );
-        if (record) {
-          this.loadComposition(this.getRecordLink(record), _app);
+      if (e.app == _app) {
+        for (const endpoint of this.hsCommonEndpointsService.endpoints) {
+          const record =
+            this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
+              e.feature,
+              e.selector,
+              endpoint.compositions,
+              _app
+            );
+          if (record) {
+            this.loadComposition(this.getRecordLink(record), _app);
+          }
         }
       }
     });
