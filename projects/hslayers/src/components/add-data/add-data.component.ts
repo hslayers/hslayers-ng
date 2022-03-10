@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AddDataUrlType, servicesSupportedByUrl} from './url/types/url.type';
+import {AddDataUrlType} from './url/types/url.type';
 import {DatasetType, HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
@@ -10,6 +10,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
+import {servicesSupportedByUrl} from './url/services-supported.const';
 
 @Component({
   selector: 'hs-add-data',

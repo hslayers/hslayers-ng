@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import {AddDataUrlType, servicesSupportedByUrl} from './types/url.type';
+import {AddDataUrlType} from './types/url.type';
 import {AddDataUrlValues} from './add-data-url-values';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataOwsService} from './add-data-ows.service';
@@ -12,6 +12,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsShareUrlService} from '../../permalink/share-url.service';
 import {Subject, takeUntil} from 'rxjs';
+import {servicesSupportedByUrl} from './services-supported.const';
 
 @Component({
   selector: 'hs-add-data-url',

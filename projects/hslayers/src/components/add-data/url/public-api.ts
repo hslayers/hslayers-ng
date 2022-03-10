@@ -21,3 +21,4 @@ export * from './types/recursive-options.type';
 export * from './types/url.type';
 export * from './add-data-url-values';
 export * from './add-data-ows.service';
+export * from './services-supported.const';
