@@ -1,5 +1,5 @@
 import {BehaviorSubject} from 'rxjs';
-import {Component, Injectable} from '@angular/core';
+import {Component, Injectable, Input} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -18,8 +18,8 @@ import {
   HsLayerUtilsService,
   HsLayoutService,
   HsMapService,
+  HsSidebarService,
   HsUtilsService,
-  HsSidebarService
 } from 'hslayers-ng';
 
 class HsLayerNode {
@@ -38,7 +38,7 @@ class HsLayerFlatNode {
 @Injectable()
 export class HsLayerDatabase {
   dataChange = new BehaviorSubject<HsLayerNode[]>([]);
-
+  @Input() app = 'default';
   get data(): HsLayerNode[] {
     return this.dataChange.value;
   }
@@ -47,11 +47,15 @@ export class HsLayerDatabase {
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService
   ) {
-    const data = this.buildLayerTree(this.HsLayerManagerService.data);
+    const data = this.buildLayerTree(
+      this.HsLayerManagerService.get(this.app).data
+    );
     this.dataChange.next(data);
 
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      const data = this.buildLayerTree(this.HsLayerManagerService.data);
+      const data = this.buildLayerTree(
+        this.HsLayerManagerService.get(this.app).data
+      );
       this.dataChange.next(data);
     });
   }
@@ -106,6 +110,7 @@ export class HsLayerDatabase {
   providers: [HsLayerDatabase],
 })
 export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
+  app = 'default';
   flatNodeMap = new Map<HsLayerFlatNode, HsLayerNode>();
   nestedNodeMap = new Map<HsLayerNode, HsLayerFlatNode>();
   selectedParent: HsLayerFlatNode | null = null;
@@ -176,14 +181,22 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
         .filter((node) => node.layer)
         .filter((node) => !node.layer.visible)
         .forEach((node) =>
-          this.HsLayerManagerService.changeLayerVisibility(true, node.layer)
+          this.HsLayerManagerService.changeLayerVisibility(
+            true,
+            node.layer,
+            this.app
+          )
         );
 
       changes.removed
         .filter((node) => node.layer)
         .filter((node) => node.layer.visible)
         .forEach((node) =>
-          this.HsLayerManagerService.changeLayerVisibility(false, node.layer)
+          this.HsLayerManagerService.changeLayerVisibility(
+            false,
+            node.layer,
+            this.app
+          )
         );
     });
 

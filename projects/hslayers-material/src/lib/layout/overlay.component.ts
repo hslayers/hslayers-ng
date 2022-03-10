@@ -1,5 +1,5 @@
 import * as olExtent from 'ol/extent';
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {HsAttributionDialogComponent} from './attribution-dialog.component';
 import {
   HsConfig,
@@ -18,6 +18,7 @@ import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/ev
   styleUrls: ['./overlay.component.scss'],
 })
 export class HsMatOverlayComponent implements OnInit {
+  @Input() app = 'default';
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
@@ -27,7 +28,8 @@ export class HsMatOverlayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const mapControls = this.HsConfig.get(this.app).componentsEnabled.mapControls;
+    const mapControls = this.HsConfig.get(this.app).componentsEnabled
+      .mapControls;
     this.HsEventBusService.olMapLoads.subscribe(({map, app}) => {
       map.addInteraction(
         new MouseWheelZoom({
@@ -43,13 +45,13 @@ export class HsMatOverlayComponent implements OnInit {
       );
     });
 
-    this.HsConfig.get(app).componentsEnabled.mapControls = false;
-    this.HsConfig.get(app).componentsEnabled.defaultViewButton = false;
+    this.HsConfig.get(this.app).componentsEnabled.mapControls = false;
+    this.HsConfig.get(this.app).componentsEnabled.defaultViewButton = false;
   }
 
   openAttributionDialog(event): void {
     this.dialog.open(HsAttributionDialogComponent, {
-      data: this.HsMapService.getLayersArray()
+      data: this.HsMapService.getLayersArray(this.app)
         .filter((layer) => layer.getVisible())
         .map((layer) => layer.getSource().getAttributions())
         .filter((f) => f)
@@ -84,8 +86,8 @@ export class HsMatOverlayComponent implements OnInit {
     this.HsMapService.getMap(this.app)
       ?.getView()
       .animate({
-        center: this.HsConfig.get(app).default_view.getCenter(),
-        zoom: this.HsConfig.get(app).default_view.getZoom(),
+        center: this.HsConfig.get(this.app).default_view.getCenter(),
+        zoom: this.HsConfig.get(this.app).default_view.getZoom(),
         duration: 300,
       });
   }
@@ -93,11 +95,11 @@ export class HsMatOverlayComponent implements OnInit {
   maxView(): void {
     const extent = olExtent.createEmpty();
 
-    if (this.HsLayerManagerService.data.layers.length == 0) {
+    if (this.HsLayerManagerService.get(this.app).data.layers.length == 0) {
       return;
     }
 
-    this.HsLayerManagerService.data.layers.forEach((layer) => {
+    this.HsLayerManagerService.get(this.app).data.layers.forEach((layer) => {
       if (layer.visible && layer.layer instanceof VectorLayer) {
         olExtent.extend(extent, layer.layer.getSource().getExtent());
       }
