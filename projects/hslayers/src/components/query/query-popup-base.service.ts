@@ -27,6 +27,12 @@ export class HsQueryPopupBaseService {
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {}
 
+  public setAppIfNeeded(app: string) {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new HsQueryPopupData();
+    }
+  }
+
   fillFeatures(features: Feature<Geometry>[], app: string) {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
     this.zone.run(() => {

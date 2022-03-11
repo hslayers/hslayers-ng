@@ -119,7 +119,7 @@ export class HsLayoutService {
   mapSpaceRef: BehaviorSubject<{
     viewContainerRef: ViewContainerRef;
     app: string;
-  }> = new BehaviorSubject(null);
+  }> = new BehaviorSubject(undefined);
 
   constructor(
     public HsConfig: HsConfig,
@@ -462,9 +462,11 @@ export class HsLayoutService {
         visualizerComponent
       );
 
-    this.mapSpaceRef.subscribe(({viewContainerRef, app}) => {
-      if (viewContainerRef && app == _app) {
-        viewContainerRef.createComponent(componentFactory);
+    this.mapSpaceRef.subscribe((params) => {
+      if (params?.viewContainerRef && params?.app == _app) {
+        const componentRef: any =
+          params.viewContainerRef.createComponent(componentFactory);
+        componentRef.instance.app = params?.app;
       }
     });
   }

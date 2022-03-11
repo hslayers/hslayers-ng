@@ -75,7 +75,7 @@ export class HsCesiumPickerService {
           200,
           false,
           this
-        )({position: movement.endPosition}, 'none');
+        )({position: movement.endPosition}, 'none', app);
       }
     }, ScreenSpaceEventType.MOUSE_MOVE);
   }

@@ -196,6 +196,7 @@ export class HsCesiumService {
           this.HsEventBusService.mapCenterSynchronizations.next({
             center,
             viewport,
+            app,
           });
         }
       });
@@ -226,6 +227,7 @@ export class HsCesiumService {
       });
 
       this.HsCesiumPicker.init(this.get(app).viewer, app);
+      this.hsCesiumQueryPopupService.init(app);
       this.HsCesiumPicker.get(app).cesiumPositionClicked.subscribe(
         (position) => {
           this.get(app).cesiumPositionClicked.next(position);
@@ -234,6 +236,7 @@ export class HsCesiumService {
 
       this.HsLayoutService.createOverlay(HsQueryPopupComponent, app, {
         service: this.hsCesiumQueryPopupService,
+        app,
       });
 
       this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});

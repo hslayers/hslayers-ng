@@ -73,10 +73,9 @@ export class HslayersAppComponent {
     }
 
     if (w['hslayersNgConfig' + this.id]) {
-      let cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol, this.id)');
+      const cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol, this.id)');
       this.HsConfig.update(cfg, this.id);
-    }
-    else if (w.hslayersNgConfig) {
+    } else if (w.hslayersNgConfig) {
       this.HsConfig.update(w.hslayersNgConfig(w.ol, this.id), this.id);
     }
   }

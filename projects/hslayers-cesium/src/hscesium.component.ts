@@ -18,7 +18,7 @@ import {HsCesiumService} from './hscesium.service';
 })
 export class HslayersCesiumComponent implements AfterViewInit {
   visible = true;
-  app = 'cesium';
+  app = 'default';
   constructor(
     public HsCesiumService: HsCesiumService,
     public HsPermalinkUrlService: HsShareUrlService,

@@ -4,14 +4,12 @@ import {Feature, Map, Overlay} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfig} from '../../config.service';
-import {HsFeatureLayer} from './query-popup.service.model';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from '../utils/utils.service';
-import { HsQueryPopupData } from './popup-data';
 
 @Injectable({
   providedIn: 'root',
@@ -75,12 +73,6 @@ export class HsQueryPopupService
         )
       );
     } /* else none */
-  }
-
-  private setAppIfNeeded(app: string) {
-    if (this.apps[app] == undefined) {
-      this.apps[app] = new HsQueryPopupData();
-    }
   }
 
   /**

@@ -32,6 +32,10 @@ export class HsCesiumQueryPopupService
     );
   }
 
+  async init(app: string) {
+    this.setAppIfNeeded(app);
+  }
+
   /**
    * Get the params saved by the cesium query popup service for the current app
    * @param app - App identifier

@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentFactoryResolver,
+  ElementRef,
   Input,
   OnInit,
 } from '@angular/core';
@@ -24,12 +25,13 @@ import {Vector} from 'ol/source';
   styleUrls: [],
 })
 export class AppComponent implements OnInit {
-  @Input() app = 'cesium';
+  id;
   constructor(
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
     private HsLayoutService: HsLayoutService,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver, 
+    private elementRef: ElementRef
   ) {
     const w: any = window;
     w.ol = {
@@ -64,16 +66,37 @@ export class AppComponent implements OnInit {
       proj,
     };
 
-    if (w.hslayersNgConfig) {
-      this.HsConfig.update(w.hslayersNgConfig(w.ol), this.app);
+    if (this.elementRef.nativeElement.id) {
+      this.id = this.elementRef.nativeElement.id;
+    } else {
+      this.id = 'default';
+    }
+    let globFunctions = 'hslayersCesiumConfig' + this.id;
+    if (w['hslayersNgConfig' + this.id]) {
+      const cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol, this.id)');
+      this.HsConfig.update(cfg, this.id);
+    } else if (this.id == 'default'){
+      globFunctions = 'hslayersNgConfig' + this.id;
+      if (w[globFunctions]) {
+        const cfg = eval(globFunctions + '(w.ol, this.id)');
+        this.HsCesiumConfig.update(cfg, this.id);
+      }
     }
 
-    if (w.hslayersCesiumConfig) {
-      this.HsCesiumConfig.update(w.hslayersCesiumConfig(), this.app);
+    globFunctions = 'hslayersCesiumConfig' + this.id;
+    if (w[globFunctions]) {
+      const cfg = eval(globFunctions + '(w.ol, this.id)');
+      this.HsCesiumConfig.update(cfg, this.id);
+    } else if (this.id == 'default') {
+      globFunctions = 'hslayersCesiumConfig' + this.id;
+      if (w[globFunctions]) {
+        const cfg = eval(globFunctions + '(w.ol, this.id)');
+        this.HsCesiumConfig.update(cfg, this.id);
+      }
     }
 
-    if (!this.HsCesiumConfig.get(this.app).cesiumBase) {
-      this.HsCesiumConfig.get(this.app).cesiumBase =
+    if (!this.HsCesiumConfig.get(this.id).cesiumBase) {
+      this.HsCesiumConfig.get(this.id).cesiumBase =
         'node_modules/hslayers-cesium-app/assets/cesium/';
     }
   }

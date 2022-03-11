@@ -79,19 +79,25 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
    * This gets called from Cesium map, to
    * synchronize center and resolution between Ol and Cesium maps
    */
-  onCenterSync(app: string, data?) {
-    const center = data.center;
-    if (!center) {
-      return;
+  onCenterSync(data?) {
+    if (this.app == data.app) {
+      const center = data.center;
+      if (!center) {
+        return;
+      }
+      const toProj = this.HsMapService.getCurrentProj(data.app);
+      const transformed = transform(
+        [center[0], center[1]],
+        'EPSG:4326',
+        toProj
+      );
+      this.HsMapService.moveToAndZoom(
+        transformed[0],
+        transformed[1],
+        this.zoomForResolution(center[2]),
+        this.app
+      );
     }
-    const toProj = this.HsMapService.getCurrentProj(app);
-    const transformed = transform([center[0], center[1]], 'EPSG:4326', toProj);
-    this.HsMapService.moveToAndZoom(
-      transformed[0],
-      transformed[1],
-      this.zoomForResolution(center[2]),
-      this.app
-    );
   }
 
   /**

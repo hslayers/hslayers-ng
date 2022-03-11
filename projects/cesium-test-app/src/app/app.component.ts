@@ -23,7 +23,7 @@ import {transform} from 'ol/proj';
   styleUrls: [],
 })
 export class AppComponent implements OnInit {
-  @Input() app = 'cesium';
+  app = 'default';
   constructor(
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
@@ -263,15 +263,6 @@ export class AppComponent implements OnInit {
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
-    const componentFactory =
-      this.componentFactoryResolver.resolveComponentFactory(
-        HslayersCesiumComponent
-      );
-
-    this.HsLayoutService.mapSpaceRef.subscribe(({viewContainerRef, app}) => {
-      if (viewContainerRef) {
-        viewContainerRef.createComponent(componentFactory);
-      }
-    });
+    this.HsLayoutService.addMapVisualizer(HslayersCesiumComponent, 'default');
   }
 }
