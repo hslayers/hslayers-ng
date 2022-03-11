@@ -43,7 +43,7 @@ export class HsSaveMapComponent
     this.HsCommonEndpointsService.endpointsFilled
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((filled) => {
-        if (!filled) {
+        if (!filled || !this.data?.app) {
           return;
         }
         if (filled.endpoints?.length > 0 && !this.endpoint) {
