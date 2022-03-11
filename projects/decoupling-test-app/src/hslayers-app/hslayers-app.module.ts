@@ -10,8 +10,9 @@ import {HsCoreModule} from '../../../hslayers/src/components/core/core.module';
 import {HsLayoutModule} from '../../../hslayers/src/components/layout/layout.module';
 //import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
 //import {HsDrawModule} from 'hslayers-ng/src/components/draw/public-api';
-import {HsLanguageModule} from 'hslayers-ng';
-import {HsQueryModule} from 'hslayers-ng/src/components/query/query.module';
+import {HsDrawModule} from '../../../hslayers/src/components/draw/draw.module';
+import {HsLanguageModule} from '../../../hslayers/src/components/language/language.module';
+import {HsQueryModule} from '../../../hslayers/src/components/query/query.module';
 import {HslayersAppComponent} from './hslayers-app.component';
 
 @NgModule({
@@ -21,7 +22,7 @@ import {HslayersAppComponent} from './hslayers-app.component';
     HsCoreModule,
     HsLanguageModule,
     HsLayoutModule,
-    //HsDrawModule,
+    HsDrawModule,
     //HsMeasureModule,
     //HsSearchModule,
     //HsInfoModule,
