@@ -18,6 +18,7 @@ import {HsCesiumService} from './hscesium.service';
 })
 export class HslayersCesiumComponent implements AfterViewInit {
   visible = true;
+  app = 'cesium';
   constructor(
     public HsCesiumService: HsCesiumService,
     public HsPermalinkUrlService: HsShareUrlService,
@@ -32,32 +33,39 @@ export class HslayersCesiumComponent implements AfterViewInit {
     //Timeout needed because view container might not
     //be resized yey and globe will be zoomed out in that case
     setTimeout(() => {
-      this.HsCesiumService.init();
+      this.HsCesiumService.init(this.app);
     }, 100);
 
     const view = this.HsPermalinkUrlService.getParamValue(HS_PRMS.view);
     if (view != '2d') {
-      this.HsPermalinkUrlService.updateCustomParams({view: '3d'});
+      this.HsPermalinkUrlService.updateCustomParams({view: '3d'}, this.app);
       this.HsMapService.visible = false;
     } else {
-      this.HsPermalinkUrlService.updateCustomParams({view: '2d'});
+      this.HsPermalinkUrlService.updateCustomParams({view: '2d'}, this.app);
     }
 
-    this.HsSidebarService.get(this.data.app).buttons.push({
-      title: '3D/2D',
-      description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
-      icon: 'icon-globealt',
-      click: () => this.toggleCesiumMap(),
-    });
+    this.HsSidebarService.addButton(
+      {
+        title: '3D/2D',
+        description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
+        icon: 'icon-globealt',
+        click: () => this.toggleCesiumMap(),
+      },
+      this.app
+    );
 
     this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
-      this.HsCesiumService.dimensionChanged(data.layer, data.dimension)
+      this.HsCesiumService.dimensionChanged(
+        data.layer,
+        data.dimension,
+        this.app
+      )
     );
 
     this.HsEventBusService.sizeChanges.subscribe((size) =>
       this.HsCesiumService.resize(size)
     );
-    this.HsCesiumService.resize();
+    this.HsCesiumService.resize(this.app);
   }
 
   /**
@@ -66,14 +74,17 @@ export class HslayersCesiumComponent implements AfterViewInit {
   toggleCesiumMap() {
     this.HsMapService.visible = !this.HsMapService.visible;
     this.visible = !this.HsMapService.visible;
-    this.HsPermalinkUrlService.updateCustomParams({
-      view: this.HsMapService.visible ? '2d' : '3d',
-    });
+    this.HsPermalinkUrlService.updateCustomParams(
+      {
+        view: this.HsMapService.visible ? '2d' : '3d',
+      },
+      this.app
+    );
     if (this.HsMapService.visible) {
-      this.HsCesiumService.viewer.destroy();
-      this.HsCoreService.updateMapSize();
+      this.HsCesiumService.get(this.app).viewer.destroy();
+      this.HsCoreService.updateMapSize(this.app);
     } else {
-      this.HsCesiumService.init();
+      this.HsCesiumService.init(this.app);
     }
     this.HsEventBusService.mapLibraryChanges.next(
       this.visible ? 'cesium' : 'ol'

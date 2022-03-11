@@ -4,39 +4,44 @@ import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import dayjs from 'dayjs';
 import knockout from 'cesium/Source/ThirdParty/knockout';
-import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsEventBusService, getTitle} from 'hslayers-ng';
 import {default as utc} from 'dayjs/plugin/utc';
 
+import {HsCesiumLayersService} from './hscesium-layers.service';
 @Injectable({
   providedIn: 'root',
 })
 export class HsCesiumTimeService {
-  viewer: Viewer;
+  apps: {
+    [key: string]: {viewer: Viewer};
+  } = {default: {viewer: null}};
   constructor(
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsEventBusService: HsEventBusService
   ) {}
 
-  init(viewer: Viewer) {
-    this.viewer = viewer;
-    this.monitorTimeLine();
+  init(viewer: Viewer, app: string) {
+    this.apps[app].viewer = viewer;
+    this.monitorTimeLine(app);
   }
 
-  monitorTimeLine() {
+  monitorTimeLine(app: string) {
     knockout
-      .getObservable(this.viewer.clockViewModel, 'currentTime')
+      .getObservable(this.apps[app].viewer.clockViewModel, 'currentTime')
       .subscribe((value) => {
         let something_changed = false;
-        for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
+        for (let i = 0; i < this.apps[app].viewer.imageryLayers.length; i++) {
           let round_time = new Date(value.toString());
           round_time.setMilliseconds(0);
           round_time.setMinutes(0);
           round_time.setSeconds(0);
 
-          const layer = this.viewer.imageryLayers.get(i);
+          const layer = this.apps[app].viewer.imageryLayers.get(i);
           if (layer.imageryProvider instanceof WebMapServiceImageryProvider) {
-            const prmCache = this.HsCesiumLayersService.findParamCache(layer);
+            const prmCache = this.HsCesiumLayersService.findParamCache(
+              layer,
+              app
+            );
             if (prmCache && this.getTimeParameter(layer)) {
               if (prmCache.dimensions.time) {
                 let min_dist = Number.MAX_VALUE;
@@ -67,35 +72,36 @@ export class HsCesiumTimeService {
                 this.HsCesiumLayersService.changeLayerParam(
                   layer,
                   this.getTimeParameter(layer),
-                  round_time.toISOString()
+                  round_time.toISOString(),
+                  app
                 );
                 something_changed = true;
               }
             }
           }
         }
-        this.HsCesiumLayersService.removeLayersWithOldParams();
+        this.HsCesiumLayersService.removeLayersWithOldParams(app);
         if (something_changed) {
           this.HsEventBusService.cesiumTimeLayerChanges.next(
-            this.getLayerListTimes()
+            this.getLayerListTimes(app)
           );
         }
       });
   }
 
-  getLayerListTimes() {
-    if (this.viewer.isDestroyed()) {
+  getLayerListTimes(app: string) {
+    if (this.apps[app].viewer.isDestroyed()) {
       return;
     }
     const tmp = [];
-    for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
-      const layer = this.viewer.imageryLayers.get(i);
-      const prmCache = this.HsCesiumLayersService.findParamCache(layer);
+    for (let i = 0; i < this.apps[app].viewer.imageryLayers.length; i++) {
+      const layer = this.apps[app].viewer.imageryLayers.get(i);
+      const prmCache = this.HsCesiumLayersService.findParamCache(layer, app);
       if (prmCache) {
         const t = new Date(prmCache.parameters[this.getTimeParameter(layer)]);
         dayjs.extend(utc);
         tmp.push({
-          name: getTitle(this.HsCesiumLayersService.findOlLayer(layer)),
+          name: getTitle(this.HsCesiumLayersService.findOlLayer(layer, app)),
           time: dayjs.utc(t).format('DD-MM-YYYY HH:mm'),
         });
       }

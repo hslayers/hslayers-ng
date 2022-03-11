@@ -12,19 +12,35 @@ import {HsConfig, HsMapService} from 'hslayers-ng';
 import {PerspectiveFrustum} from 'cesium';
 import {get as getProj, transformExtent} from 'ol/proj';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsCesiumCameraService {
+export class CesiumCameraServiceParams {
   viewer: Viewer;
   lastGoodCenter: any[] = null;
   ellipsoid: any;
   lastSyncedExtentFromOl: any;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCesiumCameraService {
+  apps: {[id: string]: CesiumCameraServiceParams} = {
+    default: new CesiumCameraServiceParams(),
+  };
   constructor(public HsMapService: HsMapService, public HsConfig: HsConfig) {}
 
-  init(viewer: Viewer) {
-    this.viewer = viewer;
-    this.fixMorphs(this.viewer);
+  /**
+   * Get the params saved by the cesium camera service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): CesiumCameraServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new CesiumCameraServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
+  init(viewer: Viewer, app: string) {
+    this.get(app).viewer = viewer;
+    this.fixMorphs(this.get(app).viewer, app);
   }
 
   /**
@@ -32,10 +48,10 @@ export class HsCesiumCameraService {
    * @param latitude -
    * Calculates the resolution for a given distance from the ground and latitude
    */
-  calcResolutionForDistance(distance, latitude) {
+  calcResolutionForDistance(distance, latitude, app: string) {
     // See the reverse calculation (calcDistanceForResolution_) for details
-    const canvas = this.viewer.scene.canvas;
-    const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
+    const canvas = this.get(app).viewer.scene.canvas;
+    const fov = (<PerspectiveFrustum>this.get(app).viewer.camera.frustum).fov;
     const metersPerUnit = getProj('EPSG:3857').getMetersPerUnit();
 
     const visibleMeters = 2 * distance * Math.tan(fov / 2);
@@ -49,27 +65,29 @@ export class HsCesiumCameraService {
   /**
    * Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
    */
-  getCameraCenterInLngLat() {
+  getCameraCenterInLngLat(app: string) {
     if (
-      this.viewer.scene.mode == SceneMode.SCENE2D ||
-      this.viewer.scene.mode == SceneMode.COLUMBUS_VIEW
+      this.get(app).viewer.scene.mode == SceneMode.SCENE2D ||
+      this.get(app).viewer.scene.mode == SceneMode.COLUMBUS_VIEW
     ) {
       const lngDeg =
-        this.viewer.camera.positionCartographic.longitude * (180 / Math.PI);
+        this.get(app).viewer.camera.positionCartographic.longitude *
+        (180 / Math.PI);
       const latDeg =
-        this.viewer.camera.positionCartographic.latitude * (180 / Math.PI);
+        this.get(app).viewer.camera.positionCartographic.latitude *
+        (180 / Math.PI);
       const position = [lngDeg, latDeg, 0];
       return position;
-    } else if (this.viewer.scene.mode == SceneMode.SCENE3D) {
-      const ray = this.viewer.camera.getPickRay(
+    } else if (this.get(app).viewer.scene.mode == SceneMode.SCENE3D) {
+      const ray = this.get(app).viewer.camera.getPickRay(
         new Cartesian2(
-          this.viewer.canvas.width / 2,
-          this.viewer.canvas.height / 2
+          this.get(app).viewer.canvas.width / 2,
+          this.get(app).viewer.canvas.height / 2
         )
       );
-      const positionCartesian3 = this.viewer.scene.globe.pick(
+      const positionCartesian3 = this.get(app).viewer.scene.globe.pick(
         ray,
-        this.viewer.scene
+        this.get(app).viewer.scene
       );
       if (positionCartesian3) {
         const positionCartographic =
@@ -80,9 +98,10 @@ export class HsCesiumCameraService {
           lngDeg,
           latDeg,
           this.calcResolutionForDistance(
-            Cartographic.fromCartesian(this.viewer.camera.position).height -
-              positionCartographic.height,
-            latDeg
+            Cartographic.fromCartesian(this.get(app).viewer.camera.position)
+              .height - positionCartographic.height,
+            latDeg,
+            app
           ),
         ];
         return position;
@@ -95,16 +114,16 @@ export class HsCesiumCameraService {
   /**
    * Gets the position the camera is pointing to in cartesian coordinates and resolution as the third array element
    */
-  getCameraCenterInCartesian() {
-    const ray = this.viewer.camera.getPickRay(
+  getCameraCenterInCartesian(app: string) {
+    const ray = this.get(app).viewer.camera.getPickRay(
       new Cartesian2(
-        this.viewer.canvas.width / 2,
-        this.viewer.canvas.height / 2
+        this.get(app).viewer.canvas.width / 2,
+        this.get(app).viewer.canvas.height / 2
       )
     );
-    const positionCartesian3 = this.viewer.scene.globe.pick(
+    const positionCartesian3 = this.get(app).viewer.scene.globe.pick(
       ray,
-      this.viewer.scene
+      this.get(app).viewer.scene
     );
     if (positionCartesian3) {
       return positionCartesian3;
@@ -113,7 +132,7 @@ export class HsCesiumCameraService {
     }
   }
 
-  getViewportPolygon() {
+  getViewportPolygon(app: string) {
     /**
      * @param d -
      */
@@ -121,12 +140,14 @@ export class HsCesiumCameraService {
       try {
         return [
           CesiumMath.toDegrees(
-            this.viewer.scene.globe.ellipsoid.cartesianToCartographic(d)
-              .longitude
+            this.get(app).viewer.scene.globe.ellipsoid.cartesianToCartographic(
+              d
+            ).longitude
           ),
           CesiumMath.toDegrees(
-            this.viewer.scene.globe.ellipsoid.cartesianToCartographic(d)
-              .latitude
+            this.get(app).viewer.scene.globe.ellipsoid.cartesianToCartographic(
+              d
+            ).latitude
           ),
         ];
       } catch (ex) {
@@ -137,41 +158,51 @@ export class HsCesiumCameraService {
     const of_y = 0;
     const center = [
       CesiumMath.toDegrees(
-        this.viewer.scene.globe.ellipsoid.cartesianToCartographic(
-          this.viewer.camera.position
+        this.get(app).viewer.scene.globe.ellipsoid.cartesianToCartographic(
+          this.get(app).viewer.camera.position
         ).longitude
       ),
       CesiumMath.toDegrees(
-        this.viewer.scene.globe.ellipsoid.cartesianToCartographic(
-          this.viewer.camera.position
+        this.get(app).viewer.scene.globe.ellipsoid.cartesianToCartographic(
+          this.get(app).viewer.camera.position
         ).latitude
       ),
     ];
     let top_left = cornerToDegrees(
       this.getCornerCoord(
         new Cartesian2(of_x, of_y),
-        new Cartesian2(this.viewer.canvas.width, this.viewer.canvas.height)
+        new Cartesian2(
+          this.get(app).viewer.canvas.width,
+          this.get(app).viewer.canvas.height
+        ),
+        app
       )
     );
     let top_right = cornerToDegrees(
       this.getCornerCoord(
-        new Cartesian2(this.viewer.canvas.width - of_x, of_y),
-        new Cartesian2(0, this.viewer.canvas.height)
+        new Cartesian2(this.get(app).viewer.canvas.width - of_x, of_y),
+        new Cartesian2(0, this.get(app).viewer.canvas.height),
+        app
       )
     );
     let bot_left = cornerToDegrees(
       this.getCornerCoord(
         new Cartesian2(
-          this.viewer.canvas.width - of_x + 100,
-          this.viewer.canvas.height - of_y + 100
+          this.get(app).viewer.canvas.width - of_x + 100,
+          this.get(app).viewer.canvas.height - of_y + 100
         ),
-        new Cartesian2(0, 0)
+        new Cartesian2(0, 0),
+        app
       )
     );
     let bot_right = cornerToDegrees(
       this.getCornerCoord(
-        new Cartesian2(-100 + of_x, this.viewer.canvas.height - of_y + 100),
-        new Cartesian2(this.viewer.canvas.width, 0)
+        new Cartesian2(
+          -100 + of_x,
+          this.get(app).viewer.canvas.height - of_y + 100
+        ),
+        new Cartesian2(this.get(app).viewer.canvas.width, 0),
+        app
       )
     );
 
@@ -199,10 +230,10 @@ export class HsCesiumCameraService {
     return [top_left, top_right, bot_left, bot_right];
   }
 
-  getCornerCoord(startCoordinates, endCoordinates) {
-    let coordinate = this.viewer.scene.camera.pickEllipsoid(
+  getCornerCoord(startCoordinates, endCoordinates, app: string) {
+    let coordinate = this.get(app).viewer.scene.camera.pickEllipsoid(
       startCoordinates,
-      this.ellipsoid
+      this.get(app).ellipsoid
     );
 
     // Translate coordinates
@@ -217,9 +248,9 @@ export class HsCesiumCameraService {
     const sy = y1 < y2 ? 1 : -1;
     let err = dx - dy;
 
-    coordinate = this.viewer.scene.camera.pickEllipsoid(
+    coordinate = this.get(app).viewer.scene.camera.pickEllipsoid(
       new Cartesian2(x1, y1),
-      this.ellipsoid
+      this.get(app).ellipsoid
     );
     if (coordinate) {
       return coordinate;
@@ -237,9 +268,9 @@ export class HsCesiumCameraService {
         y1 += sy;
       }
 
-      coordinate = this.viewer.scene.camera.pickEllipsoid(
+      coordinate = this.get(app).viewer.scene.camera.pickEllipsoid(
         new Cartesian2(x1, y1),
-        this.ellipsoid
+        this.get(app).ellipsoid
       );
       if (coordinate) {
         return coordinate;
@@ -248,26 +279,28 @@ export class HsCesiumCameraService {
     return;
   }
 
-  setExtentEqualToOlExtent(view) {
+  setExtentEqualToOlExtent(view, app: string) {
     try {
-      const ol_ext = view.calculateExtent(this.HsMapService.getMap(app).getSize());
+      const ol_ext = view.calculateExtent(
+        this.HsMapService.getMap(app).getSize()
+      );
       const trans_ext = transformExtent(
         ol_ext,
         view.getProjection(),
         'EPSG:4326'
       );
-      this.lastSyncedExtentFromOl = trans_ext;
-      if (this.viewer.isDestroyed()) {
+      this.get(app).lastSyncedExtentFromOl = trans_ext;
+      if (this.get(app).viewer.isDestroyed()) {
         return;
       }
-      this.fitExtent(trans_ext);
+      this.fitExtent(trans_ext, app);
     } catch (ex) {
       console.error(ex);
     }
   }
 
-  private fitExtent(trans_ext: any) {
-    this.viewer.camera.setView({
+  private fitExtent(trans_ext: any, app: string) {
+    this.get(app).viewer.camera.setView({
       destination: Rectangle.fromDegrees(
         trans_ext[0],
         trans_ext[1],
@@ -277,19 +310,19 @@ export class HsCesiumCameraService {
     });
 
     const width =
-      this.viewer.canvas.width > 0
-        ? this.viewer.canvas.width
+      this.get(app).viewer.canvas.width > 0
+        ? this.get(app).viewer.canvas.width
         : window.innerWidth;
     const height =
-      this.viewer.canvas.height > 0
-        ? this.viewer.canvas.height
+      this.get(app).viewer.canvas.height > 0
+        ? this.get(app).viewer.canvas.height
         : window.innerHeight;
-    const ray = this.viewer.camera.getPickRay(
+    const ray = this.get(app).viewer.camera.getPickRay(
       new Cartesian2(width / 2, height / 2)
     );
-    const positionCartesian3 = this.viewer.scene.globe.pick(
+    const positionCartesian3 = this.get(app).viewer.scene.globe.pick(
       ray,
-      this.viewer.scene
+      this.get(app).viewer.scene
     );
     if (positionCartesian3) {
       /*
@@ -301,12 +334,12 @@ export class HsCesiumCameraService {
                 })
             });
  
-            this.viewer.scene.primitives.removeAll();
-            this.viewer.scene.primitives.add(new Cesium.Primitive({
+            this.get(app).viewer.scene.primitives.removeAll();
+            this.get(app).viewer.scene.primitives.add(new Cesium.Primitive({
                 geometryInstances : instance,
                 appearance : new EllipsoidSurfaceAppearance({aboveGround: true})
             })); */
-      this.viewer.camera.moveBackward(
+      this.get(app).viewer.camera.moveBackward(
         Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height
       );
     }
@@ -318,9 +351,9 @@ export class HsCesiumCameraService {
    * @deprecated
    * Calculates the distance from the ground based on resolution and latitude
    */
-  calcDistanceForResolution(resolution, latitude) {
-    const canvas = this.viewer.scene.canvas;
-    const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
+  calcDistanceForResolution(resolution, latitude, app: string) {
+    const canvas = this.get(app).viewer.scene.canvas;
+    const fov = (<PerspectiveFrustum>this.get(app).viewer.camera.frustum).fov;
     const metersPerUnit = this.HsMapService.getMap(app)
       .getView()
       .getProjection()
@@ -354,23 +387,23 @@ export class HsCesiumCameraService {
     return requiredDistance;
   }
 
-  fixMorphs(viewer) {
+  fixMorphs(viewer, app: string) {
     viewer.camera.moveEnd.addEventListener((e) => {
       if (!this.HsMapService.visible) {
-        const center = this.getCameraCenterInLngLat();
+        const center = this.getCameraCenterInLngLat(app);
         if (center === null || center[0] == 0 || center[1] == 0) {
           return;
         } //Not looking on the map but in the sky
-        this.lastGoodCenter = center;
+        this.get(app).lastGoodCenter = center;
       }
     });
     viewer.scene.morphComplete.addEventListener(() => {
-      if (this.lastGoodCenter) {
+      if (this.get(app).lastGoodCenter) {
         setTimeout(() => {
           viewer.camera.flyTo({
             destination: Cartesian3.fromDegrees(
-              this.lastGoodCenter[0],
-              this.lastGoodCenter[1],
+              this.get(app).lastGoodCenter[0],
+              this.get(app).lastGoodCenter[1],
               15000.0
             ),
             duration: 1,
@@ -380,10 +413,10 @@ export class HsCesiumCameraService {
     });
   }
 
-  getDefaultViewport() {
+  getDefaultViewport(app: string) {
     let trans_ext;
-    if (this.lastSyncedExtentFromOl) {
-      trans_ext = this.lastSyncedExtentFromOl;
+    if (this.get(app).lastSyncedExtentFromOl) {
+      trans_ext = this.get(app).lastSyncedExtentFromOl;
     } else if (this.HsConfig.get(app).default_view) {
       const view = this.HsConfig.get(app).default_view;
       let winWidth = window.innerWidth;

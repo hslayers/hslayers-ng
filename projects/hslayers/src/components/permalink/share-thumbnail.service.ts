@@ -52,7 +52,11 @@ export class HsShareThumbnailService {
     const firstCanvas =
       this.HsMapService.apps[app].mapElement.querySelector('.ol-layer canvas');
     this.setCanvasSize(targetCanvas, width, height);
-    this.setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
+    this.setCanvasSize(
+      collectorCanvas,
+      firstCanvas?.width ?? width,
+      firstCanvas?.height ?? height
+    );
     const ctxCollector = collectorCanvas.getContext('2d');
     const ctxTarget = targetCanvas.getContext('2d');
     this.setupContext(ctxTarget);

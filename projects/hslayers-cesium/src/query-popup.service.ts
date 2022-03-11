@@ -1,12 +1,10 @@
 import {Injectable, NgZone} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
 import {
   HsConfig,
   HsMapService,
-  HsQueryBaseService,
   HsQueryPopupBaseService,
+  HsQueryPopupData,
   HsQueryPopupServiceModel,
   HsQueryPopupWidgetContainerService,
   HsUtilsService,
@@ -17,18 +15,12 @@ import {
 })
 export class HsCesiumQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel
-{
-  featuresUnderMouse: Feature<Geometry>[] = [];
-  featureLayersUnderMouse = [];
-  hoverPopup: any;
-
+  implements HsQueryPopupServiceModel {
   constructor(
     HsMapService: HsMapService,
     private HsConfig: HsConfig,
     HsUtilsService: HsUtilsService,
     zone: NgZone,
-    private HsQueryBaseService: HsQueryBaseService,
     hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
     super(
@@ -40,13 +32,23 @@ export class HsCesiumQueryPopupService
     );
   }
 
-  registerPopup(nativeElement: any) {
+  /**
+   * Get the params saved by the cesium query popup service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): HsQueryPopupData {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsQueryPopupData();
+    }
+    return this.apps[app ?? 'default'];
+  }
+  registerPopup(nativeElement: any, app: string) {
     nativeElement.style.position = 'absolute';
-    this.hoverPopup = nativeElement;
+    this.get(app).hoverPopup = nativeElement;
   }
 
-  showPopup(e: any): void {
-    this.hoverPopup.style.left = e.pixel.x + 4 + 'px';
-    this.hoverPopup.style.top = e.pixel.y + 4 + 'px';
+  showPopup(e: any, app: string): void {
+    this.get(app).hoverPopup.style.left = e.pixel.x + 4 + 'px';
+    this.get(app).hoverPopup.style.top = e.pixel.y + 4 + 'px';
   }
 }

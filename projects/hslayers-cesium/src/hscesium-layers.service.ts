@@ -55,15 +55,20 @@ function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
   this.projection = projection;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsCesiumLayersService {
+class CesiumLayersServiceParams {
   layersToBeDeleted = [];
   viewer: Viewer;
   ol2CsMappings: Array<OlCesiumObjectMapItem> = [];
   paramCaches: Array<ParamCacheMapItem> = [];
+}
 
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCesiumLayersService {
+  apps: {
+    [key: string]: CesiumLayersServiceParams;
+  } = {default: new CesiumLayersServiceParams()};
   constructor(
     public HsMapService: HsMapService,
     public HsConfig: HsConfig,
@@ -72,13 +77,22 @@ export class HsCesiumLayersService {
     public HsCesiumConfig: HsCesiumConfig,
     private HsLayerUtilsService: HsLayerUtilsService
   ) {}
-
-  init(viewer: Viewer) {
-    this.viewer = viewer;
-    this.ol2CsMappings = [];
-    this.paramCaches = [];
+  /**
+   * Get the params saved by the cesium layers service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): CesiumLayersServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new CesiumLayersServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+  init(viewer: Viewer, app: string) {
+    this.get(app).viewer = viewer;
+    this.get(app).ol2CsMappings = [];
+    this.get(app).paramCaches = [];
     this.defineProxy();
-    this.setupEvents();
+    this.setupEvents(app);
   }
 
   defineProxy() {
@@ -140,7 +154,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  async setupEvents() {
+  async setupEvents(app: string) {
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
       (data) => {
         if (data && data.type && data.type == 'terrain') {
@@ -149,11 +163,11 @@ export class HsCesiumLayersService {
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
           ) {
             const terrain_provider = createWorldTerrain(
-              this.HsCesiumConfig.createWorldTerrainOptions
+              this.HsCesiumConfig.get(app).createWorldTerrainOptions
             );
-            this.viewer.terrainProvider = terrain_provider;
+            this.get(app).viewer.terrainProvider = terrain_provider;
           } else {
-            this.viewer.terrainProvider = new CesiumTerrainProvider({
+            this.get(app).viewer.terrainProvider = new CesiumTerrainProvider({
               url: data.url,
             });
           }
@@ -161,11 +175,11 @@ export class HsCesiumLayersService {
       }
     );
 
-    this.repopulateLayers();
+    this.repopulateLayers(app);
     const map = await this.HsMapService.loaded(app);
     map.getLayers().on('add', (e) => {
       const lyr = e.element;
-      this.processOlLayer(lyr);
+      this.processOlLayer(lyr, app);
     });
   }
 
@@ -173,29 +187,36 @@ export class HsCesiumLayersService {
    * @public
    * Add all layers from app HsConfig (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
    */
-  async repopulateLayers() {
-    if (this.viewer.isDestroyed()) {
+  async repopulateLayers(app: string) {
+    if (this.get(app).viewer.isDestroyed()) {
       return;
     }
     if (this.HsConfig.get(app).default_layers !== undefined) {
-      this.HsConfig.get(app).default_layers.forEach((l) => this.processOlLayer(l));
+      this.HsConfig.get(app).default_layers.forEach((l) =>
+        this.processOlLayer(l, app)
+      );
     }
     if (this.HsConfig.get(app).box_layers) {
-      this.HsConfig.get(app).box_layers.forEach((l) => this.processOlLayer(l));
+      this.HsConfig.get(app).box_layers.forEach((l) =>
+        this.processOlLayer(l, app)
+      );
     }
     //Some layers might be loaded from cookies before cesium service was called
     const map = await this.HsMapService.loaded(app);
     map.getLayers().forEach((lyr: Layer<Source>) => {
-      const cesiumLayer = this.findCesiumLayer(lyr);
+      const cesiumLayer = this.findCesiumLayer(lyr, app);
       if (cesiumLayer == undefined) {
-        this.processOlLayer(lyr);
+        this.processOlLayer(lyr, app);
       }
     });
   }
 
-  serializeVectorLayerToGeoJson(ol_source: VectorSource<Geometry>): any {
+  serializeVectorLayerToGeoJson(
+    ol_source: VectorSource<Geometry>,
+    app: string
+  ): any {
     const f = new GeoJSON();
-    const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
+    const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source, app);
     //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const features = ol_source.getFeatures();
     features.forEach((feature) => {
@@ -231,7 +252,7 @@ export class HsCesiumLayersService {
     const json: any = f.writeFeaturesObject(features);
     //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     //cesiumLayer.entities.removeAll();
-    if (this.currentMapProjCode() == 'EPSG:3857') {
+    if (this.currentMapProjCode(app) == 'EPSG:3857') {
       json.crs = {
         type: 'name',
         properties: {
@@ -242,7 +263,7 @@ export class HsCesiumLayersService {
     return json;
   }
 
-  currentMapProjCode() {
+  currentMapProjCode(app: string) {
     if (this.HsMapService.getMap(app)) {
       return this.HsMapService.getCurrentProj(app).getCode();
     } else {
@@ -250,8 +271,11 @@ export class HsCesiumLayersService {
     }
   }
 
-  findCesiumLayer(ol: Layer<Source> | Source): ImageryLayer | DataSource {
-    const found = this.ol2CsMappings.filter(
+  findCesiumLayer(
+    ol: Layer<Source> | Source,
+    app: string
+  ): ImageryLayer | DataSource {
+    const found = this.get(app).ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) => m.olObject == ol
     );
     if (found.length > 0) {
@@ -259,8 +283,8 @@ export class HsCesiumLayersService {
     }
   }
 
-  findOlLayer(cs: ImageryLayer | DataSource): Layer<Source> {
-    const found = this.ol2CsMappings.filter(
+  findOlLayer(cs: ImageryLayer | DataSource, app: string): Layer<Source> {
+    const found = this.get(app).ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
         m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Layer)
     );
@@ -269,8 +293,8 @@ export class HsCesiumLayersService {
     }
   }
 
-  findOlSource(cs: ImageryLayer | DataSource): Source {
-    const found = this.ol2CsMappings.filter(
+  findOlSource(cs: ImageryLayer | DataSource, app: string): Source {
+    const found = this.get(app).ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
         m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Source)
     );
@@ -281,15 +305,19 @@ export class HsCesiumLayersService {
 
   linkOlLayerToCesiumLayer(
     ol_layer: Layer<Source>,
-    cesium_layer: ImageryLayer
+    cesium_layer: ImageryLayer,
+    app: string
   ): void {
-    this.ol2CsMappings.push({olObject: ol_layer, csObject: cesium_layer});
+    this.get(app).ol2CsMappings.push({
+      olObject: ol_layer,
+      csObject: cesium_layer,
+    });
     ol_layer.on('change:visible', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
+      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>, app);
       cesiumLayer.show = ol_layer.getVisible();
     });
     ol_layer.on('change:opacity', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
+      const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>, app);
       if (this.HsUtilsService.instOf(cesiumLayer, ImageryLayer)) {
         (<ImageryLayer>cesiumLayer).alpha = ol_layer.getOpacity();
       }
@@ -298,19 +326,23 @@ export class HsCesiumLayersService {
 
   linkOlSourceToCesiumDatasource(
     ol_source: VectorSource<Geometry>,
-    cesium_layer: ImageryLayer | DataSource
+    cesium_layer: ImageryLayer | DataSource,
+    app: string
   ): void {
-    this.ol2CsMappings.push({olObject: ol_source, csObject: cesium_layer});
-    this.syncFeatures(ol_source);
+    this.get(app).ol2CsMappings.push({
+      olObject: ol_source,
+      csObject: cesium_layer,
+    });
+    this.syncFeatures(ol_source, app);
     (ol_source as any).on('features:loaded', (e) => {
-      const cesiumLayer = this.findCesiumLayer(e.target as Source);
+      const cesiumLayer = this.findCesiumLayer(e.target as Source, app);
       if (cesiumLayer) {
-        this.syncFeatures(e.target as VectorSource<Geometry>);
+        this.syncFeatures(e.target as VectorSource<Geometry>, app);
       }
     });
   }
 
-  syncFeatures(ol_source: VectorSource<Geometry>): void {
+  syncFeatures(ol_source: VectorSource<Geometry>, app: string): void {
     const tmp_source = new GeoJsonDataSource('tmp');
     GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
       const firstProjection =
@@ -326,13 +358,13 @@ export class HsCesiumLayersService {
     };
     //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const promise = tmp_source.load(
-      this.serializeVectorLayerToGeoJson(ol_source),
+      this.serializeVectorLayerToGeoJson(ol_source, app),
       {
         clampToGround: true,
       }
     );
     promise.then((source) => {
-      const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
+      const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source, app);
       //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
       source.entities.values.forEach((entity) => {
         try {
@@ -352,15 +384,15 @@ export class HsCesiumLayersService {
     });
   }
 
-  async processOlLayer(lyr: Layer<Source> | Group): Promise<void> {
-    if (!this.viewer) {
+  async processOlLayer(lyr: Layer<Source> | Group, app: string): Promise<void> {
+    if (!this.get(app).viewer) {
       return;
     }
     if (this.HsUtilsService.instOf(lyr, Group)) {
       for (const sub_lyr of (<Group>lyr)
         .getLayers()
         .getArray() as Layer<Source>[]) {
-        this.processOlLayer(sub_lyr);
+        this.processOlLayer(sub_lyr, app);
       }
     } else {
       lyr.setVisible(
@@ -376,7 +408,7 @@ export class HsCesiumLayersService {
             ImageWMS
           )
         ) {
-          this.HsMapService.proxifyLayerLoader(lyr, false);
+          this.HsMapService.proxifyLayerLoader(lyr, false, app);
         }
       }
 
@@ -387,29 +419,32 @@ export class HsCesiumLayersService {
             TileWMS
           )
         ) {
-          this.HsMapService.proxifyLayerLoader(lyr, true);
+          this.HsMapService.proxifyLayerLoader(lyr, true, app);
         }
       }
       const cesium_layer = await this.convertOlToCesiumProvider(
-        lyr as Layer<Source>
+        lyr as Layer<Source>,
+        app
       );
       if (cesium_layer) {
         if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
           this.linkOlLayerToCesiumLayer(
             lyr as Layer<Source>,
-            cesium_layer as ImageryLayer
+            cesium_layer as ImageryLayer,
+            app
           );
-          this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
+          this.get(app).viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
         } else if (
           (this.HsUtilsService.instOf(cesium_layer, GeoJsonDataSource) ||
             this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
-          this.viewer.dataSources
+          this.get(app).viewer.dataSources
         ) {
-          this.viewer.dataSources.add(<DataSource>cesium_layer);
+          this.get(app).viewer.dataSources.add(<DataSource>cesium_layer);
           if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
               (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
-              cesium_layer
+              cesium_layer,
+              app
             );
           }
         }
@@ -418,7 +453,8 @@ export class HsCesiumLayersService {
   }
 
   async convertOlToCesiumProvider(
-    ol_lyr: Layer<Source>
+    ol_lyr: Layer<Source>,
+    app: string
   ): Promise<ImageryLayer | DataSource> {
     if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
@@ -426,12 +462,16 @@ export class HsCesiumLayersService {
         minimumTerrainLevel: getMinimumTerrainLevel(ol_lyr) || 15,
       });
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), TileWMS)) {
-      return this.createTileProvider(ol_lyr);
+      return this.createTileProvider(ol_lyr, app);
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), ImageWMS)) {
-      return this.createSingleImageProvider(ol_lyr as ImageLayer<ImageSource>);
+      return this.createSingleImageProvider(
+        ol_lyr as ImageLayer<ImageSource>,
+        app
+      );
     } else if (this.HsUtilsService.instOf(ol_lyr, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
-        ol_lyr as VectorLayer<VectorSource<Geometry>>
+        ol_lyr as VectorLayer<VectorSource<Geometry>>,
+        app
       );
       return dataSource;
     } else {
@@ -446,7 +486,8 @@ export class HsCesiumLayersService {
   }
 
   async createVectorDataSource(
-    ol_lyr: VectorLayer<VectorSource<Geometry>>
+    ol_lyr: VectorLayer<VectorSource<Geometry>>,
+    app: string
   ): Promise<DataSource> {
     if (
       ol_lyr.getSource().getFormat() &&
@@ -460,23 +501,29 @@ export class HsCesiumLayersService {
       }
       const url: string = <string>ol_lyr.getSource().getUrl();
       return await KmlDataSource.load(url, {
-        camera: this.viewer.scene.camera,
-        canvas: this.viewer.scene.canvas,
+        camera: this.get(app).viewer.scene.camera,
+        canvas: this.get(app).viewer.scene.canvas,
         clampToGround: ol_lyr.getSource().get('clampToGround') || true,
       });
     } else {
       const new_source = new GeoJsonDataSource(getTitle(ol_lyr));
       //link to cesium layer will be set also for OL layers source object, when this function returns.
-      this.ol2CsMappings.push({olObject: ol_lyr, csObject: new_source});
+      this.get(app).ol2CsMappings.push({
+        olObject: ol_lyr,
+        csObject: new_source,
+      });
       ol_lyr.on('change:visible', (e) => {
-        const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
+        const cesiumLayer = this.findCesiumLayer(
+          e.target as Layer<Source>,
+          app
+        );
         cesiumLayer.show = ol_lyr.getVisible();
       });
       return new_source;
     }
   }
 
-  createTileProvider(ol_lyr): ImageryLayer {
+  createTileProvider(ol_lyr, app: string): ImageryLayer {
     const src = ol_lyr.getSource();
     const params = JSON.parse(
       JSON.stringify(this.HsLayerUtilsService.getLayerParams(ol_lyr))
@@ -493,7 +540,7 @@ export class HsCesiumLayersService {
       url: new Resource({
         url: src.getUrls()[0],
         proxy: new MyProxy({
-          proxy: this.getProxyFromConfig(),
+          proxy: this.getProxyFromConfig(app),
           maxResolution: ol_lyr.getMaxResolution(),
           HsUtilsService: this.HsUtilsService,
           projection: this.getProjectionFromParams(params),
@@ -520,12 +567,14 @@ export class HsCesiumLayersService {
         show: ol_lyr.getVisible(),
       }
     );
-    this.paramCaches.push({imageryLayer: tmp, cache: prmCache});
+    this.get(app).paramCaches.push({imageryLayer: tmp, cache: prmCache});
     return tmp;
   }
 
-  private getProxyFromConfig(): string {
-    return this.HsConfig.get(app).proxyPrefix ? this.HsConfig.get(app).proxyPrefix : '/proxy/';
+  private getProxyFromConfig(app: string): string {
+    return this.HsConfig.get(app).proxyPrefix
+      ? this.HsConfig.get(app).proxyPrefix
+      : '/proxy/';
   }
 
   private getProjectionFromParams(params: any): string {
@@ -533,7 +582,10 @@ export class HsCesiumLayersService {
   }
 
   //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
-  createSingleImageProvider(ol_lyr: ImageLayer<ImageSource>): ImageryLayer {
+  createSingleImageProvider(
+    ol_lyr: ImageLayer<ImageSource>,
+    app: string
+  ): ImageryLayer {
     const src: ImageWMS = <ImageWMS>ol_lyr.getSource();
     const params = Object.assign({}, src.getParams());
     params.VERSION = params.VERSION || '1.1.1';
@@ -550,7 +602,7 @@ export class HsCesiumLayersService {
       url: new Resource({
         url: src.getUrl(),
         proxy: new MyProxy({
-          proxy: this.getProxyFromConfig(),
+          proxy: this.getProxyFromConfig(app),
           maxResolution: ol_lyr.getMaxResolution(),
           HsUtilsService: this.HsUtilsService,
           projection: this.getProjectionFromParams(params),
@@ -579,7 +631,7 @@ export class HsCesiumLayersService {
         show: ol_lyr.getVisible(),
       }
     );
-    this.paramCaches.push({imageryLayer: tmp, cache: prmCache});
+    this.get(app).paramCaches.push({imageryLayer: tmp, cache: prmCache});
     return tmp;
   }
 
@@ -592,24 +644,29 @@ export class HsCesiumLayersService {
     return prmCache;
   }
 
-  changeLayerParam(layer: ImageryLayer, parameter, new_value): void {
+  changeLayerParam(
+    layer: ImageryLayer,
+    parameter,
+    new_value,
+    app: string
+  ): void {
     new_value = dayjs(new_value).isValid()
       ? dayjs(new_value).toISOString()
       : new_value;
-    const prmCache = this.findParamCache(layer);
+    const prmCache = this.findParamCache(layer, app);
     prmCache.parameters[parameter] = new_value;
-    this.layersToBeDeleted.push(layer);
+    this.get(app).layersToBeDeleted.push(layer);
     const tmp = new ImageryLayer(new WebMapServiceImageryProvider(prmCache), {
       alpha: layer.alpha,
       show: layer.show,
     });
-    this.paramCaches.push({imageryLayer: tmp, cache: prmCache});
-    this.linkOlLayerToCesiumLayer(this.findOlLayer(layer), tmp);
-    this.viewer.imageryLayers.add(tmp);
+    this.get(app).paramCaches.push({imageryLayer: tmp, cache: prmCache});
+    this.linkOlLayerToCesiumLayer(this.findOlLayer(layer, app), tmp, app);
+    this.get(app).viewer.imageryLayers.add(tmp);
   }
 
-  findParamCache(layer: ImageryLayer): any {
-    const found = this.paramCaches.filter(
+  findParamCache(layer: ImageryLayer, app: string): any {
+    const found = this.get(app).paramCaches.filter(
       (m: ParamCacheMapItem) => m.imageryLayer == layer
     );
     if (found.length > 0) {
@@ -617,15 +674,17 @@ export class HsCesiumLayersService {
     }
   }
 
-  removeLayersWithOldParams(): void {
-    while (this.layersToBeDeleted.length > 0) {
-      const cesiumLayer = this.layersToBeDeleted.pop();
-      this.viewer.imageryLayers.remove(cesiumLayer);
-      const mappingsToRemove = this.ol2CsMappings.filter(
+  removeLayersWithOldParams(app: string): void {
+    while (this.get(app).layersToBeDeleted.length > 0) {
+      const cesiumLayer = this.get(app).layersToBeDeleted.pop();
+      this.get(app).viewer.imageryLayers.remove(cesiumLayer);
+      const mappingsToRemove = this.get(app).ol2CsMappings.filter(
         (m) => m.csObject == cesiumLayer
       );
       for (const mapping of mappingsToRemove) {
-        this.ol2CsMappings.splice(this.ol2CsMappings.indexOf(mapping));
+        this.get(app).ol2CsMappings.splice(
+          this.get(app).ol2CsMappings.indexOf(mapping)
+        );
       }
     }
   }

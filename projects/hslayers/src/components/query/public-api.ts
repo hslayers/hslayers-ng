@@ -21,3 +21,4 @@ export * from './widgets/dynamic-text.component';
 export * from './widgets/layer-name.component';
 export * from './widgets/widgets.type';
 export * from './widgets/widget-item.type';
+export * from './popup-data';

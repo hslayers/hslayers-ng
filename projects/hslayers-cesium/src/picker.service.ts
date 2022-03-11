@@ -9,17 +9,21 @@ import ScreenSpaceEventHandler from 'cesium/Source/Core/ScreenSpaceEventHandler'
 import ScreenSpaceEventType from 'cesium/Source/Core/ScreenSpaceEventType';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import defined from 'cesium/Source/Core/defined';
-
-import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsConfig, HsMapService, HsUtilsService} from 'hslayers-ng';
 
+import {HsCesiumQueryPopupService} from './query-popup.service';
+
+class CesiumPickerServiceParams {
+  viewer: Viewer;
+  cesiumPositionClicked: Subject<any> = new Subject();
+}
 @Injectable({
   providedIn: 'root',
 })
 export class HsCesiumPickerService {
-  viewer: Viewer;
-  cesiumPositionClicked: Subject<any> = new Subject();
-
+  apps: {
+    [key: string]: CesiumPickerServiceParams;
+  } = {default: new CesiumPickerServiceParams()};
   constructor(
     private HsCesiumQueryPopupService: HsCesiumQueryPopupService,
     private HsMapService: HsMapService,
@@ -27,12 +31,25 @@ export class HsCesiumPickerService {
     private hsUtilsService: HsUtilsService
   ) {}
 
-  init(viewer: Viewer) {
-    this.viewer = viewer;
-    const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
+  /**
+   * Get the params saved by the cesium picker service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): CesiumPickerServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new CesiumPickerServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
+  init(viewer: Viewer, app: string) {
+    this.get(app).viewer = viewer;
+    const handler = new ScreenSpaceEventHandler(
+      this.get(app).viewer.scene.canvas
+    );
 
     handler.setInputAction((movement) => {
-      const pickedObject = this.viewer.scene.pick(movement.position);
+      const pickedObject = this.get(app).viewer.scene.pick(movement.position);
       if (pickedObject && pickedObject.id && pickedObject.id.onmouseup) {
         pickedObject.id.onmouseup(pickedObject.id);
         return;
@@ -40,15 +57,15 @@ export class HsCesiumPickerService {
     }, ScreenSpaceEventType.LEFT_UP);
 
     handler.setInputAction(
-      (movement) => this.handleScreenInteraction(movement, 'left'),
+      (movement) => this.handleScreenInteraction(movement, 'left', app),
       ScreenSpaceEventType.LEFT_DOWN || ScreenSpaceEventType.RIGHT_DOWN
     );
     handler.setInputAction(
-      (movement) => this.handleScreenInteraction(movement, 'right'),
+      (movement) => this.handleScreenInteraction(movement, 'right', app),
       ScreenSpaceEventType.RIGHT_DOWN
     );
     handler.setInputAction(
-      (movement) => this.handleScreenInteraction(movement, 'left'),
+      (movement) => this.handleScreenInteraction(movement, 'left', app),
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
     handler.setInputAction((movement) => {
@@ -65,20 +82,29 @@ export class HsCesiumPickerService {
   /**
    * @param movement -
    */
-  handleScreenInteraction(movement, button: 'left' | 'right' | 'none') {
-    const pickRay = this.viewer.camera.getPickRay(movement.position);
-    const pickedObject = this.viewer.scene.pick(movement.position);
+  handleScreenInteraction(
+    movement,
+    button: 'left' | 'right' | 'none',
+    app: string
+  ) {
+    const pickRay = this.get(app).viewer.camera.getPickRay(movement.position);
+    const pickedObject = this.get(app).viewer.scene.pick(movement.position);
 
-    if (this.viewer.scene.pickPositionSupported) {
-      if (this.viewer.scene.mode === SceneMode.SCENE3D) {
-        const cartesian = this.viewer.scene.pickPosition(movement.position);
+    if (this.get(app).viewer.scene.pickPositionSupported) {
+      if (this.get(app).viewer.scene.mode === SceneMode.SCENE3D) {
+        const cartesian = this.get(app).viewer.scene.pickPosition(
+          movement.position
+        );
         if (defined(cartesian)) {
           const cartographic = Cartographic.fromCartesian(cartesian);
           const longitudeString = Math.toDegrees(cartographic.longitude);
           const latitudeString = Math.toDegrees(cartographic.latitude);
           //TODO rewrite to subject
           if (button == 'left' || 'right') {
-            this.cesiumPositionClicked.next([longitudeString, latitudeString]);
+            this.get(app).cesiumPositionClicked.next([
+              longitudeString,
+              latitudeString,
+            ]);
           }
         }
       }
@@ -90,15 +116,19 @@ export class HsCesiumPickerService {
       if (button == 'left' && pickedObject?.id?.onclick) {
         pickedObject.id.onclick(pickedObject.id);
       }
-      this.HsCesiumQueryPopupService.fillFeatures([
-        this.HsMapService.getFeatureById(
-          (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue()
-        ),
-      ]);
-      this.HsCesiumQueryPopupService.showPopup({pixel: movement.position});
+      this.HsCesiumQueryPopupService.fillFeatures(
+        [
+          this.HsMapService.getFeatureById(
+            (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue(),
+            app
+          ),
+        ],
+        app
+      );
+      this.HsCesiumQueryPopupService.showPopup({pixel: movement.position}, app);
       return;
     } else {
-      this.HsCesiumQueryPopupService.fillFeatures([]);
+      this.HsCesiumQueryPopupService.fillFeatures([], app);
     }
   }
 }

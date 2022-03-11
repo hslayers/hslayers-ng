@@ -2,14 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {ImageryProvider, JulianDate} from 'cesium';
 import {Subject} from 'rxjs';
-
-@Injectable()
-export class HsCesiumConfig {
-  /**
-   * Triggered when cesiumConfig is updated using 'update' function of HsCesiumService.
-   */
-  cesiumConfigChanges?: Subject<HsCesiumConfig> = new Subject();
-
+export class HsCesiumConfigObject {
   cesiumDebugShowFramesPerSecond?: boolean;
   cesiumShadows?: number;
   cesiumBase?: string;
@@ -26,10 +19,35 @@ export class HsCesiumConfig {
   terrain_providers?: any[];
   cesiumAccessToken?: string;
   cesiumTime?: JulianDate;
+  constructor() {}
+}
+@Injectable()
+export class HsCesiumConfig {
+  apps: {[id: string]: HsCesiumConfigObject} = {
+    default: {},
+  };
+  /**
+   * Triggered when cesiumConfig is updated using 'update' function of HsCesiumService.
+   */
+  cesiumConfigChanges?: Subject<HsCesiumConfigObject> = new Subject();
 
-  update?(newConfig: HsCesiumConfig): void {
-    Object.assign(this, newConfig);
+  constructor() {}
 
-    this.cesiumConfigChanges.next(this);
+  get(app: string): HsCesiumConfigObject {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsCesiumConfigObject();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
+  update?(newConfig: HsCesiumConfigObject, app?: string): void {
+    let appConfig = this.apps[app];
+    if (appConfig == undefined) {
+      this.apps[app] = new HsCesiumConfigObject();
+      appConfig = this.apps[app];
+    }
+    Object.assign(appConfig, newConfig);
+
+    this.cesiumConfigChanges.next(this.apps[app]);
   }
 }

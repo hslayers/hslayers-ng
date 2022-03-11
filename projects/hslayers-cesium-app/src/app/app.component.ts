@@ -1,4 +1,9 @@
-import {Component, ComponentFactoryResolver} from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -18,7 +23,8 @@ import {Vector} from 'ol/source';
   templateUrl: './app.component.html',
   styleUrls: [],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  @Input() app = 'cesium';
   constructor(
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
@@ -59,15 +65,15 @@ export class AppComponent {
     };
 
     if (w.hslayersNgConfig) {
-      this.HsConfig.get(app).update(w.hslayersNgConfig(w.ol));
+      this.HsConfig.update(w.hslayersNgConfig(w.ol), this.app);
     }
 
     if (w.hslayersCesiumConfig) {
-      this.HsCesiumConfig.update(w.hslayersCesiumConfig());
+      this.HsCesiumConfig.update(w.hslayersCesiumConfig(), this.app);
     }
 
-    if (!this.HsCesiumConfig.cesiumBase) {
-      this.HsCesiumConfig.cesiumBase =
+    if (!this.HsCesiumConfig.get(this.app).cesiumBase) {
+      this.HsCesiumConfig.get(this.app).cesiumBase =
         'node_modules/hslayers-cesium-app/assets/cesium/';
     }
   }
@@ -79,9 +85,9 @@ export class AppComponent {
         HslayersCesiumComponent
       );
 
-    this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
-      if (mapSpace) {
-        mapSpace.createComponent(componentFactory);
+    this.HsLayoutService.mapSpaceRef.subscribe(({viewContainerRef, app}) => {
+      if (viewContainerRef) {
+        viewContainerRef.createComponent(componentFactory);
       }
     });
   }
