@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -21,12 +21,12 @@ import {HsQueryPopupService} from 'hslayers-ng/src/components/query/query-popup.
   styleUrls: [],
 })
 export class HslayersAppComponent {
+  @Input() app = 'default';
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
     hsLayoutService: HsLayoutService,
-    hsQueryPopupService: HsQueryPopupService
-    //hsToolbarPanelContainerService: HsToolbarPanelContainerService
+    hsQueryPopupService: HsQueryPopupService //hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     const count = 200;
     const features = new Array(count);
@@ -337,14 +337,17 @@ export class HslayersAppComponent {
     setTimeout(() => {
       this.HsEventBusService.layerDimensionDefinitionChanges.next({
         layer: opticalMap,
+        app: this.app,
       });
     }, 100);
     //hsLayoutService.createPanel(HsQueryComponent, {});
     //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    hsLayoutService.createOverlay(HsQueryPopupComponent, {
+    hsQueryPopupService.init(this.app);
+    hsLayoutService.createOverlay(HsQueryPopupComponent, this.app, {
       service: hsQueryPopupService,
+      app: this.app,
     });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});
   }

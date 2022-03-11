@@ -10,16 +10,16 @@ import {HsCoreModule} from '../../../hslayers/src/components/core/core.module';
 import {HsLayoutModule} from '../../../hslayers/src/components/layout/layout.module';
 //import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
 //import {HsDrawModule} from 'hslayers-ng/src/components/draw/public-api';
+import {HsLanguageModule} from 'hslayers-ng';
 import {HsQueryModule} from 'hslayers-ng/src/components/query/query.module';
 import {HslayersAppComponent} from './hslayers-app.component';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HslayersAppComponent],
   imports: [
     BrowserModule,
     HsCoreModule,
-    TranslateModule,
+    HsLanguageModule,
     HsLayoutModule,
     //HsDrawModule,
     //HsMeasureModule,

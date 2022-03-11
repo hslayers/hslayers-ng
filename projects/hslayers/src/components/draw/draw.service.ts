@@ -671,6 +671,7 @@ export class HsDrawService {
           ...(appRef.drawableLayers ?? []),
           ...(appRef.drawableLaymanLayers ?? []),
         ],
+        app,
       },
       app
     );
