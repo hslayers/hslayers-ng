@@ -2,7 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 import {Location, PlatformLocation} from '@angular/common';
 
 import {Map} from 'ol';
-import {Subject} from 'rxjs';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from '../../config.service';
@@ -29,6 +29,7 @@ export class HsShareUrlService {
   id: any;
   urlUntilParams: string;
   param_string: string;
+  private ngUnsubscribe = new Subject<void>();
   public statusSaving = false;
   public browserUrlUpdated: Subject<void> = new Subject();
 
@@ -62,6 +63,17 @@ export class HsShareUrlService {
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(app: string): void {
+    if (Object.entries(this.HsConfig.apps).length > 1) {
+      if (!this.ngUnsubscribe.closed) {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+      }
+      /**
+       * FIXME: ?
+       * Some third party params ( mentioned in keepTrackOfGetParams ) might need to be handled separately?
+       */
+      return;
+    }
     const view = this.HsMapService.getMap(app).getView();
     this.id = this.HsUtilsService.generateUuid();
 
@@ -314,18 +326,20 @@ export class HsShareUrlService {
     const map = this.HsMapService.getMap(app);
     if (this.url_generation) {
       let timer = null;
-      this.HsEventBusService.mapExtentChanges.subscribe(
-        this.HsUtilsService.debounce(
-          (data) => {
-            this.zone.run(() => {
-              this.update(app);
-            });
-          },
-          200,
-          false,
-          this
-        )
-      );
+      this.HsEventBusService.mapExtentChanges
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(
+          this.HsUtilsService.debounce(
+            (data) => {
+              this.zone.run(() => {
+                this.update(app);
+              });
+            },
+            200,
+            false,
+            this
+          )
+        );
       map.getLayers().on('add', (e) => {
         const layer = e.element;
         const external = getShowInLayerManager(layer);
@@ -337,7 +351,9 @@ export class HsShareUrlService {
             clearTimeout(timer);
           }
           timer = setTimeout(() => {
-            this.update(app);
+            if (!this.ngUnsubscribe.closed) {
+              this.update(app);
+            }
           }, 1000);
         });
       });
