@@ -474,6 +474,7 @@ export class HsAddDataCatalogueService {
               extractStyles: whatToAdd.extractStyles,
               workspace: whatToAdd.workspace,
               style: whatToAdd.style,
+              saveToLayman: true,
             },
             app
           );

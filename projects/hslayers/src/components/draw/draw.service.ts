@@ -314,6 +314,7 @@ export class HsDrawService {
    */
   async selectLayer(layer, app: string) {
     let metadata;
+    let style;
     const appRef = this.get(app);
 
     if (!(layer instanceof Layer)) {
@@ -322,37 +323,54 @@ export class HsDrawService {
         layer
       );
     }
-    if (metadata && !metadata?.type?.includes('WFS')) {
-      const dialog = this.hsDialogContainerService.create(
-        HsConfirmDialogComponent,
-        {
-          message: this.hsLanguageService.getTranslation(
-            'DRAW.thisLayerDoesNotSupportDrawing',
-            undefined,
-            app
-          ),
-          title: this.hsLanguageService.getTranslation(
-            'DRAW.notAVectorLayer',
-            undefined,
-            app
-          ),
-        },
-        app
-      );
-      const confirmed = await dialog.waitResult();
-      if (confirmed == 'yes') {
-        await this.hsAddDataOwsService.connectToOWS(
+    if (metadata) {
+      if (!metadata?.type?.includes('WFS')) {
+        const dialog = this.hsDialogContainerService.create(
+          HsConfirmDialogComponent,
           {
-            type: 'wms',
-            uri: decodeURIComponent(metadata.wms.url),
-            layer: layer.name,
+            message: this.hsLanguageService.getTranslation(
+              'DRAW.thisLayerDoesNotSupportDrawing',
+              undefined,
+              app
+            ),
+            title: this.hsLanguageService.getTranslation(
+              'DRAW.notAVectorLayer',
+              undefined,
+              app
+            ),
           },
           app
         );
-        appRef.selectedLayer = null;
-        this.fillDrawableLayers(app);
+        const confirmed = await dialog.waitResult();
+        if (confirmed == 'yes') {
+          await this.hsAddDataOwsService.connectToOWS(
+            {
+              type: 'wms',
+              uri: decodeURIComponent(metadata.wms.url),
+              layer: layer.name,
+            },
+            app
+          );
+          appRef.selectedLayer = null;
+          this.fillDrawableLayers(app);
+        }
+        return;
       }
-      return;
+      if (metadata.style?.url) {
+        style = await this.hsLaymanBrowserService.getStyleFromUrl(
+          metadata.style?.url
+        );
+      }
+      if (metadata.style?.type == 'sld') {
+        if (!style?.includes('StyledLayerDescriptor')) {
+          style = undefined;
+        }
+      }
+      if (metadata.style?.type == 'qml') {
+        if (!style?.includes('<qgis')) {
+          style = undefined;
+        }
+      }
     }
 
     let lyr = layer;
@@ -364,7 +382,7 @@ export class HsDrawService {
         layer.title,
         undefined,
         'EPSG:4326',
-        {workspace: layer.workspace},
+        {workspace: layer.workspace, saveToLayman: true, style: style},
         app
       );
       lyr = this.hsMapService.findLayerByTitle(layer.title, app);
