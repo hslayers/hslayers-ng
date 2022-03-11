@@ -30,6 +30,7 @@ export class HsStatisticsTimeSeriesChartDialogComponent
     rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
     uses: Usage;
+    app: string;
   };
   viewRef: ViewRef;
   selectedVariable: string;
@@ -89,7 +90,7 @@ export class HsStatisticsTimeSeriesChartDialogComponent
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   selectVariable(variable): void {
@@ -121,12 +122,15 @@ export class HsStatisticsTimeSeriesChartDialogComponent
   }
 
   async visualize(): Promise<void> {
+    if (!this.filteredRows) {
+      return;
+    }
     const observations = this.colWrappers
       .filter((col) => col.checked)
       .reduce(
         (acc, col) =>
           acc.concat(
-            this.filteredRows.map((s) => {
+            this.filteredRows?.map((s) => {
               const item = {
                 value: s.values[col.name],
                 name: col.name,
@@ -153,7 +157,7 @@ export class HsStatisticsTimeSeriesChartDialogComponent
     });
 
     const toolTipVariables = observations
-      .map((ob) => ob.name)
+      ?.map((ob) => ob.name)
       .filter((value, index, self) => {
         return self.indexOf(value) === index;
       })

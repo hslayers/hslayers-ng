@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
 
 import Papa from 'papaparse';
 import {
@@ -15,12 +15,12 @@ import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
   selector: 'hs-statistics-upload',
   templateUrl: './upload-panel.component.html',
 })
-export class HsStatisticsUploadPanelComponent implements AfterViewInit
-{
+export class HsStatisticsUploadPanelComponent implements AfterViewInit {
+  @Input() app = 'default';
   public title = '';
-  columns: string[];
-  uses: Usage;
-  rows: any[];
+  columns: string[] = [];
+  uses: Usage = null;
+  rows: any[] = [];
   rowsCollapsed = false;
   fileInput;
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -42,7 +42,7 @@ export class HsStatisticsUploadPanelComponent implements AfterViewInit
         this.setUses();
       }
     }
-    this.hsStatisticsService.clearData$.subscribe(() => {
+    this.hsStatisticsService.get(this.app).clearData$.subscribe(() => {
       this.rows = [];
       this.columns = [];
       this.uses = {};
@@ -57,11 +57,16 @@ export class HsStatisticsUploadPanelComponent implements AfterViewInit
   }
 
   visualizeInMap(): void {
-    this.hsDialogContainerService.create(HsStatisticsToMapDialogComponent, {
-      rows: this.rows,
-      columns: this.columns,
-      uses: this.uses,
-    });
+    this.hsDialogContainerService.create(
+      HsStatisticsToMapDialogComponent,
+      {
+        rows: this.rows,
+        columns: this.columns,
+        uses: this.uses,
+        app: this.app,
+      },
+      this.app
+    );
   }
 
   dataAvailable(): boolean {

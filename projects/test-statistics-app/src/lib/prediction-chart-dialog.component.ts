@@ -32,6 +32,7 @@ export class HsStatisticsPredictionChartDialogComponent
     predictedVariable: string;
     factor: ColumnWrapper;
     shifts: ShiftBy;
+    app: string;
   };
   viewRef: ViewRef;
   selectedLocation: any;
@@ -56,11 +57,19 @@ export class HsStatisticsPredictionChartDialogComponent
 
     this.locationColumn = 'location';
     this.timeColumn = 'time';
-    tmpTimeValues = Object.keys(this.hsStatisticsService.corpus.dict)
-      .map((key) => this.hsStatisticsService.corpus.dict[key])
+    tmpTimeValues = Object.keys(
+      this.hsStatisticsService.get(this.data.app).corpus.dict
+    )
+      .map(
+        (key) => this.hsStatisticsService.get(this.data.app).corpus.dict[key]
+      )
       .map((row) => row.time);
-    tmpLocValues = Object.keys(this.hsStatisticsService.corpus.dict)
-      .map((key) => this.hsStatisticsService.corpus.dict[key])
+    tmpLocValues = Object.keys(
+      this.hsStatisticsService.get(this.data.app).corpus.dict
+    )
+      .map(
+        (key) => this.hsStatisticsService.get(this.data.app).corpus.dict[key]
+      )
       .map((row) => row.location);
 
     this.timeValues = tmpTimeValues.filter((value, index, self) => {
@@ -71,13 +80,15 @@ export class HsStatisticsPredictionChartDialogComponent
     this.locationValues = tmpLocValues.filter((value, index, self) => {
       return self.indexOf(value) === index;
     });
-    this.colWrappers = this.hsStatisticsService.corpus.variables.map((col) => {
-      return {checked: true, name: col};
-    });
+    this.colWrappers = this.hsStatisticsService
+      .get(this.data.app)
+      .corpus.variables.map((col) => {
+        return {checked: true, name: col};
+      });
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   selectFilter(value: any): void {
@@ -87,8 +98,12 @@ export class HsStatisticsPredictionChartDialogComponent
   }
 
   applyFilters() {
-    this.filteredRows = Object.keys(this.hsStatisticsService.corpus.dict)
-      .map((key) => this.hsStatisticsService.corpus.dict[key])
+    this.filteredRows = Object.keys(
+      this.hsStatisticsService.get(this.data.app).corpus.dict
+    )
+      .map(
+        (key) => this.hsStatisticsService.get(this.data.app).corpus.dict[key]
+      )
       .filter((row) => row.location == this.selectedLocation);
   }
 

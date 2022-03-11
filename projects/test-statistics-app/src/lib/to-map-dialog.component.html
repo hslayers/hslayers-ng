@@ -3,14 +3,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'STATISTICS.VISUALIZE_MAP' | translate}}
+                    {{'STATISTICS.VISUALIZE_MAP' | translateHs : data}}
                 </h4>
                 <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
-                        class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
+                        class="visually-hidden">{{'COMMON.close' | translateHs : data}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'COMMON.layer' | translate}}:</p>
+                    <p class="m-0 p-0 flex-fill text-primary">{{'COMMON.layer' | translateHs : data}}:</p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
@@ -21,21 +21,23 @@
                       mw-100
                     " aria-haspopup="true">
                             <div class="text-truncate" *ngIf="selectedLayer !== undefined">
-                                {{HsLayerUtilsService.translateTitle(selectedLayer.title)}}
+                                {{HsLayerUtilsService.translateTitle(selectedLayer.title, data.app)}}
                             </div>
                         </button>
                         <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item text-truncate" *ngFor="let layer of vectorLayers"
-                                    data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
-                                    (click)="selectLayer(layer);">{{HsLayerUtilsService.translateTitle(layer.title)}}</a>
+                                    data-toggle="tooltip"
+                                    title="{{HsLayerUtilsService.translateTitle(layer.title,data.app)}}"
+                                    (click)="selectLayer(layer);">{{HsLayerUtilsService.translateTitle(layer.title,data.app)}}</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.LOCATION_PROPERTY' | translate}}:</p>
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.LOCATION_PROPERTY' | translateHs : data}}:
+                    </p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
@@ -52,15 +54,14 @@
                         <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item text-truncate" *ngFor="let p of locProperties"
-                                    data-toggle="tooltip" title="{{p}}"
-                                    (click)="selectedLocationProp = p">{{p}}</a>
+                                    data-toggle="tooltip" title="{{p}}" (click)="selectedLocationProp = p">{{p}}</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translate}}:</p>
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translateHs : data}}:</p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
@@ -84,7 +85,7 @@
                 </div>
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.TIME_FILTER' | translate}}:</p>
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.TIME_FILTER' | translateHs : data}}:</p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
@@ -109,12 +110,12 @@
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
                     <div class="input-group">
-                        <span class="input-group-text">{{ "STATISTICS.MINIMUM" | translate }}</span>
+                        <span class="input-group-text">{{ "STATISTICS.MINIMUM" | translateHs : data }}</span>
                         <input class="form-control" style="width: 65px" [(ngModel)]="min" name="min" />
                     </div>
 
                     <div class="input-group">
-                        <span class="input-group-text">{{ "STATISTICS.MAXIMUM" | translate }}</span>
+                        <span class="input-group-text">{{ "STATISTICS.MAXIMUM" | translateHs : data }}</span>
                         <input class="form-control" style="width: 65px" [(ngModel)]="max" name="max" />
                     </div>
                 </div>
@@ -123,9 +124,10 @@
                 <div class="modal-footer">
                     <button class="btn btn-primary" (click)="visualizeHistogram();" [disabled]="histogramDisabled()"
                         data-dismiss="modal">{{'STATISTICS.DESCRIPTIVE_STATISTICS'
-                        | translate}}</button>
-                    <button class="btn btn-primary" (click)="visualize();" [disabled]="!filteredRows" data-dismiss="modal">{{'STATISTICS.VISUALIZE'
-                        | translate}}</button>
+                        | translateHs : data}}</button>
+                    <button class="btn btn-primary" (click)="visualize();" [disabled]="!filteredRows"
+                        data-dismiss="modal">{{'STATISTICS.VISUALIZE'
+                        | translateHs : data}}</button>
                 </div>
             </div>
         </div>

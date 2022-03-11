@@ -6,18 +6,18 @@
           {{data.selectedVariable}} {{data.selectedTime}}
         </h4>
         <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
-            class="visually-hidden">{{'COMMON.close' | translate}}</span></button>
+            class="visually-hidden">{{'COMMON.close' | translateHs : data}}</span></button>
       </div>
       <div class="modal-body" style="max-height:600px; overflow-y:auto">
         <table class="table table-sm table-striped m-1" style="table-layout: fixed;">
           <thead style="vertical-align: middle;">
-            <th>{{'STATISTICS.MEAN' | translate}}</th>
-            <th>{{'STATISTICS.MEAN_ABSOLUTE_DEVIATION' | translate}}</th>
-            <th>{{'STATISTICS.MODE' | translate}}</th>
-            <th>{{'STATISTICS.MEDIAN' | translate}}</th>
-            <th>{{'STATISTICS.VARIANCE' | translate}}</th>
-            <th>{{'STATISTICS.STANDARD_DEVIATION' | translate}}</th>
-            <th>{{'STATISTICS.PEARSONS_OFFSET_COEFFICIENT' | translate}}</th>
+            <th>{{'STATISTICS.MEAN' | translateHs : data}}</th>
+            <th>{{'STATISTICS.MEAN_ABSOLUTE_DEVIATION' | translateHs : data}}</th>
+            <th>{{'STATISTICS.MODE' | translateHs : data}}</th>
+            <th>{{'STATISTICS.MEDIAN' | translateHs : data}}</th>
+            <th>{{'STATISTICS.VARIANCE' | translateHs : data}}</th>
+            <th>{{'STATISTICS.STANDARD_DEVIATION' | translateHs : data}}</th>
+            <th>{{'STATISTICS.PEARSONS_OFFSET_COEFFICIENT' | translateHs : data}}</th>
           </thead>
           <tbody>
             <tr>

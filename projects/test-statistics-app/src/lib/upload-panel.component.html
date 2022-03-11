@@ -1,18 +1,19 @@
 <div>
     <div>
-        {{'STATISTICS.DOWNLOAD_TEMPLATE_HINT' |
-        translate}} <a download="template.csv" [hsDownload]="uploadTemplate" mimeType="text/csv" [href]="downloadData"
-            (downloadPrepared)="downloadData = $event" [title]="'STATISTICS.HERE' | translate">
+        {{'STATISTICS.DOWNLOAD_TEMPLATE_HINT' | translateHs : {app} }} <a download="template.csv"
+            [hsDownload]="uploadTemplate" mimeType="text/csv" [href]="downloadData"
+            (downloadPrepared)="downloadData = $event" [title]="'STATISTICS.HERE' | translateHs: {app} ">
             here</a>.
     </div>
     <div class="form-group m-3">
-        <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="app" uploader="hs-sld-upload" acceptedFormats=".csv">
+        <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="app" uploader="hs-sld-upload"
+            acceptedFormats=".csv">
         </hs-file-upload>
     </div>
     <div class="d-flex justify-content-end">
         <button type="button" class="btn m-1 btn-secondary" (click)="rowsCollapsed = !rowsCollapsed"
             *ngIf="dataAvailable()">{{'STATISTICS.COLLAPSE_ROWS' |
-            translate}}</button>
+            translateHs : {app} }}</button>
     </div>
     <ng-container>
         <table class="table table-sm table-striped table-bordered"
@@ -40,11 +41,11 @@
 
     <div class="btn-group align-items-center" data-toggle="buttons">
         <button type="button" class="btn m-1 btn-primary"
-            (click)="hsStatisticsService.store(rows, columns, uses)">{{'STATISTICS.STORE' |
-            translate}}</button>
+            (click)="hsStatisticsService.store(rows, columns, uses, app)">{{'STATISTICS.STORE' |
+            translateHs : {app} }}</button>
         <button type="button" class="btn m-1 btn-secondary" (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP'
             |
-            translate}}</button>
+            translateHs : {app} }}</button>
     </div>
 
 </div>

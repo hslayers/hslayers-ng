@@ -17,7 +17,8 @@ export type HistogramData = {
   templateUrl: './histogram-chart-dialog.component.html',
 })
 export class HsStatisticsHistogramComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   viewRef: ViewRef;
   descStat: {
     median: number;
@@ -35,6 +36,7 @@ export class HsStatisticsHistogramComponent
     min: number;
     max: number;
     selectedVariable: string;
+    app: string;
   };
   constructor(
     public hsDialogContainerService: HsDialogContainerService,
@@ -79,7 +81,7 @@ export class HsStatisticsHistogramComponent
     );
   }
   close(): void {
-    this.hsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this, this.data.app);
   }
 
   visualize(): void {

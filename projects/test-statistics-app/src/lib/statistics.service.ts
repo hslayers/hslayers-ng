@@ -6,7 +6,7 @@ import {
   HsLanguageService,
 } from 'hslayers-ng';
 import {Subject} from 'rxjs';
-import {sampleCorrelation, sampleVariance} from 'simple-statistics';
+import {sampleCorrelation} from 'simple-statistics';
 
 export interface Usage {
   [key: string]: 'location' | 'ignore' | 'time' | 'variable';
@@ -28,25 +28,47 @@ export interface CorpusItems {
   uses: Usage;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsStatisticsService {
+class StatisticsServiceParams {
   /** Main hash table of time+location keys and values which are populated from columns marked as 'variable'*/
   corpus: CorpusItems = {dict: {}, variables: [], uses: {}};
   clearData$: Subject<void> = new Subject();
   activeTab = 1;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HsStatisticsService {
+  apps: {
+    [id: string]: StatisticsServiceParams;
+  } = {default: new StatisticsServiceParams()};
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsDialogContainerService: HsDialogContainerService
-  ) {
+  ) {}
+
+  /**
+   * Initialize the map swipe service data and subscribers
+   * @param app - App identifier
+   */
+  init(app: string) {
     const savedCorpus = localStorage.getItem('hs_statistics_corpus');
     if (savedCorpus) {
-      this.corpus = JSON.parse(savedCorpus);
+      this.get(app).corpus = JSON.parse(savedCorpus);
     }
   }
+  /**
+   * Get the params saved by the statistics service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): StatisticsServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new StatisticsServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
 
-  store(rows: any[], columns: string[], uses: Usage): void {
+  store(rows: any[], columns: string[], uses: Usage, app: string): void {
     if (!rows || !columns) {
       return;
     }
@@ -62,34 +84,40 @@ export class HsStatisticsService {
       }
       let corpusItem: {values: CorpusItemValues};
       const key = keyObject.location + '::' + keyObject.time;
-      if (this.corpus.dict[key] === undefined) {
+      if (this.get(app).corpus.dict[key] === undefined) {
         corpusItem = {values: {}, ...keyObject};
-        this.corpus.dict[key] = corpusItem;
+        this.get(app).corpus.dict[key] = corpusItem;
       } else {
-        corpusItem = this.corpus.dict[key];
+        corpusItem = this.get(app).corpus.dict[key];
       }
       for (const col of columns.filter((col) => uses[col] == 'variable')) {
         //Why is this here? It breaks key comparisons between columns and usages
         //Answer: Its needed because vega treats everything after dot as a hierarchical sub-variable
         const escapedCol = col.replace(/\./g, '');
         corpusItem.values[escapedCol] = parseFloat(row[col]);
-        if (!this.corpus.variables.some((v) => v == escapedCol)) {
-          this.corpus.variables.push(escapedCol);
+        if (!this.get(app).corpus.variables.some((v) => v == escapedCol)) {
+          this.get(app).corpus.variables.push(escapedCol);
         }
         if (escapedCol != col) {
           uses[escapedCol] = uses[col];
         }
       }
     }
-    Object.assign(this.corpus.uses, uses);
-    localStorage.setItem('hs_statistics_corpus', JSON.stringify(this.corpus));
+    Object.assign(this.get(app).corpus.uses, uses);
+    localStorage.setItem(
+      'hs_statistics_corpus',
+      JSON.stringify(this.get(app).corpus)
+    );
     localStorage.setItem(
       'hs_statistics_table',
       JSON.stringify({rows: rows, columns: columns})
     );
   }
 
-  correlate(variableShifts: ShiftBy): {
+  correlate(
+    variableShifts: ShiftBy,
+    app: string
+  ): {
     matrix: {
       [var1: string]: number[];
     };
@@ -100,10 +128,14 @@ export class HsStatisticsService {
     }[];
   } {
     const results = {matrix: {}, list: []};
-    for (const var1 of this.corpus.variables) {
+    for (const var1 of this.get(app).corpus.variables) {
       results.matrix[var1] = [];
-      for (const var2 of this.corpus.variables) {
-        const {samples} = this.createShiftedSamples([var1, var2], variableShifts);
+      for (const var2 of this.get(app).corpus.variables) {
+        const {samples} = this.createShiftedSamples(
+          [var1, var2],
+          variableShifts,
+          app
+        );
         const coefficient =
           samples[0].length > 1 ? sampleCorrelation(samples[0], samples[1]) : 0;
         results.matrix[var1].push(coefficient);
@@ -123,12 +155,13 @@ export class HsStatisticsService {
 
   createShiftedSamples(
     variables: string[],
-    variableShifts: ShiftBy
+    variableShifts: ShiftBy,
+    app: string
   ): {samples: number[][]; sampleKeys: string[][]} {
-    const dict = this.corpus.dict;
+    const dict = this.get(app).corpus.dict;
     const tmpSamples = variables.map((variable) => {
       const keys = Object.keys(dict).map((key) =>
-        this.adjustDictionaryKey(key, variable, variableShifts)
+        this.adjustDictionaryKey(key, variable, variableShifts, app)
       );
       return {
         values: keys.map((key) =>
@@ -162,16 +195,19 @@ export class HsStatisticsService {
 
   /**
    * Take data dictionary item key and return the same item, but from another year
-   * @param key
-   * @param variable
+   * @param key -
+   * @param variable -
+   * @param variableShifts -
+   * @param app - App identifier
    * @returns
    */
   private adjustDictionaryKey(
     key: string,
     variable: string,
-    variableShifts: ShiftBy
+    variableShifts: ShiftBy,
+    app: string
   ): string {
-    const origEntry = this.corpus.dict[key];
+    const origEntry = this.get(app).corpus.dict[key];
     return (
       origEntry.location +
       '::' +
@@ -181,15 +217,15 @@ export class HsStatisticsService {
 
   /**
    * Lookup time shifting amount
-   * @param variable
-   * @param time
+   * @param variable -
+   * @param time -
    * @returns
    */
   shiftTime(variable: string, time: string, variableShifts: ShiftBy) {
     return parseInt(time) - (variableShifts[variable] ?? 0);
   }
 
-  async clear(): Promise<void> {
+  async clear(app: string): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -197,16 +233,17 @@ export class HsStatisticsService {
           'STATISTICS.CLEAR_ALL_STATISTICS_DATA'
         ),
         title: this.hsLanguageService.getTranslation('COMMON.confirm'),
-      }
+      },
+      app
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.corpus.dict = {};
-      this.corpus.variables = [];
-      this.corpus.uses = {};
+      this.get(app).corpus.dict = {};
+      this.get(app).corpus.variables = [];
+      this.get(app).corpus.uses = {};
       localStorage.removeItem('hs_statistics_corpus');
       localStorage.removeItem('hs_statistics_table');
-      this.clearData$.next();
+      this.get(app).clearData$.next();
     }
   }
 }

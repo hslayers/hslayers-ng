@@ -23,7 +23,10 @@ export enum Tabs {
   ],
 })
 export class HsStatisticsCorrelationsComponent implements HsDialogComponent {
-  @Input() data: any;
+  @Input() data: {
+    correlate: any;
+    app: string;
+  };
   viewRef: ViewRef;
   tabs = Tabs;
   tabSelected = Tabs.varList;
@@ -35,12 +38,15 @@ export class HsStatisticsCorrelationsComponent implements HsDialogComponent {
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   updateShifting(variable: string, shiftBy: number) {
     this.shifts[variable] = shiftBy;
-    this.data = this.HsStatisticsService.correlate(this.shifts);
+    this.data.correlate = this.HsStatisticsService.correlate(
+      this.shifts,
+      this.data.app
+    );
   }
 
   tabSelect(tabTitle: Tabs): void {

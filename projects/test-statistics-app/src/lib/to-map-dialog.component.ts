@@ -34,6 +34,7 @@ export class HsStatisticsToMapDialogComponent
     rows: any[] | {[key: string]: {values: CorpusItemValues}};
     columns: string[];
     uses: Usage;
+    app: string;
   };
   viewRef: ViewRef;
   vectorLayers = [];
@@ -58,9 +59,7 @@ export class HsStatisticsToMapDialogComponent
     public HsLayerUtilsService: HsLayerUtilsService,
     private HsMapService: HsMapService,
     private HsStylerService: HsStylerService
-  ) {
-    this.fillVectorLayers();
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.isDataLoaded()) {
@@ -90,13 +89,16 @@ export class HsStatisticsToMapDialogComponent
         })
         .filter((val) => val);
 
-      this.selectVariable(
-        this.data.columns.find((col) => this.data.uses[col] == 'variable')
+      const variable = this.data.columns.find(
+        (col) => this.data.uses[col] == 'variable'
       );
+      this.selectedVariable = variable;
       if (this.timeValues?.length > 0) {
         this.selectFilter(this.timeValues[this.timeValues.length - 1]);
       }
     }
+
+    this.fillVectorLayers();
   }
 
   isDataLoaded(): boolean {
@@ -111,19 +113,24 @@ export class HsStatisticsToMapDialogComponent
   }
 
   visualizeHistogram(): void {
-    this.HsDialogContainerService.create(HsStatisticsHistogramComponent, {
-      filteredValues: this.filteredValues,
-      selectedTime: this.selectedTimeValue,
-      min: this.min,
-      max: this.max,
-      selectedVariable: this.selectedVariable,
-    });
+    this.HsDialogContainerService.create(
+      HsStatisticsHistogramComponent,
+      {
+        filteredValues: this.filteredValues,
+        selectedTime: this.selectedTimeValue,
+        min: this.min,
+        max: this.max,
+        selectedVariable: this.selectedVariable,
+        app: this.data.app,
+      },
+      this.data.app
+    );
   }
 
   async fillVectorLayers(): Promise<void> {
-    this.HsMapService.loaded(this.app).then((map) => {
+    this.HsMapService.loaded(this.data.app).then((map) => {
       this.vectorLayers = [
-        ...this.HsMapService.getLayersArray()
+        ...this.HsMapService.getLayersArray(this.data.app)
           .filter((layer: Layer<Source>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer)
           )
@@ -138,7 +145,7 @@ export class HsStatisticsToMapDialogComponent
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.HsDialogContainerService.destroy(this, this.data.app);
   }
 
   async selectLayer(layer: {
@@ -172,6 +179,9 @@ export class HsStatisticsToMapDialogComponent
   }
 
   applyFilters() {
+    if (!this.selectedVariable) {
+      return;
+    }
     if (Array.isArray(this.data.rows)) {
       this.filteredRows = this.data.rows.filter(
         (row) => row[this.timeColumn] == this.selectedTimeValue
@@ -267,7 +277,8 @@ export class HsStatisticsToMapDialogComponent
   </NamedLayer>
 </StyledLayerDescriptor>`;
     setSld(this.selectedLayer.layer, sld);
-    const style = (await this.HsStylerService.parseStyle(sld)).style;
+    const style = (await this.HsStylerService.parseStyle(sld, this.data.app))
+      .style;
     if (style) {
       this.selectedLayer.layer.setStyle(style);
     }
