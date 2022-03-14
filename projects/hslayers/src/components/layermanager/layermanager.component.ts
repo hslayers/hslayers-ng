@@ -253,7 +253,7 @@ export class HsLayerManagerComponent
 
   toggleVisibilityForAll(): void {
     this.allLayersVisible = !this.allLayersVisible;
-    this.data.layers.forEach((l) => {
+    this.appRef.data.layers.forEach((l) => {
       this.hsLayerManagerService.changeLayerVisibility(
         this.allLayersVisible,
         l,
@@ -299,7 +299,7 @@ export class HsLayerManagerComponent
    * Test if box layers are loaded
    */
   hasBoxImages(): boolean {
-    return this.data.box_layers?.some(
+    return this.appRef.data.box_layers?.some(
       (layer) => getThumbnail(layer) !== undefined
     );
   }

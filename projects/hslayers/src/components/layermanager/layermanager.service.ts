@@ -632,7 +632,10 @@ export class HsLayerManagerService {
       this.HsLayerEditorVectorLayerService.layersClusteredFromStart,
       e.element
     );
-    this.HsEventBusService.layerManagerUpdates.next(e.element);
+    this.HsEventBusService.layerManagerUpdates.next({
+      layer: e.element,
+      app: app,
+    });
     this.HsEventBusService.layerRemovals.next(e.element);
     this.HsEventBusService.compositionEdits.next({app});
     const layers = this.HsMapService.getMap(app).getLayers().getArray();

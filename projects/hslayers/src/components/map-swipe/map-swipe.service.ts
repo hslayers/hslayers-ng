@@ -8,6 +8,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
@@ -45,7 +46,8 @@ export class HsMapSwipeService {
     public hsLayerShiftingService: HsLayerShiftingService,
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerService: HsLayerManagerService,
-    public hsShareUrlService: HsShareUrlService
+    public hsShareUrlService: HsShareUrlService,
+    public hsLayoutService: HsLayoutService
   ) {}
 
   /**
@@ -67,13 +69,19 @@ export class HsMapSwipeService {
     this.setInitCtrlActive(app);
     this.setInitOri(app);
     this.hsMapService.loaded(app).then(() => {
-      this.initSwipeControl(app);
+      if (this.hsLayoutService.panelEnabled('mapSwipe', app)) {
+        this.initSwipeControl(app);
+      }
     });
-    this.hsEventBusService.layerManagerUpdates
-      .pipe(first())
-      .subscribe(() => this.setInitialSwipeLayers(app));
+    this.hsEventBusService.layerManagerUpdates.pipe(first()).subscribe(() => {
+      if (this.hsLayoutService.panelEnabled('mapSwipe', app)) {
+        this.setInitialSwipeLayers(app);
+      }
+    });
     this.hsEventBusService.layerManagerUpdates.subscribe(({layer, app}) => {
-      this.fillSwipeLayers(layer, app);
+      if (this.hsLayoutService.panelEnabled('mapSwipe', app)) {
+        this.fillSwipeLayers(layer, app);
+      }
     });
   }
 
@@ -104,15 +112,16 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   setInitOri(app: string): void {
+    const appRef = this.get(app);
     const storageOri = localStorage.getItem(`${app}:hs_map_swipe_ori`);
     if (storageOri) {
-      this.get(app).orientation = storageOri;
+      appRef.orientation = storageOri;
     } else {
-      this.get(app).orientation =
+      appRef.orientation =
         this.hsConfig?.get(app).mapSwipeOptions?.orientation ?? 'vertical';
     }
-    if (this.get(app).orientation !== 'vertical') {
-      this.get(app).orientationVertical = false;
+    if (appRef.orientation !== 'vertical') {
+      appRef.orientationVertical = false;
     }
     this.updateStorageOri(app);
   }
@@ -121,13 +130,14 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   initSwipeControl(app: string): void {
-    this.get(app).swipeCtrl = new SwipeControl({
-      orientation: this.get(app).orientation,
+    const appRef = this.get(app);
+    appRef.swipeCtrl = new SwipeControl({
+      orientation: appRef.orientation,
       app: app,
     });
-    if (this.get(app).swipeControlActive) {
-      this.get(app).swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
-      this.hsMapService.getMap(app).addControl(this.get(app).swipeCtrl);
+    if (appRef.swipeControlActive) {
+      appRef.swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
+      this.hsMapService.getMap(app).addControl(appRef.swipeCtrl);
     }
   }
 
@@ -157,13 +167,14 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   layersAvailable(app: string): boolean {
-    if (this.get(app) == undefined) {
+    const appRef = this.get(app);
+    if (appRef == undefined) {
       return false;
     }
     return (
-      this.get(app).swipeCtrl?.leftLayers?.length > 0 ||
-      this.get(app).swipeCtrl?.rightLayers?.length > 0 ||
-      this.get(app).entireMapLayers?.length > 0
+      appRef.swipeCtrl?.leftLayers?.length > 0 ||
+      appRef.swipeCtrl?.rightLayers?.length > 0 ||
+      appRef.entireMapLayers?.length > 0
     );
   }
 
@@ -172,11 +183,10 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   setOrientation(app: string): void {
-    this.get(app).orientationVertical = !this.get(app).orientationVertical;
-    this.get(app).orientation = this.get(app).orientationVertical
-      ? 'vertical'
-      : 'horizontal';
-    this.get(app).swipeCtrl.set('orientation', this.get(app).orientation);
+    const appRef = this.get(app);
+    appRef.orientationVertical = !appRef.orientationVertical;
+    appRef.orientation = appRef.orientationVertical ? 'vertical' : 'horizontal';
+    appRef.swipeCtrl.set('orientation', appRef.orientation);
     this.updateStorageOri(app);
   }
   /**
@@ -212,19 +222,20 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   addSwipeLayer(layerItem: LayerListItem, app: string): void {
-    if (!this.get(app).swipeCtrl) {
+    const appRef = this.get(app);
+    if (!appRef.swipeCtrl) {
       this.initSwipeControl(app);
     }
     if (!this.findLayer(layerItem.layer, app)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeSide(layerItem.layer) === 'right') {
-        this.get(app).swipeCtrl.addLayer(layerItem, true);
-        this.get(app).rightLayers.push(layerItem);
+        appRef.swipeCtrl.addLayer(layerItem, true);
+        appRef.rightLayers.push(layerItem);
       } else if (getSwipeSide(layerItem.layer) === 'left') {
-        this.get(app).swipeCtrl.addLayer(layerItem);
-        this.get(app).leftLayers.push(layerItem);
+        appRef.swipeCtrl.addLayer(layerItem);
+        appRef.leftLayers.push(layerItem);
       } else {
-        this.get(app).entireMapLayers.push(layerItem);
+        appRef.entireMapLayers.push(layerItem);
       }
       layerItem.layer.on('change:visible', (e) =>
         this.layerVisibilityChanged(e, app)
@@ -237,15 +248,16 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   moveSwipeLayer(lyrListItem: LayerListItem, app: string): void {
-    if (this.get(app).movingSide === SwipeSide.Right) {
+    const appRef = this.get(app);
+    if (appRef.movingSide === SwipeSide.Right) {
       this.moveRight(lyrListItem, app);
       setSwipeSide(lyrListItem.layer, 'right');
     }
-    if (this.get(app).movingSide === SwipeSide.Left) {
+    if (appRef.movingSide === SwipeSide.Left) {
       this.moveLeft(lyrListItem, app);
       setSwipeSide(lyrListItem.layer, 'left');
     }
-    if (this.get(app).movingSide === SwipeSide.Full) {
+    if (appRef.movingSide === SwipeSide.Full) {
       setSwipeSide(lyrListItem.layer, undefined);
       this.get(app).swipeCtrl.removeCompletely(lyrListItem.layer);
     }
@@ -274,18 +286,19 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   setControl(app: string): void {
-    this.get(app).swipeControlActive = !this.get(app).swipeControlActive;
+    const appRef = this.get(app);
+    appRef.swipeControlActive = !appRef.swipeControlActive;
     this.updateUrlParam(app);
     if (!this.hsMapService.getMap(app)) {
       return;
     }
-    if (this.get(app).swipeControlActive) {
-      this.get(app).swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
-      this.hsMapService.getMap(app).addControl(this.get(app).swipeCtrl);
-      this.get(app).swipeCtrl.setEvents(true);
+    if (appRef.swipeControlActive) {
+      appRef.swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
+      this.hsMapService.getMap(app).addControl(appRef.swipeCtrl);
+      appRef.swipeCtrl.setEvents(true);
     } else {
-      this.hsMapService.getMap(app).removeControl(this.get(app).swipeCtrl);
-      this.get(app).swipeCtrl.setEvents();
+      this.hsMapService.getMap(app).removeControl(appRef.swipeCtrl);
+      appRef.swipeCtrl.setEvents();
     }
     try {
       this.hsMapService.getMap(app).renderSync();
@@ -299,25 +312,26 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   removeCompletely(layerToRm: Layer<Source>, app: string): void {
+    const appRef = this.get(app);
     const layerFound = this.findLayer(layerToRm, app);
     if (layerFound.l) {
       if (layerFound.arr === 'layers') {
-        this.get(app).leftLayers = this.get(app).leftLayers.filter(
+        appRef.leftLayers = appRef.leftLayers.filter(
           (l) => l.layer != layerToRm
         );
       }
       if (layerFound.arr === 'rightLayers') {
-        this.get(app).rightLayers = this.get(app).rightLayers.filter(
+        appRef.rightLayers = appRef.rightLayers.filter(
           (l) => l.layer != layerToRm
         );
       }
       if (layerFound.arr === 'entireMapLayers') {
-        this.get(app).entireMapLayers = this.get(app).entireMapLayers.filter(
+        appRef.entireMapLayers = appRef.entireMapLayers.filter(
           (l) => l.layer != layerToRm
         );
       }
     }
-    this.get(app).swipeCtrl.removeCompletely(layerToRm);
+    appRef.swipeCtrl.removeCompletely(layerToRm);
   }
   /**
    * Set layer as active (last dragged)
@@ -325,10 +339,11 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   setLayerActive(layer: LayerListItem, app: string): void {
+    const appRef = this.get(app);
     const layerFound = this.findLayer(layer.layer, app);
-    this.get(app).leftLayers.forEach((l) => (l.active = false));
-    this.get(app).rightLayers.forEach((l) => (l.active = false));
-    this.get(app).entireMapLayers.forEach((l) => (l.active = false));
+    appRef.leftLayers.forEach((l) => (l.active = false));
+    appRef.rightLayers.forEach((l) => (l.active = false));
+    appRef.entireMapLayers.forEach((l) => (l.active = false));
     if (layerFound?.l) {
       layerFound.l.active = true;
     }
@@ -338,9 +353,10 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   setInitialSwipeLayers(app: string): void {
-    this.get(app).leftLayers = [];
-    this.get(app).rightLayers = [];
-    this.get(app).entireMapLayers = [];
+    const appRef = this.get(app);
+    appRef.leftLayers = [];
+    appRef.rightLayers = [];
+    appRef.entireMapLayers = [];
     this.hsLayerShiftingService.fillLayers(app);
     if (!this.hsLayerShiftingService.layersCopy) {
       return;
@@ -369,16 +385,17 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   sortLayers(app: string): void {
-    this.get(app).leftLayers = this.hsLayerManagerService.sortLayersByZ(
-      this.get(app).leftLayers,
+    const appRef = this.get(app);
+    appRef.leftLayers = this.hsLayerManagerService.sortLayersByZ(
+      appRef.leftLayers,
       app
     );
-    this.get(app).rightLayers = this.hsLayerManagerService.sortLayersByZ(
-      this.get(app).rightLayers,
+    appRef.rightLayers = this.hsLayerManagerService.sortLayersByZ(
+      appRef.rightLayers,
       app
     );
-    this.get(app).entireMapLayers = this.hsLayerManagerService.sortLayersByZ(
-      this.get(app).entireMapLayers,
+    appRef.entireMapLayers = this.hsLayerManagerService.sortLayersByZ(
+      appRef.entireMapLayers,
       app
     );
   }
