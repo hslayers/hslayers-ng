@@ -88,12 +88,13 @@ export class HsAddDataCatalogueMapService {
    * @param map -
    */
   async init(app): Promise<void> {
-    if (!this.get(app).initRun) {
+    const appRef = this.get(app);
+    if (!appRef.initRun) {
       await this.hsMapService.loaded(app);
       const map = this.hsMapService.getMap(app);
       map.on('pointermove', (evt) => this.mapPointerMoved(evt, app));
-      map.addLayer(this.get(app).extentLayer);
-      this.hsSaveMapService.internalLayers.push(this.get(app).extentLayer);
+      map.addLayer(appRef.extentLayer);
+      this.hsSaveMapService.internalLayers.push(appRef.extentLayer);
       this.apps[app].initRun = true;
     }
   }

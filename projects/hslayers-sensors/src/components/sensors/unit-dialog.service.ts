@@ -66,9 +66,10 @@ export class HsSensorsUnitDialogService {
    * @param app - App identifier
    */
   selectSensor(sensor: any, app: string) {
-    this.get(app).sensorsSelected.forEach((s) => (s.checked = false));
-    this.get(app).sensorsSelected = [sensor];
-    this.get(app).sensorIdsSelected = [sensor.sensor_id];
+    const appRef = this.get(app);
+    appRef.sensorsSelected.forEach((s) => (s.checked = false));
+    appRef.sensorsSelected = [sensor];
+    appRef.sensorIdsSelected = [sensor.sensor_id];
   }
 
   /**
@@ -77,16 +78,14 @@ export class HsSensorsUnitDialogService {
    * @param app - App identifier
    */
   toggleSensor(sensor, app: string) {
+    const appRef = this.get(app);
     if (sensor.checked) {
-      this.get(app).sensorsSelected.push(sensor);
-      this.get(app).sensorIdsSelected.push(sensor.sensor_id);
+      appRef.sensorsSelected.push(sensor);
+      appRef.sensorIdsSelected.push(sensor.sensor_id);
     } else {
-      this.get(app).sensorsSelected.splice(
-        this.get(app).sensorsSelected.indexOf(sensor),
-        1
-      );
-      this.get(app).sensorIdsSelected.splice(
-        this.get(app).sensorIdsSelected.indexOf(sensor.sensor_id),
+      appRef.sensorsSelected.splice(appRef.sensorsSelected.indexOf(sensor), 1);
+      appRef.sensorIdsSelected.splice(
+        appRef.sensorIdsSelected.indexOf(sensor.sensor_id),
         1
       );
     }
@@ -144,12 +143,11 @@ export class HsSensorsUnitDialogService {
    * @returns Promise which resolves when observation history data is received
    */
   getObservationHistory(unit, interval, app: string) {
+    const appRef = this.get(app);
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.hsUtilsService.proxify(
-        `${this.get(app).endpoint.url}/${
-          this.get(app).endpoint.liteApiPath
-        }/rest/observation`,
+        `${appRef.endpoint.url}/${appRef.endpoint.liteApiPath}/rest/observation`,
         app
       );
       const time = this.getTimeForInterval(interval);
@@ -163,7 +161,7 @@ export class HsSensorsUnitDialogService {
       this.http
         .get(
           `${url}?user_id=${encodeURIComponent(
-            this.get(app).endpoint.user_id
+            appRef.endpoint.user_id
           )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(
             from_time
           )}&to_time=${encodeURIComponent(to_time)}`
@@ -171,7 +169,7 @@ export class HsSensorsUnitDialogService {
         .subscribe(
           (response) => {
             interval.loading = false;
-            this.get(app).observations = response;
+            appRef.observations = response;
             resolve(null);
           },
           (err) => {
@@ -192,23 +190,22 @@ export class HsSensorsUnitDialogService {
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
   createChart(unit, app: string) {
+    const appRef = this.get(app);
     let sensorDesc = unit.sensors.filter(
-      (s) => this.get(app).sensorIdsSelected.indexOf(s.sensor_id) > -1
+      (s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1
     );
     if (sensorDesc.length > 0) {
       sensorDesc = sensorDesc[0];
     }
-    const observations = this.get(app).observations.reduce(
+    const observations = appRef.observations.reduce(
       (acc, val) =>
         acc.concat(
           val.sensors
-            .filter(
-              (s) => this.get(app).sensorIdsSelected.indexOf(s.sensor_id) > -1
-            )
+            .filter((s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1)
             .map((s) => {
               const time = dayjs(val.time_stamp);
               s.sensor_name = this.translate(
-                this.get(app).sensorById[s.sensor_id].sensor_name,
+                appRef.sensorById[s.sensor_id].sensor_name,
                 'SENSORNAMES'
               );
               s.time = time.format('DD.MM.YYYY HH:mm');
@@ -218,11 +215,7 @@ export class HsSensorsUnitDialogService {
         ),
       []
     );
-    this.get(app).aggregations = this.calculateAggregates(
-      unit,
-      observations,
-      app
-    );
+    appRef.aggregations = this.calculateAggregates(unit, observations, app);
     observations.sort((a, b) => {
       if (a.time_stamp > b.time_stamp) {
         return 1;
@@ -241,9 +234,8 @@ export class HsSensorsUnitDialogService {
         },
       },
       'width':
-        this.get(app).dialogElement.nativeElement.querySelector(
-          '.hs-chartplace'
-        ).parentElement.offsetWidth - 40,
+        appRef.dialogElement.nativeElement.querySelector('.hs-chartplace')
+          .parentElement.offsetWidth - 40,
       'autosize': {
         'type': 'fit',
         'contains': 'padding',
@@ -294,9 +286,7 @@ export class HsSensorsUnitDialogService {
     };
     try {
       vegaEmbed(
-        this.get(app).dialogElement.nativeElement.querySelector(
-          '.hs-chartplace'
-        ),
+        appRef.dialogElement.nativeElement.querySelector('.hs-chartplace'),
         chartData
       );
     } catch (ex) {

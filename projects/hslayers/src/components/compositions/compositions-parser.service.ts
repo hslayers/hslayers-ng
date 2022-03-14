@@ -139,12 +139,13 @@ export class HsCompositionsParserService {
     app: string
   ): Promise<void> {
     this.hsEventBusService.compositionLoading.next(response);
+    const appRef = this.get(app);
     if (this.checkLoadSuccess(response)) {
-      this.get(app).composition_loaded = url;
+      appRef.composition_loaded = url;
       if (this.hsUtilsService.isFunction(pre_parse)) {
         response = pre_parse(response);
       }
-      response.workspace = this.get(app).current_composition_workspace;
+      response.workspace = appRef.current_composition_workspace;
       /*
       Response might contain {data:{abstract:...}} or {abstract:}
       directly. If there is data object,

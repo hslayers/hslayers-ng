@@ -35,14 +35,15 @@ export class HsCompositionsMapService {
     private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      if (this.get(app).extentLayer) {
+      const appRef = this.get(app);
+      if (appRef.extentLayer) {
         if (
           this.hsLayoutService.get(app).mainpanel === 'composition_browser' ||
           this.hsLayoutService.get(app).mainpanel === 'composition'
         ) {
-          this.get(app).extentLayer.setVisible(true);
+          appRef.extentLayer.setVisible(true);
         } else {
-          this.get(app).extentLayer.setVisible(false);
+          appRef.extentLayer.setVisible(false);
         }
       }
     });
@@ -53,10 +54,11 @@ export class HsCompositionsMapService {
    * @param app - App identifier
    */
   init(app: string) {
+    const appRef = this.get(app);
     this.hsMapService.loaded(app).then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e, app));
-      map.addLayer(this.get(app).extentLayer);
-      this.hsSaveMapService.internalLayers.push(this.get(app).extentLayer);
+      map.addLayer(appRef.extentLayer);
+      this.hsSaveMapService.internalLayers.push(appRef.extentLayer);
     });
   }
 
@@ -104,15 +106,16 @@ export class HsCompositionsMapService {
    * @param app - App identifier
    */
   mapPointerMoved(evt, app: string) {
-    const featuresUnderMouse = this.get(app)
-      .extentLayer.getSource()
+    const appRef = this.get(app);
+    const featuresUnderMouse = appRef.extentLayer
+      .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.compositions
     )) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
-        this.get(app).extentLayer,
+        appRef.extentLayer,
         endpoint.compositions
       );
     }

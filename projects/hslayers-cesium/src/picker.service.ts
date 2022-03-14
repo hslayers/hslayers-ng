@@ -43,13 +43,12 @@ export class HsCesiumPickerService {
   }
 
   init(viewer: Viewer, app: string) {
-    this.get(app).viewer = viewer;
-    const handler = new ScreenSpaceEventHandler(
-      this.get(app).viewer.scene.canvas
-    );
+    const appRef = this.get(app);
+    appRef.viewer = viewer;
+    const handler = new ScreenSpaceEventHandler(appRef.viewer.scene.canvas);
 
     handler.setInputAction((movement) => {
-      const pickedObject = this.get(app).viewer.scene.pick(movement.position);
+      const pickedObject = appRef.viewer.scene.pick(movement.position);
       if (pickedObject && pickedObject.id && pickedObject.id.onmouseup) {
         pickedObject.id.onmouseup(pickedObject.id);
         return;
@@ -87,21 +86,20 @@ export class HsCesiumPickerService {
     button: 'left' | 'right' | 'none',
     app: string
   ) {
-    const pickRay = this.get(app).viewer.camera.getPickRay(movement.position);
-    const pickedObject = this.get(app).viewer.scene.pick(movement.position);
+    const appRef = this.get(app);
+    const pickRay = appRef.viewer.camera.getPickRay(movement.position);
+    const pickedObject = appRef.viewer.scene.pick(movement.position);
 
-    if (this.get(app).viewer.scene.pickPositionSupported) {
-      if (this.get(app).viewer.scene.mode === SceneMode.SCENE3D) {
-        const cartesian = this.get(app).viewer.scene.pickPosition(
-          movement.position
-        );
+    if (appRef.viewer.scene.pickPositionSupported) {
+      if (appRef.viewer.scene.mode === SceneMode.SCENE3D) {
+        const cartesian = appRef.viewer.scene.pickPosition(movement.position);
         if (defined(cartesian)) {
           const cartographic = Cartographic.fromCartesian(cartesian);
           const longitudeString = Math.toDegrees(cartographic.longitude);
           const latitudeString = Math.toDegrees(cartographic.latitude);
           //TODO rewrite to subject
           if (button == 'left' || 'right') {
-            this.get(app).cesiumPositionClicked.next([
+            appRef.cesiumPositionClicked.next([
               longitudeString,
               latitudeString,
             ]);

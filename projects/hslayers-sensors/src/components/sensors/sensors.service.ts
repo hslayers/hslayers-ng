@@ -104,9 +104,10 @@ export class HsSensorsService {
    * @param app - App identifier
    */
   init(app: string): void {
-    this.get(app).labelStyle = this.olStyle;
+    const appRef = this.get(app);
+    appRef.labelStyle = this.olStyle;
     this.hsConfig.configChanges.subscribe(() => {
-      if (this.hsConfig.get(app).senslog != this.get(app).endpoint) {
+      if (this.hsConfig.get(app).senslog != appRef.endpoint) {
         this.setEndpoint(app);
       }
     });
@@ -117,14 +118,14 @@ export class HsSensorsService {
         () => {
           if (
             this.hsMapService.getLayerForFeature(event.feature, app) ==
-            this.get(app).layer
+            appRef.layer
           ) {
             this.hsLayoutService.setMainPanel('sensors', app);
-            this.get(app).units.forEach(
+            appRef.units.forEach(
               (unit: HsSensorUnit) => (unit.expanded = false)
             );
             this.selectUnit(
-              this.get(app).units.filter(
+              appRef.units.filter(
                 (unit: HsSensorUnit) => unit.unit_id == getUnitId(event.feature)
               )[0],
               app
@@ -143,13 +144,13 @@ export class HsSensorsService {
    * @param app - App identifier
    */
   private setEndpoint(app: string) {
+    const appRef = this.get(app);
     if (this.hsConfig.get(app).senslog) {
-      this.get(app).endpoint = this.hsConfig.get(app).senslog;
-      if (this.get(app).endpoint.liteApiPath == undefined) {
-        this.get(app).endpoint.liteApiPath = 'senslog-lite2';
+      appRef.endpoint = this.hsConfig.get(app).senslog;
+      if (appRef.endpoint.liteApiPath == undefined) {
+        appRef.endpoint.liteApiPath = 'senslog-lite2';
       }
-      this.hsSensorsUnitDialogService.get(app).endpoint =
-        this.get(app).endpoint;
+      this.hsSensorsUnitDialogService.get(app).endpoint = appRef.endpoint;
     }
   }
 
@@ -220,8 +221,9 @@ export class HsSensorsService {
    * @param app - App identifier
    */
   createLayer(app: string) {
+    const appRef = this.get(app);
     const me = this;
-    this.get(app).bookmarkStyle = [
+    appRef.bookmarkStyle = [
       new Style({
         fill: new Fill({
           color: 'rgba(255, 255, 255, 0.2)',
@@ -236,9 +238,9 @@ export class HsSensorsService {
           anchor: [0.5, 1],
         }),
       }),
-      this.get(app).labelStyle,
+      appRef.labelStyle,
     ];
-    this.get(app).layer = new VectorLayer<VectorSource<Geometry>>({
+    appRef.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
         title: 'Sensor units',
         editor: {
@@ -251,7 +253,7 @@ export class HsSensorsService {
       },
       source: new VectorSource({}),
     });
-    this.hsMapService.getMap(app).addLayer(this.get(app).layer);
+    this.hsMapService.getMap(app).addLayer(appRef.layer);
   }
 
   /**
@@ -259,26 +261,25 @@ export class HsSensorsService {
    * @param app - App identifier
    */
   getUnits(app: string) {
-    if (this.get(app).layer === null) {
+    const appRef = this.get(app);
+    if (appRef.layer === null) {
       this.createLayer(app);
     }
     const url = this.hsUtilsService.proxify(
-      `${this.get(app).endpoint.url}/${
-        this.get(app).endpoint.liteApiPath
-      }/rest/unit`,
+      `${appRef.endpoint.url}/${appRef.endpoint.liteApiPath}/rest/unit`,
       app
     );
     this.http
       .get(url, {
         params: {
-          user_id: this.get(app).endpoint.user_id.toString(),
+          user_id: appRef.endpoint.user_id.toString(),
         },
       })
       .subscribe((response) => {
-        this.get(app).units = response;
-        this.get(app).layer.getSource().clear();
-        const features = this.get(app)
-          .units.filter(
+        appRef.units = response;
+        appRef.layer.getSource().clear();
+        const features = appRef.units
+          .filter(
             (unit: HsSensorUnit) =>
               unit.unit_position && unit.unit_position.asWKT
           )
@@ -293,9 +294,9 @@ export class HsSensorsService {
             unit.feature = feature;
             return feature;
           });
-        this.get(app).layer.getSource().addFeatures(features);
+        appRef.layer.getSource().addFeatures(features);
         this.fillLastObservations(app);
-        this.get(app).units.forEach((unit: HsSensorUnit) => {
+        appRef.units.forEach((unit: HsSensorUnit) => {
           unit.sensorTypes = unit.sensors.map((s) => {
             return {name: s.sensor_type};
           });
@@ -336,17 +337,19 @@ export class HsSensorsService {
    * @param app - App identifier
    */
   fillLastObservations(app: string): void {
+    const appRef = this.get(app);
     this.http
+
       .get(
         this.hsUtilsService.proxify(
-          `${this.get(app).endpoint.url}/senslog1/SensorService`,
+          `${appRef.endpoint.url}/senslog1/SensorService`,
           app
         ),
         {
           params: {
             Operation: 'GetLastObservations',
-            group: this.get(app).endpoint.group,
-            user: this.get(app).endpoint.user,
+            group: appRef.endpoint.group,
+            user: appRef.endpoint.user,
           },
         }
       )
@@ -358,7 +361,7 @@ export class HsSensorsService {
             timestamp: dayjs(sv.timeStamp).format('DD.MM.YYYY HH:mm'),
           };
         });
-        this.get(app).units.forEach((unit: HsSensorUnit) => {
+        appRef.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
             this.hsSensorsUnitDialogService.get(app).sensorById[
               sensor.sensor_id

@@ -84,8 +84,9 @@ export class HsStylerService {
   }
 
   async init(app: string): Promise<void> {
+    const appRef = this.get(app);
     await this.hsMapService.loaded(app);
-    this.get(app).pin_white_blue = new Style({
+    appRef.pin_white_blue = new Style({
       image: new Icon({
         src:
           this.hsUtilsService.getAssetsPath(app) + 'img/pin_white_blue32.png',
@@ -93,7 +94,7 @@ export class HsStylerService {
         anchor: [0.5, 1],
       }),
     });
-    this.get(app).pin_white_blue_highlight = (
+    appRef.pin_white_blue_highlight = (
       feature: Feature<Geometry>,
       resolution
     ): Array<Style> => {
@@ -167,10 +168,11 @@ export class HsStylerService {
     layer: VectorLayer<VectorSource<Geometry>>,
     app: string
   ): Promise<void> {
+    const appRef = this.get(app);
     await this.fill(layer, app);
     //Check if layer already has SLD style for clusters
     if (
-      !this.get(app).styleObject.rules.find((r) => {
+      !appRef.styleObject.rules.find((r) => {
         try {
           /* 
           For clusters SLD styles created by Hslayers have 'AND' rule where the 
@@ -190,7 +192,7 @@ export class HsStylerService {
         ['==', 'features', 'undefined'],
         ['==', 'features', '[object Object]'],
       ];
-      for (const rule of this.get(app).styleObject.rules) {
+      for (const rule of appRef.styleObject.rules) {
         // Set filter so the original style is applied to features which are not clusters
         rule.filter =
           rule.filter?.length > 0
@@ -201,7 +203,7 @@ export class HsStylerService {
     }
     let style = layer.getStyle();
     if (
-      this.hsUtilsService.instOf(this.get(app).layer.getSource(), Cluster) &&
+      this.hsUtilsService.instOf(appRef.layer.getSource(), Cluster) &&
       this.hsUtilsService.isFunction(style)
     ) {
       style = this.wrapStyleForClusters(style as StyleFunction);
@@ -410,9 +412,10 @@ export class HsStylerService {
     kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale' | 'Cluster',
     app: string
   ): Promise<void> {
+    const appRef = this.get(app);
     switch (kind) {
       case 'Cluster':
-        this.get(app).styleObject.rules.push({
+        appRef.styleObject.rules.push({
           name: 'Cluster rule',
           filter: [
             '&&',
@@ -442,7 +445,7 @@ export class HsStylerService {
         break;
       case 'Simple':
       default:
-        this.get(app).styleObject.rules.push({
+        appRef.styleObject.rules.push({
           name: 'Untitled rule',
           symbolizers: [],
         });
@@ -451,10 +454,8 @@ export class HsStylerService {
   }
 
   async removeRule(rule: Rule, app: string): Promise<void> {
-    this.get(app).styleObject.rules.splice(
-      this.get(app).styleObject.rules.indexOf(rule),
-      1
-    );
+    const appRef = this.get(app);
+    appRef.styleObject.rules.splice(appRef.styleObject.rules.indexOf(rule), 1);
     await this.save(app);
   }
 

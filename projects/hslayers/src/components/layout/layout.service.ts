@@ -155,12 +155,13 @@ export class HsLayoutService {
   }
 
   parseConfig(app: string) {
-    this.get(app).panel_enabled = {};
+    const appRef = this.get(app);
+    appRef.panel_enabled = {};
     for (const key of Object.keys(this.HsConfig.get(app).panelsEnabled)) {
       this.panelEnabled(key, app, this.getPanelEnableState(key, app));
     }
 
-    this.get(app).sidebarToggleable = this.HsConfig.get(app).hasOwnProperty(
+    appRef.sidebarToggleable = this.HsConfig.get(app).hasOwnProperty(
       'sidebarToggleable'
     )
       ? this.HsConfig.get(app).sidebarToggleable
@@ -189,17 +190,16 @@ export class HsLayoutService {
    * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
    */
   panelVisible(which, app: string, scope?) {
+    const appRef = this.get(app);
     if (scope) {
       if (scope.panelName == undefined) {
         scope.panelName = which;
       }
     }
-    if (this.get(app).panel_statuses[which] !== undefined) {
-      return (
-        this.get(app).panel_statuses[which] && this.panelEnabled(which, app)
-      );
+    if (appRef.panel_statuses[which] !== undefined) {
+      return appRef.panel_statuses[which] && this.panelEnabled(which, app);
     }
-    return this.get(app).mainpanel == which || (scope && scope.unpinned);
+    return appRef.mainpanel == which || (scope && scope.unpinned);
   }
 
   /**
@@ -209,8 +209,9 @@ export class HsLayoutService {
    * @public
    */
   hidePanels(app) {
-    this.get(app).mainpanel = '';
-    this.get(app).sidebarLabels = true;
+    const appRef = this.get(app);
+    appRef.mainpanel = '';
+    appRef.sidebarLabels = true;
     this.HsEventBusService.mainPanelChanges.next({app});
   }
 
@@ -227,9 +228,10 @@ export class HsLayoutService {
    * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
    */
   closePanel(which, app: string) {
+    const appRef = this.get(app);
     if (which.unpinned) {
-      this.get(app)
-        .contentWrapper.querySelector(which.original_container)
+      appRef.contentWrapper
+        .querySelector(which.original_container)
         .appendChild(which.drag_panel);
       which.drag_panel.css({
         top: 'auto',
@@ -238,18 +240,18 @@ export class HsLayoutService {
       });
     }
     which.unpinned = false;
-    if (which.panelName == this.get(app).mainpanel) {
-      if (this.get(app).defaultPanel != '') {
-        if (which.panelName == this.get(app).defaultPanel) {
-          this.get(app).sidebarExpanded = false;
+    if (which.panelName == appRef.mainpanel) {
+      if (appRef.defaultPanel != '') {
+        if (which.panelName == appRef.defaultPanel) {
+          appRef.sidebarExpanded = false;
         } else {
-          this.setMainPanel(this.get(app).defaultPanel, app);
+          this.setMainPanel(appRef.defaultPanel, app);
         }
       } else {
-        this.get(app).mainpanel = '';
-        this.get(app).sidebarLabels = true;
+        appRef.mainpanel = '';
+        appRef.sidebarLabels = true;
       }
-      this.get(app).sidebarExpanded = false;
+      appRef.sidebarExpanded = false;
     }
 
     this.HsEventBusService.mainPanelChanges.next({which, app});
@@ -265,14 +267,15 @@ export class HsLayoutService {
    * @returns Panel enabled/disabled status for getter function
    */
   panelEnabled(which: string, app: string, status?: boolean): boolean {
+    const appRef = this.get(app);
     if (status === undefined) {
-      if (this.get(app).panel_enabled[which] != undefined) {
-        return this.get(app).panel_enabled[which];
+      if (appRef.panel_enabled[which] != undefined) {
+        return appRef.panel_enabled[which];
       } else {
         return true;
       }
     } else {
-      this.get(app).panel_enabled[which] = status;
+      appRef.panel_enabled[which] = status;
     }
   }
 
@@ -297,23 +300,24 @@ export class HsLayoutService {
    * @param by_gui - Whether function call came as result of GUI action
    */
   setMainPanel(which: string, app: string, by_gui?: boolean): void {
+    const appRef = this.get(app);
     if (!this.panelEnabled(which, app)) {
       return;
     }
-    if (which == this.get(app).mainpanel && by_gui) {
+    if (which == appRef.mainpanel && by_gui) {
       which = '';
-      if (this.get(app).sidebarExpanded == true) {
+      if (appRef.sidebarExpanded == true) {
         if (this.sidebarBottom()) {
-          this.get(app).sidebarExpanded = false;
+          appRef.sidebarExpanded = false;
         } else {
-          this.get(app).sidebarLabels = true;
+          appRef.sidebarLabels = true;
         }
       }
     } else {
-      this.get(app).sidebarExpanded = true;
-      this.get(app).sidebarLabels = false;
+      appRef.sidebarExpanded = true;
+      appRef.sidebarLabels = false;
     }
-    this.get(app).mainpanel = which;
+    appRef.mainpanel = which;
     const componentRefInstance = this.hsPanelContainerService
       .get(app)
       .panels.find((p) => p.name == which);
@@ -335,6 +339,7 @@ export class HsLayoutService {
   }
 
   panelSpaceWidth(app: string) {
+    const appRef = this.get(app);
     const panelWidths = {
       default: 425,
       ows: 700,
@@ -342,9 +347,9 @@ export class HsLayoutService {
       addData: 700,
       mapSwipe: 550,
     };
-    const layoutWidth = this.get(app).layoutElement.clientWidth;
+    const layoutWidth = appRef.layoutElement.clientWidth;
     Object.assign(panelWidths, this.HsConfig.get(app).panelWidths);
-    let tmp = panelWidths[this.get(app).mainpanel] || panelWidths.default;
+    let tmp = panelWidths[appRef.mainpanel] || panelWidths.default;
 
     if (typeof tmp === 'string' && tmp.includes('%')) {
       const widthRatio = Number(tmp.replace('%', ''));
@@ -353,21 +358,21 @@ export class HsLayoutService {
 
     if (layoutWidth <= 767 && window.innerWidth <= 767) {
       tmp = layoutWidth;
-      this.get(app).sidebarToggleable = false;
+      appRef.sidebarToggleable = false;
 
       return tmp;
     } else {
-      this.get(app).sidebarToggleable =
+      appRef.sidebarToggleable =
         this.HsConfig.get(app).sidebarToggleable != undefined
           ? this.HsConfig.get(app).sidebarToggleable
           : true;
-      if (!this.get(app).sidebarToggleable) {
+      if (!appRef.sidebarToggleable) {
         return tmp;
       }
     }
-    if (this.get(app).sidebarExpanded && this.sidebarVisible(app)) {
-      if (panelWidths[this.get(app).mainpanel]) {
-        tmp = panelWidths[this.get(app).mainpanel];
+    if (appRef.sidebarExpanded && this.sidebarVisible(app)) {
+      if (panelWidths[appRef.mainpanel]) {
+        tmp = panelWidths[appRef.mainpanel];
       } else {
         tmp = panelWidths.default;
       }
@@ -385,6 +390,7 @@ export class HsLayoutService {
   }
 
   sidebarVisible(app: string, state?: boolean): boolean {
+    const appRef = this.get(app);
     if (
       this.HsConfig.get(app).sidebarPosition == 'invisible' ||
       this.HsConfig.get(app).pureMap ||
@@ -394,12 +400,12 @@ export class HsLayoutService {
       return false;
     }
     if (state != undefined) {
-      this.get(app)._sidebarVisible = state;
+      appRef._sidebarVisible = state;
     }
-    if (this.get(app)._sidebarVisible == undefined) {
+    if (appRef._sidebarVisible == undefined) {
       return true;
     } else {
-      return this.get(app)._sidebarVisible;
+      return appRef._sidebarVisible;
     }
   }
 
@@ -408,10 +414,10 @@ export class HsLayoutService {
   }
 
   panelSpaceHeight(app: string) {
-    if (this.get(app).contentWrapper.querySelector('.hs-panelspace-wrapper')) {
-      return this.get(app).contentWrapper.querySelector(
-        '.hs-panelspace-wrapper'
-      ).clientHeight;
+    const appRef = this.get(app);
+    if (appRef.contentWrapper.querySelector('.hs-panelspace-wrapper')) {
+      return appRef.contentWrapper.querySelector('.hs-panelspace-wrapper')
+        .clientHeight;
       // return tmp
     }
   }
@@ -426,15 +432,16 @@ export class HsLayoutService {
   }
 
   mapStyle(app: string) {
+    const appRef = this.get(app);
     const fullscreen =
       this.HsConfig.get(app).sizeMode == undefined ||
       this.HsConfig.get(app).sizeMode == 'fullscreen';
-    let height = this.get(app).layoutElement.clientHeight;
-    let width = this.get(app).layoutElement.clientWidth;
+    let height = appRef.layoutElement.clientHeight;
+    let width = appRef.layoutElement.clientWidth;
     let marginLeft = 0;
 
     if (!this.sidebarBottom() || !fullscreen) {
-      marginLeft += this.get(app).sidebarRight ? 0 : this.panelSpaceWidth(app);
+      marginLeft += appRef.sidebarRight ? 0 : this.panelSpaceWidth(app);
       width -= this.panelSpaceWidth(app);
     }
     if (this.sidebarBottom() && (fullscreen || window.innerWidth <= 767)) {

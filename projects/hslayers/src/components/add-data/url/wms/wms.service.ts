@@ -288,11 +288,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
   calcAllLayersExtent(serviceLayers: any, app: string): any {
+    const appRef = this.get(app);
     if (!Array.isArray(serviceLayers)) {
-      return this.getLayerBBox(serviceLayers, this.get(app).data.srs, app);
+      return this.getLayerBBox(serviceLayers, appRef.data.srs, app);
     }
     return serviceLayers
-      .map((lyr) => this.getLayerBBox(lyr, this.get(app).data.srs, app))
+      .map((lyr) => this.getLayerBBox(lyr, appRef.data.srs, app))
       .reduce((acc, curr) => {
         //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
         const [west, south, east, north] = curr;
@@ -317,11 +318,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   getLayerBBox(serviceLayer: any, crs: any, app: string): any {
+    const appRef = this.get(app);
     let boundingbox = serviceLayer.BoundingBox;
     let preferred;
     if (Array.isArray(serviceLayer.BoundingBox)) {
       preferred = boundingbox.filter((bboxInCrs) => {
-        return bboxInCrs.crs == this.get(app).data.map_projection;
+        return bboxInCrs.crs == appRef.data.map_projection;
       })[0];
     }
     if (preferred) {
@@ -335,7 +337,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         );
       }
     } else {
-      if (this.get(app).data.map_projection != serviceLayer.crs) {
+      if (appRef.data.map_projection != serviceLayer.crs) {
         boundingbox = serviceLayer.LatLonBoundingBox;
       }
     }

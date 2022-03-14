@@ -15,7 +15,8 @@ import {
 })
 export class HsCesiumQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel {
+  implements HsQueryPopupServiceModel
+{
   constructor(
     HsMapService: HsMapService,
     private HsConfig: HsConfig,
@@ -52,7 +53,8 @@ export class HsCesiumQueryPopupService
   }
 
   showPopup(e: any, app: string): void {
-    this.get(app).hoverPopup.style.left = e.pixel.x + 4 + 'px';
-    this.get(app).hoverPopup.style.top = e.pixel.y + 4 + 'px';
+    const appRef = this.get(app);
+    appRef.hoverPopup.style.left = e.pixel.x + 4 + 'px';
+    appRef.hoverPopup.style.top = e.pixel.y + 4 + 'px';
   }
 }

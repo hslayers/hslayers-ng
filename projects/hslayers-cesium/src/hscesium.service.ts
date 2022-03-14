@@ -71,6 +71,7 @@ export class HsCesiumService {
    * Initializes Cesium map
    */
   init(app: string) {
+    const appRef = this.get(app);
     this.checkForBingKey(app);
     this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
       this.checkForBingKey(app);
@@ -108,7 +109,7 @@ export class HsCesiumService {
       //TODO: research if this must be used or ignored
       const bing = new BingMapsImageryProvider({
         url: '//dev.virtualearth.net',
-        key: this.get(app).BING_KEY,
+        key: appRef.BING_KEY,
         mapStyle: BingMapsStyle.AERIAL,
       });
 
@@ -166,26 +167,26 @@ export class HsCesiumService {
           this.HsCesiumConfig.get(app).cesiumTime;
       }
 
-      this.get(app).viewer = viewer;
-      this.HsCesiumCameraService.init(this.get(app).viewer, app);
-      this.HsCesiumLayersService.init(this.get(app).viewer, app);
-      this.HsCesiumTimeService.init(this.get(app).viewer, app);
+      appRef.viewer = viewer;
+      this.HsCesiumCameraService.init(appRef.viewer, app);
+      this.HsCesiumLayersService.init(appRef.viewer, app);
+      this.HsCesiumTimeService.init(appRef.viewer, app);
 
       window.addEventListener('blur', () => {
-        if (this.get(app).viewer.isDestroyed()) {
+        if (appRef.viewer.isDestroyed()) {
           return;
         }
-        this.get(app).viewer.targetFrameRate = 5;
+        appRef.viewer.targetFrameRate = 5;
       });
 
       window.addEventListener('focus', () => {
-        if (this.get(app).viewer.isDestroyed()) {
+        if (appRef.viewer.isDestroyed()) {
           return;
         }
-        this.get(app).viewer.targetFrameRate = 30;
+        appRef.viewer.targetFrameRate = 30;
       });
 
-      this.get(app).viewer.camera.moveEnd.addEventListener((e) => {
+      appRef.viewer.camera.moveEnd.addEventListener((e) => {
         if (!this.HsMapService.visible) {
           const center =
             this.HsCesiumCameraService.getCameraCenterInLngLat(app);
@@ -217,7 +218,7 @@ export class HsCesiumService {
       });
 
       this.HsEventBusService.zoomTo.subscribe((data) => {
-        this.get(app).viewer.camera.setView({
+        appRef.viewer.camera.setView({
           destination: Cartesian3.fromDegrees(
             data.coordinate[0],
             data.coordinate[1],
@@ -226,11 +227,11 @@ export class HsCesiumService {
         });
       });
 
-      this.HsCesiumPicker.init(this.get(app).viewer, app);
+      this.HsCesiumPicker.init(appRef.viewer, app);
       this.hsCesiumQueryPopupService.init(app);
       this.HsCesiumPicker.get(app).cesiumPositionClicked.subscribe(
         (position) => {
-          this.get(app).cesiumPositionClicked.next(position);
+          appRef.cesiumPositionClicked.next(position);
         }
       );
 

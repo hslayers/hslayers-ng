@@ -424,10 +424,11 @@ export class HsDrawService {
   }
 
   onDrawEnd(e, app: string): void {
-    if (!getEditor(this.get(app).selectedLayer)) {
+    const appRef = this.get(app);
+    if (!getEditor(appRef.selectedLayer)) {
       return;
     }
-    const editorConfig = getEditor(this.get(app).selectedLayer);
+    const editorConfig = getEditor(appRef.selectedLayer);
     if (editorConfig.defaultAttributes) {
       for (const key in editorConfig.defaultAttributes) {
         const value = editorConfig.defaultAttributes[key];
@@ -641,6 +642,7 @@ export class HsDrawService {
    * Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(app: string): Promise<void> {
+    const appRef = this.get(app);
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -660,8 +662,8 @@ export class HsDrawService {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      await this.completeLayerRemoval(this.get(app).selectedLayer, app);
-      this.get(app).selectedLayer = null;
+      await this.completeLayerRemoval(appRef.selectedLayer, app);
+      appRef.selectedLayer = null;
       this.fillDrawableLayers(app);
     }
   }

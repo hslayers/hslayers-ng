@@ -133,9 +133,10 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
   getLayers(app: string, checkedOnly: boolean): Layer<Source>[] {
-    this.get(app).data.add_all = checkedOnly;
+    const appRef = this.get(app);
+    appRef.data.add_all = checkedOnly;
     const collection = [];
-    for (const layer of this.get(app).data.layers) {
+    for (const layer of appRef.data.layers) {
       this.getLayersRecursively(layer, undefined, collection, app);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);

@@ -233,12 +233,13 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Parse layer feature count and set feature limits
    */
   parseFeatureCount(app: string): void {
-    for (const layer of this.get(app).data.layers) {
+    const appRef = this.get(app);
+    for (const layer of appRef.data.layers) {
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
         this.hsUtilsService.paramsToURLWoEncode({
           service: 'wfs',
-          version: this.get(app).data.version, //== '2.0.0' ? '1.1.0' : this.version,
+          version: appRef.data.version, //== '2.0.0' ? '1.1.0' : this.version,
           request: 'GetFeature',
           typeName: layer.Name,
           resultType: 'hits',
@@ -323,9 +324,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     checkedOnly?: boolean,
     style?: string
   ): Layer<Source>[] {
-    this.get(app).data.add_all = checkedOnly;
+    const appRef = this.get(app);
+    appRef.data.add_all = checkedOnly;
     const collection = [];
-    for (const layer of this.get(app).data.layers) {
+    for (const layer of appRef.data.layers) {
       this.getLayersRecursively(layer, {style}, collection, app);
     }
     this.hsAddDataCommonService.clearParams(app);
@@ -347,15 +349,16 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     collection: Layer<Source>[],
     app: string
   ): void {
-    if (!this.get(app).data.add_all || layer.checked) {
+    const appRef = this.get(app);
+    if (!appRef.data.add_all || layer.checked) {
       const newLayer = this.getLayer(
         layer,
         {
           layerName: layer.Name,
           folder: this.hsUtilsService.undefineEmptyString(
-            this.get(app).data.folder_name
+            appRef.data.folder_name
           ),
-          crs: this.get(app).data.srs,
+          crs: appRef.data.srs,
           sld: options.style?.includes('StyledLayerDescriptor')
             ? options.style
             : undefined,
@@ -385,6 +388,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param srs - of the layer
    */
   getLayer(layer, options: addLayerOptions, app: string): Layer<Source> {
+    const appRef = this.get(app);
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -399,8 +403,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         this.hsUtilsService,
         this.http,
         {
-          data_version: this.get(app).data.version,
-          output_format: this.get(app).data.output_format,
+          data_version: appRef.data.version,
+          output_format: appRef.data.output_format,
           crs: options.crs,
           provided_url:
             this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
@@ -429,6 +433,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   private zoomToBBox(bbox: any, app: string) {
+    const appRef = this.get(app);
     if (!bbox) {
       return;
     }
@@ -440,8 +445,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         bbox.UpperCorner.split(' ')[1],
       ];
     }
-    if (!this.get(app).data.map_projection) {
-      this.get(app).data.map_projection = this.hsMapService
+    if (!appRef.data.map_projection) {
+      appRef.data.map_projection = this.hsMapService
         .getMap(app)
         .getView()
         .getProjection()
@@ -451,7 +456,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     const extent = transformExtent(
       bbox,
       'EPSG:4326',
-      this.get(app).data.map_projection
+      appRef.data.map_projection
     );
     if (extent) {
       this.hsMapService.fitExtent(extent, app);

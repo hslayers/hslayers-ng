@@ -95,11 +95,12 @@ export class HsAddDataCatalogueService {
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
         ({e, app}) => {
-          if (!this.panelVisible(app) || this.get(app).extentChangeSuppressed) {
-            this.get(app).extentChangeSuppressed = false;
+          const appRef = this.get(app);
+          if (!this.panelVisible(app) || appRef.extentChangeSuppressed) {
+            appRef.extentChangeSuppressed = false;
             return;
           }
-          if (this.get(app).data.filterByExtent) {
+          if (appRef.data.filterByExtent) {
             this.zone.run(() => {
               this.reloadData(app);
             });
@@ -325,8 +326,9 @@ export class HsAddDataCatalogueService {
   }
 
   clearLoadedData(app: string): void {
-    this.get(app).catalogEntries = [];
-    this.get(app).endpointsWithDatasources.forEach((ep) => (ep.layers = []));
+    const appRef = this.get(app);
+    appRef.catalogEntries = [];
+    appRef.endpointsWithDatasources.forEach((ep) => (ep.layers = []));
   }
 
   /**
@@ -337,16 +339,17 @@ export class HsAddDataCatalogueService {
    * @param catalog - Configuration of selected datasource (from app config)
    */
   queryCatalog(catalog: HsEndpoint, app: string): any {
+    const appRef = this.get(app);
     this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog, app);
     let query;
     switch (catalog.type) {
       case 'micka':
         query = this.hsMickaBrowserService.queryCatalog(
           catalog,
-          this.get(app).data,
+          appRef.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature, app),
-          this.get(app).data.textField,
+          appRef.data.textField,
           app
         );
         return query;
@@ -354,7 +357,7 @@ export class HsAddDataCatalogueService {
         query = this.hsLaymanBrowserService.queryCatalog(
           catalog,
           app,
-          this.get(app).data,
+          appRef.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature, app)
         );

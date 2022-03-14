@@ -14,14 +14,15 @@ export class HsLayoutServiceMock {
   }
 
   panelEnabled(which: string, app: string, status?: boolean): boolean {
+    const appRef = this.get(app);
     if (status === undefined) {
-      if (this.get(app).panel_enabled[which] != undefined) {
-        return this.get(app).panel_enabled[which];
+      if (appRef.panel_enabled[which] != undefined) {
+        return appRef.panel_enabled[which];
       } else {
         return true;
       }
     } else {
-      this.get(app).panel_enabled[which] = status;
+      appRef.panel_enabled[which] = status;
     }
   }
 
@@ -30,17 +31,16 @@ export class HsLayoutServiceMock {
   }
 
   panelVisible(which, app: string, scope?) {
+    const appRef = this.get(app);
     if (scope) {
       if (scope.panelName == undefined) {
         scope.panelName = which;
       }
     }
-    if (this.get(app).panel_statuses[which] !== undefined) {
-      return (
-        this.get(app).panel_statuses[which] && this.panelEnabled(which, app)
-      );
+    if (appRef.panel_statuses[which] !== undefined) {
+      return appRef.panel_statuses[which] && this.panelEnabled(which, app);
     }
-    return this.get(app).mainpanel == which || (scope && scope.unpinned);
+    return appRef.mainpanel == which || (scope && scope.unpinned);
   }
 
   sidebarBottom() {

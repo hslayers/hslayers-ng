@@ -67,6 +67,7 @@ export class HsAddDataOwsService {
     }
   ): Promise<Layer<Source>[]> {
     await this.setTypeServices(app);
+    const appRef = this.get(app);
     const url = this.hsAddDataCommonService.get(app).url;
     if (!url || url === '') {
       return;
@@ -80,7 +81,7 @@ export class HsAddDataOwsService {
         );
         return;
       }
-      this.get(app).typeService.get(app).data.get_map_url = url;
+      appRef.typeService.get(app).data.get_map_url = url;
       this.hsAddDataUrlService.apps[app].addingAllowed = true;
     }
     this.hsHistoryListService.addSourceHistory(
@@ -91,7 +92,7 @@ export class HsAddDataOwsService {
       loadingInfo: true,
       showDetails: true,
     });
-    const wrapper = await this.get(app).typeCapabilitiesService.request(
+    const wrapper = await appRef.typeCapabilitiesService.request(
       url,
       app,
       opt?.owrCache
@@ -108,7 +109,7 @@ export class HsAddDataOwsService {
       ).typeService.listLayerFromCapabilities(wrapper, app, opt?.style);
       if (!opt?.getOnly) {
         if (response?.length > 0) {
-          this.get(app).typeService.addLayers(response, app);
+          appRef.typeService.addLayers(response, app);
         }
         if (this.hsUrlArcGisService.isImageService(app)) {
           const layers = this.hsUrlArcGisService.getLayers(app);

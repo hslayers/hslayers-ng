@@ -185,13 +185,14 @@ export class HsCompositionsService {
    * @param app - App identifier
    */
   async shareComposition(record, app: string): Promise<any> {
+    const appRef = this.get(app);
     const recordLink = encodeURIComponent(this.getRecordLink(record));
     const permalinkOverride = this.hsConfig.get(app).permalinkLocation;
     const compositionUrl =
       this.hsCore.isMobile() && permalinkOverride
         ? permalinkOverride.origin + permalinkOverride.pathname
         : `${location.origin}${location.pathname}?composition=${recordLink}`;
-    this.get(app).shareId = this.hsUtilsService.generateUuid();
+    appRef.shareId = this.hsUtilsService.generateUuid();
     const headers = new HttpHeaders().set(
       'Content-Type',
       'text/plain; charset=utf-8'
@@ -201,7 +202,7 @@ export class HsCompositionsService {
         this.hsStatusManagerService.endpointUrl(app),
         JSON.stringify({
           request: 'socialShare',
-          id: this.get(app).shareId,
+          id: appRef.shareId,
           url: encodeURIComponent(compositionUrl),
           title: record.title,
           description: record.abstract,

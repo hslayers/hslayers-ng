@@ -71,22 +71,23 @@ export class HsSidebarService {
   }
 
   setButtonVisibility(buttons: HsButton[], app: string) {
+    const appRef = this.get(app);
     if (this.HsLayoutService.get(app).layoutElement == undefined) {
       setTimeout(() => this.setButtonVisibility(buttons, app), 100);
       return;
     }
-    this.get(app).importantButtons = buttons.filter((button) => {
+    appRef.importantButtons = buttons.filter((button) => {
       return (
         button.important != false &&
-        this.get(app).visibleButtons.includes(button.panel)
+        appRef.visibleButtons.includes(button.panel)
       );
     });
-    this.get(app).numberOfUnimportant =
-      buttons.length - this.get(app).importantButtons.length;
-    for (const button of this.get(app).importantButtons) {
+    appRef.numberOfUnimportant =
+      buttons.length - appRef.importantButtons.length;
+    for (const button of appRef.importantButtons) {
       button.fits = this.fitsSidebar(button, app);
     }
-    if (!this.get(app).unimportantExist) {
+    if (!appRef.unimportantExist) {
       this.HsLayoutService.get(app).minisidebar = this.get(
         app
       ).importantButtons.some((b) => b.fits == false);
@@ -123,6 +124,7 @@ export class HsSidebarService {
     state: boolean,
     app: string
   ): void {
+    const appRef = this.get(app);
     const backCompat = {datasource_selector: 'addData'};
     panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
     const button = buttons.find((b) => b.panel == panelName);
@@ -132,8 +134,8 @@ export class HsSidebarService {
       button.important = state;
     }
 
-    this.get(app).unimportantExist = buttons.some((b) => b.important == false);
-    this.HsLayoutService.get(app).minisidebar = this.get(app).unimportantExist;
+    appRef.unimportantExist = buttons.some((b) => b.important == false);
+    this.HsLayoutService.get(app).minisidebar = appRef.unimportantExist;
   }
   buttonClicked(button: HsButton, app: string): void {
     if (button.click) {
@@ -143,6 +145,7 @@ export class HsSidebarService {
     }
   }
   setPanelState(buttons: Array<HsButton>, app: string): void {
+    const appRef = this.get(app);
     if (buttons.length == 0) {
       return;
     }
@@ -151,8 +154,8 @@ export class HsSidebarService {
         this.HsLayoutService.getPanelEnableState(button.panel, app) &&
         this.checkConfigurableButtons(button, app)
       ) {
-        if (!this.get(app).visibleButtons.includes(button.panel)) {
-          this.get(app).visibleButtons.push(button.panel);
+        if (!appRef.visibleButtons.includes(button.panel)) {
+          appRef.visibleButtons.push(button.panel);
           button.visible = true;
         }
       } else {

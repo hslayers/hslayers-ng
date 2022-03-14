@@ -69,6 +69,7 @@ export class HsStatisticsService {
   }
 
   store(rows: any[], columns: string[], uses: Usage, app: string): void {
+    const appRef = this.get(app);
     if (!rows || !columns) {
       return;
     }
@@ -84,30 +85,27 @@ export class HsStatisticsService {
       }
       let corpusItem: {values: CorpusItemValues};
       const key = keyObject.location + '::' + keyObject.time;
-      if (this.get(app).corpus.dict[key] === undefined) {
+      if (appRef.corpus.dict[key] === undefined) {
         corpusItem = {values: {}, ...keyObject};
-        this.get(app).corpus.dict[key] = corpusItem;
+        appRef.corpus.dict[key] = corpusItem;
       } else {
-        corpusItem = this.get(app).corpus.dict[key];
+        corpusItem = appRef.corpus.dict[key];
       }
       for (const col of columns.filter((col) => uses[col] == 'variable')) {
         //Why is this here? It breaks key comparisons between columns and usages
         //Answer: Its needed because vega treats everything after dot as a hierarchical sub-variable
         const escapedCol = col.replace(/\./g, '');
         corpusItem.values[escapedCol] = parseFloat(row[col]);
-        if (!this.get(app).corpus.variables.some((v) => v == escapedCol)) {
-          this.get(app).corpus.variables.push(escapedCol);
+        if (!appRef.corpus.variables.some((v) => v == escapedCol)) {
+          appRef.corpus.variables.push(escapedCol);
         }
         if (escapedCol != col) {
           uses[escapedCol] = uses[col];
         }
       }
     }
-    Object.assign(this.get(app).corpus.uses, uses);
-    localStorage.setItem(
-      'hs_statistics_corpus',
-      JSON.stringify(this.get(app).corpus)
-    );
+    Object.assign(appRef.corpus.uses, uses);
+    localStorage.setItem('hs_statistics_corpus', JSON.stringify(appRef.corpus));
     localStorage.setItem(
       'hs_statistics_table',
       JSON.stringify({rows: rows, columns: columns})
@@ -127,10 +125,11 @@ export class HsStatisticsService {
       coefficient: number;
     }[];
   } {
+    const appRef = this.get(app);
     const results = {matrix: {}, list: []};
-    for (const var1 of this.get(app).corpus.variables) {
+    for (const var1 of appRef.corpus.variables) {
       results.matrix[var1] = [];
-      for (const var2 of this.get(app).corpus.variables) {
+      for (const var2 of appRef.corpus.variables) {
         const {samples} = this.createShiftedSamples(
           [var1, var2],
           variableShifts,
@@ -226,6 +225,7 @@ export class HsStatisticsService {
   }
 
   async clear(app: string): Promise<void> {
+    const appRef = this.get(app);
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -238,12 +238,12 @@ export class HsStatisticsService {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.get(app).corpus.dict = {};
-      this.get(app).corpus.variables = [];
-      this.get(app).corpus.uses = {};
+      appRef.corpus.dict = {};
+      appRef.corpus.variables = [];
+      appRef.corpus.uses = {};
       localStorage.removeItem('hs_statistics_corpus');
       localStorage.removeItem('hs_statistics_table');
-      this.get(app).clearData$.next();
+      appRef.clearData$.next();
     }
   }
 }
