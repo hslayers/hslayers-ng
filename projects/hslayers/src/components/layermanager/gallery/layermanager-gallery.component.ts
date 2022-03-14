@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
 
-import {HsConfig} from '../../../config.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
@@ -16,14 +15,12 @@ import {getBase} from '../../../common/layer-extensions';
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   menuExpanded = false;
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
-  @Input() app = 'default';
   constructor(
-    public HsLayoutService: HsLayoutService,
-    public HsLayerManagerService: HsLayerManagerService,
-    public HsConfig: HsConfig,
-    public HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public hsLayoutService: HsLayoutService,
+    public hsLayerManagerService: HsLayerManagerService,
+    public hsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
-    super(HsLayoutService);
+    super(hsLayoutService);
   }
 
   toggleMiniMenu(layer: HsLayerDescriptor): void {
@@ -37,45 +34,45 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {
       if (!layer.active) {
-        this.HsLayerManagerService.changeBaseLayerVisibility(
+        this.hsLayerManagerService.changeBaseLayerVisibility(
           true,
           layer,
-          this.app
+          this.data.app
         );
         this.dropdown.close();
-        this.HsLayerManagerService.apps[this.app].menuExpanded = false;
+        this.hsLayerManagerService.apps[this.data.app].menuExpanded = false;
         const olLayer =
-          this.HsLayerManagerService.apps[this.app].currentLayer?.layer;
+          this.hsLayerManagerService.apps[this.data.app].currentLayer?.layer;
         if (!olLayer || getBase(olLayer)) {
-          this.HsLayerManagerService.apps[this.app].currentLayer = null;
+          this.hsLayerManagerService.apps[this.data.app].currentLayer = null;
         }
       }
     } else {
       this.dropdown.close();
-      this.HsLayerManagerService.apps[this.app].currentLayer = null;
+      this.hsLayerManagerService.apps[this.data.app].currentLayer = null;
 
-      this.HsLayerManagerService.changeBaseLayerVisibility(
+      this.hsLayerManagerService.changeBaseLayerVisibility(
         null,
         null,
-        this.app
+        this.data.app
       );
     }
   }
   expandMenu(layer) {
-    this.HsLayerManagerService.toggleLayerEditor(
+    this.hsLayerManagerService.toggleLayerEditor(
       layer,
       'settings',
       'sublayers',
-      this.app
+      this.data.app
     );
-    this.HsLayerManagerService.apps[this.app].menuExpanded =
-      !this.HsLayerManagerService.apps[this.app].menuExpanded;
+    this.hsLayerManagerService.apps[this.data.app].menuExpanded =
+      !this.hsLayerManagerService.apps[this.data.app].menuExpanded;
   }
 
   isVisible(): boolean {
     return (
-      this.HsLayoutService.componentEnabled('basemapGallery', this.app) &&
-      this.HsLayoutService.componentEnabled('guiOverlay', this.app)
+      this.hsLayoutService.componentEnabled('basemapGallery', this.data.app) &&
+      this.hsLayoutService.componentEnabled('guiOverlay', this.data.app)
     );
   }
 }
