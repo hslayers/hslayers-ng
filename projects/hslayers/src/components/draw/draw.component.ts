@@ -35,7 +35,7 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
     this.appRef.layerMetadataDialog.subscribe(() => {
       this.HsDialogContainerService.create(
         HsDrawLayerMetadataDialogComponent,
-        this.HsDrawService,
+        {service: this.HsDrawService, app: this.data.app},
         this.data.app
       );
     });

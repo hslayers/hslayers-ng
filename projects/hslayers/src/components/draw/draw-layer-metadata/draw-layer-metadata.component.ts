@@ -22,10 +22,11 @@ import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
   templateUrl: './draw-layer-metadata.html',
 })
 export class HsDrawLayerMetadataDialogComponent
-  implements HsDialogComponent, OnInit
-{
-  @Input() data: any;
-  @Input() app = 'default';
+  implements HsDialogComponent, OnInit {
+  @Input() data: {
+    service: HsDrawService;
+    app: string;
+  };
 
   newLayerPath: string;
   attributes: Array<any> = [];
@@ -49,7 +50,7 @@ export class HsDrawLayerMetadataDialogComponent
 
   viewRef: ViewRef;
   ngOnInit(): void {
-    this.appRef = this.data.get(this.data.app);
+    this.appRef = this.data.service.get(this.data.app);
     this.layer = this.appRef.selectedLayer;
     this.title = getTitle(this.layer);
     this.path = getPath(this.layer);
@@ -86,10 +87,11 @@ export class HsDrawLayerMetadataDialogComponent
     });
 
     setAccessRights(this.layer, this.access_rights);
-    this.data.changeDrawSource(this.data.app);
+    const appService = this.data.service;
+    appService.changeDrawSource(this.data.app);
 
-    this.data.addDrawLayer(this.layer, this.data.app);
-    this.data.fillDrawableLayers(this.data.app);
+    appService.addDrawLayer(this.layer, this.data.app);
+    appService.fillDrawableLayers(this.data.app);
     this.tmpFeatures = this.layer.getSource().getFeatures();
     //Dispatch add feature event in order to trigger sync
     this.awaitLayerSync(this.layer).then(() => {
@@ -129,7 +131,7 @@ export class HsDrawLayerMetadataDialogComponent
   }
 
   selectLayer(layer): void {
-    this.data.selectLayer(layer, this.data.app);
+    this.data.service.selectLayer(layer, this.data.app);
     this.HsDialogContainerService.destroy(this, this.data.app);
   }
 }

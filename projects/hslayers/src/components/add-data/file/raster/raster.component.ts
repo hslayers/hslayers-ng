@@ -14,10 +14,8 @@ import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 })
 export class HsFileRasterComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   dataType: AddDataFileType = 'raster';
-  @Input() app = 'default';
   constructor(
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
