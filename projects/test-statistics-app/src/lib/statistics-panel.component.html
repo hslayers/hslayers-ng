@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="statistics" [app]="data.app" [title]="'PANEL_HEADER.STATISTICS' | translateHs : data">
+    <hs-panel-header name="statistics" [app]="data.app" [title]="'PANEL_HEADER.STATISTICS' | translateHs : data ">
     </hs-panel-header>
     <div class="card-body">
 
@@ -28,7 +28,7 @@
                                         <div>
                                             <button class="btn btn-danger btn-sm me-0"
                                                 (click)="removeVariable(variable)" data-toggle="tooltip"
-                                                [title]="'STATISTICS.removeVariable' | translateHs : data">
+                                                [title]="'STATISTICS.removeVariable' | translateHs : data ">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </div>
@@ -40,20 +40,20 @@
                             data-toggle="buttons">
                             <button type="button" class="btn btn-sm btn-primary m-1"
                                 (click)="correlate()">{{'STATISTICS.CORRELATE' |
-                                translateHs : data}}</button>
+                                translateHs : data }}</button>
                             <button type="button" class="btn btn-sm btn-primary m-1"
                                 (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
-                                translateHs : data}}</button>
+                                translateHs : data }}</button>
                             <button type="button" class="btn btn-sm btn-primary m-1"
                                 (click)="regression()">{{'STATISTICS.REGRESSION'
                                 |
-                                translateHs : data}}</button>
+                                translateHs : data }}</button>
                             <button type="button" class="btn btn-sm btn-secondary m-1"
                                 (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
-                                translateHs : data}}</button>
+                                translateHs : data }}</button>
                             <button type="button" class="btn btn-sm btn-danger m-1"
                                 (click)="clearAll()">{{'STATISTICS.CLEAR_ALL_DATA' |
-                                translateHs : data}}</button>
+                                translateHs : data }}</button>
                         </div>
                     </div>
                 </ng-template>

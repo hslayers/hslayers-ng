@@ -17,13 +17,14 @@
 
                             <a *ngIf="viewMode === 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 <b>{{getTranslation(sensor.sensor_name)}}</b><span class="ms-1">{{'SENSORS.measure' |
-                                    translateHs}}</span> {{getTranslation(sensor.phenomenon_name, 'PHENOMENON')}}</a>
+                                    translateHs: {app} }}</span> {{getTranslation(sensor.phenomenon_name,
+                                'PHENOMENON')}}</a>
                             <a *ngIf="viewMode === 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 {{getTranslation(sensor.phenomenon_name, 'PHENOMENON')}}</a>
                         </div>
                         <div class="p-0">
                             <span class="badge bg-light rounded-pill">{{sensor.lastObservationValue}} {{sensor.uom}}
-                                <br><small>{{'SENSORS.at' | translateHs}}
+                                <br><small>{{'SENSORS.at' | translateHs: {app} }}
                                     {{sensor.lastObservationTimestamp}}</small></span>
                         </div>
                     </div>
