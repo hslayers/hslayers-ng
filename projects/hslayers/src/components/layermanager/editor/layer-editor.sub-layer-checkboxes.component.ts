@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {
   HsLayerEditorSublayerService,
   KeyBooleanDict,
@@ -9,19 +9,22 @@ import {HsLayerManagerService} from '../layermanager.service';
   selector: 'hs-layer-editor-sub-layer-checkbox',
   templateUrl: './sub-layer-checkboxes.html',
 })
-export class HsLayerEditorSubLayerCheckboxesComponent {
+export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   @Input() subLayer: any;
   @Input() app = 'default';
   expanded = false;
   checkedSubLayers: KeyBooleanDict;
   withChildren: KeyBooleanDict;
-
+  appRef;
   constructor(
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public HsLayerManagerService: HsLayerManagerService
-  ) {
-    this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
-    this.withChildren = this.HsLayerEditorSublayerService.withChildren;
+  ) {}
+
+  ngOnInit() {
+    this.appRef = this.HsLayerEditorSublayerService.get(this.app);
+    this.checkedSubLayers = this.appRef.checkedSubLayers;
+    this.withChildren = this.appRef.withChildren;
   }
 
   getSubLayers(app: string) {
@@ -49,14 +52,14 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
         Object.assign(this.checkedSubLayers, {
           [nameOrId]: state,
         });
-        this.HsLayerEditorSublayerService.checkedSubLayersTmp[nameOrId] = state;
+        this.appRef.checkedSubLayersTmp[nameOrId] = state;
       }
     }
     const nameOrId = sublayer.Name; //ID is stored in Name prop for ArcGISREST
     if (this.checkedSubLayers[nameOrId] != undefined) {
-      this.HsLayerEditorSublayerService.checkedSubLayersTmp[nameOrId] = state;
+      this.appRef.checkedSubLayersTmp[nameOrId] = state;
     } else {
-      this.HsLayerEditorSublayerService.withChildrenTmp[nameOrId] = state;
+      this.appRef.withChildrenTmp[nameOrId] = state;
     }
     return this.HsLayerEditorSublayerService.subLayerSelected(this.app);
   }

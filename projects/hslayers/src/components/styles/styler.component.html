@@ -14,7 +14,7 @@
     <div class="d-flex flex-row justify-content-end">
       <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs : data}}:</div>
       <div class="p-1">
-        <div ngbDropdown class="d-inline-block">
+        <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-right">
           <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs : data"
             id="dropdownAddRule" ngbDropdownToggle>
             <span class="icon-plus"></span>

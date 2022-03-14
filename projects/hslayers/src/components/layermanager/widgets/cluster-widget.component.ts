@@ -13,7 +13,8 @@ import {HsLayerSelectorService} from '../editor/layer-selector.service';
 })
 export class HsClusterWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   name = 'cluster-widget';
   distance = {
     value: 40,
@@ -27,6 +28,8 @@ export class HsClusterWidgetComponent
     super(hsLayerSelectorService);
   }
   ngOnInit() {
+    /*Call super ngOnInit manually as its getting overridden by local one*/
+    super.ngOnInit();
     this.distance.value = this.setClusteringDistanceFromConfig();
   }
 

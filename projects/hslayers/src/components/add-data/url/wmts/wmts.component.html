@@ -13,7 +13,7 @@
             <li *ngFor="let layer of appRef.data.layers; trackBy:( 'Identifier' | trackByProperty ); let index = index"
                 class="list-group-item clearfix">
                 <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}"
-                    (change)="hsAddDataOwsService.changed(appRef.data,app)" [attr.id]="'wmtslayer-'+index"
+                    (change)="hsAddDataOwsService.changed(appRef.data,app)" [attr.id]="'wmtslayer-'+index+app"
                     name="wmtslayer-{{index}}" />
                 <label class="form-check-label m-0 ps-4 mw-100 d-flex align-items-center"
                     [attr.for]="'wmtslayer-'+index"

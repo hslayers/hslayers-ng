@@ -41,25 +41,29 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   ) {
     this.hsDimensionTimeService.layerTimeChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({layer: layerDescriptor, time}) => {
-        if (this.layer.uid !== layerDescriptor.uid) {
-          return;
+      .subscribe(({layer: layerDescriptor, time, app}) => {
+        if (app == this.app) {
+          if (this.layer.uid !== layerDescriptor.uid) {
+            return;
+          }
+          if (!this.availableTimes) {
+            this.fillAvailableTimes(layerDescriptor);
+          }
+          this.setCurrentTimeIfAvailable(time);
         }
-        if (!this.availableTimes) {
-          this.fillAvailableTimes(layerDescriptor);
-        }
-        this.setCurrentTimeIfAvailable(time);
       });
 
     this.hsEventBusService.layerTimeSynchronizations
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({sync, time}) => {
-        this.timesInSync = sync;
-        if (sync) {
-          this.hideTimeSelect();
-          this.setCurrentTimeIfAvailable(time);
-          if (this.currentTime) {
-            this.setLayerTime();
+      .subscribe(({sync, time, app}) => {
+        if (app == this.app) {
+          this.timesInSync = sync;
+          if (sync) {
+            this.hideTimeSelect();
+            this.setCurrentTimeIfAvailable(time);
+            if (this.currentTime) {
+              this.setLayerTime();
+            }
           }
         }
       });
@@ -114,6 +118,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
         this.hsEventBusService.layerTimeSynchronizations.next({
           sync: this.timesInSync,
           time: this.currentTime,
+          app: this.app,
         });
       }
       this.setLayerTime();
@@ -127,6 +132,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
         this.hsEventBusService.layerTimeSynchronizations.next({
           sync: this.timesInSync,
           time: this.currentTime,
+          app: this.app,
         });
       }
       this.setLayerTime();
@@ -139,6 +145,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       this.hsEventBusService.layerTimeSynchronizations.next({
         sync: this.timesInSync,
         time: this.currentTime,
+        app: this.app,
       });
     }
     this.setLayerTime();
@@ -178,6 +185,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     this.hsEventBusService.layerTimeSynchronizations.next({
       sync: this.timesInSync,
       time: this.currentTime,
+      app: this.app,
     });
   }
 

@@ -23,7 +23,7 @@ export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
   implements OnDestroy, OnChanges
 {
-  name: 'dimensions';
+  name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private ngUnsubscribe = new Subject<void>();
 
@@ -33,7 +33,7 @@ export class HsLayerEditorDimensionsComponent
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsUtilsService: HsUtilsService,
-    private hsLayerSelectorService: HsLayerSelectorService
+    hsLayerSelectorService: HsLayerSelectorService
   ) {
     super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges

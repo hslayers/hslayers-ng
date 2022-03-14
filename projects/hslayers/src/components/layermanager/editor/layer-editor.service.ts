@@ -21,11 +21,19 @@ import {
   getInlineLegend,
   setCluster,
 } from '../../../common/layer-extensions';
+
+class HsLayerEditorServiceParams {
+  legendDescriptor: HsLegendDescriptor;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorService {
-  legendDescriptor: HsLegendDescriptor;
+  apps: {
+    [id: string]: HsLayerEditorServiceParams;
+  } = {default: new HsLayerEditorServiceParams()};
+
   layerTitleChange: Subject<{
     newTitle: string;
     oldTitle: string;
@@ -45,12 +53,17 @@ export class HsLayerEditorService {
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe(
       async ({layer, app}) => {
-        this.legendDescriptor =
+        this.get(app).legendDescriptor =
           await this.HsLegendService.getLayerLegendDescriptor(layer.layer, app);
       }
     );
   }
-
+  get(app: string) {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsLayerEditorServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
   /**
    * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
@@ -163,9 +176,10 @@ export class HsLayerEditorService {
   }
 
   legendVisible(app: string): boolean {
+    const legendDescriptor = this.get(app).legendDescriptor;
     return (
-      this.HsLegendService.legendValid(this.legendDescriptor) &&
-      (getInlineLegend(this.legendDescriptor.lyr) ||
+      this.HsLegendService.legendValid(legendDescriptor) &&
+      (getInlineLegend(legendDescriptor.lyr) ||
         !this.HsLayoutService.panelEnabled('legend', app))
     );
   }

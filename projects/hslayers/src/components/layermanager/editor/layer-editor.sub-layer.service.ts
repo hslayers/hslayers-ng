@@ -10,15 +10,22 @@ export type KeyBooleanDict = {
   [key: string]: boolean;
 };
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsLayerEditorSublayerService {
+class HsLayerEditorSublayerParams {
   checkedSubLayers: KeyBooleanDict = {};
   withChildren: KeyBooleanDict = {};
   populatedLayers: Array<any> = [];
   withChildrenTmp: KeyBooleanDict = {};
   checkedSubLayersTmp: KeyBooleanDict = {};
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HsLayerEditorSublayerService {
+  apps: {
+    [id: string]: HsLayerEditorSublayerParams;
+  } = {default: new HsLayerEditorSublayerParams()};
+
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerSelectorService: HsLayerSelectorService,
@@ -28,13 +35,22 @@ export class HsLayerEditorSublayerService {
       this.resetSublayers(layer, app);
     });
   }
-  resetSublayers(layer: HsLayerDescriptor, app: string) {
-    if (this.HsLayerManagerService.apps[app].currentLayer) {
-      this.checkedSubLayers = layer.checkedSubLayers;
-      this.checkedSubLayersTmp = layer.checkedSubLayersTmp;
 
-      this.withChildren = layer.withChildren;
-      this.withChildrenTmp = layer.withChildrenTmp;
+  get(app: string): HsLayerEditorSublayerParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsLayerEditorSublayerParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
+  resetSublayers(layer: HsLayerDescriptor, app: string) {
+    const appRef = this.get(app);
+    if (this.HsLayerManagerService.apps[app].currentLayer) {
+      appRef.checkedSubLayers = layer.checkedSubLayers;
+      appRef.checkedSubLayersTmp = layer.checkedSubLayersTmp;
+
+      appRef.withChildren = layer.withChildren;
+      appRef.withChildrenTmp = layer.withChildrenTmp;
     }
   }
   hasSubLayers(app: string): boolean {
@@ -58,9 +74,10 @@ export class HsLayerEditorSublayerService {
   }
 
   populateSubLayers(app: string) {
+    const appRef = this.get(app);
     const wrapper = this.HsLayerManagerService.apps[app].currentLayer;
     const layer = wrapper.layer;
-    if (this.populatedLayers.includes(wrapper.uid)) {
+    if (appRef.populatedLayers.includes(wrapper.uid)) {
       return;
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
@@ -72,7 +89,7 @@ export class HsLayerEditorSublayerService {
       //Function which converts list of layers to dictionary of their names and visibility
       const toDictionary = (d, layer) => ((d[layer.Name] = visible), d);
 
-      this.populatedLayers.push(wrapper.uid);
+      appRef.populatedLayers.push(wrapper.uid);
       const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
       const subSubLayers = subLayersWithChild.map((sl) => sl.Layer).flat();
       wrapper.withChildren = subLayersWithChild.reduce(toDictionary, {});
@@ -80,15 +97,18 @@ export class HsLayerEditorSublayerService {
       const leafs = subSubLayers.length > 0 ? subSubLayers : subLayers;
       wrapper.checkedSubLayers = leafs.reduce(toDictionary, {});
 
-      this.checkedSubLayers = wrapper.checkedSubLayers;
-      this.withChildren = wrapper.withChildren;
-      this.checkedSubLayersTmp = clone(this.checkedSubLayers);
-      wrapper.checkedSubLayersTmp = this.checkedSubLayersTmp;
-      this.withChildrenTmp = clone(this.withChildren);
-      wrapper.withChildrenTmp = this.withChildrenTmp;
+      appRef.checkedSubLayers = wrapper.checkedSubLayers;
+      appRef.withChildren = wrapper.withChildren;
+      appRef.checkedSubLayersTmp = clone(appRef.checkedSubLayers);
+      wrapper.checkedSubLayersTmp = appRef.checkedSubLayersTmp;
+      appRef.withChildrenTmp = clone(appRef.withChildren);
+      wrapper.withChildrenTmp = appRef.withChildrenTmp;
 
       if (!this.HsLayerManagerService.apps[app].currentLayer.visible) {
-        for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {
+        for (const dict of [
+          appRef.checkedSubLayersTmp,
+          appRef.withChildrenTmp,
+        ]) {
           Object.keys(dict).forEach((v) => (dict[v] = true));
         }
       }
@@ -96,10 +116,13 @@ export class HsLayerEditorSublayerService {
   }
 
   subLayerSelected(app: string): void {
+    const appRef = this.get(app);
     const layer = this.HsLayerManagerService.apps[app].currentLayer;
     const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
-    params.LAYERS = Object.keys(this.checkedSubLayers)
-      .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])
+    params.LAYERS = Object.keys(appRef.checkedSubLayers)
+      .filter(
+        (key) => appRef.checkedSubLayers[key] && !appRef.withChildren[key]
+      )
       .join(',');
     if (this.HsLayerUtilsService.isLayerArcgis(layer.layer)) {
       params.LAYERS = `show:${params.LAYERS}`;

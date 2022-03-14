@@ -75,55 +75,24 @@ export class HsLayerEditorComponent {
   ) {}
 
   createWidgets() {
-    this.hsWidgetContainerService.create(
+    const widgets = [
       HsTypeWidgetComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
-    this.hsWidgetContainerService.create(
       HsMetadataWidgetComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
-    this.hsWidgetContainerService.create(
-      HsScaleWidgetComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
-    this.hsWidgetContainerService.create(
       HsClusterWidgetComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
-    this.hsWidgetContainerService.create(
+      HsScaleWidgetComponent,
       HsLegendWidgetComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
-    this.hsWidgetContainerService.create(
       HsLayerEditorDimensionsComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
-    this.hsWidgetContainerService.create(
       HsOpacityWidgetComponent,
-      {
-        app: this.app,
-      },
-      this.app
-    );
+    ];
+    for (const widgetClass of widgets) {
+      this.hsWidgetContainerService.create(
+        widgetClass,
+        {
+          app: this.app,
+        },
+        this.app
+      );
+    }
   }
 
   /**

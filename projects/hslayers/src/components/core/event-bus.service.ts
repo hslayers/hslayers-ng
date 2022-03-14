@@ -61,6 +61,7 @@ export class HsEventBusService {
   layerTimeSynchronizations: Subject<{
     sync: boolean;
     time?: string;
+    app: string;
   }> = new Subject();
   /**
    * DEPRECATED. Moved into the HsDimensionTimeService for mostly internal usage.
