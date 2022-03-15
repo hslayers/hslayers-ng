@@ -42,9 +42,6 @@ export class HsLanguageService {
     }
     this.getTranslator(app).use(lang);
     this.apps[app].language = lang;
-    // this.HsEventBusService.updateLanguageButton.next({
-    //   language: lang,
-    // });
   }
 
   getTranslator(app): HsCustomTranslationService {

@@ -24,6 +24,7 @@ export class HsLanguageComponent
   }
 
   ngOnInit(): void {
+    const app = this.data.app;
     this.hsSidebarService.addButton(
       {
         panel: 'language',
@@ -34,27 +35,28 @@ export class HsLanguageComponent
           this.hsLanguageService.getTranslation(
             'PANEL_HEADER.LANGUAGE',
             undefined,
-            this.data.app
+            app
           ),
         description: () =>
           this.hsLanguageService.getTranslation(
             'SIDEBAR.descriptions.LANGUAGE',
             undefined,
-            this.data.app
+            app
           ),
         content: () => {
           return this.hsLanguageService
-            .getCurrentLanguageCode(this.data.app)
+            .getCurrentLanguageCode(app)
             .toUpperCase();
         },
       },
-      this.data.app
+      app
     );
-    this.available_languages = this.hsLanguageService.listAvailableLanguages(
-      this.data.app
-    );
-    this.hsLanguageService.apps[this.data.app].language =
-      this.hsConfig.get(this.data.app).language ?? 'en';
+    this.available_languages =
+      this.hsLanguageService.listAvailableLanguages(app);
+    const configLang = this.hsConfig.get(app).language;
+    if (configLang != undefined) {
+      this.setLanguage(configLang);
+    }
   }
 
   /**
