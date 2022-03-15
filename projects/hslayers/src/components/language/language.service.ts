@@ -4,7 +4,10 @@ import {lastValueFrom} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {CustomTranslationService as HsCustomTranslationService} from './custom-translate.service';
+
+const DEFAULT_LANG = 'en';
 class HsLangageObject {
+  /** App-Language pair such as `app-1|en` */
   language: string;
   translationService: HsCustomTranslationService;
 }
@@ -27,10 +30,16 @@ export class HsLanguageService {
 
   /**
    * @public
-   * @param lang - Language code
+   * @param lang - Language code without app prefix
    * Set language
    */
   setLanguage(lang: string, app: string): void {
+    if (app == undefined) {
+      app == 'default';
+    }
+    if (!lang.includes('|')) {
+      lang = `${app}|${lang}`;
+    }
     this.getTranslator(app).use(lang);
     this.apps[app].language = lang;
     // this.HsEventBusService.updateLanguageButton.next({
@@ -41,12 +50,13 @@ export class HsLanguageService {
   getTranslator(app): HsCustomTranslationService {
     if (this.apps[app] == undefined) {
       this.apps[app] = {
-        language: 'en',
+        language: app + '|' + DEFAULT_LANG,
         translationService: this.translateServiceFactory(
           this.hsConfig,
           this.HttpClient
         ),
       };
+      this.apps[app].translationService.use(app + '|' + DEFAULT_LANG);
     }
     return this.apps[app].translationService;
   }
@@ -61,7 +71,7 @@ export class HsLanguageService {
       typeof this.apps[app].language == 'undefined' ||
       this.apps[app].language == ''
     ) {
-      return 'en';
+      return DEFAULT_LANG;
     }
     return this.apps[app].language.split('|').pop().substr(0, 2).toLowerCase();
   }

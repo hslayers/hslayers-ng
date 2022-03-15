@@ -359,11 +359,7 @@ export class HsShareUrlService {
       });
       const lang = this.getParamValue(HS_PRMS.lang);
       if (lang) {
-        //Add app name for backwards compatibility of urls where app is not specified together with lang code
-        this.HsLanguageService.setLanguage(
-          (!lang.includes('|') ? app + '|' : '') + lang,
-          app
-        );
+        this.HsLanguageService.setLanguage(lang, app);
       }
       const view = this.getParamValue(HS_PRMS.view);
       // this.HsMapService.visible = !(view == '3d');

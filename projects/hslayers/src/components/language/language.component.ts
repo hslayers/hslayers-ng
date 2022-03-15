@@ -11,8 +11,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsLanguageComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   available_languages: any;
   name = 'language';
   constructor(
@@ -74,9 +73,6 @@ export class HsLanguageComponent
    * @param langCode - Language code
    */
   setLanguage(langCode: string): void {
-    this.hsLanguageService.setLanguage(
-      this.data.app + '|' + langCode,
-      this.data.app
-    );
+    this.hsLanguageService.setLanguage(langCode, this.data.app);
   }
 }
