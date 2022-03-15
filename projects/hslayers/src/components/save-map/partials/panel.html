@@ -15,7 +15,8 @@
             <div class="alert alert-info text-gray">
                 {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs : data}} </div>
         </div>
-        <hs-layman-current-user class="d-block pb-5" *ngIf="endpoint?.type === 'layman'" [endpoint]="endpoint">
+        <hs-layman-current-user class="d-block pb-5" [app]="data.app" *ngIf="endpoint?.type === 'layman'"
+            [endpoint]="endpoint">
         </hs-layman-current-user>
         <hs-save-map-form *ngIf="(isAuthorized || endpoint?.type !== 'layman')" [app]="data.app">
         </hs-save-map-form>
