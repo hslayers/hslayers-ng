@@ -172,10 +172,11 @@ export class HsCompositionsService {
    * Delete composition from datasource database
    * @param composition - Composition selected
    */
-  async deleteComposition(composition): Promise<void> {
+  async deleteComposition(composition, app: string): Promise<void> {
     await this.managerByType(composition.endpoint)?.delete(
       composition.endpoint,
-      composition
+      composition,
+      app
     );
   }
 

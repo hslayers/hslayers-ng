@@ -156,7 +156,25 @@ export class HsLegendService {
       source_url = params.OWSURL;
     }
     const legendImage = getLegends(layer);
-    if (legendImage !== undefined) {
+    if (
+      legendImage === undefined ||
+      (Array.isArray(legendImage) && legendImage.length == 0)
+    ) {
+      source_url +=
+        (source_url.indexOf('?') > 0 ? '' : '?') +
+        '&version=' +
+        version +
+        '&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=' +
+        layer_name +
+        '&format=image%2Fpng';
+      if (
+        getEnableProxy(layer) === undefined ||
+        getEnableProxy(layer) == true
+      ) {
+        source_url = this.hsUtilsService.proxify(source_url, app, false);
+      }
+      return source_url;
+    } else {
       if (typeof legendImage == 'string') {
         return legendImage;
       }
@@ -164,17 +182,6 @@ export class HsLegendService {
         return legendImage[0];
       }
     }
-    source_url +=
-      (source_url.indexOf('?') > 0 ? '' : '?') +
-      '&version=' +
-      version +
-      '&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=' +
-      layer_name +
-      '&format=image%2Fpng';
-    if (getEnableProxy(layer) === undefined || getEnableProxy(layer) == true) {
-      source_url = this.hsUtilsService.proxify(source_url, app, false);
-    }
-    return source_url;
   }
 
   async setSvg(layer: Layer<Source>): Promise<SafeHtml> {

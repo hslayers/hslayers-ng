@@ -25,7 +25,10 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
    * Delete selected composition from project (including deletion from composition server, useful for user created compositions)
    */
   async delete(composition): Promise<void> {
-    await this.HsCompositionsService.deleteComposition(composition);
+    await this.HsCompositionsService.deleteComposition(
+      composition,
+      this.data.app
+    );
     this.close();
   }
 }

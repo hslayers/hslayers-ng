@@ -330,12 +330,15 @@ export class HsLayerManagerMetadataService {
       const layerNameInParams: string = params.LAYERS;
 
       this.parseWmsCaps(layerDescriptor, layerNameInParams, caps, app);
-      if (getSubLayers(layer)) {
-        /* When capabilities have been queried, it's safe to override LAYERS
+      const sublayers = getSubLayers(layer);
+      if (sublayers) {
+        if (!(Array.isArray(sublayers) && sublayers.length == 0)) {
+          /* When capabilities have been queried, it's safe to override LAYERS
          param now to not render the container layer, but sublayers.*/
-        this.HsLayerUtilsService.updateLayerParams(layer, {
-          LAYERS: getSubLayers(layer),
-        });
+          this.HsLayerUtilsService.updateLayerParams(layer, {
+            LAYERS: getSubLayers(layer),
+          });
+        }
       }
       this.fillMetadataUrlsIfNotExist(layer, caps);
       //Identify max resolution of layer. If layer has sublayers the highest value is selected

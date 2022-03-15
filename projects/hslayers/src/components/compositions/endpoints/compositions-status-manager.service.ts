@@ -167,7 +167,7 @@ export class HsCompositionsStatusManagerService {
       encodeURIComponent(this.hsConfig.get(app).project_name);
     url = this.hsUtilsService.proxify(url, app);
     await lastValueFrom(this.$http.get(url));
-    this.hsEventBusService.compositionDeletes.next(composition);
+    this.hsEventBusService.compositionDeletes.next({composition, app});
   }
 }
 

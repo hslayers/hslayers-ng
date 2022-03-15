@@ -34,7 +34,7 @@ export class HsPagerComponent implements OnInit {
    */
   getPreviousRecords(): void {
     if (this.pagerService.getPreviousRecords) {
-      this.pagerService.getPreviousRecords();
+      this.pagerService.getPreviousRecords(this.app);
     } else {
       if (this.appRef.listStart - this.appRef.recordsPerPage <= 0) {
         this.appRef.listStart = 0;
@@ -56,7 +56,7 @@ export class HsPagerComponent implements OnInit {
     this.appRef.listStart = 0;
     this.appRef.listNext = this.appRef.recordsPerPage;
     if (this.pagerService.changeRecordsPerPage) {
-      this.pagerService.changeRecordsPerPage();
+      this.pagerService.changeRecordsPerPage(this.app);
     }
   }
 
@@ -65,7 +65,7 @@ export class HsPagerComponent implements OnInit {
    */
   getNextRecords(): void {
     if (this.pagerService.getNextRecords) {
-      this.pagerService.getNextRecords();
+      this.pagerService.getNextRecords(this.app);
     } else {
       this.appRef.listStart += this.appRef.recordsPerPage;
       this.appRef.listNext += this.appRef.recordsPerPage;

@@ -258,7 +258,7 @@ export class HsCompositionsParserService {
     if (overwrite == undefined || overwrite == true) {
       this.removeCompositionLayers(app);
     }
-    this.hsEventBusService.currentComposition.next(obj);
+    this.hsEventBusService.currentComposition.next(obj); //Doesnt seems to be used
     this.get(app).current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (possibleExtent !== undefined) {

@@ -193,10 +193,10 @@ export class HsCompositionsLaymanService {
    * @param endpoint - Layman endpoint selected
    * @param composition - Composition to be deleted
    */
-  async delete(endpoint: HsEndpoint, composition): Promise<void> {
+  async delete(endpoint: HsEndpoint, composition, app: string): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     await lastValueFrom(this.$http.delete(url, {withCredentials: true}));
-    this.hsEventBusService.compositionDeletes.next(composition);
+    this.hsEventBusService.compositionDeletes.next({composition, app});
   }
 
   /**
