@@ -98,7 +98,7 @@
     "@compodoc/compodoc": "^1.1.19",
     "@types/jasmine": "~3.10.3",
     "@types/jasminewd2": "~2.0.10",
-    "@typescript-eslint/eslint-plugin": "5.14.0",
+    "@typescript-eslint/eslint-plugin": "5.15.0",
     "@typescript-eslint/parser": "5.15.0",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
