@@ -40,6 +40,9 @@ export class HsPanelContainerService
     app: string,
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
+    if (data?.app == undefined) {
+      data.app = app;
+    }
     (panelObserver ?? this.get(app).panelObserver).next(
       new HsPanelItem(component, data)
     );

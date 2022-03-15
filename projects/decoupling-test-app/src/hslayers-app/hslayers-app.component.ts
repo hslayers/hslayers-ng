@@ -347,7 +347,6 @@ export class HslayersAppComponent {
     hsQueryPopupService.init(this.app);
     hsLayoutService.createOverlay(HsQueryPopupComponent, this.app, {
       service: hsQueryPopupService,
-      app: this.app,
     });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});
   }

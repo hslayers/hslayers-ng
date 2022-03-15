@@ -85,13 +85,7 @@ export class HsLayerEditorComponent {
       HsOpacityWidgetComponent,
     ];
     for (const widgetClass of widgets) {
-      this.hsWidgetContainerService.create(
-        widgetClass,
-        {
-          app: this.app,
-        },
-        this.app
-      );
+      this.hsWidgetContainerService.create(widgetClass, {}, this.app);
     }
   }
 

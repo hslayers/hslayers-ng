@@ -189,23 +189,20 @@ export class HslayersAppComponent {
       },
       this.app
     );
-    hsLayoutService.createPanel(HsQueryComponent, this.app, {app: this.app});
-    hsLayoutService.createPanel(HsStatisticsPanelComponent, this.app, {
-      app: this.app,
-    });
+    hsLayoutService.createPanel(HsQueryComponent, this.app, {});
+    hsLayoutService.createPanel(HsStatisticsPanelComponent, this.app, {});
     hsLayoutService.createPanel(HsLayerManagerComponent, this.app, {
       app: this.app,
     });
-    hsLayoutService.createPanel(HsStylerComponent, this.app, {app: this.app});
+    hsLayoutService.createPanel(HsStylerComponent, this.app, {});
     hsToolbarPanelContainerService.create(
       HsSearchToolbarComponent,
-      {app: this.app},
+      {},
       this.app
     );
     hsQueryPopupService.init(this.app);
     hsLayoutService.createOverlay(HsQueryPopupComponent, this.app, {
       service: hsQueryPopupService,
-      app: this.app,
     });
   }
   title = 'hslayers-workspace';

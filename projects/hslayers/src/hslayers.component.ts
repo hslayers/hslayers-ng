@@ -86,92 +86,62 @@ export class HslayersComponent implements OnInit {
     if (this.id == undefined) {
       this.id = 'default';
     }
-    this.createPanel('tripPlanner', HsTripPlannerComponent, this.id, {
-      app: this.id,
-    });
-    this.createPanel('addData', HsAddDataComponent, this.id, {app: this.id});
-    this.createPanel('draw', HsDrawComponent, this.id, {app: this.id});
-    this.createPanel('search', HsSearchComponent, this.id, {app: this.id});
-    this.createPanel('feature_table', HsFeatureTableComponent, this.id, {
-      app: this.id,
-    });
-    this.createPanel('saveMap', HsSaveMapComponent, this.id, {app: this.id});
-    this.createPanel('language', HsLanguageComponent, this.id, {app: this.id});
-    this.createPanel('info', HsQueryComponent, this.id, {app: this.id});
-    this.createPanel('permalink', HsShareComponent, this.id, {app: this.id});
-    this.createPanel('print', HsPrintComponent, this.id, {app: this.id});
-    this.createPanel('measure', HsMeasureComponent, this.id, {app: this.id});
-    this.createPanel('composition_browser', HsCompositionsComponent, this.id, {
-      app: this.id,
-    });
-    this.createPanel('legend', HsLegendComponent, this.id, {app: this.id});
-    this.createPanel('layermanager', HsLayerManagerComponent, this.id, {
-      app: this.id,
-    });
-    this.createPanel('mapSwipe', HsMapSwipeComponent, this.id, {app: this.id});
-
-    this.HsPanelContainerService.create(
-      HsStylerComponent,
-      {
-        app: this.id,
-      },
-      this.id
+    this.createPanel('tripPlanner', HsTripPlannerComponent, this.id, {});
+    this.createPanel('addData', HsAddDataComponent, this.id, {});
+    this.createPanel('draw', HsDrawComponent, this.id, {});
+    this.createPanel('search', HsSearchComponent, this.id, {});
+    this.createPanel('feature_table', HsFeatureTableComponent, this.id, {});
+    this.createPanel('saveMap', HsSaveMapComponent, this.id, {});
+    this.createPanel('language', HsLanguageComponent, this.id, {});
+    this.createPanel('info', HsQueryComponent, this.id, {});
+    this.createPanel('permalink', HsShareComponent, this.id, {});
+    this.createPanel('print', HsPrintComponent, this.id, {});
+    this.createPanel('measure', HsMeasureComponent, this.id, {});
+    this.createPanel(
+      'composition_browser',
+      HsCompositionsComponent,
+      this.id,
+      {}
     );
+    this.createPanel('legend', HsLegendComponent, this.id, {});
+    this.createPanel('layermanager', HsLayerManagerComponent, this.id, {});
+    this.createPanel('mapSwipe', HsMapSwipeComponent, this.id, {});
+
+    this.HsPanelContainerService.create(HsStylerComponent, {}, this.id);
 
     this.hsToolbarPanelContainerService.create(
       HsSearchToolbarComponent,
-      {
-        app: this.id,
-      },
+      {},
       this.id
     );
     this.hsToolbarPanelContainerService.create(
       HsDrawToolbarComponent,
-      {
-        app: this.id,
-      },
+      {},
       this.id
     );
     this.hsToolbarPanelContainerService.create(
       HsMeasureToolbarComponent,
-      {
-        app: this.id,
-      },
+      {},
       this.id
     );
 
     this.HsOverlayPanelContainerService.create(
       HsGeolocationComponent,
-      {
-        app: this.id,
-      },
+      {},
       this.id
     );
-    this.HsOverlayPanelContainerService.create(
-      HsInfoComponent,
-      {app: this.id},
-      this.id
-    );
+    this.HsOverlayPanelContainerService.create(HsInfoComponent, {}, this.id);
     this.HsOverlayPanelContainerService.create(
       HsLayerManagerGalleryComponent,
-      {
-        app: this.id,
-      },
+      {},
       this.id
     );
-    this.HsOverlayPanelContainerService.create(
-      HsToolbarComponent,
-      {
-        app: this.id,
-      },
-      this.id
-    );
+    this.HsOverlayPanelContainerService.create(HsToolbarComponent, {}, this.id);
     this.hsQueryPopupService.init(this.id);
     this.HsOverlayPanelContainerService.create(
       HsQueryPopupComponent,
       {
         service: this.hsQueryPopupService,
-        app: this.id,
       },
       this.id
     );
