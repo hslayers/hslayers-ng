@@ -1,3 +1,35 @@
+# [8.1.0](https://github.com/hslayers/hslayers-ng/compare/8.0.0...8.1.0) (2022-03-15)
+
+
+### Bug Fixes
+
+* **external:** Check if layer is visible, when handling feature custom actions ([15aeebe](https://github.com/hslayers/hslayers-ng/commit/15aeebef725c99a302826bae7303492370d4ac6c))
+* **legend:** Layer has no style rules ([91956e9](https://github.com/hslayers/hslayers-ng/commit/91956e97851e1342b7e427ea241911a3f4867e0a))
+* **print:** Implemented fixes for found bugs and issues ([1f5416b](https://github.com/hslayers/hslayers-ng/commit/1f5416b99a9f27bcd6af8198fe1e31eca2bfb50d))
+* **print:** Provide correct wms layer legend height ([1b910dd](https://github.com/hslayers/hslayers-ng/commit/1b910ddba847f4e8f7ee1a358bb5da01e616bce5))
+* **save-map:** Button for downloading composition json ([a6c4f83](https://github.com/hslayers/hslayers-ng/commit/a6c4f83717884193bc3044bf462c228e84d602c8))
+* Fix save-map thumbnail generation ([8e91564](https://github.com/hslayers/hslayers-ng/commit/8e915643d6ad0aa04c2741cf3701e5971a87451f))
+* **save-map:** Improve map saving completion ([af84014](https://github.com/hslayers/hslayers-ng/commit/af840144d15fd4537574fc1c40f50a686da1ecaa))
+* Improve map saving UX and validation ([7876384](https://github.com/hslayers/hslayers-ng/commit/7876384a064866a500e04ca7fb152838b210ec29))
+* Look for wms layers with name recursively ([bdd0e2a](https://github.com/hslayers/hslayers-ng/commit/bdd0e2a4ed7afe8401ba4b448549ab95cfa830df))
+
+
+### Code Refactoring
+
+* Merge the two variants of map saving forms ([a908092](https://github.com/hslayers/hslayers-ng/commit/a908092da458bfbb9c303ff764aa14eb5703eb55))
+
+
+### Features
+
+* **print:** Support configuring legend, scale and text for print panel ([1c7ad71](https://github.com/hslayers/hslayers-ng/commit/1c7ad71e7c9ceafafe4f81348a68fff31e2be325))
+
+
+### BREAKING CHANGES
+
+* advancedForm hsConfig parameter removed
+
+
+
 # [8.0.0](https://github.com/hslayers/hslayers-ng/compare/7.0.3...8.0.0) (2022-02-11)
 
 
