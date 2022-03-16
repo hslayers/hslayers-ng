@@ -34,12 +34,13 @@ export class HsMapSwipeComponent
     left: true,
     right: true,
   };
+  appRef;
   constructor(
     public hsLayoutService: HsLayoutService,
-    public hsSidebarService: HsSidebarService,
-    public hsLanguageService: HsLanguageService,
+    private hsSidebarService: HsSidebarService,
+    private hsLanguageService: HsLanguageService,
     private hsMapSwipeService: HsMapSwipeService,
-    public hsLayerUtilsService: HsLayerUtilsService, //In template
+    private hsLayerUtilsService: HsLayerUtilsService, //In template
     private hsLayerShiftingService: HsLayerShiftingService
   ) {
     super(hsLayoutService);
@@ -71,6 +72,7 @@ export class HsMapSwipeComponent
       this.data.app
     );
     this.hsMapSwipeService.init(this.data.app);
+    this.appRef = this.hsMapSwipeService.get(this.data.app);
   }
 
   /**
@@ -161,20 +163,6 @@ export class HsMapSwipeComponent
   }
 
   /**
-   * Get map-swipe swipe element orientation
-   */
-  getOrientation(): string {
-    return this.hsMapSwipeService.get(this.data.app).orientation;
-  }
-
-  /**
-   * Get map-swipe control active state
-   */
-  getSwipeControlActive(): boolean {
-    return this.hsMapSwipeService.get(this.data.app).swipeControlActive;
-  }
-
-  /**
    * Check if layers for map-swipe component are available
    */
   layersAvailable(): boolean {
@@ -189,23 +177,16 @@ export class HsMapSwipeComponent
   }
 
   /**
-   * Get EntireMapLayers for map-swipe component
-   */
-  getEntireMapLayers(): LayerListItem[] {
-    return this.hsMapSwipeService.get(this.data.app).entireMapLayers;
-  }
-
-  /**
-   * Get leftLayers for map-swipe component
-   */
-  getLeftLayers(): LayerListItem[] {
-    return this.hsMapSwipeService.get(this.data.app).leftLayers;
-  }
-
-  /**
    * Get rightLayers for map-swipe component
    */
   getRightLayers(): LayerListItem[] {
     return this.hsMapSwipeService.get(this.data.app).rightLayers;
+  }
+
+  /**
+   * Get title translation
+   */
+  translateTitle(title: string): string {
+    return this.hsLayerUtilsService.translateTitle(title, this.data.app);
   }
 }
