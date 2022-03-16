@@ -303,11 +303,11 @@ export class HsLayerSynchronizerService {
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
-      app,
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsLayerSynchronizerService',
-      }
+      },
+      app
     );
   }
 

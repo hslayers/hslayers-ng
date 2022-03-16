@@ -309,11 +309,11 @@ export class HsAddDataCommonFileService {
                 undefined,
                 app
               ),
-              app,
               {
                 serviceCalledFrom: 'HsAddDataCommonFileService',
                 disableLocalization: true,
-              }
+              },
+              app
             );
             this.layerAddedAsWms.next(false);
             return;
@@ -389,11 +389,11 @@ export class HsAddDataCommonFileService {
     this.hsToastService.createToastPopupMessage(
       _options.header,
       _options.message,
-      app,
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
         details: _options.details,
-      }
+      },
+      app
     );
   }
 

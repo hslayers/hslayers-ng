@@ -494,11 +494,11 @@ export class HsCompositionsParserService {
             this.hsLanguageService.getTranslation(
               'COMPOSITIONS.notAbleToParseLayerFromComposition'
             ) + lyr_def.title,
-            app,
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsParserService',
-            }
+            },
+            app
           );
         }
       } else {

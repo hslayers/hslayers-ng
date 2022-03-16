@@ -121,11 +121,11 @@ export class HsCompositionsLayerParserService {
           error,
           app
         ),
-        app,
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsLayerParserService',
-        }
+        },
+        app
       );
       this.HsMapService.getMap(app).getLayers().remove(wmts);
     }

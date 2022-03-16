@@ -481,14 +481,14 @@ export class HsTripPlannerService {
                   this.HsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.message,
-                    {url: url},
+                    {url},
                     app
                   ),
-                  app,
                   {
                     disableLocalization: true,
                     serviceCalledFrom: 'HsTripPlannerService',
-                  }
+                  },
+                  app
                 );
                 return of(null);
               })

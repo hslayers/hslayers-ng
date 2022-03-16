@@ -102,12 +102,12 @@ export class HsCompositionsMickaService {
             undefined,
             app
           ),
-        app,
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
           serviceCalledFrom: 'HsCompositionsMickaService',
-        }
+        },
+        app
       );
       return;
     }
@@ -182,11 +182,11 @@ export class HsCompositionsMickaService {
                 {url: url},
                 app
               ),
-            app,
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsMickaService',
-            }
+            },
+            app
           );
           return of(e);
         })

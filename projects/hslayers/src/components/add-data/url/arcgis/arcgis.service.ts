@@ -268,11 +268,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
         'ADDLAYERS.OlDoesNotRecognizeProjection',
-        app,
         {
           serviceCalledFrom: 'HsUrlArcGisService',
           details: [`${options.layerTitle}`, `EPSG: ${appRef.data.srs}`],
-        }
+        },
+        app
       );
     }
 

@@ -129,11 +129,11 @@ export class HsCompositionsLaymanService {
                     {url: endpoint.url},
                     app
                   ),
-                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsCompositionsLaymanService',
-                }
+                },
+                app
               );
               break;
           }
@@ -266,12 +266,12 @@ export class HsCompositionsLaymanService {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
       endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
-      app,
       {
         disableLocalization: true,
         toastStyleClasses: 'bg-warning text-light',
         serviceCalledFrom: 'HsCompositionsLaymanService',
-      }
+      },
+      app
     );
   }
 }

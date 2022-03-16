@@ -94,10 +94,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
                     undefined,
                     this.app
                   ),
-                  this.app,
                   {
                     toastStyleClasses: 'bg-info text-light',
-                  }
+                  },
+                  this.app
                 );
               } else {
                 //Remove lastly selected feature.
@@ -151,6 +151,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
           this.app
         ),
         'Only polygon geometry can be edited',
+        undefined,
         this.app
       );
       this.resetState();
@@ -204,10 +205,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         undefined,
         this.app
       ),
-      this.app,
       {
         toastStyleClasses: 'bg-info text-light',
-      }
+      },
+      this.app
     );
     setTimeout(() => {
       try {
@@ -245,10 +246,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
               undefined,
               this.app
             ),
-            this.app,
             {
               toastStyleClasses: 'bg-info text-light',
-            }
+            },
+            this.app
           );
         }
       }
@@ -359,10 +360,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
           undefined,
           this.app
         ),
-        this.app,
         {
           toastStyleClasses: 'bg-warning text-light',
-        }
+        },
+        this.app
       );
     }
   }

@@ -80,12 +80,12 @@ export class HsCompositionsStatusManagerMickaJointService {
                     {url: ds.url},
                     app
                   ),
-                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom:
                     'HsCompositionsStatusManagerMickaJointService',
-                }
+                },
+                app
               );
           }
           return of(e);
@@ -130,11 +130,11 @@ export class HsCompositionsStatusManagerMickaJointService {
           {url: url},
           app
         ),
-        app,
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsStatusManagerMickaJointService',
-        }
+        },
+        app
       );
     }
   }

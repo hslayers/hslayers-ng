@@ -139,11 +139,11 @@ export class HsLaymanBrowserService {
                     {url},
                     app
                   ),
-                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsLaymanBrowserService',
-                }
+                },
+                app
               );
           }
           endpoint.datasourcePaging.loaded = true;
@@ -168,12 +168,12 @@ export class HsLaymanBrowserService {
             undefined,
             app
           ),
-        app,
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
           serviceCalledFrom: 'HsLaymanBrowserService',
-        }
+        },
+        app
       );
       return;
     }
@@ -296,8 +296,11 @@ export class HsLaymanBrowserService {
           undefined,
           app
         ),
-        app,
-        {disableLocalization: true, serviceCalledFrom: 'HsLaymanBrowserService'}
+        {
+          disableLocalization: true,
+          serviceCalledFrom: 'HsLaymanBrowserService',
+        },
+        app
       );
       return false;
     }

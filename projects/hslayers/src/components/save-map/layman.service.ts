@@ -667,13 +667,13 @@ export class HsLaymanService implements HsSaverService {
                   this.HsToastService.createToastPopupMessage(
                     'LAYMAN.deleteLayersRequest',
                     message,
-                    app,
                     {
                       toastStyleClasses: 'bg-success text-light',
                       details: (res as DeleteSingleLayerResponse)?.name
                         ? [(res as DeleteSingleLayerResponse).name]
                         : null,
-                    }
+                    },
+                    app
                   );
                 }
               ),
@@ -696,8 +696,8 @@ export class HsLaymanService implements HsSaverService {
                     },
                     app
                   ),
-                  app,
-                  {serviceCalledFrom: 'HsLaymanService'}
+                  {serviceCalledFrom: 'HsLaymanService'},
+                  app
                 );
                 return of(e);
               })

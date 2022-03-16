@@ -113,11 +113,11 @@ export class HsFeatureCommonService {
         undefined,
         app
       ) + getTitle(toLayer),
-      app,
       {
         toastStyleClasses: 'bg-success text-light',
         serviceCalledFrom: 'HsFeatureCommonService',
-      }
+      },
+      app
     );
   }
 }

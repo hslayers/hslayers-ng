@@ -85,8 +85,8 @@ export class HsCompositionsListItemComponent {
           {url: url},
           this.app
         ),
-        this.app,
-        {disableLocalization: true}
+        {disableLocalization: true},
+        this.app
       );
     }
   }

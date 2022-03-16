@@ -285,8 +285,8 @@ export class HsShareService {
             undefined,
             app
           ),
-          app,
-          {disableLocalization: true, serviceCalledFrom: 'HsShareService'}
+          {disableLocalization: true, serviceCalledFrom: 'HsShareService'},
+          app
         );
       });
   }

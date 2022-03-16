@@ -708,13 +708,13 @@ export class HsDrawService {
           undefined,
           app
         ),
-        app,
         {
           toastStyleClasses: 'bg-info text-white',
           serviceCalledFrom: 'HsDrawService',
           disableLocalization: true,
           customDelay: 600000,
-        }
+        },
+        app
       );
       const drawableLaymanRm = appRef.drawableLaymanLayers.filter(
         (l) => l.toRemove
@@ -874,10 +874,10 @@ export class HsDrawService {
               },
               app
             )}`,
-            app,
             {
               serviceCalledFrom: 'HsDrawService',
-            }
+            },
+            app
           );
         }
         appRef.drawActive = true;
@@ -1025,11 +1025,11 @@ export class HsDrawService {
               platformModifierKey: 'CTRL/META',
             }
           )}`,
-          app,
           {
             toastStyleClasses: 'bg-info text-white',
             serviceCalledFrom: 'HsDrawService',
-          }
+          },
+          app
         );
       }
     });

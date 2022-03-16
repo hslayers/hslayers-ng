@@ -176,8 +176,8 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
             undefined,
             this.app
           ),
-          this.app,
-          {disableLocalization: true}
+          {disableLocalization: true},
+          this.app
         );
       }
     });

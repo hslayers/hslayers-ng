@@ -88,11 +88,11 @@ export class HsCompositionsStatusManagerService {
                   {url: url},
                   app
                 ),
-              app,
               {
                 disableLocalization: true,
                 serviceCalledFrom: 'HsCompositionsStatusManagerService',
-              }
+              },
+              app
             );
         }
         return of(e);

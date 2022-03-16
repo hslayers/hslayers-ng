@@ -112,8 +112,8 @@ export class HsCommonLaymanService {
           undefined,
           app
         ),
-      app,
-      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}
+      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'},
+      app
     );
   }
 }

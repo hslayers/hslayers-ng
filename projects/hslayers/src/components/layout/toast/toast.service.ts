@@ -112,8 +112,8 @@ export class HsToastService {
   createToastPopupMessage(
     header: string,
     text: string,
-    app: string,
-    options: customToastOptions = {}
+    options: customToastOptions = {},
+    app: string = 'default'
   ): void {
     this.show(
       options.disableLocalization

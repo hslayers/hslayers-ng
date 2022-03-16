@@ -92,11 +92,11 @@ export class HsMickaBrowserService {
                     {url},
                     app
                   ),
-                app,
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsMickaBrowserService',
-                }
+                },
+                app
               );
           }
           dataset.datasourcePaging.loaded = true;
