@@ -53,7 +53,6 @@ export class HsLanguageService {
           this.HttpClient
         ),
       };
-      this.apps[app].translationService.use(app + '|' + DEFAULT_LANG);
     }
     return this.apps[app].translationService;
   }

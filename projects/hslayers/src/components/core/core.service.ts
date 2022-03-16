@@ -62,6 +62,8 @@ export class HsCoreService {
     translateService.setDefaultLang(`${app}|en`);
     if (this.HsConfig.get(app).language) {
       translateService.use(`${app}|${this.HsConfig.get(app).language}`);
+    } else {
+      translateService.use(translateService.getDefaultLang());
     }
 
     if (this.initCalled) {

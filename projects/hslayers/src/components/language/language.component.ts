@@ -53,12 +53,7 @@ export class HsLanguageComponent
     );
     this.available_languages =
       this.hsLanguageService.listAvailableLanguages(app);
-    const configLang = this.hsConfig.get(app).language;
-    if (configLang != undefined) {
-      this.setLanguage(configLang);
-    }
   }
-
   /**
    * Check if provided language is active language
    * @param langCode - Language code

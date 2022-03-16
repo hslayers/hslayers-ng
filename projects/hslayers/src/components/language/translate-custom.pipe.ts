@@ -19,8 +19,7 @@ import {
 })
 export class TranslateCustomPipe
   extends TranslatePipe
-  implements PipeTransform
-{
+  implements PipeTransform {
   onLangChangeOverridden: boolean;
   constructor(
     private translate2: TranslateService,
@@ -54,6 +53,12 @@ export class TranslateCustomPipe
       }
     }
 
+    if (interpolateParams.app == undefined) {
+      console.warn(
+        'You must specify app parameter for translateHs pipe i.e. `translateHs : {app: "default"}`. Translating: ' +
+          query
+      );
+    }
     const translator = this.hsLanguageService.getTranslator(
       interpolateParams.app
     );
@@ -98,7 +103,9 @@ export class TranslateCustomPipe
       this.value = res !== undefined ? res : query;
       this.lastKey = query;
     };
-
+    if (translator.currentLang == undefined) {
+      translator.currentLang = translator.defaultLang;
+    }
     translator.get(query).subscribe(onTranslation);
   }
 }

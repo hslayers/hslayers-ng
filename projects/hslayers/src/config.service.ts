@@ -237,6 +237,9 @@ export class HsConfig {
   }
 
   update?(newConfig: HsConfigObject, app?: string): void {
+    if (app == undefined) {
+      app = 'default';
+    }
     this.checkDeprecatedCesiumConfig(newConfig);
     let appConfig = this.apps[app];
     if (appConfig == undefined) {
