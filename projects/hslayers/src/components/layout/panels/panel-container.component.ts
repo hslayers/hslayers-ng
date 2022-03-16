@@ -100,8 +100,13 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       componentRefInstance
     );
 
+    /* When component doesn't create its own data object 
+    set data by merging two sources: html attribute (this.data) and parameter passed 
+    to PanelContainerService.create function (panelItem.data). It can contain 
+    layerDescriptor for example */
     if (componentRefInstance.data == undefined) {
-      componentRefInstance.data = panelItem.data || this.data;
+      Object.assign(panelItem.data, this.data);
+      componentRefInstance.data = panelItem.data;
     }
     this.service
       .get(this.app)
