@@ -23,6 +23,7 @@ class MeasureServiceParams {
   sketches: Feature<Geometry>[] = [];
   lastMeasurementId: number;
   measureVector: VectorLayer<VectorSource<Geometry>>;
+  measuringActivated = false;
 }
 @Injectable({
   providedIn: 'root',
@@ -125,6 +126,10 @@ export class HsMeasureService {
    * Start measuring interaction in app
    */
   activateMeasuring(type: string, app: string): void {
+    const appRef = this.get(app);
+    if (appRef.measuringActivated) {
+      return;
+    }
     const map = this.HsMapService.getMap(app);
     if (!map) {
       setTimeout(() => {
@@ -132,7 +137,7 @@ export class HsMeasureService {
       }, 500);
       return;
     }
-    map.addLayer(this.get(app).measureVector);
+    map.addLayer(appRef.measureVector);
     map.getViewport().addEventListener('mousemove', (evt) => {
       this.mouseMoveHandler(evt, app);
     });
@@ -144,6 +149,7 @@ export class HsMeasureService {
     });
 
     this.addInteraction(type, app);
+    appRef.measuringActivated = true;
   }
 
   /**
@@ -167,6 +173,7 @@ export class HsMeasureService {
       map.removeInteraction(appRef.draw);
       map.removeLayer(appRef.measureVector);
     });
+    appRef.measuringActivated = false;
     this.HsEventBusService.measurementEnds.next({app}); //better emit drawingEnds here
   }
 

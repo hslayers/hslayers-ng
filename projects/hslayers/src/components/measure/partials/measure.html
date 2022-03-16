@@ -1,6 +1,6 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
   <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translateHs : data " [app]="data.app">
-    <extra-title>&nbsp;<span [hidden]="!serviceData.multipleShapeMode">{{'MEASURE.multipleShapes' |
+    <extra-title>&nbsp;<span [hidden]="!appRef.data.multipleShapeMode">{{'MEASURE.multipleShapes' |
         translateHs : data }}</span></extra-title>
   </hs-panel-header>
   <div class="card-body p-2">
@@ -16,11 +16,11 @@
           (ngModelChange)="changeMeasureParams()">
       </label>
     </div>
-    <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.clear' | translateHs : {'app':
-      data.app} }}</button>
+    <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.clear' | translateHs : data
+      }}</button>
     <ul class="list-group">
-      <li *ngFor="let measurement of serviceData.measurements" class="list-group-item">
-        {{measurement.size}}&nbsp;{{measurement.unit}}<span *ngIf="measurement.type === 'Area'"><sup>2</sup></span>
+      <li *ngFor="let measurement of appRef.data.measurements" class="list-group-item">
+        {{measurement?.size}}&nbsp;{{measurement?.unit}}<span *ngIf="measurement?.type === 'Area'"><sup>2</sup></span>
       </li>
     </ul>
   </div>

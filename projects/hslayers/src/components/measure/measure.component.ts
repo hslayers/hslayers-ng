@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
-import {first, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -19,12 +19,8 @@ export class HsMeasureComponent
   extends HsPanelBaseComponent
   implements OnDestroy, OnInit {
   type: string;
-  serviceData: {
-    measurements: Array<any>;
-    multipleShapeMode: boolean;
-  };
   name = 'measure';
-
+  appRef;
   private ngUnsubscribe = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
@@ -44,7 +40,7 @@ export class HsMeasureComponent
   ngOnInit() {
     const app = this.data.app;
     this.hsMeasureService.init(app);
-    this.serviceData = this.hsMeasureService.get(app).data;
+    this.appRef = this.hsMeasureService.get(this.data.app);
     this.type = 'distance';
 
     if (this.hsUtilsService.runningInBrowser()) {
@@ -70,12 +66,11 @@ export class HsMeasureComponent
       .subscribe(({app}) => {
         if (app == app) {
           this.hsLayoutService.panelEnabled('toolbar', app, true);
-          this.serviceData = this.hsMeasureService.get(app).data;
         }
       });
 
     this.hsEventBusService.mainPanelChanges
-      .pipe(first(), takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({which, app}) => {
         if (this.hsLayoutService.get(app).mainpanel == 'measure') {
           this.hsMeasureService.activateMeasuring(this.type, app);
