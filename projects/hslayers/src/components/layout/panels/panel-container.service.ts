@@ -13,8 +13,7 @@ import {KeyNumberDict} from '../../../config.service';
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface
-{
+  implements HsPanelContainerServiceInterface {
   apps: any = {default: new HsPanelContainerParams()};
   constructor() {}
 
@@ -40,8 +39,10 @@ export class HsPanelContainerService
     app: string,
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
-    if (data?.app == undefined) {
+    if (data && data.app == undefined) {
       data.app = app;
+    } else if (data == undefined) {
+      data = {app};
     }
     (panelObserver ?? this.get(app).panelObserver).next(
       new HsPanelItem(component, data)
