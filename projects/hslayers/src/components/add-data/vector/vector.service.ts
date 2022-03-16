@@ -249,6 +249,7 @@ export class HsAddDataVectorService {
           !data.url?.endsWith('json'),
         saveToLayman: data.saveToLayman,
       },
+      app,
       data.addUnder
     );
     this.fitExtent(layer, app);

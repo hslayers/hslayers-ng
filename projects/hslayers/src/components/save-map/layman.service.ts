@@ -190,11 +190,15 @@ export class HsLaymanService implements HsSaverService {
       this.switchFormDataToFileNames(formdata, files_to_async_upload);
     }
 
-    formdata.append(
-      'sld',
-      new Blob([description.sld], {type: 'application/octet-stream'}),
-      'file.sld'
-    );
+    //Empty blob causes laymant to return “Internal Server Error”
+    if (description.sld) {
+      formdata.append(
+        'sld',
+        new Blob([description.sld], {type: 'application/octet-stream'}),
+        'file.sld'
+      );
+    }
+
     formdata.append('name', description.name);
     formdata.append('title', description.title);
     formdata.append('crs', description.crs);

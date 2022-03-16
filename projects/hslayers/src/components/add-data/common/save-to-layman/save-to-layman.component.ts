@@ -6,5 +6,7 @@ import {Component, Input} from '@angular/core';
 })
 export class HsSaveToLaymanComponent {
   @Input() data: any;
+  @Input() app = 'default';
+
   constructor() {}
 }

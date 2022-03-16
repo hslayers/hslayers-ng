@@ -1,12 +1,14 @@
 <form class="form-horizontal" role="form">
   <div class="form-group m-3">
-    <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="app" uploader="hs-file-vector" [acceptedFormats]="acceptedFormats">
+    <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="app" [uploader]="'hs-file-vector-'+app"
+      [acceptedFormats]="acceptedFormats">
     </hs-file-upload>
   </div>
   <div *ngIf="data.showDetails">
     <div class="border-bottom d-flex flex-row justify-content-between">
       <p class="align-self-center m-0">
-        {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount}, app)}}
+        {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount},
+        app)}}
       </p>
       <ul class="nav nav-tabs justify-content-end">
         <li class="nav-item">
