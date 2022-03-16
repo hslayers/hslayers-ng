@@ -35,7 +35,7 @@ export class HsLanguageService {
    */
   setLanguage(lang: string, app: string): void {
     if (app == undefined) {
-      app == 'default';
+      app = 'default';
     }
     if (!lang.includes('|')) {
       lang = `${app}|${lang}`;
@@ -44,7 +44,7 @@ export class HsLanguageService {
     this.apps[app].language = lang;
   }
 
-  getTranslator(app): HsCustomTranslationService {
+  getTranslator(app: string): HsCustomTranslationService {
     if (this.apps[app] == undefined) {
       this.apps[app] = {
         language: app + '|' + DEFAULT_LANG,

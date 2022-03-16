@@ -8,18 +8,18 @@ import {HsToolbarPanelBaseComponent} from '../toolbar/toolbar-panel-base.compone
   templateUrl: './partials/measure-toolbar.html',
 })
 export class HsMeasureToolbarComponent extends HsToolbarPanelBaseComponent {
-  constructor(public HsLayoutService: HsLayoutService) {
-    super(HsLayoutService);
+  constructor(public hsLayoutService: HsLayoutService) {
+    super(hsLayoutService);
   }
   name = 'measureToolbar';
   isVisible(): boolean {
     return (
-      this.HsLayoutService.panelEnabled('measure', this.data.app) &&
-      this.HsLayoutService.componentEnabled('measureToolbar', this.data.app)
+      this.hsLayoutService.panelEnabled('measure', this.data.app) &&
+      this.hsLayoutService.componentEnabled('measureToolbar', this.data.app)
     );
   }
 
   measureButtonClicked(): void {
-    this.HsLayoutService.setMainPanel('measure', this.data.app, true);
+    this.hsLayoutService.setMainPanel('measure', this.data.app, true);
   }
 }

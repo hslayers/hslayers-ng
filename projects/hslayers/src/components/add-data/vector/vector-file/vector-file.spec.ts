@@ -124,7 +124,10 @@ describe('add-layers-vector', () => {
     component.data.srs = '';
     component.data.extract_styles = false;
 
-    const layer: Layer<Source> = await service.addNewLayer(component.data, '');
+    const layer: Layer<Source> = await service.addNewLayer(
+      component.data,
+      'default'
+    );
     expect(layer).toBeDefined();
     expect(getTitle(layer)).toEqual('Cancer rates');
   });

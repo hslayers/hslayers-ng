@@ -11,81 +11,118 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService, Measurement} from '../utils/utils.service';
 import {setTitle} from '../../common/layer-extensions';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsMeasureService {
+class MeasureServiceParams {
   draw: Draw;
   data = {
     measurements: [],
     multipleShapeMode: false,
   };
   /**
-   * @property {Feature[]} sketches Array of measure sketches
+   * sketches Array of measure sketches
    */
   sketches: Feature<Geometry>[] = [];
   lastMeasurementId: number;
-  measureVector = new VectorLayer({
-    source: new VectorSource(),
-    style: new Style({
-      fill: new Fill({
-        color: 'rgba(255, 255, 255, 0.2)',
-      }),
-      stroke: new Stroke({
-        color: '#ffcc33',
-        width: 2,
-      }),
-    }),
-  });
-
+  measureVector: VectorLayer<VectorSource<Geometry>>;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class HsMeasureService {
+  apps: {
+    [id: string]: MeasureServiceParams;
+  } = {default: new MeasureServiceParams()};
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
-  ) {
-    setTitle(this.measureVector, 'Measurement sketches');
+  ) {}
+
+  /**
+   * Initialize the map swipe service data and subscribers
+   * @param app - App identifier
+   */
+  init(app: string): void {
+    this.setMeasureLayer(app);
+    setTitle(this.get(app).measureVector, 'Measurement sketches');
+  }
+
+  /**
+   * Get the params saved by the measure service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): MeasureServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new MeasureServiceParams();
+    }
+    return this.apps[app ?? 'default'];
   }
 
   /**
    * @public
-   * @param {boolean?} mode Optional parameter if multiple shape mode should be enabled
-   * @description Enable/disable multiple shape mode for measuring (switch without parameter)
+   * @param mode - Optional parameter if multiple shape mode should be enabled
+   * @param app - App identifier
+   * Enable/disable multiple shape mode for measuring (switch without parameter)
    */
-  switchMultipleMode(mode?: boolean): void {
+  switchMultipleMode(app: string, mode?: boolean): void {
+    const appRef = this.get(app);
     if (mode !== undefined) {
-      this.data.multipleShapeMode = mode;
+      appRef.data.multipleShapeMode = mode;
     } else {
-      this.data.multipleShapeMode = !this.data.multipleShapeMode;
+      appRef.data.multipleShapeMode = !appRef.data.multipleShapeMode;
     }
   }
 
   /**
+   * Set new measure vector layer
+   * @param app - App identifier
+   */
+  setMeasureLayer(app: string): void {
+    this.get(app).measureVector = new VectorLayer({
+      source: new VectorSource(),
+      style: new Style({
+        fill: new Fill({
+          color: 'rgba(255, 255, 255, 0.2)',
+        }),
+        stroke: new Stroke({
+          color: '#ffcc33',
+          width: 2,
+        }),
+      }),
+    });
+  }
+
+  /**
    * @public
-   * @param {string} type Geometry type of measurement ('area' for polygon, 'line' for linestring)
-   * @description Change geometry type of measurement without deleting of old ones
+   * @param type - Geometry type of measurement ('area' for polygon, 'line' for linestring)
+   * @param app - App identifier
+   * Change geometry type of measurement without deleting of old ones
    */
   changeMeasureParams(type: string, app: string): void {
-    this.HsMapService.getMap(app).removeInteraction(this.draw);
-    this.sketches = [];
+    const appRef = this.get(app);
+    this.HsMapService.getMap(app).removeInteraction(appRef.draw);
+    appRef.sketches = [];
     this.addInteraction(type, app);
   }
 
   /**
    * @public
-   * @description Clear all measurements and restart measuring
+   * @param app - App identifier
+   * Clear all measurements and restart measuring
    */
-  clearMeasurement(): void {
-    this.draw.setActive(false);
-    this.data.measurements = [];
-    this.measureVector.getSource().clear();
-    this.sketches = [];
-    this.draw.setActive(true);
+  clearMeasurement(app: string): void {
+    const appRef = this.get(app);
+    appRef.draw.setActive(false);
+    appRef.data.measurements = [];
+    appRef.measureVector.getSource().clear();
+    appRef.sketches = [];
+    appRef.draw.setActive(true);
   }
 
   /**
    * @public
-   * @param type
-   * @description Start measuring interaction in app
+   * @param type -
+   * @param app - App identifier
+   * Start measuring interaction in app
    */
   activateMeasuring(type: string, app: string): void {
     const map = this.HsMapService.getMap(app);
@@ -95,7 +132,7 @@ export class HsMeasureService {
       }, 500);
       return;
     }
-    map.addLayer(this.measureVector);
+    map.addLayer(this.get(app).measureVector);
     map.getViewport().addEventListener('mousemove', (evt) => {
       this.mouseMoveHandler(evt, app);
     });
@@ -111,9 +148,11 @@ export class HsMeasureService {
 
   /**
    * @public
-   * @description Stop measuring interaction in app
+   * @param app - App identifier
+   * Stop measuring interaction in app
    */
   deactivateMeasuring(app: string): void {
+    const appRef = this.get(app);
     this.HsMapService.loaded(app).then((map) => {
       map.getViewport().removeEventListener('mousemove', (evt) => {
         this.mouseMoveHandler(evt, app);
@@ -125,22 +164,23 @@ export class HsMeasureService {
         this.mouseMoveHandler(evt, app);
       });
 
-      map.removeInteraction(this.draw);
-      map.removeLayer(this.measureVector);
+      map.removeInteraction(appRef.draw);
+      map.removeLayer(appRef.measureVector);
     });
     this.HsEventBusService.measurementEnds.next({app}); //better emit drawingEnds here
   }
 
   /**
-   * @private
-   * @param {object} evt Callback param for mouse move event
-   * @description Callback for mouse and touch move event, compute live measurement results
+   * @param evt - Callback param for mouse move event
+   * @param app - App identifier
+   * Callback for mouse and touch move event, compute live measurement results
    */
   mouseMoveHandler(evt, app: string): void {
-    if (this.sketches.length > 0) {
+    const appRef = this.get(app);
+    if (appRef.sketches.length > 0) {
       let output: Measurement;
 
-      for (const sketch of this.sketches) {
+      for (const sketch of appRef.sketches) {
         const geom = sketch.getGeometry();
         if (this.HsUtilsService.instOf(geom, Polygon)) {
           output = this.addMultiple(
@@ -162,17 +202,17 @@ export class HsMeasureService {
       }
       //output.geom = this.sketch;
       setTimeout(() => {
-        this.data.measurements[this.lastMeasurementId] = output;
+        appRef.data.measurements[appRef.lastMeasurementId] = output;
       }, 0);
     }
   }
 
   /**
-   * @private
-   * @param {Measurement} val1 Output of new object
-   * @param {Measurement} val2 Old value
-   * @returns {Measurement}
-   * @description Adds two measure results for multiple shape mode to display joined result
+
+   * @param val1 - Output of new object
+   * @param val2 - Old value
+   * @returns 
+   * Adds two measure results for multiple shape mode to display joined result
    */
   addMultiple(val1: Measurement, val2: Measurement): Measurement {
     if (val2 == undefined) {
@@ -208,41 +248,42 @@ export class HsMeasureService {
   }
 
   /**
-   * @private
-   * @param {string} type Geometry type
-   * @description Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
+   * @param type - Geometry type
+   * @param app - App identifier
+   * Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
    */
   addInteraction(type: string, app: string): void {
+    const appRef = this.get(app);
     const drawType = type == 'area' ? 'Polygon' : 'LineString';
-    this.draw = new Draw({
-      source: this.measureVector.getSource(),
+    appRef.draw = new Draw({
+      source: appRef.measureVector.getSource(),
       type: /** @type {GeometryType} */ drawType,
       dragVertexDelay: 150,
     });
-    this.HsMapService.getMap(app).addInteraction(this.draw);
+    this.HsMapService.getMap(app).addInteraction(appRef.draw);
 
-    this.draw.on('drawstart', (evt) => {
+    appRef.draw.on('drawstart', (evt) => {
       this.HsEventBusService.measurementStarts.next({app});
-      if (this.data.multipleShapeMode) {
-        if (!Array.isArray(this.sketches)) {
-          this.sketches = [];
-          this.data.measurements.push({
+      if (appRef.data.multipleShapeMode) {
+        if (!Array.isArray(appRef.sketches)) {
+          appRef.sketches = [];
+          appRef.data.measurements.push({
             size: 0,
             unit: '',
           });
         }
-        this.sketches.push(evt.feature);
+        appRef.sketches.push(evt.feature);
       } else {
-        this.sketches = [evt.feature];
-        this.data.measurements.push({
+        appRef.sketches = [evt.feature];
+        appRef.data.measurements.push({
           size: 0,
           unit: '',
         });
       }
-      this.lastMeasurementId = this.data.measurements.length - 1;
+      appRef.lastMeasurementId = appRef.data.measurements.length - 1;
     });
 
-    this.draw.on('drawend', (evt) => {
+    appRef.draw.on('drawend', (evt) => {
       this.HsEventBusService.measurementEnds.next({app});
     });
   }

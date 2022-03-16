@@ -1,7 +1,7 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {first, takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -17,68 +17,24 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy, OnInit {
   type: string;
-  data;
+  serviceData: {
+    measurements: Array<any>;
+    multipleShapeMode: boolean;
+  };
   name = 'measure';
 
   private ngUnsubscribe = new Subject<void>();
   constructor(
-    public HsEventBusService: HsEventBusService,
-    public HsLayoutService: HsLayoutService,
-    public HsMeasureService: HsMeasureService,
-    private HsUtilsService: HsUtilsService,
+    private hsEventBusService: HsEventBusService,
+    public hsLayoutService: HsLayoutService,
+    private hsMeasureService: HsMeasureService,
+    private hsUtilsService: HsUtilsService,
     private hsLanguageService: HsLanguageService,
     private hsSidebarService: HsSidebarService
   ) {
-    super(HsLayoutService);
-    this.data = this.HsMeasureService.data;
-    this.type = 'distance';
-
-    if (this.HsUtilsService.runningInBrowser()) {
-      document.addEventListener('keyup', (e) => {
-        if (e.key == 'Control') {
-          //ControlLeft
-          setTimeout(() => {
-            this.HsMeasureService.switchMultipleMode();
-          }, 0);
-        }
-      });
-    }
-    this.HsEventBusService.measurementStarts
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({app}) => {
-        if (app == this.data.app) {
-          this.HsLayoutService.panelEnabled('toolbar', app, false);
-        }
-      });
-
-    this.HsEventBusService.measurementEnds
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({app}) => {
-        if (app == this.data.app) {
-          this.HsLayoutService.panelEnabled('toolbar', app, true);
-          this.data = this.HsMeasureService.data;
-        }
-      });
-
-    this.HsEventBusService.mainPanelChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({which, app}) => {
-        if (HsLayoutService.get(app).mainpanel == 'measure') {
-          this.HsMeasureService.activateMeasuring(this.type, app);
-        } else {
-          this.HsMeasureService.deactivateMeasuring(app);
-        }
-      });
-
-    //Temporary fix when measure panel is loaded as default (e.g. reloading page with parameters in link)
-    if (this.HsLayoutService.get(this.data.app).mainpanel == 'measure') {
-      this.HsMeasureService.activateMeasuring(this.type, this.data.app);
-    }
-
-    //$scope.$emit('scope_loaded', 'Measure');
+    super(hsLayoutService);
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
@@ -86,10 +42,54 @@ export class HsMeasureComponent
   }
 
   ngOnInit() {
+    const app = this.data.app;
+    this.hsMeasureService.init(app);
+    this.serviceData = this.hsMeasureService.get(app).data;
+    this.type = 'distance';
+
+    if (this.hsUtilsService.runningInBrowser()) {
+      document.addEventListener('keyup', (e) => {
+        if (e.key == 'Control') {
+          //ControlLeft
+          setTimeout(() => {
+            this.hsMeasureService.switchMultipleMode(app);
+          }, 0);
+        }
+      });
+    }
+    this.hsEventBusService.measurementStarts
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app}) => {
+        if (app == app) {
+          this.hsLayoutService.panelEnabled('toolbar', app, false);
+        }
+      });
+
+    this.hsEventBusService.measurementEnds
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app}) => {
+        if (app == app) {
+          this.hsLayoutService.panelEnabled('toolbar', app, true);
+          this.serviceData = this.hsMeasureService.get(app).data;
+        }
+      });
+
+    this.hsEventBusService.mainPanelChanges
+      .pipe(first(), takeUntil(this.ngUnsubscribe))
+      .subscribe(({which, app}) => {
+        if (this.hsLayoutService.get(app).mainpanel == 'measure') {
+          this.hsMeasureService.activateMeasuring(this.type, app);
+        } else {
+          this.hsMeasureService.deactivateMeasuring(app);
+        }
+      });
+
+    //Temporary fix when measure panel is loaded as default (e.g. reloading page with parameters in link)
+    if (this.hsLayoutService.get(app).mainpanel == 'measure') {
+      this.hsMeasureService.activateMeasuring(this.type, app);
+    }
     //Don't need two buttons (sidebar and toolbar) to toggle measure panel
-    if (
-      !this.HsLayoutService.componentEnabled('measureToolbar', this.data.app)
-    ) {
+    if (!this.hsLayoutService.componentEnabled('measureToolbar', app)) {
       this.hsSidebarService.addButton(
         {
           panel: 'measure',
@@ -100,33 +100,36 @@ export class HsMeasureComponent
             this.hsLanguageService.getTranslation(
               'PANEL_HEADER.MEASURE',
               undefined,
-              this.data.app
+              app
             ),
           description: () =>
             this.hsLanguageService.getTranslation(
               'SIDEBAR.descriptions.MEASURE',
               undefined,
-              this.data.app
+              app
             ),
           icon: 'icon-design',
           condition: true,
         },
-        this.data.app
+        app
       );
     }
   }
 
+  /**
+   * Change geometry type of measurement without deleting of old ones
+   */
   changeMeasureParams(): void {
-    if (this.HsLayoutService.get(this.data.app).mainpanel != 'measure') {
+    if (this.hsLayoutService.get(this.data.app).mainpanel != 'measure') {
       return;
     }
-    this.HsMeasureService.changeMeasureParams(this.type, this.data.app);
+    this.hsMeasureService.changeMeasureParams(this.type, this.data.app);
   }
 
   /**
    * Reset sketch and all measurements to start new drawing
    */
   clearAll(): void {
-    this.HsMeasureService.clearMeasurement();
+    this.hsMeasureService.clearMeasurement(this.data.app);
   }
 }
