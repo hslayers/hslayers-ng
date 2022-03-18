@@ -59,6 +59,7 @@ export class HslayersAppComponent {
           geometry: new Point(coordinates),
           name: 'test',
           population: Math.round(Math.random() * 5000000),
+          val: this.getRandomInt(0, 100),
         });
       }
       const geojsonObject = {
@@ -279,6 +280,12 @@ export class HslayersAppComponent {
       });
       this.HsConfig.update(
         {
+          interpolatedLayer: {
+            title: 'IDW',
+            weight: 'dwn2020',
+            externalSourceUrl:
+              'https://api-agroclimatic.lesprojekt.cz/area/year/preci/0/48.0/52.0/12.0/16.0/0.1/0.1/1.0/2020/2020/ERA5-Land',
+          },
           sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
@@ -531,4 +538,10 @@ export class HslayersAppComponent {
     }
   }
   title = 'hslayers-workspace';
+
+  getRandomInt(min, max): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 }

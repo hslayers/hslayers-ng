@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
@@ -146,6 +147,12 @@ export class HsConfigObject {
    */
   pathExclusivity?: boolean;
   ngRouter?: boolean;
+  interpolatedLayer?: {
+    title: string;
+    initialFeatures?: Feature<Geometry>[];
+    externalSourceUrl?: string;
+    weight?: string;
+  };
 
   constructor() {
     this.pathExclusivity = false;

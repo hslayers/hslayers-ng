@@ -1,4 +1,8 @@
 /* eslint-disable no-eq-null */
+import {HttpClient} from '@angular/common/http';
+import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+
+import VectorLayer from 'ol/layer/Vector';
 import proj4 from 'proj4';
 import {
   Cluster,
@@ -13,12 +17,7 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {
-  Control,
-  MousePosition,
-  ScaleLine,
-  defaults as controlDefaults,
-} from 'ol/control';
+import {Control, ScaleLine, defaults as controlDefaults} from 'ol/control';
 import {
   DoubleClickZoom,
   DragPan,
@@ -33,14 +32,13 @@ import {
 import {Feature, Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer, Tile} from 'ol/layer';
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
-import VectorLayer from 'ol/layer/Vector';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsIDWLayerService} from '../../common/layers/idw-layer.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -71,6 +69,7 @@ class AppData {
   featureLayerMapping: {
     [key: string]: VectorAndSource[];
   } = {};
+  cachedIDWFeatures?: Feature<Geometry>[];
 }
 
 @Injectable({
@@ -119,7 +118,8 @@ export class HsMapService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
-    private rendererFactory: RendererFactory2
+    private rendererFactory: RendererFactory2,
+    private hsIDWLayerService: HsIDWLayerService
   ) {}
   /**
    * Returns the associated layer for feature.
@@ -729,7 +729,7 @@ export class HsMapService {
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
    */
 
-  repopulateLayers(visibilityOverrides, app: string) {
+  async repopulateLayers(visibilityOverrides, app: string) {
     if (this.HsConfig.get(app).box_layers) {
       this.HsConfig.get(app).box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
@@ -753,6 +753,20 @@ export class HsMapService {
           visibilityOverrides
         );
       });
+    }
+
+    if (this.HsConfig.get(app).interpolatedLayer) {
+      const source = await this.hsIDWLayerService.createIDWSource(
+        this.getMap(app).getView().getProjection().getCode(),
+        app
+      );
+      const idwLayer = this.hsIDWLayerService.createIDWLayer(source, app);
+      this.addLayer(idwLayer, app, DuplicateHandling.RemoveOriginal);
+      const idwVectorLayer = this.hsIDWLayerService.createIDWVectorLayer(
+        source,
+        app
+      );
+      this.addLayer(idwVectorLayer, app, DuplicateHandling.RemoveOriginal);
     }
   }
 

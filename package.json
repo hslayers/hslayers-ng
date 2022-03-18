@@ -66,6 +66,7 @@
     "ngx-color": "^7.3.3",
     "ngx-cookie-service": "^13.0.3",
     "ol": "^6.9.0",
+    "ol-ext": "^3.2.22",
     "ol-popup": "^4.0.0",
     "papaparse": "^5",
     "passport-oauth2-middleware": "^1.0.3",
@@ -104,6 +105,7 @@
     "@typescript-eslint/eslint-plugin": "5.15.0",
     "@typescript-eslint/parser": "5.15.0",
     "codelyzer": "^6.0.2",
+    "cypress": "~9.5.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.11.0",
     "eslint-config-openlayers": "14.0.0",
@@ -120,13 +122,12 @@
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "^1.7.0",
     "ng-packagr": "^13.2.1",
-    "prettier": "^2.6.0",
     "ngx-build-plus": "^13.0.1",
+    "prettier": "^2.6.0",
     "puppeteer": "^13.5.1",
     "sass": "^1.49.9",
     "ts-node": "^10.7.0",
-    "typescript": "4.5.5",
-    "cypress": "~9.5.2"
+    "typescript": "4.5.5"
   },
   "config": {
     "commitizen": {
