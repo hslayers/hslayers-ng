@@ -24,20 +24,21 @@ export interface exportFormats {
 }
 [];
 
+class HsFeatureCommonServiceParams {
+  listSubject = new BehaviorSubject<Layer<Source>[]>([] as Layer<Source>[]);
+
+  availableLayer$: Observable<Layer<Source>[]> =
+    this.listSubject.asObservable();
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsFeatureCommonService {
-  private listSubject = new BehaviorSubject<{
-    layers: Layer<Source>[];
-    app: string;
-  }>({layers: [] as Layer<Source>[], app: 'default'});
+  apps: {
+    [id: string]: HsFeatureCommonServiceParams;
+  } = {default: new HsFeatureCommonServiceParams()};
 
-  availableLayer$: Observable<{
-    layers: Layer<Source>[];
-    app: string;
-  }> = this.listSubject.asObservable();
-  apps: {[key: string]: boolean} = {};
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
     public hsToastService: HsToastService,
@@ -57,7 +58,7 @@ export class HsFeatureCommonService {
       .on('change:length', () => {
         this.updateLayerList(app);
       });
-    this.apps[app] = true;
+    this.apps[app] = new HsFeatureCommonServiceParams();
   }
 
   translateString(module: string, text: string, app: string): string {
@@ -75,7 +76,7 @@ export class HsFeatureCommonService {
       .filter((layer: Layer<Source>) => {
         return this.hsLayerUtilsService.isLayerDrawable(layer);
       });
-    this.listSubject.next({layers, app});
+    this.apps[app].listSubject.next(layers);
   }
 
   toggleExportMenu(

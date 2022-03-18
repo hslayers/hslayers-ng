@@ -48,7 +48,8 @@
                     [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs : {app} ">
                     <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
                         translateHs : {app} }}</option>
-                    <option *ngFor="let layer of hsFeatureCommonService.availableLayer$ | async" [ngValue]="layer">
+                    <option *ngFor="let layer of hsFeatureCommonService.apps[app].availableLayer$ | async"
+                        [ngValue]="layer">
                         {{hsLayerUtilsService.translateTitle(getTitle(layer), app)}}</option>
                 </select>
                 <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature(app)" [disabled]="!selectedLayer"><i

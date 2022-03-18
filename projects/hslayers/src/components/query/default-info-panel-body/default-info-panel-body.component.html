@@ -1,18 +1,24 @@
-<div *ngIf="(hsQueryBaseService.apps[app].features.length > 0) || (hsQueryBaseService.apps[app].coordinates.length > 0)" class="card hs-main-panel">
+<div *ngIf="(hsQueryBaseService.apps[app].features.length > 0) || (hsQueryBaseService.apps[app].coordinates.length > 0)"
+    class="card hs-main-panel">
     <div class="card-body">
         <div class="dropdown" [hidden]="!(hsQueryBaseService.apps[app].featureInfoHtmls.length > 0)">
-            <button class="btn btn-light w-100 dropdown-toggle rounded-0" data-toggle="dropdown" [attr.aria-expanded]="featureInfoExpanded" (click)="featureInfoExpanded = !featureInfoExpanded">
+            <button class="btn btn-light w-100 dropdown-toggle rounded-0" data-toggle="dropdown"
+                [attr.aria-expanded]="featureInfoExpanded" (click)="featureInfoExpanded = !featureInfoExpanded">
                 {{'QUERY.featureInfo' | translateHs : {app} }}
             </button>
-            <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}" *ngFor="let html of hsQueryBaseService.apps[app].featureInfoHtmls" [innerHtml]="html"></div>
+            <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}"
+                *ngFor="let html of hsQueryBaseService.apps[app].featureInfoHtmls" [innerHtml]="html"></div>
         </div>
         <hs-query-feature-list [app]="app"></hs-query-feature-list>
-        <table class="table table-striped" style="table-layout:fixed" [hidden]="!(hsQueryBaseService.apps[app].attributes.length > 0)">
-            <tbody><tr *ngFor="let attribute of hsQueryBaseService.apps[app].attributes">
-                <td class="first-col">{{attribute.name}}</td>
-                <td class="second-col" [innerHtml]="attribute.value"></td>
-            </tr>
-        </tbody></table>
+        <table class="table table-striped" style="table-layout:fixed"
+            [hidden]="!(hsQueryBaseService.apps[app].attributes.length > 0)">
+            <tbody>
+                <tr *ngFor="let attribute of hsQueryBaseService.apps[app].attributes">
+                    <td class="first-col">{{attribute.name}}</td>
+                    <td class="second-col" [innerHtml]="attribute.value"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
 </div>
