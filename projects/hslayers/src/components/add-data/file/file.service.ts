@@ -38,21 +38,15 @@ export class HsFileService {
         promises.push(filePromise);
       }
       await Promise.all(promises);
-      switch (evt.uploader) {
-        case 'shpdbfshx':
-          data.files = filesRead;
-          this.checkShpFiles(data, app);
-          break;
-        case 'sld':
-          data.sld = filesRead[0];
-          this.hsAddDataCommonFileService.dataObjectChanged.next(data);
-          break;
-        case 'hs-file-raster':
-          data.files = filesRead;
-          this.checkRasterFiles(data, app);
-          break;
-        default:
-          return;
+      if (evt.uploader.includes('shpdbfshx')) {
+        data.files = filesRead;
+        this.checkShpFiles(data, app);
+      } else if (evt.uploader.includes('sld')) {
+        data.sld = filesRead[0];
+        this.hsAddDataCommonFileService.get(app).dataObjectChanged.next(data);
+      } else if (evt.uploader.includes('hs-file-raster')) {
+        data.files = filesRead;
+        this.checkRasterFiles(data, app);
       }
     } catch (e) {
       this.hsAddDataCommonFileService.catchError(
@@ -69,7 +63,7 @@ export class HsFileService {
       data.files.length == 3 ||
       this.hsAddDataCommonFileService.isZip(data.files[0].type)
     ) {
-      this.hsAddDataCommonFileService.setDataName(data);
+      this.hsAddDataCommonFileService.setDataName(data, app);
     } else if (data.files.length > 3) {
       this.tooManyFiles(3, data.files.length, app);
     } else {
@@ -90,7 +84,7 @@ export class HsFileService {
       this.hsAddDataCommonFileService.isGeotiff(data.files[0].type) ||
       this.hsAddDataCommonFileService.isJp2(data.files[0].type)
     ) {
-      this.hsAddDataCommonFileService.setDataName(data);
+      this.hsAddDataCommonFileService.setDataName(data, app);
     } else if (data.files.length > 2) {
       this.tooManyFiles(2, data.files.length, app);
     } else {

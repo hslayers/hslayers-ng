@@ -111,7 +111,7 @@
       "chooseFiles": "Vyberte súbory...",
       "chooseLayer": "Vyberte vrstvu zo zoznamu ...",
       "dragAndDropFiles": "Pretiahnite súbory",
-      "note": "*Poznámka: Ak pripojíte súbor so súradnicami v inom systéme než WGS84 (dĺžka/šírka) nastavte prosím SRS v skecií \"POKROČILÉ MOŽNOSTI\"",
+      "note": "*Poznámka: Ak pripojíte súbor so súradnicami v inom systéme než WGS84 (dĺžka/šírka) nastavte prosím SRS",
       "uploadVectorFiles": "Nahrajte vektorové súbory"
     },
     "VECTOR": {

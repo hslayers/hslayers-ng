@@ -2,11 +2,11 @@
   title="{{hsAddDataCommonFileService.addTooltip(data, app)}}">
   <button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100"
     [disabled]="!data.name || !data.srs" (click)="hsAddDataCommonFileService.addAsWms(data, app)">
-    <i class="icon-plus" [hidden]="hsAddDataCommonFileService.loadingToLayman"></i>
-    <img [src]="hsUtilsService.getAjaxLoaderIcon(app)" [hidden]="!hsAddDataCommonFileService.loadingToLayman" />
+    <i class="icon-plus" [hidden]="appRef.loadingToLayman"></i>
+    <img [src]="hsUtilsService.getAjaxLoaderIcon(app)" [hidden]="!appRef.loadingToLayman" />
     {{hsAddDataCommonFileService.getLoadingText(app)}}
-    <ngb-progressbar *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.asyncLoading"
-      showValue="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
+    <ngb-progressbar *ngIf="appRef.loadingToLayman && appRef.asyncLoading" showValue="true" class="rounded-0 mb-1"
+      type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
     </ngb-progressbar>
   </button>
 </div>

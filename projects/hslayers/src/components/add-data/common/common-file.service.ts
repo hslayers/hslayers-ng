@@ -23,14 +23,21 @@ import {fileDataObject} from '../file/types/file-data-object.type';
 
 export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
 
-@Injectable({providedIn: 'root'})
-export class HsAddDataCommonFileService {
+export class HsAddDataCommonFileServiceParams {
   loadingToLayman = false;
   asyncLoading = false;
   layerNameExists = false;
   endpoint: HsEndpoint = null;
   layerAddedAsWms: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<fileDataObject> = new Subject();
+}
+
+@Injectable({providedIn: 'root'})
+export class HsAddDataCommonFileService {
+  apps: {
+    [id: string]: HsAddDataCommonFileServiceParams;
+  } = {default: new HsAddDataCommonFileServiceParams()};
+
   constructor(
     private httpClient: HttpClient,
     private hsLog: HsLogService,
@@ -43,15 +50,23 @@ export class HsAddDataCommonFileService {
     public hsAddDataOwsService: HsAddDataOwsService
   ) {}
 
-  clearParams(): void {
-    this.asyncLoading = false;
-    this.endpoint = null;
-    this.loadingToLayman = false;
+  get(app: string): HsAddDataCommonFileServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsAddDataCommonFileServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
+  clearParams(app: string): void {
+    const appRef = this.get(app);
+    appRef.asyncLoading = false;
+    appRef.endpoint = null;
+    appRef.loadingToLayman = false;
     this.hsLaymanService.totalProgress = 0;
   }
 
   getLoadingText(app: string): string {
-    return this.loadingToLayman
+    return this.get(app).loadingToLayman
       ? this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
           'uploading',
@@ -72,16 +87,17 @@ export class HsAddDataCommonFileService {
    * @param app - App identifier
    */
   pickEndpoint(app: string): void {
+    const appRef = this.get(app);
     const endpoints = this.hsCommonEndpointsService.endpoints;
     if (endpoints && endpoints.length > 0) {
       const laymans = endpoints.filter((ep) => ep.type == 'layman');
       if (laymans.length > 0) {
-        this.endpoint = laymans[0];
+        appRef.endpoint = laymans[0];
       } else {
-        this.endpoint = endpoints[0];
+        appRef.endpoint = endpoints[0];
       }
-      if (this.endpoint && this.endpoint.type == 'layman') {
-        this.endpoint.getCurrentUserIfNeeded(this.endpoint, app);
+      if (appRef.endpoint && appRef.endpoint.type == 'layman') {
+        appRef.endpoint.getCurrentUserIfNeeded(appRef.endpoint, app);
       }
     }
   }
@@ -177,9 +193,11 @@ export class HsAddDataCommonFileService {
     abstract: string,
     srs: string,
     sld: FileDescriptor,
-    access_rights: accessRightsModel
+    access_rights: accessRightsModel,
+    app: string
   ): Promise<any> {
     return new Promise(async (resolve, reject) => {
+      const appRef = this.get(app);
       const formdata = new FormData();
       let zipContent;
       if (this.isZip(files[0].type)) {
@@ -197,8 +215,8 @@ export class HsAddDataCommonFileService {
         .getAll('file')
         .filter((f) => (f as File).name)
         .reduce((prev, f) => prev + (f as File).size, 0);
-      this.asyncLoading = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
-      if (this.asyncLoading) {
+      appRef.asyncLoading = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
+      if (appRef.asyncLoading) {
         this.hsLaymanService.switchFormDataToFileNames(
           formdata,
           files_to_async_upload
@@ -241,7 +259,7 @@ export class HsAddDataCommonFileService {
         );
         //CHECK IF OK not auth etc.
         if (data && data.length > 0) {
-          if (this.asyncLoading) {
+          if (appRef.asyncLoading) {
             const promise = await this.hsLaymanService.asyncUpload(
               files_to_async_upload,
               data,
@@ -267,8 +285,9 @@ export class HsAddDataCommonFileService {
    */
   async addAsWms(data: fileDataObject, app: string): Promise<void> {
     try {
-      this.loadingToLayman = true;
-      if (!this.endpoint) {
+      const appRef = this.get(app);
+      appRef.loadingToLayman = true;
+      if (!appRef.endpoint) {
         this.pickEndpoint(app);
       }
       if (!this.isSRSSupported(data)) {
@@ -282,18 +301,19 @@ export class HsAddDataCommonFileService {
         );
       }
       this.loadNonWmsLayer(
-        this.endpoint,
+        appRef.endpoint,
         data.files,
         data.name,
         data.title,
         data.abstract,
         data.srs,
         data.sld,
-        data.access_rights
+        data.access_rights,
+        app
       )
         .then((response) => {
           data.name = response[0].name; //Name translated to Layman-safe name
-          return this.describeNewLayer(this.endpoint, response[0].name);
+          return this.describeNewLayer(appRef.endpoint, response[0].name);
         })
         .then(async (descriptor) => {
           if (descriptor?.file.error) {
@@ -315,12 +335,12 @@ export class HsAddDataCommonFileService {
               },
               app
             );
-            this.layerAddedAsWms.next(false);
+            appRef.layerAddedAsWms.next(false);
             return;
           }
           this.hsLaymanService.totalProgress = 0;
           this.hsAddDataService.selectType('url', app);
-          this.layerAddedAsWms.next(true);
+          appRef.layerAddedAsWms.next(true);
           await this.hsAddDataOwsService.connectToOWS(
             {
               type: 'wms',
@@ -334,8 +354,8 @@ export class HsAddDataCommonFileService {
         })
         .catch((err) => {
           if (err?.code === 17) {
-            this.clearParams();
-            this.layerNameExists = true;
+            this.clearParams(app);
+            appRef.layerNameExists = true;
             return;
           }
           const errorMessage =
@@ -406,7 +426,7 @@ export class HsAddDataCommonFileService {
       },
       app
     );
-    this.layerAddedAsWms.next(false);
+    this.get(app).layerAddedAsWms.next(false);
   }
 
   isSRSSupported(data: fileDataObject): boolean {
@@ -417,9 +437,9 @@ export class HsAddDataCommonFileService {
     return this.hsLaymanService.getLaymanEndpoint().authenticated;
   }
 
-  setDataName(data: fileDataObject): void {
+  setDataName(data: fileDataObject, app: string): void {
     data.name = data.files[0].name.slice(0, -4);
     data.title = data.files[0].name.slice(0, -4);
-    this.dataObjectChanged.next(data);
+    this.get(app).dataObjectChanged.next(data);
   }
 }

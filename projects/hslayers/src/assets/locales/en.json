@@ -111,7 +111,7 @@
       "chooseFiles": "Choose files...",
       "chooseLayer": "Please, choose a layer from list...",
       "dragAndDropFiles": "Drag and drop files",
-      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
+      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS",
       "uploadVectorFiles": "Upload vector files"
     },
     "VECTOR": {

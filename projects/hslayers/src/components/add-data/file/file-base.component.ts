@@ -37,26 +37,7 @@ export class HsAddDataFileBaseComponent
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLayoutService: HsLayoutService
-  ) {
-    this.hsAddDataCommonFileService.dataObjectChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data) => {
-        this.hsAddDataCommonService.get(this.app).showDetails = true;
-        Object.assign(this.data, data);
-        this.clearInput();
-      });
-
-    this.hsAddDataCommonFileService.layerAddedAsWms
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((success) => {
-        if (success) {
-          this.hsLayoutService.setMainPanel('layermanager', this.app);
-          this.hsAddDataCommonService.setPanelToCatalogue(this.app);
-        }
-        this.setDataToDefault();
-        this.clearInput();
-      });
-  }
+  ) {}
 
   clearInput(): void {
     if (this.fileInput) {
@@ -71,6 +52,28 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnInit(): void {
+    const commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
+      this.app
+    );
+    commonFileServiceAppRef.dataObjectChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
+        this.hsAddDataCommonService.get(this.app).showDetails = true;
+        Object.assign(this.data, data);
+        this.clearInput();
+      });
+
+    commonFileServiceAppRef.layerAddedAsWms
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((success) => {
+        if (success) {
+          this.hsLayoutService.setMainPanel('layermanager', this.app);
+          this.hsAddDataCommonService.setPanelToCatalogue(this.app);
+        }
+        this.setDataToDefault();
+        this.clearInput();
+      });
+
     this.hsAddDataCommonFileService.pickEndpoint(this.app);
     this.setDataToDefault();
   }
@@ -97,7 +100,7 @@ export class HsAddDataFileBaseComponent
       title: '',
       type: this.baseDataType,
     };
-    this.hsAddDataCommonFileService.clearParams();
+    this.hsAddDataCommonFileService.clearParams(this.app);
     this.hsAddDataCommonService.clearParams(this.app);
   }
 

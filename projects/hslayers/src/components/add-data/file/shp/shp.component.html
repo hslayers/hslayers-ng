@@ -1,7 +1,7 @@
 <form class="form-horizontal m-3" role="form">
     <div class="form-group justify-content-center">
         <hs-file-upload (uploaded)="handleFileUpload($event,app)" [app]="app" [acceptedFormats]="acceptedFormats"
-            uploader="shpdbfshx">
+            [uploader]="'shpdbfshx-'+app">
         </hs-file-upload>
     </div>
     <div *ngIf="hsAddDataCommonService.get(app).showDetails">
