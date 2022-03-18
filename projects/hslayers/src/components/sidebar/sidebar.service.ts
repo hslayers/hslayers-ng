@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, Subject, debounceTime, take} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
 import {Injectable} from '@angular/core';
 
 import {HsButton} from './button.interface';
@@ -67,6 +67,13 @@ export class HsSidebarService {
       setTimeout(() => {
         this.HsCoreService.updateMapSize(app);
       }, 550);
+    });
+
+    this.HsEventBusService.layoutResizes.subscribe(() => {
+      for (const [appId, appObj] of Object.entries(this.apps)) {
+        const buttons = appObj.buttonsSubject.getValue();
+        this.setButtonVisibility(buttons, appId);
+      }
     });
   }
 
@@ -193,7 +200,7 @@ export class HsSidebarService {
       window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
     this.HsLayoutService.get(app).sidebarToggleable = window.innerWidth > 767;
     let maxNumberOfButtons = Math.floor(
-      this.HsLayoutService.get(app).layoutElement[dimensionToCheck] / 60
+      this.HsLayoutService.get(app).layoutElement[dimensionToCheck] / 65
     );
     maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'
