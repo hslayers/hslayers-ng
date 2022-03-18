@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Input, OnDestroy} from '@angular/core';
 
 import {Feature} from 'ol';
@@ -15,7 +15,7 @@ import {getTitle} from '../../../common/layer-extensions';
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',
 })
-export class HsQueryFeatureComponent implements OnDestroy {
+export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   @Input() feature;
   @Input() app = 'default';
   attributeName = '';
@@ -44,23 +44,23 @@ export class HsQueryFeatureComponent implements OnDestroy {
     public hsFeatureCommonService: HsFeatureCommonService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public cd: ChangeDetectorRef
-  ) {
-    this.availableLayersSubscription =
-      this.hsFeatureCommonService.availableLayer$.subscribe(({layers, app}) => {
-        if (!this.olFeature()) {
-          //Feature from WMS getFeatureInfo
-          return;
-        }
-        const featureLayer = this.hsMapService.getLayerForFeature(
-          this.olFeature(),
-          this.app
-        );
-        this.availableLayers = layers.filter((layer) => layer != featureLayer);
-      });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.hsFeatureCommonService.init(this.app);
+    this.availableLayersSubscription = this.hsFeatureCommonService.apps[
+      this.app
+    ].availableLayer$.subscribe((layers) => {
+      if (!this.olFeature()) {
+        //Feature from WMS getFeatureInfo
+        return;
+      }
+      const featureLayer = this.hsMapService.getLayerForFeature(
+        this.olFeature(),
+        this.app
+      );
+      this.availableLayers = layers.filter((layer) => layer != featureLayer);
+    });
   }
 
   ngOnDestroy(): void {
