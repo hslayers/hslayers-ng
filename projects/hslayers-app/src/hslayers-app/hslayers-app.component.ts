@@ -23,6 +23,7 @@ import {
 
 import SparqlJson from 'hslayers-ng/src/common/layers/hs.source.SparqlJson';
 import {HsConfig} from 'hslayers-ng/src/config.service';
+import {InterpolatedSource} from 'hslayers-ng/src/common/layers/interpolated-source';
 
 @Component({
   selector: 'hslayers-app',
@@ -51,6 +52,7 @@ export class HslayersAppComponent {
         ImageWMS,
         ImageArcGISRest,
         SparqlJson,
+        InterpolatedSource,
       },
       format: {
         GeoJSON,

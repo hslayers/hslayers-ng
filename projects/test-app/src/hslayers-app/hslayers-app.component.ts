@@ -1,17 +1,21 @@
 import {Component} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
-import {Vector as VectorLayer} from 'ol/layer';
+import {catchError, lastValueFrom, takeUntil} from 'rxjs';
+import {transformExtent} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
-
+import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
+import {InterpolatedSource} from 'hslayers-ng/src/common/layers/interpolated-source';
 import {PopupWidgetComponent} from './popup-widget.component';
 
 @Component({
@@ -21,9 +25,11 @@ import {PopupWidgetComponent} from './popup-widget.component';
 })
 export class HslayersAppComponent {
   constructor(
-    public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService,
-    private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    public hsConfig: HsConfig,
+    private hsEventBusService: HsEventBusService,
+    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    private hsUtilsService: HsUtilsService,
+    private httpClient: HttpClient
   ) {
     const apps = [
       {
@@ -49,6 +55,53 @@ export class HslayersAppComponent {
       },
     ];
     for (const app of apps) {
+      const interpolatedSource = new InterpolatedSource({
+        maxFeaturesInCache: 500,
+        maxFeaturesInExtent: 100,
+        features: [],
+        weight: 'fac2020',
+        loader: async ({extent, projection}) => {
+          interpolatedSource.cancelUrlRequest.next();
+          const extentIn4326 = transformExtent(extent, projection, 'EPSG:4326');
+          const url = this.hsUtilsService.proxify(
+            interpolatedSource.createIDWSourceUrl(
+              'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
+              extentIn4326
+            ),
+            app.name
+          );
+          try {
+            const response: any = await lastValueFrom(
+              this.httpClient.get(url).pipe(
+                takeUntil(interpolatedSource.cancelUrlRequest),
+                catchError(async (e) => {})
+              )
+            );
+            if (response?.features?.length > 0) {
+              return interpolatedSource.parseFeatures(response, projection);
+            }
+          } catch (error) {}
+        },
+        colorMap: 'jet',
+      });
+      const idwLayer = new ImageLayer({
+        properties: {title: 'IDW layer'},
+        source: interpolatedSource as any,
+        opacity: 0.5,
+      });
+
+      //Mandatory, otherwise nothing will be loaded with source loader
+      const idwVectorLayer = new VectorLayer({
+        properties: {
+          showInLayerManager: false,
+          visible: idwLayer.getVisible(),
+        },
+        style: new Style(),
+        source: interpolatedSource.getSource(),
+      });
+      idwLayer.on('change:visible', (e) => {
+        idwVectorLayer.setVisible(e.target.getVisible());
+      });
       const count = 200;
       const features = new Array(count);
       const e = 4500000;
@@ -61,6 +114,7 @@ export class HslayersAppComponent {
           geometry: new Point(coordinates),
           name: 'test',
           population: Math.round(Math.random() * 5000000),
+          val: this.getRandomInt(0, 100),
         });
       }
       const geojsonObject = {
@@ -279,7 +333,7 @@ export class HslayersAppComponent {
         visible: false,
         opacity: 1,
       });
-      this.HsConfig.update(
+      this.hsConfig.update(
         {
           sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
@@ -504,6 +558,8 @@ export class HslayersAppComponent {
               }),
             }),
             opticalMap,
+            idwLayer,
+            idwVectorLayer,
           ],
         },
         app.name
@@ -518,7 +574,7 @@ export class HslayersAppComponent {
           '2019-04-18',
         ];
       }
-      this.HsQueryPopupWidgetContainerService.create(
+      this.hsQueryPopupWidgetContainerService.create(
         PopupWidgetComponent,
         app,
         undefined
@@ -526,7 +582,7 @@ export class HslayersAppComponent {
 
       //Simulating ajax
       setTimeout(() => {
-        this.HsEventBusService.layerDimensionDefinitionChanges.next({
+        this.hsEventBusService.layerDimensionDefinitionChanges.next({
           layer: opticalMap,
           app: app.name,
         });
@@ -534,4 +590,10 @@ export class HslayersAppComponent {
     }
   }
   title = 'hslayers-workspace';
+
+  getRandomInt(min, max): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 }

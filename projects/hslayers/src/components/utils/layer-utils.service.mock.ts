@@ -8,6 +8,7 @@ export function mockLayerUtilsService() {
     'getURL',
     'isLayerWMTS',
     'isLayerXYZ',
+    'isLayerIDW',
     'getLayerSourceFormat',
     'isLayerVectorLayer',
     'isLayerGeoJSONSource',

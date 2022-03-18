@@ -21,5 +21,8 @@ import {HsToastService} from './toast.service';
 })
 export class HsToastComponent {
   @Input() app = 'default';
-  constructor(public PmToastService: HsToastService) {}
+  appRef;
+  constructor(public PmToastService: HsToastService) {
+    this.appRef = this.PmToastService.get(this.app);
+  }
 }
