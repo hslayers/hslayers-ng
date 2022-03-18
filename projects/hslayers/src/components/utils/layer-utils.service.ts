@@ -2,6 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import FeatureFormat from 'ol/format/Feature';
+import IDW from 'ol-ext/source/IDW';
 import TileLayer from 'ol/layer/Tile';
 import {
   Cluster,
@@ -192,6 +193,16 @@ export class HsLayerUtilsService {
     if (
       this.HsUtilsService.instOf(layer, TileLayer) &&
       this.HsUtilsService.instOf(layer.getSource(), TileArcGISRest)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  isLayerIDW(layer: Layer<Source>): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, ImageLayer) &&
+      this.HsUtilsService.instOf(layer.getSource(), IDW)
     ) {
       return true;
     }

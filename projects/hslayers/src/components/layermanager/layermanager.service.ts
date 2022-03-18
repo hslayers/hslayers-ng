@@ -365,6 +365,10 @@ export class HsLayerManagerService {
     if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
       return 'ARCGIS';
     }
+
+    if (this.HsLayerUtilsService.isLayerIDW(layer)) {
+      return 'IDW';
+    }
     this.HsLog.warn(
       `Cannot decide a type of source of layer ${getTitle(layer)}`
     );
