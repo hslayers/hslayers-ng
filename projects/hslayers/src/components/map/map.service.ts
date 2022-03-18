@@ -1,4 +1,7 @@
 /* eslint-disable no-eq-null */
+import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+
+import VectorLayer from 'ol/layer/Vector';
 import proj4 from 'proj4';
 import {
   Cluster,
@@ -13,12 +16,7 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {
-  Control,
-  MousePosition,
-  ScaleLine,
-  defaults as controlDefaults,
-} from 'ol/control';
+import {Control, ScaleLine, defaults as controlDefaults} from 'ol/control';
 import {
   DoubleClickZoom,
   DragPan,
@@ -33,12 +31,10 @@ import {
 import {Feature, Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer, Tile} from 'ol/layer';
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
-import VectorLayer from 'ol/layer/Vector';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -91,15 +87,14 @@ export class HsMapService {
   puremap: any;
   /**
    * @public
-   * @type {number} 400
-   * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
+   * 400
+   * Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    */
   duration = 400;
 
   /**
    * @public
-   * @type {object}
-   * @description Set of default map interactions used in HSLayers (
+   * Set of default map interactions used in HSLayers (
    *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},
    *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan},
    *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom},
@@ -117,18 +112,18 @@ export class HsMapService {
   originalView: {center: number[]; zoom: number; rotation: number};
 
   constructor(
-    public HsConfig: HsConfig,
-    public HsLayoutService: HsLayoutService,
-    public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    public HsLanguageService: HsLanguageService,
+    public hsConfig: HsConfig,
+    public hsLayoutService: HsLayoutService,
+    public hsUtilsService: HsUtilsService,
+    public hsEventBusService: HsEventBusService,
+    public hsLanguageService: HsLanguageService,
     private rendererFactory: RendererFactory2
   ) {}
   /**
    * Returns the associated layer for feature.
    * This is used in query-vector.service to get the layer of clicked
    * feature when features are listed in info panel.
-   * @param feature
+   * @param feature -
    * @returns VectorLayer
    */
   getLayerForFeature(
@@ -136,7 +131,7 @@ export class HsMapService {
     app: string
   ): VectorLayer<VectorSource<Geometry>> | VectorLayer<Cluster> {
     if (typeof feature.getId() == 'undefined') {
-      feature.setId(this.HsUtilsService.generateUuid());
+      feature.setId(this.hsUtilsService.generateUuid());
     }
     const fid = feature.getId();
     if (this.apps[app].featureLayerMapping[fid]) {
@@ -201,10 +196,16 @@ export class HsMapService {
     });
   }
 
+  /**
+   * @public
+   * Get vector layers from the map, mentioned in the layersToLookFor array
+   * @param layersToLookFor - Layers requested
+   * @param app - App identifier
+   */
   getVectorLayers(layersToLookFor: VectorAndSource[], app: string): void {
     const check = (layer) => {
       const source = layer.getSource();
-      if (this.HsUtilsService.instOf(source, Cluster)) {
+      if (this.hsUtilsService.instOf(source, Cluster)) {
         layersToLookFor.push({
           layer,
           source,
@@ -213,7 +214,7 @@ export class HsMapService {
           layer,
           source: source.getSource(),
         });
-      } else if (this.HsUtilsService.instOf(source, VectorSource)) {
+      } else if (this.hsUtilsService.instOf(source, VectorSource)) {
         layersToLookFor.push({
           layer,
           source,
@@ -223,7 +224,7 @@ export class HsMapService {
     this.getMap(app ?? DEFAULT)
       .getLayers()
       .forEach((layer) => {
-        if (this.HsUtilsService.instOf(layer, Group)) {
+        if (this.hsUtilsService.instOf(layer, Group)) {
           (layer as Group).getLayers().forEach(check);
         } else {
           check(layer);
@@ -231,6 +232,12 @@ export class HsMapService {
       });
   }
 
+  /**
+   * @public
+   * Get geometry feature by its id
+   * @param fid - Feature id
+   * @param app - App identifier
+   */
   getFeatureById(fid: string, app: string): Feature<Geometry> {
     if (this.apps[app].featureLayerMapping[fid]) {
       if (this.apps[app].featureLayerMapping[fid].length > 1) {
@@ -253,6 +260,12 @@ export class HsMapService {
     }
   }
 
+  /**
+   * @public
+   * Create default view button inside the map html element
+   * @param app - App identifier
+   * @param defaultDesktopControls - Default controls
+   */
   createDefaultViewButton(app: string, defaultDesktopControls) {
     const rendered = this.apps[app].renderer;
     const button = rendered.createElement('button');
@@ -276,7 +289,7 @@ export class HsMapService {
     rendered.setAttribute(
       this.element,
       'title',
-      this.HsLanguageService.getTranslation(
+      this.hsLanguageService.getTranslation(
         'MAP.zoomToInitialWindow',
         undefined,
         app
@@ -291,6 +304,12 @@ export class HsMapService {
     defaultDesktopControls.push(defaultViewControl);
   }
 
+  /**
+   * @public
+   * Set map to default view
+   * @param e -
+   * @param app - App identifier
+   */
   setDefaultView = function (e, app) {
     const center = this.HsConfig.get(app).default_view.getCenter();
     this.map.getView().setCenter(center);
@@ -298,7 +317,8 @@ export class HsMapService {
     this.map.getView().setZoom(zoom);
   };
   /**
-   * @param e
+   * @param e -
+   * @param app - App identifier
    */
   extentChanged(e, app: string) {
     if (this.timer !== null) {
@@ -306,7 +326,7 @@ export class HsMapService {
     }
     this.timer = setTimeout(() => {
       const map = this.getMap(app);
-      this.HsEventBusService.mapExtentChanges.next({
+      this.hsEventBusService.mapExtentChanges.next({
         e: {
           element: e.element,
           extent: map.getView().calculateExtent(map.getSize()),
@@ -318,7 +338,9 @@ export class HsMapService {
 
   /**
    * @public
-   * @description Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
+   * Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
+   * @param mapElement - Map html element
+   * @param app - App identifier
    */
   init(mapElement, app: string) {
     let map;
@@ -360,7 +382,7 @@ export class HsMapService {
         target: mapElement,
         interactions: [],
         view:
-          this.HsConfig.get(app).default_view ?? this.createPlaceholderView(),
+          this.hsConfig.get(app).default_view ?? this.createPlaceholderView(),
       });
       this.apps[app] = {
         mapElement,
@@ -390,8 +412,8 @@ export class HsMapService {
       setTimeout(() => {
         //make sure translations are loaded
         if (
-          this.HsConfig.get(app).componentsEnabled?.defaultViewButton &&
-          this.HsConfig.get(app).componentsEnabled?.guiOverlay != false
+          this.hsConfig.get(app).componentsEnabled?.defaultViewButton &&
+          this.hsConfig.get(app).componentsEnabled?.guiOverlay != false
         ) {
           this.createDefaultViewButton(app, defaultDesktopControls);
         }
@@ -410,10 +432,10 @@ export class HsMapService {
       }),
       'MouseWheelZoom': new MouseWheelZoom({
         condition: (browserEvent): boolean => {
-          if (this.HsConfig.get(app).componentsEnabled?.mapControls == false) {
+          if (this.hsConfig.get(app).componentsEnabled?.mapControls == false) {
             return false;
           }
-          return this.HsConfig.get(app).zoomWithModifierKeyOnly
+          return this.hsConfig.get(app).zoomWithModifierKeyOnly
             ? platformModifierKeyOnlyCondition(browserEvent)
             : true;
         },
@@ -430,7 +452,7 @@ export class HsMapService {
       'DragRotate': new DragRotate(),
     };
 
-    if (this.HsConfig.get(app).mapInteractionsEnabled != false) {
+    if (this.hsConfig.get(app).mapInteractionsEnabled != false) {
       for (const value of Object.values(interactions).filter(
         (value) => !map.getInteractions().getArray().includes(value)
       )) {
@@ -445,17 +467,17 @@ export class HsMapService {
     // then also notify the user when he tries to zoom,
     // but the CTRL is not pressed
     if (
-      this.HsConfig.get(app).zoomWithModifierKeyOnly &&
-      this.HsConfig.get(app).mapInteractionsEnabled != false
+      this.hsConfig.get(app).zoomWithModifierKeyOnly &&
+      this.hsConfig.get(app).mapInteractionsEnabled != false
     ) {
       map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
         const renderer = this.apps[app].renderer;
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
-          !this.HsLayoutService.get(app).contentWrapper.querySelector(
-            '.hs-zoom-info-dialog'
-          )
+          !this.hsLayoutService
+            .get(app)
+            .contentWrapper.querySelector('.hs-zoom-info-dialog')
         ) {
           //TODO: change the name of platform modifier key dynamically based on OS
           const platformModifierKey = 'CTRL/META';
@@ -472,7 +494,7 @@ export class HsMapService {
             `position: absolute; right:15px; top:0.6em;z-index:101`
           );
           const text = renderer.createText(
-            `${this.HsLanguageService.getTranslation(
+            `${this.hsLanguageService.getTranslation(
               'MAP.zoomKeyModifier',
               {
                 platformModifierKey: platformModifierKey,
@@ -482,13 +504,14 @@ export class HsMapService {
           );
           renderer.appendChild(html, text);
           renderer.appendChild(
-            this.HsLayoutService.get(app).contentWrapper.querySelector(
-              '.hs-map-space'
-            ),
+            this.hsLayoutService
+              .get(app)
+              .contentWrapper.querySelector('.hs-map-space'),
             html
           );
           setTimeout(() => {
-            this.HsLayoutService.get(app)
+            this.hsLayoutService
+              .get(app)
               .contentWrapper.querySelector('.hs-zoom-info-dialog')
               .remove();
           }, 4000);
@@ -516,19 +539,24 @@ export class HsMapService {
       '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
     );
     register(proj4);
-    if (this.HsConfig.get(app).componentsEnabled?.mapControls == false) {
+    if (this.hsConfig.get(app).componentsEnabled?.mapControls == false) {
       this.removeAllControls(app);
     }
-    this.HsEventBusService.olMapLoads.next({map, app});
+    this.hsEventBusService.olMapLoads.next({map, app});
   }
 
+  /**
+   * @public
+   * Wait until the OL map is fully loaded
+   * @param app - App identifier
+   */
   loaded(app: string) {
     return new Promise<Map>((resolve, reject) => {
       if (this.getMap(app ?? DEFAULT)) {
         resolve(this.getMap(app ?? DEFAULT));
         return;
       } else {
-        this.HsEventBusService.olMapLoads.subscribe(({map, app}) => {
+        this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
           if (map) {
             resolve(map);
           }
@@ -539,9 +567,10 @@ export class HsMapService {
 
   /**
    * @public
-   * @param {string} title Title of the layer (from layer creation)
-   * @returns {Ol.layer} Ol.layer object
-   * @description Find layer object by title of layer
+   * @param title - Title of the layer (from layer creation)
+   * @param app - App identifier
+   * @returns Ol.layer object
+   * Find layer object by title of layer
    */
   findLayerByTitle(title, app: string) {
     const layers = this.getLayersArray(app);
@@ -555,9 +584,9 @@ export class HsMapService {
   }
 
   /**
-   * @param {ol/Layer} existingLayers Layer 1. Usually the one which is already added to map
-   * @param {ol/Layer} newLayer Layer 2. Usually the one which will be added to map
-   * @returns {boolean} True if layers are equal
+   * @param existingLayers - Layer 1. Usually the one which is already added to map
+   * @param newLayer - Layer 2. Usually the one which will be added to map
+   * @returns True if layers are equal
    */
   layersEqual(existingLayers, newLayer) {
     if (newLayer === 'undefined') {
@@ -602,9 +631,10 @@ export class HsMapService {
   }
 
   /**
-   * @description Checks if a layer with the same title already exists in the map
-   * @param {ol/Layer} lyr A layer to check
-   * @returns {boolean} True if layer is already present in the map, false otherwise
+   * Checks if a layer with the same title already exists in the map
+   * @param lyr - A layer to check
+   * @param app - App identifier
+   * @returns True if layer is already present in the map, false otherwise
    */
   layerAlreadyExists(lyr, app: string) {
     const duplicateLayers = this.getLayersArray(app ?? DEFAULT).filter(
@@ -616,6 +646,11 @@ export class HsMapService {
     return duplicateLayers.length > 0;
   }
 
+  /**
+   * Remove any duplicate layer inside map layers array
+   * @param lyr - A layer to check
+   * @param app - App identifier
+   */
   removeDuplicate(lyr, app: string) {
     this.getLayersArray(app ?? DEFAULT)
       .filter((existing) => {
@@ -629,6 +664,11 @@ export class HsMapService {
       });
   }
 
+  /**
+   * Get layers array from the OL map object
+   * @param app - App identifier
+   * @returns Layer array
+   */
   getLayersArray(app: string): Layer<Source>[] {
     return this.getMap(app ?? DEFAULT)
       .getLayers()
@@ -636,34 +676,35 @@ export class HsMapService {
   }
 
   /**
-   * @param lyr {Layer} Layer which to proxify if needed
-   * @description Proxify layer based on its source object type and if its tiled or not.
+   * @param lyr - {Layer} Layer which to proxify if needed
+   * @param app - App identifier
+   * Proxify layer based on its source object type and if its tiled or not.
    * Each underlying OL source class has its own way to override imagery loading.
    */
   proxifyLayer(lyr: Layer<Source>, app: string): void {
     const source = lyr.getSource();
     if (
       [ImageWMS, ImageArcGISRest].some((typ) =>
-        this.HsUtilsService.instOf(source, typ)
+        this.hsUtilsService.instOf(source, typ)
       )
     ) {
       this.proxifyLayerLoader(lyr, false, app);
     }
-    if (this.HsUtilsService.instOf(source, WMTS)) {
+    if (this.hsUtilsService.instOf(source, WMTS)) {
       (source as WMTS).setTileLoadFunction((i, s) =>
         this.simpleImageryProxy(i, s, app)
       );
     }
     if (
       [TileWMS, TileArcGISRest].some((typ) =>
-        this.HsUtilsService.instOf(source, typ)
+        this.hsUtilsService.instOf(source, typ)
       )
     ) {
       this.proxifyLayerLoader(lyr, true, app);
     }
     if (
-      this.HsUtilsService.instOf(source, XYZ) &&
-      !this.HsUtilsService.instOf(source, OSM) &&
+      this.hsUtilsService.instOf(source, XYZ) &&
+      !this.hsUtilsService.instOf(source, OSM) &&
       (source as XYZ)
         .getUrls()
         .filter((url) => url.indexOf('openstreetmap') > -1).length == 0
@@ -671,9 +712,9 @@ export class HsMapService {
       this.proxifyLayerLoader(lyr, true, app);
     }
 
-    if (this.HsUtilsService.instOf(source, Static)) {
+    if (this.hsUtilsService.instOf(source, Static)) {
       //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
-      (source as any).url_ = this.HsUtilsService.proxify(
+      (source as any).url_ = this.hsUtilsService.proxify(
         (source as Static).getUrl(),
         app
       );
@@ -686,9 +727,9 @@ export class HsMapService {
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
    * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.getMap(app).addLayer.
    *
-   * @param lyr Layer to add
-   * @param duplicateHandling How to handle duplicate layers (same class and title)
-   * @param visibleOverride Override the visibility using an array layer titles, which
+   * @param lyr - Layer to add
+   * @param duplicateHandling - How to handle duplicate layers (same class and title)
+   * @param visibleOverride - Override the visibility using an array layer titles, which
    */
   addLayer(
     lyr: Layer<Source>,
@@ -714,7 +755,7 @@ export class HsMapService {
       lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
     }
     const source = lyr.getSource();
-    if (this.HsUtilsService.instOf(source, VectorSource)) {
+    if (this.hsUtilsService.instOf(source, VectorSource)) {
       this.getVectorType(lyr);
     }
     this.proxifyLayer(lyr, app);
@@ -726,15 +767,16 @@ export class HsMapService {
 
   /**
    * @public
-   * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
+   * @param visibilityOverrides - Override the visibility using an array layer titles, which
    * should be visible. Usefull when the layer visibility is stored in a URL parameter
-   * @description Add all layers from app config (box_layers and default_layers) to the map.
+   * @param app - App identifier
+   * Add all layers from app config (box_layers and default_layers) to the map.
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
    */
-
   repopulateLayers(visibilityOverrides, app: string) {
-    if (this.HsConfig.get(app).box_layers) {
-      this.HsConfig.get(app).box_layers.forEach((box) => {
+    const appConfig = this.hsConfig.get(app);
+    if (appConfig.box_layers) {
+      appConfig.box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
           this.addLayer(
             lyr,
@@ -746,8 +788,8 @@ export class HsMapService {
       });
     }
 
-    if (this.HsConfig.get(app).default_layers) {
-      const layers = this.HsConfig.get(app).default_layers.filter((lyr) => lyr);
+    if (appConfig.default_layers) {
+      const layers = appConfig.default_layers.filter((lyr) => lyr);
       if (layers.length > 0) {
         this.getMap(app).removeLayer(this.apps[app].placeholderOsm);
       }
@@ -762,12 +804,22 @@ export class HsMapService {
     }
   }
 
+  /**
+   * @public
+   * @param app - App identifier
+   * Get current map projection
+   */
   getCurrentProj(app: string): Projection {
     return this.getMap(app ?? DEFAULT)
       .getView()
       .getProjection();
   }
 
+  /**
+   * @public
+   * @param layer - Layer selected
+   * Get vector type from the layer selected
+   */
   getVectorType(layer) {
     let src;
     if (layer.getSource().getSource) {
@@ -791,7 +843,8 @@ export class HsMapService {
   }
 
   /**
-   * @param src
+   * @param src -
+   * Check vector geometry types as found from vectorsource provided
    */
   vectorSourceTypeComputer(src) {
     src.getFeatures().forEach((f) => {
@@ -820,7 +873,8 @@ export class HsMapService {
 
   /**
    * @public
-   * @description Reset map to state configured in app config (reload all layers and set default view)
+   * @param app - App identifier
+   * Reset map to state configured in app config (reload all layers and set default view)
    */
   reset(app: string) {
     this.removeAllLayers(app);
@@ -830,7 +884,8 @@ export class HsMapService {
 
   /**
    * @public
-   * @description Reset map view to view configured in app config
+   * @param app - App identifier
+   * Reset map view to view configured in app config
    */
   resetView(app: string) {
     const view = this.getMap(app ?? DEFAULT).getView();
@@ -840,7 +895,7 @@ export class HsMapService {
   }
 
   /**
-   *
+   * Create a placeholder view
    */
   createPlaceholderView() {
     return new View({
@@ -851,10 +906,10 @@ export class HsMapService {
 
   /**
    * @public
-   * @param {ol.Layer} lyr Layer for which to determine visibility
-   * @param {Array} array Layer title to check in.
-   * @returns {boolean} Detected visibility of layer
-   * @description Checks if layer title is present in an array of layer titles.
+   * @param lyr - Layer for which to determine visibility
+   * @param array - Layer title to check in.
+   * @returns Detected visibility of layer
+   * Checks if layer title is present in an array of layer titles.
    * Used to set visibility by URL parameter which contains visible layer titles
    */
   layerTitleInArray(lyr, array) {
@@ -864,12 +919,23 @@ export class HsMapService {
     return lyr.getVisible();
   }
 
+  /**
+   * @public
+   * @param app - App identifier
+   * Get ol-layer canvas element from DOM
+   */
   getCanvases(app: string) {
     return this.apps[app ?? DEFAULT].mapElement.querySelectorAll(
       '.ol-layer canvas'
     );
   }
 
+  /**
+   * @public
+   * @param type - Scale type (scaleline or scalebar)
+   * @param app - App identifier
+   * Get ol-layer canvas element from DOM
+   */
   getScaleLineElement(type: 'scaleline' | 'scalebar', app: string): Element {
     switch (type) {
       case 'scalebar':
@@ -886,9 +952,10 @@ export class HsMapService {
 
   /**
    * @public
-   * @param {Ol.layer} lyr Layer to proxify
-   * @param {boolean} tiled Info if layer is tiled
-   * @description Proxify layer loader to work with layers from other sources than app
+   * @param lyr - Layer to proxify
+   * @param tiled - Info if layer is tiled
+   * @param app - App identifier
+   * Proxify layer loader to work with layers from other sources than app
    */
   proxifyLayerLoader(lyr, tiled, app: string) {
     const src = lyr.getSource();
@@ -906,16 +973,16 @@ export class HsMapService {
             url = url.replace(`{${dimension}}`, dimensions[dimension].value);
           });
         }
-        if (url.indexOf(this.HsConfig.get(app).proxyPrefix) == 0) {
+        if (url.indexOf(this.hsConfig.get(app).proxyPrefix) == 0) {
           return url;
         } else {
-          return this.HsUtilsService.proxify(url, app);
+          return this.hsUtilsService.proxify(url, app);
         }
       });
       src.setTileLoadFunction((tile, src) => {
-        const laymanEp = this.HsConfig.get(app).datasources?.find(
-          (ep) => ep.type == 'layman'
-        );
+        const laymanEp = this.hsConfig
+          .get(app)
+          .datasources?.find((ep) => ep.type == 'layman');
         if (laymanEp && src.startsWith(laymanEp.url)) {
           this.laymanWmsLoadingFunction(tile, src);
         } else {
@@ -927,21 +994,34 @@ export class HsMapService {
     }
   }
 
+  /**
+   * @public
+   * @param image -
+   * @param src -
+   * @param app - App identifier
+   *
+   */
   simpleImageryProxy(image, src, app: string) {
-    if (src.indexOf(this.HsConfig.get(app).proxyPrefix) == 0) {
+    if (src.indexOf(this.hsConfig.get(app).proxyPrefix) == 0) {
       image.getImage().src = src;
     } else {
-      const laymanEp = this.HsConfig.get(app).datasources?.find(
-        (ep) => ep.type == 'layman'
-      );
+      const laymanEp = this.hsConfig
+        .get(app)
+        .datasources?.find((ep) => ep.type == 'layman');
       if (laymanEp && src.startsWith(laymanEp.url)) {
         this.laymanWmsLoadingFunction(image, src);
       } else {
-        image.getImage().src = this.HsUtilsService.proxify(src, app); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+        image.getImage().src = this.hsUtilsService.proxify(src, app); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
       }
     }
   }
 
+  /**
+   * @public
+   * @param image -
+   * @param src -
+   *
+   */
   laymanWmsLoadingFunction(image, src: string) {
     const xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -959,10 +1039,11 @@ export class HsMapService {
 
   /**
    * @public
-   * @param {number} x X coordinate of new center
-   * @param {number} y Y coordinate of new center
-   * @param {number} zoom New zoom level
-   * @description Move map and zoom to specified coordinate/zoom level
+   * @param x - X coordinate of new center
+   * @param y - Y coordinate of new center
+   * @param zoom - New zoom level
+   * @param app - App identifier
+   * Move map and zoom to specified coordinate/zoom level
    */
   moveToAndZoom(x, y, zoom, app: string) {
     const view = this.getMap(app ?? DEFAULT).getView();
@@ -970,6 +1051,11 @@ export class HsMapService {
     view.setZoom(zoom);
   }
 
+  /**
+   * @public
+   * @param app - App identifier
+   * Get current map extent
+   */
   getMapExtent(app: string) {
     const mapSize = this.getMap(app ?? DEFAULT).getSize();
     const mapExtent = mapSize
@@ -980,6 +1066,11 @@ export class HsMapService {
     return mapExtent;
   }
 
+  /**
+   * @public
+   * @param app - App identifier
+   * Get current map extent in 4326 projection
+   */
   getMapExtentInEpsg4326(app: string) {
     const bbox = transformExtent(
       this.getMapExtent(app),
@@ -989,6 +1080,12 @@ export class HsMapService {
     return bbox;
   }
 
+  /**
+   * @public
+   * @param extent - Extent provided
+   * @param app - App identifier
+   * Fit extent in to map view
+   */
   fitExtent(extent: number[], app: string): void {
     this.getMap(app ?? DEFAULT)
       .getView()
@@ -997,13 +1094,19 @@ export class HsMapService {
 
   /**
    * @public
-   * @description Get ol.Map object from service
+   * @param app - App identifier
+   * Get ol.Map object from service
    * @returns ol.Map
    */
   getMap(app: string) {
     return this.apps[app ?? DEFAULT]?.map;
   }
 
+  /**
+   * @public
+   * @param app - App identifier
+   * Remove all map layers
+   */
   removeAllLayers(app: string) {
     const to_be_removed = [];
     this.getLayersArray(app)
@@ -1015,6 +1118,12 @@ export class HsMapService {
       this.getMap(app ?? DEFAULT).removeLayer(to_be_removed.shift());
     }
   }
+
+  /**
+   * @public
+   * @param app - App identifier
+   * Remove all map controls
+   */
   removeAllControls(app: string) {
     [
       ...this.getMap(app ?? DEFAULT)
@@ -1023,15 +1132,20 @@ export class HsMapService {
     ].forEach((control) => {
       this.getMap(app ?? DEFAULT).removeControl(control);
     });
-    this.HsConfig.get(app).componentsEnabled.mapControls = false;
+    this.hsConfig.get(app).componentsEnabled.mapControls = false;
   }
 
+  /**
+   * @public
+   * @param app - App identifier
+   * Remove all map interactions
+   */
   removeAllInteractions(app: string) {
     this.getMap(app ?? DEFAULT)
       .getInteractions()
       .forEach((interaction) => {
         this.getMap(app ?? DEFAULT).removeInteraction(interaction);
       });
-    this.HsConfig.get(app).mapInteractionsEnabled = false;
+    this.hsConfig.get(app).mapInteractionsEnabled = false;
   }
 }
