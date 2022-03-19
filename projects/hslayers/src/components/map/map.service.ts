@@ -1,5 +1,4 @@
 /* eslint-disable no-eq-null */
-import {HttpClient} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
@@ -69,7 +68,6 @@ class AppData {
   featureLayerMapping: {
     [key: string]: VectorAndSource[];
   } = {};
-  cachedIDWFeatures?: Feature<Geometry>[];
 }
 
 @Injectable({
@@ -303,6 +301,10 @@ export class HsMapService {
     }
     this.timer = setTimeout(() => {
       const map = this.getMap(app);
+      if (this.HsConfig.get(app).interpolatedLayer) {
+        this.hsIDWLayerService.get(app).cancelUrlRequest.next();
+        this.setIDWLayer(app);
+      }
       this.HsEventBusService.mapExtentChanges.next({
         e: {
           element: e.element,
@@ -729,7 +731,7 @@ export class HsMapService {
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
    */
 
-  async repopulateLayers(visibilityOverrides, app: string) {
+  repopulateLayers(visibilityOverrides, app: string) {
     if (this.HsConfig.get(app).box_layers) {
       this.HsConfig.get(app).box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
@@ -756,12 +758,23 @@ export class HsMapService {
     }
 
     if (this.HsConfig.get(app).interpolatedLayer) {
-      const source = await this.hsIDWLayerService.createIDWSource(
-        this.getMap(app).getView().getProjection().getCode(),
-        app
-      );
-      const idwLayer = this.hsIDWLayerService.createIDWLayer(source, app);
-      this.addLayer(idwLayer, app, DuplicateHandling.RemoveOriginal);
+      this.hsIDWLayerService.init(app);
+      this.setIDWLayer(app);
+    }
+  }
+
+  async setIDWLayer(app: string): Promise<void> {
+    const map = this.getMap(app);
+    const mapProjection = map.getView().getProjection().getCode();
+    const extent = map.getView().calculateExtent(map.getSize());
+    const source = await this.hsIDWLayerService.getIDWSource(
+      mapProjection,
+      app,
+      extent
+    );
+    const idwLayer = this.hsIDWLayerService.createIDWLayer(source, extent, app);
+    this.addLayer(idwLayer, app, DuplicateHandling.RemoveOriginal);
+    if (this.HsConfig.get(app).interpolatedLayer?.vectorSourceLayer) {
       const idwVectorLayer = this.hsIDWLayerService.createIDWVectorLayer(
         source,
         app

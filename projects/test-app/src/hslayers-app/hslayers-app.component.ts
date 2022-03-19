@@ -283,6 +283,7 @@ export class HslayersAppComponent {
           interpolatedLayer: {
             title: 'IDW',
             weight: 'dwn2020',
+            vectorSourceLayer: false,
             externalSourceUrl:
               'https://api-agroclimatic.lesprojekt.cz/area/year/preci/0/48.0/52.0/12.0/16.0/0.1/0.1/1.0/2020/2020/ERA5-Land',
           },

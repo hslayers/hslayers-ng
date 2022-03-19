@@ -152,6 +152,7 @@ export class HsConfigObject {
     initialFeatures?: Feature<Geometry>[];
     externalSourceUrl?: string;
     weight?: string;
+    vectorSourceLayer?: boolean;
   };
 
   constructor() {
