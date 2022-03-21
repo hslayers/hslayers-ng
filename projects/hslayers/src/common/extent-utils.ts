@@ -1,8 +1,8 @@
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
-import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
-import {transform} from 'ol/proj';
+import {Projection, transform} from 'ol/proj';
 import {generateUuid} from '../components/utils/utils.service';
+import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 /**
  * @param record - Record of one dataset from Get Records response
@@ -108,4 +108,15 @@ export function parseExtent(bbox: string | Array<number>): number[][] {
   pairs.push([parseFloat(b[0]), parseFloat(b[1])]);
   pairs.push([parseFloat(b[2]), parseFloat(b[3])]);
   return pairs;
+}
+export function extentTo4326(
+  extent: number[],
+  mapProjection: string | Projection
+) {
+  const extentPairs = parseExtent(extent);
+  const pair1 = transform(extentPairs[0], mapProjection, 'EPSG:4326');
+  const pair2 = transform(extentPairs[1], mapProjection, 'EPSG:4326');
+  let parsedExtent = [...pair1, ...pair2];
+  parsedExtent = parsedExtent.map((e) => Number(e.toFixed(1)));
+  return parsedExtent;
 }

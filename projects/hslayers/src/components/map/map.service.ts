@@ -37,7 +37,6 @@ import {register} from 'ol/proj/proj4';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsIDWLayerService} from '../../common/layers/idw-layer.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -116,8 +115,7 @@ export class HsMapService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
-    private rendererFactory: RendererFactory2,
-    private hsIDWLayerService: HsIDWLayerService
+    private rendererFactory: RendererFactory2 // private hsIDWLayerService: HsIDWLayerService
   ) {}
   /**
    * Returns the associated layer for feature.
@@ -301,10 +299,6 @@ export class HsMapService {
     }
     this.timer = setTimeout(() => {
       const map = this.getMap(app);
-      if (this.HsConfig.get(app).interpolatedLayer) {
-        this.hsIDWLayerService.get(app).cancelUrlRequest.next();
-        this.setIDWLayer(app);
-      }
       this.HsEventBusService.mapExtentChanges.next({
         e: {
           element: e.element,
@@ -755,31 +749,6 @@ export class HsMapService {
           visibilityOverrides
         );
       });
-    }
-
-    if (this.HsConfig.get(app).interpolatedLayer) {
-      this.hsIDWLayerService.init(app);
-      this.setIDWLayer(app);
-    }
-  }
-
-  async setIDWLayer(app: string): Promise<void> {
-    const map = this.getMap(app);
-    const mapProjection = map.getView().getProjection().getCode();
-    const extent = map.getView().calculateExtent(map.getSize());
-    const source = await this.hsIDWLayerService.getIDWSource(
-      mapProjection,
-      app,
-      extent
-    );
-    const idwLayer = this.hsIDWLayerService.createIDWLayer(source, extent, app);
-    this.addLayer(idwLayer, app, DuplicateHandling.RemoveOriginal);
-    if (this.HsConfig.get(app).interpolatedLayer?.vectorSourceLayer) {
-      const idwVectorLayer = this.hsIDWLayerService.createIDWVectorLayer(
-        source,
-        app
-      );
-      this.addLayer(idwVectorLayer, app, DuplicateHandling.RemoveOriginal);
     }
   }
 

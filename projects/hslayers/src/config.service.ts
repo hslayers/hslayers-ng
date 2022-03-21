@@ -147,13 +147,6 @@ export class HsConfigObject {
    */
   pathExclusivity?: boolean;
   ngRouter?: boolean;
-  interpolatedLayer?: {
-    title: string;
-    initialFeatures?: Feature<Geometry>[];
-    externalSourceUrl?: string;
-    weight?: string;
-    vectorSourceLayer?: boolean;
-  };
 
   constructor() {
     this.pathExclusivity = false;

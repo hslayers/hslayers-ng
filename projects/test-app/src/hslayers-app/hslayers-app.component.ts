@@ -1,18 +1,26 @@
 import {Component} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
+import IDW from 'ol-ext/source/IDW';
 import Point from 'ol/geom/Point';
-import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
+import {Image as ImageLayer, Tile} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
-import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
+import {bbox} from 'ol/loadingstrategy';
+import {catchError} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
+import {HsLanguageService} from 'hslayers-ng/src/components/language/language.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
-
+import {HsToastService} from 'hslayers-ng/src/components/layout/toast/toast.service';
+import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
 import {PopupWidgetComponent} from './popup-widget.component';
+import {extentTo4326} from 'hslayers-ng/src/common/extent-utils';
+import {normalizeWeight} from 'hslayers-ng/src/common/idw-weight-normalize-utils';
 
 @Component({
   selector: 'hslayers-app',
@@ -22,6 +30,10 @@ import {PopupWidgetComponent} from './popup-widget.component';
 export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
+    private hsUtilsService: HsUtilsService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService,
+    private httpClient: HttpClient,
     private HsEventBusService: HsEventBusService,
     private HsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
@@ -252,6 +264,127 @@ export class HslayersAppComponent {
           features: new GeoJSON().readFeatures(geojsonObject),
         }),
       });
+      const weight = 'dwn2020';
+      const idwVectorSource = new VectorSource({
+        loader: async (extent, resolution, projection, success, failure) => {
+          this.hsToastService.createToastPopupMessage(
+            await this.hsLanguageService.awaitTranslation(
+              'IDW layer request',
+              undefined,
+              app.name
+            ),
+            'Loading IDW layer source, please wait!',
+            {
+              disableLocalization: true,
+              toastStyleClasses: 'bg-warning text-light',
+              serviceCalledFrom: 'HsIDWLayerService',
+              customDelay: 60000,
+            },
+            app.name
+          );
+          const parsedExtent = extentTo4326(extent, projection);
+          const url =
+            'https://api-agroclimatic.lesprojekt.cz/area/year/preci/0/48.0/52.0/12.0/16.0/0.1/0.1/1.0/2020/2020/ERA5-Land';
+          // const url = `https://api-agroclimatic.lesprojekt.cz/area/year/preci/0/${parsedExtent[0]}/${parsedExtent[1]}/${parsedExtent[2]}/${parsedExtent[3]}/0.1/0.1/1.0/2020/2020/ERA5-Land`;
+          this.httpClient
+            .get(this.hsUtilsService.proxify(url, app.name))
+            .pipe(
+              catchError(async (e) => {
+                this.hsToastService.removeByText(
+                  this.hsLanguageService.getTranslation(
+                    'Loading IDW layer source, please wait!',
+                    undefined,
+                    app.name
+                  ),
+                  app.name
+                );
+                this.hsToastService.createToastPopupMessage(
+                  await this.hsLanguageService.awaitTranslation(
+                    'IDW layer request',
+                    undefined,
+                    app.name
+                  ),
+                  'Failed to load IDW source',
+                  {
+                    disableLocalization: true,
+                  },
+                  app.name
+                );
+              })
+            )
+            .subscribe(async (response: any) => {
+              this.hsToastService.removeByText(
+                this.hsLanguageService.getTranslation(
+                  'Loading IDW layer source, please wait!',
+                  undefined,
+                  app.name
+                ),
+                app.name
+              );
+              if (response?.features?.length > 0) {
+                this.hsToastService.createToastPopupMessage(
+                  await this.hsLanguageService.awaitTranslation(
+                    'IDW layer request',
+                    undefined,
+                    app.name
+                  ),
+                  'IDW source loaded',
+                  {
+                    disableLocalization: true,
+                    toastStyleClasses: 'bg-success text-light',
+                    serviceCalledFrom: 'HsIDWLayerService',
+                  },
+                  app.name
+                );
+                response.features = new GeoJSON().readFeatures(response, {
+                  dataProjection: 'EPSG:4326',
+                  featureProjection: projection,
+                });
+                normalizeWeight(response.features, weight);
+                idwVectorSource.clear();
+                idwVectorSource.addFeatures(features);
+              }
+            });
+        },
+        strategy: bbox,
+      });
+
+      const IdwVector = new VectorLayer({
+        properties: {
+          title: 'IDW vector layer',
+        },
+        source: idwVectorSource,
+        style: function (feature, resolution) {
+          return [
+            new Style({
+              text: new Text({
+                text: feature?.get(weight)?.toString(),
+                font: '12px Calibri,sans-serif',
+                overflow: true,
+                fill: new Fill({
+                  color: '#000',
+                }),
+                stroke: new Stroke({
+                  color: '#fff',
+                  width: 3,
+                }),
+              }),
+            }),
+          ];
+        },
+      });
+
+      const idwLayerSource = new IDW({
+        source: idwVectorSource,
+        weight,
+      });
+
+      const idwLayer = new ImageLayer({
+        properties: {title: 'IDW layer'},
+        source: idwLayerSource,
+        opacity: 0.5,
+      });
+
       const opticalMap = new Tile({
         source: new XYZ({
           attributions:
@@ -280,13 +413,6 @@ export class HslayersAppComponent {
       });
       this.HsConfig.update(
         {
-          interpolatedLayer: {
-            title: 'IDW',
-            weight: 'dwn2020',
-            vectorSourceLayer: false,
-            externalSourceUrl:
-              'https://api-agroclimatic.lesprojekt.cz/area/year/preci/0/48.0/52.0/12.0/16.0/0.1/0.1/1.0/2020/2020/ERA5-Land',
-          },
           sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
@@ -509,6 +635,8 @@ export class HslayersAppComponent {
               }),
             }),
             opticalMap,
+            idwLayer,
+            IdwVector,
           ],
         },
         app.name
