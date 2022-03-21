@@ -308,23 +308,6 @@ export class HsSaveMapManagerService {
   private async fillCompositionData(app: string) {
     const appRef = this.get(app);
     this.fillLayers(app);
-    await this.fillGroups(app);
-    appRef.statusData.groups.unshift({
-      roleTitle: 'Public',
-      roleName: 'guest',
-      w: false,
-      r: false,
-    });
-    const cc = appRef.compoData.currentComposition;
-    if (appRef.compoData.currentComposition && cc != '') {
-      for (const g of appRef.statusData.groups) {
-        if (cc.groups && cc.groups[g.roleName]) {
-          g.w = cc.groups[g.roleName].indexOf('w') > -1;
-          g.r = cc.groups[g.roleName].indexOf('r') > -1;
-        }
-      }
-    }
-    this.loadUserDetails(app);
   }
 
   private fillLayers(app: string) {
@@ -349,43 +332,6 @@ export class HsSaveMapManagerService {
       .sort((a, b) => {
         return a.layer.getZIndex() - b.layer.getZIndex();
       });
-  }
-
-  /**
-   * Send getGroups request to status manager server and process response
-   */
-  async fillGroups(app: string): Promise<void> {
-    const appRef = this.get(app);
-    appRef.statusData.groups = [];
-    const response: any = await lastValueFrom(
-      this.http.get(this.HsStatusManagerService.endpointUrl(app), {
-        params: new HttpParams({
-          fromObject: {
-            request: 'getGroups',
-          },
-        }),
-      })
-    );
-    const j = response.data;
-    if (j.success) {
-      appRef.statusData.groups = j.result;
-      for (const g of appRef.statusData.groups) {
-        g.w = false;
-        g.r = false;
-      }
-    }
-  }
-
-  /**
-   * Get User info from server and call callback (setUserDetail)
-   */
-  async loadUserDetails(app: string) {
-    const response: any = await lastValueFrom(
-      this.http.get(
-        this.HsStatusManagerService.endpointUrl(app) + '?request=getuserinfo'
-      )
-    );
-    this.setUserDetails(response, app);
   }
 
   /**
