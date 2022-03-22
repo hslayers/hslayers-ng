@@ -102,7 +102,10 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     //In case the app height is not set on hslayers element, height is determined by
     //the main panel height which vary from 0 if no mainpanel is set to 90 or even 208 in some cases .
     //Value of 300 or less /would mean that height is not set we need do something
-    if (hsapp.clientHeight < minHeight) {
+    if (
+      hsapp.clientHeight < minHeight &&
+      getComputedStyle(hsapp).height === '0px' //Prevents changes to defined height settings
+    ) {
       hsapp.style.height = '100%';
       //If its still the same, height is not even set on parents of hslayers element - we want fullscreen app
       if (hsapp.clientHeight < minHeight) {
