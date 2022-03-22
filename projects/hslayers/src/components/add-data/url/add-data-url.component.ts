@@ -82,7 +82,7 @@ export class HsAddDataUrlComponent implements OnInit {
         }
         this.hsDialogContainerService.create(
           HsGetCapabilitiesErrorComponent,
-          error,
+          {error: error},
           this.app
         );
       });

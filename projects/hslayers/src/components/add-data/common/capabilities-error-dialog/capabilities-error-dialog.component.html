@@ -1,18 +1,20 @@
-<div class="modal in hs-ows-wms-capabilities-error" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal in hs-ows-wms-capabilities-error" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white" style="opacity: 0.9;">
                 <h4 class="modal-title text-uppercase">
                     {{'ADDLAYERS.capabilitiesParsingProblem' | translateHs : data}}
                 </h4>
-                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translateHs : data}}"></button>
+                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
+                    attr.aria-label="{{'COMMON.close' | translateHs : data}}"></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <p>{{'ADDLAYERS.ERROR.thereWasErrorWhile' | translateHs : data}}</p>
-                <p>{{data}}</p>
+                <p>{{data.error}}</p>
             </div>
-            <div class="modal-footer" >
-                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close' | translateHs : data}}</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close'
+                    | translateHs : data}}</button>
             </div>
         </div>
     </div>
