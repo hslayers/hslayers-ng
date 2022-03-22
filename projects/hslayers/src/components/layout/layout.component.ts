@@ -106,9 +106,10 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
       hsapp.clientHeight < minHeight &&
       getComputedStyle(hsapp).height === '0px' //Prevents changes to defined height settings
     ) {
+      const heightBefore = hsapp.clientHeight;
       hsapp.style.height = '100%';
       //If its still the same, height is not even set on parents of hslayers element - we want fullscreen app
-      if (hsapp.clientHeight < minHeight) {
+      if (hsapp.clientHeight == heightBefore) {
         hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
       }
       console.warn(
