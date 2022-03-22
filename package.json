@@ -101,7 +101,7 @@
     "@cypress/schematic": "^1.6.0",
     "@types/jasmine": "~4.0.0",
     "@types/jasminewd2": "~2.0.10",
-    "@typescript-eslint/eslint-plugin": "5.15.0",
+    "@typescript-eslint/eslint-plugin": "5.16.0",
     "@typescript-eslint/parser": "5.15.0",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
