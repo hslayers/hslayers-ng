@@ -17,7 +17,7 @@ import {PopupWidgetComponent} from './popup-widget.component';
 @Component({
   selector: 'hslayers-app',
   templateUrl: './hslayers-app.component.html',
-  styleUrls: [],
+  styleUrls: ['./hslayers-app.component.scss'],
 })
 export class HslayersAppComponent {
   constructor(
