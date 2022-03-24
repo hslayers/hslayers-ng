@@ -70,7 +70,7 @@
     "papaparse": "^5",
     "passport-oauth2-middleware": "^1.0.3",
     "polygon-clipping": "^0.15.3",
-    "polygon-splitter": "^0.0.7",
+    "polygon-splitter": "^0.0.8",
     "proj4": "^2.8.0",
     "queue": "^6.0.2",
     "resumablejs": "^1.1.0",
