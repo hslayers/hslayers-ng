@@ -5,6 +5,16 @@ import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {getName, getTitle} from '../../common/layer-extensions';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
+export const SUPPORTED_SRS_LIST = [
+  'EPSG:3857',
+  'EPSG:4326',
+  'EPSG:5514',
+  'EPSG:32633',
+  'EPSG:32634',
+  'EPSG:3034',
+  'EPSG:3035',
+  'EPSG:3059',
+];
 /**
  * Get Layman friendly name for layer based on its title by
  * replacing spaces with underscores, converting to lowercase, etc.

@@ -25,6 +25,7 @@ import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
+  SUPPORTED_SRS_LIST,
   getLayerName,
   getLaymanFriendlyLayerName,
   wfsFailed,
@@ -351,7 +352,7 @@ export class HsLaymanService implements HsSaverService {
     let layerTitle = getTitle(layer);
 
     const f = new GeoJSON();
-    const crsSupported = ['EPSG:4326', 'EPSG:3857'].includes(this.crs);
+    const crsSupported = SUPPORTED_SRS_LIST.includes(this.crs);
     let geojson;
     if (withFeatures) {
       if (!crsSupported) {
