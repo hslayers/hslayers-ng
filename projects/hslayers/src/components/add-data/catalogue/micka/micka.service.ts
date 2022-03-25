@@ -260,6 +260,32 @@ export class HsMickaBrowserService {
   }
 
   /**
+   *   Parse layer name from dataset url (Micka includes LAYER parameters for both WMS/WFS in record url)
+   */
+  private parseLayerName(whatToAdd): string {
+    const link = Array.isArray(whatToAdd.link)
+      ? whatToAdd.link[0]
+      : whatToAdd.link;
+    return link
+      .split('&')
+      ?.find((part) => part.includes('LAYERS'))
+      ?.split('=')[1];
+  }
+
+  /**
+   * Parse workspace from micka dataset record. Null if not layman layer
+   */
+  private parseWorkspaceFromURL(whatToAdd): void {
+    const link = Array.isArray(whatToAdd.link)
+      ? whatToAdd.link.find((link) => link.includes('wfs'))
+      : whatToAdd.link;
+    //Assuming its layman layer
+    if (link?.includes('geoserver')) {
+      whatToAdd.workspace = link.match('(?<=geoserver/).*?(?=/)')[0];
+    }
+  }
+
+  /**
    * @param ds - Configuration of selected datasource (from app config)
    * @param layer - Micka layer for which to get metadata
    * @returns Promise which describes layer
@@ -336,6 +362,7 @@ export class HsMickaBrowserService {
         whatToAdd.link = Array.isArray(whatToAdd.type)
           ? layer.links.map((link) => link.url)
           : this.getLayerLink(layer, 'wfs');
+        this.parseWorkspaceFromURL(whatToAdd);
       } else {
         return false;
       }
@@ -354,8 +381,12 @@ export class HsMickaBrowserService {
       alert(`Datasource type "${type}" not supported.`);
       return false;
     }
+    whatToAdd.recordType = type;
     whatToAdd.title = layer.title || 'Layer';
-    whatToAdd.name = layer.title || 'Layer';
+    whatToAdd.name =
+      type === 'dataset'
+        ? this.parseLayerName(whatToAdd) ?? layer.title
+        : layer.title;
     whatToAdd.abstract = layer.abstract || 'Layer';
     return whatToAdd;
   }

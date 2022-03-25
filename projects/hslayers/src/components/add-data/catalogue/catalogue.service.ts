@@ -35,6 +35,7 @@ type WhatToAddDescriptor = {
   editable?: boolean;
   workspace?: string;
   style?: string;
+  recordType?: string;
 };
 
 class HsAddDataCatalogueParams {
@@ -42,7 +43,7 @@ class HsAddDataCatalogueParams {
     query: {
       textFilter: '',
       title: '',
-      type: 'service',
+      type: 'all',
       Subject: '',
       sortby: 'date',
     },
@@ -435,20 +436,27 @@ export class HsAddDataCatalogueService {
       whatToAdd.link = Array.isArray(whatToAdd.link)
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
         : whatToAdd.link;
-      if (ds.type == 'micka') {
+      if (ds.type == 'micka' && whatToAdd.recordType != 'dataset') {
         this.datasetSelect('url', app);
       }
       await this.hsAddDataOwsService.connectToOWS(
         {
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
-          layer: ds.type == 'layman' ? layer.name : undefined,
+          layer:
+            ds.type == 'layman' || whatToAdd.recordType === 'dataset'
+              ? ds.type == 'layman'
+                ? layer.name
+                : whatToAdd.name
+              : undefined,
         },
         app
       );
     } else if (whatToAdd.type == 'WFS') {
       if (ds.type == 'micka') {
-        this.datasetSelect('url', app);
+        if (!whatToAdd.workspace) {
+          this.datasetSelect('url', app);
+        }
         whatToAdd.link = Array.isArray(whatToAdd.link)
           ? whatToAdd.link.filter((link) =>
               link.toLowerCase().includes('wfs')
@@ -458,7 +466,9 @@ export class HsAddDataCatalogueService {
           {
             type: whatToAdd.type.toLowerCase(),
             uri: decodeURIComponent(whatToAdd.link),
-            layer: undefined, //layer.title || layer.name ||
+            layer: whatToAdd.workspace
+              ? `${whatToAdd.workspace}:${whatToAdd.name}`
+              : undefined,
             style: whatToAdd.style,
           },
           app
