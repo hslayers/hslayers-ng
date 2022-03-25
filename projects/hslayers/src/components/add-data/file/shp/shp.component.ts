@@ -14,7 +14,8 @@ import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 })
 export class HsFileShpComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   dataType: AddDataFileType = 'shp';
 
   constructor(
