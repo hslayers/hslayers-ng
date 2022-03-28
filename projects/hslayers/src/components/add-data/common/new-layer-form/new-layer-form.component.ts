@@ -7,8 +7,8 @@ import {
 import {HsAddDataCommonService} from '../common.service';
 import {HsFileService} from '../../file/file.service';
 import {HsLanguageService} from './../../../../components/language/language.service';
+import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsUploadedFiles} from './../../../../common/upload/upload.component';
-import {SUPPORTED_SRS_LIST} from '../../../save-map/layman-utils';
 
 @Component({
   selector: 'hs-new-layer-form',
@@ -25,9 +25,10 @@ export class HsNewLayerFormComponent implements OnInit {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLanguageService: HsLanguageService,
-    public hsFileService: HsFileService
+    public hsFileService: HsFileService,
+    public hsLaymanService: HsLaymanService
   ) {
-    this.SUPPORTED_SRS_LIST = SUPPORTED_SRS_LIST;
+    this.SUPPORTED_SRS_LIST = this.hsLaymanService.supportedCRRList;
   }
 
   ngOnInit() {
