@@ -1,6 +1,7 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {getName, getTitle} from '../../common/layer-extensions';
 
@@ -57,4 +58,31 @@ export function wfsPendingOrStarting(descr: HsLaymanLayerDescriptor) {
 
 export function wfsFailed(descr: HsLaymanLayerDescriptor) {
   return descr.wfs?.status == 'FAILURE';
+}
+
+export function getSupportedSrsList(ep: HsEndpoint) {
+  if (isAtLeastVersions(ep, '1.16.0')) {
+    return SUPPORTED_SRS_LIST;
+  }
+  return SUPPORTED_SRS_LIST.slice(0, 2);
+}
+
+/**
+ * @param ep Layman endpoint
+ * @param version Version which the endpoint version will be compared with
+ */
+export function isAtLeastVersions(ep: HsEndpoint, version: string) {
+  let epVer = ep.version.split('.').map((part) => parseInt(part));
+  const compareVer = version.split('.').map((part) => parseInt(part));
+  if (epVer.length != compareVer.length) {
+    epVer = epVer.slice(0, (epVer.length - compareVer.length) * -1);
+  }
+
+  for (let i = 0; i < epVer.length; i++) {
+    if (epVer[i] < compareVer[i]) {
+      return false;
+    }
+  }
+
+  return true;
 }

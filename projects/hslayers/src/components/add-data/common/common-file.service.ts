@@ -17,7 +17,6 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
 import {PostLayerResponse} from '../../../common/layman/post-layer-response.type';
-import {SUPPORTED_SRS_LIST} from '../../save-map/layman-utils';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {fileDataObject} from '../file/types/file-data-object.type';
@@ -431,7 +430,9 @@ export class HsAddDataCommonFileService {
   }
 
   isSRSSupported(data: fileDataObject): boolean {
-    return SUPPORTED_SRS_LIST.some((epsg) => data.srs.endsWith(epsg));
+    return this.hsLaymanService.supportedCRRList.some((epsg) =>
+      data.srs.endsWith(epsg)
+    );
   }
 
   isAuthorized(): boolean {

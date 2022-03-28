@@ -25,9 +25,9 @@ import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
-  SUPPORTED_SRS_LIST,
   getLayerName,
   getLaymanFriendlyLayerName,
+  getSupportedSrsList,
   wfsFailed,
   wfsNotAvailable,
   wfsPendingOrStarting,
@@ -64,6 +64,7 @@ export class HsLaymanService implements HsSaverService {
   laymanLayerPending: Subject<any> = new Subject();
   totalProgress = 0;
   deleteQuery;
+  supportedCRRList: string[];
   constructor(
     public HsUtilsService: HsUtilsService,
     private http: HttpClient,
@@ -73,7 +74,18 @@ export class HsLaymanService implements HsSaverService {
     public $log: HsLogService,
     public HsToastService: HsToastService,
     public HsLanguageService: HsLanguageService
-  ) {}
+  ) {
+    this.HsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
+      if (data) {
+        const laymanEP = data.endpoints.find((ep) => ep.type == 'layman');
+        const laymanVersion: any = await lastValueFrom(
+          this.http.get(laymanEP.url + '/rest/about/version')
+        );
+        laymanEP.version = laymanVersion.about.applications.layman.version;
+        this.supportedCRRList = getSupportedSrsList(laymanEP);
+      }
+    });
+  }
 
   /**
    * Save composition to Layman
@@ -352,7 +364,7 @@ export class HsLaymanService implements HsSaverService {
     let layerTitle = getTitle(layer);
 
     const f = new GeoJSON();
-    const crsSupported = SUPPORTED_SRS_LIST.includes(this.crs);
+    const crsSupported = this.supportedCRRList.includes(this.crs);
     let geojson;
     if (withFeatures) {
       if (!crsSupported) {
