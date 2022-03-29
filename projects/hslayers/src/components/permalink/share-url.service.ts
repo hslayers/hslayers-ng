@@ -65,7 +65,7 @@ export class HsShareUrlService {
   update(app: string): void {
     if (Object.entries(this.HsConfig.apps).length > 1) {
       if (!this.ngUnsubscribe.closed) {
-        this.current_url = location.origin + location.pathname;
+        this.current_url = location.origin + location.pathname + '?';
         this.id = this.HsUtilsService.generateUuid();
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
