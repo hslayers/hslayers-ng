@@ -66,6 +66,14 @@ export class HsShareService {
   init(app1: string): void {
     this.HsEventBusService.mainPanelChanges.subscribe(async ({which, app}) => {
       if (this.HsLayoutService.apps[app].mainpanel == 'permalink') {
+        this.generateThumbnail(
+          this.HsLayoutService.get(app).contentWrapper.querySelector(
+            '.hs-permalink-thumbnail'
+          ),
+          false,
+          app
+        );
+
         this.HsShareUrlService.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl(app);
         const layers = this.HsMapService.getLayersArray(app)
@@ -127,18 +135,6 @@ export class HsShareService {
           this.data.pureMapUrl = this.HsShareUrlService.getPureMapUrl(app1);
           this.data.permalinkUrl = this.HsShareUrlService.getPermalinkUrl(app1);
         }
-      }
-    });
-
-    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      if (this.HsLayoutService.get(app).mainpanel == 'permalink') {
-        this.generateThumbnail(
-          this.HsLayoutService.get(app).contentWrapper.querySelector(
-            '.hs-permalink-thumbnail'
-          ),
-          false,
-          app
-        );
       }
     });
 
