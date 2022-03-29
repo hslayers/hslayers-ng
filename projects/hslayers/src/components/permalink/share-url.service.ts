@@ -65,9 +65,12 @@ export class HsShareUrlService {
   update(app: string): void {
     if (Object.entries(this.HsConfig.apps).length > 1) {
       if (!this.ngUnsubscribe.closed) {
+        this.current_url = location.origin + location.pathname;
+        this.id = this.HsUtilsService.generateUuid();
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
       }
+      this.browserUrlUpdated.next();
       /**
        * FIXME: ?
        * Some third party params ( mentioned in keepTrackOfGetParams ) might need to be handled separately?
@@ -140,6 +143,7 @@ export class HsShareUrlService {
    */
   getPermalinkUrl(app: string): string {
     if (this.HsCore.isMobile() && this.HsConfig.get(app).permalinkLocation) {
+      //Deprecated? - isMobile??
       return (
         this.HsConfig.get(app).permalinkLocation.origin +
         this.current_url.replace(
