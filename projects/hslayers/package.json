@@ -48,6 +48,7 @@
     "ol-popup": "^4.0.0",
     "polygon-splitter": "^0.0.5",
     "polygon-clipping": "^0.15.3",
+    "@popperjs/core": "^2.0.0",
     "proj4": "^2.6.0",
     "queue": "^6.0.0",
     "rxjs": "^7.0.0",
