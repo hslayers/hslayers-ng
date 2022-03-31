@@ -6,9 +6,9 @@ export class HsFeatureFilterPipe implements PipeTransform {
   /**
    * Transform
    *
-   * @param {any[]} features
-   * @param {string} searchText
-   * @returns {any[]}
+   * @param features -
+   * @param searchText -
+   * @returns Filtered features
    */
   transform(features: any[], searchText: string): any[] {
     if (!features) {

@@ -18,7 +18,7 @@ type Operation = {
 
 @Component({
   selector: 'hs-layer-features',
-  templateUrl: './partials/layer-features.html',
+  templateUrl: './partials/layer-features.component.html',
   styles: [
     `
       td,
@@ -40,53 +40,90 @@ export class HsLayerFeaturesComponent implements OnInit {
   @Input() app = 'default';
   showFeatureStats = false; //Toggle for showing feature statistics
   searchedFeatures = '';
+  appRef;
   constructor(
-    public HsFeatureTableService: HsFeatureTableService,
-    public HsUtilsService: HsUtilsService,
-    public HsMapService: HsMapService,
-    public HsLanguageService: HsLanguageService,
-    public HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public hsFeatureTableService: HsFeatureTableService,
+    public hsUtilsService: HsUtilsService,
+    public hsMapService: HsMapService,
+    public hsLanguageService: HsLanguageService,
+    public hsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
   /**
-   * @public
-   * @description Activate listeners for any layer source changes to update the html table
+   * Activate listeners for any layer source changes to update the html table
    */
   ngOnInit(): void {
     const olLayer = this.layer.lyr;
-    const source = this.HsLayerUtilsService.isLayerClustered(olLayer)
+    const source = this.hsLayerUtilsService.isLayerClustered(olLayer)
       ? olLayer.getSource().getSource()
       : olLayer.getSource();
     if (source) {
-      this.HsFeatureTableService.fillFeatureList(olLayer, this.app);
+      this.hsFeatureTableService.fillFeatureList(olLayer, this.app);
       source.on('changefeature', (e) => {
-        this.HsFeatureTableService.updateFeatureDescription(
+        this.hsFeatureTableService.updateFeatureDescription(
           e.feature,
           this.app
         );
       });
       source.on('addfeature', (e) => {
-        this.HsFeatureTableService.addFeatureDescription(e.feature, this.app);
+        this.hsFeatureTableService.addFeatureDescription(e.feature, this.app);
       });
       source.on('removefeature', (e) => {
-        this.HsFeatureTableService.removeFeatureDescription(e.feature);
+        this.hsFeatureTableService.removeFeatureDescription(
+          e.feature,
+          this.app
+        );
       });
     }
+    this.appRef = this.hsFeatureTableService.get(this.app);
   }
   /**
-   * @param operation Action for html table
+   * @param operation - Action for html table
    * @public
-   * @description zoom to feature from html table after triggering zoom action
+   * zoom to feature from html table after triggering zoom action
    */
   executeOperation(operation: Operation): void {
     switch (operation.action) {
       case 'zoom to':
         const extent = operation.feature.getGeometry().getExtent();
-        this.HsMapService.fitExtent(extent, this.app);
+        this.hsMapService.fitExtent(extent, this.app);
         break;
       case 'custom action':
         operation.customAction(operation.feature);
         break;
       default:
     }
+  }
+
+  /**
+   * Get title translation
+   * @param title - Title to translate
+   */
+  translateTitle(title: string): string {
+    return this.hsLayerUtilsService.translateTitle(title, this.app);
+  }
+
+  /**
+   * @param text - Text to translate to locale
+   * @param app - App identifier
+   * Translate provided text to selected locale language
+   * @returns Returns translation
+   */
+  translate(text: string): string {
+    const translation: string =
+      this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'FEATURE_TABLE',
+        text,
+        undefined,
+        this.app
+      );
+    return translation;
+  }
+
+  /**
+   * @param name - Sort value
+   * Sort features by value
+   */
+  sortFeaturesBy(name: string): void {
+    this.hsFeatureTableService.sortFeaturesBy(name, this.app);
   }
 }

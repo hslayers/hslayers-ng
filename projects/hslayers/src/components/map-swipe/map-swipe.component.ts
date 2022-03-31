@@ -25,8 +25,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private ngUnsubscribe = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
@@ -185,6 +184,7 @@ export class HsMapSwipeComponent
 
   /**
    * Get title translation
+   * @param title - Title to translate
    */
   translateTitle(title: string): string {
     return this.hsLayerUtilsService.translateTitle(title, this.data.app);
