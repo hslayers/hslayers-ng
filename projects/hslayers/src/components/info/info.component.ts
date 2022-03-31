@@ -6,24 +6,21 @@ import {takeUntil} from 'rxjs/operators';
 import {HsEventBusService} from './../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsUtilsService} from './../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
 /**
  * HsInfoComponent
  */
 @Component({
   selector: 'hs-info',
-  templateUrl: './partials/info.html',
+  templateUrl: './partials/info.component.html',
 })
 export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   /**
-   * @type {boolean} true
    * Store if composition is loaded
    */
   composition_loaded = true;
   /**
-   * @type {Array} null
-   * @description List of layers which are currently loading.
+   * List of layers which are currently loading.
    */
   layer_loading = [];
   composition_abstract: string;
@@ -33,12 +30,11 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   composition_edited: boolean;
   private ngUnsubscribe = new Subject<void>();
   constructor(
-    public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService
+    private hsEventBusService: HsEventBusService,
+    public hsLayoutService: HsLayoutService
   ) {
-    super(HsLayoutService);
-    this.HsEventBusService.compositionLoading
+    super(hsLayoutService);
+    this.hsEventBusService.compositionLoading
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
         if (data.error === undefined) {
@@ -57,7 +53,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
         }
       });
 
-    this.HsEventBusService.compositionLoads
+    this.hsEventBusService.compositionLoads
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({data}) => {
         if (data.error !== undefined) {
@@ -74,7 +70,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
         this.composition_edited = false;
       });
 
-    this.HsEventBusService.layerLoadings
+    this.hsEventBusService.layerLoadings
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({layer, progress, app}) => {
         if (app == this.data.app) {
@@ -85,7 +81,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
         }
       });
 
-    this.HsEventBusService.layerLoads
+    this.hsEventBusService.layerLoads
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({layer, app}) => {
         if (app == this.data.app) {
@@ -101,7 +97,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
         }
       });
 
-    this.HsEventBusService.compositionDeletes
+    this.hsEventBusService.compositionDeletes
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({composition, app}) => {
         if (app == this.data.app) {
@@ -112,7 +108,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
         }
       });
 
-    this.HsEventBusService.mapResets
+    this.hsEventBusService.mapResets
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({app}) => {
         if (app == this.data.app) {
@@ -124,7 +120,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
         }
       });
 
-    this.HsEventBusService.compositionEdits
+    this.hsEventBusService.compositionEdits
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.composition_edited = true;
@@ -140,15 +136,15 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   }
   /**
 
-   * @returns {boolean} Returns true if composition title available
-   * @description Test if composition is loaded, to change info template.
+   * @returns Returns true if composition title available
+   * est if composition is loaded, to change info template.
    */
   compositionLoaded(): boolean {
     return this.composition_title !== undefined;
   }
 
   isVisible(): boolean {
-    return this.HsLayoutService.panelEnabled(
+    return this.hsLayoutService.panelEnabled(
       'compositionLoadingProgress',
       this.data.app
     );
