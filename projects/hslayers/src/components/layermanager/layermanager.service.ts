@@ -283,7 +283,11 @@ export class HsLayerManagerService {
         }
       }
       if (getQueryCapabilities(layer) !== false) {
-        const que = this.HsQueuesService.ensureQueue('wmsGetCapabilities', 1);
+        const que = this.HsQueuesService.ensureQueue(
+          'wmsGetCapabilities',
+          app,
+          1
+        );
         que.push(async (cb) => {
           try {
             await this.HsLayerManagerMetadata.fillMetadata(

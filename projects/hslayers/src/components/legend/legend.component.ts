@@ -129,7 +129,7 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   /**
-   * @param map
+   * @param map -
    */
   init(map: Map): void {
     map.getLayers().on('add', (e) => this.layerAdded(e));
@@ -152,7 +152,11 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
    * @param e - Event object, should have element property
    */
   layerAdded(e): void {
-    const que = this.hsQueuesService.ensureQueue('addLayerToLegends', 3);
+    const que = this.hsQueuesService.ensureQueue(
+      'addLayerToLegends',
+      this.data.app,
+      3
+    );
     que.push(async (cb) => {
       await this.addLayerToLegends(e.element);
       cb(null);
