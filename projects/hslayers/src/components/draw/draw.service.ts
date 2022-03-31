@@ -3,10 +3,10 @@ import {Injectable, NgZone} from '@angular/core';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Circle, Geometry} from 'ol/geom';
 import {Cluster, Source} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
-import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Subject, lastValueFrom} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
@@ -892,7 +892,7 @@ export class HsDrawService {
 
       appRef.draw.on('drawend', (e: DrawEvent) => {
         if (appRef.type == 'Circle') {
-          e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
+          e.feature.setGeometry(fromCircle(e.feature.getGeometry() as Circle));
         }
         if (onDrawEnd) {
           onDrawEnd(e, app);

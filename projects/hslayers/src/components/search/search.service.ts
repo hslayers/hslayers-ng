@@ -260,10 +260,9 @@ export class HsSearchService {
       const g_feature = this.formatWKT.readFeature(
         result.FullGeom.toUpperCase()
       );
-      return g_feature
-        .getGeometry()
-        .transform('EPSG:4326', currentProj)
-        .getCoordinates();
+      return (
+        g_feature.getGeometry().transform('EPSG:4326', currentProj) as Point
+      ).getCoordinates();
     }
   }
 
