@@ -33,7 +33,7 @@ export class HslayersAppComponent {
           draw: true,
           tripPlanner: true,
           mapSwipe: true,
-          print: true,
+          feature_table: true,
         },
         sidebarPosition: 'right',
       },
@@ -43,7 +43,7 @@ export class HslayersAppComponent {
           compositionLoadingProgress: true,
           tripPlanner: true,
           mapSwipe: false,
-          print: true,
+          feature_table: true,
         },
         sidebarPosition: 'left',
       },
@@ -305,6 +305,7 @@ export class HslayersAppComponent {
           mapSwipeOptions: {
             orientation: 'vertical',
           },
+          layersInFeatureTable: [points],
           componentsEnabled: {
             basemapGallery: true,
             mapSwipe: true,

@@ -26,29 +26,44 @@ type FeatureDescriptor = {
   }[];
   stats: any[];
 };
-
+class FeatureTableServiceParams {
+  sortReverse = false; //trigger for reverse sorting
+  lastSortValue = ''; //last sorting value selected
+  features: FeatureDescriptor[] = []; //all feature attributes for html table
+}
 @Injectable({
   providedIn: 'root',
 })
 export class HsFeatureTableService {
-  sortReverse = false; //trigger for reverse sorting
-  lastSortValue = ''; //last sorting value selected
-  features: FeatureDescriptor[] = []; //all feature attributes for html table
+  apps: {
+    [id: string]: FeatureTableServiceParams;
+  } = {default: new FeatureTableServiceParams()};
   constructor(
-    public HsUtilsService: HsUtilsService,
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public HsQueryVectorService: HsQueryVectorService,
-    public HsLanguageService: HsLanguageService
+    private hsUtilsService: HsUtilsService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsLanguageService: HsLanguageService
   ) {}
+
   /**
-   * @param layer Layer from HsConfig.get(app).layersInFeatureTable
-   * @description Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
-   * @returns {any} Returns layer
+   * Get the params saved by the feature table service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): FeatureTableServiceParams {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new FeatureTableServiceParams();
+    }
+    return this.apps[app ?? 'default'];
+  }
+  /**
+   * @param layer - Layer from HsConfig.get(app).layersInFeatureTable
+   * Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
+   * @returns Returns layer
    */
   addLayer(layer: Layer<Source>): any {
     if (
       !getBase(layer) &&
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      this.hsUtilsService.instOf(layer, VectorLayer) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
     ) {
@@ -57,9 +72,9 @@ export class HsFeatureTableService {
     return;
   }
   /**
-   * @param layer Layer from HsConfig.get(app).layersInFeatureTable
-   * @description Wrap layer object
-   * @returns {any} Returns wrapped layer object
+   * @param layer - Layer from HsConfig.get(app).layersInFeatureTable
+   * Wrap layer object
+   * @returns Returns wrapped layer object
    */
   wrapLayer(layer: Layer<Source>): any {
     return {
@@ -69,47 +84,69 @@ export class HsFeatureTableService {
     };
   }
   /**
-   * @param layer Layer from HsConfig.get(app).layersInFeatureTable
-   * @description Search all layers feature attributes and map them into new objects for html table
+   * @param layer - Layer from HsConfig.get(app).layersInFeatureTable
+   * @param app - App identifier
+   * Search all layers feature attributes and map them into new objects for html table
    */
   fillFeatureList(layer: Layer<Source>, app: string): void {
     const source: VectorSource<Geometry> =
-      this.HsLayerUtilsService.isLayerClustered(layer)
+      this.hsLayerUtilsService.isLayerClustered(layer)
         ? (layer.getSource() as Cluster).getSource()
         : (layer.getSource() as VectorSource<Geometry>);
-    this.features = source
+    this.get(app).features = source
       .getFeatures()
       .map((f) => this.describeFeature(f, app))
       .filter((f) => f?.attributes?.length > 0);
   }
 
+  /**
+   * @param feature - Feature selected
+   * @param app - App identifier
+   * Update feature description
+   */
   updateFeatureDescription(feature: Feature<Geometry>, app: string): void {
+    const appRef = this.get(app);
     const newDescriptor = this.describeFeature(feature, app);
-    const currentIx = this.features.findIndex((f) => f.feature == feature);
+    const currentIx = appRef.features.findIndex((f) => f.feature == feature);
     if (newDescriptor && currentIx > -1) {
-      this.features[currentIx] = newDescriptor;
+      appRef.features[currentIx] = newDescriptor;
     }
   }
 
+  /**
+   * @param feature - Feature selected
+   * @param app - App identifier
+   * Add feature description
+   */
   addFeatureDescription(feature: Feature<Geometry>, app: string): void {
     const newDescriptor = this.describeFeature(feature, app);
     if (newDescriptor) {
-      this.features.push(newDescriptor);
+      this.get(app).features.push(newDescriptor);
     }
   }
 
-  removeFeatureDescription(feature: Feature<Geometry>): void {
-    const currentIx = this.features.findIndex((f) => f.feature == feature);
+  /**
+   * @param feature - Feature selected
+   * @param app - App identifier
+   * Remove feature description
+   */
+  removeFeatureDescription(feature: Feature<Geometry>, app: string): void {
+    const appRef = this.get(app);
+    const currentIx = appRef.features.findIndex((f) => f.feature == feature);
     if (currentIx > -1) {
-      this.features.splice(currentIx, 1);
+      appRef.features.splice(currentIx, 1);
     }
   }
 
+  /**
+   * @param feature - Feature selected
+   * @param app - App identifier
+   * Describe feature
+   */
   describeFeature(feature: Feature<Geometry>, app: string): FeatureDescriptor {
-    const attribWrapper = this.HsQueryVectorService.getFeatureAttributes(
-      feature,
-      app
-    ).pop();
+    const attribWrapper = this.hsQueryVectorService
+      .getFeatureAttributes(feature, app)
+      .pop();
     if (!attribWrapper) {
       return null;
     }
@@ -122,9 +159,9 @@ export class HsFeatureTableService {
   }
 
   /**
-   * @param attributes layers feature attributes
-   * @description Find feature name attribute and seperate it from other attributes for html table purposes
-   * @returns {any} feature name
+   * @param attributes - layers feature attributes
+   * Find feature name attribute and seperate it from other attributes for html table purposes
+   * @returns feature name
    */
   setFeatureName(attributes: any): string {
     if (attributes.length > 0) {
@@ -140,35 +177,39 @@ export class HsFeatureTableService {
     }
   }
   /**
-   * @param attributes layers feature attributes
-   * @description Remove feature name attribute from feature attributes array
-   * @returns {any} feature attributes
+   * @param attributes - layers feature attributes
+   * Remove feature name attribute from feature attributes array
+   * @returns feature attributes
    */
   attributesWithoutFeatureName(attributes: any): any {
     return attributes.filter((attr) => attr.name !== 'name');
   }
   /**
-   * @param valueName Requested value to sort the feature table list
-   * @description Sort features by requested value
+   * @param valueName - Requested value to sort the feature table list
+   * @param app - App identifier
+   * Sort features by requested value
    */
-  sortFeaturesBy(valueName): void {
-    if (this.features !== undefined && this.features.length > 1) {
-      this.lastSortValue === valueName //if last sort by value is the same as current sort table list in reverse
-        ? (this.sortReverse = !this.sortReverse)
-        : (this.sortReverse = false);
-      this.features = this.features.sort((a, b) =>
-        this.sortFeatures(a, b, valueName)
+  sortFeaturesBy(valueName, app: string): void {
+    const appRef = this.get(app);
+    if (appRef.features !== undefined && appRef.features.length > 1) {
+      appRef.lastSortValue === valueName //if last sort by value is the same as current sort table list in reverse
+        ? (appRef.sortReverse = !appRef.sortReverse)
+        : (appRef.sortReverse = false);
+      appRef.features = appRef.features.sort((a, b) =>
+        this.sortFeatures(a, b, valueName, app)
       );
     }
   }
   /**
-   * @param a First input feature
-   * @param b second input feature
-   * @param valueName Sorting value
-   * @description Sorting algorithm
-   * @returns {number} Returns each features relative position in the table
+   * @param a - First input feature
+   * @param b - second input feature
+   * @param valueName - Sorting value
+   * @param app - App identifier
+   * Sorting algorithm
+   * @returns Returns each features relative position in the table
    */
-  sortFeatures(a, b, valueName): number {
+  sortFeatures(a, b, valueName, app: string): number {
+    const appRef = this.get(app);
     let aFeature, bFeature: any;
     let position: number;
     if (valueName === 'name') {
@@ -196,15 +237,15 @@ export class HsFeatureTableService {
     if (typeof aFeature == 'number' && typeof bFeature == 'number') {
       position = aFeature - bFeature;
     }
-    this.sortReverse ? (position = position * -1) : position;
-    this.lastSortValue = valueName;
+    appRef.sortReverse ? (position = position * -1) : position;
+    appRef.lastSortValue = valueName;
     return position;
   }
   /**
-   * @param attributes features attributes
-   * @param valueName Sorting value
-   * @description Get requested features attribute value, which will be used in the sorting algorithm
-   * @returns {number | string} Returns attributes value
+   * @param attributes - features attributes
+   * @param valueName - Sorting value
+   * Get requested features attribute value, which will be used in the sorting algorithm
+   * @returns Returns attributes value
    */
   getValue(attributes: any, valueName: string): string | number {
     let value = attributes //get requested attribute value
@@ -216,14 +257,5 @@ export class HsFeatureTableService {
       value = value[0];
     }
     return value;
-  }
-
-  translate(text: string): string {
-    const translation: string =
-      this.HsLanguageService.getTranslationIgnoreNonExisting(
-        'FEATURE_TABLE',
-        text
-      );
-    return translation;
   }
 }

@@ -14,20 +14,21 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-feature-table',
-  templateUrl: './partials/feature-table.html',
+  templateUrl: './partials/feature-table.component.html',
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   layers: VectorLayer<VectorSource<Geometry>>[] = [];
   name = 'feature_table';
   constructor(
-    public HsFeatureTableService: HsFeatureTableService,
-    public HsConfig: HsConfig,
-    public HsMapService: HsMapService,
+    private hsFeatureTableService: HsFeatureTableService,
+    private hsConfig: HsConfig,
+    private hsMapService: HsMapService,
     hsLayoutService: HsLayoutService,
-    public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService
+    private hsLanguageService: HsLanguageService,
+    private hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
   }
@@ -54,15 +55,20 @@ export class HsFeatureTableComponent
       },
       this.data.app
     );
-    this.HsMapService.loaded(this.data.app).then(() => {
-      for (const layer of this.HsConfig.get(this.data.app)
+    this.hsMapService.loaded(this.data.app).then(() => {
+      for (const layer of this.hsConfig.get(this.data.app)
         .layersInFeatureTable || []) {
         this.addLayerToTable(layer);
       }
     });
   }
+
+  /**
+   * @param layer - Layer to add
+   * Add layer to feature description table
+   */
   addLayerToTable(layer: VectorLayer<VectorSource<Geometry>>): void {
-    const layerDescriptor = this.HsFeatureTableService.addLayer(layer);
+    const layerDescriptor = this.hsFeatureTableService.addLayer(layer);
     if (layerDescriptor) {
       this.layers.push(layerDescriptor);
     }
