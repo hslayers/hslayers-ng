@@ -529,7 +529,9 @@ export class HsStylerService {
             evaluatedStyle.getText()?.getText()?.includes('[object Object]')
           ) {
             const featureListSerialized = evaluatedStyle.getText().getText();
-            const fCount = featureListSerialized.split(',').length.toString();
+            const fCount = (featureListSerialized as string)
+              .split(',')
+              .length.toString();
             evaluatedStyle.getText().setText(fCount);
           }
         }

@@ -1,6 +1,6 @@
 import VectorSource from 'ol/source/Vector';
+import {Circle, Geometry, LineString, Point, Polygon} from 'ol/geom';
 import {Cluster, Source} from 'ol/source';
-import {Geometry, Point} from 'ol/geom';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
@@ -64,13 +64,15 @@ export class HsLayerEditorVectorLayerService {
         }
         switch (feature.getGeometry().getType()) {
           case 'Point':
-            return feature.getGeometry();
+            return feature.getGeometry() as Point;
           case 'Circle':
-            return new Point(feature.getGeometry().getCenter());
+            return new Point((feature.getGeometry() as Circle).getCenter());
           case 'Polygon':
-            return feature.getGeometry().getInteriorPoint();
+            return (feature.getGeometry() as Polygon).getInteriorPoint();
           case 'LineString':
-            return new Point(feature.getGeometry().getFirstCoordinate());
+            return new Point(
+              (feature.getGeometry() as LineString).getFirstCoordinate()
+            );
           default:
             return null;
         }
