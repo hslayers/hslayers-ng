@@ -4,5 +4,6 @@ export function mockHsPrintScaleService() {
     'scaleChanged',
     'drawScaleCanvas',
     'init',
+    'get',
   ]);
 }

@@ -51,6 +51,8 @@ export class HsPrintLegendStylerComponent {
 
   /**
    * Get translation for the value string
+   * @param module - Translation module
+   * @param text - Text to translate
    */
   getTranslation(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(

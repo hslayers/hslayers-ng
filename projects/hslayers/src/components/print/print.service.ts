@@ -27,6 +27,7 @@ export class HsPrintService {
   /**
    * Print styled print layout
    * @param print - Print object
+   * @param app - App identifier
    * @param complete - If true, generated image will be opened and printing interface will be created
    */
   async print(
@@ -41,7 +42,7 @@ export class HsPrintService {
       })
     );
     obs
-      .pipe(takeUntil(this.hsPrintLegendService.cancelRequest))
+      .pipe(takeUntil(this.hsPrintLegendService.get(app).cancelRequest))
       .subscribe((img) => {
         const win = window.open();
         const html = `<html><head></head><style>body{background-color:white !important;}@page { size: landscape; }</style><body><img src='${img}'/></body></html>`;
@@ -61,6 +62,7 @@ export class HsPrintService {
   /**
    * Download map print layout as png image
    * @param print - Print object
+   * @param app - App identifier
    */
   async download(print: PrintModel, app: string): Promise<void> {
     const img = await this.createMapImage(print, app);
@@ -80,6 +82,7 @@ export class HsPrintService {
   /**
    * Create map image with additional styled text, optional scale, legend or imprint
    * @param print - Print object
+   * @param app - App identifier
    */
   async createMapImage(print: PrintModel, app: string): Promise<string> {
     await this.hsMapService.loaded(app);
@@ -136,7 +139,8 @@ export class HsPrintService {
     }
     if (print.imprintObj?.author || print.imprintObj?.abstract) {
       const iCanvas = await this.hsPrintImprintService.drawImprintCanvas(
-        print.imprintObj
+        print.imprintObj,
+        app
       );
       if (iCanvas) {
         const imprintPos = this.getChildPosition(

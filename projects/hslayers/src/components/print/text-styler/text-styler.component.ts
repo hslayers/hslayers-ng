@@ -100,8 +100,10 @@ export class HsPrintTextStylerComponent {
 
   /**
    * Get translation for the value string
+   * @param module - Translation module
+   * @param text - Text to translate
    */
-  getTranslation(module: string, text: string, app: string): string {
+  getTranslation(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
