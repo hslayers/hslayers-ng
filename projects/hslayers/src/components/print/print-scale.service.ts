@@ -14,7 +14,11 @@ import {ScaleObj} from './types/scale-object.type';
   providedIn: 'root',
 })
 export class HsPrintScaleService {
-  defaultScaleLine: Control;
+  apps: {
+    [id: string]: {
+      defaultScaleLine: Control;
+    };
+  } = {default: {defaultScaleLine: null}};
   scaleBarCSS = SCALE_BAR_CLASSES;
   scaleLineCSS = SCALE_LINE_CLASSES;
   constructor(
@@ -22,24 +26,42 @@ export class HsPrintScaleService {
     private hsPrintLegendService: HsPrintLegendService
   ) {}
 
+  /**
+   * Initialize the print scale service data and subscribers
+   * @param app - App identifier
+   */
   init(app: string): void {
     this.hsMapService.loaded(app).then((_) => {
-      this.defaultScaleLine = this.getMapScale(app);
+      this.get(app).defaultScaleLine = this.getMapScale(app);
     });
   }
 
   /**
+   * Get the params saved by the print scale service for the current app
+   * @param app - App identifier
+   */
+  get(app: string): {defaultScaleLine: Control} {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = {defaultScaleLine: null};
+    }
+    return this.apps[app ?? 'default'];
+  }
+
+  /**
    * Set original map scale if it exists
+   * @param app - App identifier
    */
   setToDefaultScale(app: string): void {
-    if (this.defaultScaleLine && this.hsMapService.getMap(app)) {
-      this.setMapScale(this.defaultScaleLine, app);
+    const appRef = this.get(app);
+    if (appRef.defaultScaleLine && this.hsMapService.getMap(app)) {
+      this.setMapScale(appRef.defaultScaleLine, app);
     }
   }
 
   /**
    * Triggered when the scale type or its values have been changed by the user
    * @param scaleObj - Scale object
+   * @param app - App identifier
    */
   scaleChanged(scaleObj: ScaleObj, app: string): void {
     this.setMapScale(this.createNewScaleControl(scaleObj), app);
@@ -48,6 +70,7 @@ export class HsPrintScaleService {
   /**
    * Draw canvas with scale DOM element
    * @param scaleObj - Scale object
+   * @param app - App identifier
    */
   async drawScaleCanvas(
     scaleObj: ScaleObj,
@@ -72,7 +95,7 @@ export class HsPrintScaleService {
         canvas.height = scaleElem.clientHeight + 5;
     }
     const svgSource = this.createScaleSvgSource(type, scaleElem, cssClasses);
-    await this.drawScaleImage(canvas, svgSource);
+    await this.drawScaleImage(canvas, svgSource, app);
     return canvas;
   }
 
@@ -115,14 +138,16 @@ export class HsPrintScaleService {
    * Draw scale image from svg source into a canvas
    * @param canvas - HTMLCanvasElement
    * @param svgSource - Svg source string
+   * @param app - App identifier
    */
   private drawScaleImage(
     canvas: HTMLCanvasElement,
-    svgSource: string
+    svgSource: string,
+    app: string
   ): Promise<void> {
     return new Promise(async (resolve, reject) => {
       const ctx = canvas.getContext('2d');
-      const img = await this.hsPrintLegendService.svgToImage(svgSource);
+      const img = await this.hsPrintLegendService.svgToImage(svgSource, app);
       if (img) {
         ctx.drawImage(img, 0, 0);
       }
@@ -132,6 +157,7 @@ export class HsPrintScaleService {
 
   /**
    * Get current map scale Control
+   * @param app - App identifier
    */
   private getMapScale(app: string): Control {
     for (const control of this.hsMapService
@@ -168,6 +194,7 @@ export class HsPrintScaleService {
   /**
    * Set map scale to a new scale object
    * @param newControl - Control
+   * @param app - App identifier
    */
   private setMapScale(newControl: Control, app: string): void {
     const currentScaleControl = this.getMapScale(app);

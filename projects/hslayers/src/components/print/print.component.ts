@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsConfig} from './../../config.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -27,11 +26,9 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   print: PrintModel;
 
   constructor(
-    public HsPrintService: HsPrintService,
-    public HsConfig: HsConfig,
     HsLayoutService: HsLayoutService,
-    public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService,
+    private hsLanguageService: HsLanguageService,
+    private hsSidebarService: HsSidebarService,
     public hsUtilsService: HsUtilsService,
     private hsPrintService: HsPrintService,
     private hsPrintScaleService: HsPrintScaleService,
@@ -63,8 +60,9 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
       },
       this.data.app
     );
-    this.setToDefault();
     this.hsPrintScaleService.init(this.data.app);
+    this.hsPrintLegendService.init(this.data.app);
+    this.setToDefault();
   }
 
   /**
@@ -119,14 +117,14 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
       s.visible = false;
     });
     this.hsPrintScaleService.setToDefaultScale(this.data.app);
-    this.hsPrintLegendService.loadingExternalImages = false;
+    this.hsPrintLegendService.get(this.data.app).loadingExternalImages = false;
   }
 
   /**
    * Cancel loading print layout image
    */
   cancelLoading(): void {
-    this.hsPrintLegendService.cancelRequest.next();
+    this.hsPrintLegendService.get(this.data.app).cancelRequest.next();
   }
 
   /**
@@ -145,7 +143,7 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   isLoading(): boolean {
-    return this.hsPrintLegendService.loadingExternalImages;
+    return this.hsPrintLegendService.get(this.data.app).loadingExternalImages;
   }
 
   /**

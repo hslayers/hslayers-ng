@@ -43,7 +43,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.fontStyle"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="fontStyle" *ngFor="let fontStyle of stylingOptions.fontStyles">
-        {{getTranslation('PRINT',fontStyle, app)}}
+        {{getTranslation('PRINT',fontStyle)}}
       </option>
     </select>
   </div>
@@ -54,7 +54,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textDraw"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="textDraw" *ngFor="let textDraw of stylingOptions.textDrawTypes">
-        {{getTranslation('COMMON',textDraw, app)}}
+        {{getTranslation('COMMON',textDraw)}}
       </option>
     </select>
   </div>
@@ -65,7 +65,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posX"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="positionX" *ngFor="let positionX of positionOptions.positionsX">
-        {{getTranslation('PRINT',positionX, app)}}
+        {{getTranslation('PRINT',positionX)}}
       </option>
     </select>
   </div>
@@ -77,7 +77,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posY"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="positionY" *ngFor="let positionY of positionOptions.positionsY">
-        {{getTranslation('PRINT',positionY, app)}}
+        {{getTranslation('PRINT',positionY)}}
       </option>
     </select>
   </div>

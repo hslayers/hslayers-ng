@@ -18,6 +18,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsPrintComponent} from './print.component';
 import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.component';
 import {HsPrintLegendService} from './print-legend.service';
+import {HsPrintLegendServiceMock} from './mocks/print-legend.service.mock';
 import {HsPrintLegendStylerComponent} from './legend-styler/legend-styler.component';
 import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintScaleStylerComponent} from './scale-styler/scale-styler.component';
@@ -26,7 +27,6 @@ import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {mockHsPrintLegendService} from './mocks/print-legend.service.mock';
 import {mockHsPrintScaleService} from './mocks/print-scale.service.mock';
 import {mockHsPrintService} from './mocks/print.service.mock';
 
@@ -71,7 +71,7 @@ describe('HsPrintComponent', () => {
         },
         {
           provide: HsPrintLegendService,
-          useValue: mockHsPrintLegendService(),
+          useValue: new HsPrintLegendServiceMock(),
         },
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
