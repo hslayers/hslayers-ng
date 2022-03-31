@@ -7,5 +7,6 @@ export function mockHsLayerShiftingService() {
     'moveToBottom',
     'moveToTop',
     'swapSibling',
+    'get',
   ]);
 }

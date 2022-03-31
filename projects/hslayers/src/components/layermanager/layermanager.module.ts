@@ -23,7 +23,7 @@ import {HsLayerManagerGalleryComponent} from './gallery/layermanager-gallery.com
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerRemoveLayerDialogComponent} from './dialogs/remove-layer-dialog.component';
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layermanager-time-editor.component';
-import {HsLayerPhysicalListComponent} from './physical-list/layermanager-physical-layerlist.component';
+import {HsLayerPhysicalListComponent} from './physical-list/physical-layerlist.component';
 import {HsLegendModule} from '../legend/legend.module';
 import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from './widgets/metadata-widget.component';

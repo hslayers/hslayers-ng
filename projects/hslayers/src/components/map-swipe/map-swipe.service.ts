@@ -201,9 +201,9 @@ export class HsMapSwipeService {
     if (!layer) {
       return;
     }
-    const layerFound = this.hsLayerShiftingService.layersCopy.find(
-      (wrapper) => wrapper.layer == layer
-    );
+    const layerFound = this.hsLayerShiftingService
+      .get(app)
+      .layersCopy.find((wrapper) => wrapper.layer == layer);
     if (layerFound !== undefined) {
       this.setLayerActive(layerFound, app);
       appRef.wasMoved
@@ -358,14 +358,15 @@ export class HsMapSwipeService {
    */
   setInitialSwipeLayers(app: string): void {
     const appRef = this.get(app);
+    const layerShiftingappRef = this.hsLayerShiftingService.get(app);
     appRef.leftLayers = [];
     appRef.rightLayers = [];
     appRef.entireMapLayers = [];
     this.hsLayerShiftingService.fillLayers(app);
-    if (!this.hsLayerShiftingService.layersCopy) {
+    if (!layerShiftingappRef.layersCopy) {
       return;
     }
-    for (const layer of this.hsLayerShiftingService.layersCopy) {
+    for (const layer of layerShiftingappRef.layersCopy) {
       this.addSwipeLayer(layer, app);
     }
     this.sortLayers(app);
@@ -375,9 +376,11 @@ export class HsMapSwipeService {
    * @param app - App identifier
    */
   checkForMissingLayers(app: string): void {
-    const missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
-      return !this.findLayer(l.layer, app)?.l;
-    });
+    const missingLayers = this.hsLayerShiftingService
+      .get(app)
+      .layersCopy.filter((l) => {
+        return !this.findLayer(l.layer, app)?.l;
+      });
     for (const layer of missingLayers) {
       this.addSwipeLayer(layer, app);
     }
