@@ -373,7 +373,7 @@ export class HslayersAppComponent {
               source: new OSM(),
               visible: true,
               properties: {
-                title: 'OpenStreetMap',
+                title: 'OpenStreet Map',
                 base: true,
                 removable: false,
               },

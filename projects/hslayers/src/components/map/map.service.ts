@@ -71,6 +71,9 @@ class AppData {
   featureLayerMapping: {
     [key: string]: VectorAndSource[];
   } = {};
+  /* This is a hacky solution so map would always have some layer. 
+  Otherwise some weird rendering problems appear in multi-apps mode  */
+  placeholderOsm: Layer<Source>;
 }
 
 @Injectable({
@@ -342,19 +345,18 @@ export class HsMapService {
       defaultDesktopControls.push(new ScaleLine());
 
       const controls = defaultDesktopControls;
+      const placeholderOsm = new Tile({
+        source: new OSM(),
+        visible: true,
+        properties: {
+          title: 'OpenStreetMap',
+          base: true,
+          removable: true,
+        },
+      });
       map = new Map({
         controls,
-        layers: [
-          new Tile({
-            source: new OSM(),
-            visible: true,
-            properties: {
-              title: 'OpenStreetMap',
-              base: true,
-              removable: true,
-            },
-          }),
-        ],
+        layers: [placeholderOsm],
         target: mapElement,
         interactions: [],
         view:
@@ -362,6 +364,7 @@ export class HsMapService {
       });
       this.apps[app] = {
         mapElement,
+        placeholderOsm,
         map,
         renderer: this.rendererFactory.createRenderer(null, null),
         featureLayerMapping: {},
@@ -745,6 +748,9 @@ export class HsMapService {
 
     if (this.HsConfig.get(app).default_layers) {
       const layers = this.HsConfig.get(app).default_layers.filter((lyr) => lyr);
+      if (layers.length > 0) {
+        this.getMap(app).removeLayer(this.apps[app].placeholderOsm);
+      }
       layers.forEach((lyr: Layer<Source>) => {
         this.addLayer(
           lyr,
