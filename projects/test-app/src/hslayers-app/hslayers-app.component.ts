@@ -643,7 +643,7 @@ export class HslayersAppComponent {
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
-          customDelay: 60000,
+          customDelay: 5000,
         },
         app
       );
