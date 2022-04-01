@@ -84,6 +84,34 @@ export class HslayersAppComponent {
             }
           } catch (error) {}
         },
+        setCustomColor: (v) => {
+          let color = [0, 0, 0, 255];
+          if (isNaN(v)) {
+            return color;
+          }
+          v = Math.floor(v);
+          switch (true) {
+            case v < 20:
+              color = interpolatedSource.jetColorMap[10];
+              break;
+            case v < 40:
+              color = interpolatedSource.jetColorMap[30];
+              break;
+            case v < 60:
+              color = interpolatedSource.jetColorMap[50];
+              break;
+            case v < 80:
+              color = interpolatedSource.jetColorMap[70];
+              break;
+            case v <= 100:
+            case v > 100:
+              color = interpolatedSource.jetColorMap[90];
+              break;
+            default:
+              color = [0, 0, 0, 255];
+          }
+          return color;
+        },
       });
       const idwLayer = new ImageLayer({
         properties: {title: 'IDW layer'},

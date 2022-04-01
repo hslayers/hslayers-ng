@@ -5,6 +5,7 @@ import {Feature} from 'ol';
 import {Fill, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
+import {JET_COLOR_MAP} from './jet-color-map.const';
 import {Projection} from 'ol/proj';
 import {Subject} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -16,10 +17,13 @@ export interface InterpolatedSourceOptions {
   features?: Feature<Geometry>[];
   weight?: string;
   loader?(params: any): Promise<Feature[]>;
+  setCustomColor?(v: number): number[];
 }
 
 export class InterpolatedSource extends IDW {
   cancelUrlRequest: Subject<void> = new Subject();
+  geoJSONFeatures: string[] = [];
+  jetColorMap = JET_COLOR_MAP;
   constructor(private options: InterpolatedSourceOptions) {
     super({
       // Source that contains the data
@@ -56,9 +60,8 @@ export class InterpolatedSource extends IDW {
       // Use val as weight property
       weight: NORMALIZED_WEIGHT_PROPERTY_NAME,
     });
-    if (options.customColors) {
-      const colors = options.customColors;
-      super.setData(colors.value, colors.data, colors.i);
+    if (options.setCustomColor) {
+      super.getColor = options.setCustomColor;
     }
     if (options.features) {
       this.fillFeatures(options.features);
