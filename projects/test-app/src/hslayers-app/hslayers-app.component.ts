@@ -5,21 +5,17 @@ import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Extent} from 'ol/extent';
 import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
-import {catchError, takeUntil} from 'rxjs';
+import {catchError, lastValueFrom, takeUntil} from 'rxjs';
+import {transformExtent} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import {HsLanguageService} from 'hslayers-ng/src/components/language/language.service';
-import {HsMapService} from 'hslayers-ng/src/components/map/map.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
-import {HsToastService} from 'hslayers-ng/src/components/layout/toast/toast.service';
 import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
 import {InterpolatedSource} from '../../../hslayers/src/common/layers/interpolated-source';
-import {InterpolatedSourceModel} from 'hslayers-ng/src/common/layers/interpolated-source.model';
 import {PopupWidgetComponent} from './popup-widget.component';
 
 @Component({
@@ -33,11 +29,8 @@ export class HslayersAppComponent {
     public hsConfig: HsConfig,
     private hsEventBusService: HsEventBusService,
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
     private hsUtilsService: HsUtilsService,
-    private httpClient: HttpClient,
-    private hsMapService: HsMapService
+    private httpClient: HttpClient
   ) {
     const apps = [
       {
@@ -65,19 +58,31 @@ export class HslayersAppComponent {
     for (const app of apps) {
       const interpolatedSource = new InterpolatedSource({
         features: [],
-        loader: ({extent}) => {
+        weight: 'fac2020',
+        loader: async ({extent, projection}) => {
           if (this.timer !== null) {
             clearTimeout(this.timer);
           }
           interpolatedSource.cancelUrlRequest.next();
-          this.removeLoadingToast(app.name);
-          this.getFeaturesForIDW(
-            interpolatedSource,
-            'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
-            'fac2020',
-            app.name,
-            extent
+          const extentIn4326 = transformExtent(extent, projection, 'EPSG:4326');
+          const url = this.hsUtilsService.proxify(
+            interpolatedSource.createIDWSourceUrl(
+              'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
+              extentIn4326
+            ),
+            app.name
           );
+          try {
+            const response: any = await lastValueFrom(
+              this.httpClient.get(url).pipe(
+                takeUntil(interpolatedSource.cancelUrlRequest),
+                catchError(async (e) => {})
+              )
+            );
+            if (response?.features?.length > 0) {
+              return interpolatedSource.parseFeatures(response, projection);
+            }
+          } catch (error) {}
         },
       });
       const idwLayer = new ImageLayer({
@@ -545,26 +550,6 @@ export class HslayersAppComponent {
             idwLayer,
             idwVectorLayer,
           ],
-          translationOverrides: {
-            en: {
-              IDW: {
-                loadingIdwLayer:
-                  'Loading interpolated layer source, please wait!',
-                layerRequest: 'Interpolated layer request',
-                failedToLoad: 'Failed to load interpolated layer source',
-                loaded: 'Interpolated layer source loaded',
-              },
-            },
-            lv: {
-              IDW: {
-                loadingIdwLayer:
-                  'Notiek interpolētā slāņa avota ielāde, lūdzu, uzgaidiet!',
-                layerRequest: 'Interpolētā slāņa pieprasījums',
-                failedToLoad: 'Neizdevās ielādēt interpolētā slāņa avotu',
-                loaded: 'Ielādēts interpolētā slāņa avots',
-              },
-            },
-          },
         },
         app.name
       );
@@ -599,116 +584,5 @@ export class HslayersAppComponent {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  /**
-   * Remove warning toast when get request completes
-   * @param app - App identifier
-   */
-  async removeLoadingToast(app: string): Promise<void> {
-    this.hsToastService.removeByText(
-      await this.hsLanguageService.awaitTranslation(
-        'IDW.loadingIdwLayer',
-        undefined,
-        app
-      ),
-      app
-    );
-  }
-
-  /**
-   * Get features for interpolated source
-   * @param interpolatedSource - Interpolated source class reference
-   * @param url - external source URL
-   * @param weight - Weight property name
-   * @param app - App identifier
-   * @param extent - Current extent
-   */
-  async getFeaturesForIDW(
-    interpolatedSource: InterpolatedSourceModel,
-    url: string,
-    weight: string,
-    app: string,
-    extent: Extent
-  ): Promise<void> {
-    const mapProjection = this.hsMapService.getCurrentProj(app).getCode();
-    url = interpolatedSource.createIDWSourceUrl(
-      url,
-      this.hsMapService.getMapExtentInEpsg4326(app)
-    );
-    if (url && !interpolatedSource.cacheAvailable(extent)) {
-      this.hsToastService.createToastPopupMessage(
-        await this.hsLanguageService.awaitTranslation(
-          'IDW.layerRequest',
-          undefined,
-          app
-        ),
-        await this.hsLanguageService.awaitTranslation(
-          'IDW.loadingIdwLayer',
-          undefined,
-          app
-        ),
-        {
-          disableLocalization: true,
-          toastStyleClasses: 'bg-warning text-light',
-          customDelay: 5000,
-        },
-        app
-      );
-      this.httpClient
-        .get(this.hsUtilsService.proxify(url, app))
-        .pipe(
-          takeUntil(interpolatedSource.cancelUrlRequest),
-          catchError(async (e) => {
-            this.removeLoadingToast(app);
-            this.hsToastService.createToastPopupMessage(
-              await this.hsLanguageService.awaitTranslation(
-                'IDW.layerRequest',
-                undefined,
-                app
-              ),
-              await this.hsLanguageService.awaitTranslation(
-                'IDW.failedToLoad',
-                undefined,
-                app
-              ),
-              {
-                disableLocalization: true,
-              },
-              app
-            );
-          })
-        )
-        .subscribe(async (response: any) => {
-          this.removeLoadingToast(app);
-          if (response?.features?.length > 0) {
-            interpolatedSource.fillFeatures(
-              response,
-              mapProjection,
-              weight,
-              extent
-            );
-            this.hsToastService.createToastPopupMessage(
-              await this.hsLanguageService.awaitTranslation(
-                'IDW.layerRequest',
-                undefined,
-                app
-              ),
-              await this.hsLanguageService.awaitTranslation(
-                'IDW.loaded',
-                undefined,
-                app
-              ),
-              {
-                disableLocalization: true,
-                toastStyleClasses: 'bg-success text-light',
-              },
-              app
-            );
-          }
-        });
-    } else {
-      interpolatedSource.getFeaturesInExtent(extent);
-    }
   }
 }

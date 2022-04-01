@@ -10,25 +10,20 @@ import {Subject} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
 import {containsExtent, equals} from 'ol/extent';
 
-import {InterpolatedSourceModel} from './interpolated-source.model';
-
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 
 export interface InterpolatedSourceOptions {
   features?: Feature<Geometry>[];
   weight?: string;
-  loader?(params: any);
+  loader?(params: any): Promise<Feature[]>;
 }
 
-export class InterpolatedSource extends IDW implements InterpolatedSourceModel {
-  idwCacheSource: VectorSource<Geometry>;
-  lastExtent: number[];
+export class InterpolatedSource extends IDW {
   cancelUrlRequest: Subject<void> = new Subject();
-  constructor(options: InterpolatedSourceOptions) {
+  constructor(private options: InterpolatedSourceOptions) {
     super({
       // Source that contains the data
       source: new VectorSource({
-        features: options.features,
         strategy: (extent, resolution) => {
           const extentCache = super
             .getSource()
@@ -44,84 +39,64 @@ export class InterpolatedSource extends IDW implements InterpolatedSourceModel {
           }
           return [extent];
         },
-        loader: (extent, resolution, projection, success, failure) => {
+        loader: async (extent, resolution, projection, success, failure) => {
           if (options.loader) {
-            options.loader({extent, resolution, projection, success, failure});
+            this.fillFeatures(
+              await options.loader({
+                extent,
+                resolution,
+                projection,
+                success,
+                failure,
+              })
+            );
           }
         },
       }),
       // Use val as weight property
-      weight: options.weight ?? NORMALIZED_WEIGHT_PROPERTY_NAME,
+      weight: NORMALIZED_WEIGHT_PROPERTY_NAME,
     });
+    if (options.customColors) {
+      const colors = options.customColors;
+      super.setData(colors.value, colors.data, colors.i);
+    }
+    if (options.features) {
+      this.fillFeatures(options.features);
+    }
   }
 
   /**
-   * Fill cache vectorsource with features from get request
+   * Fill Interpolated source features
+   * @param features - Parsed Ol features from get request
+   */
+  fillFeatures(features) {
+    if (!features) {
+      return;
+    }
+    const currentFeatures = super.getSource().getFeatures();
+    features = features.filter((l) => !currentFeatures.includes(l));
+    this.normalizeWeight(features, this.options.weight);
+    super.getSource().addFeatures(features);
+  }
+
+  /**
+   * Parse features from get request
    * @param collection - Get request response feature collection
    * @param mapProjection - Map projection
-   * @param weight - Weight property name
-   * @param extent - Current map extent
    */
-  fillFeatures(
-    collection: any,
-    mapProjection: string | Projection,
-    weight: string,
-    extent?: number[]
-  ): void {
+  parseFeatures(collection: any, mapProjection: string | Projection): void {
     const dataProj = (collection.crs || collection.srs) ?? 'EPSG:4326';
     collection.features = new GeoJSON().readFeatures(collection, {
       dataProjection: dataProj,
       featureProjection: mapProjection,
     });
     collection.features = collection.features.filter((f) => {
-      const value = f.get(weight);
+      const value = f.get(this.options.weight);
       if (value && !isNaN(parseInt(value))) {
         return f;
       }
     });
-    this.normalizeWeight(collection.features, weight);
-    const cachedFeatures = this.idwCacheSource?.getFeatures();
-    if (extent && this.lastExtent && cachedFeatures?.length > 0) {
-      const filteredFeatures = collection.features.filter(
-        (f) => !cachedFeatures.includes(f)
-      );
-      if (filteredFeatures?.length > 0) {
-        this.idwCacheSource.addFeatures(filteredFeatures);
-      }
-    } else {
-      this.idwCacheSource = new VectorSource({
-        features: collection.features,
-      });
-    }
-    this.lastExtent = extent ?? null;
-    this.getFeaturesInExtent(extent);
-  }
-
-  /**
-   * Add features to Interpolated source currently found inside the extent provided
-   * @param extent - Current map extent
-   */
-  getFeaturesInExtent(extent: number[]): void {
-    const features: Feature<Geometry>[] = [];
-    this.idwCacheSource.forEachFeatureInExtent(extent, (feature) => {
-      features.push(feature);
-    });
-    super.getSource().clear();
-    super.getSource().addFeatures(features);
-  }
-
-  /**
-   * Check if cached features are available to use
-   * @param currentExtent - Current map extent
-   */
-  cacheAvailable(currentExtent: number[]): boolean {
-    if (!this.lastExtent || !this.idwCacheSource) {
-      return false;
-    }
-    return (
-      containsExtent(currentExtent, this.lastExtent) &&
-      this.idwCacheSource?.getFeatures()?.length > 0
-    );
+    return collection.features;
   }
 
   /**
