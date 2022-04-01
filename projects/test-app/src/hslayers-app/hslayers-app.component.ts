@@ -5,6 +5,7 @@ import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Extent} from 'ol/extent';
 import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
@@ -27,6 +28,7 @@ import {PopupWidgetComponent} from './popup-widget.component';
   styleUrls: ['./hslayers-app.component.scss'],
 })
 export class HslayersAppComponent {
+  timer: any;
   constructor(
     public hsConfig: HsConfig,
     private hsEventBusService: HsEventBusService,
@@ -61,16 +63,22 @@ export class HslayersAppComponent {
       // },
     ];
     for (const app of apps) {
-      const interpolatedSource = new InterpolatedSource({features: []});
-      this.hsEventBusService.mapExtentChanges.subscribe(async ({e, app}) => {
-        interpolatedSource.cancelUrlRequest.next();
-        this.removeLoadingToast(app);
-        this.getFeaturesForIDW(
-          interpolatedSource,
-          'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
-          'fac2020',
-          app
-        );
+      const interpolatedSource = new InterpolatedSource({
+        features: [],
+        loader: ({extent}) => {
+          if (this.timer !== null) {
+            clearTimeout(this.timer);
+          }
+          interpolatedSource.cancelUrlRequest.next();
+          this.removeLoadingToast(app.name);
+          this.getFeaturesForIDW(
+            interpolatedSource,
+            'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
+            'fac2020',
+            app.name,
+            extent
+          );
+        },
       });
       const idwLayer = new ImageLayer({
         properties: {title: 'IDW layer'},
@@ -614,15 +622,15 @@ export class HslayersAppComponent {
    * @param url - external source URL
    * @param weight - Weight property name
    * @param app - App identifier
+   * @param extent - Current extent
    */
   async getFeaturesForIDW(
     interpolatedSource: InterpolatedSourceModel,
     url: string,
     weight: string,
-    app: string
+    app: string,
+    extent: Extent
   ): Promise<void> {
-    await this.hsMapService.loaded(app);
-    const extent = this.hsMapService.getMapExtent(app);
     const mapProjection = this.hsMapService.getCurrentProj(app).getCode();
     url = interpolatedSource.createIDWSourceUrl(
       url,
@@ -702,29 +710,5 @@ export class HslayersAppComponent {
     } else {
       interpolatedSource.getFeaturesInExtent(extent);
     }
-  }
-
-  /**
-   * On map extent changes get new IDW features
-   * @param app - App identifier
-   * @param interpolatedSource - Interpolated source class reference
-   */
-  extentChanged(
-    app: string,
-    interpolatedSource: InterpolatedSourceModel
-  ): void {
-    if (this.timer !== null) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      interpolatedSource.cancelUrlRequest.next();
-      this.removeLoadingToast(app);
-      this.getFeaturesForIDW(
-        interpolatedSource,
-        'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
-        'fac2020',
-        app
-      );
-    }, 500);
   }
 }

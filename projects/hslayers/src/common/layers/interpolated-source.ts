@@ -8,16 +8,17 @@ import {Geometry} from 'ol/geom';
 import {Projection} from 'ol/proj';
 import {Subject} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
-import {containsExtent} from 'ol/extent';
+import {containsExtent, equals} from 'ol/extent';
 
 import {InterpolatedSourceModel} from './interpolated-source.model';
 
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 
-type InterpolatedSourceOptions = {
+export interface InterpolatedSourceOptions {
   features?: Feature<Geometry>[];
   weight?: string;
-};
+  loader?(params: any);
+}
 
 export class InterpolatedSource extends IDW implements InterpolatedSourceModel {
   idwCacheSource: VectorSource<Geometry>;
@@ -28,6 +29,26 @@ export class InterpolatedSource extends IDW implements InterpolatedSourceModel {
       // Source that contains the data
       source: new VectorSource({
         features: options.features,
+        strategy: (extent, resolution) => {
+          const extentCache = super
+            .getSource()
+            .loadedExtentsRtree_.getAll()
+            .map((item) => item.extent);
+          const toRemove = extentCache.filter(
+            //Delete cached extents which contain this extent because they have their feature counts limited
+            (cachedExt) =>
+              !equals(cachedExt, extent) && containsExtent(cachedExt, extent)
+          );
+          for (const extToRemove of toRemove) {
+            super.getSource().removeLoadedExtent(extToRemove);
+          }
+          return [extent];
+        },
+        loader: (extent, resolution, projection, success, failure) => {
+          if (options.loader) {
+            options.loader({extent, resolution, projection, success, failure});
+          }
+        },
       }),
       // Use val as weight property
       weight: options.weight ?? NORMALIZED_WEIGHT_PROPERTY_NAME,
