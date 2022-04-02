@@ -76,10 +76,8 @@ export class InterpolatedSource extends IDW {
     if (!features) {
       return;
     }
-    const currentFeatures = super.getSource().getFeatures();
-    features = features.filter((l) => !currentFeatures.includes(l));
-    this.normalizeWeight(features, this.options.weight);
     super.getSource().addFeatures(features);
+    this.normalizeWeight(this.options.weight);
   }
 
   /**
@@ -89,6 +87,10 @@ export class InterpolatedSource extends IDW {
    */
   parseFeatures(collection: any, mapProjection: string | Projection): void {
     const dataProj = (collection.crs || collection.srs) ?? 'EPSG:4326';
+    collection.features = collection.features.filter(
+      (f) => !this.geoJSONFeatures.includes(f)
+    );
+    this.geoJSONFeatures = this.geoJSONFeatures.concat(collection.features);
     collection.features = new GeoJSON().readFeatures(collection, {
       dataProjection: dataProj,
       featureProjection: mapProjection,
@@ -134,19 +136,19 @@ export class InterpolatedSource extends IDW {
    * @param features - OL feature array
    * @param weight - Weight property name
    */
-  normalizeWeight(features: Feature<Geometry>[], weight: string): void {
+  normalizeWeight(weight: string): void {
     //https://www.statology.org/normalize-data-between-0-and-100/
+
+    const features = super.getSource().getFeatures();
     const weightValues = features.map((f) => parseInt(f.get(weight)));
     const min = Math.min(...weightValues);
     const max = Math.max(...weightValues);
 
     features.forEach((f) => {
-      if (!f.get(NORMALIZED_WEIGHT_PROPERTY_NAME)) {
-        const normalizedWeight = Math.ceil(
-          ((f.get(weight) - min) / (max - min)) * 100
-        );
-        f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight);
-      }
+      const normalizedWeight = Math.ceil(
+        ((f.get(weight) - min) / (max - min)) * 100
+      );
+      f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight);
     });
   }
 
