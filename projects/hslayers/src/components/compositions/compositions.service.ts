@@ -276,7 +276,8 @@ export class HsCompositionsService {
       let url;
       switch (recordEndpoint.type) {
         case 'micka':
-          url = this.getRecordLink(record);
+          url =
+            record.serviceType == 'CSW' ? record : this.getRecordLink(record);
           break;
         case 'layman':
           url = record.url + '/file';

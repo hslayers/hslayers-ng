@@ -158,7 +158,7 @@ export class HsAddDataOwsService {
 
   async setTypeServices(app: string): Promise<void> {
     const appRef = this.get(app);
-    switch (this.hsAddDataUrlService.apps[app].typeSelected) {
+    switch (this.hsAddDataUrlService.get(app).typeSelected) {
       case 'wmts':
         appRef.typeService = this.hsUrlWmtsService;
         appRef.typeCapabilitiesService = this.hsWmtsGetCapabilitiesService;

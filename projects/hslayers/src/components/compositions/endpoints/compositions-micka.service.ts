@@ -41,6 +41,8 @@ export class HsCompositionsMickaService {
     bbox = params.filterByExtent
       ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'")
       : '';
+    const serviceTypeFilter =
+      ' AND (serviceType like "Map" OR serviceType like "CSW" OR serviceType like "WMC")';
     const textFilter =
       query && query.title !== undefined && query.title != ''
         ? encodeURIComponent(
@@ -69,18 +71,21 @@ export class HsCompositionsMickaService {
     }
 
     tmp +=
-      '?format=json&' +
+      '?request=GetRecords&' +
+      'format=text/json&' +
+      'template=report-layman&' +
       serviceName +
       'query=type%3D' +
       params.type +
       bbox +
+      serviceTypeFilter +
       textFilter +
       keywordFilter +
-      '&lang=eng&sortBy=' +
-      params.sortBy +
-      '&detail=summary&start=' +
+      // '&language=eng&sortby=' +
+      // params.sortBy +
+      '&detail=summary&StartPosition=' +
       params.start +
-      '&limit=' +
+      '&MaxRecords=' +
       params.limit;
     tmp = this.hsUtilsService.proxify(tmp, app);
     return tmp;

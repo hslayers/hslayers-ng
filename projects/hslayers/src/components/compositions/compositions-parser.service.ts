@@ -8,6 +8,8 @@ import {lastValueFrom} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
+import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
+import {HsAddDataUrlService} from '../add-data/url/add-data-url.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
@@ -20,14 +22,17 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-
 import {
   getFromComposition,
   getTitle,
+  setFromComposition,
   setMetadata,
   setSwipeSide,
 } from '../../common/layer-extensions';
+import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
 import {parseExtent, transformExtentValue} from '../../common/extent-utils';
+import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
+import {setPath} from 'hslayers-ng';
 
 class HsCompositionsParserParams {
   /**
@@ -68,7 +73,9 @@ export class HsCompositionsParserService {
     private hsLanguageService: HsLanguageService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsLayerManagerService: HsLayerManagerService,
-    private hsToastService: HsToastService
+    private hsToastService: HsToastService,
+    private hsAddDataOwsService: HsAddDataOwsService,
+    private hsAddDataUrlService: HsAddDataUrlService
   ) {}
 
   /**
@@ -93,12 +100,19 @@ export class HsCompositionsParserService {
    * @param pre_parse - Optional function for pre-parsing loaded data about composition to accepted format
    */
   async loadUrl(
-    url: string,
+    url: string | any, //CSW recrod object
     app: string,
     overwrite?: boolean,
     callback?,
     pre_parse?
   ): Promise<void> {
+    if (typeof url !== 'string') {
+      pre_parse = (res) => this.parseCSW(res);
+      url.success = true;
+      url.app = app;
+      this.loaded(url, pre_parse, url, overwrite, callback, app);
+      return;
+    }
     this.get(app).current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.hsUtilsService.proxify(url, app);
@@ -108,9 +122,8 @@ export class HsCompositionsParserService {
       options['responseType'] = 'text';
     }
     options['withCredentials'] = url.includes(
-      this.hsCommonEndpointsService?.endpoints.filter(
-        (ep) => ep.type == 'layman'
-      )[0]?.url
+      this.hsCommonEndpointsService?.endpoints.find((ep) => ep.type == 'layman')
+        ?.url
     );
     const data: any = await lastValueFrom(this.$http.get(url, options));
     if (data?.file) {
@@ -143,7 +156,7 @@ export class HsCompositionsParserService {
     if (this.checkLoadSuccess(response)) {
       appRef.composition_loaded = url;
       if (this.hsUtilsService.isFunction(pre_parse)) {
-        response = pre_parse(response);
+        response = await pre_parse(response);
       }
       response.workspace = appRef.current_composition_workspace;
       /*
@@ -166,6 +179,73 @@ export class HsCompositionsParserService {
     } else {
       this.raiseCompositionLoadError(response, app);
     }
+  }
+
+  /**
+   * Parse url from CSW compostion format layer/service
+   */
+  parseCSWLayer(layer) {
+    if (!layer.online) {
+      return;
+    }
+    for (const link of layer.online) {
+      const type = servicesSupportedByUrl.find((type) =>
+        link.protocolText.toLowerCase().includes(type)
+      );
+      if (type) {
+        return {
+          type: type,
+          title: layer.title,
+          url: link.url,
+        };
+      }
+    }
+  }
+
+  /**
+   * Parse CSW composition record extracting layers
+   */
+  getCSWLayers(record) {
+    const layers = [];
+    const services = [];
+    for (const layer of record.operatesOn) {
+      const layerObject = this.parseCSWLayer(layer);
+      if (layerObject) {
+        (layerObject.url.includes('LAYERS=') ? layers : services).push(
+          layerObject
+        );
+      }
+    }
+    return {layers, services};
+  }
+
+  async parseCSW(record) {
+    const composition = {};
+
+    composition['name'] = getLaymanFriendlyLayerName(record.title);
+    composition['title'] = record.title;
+    composition['scale'] = 1; //not nice
+    composition['schema_version'] = '2.0.0'; //not nice
+    composition['title'] = record.title;
+    composition['abstract'] = record.abstract;
+
+    const operatesOn = this.getCSWLayers(record);
+    composition['layers'] = operatesOn['layers'];
+    composition['services'] = operatesOn['services'];
+
+    if (composition['layers']?.length > 0) {
+      //Map composition layer template for layer
+      //ONE layer per service or separately
+      //WMS LAYERS='x,y,z'
+      //WFS typeNames='y,y,y"
+      //
+    }
+
+    // "user": {
+    //   "email": "leitnerfilip@gmail.com",
+    //   "name": "Filip Leitner"
+    // }
+    return composition;
   }
 
   /**
@@ -286,6 +366,23 @@ export class HsCompositionsParserService {
         );
       });
       this.hsLayerManagerService.updateLayerListPositions(app);
+    }
+    //CSW serviceType compostitions
+    if (obj.services) {
+      for (const service of obj.services) {
+        this.hsAddDataUrlService.get(app).typeSelected = service.type;
+        await this.hsAddDataOwsService.setUrlAndConnect(
+          {type: service.type, uri: service.url, getOnly: true},
+          app
+        );
+        const typeService = this.hsAddDataOwsService.get(app).typeService;
+        const layers = typeService.getLayers(app, false, true);
+        for (const layer of layers) {
+          setFromComposition(layer, true);
+          setPath(layer, obj.title);
+        }
+        typeService.addLayers(layers, app);
+      }
     }
 
     if (obj.current_base_layer) {
