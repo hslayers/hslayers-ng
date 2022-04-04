@@ -165,13 +165,16 @@ export class InterpolatedSource extends IDW {
 
   /**
    * Create vector layer to display weight values as point features
+   * @param properties - Layer properties
    * @returns Vector layer
    */
-  createVectorLayer(): VectorLayer<VectorSource<Geometry>> {
+  createVectorLayer(properties?: any): VectorLayer<VectorSource<Geometry>> {
+    const props = {
+      title: 'IDW layer source',
+    };
+    Object.assign(props, properties);
     return new VectorLayer({
-      properties: {
-        title: 'IDW layer source',
-      },
+      properties: props,
       source: super.getSource(),
       style: function (feature, resolution) {
         return [

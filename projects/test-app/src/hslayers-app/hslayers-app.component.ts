@@ -118,6 +118,7 @@ export class HslayersAppComponent {
         source: interpolatedSource as any,
         opacity: 0.5,
       });
+      //Manditory, otherwise nothing will be loaded with source loader
       const idwVectorLayer = interpolatedSource.createVectorLayer();
       const count = 200;
       const features = new Array(count);
