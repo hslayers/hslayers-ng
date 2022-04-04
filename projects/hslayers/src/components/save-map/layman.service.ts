@@ -78,11 +78,13 @@ export class HsLaymanService implements HsSaverService {
     this.HsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
       if (data) {
         const laymanEP = data.endpoints.find((ep) => ep.type == 'layman');
-        const laymanVersion: any = await lastValueFrom(
-          this.http.get(laymanEP.url + '/rest/about/version')
-        );
-        laymanEP.version = laymanVersion.about.applications.layman.version;
-        this.supportedCRRList = getSupportedSrsList(laymanEP);
+        if (laymanEP) {
+          const laymanVersion: any = await lastValueFrom(
+            this.http.get(laymanEP.url + '/rest/about/version')
+          );
+          laymanEP.version = laymanVersion.about.applications.layman.version;
+          this.supportedCRRList = getSupportedSrsList(laymanEP);
+        }
       }
     });
   }
