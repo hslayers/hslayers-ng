@@ -164,9 +164,8 @@
     </table>
   </ng-template>
   <ng-container *ngIf="type === 'wms'">
-    <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span
-        [translateHs: {app} ]="'ADDDATA.CATALOGUE.showingSubset'"
-        [translateHs: {app} Params]="{limitShown: limitShown, total: data.layers.length}"></span>
+    <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span>
+        {{getLimitTextTranslation()}}</span>
       <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
           (click)="limitShown = limitShown + 100">

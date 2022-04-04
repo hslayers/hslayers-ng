@@ -86,4 +86,12 @@ export class HsUrlDetailsComponent implements AfterContentInit {
       }
     }
   }
+
+  getLimitTextTranslation(): string {
+    return this.hsLanguageService.getTranslation(
+      'ADDDATA.CATALOGUE.showingSubset',
+      {limitShown: this.limitShown, total: this.data.layers.length},
+      this.app
+    );
+  }
 }
