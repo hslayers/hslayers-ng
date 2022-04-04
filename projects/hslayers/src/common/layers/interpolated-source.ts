@@ -21,6 +21,7 @@ export interface InterpolatedSourceOptions {
 }
 
 export class InterpolatedSource extends IDW {
+  featureCache: VectorSource = new VectorSource({});
   cancelUrlRequest: Subject<void> = new Subject();
   geoJSONFeatures: string[] = [];
   jetColorMap = JET_COLOR_MAP;
@@ -28,7 +29,7 @@ export class InterpolatedSource extends IDW {
     super({
       // Source that contains the data
       source: new VectorSource({
-        strategy: (extent, resolution) => {
+        strategy: (extent: number[], resolution) => {
           const extentCache = super
             .getSource()
             .loadedExtentsRtree_.getAll()
@@ -52,7 +53,8 @@ export class InterpolatedSource extends IDW {
                 projection,
                 success,
                 failure,
-              })
+              }),
+              extent
             );
           }
         },
@@ -71,13 +73,22 @@ export class InterpolatedSource extends IDW {
   /**
    * Fill Interpolated source features
    * @param features - Parsed Ol features from get request
+   * @param extent - Current map extent
    */
-  fillFeatures(features) {
+  fillFeatures(features: Feature<Geometry>[], extent?: number[]) {
     if (!features) {
       return;
     }
-    super.getSource().addFeatures(features);
+    this.featureCache.addFeatures(features);
     this.normalizeWeight(this.options.weight);
+    if (extent) {
+      super.getSource().clear();
+      super
+        .getSource()
+        .addFeatures(this.featureCache.getFeaturesInExtent(extent));
+    } else {
+      super.getSource().addFeatures(features);
+    }
   }
 
   /**
@@ -139,7 +150,7 @@ export class InterpolatedSource extends IDW {
   normalizeWeight(weight: string): void {
     //https://www.statology.org/normalize-data-between-0-and-100/
 
-    const features = super.getSource().getFeatures();
+    const features = this.featureCache.getFeatures();
     const weightValues = features.map((f) => parseInt(f.get(weight)));
     const min = Math.min(...weightValues);
     const max = Math.max(...weightValues);
