@@ -23,6 +23,7 @@ export interface HsUrlTypeServiceModel {
   getLayers(
     app: string,
     checkedOnly?: boolean,
+    shallow?: boolean,
     style?: string
   ): Layer<Source>[];
   addLayers(layers: Layer<Source>[], app: string): void;

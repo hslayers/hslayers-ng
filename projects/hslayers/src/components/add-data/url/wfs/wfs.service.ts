@@ -108,7 +108,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           this.get(app).data.layers,
           app
         );
-        const collection = this.getLayers(app, true, style);
+        const collection = this.getLayers(app, true, false, style);
         this.zoomToBBox(bbox, app);
         return collection;
       }
@@ -318,10 +318,12 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
+   * @param shallow - Wether to go through full depth of layer tree or to stop on first queriable
    */
   getLayers(
     app: string,
     checkedOnly?: boolean,
+    shallow: boolean = false,
     style?: string
   ): Layer<Source>[] {
     const appRef = this.get(app);

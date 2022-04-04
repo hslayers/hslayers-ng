@@ -284,19 +284,19 @@ export class HslayersAppComponent {
           sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
-            {
-              title: 'Layman',
-              url: 'http://localhost:8087',
-              user: 'anonymous',
-              type: 'layman',
-              liferayProtocol: 'https',
-            },
             // {
-            //   title: 'Micka',
-            //   url: 'https://hub.lesprojekt.cz/micka/csw',
-            //   language: 'eng',
-            //   type: 'micka',
+            //   title: 'Layman',
+            //   url: 'http://localhost:8087',
+            //   user: 'anonymous',
+            //   type: 'layman',
+            //   liferayProtocol: 'https',
             // },
+            {
+              title: 'Micka',
+              url: 'https://hub.lesprojekt.cz/micka/csw',
+              language: 'eng',
+              type: 'micka',
+            },
           ],
           proxyPrefix: window.location.hostname.includes('localhost')
             ? `${window.location.protocol}//${window.location.hostname}:8085/`

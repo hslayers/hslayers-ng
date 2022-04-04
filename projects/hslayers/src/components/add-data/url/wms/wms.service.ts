@@ -9,8 +9,6 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-//FIX ME
-//refactor
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataService} from '../../add-data.service';
@@ -395,15 +393,20 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  getLayers(app: string, checkedOnly: boolean): Layer<Source>[] {
+  getLayers(
+    app: string,
+    checkedOnly: boolean,
+    shallow: boolean = false
+  ): Layer<Source>[] {
     const appRef = this.get(app);
     if (appRef.data.layers === undefined) {
       return;
     }
     const collection = [];
     //Limit visible layers to 10 to not freeze accidentally
-    appRef.data.visible =
-      appRef.data.layers.filter((l) => l.checked === true).length <= 10;
+    appRef.data.visible = checkedOnly
+      ? appRef.data.layers.filter((l) => l.checked === true).length <= 10
+      : false;
     if (appRef.data.base) {
       const newLayer = this.getLayer(
         {},
@@ -425,7 +428,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       for (const layer of appRef.data.layers) {
         this.getLayersRecursively(
           layer,
-          {checkedOnly: checkedOnly},
+          {checkedOnly: checkedOnly, shallow: shallow},
           collection,
           app
         );
@@ -558,11 +561,11 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer recursively
    * @param layer - Layer selected
    * @param options - Add layers recursively options
-   * (checkedOnly?: boolean; style?: string;)
+   * (checkedOnly?: boolean; shallow?: boolean;style?: string;)
    * @param collection - Layers created and retreived collection
    */
   getLayersRecursively(
-    layer: any,
+    layer: any, //TODO better typing
     options: addLayersRecursivelyOptions = {checkedOnly: true},
     collection: Layer<Source>[],
     app: string
@@ -586,7 +589,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         )
       );
     }
-    if (layer.Layer) {
+    // When not shallow go full depth otherwise layer.Name has got to be missing (first queriable layer)
+    const nextDepthAllowed = options.shallow ? !layer.Name : true;
+    if (layer.Layer && nextDepthAllowed) {
       for (const sublayer of layer.Layer) {
         this.getLayersRecursively(
           sublayer,
