@@ -24,8 +24,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
@@ -44,21 +43,6 @@ export class HsQueryComponent
     public hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
-
-    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
-      if (source && source != 'hs.query' && this.popup !== undefined) {
-        this.popup.hide();
-      }
-    });
-
-    this.hsQueryVectorService.featureRemovals
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((feature) => {
-        this.hsQueryBaseService.apps[this.data.app].features.splice(
-          this.hsQueryBaseService.apps[this.data.app].features.indexOf(feature),
-          1
-        );
-      });
   }
   async ngOnInit() {
     this.hsSidebarService.addButton(
@@ -83,6 +67,22 @@ export class HsQueryComponent
       },
       this.data.app
     );
+    this.hsQueryWmsService.init(this.data.app);
+
+    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
+      if (source && source != 'hs.query' && this.popup !== undefined) {
+        this.popup.hide();
+      }
+    });
+
+    this.hsQueryVectorService.featureRemovals
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((feature) => {
+        this.hsQueryBaseService.apps[this.data.app].features.splice(
+          this.hsQueryBaseService.apps[this.data.app].features.indexOf(feature),
+          1
+        );
+      });
     this.hsMapService.loaded(this.data.app).then((map) => {
       map.addOverlay(this.popup);
     });
@@ -107,47 +107,44 @@ export class HsQueryComponent
         }
       });
 
-    this.hsQueryBaseService.queryStatusChanges
+    this.hsQueryBaseService.getFeatureInfoStarted
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.hsQueryBaseService.getFeatureInfoStarted
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((e) => {
-            this.popup.hide();
-            if (
-              this.hsQueryBaseService.currentPanelQueryable(this.data.app) &&
-              this.hsLayoutService.get(this.data.app).mainpanel != 'draw'
-            ) {
-              this.hsLayoutService.setMainPanel('info', this.data.app);
-            }
-          });
+      .subscribe(({evt, app}) => {
+        if (this.data.app == app) {
+          this.popup.hide();
+          if (
+            this.hsQueryBaseService.currentPanelQueryable(this.data.app) &&
+            this.hsLayoutService.get(this.data.app).mainpanel != 'draw'
+          ) {
+            this.hsLayoutService.setMainPanel('info', this.data.app);
+          }
+        }
+      });
 
-        this.hsQueryBaseService.getFeatureInfoCollected
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((coordinate) => {
-            const invisiblePopup: any =
-              this.hsQueryBaseService.getInvisiblePopup();
-            if (!invisiblePopup) {
-              return;
-            }
-            const bodyElementsFound = this.checkForBodyElements(
-              invisiblePopup.contentDocument.body.children
-            );
-            if (bodyElementsFound) {
-              //TODO: don't count style, title, meta towards length
-              if (this.hsQueryBaseService.popupClassname.length > 0) {
-                this.popup.getElement().className =
-                  this.hsQueryBaseService.popupClassname;
-              } else {
-                this.popup.getElement().className = 'ol-popup';
-              }
-              this.popup.show(
-                coordinate,
-                invisiblePopup.contentDocument.body.innerHTML
-              );
-              this.popupOpens.next('hs.query');
-            }
-          });
+    this.hsQueryBaseService.getFeatureInfoCollected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((coordinate) => {
+        const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
+        if (!invisiblePopup) {
+          return;
+        }
+        const bodyElementsFound = this.checkForBodyElements(
+          invisiblePopup.contentDocument.body.children
+        );
+        if (bodyElementsFound) {
+          //TODO: don't count style, title, meta towards length
+          if (this.hsQueryBaseService.popupClassname.length > 0) {
+            this.popup.getElement().className =
+              this.hsQueryBaseService.popupClassname;
+          } else {
+            this.popup.getElement().className = 'ol-popup';
+          }
+          this.popup.show(
+            coordinate,
+            invisiblePopup.contentDocument.body.innerHTML
+          );
+          this.popupOpens.next('hs.query');
+        }
       });
   }
   ngOnDestroy(): void {
