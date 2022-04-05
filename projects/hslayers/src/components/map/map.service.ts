@@ -913,7 +913,7 @@ export class HsMapService {
    * Used to set visibility by URL parameter which contains visible layer titles
    */
   layerTitleInArray(lyr, array) {
-    if (array) {
+    if (array && getTitle(lyr) != undefined) {
       return array.filter((title) => title == getTitle(lyr)).length > 0;
     }
     return lyr.getVisible();
