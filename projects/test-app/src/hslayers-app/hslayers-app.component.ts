@@ -118,8 +118,15 @@ export class HslayersAppComponent {
         source: interpolatedSource as any,
         opacity: 0.5,
       });
-      //Manditory, otherwise nothing will be loaded with source loader
-      const idwVectorLayer = interpolatedSource.createVectorLayer();
+      //Mandatory, otherwise nothing will be loaded with source loader
+      const idwVectorLayer = new VectorLayer({
+        properties: {
+          showInLayerManager: false,
+          visible: true,
+        },
+        style: new Style(),
+        source: interpolatedSource.getSource(),
+      });
       const count = 200;
       const features = new Array(count);
       const e = 4500000;

@@ -2,13 +2,11 @@ import IDW from 'ol-ext/source/IDW';
 
 import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
-import {Fill, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {JET_COLOR_MAP} from './jet-color-map.const';
 import {Projection} from 'ol/proj';
 import {Subject} from 'rxjs';
-import {Vector as VectorLayer} from 'ol/layer';
 import {containsExtent, equals} from 'ol/extent';
 
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
@@ -160,40 +158,6 @@ export class InterpolatedSource extends IDW {
         ((f.get(weight) - min) / (max - min)) * 100
       );
       f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight);
-    });
-  }
-
-  /**
-   * Create vector layer to display weight values as point features
-   * @param properties - Layer properties
-   * @returns Vector layer
-   */
-  createVectorLayer(properties?: any): VectorLayer<VectorSource<Geometry>> {
-    const props = {
-      title: 'IDW layer source',
-    };
-    Object.assign(props, properties);
-    return new VectorLayer({
-      properties: props,
-      source: super.getSource(),
-      style: function (feature, resolution) {
-        return [
-          new Style({
-            text: new Text({
-              text: feature?.get(NORMALIZED_WEIGHT_PROPERTY_NAME)?.toString(),
-              font: '12px Calibri,sans-serif',
-              overflow: true,
-              fill: new Fill({
-                color: '#000',
-              }),
-              stroke: new Stroke({
-                color: '#fff',
-                width: 3,
-              }),
-            }),
-          }),
-        ];
-      },
     });
   }
 }
