@@ -60,6 +60,8 @@ export class HslayersAppComponent {
     ];
     for (const app of apps) {
       const interpolatedSource = new InterpolatedSource({
+        maxFeaturesInCache: 500,
+        maxFeaturesInExtent: 100,
         features: [],
         weight: 'fac2020',
         loader: async ({extent, projection}) => {

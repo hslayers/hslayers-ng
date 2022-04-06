@@ -16,6 +16,8 @@ export interface InterpolatedSourceOptions {
   loader?(params: any): Promise<Feature[]>;
   colorMap?: ((v: number) => number[]) | string;
   strategy?: LoadingStrategy;
+  maxFeaturesInExtent?: number;
+  maxFeaturesInCache?: number;
 }
 
 export const colorMaps = {'jet': JET_COLOR_MAP};
@@ -99,15 +101,26 @@ export class InterpolatedSource extends IDW {
     if (!features) {
       return;
     }
-    this.featureCache.addFeatures(features);
+    const featsCached = this.featureCache.getFeatures();
+    const cacheLimit = this.options.maxFeaturesInCache;
+    if (cacheLimit < featsCached.length + features.length) {
+      const cntToRemove = featsCached.length - (cacheLimit - features.length);
+      featsCached
+        .slice(0, cntToRemove)
+        .forEach((f) => this.featureCache.removeFeature(f));
+    }
+    const countToAdd = cacheLimit ?? Number.MAX_VALUE;
+    this.featureCache.addFeatures(features.slice(0, countToAdd));
     this.normalizeWeight(this.options.weight);
+    const src = super.getSource();
     if (extent) {
-      super.getSource().clear();
-      super
-        .getSource()
-        .addFeatures(this.featureCache.getFeaturesInExtent(extent));
+      src.clear();
+      const limitInExt = this.options.maxFeaturesInExtent ?? Number.MAX_VALUE;
+      src.addFeatures(
+        this.featureCache.getFeaturesInExtent(extent).slice(0, limitInExt)
+      );
     } else {
-      super.getSource().addFeatures(features);
+      src.addFeatures(features);
     }
   }
 
