@@ -15,7 +15,10 @@ import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
 import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
-import {InterpolatedSource} from '../../../hslayers/src/common/layers/interpolated-source';
+import {
+  InterpolatedSource,
+  colorMaps,
+} from 'hslayers-ng/src/common/layers/interpolated-source';
 import {PopupWidgetComponent} from './popup-widget.component';
 
 @Component({
@@ -84,32 +87,8 @@ export class HslayersAppComponent {
             }
           } catch (error) {}
         },
-        setCustomColor: (v) => {
+        colorMap: (v) => {
           let color = [0, 0, 0, 255];
-          if (isNaN(v)) {
-            return color;
-          }
-          v = Math.floor(v);
-          switch (true) {
-            case v < 20:
-              color = interpolatedSource.jetColorMap[10];
-              break;
-            case v < 40:
-              color = interpolatedSource.jetColorMap[30];
-              break;
-            case v < 60:
-              color = interpolatedSource.jetColorMap[50];
-              break;
-            case v < 80:
-              color = interpolatedSource.jetColorMap[70];
-              break;
-            case v <= 100:
-            case v > 100:
-              color = interpolatedSource.jetColorMap[90];
-              break;
-            default:
-              color = [0, 0, 0, 255];
-          }
           return color;
         },
       });

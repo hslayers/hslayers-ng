@@ -1,6 +1,5 @@
 import IDW from 'ol-ext/source/IDW';
-
-import VectorSource from 'ol/source/Vector';
+import VectorSource, {LoadingStrategy} from 'ol/source/Vector';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
@@ -15,33 +14,40 @@ export interface InterpolatedSourceOptions {
   features?: Feature<Geometry>[];
   weight?: string;
   loader?(params: any): Promise<Feature[]>;
-  setCustomColor?(v: number): number[];
+  colorMap?: ((v: number) => number[]) | string;
+  strategy?: LoadingStrategy;
 }
+
+export const colorMaps = {'jet': JET_COLOR_MAP};
 
 export class InterpolatedSource extends IDW {
   featureCache: VectorSource = new VectorSource({});
   cancelUrlRequest: Subject<void> = new Subject();
   geoJSONFeatures: string[] = [];
-  jetColorMap = JET_COLOR_MAP;
+
   constructor(private options: InterpolatedSourceOptions) {
     super({
       // Source that contains the data
       source: new VectorSource({
-        strategy: (extent: number[], resolution) => {
-          const extentCache = super
-            .getSource()
-            .loadedExtentsRtree_.getAll()
-            .map((item) => item.extent);
-          const toRemove = extentCache.filter(
-            //Delete cached extents which contain this extent because they have their feature counts limited
-            (cachedExt) =>
-              !equals(cachedExt, extent) && containsExtent(cachedExt, extent)
-          );
-          for (const extToRemove of toRemove) {
-            super.getSource().removeLoadedExtent(extToRemove);
-          }
-          return [extent];
-        },
+        strategy:
+          options.strategy != undefined
+            ? options.strategy
+            : (extent: number[], resolution) => {
+                const extentCache = super
+                  .getSource()
+                  .loadedExtentsRtree_.getAll()
+                  .map((item) => item.extent);
+                const toRemove = extentCache.filter(
+                  //Delete cached extents which contain this extent because they have their feature counts limited
+                  (cachedExt) =>
+                    !equals(cachedExt, extent) &&
+                    containsExtent(cachedExt, extent)
+                );
+                for (const extToRemove of toRemove) {
+                  super.getSource().removeLoadedExtent(extToRemove);
+                }
+                return [extent];
+              },
         loader: async (extent, resolution, projection, success, failure) => {
           if (options.loader) {
             this.fillFeatures(
@@ -57,11 +63,27 @@ export class InterpolatedSource extends IDW {
           }
         },
       }),
-      // Use val as weight property
       weight: NORMALIZED_WEIGHT_PROPERTY_NAME,
     });
-    if (options.setCustomColor) {
-      super.getColor = options.setCustomColor;
+    if (options.colorMap) {
+      if (typeof options.colorMap == 'string') {
+        super.getColor = (v) => {
+          const black = [0, 0, 0, 255];
+          if (isNaN(v)) {
+            return black;
+          }
+          if (v > 99) {
+            v = 99;
+          }
+          if (v < 0) {
+            v = 0;
+          }
+          v = Math.floor(v);
+          return colorMaps[options.colorMap as string][v];
+        };
+      } else {
+        super.getColor = options.colorMap;
+      }
     }
     if (options.features) {
       this.fillFeatures(options.features);
@@ -155,9 +177,9 @@ export class InterpolatedSource extends IDW {
 
     features.forEach((f) => {
       const normalizedWeight = Math.ceil(
-        ((f.get(weight) - min) / (max - min)) * 100
+        ((f.get(weight) - min) / (max - min)) * 99
       );
-      f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight);
+      f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight, true);
     });
   }
 }
