@@ -109,7 +109,7 @@ export class HsQueryBaseService {
   ];
   getFeatureInfoStarted: Subject<{evt; app: string}> = new Subject();
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
-  queryStatusChanges: Subject<boolean> = new Subject();
+  queryStatusChanges: Subject<{status: boolean; app: string}> = new Subject();
   vectorSelectorCreated: Subject<{selector: Select; app: string}> =
     new Subject();
   apps: {[key: string]: HsQueryData} = {};
@@ -277,7 +277,7 @@ export class HsQueryBaseService {
     appRef.queryActive = true;
     this.hsMapService.getMap(app).addLayer(this.apps[app].queryLayer);
     this.hsSaveMapService.internalLayers.push(this.apps[app].queryLayer);
-    this.queryStatusChanges.next(true);
+    this.queryStatusChanges.next({status: true, app});
   }
 
   deactivateQueries(app: string): void {
@@ -287,7 +287,7 @@ export class HsQueryBaseService {
     }
     appRef.queryActive = false;
     this.hsMapService.getMap(app).removeLayer(this.apps[app].queryLayer);
-    this.queryStatusChanges.next(false);
+    this.queryStatusChanges.next({status: false, app});
   }
 
   currentPanelQueryable(app: string): boolean {
