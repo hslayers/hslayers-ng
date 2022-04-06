@@ -87,10 +87,7 @@ export class HslayersAppComponent {
             }
           } catch (error) {}
         },
-        colorMap: (v) => {
-          let color = [0, 0, 0, 255];
-          return color;
-        },
+        colorMap: 'jet',
       });
       const idwLayer = new ImageLayer({
         properties: {title: 'IDW layer'},
