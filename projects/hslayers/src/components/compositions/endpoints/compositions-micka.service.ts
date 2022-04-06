@@ -71,9 +71,7 @@ export class HsCompositionsMickaService {
     }
 
     tmp +=
-      '?request=GetRecords&' +
-      'format=text/json&' +
-      'template=report-layman&' +
+      '?format=json&' +
       serviceName +
       'query=type%3D' +
       params.type +
@@ -81,11 +79,11 @@ export class HsCompositionsMickaService {
       serviceTypeFilter +
       textFilter +
       keywordFilter +
-      // '&language=eng&sortby=' +
-      // params.sortBy +
-      '&detail=summary&StartPosition=' +
+      '&lang=eng&sortBy=' +
+      params.sortBy +
+      '&detail=summary&start=' +
       params.start +
-      '&MaxRecords=' +
+      '&limit=' +
       params.limit;
     tmp = this.hsUtilsService.proxify(tmp, app);
     return tmp;

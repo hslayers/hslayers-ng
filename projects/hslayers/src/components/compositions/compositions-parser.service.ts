@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import * as xml2Json from 'xml-js';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {lastValueFrom} from 'rxjs';
+import {lastValueFrom, of} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -27,12 +27,12 @@ import {
   getTitle,
   setFromComposition,
   setMetadata,
+  setPath,
   setSwipeSide,
 } from '../../common/layer-extensions';
 import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
 import {parseExtent, transformExtentValue} from '../../common/extent-utils';
 import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
-import {setPath} from 'hslayers-ng';
 
 class HsCompositionsParserParams {
   /**
@@ -125,12 +125,18 @@ export class HsCompositionsParserService {
       this.hsCommonEndpointsService?.endpoints.find((ep) => ep.type == 'layman')
         ?.url
     );
-    const data: any = await lastValueFrom(this.$http.get(url, options));
-    if (data?.file) {
-      // Layman composition wrapper
-      return this.loadUrl(data.file.url, app, overwrite, callback, pre_parse);
+    const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
+      (e) => {
+        this.raiseCompositionLoadError(e, app);
+      }
+    );
+    if (data) {
+      if (data.file) {
+        // Layman composition wrapper
+        return this.loadUrl(data.file.url, app, overwrite, callback, pre_parse);
+      }
+      this.loaded(data, pre_parse, url, overwrite, callback, app);
     }
-    this.loaded(data, pre_parse, url, overwrite, callback, app);
   }
 
   /**
@@ -190,7 +196,7 @@ export class HsCompositionsParserService {
     }
     for (const link of layer.online) {
       const type = servicesSupportedByUrl.find((type) =>
-        link.protocolText.toLowerCase().includes(type)
+        link.protocolUri.toLowerCase().includes(type)
       );
       if (type) {
         return {
@@ -406,7 +412,12 @@ export class HsCompositionsParserService {
    * @param app - App identifier
    */
   finalizeCompositionLoading(responseData, app: string): void {
-    if (this.hsConfig.get(app).open_lm_after_comp_loaded) {
+    const open_lm_after_comp_loaded =
+      this.hsConfig.get(app).open_lm_after_comp_loaded;
+    if (
+      open_lm_after_comp_loaded === true ||
+      open_lm_after_comp_loaded === undefined
+    ) {
       this.hsLayoutService.setMainPanel('layermanager', app);
     }
 

@@ -43,6 +43,7 @@ import {
   getWfsUrl,
   getWorkspace,
 } from '../../common/layer-extensions';
+import {transformExtent} from 'ol/proj';
 
 const LCLSTORAGE_EXPIRE = 5000;
 
@@ -82,16 +83,21 @@ export class HsSaveMapService {
     let bbox = compoData.bbox;
     if (compoData.bbox && !Array.isArray(compoData.bbox)) {
       bbox = [
-        compoData.bbox.east,
-        compoData.bbox.south,
-        compoData.bbox.west,
-        compoData.bbox.north,
+        parseFloat(compoData.bbox.east),
+        parseFloat(compoData.bbox.south),
+        parseFloat(compoData.bbox.west),
+        parseFloat(compoData.bbox.north),
       ];
     }
     const json: any = {
       abstract: compoData.abstract,
       title: compoData.title,
       keywords: compoData.keywords,
+      nativeExtent: transformExtent(
+        bbox,
+        'EPSG:4326',
+        this.HsMapService.getCurrentProj(app)
+      ),
       extent: bbox,
       user: {
         address: userData.address,
@@ -105,6 +111,9 @@ export class HsSaveMapService {
         postalcode: userData.postalcode,
         state: userData.state,
       },
+      describedBy:
+        'https://raw.githubusercontent.com/hslayers/map-compositions/2.0.0/schema.json',
+      schema_version: '2.0.0',
       groups: groups,
     };
 

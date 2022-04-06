@@ -21,6 +21,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 class HsCompositionsParams {
@@ -53,7 +54,8 @@ export class HsCompositionsService {
     private $log: HsLogService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsCompositionsMapService: HsCompositionsMapService,
-    private hsEventBusService: HsEventBusService
+    private hsEventBusService: HsEventBusService,
+    private hsToastService: HsToastService
   ) {
     this.hsEventBusService.compositionEdits.subscribe(({app}) => {
       this.hsCompositionsParserService.get(app).composition_edited = true;
@@ -266,46 +268,78 @@ export class HsCompositionsService {
   }
 
   /**
+   * Get 'report-layman' template of composition object (operatesOn property included).
+   * Necessary for CSW serviceType compositions to be parsed
+   */
+  async getLaymanTemplateRecordObject(record, app: string) {
+    const params = `?request=GetRecords&format=text/json&template=report-layman&query=ServiceType like 'CSW' and title like '${record.title}'`;
+    const url = this.hsUtilsService.proxify(record.endpoint.url + params, app);
+
+    try {
+      const compositions = await lastValueFrom(
+        this.http.get(url, {
+          responseType: 'json',
+        })
+      );
+      console.log('compositions', compositions['records'][0]);
+      return compositions['records'][0];
+    } catch (e) {
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
+          'COMPOSITIONS.errorWhileRequestingCompositions',
+          undefined,
+          app
+        ),
+        record.endpoint.title +
+          ': ' +
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'ERRORMESSAGES',
+            e.status ? e.status.toString() : e.message,
+            {url: url},
+            app
+          ),
+        {
+          disableLocalization: true,
+          serviceCalledFrom: 'HsCompositionsMickaService',
+        },
+        app
+      );
+    }
+  }
+
+  async getRecordUrl(record, app: string): Promise<string | any> {
+    const recordEndpoint = record.endpoint;
+    if (recordEndpoint.type == 'micka') {
+      return record.serviceType == 'CSW'
+        ? await this.getLaymanTemplateRecordObject(record, app)
+        : this.getRecordLink(record);
+    } else if (recordEndpoint.type == 'layman') {
+      return record.url + '/file';
+    } else {
+      this.$log.warn(`Endpoint type '${recordEndpoint.type} not supported`);
+      return;
+    }
+  }
+
+  /**
    * Load composition from datasource record url
    * @param record - Datasource record selected
    * @param app - App identifier
    */
-  loadCompositionParser(record, app: string): Promise<void> {
-    const recordEndpoint = record.endpoint;
-    return new Promise((resolve, reject) => {
-      let url;
-      switch (recordEndpoint.type) {
-        case 'micka':
-          url =
-            record.serviceType == 'CSW' ? record : this.getRecordLink(record);
-          break;
-        case 'layman':
-          url = record.url + '/file';
-          break;
-        default:
-          this.$log.warn(`Endpoint type '${recordEndpoint.type} not supported`);
-          reject();
-          return;
+  async loadCompositionParser(record, app: string): Promise<void> {
+    const url = await this.getRecordUrl(record, app);
+    if (url) {
+      //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
+      this.hsCompositionsParserService.get(app).current_composition_workspace =
+        record.editable ? record.workspace : null;
+      if (
+        this.hsCompositionsParserService.get(app).composition_edited == true
+      ) {
+        this.get(app).notSavedCompositionLoading.next(url);
+      } else {
+        this.loadComposition(url, app, true);
       }
-      if (url) {
-        //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
-        this.hsCompositionsParserService.get(
-          app
-        ).current_composition_workspace = record.editable
-          ? record.workspace
-          : null;
-        if (
-          this.hsCompositionsParserService.get(app).composition_edited == true
-        ) {
-          this.get(app).notSavedCompositionLoading.next(url);
-          reject();
-        } else {
-          this.loadComposition(url, app, true).then(() => {
-            resolve();
-          });
-        }
-      }
-    });
+    }
   }
 
   /**

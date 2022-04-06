@@ -31,16 +31,7 @@ export class HsCompositionsListItemComponent {
    * @param composition - Selected composition
    */
   openComposition(composition): void {
-    this.hsCompositionsService
-      .loadCompositionParser(composition, this.app)
-      .then(() => {
-        //This should not be needed, as for that is the save map button created
-        // this.HsSaveMapManagerService.openPanel(composition);
-        this.hsLayoutService.setMainPanel('layermanager', this.app);
-      })
-      .catch(() => {
-        //Do nothing
-      });
+    this.hsCompositionsService.loadCompositionParser(composition, this.app);
   }
   /**
    * @param record - Composition to show details
