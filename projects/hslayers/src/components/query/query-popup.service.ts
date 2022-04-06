@@ -94,7 +94,7 @@ export class HsQueryPopupService
     if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
     }
-    if (!this.HsQueryBaseService.queryActive) {
+    if (!this.HsQueryBaseService.get(app).queryActive) {
       return;
     }
     const tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(

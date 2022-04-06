@@ -61,7 +61,7 @@ export class HsQueryVectorService {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
       if (_app == app) {
         this.hsQueryBaseService.apps[app].clear('features');
-        if (!this.hsQueryBaseService.queryActive) {
+        if (!this.hsQueryBaseService.apps[app].queryActive) {
           return;
         }
         this.createFeatureAttributeList(app);

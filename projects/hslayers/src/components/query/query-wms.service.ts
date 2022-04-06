@@ -95,7 +95,7 @@ export class HsQueryWmsService {
     app: string
   ): Promise<void> {
     const req_url = this.hsUtilsService.proxify(url, app, true);
-    const reqHash = this.hsQueryBaseService.currentQuery;
+    const reqHash = this.hsQueryBaseService.apps[app].currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});
       headers.set('Accept', 'text');
@@ -106,12 +106,12 @@ export class HsQueryWmsService {
         })
       );
 
-      if (reqHash != this.hsQueryBaseService.currentQuery) {
+      if (reqHash != this.hsQueryBaseService.apps[app].currentQuery) {
         return;
       }
       this.featureInfoReceived(response, infoFormat, coordinate, layer, app);
     } catch (exception) {
-      if (reqHash != this.hsQueryBaseService.currentQuery) {
+      if (reqHash != this.hsQueryBaseService.apps[app].currentQuery) {
         return;
       }
       this.featureInfoError(coordinate, exception, app);
