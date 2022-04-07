@@ -29,8 +29,10 @@ export class HsQueryComponent
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
-
+  //To Unsubscribe all subscribers
   private ngUnsubscribe = new Subject<void>();
+  //To deactivate queries (unsubscribe subscribers) per app
+  queryDeactivator = new Subject<void>();
   constructor(
     public hsConfig: HsConfig,
     public hsQueryBaseService: HsQueryBaseService,
@@ -44,21 +46,6 @@ export class HsQueryComponent
     public hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
-
-    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
-      if (source && source != 'hs.query' && this.popup !== undefined) {
-        this.popup.hide();
-      }
-    });
-
-    this.hsQueryVectorService.featureRemovals
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((feature) => {
-        this.hsQueryBaseService.apps[this.data.app].features.splice(
-          this.hsQueryBaseService.apps[this.data.app].features.indexOf(feature),
-          1
-        );
-      });
   }
   async ngOnInit() {
     this.hsSidebarService.addButton(
@@ -83,6 +70,22 @@ export class HsQueryComponent
       },
       this.data.app
     );
+    this.hsQueryWmsService.init(this.data.app);
+
+    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
+      if (source && source != 'hs.query' && this.popup !== undefined) {
+        this.popup.hide();
+      }
+    });
+
+    this.hsQueryVectorService.featureRemovals
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((feature) => {
+        this.hsQueryBaseService.apps[this.data.app].features.splice(
+          this.hsQueryBaseService.apps[this.data.app].features.indexOf(feature),
+          1
+        );
+      });
     this.hsMapService.loaded(this.data.app).then((map) => {
       map.addOverlay(this.popup);
     });
@@ -94,62 +97,79 @@ export class HsQueryComponent
         if (this.data.app == app) {
           if (this.hsQueryBaseService.currentPanelQueryable(this.data.app)) {
             if (
-              !this.hsQueryBaseService.queryActive &&
+              !this.hsQueryBaseService.apps[app].queryActive &&
               !this.hsDrawService.get(app).drawActive
             ) {
               this.hsQueryBaseService.activateQueries(this.data.app);
             }
           } else {
-            if (this.hsQueryBaseService.queryActive) {
+            if (this.hsQueryBaseService.apps[app].queryActive) {
               this.hsQueryBaseService.deactivateQueries(this.data.app);
             }
           }
         }
       });
-
     this.hsQueryBaseService.queryStatusChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.hsQueryBaseService.getFeatureInfoStarted
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((e) => {
-            this.popup.hide();
-            if (
-              this.hsQueryBaseService.currentPanelQueryable(this.data.app) &&
-              this.hsLayoutService.get(this.data.app).mainpanel != 'draw'
-            ) {
-              this.hsLayoutService.setMainPanel('info', this.data.app);
-            }
-          });
+      .subscribe(({status, app}) => {
+        if (app == this.data.app) {
+          this.queryStatusChanged(status);
+        }
+      });
+    const active = this.hsQueryBaseService.get(this.data.app).queryActive;
+    if (active) {
+      this.queryStatusChanged(active);
+    }
+  }
 
-        this.hsQueryBaseService.getFeatureInfoCollected
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((coordinate) => {
-            const invisiblePopup: any =
-              this.hsQueryBaseService.getInvisiblePopup();
-            if (!invisiblePopup) {
-              return;
-            }
-            const bodyElementsFound = this.checkForBodyElements(
-              invisiblePopup.contentDocument.body.children
-            );
-            if (bodyElementsFound) {
-              //TODO: don't count style, title, meta towards length
-              if (this.hsQueryBaseService.popupClassname.length > 0) {
-                this.popup.getElement().className =
-                  this.hsQueryBaseService.popupClassname;
-              } else {
-                this.popup.getElement().className = 'ol-popup';
-              }
-              this.popup.show(
-                coordinate,
-                invisiblePopup.contentDocument.body.innerHTML
-              );
-              this.popupOpens.next('hs.query');
-            }
-          });
+  queryStatusChanged(active: boolean) {
+    if (!active) {
+      this.queryDeactivator.next();
+      return;
+    }
+    this.hsQueryBaseService.getFeatureInfoStarted
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.queryDeactivator))
+      .subscribe(({evt, app}) => {
+        if (this.data.app == app) {
+          this.popup.hide();
+          if (
+            this.hsQueryBaseService.currentPanelQueryable(this.data.app) &&
+            this.hsLayoutService.get(this.data.app).mainpanel != 'draw'
+          ) {
+            this.hsLayoutService.setMainPanel('info', this.data.app);
+          }
+        }
+      });
+
+    this.hsQueryBaseService.getFeatureInfoCollected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.queryDeactivator))
+      .subscribe((coordinate) => {
+        const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
+        if (!invisiblePopup) {
+          return;
+        }
+        const bodyElementsFound = this.checkForBodyElements(
+          invisiblePopup.contentDocument.body.children
+        );
+        if (bodyElementsFound) {
+          //TODO: don't count style, title, meta towards length
+          if (this.hsQueryBaseService.popupClassname.length > 0) {
+            this.popup.getElement().className =
+              this.hsQueryBaseService.popupClassname;
+          } else {
+            this.popup.getElement().className = 'ol-popup';
+          }
+          this.popup.show(
+            coordinate,
+            invisiblePopup.contentDocument.body.innerHTML
+          );
+          this.popupOpens.next('hs.query');
+        }
       });
   }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

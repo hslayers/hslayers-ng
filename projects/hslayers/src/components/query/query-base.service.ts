@@ -33,8 +33,10 @@ class HsQueryData {
   hsEventBusService;
   invisiblePopup;
   queryPoint = new Point([0, 0]);
-
   selector = null;
+  last_coordinate_clicked: any;
+  queryActive = false;
+  currentQuery = null;
 
   constructor(queryLayerStyle, hsEventBusService, invisiblePopup) {
     this.queryLayer = new VectorLayer({
@@ -96,10 +98,7 @@ class HsQueryData {
   providedIn: 'root',
 })
 export class HsQueryBaseService {
-  queryActive = false;
   popupClassname = '';
-  currentQuery = null;
-
   nonQueryablePanels = [
     'measure',
     'composition_browser',
@@ -108,10 +107,9 @@ export class HsQueryBaseService {
     // 'draw',
     'tripPlanner',
   ];
-  last_coordinate_clicked: any;
   getFeatureInfoStarted: Subject<{evt; app: string}> = new Subject();
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
-  queryStatusChanges: Subject<boolean> = new Subject();
+  queryStatusChanges: Subject<{status: boolean; app: string}> = new Subject();
   vectorSelectorCreated: Subject<{selector: Select; app: string}> =
     new Subject();
   apps: {[key: string]: HsQueryData} = {};
@@ -163,7 +161,7 @@ export class HsQueryBaseService {
             app,
           })
         );
-        if (!this.queryActive) {
+        if (!this.apps[app].queryActive) {
           return;
         }
         this.popupClassname = '';
@@ -171,13 +169,15 @@ export class HsQueryBaseService {
           this.apps[app].clear();
         }
         this.apps[app].dataCleared = false;
-        this.currentQuery = (Math.random() + 1).toString(36).substring(7);
+        this.apps[app].currentQuery = (Math.random() + 1)
+          .toString(36)
+          .substring(7);
         this.apps[app].set(
           this.getCoordinate(evt.coordinate, app),
           'coordinates',
           true
         );
-        this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
+        this.apps[app].last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
         this.apps[app].selectedProj =
           this.apps[app].coordinates[0].projections[0];
         this.getFeatureInfoStarted.next({evt, app});
@@ -270,22 +270,24 @@ export class HsQueryBaseService {
   }
 
   activateQueries(app: string): void {
-    if (this.queryActive) {
+    const appRef = this.get(app);
+    if (appRef.queryActive) {
       return;
     }
-    this.queryActive = true;
+    appRef.queryActive = true;
     this.hsMapService.getMap(app).addLayer(this.apps[app].queryLayer);
     this.hsSaveMapService.internalLayers.push(this.apps[app].queryLayer);
-    this.queryStatusChanges.next(true);
+    this.queryStatusChanges.next({status: true, app});
   }
 
   deactivateQueries(app: string): void {
-    if (!this.queryActive) {
+    const appRef = this.get(app);
+    if (!appRef.queryActive) {
       return;
     }
-    this.queryActive = false;
+    appRef.queryActive = false;
     this.hsMapService.getMap(app).removeLayer(this.apps[app].queryLayer);
-    this.queryStatusChanges.next(false);
+    this.queryStatusChanges.next({status: false, app});
   }
 
   currentPanelQueryable(app: string): boolean {

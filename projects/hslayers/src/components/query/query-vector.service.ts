@@ -48,15 +48,7 @@ export class HsQueryVectorService {
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     private domSanitizer: DomSanitizer
-  ) {
-    this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
-      this.hsQueryBaseService.apps[app].clear('features');
-      if (!this.hsQueryBaseService.queryActive) {
-        return;
-      }
-      this.createFeatureAttributeList(app);
-    });
-  }
+  ) {}
 
   get(app: string) {
     if (this.apps[app ?? 'default'] == undefined) {
@@ -66,6 +58,15 @@ export class HsQueryVectorService {
   }
 
   init(_app: string): void {
+    this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
+      if (_app == app) {
+        this.hsQueryBaseService.apps[app].clear('features');
+        if (!this.hsQueryBaseService.apps[app].queryActive) {
+          return;
+        }
+        this.createFeatureAttributeList(app);
+      }
+    });
     if (this.apps[_app]) {
       return;
     } else {
@@ -94,11 +95,6 @@ export class HsQueryVectorService {
         if (_app == app) {
           map.addInteraction(selector);
         }
-      });
-
-      this.hsQueryBaseService.queryStatusChanges.subscribe(() => {
-        /*if (Base.queryActive) OlMap.map.addInteraction(this.selector);
-            else OlMap.map.removeInteraction(this.selector);*/
       });
 
       selector.getFeatures().on('add', (e) => {

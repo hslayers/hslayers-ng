@@ -42,27 +42,32 @@ export class HsQueryWmsService {
     private httpClient: HttpClient,
     public hsLogService: HsLogService,
     public hsQueryWmtsService: HsQueryWmtsService
-  ) {
+  ) {}
+  init(_app: string): void {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
-      this.infoCounter = 0;
-      this.hsMapService.getLayersArray(app).forEach((layer: Layer<Source>) => {
-        if (getBase(layer) == true || layer.get('queryable') == false) {
-          return;
-        }
-        if (getQueryFilter(layer) != undefined) {
-          const filter = getQueryFilter(layer);
-          if (!filter(hsMapService.getMap(app), layer, evt.pixel)) {
-            return;
-          }
-        }
-        this.queryWmsLayer(
-          this.hsUtilsService.instOf(layer, Tile)
-            ? (layer as Layer<TileWMS>)
-            : (layer as Layer<ImageWMS>),
-          evt.coordinate,
-          app
-        );
-      });
+      if (_app == app) {
+        this.infoCounter = 0;
+        this.hsMapService
+          .getLayersArray(app)
+          .forEach((layer: Layer<Source>) => {
+            if (getBase(layer) == true || layer.get('queryable') == false) {
+              return;
+            }
+            if (getQueryFilter(layer) != undefined) {
+              const filter = getQueryFilter(layer);
+              if (!filter(this.hsMapService.getMap(app), layer, evt.pixel)) {
+                return;
+              }
+            }
+            this.queryWmsLayer(
+              this.hsUtilsService.instOf(layer, Tile)
+                ? (layer as Layer<TileWMS>)
+                : (layer as Layer<ImageWMS>),
+              evt.coordinate,
+              app
+            );
+          });
+      }
     });
   }
 
@@ -90,7 +95,7 @@ export class HsQueryWmsService {
     app: string
   ): Promise<void> {
     const req_url = this.hsUtilsService.proxify(url, app, true);
-    const reqHash = this.hsQueryBaseService.currentQuery;
+    const reqHash = this.hsQueryBaseService.apps[app].currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});
       headers.set('Accept', 'text');
@@ -101,12 +106,12 @@ export class HsQueryWmsService {
         })
       );
 
-      if (reqHash != this.hsQueryBaseService.currentQuery) {
+      if (reqHash != this.hsQueryBaseService.apps[app].currentQuery) {
         return;
       }
       this.featureInfoReceived(response, infoFormat, coordinate, layer, app);
     } catch (exception) {
-      if (reqHash != this.hsQueryBaseService.currentQuery) {
+      if (reqHash != this.hsQueryBaseService.apps[app].currentQuery) {
         return;
       }
       this.featureInfoError(coordinate, exception, app);
@@ -252,40 +257,56 @@ export class HsQueryWmsService {
       }
       this.updateFeatureList(updated, customInfoTemplate, group, app);
     }
-    doc.querySelectorAll('msGMLOutput').forEach(($this) => {
-      for (const layer_i in $this.children) {
-        const layer = $this.children[layer_i];
-        let layer_name = '';
-        if (layer.children == undefined) {
-          continue;
-        }
-        for (
-          let feature_i = 0;
-          feature_i < layer.children.length;
-          feature_i++
-        ) {
-          const feature = layer.children[feature_i];
-          if (feature.nodeName == 'gml:name') {
-            layer_name = feature.innerHTML;
-          } else {
-            const group = {
-              name: layer_name + ' Feature',
-              attributes: [],
-            };
-            for (const attribute in feature.children) {
-              if (feature.children[attribute].childElementCount == 0) {
-                group.attributes.push({
-                  'name': feature.children[attribute].localName,
-                  'value': feature.children[attribute].innerHTML,
-                });
-                updated = true;
-              }
+    const msGMLOutputs = doc.querySelectorAll('msGMLOutput');
+    if (msGMLOutputs?.length > 0) {
+      msGMLOutputs.forEach((output) => {
+        this.parseMsGmlOutput(output, updated, customInfoTemplate, app);
+      });
+    } else if (doc.nodeName == 'msGMLOutput') {
+      this.parseMsGmlOutput(doc, updated, customInfoTemplate, app);
+    }
+  }
+
+  /**
+   * @param output - MsGMLOutput
+   * @param updated - Is feature list updated
+   * @param customInfoTemplate - Custom info template
+   * @param app - App identifier
+   */
+  parseMsGmlOutput(
+    output: any,
+    updated: boolean,
+    customInfoTemplate,
+    app: string
+  ): void {
+    for (const layer_i in output.children) {
+      const layer = output.children[layer_i];
+      let layer_name = '';
+      if (layer.children == undefined) {
+        continue;
+      }
+      for (let feature_i = 0; feature_i < layer.children.length; feature_i++) {
+        const feature = layer.children[feature_i];
+        if (feature.nodeName == 'gml:name') {
+          layer_name = feature.innerHTML;
+        } else {
+          const group = {
+            name: layer_name + ' Feature',
+            attributes: [],
+          };
+          for (const attribute in feature.children) {
+            if (feature.children[attribute].childElementCount == 0) {
+              group.attributes.push({
+                'name': feature.children[attribute].localName,
+                'value': feature.children[attribute].innerHTML,
+              });
+              updated = true;
             }
-            this.updateFeatureList(updated, customInfoTemplate, group, app);
           }
+          this.updateFeatureList(updated, customInfoTemplate, group, app);
         }
       }
-    });
+    }
   }
 
   /**
