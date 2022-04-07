@@ -283,7 +283,9 @@ export class HsCompositionsService {
           responseType: 'json',
         })
       );
-      return compositions['records'][0];
+      return compositions['records'].length > 1
+        ? compositions['records'].find((r) => r.id == record.id)
+        : compositions['records'][0];
     } catch (e) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
