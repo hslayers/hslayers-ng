@@ -4,12 +4,13 @@ import {Injectable, NgZone} from '@angular/core';
 import CircleStyle from 'ol/style/Circle';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
 import {Feature, Map} from 'ol';
+import {FeatureLike} from 'ol/Feature';
 import {Geometry, Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
-import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
@@ -115,12 +116,12 @@ export class HsQueryBaseService {
   apps: {[key: string]: HsQueryData} = {};
 
   constructor(
-    public hsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    public hsLayoutService: HsLayoutService,
-    public hsLanguageService: HsLanguageService,
-    public hsUtilsService: HsUtilsService,
-    public hsEventBusService: HsEventBusService,
+    private hsMapService: HsMapService,
+    private hsConfig: HsConfig,
+    private hsLayoutService: HsLayoutService,
+    private hsLanguageService: HsLanguageService,
+    private hsUtilsService: HsUtilsService,
+    private hsEventBusService: HsEventBusService,
     private hsSaveMapService: HsSaveMapService,
     private domSanitizer: DomSanitizer,
     private zone: NgZone
@@ -130,6 +131,11 @@ export class HsQueryBaseService {
     });
   }
 
+  /**
+   * Get the params saved by the query base service for the current app
+   * @param app - App identifier
+   * @returns Query base service data for the app
+   */
   get(app: string): HsQueryData {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new HsQueryData(
@@ -141,17 +147,12 @@ export class HsQueryBaseService {
     return this.apps[app ?? 'default'];
   }
   /**
-   *
+   * Initialize the query base service data and subscribers
+   * @param app - App identifier
    */
-  async init(app): Promise<void> {
+  async init(app: string): Promise<void> {
     await this.hsMapService.loaded(app);
-    if (this.apps[app] == undefined) {
-      this.apps[app] = new HsQueryData(
-        () => this.pointClickedStyle(app),
-        this.hsEventBusService,
-        this.getInvisiblePopup()
-      );
-    }
+    const appRef = this.get(app);
     this.activateQueries(app);
     this.hsMapService.getMap(app).on('singleclick', (evt) => {
       this.zone.run(() => {
@@ -161,53 +162,73 @@ export class HsQueryBaseService {
             app,
           })
         );
-        if (!this.apps[app].queryActive) {
+        if (!appRef.queryActive) {
           return;
         }
         this.popupClassname = '';
-        if (!this.apps[app]) {
-          this.apps[app].clear();
+        if (!appRef) {
+          appRef.clear();
         }
-        this.apps[app].dataCleared = false;
-        this.apps[app].currentQuery = (Math.random() + 1)
-          .toString(36)
-          .substring(7);
-        this.apps[app].set(
+        appRef.dataCleared = false;
+        appRef.currentQuery = (Math.random() + 1).toString(36).substring(7);
+        appRef.set(
           this.getCoordinate(evt.coordinate, app),
           'coordinates',
           true
         );
-        this.apps[app].last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-        this.apps[app].selectedProj =
-          this.apps[app].coordinates[0].projections[0];
+        appRef.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
+        appRef.selectedProj = appRef.coordinates[0].projections[0];
         this.getFeatureInfoStarted.next({evt, app});
       });
     });
   }
 
-  getFeaturesUnderMouse(map: Map, pixel: any, app: string) {
+  /**
+   * Get features under the mouse pointer on the map
+   * @param map - Current map object
+   * @param pixel - Target pixel
+   * @param app - App identifier
+   * @returns Array with features
+   */
+  getFeaturesUnderMouse(map: Map, pixel: number[], app: string): FeatureLike[] {
     return map
       .getFeaturesAtPixel(pixel)
       .filter((feature: Feature<Geometry>) => {
         const layer = this.hsMapService.getLayerForFeature(feature, app);
-        return layer && layer != this.apps[app].queryLayer;
+        return layer && layer != this.get(app).queryLayer;
       });
   }
 
+  /**
+   * Get invisible popup element
+   * @returns HTML frame element, if the app ir running in a browser
+   */
   getInvisiblePopup(): HTMLIFrameElement {
     if (this.hsUtilsService.runningInBrowser()) {
       return <HTMLIFrameElement>document.getElementById('invisible_popup');
     }
   }
 
-  pushFeatureInfoHtml(html, app: string): void {
-    this.apps[app].featureInfoHtmls.push(
+  /**
+   * Push a new feature info html content to other htmls array
+   * @param html - Feature info html content
+   * @param app - App identifier
+   */
+  pushFeatureInfoHtml(html: string, app: string): void {
+    const appRef = this.get(app);
+    appRef.featureInfoHtmls.push(
       this.domSanitizer.bypassSecurityTrustHtml(html)
     );
-    this.apps[app].dataCleared = false;
+    appRef.dataCleared = false;
   }
 
-  fillIframeAndResize(response, append: boolean, app: string): void {
+  /**
+   * Fill popup iframe and resize it to fit the content
+   * @param response - Response of GetFeatureInfoRequest
+   * @param append - If true, the response will be appended to iframe inner HTML, otherwise, will be replaced
+   * @param app - App identifier
+   */
+  fillIframeAndResize(response: string, append: boolean, app: string): void {
     const iframe = this.getInvisiblePopup();
     if (append) {
       iframe.contentDocument.body.innerHTML += response;
@@ -234,10 +255,21 @@ export class HsQueryBaseService {
   }
 
   /**
-   * @param coordinate -
+   * Get coordinates in multiple projections
+   * @param coordinate - Coordinates from map single click interaction
+   * @param app - App identifier
+   * @returns Object with coordinates in multiple projections
    */
-  getCoordinate(coordinate, app: string) {
-    this.apps[app].queryPoint.setCoordinates(coordinate, 'XY');
+  getCoordinate(
+    coordinate: Coordinate,
+    app: string
+  ): {
+    name: string;
+    mapProjCoordinate: Coordinate;
+    epsg4326Coordinate: Coordinate;
+    projections: {name: string; value: any}[];
+  } {
+    this.get(app).queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
       this.hsMapService.getCurrentProj(app),
@@ -269,27 +301,40 @@ export class HsQueryBaseService {
     return coords;
   }
 
+  /**
+   * Activate queries for the current OL map
+   * @param app - App identifier
+   */
   activateQueries(app: string): void {
     const appRef = this.get(app);
     if (appRef.queryActive) {
       return;
     }
     appRef.queryActive = true;
-    this.hsMapService.getMap(app).addLayer(this.apps[app].queryLayer);
-    this.hsSaveMapService.internalLayers.push(this.apps[app].queryLayer);
+    this.hsMapService.getMap(app).addLayer(appRef.queryLayer);
+    this.hsSaveMapService.internalLayers.push(appRef.queryLayer);
     this.queryStatusChanges.next({status: true, app});
   }
 
+  /**
+   * Deactivate queries for the current OL map
+   * @param app - App identifier
+   */
   deactivateQueries(app: string): void {
     const appRef = this.get(app);
     if (!appRef.queryActive) {
       return;
     }
     appRef.queryActive = false;
-    this.hsMapService.getMap(app).removeLayer(this.apps[app].queryLayer);
+    this.hsMapService.getMap(app).removeLayer(appRef.queryLayer);
     this.queryStatusChanges.next({status: false, app});
   }
 
+  /**
+   * Check if current app panel is queryable
+   * @param app - App identifier
+   * @returns - True or false
+   */
   currentPanelQueryable(app: string): boolean {
     return (
       !this.nonQueryablePanels.includes(
@@ -298,6 +343,11 @@ export class HsQueryBaseService {
     );
   }
 
+  /**
+   * Get style for point clicked on the map
+   * @param app - App identifier
+   * @returns - OL style
+   */
   pointClickedStyle(app: string): Style {
     const defaultStyle = new Style({
       image: new Circle({

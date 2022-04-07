@@ -25,11 +25,17 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
     super();
   }
 
+  /**
+   * Initialize query popup widgets
+   * @param widgetNames - Widget name
+   * @param app - App identifier
+   * @param panelObserver - (Optional)
+   */
   initWidgets(
     widgetNames: string[],
     app: string,
     panelObserver?: ReplaySubject<HsPanelItem>
-  ) {
+  ): void {
     if (widgetNames?.length > 0) {
       for (const widgetName of widgetNames) {
         let widgetFound = this.queryPopupWidgets.find(

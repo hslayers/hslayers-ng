@@ -2,8 +2,8 @@
 <ng-template #featureHeader let-feature="feature" let-type="type">
   <div class="d-flex flex-row">
     <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
-    <a class="p-1" *ngIf="hsQueryVectorService.isFeatureRemovable(feature, data.app) && type" (click)="removeFeature(feature)"
-      data-toggle="tooltip" [title]="'QUERY.featurePopup.' + type | translateHs : data">
+    <a class="p-1" *ngIf="isFeatureRemovable(feature) && type" (click)="removeFeature(feature)" data-toggle="tooltip"
+      [title]="'QUERY.featurePopup.' + type | translateHs : data">
       <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
     </a>
   </div>
@@ -14,11 +14,9 @@
   <div *ngFor="let attribute of attributes" class="d-flex flex-row">
     <ng-container *ngIf="attribute.key">
       <div class="p-1 flex-grow-1">
-        {{hsLanguageService.getTranslationIgnoreNonExisting(
+        {{translateString(
         'FEATURE_TABLE',
-        attribute.key,
-        undefined,
-        data.app
+        attribute.key
         )}} 
       </div>
     </ng-container>

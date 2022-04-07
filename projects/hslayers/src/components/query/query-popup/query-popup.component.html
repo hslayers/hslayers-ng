@@ -4,8 +4,9 @@
             [title]="'QUERY.featurePopup.closePopup' | translateHs : data">
             <i class="icon-remove-circle"></i>
         </a>
-        <div *ngFor="let layerDesc of data.service.apps[data.app].featureLayersUnderMouse; let i = index" class="hs-popup-layer">
-            <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [app]="data.app" [reusePanelObserver]="true" [panelObserver]="layerDesc.panelObserver"
+        <div *ngFor="let layerDesc of dataAppRef.featureLayersUnderMouse; let i = index" class="hs-popup-layer">
+            <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [app]="data.app"
+                [reusePanelObserver]="true" [panelObserver]="layerDesc.panelObserver"
                 [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service, app: data.app}">
             </hs-panel-container>
         </div>

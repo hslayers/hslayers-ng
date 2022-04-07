@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Input, OnDestroy} from '@angular/core';
 
 import {Feature} from 'ol';
@@ -33,17 +33,16 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   exportMenuVisible = false;
   editMenuVisible = false;
   selectedLayer = null;
-  editType: string;
+  editType: 'move' | 'copy';
   getTitle = getTitle;
   availableLayers = [];
   availableLayersSubscription: any;
 
   constructor(
-    public hsMapService: HsMapService,
-    public hsQueryVectorService: HsQueryVectorService,
-    public hsFeatureCommonService: HsFeatureCommonService,
-    public hsLayerUtilsService: HsLayerUtilsService,
-    public cd: ChangeDetectorRef
+    private hsMapService: HsMapService,
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsFeatureCommonService: HsFeatureCommonService,
+    private hsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   ngOnInit(): void {
@@ -67,17 +66,30 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
     this.availableLayersSubscription?.unsubscribe();
   }
 
+  /**
+   * Get OL feature
+   * @returns Returns feature
+   */
   olFeature(): Feature<Geometry> {
     return this.feature?.feature;
   }
 
+  /**
+   * Check if thhis feature is removable
+   * @returns True or false
+   */
   isFeatureRemovable(): boolean {
     return this.olFeature()
       ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature(), this.app)
       : false;
   }
 
-  saveNewAttribute(attributeName, attributeValue): void {
+  /**
+   * Set new feature attribute
+   * @param attributeName - New attribute name
+   * @param attributeValue - New attribute value
+   */
+  saveNewAttribute(attributeName: string, attributeValue): void {
     if (this.feature?.feature) {
       const feature = this.feature.feature;
       const getDuplicates = this.feature.attributes.filter(
@@ -94,10 +106,16 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
     this.attributeValue = '';
   }
 
+  /**
+   * Remove this feature
+   */
   removeFeature(): void {
     this.hsQueryVectorService.removeFeature(this.olFeature(), this.app);
   }
 
+  /**
+   * Zoom to this feature
+   */
   zoomToFeature(): void {
     const extent = this.olFeature().getGeometry().getExtent();
     this.hsMapService.fitExtent(extent, this.app);
@@ -105,14 +123,18 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
 
   /**
    * Toggle dropdown menus
-   * @param beingToggled Menu being toggled
-   * @param other Other menu to be closed if opened
+   * @param beingToggled - Menu name that is being toggled
+   * @param other - Other menu name to be closed if opened
    */
   toggleMenus(beingToggled: string, other: string): void {
     this[other] = this[other] ? !this[other] : this[other];
     this[beingToggled] = !this[beingToggled];
   }
 
+  /**
+   * Toggle export menus
+   * @param app - App identifier
+   */
   toggleExportMenu(app: string): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
@@ -122,11 +144,18 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
 
-  editTypeSelected(type): void {
+  /**
+   * Set edit type
+   * @param type - Type selected
+   */
+  editTypeSelected(type: 'move' | 'copy'): void {
     this.editType = type;
     this.editMenuVisible = !this.editMenuVisible;
   }
 
+  /**
+   * Toggle edit menu
+   */
   toggleEditMenu(): void {
     if (this.editType) {
       this.editType = null;
@@ -135,6 +164,10 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
     this.toggleMenus('editMenuVisible', 'exportMenuVisible');
   }
 
+  /**
+   * Move or copy feature
+   * @param app - App identifier
+   */
   moveOrCopyFeature(app: string): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
@@ -142,5 +175,23 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
       this.selectedLayer,
       app
     );
+  }
+
+  /**
+   * Translate string value to the selected UI language
+   * @param module - Locales json key
+   * @param text - Locales json key value
+   * @returns Translated text
+   */
+  translateString(module: string, text: string): string {
+    return this.hsFeatureCommonService.translateString(module, text, this.app);
+  }
+
+  /**
+   * Get title translation
+   * @param title - Title to translate
+   */
+  translateTitle(title: string): string {
+    return this.hsLayerUtilsService.translateTitle(title, this.app);
   }
 }

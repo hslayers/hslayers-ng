@@ -6,7 +6,6 @@ import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -33,17 +32,18 @@ export class HsQueryComponent
   private ngUnsubscribe = new Subject<void>();
   //To deactivate queries (unsubscribe subscribers) per app
   queryDeactivator = new Subject<void>();
+  queryBaseAppRef;
+  layoutAppRef;
   constructor(
-    public hsConfig: HsConfig,
-    public hsQueryBaseService: HsQueryBaseService,
+    private hsQueryBaseService: HsQueryBaseService,
     public hsLayoutService: HsLayoutService,
-    public hsMapService: HsMapService,
-    public hsEventBusService: HsEventBusService,
-    public hsQueryVectorService: HsQueryVectorService,
-    public hsQueryWmsService: HsQueryWmsService,
-    public hsDrawService: HsDrawService,
-    public hsSidebarService: HsSidebarService,
-    public hsLanguageService: HsLanguageService
+    private hsMapService: HsMapService,
+    private hsEventBusService: HsEventBusService,
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsQueryWmsService: HsQueryWmsService,
+    private hsDrawService: HsDrawService,
+    private hsSidebarService: HsSidebarService,
+    private hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
   }
@@ -71,7 +71,8 @@ export class HsQueryComponent
       this.data.app
     );
     this.hsQueryWmsService.init(this.data.app);
-
+    this.queryBaseAppRef = this.hsQueryBaseService.get(this.data.app);
+    this.layoutAppRef = this.hsLayoutService.get(this.data.app);
     this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
         this.popup.hide();
@@ -81,8 +82,8 @@ export class HsQueryComponent
     this.hsQueryVectorService.featureRemovals
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((feature) => {
-        this.hsQueryBaseService.apps[this.data.app].features.splice(
-          this.hsQueryBaseService.apps[this.data.app].features.indexOf(feature),
+        this.queryBaseAppRef.features.splice(
+          this.queryBaseAppRef.features.indexOf(feature),
           1
         );
       });
@@ -97,13 +98,13 @@ export class HsQueryComponent
         if (this.data.app == app) {
           if (this.hsQueryBaseService.currentPanelQueryable(this.data.app)) {
             if (
-              !this.hsQueryBaseService.apps[app].queryActive &&
+              !this.queryBaseAppRef.queryActive &&
               !this.hsDrawService.get(app).drawActive
             ) {
               this.hsQueryBaseService.activateQueries(this.data.app);
             }
           } else {
-            if (this.hsQueryBaseService.apps[app].queryActive) {
+            if (this.queryBaseAppRef.queryActive) {
               this.hsQueryBaseService.deactivateQueries(this.data.app);
             }
           }
@@ -122,7 +123,11 @@ export class HsQueryComponent
     }
   }
 
-  queryStatusChanged(active: boolean) {
+  /**
+   * Act on query status changes
+   * @param active - Query status state
+   */
+  queryStatusChanged(active: boolean): void {
     if (!active) {
       this.queryDeactivator.next();
       return;
@@ -146,7 +151,8 @@ export class HsQueryComponent
       .pipe(takeUntil(this.ngUnsubscribe))
       .pipe(takeUntil(this.queryDeactivator))
       .subscribe((coordinate) => {
-        const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
+        const invisiblePopup: HTMLIFrameElement =
+          this.hsQueryBaseService.getInvisiblePopup();
         if (!invisiblePopup) {
           return;
         }
@@ -174,7 +180,13 @@ export class HsQueryComponent
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-  checkForBodyElements(docChildren: any): boolean {
+
+  /**
+   * Check if popup HTML body contains valid elements
+   * @param docChildren - Popup HTML collection
+   * @returns True or false
+   */
+  checkForBodyElements(docChildren: HTMLCollection): boolean {
     return Array.from(docChildren).some((ch: any) => {
       if (ch.tagName == 'TITLE' && ch.title == '') {
         return false;
@@ -186,12 +198,17 @@ export class HsQueryComponent
       );
     });
   }
+
+  /**
+   * Check if any feature is selected
+   * @returns True or false
+   */
   noFeatureSelected(): boolean {
-    const app = this.hsQueryBaseService.apps[this.data.app];
     return (
-      app == undefined ||
-      (app.features.length == 0 &&
-        (app.coordinates === undefined || app.coordinates.length == 0))
+      this.queryBaseAppRef == undefined ||
+      (this.queryBaseAppRef.features.length == 0 &&
+        (this.queryBaseAppRef.coordinates === undefined ||
+          this.queryBaseAppRef.coordinates.length == 0))
     );
   }
   showQueryDialog(ev) {

@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  OnInit,
   ViewRef,
 } from '@angular/core';
 
@@ -12,7 +13,6 @@ import {HsConfig} from '../../../config.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogItem} from '../../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from '../query-popup-widget-container.service';
@@ -25,7 +25,7 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './query-popup.component.html',
 })
 export class HsQueryPopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit {
+  implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit {
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -35,24 +35,16 @@ export class HsQueryPopupComponent
     service: HsQueryPopupServiceModel;
     app: string;
   };
+  dataAppRef;
 
   constructor(
-    public hsEventBusService: HsEventBusService,
-    public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService,
+    private hsEventBusService: HsEventBusService,
+    private hsMapService: HsMapService,
     private ElementRef: ElementRef,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
     private hsConfig: HsConfig,
     private HsQueryVectorService: HsQueryVectorService
-  ) {
-    this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
-      ({map, app}) => {
-        if (app == this.data.app) {
-          map.addOverlay(this.data.service.apps[this.data.app].hoverPopup);
-        }
-      }
-    );
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.data.service.registerPopup(
@@ -62,7 +54,15 @@ export class HsQueryPopupComponent
   }
 
   ngOnInit() {
+    this.dataAppRef = this.data.service.apps[this.data.app];
     this.HsQueryVectorService.init(this.data.app);
+    this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
+      ({map, app}) => {
+        if (app == this.data.app) {
+          map.addOverlay(this.dataAppRef.hoverPopup);
+        }
+      }
+    );
     this.hsQueryPopupWidgetContainerService.initWidgets(
       this.hsConfig.get(this.data.app).queryPopupWidgets,
       this.data.app
@@ -72,20 +72,21 @@ export class HsQueryPopupComponent
   ngOnDestroy(): void {
     this.hsMapService
       .getMap(this.data.app)
-      .removeOverlay(this.data.service.apps[this.data.app].hoverPopup);
+      .removeOverlay(this.dataAppRef.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
+  /**
+   * Return popup visibility state
+   */
   popupVisible(): any {
     const DISPLAY_NONE = {
       'display': 'none',
     };
-    if (this.data.service.apps[this.data.app] == undefined) {
+    if (this.dataAppRef == undefined) {
       return DISPLAY_NONE;
     }
-    const featuresWithPopup = this.data.service.apps[
-      this.data.app
-    ].featuresUnderMouse.filter((f) => {
+    const featuresWithPopup = this.dataAppRef.featuresUnderMouse.filter((f) => {
       const layer = this.hsMapService.getLayerForFeature(f, this.data.app);
       if (!layer) {
         return DISPLAY_NONE;
@@ -95,25 +96,23 @@ export class HsQueryPopupComponent
     const featureCount = featuresWithPopup.length;
     if (featureCount > 0) {
       let tmpForHover: any[] = [];
-      this.data.service.apps[this.data.app].featuresUnderMouse.forEach(
-        (feature) => {
-          tmpForHover = tmpForHover.concat(
-            this.data.service.serializeFeatureAttributes(feature, this.data.app)
-          );
-          if (getFeatures(feature)) {
-            getFeatures(feature).forEach((subfeature) => {
-              const subFeatureObj: any = {};
-              subFeatureObj.feature = subfeature;
-              subFeatureObj.attributes =
-                this.data.service.serializeFeatureAttributes(
-                  subfeature,
-                  this.data.app
-                );
-              tmpForHover.push(subFeatureObj);
-            });
-          }
+      this.dataAppRef.featuresUnderMouse.forEach((feature) => {
+        tmpForHover = tmpForHover.concat(
+          this.data.service.serializeFeatureAttributes(feature, this.data.app)
+        );
+        if (getFeatures(feature)) {
+          getFeatures(feature).forEach((subfeature) => {
+            const subFeatureObj: any = {};
+            subFeatureObj.feature = subfeature;
+            subFeatureObj.attributes =
+              this.data.service.serializeFeatureAttributes(
+                subfeature,
+                this.data.app
+              );
+            tmpForHover.push(subFeatureObj);
+          });
         }
-      );
+      });
       this.attributesForHover = tmpForHover.filter((f) => f);
     }
 

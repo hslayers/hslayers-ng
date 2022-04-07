@@ -1,10 +1,9 @@
 import {Injectable, NgZone} from '@angular/core';
-import {ReplaySubject} from 'rxjs';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
+import {ReplaySubject} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelItem} from '../layout/panels/panel-item';
 import {HsQueryPopupData} from './popup-data';
@@ -23,17 +22,25 @@ export class HsQueryPopupBaseService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public zone: NgZone,
-    public hsConfig: HsConfig,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {}
 
-  public setAppIfNeeded(app: string) {
+  /**
+   * Set up query popup base service data for the app if needed
+   * @param app - App identifier
+   */
+  public setAppIfNeeded(app: string): void {
     if (this.apps[app] == undefined) {
       this.apps[app] = new HsQueryPopupData();
     }
   }
 
-  fillFeatures(features: Feature<Geometry>[], app: string) {
+  /**
+   * Fill features for the popup
+   * @param features - Features found on the map under the mouse
+   * @param app - App identifier
+   */
+  fillFeatures(features: Feature<Geometry>[], app: string): void {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
     this.zone.run(() => {
       this.apps[app].featuresUnderMouse = features;
@@ -81,12 +88,19 @@ export class HsQueryPopupBaseService {
     });
   }
 
+  /**
+   * Close the popup
+   * @param app - App identifier
+   */
   closePopup(app: string): void {
     this.apps[app].featuresUnderMouse = [];
   }
 
   /**
-   * @param feature -
+   * Serialize feature attributes
+   * @param feature - Feature selected
+   * @param app - App identifier
+   * @returns Serialized attributes
    */
   serializeFeatureAttributes(feature: Feature<Geometry>, app: string): any[] {
     const attributesForHover = [];

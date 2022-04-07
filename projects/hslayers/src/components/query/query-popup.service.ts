@@ -19,30 +19,38 @@ export class HsQueryPopupService
   implements HsQueryPopupServiceModel
 {
   constructor(
-    hsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    hsUtilsService: HsUtilsService,
-    zone: NgZone,
+    public hsMapService: HsMapService,
+    private hsConfig: HsConfig,
+    public hsUtilsService: HsUtilsService,
+    public zone: NgZone,
     private HsQueryBaseService: HsQueryBaseService,
-    hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
   ) {
     super(
       hsMapService,
       hsUtilsService,
       zone,
-      hsConfig,
       hsQueryPopupWidgetContainerService
     );
   }
 
-  registerPopup(nativeElement: any, app: string) {
+  /**
+   * Register and set hover popup overlay
+   * @param nativeElement - Popup html content
+   * @param app - App identifier
+   */
+  registerPopup(nativeElement: HTMLElement, app: string): void {
     this.setAppIfNeeded(app);
     this.apps[app].hoverPopup = new Overlay({
       element: nativeElement,
     });
   }
 
-  async init(app: string) {
+  /**
+   * Initialize the query popup service data and subscribers
+   * @param app - App identifier
+   */
+  async init(app: string): Promise<void> {
     this.setAppIfNeeded(app);
     await this.hsMapService.loaded(app);
     this.apps[app].map = this.hsMapService.getMap(app);
@@ -76,10 +84,11 @@ export class HsQueryPopupService
   }
 
   /**
+   * Prepare popup before the display
    * Get features dependent on mouse position.
    * For cesium the features will be filled differently.
-   * @param e -
-   * @returns
+   * @param e - Mouse event over the OL map
+   * @param app - App identifier
    */
   preparePopup(
     e: {
@@ -89,7 +98,7 @@ export class HsQueryPopupService
       originalEvent?: any;
     },
     app: string
-  ) {
+  ): void {
     // The latter case happens when hovering over the pop-up itself
     if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
@@ -117,6 +126,7 @@ export class HsQueryPopupService
   /**
    * Set popups position according to pixel where mouse is
    * @param e - Event, which triggered this function
+   * @param app - App identifier
    */
   showPopup(e: any, app: string): void {
     const map = e.map;

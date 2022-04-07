@@ -8,7 +8,6 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 import {HsFeatureCommonService} from '../feature-common.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
 import {HsQueryBaseService} from '../query-base.service';
 import {HsQueryVectorService} from '../query-vector.service';
 import {exportFormats} from '../feature-common.service';
@@ -35,8 +34,14 @@ export class HsQueryFeatureListComponent implements OnInit {
   editMenuVisible = false;
   selectedLayer = null;
   queryBaseAppRef;
+  featureCommonAppRef;
   getTitle = getTitle;
 
+  /**
+   * Track item by openlayers feature, ol_uid value
+   * @param index - Index
+   * @param item - Item provided
+   */
   trackById(index, item) {
     if (item.feature) {
       return item.feature.ol_uid;
@@ -46,36 +51,44 @@ export class HsQueryFeatureListComponent implements OnInit {
   }
 
   constructor(
-    public hsQueryVectorService: HsQueryVectorService,
-    public hsLanguageService: HsLanguageService,
-    public hsDialogContainerService: HsDialogContainerService,
-    public hsLayoutService: HsLayoutService,
-    public hsFeatureCommonService: HsFeatureCommonService,
-    public hsLayerUtilsService: HsLayerUtilsService,
-    public hsQueryBaseService: HsQueryBaseService
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsLanguageService: HsLanguageService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsFeatureCommonService: HsFeatureCommonService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsQueryBaseService: HsQueryBaseService
   ) {}
 
   ngOnInit(): void {
     this.queryBaseAppRef = this.hsQueryBaseService.get(this.app);
     this.hsFeatureCommonService.init(this.app);
+    this.featureCommonAppRef = this.hsFeatureCommonService.apps[this.app];
   }
 
+  /**
+   * Get OL feature array
+   * @returns Feature array
+   */
   olFeatureArray(): Feature<Geometry>[] {
-    return this.hsQueryBaseService.apps[this.app].features
+    return this.queryBaseAppRef.features
       .map((feature) => feature.feature)
       .filter((f) => f);
   }
 
   /**
    * Toggle dropdown menus
-   * @param beingToggled - Menu being toggled
-   * @param other - Other menu to be closed if opened
+   * @param beingToggled - Menu name that is being toggled
+   * @param other - Other menu name to be closed if opened
    */
   toggleMenus(beingToggled: string, other: string): void {
     this[other] = this[other] ? !this[other] : this[other];
     this[beingToggled] = !this[beingToggled];
   }
 
+  /**
+   * Toggle export menu
+   * @param app - App identifier
+   */
   toggleExportMenu(app: string): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
@@ -85,6 +98,9 @@ export class HsQueryFeatureListComponent implements OnInit {
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
 
+  /**
+   * Toggle edit menu
+   */
   toggleEditMenu(): void {
     if (this.editType) {
       this.editType = null;
@@ -93,11 +109,19 @@ export class HsQueryFeatureListComponent implements OnInit {
     this.toggleMenus('editMenuVisible', 'exportMenuVisible');
   }
 
+  /**
+   * Set edit type
+   * @param type - Type selected
+   */
   editTypeSelected(type: string): void {
     this.editType = type;
     this.editMenuVisible = !this.editMenuVisible;
   }
 
+  /**
+   * Move or copy feature
+   * @param app - App identifier
+   */
   moveOrCopyFeature(app: string): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
@@ -107,6 +131,10 @@ export class HsQueryFeatureListComponent implements OnInit {
     );
   }
 
+  /**
+   * Remove all selected features
+   * @param app - App identifier
+   */
   async removeAllSelectedFeatures(app: string): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
@@ -126,12 +154,31 @@ export class HsQueryFeatureListComponent implements OnInit {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      for (const feature of this.hsQueryBaseService.apps[this.app].features) {
+      for (const feature of this.queryBaseAppRef.features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
           this.hsQueryVectorService.removeFeature(feature.feature, app);
         }, 250);
       }
     }
+  }
+
+  /**
+   * Translate string value to the selected UI language
+   * @param module - Locales json key
+   * @param text - Locales json key value
+   * @returns Translated text
+   */
+  translateString(module: string, text: string): string {
+    return this.hsFeatureCommonService.translateString(module, text, this.app);
+  }
+
+  /**
+   * Get title translation
+   * @param title - Title to translate
+   * @returns Translated title
+   */
+  translateTitle(title: string): string {
+    return this.hsLayerUtilsService.translateTitle(title, this.app);
   }
 }

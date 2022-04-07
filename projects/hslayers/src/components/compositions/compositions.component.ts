@@ -261,7 +261,7 @@ export class HsCompositionsComponent
    * Translate string value to the selected UI language
    * @param module - Locales json key
    * @param text - Locales json key value
-   * @returns Translated text value
+   * @returns Translated text
    */
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(

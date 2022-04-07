@@ -36,8 +36,8 @@ export class HsFeatureInfoComponent
   };
 
   constructor(
-    public hsLanguageService: HsLanguageService,
-    public hsQueryVectorService: HsQueryVectorService,
+    private hsLanguageService: HsLanguageService,
+    private hsQueryVectorService: HsQueryVectorService,
     private hsDialogContainerService: HsDialogContainerService
   ) {
     super();
@@ -47,7 +47,12 @@ export class HsFeatureInfoComponent
     this.attributesForHover = this.data.attributesForHover;
   }
 
-  serializeFeatureName(feature): string {
+  /**
+   * Serialize feature name
+   * @param feature - Feature selected
+   * @returns Serialized feature name
+   */
+  serializeFeatureName(feature: Feature<Geometry>): string {
     if (!feature) {
       return;
     }
@@ -76,7 +81,11 @@ export class HsFeatureInfoComponent
     );
   }
 
-  async removeFeature(feature): Promise<void> {
+  /**
+   * Remove feature
+   * @param feature - Feature selected
+   */
+  async removeFeature(feature: Feature<Geometry>): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -100,11 +109,45 @@ export class HsFeatureInfoComponent
     }
   }
 
-  isClustered(feature): boolean {
+  /**
+   * Check if feature is a cluster
+   * @param feature - Feature selected
+   * @returns True or false
+   */
+  isClustered(feature: Feature<Geometry>): boolean {
     return getFeatures(feature) && getFeatures(feature).length > 0;
   }
 
-  hasMultipleSubFeatures(feature): boolean {
+  /**
+   * Check if feature has sub-features
+   * @param feature - Feature selected
+   * @returns True or false
+   */
+  hasMultipleSubFeatures(feature: Feature<Geometry>): boolean {
     return getFeatures(feature).length > 1;
+  }
+
+  /**
+   * Check if feature is removable
+   * @param feature - Feature selected
+   * @returns True or false
+   */
+  isFeatureRemovable(feature: Feature<Geometry>): boolean {
+    return this.hsQueryVectorService.isFeatureRemovable(feature, this.data.app);
+  }
+
+  /**
+   * Translate string value to the selected UI language
+   * @param module - Locales json key
+   * @param text - Locales json key value
+   * @returns Translated text
+   */
+  translateString(module: string, text: string): string {
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      module,
+      text,
+      undefined,
+      this.data.app
+    );
   }
 }
