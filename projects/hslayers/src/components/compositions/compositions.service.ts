@@ -272,7 +272,9 @@ export class HsCompositionsService {
    * Necessary for CSW serviceType compositions to be parsed
    */
   async getLaymanTemplateRecordObject(record, app: string) {
-    const params = `?request=GetRecords&format=text/json&template=report-layman&query=ServiceType like 'CSW' and title like '${record.title}'`;
+    const params = `?request=GetRecords&format=text/json&template=report-layman&query=ServiceType like 'CSW' and title like '${
+      record.title
+    }' and BoundingBox like '${record.bbox.join(' ')}'`;
     const url = this.hsUtilsService.proxify(record.endpoint.url + params, app);
 
     try {
@@ -281,7 +283,6 @@ export class HsCompositionsService {
           responseType: 'json',
         })
       );
-      console.log('compositions', compositions['records'][0]);
       return compositions['records'][0];
     } catch (e) {
       this.hsToastService.createToastPopupMessage(
