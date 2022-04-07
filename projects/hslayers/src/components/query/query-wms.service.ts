@@ -1,7 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import LayerRenderer from 'ol/renderer/Layer';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {lastValueFrom} from 'rxjs';
@@ -12,7 +11,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryWmtsService} from './query-wmts.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService, instOf} from '../utils/utils.service';
 import {
   getBase,
   getCustomInfoTemplate,
@@ -62,7 +61,7 @@ export class HsQueryWmsService {
               }
             }
             this.queryWmsLayer(
-              this.hsUtilsService.instOf(layer, Tile)
+              instOf(layer, Tile)
                 ? (layer as Layer<TileWMS>)
                 : (layer as Layer<ImageWMS>),
               evt.coordinate,
@@ -112,7 +111,7 @@ export class HsQueryWmsService {
     url: string,
     infoFormat: string,
     coordinate: number[],
-    layer: Layer<ImageWMS | TileWMS, LayerRenderer<any>>,
+    layer: Layer<Source>,
     app: string
   ): Promise<void> {
     const queryBaseAppRef = this.hsQueryBaseService.get(app);
@@ -166,7 +165,7 @@ export class HsQueryWmsService {
     response: string,
     infoFormat: string,
     coordinate: number[],
-    layer: Layer<ImageWMS | TileWMS, LayerRenderer<any>>,
+    layer: Layer<Source>,
     app: string
   ): void {
     /* Maybe this will work in future OL versions
@@ -181,10 +180,9 @@ export class HsQueryWmsService {
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
 
-      if (
-        infoFormat.includes('gml') ||
-        this.hsUtilsService.instOf(layer.getSource(), WMTS)
-      ) {
+      //This is suggests that WMTS only provides gml, is that the case?
+      //http://opengeospatial.github.io/e-learning/wmts/text/operations.html
+      if (infoFormat.includes('gml') || instOf(layer.getSource(), WMTS)) {
         this.parseGmlResponse(doc, layer, customInfoTemplate, app);
       } else if (
         infoFormat == 'text/xml' ||
@@ -242,7 +240,7 @@ export class HsQueryWmsService {
    */
   parseGmlResponse(
     doc: HTMLElement,
-    layer: Layer<ImageWMS | TileWMS, LayerRenderer<any>>,
+    layer: Layer<Source>,
     customInfoTemplate: string | boolean,
     app: string
   ): void {
@@ -365,14 +363,14 @@ export class HsQueryWmsService {
    * @param app - App identifier
    */
   queryWmsLayer(
-    layer: Layer<ImageWMS | TileWMS>,
+    layer: Layer<TileWMS | ImageWMS | WMTS>,
     coordinate: number[],
     app: string
   ): void {
     if (this.isLayerWmsQueryable(layer)) {
-      if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
+      if (instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService
-          .parseRequestURL(layer, coordinate, app)
+          .parseRequestURL(layer as Layer<WMTS>, coordinate, app)
           .then((res) => {
             console.log(res);
             this.infoCounter++;
@@ -381,7 +379,12 @@ export class HsQueryWmsService {
         return;
       }
 
-      const source = layer.getSource();
+      let source: ImageWMS | TileWMS;
+      if (instOf(layer.getSource(), ImageWMS)) {
+        source = layer.getSource() as ImageWMS;
+      } else if (instOf(layer.getSource(), TileWMS)) {
+        source = layer.getSource() as TileWMS;
+      }
       const map = this.hsMapService.getMap(app);
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
@@ -398,7 +401,7 @@ export class HsQueryWmsService {
         getFeatureInfoLang(layer) &&
         getFeatureInfoLang(layer)[this.hsLanguageService.apps[app].language]
       ) {
-        if (this.hsUtilsService.instOf(source, TileWMS)) {
+        if (instOf(source, TileWMS)) {
           url = url.replace(
             (source as TileWMS).getUrls()[0],
             getFeatureInfoLang(layer)[this.hsLanguageService.apps[app].language]
@@ -437,28 +440,25 @@ export class HsQueryWmsService {
    * @param layer - Layer selected
    * @returns True or false
    */
-  isLayerWmsQueryable(layer: Layer<ImageWMS | TileWMS>): boolean {
+  isLayerWmsQueryable(layer: Layer<ImageWMS | TileWMS | WMTS>): boolean {
     if (!layer.getVisible()) {
       return false;
     }
-    if (this.hsUtilsService.instOf(layer, Tile)) {
+    if (instOf(layer, Tile)) {
       if (
-        this.hsUtilsService.instOf(layer.getSource(), TileWMS) &&
-        layer.getSource().getParams().INFO_FORMAT
+        instOf(layer.getSource(), TileWMS) &&
+        (layer.getSource() as TileWMS).getParams().INFO_FORMAT
       ) {
         return true;
       }
-      if (
-        this.hsUtilsService.instOf(layer.getSource(), WMTS) &&
-        getInfoFormat(layer)
-      ) {
+      if (instOf(layer.getSource(), WMTS) && getInfoFormat(layer)) {
         return true;
       }
     }
     if (
-      this.hsUtilsService.instOf(layer, ImageLayer) &&
-      this.hsUtilsService.instOf(layer.getSource(), ImageWMS) &&
-      layer.getSource().getParams().INFO_FORMAT
+      instOf(layer, ImageLayer) &&
+      instOf(layer.getSource(), ImageWMS) &&
+      (layer.getSource() as ImageWMS).getParams().INFO_FORMAT
     ) {
       return true;
     }

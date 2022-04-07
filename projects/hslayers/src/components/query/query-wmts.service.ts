@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 
-import {ImageWMS, TileWMS} from 'ol/source';
+import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {Layer} from 'ol/layer';
+import {WMTS} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {HsMapService} from '../map/map.service';
@@ -25,11 +26,11 @@ export class HsQueryWmtsService {
    * @returns Request URL and format
    */
   async parseRequestURL(
-    layer: Layer<ImageWMS | TileWMS>,
+    layer: Layer<WMTS>,
     coordinate: number[],
     app: string
   ): Promise<{url: string; format: string}> {
-    const source = layer.getSource() as any;
+    const source = layer.getSource();
 
     coordinate = transform(
       coordinate,
@@ -37,7 +38,7 @@ export class HsQueryWmtsService {
       source.getProjection()
     );
 
-    const tileGrid = source.getTileGrid();
+    const tileGrid = source.getTileGrid() as WMTSTileGrid;
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
       this.hsMapService.getMap(app).getView().getResolution()

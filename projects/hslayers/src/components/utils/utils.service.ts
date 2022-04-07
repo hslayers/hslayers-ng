@@ -363,10 +363,7 @@ export class HsUtilsService {
    * @returns true when input is a function, false otherwise
    */
   isFunction(functionToCheck: any): boolean {
-    return (
-      functionToCheck &&
-      {}.toString.call(functionToCheck) === '[object Function]'
-    );
+    return isFunction(functionToCheck);
   }
 
   /**
@@ -378,36 +375,6 @@ export class HsUtilsService {
     return (
       objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
     );
-  }
-
-  /**
-   * Check if object is an instance of a class
-   * @param {object} obj
-   * @param {*} type
-   * @returns true when obj is an instance of type, false otherwise
-   */
-  instOf(obj: any, type: any): boolean {
-    return this._instanceOf(obj, type);
-  }
-
-  private _instanceOf(obj: any, klass: any): boolean {
-    if (obj === undefined || obj === null) {
-      return false;
-    }
-    if (klass.default) {
-      klass = klass.default;
-    }
-    if (this.isFunction(klass)) {
-      return obj instanceof klass;
-    }
-    obj = Object.getPrototypeOf(obj);
-    while (obj !== null) {
-      if (obj.constructor.name === klass) {
-        return true;
-      }
-      obj = Object.getPrototypeOf(obj);
-    }
-    return false;
   }
 
   /**
@@ -546,6 +513,10 @@ export class HsUtilsService {
     return output;
   }
 
+  instOf(obj: any, type: any): boolean {
+    return instOf(obj, type);
+  }
+
   /**
    * @private
    * @param {Polygon} polygon
@@ -576,4 +547,45 @@ export function generateUuid(): string {
       v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+}
+
+/**
+ * Check if object is an instance of a class
+ * @param obj -
+ * @param type -
+ * @returns true when obj is an instance of type, false otherwise
+ */
+export function instOf(obj: any, type: any): boolean {
+  return _instanceOf(obj, type);
+}
+
+export function _instanceOf(obj: any, klass: any): boolean {
+  if (obj === undefined || obj === null) {
+    return false;
+  }
+  if (klass.default) {
+    klass = klass.default;
+  }
+  if (isFunction(klass)) {
+    return obj instanceof klass;
+  }
+  obj = Object.getPrototypeOf(obj);
+  while (obj !== null) {
+    if (obj.constructor.name === klass) {
+      return true;
+    }
+    obj = Object.getPrototypeOf(obj);
+  }
+  return false;
+}
+
+/**
+ * Check if object is a function
+ * @param functionToCheck -
+ * @returns true when input is a function, false otherwise
+ */
+export function isFunction(functionToCheck: any): boolean {
+  return (
+    functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
+  );
 }

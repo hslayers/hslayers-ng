@@ -14,7 +14,7 @@ import {Point} from 'ol/geom';
 import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLogService} from './../../common/log/log.service';
-import {HsUtilsService} from './utils.service';
+import {HsUtilsService, instOf} from './utils.service';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 class EmptyMock {
@@ -228,9 +228,9 @@ describe('HsUtilsService', () => {
   });
   it('check if object is instance of some type', () => {
     const layer = new VectorLayer();
-    let isInstOf = hsUtilsService.instOf(layer, VectorLayer);
+    let isInstOf = instOf(layer, VectorLayer);
     expect(isInstOf).toBe(true);
-    isInstOf = hsUtilsService.instOf(layer, Point);
+    isInstOf = instOf(layer, Point);
     expect(isInstOf).toBe(false);
   });
   it('try to hash a string', () => {
