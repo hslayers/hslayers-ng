@@ -12,7 +12,6 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsToastService} from '../layout/toast/toast.service';
-
 import {getTitle} from '../../common/layer-extensions';
 
 export interface exportFormats {
@@ -40,13 +39,17 @@ export class HsFeatureCommonService {
   } = {default: new HsFeatureCommonServiceParams()};
 
   constructor(
-    public hsQueryVectorService: HsQueryVectorService,
-    public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService,
+    private hsMapService: HsMapService,
+    private hsLayerUtilsService: HsLayerUtilsService
   ) {}
 
+  /**
+   * Initialize the feature common service data and subscribers
+   * @param app - App identifier
+   */
   async init(app: string): Promise<void> {
     if (this.apps[app]) {
       return;
@@ -61,6 +64,13 @@ export class HsFeatureCommonService {
     this.apps[app] = new HsFeatureCommonServiceParams();
   }
 
+  /**
+   * Translate string value to the selected UI language
+   * @param module - Locales json key
+   * @param text - Locales json key value
+   * @param app - App identifier
+   * @returns Translated text
+   */
   translateString(module: string, text: string, app: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
@@ -70,6 +80,10 @@ export class HsFeatureCommonService {
     );
   }
 
+  /**
+   * Update layer list from the current app map
+   * @param app - App identifier
+   */
   updateLayerList(app: string): void {
     const layers = this.hsMapService
       .getLayersArray(app)
@@ -79,8 +93,14 @@ export class HsFeatureCommonService {
     this.apps[app].listSubject.next(layers);
   }
 
+  /**
+   * Prepare features for export
+   * @param exportFormats - Export formats selected
+   * @param features - Features to export
+   * @param app - App identifier
+   */
   toggleExportMenu(
-    exportFormats,
+    exportFormats: exportFormats[],
     features: Feature<Geometry>[] | Feature<Geometry>,
     app: string
   ): void {
@@ -93,8 +113,15 @@ export class HsFeatureCommonService {
     }
   }
 
+  /**
+   * Move or copy feature/s
+   * @param type - Action type ('move' or 'copy')
+   * @param features - Features to interact with
+   * @param toLayer - Target layer
+   * @param app - App identifier
+   */
   moveOrCopyFeature(
-    type: string,
+    type: 'move' | 'copy',
     features: Feature<Geometry>[],
     toLayer: Layer<VectorSource<Geometry>>,
     app: string

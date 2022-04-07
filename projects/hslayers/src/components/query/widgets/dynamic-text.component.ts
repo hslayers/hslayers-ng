@@ -1,10 +1,9 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {getPopUp} from '../../../common/layer-extensions';
 
@@ -15,7 +14,8 @@ import {getPopUp} from '../../../common/layer-extensions';
 })
 export class HsDynamicTextComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   layerDescriptor: any;
   name = 'dynamic-text';
 
@@ -24,16 +24,19 @@ export class HsDynamicTextComponent
     app: string;
   };
 
-  constructor(
-    public hsLayerUtilsService: HsLayerUtilsService,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private sanitizer: DomSanitizer) {
     super();
   }
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
   }
-  generateContent(feature: Feature<Geometry>) {
+
+  /**
+   * Generate dynamic text content using display function
+   * @param feature - Feature selected
+   * @returns Safe HTML
+   */
+  generateContent(feature: Feature<Geometry>): SafeHtml {
     const displayFunction = getPopUp(
       this.layerDescriptor.layer
     ).displayFunction;

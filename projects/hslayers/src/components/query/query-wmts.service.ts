@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 
+import {ImageWMS, TileWMS} from 'ol/source';
+import {Layer} from 'ol/layer';
 import {transform} from 'ol/proj';
 
 import {HsMapService} from '../map/map.service';
@@ -15,8 +17,19 @@ export class HsQueryWmtsService {
     private hsUtilsService: HsUtilsService
   ) {}
 
-  async parseRequestUrl(layer, coordinate, app: string) {
-    const source = layer.getSource();
+  /**
+   * Parse request URL
+   * @param layer - Layer to Query
+   * @param coordinate - Clicked coordinates
+   * @param app - App identifier
+   * @returns Request URL and format
+   */
+  async parseRequestURL(
+    layer: Layer<ImageWMS | TileWMS>,
+    coordinate: number[],
+    app: string
+  ): Promise<{url: string; format: string}> {
+    const source = layer.getSource() as any;
 
     coordinate = transform(
       coordinate,

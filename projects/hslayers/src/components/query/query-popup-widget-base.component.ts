@@ -11,6 +11,10 @@ export class HsQueryPopupWidgetBaseComponent implements HsPanelComponent {
 
   constructor() {}
 
+  /**
+   * Check if widget is visible
+   * @returns True or false
+   */
   isVisible(): boolean {
     return true;
   }

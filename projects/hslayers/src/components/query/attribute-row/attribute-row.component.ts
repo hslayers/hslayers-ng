@@ -14,6 +14,9 @@ export class HsQueryAttributeRowComponent implements OnInit {
   ngOnInit(): void {
     this.checkAttributeValue();
   }
+  /**
+   * Act on feature attribute changes
+   */
   change(): void {
     if (this.feature?.feature) {
       const feature = this.feature.feature;
@@ -21,6 +24,9 @@ export class HsQueryAttributeRowComponent implements OnInit {
     }
   }
 
+  /**
+   * Check if attribute value is object and stringify it if needed
+   */
   checkAttributeValue(): void {
     if (
       typeof this.attribute.value == 'object' &&

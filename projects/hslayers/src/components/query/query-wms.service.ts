@@ -1,12 +1,11 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import LayerRenderer from 'ol/renderer/Layer';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {lastValueFrom} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -32,17 +31,20 @@ import {
 export class HsQueryWmsService {
   infoCounter = 0;
   constructor(
-    public hsQueryBaseService: HsQueryBaseService,
-    public hsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    public hsLayerUtilsService: HsLayerUtilsService,
-    public hsLanguageService: HsLanguageService,
-    public hsUtilsService: HsUtilsService,
-    public hsEventBusService: HsEventBusService,
+    private hsQueryBaseService: HsQueryBaseService,
+    private hsMapService: HsMapService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsLanguageService: HsLanguageService,
+    private hsUtilsService: HsUtilsService,
     private httpClient: HttpClient,
-    public hsLogService: HsLogService,
-    public hsQueryWmtsService: HsQueryWmtsService
+    private hsLogService: HsLogService,
+    private hsQueryWmtsService: HsQueryWmtsService
   ) {}
+
+  /**
+   * Initialize the query Wms service data and subscribers
+   * @param _app - App identifier
+   */
   init(_app: string): void {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe(({evt, app}) => {
       if (_app == app) {
@@ -72,30 +74,50 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @param updated -
-   * @param customInfoTemplate -
+   * Update feature list
+   * @param updated - Feature list has been updated
    * @param group -
+   * @param app - App identifier
    */
-  updateFeatureList(updated, customInfoTemplate, group, app: string): void {
+  updateFeatureList(
+    updated: boolean,
+    group: {
+      layer?: string;
+      name?: any;
+      attributes?: any[];
+      customInfoTemplate?: string | boolean;
+    },
+    app: string
+  ): void {
+    const queryBaseAppRef = this.hsQueryBaseService.get(app);
     if (updated) {
-      if (customInfoTemplate) {
-        this.hsQueryBaseService.apps[app].set(group, 'customFeatures');
-        this.hsQueryBaseService.apps[app].dataCleared = false;
+      if (group.customInfoTemplate) {
+        queryBaseAppRef.set(group, 'customFeatures');
+        queryBaseAppRef.dataCleared = false;
       } else {
-        this.hsQueryBaseService.apps[app].set(group, 'features');
+        queryBaseAppRef.set(group, 'features');
       }
     }
   }
 
+  /**
+   * Request information about clicked WMS layer coordinates
+   * @param url - Request url
+   * @param infoFormat - Request information format
+   * @param coordinate - Clicked coordinates
+   * @param layer - Target layer
+   * @param app - App identifier
+   */
   async request(
-    url,
-    infoFormat,
+    url: string,
+    infoFormat: string,
     coordinate: number[],
-    layer,
+    layer: Layer<ImageWMS | TileWMS, LayerRenderer<any>>,
     app: string
   ): Promise<void> {
+    const queryBaseAppRef = this.hsQueryBaseService.get(app);
     const req_url = this.hsUtilsService.proxify(url, app, true);
-    const reqHash = this.hsQueryBaseService.apps[app].currentQuery;
+    const reqHash = queryBaseAppRef.currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});
       headers.set('Accept', 'text');
@@ -106,12 +128,12 @@ export class HsQueryWmsService {
         })
       );
 
-      if (reqHash != this.hsQueryBaseService.apps[app].currentQuery) {
+      if (reqHash != queryBaseAppRef.currentQuery) {
         return;
       }
       this.featureInfoReceived(response, infoFormat, coordinate, layer, app);
     } catch (exception) {
-      if (reqHash != this.hsQueryBaseService.apps[app].currentQuery) {
+      if (reqHash != queryBaseAppRef.currentQuery) {
         return;
       }
       this.featureInfoError(coordinate, exception, app);
@@ -120,10 +142,11 @@ export class HsQueryWmsService {
 
   /**
    * Error callback to decrease infoCounter
-   * @param exception -
-   * @param coordinate -
+   * @param coordinate - Clicked coordinates
+   * @param exception - Error caught
+   * @param app - App identifier
    */
-  featureInfoError(coordinate, exception, app: string): void {
+  featureInfoError(coordinate: number[], exception, app: string): void {
     this.infoCounter--;
     this.hsLogService.warn(exception);
     if (this.infoCounter === 0) {
@@ -132,23 +155,25 @@ export class HsQueryWmsService {
   }
 
   /**
-   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
+   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
    * @param response - Response of GetFeatureInfoRequest
    * @param infoFormat - Format of GetFeatureInfoResponse
    * @param coordinate - Coordinate of request
-   * @param layer -
+   * @param layer - Target layer
+   * @param app - App identifier
    */
   featureInfoReceived(
-    response,
+    response: string,
     infoFormat: string,
     coordinate: number[],
-    layer,
+    layer: Layer<ImageWMS | TileWMS, LayerRenderer<any>>,
     app: string
   ): void {
     /* Maybe this will work in future OL versions
      * var format = new GML();
      *  console.log(format.readFeatures(response, {}));
      */
+    const queryBaseAppRef = this.hsQueryBaseService.get(app);
     const customInfoTemplate = getCustomInfoTemplate(layer) || false;
 
     if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
@@ -173,10 +198,10 @@ export class HsQueryWmsService {
             customInfoTemplate: customInfoTemplate,
           };
           if (customInfoTemplate) {
-            this.hsQueryBaseService.apps[app].set(group, 'customFeatures');
-            this.hsQueryBaseService.apps[app].dataCleared = false;
+            queryBaseAppRef.set(group, 'customFeatures');
+            queryBaseAppRef.dataCleared = false;
           } else {
-            this.hsQueryBaseService.apps[app].set(group, 'features');
+            queryBaseAppRef.set(group, 'features');
           }
         } else {
           return;
@@ -199,7 +224,7 @@ export class HsQueryWmsService {
     }
     if (infoFormat.includes('json')) {
       const resJSON = JSON.parse(response);
-      this.hsQueryBaseService.apps[app].set(resJSON.features, 'customFeatures');
+      this.hsQueryBaseService.get(app).set(resJSON.features, 'customFeatures');
       console.log('jsonquery');
     }
     this.infoCounter--;
@@ -208,10 +233,17 @@ export class HsQueryWmsService {
     }
   }
 
+  /**
+   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
+   * @param doc - Parsed HTML document from GetFeatureInfoRequest response
+   * @param layer - Target layer
+   * @param customInfoTemplate - Custom info template
+   * @param app - App identifier
+   */
   parseGmlResponse(
-    doc,
-    layer: Layer<Source>,
-    customInfoTemplate,
+    doc: HTMLElement,
+    layer: Layer<ImageWMS | TileWMS, LayerRenderer<any>>,
+    customInfoTemplate: string | boolean,
     app: string
   ): void {
     let updated = false;
@@ -219,14 +251,14 @@ export class HsQueryWmsService {
     if (features.length == 0) {
       features = doc.querySelectorAll('featureMember');
     }
-    for (const feature of features) {
+    features.forEach((feature) => {
       const layerName = getTitle(layer) || getName(layer);
       const layers = feature.getElementsByTagName('Layer');
-      for (const fioLayer of layers) {
+      for (const fioLayer of Array.from(layers)) {
         const featureName = fioLayer.attributes[0].nodeValue;
         const attrs = fioLayer.getElementsByTagName('Attribute');
         const attributes = [];
-        for (const attr of attrs) {
+        for (const attr of Array.from(attrs)) {
           attributes.push({
             'name': attr.attributes[0].nodeValue,
             'value': attr.innerHTML,
@@ -235,12 +267,12 @@ export class HsQueryWmsService {
         const group = {
           layer: layerName,
           name: featureName,
-          attributes: attributes,
-          customInfoTemplate: customInfoTemplate,
+          attributes,
+          customInfoTemplate,
         };
-        this.updateFeatureList(updated, customInfoTemplate, group, app);
+        this.updateFeatureList(updated, group, app);
       }
-      const featureNode = feature.firstChild;
+      const featureNode = feature.firstChild as any;
       const group = {
         name: 'Feature',
         layer: this.hsLayerUtilsService.getLayerName(layer),
@@ -255,28 +287,29 @@ export class HsQueryWmsService {
           updated = true;
         }
       }
-      this.updateFeatureList(updated, customInfoTemplate, group, app);
-    }
+      this.updateFeatureList(updated, group, app);
+    });
     const msGMLOutputs = doc.querySelectorAll('msGMLOutput');
     if (msGMLOutputs?.length > 0) {
       msGMLOutputs.forEach((output) => {
-        this.parseMsGmlOutput(output, updated, customInfoTemplate, app);
+        this.extractMsGMLAttributes(output, updated, customInfoTemplate, app);
       });
     } else if (doc.nodeName == 'msGMLOutput') {
-      this.parseMsGmlOutput(doc, updated, customInfoTemplate, app);
+      this.extractMsGMLAttributes(doc, updated, customInfoTemplate, app);
     }
   }
 
   /**
-   * @param output - MsGMLOutput
+   * Extract MsGMLOutput feature attributes
+   * @param output - MsGMLOutput from parsed HTML document
    * @param updated - Is feature list updated
    * @param customInfoTemplate - Custom info template
    * @param app - App identifier
    */
-  parseMsGmlOutput(
-    output: any,
+  extractMsGMLAttributes(
+    output: Element,
     updated: boolean,
-    customInfoTemplate,
+    customInfoTemplate: string | boolean,
     app: string
   ): void {
     for (const layer_i in output.children) {
@@ -293,6 +326,7 @@ export class HsQueryWmsService {
           const group = {
             name: layer_name + ' Feature',
             attributes: [],
+            customInfoTemplate,
           };
           for (const attribute in feature.children) {
             if (feature.children[attribute].childElementCount == 0) {
@@ -303,19 +337,21 @@ export class HsQueryWmsService {
               updated = true;
             }
           }
-          this.updateFeatureList(updated, customInfoTemplate, group, app);
+          this.updateFeatureList(updated, group, app);
         }
       }
     }
   }
 
   /**
-   * @param coordinate -
+   * Acknowledge that queries for clicked coordinates have been collected
+   * @param coordinate - Clicked coordinates
+   * @param app - App identifier
    */
   queriesCollected(coordinate: number[], app: string): void {
     const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
     if (
-      this.hsQueryBaseService.apps[app].features.length > 0 ||
+      this.hsQueryBaseService.get(app).features.length > 0 ||
       invisiblePopup.contentDocument.body.innerHTML.length > 30
     ) {
       this.hsQueryBaseService.getFeatureInfoCollected.next(coordinate);
@@ -325,17 +361,18 @@ export class HsQueryWmsService {
   /**
    * Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
    * @param layer - Layer to Query
-   * @param coordinate -
+   * @param coordinate - Clicked coordinates
+   * @param app - App identifier
    */
   queryWmsLayer(
     layer: Layer<ImageWMS | TileWMS>,
     coordinate: number[],
     app: string
-  ) {
+  ): void {
     if (this.isLayerWmsQueryable(layer)) {
       if (this.hsUtilsService.instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService
-          .parseRequestUrl(layer, coordinate, app)
+          .parseRequestURL(layer, coordinate, app)
           .then((res) => {
             console.log(res);
             this.infoCounter++;
@@ -396,9 +433,11 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @param layer - Selected layer
+   * Check if the selected layer is queryable
+   * @param layer - Layer selected
+   * @returns True or false
    */
-  isLayerWmsQueryable(layer): boolean {
+  isLayerWmsQueryable(layer: Layer<ImageWMS | TileWMS>): boolean {
     if (!layer.getVisible()) {
       return false;
     }

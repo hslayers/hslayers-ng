@@ -20,10 +20,19 @@ export class HsLayerNameComponent
     app: string;
   };
 
-  constructor(public hsLayerUtilsService: HsLayerUtilsService) {
+  constructor(private hsLayerUtilsService: HsLayerUtilsService) {
     super();
   }
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
+  }
+
+  /**
+   * Get title translation
+   * @param title - Title to translate
+   * @returns Translated title
+   */
+  translateTitle(title: string): string {
+    return this.hsLayerUtilsService.translateTitle(title, this.data.app);
   }
 }
