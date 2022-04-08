@@ -363,7 +363,7 @@ export class HsLayerManagerService {
       return 'XYZ';
     }
     if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
-      return 'ARCGIS';
+      return 'ArcGIS';
     }
 
     if (this.HsLayerUtilsService.isLayerIDW(layer)) {

@@ -130,22 +130,24 @@ export class InterpolatedSource extends IDW {
    * @param mapProjection - Map projection
    */
   parseFeatures(collection: any, mapProjection: string | Projection): void {
-    const dataProj = (collection.crs || collection.srs) ?? 'EPSG:4326';
-    collection.features = collection.features.filter(
-      (f) => !this.geoJSONFeatures.includes(f)
-    );
-    this.geoJSONFeatures = this.geoJSONFeatures.concat(collection.features);
-    collection.features = new GeoJSON().readFeatures(collection, {
-      dataProjection: dataProj,
-      featureProjection: mapProjection,
-    });
-    collection.features = collection.features.filter((f) => {
-      const value = f.get(this.options.weight);
-      if (value && !isNaN(parseInt(value))) {
-        return f;
-      }
-    });
-    return collection.features;
+    if (collection?.features?.length > 0) {
+      const dataProj = (collection.crs || collection.srs) ?? 'EPSG:4326';
+      collection.features = collection.features.filter(
+        (f) => !this.geoJSONFeatures.includes(f)
+      );
+      this.geoJSONFeatures = this.geoJSONFeatures.concat(collection.features);
+      collection.features = new GeoJSON().readFeatures(collection, {
+        dataProjection: dataProj,
+        featureProjection: mapProjection,
+      });
+      collection.features = collection.features.filter((f) => {
+        const value = f.get(this.options.weight);
+        if (value && !isNaN(parseInt(value))) {
+          return f;
+        }
+      });
+      return collection.features;
+    }
   }
 
   /**
@@ -177,12 +179,10 @@ export class InterpolatedSource extends IDW {
   }
   /**
    * Normalize weight values to be between 0 and 100
-   * @param features - OL feature array
+   * //https://www.statology.org/normalize-data-between-0-and-100/
    * @param weight - Weight property name
    */
   normalizeWeight(weight: string): void {
-    //https://www.statology.org/normalize-data-between-0-and-100/
-
     const features = this.featureCache.getFeatures();
     const weightValues = features.map((f) => parseInt(f.get(weight)));
     const min = Math.min(...weightValues);
