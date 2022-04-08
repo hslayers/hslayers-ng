@@ -7,7 +7,7 @@
             <ng-template map-host></ng-template>
             <hs-panel-container [service]="HsOverlayPanelContainerService" [app]="app"></hs-panel-container>
         </div>
-        <div class="hs-panelspace" *ngIf="HsLayoutService.sidebarVisible(app)"
+        <div class="hs-panelspace" [hidden]="!HsLayoutService.sidebarVisible(app)"
             [ngClass]="{'labels': HsLayoutService.apps[app].sidebarLabels, 'buttons': HsLayoutService.apps[app].sidebarButtons}">
             <div class="hs-panelspace-wrapper me-1">
                 <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
