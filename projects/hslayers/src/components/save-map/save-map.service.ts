@@ -476,7 +476,12 @@ export class HsSaveMapService {
     const data = {
       expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
       layers: this.HsMapService.getLayersArray(app)
-        .filter((lyr) => !this.internalLayers.includes(lyr))
+        .filter(
+          (lyr) =>
+            !this.internalLayers.includes(lyr) &&
+            (getShowInLayerManager(lyr) == undefined ||
+              getShowInLayerManager(lyr) == true)
+        )
         .map((lyr: Layer<Source>) => this.layer2json(lyr, app)),
     };
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
