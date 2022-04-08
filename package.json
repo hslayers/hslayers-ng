@@ -113,7 +113,7 @@
     "eslint-plugin-jsdoc": "39.0.0",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-tsdoc": "^0.2.14",
+    "eslint-plugin-tsdoc": "^0.2.15",
     "eslint-stats": "^1.0.1",
     "jasmine-core": "~4.0.1",
     "jasmine-spec-reporter": "~7.0.0",
