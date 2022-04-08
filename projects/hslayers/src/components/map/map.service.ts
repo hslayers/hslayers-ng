@@ -1,6 +1,7 @@
 /* eslint-disable no-eq-null */
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
+import ImageWrapper from 'ol/Image';
 import VectorLayer from 'ol/layer/Vector';
 import proj4 from 'proj4';
 import {
@@ -11,6 +12,7 @@ import {
   Source,
   ImageStatic as Static,
   TileArcGISRest,
+  TileImage,
   TileWMS,
   Vector as VectorSource,
   WMTS,
@@ -29,7 +31,7 @@ import {
   PinchZoom,
 } from 'ol/interaction';
 import {Extent} from 'ol/extent';
-import {Feature, Kinetic, Map, MapBrowserEvent, View} from 'ol';
+import {Feature, ImageTile, Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer, Tile} from 'ol/layer';
 import {Projection, transform, transformExtent} from 'ol/proj';
@@ -88,25 +90,10 @@ export class HsMapService {
   puremap: any;
   /**
    * @public
-   * 400
+   * @default 400
    * Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    */
   duration = 400;
-
-  /**
-   * @public
-   * Set of default map interactions used in HSLayers (
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.MouseWheelZoom.html MouseWheelZoom},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchRotate.html PinchRotate},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchZoom.html PinchZoom},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragPan.html DragPan},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragZoom.html DragZoom},
-   *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragRotate.html DragRotate} )
-   */
-
   element: any;
   visible: boolean;
   /** Copy of the default_view for map resetting purposes */
@@ -238,8 +225,8 @@ export class HsMapService {
 
   /**
    * @public
-   * Get geometry feature by its id
-   * @param fid - Feature id
+   * Get geometry feature by its ID
+   * @param fid - Feature ID
    * @param app - App identifier
    * @returns Feature
    */
@@ -342,8 +329,10 @@ export class HsMapService {
   }
 
   /**
+   * Initialization function for HSLayers map object.
+   * Initialize map with basic interaction, scale line and watcher for map view changes.
+   * When default controller is used, it's called automatically, otherwise it must be called before other modules dependent on map object are loaded.
    * @public
-   * Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
    * @param mapElement - Map html element
    * @param app - App identifier
    */
@@ -362,12 +351,6 @@ export class HsMapService {
           collapsed: true,
         },
       });
-      /**
-       * @public
-       * @type {object}
-       * @description Set of default map controls used in HSLayers, may be loaded from config file
-       */
-
       defaultDesktopControls.removeAt(1);
       defaultDesktopControls.push(new ScaleLine());
 
@@ -572,11 +555,11 @@ export class HsMapService {
   }
 
   /**
+   * Find layer object by title of layer
    * @public
    * @param title - Title of the layer (from layer creation)
    * @param app - App identifier
-   * @returns Ol.layer object
-   * Find layer object by title of layer
+   * @returns OL.layer object
    */
   findLayerByTitle(title: string, app: string) {
     const layers = this.getLayersArray(app);
@@ -590,26 +573,26 @@ export class HsMapService {
   }
 
   /**
-   * @param existingLayers - Layer 1. Usually the one which is already added to map
+   * @param existingLayer - Layer 1. Usually the one which is already added to map
    * @param newLayer - Layer 2. Usually the one which will be added to map
    * @returns True or false
    */
-  layersEqual(existingLayers, newLayer): boolean {
+  layersEqual(existingLayer, newLayer): boolean {
     if (newLayer === 'undefined') {
       console.warn(
         'Checking duplicity for undefined layer. Why are we doing this?'
       );
       return true;
     }
-    if (existingLayers.getSource === 'undefined') {
+    if (existingLayer.getSource === 'undefined') {
       return false;
     }
     if (newLayer.getSource === 'undefined') {
       return false;
     }
-    const existingSource = existingLayers.getSource();
+    const existingSource = existingLayer.getSource();
     const newSource = newLayer.getSource();
-    const existingTitle = getTitle(existingLayers);
+    const existingTitle = getTitle(existingLayer);
     const newTitle = getTitle(newLayer);
     const existingSourceType = typeof existingSource;
     const newSourceType = typeof newSource;
@@ -640,7 +623,7 @@ export class HsMapService {
    * Checks if a layer with the same title already exists in the map
    * @param lyr - A layer to check
    * @param app - App identifier
-   * @returns True or false
+   * @returns True if layer is already present in the map, false otherwise
    */
   layerAlreadyExists(lyr: Layer, app: string): boolean {
     const duplicateLayers = this.getLayersArray(app ?? DEFAULT).filter(
@@ -682,10 +665,10 @@ export class HsMapService {
   }
 
   /**
-   * @param lyr - {Layer} Layer which to proxify if needed
-   * @param app - App identifier
-   * Proxify layer based on its source object type and if its tiled or not.
+   * Proxify layer based on its source object type and if it's tiled or not.
    * Each underlying OL source class has its own way to override imagery loading.
+   * @param lyr - Layer which to proxify if needed
+   * @param app - App identifier
    */
   proxifyLayer(lyr: Layer<Source>, app: string): void {
     const source = lyr.getSource();
@@ -698,7 +681,7 @@ export class HsMapService {
     }
     if (this.hsUtilsService.instOf(source, WMTS)) {
       (source as WMTS).setTileLoadFunction((i, s) =>
-        this.simpleImageryProxy(i, s, app)
+        this.simpleImageryProxy(i as ImageTile, s, app)
       );
     }
     if (
@@ -772,12 +755,12 @@ export class HsMapService {
   }
 
   /**
-   * @public
-   * @param visibilityOverrides - Override the visibility using an array layer titles, which
-   * should be visible. Usefull when the layer visibility is stored in a URL parameter
-   * @param app - App identifier
    * Add all layers from app config (box_layers and default_layers) to the map.
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
+   * @public
+   * @param visibilityOverrides - Override the visibility using an array layer titles, which
+   * should be visible. Useful when the layer visibility is stored in a URL parameter
+   * @param app - App identifier
    */
   repopulateLayers(visibilityOverrides: string[], app: string): void {
     const appConfig = this.hsConfig.get(app);
@@ -811,6 +794,7 @@ export class HsMapService {
   }
 
   /**
+   * Get map projection currently used in the map view
    * @public
    * @param app - App identifier
    * Get current map projection
@@ -823,6 +807,7 @@ export class HsMapService {
   }
 
   /**
+   * For a vector layer with a vector source, determines if it includes points, lines and/or polygons and stores the information in hasPoint, hasLine, hasPoly properties of the source.
    * @public
    * @param layer - Vector layer selected
    * Get vector type from the layer selected
@@ -850,8 +835,8 @@ export class HsMapService {
   }
 
   /**
+   * Check vector geometry types as found from vector source provided
    * @param src - Vector source
-   * Check vector geometry types as found from vectorsource provided
    */
   vectorSourceTypeComputer(src): void {
     src.getFeatures().forEach((f) => {
@@ -879,9 +864,9 @@ export class HsMapService {
   }
 
   /**
+   * Reset map to state configured in app config (reload all layers and set default view)
    * @public
    * @param app - App identifier
-   * Reset map to state configured in app config (reload all layers and set default view)
    */
   reset(app: string): void {
     this.removeAllLayers(app);
@@ -890,9 +875,9 @@ export class HsMapService {
   }
 
   /**
+   * Reset map view to view configured in app config
    * @public
    * @param app - App identifier
-   * Reset map view to view configured in app config
    */
   resetView(app: string): void {
     const view = this.getMap(app ?? DEFAULT).getView();
@@ -913,12 +898,12 @@ export class HsMapService {
   }
 
   /**
+   * Checks if layer title is present in an array of layer titles.
+   * Used to set visibility by URL parameter which contains visible layer titles
    * @public
    * @param lyr - Layer for which to determine visibility
    * @param array - Layer title to check in.
    * @returns Detected visibility of layer
-   * Checks if layer title is present in an array of layer titles.
-   * Used to set visibility by URL parameter which contains visible layer titles
    */
   layerTitleInArray(lyr: Layer, array: string[]) {
     if (array && getTitle(lyr) != undefined) {
@@ -928,9 +913,9 @@ export class HsMapService {
   }
 
   /**
+   * Get ol-layer canvas element from DOM
    * @public
    * @param app - App identifier
-   * Get ol-layer canvas element from DOM
    * @returns DOM NodeListOf<HTMLCanvasElement>
    */
   getCanvases(app: string): NodeListOf<HTMLCanvasElement> {
@@ -940,10 +925,10 @@ export class HsMapService {
   }
 
   /**
+   * Get ol-layer canvas element from DOM
    * @public
    * @param type - Scale type (scaleline or scalebar)
    * @param app - App identifier
-   * Get ol-layer canvas element from DOM
    * @returns DOM element
    */
   getScaleLineElement(type: 'scaleline' | 'scalebar', app: string): Element {
@@ -961,22 +946,24 @@ export class HsMapService {
   }
 
   /**
+   * Proxify layer loader to work with layers from other sources than app
    * @public
    * @param lyr - Layer to proxify
    * @param tiled - Info if layer is tiled
    * @param app - App identifier
-   * Proxify layer loader to work with layers from other sources than app
-   * @returns URL
+   * @returns proxified URL
    */
-  proxifyLayerLoader(lyr, tiled: boolean, app: string): string {
+  proxifyLayerLoader(lyr: Layer, tiled: boolean, app: string): string {
     const src = lyr.getSource();
-    if (getEnableProxy(lyr) && getEnableProxy(lyr) == false) {
+    if (getEnableProxy(lyr) !== undefined && getEnableProxy(lyr) == false) {
       return;
     }
     if (tiled) {
+      //TODO: refactor: tileUrlFunction() seems redundant
       const tile_url_function =
-        src.getTileUrlFunction() || src.tileUrlFunction();
-      src.setTileUrlFunction((b, c, d) => {
+        (src as TileImage).getTileUrlFunction() ||
+        (src as any).tileUrlFunction();
+      (src as TileImage).setTileUrlFunction((b, c, d) => {
         let url = tile_url_function.call(src, b, c, d);
         if (getDimensions(lyr)) {
           const dimensions = getDimensions(lyr);
@@ -990,50 +977,59 @@ export class HsMapService {
           return this.hsUtilsService.proxify(url, app);
         }
       });
-      src.setTileLoadFunction((tile, src) => {
+      (src as TileImage).setTileLoadFunction((tile: ImageTile, src) => {
         const laymanEp = this.hsConfig
           .get(app)
           .datasources?.find((ep) => ep.type == 'layman');
         if (laymanEp && src.startsWith(laymanEp.url)) {
           this.laymanWmsLoadingFunction(tile, src);
         } else {
-          tile.getImage().src = src;
+          (tile.getImage() as HTMLImageElement).src = src;
         }
       });
     } else {
-      src.setImageLoadFunction((i, s) => this.simpleImageryProxy(i, s, app));
+      (src as ImageWMS | ImageArcGISRest).setImageLoadFunction((i, s) =>
+        this.simpleImageryProxy(i, s, app)
+      );
     }
   }
 
   /**
+   * Proxify loader for any imagery layer, either tiled or not
    * @public
-   * @param image -
-   * @param src -
+   * @param image - Image or ImageTile as required by setImageLoadFunction() in ImageWMS, ImageArcGISRest and WMTS sources
+   * @param src - Original (unproxified) source URL
    * @param app - App identifier
-   *
    */
-  simpleImageryProxy(image, src, app: string): void {
+  simpleImageryProxy(
+    image: ImageWrapper | ImageTile,
+    src: string,
+    app: string
+  ): void {
     if (src.indexOf(this.hsConfig.get(app).proxyPrefix) == 0) {
-      image.getImage().src = src;
-    } else {
-      const laymanEp = this.hsConfig
-        .get(app)
-        .datasources?.find((ep) => ep.type == 'layman');
-      if (laymanEp && src.startsWith(laymanEp.url)) {
-        this.laymanWmsLoadingFunction(image, src);
-      } else {
-        image.getImage().src = this.hsUtilsService.proxify(src, app); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
-      }
+      (image.getImage() as HTMLImageElement).src = src;
+      return;
     }
+    const laymanEp = this.hsConfig
+      .get(app)
+      .datasources?.find((ep) => ep.type == 'layman');
+    if (laymanEp && src.startsWith(laymanEp.url)) {
+      this.laymanWmsLoadingFunction(image, src);
+      return;
+    }
+    (image.getImage() as HTMLImageElement).src = this.hsUtilsService.proxify(
+      src,
+      app
+    ); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
   }
 
   /**
+   * Create a loader function for Layman WMS layers specifically
    * @public
-   * @param image -
-   * @param src -
-   *
+   * @param image - ol/Image, the image requested via WMS source
+   * @param src - Original (unproxified) source URL
    */
-  laymanWmsLoadingFunction(image, src: string): void {
+  laymanWmsLoadingFunction(image: ImageWrapper | ImageTile, src: string): void {
     const xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.responseType = 'arraybuffer';
@@ -1043,18 +1039,18 @@ export class HsMapService {
       const blob = new Blob([arrayBufferView], {type: 'image/png'});
       const urlCreator = window.URL || window.webkitURL;
       const imageUrl = urlCreator.createObjectURL(blob);
-      image.getImage().src = imageUrl;
+      (image.getImage() as HTMLImageElement).src = imageUrl;
     });
     xhr.send();
   }
 
   /**
+   * Move map and zoom to specified coordinate/zoom level
    * @public
    * @param x - X coordinate of new center
    * @param y - Y coordinate of new center
    * @param zoom - New zoom level
    * @param app - App identifier
-   * Move map and zoom to specified coordinate/zoom level
    */
   moveToAndZoom(x: number, y: number, zoom: number, app: string): void {
     const view = this.getMap(app ?? DEFAULT).getView();
@@ -1063,9 +1059,9 @@ export class HsMapService {
   }
 
   /**
+   * Get current map extent
    * @public
    * @param app - App identifier
-   * Get current map extent
    * @returns Extent
    */
   getMapExtent(app: string): Extent {
@@ -1079,9 +1075,9 @@ export class HsMapService {
   }
 
   /**
+   * Get current map extent in WGS84 (EPSG:4326) projection
    * @public
    * @param app - App identifier
-   * Get current map extent in 4326 projection
    * @returns Extent
    */
   getMapExtentInEpsg4326(app: string): Extent {
@@ -1094,10 +1090,10 @@ export class HsMapService {
   }
 
   /**
+   * Fit extent into map view
    * @public
    * @param extent - Extent provided
    * @param app - App identifier
-   * Fit extent in to map view
    */
   fitExtent(extent: number[], app: string): void {
     this.getMap(app ?? DEFAULT)
@@ -1106,9 +1102,9 @@ export class HsMapService {
   }
 
   /**
+   * Get ol.Map object from service
    * @public
    * @param app - App identifier
-   * Get ol.Map object from service
    * @returns ol.Map
    */
   getMap(app: string): Map {
@@ -1116,9 +1112,9 @@ export class HsMapService {
   }
 
   /**
+   * Remove all map layers
    * @public
    * @param app - App identifier
-   * Remove all map layers
    */
   removeAllLayers(app: string): void {
     const to_be_removed = [];
@@ -1133,9 +1129,9 @@ export class HsMapService {
   }
 
   /**
+   * Remove all map controls
    * @public
    * @param app - App identifier
-   * Remove all map controls
    */
   removeAllControls(app: string): void {
     [
@@ -1149,9 +1145,9 @@ export class HsMapService {
   }
 
   /**
+   * Remove all map interactions
    * @public
    * @param app - App identifier
-   * Remove all map interactions
    */
   removeAllInteractions(app: string): void {
     this.getMap(app ?? DEFAULT)

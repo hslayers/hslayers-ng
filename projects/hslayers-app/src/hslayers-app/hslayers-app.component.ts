@@ -23,7 +23,7 @@ import {
 
 import SparqlJson from 'hslayers-ng/src/common/layers/hs.source.SparqlJson';
 import {HsConfig} from 'hslayers-ng/src/config.service';
-import {InterpolatedSource} from 'hslayers-ng/src/common/layers/interpolated-source';
+import {InterpolatedSource} from 'hslayers-ng/src/common/layers/hs.source.interpolated';
 
 @Component({
   selector: 'hslayers-app',

@@ -15,7 +15,7 @@ import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
 import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
-import {InterpolatedSource} from 'hslayers-ng/src/common/layers/interpolated-source';
+import {InterpolatedSource} from 'hslayers-ng/src/common/layers/hs.source.interpolated';
 import {PopupWidgetComponent} from './popup-widget.component';
 
 @Component({
@@ -77,9 +77,7 @@ export class HslayersAppComponent {
                 catchError(async (e) => {})
               )
             );
-            if (response?.features?.length > 0) {
-              return interpolatedSource.parseFeatures(response, projection);
-            }
+            return interpolatedSource.parseFeatures(response, projection);
           } catch (error) {}
         },
         colorMap: 'jet',
