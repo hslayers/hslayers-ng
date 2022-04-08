@@ -67,11 +67,12 @@ export class HsToastService {
    * Callback method to remove Toast DOM element from view
    */
   remove(toast: Toast, app: string): void {
-    this.apps[app].toasts = this.apps[app].toasts.filter((t) => t !== toast);
+    const appRef = this.get(app);
+    appRef.toasts = appRef.toasts.filter((t) => t !== toast);
   }
 
   removeByText(text: string, app: string): void {
-    const found = this.apps[app].toasts.filter((t) => t.textOrTpl === text);
+    const found = this.get(app).toasts.filter((t) => t.textOrTpl === text);
     if (found?.length > 0) {
       for (const f of found) {
         this.remove(f, app);
@@ -88,17 +89,18 @@ export class HsToastService {
     app: string,
     options: any = {}
   ): void {
-    if (this.apps[app].toasts.length >= 5) {
-      this.apps[app].toasts = this.apps[app].toasts.slice(-4);
+    const appRef = this.get(app);
+    if (appRef.toasts.length >= 5) {
+      appRef.toasts = appRef.toasts.slice(-4);
     }
     if (
-      !this.apps[app].toasts.some(
+      !appRef.toasts.some(
         (toast) =>
           toast.textOrTpl === textOrTpl &&
           toast?.serviceCalledFrom === options.serviceCalledFrom
       )
     ) {
-      this.apps[app].toasts.push({textOrTpl, ...options});
+      appRef.toasts.push({textOrTpl, ...options});
     }
   }
   /**
