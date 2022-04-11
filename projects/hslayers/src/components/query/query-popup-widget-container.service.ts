@@ -27,7 +27,7 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
 
   /**
    * Initialize query popup widgets
-   * @param widgetNames - Widget name
+   * @param widgetNames - Array of widget names
    * @param app - App identifier
    * @param panelObserver - (Optional)
    */

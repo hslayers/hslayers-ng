@@ -201,7 +201,7 @@ export class HsQueryBaseService {
 
   /**
    * Get invisible popup element
-   * @returns HTML frame element, if the app ir running in a browser
+   * @returns HTML frame element, if the app is running in a browser
    */
   getInvisiblePopup(): HTMLIFrameElement {
     if (this.hsUtilsService.runningInBrowser()) {
@@ -225,7 +225,7 @@ export class HsQueryBaseService {
   /**
    * Fill popup iframe and resize it to fit the content
    * @param response - Response of GetFeatureInfoRequest
-   * @param append - If true, the response will be appended to iframe inner HTML, otherwise, will be replaced
+   * @param append - If true, the response will be appended to iframe's inner HTML, otherwise its content will be replaced
    * @param app - App identifier
    */
   fillIframeAndResize(response: string, append: boolean, app: string): void {

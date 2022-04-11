@@ -252,7 +252,7 @@ export class HsQueryVectorService {
     return center;
   }
   /**
-   * Adding a default stats to query based on feature geom type
+   * Adding a default stats to query based on feature geometry type
    * @param f - Selected feature from the map
    * @param app - App identifier
    * @returns Default feature stats
@@ -292,7 +292,7 @@ export class HsQueryVectorService {
    * Find layer source from the feature selected
    * @param feature - Selected feature from the map
    * @param app - App identifier
-   * @returns Vectorlayer source
+   * @returns Vector layer's source
    */
   olSource(feature: Feature<Geometry>, app: string): VectorSource<Geometry> {
     const layer = this.hsMapService.getLayerForFeature(feature, app);
@@ -309,7 +309,7 @@ export class HsQueryVectorService {
    * Check if feature is removable
    * @param feature - Selected feature from the map
    * @param app - App identifier
-   * @returns True or false
+   * @returns True if feature is removable, false otherwise
    */
   isFeatureRemovable(feature: Feature<Geometry>, app: string): boolean {
     const source = this.olSource(feature, app);

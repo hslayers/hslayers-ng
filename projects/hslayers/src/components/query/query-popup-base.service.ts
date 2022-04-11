@@ -97,7 +97,7 @@ export class HsQueryPopupBaseService {
   }
 
   /**
-   * Serialize feature attributes
+   * Get feature attributes in an array, where each attribute is represented as {key, value, displayFunction}.
    * @param feature - Feature selected
    * @param app - App identifier
    * @returns Serialized attributes

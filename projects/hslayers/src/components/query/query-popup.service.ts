@@ -36,7 +36,7 @@ export class HsQueryPopupService
 
   /**
    * Register and set hover popup overlay
-   * @param nativeElement - Popup html content
+   * @param nativeElement - Popup HTML content
    * @param app - App identifier
    */
   registerPopup(nativeElement: HTMLElement, app: string): void {

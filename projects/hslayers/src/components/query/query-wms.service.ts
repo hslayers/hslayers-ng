@@ -41,7 +41,7 @@ export class HsQueryWmsService {
   ) {}
 
   /**
-   * Initialize the query Wms service data and subscribers
+   * Initialize the query WMS service data and subscribers
    * @param _app - App identifier
    */
   init(_app: string): void {
@@ -101,7 +101,7 @@ export class HsQueryWmsService {
 
   /**
    * Request information about clicked WMS layer coordinates
-   * @param url - Request url
+   * @param url - Request URL
    * @param infoFormat - Request information format
    * @param coordinate - Clicked coordinates
    * @param layer - Target layer
@@ -154,7 +154,7 @@ export class HsQueryWmsService {
   }
 
   /**
-   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
+   * Parse Information from GetFeatureInfo request. If result came in XML format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
    * @param response - Response of GetFeatureInfoRequest
    * @param infoFormat - Format of GetFeatureInfoResponse
    * @param coordinate - Coordinate of request
@@ -232,7 +232,7 @@ export class HsQueryWmsService {
   }
 
   /**
-   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
+   * Parse Information from GetFeatureInfo request. If result came in XML format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
    * @param doc - Parsed HTML document from GetFeatureInfoRequest response
    * @param layer - Target layer
    * @param customInfoTemplate - Custom info template
@@ -438,7 +438,7 @@ export class HsQueryWmsService {
   /**
    * Check if the selected layer is queryable
    * @param layer - Layer selected
-   * @returns True or false
+   * @returns True if the layer is queryable, false otherwise
    */
   isLayerWmsQueryable(layer: Layer<ImageWMS | TileWMS | WMTS>): boolean {
     if (!layer.getVisible()) {

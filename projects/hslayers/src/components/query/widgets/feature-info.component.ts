@@ -48,7 +48,7 @@ export class HsFeatureInfoComponent
   }
 
   /**
-   * Serialize feature name
+   * Serialize feature name. Searches for 'title', 'name' and 'label' properties. If the feature is a cluster, a description of the cluster is returned instead.
    * @param feature - Feature selected
    * @returns Serialized feature name
    */
@@ -112,7 +112,7 @@ export class HsFeatureInfoComponent
   /**
    * Check if feature is a cluster
    * @param feature - Feature selected
-   * @returns True or false
+   * @returns True if the feature is a cluster, false otherwise
    */
   isClustered(feature: Feature<Geometry>): boolean {
     return getFeatures(feature) && getFeatures(feature).length > 0;
@@ -121,7 +121,7 @@ export class HsFeatureInfoComponent
   /**
    * Check if feature has sub-features
    * @param feature - Feature selected
-   * @returns True or false
+   * @returns True if this cluster has more than 1 sub-feature, false otherwise
    */
   hasMultipleSubFeatures(feature: Feature<Geometry>): boolean {
     return getFeatures(feature).length > 1;
@@ -130,7 +130,7 @@ export class HsFeatureInfoComponent
   /**
    * Check if feature is removable
    * @param feature - Feature selected
-   * @returns True or false
+   * @returns True if the feature is removable, false otherwise
    */
   isFeatureRemovable(feature: Feature<Geometry>): boolean {
     return this.hsQueryVectorService.isFeatureRemovable(feature, this.data.app);

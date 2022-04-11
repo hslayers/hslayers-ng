@@ -74,7 +74,7 @@ export class HsClearLayerComponent
   /**
    * Check if layer is editable
    * @param layer - Layer selected
-   * @returns True or false
+   * @returns True if the layer is editable, false otherwise
    */
   isLayerEditable(layer: Layer<Source>): boolean {
     return this.hsLayerUtilsService.isLayerEditable(layer);
