@@ -13,8 +13,12 @@ import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-c
   templateUrl: './layman-login.html',
 })
 export class HsLaymanLoginComponent
-  implements HsDialogComponent, OnDestroy, OnInit {
-  @Input() data;
+  implements HsDialogComponent, OnDestroy, OnInit
+{
+  @Input() data: {
+    url: string;
+    app: string;
+  };
   viewRef: ViewRef;
   url: SafeResourceUrl;
   authChangeSubscription: Subscription;
@@ -32,7 +36,7 @@ export class HsLaymanLoginComponent
     this.authChangeSubscription.unsubscribe();
   }
   ngOnInit(): void {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data);
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.url);
   }
   close(): void {
     this.HsDialogContainerService.destroy(this, this.data.app);
