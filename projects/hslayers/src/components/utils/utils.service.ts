@@ -550,10 +550,10 @@ export function generateUuid(): string {
 }
 
 /**
- * Check if object is an instance of a class
- * @param obj -
- * @param type -
- * @returns true when obj is an instance of type, false otherwise
+ * Check if object is an instance of a specific class
+ * @param obj - any object to check
+ * @param type - class type itself
+ * @returns true when obj is an instance of the provided type, false otherwise
  */
 export function instOf(obj: any, type: any): boolean {
   return _instanceOf(obj, type);
@@ -581,7 +581,7 @@ export function _instanceOf(obj: any, klass: any): boolean {
 
 /**
  * Check if object is a function
- * @param functionToCheck -
+ * @param functionToCheck - object to check, presumably a function
  * @returns true when input is a function, false otherwise
  */
 export function isFunction(functionToCheck: any): boolean {

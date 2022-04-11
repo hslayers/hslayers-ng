@@ -75,8 +75,8 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Check if thhis feature is removable
-   * @returns True or false
+   * Check if this feature is removable
+   * @returns True if the feature can be removed from the map, false otherwise
    */
   isFeatureRemovable(): boolean {
     return this.olFeature()
@@ -145,7 +145,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Set edit type
+   * Set edit type (move or copy)
    * @param type - Type selected
    */
   editTypeSelected(type: 'move' | 'copy'): void {
@@ -154,7 +154,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Toggle edit menu
+   * Show or hide edit menu
    */
   toggleEditMenu(): void {
     if (this.editType) {
