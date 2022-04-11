@@ -81,7 +81,7 @@ export class HsLaymanCurrentUserComponent {
     }
     this.HsDialogContainerService.create(
       HsLaymanLoginComponent,
-      this.authUrl(),
+      {url: this.authUrl()},
       this.app
     );
   }
