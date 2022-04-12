@@ -150,6 +150,9 @@ export class HsSensorsService {
       if (appRef.endpoint.liteApiPath == undefined) {
         appRef.endpoint.liteApiPath = 'senslog-lite2';
       }
+      if (appRef.endpoint.senslog1Path == undefined) {
+        appRef.endpoint.senslog1Path = 'senslog1';
+      }
       this.hsSensorsUnitDialogService.get(app).endpoint = appRef.endpoint;
     }
   }
@@ -185,9 +188,11 @@ export class HsSensorsService {
     unit.expanded = !unit.expanded;
     //this.selectSensor(unit.sensors[0]);
     if (
-      !this.hsLayoutService
+      !this.hsDialogContainerService
         .get(app)
-        .contentWrapper.querySelector('.hs-sensor-unit-dialog')
+        .dialogs.some((d) =>
+          this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
+        )
     ) {
       this.hsDialogContainerService.create(
         HsSensorsUnitDialogComponent,
@@ -342,7 +347,7 @@ export class HsSensorsService {
 
       .get(
         this.hsUtilsService.proxify(
-          `${appRef.endpoint.url}/senslog1/SensorService`,
+          `${appRef.endpoint.url}/${appRef.endpoint.senslog1Path}/SensorService`,
           app
         ),
         {
