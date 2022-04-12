@@ -50,9 +50,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       appRef.panelObserver = new ReplaySubject<HsPanelItem>();
     }
     for (const p of appRef.panels) {
-      if (p.cleanup) {
-        p.cleanup();
-      }
       this.service.destroy(p, this.app);
     }
     this.ngUnsubscribe.next();

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewRef} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
 import {HsDialogComponent} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
@@ -8,13 +8,20 @@ import {HsUtilsService} from 'hslayers-ng';
 import {Aggregate} from './types/aggregate.type';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {Interval} from './types/interval.type';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'hs-sensor-unit',
   templateUrl: './partials/unit-dialog.component.html',
 })
-export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
+export class HsSensorsUnitDialogComponent
+  implements HsDialogComponent, OnInit, OnDestroy
+{
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
+  dialogStyle;
+  private ngUnsubscribe = new Subject<void>();
+  viewRef: ViewRef;
+  data: any;
 
   constructor(
     private hsLayoutService: HsLayoutService,
@@ -23,8 +30,6 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
     private hsUtilsService: HsUtilsService,
     public elementRef: ElementRef
   ) {}
-  viewRef: ViewRef;
-  data: any;
 
   ngOnInit(): void {
     this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible = true;
@@ -33,6 +38,13 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
     this.timeButtonClicked(
       this.hsSensorsUnitDialogService.get(this.data.app).intervals[2]
     );
+    this.hsLayoutService.panelSpaceWidth
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app, width}) => {
+        if (app == this.data.app) {
+          this.calculateDialogStyle(app, width);
+        }
+      });
   }
 
   /**
@@ -138,25 +150,19 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
       );
   }
 
-  /**
-   * Set unit dialog style
-   */
-  dialogStyle() {
-    return {
-      'visibility': this.hsSensorsUnitDialogService.get(this.data.app)
-        .unitDialogVisible
+  calculateDialogStyle(app: string, panelSpaceWidth: number) {
+    const padding = 20;
+    const widthWithoutPanelSpace =
+      'calc(100% - ' + (panelSpaceWidth + padding) + 'px)';
+    const sidebarAtBot = this.hsLayoutService.sidebarBottom();
+    this.dialogStyle = {
+      'visibility': this.hsSensorsUnitDialogService.get(app).unitDialogVisible
         ? 'visible'
         : 'hidden',
-      'left': this.hsLayoutService.sidebarBottom()
-        ? '3px'
-        : this.hsLayoutService.panelSpaceWidth(this.data.app) + 10 + 'px',
-      'width': this.hsLayoutService.sidebarBottom()
-        ? '100%'
-        : 'calc(' +
-          this.hsLayoutService.widthWithoutPanelSpace(this.data.app) +
-          ')',
-      'bottom': this.hsLayoutService.sidebarBottom() ? '46.5em' : '0',
-      'height': this.hsLayoutService.sidebarBottom() ? '5em' : 'auto',
+      'left': sidebarAtBot ? '3px' : panelSpaceWidth + padding + 'px',
+      'width': sidebarAtBot ? '100%' : `calc(${widthWithoutPanelSpace})`,
+      'bottom': sidebarAtBot ? '46.5em' : '0',
+      'height': sidebarAtBot ? '5em' : 'auto',
     };
   }
 
@@ -174,5 +180,10 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
    */
   getUnitDescription(): string {
     return this.hsSensorsUnitDialogService.get(this.data.app).unit.description;
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

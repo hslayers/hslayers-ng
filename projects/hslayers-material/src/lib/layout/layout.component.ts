@@ -22,16 +22,13 @@ export class HsMatLayoutComponent implements AfterViewInit {
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
   @Input() app = 'default';
+  panelSpaceWidth: number;
   panelVisible(which, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, scope);
   }
 
   panelEnabled(which, status?): boolean {
     return this.HsLayoutService.panelEnabled(which, status);
-  }
-
-  panelSpaceWidth() {
-    return this.HsLayoutService.panelSpaceWidth(this.app);
   }
 
   constructor(
@@ -74,6 +71,11 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //    this.HsThemeService.setLightTheme();
     //    break;
     //}
+    this.HsLayoutService.panelSpaceWidth.subscribe(({app, width}) => {
+      if (this.app == app) {
+        this.panelSpaceWidth = width;
+      }
+    });
   }
 
   ngAfterViewInit() {

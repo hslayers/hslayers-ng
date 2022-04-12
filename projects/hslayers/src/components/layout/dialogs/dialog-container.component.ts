@@ -49,7 +49,10 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
 
   destroyDialog(dialog: HsDialogComponent): void {
     const viewContainerRef = this.dialogHost.viewContainerRef;
-    viewContainerRef.remove(viewContainerRef.indexOf(dialog.viewRef));
+    const index = viewContainerRef.indexOf(dialog.viewRef);
+    if (index > -1) {
+      viewContainerRef.remove(index);
+    }
   }
 
   loadDialog(dialogItem: HsDialogItem): void {
@@ -59,10 +62,12 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
       );
     const viewContainerRef = this.dialogHost.viewContainerRef;
     //    viewContainerRef.clear();
-
     const componentRef = viewContainerRef.createComponent(componentFactory);
     (<HsDialogComponent>componentRef.instance).viewRef = componentRef.hostView;
     (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
     (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;
+    this.HsDialogContainerService.get(this.app).dialogs.push(
+      componentRef.instance as HsDialogComponent
+    );
   }
 }

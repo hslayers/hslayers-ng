@@ -25,6 +25,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
+  panelSpaceWidth: number;
 
   panelVisible(which, app: string, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, app, scope);
@@ -32,9 +33,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
 
   panelEnabled(which, status?): boolean {
     return this.HsLayoutService.panelEnabled(which, status);
-  }
-  panelSpaceWidth() {
-    return this.HsLayoutService.panelSpaceWidth(this.app);
   }
 
   constructor(
@@ -77,6 +75,14 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     this.HsLayoutService.mapSpaceRef.next({
       viewContainerRef: this.mapHost.viewContainerRef,
       app: this.app,
+    });
+    this.HsLayoutService.panelSpaceWidth.subscribe(({app, width}) => {
+      if (this.app == app) {
+        this.panelSpaceWidth = width;
+      }
+    });
+    window.addEventListener('resize', () => {
+      this.HsLayoutService.updPanelSpaceWidth(this.app);
     });
   }
 
