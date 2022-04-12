@@ -36,6 +36,14 @@ export class HsDialogContainerService {
   }
 
   destroy(component: HsDialogComponent, app: string): void {
+    if (component.cleanup) {
+      component.cleanup();
+    }
+    const dialogCollection = this.get(app).dialogs;
+    const dialogIx = dialogCollection.findIndex((d) => d == component);
+    if (dialogIx > -1) {
+      dialogCollection.splice(dialogIx, 1);
+    }
     this.get(app).dialogDestroyObserver.next(component);
   }
 }

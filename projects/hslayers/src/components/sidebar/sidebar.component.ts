@@ -78,6 +78,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   toggleSidebar(): void {
     this.HsLayoutService.get(this.app).sidebarExpanded =
       !this.HsLayoutService.get(this.app).sidebarExpanded;
+    this.HsLayoutService.updPanelSpaceWidth(this.app);
     setTimeout(() => {
       this.HsCoreService.updateMapSize(this.app);
     }, 110);

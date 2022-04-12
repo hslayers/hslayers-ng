@@ -121,6 +121,10 @@ export class HsLayoutService {
     app: string;
   }> = new BehaviorSubject(undefined);
 
+  panelSpaceWidth = new BehaviorSubject<{app: string; width: number}>({
+    app: 'default',
+    width: 425,
+  });
   constructor(
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
@@ -152,6 +156,14 @@ export class HsLayoutService {
     setTimeout((_) => {
       this.parseConfig(app);
     }, 0);
+    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
+      this.updPanelSpaceWidth(app);
+    });
+    this.updPanelSpaceWidth(app);
+  }
+
+  updPanelSpaceWidth(app: string) {
+    this.panelSpaceWidth.next({app, width: this.getPanelSpaceWidth(app)});
   }
 
   parseConfig(app: string) {
@@ -338,7 +350,7 @@ export class HsLayoutService {
     this.setMainPanel(which, app);
   }
 
-  panelSpaceWidth(app: string) {
+  getPanelSpaceWidth(app: string): number {
     const appRef = this.get(app);
     const panelWidths = {
       default: 425,
@@ -359,7 +371,6 @@ export class HsLayoutService {
     if (layoutWidth <= 767 && window.innerWidth <= 767) {
       tmp = layoutWidth;
       appRef.sidebarToggleable = false;
-
       return tmp;
     } else {
       appRef.sidebarToggleable =
@@ -372,9 +383,9 @@ export class HsLayoutService {
     }
     if (appRef.sidebarExpanded && this.sidebarVisible(app)) {
       if (panelWidths[appRef.mainpanel]) {
-        tmp = panelWidths[appRef.mainpanel];
+        tmp = panelWidths[appRef.mainpanel] + 48;
       } else {
-        tmp = panelWidths.default;
+        tmp = panelWidths.default + 48;
       }
     } else {
       if (this.sidebarVisible(app)) {
@@ -425,42 +436,6 @@ export class HsLayoutService {
   mdToolbarHeight(app: string) {
     const ELEM = this.get(app).contentWrapper.querySelector('.md-app-toolbar');
     return ELEM ? ELEM.clientHeight : 0;
-  }
-
-  widthWithoutPanelSpace(app: string) {
-    return 'calc(100% - ' + this.panelSpaceWidth(app) + 'px)';
-  }
-
-  mapStyle(app: string) {
-    const appRef = this.get(app);
-    const fullscreen =
-      this.HsConfig.get(app).sizeMode == undefined ||
-      this.HsConfig.get(app).sizeMode == 'fullscreen';
-    let height = appRef.layoutElement.clientHeight;
-    let width = appRef.layoutElement.clientWidth;
-    let marginLeft = 0;
-
-    if (!this.sidebarBottom() || !fullscreen) {
-      marginLeft += appRef.sidebarRight ? 0 : this.panelSpaceWidth(app);
-      width -= this.panelSpaceWidth(app);
-    }
-    if (this.sidebarBottom() && (fullscreen || window.innerWidth <= 767)) {
-      height -= this.panelSpaceHeight(app);
-      width = this.panelSpaceWidth(app);
-    }
-
-    height -= this.mdToolbarHeight(app);
-
-    this.HsEventBusService.layoutResizes.next({
-      width,
-      height,
-    });
-
-    return {
-      height: `${height}px`,
-      width: `${width}px`,
-      ...(marginLeft > 0 && {marginLeft: `${marginLeft}px`}),
-    };
   }
 
   addMapVisualizer(visualizerComponent: Type<unknown>, _app: string): void {

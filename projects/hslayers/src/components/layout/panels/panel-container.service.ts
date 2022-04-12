@@ -50,6 +50,14 @@ export class HsPanelContainerService
   }
 
   destroy(component: HsPanelComponent, app: string): void {
+    if (component.cleanup) {
+      component.cleanup();
+    }
+    const panelCollection = this.get(app).panels;
+    const panelIx = panelCollection.findIndex((d) => d == component);
+    if (panelIx > -1) {
+      panelCollection.splice(panelIx, 1);
+    }
     this.get(app).panelDestroyObserver.next(component);
   }
 
