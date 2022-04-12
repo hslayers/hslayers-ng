@@ -120,7 +120,7 @@
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.3.17",
     "karma-chrome-launcher": "~3.1.1",
-    "karma-jasmine": "~4.0.2",
+    "karma-jasmine": "~5.0.0",
     "karma-jasmine-html-reporter": "^1.7.0",
     "ng-packagr": "^13.2.1",
     "ngx-build-plus": "^13.0.1",
