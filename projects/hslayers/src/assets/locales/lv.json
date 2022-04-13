@@ -255,7 +255,8 @@
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
     "yes": "Jā",
     "zoomTo": "pietuvināt",
-    "height": "Augstums"
+    "height": "Augstums",
+    "required": "Nepieciešams"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -785,7 +786,9 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
-    "writeAccessRights": "Rakstīšanas piekļuves tiesības"
+    "writeAccessRights": "Rakstīšanas piekļuves tiesības",
+    "everyone": "Visi",
+    "perUser": "Atsevišķiem lietotājiem"
   },
   "SENSORS": {
     "1D": "1d",
