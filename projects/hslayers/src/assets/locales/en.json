@@ -255,7 +255,8 @@
     "wrongCombinationOfParams": "Wrong combination of parameters",
     "yes": "Yes",
     "zoomTo": "zoom to",
-    "height": "Height"
+    "height": "Height",
+    "required": "Required"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -785,7 +786,9 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     },
-    "writeAccessRights": "Write access rights"
+    "writeAccessRights": "Write access rights",
+    "perUser": "Per user",
+    "everyone": "Everyone"
   },
   "SENSORS": {
     "1D": "1D",
