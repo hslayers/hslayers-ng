@@ -33,7 +33,7 @@ export class HsUtilsService {
    * @param toEncoding - Optional parameter if UTF-8 encoding shouldn't be used for non-image URLs.
    * @returns Encoded Url with path to hsproxy.cgi script
    */
-  proxify(url: string, app: string, toEncoding?: boolean): string {
+  proxify(url: string, app: string = 'default', toEncoding?: boolean): string {
     const laymanEp = this.HsConfig.get(app).datasources?.find(
       (ep) => ep.type == 'layman'
     );

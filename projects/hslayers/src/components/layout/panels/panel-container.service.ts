@@ -36,7 +36,7 @@ export class HsPanelContainerService
   create(
     component: Type<any>,
     data: any,
-    app: string,
+    app: string = 'default',
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
     if (data && data.app == undefined) {

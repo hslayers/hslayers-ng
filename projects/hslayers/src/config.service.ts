@@ -280,8 +280,8 @@ export class HsConfig {
     });
   }
 
-  get(app: string): HsConfigObject {
-    return this.apps[app ?? 'default'];
+  get(app: string = 'default'): HsConfigObject {
+    return this.apps[app];
   }
 
   shortenUrl?(url: string): any;

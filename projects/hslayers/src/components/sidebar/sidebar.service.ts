@@ -43,11 +43,11 @@ export class HsSidebarService {
   } = {default: new HsSidebarParams()};
   sidebarLoad: Subject<string> = new Subject();
 
-  get(app: string): HsSidebarParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsSidebarParams();
+  get(app: string = 'default'): HsSidebarParams {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new HsSidebarParams();
     }
-    return this.apps[app ?? 'default'];
+    return this.apps[app];
   }
 
   constructor(
@@ -129,7 +129,7 @@ export class HsSidebarService {
     buttons: HsButton[],
     panelName: string,
     state: boolean,
-    app: string
+    app: string = 'default'
   ): void {
     const appRef = this.get(app);
     const backCompat = {datasource_selector: 'addData'};

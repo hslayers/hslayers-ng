@@ -658,7 +658,7 @@ export class HsMapService {
    * @param app - App identifier
    * @returns Layer array
    */
-  getLayersArray(app: string): Layer<Source>[] {
+  getLayersArray(app?: string): Layer<Source>[] {
     return this.getMap(app ?? DEFAULT)
       .getLayers()
       .getArray() as Layer<Source>[];
@@ -800,7 +800,7 @@ export class HsMapService {
    * Get current map projection
    * @returns Projection
    */
-  getCurrentProj(app: string): Projection {
+  getCurrentProj(app?: string): Projection {
     return this.getMap(app ?? DEFAULT)
       .getView()
       .getProjection();
@@ -1107,7 +1107,7 @@ export class HsMapService {
    * @param app - App identifier
    * @returns ol.Map
    */
-  getMap(app: string): Map {
+  getMap(app?: string): Map {
     return this.apps[app ?? DEFAULT]?.map;
   }
 

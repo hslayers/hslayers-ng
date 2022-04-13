@@ -25,6 +25,7 @@ const defaultLayoutParams = {
   initializedOnce: false,
   minisidebar: false,
   sidebarVisible: true,
+  sidebarPosition: 'left',
 };
 
 type HsLayoutParams = {
@@ -107,6 +108,7 @@ type HsLayoutParams = {
   contentWrapper?: any;
   layoutElement?: any;
   sidebarVisible: boolean;
+  sidebarPosition: string;
 };
 
 @Injectable({
@@ -177,6 +179,9 @@ export class HsLayoutService {
     this.sidebarVisible.subscribe(({app, visible}) => {
       this.apps[app].sidebarVisible = visible;
     });
+    this.sidebarPosition.subscribe(({app, position}) => {
+      this.apps[app].sidebarPosition = position;
+    });
   }
 
   updPanelSpaceWidth(app: string) {
@@ -235,7 +240,7 @@ export class HsLayoutService {
    * @returns {boolean} Panel opened/closed status
    * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
    */
-  panelVisible(which, app: string, scope?) {
+  panelVisible(which, app: string = 'default', scope?) {
     const appRef = this.get(app);
     if (scope) {
       if (scope.panelName == undefined) {
@@ -261,11 +266,11 @@ export class HsLayoutService {
     this.HsEventBusService.mainPanelChanges.next({app});
   }
 
-  get(app: string): HsLayoutParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = Object.assign({}, defaultLayoutParams);
+  get(app: string = 'default'): HsLayoutParams {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = Object.assign({}, defaultLayoutParams);
     }
-    return this.apps[app ?? 'default'];
+    return this.apps[app];
   }
 
   /**
@@ -345,11 +350,7 @@ export class HsLayoutService {
    * @param which - New panel to activate (panel name)
    * @param by_gui - Whether function call came as result of GUI action
    */
-  async setMainPanel(
-    which: string,
-    app: string,
-    by_gui?: boolean
-  ): Promise<void> {
+  setMainPanel(which: string, app: string, by_gui?: boolean): Promise<void> {
     const appRef = this.get(app);
     if (!this.panelEnabled(which, app)) {
       return;
@@ -357,7 +358,7 @@ export class HsLayoutService {
     if (which == appRef.mainpanel && by_gui) {
       which = '';
       if (appRef.sidebarExpanded == true) {
-        if ((await lastValueFrom(this.sidebarPosition)).position == 'bottom') {
+        if (appRef.sidebarPosition == 'bottom') {
           appRef.sidebarExpanded = false;
         } else {
           appRef.sidebarLabels = true;
@@ -383,7 +384,7 @@ export class HsLayoutService {
    * @public
    * @param which - New panel to be default (specify panel name)
    */
-  setDefaultPanel(which: string, app: string): void {
+  setDefaultPanel(which: string, app: string = 'default'): void {
     this.get(app).defaultPanel = which;
     this.setMainPanel(which, app);
   }

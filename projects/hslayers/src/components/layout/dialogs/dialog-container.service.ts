@@ -21,21 +21,25 @@ export class HsDialogContainerService {
 
   constructor() {}
 
-  get(app: string): HsDialogContainerParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsDialogContainerParams();
+  get(app: string = 'default'): HsDialogContainerParams {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new HsDialogContainerParams();
     }
-    return this.apps[app ?? 'default'];
+    return this.apps[app];
   }
 
-  create(component: Type<any>, data: any, app: string): HsDialogItem {
+  create(
+    component: Type<any>,
+    data: any,
+    app: string = 'default'
+  ): HsDialogItem {
     data.app = app;
     const item = new HsDialogItem(component, data, app);
     this.get(app).dialogObserver.next(item);
     return item;
   }
 
-  destroy(component: HsDialogComponent, app: string): void {
+  destroy(component: HsDialogComponent, app: string = 'default'): void {
     if (component.cleanup) {
       component.cleanup();
     }

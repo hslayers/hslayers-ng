@@ -337,7 +337,7 @@ export class HsCompositionsParserService {
   async loadCompositionObject(
     obj,
     overwrite: boolean,
-    app: string,
+    app: string = 'default',
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
   ): Promise<void> {
