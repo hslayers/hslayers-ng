@@ -14,3 +14,6 @@ export * from './interfaces/saver-service.interface';
 export * from './feature-services/status-manager.service';
 export * from './types/status-state.type';
 export * from './types/bounding-box-object.type';
+export * from './types/composition-data.type';
+export * from './types/user-data.type';
+export * from './types/status-data.type';

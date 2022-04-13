@@ -26,6 +26,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {UserData} from './types/user-data.type';
 import {
   getAttribution,
   getBase,
@@ -71,7 +72,7 @@ export class HsSaveMapService {
    * @param {object} statusData Metadata about permissions
    * @returns {object} JSON object with all required map composition metadata
    */
-  map2json(map, compoData, userData, statusData, app: string) {
+  map2json(map, compoData, userData: UserData, statusData, app: string) {
     const groups: any = {};
     for (const g of statusData.groups || []) {
       if (g.r || g.w) {
@@ -92,7 +93,7 @@ export class HsSaveMapService {
         this.HsMapService.getCurrentProj(app)
       ),
       extent: bbox,
-      user: {
+      user: <UserData>{
         address: userData.address,
         city: userData.city,
         country: userData.country,
@@ -101,7 +102,7 @@ export class HsSaveMapService {
         organization: userData.organization,
         phone: userData.phone,
         position: userData.position,
-        postalcode: userData.postalcode,
+        postalcode: userData.postalCode,
         state: userData.state,
       },
       describedBy:
