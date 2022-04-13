@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -26,6 +25,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
   panelSpaceWidth: number;
+  sidebarPosition: string;
 
   panelVisible(which, app: string, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, app, scope);
@@ -81,8 +81,14 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
         this.panelSpaceWidth = width;
       }
     });
+    this.HsLayoutService.sidebarPosition.subscribe(({app, position}) => {
+      if (this.app == app) {
+        this.sidebarPosition = position;
+      }
+    });
     window.addEventListener('resize', () => {
       this.HsLayoutService.updPanelSpaceWidth(this.app);
+      this.HsLayoutService.updSidebarPosition(this.app);
     });
   }
 

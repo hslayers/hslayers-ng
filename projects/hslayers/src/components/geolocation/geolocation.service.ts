@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {lastValueFrom} from 'rxjs';
 
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
@@ -160,11 +161,14 @@ export class HsGeolocationService {
    * Takes care of the distinction between click and double-click on mobile
    * @param app - App identifier
    */
-  toggleTracking(app: string): any {
+  async toggleTracking(app: string): Promise<void> {
     const appRef = this.get(app);
     if (appRef.clicked) {
       appRef.cancelClick = true;
-      if (this.HsLayoutService.sidebarBottom()) {
+      if (
+        (await lastValueFrom(this.HsLayoutService.sidebarPosition)).position ==
+        'bottom'
+      ) {
         this.HsLayoutService.get(app)
           .contentWrapper.querySelector('.hs-locationButton')
           .dispatchEvent(new Event('dblclick'));
