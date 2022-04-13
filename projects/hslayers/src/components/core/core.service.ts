@@ -199,7 +199,7 @@ export class HsCoreService {
       this.HsConfig.get(app).componentsEnabled.guiOverlay = false;
       this.HsMapService.removeAllInteractions(app);
       this.HsMapService.removeAllControls(app);
-      this.HsLayoutService.sidebarVisible(app, false);
+      this.HsLayoutService.updSidebarVisible(app, false);
     }
   }
 }

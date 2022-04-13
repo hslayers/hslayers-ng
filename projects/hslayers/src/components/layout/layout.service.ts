@@ -24,6 +24,7 @@ const defaultLayoutParams = {
   sidebarExpanded: false,
   initializedOnce: false,
   minisidebar: false,
+  sidebarVisible: true,
 };
 
 type HsLayoutParams = {
@@ -105,7 +106,7 @@ type HsLayoutParams = {
   minisidebar: boolean;
   contentWrapper?: any;
   layoutElement?: any;
-  _sidebarVisible?: any;
+  sidebarVisible: boolean;
 };
 
 @Injectable({
@@ -129,6 +130,11 @@ export class HsLayoutService {
   sidebarPosition = new BehaviorSubject<{app: string; position: string}>({
     app: 'default',
     position: 'left',
+  });
+
+  sidebarVisible = new BehaviorSubject<{app: string; visible: boolean}>({
+    app: 'default',
+    visible: true,
   });
 
   constructor(
@@ -158,15 +164,19 @@ export class HsLayoutService {
     });
   }
 
-  init(app: string): void {
+  init(_app: string): void {
     setTimeout((_) => {
-      this.parseConfig(app);
+      this.parseConfig(_app);
     }, 0);
     this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       this.updPanelSpaceWidth(app);
     });
-    this.updPanelSpaceWidth(app);
-    this.updSidebarPosition(app);
+    this.updPanelSpaceWidth(_app);
+    this.updSidebarPosition(_app);
+    this.updSidebarVisible(_app, true);
+    this.sidebarVisible.subscribe(({app, visible}) => {
+      this.apps[app].sidebarVisible = visible;
+    });
   }
 
   updPanelSpaceWidth(app: string) {
@@ -409,14 +419,14 @@ export class HsLayoutService {
         return tmp;
       }
     }
-    if (appRef.sidebarExpanded && this.sidebarVisible(app)) {
+    if (appRef.sidebarExpanded && appRef.sidebarVisible) {
       if (panelWidths[appRef.mainpanel]) {
         tmp = panelWidths[appRef.mainpanel] + 48;
       } else {
         tmp = panelWidths.default + 48;
       }
     } else {
-      if (this.sidebarVisible(app)) {
+      if (appRef.sidebarVisible) {
         tmp = 48;
       } else {
         tmp = 0;
@@ -428,23 +438,19 @@ export class HsLayoutService {
     return tmp;
   }
 
-  sidebarVisible(app: string, state?: boolean): boolean {
-    const appRef = this.get(app);
+  async updSidebarVisible(app: string, visible?: boolean): Promise<void> {
     if (
       this.HsConfig.get(app).sidebarPosition == 'invisible' ||
       this.HsConfig.get(app).pureMap ||
       this.HsConfig.get(app).componentsEnabled.guiOverlay === false ||
       this.HsConfig.get(app).componentsEnabled.sidebar === false
     ) {
-      return false;
+      return this.sidebarVisible.next({app, visible: false});
     }
-    if (state != undefined) {
-      appRef._sidebarVisible = state;
-    }
-    if (appRef._sidebarVisible == undefined) {
-      return true;
+    if (visible == undefined) {
+      this.sidebarVisible.next({app, visible: true});
     } else {
-      return appRef._sidebarVisible;
+      this.sidebarVisible.next({app, visible});
     }
   }
 
