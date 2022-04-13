@@ -170,9 +170,13 @@ export class HsCommonLaymanAccessRightsComponent {
    * Filter users by name
    * This function is passed as filter pipe function
    */
-  userFilter = (item): boolean => {
+  userFilter = (item: LaymanUser): boolean => {
     const r = new RegExp(this.userSearch, 'i');
-    return r.test(item.name);
+    return (
+      r.test(item.givenName) ||
+      r.test(item.familyName) ||
+      r.test(item.screenName)
+    );
   };
 
   /**
@@ -180,5 +184,19 @@ export class HsCommonLaymanAccessRightsComponent {
    */
   refreshList(): void {
     this.allUsers = Array.from(this.allUsers);
+  }
+
+  /**
+   * Refresh user list, when searching for specific user
+   * @param user - Provided Layman's user
+   */
+  getUserName(user: LaymanUser): string {
+    if (user.givenName && user.familyName) {
+      return user.givenName + ' ' + user.familyName;
+    } else if (user.screenName) {
+      return user.screenName;
+    } else {
+      return user.username;
+    }
   }
 }
