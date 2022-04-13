@@ -46,7 +46,7 @@
     <div class="hs-save-map-users-list p-1 my-1">
         <div class="d-flex flex-row justify-content-between align-items-start p-1"
             *ngFor="let user of allUsers | filter: userFilter">
-            <span class="w-50">{{user.name}}</span>
+            <span class="w-50">{{getUserName(user)}}</span>
             <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToRead"
                     [(ngModel)]="user.read"
                     (change)="accessRightsChanged('access_rights.read', user.username, $event)">Read</label>
