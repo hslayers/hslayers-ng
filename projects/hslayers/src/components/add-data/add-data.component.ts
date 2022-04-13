@@ -28,10 +28,6 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
     private hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
-
-    servicesSupportedByUrl.forEach((type) =>
-      this.connectServiceFromUrlParam(type as AddDataUrlType)
-    );
   }
   name = 'addData';
   appRef;
@@ -66,15 +62,19 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
       },
       this.data.app
     );
+    servicesSupportedByUrl.forEach((type) =>
+      this.connectServiceFromUrlParam(type as AddDataUrlType)
+    );
     this.hsCommonEndpointsService.init(this.data.app);
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
     if (url) {
+      console.log('setparamsfromurl', this.data.app);
       this.hsLayoutService.setMainPanel('addData', this.data.app);
-      this.hsAddDataService.apps[this.data.app].dsSelected = 'url';
-      this.hsAddDataUrlService.apps[this.data.app].typeSelected = type;
+      this.hsAddDataService.get(this.data.app).dsSelected = 'url';
+      this.hsAddDataUrlService.get(this.data.app).typeSelected = type;
     }
   }
 }
