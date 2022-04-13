@@ -1,9 +1,12 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
+import {BoundingBoxObject} from './bounding-box-object.type';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanService} from './layman.service';
@@ -13,8 +16,6 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
@@ -34,7 +35,7 @@ export class HsSaveMapManagerParams {
     layers: [],
     id: '',
     thumbnail: undefined,
-    bbox: {east: 0, south: 0, west: 0, north: 0},
+    bbox: <BoundingBoxObject>{east: '0', south: '0', west: '0', north: '0'},
     currentCompositionTitle: '',
     currentComposition: undefined,
     access_rights: <accessRightsModel>{

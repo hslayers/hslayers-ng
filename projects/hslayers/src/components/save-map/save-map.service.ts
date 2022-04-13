@@ -18,6 +18,7 @@ import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Layer} from 'ol/layer';
 
+import {BoundingBoxObject} from './bounding-box-object.type';
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -80,15 +81,7 @@ export class HsSaveMapService {
     if (groups.guest == undefined) {
       groups.guest = 'r';
     }
-    let bbox = compoData.bbox;
-    if (compoData.bbox && !Array.isArray(compoData.bbox)) {
-      bbox = [
-        parseFloat(compoData.bbox.east),
-        parseFloat(compoData.bbox.south),
-        parseFloat(compoData.bbox.west),
-        parseFloat(compoData.bbox.north),
-      ];
-    }
+    const bbox = this.getBboxFromObject(compoData.bbox);
     const json: any = {
       abstract: compoData.abstract,
       title: compoData.title,
@@ -168,6 +161,24 @@ export class HsSaveMapService {
       }
     }
     return current_base_layer;
+  }
+
+  /**
+   * Get bounding box from object {east: value, south: value, west: value, north: value}
+   * @param bbox - Bounding box
+   * @returns Returns bounding box as number array
+   */
+  getBboxFromObject(bbox: number[] | BoundingBoxObject): number[] {
+    if (bbox && !Array.isArray(bbox)) {
+      return [
+        parseFloat(bbox.east),
+        parseFloat(bbox.south),
+        parseFloat(bbox.west),
+        parseFloat(bbox.north),
+      ];
+    } else {
+      return bbox as number[];
+    }
   }
 
   /**
