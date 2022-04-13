@@ -1,11 +1,11 @@
 <div class="d-flex flex-column">
     <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
         <button type="button" class="btn rounded btn-primary hs-toolbar-button"
-            (click)="HsDrawService.saveDrawingLayer(app)" [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}">
+            (click)="HsDrawService.saveDrawingLayer(app)" [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}">
             {{'COMMON.newDrawingLayer' | translateHs: {app} }}
         </button>
         <button type="button" (click)="HsDrawService.setType(appRef.type, app)"
-            [ngClass]="{'btn-sm' : !hsLayoutService.sidebarBottom()}"
+            [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}"
             class="btn ms-1 rounded btn-primary hs-toolbar-button" [disabled]="!appRef.type">
             {{'DRAW.disableDrawing' | translateHs: {app} }}
         </button>
@@ -13,7 +13,7 @@
     <!-- <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
         [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translateHs: {app} }}</p> -->
     <div class="btn-group w-100  m-auto justify-content-center"
-        [ngClass]="hsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+        [ngClass]="sidebarPosition === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
         <ng-template #noLayerAvailable>
             <p class="m-0 text-danger">{{'DRAW.noSuitableLayer' | translateHs: {app} }}</p>
         </ng-template>
@@ -99,7 +99,7 @@
 </div>
 
 <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center"
-    [ngClass]="hsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+    [ngClass]="sidebarPosition === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: appRef.type==='Point' }"
         (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translateHs: {app}">
         <i class="icon-pin"></i>

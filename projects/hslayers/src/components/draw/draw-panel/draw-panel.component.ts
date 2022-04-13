@@ -23,6 +23,7 @@ export class DrawPanelComponent implements OnInit {
   appRef;
   getTitle = getTitle;
   @Input() app = 'default';
+  sidebarPosition: string;
 
   constructor(
     public HsDrawService: HsDrawService,
@@ -33,6 +34,11 @@ export class DrawPanelComponent implements OnInit {
 
   ngOnInit() {
     this.appRef = this.HsDrawService.get(this.app);
+    this.hsLayoutService.sidebarPosition.subscribe(({app, position}) => {
+      if (this.app == app) {
+        this.sidebarPosition = position;
+      }
+    });
   }
 
   translateString(module: string, text: string): string {

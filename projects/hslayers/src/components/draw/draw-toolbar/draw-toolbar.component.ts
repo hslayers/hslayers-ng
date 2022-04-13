@@ -18,6 +18,7 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   name = 'drawToolbar';
   getTitle = getTitle;
   appRef;
+  sidebarPosition: string;
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
@@ -29,6 +30,11 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   }
   ngOnInit() {
     this.appRef = this.HsDrawService.get(this.data.app);
+    this.HsLayoutService.sidebarPosition.subscribe(({app, position}) => {
+      if (this.data.app == app) {
+        this.sidebarPosition = position;
+      }
+    });
   }
 
   selectionMenuToggled(): void {

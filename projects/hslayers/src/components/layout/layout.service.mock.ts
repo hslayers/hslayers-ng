@@ -1,8 +1,12 @@
+import {BehaviorSubject} from 'rxjs';
+
 export class HsLayoutServiceMock {
   apps: {
     [key: string]: {panel_statuses: any; panel_enabled: any; mainpanel: string};
   } = {default: {panel_statuses: {}, panel_enabled: {}, mainpanel: ''}};
   contentWrapper = document.createElement('div');
+  sidebarPosition = new BehaviorSubject({app: 'default', position: 'left'});
+
   constructor() {}
 
   componentEnabled() {
@@ -41,9 +45,5 @@ export class HsLayoutServiceMock {
       return appRef.panel_statuses[which] && this.panelEnabled(which, app);
     }
     return appRef.mainpanel == which || (scope && scope.unpinned);
-  }
-
-  sidebarBottom() {
-    return window.innerWidth <= 767;
   }
 }

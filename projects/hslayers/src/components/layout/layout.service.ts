@@ -1,4 +1,4 @@
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, lastValueFrom} from 'rxjs';
 import {
   ComponentFactoryResolver,
   Injectable,
@@ -125,6 +125,12 @@ export class HsLayoutService {
     app: 'default',
     width: 425,
   });
+
+  sidebarPosition = new BehaviorSubject<{app: string; position: string}>({
+    app: 'default',
+    position: 'left',
+  });
+
   constructor(
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
@@ -160,10 +166,28 @@ export class HsLayoutService {
       this.updPanelSpaceWidth(app);
     });
     this.updPanelSpaceWidth(app);
+    this.updSidebarPosition(app);
   }
 
   updPanelSpaceWidth(app: string) {
     this.panelSpaceWidth.next({app, width: this.getPanelSpaceWidth(app)});
+  }
+
+  async updSidebarPosition(app: string) {
+    const lastPosition = (await lastValueFrom(this.sidebarPosition)).position;
+    if (window.innerWidth <= 767 && lastPosition != 'bottom') {
+      this.sidebarPosition.next({
+        app,
+        position: 'bottom',
+      });
+    } else {
+      if (this.HsConfig.apps[app].sidebarPosition != lastPosition) {
+        this.sidebarPosition.next({
+          app,
+          position: this.HsConfig.apps[app].sidebarPosition,
+        });
+      }
+    }
   }
 
   parseConfig(app: string) {
@@ -311,7 +335,11 @@ export class HsLayoutService {
    * @param which - New panel to activate (panel name)
    * @param by_gui - Whether function call came as result of GUI action
    */
-  setMainPanel(which: string, app: string, by_gui?: boolean): void {
+  async setMainPanel(
+    which: string,
+    app: string,
+    by_gui?: boolean
+  ): Promise<void> {
     const appRef = this.get(app);
     if (!this.panelEnabled(which, app)) {
       return;
@@ -319,7 +347,7 @@ export class HsLayoutService {
     if (which == appRef.mainpanel && by_gui) {
       which = '';
       if (appRef.sidebarExpanded == true) {
-        if (this.sidebarBottom()) {
+        if ((await lastValueFrom(this.sidebarPosition)).position == 'bottom') {
           appRef.sidebarExpanded = false;
         } else {
           appRef.sidebarLabels = true;
@@ -418,10 +446,6 @@ export class HsLayoutService {
     } else {
       return appRef._sidebarVisible;
     }
-  }
-
-  sidebarBottom() {
-    return window.innerWidth <= 767;
   }
 
   panelSpaceHeight(app: string) {
