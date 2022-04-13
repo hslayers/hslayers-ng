@@ -86,7 +86,7 @@ export class HsToastService {
    */
   show(
     textOrTpl: string | TemplateRef<any>,
-    app: string,
+    app: string = 'default',
     options: any = {}
   ): void {
     const appRef = this.get(app);

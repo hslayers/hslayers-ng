@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
+import {lastValueFrom} from 'rxjs';
 
-import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Geometry} from 'ol/geom';
@@ -8,7 +8,6 @@ import {Cluster, Source} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Layer} from 'ol/layer';
-import {Subject, lastValueFrom} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 
@@ -18,6 +17,7 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsDrawServiceParams} from './draw.service.params';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -47,8 +47,6 @@ import {
   setTitle,
   setWorkspace,
 } from '../../common/layer-extensions';
-
-import {HsDrawServiceParams} from './draw.service.params';
 
 type activateParams = {
   onDrawStart?;
@@ -312,7 +310,7 @@ export class HsDrawService {
    * In case of Layman layer not yet existing in app it pulls the layer first.
    * @param layer -
    */
-  async selectLayer(layer, app: string) {
+  async selectLayer(layer, app: string = 'default') {
     let metadata;
     let style;
     const appRef = this.get(app);
@@ -824,7 +822,7 @@ export class HsDrawService {
       onDeselected,
       drawState = true,
     }: activateParams,
-    app: string
+    app: string = 'default'
   ): void {
     const appRef = this.get(app);
     appRef.onDeselected = onDeselected;

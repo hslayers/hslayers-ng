@@ -68,11 +68,11 @@ export class HsQueryVectorService {
    * @param app - App identifier
    * @returns Query vector service data for the app
    */
-  get(app: string): {selector: Select} {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = {selector: null};
+  get(app: string = 'default'): {selector: Select} {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = {selector: null};
     }
-    return this.apps[app ?? 'default'];
+    return this.apps[app];
   }
   /**
    * Initialize the query vector service data and subscribers

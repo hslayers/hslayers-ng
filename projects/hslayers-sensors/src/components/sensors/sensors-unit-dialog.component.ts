@@ -8,7 +8,7 @@ import {HsUtilsService} from 'hslayers-ng';
 import {Aggregate} from './types/aggregate.type';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {Interval} from './types/interval.type';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -38,13 +38,18 @@ export class HsSensorsUnitDialogComponent
     this.timeButtonClicked(
       this.hsSensorsUnitDialogService.get(this.data.app).intervals[2]
     );
-    this.hsLayoutService.panelSpaceWidth
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(({app, width}) => {
-        if (app == this.data.app) {
-          this.calculateDialogStyle(app, width);
-        }
-      });
+    combineLatest([
+      this.hsLayoutService.panelSpaceWidth.pipe(takeUntil(this.ngUnsubscribe)),
+      this.hsLayoutService.sidebarPosition.pipe(takeUntil(this.ngUnsubscribe)),
+    ]).subscribe(([panelSpace, sidebar]) => {
+      if (panelSpace.app == this.data.app && sidebar.app == this.data.app) {
+        this.calculateDialogStyle(
+          this.data.app,
+          panelSpace.width,
+          sidebar.position == 'bottom'
+        );
+      }
+    });
   }
 
   /**
@@ -150,11 +155,14 @@ export class HsSensorsUnitDialogComponent
       );
   }
 
-  calculateDialogStyle(app: string, panelSpaceWidth: number) {
+  calculateDialogStyle(
+    app: string,
+    panelSpaceWidth: number,
+    sidebarAtBot: boolean
+  ) {
     const padding = 20;
     const widthWithoutPanelSpace =
       'calc(100% - ' + (panelSpaceWidth + padding) + 'px)';
-    const sidebarAtBot = this.hsLayoutService.sidebarBottom();
     this.dialogStyle = {
       'visibility': this.hsSensorsUnitDialogService.get(app).unitDialogVisible
         ? 'visible'

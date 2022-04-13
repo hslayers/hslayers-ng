@@ -33,10 +33,7 @@ export class HsLanguageService {
    * @param lang - Language code without app prefix
    * Set language
    */
-  setLanguage(lang: string, app: string): void {
-    if (app == undefined) {
-      app = 'default';
-    }
+  setLanguage(lang: string, app: string = 'default'): void {
     if (!lang.includes('|')) {
       lang = `${app}|${lang}`;
     }
@@ -105,10 +102,7 @@ export class HsLanguageService {
    * @param params -
    * @returns Translation
    */
-  getTranslation(str: string, params?: any, app?: string): string {
-    if (app == undefined) {
-      app = Object.keys(this.apps)[0];
-    }
+  getTranslation(str: string, params?: any, app: string = 'default'): string {
     return this.getTranslator(app).instant(str, params);
   }
 
@@ -119,11 +113,8 @@ export class HsLanguageService {
   async awaitTranslation(
     str: string,
     params?: any,
-    app?: string
+    app: string = 'default'
   ): Promise<string> {
-    if (app == undefined) {
-      app = Object.keys(this.apps)[0];
-    }
     return await lastValueFrom(this.getTranslator(app).get(str, params));
   }
 
@@ -139,11 +130,8 @@ export class HsLanguageService {
     module: string,
     text: string,
     params?: any,
-    app?: string
+    app: string = 'default'
   ): string {
-    if (app == undefined) {
-      app = Object.keys(this.apps)[0];
-    }
     const tmp = this.getTranslation(
       module + '.' + text,
       params || undefined,
