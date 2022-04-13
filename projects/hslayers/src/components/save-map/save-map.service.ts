@@ -18,7 +18,7 @@ import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Layer} from 'ol/layer';
 
-import {BoundingBoxObject} from './bounding-box-object.type';
+import {BoundingBoxObject} from './types/bounding-box-object.type';
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';

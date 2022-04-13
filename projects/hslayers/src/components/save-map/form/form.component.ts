@@ -3,15 +3,15 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsCoreService} from '../core/core.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsSaveMapManagerService} from './save-map-manager.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsCoreService} from '../../core/core.service';
+import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsSaveMapManagerService} from '../feature-services/save-map-manager.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-save-map-form',
-  templateUrl: './partials/form.html',
+  templateUrl: './form.component.html',
 })
 export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   btnSelectDeselectClicked = true;

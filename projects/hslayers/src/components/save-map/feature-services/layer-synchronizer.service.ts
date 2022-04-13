@@ -2,29 +2,29 @@ import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
 import VectorLayer from 'ol/layer/Vector';
-import {Feature, Map} from 'ol';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
+import {ObjectEvent} from 'ol/Object';
+import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../language/language.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanService} from './layman.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {ObjectEvent} from 'ol/Object';
+import {HsLogService} from '../../../common/log/log.service';
+import {HsMapService} from '../../map/map.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsUtilsService} from '../../utils/utils.service';
+
 import {
   getDefinition,
   getEventsSuspended,
   setEventsSuspended,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
-} from '../../common/layer-extensions';
+} from '../../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',

@@ -2,14 +2,13 @@ import {Component, ViewRef} from '@angular/core';
 import {HsCompositionsService} from '../compositions.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
+import {HsSaveMapManagerService} from '../../save-map/feature-services/save-map-manager.service';
 @Component({
   selector: 'hs-compositions-overwrite-dialog',
   templateUrl: './dialog_overwriteconfirm.html',
 })
 export class HsCompositionsOverwriteDialogComponent
-  implements HsDialogComponent
-{
+  implements HsDialogComponent {
   viewRef: ViewRef;
   data: any;
 

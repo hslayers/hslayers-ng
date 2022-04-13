@@ -11,7 +11,7 @@ import {
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
-import {HsStatusManagerService} from '../../save-map/status-manager.service';
+import {HsStatusManagerService} from '../../save-map/feature-services/status-manager.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 

@@ -9,18 +9,19 @@ import {HsConfig} from '../../config.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
-import {HsSaveMapManagerService} from './save-map-manager.service';
+import {HsSaveMapDialogSpawnerService} from './feature-services/dialog-spawner.service';
+import {HsSaveMapManagerService} from './feature-services/save-map-manager.service';
 import {HsSaveMapService} from './save-map.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-save-map',
-  templateUrl: './partials/panel.html',
+  templateUrl: './save-map.component.html',
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   endpoint = null;
   isAuthorized = false;
   name = 'saveMap';

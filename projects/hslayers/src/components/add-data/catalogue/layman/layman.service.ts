@@ -13,7 +13,7 @@ import {
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';
-import {HsLaymanLayerDescriptor} from './../../../save-map/layman-layer-descriptor.interface';
+import {HsLaymanLayerDescriptor} from '../../../save-map/interfaces/layman-layer-descriptor.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';

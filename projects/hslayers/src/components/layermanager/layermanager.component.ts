@@ -21,7 +21,7 @@ import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerListService} from './logical-list/layermanager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
-import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
+import {HsLayerSynchronizerService} from '../save-map/feature-services/layer-synchronizer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';

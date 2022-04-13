@@ -13,7 +13,7 @@ import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
-import {HsLaymanService} from './../save-map/layman.service';
+import {HsLaymanService} from './../save-map/feature-services/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
@@ -25,7 +25,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
