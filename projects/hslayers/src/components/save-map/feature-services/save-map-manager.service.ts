@@ -7,6 +7,7 @@ import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {BoundingBoxObject} from './../types/bounding-box-object.type';
+import {CompositionData} from '../types/composition-data.type';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanService} from './layman.service';
@@ -16,6 +17,7 @@ import {HsSaveMapService} from '../save-map.service';
 import {HsSaverService} from './../interfaces/saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {UserData} from './../types/user-data.type';
 import {accessRightsModel} from '../../add-data/common/access-rights.model';
 import {
   getShowInLayerManager,
@@ -30,11 +32,11 @@ export class HsSaveMapManagerParams {
     changeTitle: undefined,
     groups: [],
   };
-  compoData: any = {
+  compoData: CompositionData = {
     title: '',
     name: '',
     abstract: '',
-    keywords: [],
+    keywords: '',
     layers: [],
     id: '',
     thumbnail: undefined,
@@ -46,7 +48,7 @@ export class HsSaveMapManagerParams {
       'access_rights.read': 'EVERYONE',
     },
   };
-  userData: any = {
+  userData: UserData = {
     email: '',
     phone: '',
     name: '',
@@ -55,6 +57,8 @@ export class HsSaveMapManagerParams {
     postalCode: '',
     city: '',
     organization: '',
+    position: '',
+    state: '',
   };
   panelOpened: Subject<any> = new Subject();
   saveMapResulted: Subject<{statusData; app: string}> = new Subject();
@@ -356,7 +360,7 @@ export class HsSaveMapManagerService {
       if (user.userInfo && user.userInfo.org) {
         appRef.userData.address = user.userInfo.org.street;
         appRef.userData.country = user.userInfo.org.state;
-        appRef.userData.postalcode = user.userInfo.org.zip;
+        appRef.userData.postalCode = user.userInfo.org.zip;
         appRef.userData.city = user.userInfo.org.city;
         appRef.userData.organization = user.userInfo.org.name;
       }
