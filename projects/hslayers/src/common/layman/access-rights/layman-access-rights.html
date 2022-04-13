@@ -1,35 +1,58 @@
-<div class="form-group d-flex justify-content-between">
-    <label class="pt-2" style="margin-bottom: 0;">
-        {{'SAVECOMPOSITION.readAccessRights' | translateHs : {app} }}
-    </label>
-    <div class="btn-group">
-        <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-        (click)="accessRightChanged(access_rights,'access_rights.read','EVERYONE')"
-        [ngClass]="{'active':access_rights['access_rights.read'] === 'EVERYONE'}">
-        {{'SAVECOMPOSITION.public' | translateHs : {app} }}
-    </button>
-    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-        (click)="accessRightChanged(access_rights,'access_rights.read','private')"
-        [ngClass]="{'active':access_rights['access_rights.read'] === 'private'}">
-        {{'SAVECOMPOSITION.private' | translateHs : {app} }}
-    </button>
+<!-- Access rights template -->
+<ng-template #accessRightsTpl let-accessRights="access_rights" let-right="right" let-grantedTo="grantedTo">
+    <div class="form-group d-flex justify-content-between">
+        <label class="pt-2" style="margin-bottom: 0;">
+            {{getRightTranslation(right)}}
+        </label>
+        <div class="btn-group">
+            <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                [disabled]="right !== 'read' && access_rights['access_rights.read'] === 'private'"
+                (click)="accessRightsChanged('access_rights.' + right,grantedTo)"
+                [ngClass]="{'active':access_rights['access_rights.'+ right] === grantedTo}">
+                {{'SAVECOMPOSITION.public' | translateHs : {app} }}
+            </button>
+            <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                (click)="accessRightsChanged('access_rights.' + right,'private')"
+                [ngClass]="{'active':access_rights['access_rights.' + right] === 'private'}">
+                {{'SAVECOMPOSITION.private' | translateHs : {app} }}
+            </button>
+        </div>
     </div>
-</div>
-<div class="form-group d-flex justify-content-between" >
-    <label class="pt-2" style="margin-bottom: 0;">
-        {{'SAVECOMPOSITION.writeAccessRights' | translateHs : {app} }}
-    </label>
-    <div class="btn-group">
-        <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-        [disabled]="access_rights['access_rights.read'] === 'private'"
-        (click)="accessRightChanged(access_rights,'access_rights.write','EVERYONE')"
-            [ngClass]="{'active':access_rights['access_rights.write'] === 'EVERYONE'}">
-            {{'SAVECOMPOSITION.public' | translateHs : {app} }}
-        </button>
-        <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-        (click)="accessRightChanged(access_rights,'access_rights.write','private')"
-            [ngClass]="{'active':access_rights['access_rights.write'] === 'private'}">
-            {{'SAVECOMPOSITION.private' | translateHs : {app} }}
-        </button>
+</ng-template>
+<ul class="nav nav-tabs justify-content-end my-2 py-1">
+    <li class="nav-item" (click)="changeGrantingOptions(grantingOptions.EVERYONE)">
+        <a [ngClass]="{'active': currentOption === grantingOptions.EVERYONE}" class="nav-link "
+            aria-current="page">{{'SAVECOMPOSITION.everyone' | translateHs : {app} }}</a>
+    </li>
+    <li class="nav-item" (click)="changeGrantingOptions(grantingOptions.PERUSER)">
+        <a [ngClass]="{'active': currentOption === grantingOptions.PERUSER}" class="nav-link "
+            aria-current="page">{{'SAVECOMPOSITION.perUser' | translateHs : {app} }}</a>
+    </li>
+</ul>
+<ng-container *ngIf="currentOption === grantingOptions.EVERYONE; else perUserTpl">
+    <ng-container
+        *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: 'read', grantedTo: 'EVERYONE'}">
+    </ng-container>
+    <ng-container
+        *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: 'write', grantedTo: 'EVERYONE'}">
+    </ng-container>
+</ng-container>
+
+<ng-template #perUserTpl>
+    <div><input type="search" class="form-control hs-save-map-filter"
+            [placeholder]="'COMMON.filter' | translateHs : {app}" [(ngModel)]="userSearch"
+            [ngModelOptions]="{standalone: true}" (input)="refreshList()">
     </div>
-</div>
+    <div class="hs-save-map-users-list p-1 my-1">
+        <div class="d-flex flex-row justify-content-between align-items-start p-1"
+            *ngFor="let user of allUsers | filter: userFilter">
+            <span class="w-50">{{user.name}}</span>
+            <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToRead"
+                    [(ngModel)]="user.read"
+                    (change)="accessRightsChanged('access_rights.read', user.username, $event)">Read</label>
+            <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToWrite"
+                    [(ngModel)]="user.write"
+                    (change)="accessRightsChanged('access_rights.write', user.username, $event)">Write</label>
+        </div>
+    </div>
+</ng-template>
