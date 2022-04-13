@@ -5,7 +5,7 @@ import {lastValueFrom, map} from 'rxjs';
 
 import {HsEndpoint} from '../../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../components/language/language.service';
-import {HsLaymanService} from '../../../components/save-map/layman.service';
+import {HsLaymanService} from '../../../components/save-map/feature-services/layman.service';
 import {HsLogService} from './../../log/log.service';
 import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
 

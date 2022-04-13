@@ -1,7 +1,7 @@
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsSaveMapDialogComponent} from './save-map-dialog.component';
-import {HsSaveMapManagerService} from './save-map-manager.service';
-import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsSaveMapDialogComponent} from '../dialog-save/dialog-save.component';
+import {HsSaveMapManagerService} from './../feature-services/save-map-manager.service';
+import {HsSaveMapResultDialogComponent} from '../dialog-result/dialog-result.component';
 import {Injectable} from '@angular/core';
 
 @Injectable({

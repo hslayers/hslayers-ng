@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs';
 
-import {HsSaveMapManagerParams} from './save-map-manager.service';
+import {HsSaveMapManagerParams} from './feature-services/save-map-manager.service';
 
 export class HsSaveMapManagerServiceMock {
   apps: {
