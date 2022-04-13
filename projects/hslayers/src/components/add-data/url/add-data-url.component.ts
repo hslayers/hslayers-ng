@@ -33,7 +33,10 @@ export class HsAddDataUrlComponent implements OnInit {
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsDialogContainerService: HsDialogContainerService
-  ) {
+  ) {}
+
+  ngOnInit() {
+    this.appRef = this.hsAddDataUrlService.get(this.app);
     if (Array.isArray(this.hsConfig.get(this.app).connectTypes)) {
       this.types = this.hsConfig
         .get(this.app)
@@ -42,16 +45,11 @@ export class HsAddDataUrlComponent implements OnInit {
     } else {
       this.types = AddDataUrlValues;
     }
-    //This component initializes after add-data.component which already set the typeSelected so *should* be fine to connect now
     if (this.hsAddDataUrlService.get(this.app).typeSelected) {
       this.connectServiceFromUrlParam(
         this.hsAddDataUrlService.get(this.app).typeSelected
       );
     }
-  }
-
-  ngOnInit() {
-    this.appRef = this.hsAddDataUrlService.get(this.app);
     this.hsAddDataUrlService
       .get(this.app)
       .addDataCapsParsingError.pipe(takeUntil(this.ngUnsubscribe))
