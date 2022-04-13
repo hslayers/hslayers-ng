@@ -13,16 +13,16 @@ import {Subject, catchError, forkJoin, lastValueFrom, map, of} from 'rxjs';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
-} from '../../common/layman/delete-layer-response.type';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../language/language.service';
-import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsSaverService} from './saver-service.interface';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+} from '../../../common/layman/delete-layer-response.type';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../../language/language.service';
+import {HsLaymanLayerDescriptor} from './../interfaces/layman-layer-descriptor.interface';
+import {HsLogService} from '../../../common/log/log.service';
+import {HsMapService} from '../../map/map.service';
+import {HsSaverService} from './../interfaces/saver-service.interface';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsUtilsService} from '../../utils/utils.service';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
   getLayerName,
@@ -31,7 +31,7 @@ import {
   wfsFailed,
   wfsNotAvailable,
   wfsPendingOrStarting,
-} from './layman-utils';
+} from './../layman-utils';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
@@ -40,7 +40,7 @@ import {
   getWorkspace,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
-} from '../../common/layer-extensions';
+} from '../../../common/layer-extensions';
 
 export type WfsSyncParams = {
   /** Endpoint description */

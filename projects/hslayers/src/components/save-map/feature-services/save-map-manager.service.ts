@@ -6,18 +6,21 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
-import {BoundingBoxObject} from './bounding-box-object.type';
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
+import {BoundingBoxObject} from './../types/bounding-box-object.type';
+import {HsConfig} from '../../../config.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanService} from './layman.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsSaveMapService} from './save-map.service';
-import {HsSaverService} from './saver-service.interface';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsMapService} from '../../map/map.service';
+import {HsSaveMapService} from '../save-map.service';
+import {HsSaverService} from './../interfaces/saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {accessRightsModel} from '../add-data/common/access-rights.model';
-import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
+import {HsUtilsService} from '../../utils/utils.service';
+import {accessRightsModel} from '../../add-data/common/access-rights.model';
+import {
+  getShowInLayerManager,
+  getTitle,
+} from '../../../common/layer-extensions';
 
 export class HsSaveMapManagerParams {
   statusData: any = {

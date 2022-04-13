@@ -13,7 +13,7 @@ import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsShareThumbnailService} from './share-thumbnail.service';
 import {HsShareUrlService} from './share-url.service';
-import {HsStatusManagerService} from '../save-map/status-manager.service';
+import {HsStatusManagerService} from '../save-map/feature-services/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getShowInLayerManager} from '../../common/layer-extensions';

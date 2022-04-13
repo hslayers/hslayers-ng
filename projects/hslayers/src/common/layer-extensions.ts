@@ -3,7 +3,7 @@ import {Group, Layer} from 'ol/layer';
 
 import {DOMFeatureLink} from './dom-feature-link.type';
 import {Geometry} from 'ol/geom';
-import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
+import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {Source} from 'ol/source';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
 

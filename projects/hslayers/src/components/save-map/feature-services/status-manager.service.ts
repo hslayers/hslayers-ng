@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 
 import {lastValueFrom} from 'rxjs';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../config.service';
-import {HsSaverService} from './saver-service.interface';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsConfig} from '../../../config.service';
+import {HsSaverService} from './../interfaces/saver-service.interface';
+import {HsUtilsService} from '../../utils/utils.service';
 @Injectable({
   providedIn: 'root',
 })
