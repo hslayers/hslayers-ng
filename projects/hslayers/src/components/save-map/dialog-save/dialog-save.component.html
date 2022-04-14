@@ -23,12 +23,12 @@
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
-                            (click)="HsSaveMapManagerService.save(false, data.endpoint, data.app); close()">{{'SAVECOMPOSITION.dialogSave.yesSave'
+                            (click)="save(false)">{{'SAVECOMPOSITION.dialogSave.yesSave'
                             | translateHs : data}}</button>
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg"
-                            (click)="HsSaveMapManagerService.selectNewTitle(data.app)">{{'SAVECOMPOSITION.dialogSave.noSaveAs'
+                            (click)="selectNewTitle()">{{'SAVECOMPOSITION.dialogSave.noSaveAs'
                             | translateHs : data}}</button>
                     </p>
                 </div>
@@ -41,7 +41,7 @@
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
-                            (click)="HsSaveMapManagerService.save(true, data.endpoint, data.app); close()">{{'COMMON.save'
+                            (click)="save(true); close()">{{'COMMON.save'
                             | translateHs : data}}</button>
                     </p>
                 </div>
@@ -57,7 +57,7 @@
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
-                            (click)="HsSaveMapManagerService.focusTitle(data.app); close()">{{'COMMON.ok' |
+                            (click)="focusTitle()">{{'COMMON.ok' |
                             translateHs : data}}</button>
                     </p>
                 </div>

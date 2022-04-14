@@ -1,7 +1,8 @@
 import 'share-api-polyfill';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {lastValueFrom} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
@@ -16,7 +17,7 @@ import {HsShareUrlService} from './share-url.service';
 import {HsStatusManagerService} from '../save-map/feature-services/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getShowInLayerManager} from '../../common/layer-extensions';
+import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -81,8 +82,15 @@ export class HsShareService {
             (l) =>
               getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
           )
+          .map((lyr: Layer) => {
+            return {
+              title: getTitle(lyr),
+              checked: true,
+              layer: lyr,
+            };
+          })
           .sort((a, b) => {
-            return a.getZIndex() - b.getZIndex();
+            return a.layer.getZIndex() - b.layer.getZIndex();
           });
         try {
           await lastValueFrom(

@@ -188,7 +188,7 @@ export class HsCommonLaymanAccessRightsComponent {
 
   /**
    * Refresh user list, when searching for specific user
-   * @param user - Provided Layman's user
+   * @param user - Provided Layman's service user
    */
   getUserName(user: LaymanUser): string {
     if (user.givenName && user.familyName) {

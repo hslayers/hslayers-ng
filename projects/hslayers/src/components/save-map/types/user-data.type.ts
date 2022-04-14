@@ -9,4 +9,5 @@ export type UserData = {
   organization?: string;
   position?: string;
   state?: string;
+  url?: string;
 };

@@ -110,7 +110,7 @@ export class HsAddDataCommonService {
    * Test if current map projection is in supported projection list
    *
    * @param srss - List of supported projections
-   * @returns True if map projection is in list, otherwise false
+   * @returns True if map projection is in list, false otherwise
    */
   currentProjectionSupported(srss: string[], app: string): boolean {
     if (!srss || srss.length === 0) {

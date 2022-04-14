@@ -24,7 +24,7 @@ import {HsLanguageModule} from '../../language/language.module';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
-import {HsLaymanService} from '../../save-map/layman.service';
+import {HsLaymanService} from '../../save-map/feature-services/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
 import {HsMapService} from '../../map/map.service';

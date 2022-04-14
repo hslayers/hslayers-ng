@@ -210,7 +210,7 @@ export class HsAddDataCommonFileService {
         zipContent = await zip.generateAsync({type: 'blob'});
       }
       formdata.append('file', zipContent, files[0].name.split('.')[0] + '.zip');
-      const files_to_async_upload = [];
+      const files_to_async_upload: File[] = [];
       const sumFileSize = formdata
         .getAll('file')
         .filter((f) => (f as File).name)

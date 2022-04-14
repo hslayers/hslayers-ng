@@ -1,23 +1,29 @@
+import {Injectable} from '@angular/core';
+
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsSaveMapDialogComponent} from '../dialog-save/dialog-save.component';
 import {HsSaveMapManagerService} from './../feature-services/save-map-manager.service';
 import {HsSaveMapResultDialogComponent} from '../dialog-result/dialog-result.component';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsSaveMapDialogSpawnerService {
   constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsSaveMapManagerService: HsSaveMapManagerService
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsSaveMapManagerService: HsSaveMapManagerService
   ) {}
 
+  /**
+   * Initialize the SaveMapDialogSpawnerService data and subscribers
+   * @param app - App identifier
+   */
   init(app: string) {
-    this.HsSaveMapManagerService.get(app).saveMapResulted.subscribe(
-      ({statusData, app}) => {
+    this.hsSaveMapManagerService
+      .get(app)
+      .saveMapResulted.subscribe(({statusData, app}) => {
         if (typeof statusData != 'string') {
-          this.HsDialogContainerService.create(
+          this.hsDialogContainerService.create(
             HsSaveMapResultDialogComponent,
             {
               app,
@@ -26,11 +32,11 @@ export class HsSaveMapDialogSpawnerService {
             app
           );
         }
-      }
-    );
-    this.HsSaveMapManagerService.get(app).preSaveCheckCompleted.subscribe(
-      ({endpoint, app}) => {
-        this.HsDialogContainerService.create(
+      });
+    this.hsSaveMapManagerService
+      .get(app)
+      .preSaveCheckCompleted.subscribe(({endpoint, app}) => {
+        this.hsDialogContainerService.create(
           HsSaveMapDialogComponent,
           {
             endpoint,
@@ -38,7 +44,6 @@ export class HsSaveMapDialogSpawnerService {
           },
           app
         );
-      }
-    );
+      });
   }
 }
