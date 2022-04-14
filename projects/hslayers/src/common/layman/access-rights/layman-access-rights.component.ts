@@ -5,7 +5,7 @@ import {lastValueFrom, map} from 'rxjs';
 
 import {HsEndpoint} from '../../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../components/language/language.service';
-import {HsLaymanService} from '../../../components/save-map/feature-services/layman.service';
+import {HsLaymanService} from '../../../components/save-map/layman.service';
 import {HsLogService} from './../../log/log.service';
 import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
 
@@ -188,7 +188,7 @@ export class HsCommonLaymanAccessRightsComponent {
 
   /**
    * Refresh user list, when searching for specific user
-   * @param user - Provided Layman's user
+   * @param user - Provided Layman's service user
    */
   getUserName(user: LaymanUser): string {
     if (user.givenName && user.familyName) {

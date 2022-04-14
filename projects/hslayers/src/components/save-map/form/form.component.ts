@@ -4,9 +4,13 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsCoreService} from '../../core/core.service';
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {HsSaveMapManagerService} from '../feature-services/save-map-manager.service';
+import {
+  HsSaveMapManagerParams,
+  HsSaveMapManagerService,
+} from '../save-map-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
@@ -15,24 +19,24 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   btnSelectDeselectClicked = true;
-  endpoint: any;
+  endpoint: HsEndpoint;
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
   @Input() app = 'default';
-  appRef;
+  appRef: HsSaveMapManagerParams;
 
   private ngUnsubscribe = new Subject<void>();
   constructor(
-    public HsSaveMapManagerService: HsSaveMapManagerService,
-    public HsCoreService: HsCoreService,
-    public HsUtilsService: HsUtilsService,
-    public HsLayerUtilsService: HsLayerUtilsService, //Used in template
-    public HsLayoutService: HsLayoutService
+    private hsSaveMapManagerService: HsSaveMapManagerService,
+    private hsCoreService: HsCoreService,
+    private hsUtilsService: HsUtilsService,
+    private hsLayerUtilsService: HsLayerUtilsService, //Used in template
+    private hsLayoutService: HsLayoutService
   ) {}
 
-  ngOnInit() {
-    this.appRef = this.HsSaveMapManagerService.get(this.app);
+  ngOnInit(): void {
+    this.appRef = this.hsSaveMapManagerService.get(this.app);
     this.appRef.endpointSelected
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((endpoint) => {
@@ -46,7 +50,8 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
           this.overwrite = true;
         }
         if (statusData == 'rename') {
-          this.HsLayoutService.get(app)
+          this.hsLayoutService
+            .get(app)
             .layoutElement.querySelector('[name="hs-save-map-name"]')
             .focus();
         }
@@ -58,6 +63,10 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     this.ngUnsubscribe.complete();
   }
 
+  /**
+   * Set extra form that will get opened
+   * @param form - Form name that needs to be opened
+   */
   setExtraFormTo(form: string): void {
     if (this.extraFormOpened === form) {
       this.extraFormOpened = '';
@@ -66,9 +75,12 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     }
   }
 
+  /**
+   * Save map composition as json file
+   */
   saveCompoJson(): void {
     const compositionJSON =
-      this.HsSaveMapManagerService.generateCompositionJson(this.app);
+      this.hsSaveMapManagerService.generateCompositionJson(this.app);
     const file = new Blob([JSON.stringify(compositionJSON)], {
       type: 'application/json',
     });
@@ -82,6 +94,9 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     }, 0);
   }
 
+  /**
+   * Select or deselect all available composition's layers
+   */
   selectDeselectAllLayers(): void {
     this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
     this.appRef.compoData.layers.forEach(
@@ -89,29 +104,78 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     );
   }
 
-  //*NOTE not being used
+  /**
+   * Set the first string letter to an uppercase
+   * NOTE not being used
+   * @returns Returns the same string, but with a capitalized first letter
+   */
   capitalizeFirstLetter(string: string): string {
-    return this.HsUtilsService.capitalizeFirstLetter(string);
+    return this.hsUtilsService.capitalizeFirstLetter(string);
   }
 
+  /**
+   * Triggered when composition's title input field receives user's input
+   */
   titleChanged(): void {
     this.overwrite = false;
     this.appRef.missingTitle = false;
     this.appRef.missingName = false;
   }
 
+  /**
+   * Triggered when composition's abstract input field receives user's input
+   */
   abstractChanged(): void {
     this.appRef.missingAbstract = false;
   }
 
+  /**
+   * Check if user is allowed to save the composition, based on the currently selected endpoint type
+   * @returns True if endpoint type is 'layman'.
+   * True if the endpoint type is 'statusmanager' and the user is authorized,
+   * false otherwise
+   */
   isAllowed(): boolean {
     if (this.endpoint === null) {
       return false;
     }
     if (this.endpoint.type == 'statusmanager') {
-      return !this.HsCoreService.isAuthorized();
+      return !this.hsCoreService.isAuthorized();
     } else if (this.endpoint.type == 'layman') {
       return true;
     }
+  }
+
+  /**
+   * Initiate composition's saving procedure
+   * @param newSave - If true save a new composition, otherwise overwrite to current one
+   */
+  initiateSave(newSave: boolean): void {
+    this.hsSaveMapManagerService.initiateSave(newSave, this.app);
+  }
+
+  /**
+   * Get title translation
+   * @param title - Title to translate
+   */
+  translateTitle(title: string): string {
+    return this.hsLayerUtilsService.translateTitle(title, this.app);
+  }
+
+  /**
+   * Set bounding box property from the current OL map view
+   */
+  setCurrentBoundingBox(): void {
+    this.hsSaveMapManagerService.setCurrentBoundingBox(this.app);
+  }
+
+  /**
+   * Check if current user can overwrite the composition data
+   */
+  canOverwrite(): boolean {
+    return (
+      this.appRef.compoData.workspace &&
+      this.appRef.currentUser !== this.appRef.compoData.workspace
+    );
   }
 }

@@ -12,7 +12,7 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
-import {HsLaymanService} from '../../save-map/feature-services/layman.service';
+import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
@@ -210,7 +210,7 @@ export class HsAddDataCommonFileService {
         zipContent = await zip.generateAsync({type: 'blob'});
       }
       formdata.append('file', zipContent, files[0].name.split('.')[0] + '.zip');
-      const files_to_async_upload = [];
+      const files_to_async_upload: File[] = [];
       const sumFileSize = formdata
         .getAll('file')
         .filter((f) => (f as File).name)

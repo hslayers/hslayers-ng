@@ -2,7 +2,10 @@ import {Component, OnInit, ViewRef} from '@angular/core';
 
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsSaveMapManagerService} from '../feature-services/save-map-manager.service';
+import {
+  HsSaveMapManagerParams,
+  HsSaveMapManagerService,
+} from '../save-map-manager.service';
 @Component({
   selector: 'hs-save-map-dialog-result',
   templateUrl: './dialog-result.component.html',
@@ -10,29 +13,38 @@ import {HsSaveMapManagerService} from '../feature-services/save-map-manager.serv
 export class HsSaveMapResultDialogComponent
   implements HsDialogComponent, OnInit {
   viewRef: ViewRef;
-  data: any;
-  appRef;
+  data: {
+    app: string;
+  };
+  appRef: HsSaveMapManagerParams;
 
   constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsSaveMapManagerService: HsSaveMapManagerService
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsSaveMapManagerService: HsSaveMapManagerService
   ) {}
 
-  ngOnInit() {
-    this.appRef = this.HsSaveMapManagerService.get(this.data.app);
+  ngOnInit(): void {
+    this.appRef = this.hsSaveMapManagerService.get(this.data.app);
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this, this.data.app);
   }
 
+  /**
+   * Initiate composition's saving procedure
+   * @param newSave - If true save a new composition, otherwise overwrite to current one
+   */
   initiateSave(newSave: boolean): void {
-    this.HsSaveMapManagerService.initiateSave(newSave, this.data.app);
+    this.hsSaveMapManagerService.initiateSave(newSave, this.data.app);
     this.close();
   }
 
+  /**
+   * Request to change composition's name to a new one
+   */
   changeName() {
-    this.HsSaveMapManagerService.get(this.data.app).saveMapResulted.next({
+    this.hsSaveMapManagerService.get(this.data.app).saveMapResulted.next({
       statusData: 'rename',
       app: this.data.app,
     });

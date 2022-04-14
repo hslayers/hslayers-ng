@@ -1,3 +1,13 @@
+import {CompoData} from '../types/compo-data.type';
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {MapComposition} from '../types/map-composition.type';
+
 export interface HsSaverService {
-  save(compositionJson, endpoint, data, saveAsNew, app: string): Promise<any>;
+  save(
+    compositionJson: MapComposition,
+    endpoint: HsEndpoint,
+    compoData: CompoData,
+    saveAsNew: boolean,
+    app: string
+  ): Promise<any>;
 }
