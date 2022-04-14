@@ -8,46 +8,48 @@ import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../language/language.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
+import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './layman.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsMapService} from '../../map/map.service';
-import {HsToastService} from '../../layout/toast/toast.service';
-import {HsUtilsService} from '../../utils/utils.service';
-
+import {HsLogService} from '../../common/log/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsToastService} from '../layout/toast/toast.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {
   getDefinition,
   getEventsSuspended,
   setEventsSuspended,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
-} from '../../../common/layer-extensions';
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerSynchronizerService {
   debounceInterval = 1000;
-  crs: any;
+  crs: string;
   syncedLayers: VectorLayer<VectorSource<Geometry>>[] = [];
   constructor(
-    public HsUtilsService: HsUtilsService,
-    public HsLaymanService: HsLaymanService,
-    public HsCommonEndpointsService: HsCommonEndpointsService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsMapService: HsMapService,
-    public HsCommonLaymanService: HsCommonLaymanService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService,
-    private HsLogService: HsLogService
+    private hsUtilsService: HsUtilsService,
+    private hsLaymanService: HsLaymanService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsMapService: HsMapService,
+    private hsCommonLaymanService: HsCommonLaymanService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService,
+    private hsLogService: HsLogService
   ) {}
 
+  /**
+   * Initialize the LayerSynchronizerService data and subscribers
+   * @param app - App identifier
+   */
   async init(app: string): Promise<void> {
-    await this.HsMapService.loaded(app);
-    const map = this.HsMapService.getMap(app);
+    await this.hsMapService.loaded(app);
+    const map = this.hsMapService.getMap(app);
     const layerAdded = (e) => this.addLayer(e.element, app);
     map.getLayers().on('add', layerAdded);
     map.getLayers().on('remove', (e) => {
@@ -58,14 +60,18 @@ export class HsLayerSynchronizerService {
         element: lyr,
       });
     });
-    this.HsCommonLaymanService.authChange.subscribe((_) => {
+    this.hsCommonLaymanService.authChange.subscribe(() => {
       this.reloadLayersOnAuthChange(app);
     });
-    this.crs = this.HsMapService.getCurrentProj(app).getCode();
-    this.HsLaymanService.crs = this.crs;
+    this.crs = this.hsMapService.getCurrentProj(app).getCode();
+    this.hsLaymanService.crs = this.crs;
   }
 
-  private reloadLayersOnAuthChange(app: string) {
+  /**
+   * Reload all the synchronized layers after Layman's authorization change
+   * @param app - App identifier
+   */
+  private reloadLayersOnAuthChange(app: string): void {
     for (const layer of this.syncedLayers) {
       const layerSource = layer.getSource();
       setLaymanLayerDescriptor(layer, undefined);
@@ -76,7 +82,8 @@ export class HsLayerSynchronizerService {
 
   /**
    * Start synchronizing layer to database
-   * @param {object} layer Layer to add
+   * @param layer - Layer to add
+   * @param app - App identifier
    */
   addLayer(layer: VectorLayer<VectorSource<Geometry>>, app: string): void {
     if (this.isLayerSynchronizable(layer)) {
@@ -85,10 +92,15 @@ export class HsLayerSynchronizerService {
     }
   }
 
+  /**
+   * Check if the selected layer is synchronizable
+   * @param layer - Layer to check
+   * @returns True if the layer can be synchronized, false otherwise
+   */
   isLayerSynchronizable(layer: VectorLayer<VectorSource<Geometry>>): boolean {
     const definition = getDefinition(layer);
     return (
-      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+      this.hsUtilsService.instOf(layer.getSource(), VectorSource) &&
       //Test whether fromat cointains 'wfs' AND does not contian 'external'. Case insensitive
       new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
         definition?.format?.toLowerCase()
@@ -99,18 +111,18 @@ export class HsLayerSynchronizerService {
   /**
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initially also get features from server
-   * @param layer Layer to add
-   * @returns If layer is synchronizable
+   * @param layer - Layer to add
+   * @param app - App identifier
    */
   async startMonitoringIfNeeded(
     layer: VectorLayer<VectorSource<Geometry>>,
     app: string
-  ): Promise<boolean> {
+  ): Promise<void> {
     const layerSource = layer.getSource();
     await this.pull(layer, layerSource, app);
     layer.on('propertychange', (e) => {
       if (e.key == 'sld' || e.key == 'title') {
-        this.HsLaymanService.upsertLayer(
+        this.hsLaymanService.upsertLayer(
           this.findLaymanForWfsLayer(layer),
           layer,
           false,
@@ -131,12 +143,17 @@ export class HsLayerSynchronizerService {
     layerSource.on('removefeature', (e) => {
       this.sync([], [], [e.feature], layer, app);
     });
-    return true;
   }
 
-  findLaymanForWfsLayer(layer: VectorLayer<VectorSource<Geometry>>) {
+  /**
+   * Find Layman's endpoint description for WFS layer
+   * @param layer - Layer to add
+   */
+  findLaymanForWfsLayer(
+    layer: VectorLayer<VectorSource<Geometry>>
+  ): HsEndpoint {
     const layerDefinition = getDefinition(layer);
-    return (this.HsCommonEndpointsService.endpoints || [])
+    return (this.hsCommonEndpointsService.endpoints || [])
       .filter(
         (ds) => ds.type == 'layman' && layerDefinition?.url?.includes(ds.url)
       )
@@ -144,10 +161,11 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * Get features from Layman endpoint as WFS string, parse and add
-   * them to OpenLayers VectorSource
-   * @param layer Layer to get Layman friendly name for
-   * @param source OpenLayers VectorSource to store features in
+   * Get features from Layman's endpoint service as WFS string, parse them and add
+   * them to OL VectorSource
+   * @param layer - Layer to get Layman friendly name for
+   * @param source - OL VectorSource to store features in
+   * @param app - App identifier
    */
   async pull(
     layer: VectorLayer<VectorSource<Geometry>>,
@@ -159,7 +177,7 @@ export class HsLayerSynchronizerService {
       const laymanEndpoint = this.findLaymanForWfsLayer(layer);
       if (laymanEndpoint) {
         setHsLaymanSynchronizing(layer, true);
-        const response: string = await this.HsLaymanService.makeGetLayerRequest(
+        const response: string = await this.hsLaymanService.makeGetLayerRequest(
           laymanEndpoint,
           layer,
           app
@@ -185,26 +203,28 @@ export class HsLayerSynchronizerService {
             source.addFeatures(features);
             features.forEach((f) => this.observeFeature(f, app));
           } catch (ex) {
-            console.warn(featureString, ex);
+            this.hsLogService.warn(featureString, ex);
           }
           source.loading = false;
         }
       }
     } catch (ex) {
-      this.HsLogService.warn(`Layer ${layer} could not be pulled.`);
+      this.hsLogService.warn(`Layer ${layer} could not be pulled.`);
     } finally {
       setEventsSuspended(layer, (getEventsSuspended(layer) || 0) - 1);
     }
   }
 
   /**
-   * @param f
+   * Observe feature changes and execute handler for them
+   * @param f - Feature to observe
+   * @param app - App identifier
    */
   observeFeature(f: Feature<Geometry>, app: string): void {
     f.getGeometry().on(
       'change',
-      this.HsUtilsService.debounce(
-        (geom) => {
+      this.hsUtilsService.debounce(
+        () => {
           this.handleFeatureChange(f, app);
         },
         this.debounceInterval,
@@ -218,25 +238,31 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * @param Feature
-   * @param feature
+   * Handler for feature change event
+   * @param feature - Feature whose change event was captured
+   * @param app - App identifier
    */
   handleFeatureChange(feature: Feature<Geometry>, app: string): void {
     this.sync(
       [],
       [feature],
       [],
-      this.HsMapService.getLayerForFeature(feature, app),
+      this.hsMapService.getLayerForFeature(feature, app),
       app
     );
   }
+  /**
+   * Handler for feature property change event
+   * @param feature - Feature whose property change event was captured
+   * @param app - App identifier
+   */
   handleFeaturePropertyChange(feature: Feature<Geometry>, app: string): void {
     //NOTE Due to WFS specification, attribute addition is not possible, so we must delete the feature before.
     this.sync(
       [],
       [],
       [feature],
-      this.HsMapService.getLayerForFeature(feature, app),
+      this.hsMapService.getLayerForFeature(feature, app),
       app
     );
     //NOTE only then we can add feature with new attributes again.
@@ -244,15 +270,17 @@ export class HsLayerSynchronizerService {
       [feature],
       [],
       [],
-      this.HsMapService.getLayerForFeature(feature, app),
+      this.hsMapService.getLayerForFeature(feature, app),
       app
     );
   }
   /**
-   * @param add
-   * @param upd
-   * @param del
-   * @param layer
+   * Sync any feature changes inside a layer, that is being stored on Layman's service database
+   * @param add - Features being added
+   * @param upd - Features being uploaded
+   * @param del - Features being deleted
+   * @param layer - Layer interacted with
+   * @param app - App identifier
    */
   sync(
     add: Feature<Geometry>[],
@@ -267,8 +295,9 @@ export class HsLayerSynchronizerService {
     const ep = this.findLaymanForWfsLayer(layer);
     if (ep) {
       setHsLaymanSynchronizing(layer, true);
-      this.HsLaymanService.sync({ep, add, upd, del, layer}, app).then(
-        (response: string) => {
+      this.hsLaymanService
+        .sync({ep, add, upd, del, layer}, app)
+        .then((response: string) => {
           if (response?.includes('Exception')) {
             this.displaySyncErrorDialog(response, app);
             return;
@@ -288,15 +317,20 @@ export class HsLayerSynchronizerService {
             this.observeFeature(add[0], app);
           }
           setHsLaymanSynchronizing(layer, false);
-        }
-      );
+        });
     }
   }
 
+  /**
+   * Display error dialog on synchronization failure
+   * @param error - Error captured
+   * @param app - App identifier
+   */
   displaySyncErrorDialog(error: string, app: string): void {
-    const exception: any = xml2Json.xml2js(error, {compact: true});
-    this.HsToastService.createToastPopupMessage(
-      this.HsLanguageService.getTranslation(
+    const exception: xml2Json.Element | xml2Json.ElementCompact =
+      xml2Json.xml2js(error, {compact: true});
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing',
         undefined,
         app
@@ -313,7 +347,7 @@ export class HsLayerSynchronizerService {
 
   /**
    * Stop synchronizing layer to database
-   * @param {Layer} layer Layer to remove from legend
+   * @param layer - Layer to remove from synched layers list
    */
   removeLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
     for (let i = 0; i < this.syncedLayers.length; i++) {

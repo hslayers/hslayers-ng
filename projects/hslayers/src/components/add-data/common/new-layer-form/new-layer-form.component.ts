@@ -7,7 +7,7 @@ import {
 import {HsAddDataCommonService} from '../common.service';
 import {HsFileService} from '../../file/file.service';
 import {HsLanguageService} from './../../../../components/language/language.service';
-import {HsLaymanService} from '../../../save-map/feature-services/layman.service';
+import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsUploadedFiles} from './../../../../common/upload/upload.component';
 
 @Component({

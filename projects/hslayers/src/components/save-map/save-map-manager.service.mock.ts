@@ -1,6 +1,7 @@
 import {Subject} from 'rxjs';
 
-import {HsSaveMapManagerParams} from './feature-services/save-map-manager.service';
+import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
+import {HsSaveMapManagerParams} from './save-map-manager.service';
 
 export class HsSaveMapManagerServiceMock {
   apps: {
@@ -10,7 +11,7 @@ export class HsSaveMapManagerServiceMock {
   };
   constructor() {}
   panelOpened: Subject<any> = new Subject();
-  endpointSelected: Subject<any> = new Subject();
+  endpointSelected: Subject<HsEndpoint> = new Subject();
   get(app: string): HsSaveMapManagerParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new HsSaveMapManagerParams();

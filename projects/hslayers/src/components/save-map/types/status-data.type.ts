@@ -8,4 +8,5 @@ export type StatusData = {
   resultCode?: string;
   guessedTitle?: string;
   error?: any;
+  status?: boolean;
 };

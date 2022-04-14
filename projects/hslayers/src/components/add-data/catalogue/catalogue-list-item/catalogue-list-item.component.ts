@@ -12,7 +12,7 @@ import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLaymanBrowserService} from '../layman/layman.service';
-import {HsLaymanService} from '../../../save-map/feature-services/layman.service';
+import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 @Component({

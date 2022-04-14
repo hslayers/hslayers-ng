@@ -38,13 +38,13 @@ import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
+import {BoundingBoxObject} from './../save-map/types/bounding-box-object.type';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
-  getBase,
   getDimensions,
   getEnableProxy,
   getRemovable,
@@ -1164,9 +1164,10 @@ export class HsMapService {
   /**
    * Get current extent of map, transform it into EPSG:4326 and round coordinates to 2 decimals.
    * This is used mainly in compositions and sharing of map and the coordinates are not very precise.
+   * @param app - App identifier
    * @returns Extent coordinates. Example: {east: "0.00", south: "0.00", west: "1.00", north: "1.00"}
    */
-  describeExtent(app: string) {
+  describeExtent(app: string): BoundingBoxObject {
     const b = this.getMap(app)
       .getView()
       .calculateExtent(this.getMap(app).getSize());

@@ -5,5 +5,5 @@ export type PostLayerResponse = {
   files_to_upload?: {
     file?: string;
     layman_original_parameter?: string;
-  };
+  }[];
 };

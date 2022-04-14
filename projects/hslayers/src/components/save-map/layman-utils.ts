@@ -68,8 +68,8 @@ export function getSupportedSrsList(ep: HsEndpoint) {
 }
 
 /**
- * @param ep Layman endpoint
- * @param version Version which the endpoint version will be compared with
+ * @param ep - Layman endpoint
+ * @param version - Version which the endpoint version will be compared with
  */
 export function isAtLeastVersions(ep: HsEndpoint, version: string) {
   let epVer = ep.version.split('.').map((part) => parseInt(part));

@@ -4,25 +4,38 @@ import {Injectable} from '@angular/core';
 import Resumable from 'resumablejs';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Feature} from 'ol';
 import {GeoJSON, WFS} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
+import {
+  Observable,
+  Subject,
+  Subscription,
+  catchError,
+  forkJoin,
+  lastValueFrom,
+  map,
+  of,
+} from 'rxjs';
 import {Source} from 'ol/source';
-import {Subject, catchError, forkJoin, lastValueFrom, map, of} from 'rxjs';
 
+import {AboutLayman} from './types/about-layman-response.type';
+import {CompoData} from './types/compo-data.type';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
-} from '../../../common/layman/delete-layer-response.type';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLaymanLayerDescriptor} from './../interfaces/layman-layer-descriptor.interface';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsMapService} from '../../map/map.service';
-import {HsSaverService} from './../interfaces/saver-service.interface';
-import {HsToastService} from '../../layout/toast/toast.service';
-import {HsUtilsService} from '../../utils/utils.service';
+} from '../../common/layman/delete-layer-response.type';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../language/language.service';
+import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
+import {HsLogService} from '../../common/log/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsSaverService} from './interfaces/saver-service.interface';
+import {HsToastService} from '../layout/toast/toast.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {MapComposition} from './types/map-composition.type';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
   getLayerName,
@@ -31,7 +44,9 @@ import {
   wfsFailed,
   wfsNotAvailable,
   wfsPendingOrStarting,
-} from './../layman-utils';
+} from './layman-utils';
+import {PostLayerResponse} from '../../common/layman/post-layer-response.type';
+import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
@@ -40,17 +55,17 @@ import {
   getWorkspace,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
-} from '../../../common/layer-extensions';
+} from '../../common/layer-extensions';
 
 export type WfsSyncParams = {
   /** Endpoint description */
   ep: HsEndpoint;
   /** Array of features to add */
-  add;
+  add: Feature<Geometry>[];
   /** Array of features to update */
-  upd;
+  upd: Feature<Geometry>[];
   /** Array of features to delete */
-  del;
+  del: Feature<Geometry>[];
   /** OpenLayers layer which has to have a title attribute */
   layer: VectorLayer<VectorSource<Geometry>>;
 };
@@ -61,26 +76,54 @@ export type WfsSyncParams = {
 export class HsLaymanService implements HsSaverService {
   crs: string;
   pendingLayers: Array<string> = [];
-  laymanLayerPending: Subject<any> = new Subject();
+  laymanLayerPending: Subject<string[]> = new Subject();
   totalProgress = 0;
-  deleteQuery;
+  deleteQuery: Subscription;
   supportedCRRList: string[];
   constructor(
-    public HsUtilsService: HsUtilsService,
+    private hsUtilsService: HsUtilsService,
     private http: HttpClient,
-    public HsMapService: HsMapService,
-    public HsLogService: HsLogService,
-    public HsCommonEndpointsService: HsCommonEndpointsService,
-    public $log: HsLogService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    private hsMapService: HsMapService,
+    private hsLogService: HsLogService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService
   ) {
-    this.HsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
+    this.hsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
       if (data) {
         const laymanEP = data.endpoints.find((ep) => ep.type == 'layman');
         if (laymanEP) {
-          const laymanVersion: any = await lastValueFrom(
-            this.http.get(laymanEP.url + '/rest/about/version')
+          const laymanVersion: AboutLayman = await lastValueFrom(
+            this.http
+              .get<AboutLayman>(laymanEP.url + '/rest/about/version')
+              .pipe(
+                map((res: any) => {
+                  return {
+                    about: {
+                      applications: {
+                        layman: {
+                          version: res.about.applications.layman.version,
+                          releaseTimestamp:
+                            res.about.applications.layman['release-timestamp'],
+                        },
+                        laymanTestClient: {
+                          version:
+                            res.about.applications['layman-test-client']
+                              .version,
+                        },
+                      },
+                      data: {
+                        layman: {
+                          lastSchemaMigration:
+                            res.about.applications['last-schema-migration'],
+                          lastDataMigration:
+                            res.about.applications['last-data-migration'],
+                        },
+                      },
+                    },
+                  };
+                })
+              )
           );
           laymanEP.version = laymanVersion.about.applications.layman.version;
           this.supportedCRRList = getSupportedSrsList(laymanEP);
@@ -90,17 +133,17 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * Save composition to Layman
-   * @param compositionJson Json with composition definition
-   * @param endpoint Endpoint description
-   * @param compoData Additional fields for composition such
-   * @param saveAsNew Save as new composition as title, name
+   * Save composition to Layman's database
+   * @param compositionJson - Json with composition's definition
+   * @param endpoint - Endpoint's description
+   * @param compoData - Additional data for composition
+   * @param saveAsNew - Save as new composition
    * @returns Promise result of POST
    */
   async save(
-    compositionJson,
-    endpoint,
-    compoData,
+    compositionJson: MapComposition,
+    endpoint: HsEndpoint,
+    compoData: CompoData,
     saveAsNew: boolean
   ): Promise<any> {
     const write =
@@ -172,20 +215,27 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * Send layer definition and features to Layman
-   * @param endpoint Endpoint description
-   * @param geojson Geojson object with features to send to server
-   * @param description Object containing {name, title, crs, workspace, access_rights} of
+   * Send layer's definition and features to Layman
+   * @param endpoint - Endpoint's description
+   * @param geojson - Geojson's object with features to send to server
+   * @param description - Object containing {name, title, crs, workspace, access_rights} of
    * layer to retrieve
-   * @param layerDesc Previously fetched layer descriptor
+   * @param layerDesc - Previously fetched layer's descriptor
    * @returns Promise result of POST/PATCH
    */
   private async makeUpsertLayerRequest(
-    endpoint,
-    geojson,
-    description,
-    layerDesc?
-  ): Promise<string> {
+    endpoint: HsEndpoint,
+    geojson: Feature<Geometry>[],
+    description: {
+      title: string;
+      name: string;
+      crs: string;
+      workspace: string;
+      access_rights: accessRightsModel;
+      sld: string;
+    },
+    layerDesc?: HsLaymanLayerDescriptor
+  ): Promise<any> {
     const formdata = new FormData();
     if (geojson) {
       formdata.append(
@@ -195,7 +245,7 @@ export class HsLaymanService implements HsSaverService {
       );
     }
 
-    const files_to_async_upload = [];
+    const files_to_async_upload: File[] = [];
     const sumFileSize = formdata
       .getAll('file')
       .filter((f) => (f as File).name)
@@ -205,7 +255,7 @@ export class HsLaymanService implements HsSaverService {
       this.switchFormDataToFileNames(formdata, files_to_async_upload);
     }
 
-    //Empty blob causes laymant to return “Internal Server Error”
+    //Empty blob causes Layman to return “Internal Server Error”
     if (description.sld) {
       formdata.append(
         'sld',
@@ -250,7 +300,7 @@ export class HsLaymanService implements HsSaverService {
           );
         }
       } catch (ex) {
-        this.HsLogService.log(`Creating layer ${description.name}`);
+        this.hsLogService.log(`Creating layer ${description.name}`);
       }
       const data = await lastValueFrom(
         this.http[layerDesc2?.name ? 'patch' : 'post']<any>(
@@ -264,10 +314,11 @@ export class HsLaymanService implements HsSaverService {
 
       if (data && data.length > 0) {
         if (async_upload) {
-          const promise = await this.asyncUpload(files_to_async_upload, data, {
-            url: endpoint.url,
-            user: description.workspace,
-          });
+          const promise = await this.asyncUpload(
+            files_to_async_upload,
+            data,
+            endpoint
+          );
           return promise;
         } else {
           return data;
@@ -282,13 +333,15 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Saves files for later upload and switches from files to file names in form data
+   * @param formdata - File that will be uploaded
+   * @param files_to_async_upload - File array that will get uploaded asynchronously
    */
   switchFormDataToFileNames(
     formdata: FormData,
-    files_to_async_upload: Array<any>
+    files_to_async_upload: File[]
   ): void {
     const files = formdata.getAll('file').filter((f) => (f as any).name);
-    files_to_async_upload.push(...files);
+    files_to_async_upload.push(...(files as File[]));
 
     const file_names = files.map((f) => (f as any).name);
     formdata.delete('file');
@@ -297,8 +350,15 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Use resumable to chunk upload data larger than PREFER_RESUMABLE_SIZE_LIMIT(2MB)
+   * @param files_to_async_upload - File array that will get uploaded asynchronously
+   * @param data - Layman's response after posting layers
+   * @param endpoint - Layman's service endpoint
    */
-  asyncUpload(files_to_async_upload, data, endpoint): Promise<any> {
+  asyncUpload(
+    files_to_async_upload: File[],
+    data: PostLayerResponse[],
+    endpoint: HsEndpoint
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       files_to_async_upload = files_to_async_upload.filter(
         (file_to_upload) =>
@@ -319,15 +379,15 @@ export class HsLaymanService implements HsSaverService {
 
       const chunksProgress = [];
       resumable.on('complete', () => {
-        this.HsLogService.log(`Async upload finished successfully!`);
+        this.hsLogService.log(`Async upload finished successfully!`);
         resolve(data);
       });
       resumable.on('fileError', (file, message) => {
-        console.log('fileError', message);
+        this.hsLogService.log('fileError', message);
         reject(message);
       });
       resumable.on('fileSuccess', (file, message) => {
-        this.HsLogService.log(message);
+        this.hsLogService.log(message);
       });
       resumable.on('fileProgress', (file) => {
         chunksProgress[file.uniqueIdentifier] = file.progress(false);
@@ -335,7 +395,7 @@ export class HsLaymanService implements HsSaverService {
         this.totalProgress = sum / files_to_async_upload.length;
       });
       resumable.on('filesAdded', (files) => {
-        this.HsLogService.log(
+        this.hsLogService.log(
           `${files.length} files added to Resumable.js, starting async upload.`
         );
         resumable.upload();
@@ -348,13 +408,14 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Create Layman layer if needed and send all features
-   * @param endpoint Endpoint description
-   * @param ep
-   * @param layer Layer to get Layman friendly name for
-   * get features
+   * @param endpoint - Layman's endpoint description
+   * @param layer - Layer to get Layman friendly name for
+   * in order to get features
+   * @param withFeatures - Layer state, whether or not it has features
+   * @param app - App identifier
    */
   public async upsertLayer(
-    ep: HsEndpoint,
+    endpoint: HsEndpoint,
     layer: VectorLayer<VectorSource<Geometry>>,
     withFeatures: boolean,
     app: string
@@ -367,7 +428,7 @@ export class HsLaymanService implements HsSaverService {
 
     const f = new GeoJSON();
     const crsSupported = this.supportedCRRList.includes(this.crs);
-    let geojson;
+    let geojson: Feature<Geometry>[];
     if (withFeatures) {
       if (!crsSupported) {
         geojson = f.writeFeaturesObject(
@@ -385,11 +446,11 @@ export class HsLaymanService implements HsSaverService {
       }
     }
 
-    if ((ep?.version?.split('.').join() as unknown as number) < 171) {
+    if ((endpoint?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
     setHsLaymanSynchronizing(layer, true);
-    await this.makeUpsertLayerRequest(ep, geojson, {
+    await this.makeUpsertLayerRequest(endpoint, geojson, {
       title: layerTitle,
       name: layerName,
       crs: crsSupported ? this.crs : 'EPSG:3857',
@@ -398,19 +459,21 @@ export class HsLaymanService implements HsSaverService {
       sld: getSld(layer),
     });
     setTimeout(async () => {
-      await this.makeGetLayerRequest(ep, layer, app);
+      await this.makeGetLayerRequest(endpoint, layer, app);
       setHsLaymanSynchronizing(layer, false);
     }, 2000);
   }
 
   /**
-   * Sync wfs features using transaction. Publish layer first if needed
-   * @param param0
-   * @param param0.ep
-   * @param param0.add
-   * @param param0.upd
-   * @param param0.del
-   * @param param0.layer
+   * Sync WFS features using transaction. Publish layer first if needed
+   * @param param0 - Object describing endpoint, layer and arrays
+   * for each of the methods: update, del, insert containing the features to be processed
+   * @param ep - Layman's endpoint description
+   * @param add - Features being added
+   * @param upd - Features being uploaded
+   * @param del - Features being deleted
+   * @param layer - Layer interacted with
+   * @param app - App identifier
    * @returns Promise result of POST
    */
   async sync(
@@ -433,7 +496,7 @@ export class HsLaymanService implements HsSaverService {
           throw `Layer or its name/url didn't exist`;
         }
       } catch (ex) {
-        this.HsLogService.warn(`Layer ${name} didn't exist. Creating..`);
+        this.hsLogService.warn(`Layer ${name} didn't exist. Creating..`);
         this.upsertLayer(ep, layer, true, app);
         return;
       }
@@ -450,14 +513,15 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Make WFS transaction request
-   * @param param0 Object describing endpoint, layer and arrays
+   * @param param0 - Object describing endpoint, layer and arrays
    * for each of the methods: update, del, insert containing the features to be processed
-   * @param param0.add
-   * @param param0.ep
-   * @param url Layman client / geoserver
-   * @param param0.upd
-   * @param param0.del
-   * @param param0.layer
+   * @param ep - Layman's endpoint description
+   * @param add - Features being added
+   * @param upd - Features being uploaded
+   * @param del - Features being deleted
+   * @param layer - Layer interacted with
+   * @param app - App identifier
+   * @returns Promise result of POST
    */
   private async makeWfsRequest(
     {ep, add, upd, del, layer}: WfsSyncParams,
@@ -465,7 +529,7 @@ export class HsLaymanService implements HsSaverService {
     app: string
   ): Promise<string> {
     try {
-      const srsName = this.HsMapService.getCurrentProj(app).getCode();
+      const srsName = this.hsMapService.getCurrentProj(app).getCode();
       const featureType = getLayerName(layer);
       const wfsFormat = new WFS();
       const options = {
@@ -497,10 +561,16 @@ export class HsLaymanService implements HsSaverService {
       );
       return r;
     } catch (ex) {
-      this.HsLogService.error(ex);
+      this.hsLogService.error(ex);
     }
   }
 
+  /**
+   * Cache Layman's layer descriptor so it can be used layer on
+   * @param layer - Layer interacted with
+   * @param layer - Layman's layer descriptor
+   * @param endpoint - Layman's endpoint description
+   */
   private cacheLaymanDescriptor(
     layer: VectorLayer<VectorSource<Geometry>>,
     desc: HsLaymanLayerDescriptor,
@@ -512,13 +582,11 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @param ep
-   * @param layer
-   * @param endpoint Endpoint description
-   * @param layerName Escaped name of layer
+   * Retrieve layer's features from server
+   * @param ep - Layman's endpoint description
+   * @param layer - Layer interacted with
    * @returns Promise with WFS xml (GML3.1) response
    * with features for a specified layer
-   * Retrieve layers features from server
    */
   async makeGetLayerRequest(
     ep: HsEndpoint,
@@ -546,7 +614,7 @@ export class HsLaymanService implements HsSaverService {
         this.cacheLaymanDescriptor(layer, descr, endpoint);
       }
     } catch (ex) {
-      //If layman returned 404
+      //If Layman returned 404
       return null;
     }
 
@@ -557,13 +625,13 @@ export class HsLaymanService implements HsSaverService {
         this.http.get(
           descr.wfs.url +
             '?' +
-            this.HsUtilsService.paramsToURL({
+            this.hsUtilsService.paramsToURL({
               service: 'wfs',
               version: '1.1.0',
               request: 'GetFeature',
               typeNames: `${getWorkspace(layer)}:${descr.name}`,
               r: Math.random(),
-              srsName: this.HsMapService.getCurrentProj(app).getCode(),
+              srsName: this.hsMapService.getCurrentProj(app).getCode(),
             }),
           {responseType: 'text', withCredentials: true}
         )
@@ -575,11 +643,12 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * Try getting layer description from layman.
-   * @param endpoint Endpoint description
-   * @param layerName Layer name
+   * Try getting layer's description from Layman.
+   * @param endpoint - Layman's endpoint description
+   * @param layerName - Interacted layer's name
+   * @param workspace - Current Layman's workspace
    * @returns Promise which returns layers
-   * description containing name, file, wms, wfs urls etc.
+   * description containing name, file, WMS, WFS urls etc.
    */
   async describeLayer(
     endpoint: HsEndpoint,
@@ -618,12 +687,16 @@ export class HsLaymanService implements HsSaverService {
       }
     } catch (ex) {
       this.managePendingLayers(layerName);
-      this.HsLogService.error(ex);
+      this.hsLogService.error(ex);
       throw ex;
     }
   }
 
-  private managePendingLayers(layerName) {
+  /**
+   * Keep track of pending layers that are still being loaded
+   * @param layerName - Interacted layer's name
+   */
+  private managePendingLayers(layerName: string): void {
     if (this.pendingLayers.includes(layerName)) {
       this.pendingLayers = this.pendingLayers.filter(
         (layer) => layer != layerName
@@ -633,8 +706,9 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * Removes selected layer from layman.
-   * @param layer -
+   * Removes selected layer from Layman's database
+   * @param app - App identifier
+   * @param layer - (Optional) Layer to be removed
    */
   async removeLayer(
     app: string,
@@ -645,8 +719,8 @@ export class HsLaymanService implements HsSaverService {
         this.deleteQuery.unsubscribe();
         delete this.deleteQuery;
       }
-      const observables = [];
-      (this.HsCommonEndpointsService.endpoints || [])
+      const observables: Observable<any>[] = [];
+      (this.hsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
           let url;
@@ -667,8 +741,8 @@ export class HsLaymanService implements HsSaverService {
                 (
                   res: DeleteSingleLayerResponse | DeleteAllLayersResponse[]
                 ) => {
-                  this.HsToastService.removeByText(
-                    this.HsLanguageService.getTranslation(
+                  this.hsToastService.removeByText(
+                    this.hsLanguageService.getTranslation(
                       'LAYMAN.deletionInProgress',
                       undefined,
                       app
@@ -679,7 +753,7 @@ export class HsLaymanService implements HsSaverService {
                   if (!layer) {
                     message = 'LAYMAN.allLayersSuccessfullyRemoved';
                   }
-                  this.HsToastService.createToastPopupMessage(
+                  this.hsToastService.createToastPopupMessage(
                     'LAYMAN.deleteLayersRequest',
                     message,
                     {
@@ -693,13 +767,13 @@ export class HsLaymanService implements HsSaverService {
                 }
               ),
               catchError((e) => {
-                this.HsToastService.createToastPopupMessage(
-                  this.HsLanguageService.getTranslation(
+                this.hsToastService.createToastPopupMessage(
+                  this.hsLanguageService.getTranslation(
                     'COMMON.warning',
                     undefined,
                     app
                   ),
-                  this.HsLanguageService.getTranslationIgnoreNonExisting(
+                  this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'SAVECOMPOSITION',
                     'removeLayerError',
                     {
@@ -725,13 +799,21 @@ export class HsLaymanService implements HsSaverService {
     });
   }
 
+  /**
+   * Get Layman's endpoint description
+   * @returns Layman's endpoint description
+   */
   getLaymanEndpoint(): HsEndpoint {
-    return this.HsCommonEndpointsService.endpoints?.find(
+    return this.hsCommonEndpointsService.endpoints?.find(
       //FIXME..."?" was not there before multiple apps. Added to bypass while refactoring other
       (e) => e.type == 'layman'
     );
   }
 
+  /**
+   * Check if the current Layman's user is anonymous (Not logged in)
+   * @returns True if user is not logged in, false otherwise
+   */
   isLaymanGuest(): boolean {
     const endpoint = this.getLaymanEndpoint();
     return endpoint.user == 'anonymous' || endpoint.user == 'browser';
@@ -740,12 +822,15 @@ export class HsLaymanService implements HsSaverService {
 
 /**
  * Mend error when features are not encoded as string.
- * They would not need to be encoded in future, but for now Layman
+ * They would not need to be encoded in the future, but for now Layman
  * and composition schema requires them to be.
- * @param response - Check if server response contained error about features
+ * @param response - Response containing error about features
  * @param compositionJson  - Composition json being sent on first try
  */
-function featuresTypeFallback(response: any, compositionJson: any) {
+function featuresTypeFallback(
+  response: any,
+  compositionJson: MapComposition
+): void {
   if (
     response.code == 2 &&
     response.detail &&
