@@ -189,14 +189,14 @@ export class HsLayoutService {
   }
 
   async updSidebarPosition(app: string) {
-    const lastPosition = (await lastValueFrom(this.sidebarPosition)).position;
-    if (window.innerWidth <= 767 && lastPosition != 'bottom') {
+    const lastPosition = this.sidebarPosition.value;
+    if (window.innerWidth <= 767 && lastPosition.position != 'bottom') {
       this.sidebarPosition.next({
         app,
         position: 'bottom',
       });
     } else {
-      if (this.HsConfig.apps[app].sidebarPosition != lastPosition) {
+      if (this.HsConfig.apps[app].sidebarPosition != lastPosition.position) {
         this.sidebarPosition.next({
           app,
           position: this.HsConfig.apps[app].sidebarPosition,
