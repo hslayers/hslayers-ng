@@ -43,16 +43,16 @@ export class HslayersAppComponent {
         },
         sidebarPosition: 'right',
       },
-      {
-        name: 'app-2',
-        panelsEnabled: {
-          compositionLoadingProgress: true,
-          tripPlanner: true,
-          mapSwipe: false,
-          feature_table: true,
-        },
-        sidebarPosition: 'left',
-      },
+      // {
+      //   name: 'app-2',
+      //   panelsEnabled: {
+      //     compositionLoadingProgress: true,
+      //     tripPlanner: true,
+      //     mapSwipe: false,
+      //     feature_table: true,
+      //   },
+      //   sidebarPosition: 'left',
+      // },
     ];
     for (const app of apps) {
       const interpolatedSource = new InterpolatedSource({
@@ -333,6 +333,7 @@ export class HslayersAppComponent {
       });
       this.hsConfig.update(
         {
+          sidebarClosed: true,
           sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
