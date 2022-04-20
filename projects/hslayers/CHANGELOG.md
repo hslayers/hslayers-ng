@@ -1,3 +1,105 @@
+# [9.0.0](https://github.com/hslayers/hslayers-ng/compare/8.1.0...9.0.0) (2022-04-20)
+
+
+### Bug Fixes
+
+* Add missing required composition params ([5b353a5](https://github.com/hslayers/hslayers-ng/commit/5b353a51f79bc7d13037c2cedf92fb8603ae62fa))
+* Bootstrapping code for cesium-app ([02ca26a](https://github.com/hslayers/hslayers-ng/commit/02ca26a8178cdac81af82fcf9a487e8645a62364))
+* Building of cesium app ([d8e2e64](https://github.com/hslayers/hslayers-ng/commit/d8e2e64f574c8ddb14d4c27cea7e54bf1e2ef323))
+* Capabilities parsing error ([22bfa9b](https://github.com/hslayers/hslayers-ng/commit/22bfa9b44a6fbdd1192c3885e2eb170a6d98f4c5))
+* Composition panel fixes ([906e79d](https://github.com/hslayers/hslayers-ng/commit/906e79d22bee385e91d049b67538d6862a7cb367))
+* connectServiceFromUrlParam ([d9bb208](https://github.com/hslayers/hslayers-ng/commit/d9bb2086096c47f3512fd7561b897a46d67b8db7))
+* contentWrapper needs to be set before sidebarPosition ([5e0d7fa](https://github.com/hslayers/hslayers-ng/commit/5e0d7fa7ca963bec143fb08474d68e5601475b3b))
+* Copy/move feature ([c44ad30](https://github.com/hslayers/hslayers-ng/commit/c44ad308c3efcc42947ce3a10cb521d79791857c))
+* Create empty toasts array if none exists ([7a66e57](https://github.com/hslayers/hslayers-ng/commit/7a66e572a3afaa215b973dad339fceedf3c372c1))
+* Don't go fullscreen in very small containers ([dffcf13](https://github.com/hslayers/hslayers-ng/commit/dffcf13e50047c2375d10b1c40162350dd6a0d23))
+* Don't store layers not visible in LM ([d87c2d9](https://github.com/hslayers/hslayers-ng/commit/d87c2d93bcaa1a3e167705ea6532e9b1b0774298))
+* Don't throw error if some highlightable feature null ([c8a5ccf](https://github.com/hslayers/hslayers-ng/commit/c8a5ccfed09bc02f44ee720344c9684ba594045e))
+* Dont request layman version if no endpoint ([b4ec6f2](https://github.com/hslayers/hslayers-ng/commit/b4ec6f272c5cf55466be5ee15468f0503c306997))
+* Ensure Layman username at first login ([2af8705](https://github.com/hslayers/hslayers-ng/commit/2af87053815eca6eec8a9c9704663adcd9c2b12c))
+* Error filling bbox for composition when sharing map ([7599145](https://github.com/hslayers/hslayers-ng/commit/759914508e27527def747a36f96227603c089cef))
+* ExpressionChangedAfterItHasBeenCheckedError ([32fd074](https://github.com/hslayers/hslayers-ng/commit/32fd074d7e2ad9bd7c31d9c69c73a459b09664f0))
+* Fix basemap gallery for multi-apps ([15fde85](https://github.com/hslayers/hslayers-ng/commit/15fde8518bafaaf644c150eeb969002020d771f0))
+* Fix decoupling test app for multi-apps ([b311ced](https://github.com/hslayers/hslayers-ng/commit/b311ced74898bf99651d359c00694ace504134d7))
+* Init popup service before component ([57edff5](https://github.com/hslayers/hslayers-ng/commit/57edff54319d7daccb2e0697def15a3d9d0e997a))
+* initRun for undefined app ([8393c73](https://github.com/hslayers/hslayers-ng/commit/8393c7313a8d1ba55c3711a7575eeec2c9f34797))
+* LM multi app fixes ([4c173bd](https://github.com/hslayers/hslayers-ng/commit/4c173bd9f9dbbaf1c359336efe8ad3b57cdbfb83))
+* Loading layman wfs layers ([f208291](https://github.com/hslayers/hslayers-ng/commit/f2082918828a2e3a165a16411e8c2a8c8077de85))
+* Make sure dialogs are passed app id in data object ([22380a6](https://github.com/hslayers/hslayers-ng/commit/22380a623ea2ce8ac12791c35c95e9444388ec63))
+* Make sure sidebarPosition is set before layoutservice init ([#2916](https://github.com/hslayers/hslayers-ng/issues/2916)) ([3138a2c](https://github.com/hslayers/hslayers-ng/commit/3138a2c88d8028b76eb893536803dffc16a35383))
+* Map swipe position in storage ([7a2eb3f](https://github.com/hslayers/hslayers-ng/commit/7a2eb3ff76b6fb44393e805597e110c486de1ad7))
+* Merge data objects for widgets from js and html ([460ad4d](https://github.com/hslayers/hslayers-ng/commit/460ad4dec701b37ef908b89d3308eb795671c1d4))
+* Minisidebar buttons displayed ([3762c30](https://github.com/hslayers/hslayers-ng/commit/3762c309ac4952406fe573449edbdd3e93123c02))
+* OSM layer from app not added due to placeholder ([5209115](https://github.com/hslayers/hslayers-ng/commit/52091159e3768fcc4e31677665ad9916e806c6bc))
+* Passing of data object to panel from multiple sources ([9b4c43d](https://github.com/hslayers/hslayers-ng/commit/9b4c43dc697bfe9c5616c72b6022b3bf4e79ed9b))
+* Prioritize user defined height on init ([ae3a7ec](https://github.com/hslayers/hslayers-ng/commit/ae3a7ecaed34d5c0418c9e0e7c2f4ae3970ddd34))
+* Provide correct attr bound id for chb and label ([ad0100c](https://github.com/hslayers/hslayers-ng/commit/ad0100c25f30e340af22efe77ba9f49c3e99ddbb))
+* Provide correct data object for layman login ([45bd632](https://github.com/hslayers/hslayers-ng/commit/45bd632284730d0280152619fef4ad46976a4b5a))
+* Provide default style for tmp draw layer ([ee3e536](https://github.com/hslayers/hslayers-ng/commit/ee3e536a70fbef735a088fcbe7db178b03e6427e))
+* Remove obsolete Status Manager requests, fixes [#2796](https://github.com/hslayers/hslayers-ng/issues/2796) ([3a389f3](https://github.com/hslayers/hslayers-ng/commit/3a389f3902196ff6f22ebf65f8a4e9a0c6bea385))
+* Remove only selected layman layer ([2dbfc92](https://github.com/hslayers/hslayers-ng/commit/2dbfc92bdb48c8dd091f7677a2533b9e02621a24))
+* Remove osm placeholder layer if default_layers has OSM already ([f340919](https://github.com/hslayers/hslayers-ng/commit/f3409197a7b2dcc73dbe048ecd1952cc49817c10))
+* Return app reference string on auth change ([1a3b486](https://github.com/hslayers/hslayers-ng/commit/1a3b48689ef3d6e40282c48a1355c3be8532cd8d))
+* Save map component undefined error ([b1001ec](https://github.com/hslayers/hslayers-ng/commit/b1001ec8a1ecc3587a556c94cca6853e98ebd7e3))
+* Separate vector uploaders, empty sld blob breaking vector upload ([88b4559](https://github.com/hslayers/hslayers-ng/commit/88b455981069b26cfd3bb3165f0d285358296ce6))
+* Set default style object if parsing sld/qml fails ([50cb0d7](https://github.com/hslayers/hslayers-ng/commit/50cb0d79eed3d21d43c45cbefbc198c819ec11e8)), closes [#2880](https://github.com/hslayers/hslayers-ng/issues/2880)
+* Share pure map ([df24678](https://github.com/hslayers/hslayers-ng/commit/df2467830bb19c485ea43e347b9aff891c0141f0))
+* Share radio buttons ([2e145d5](https://github.com/hslayers/hslayers-ng/commit/2e145d5bb8a8f50fe08a8f46fd08ee9e5d418c7c))
+* Sidebar should load always, but be hidden if configured ([1932fe3](https://github.com/hslayers/hslayers-ng/commit/1932fe33efff11822bfeb63ce778be46676ecc9d))
+* **add-data:** Fix url details params translation ([759f979](https://github.com/hslayers/hslayers-ng/commit/759f979f73d42aa54b2fd0b6801bde2053b572f6))
+* Sidebar not shrinking on layoutresize ([a7936cc](https://github.com/hslayers/hslayers-ng/commit/a7936cc5e12f6ddeac4032821930953889126cef))
+* **map-swipe:** Cannot addLayer from undefined ([754d724](https://github.com/hslayers/hslayers-ng/commit/754d7243b221ab6cbdd84497f10ff58e5898510c))
+* **measure:** Bind data to html from service and don't store it inside the component ([4a535d0](https://github.com/hslayers/hslayers-ng/commit/4a535d0690430ea0d7515028c9f4a8e12817d41b))
+* **save-map:** Add missing app input ([d1c6a52](https://github.com/hslayers/hslayers-ng/commit/d1c6a52fc9950565f036d458277ec27da606d154))
+* Translation pipe syntax ([62de181](https://github.com/hslayers/hslayers-ng/commit/62de181607082e2bddd9cbf1ae91f83c4856d910))
+
+
+### Build System
+
+* Add popperjs/core peer dependency for ngBootstrap ([735c51c](https://github.com/hslayers/hslayers-ng/commit/735c51c49cf68fcf47b5ea702d437958a38fbd81))
+
+
+### Code Refactoring
+
+* Change sidebar button management ([4ae9387](https://github.com/hslayers/hslayers-ng/commit/4ae93877334e9a2a59ff14e4fb743f7d4b786e34))
+* Make HsLayoutService.sidebarVisible an observable ([f9822bf](https://github.com/hslayers/hslayers-ng/commit/f9822bf6dffefc7f69953162e913ac85bdbc85a6)), closes [#2888](https://github.com/hslayers/hslayers-ng/issues/2888)
+* Multiple translation services for multi-apps ([77e0158](https://github.com/hslayers/hslayers-ng/commit/77e0158ce3936a6e7dec4905efbf6af2de415b4d))
+* Replace sidebarBottom() with sidebarPosition observable ([b15450e](https://github.com/hslayers/hslayers-ng/commit/b15450e74589b3053070656afda6f1653afe1560)), closes [#2888](https://github.com/hslayers/hslayers-ng/issues/2888)
+
+
+### Features
+
+* Ability to load CSW type compositions ([3944356](https://github.com/hslayers/hslayers-ng/commit/3944356da2f0be32a80edeebb76c0d7639070130))
+* Add multiple-apps support with shared services but separate config ([e0c1dd5](https://github.com/hslayers/hslayers-ng/commit/e0c1dd539202390b45d67add38cbc49ce75a7cdb))
+* Add new defaultComposition config parameter ([ed7794d](https://github.com/hslayers/hslayers-ng/commit/ed7794d4ae497d0d957f2dd7791e1dbca38ca96f))
+* Add overridable senslog path config ([c5b668e](https://github.com/hslayers/hslayers-ng/commit/c5b668e3456ae9c1e1ccd1a2c9d32d8aca650873))
+* Allow multiple hslayersNgConfig with app id postfix ([601f440](https://github.com/hslayers/hslayers-ng/commit/601f440c429e338903e0da5e2f2a69744d92f532))
+* Create InterpolatedSource class for IDW layers ([c8326a6](https://github.com/hslayers/hslayers-ng/commit/c8326a66b1e7e6811a1a33a8d72ad89752f16daa))
+* Support multiple hslayers-app elements ([eeb161e](https://github.com/hslayers/hslayers-ng/commit/eeb161ea243bc0d9638d203a89ee7f32afc9d0d6))
+
+
+### Performance Improvements
+
+* Make panelSpaceWidth observable ([7514330](https://github.com/hslayers/hslayers-ng/commit/75143300d9926fe05c73a29a35db5cc13d151943))
+
+
+### BREAKING CHANGES
+
+* Since a page can have multiple hslayers maps, but Angular services are singletone, a lot of functions inside hslayers services need `app` parameter specified. Use value 'default' if unsure.
+* Replace sidebarVisible() with sidebarVisible observable. It returns {app, visible}
+* Replace sidebarBottom() with sidebarPosition observable. It returns {app, position}
+where position == 'bottom' if sidebar is located at bottom.
+* panelSpaceWidth is not a function anymore, but a BehaviourSubject<{app, width}>
+* Add ol-ext library as peer dependency
+```
+npm i ol-ext
+```
+* Hslayers wont compile without popperjs/core
+* Use `translateHs: {'app': data.app}` or just `translateHs: data` pipe provided by HsLanguageModule instead of `translate` which is provided by ngx-translate if you want to translate components which are integrated into hslayers application such as custom HSlayers-ng panels or widgets.
+* Buttons are now added by HsSidebarService.addButton() function
+
+
+
 # [8.1.0](https://github.com/hslayers/hslayers-ng/compare/8.0.0...8.1.0) (2022-03-15)
 
 
