@@ -336,13 +336,13 @@ export class HslayersAppComponent {
           sidebarPosition: app.sidebarPosition,
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
-            // {
-            //   title: 'Layman',
-            //   url: 'http://localhost:8087',
-            //   user: 'anonymous',
-            //   type: 'layman',
-            //   liferayProtocol: 'https',
-            // },
+            {
+              title: 'Layman',
+              url: 'http://localhost:8087',
+              user: 'anonymous',
+              type: 'layman',
+              liferayProtocol: 'https',
+            },
             {
               title: 'Micka',
               url: 'https://hub.lesprojekt.cz/micka/csw',
