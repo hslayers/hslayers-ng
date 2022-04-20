@@ -85,17 +85,19 @@ export class HsShareService {
             return a.getZIndex() - b.getZIndex();
           });
         try {
+          const bbox = this.HsMapService.describeExtent(app);
+          const data = this.HsSaveMapService.map2json(
+            this.HsMapService.getMap(app),
+            {layers, bbox},
+            {},
+            {},
+            app
+          );
           await lastValueFrom(
             this.HttpClient.post(
               status_url,
               JSON.stringify({
-                data: this.HsSaveMapService.map2json(
-                  this.HsMapService.getMap(app),
-                  {layers: layers},
-                  {},
-                  {},
-                  app
-                ),
+                data,
                 permalink: true,
                 id: this.HsShareUrlService.id,
                 project: this.HsConfig.get(app1).project_name,

@@ -169,7 +169,7 @@ export class HsSaveMapManagerService {
   }
 
   setCurrentBoundingBox(app: string): void {
-    this.get(app).compoData.bbox = this.getCurrentExtent(app);
+    this.get(app).compoData.bbox = this.HsMapService.describeExtent(app);
   }
 
   //*NOTE not being used
@@ -313,7 +313,7 @@ export class HsSaveMapManagerService {
   private fillLayers(app: string) {
     const compoData = this.get(app).compoData;
     compoData.layers = [];
-    compoData.bbox = this.getCurrentExtent(app);
+    compoData.bbox = this.HsMapService.describeExtent(app);
     compoData.layers = this.HsMapService.getMap(app)
       .getLayers()
       .getArray()
@@ -357,27 +357,6 @@ export class HsSaveMapManagerService {
         appRef.userData.organization = user.userInfo.org.name;
       }
     }
-  }
-
-  /**
-   * Get current extent of map, transform it into EPSG:4326 and save it into controller model
-   * Returns Extent coordinates
-   */
-  getCurrentExtent(app: string) {
-    const b = this.HsMapService.getMap(app)
-      .getView()
-      .calculateExtent(this.HsMapService.getMap(app).getSize());
-    let pair1 = [b[0], b[1]];
-    let pair2 = [b[2], b[3]];
-    const cur_proj = this.HsMapService.getCurrentProj(app).getCode();
-    pair1 = transform(pair1, cur_proj, 'EPSG:4326');
-    pair2 = transform(pair2, cur_proj, 'EPSG:4326');
-    return {
-      east: pair1[0].toFixed(2),
-      south: pair1[1].toFixed(2),
-      west: pair2[0].toFixed(2),
-      north: pair2[1].toFixed(2),
-    };
   }
 
   /**

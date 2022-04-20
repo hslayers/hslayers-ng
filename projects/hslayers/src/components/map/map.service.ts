@@ -1160,4 +1160,26 @@ export class HsMapService {
       });
     this.hsConfig.get(app).mapInteractionsEnabled = false;
   }
+
+  /**
+   * Get current extent of map, transform it into EPSG:4326 and round coordinates to 2 decimals.
+   * This is used mainly in compositions and sharing of map and the coordinates are not very precise.
+   * @returns Extent coordinates. Example: {east: "0.00", south: "0.00", west: "1.00", north: "1.00"}
+   */
+  describeExtent(app: string) {
+    const b = this.getMap(app)
+      .getView()
+      .calculateExtent(this.getMap(app).getSize());
+    let pair1 = [b[0], b[1]];
+    let pair2 = [b[2], b[3]];
+    const cur_proj = this.getCurrentProj(app).getCode();
+    pair1 = transform(pair1, cur_proj, 'EPSG:4326');
+    pair2 = transform(pair2, cur_proj, 'EPSG:4326');
+    return {
+      east: pair1[0].toFixed(2),
+      south: pair1[1].toFixed(2),
+      west: pair2[0].toFixed(2),
+      north: pair2[1].toFixed(2),
+    };
+  }
 }
