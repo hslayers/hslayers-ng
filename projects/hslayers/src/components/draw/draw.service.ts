@@ -282,6 +282,7 @@ export class HsDrawService {
         source: new VectorSource(),
         visible: true,
       });
+      setSld(drawLayer, defaultStyle);
       setTitle(drawLayer, TMP_LAYER_TITLE);
       setShowInLayerManager(drawLayer, false);
       setRemovable(drawLayer, true);
