@@ -301,8 +301,9 @@ export class HsStylerService {
     layer: VectorLayer<VectorSource<Geometry>>,
     app: string
   ): Promise<void> {
+    const appRef = this.get(app);
+    const blankStyleObj = {name: 'untitled style', rules: []};
     try {
-      const appRef = this.get(app);
       if (!layer) {
         return;
       }
@@ -315,10 +316,11 @@ export class HsStylerService {
       } else if (qml != undefined) {
         appRef.styleObject = await this.qmlToJson(qml, app);
       } else {
-        appRef.styleObject = {name: 'untitled style', rules: []};
+        appRef.styleObject = blankStyleObj;
       }
       this.geostylerWorkaround(app);
     } catch (ex) {
+      appRef.styleObject = blankStyleObj;
       this.hsLogService.error(ex.message);
     }
   }
