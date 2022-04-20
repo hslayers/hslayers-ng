@@ -37,8 +37,8 @@ ngOnInit(): void {
     );
 
     this.hsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
-      if (mapSpace) {
-        mapSpace.createComponent(componentFactory);
+      if (mapSpace?.viewContainerRef) {
+        mapSpace.viewContainerRef.createComponent(componentFactory);
       }
     });
   }

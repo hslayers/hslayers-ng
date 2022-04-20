@@ -194,14 +194,14 @@ export class HsCesiumLayersService {
       return;
     }
     if (this.HsConfig.get(app).default_layers !== undefined) {
-      this.HsConfig.get(app).default_layers.forEach((l) =>
-        this.processOlLayer(l, app)
-      );
+      for (const l of this.HsConfig.get(app).default_layers.filter((l) => l)) {
+        this.processOlLayer(l, app);
+      }
     }
     if (this.HsConfig.get(app).box_layers) {
-      this.HsConfig.get(app).box_layers.forEach((l) =>
-        this.processOlLayer(l, app)
-      );
+      for (const l of this.HsConfig.get(app).box_layers.filter((l) => l)) {
+        this.processOlLayer(l, app);
+      }
     }
     //Some layers might be loaded from cookies before cesium service was called
     const map = await this.HsMapService.loaded(app);

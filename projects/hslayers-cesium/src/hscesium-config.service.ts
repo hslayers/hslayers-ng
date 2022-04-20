@@ -33,14 +33,14 @@ export class HsCesiumConfig {
 
   constructor() {}
 
-  get(app: string): HsCesiumConfigObject {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsCesiumConfigObject();
+  get(app: string = 'default'): HsCesiumConfigObject {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new HsCesiumConfigObject();
     }
-    return this.apps[app ?? 'default'];
+    return this.apps[app];
   }
 
-  update?(newConfig: HsCesiumConfigObject, app?: string): void {
+  update?(newConfig: HsCesiumConfigObject, app: string = 'default'): void {
     let appConfig = this.apps[app];
     if (appConfig == undefined) {
       this.apps[app] = new HsCesiumConfigObject();
