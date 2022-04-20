@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
+import {Map} from 'ol';
 import {Source} from 'ol/source';
 import {first} from 'rxjs';
 
@@ -14,7 +15,12 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
 import {SwipeControl} from './swipe-control/swipe.control.class';
-import {getSwipeSide, setSwipeSide} from '../../common/layer-extensions';
+import {
+  getQueryFilter,
+  getSwipeSide,
+  setQueryFilter,
+  setSwipeSide,
+} from '../../common/layer-extensions';
 
 export enum SwipeSide {
   Left = 'left',
@@ -29,7 +35,7 @@ class HsMapSwipeParams {
   movingSide = SwipeSide.Left;
   wasMoved: boolean;
   swipeControlActive: boolean;
-  orientation: string;
+  orientation: 'vertical' | 'horizontal';
   orientationVertical = true;
 }
 @Injectable({
@@ -114,7 +120,9 @@ export class HsMapSwipeService {
    */
   setInitOri(app: string): void {
     const appRef = this.get(app);
-    const storageOri = localStorage.getItem(`${app}:hs_map_swipe_ori`);
+    const storageOri = localStorage.getItem(`${app}:hs_map_swipe_ori`) as
+      | 'vertical'
+      | 'horizontal';
     if (storageOri) {
       appRef.orientation = storageOri;
     } else {
@@ -228,6 +236,9 @@ export class HsMapSwipeService {
     if (!appRef.swipeCtrl) {
       this.initSwipeControl(app);
     }
+    if (getQueryFilter(layerItem.layer) === undefined) {
+      this.createQueryFilter(layerItem, app);
+    }
     if (!this.findLayer(layerItem.layer, app)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeSide(layerItem.layer) === 'right') {
@@ -243,6 +254,38 @@ export class HsMapSwipeService {
         this.layerVisibilityChanged(e, app)
       );
     }
+  }
+
+  /**
+   * Crate queryFilter callback function for layer and set it as layer's property
+   * Query will work for the layer, if the user's click was made on the same map swipe panel
+   * where the layer is being rendered
+   * If the layer swipe side is not specified, query will work by default
+   * @param layerItem - layer issued from layerManagerUpdates event
+   * @param app - App identifier
+   */
+  createQueryFilter(layerItem: LayerListItem, app: string): void {
+    const appRef = this.get(app);
+    const filter = (map: Map, layer: Layer, pixel: number[]) => {
+      const swipeSide: 'left' | 'right' = getSwipeSide(layer);
+      if (!appRef.swipeControlActive || !swipeSide) {
+        return true;
+      }
+      const clickPos =
+        appRef.orientation == 'vertical'
+          ? appRef.swipeCtrl.getPosValue(map.getSize()[0], pixel[0])
+          : appRef.swipeCtrl.getPosValue(map.getSize()[1], pixel[1]);
+
+      if (
+        (clickPos <= appRef.swipeCtrl.get('position') && swipeSide == 'left') ||
+        (clickPos > appRef.swipeCtrl.get('position') && swipeSide == 'right')
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+    setQueryFilter(layerItem.layer, filter);
   }
   /**
    * Move a layer to swipe control

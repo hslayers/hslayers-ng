@@ -641,7 +641,7 @@ export function setWfsUrl(layer: Layer<Source>, url: string): void {
   layer.set(WFS_URL, url);
 }
 
-export function getSwipeSide(layer: Layer<Source>): string {
+export function getSwipeSide(layer: Layer<Source>): 'left' | 'right' {
   return layer.get(SWIPE_SIDE);
 }
 

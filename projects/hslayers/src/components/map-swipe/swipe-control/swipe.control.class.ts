@@ -278,10 +278,10 @@ export class SwipeControl extends Control {
               window.pageXOffset -
               document.documentElement.clientLeft;
 
-            l = this.getMap().getSize()[0];
-            const w = l - Math.min(Math.max(0, l - pageX), l);
-            l = w / l;
-            this.set('position', l);
+            this.set(
+              'position',
+              this.getPosValue(this.getMap().getSize()[0], pageX)
+            );
             this.dispatchEvent('moving');
           } else {
             let pageY =
@@ -297,11 +297,10 @@ export class SwipeControl extends Control {
               this.getMap().getTargetElement().getBoundingClientRect().top +
               window.pageYOffset -
               document.documentElement.clientTop;
-
-            l = this.getMap().getSize()[1];
-            const h = l - Math.min(Math.max(0, l - pageY), l);
-            l = h / l;
-            this.set('position', l);
+            this.set(
+              'position',
+              this.getPosValue(this.getMap().getSize()[1], pageY)
+            );
             this.dispatchEvent('moving');
           }
         }
@@ -394,5 +393,17 @@ export class SwipeControl extends Control {
     } else {
       e.context.restore();
     }
+  }
+
+  /** Get the position of an element or event action relative to the map
+   *	@param mapSize - OL Map size (width or height)
+   *  @param coord - Coordinate provided (X or Y)
+   * @returns Position relative to map size
+   */
+  getPosValue(mapSize: number, coord: number): number {
+    let l = mapSize;
+    const w = l - Math.min(Math.max(0, l - coord), l);
+    l = w / l;
+    return l;
   }
 }
