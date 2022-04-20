@@ -50,6 +50,8 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     this.HsLayoutService.get(this.app).layoutElement =
       this.elementRef.nativeElement;
 
+    this.HsLayoutService.get(this.app).contentWrapper =
+      this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
     if (this.HsConfig.get(this.app).sidebarPosition === 'left') {
       this.HsLayoutService.get(this.app).contentWrapper.classList.add(
         'flex-reverse'
@@ -61,8 +63,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     }
 
     this.HsLayoutService.init(this.app);
-    this.HsLayoutService.get(this.app).contentWrapper =
-      this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
 
     if (window.innerWidth < 600 && this.HsUtilsService.runningInBrowser()) {
       const viewport = document.querySelector('meta[name="viewport"]');
