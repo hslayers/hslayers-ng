@@ -727,11 +727,14 @@ export class HsMapService {
     visibleOverride?: string[]
   ): void {
     if (this.layerAlreadyExists(lyr, app ?? DEFAULT)) {
+      if (getTitle(lyr) === getTitle(this.apps[app].placeholderOsm)) {
+        duplicateHandling = DuplicateHandling.RemoveOriginal;
+      }
       switch (duplicateHandling) {
         case DuplicateHandling.RemoveOriginal:
-          if (getBase(lyr) == true) {
+          /* if (getBase(lyr) == true) { //Removed so we could add OSM over the placeholderOsm 
             return;
-          }
+          } */
           this.removeDuplicate(lyr, app);
           break;
         case DuplicateHandling.IgnoreNew:
