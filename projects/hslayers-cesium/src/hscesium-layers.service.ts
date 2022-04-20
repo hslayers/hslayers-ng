@@ -400,7 +400,7 @@ export class HsCesiumLayersService {
     } else {
       lyr.setVisible(
         this.HsMapService.layerTitleInArray(
-          lyr,
+          lyr as Layer<Source>,
           this.HsMapService.visibleLayersInUrl
         ) || lyr.getVisible()
       );
@@ -411,7 +411,11 @@ export class HsCesiumLayersService {
             ImageWMS
           )
         ) {
-          this.HsMapService.proxifyLayerLoader(lyr, false, app);
+          this.HsMapService.proxifyLayerLoader(
+            lyr as Layer<Source>,
+            false,
+            app
+          );
         }
       }
 
@@ -422,7 +426,7 @@ export class HsCesiumLayersService {
             TileWMS
           )
         ) {
-          this.HsMapService.proxifyLayerLoader(lyr, true, app);
+          this.HsMapService.proxifyLayerLoader(lyr as Layer<Source>, true, app);
         }
       }
       const cesium_layer = await this.convertOlToCesiumProvider(

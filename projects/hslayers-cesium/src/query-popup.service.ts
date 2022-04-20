@@ -28,7 +28,6 @@ export class HsCesiumQueryPopupService
       HsMapService,
       HsUtilsService,
       zone,
-      HsConfig,
       hsQueryPopupWidgetContainerService
     );
   }
