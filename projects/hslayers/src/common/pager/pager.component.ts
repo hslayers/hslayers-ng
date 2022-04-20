@@ -5,7 +5,7 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './pager.component.html',
 })
 export class HsPagerComponent implements OnInit {
-  @Input() app: string;
+  @Input() app = 'default';
   @Input() pagerService: any;
 
   appRef;

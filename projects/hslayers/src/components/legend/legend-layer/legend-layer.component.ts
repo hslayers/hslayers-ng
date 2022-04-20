@@ -14,7 +14,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLegendLayerComponent implements OnDestroy {
   @Input() layer: any;
-  @Input() app: string;
+  @Input() app = 'default';
   svg: SafeHtml;
   private ngUnsubscribe = new Subject<void>();
   constructor(

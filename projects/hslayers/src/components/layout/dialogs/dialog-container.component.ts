@@ -20,7 +20,7 @@ import {HsDialogItem} from './dialog-item';
   templateUrl: './dialog-container.html',
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {
-  @Input() app: string;
+  @Input() app = 'default';
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;

@@ -20,7 +20,7 @@ import {HsUtilsService} from '../../../../utils/utils.service';
 export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
-  @Input() app: string;
+  @Input() app = 'default';
   data;
   checkedSubLayers = {};
   hasNestedLayers: any;
