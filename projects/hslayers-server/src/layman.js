@@ -61,7 +61,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(authnUtil.addIncomingTimestamp);
 
-// Get user profile from Layman instead of Liferay
+// Get user profile from Layman instead of CMS
 OAuth2.prototype.userProfile = (access_token, done) => {
 
   (async () => {
@@ -73,6 +73,9 @@ OAuth2.prototype.userProfile = (access_token, done) => {
           'Authorization': `Bearer ${access_token}`,
         }
       });
+
+      // reserve username in Layman in case it does not exist yet
+      authnUtil.ensureUsername(access_token, response.body);
 
       console.log(response.body);
       done(null, response.body);
@@ -134,7 +137,7 @@ app.get('/logout', (req, res) => {
 
 app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error' }), function (req, res) {
   if (req.session.passport && req.session.passport.user && (req.session.passport.user.authenticated || req.session.passport.user.ticket)) {
-    res.send(`Logged in as ${req.session.passport.user.screenName || req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>
+    res.send(`Logged in as ${req.session.passport.user.username || req.session.passport.user.claims.screen_name}. You can now close this window and return back to the map.
     <script>
     function inIframe () {
         try {
