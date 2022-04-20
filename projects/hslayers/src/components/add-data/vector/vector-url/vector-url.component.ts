@@ -14,7 +14,7 @@ import {vectorDataObject} from '../vector-data.type';
 })
 export class HsAddDataVectorUrlComponent {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
-  @Input() app: 'default';
+  @Input() app = 'default';
 
   data: vectorDataObject;
   constructor(

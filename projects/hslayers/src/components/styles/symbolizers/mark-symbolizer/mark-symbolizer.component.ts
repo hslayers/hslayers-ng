@@ -10,7 +10,7 @@ import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 })
 export class HsMarkSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: MarkSymbolizer;
-
+  @Input() app = 'default';
   wellKnownNames = [
     'circle',
     'square',

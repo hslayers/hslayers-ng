@@ -30,7 +30,7 @@ import {vectorDataObject} from '../vector-data.type';
 })
 export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
-  @Input() app: 'default';
+  @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';

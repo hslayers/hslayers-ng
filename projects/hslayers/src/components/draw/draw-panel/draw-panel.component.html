@@ -5,8 +5,8 @@
             {{'COMMON.newDrawingLayer' | translateHs: {app} }}
         </button>
         <button type="button" (click)="HsDrawService.setType(appRef.type, app)"
-            [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}"
-            class="btn ms-1 rounded btn-primary hs-toolbar-button" [disabled]="!appRef.type">
+            [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}" class="btn ms-1 rounded btn-primary hs-toolbar-button"
+            [disabled]="!appRef.type">
             {{'DRAW.disableDrawing' | translateHs: {app} }}
         </button>
     </div>
@@ -34,7 +34,8 @@
                             translateHs: {app} }}</label>
                         <a class="dropdown-item text-truncate" *ngFor="let layer of appRef.drawableLayers"
                             data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
-                            (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}</a>
+                            (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer),
+                            app)}}</a>
                     </div>
                     <div class="d-flex align-items-center w-100 flex-column"
                         *ngIf="appRef.drawableLaymanLayers.length > 0">
@@ -61,7 +62,7 @@
                 </div>
             </div>
             <button type="button" *ngIf="appRef.tmpDrawLayer" class="btn btn-light btn-outline-primary border-0 btn-sm"
-                (click)="HsDrawService.saveDrawingLayer(app)" [title]="'DRAW.saveDrawingToLayer' | translateHs: {app}">
+                (click)="HsDrawService.saveDrawingLayer(app)" [title]="'DRAW.saveDrawingToLayer' | translateHs: {app} ">
                 <i class="glyphicon icon-save-floppy"></i>
             </button>
             <ng-container *ngIf="appRef.hasSomeDrawables">
@@ -87,7 +88,7 @@
                 </ng-container>
                 <ng-template #deleteButton>
                     <button type="button" class="btn btn-light  btn-outline-danger btn-sm"
-                        (click)="HsDrawService.removeLayer(app)" [title]="'COMMON.removeLayer' | translateHs: {app}"
+                        (click)="HsDrawService.removeLayer(app)" [title]="'COMMON.removeLayer' | translateHs: {app} "
                         style="border: none !important;">
                         <i class="glyphicon icon-trash"></i>
                     </button>
@@ -101,25 +102,25 @@
 <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center"
     [ngClass]="sidebarPosition === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: appRef.type==='Point' }"
-        (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translateHs: {app}">
+        (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translateHs: {app} ">
         <i class="icon-pin"></i>
     </button>
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: appRef.type==='Polygon' }"
-        (click)="setType('Polygon')" data-toggle="tooltip" [title]="'COMMON.polygon' | translateHs: {app}">
+        (click)="setType('Polygon')" data-toggle="tooltip" [title]="'COMMON.polygon' | translateHs: {app} ">
         <i class="icon-polygonlasso"></i>
     </button>
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: appRef.type==='LineString' }"
-        (click)="setType('LineString')" data-toggle="tooltip" [title]="'COMMON.line' | translateHs: {app}">
+        (click)="setType('LineString')" data-toggle="tooltip" [title]="'COMMON.line' | translateHs: {app} ">
         <i class="icon-line"></i>
     </button>
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: appRef.type==='Circle' }"
-        (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translateHs: {app}">
+        (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translateHs: {app} ">
         <i class="icon-circleloaderfull"></i>
     </button>
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
         #selectionTypeDropdown="ngbDropdown">
         <button ngbDropdownToggle type="button" [ngClass]="{active: !appRef.type }"
-            [title]="'STYLER.selection' | translateHs: {app}" class="btn btn-light btn-outline-primary">
+            [title]="'STYLER.selection' | translateHs: {app} " class="btn btn-light btn-outline-primary">
             <i class="icon-cursor"></i>
         </button>
         <div ngbDropdownMenu style="white-space: nowrap;">
@@ -133,7 +134,7 @@
                 </div>
                 <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!appRef.selectedLayer"
                     (click)="HsDrawService.selectAllFeatures(app);selectionTypeDropdown.close()" data-toggle="tooltip"
-                    [title]="'DRAW.deselectAllFeatures' | translateHs: {app}">
+                    [title]="'DRAW.deselectAllFeatures' | translateHs: {app} ">
                     {{translateString('DRAW',appRef.toggleSelectionString)}}
                 </button>
             </div>
@@ -162,8 +163,10 @@
                     <div ngbDropdownMenu style="max-width: 150%;">
                         <div class="d-flex align-items-center w-100 flex-column">
                             <a class="dropdown-item text-truncate" *ngFor="let layer of appRef.drawableLayers"
-                                data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
-                                (click)="changeSnapSource(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}</a>
+                                data-toggle="tooltip"
+                                title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
+                                (click)="changeSnapSource(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer),
+                                app)}}</a>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ import {Input} from '@angular/core';
 })
 export class HsLaymanCurrentUserComponent {
   @Input() endpoint;
-  @Input() app: string;
+  @Input() app = 'default';
   monitorTries = 0;
   DEFAULT_TIMER_INTERVAL = 2000;
   MAX_MONITOR_TRIES = 100;

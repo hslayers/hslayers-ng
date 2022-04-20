@@ -1,60 +1,40 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-  <hs-panel-header
-    name="tripPlaner"
-    [title]="'PANEL_HEADER.TRIP_PLANNER' | translateHs : {'app': data.app}"
-    [app]="data.app"
-  ></hs-panel-header>
+  <hs-panel-header name="tripPlaner" [title]="'PANEL_HEADER.TRIP_PLANNER' | translateHs : data" [app]="data.app">
+  </hs-panel-header>
   <div class="card-body">
-    <hs-trip-planner-layer-selector usage="route" [app]="data.app" label="{{'TRIP_PLANNER.routerLayer' | translateHs : data}}" [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.route"></hs-trip-planner-layer-selector>
-    <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app" label="{{'TRIP_PLANNER.waypointLayer' | translateHs : data}}" [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.waypoints"></hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="route" [app]="data.app"
+      label="{{'TRIP_PLANNER.routerLayer' | translateHs : data}}"
+      [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.route">
+    </hs-trip-planner-layer-selector>
+    <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app"
+      label="{{'TRIP_PLANNER.waypointLayer' | translateHs : data}}"
+      [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.waypoints">
+    </hs-trip-planner-layer-selector>
 
-    <div
-      *ngFor="let waypoint of HsTripPlannerService.apps[data.app].waypoints"
-      class="d-flex flex-row"
-    >
+    <div *ngFor="let waypoint of HsTripPlannerService.apps[data.app].waypoints" class="d-flex flex-row">
       <div class="p-1 flex-grow-1">
-        <a (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.editMode"
-          >{{waypoint.name}}</a
-        >
-        <input
-          [(ngModel)]="waypoint.name"
-          class="form-control hs-waypoint-name"
-          [ngModelOptions]="{standalone: true}"
-          [hidden]="!waypoint.editMode"
-          (blur)="toggleEdit(waypoint)"
-        />
+        <a (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.editMode">{{waypoint.name}}</a>
+        <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [ngModelOptions]="{standalone: true}"
+          [hidden]="!waypoint.editMode" (blur)="toggleEdit(waypoint)" />
       </div>
       <div class="p-1">
-        <img
-          [hidden]="!waypoint.loading"
-          [src]="HsUtilsService.getAjaxLoaderIcon(data.app)"
-        />
+        <img [hidden]="!waypoint.loading" [src]="HsUtilsService.getAjaxLoaderIcon(data.app)" />
       </div>
       <div class="p-1" style="height: 1.7em">
         <div style="margin-top: 1em">{{ formatDistance(waypoint) }}</div>
       </div>
       <div class="p-1">
-        <a
-          class="p-1"
-          (click)="HsTripPlannerService.removeWaypoint(waypoint, data.app)"
-          data-toggle="tooltip"
-          [title]="'TRIP_PLANNER.removeWaypoint' | translateHs : data"
-        >
+        <a class="p-1" (click)="HsTripPlannerService.removeWaypoint(waypoint, data.app)" data-toggle="tooltip"
+          [title]="'TRIP_PLANNER.removeWaypoint' | translateHs : data">
           <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
         </a>
       </div>
     </div>
-    <div
-      class="alert alert-primary"
-      role="alert"
-      *ngIf="HsTripPlannerService.apps[data.app].waypoints.length===0"
-    >
+    <div class="alert alert-primary" role="alert" *ngIf="HsTripPlannerService.apps[data.app].waypoints.length===0">
       {{'TRIP_PLANNER.waypointDrawingHint' | translateHs : data}}
     </div>
     <br />
-    <a (click)="HsTripPlannerService.clearAll(data.app)"
-      >{{'TRIP_PLANNER.clearWaypoints' | translateHs : data}}</a
-    >
+    <a (click)="HsTripPlannerService.clearAll(data.app)">{{'TRIP_PLANNER.clearWaypoints' | translateHs : data}}</a>
     <br />
     <div class="d-flex flex-row">
       <div class="p-1 flex-grow-1">

@@ -1,8 +1,8 @@
 <div class="card panel-default hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="sensors" [app]="data.app" [title]="'PANEL_HEADER.SENSORS' | translateHs: {'app': data.app} ">
+    <hs-panel-header name="sensors" [app]="data.app" [title]="'PANEL_HEADER.SENSORS' | translateHs: data ">
     </hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs: {'app': data.app}"
+        <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs: data "
                 [(ngModel)]="query.description"></p>
         <div class="container">
             <div class="row" style="width: 662;">
@@ -11,13 +11,13 @@
                         <!--<li class="nav-item">
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}" 
                                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('sensors')"
-                                    >{{'SENSORS.sensors' | translateHs: {'app': data.app}}}
+                                    >{{'SENSORS.sensors' | translateHs: data }}
                             </a>
                         </li>
                         <li>
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'phenomena'}" 
                                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('phenomena')"
-                                >{{'SENSORS.phenomena' | translateHs: {'app': data.app}}}
+                                >{{'SENSORS.phenomena' | translateHs: data }}
                             </a>
                         </li>-->
                     </ul><!-- Tab panes -->

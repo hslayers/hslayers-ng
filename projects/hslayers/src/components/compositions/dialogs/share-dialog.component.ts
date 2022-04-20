@@ -1,4 +1,4 @@
-import {Component, Input, ViewRef} from '@angular/core';
+import {Component, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsShareService} from '../../permalink/share.service';
@@ -7,7 +7,6 @@ import {HsShareService} from '../../permalink/share.service';
   templateUrl: './dialog_share.html',
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
-  @Input() app: string;
   viewRef: ViewRef;
   data: {url; title; abstract; app: string};
 
@@ -25,7 +24,7 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
       this.data.title,
       this.data.abstract,
       this.data.url,
-      this.app
+      this.data.app
     );
   }
 }
