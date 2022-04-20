@@ -5,10 +5,10 @@
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
                 <h4 class="modal-title">
-                    {{'SENSORS.sensorUnit' | translateHs: data }} {{getUnitDescription()}}
+                    {{'SENSORS.sensorUnit' | translateHs: data}} {{getUnitDescription()}}
                 </h4>
                 <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: data }}"></button>
+                    attr.aria-label="{{'COMMON.close' | translateHs: data}}"></button>
             </div>
             <div class="modal-body" style="max-height: 260px; overflow-y: auto">
                 <div class="container-fluid">
@@ -20,10 +20,10 @@
                 </div>
                 <table class="table table-sm table-striped table-hover">
                     <tr>
-                        <th>{{'SENSORS.sensors' | translateHs: data }}</th>
-                        <th>{{'SENSORS.min' | translateHs: data }}</th>
-                        <th>{{'SENSORS.max' | translateHs: data }}</th>
-                        <th>{{'SENSORS.avg' | translateHs: data }}</th>
+                        <th>{{'SENSORS.sensors' | translateHs: data}}</th>
+                        <th>{{'SENSORS.min' | translateHs: data}}</th>
+                        <th>{{'SENSORS.max' | translateHs: data}}</th>
+                        <th>{{'SENSORS.avg' | translateHs: data}}</th>
                     </tr>
                     <tr *ngFor="let aggr of getAggregations()">
                         <td>{{getTranslation(aggr.sensor_name)}}</td>

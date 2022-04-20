@@ -20,7 +20,7 @@
                         <label class="form-check-label m-0"
                             [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
                         <p class="ms-1 mb-0">
-                            {{'LAYERMANAGER.baseMapGallery.grayscale' | translateHs : data }}</p>
+                            {{'LAYERMANAGER.baseMapGallery.grayscale' | translateHs : data}}</p>
                     </div>
                     <label class="ps-2 mb-0 w-100" [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}"
                         (click)="expandMenu(layer)">
@@ -42,7 +42,7 @@
                     [ngClass]="{'active': !hsLayerManagerService.apps[data.app].data.baselayersVisible}"></div>
                 <a class="dropdown-item"
                     [ngClass]="{'active': !hsLayerManagerService.apps[data.app].data.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
-                    | translateHs : data }}</a>
+                    | translateHs : data}}</a>
             </div>
         </div>
     </div>

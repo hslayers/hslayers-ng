@@ -14,7 +14,7 @@
                         <i
                             class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
                         |
-                        translateHs : data }}
+                        translateHs : data}}
                     </a>
                     <a class="dropdown-item" (click)="hsCore.resetMap(data.app)">
                         <i class="glyphicon icon-fatredo hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
@@ -48,7 +48,8 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translateHs : data
+                        <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translateHs :
+                            data
                             }}</span>
                     </div>
                     <div class="p-0">
@@ -66,7 +67,8 @@
                             [ngClass]="(appRef.data.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
-                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, data.app)"></span>
+                        <span
+                            [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, data.app)"></span>
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted' : layer.grayed}"
@@ -90,7 +92,8 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translateHs : data
+                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translateHs :
+                            data
                             }}</span>
                     </div>
                 </div>
@@ -110,7 +113,8 @@
                             [ngClass]="(appRef.data.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
-                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, data.app)"></span>
+                        <span
+                            [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, data.app)"></span>
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
@@ -125,13 +129,15 @@
             <li *ngIf="!hsLayoutService.componentEnabled('basemapGallery', data.app)"
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
-                <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs : data }}</span>
+                <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs :
+                    data}}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of appRef.data.folders.sub_folders"
                 [hidden]="physicalLayerListEnabled">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="appRef.data.folders.sub_folders.length > 1" (click)="value.visible = !value.visible">
-                    <span>{{hsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name, undefined, data.app)}}&nbsp;</span>
+                    <span>{{hsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name, undefined,
+                        data.app)}}&nbsp;</span>
                     <span class="glyphicon"
                         [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>

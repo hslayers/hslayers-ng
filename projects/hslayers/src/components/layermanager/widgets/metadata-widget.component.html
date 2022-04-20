@@ -1,45 +1,30 @@
 <ng-container>
-  <div
-    class="form-group"
-    *ngIf="currentLayer && metadataService.hasMetadata(currentLayer)"
-  >
+  <div class="form-group" *ngIf="currentLayer && metadataService.hasMetadata(currentLayer)">
     <!-- Metadata -->
     <div class="pt-2">
-      <a
-        class="card-href"
-        *ngFor="let metadataUrl of metadataService.metadataArray(currentLayer)"
-        href="{{ metadataUrl.onlineResource }}"
-        target="_blank"
-        [title]="'COMMON.metadata' | translateHs : data"
-      >
+      <a class="card-href" *ngFor="let metadataUrl of metadataService.metadataArray(currentLayer)"
+        href="{{ metadataUrl.onlineResource }}" target="_blank" [title]="'COMMON.metadata' | translateHs : data">
         <span [hidden]="!metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : data }}
+          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : data}}
           {{ metadataUrl.type }}
         </span>
         <span [hidden]="metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs : data }}
+          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs : data}}
         </span>
       </a>
     </div>
     <!-- Copyright -->
     <div *ngIf="hasCopyright(currentLayer)">
-      <a
-        class="card-href"
-        href="{{ getAttribution(currentLayer.layer).onlineResource }}"
-        target="_blank"
-        [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs : data"
-      >
-        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : data }}</a
-      >
+      <a class="card-href" href="{{ getAttribution(currentLayer.layer).onlineResource }}" target="_blank"
+        [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs : data">
+        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : data}}</a>
     </div>
   </div>
 
   <div class="form-group" [hidden]="!abstract">
-    <label>{{ "COMMON.abstract" | translateHs : data }}</label>
-    <p
-      [innerHtml]="
+    <label>{{ "COMMON.abstract" | translateHs : data}}</label>
+    <p [innerHtml]="
         HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract, data.app)
-      "
-    ></p>
+      "></p>
   </div>
 </ng-container>

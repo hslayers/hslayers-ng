@@ -3,30 +3,30 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translateHs: data }}</span> {{data.title}}
+                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translateHs: data}}</span> {{data.title}}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: data }}">
+                    attr.aria-label="{{'COMMON.close' | translateHs: data}}">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row">
-                    <div class="col-md-3"><b>{{'COMMON.abstract' | translateHs: data }}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.abstract' | translateHs: data}}</b></div>
                     <div class="col-md-9">{{data.abstract}}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3"><b>{{'COMMON.url' | translateHs: data }}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.url' | translateHs: data}}</b></div>
                     <div class="col-md-9"><a [href]="data.url">{{data.url}}</a></div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="btn-group" role="group">
                     <button class="btn btn-secondary" (click)="shareOnSocial()">
-                        <i class="icon-share-alt"></i> {{'COMMON.share' | translateHs: data }}
+                        <i class="icon-share-alt"></i> {{'COMMON.share' | translateHs: data}}
                     </button>
                 </div>
                 <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close'
-                    | translateHs: data }}</button>
+                    | translateHs: data}}</button>
             </div>
         </div>
     </div>

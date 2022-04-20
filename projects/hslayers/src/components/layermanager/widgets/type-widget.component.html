@@ -1,21 +1,21 @@
 <div class="form-group">
   <small class="text-secondary" *ngIf="currentLayer">
     {{
-      HsLanguageService.getTranslationIgnoreNonExisting(
-        "LAYERMANAGER.layerEditor",
-        currentLayer.type,
-        undefined, 
-        data.app
-      )
+    HsLanguageService.getTranslationIgnoreNonExisting(
+    "LAYERMANAGER.layerEditor",
+    currentLayer.type,
+    undefined,
+    data.app
+    )
     }}
-    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : data }}
+    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : data}}
     {{
-      HsLanguageService.getTranslationIgnoreNonExisting(
-        "LAYERMANAGER.layerEditor",
-        currentLayer.source,
-        undefined,
-        data.app
-      )
+    HsLanguageService.getTranslationIgnoreNonExisting(
+    "LAYERMANAGER.layerEditor",
+    currentLayer.source,
+    undefined,
+    data.app
+    )
     }}
   </small>
 </div>

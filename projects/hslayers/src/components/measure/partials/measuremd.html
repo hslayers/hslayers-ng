@@ -2,10 +2,10 @@
   <div class="md-padding" flex layout="column">
     <div layout="row" layout-align="space-between center">
       <div layout="column" layout-align="start start">
-        <span>{{'MEASURE.measureMd.measureType' | translateHs : data }}</span>
+        <span>{{'MEASURE.measureMd.measureType' | translateHs : data}}</span>
         <md-radio-group [(ngModel)]="type" name="type" flex-offset="10">
-          <md-radio-button value="distance">{{'COMMON.distance' | translateHs : data }}</md-radio-button>
-          <md-radio-button value="area">{{'COMMON.area' | translateHs : data }}</md-radio-button>
+          <md-radio-button value="distance">{{'COMMON.distance' | translateHs : data}}</md-radio-button>
+          <md-radio-button value="area">{{'COMMON.area' | translateHs : data}}</md-radio-button>
         </md-radio-group>
       </div>
       <div layout="column" layout-align="start end">
@@ -34,7 +34,7 @@
             </md-button>-->
             <md-button class="md-icon-button" (click)="clearOne($index)">
               <md-icon class="md-accent md-hue-2">delete</md-icon>
-              <md-tooltip md-direction="left">{{'COMMON.delete' | translateHs : data }}</md-tooltip>
+              <md-tooltip md-direction="left">{{'COMMON.delete' | translateHs : data}}</md-tooltip>
             </md-button>
           </div>
         </div>
