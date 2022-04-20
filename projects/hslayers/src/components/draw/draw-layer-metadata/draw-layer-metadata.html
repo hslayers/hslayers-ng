@@ -4,19 +4,19 @@
             <div class="modal-header d-flex flex-column" style="height: auto">
                 <div class="d-flex w-100 align-items-center">
                     <h4 class="modal-title">
-                        {{'COMMON.newDrawingLayer' | translateHs: data }}
+                        {{'COMMON.newDrawingLayer' | translateHs: data}}
                     </h4>
                     <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
-                        attr.aria-label="{{'COMMON.close' | translateHs: data }}">
+                        attr.aria-label="{{'COMMON.close' | translateHs: data}}">
                     </button>
                 </div>
                 <p class="m-0 p-0" style="font-size: small; color: red;">
-                    {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs: data }}</p>
+                    {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs: data}}</p>
             </div>
             <div *ngIf="!appRef.isAuthorized && appRef.laymanEndpoint !== undefined" class="alert alert-danger"
                 role="alert">
                 <p class="text-center">
-                    {{'DRAW.notAuthorized' | translateHs: data }}
+                    {{'DRAW.notAuthorized' | translateHs: data}}
                 </p>
                 <hs-layman-current-user [app]="data.app" [endpoint]="endpoint"></hs-layman-current-user>
             </div>
@@ -24,11 +24,11 @@
                 *ngIf="appRef.drawableLaymanLayers.length > 0 && appRef.isAuthorized">
                 <button type="button" class="btn btn-sm rounded  hs-toolbar-button" (click)="type = 'draw'"
                     [ngClass]="type === 'draw' ? 'btn-primary' : 'btn-secondary'">
-                    {{'DRAW.drawToolbar.addDrawLayer' | translateHs: data }}
+                    {{'DRAW.drawToolbar.addDrawLayer' | translateHs: data}}
                 </button>
                 <button type="button" class="btn ms-1 btn-sm rounded hs-toolbar-button" (click)="type = 'layman'"
                     [ngClass]="type === 'layman' ? 'btn-primary' : 'btn-secondary'">
-                    {{'DRAW.drawLayerMetadata.loadServerLayers' | translateHs: data }}
+                    {{'DRAW.drawLayerMetadata.loadServerLayers' | translateHs: data}}
                 </button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
@@ -37,7 +37,7 @@
                         <input class="form-control" [(ngModel)]="title" (ngModelChange)="titleChanged()" name="title"
                             placeholder="'DRAW.drawLayerMetadata.layerTitle' | translateHs: data" />
                         <label for="title" class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' |
-                            translateHs: data }}</label>
+                            translateHs: data}}</label>
 
                     </div>
                     <hs-layman-access-rights *ngIf="appRef.isAuthorized" [app]="data.app"
@@ -45,7 +45,7 @@
                     </hs-layman-access-rights>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
                         <a class="p-1 mb-1" (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' |
-                            translateHs: data }}</a>
+                            translateHs: data}}</a>
                     </div>
                     <div [hidden]="!folderVisible">
                         <div class="form-floating mb-3"
@@ -61,8 +61,8 @@
                             <div class="card-body">
                                 <table class="table table-condensed">
                                     <tr>
-                                        <th>{{'COMMON.attribute' | translateHs: data }}</th>
-                                        <th>{{'DRAW.drawLayerMetadata.defaultValue' | translateHs: data }}
+                                        <th>{{'COMMON.attribute' | translateHs: data}}</th>
+                                        <th>{{'DRAW.drawLayerMetadata.defaultValue' | translateHs: data}}
                                         </th>
                                     </tr>
                                     <tr *ngFor="let attr of attributes">
@@ -82,7 +82,7 @@
                         *ngIf="appRef.drawableLaymanLayers.length > 0">
                         <div class=" bg-primary w-100 text-light m-0 p-1">
                             <div class="d-flex justify-content-between m-1">
-                                {{'DRAW.serverLayers' | translateHs: data }}
+                                {{'DRAW.serverLayers' | translateHs: data}}
                                 <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
                                     <i class="icon-settingsthree-gears"></i>
                                 </span>
@@ -93,7 +93,7 @@
                                 <label class="m-0">
                                     <input type="checkbox" name="onlyMine" [(ngModel)]="appRef.onlyMine"
                                         (ngModelChange)="data.service.fillDrawableLayers(data.app); onlyMineFilterVisible = !onlyMineFilterVisible">
-                                    {{'COMPOSITIONS.onlyMine' | translateHs: data }}
+                                    {{'COMPOSITIONS.onlyMine' | translateHs: data}}
                                 </label>
                             </div>
                         </div>
@@ -113,9 +113,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="type === 'draw'"
-                    (click)="confirm()">{{'DRAW.drawToolbar.addLayer' | translateHs: data }}</button>
+                    (click)="confirm()">{{'DRAW.drawToolbar.addLayer' | translateHs: data}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()">{{'COMMON.cancel'
-                    | translateHs: data }}</button>
+                    | translateHs: data}}</button>
             </div>
         </div>
     </div>

@@ -25,16 +25,16 @@
                                 </div>
                             </div>
                         </div>
-                        {{'STATISTICS.REGRESSION' | translateHs : data }}
+                        {{'STATISTICS.REGRESSION' | translateHs : data}}
                     </div>
                 </div>
                 <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
-                        class="visually-hidden">{{'COMMON.close' | translateHs : data }}</span></button>
+                        class="visually-hidden">{{'COMMON.close' | translateHs : data}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translateHs : data }}:</p>
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translateHs : data}}:</p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
@@ -72,9 +72,9 @@
                             </div>
                             <div class="flex-row">
                                 <div class="form-group">
-                                    <label>{{ "STATISTICS.SHIFT" | translateHs : data }} {{col.shift}} {{
+                                    <label>{{ "STATISTICS.SHIFT" | translateHs : data}} {{col.shift}} {{
                                         "STATISTICS.YEARS" |
-                                        translateHs : data }}</label>
+                                        translateHs : data}}</label>
                                     <input type="range" [disabled]="!selectedVariable" [name]="col+'shift'" step="1"
                                         min="-20" max="0" style="width: 100%; height: 21px"
                                         (change)="updateShifting(col.name, col.shift)" [(ngModel)]="col.shift" />
@@ -94,15 +94,15 @@
                                         Y - {{selectedVariable}} <br />
                                         X - {{col.name}} <span *ngIf="col.shift !== 0">({{col.shift | abs}} {{
                                             "STATISTICS.YEARS" |
-                                            translateHs : data }} {{ "STATISTICS.AGO" |
-                                            translateHs : data }})</span><br />
+                                            translateHs : data}} {{ "STATISTICS.AGO" |
+                                            translateHs : data}})</span><br />
                                         Y = X * {{col.regressionOutput.m}} + {{col.regressionOutput.b}}
                                     </div>
                                     <div class="col-3">
                                         <button type="button" class="btn btn-primary m-1"
                                             (click)="openPredictionDialog(selectedVariable, col)">{{'STATISTICS.PREDICT'
                                             |
-                                            translateHs : data }}</button>
+                                            translateHs : data}}</button>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                             <button type="button" class="btn btn-primary m-1"
                                 (click)="openPredictionDialog(selectedVariable, multipleRegressionOutput)">{{'STATISTICS.PREDICT'
                                 |
-                                translateHs : data }}</button>
+                                translateHs : data}}</button>
                         </div>-->
                     </div>
                 </div>

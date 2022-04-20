@@ -25,7 +25,7 @@
                 <div class="d-flex align-items-center w-100 flex-column" *ngIf="appRef.drawableLaymanLayers.length > 0">
                     <div class=" bg-primary w-100 text-light m-0 p-1">
                         <div class="d-flex justify-content-between">
-                            {{'DRAW.serverLayers' | translateHs: data }}
+                            {{'DRAW.serverLayers' | translateHs: data}}
                             <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
                                 <i class="icon-settingsthree-gears"></i>
                             </span>
@@ -35,7 +35,7 @@
                             <label class="m-0">
                                 <input type="checkbox" name="onlyMine" [(ngModel)]="appRef.onlyMine"
                                     (ngModelChange)="HsDrawService.fillDrawableLayers(data.app); onlyMineFilterVisible = !onlyMineFilterVisible">
-                                {{'COMPOSITIONS.onlyMine' | translateHs: data }}
+                                {{'COMPOSITIONS.onlyMine' | translateHs: data}}
                             </label>
                         </div>
                     </div>
@@ -68,10 +68,10 @@
                                 <a class="dropdown-item" *ngIf="appRef.selectedLayer"
                                     (click)="HsDrawService.removeLayer(data.app); removeLayersDropdown.close()">{{'COMMON.removeLayer'
                                     |
-                                    translateHs: data }}</a>
+                                    translateHs: data}}</a>
                                 <a class="dropdown-item"
                                     (click)="HsDrawService.removeMultipleLayers(data.app); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
-                                    | translateHs: data }}</a>
+                                    | translateHs: data}}</a>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                 <div ngbDropdownMenu class="flex-column px-1 py-2">
                     <div class="d-flex flex-row justify-content-around align-items-baseline">
                         <label class="ms-1 cursor-pointer" for="draw-boxSelection"> {{'DRAW.boxSelection' |
-                            translateHs: data }}</label>
+                            translateHs: data}}</label>
                         <input type="checkbox" [(ngModel)]="appRef.boxSelectionActive"
                             (change)="HsDrawService.toggleBoxSelection(data.app); selectionTypeDropdown.close()"
                             id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
@@ -124,7 +124,7 @@
             <button ngbDropdownToggle type="button" style="line-height: 1 !important;"
                 [ngClass]="{active: appRef.type }" class="btn  btn-light rounded-0 btn-outline-secondary"
                 aria-haspopup="true">
-                <label *ngIf="!appRef.type" class="m-0">{{'DRAW.drawToolbar.selectType' | translateHs: data }}</label>
+                <label *ngIf="!appRef.type" class="m-0">{{'DRAW.drawToolbar.selectType' | translateHs: data}}</label>
                 <i [ngClass]="{
                     'icon-pin': appRef.type==='Point',
                     'icon-polygonlasso': appRef.type==='Polygon',
