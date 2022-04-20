@@ -529,6 +529,9 @@ export class HslayersAppComponent {
             new Tile({
               properties: {
                 title: 'Latvian municipalities (parent layer)',
+                queryFilter: (map, layer, pixel) => {
+                  return true;
+                },
               },
               source: new TileWMS({
                 url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',

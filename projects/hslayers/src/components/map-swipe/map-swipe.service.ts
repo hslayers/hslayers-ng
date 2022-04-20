@@ -236,9 +236,7 @@ export class HsMapSwipeService {
     if (!appRef.swipeCtrl) {
       this.initSwipeControl(app);
     }
-    if (getQueryFilter(layerItem.layer) === undefined) {
-      this.createQueryFilter(layerItem, app);
-    }
+    this.createQueryFilter(layerItem, app);
     if (!this.findLayer(layerItem.layer, app)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeSide(layerItem.layer) === 'right') {
@@ -266,23 +264,32 @@ export class HsMapSwipeService {
    */
   createQueryFilter(layerItem: LayerListItem, app: string): void {
     const appRef = this.get(app);
+    const existingFilter = getQueryFilter(layerItem.layer);
     const filter = (map: Map, layer: Layer, pixel: number[]) => {
+      let swipeFilter: boolean;
       const swipeSide: 'left' | 'right' = getSwipeSide(layer);
       if (!appRef.swipeControlActive || !swipeSide) {
-        return true;
-      }
-      const clickPos =
-        appRef.orientation == 'vertical'
-          ? appRef.swipeCtrl.getPosValue(map.getSize()[0], pixel[0])
-          : appRef.swipeCtrl.getPosValue(map.getSize()[1], pixel[1]);
-
-      if (
-        (clickPos <= appRef.swipeCtrl.get('position') && swipeSide == 'left') ||
-        (clickPos > appRef.swipeCtrl.get('position') && swipeSide == 'right')
-      ) {
-        return true;
+        swipeFilter = true;
       } else {
-        return false;
+        const clickPos =
+          appRef.orientation == 'vertical'
+            ? appRef.swipeCtrl.getPosValue(map.getSize()[0], pixel[0])
+            : appRef.swipeCtrl.getPosValue(map.getSize()[1], pixel[1]);
+
+        if (
+          (clickPos <= appRef.swipeCtrl.get('position') &&
+            swipeSide == 'left') ||
+          (clickPos > appRef.swipeCtrl.get('position') && swipeSide == 'right')
+        ) {
+          swipeFilter = true;
+        } else {
+          swipeFilter = false;
+        }
+      }
+      if (existingFilter != undefined) {
+        return existingFilter(map, layer, pixel) && swipeFilter;
+      } else {
+        return swipeFilter;
       }
     };
     setQueryFilter(layerItem.layer, filter);
