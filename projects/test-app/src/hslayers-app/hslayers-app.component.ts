@@ -59,7 +59,9 @@ export class HslayersAppComponent {
         maxFeaturesInCache: 500,
         maxFeaturesInExtent: 100,
         features: [],
-        weight: 'fac2020',
+        weight: () => {
+          return 'fac2020';
+        },
         loader: async ({extent, projection}) => {
           interpolatedSource.cancelUrlRequest.next();
           const extentIn4326 = transformExtent(extent, projection, 'EPSG:4326');
