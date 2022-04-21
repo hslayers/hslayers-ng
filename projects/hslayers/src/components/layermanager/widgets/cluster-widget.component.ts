@@ -38,11 +38,11 @@ export class HsClusterWidgetComponent
    * @param newValue - To cluster or not to cluster
    */
   set cluster(newValue: boolean) {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
     this.HsLayerEditorService.cluster(
-      this.olLayer(),
+      this.olLayer,
       newValue,
       this.distance.value,
       this.data.app
@@ -53,11 +53,11 @@ export class HsClusterWidgetComponent
    * @returns Current cluster state
    */
   get cluster(): boolean | undefined {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
     return this.HsLayerEditorService.cluster(
-      this.olLayer(),
+      this.olLayer,
       undefined,
       this.distance.value,
       this.data.app
@@ -68,10 +68,10 @@ export class HsClusterWidgetComponent
    * Set distance between cluster features;
    */
   changeDistance(): void {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     const src = layer.getSource() as Cluster;
     if (src.setDistance == undefined) {
       return;
@@ -83,10 +83,10 @@ export class HsClusterWidgetComponent
    * Test if layer is WMS layer
    */
   isVectorLayer(): boolean | undefined {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     if (!this.HsLayerEditorService.isLayerVectorLayer(layer)) {
       return;
     } else {

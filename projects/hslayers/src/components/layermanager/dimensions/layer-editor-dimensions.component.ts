@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
@@ -21,8 +21,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges
-{
+  implements OnDestroy, OnChanges, OnInit {
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private ngUnsubscribe = new Subject<void>();
@@ -39,9 +38,14 @@ export class HsLayerEditorDimensionsComponent
     this.hsEventBusService.layerDimensionDefinitionChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({layer}) => {
-        if (layer == this.olLayer()) {
+        if (layer == this.olLayer) {
           this.ngOnChanges();
         }
+      });
+    this.layerDescriptor
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((descriptor) => {
+        this.ngOnChanges();
       });
   }
 
@@ -51,14 +55,17 @@ export class HsLayerEditorDimensionsComponent
   }
 
   ngOnChanges(): void {
-    const layer = this.olLayer();
+    const layer = this.olLayer;
+    if (!layer) {
+      return;
+    }
     this.dimensions = [];
-    const dimensions = getDimensions(this.olLayer());
+    const dimensions = getDimensions(layer);
     if (dimensions && Object.entries(dimensions)) {
       for (const [key, dimension] of <[any, any]>Object.entries(dimensions)) {
         let available = true;
         if (this.hsUtilsService.isFunction(dimension.availability)) {
-          available = dimension.availability(this.olLayer());
+          available = dimension.availability(layer);
         }
         if (available) {
           if (typeof dimension.values === 'string') {
@@ -73,7 +80,7 @@ export class HsLayerEditorDimensionsComponent
   }
 
   dimensionIsTime(dimension: Dimension): boolean {
-    const dimensions = getDimensions(this.olLayer());
+    const dimensions = getDimensions(this.olLayer);
     const type = Object.keys(dimensions).find(
       (key) => dimensions[key] === dimension
     );

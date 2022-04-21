@@ -1,4 +1,4 @@
-<div *ngIf="hsDimensionService.isLayerWithDimensions(olLayer())">
+<div *ngIf="hsDimensionService.isLayerWithDimensions(olLayer)">
   <p style="text-align: center; font-weight: bold">
     {{'LAYERMANAGER.dimensions' | translateHs : data}}
   </p>
@@ -11,7 +11,7 @@
       style="width: 100%"
       [(ngModel)]="dimension.modelValue"
       [ngModelOptions]="{standalone: true}"
-      *ngIf="dimension.type === null"
+      *ngIf="!dimension.type"
       (change)="hsDimensionService.dimensionChanged(dimension, data.app)"
     >
       <option

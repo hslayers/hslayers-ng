@@ -1,9 +1,9 @@
 <div class="form-group">
-  <small class="text-secondary" *ngIf="currentLayer">
+  <small class="text-secondary" *ngIf="(layerDescriptor | async)">
     {{
     HsLanguageService.getTranslationIgnoreNonExisting(
     "LAYERMANAGER.layerEditor",
-    currentLayer.type,
+    (layerDescriptor | async).type,
     undefined,
     data.app
     )
@@ -12,7 +12,7 @@
     {{
     HsLanguageService.getTranslationIgnoreNonExisting(
     "LAYERMANAGER.layerEditor",
-    currentLayer.source,
+    (layerDescriptor | async).source,
     undefined,
     data.app
     )

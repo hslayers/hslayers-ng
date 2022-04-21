@@ -22,14 +22,14 @@ export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
    * @param newValue
    */
   set opacity(newValue) {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    this.olLayer().setOpacity(newValue);
+    this.olLayer.setOpacity(newValue);
     this.hsEventBusService.compositionEdits.next(this.data.app);
   }
 
   get opacity() {
-    return this.olLayer().getOpacity();
+    return this.olLayer.getOpacity();
   }
 }

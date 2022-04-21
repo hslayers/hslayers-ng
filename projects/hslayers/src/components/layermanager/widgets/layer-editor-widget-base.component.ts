@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
 import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 
+import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
 import {HsPanelComponent} from '../../layout/panels/panel-component.interface';
@@ -10,31 +10,38 @@ import {HsPanelComponent} from '../../layout/panels/panel-component.interface';
   template: '<div></div>',
 })
 export class HsLayerEditorWidgetBaseComponent
-  implements HsPanelComponent, OnInit {
+  implements HsPanelComponent, OnInit, OnDestroy
+{
   name: string; //This could be used to enable/disable widgets by name on HsConfig level
   viewRef: ViewRef;
   data: any;
-  currentLayer: HsLayerDescriptor;
-  constructor(public hsLayerSelectorService: HsLayerSelectorService) {}
-  ngOnInit() {
-    this.currentLayer = this.hsLayerSelectorService.get(
-      this.data.app
-    ).currentLayer;
-
-    this.hsLayerSelectorService.layerSelected.subscribe(({layer, app}) => {
-      if (app == this.data.app) {
-        this.currentLayer = layer;
-      }
+  layerDescriptor = new BehaviorSubject<HsLayerDescriptor>(null);
+  olLayer: Layer;
+  private ngBaseUnsubscribe = new Subject<void>();
+  constructor(public hsLayerSelectorService: HsLayerSelectorService) {
+    this.layerDescriptor.subscribe((descriptor) => {
+      this.olLayer = descriptor?.layer;
     });
+  }
+  ngOnInit() {
+    this.layerDescriptor.next(
+      this.hsLayerSelectorService.get(this.data.app).currentLayer
+    );
+
+    this.hsLayerSelectorService.layerSelected
+      .pipe(takeUntil(this.ngBaseUnsubscribe))
+      .subscribe(({layer, app}) => {
+        if (app == this.data.app) {
+          this.layerDescriptor.next(layer);
+        }
+      });
   }
   isVisible(): boolean {
     return true;
   }
 
-  olLayer(): Layer<Source> {
-    if (!this.currentLayer) {
-      return undefined;
-    }
-    return this.currentLayer.layer;
+  ngOnDestroy(): void {
+    this.ngBaseUnsubscribe.next();
+    this.ngBaseUnsubscribe.complete();
   }
 }
