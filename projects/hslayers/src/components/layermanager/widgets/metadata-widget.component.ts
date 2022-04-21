@@ -31,7 +31,7 @@ export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent 
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     } else {
       return getAttribution(layer.layer)?.onlineResource != undefined;
@@ -39,7 +39,7 @@ export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent 
   }
 
   set abstract(newAbstract: string) {
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     if (layer == undefined) {
       return;
     }
@@ -47,7 +47,7 @@ export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent 
   }
 
   get abstract(): string {
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     if (layer == undefined) {
       return;
     }

@@ -25,7 +25,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
    * Test if selected layer has min and max resolution set
    */
   isScaleVisible(): boolean {
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     if (layer == undefined) {
       return false;
     }
@@ -37,10 +37,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
    * @param newValue
    */
   set minResolution(newValue) {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     layer.setMinResolution(
       this.hsLayerUtilsService.calculateResolutionFromScale(
         newValue,
@@ -50,10 +50,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   get minResolution() {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     return this.resolutionToScale(layer.getMinResolution());
   }
 
@@ -62,10 +62,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
    * @param newValue
    */
   set maxResolution(newValue) {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     layer.setMaxResolution(
       this.hsLayerUtilsService.calculateResolutionFromScale(
         newValue,
@@ -75,10 +75,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   get maxResolution() {
-    if (!this.currentLayer) {
+    if (!this.layerDescriptor) {
       return;
     }
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     return this.resolutionToScale(layer.getMaxResolution());
   }
 
@@ -91,7 +91,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   minResolutionValid(): boolean {
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     if (layer == undefined) {
       return false;
     }
@@ -101,7 +101,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   maxResolutionValid(): boolean {
-    const layer = this.olLayer();
+    const layer = this.olLayer;
     if (layer == undefined) {
       return false;
     }

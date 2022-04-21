@@ -118,7 +118,7 @@ describe('layermanager editor', () => {
     clusterWidgetComponent = clusterWidgetFixture.componentInstance;
     fixture.detectChanges();
     component.currentLayer = {layer: layerForCluster};
-    clusterWidgetComponent.currentLayer = {layer: layerForCluster};
+    clusterWidgetComponent.layerDescriptor.next({layer: layerForCluster});
     hsConfig.get(app).reverseLayerList = true;
     hsConfig.get(app).layersInFeatureTable = [];
   });
