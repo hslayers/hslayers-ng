@@ -40,7 +40,9 @@ export class HsNewLayerFormComponent implements OnInit {
       ? this.data.sld.name
       : this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.Vector',
-          'addSld'
+          'addSld',
+          undefined,
+          this.app
         );
   }
 
