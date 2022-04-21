@@ -12,7 +12,7 @@ export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 
 export interface InterpolatedSourceOptions {
   features?: Feature<Geometry>[];
-  weight?: string;
+  weight?: string | (() => string);
   loader?(params: any): Promise<Feature[]>;
   colorMap?: ((v: number) => number[]) | string;
   strategy?: LoadingStrategy;
@@ -92,6 +92,12 @@ export class InterpolatedSource extends IDW {
     }
   }
 
+  private getWeightString() {
+    return typeof this.options.weight == 'string'
+      ? this.options.weight
+      : this.options.weight();
+  }
+
   /**
    * Fill Interpolated source features
    * @param features - Parsed Ol features from get request
@@ -111,7 +117,7 @@ export class InterpolatedSource extends IDW {
     }
     const countToAdd = cacheLimit ?? Number.MAX_VALUE;
     this.featureCache.addFeatures(features.slice(0, countToAdd));
-    this.normalizeWeight(this.options.weight);
+    this.normalizeWeight(this.getWeightString());
     const src = super.getSource();
     if (extent) {
       src.clear();
@@ -141,7 +147,7 @@ export class InterpolatedSource extends IDW {
         featureProjection: mapProjection,
       });
       collection.features = collection.features.filter((f) => {
-        const value = f.get(this.options.weight);
+        const value = f.get(this.getWeightString());
         if (value && !isNaN(parseInt(value))) {
           return f;
         }
