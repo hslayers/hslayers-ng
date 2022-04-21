@@ -303,10 +303,12 @@ export class HsMapService {
    * @param app - App identifier
    */
   setDefaultView = function (e, app): void {
-    const center = this.HsConfig.get(app).default_view.getCenter();
-    this.map.getView().setCenter(center);
-    const zoom = this.HsConfig.get(app).default_view.getZoom();
-    this.map.getView().setZoom(zoom);
+    let appRef = this.hsConfig.get(app);
+    let mapRef = this.getMap(app);
+    const center = appRef.default_view.getCenter();
+    mapRef.getView().setCenter(center);
+    const zoom = appRef.default_view.getZoom();
+    mapRef.getView().setZoom(zoom);
   };
   /**
    * @param e - Map or view change
