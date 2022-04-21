@@ -2,6 +2,7 @@ import {ImageWMS, Source, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 
+import VectorSource from 'ol/source/Vector';
 import {HsDimensionDescriptor} from './dimension';
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
@@ -122,6 +123,8 @@ export class HsDimensionService {
           this.hsLayerUtilsService.updateLayerParams(layer, params);
         } else if (this.hsUtilsService.instOf(src, XYZ)) {
           src.refresh();
+        } else if (this.hsUtilsService.instOf(src, VectorSource)) {
+          (src as VectorSource).refresh();
         }
         this.hsEventBusService.layermanagerDimensionChanges.next({
           layer,

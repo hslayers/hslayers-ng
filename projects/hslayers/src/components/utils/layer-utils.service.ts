@@ -140,7 +140,12 @@ export class HsLayerUtilsService {
       return (src as XYZ).getUrls()[0];
     }
     if ((src as any).getUrl) {
-      return (src as any).getUrl();
+      const tmpUrl = (src as any).getUrl();
+      if (typeof tmpUrl == 'string') {
+        return tmpUrl;
+      } else if (this.HsUtilsService.isFunction(tmpUrl)) {
+        return tmpUrl();
+      }
     }
     if ((src as any).getUrls) {
       return (src as any).getUrls()[0];
