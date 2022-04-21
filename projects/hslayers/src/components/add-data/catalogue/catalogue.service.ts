@@ -280,7 +280,12 @@ export class HsAddDataCatalogueService {
 
     const filteredLayers = endpoint.layers.filter(
       (layer) =>
-        appRef.catalogEntries.filter((u) => u.id == layer.id).length == 0
+        appRef.catalogEntries.filter(
+          (u) =>
+            u.id == layer.id ||
+            u.id == 'm-' + layer.id ||
+            'm-' + u.id == layer.id
+        ).length == 0
     );
 
     if (endpoint.type != 'layman') {

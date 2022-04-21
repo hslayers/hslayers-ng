@@ -300,8 +300,13 @@ export class HsCompositionsCatalogueService {
       return;
     }
     const filteredCompositions = endpoint.compositions.filter(
-      (data) =>
-        appRef.compositionEntries.filter((u) => u.id == data.id).length == 0
+      (record) =>
+        appRef.compositionEntries.filter(
+          (loaded) =>
+            loaded.id == record.id ||
+            'm-' + loaded.id == record.id ||
+            loaded.id == 'm-' + record.id
+        ).length == 0
     );
     appRef.matchedRecords -=
       endpoint.compositions.length - filteredCompositions.length;
@@ -328,14 +333,10 @@ export class HsCompositionsCatalogueService {
   /**
    
    * Evaluates if array is defined and contains any data
-   * @param arr -
+   * @param arr - Endpoint composition records
    */
   arrayContainsData(arr: any[]): boolean {
-    if (arr !== undefined && arr.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return arr !== undefined && arr.length > 0;
   }
 
   /**
