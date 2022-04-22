@@ -16,6 +16,7 @@ type LaymanUser = {
   familyName: string; // Family name of the user
   middleName: string; // Middle name of the user
   name: string; // Whole name of the user (given_name + middle_name + family_name).
+  hslDisplayName?: string;
   read?: boolean;
   write?: boolean;
 };
@@ -146,7 +147,7 @@ export class HsCommonLaymanAccessRightsComponent {
               return res
                 .filter((user) => user.username != endpoint.user)
                 .map((user) => {
-                  return {
+                  const laymanUser: LaymanUser = {
                     username: user.username,
                     screenName: user.screen_name,
                     givenName: user.given_name,
@@ -154,6 +155,8 @@ export class HsCommonLaymanAccessRightsComponent {
                     middleName: user.middle_name,
                     name: user.name,
                   };
+                  laymanUser.hslDisplayName = this.getUserName(laymanUser);
+                  return laymanUser;
                 });
             })
           )
@@ -190,7 +193,7 @@ export class HsCommonLaymanAccessRightsComponent {
    * Refresh user list, when searching for specific user
    * @param user - Provided Layman's service user
    */
-  getUserName(user: LaymanUser): string {
+  getUserName(user: any): string {
     if (user.givenName && user.familyName) {
       return user.givenName + ' ' + user.familyName;
     } else if (user.screenName) {
