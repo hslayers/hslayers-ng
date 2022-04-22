@@ -57,7 +57,7 @@
                     class="icon-calcplus"></i></button>
             <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
-                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown"
+                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button"
                     (click)="toggleEditMenu()"><i class="icon-settingsthree-gears"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
                     <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
