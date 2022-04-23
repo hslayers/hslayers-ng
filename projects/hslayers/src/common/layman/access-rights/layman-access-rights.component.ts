@@ -7,19 +7,9 @@ import {HsEndpoint} from '../../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../components/language/language.service';
 import {HsLaymanService} from '../../../components/save-map/layman.service';
 import {HsLogService} from './../../log/log.service';
+import {LaymanUser} from '../types/layman-user.type';
 import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
 
-type LaymanUser = {
-  username: string; // Username of the user.
-  screenName: string; // Screen name of the user.
-  givenName: string; // Given name of the user.
-  familyName: string; // Family name of the user
-  middleName: string; // Middle name of the user
-  name: string; // Whole name of the user (given_name + middle_name + family_name).
-  hslDisplayName?: string;
-  read?: boolean;
-  write?: boolean;
-};
 enum GrantingOptions {
   PERUSER = 'per_user',
   EVERYONE = 'everyone',
