@@ -25,7 +25,7 @@ import {CompoData} from './types/compo-data.type';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
-} from '../../common/layman/delete-layer-response.type';
+} from '../../common/layman/types/delete-layer-response.type';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
@@ -45,7 +45,7 @@ import {
   wfsNotAvailable,
   wfsPendingOrStarting,
 } from './layman-utils';
-import {PostLayerResponse} from '../../common/layman/post-layer-response.type';
+import {PostLayerResponse} from '../../common/layman/types/post-layer-response.type';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {
   getAccessRights,

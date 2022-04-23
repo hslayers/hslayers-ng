@@ -16,7 +16,7 @@ import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {PREFER_RESUMABLE_SIZE_LIMIT} from '../../save-map/layman-utils';
-import {PostLayerResponse} from '../../../common/layman/post-layer-response.type';
+import {PostLayerResponse} from '../../../common/layman/types/post-layer-response.type';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {fileDataObject} from '../file/types/file-data-object.type';

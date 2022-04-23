@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Subject, lastValueFrom} from 'rxjs';
 
-import {CurrentUserResponse} from './current-user-response.type';
+import {CurrentUserResponse} from './types/current-user-response.type';
 import {HsEndpoint} from '../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../components/language/language.service';
 import {HsToastService} from '../../components/layout/toast/toast.service';
