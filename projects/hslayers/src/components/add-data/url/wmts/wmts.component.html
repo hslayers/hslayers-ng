@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnectWmts" role="form">
-    <hs-common-url type="wmts" [(url)]="hsAddDataCommonService.get(app).url"
+    <hs-common-url type="wmts" [app]="app" [(url)]="hsAddDataCommonService.get(app).url"
         (connect)="hsAddDataOwsService.connect(app)">
     </hs-common-url>
 
