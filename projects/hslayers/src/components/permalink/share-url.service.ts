@@ -334,7 +334,7 @@ export class HsShareUrlService {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(
           this.HsUtilsService.debounce(
-            (data) => {
+            ({map, event, extent, app}) => {
               this.zone.run(() => {
                 this.update(app);
               });

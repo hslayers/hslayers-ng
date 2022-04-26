@@ -114,10 +114,16 @@ export class HsEventBusService {
   zoomTo: Subject<any> = new Subject();
   /**
    * Fires when map extent change (move, zoom, resize).
-   * Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
-   * @event mapExtentChanges
+   * Returns structure containing OL map, event which triggered the extent change, newly
+   * calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
+   * and app name ('default' in most cases)
    */
-  mapExtentChanges: Subject<{e; app: string}> = new Subject();
+  mapExtentChanges: Subject<{
+    map: Map;
+    event: string;
+    extent: number[];
+    app: string;
+  }> = new Subject();
   mapCenterSynchronizations: Subject<any> = new Subject();
   mapLibraryChanges: Subject<any> = new Subject();
   /**
