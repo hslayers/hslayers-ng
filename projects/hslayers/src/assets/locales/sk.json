@@ -256,7 +256,8 @@
     "preview": "Náhľad",
     "resetToDefault": "Obnoviť východzie hodnoty",
     "steps": "Kroky",
-    "addLayers": "Pridať vrstvy"
+    "addLayers": "Pridať vrstvy",
+    "toggle": "Prepnúť"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -309,7 +310,8 @@
     "selectThemes": "Vybrať témy",
     "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!",
     "cswDialog": {
-      "servicesLoading": "Služba sa načítava, čakajte prosím!"
+      "servicesLoading": "Služba sa načítava, čakajte prosím!",
+      "infoText": "Vyberte vrstvy, ktoré chcete pridať do mapy! \nAk nie je zaškrtnutá žiadna vrstva, pridá sa jedna vrstva reprezentujúca celú službu"
     }
   },
   "COMPOSITONINSPIRETHEMES": {

@@ -30,7 +30,7 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
     HsUrlDetailsComponent,
-    HsLayerTableComponent
+    HsLayerTableComponent,
   ],
   declarations: [
     HsUrlAddComponent,

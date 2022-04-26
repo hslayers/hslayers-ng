@@ -257,7 +257,8 @@
     "zoomTo": "zoom to",
     "height": "Height",
     "required": "Required",
-    "addLayers": "Add layers"
+    "addLayers": "Add layers",
+    "toggle": "Toggle"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -314,7 +315,8 @@
     "compositionNotLoaded": "Composition not loaded",
     "weAreSorryBut": "We are sorry, but composition was not loaded due to some error",
     "cswDialog": {
-      "servicesLoading": "Service is loading, please wait!"
+      "servicesLoading": "Service is loading, please wait!",
+      "infoText": "Choose which layers you want to add to map! In case no layer is checked single layer with sublayers will be added."
     }
   },
   "COMPOSITONINSPIRETHEMES": {

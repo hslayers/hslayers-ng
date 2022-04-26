@@ -1,18 +1,3 @@
-import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'lib-layer-table',
-  templateUrl: './layer-table.component.html',
-  styleUrls: ['./layer-table.component.css']
-})
-export class LayerTableComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
 import {AddDataUrlType} from '../../../url/types/url.type';
 import {AfterContentInit, Component, Input} from '@angular/core';
 import {HsAddDataCommonService} from '../../common.service';
@@ -29,7 +14,6 @@ import {HsUtilsService} from '../../../../utils/utils.service';
 @Component({
   selector: 'hs-layer-table',
   templateUrl: './layer-table.component.html',
-  styleUrls: ['./layer-table.component.css'],
 })
 export class HsLayerTableComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
@@ -37,7 +21,6 @@ export class HsLayerTableComponent implements AfterContentInit {
   @Input() app = 'default';
   data;
   checkedSubLayers = {};
-  hasNestedLayers: any;
   getDimensionValues: any;
   limitShown = 100;
   constructor(
@@ -49,9 +32,9 @@ export class HsLayerTableComponent implements AfterContentInit {
     public hsUrlWmsService: HsUrlWmsService,
     public hsAddDataCommonService: HsAddDataCommonService
   ) {}
+  
   ngAfterContentInit(): void {
     this.data = this.injectedService.get(this.app).data;
-    this.hasNestedLayers = this.hsLayerUtilsService.hasNestedLayers;
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
   }
 
