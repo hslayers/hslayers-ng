@@ -645,7 +645,9 @@ export class HsLayerManagerService {
       app: app,
     });
     this.HsEventBusService.layerRemovals.next(e.element);
-    this.HsEventBusService.compositionEdits.next({app});
+    if (getShowInLayerManager(e.element)) {
+      this.HsEventBusService.compositionEdits.next({app});
+    }
     const layers = this.HsMapService.getMap(app).getLayers().getArray();
     if (this.apps[app].zIndexValue > layers.length) {
       this.apps[app].zIndexValue--;
