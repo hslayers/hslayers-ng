@@ -97,7 +97,7 @@ export class HsCompositionsCatalogueService {
     const extentChangeDebouncer = {};
     this.hsEventBusService.mapExtentChanges.subscribe(
       hsUtilsService.debounce(
-        ({e, app}) => {
+        ({map, event, extent, app}) => {
           const appRef = this.get(app);
           if (
             (this.hsLayoutService.get(app).mainpanel != 'composition_browser' &&

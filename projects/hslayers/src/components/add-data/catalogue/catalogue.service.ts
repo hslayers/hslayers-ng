@@ -93,26 +93,6 @@ export class HsAddDataCatalogueService {
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsAddDataOwsService: HsAddDataOwsService
   ) {
-    this.hsEventBusService.mapExtentChanges.subscribe(
-      this.hsUtilsService.debounce(
-        ({e, app}) => {
-          const appRef = this.get(app);
-          if (!this.panelVisible(app) || appRef.extentChangeSuppressed) {
-            appRef.extentChangeSuppressed = false;
-            return;
-          }
-          if (appRef.data.filterByExtent) {
-            this.zone.run(() => {
-              this.reloadData(app);
-            });
-          }
-        },
-        500,
-        false,
-        this
-      )
-    );
-
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       if (this.dataSourceExistsAndEmpty(app) && this.panelVisible(app)) {
         this.reloadData(app);
@@ -141,16 +121,37 @@ export class HsAddDataCatalogueService {
     return this.apps[app ?? 'default'];
   }
 
-  init(app: string) {
-    this.get(app).endpointsWithDatasources =
+  init(_app: string) {
+    this.get(_app).endpointsWithDatasources =
       this.endpointsWithDatasourcesPipe.transform(
         this.hsCommonEndpointsService.endpoints
       );
 
-    if (this.dataSourceExistsAndEmpty(app) && this.panelVisible(app)) {
-      this.queryCatalogs(app);
+    if (this.dataSourceExistsAndEmpty(_app) && this.panelVisible(_app)) {
+      this.queryCatalogs(_app);
       // this.hsMickaFilterService.fillCodesets();
     }
+    this.hsEventBusService.mapExtentChanges.subscribe(
+      this.hsUtilsService.debounce(
+        ({map, event, extent, app}) => {
+          if (app == _app) {
+            const appRef = this.get(app);
+            if (!this.panelVisible(app) || appRef.extentChangeSuppressed) {
+              appRef.extentChangeSuppressed = false;
+              return;
+            }
+            if (appRef.data.filterByExtent) {
+              this.zone.run(() => {
+                this.reloadData(app);
+              });
+            }
+          }
+        },
+        500,
+        false,
+        this
+      )
+    );
   }
 
   resetList(app: string): void {

@@ -321,10 +321,9 @@ export class HsMapService {
     this.timer = setTimeout(() => {
       const map = this.getMap(app);
       this.hsEventBusService.mapExtentChanges.next({
-        e: {
-          element: e.element,
-          extent: map.getView().calculateExtent(map.getSize()),
-        },
+        map: e.target,
+        event: e.type,
+        extent: map.getView().calculateExtent(map.getSize()),
         app,
       });
     }, 500);
