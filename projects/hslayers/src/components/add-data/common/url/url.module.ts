@@ -6,6 +6,7 @@ import {NgModule} from '@angular/core';
 import {HsCommonUrlComponent} from './url.component';
 import {HsHistoryListModule} from './../../../../common/history-list/history-list.module';
 import {HsLanguageModule} from '../../../language/language.module';
+import {HsLayerTableComponent} from './layer-table/layer-table.component';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
 import {HsUiExtensionsModule} from './../../../../common/widgets/ui-extensions.module';
 import {HsUrlAddComponent} from './add/add.component';
@@ -29,6 +30,7 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
     HsUrlDetailsComponent,
+    HsLayerTableComponent
   ],
   declarations: [
     HsUrlAddComponent,
@@ -37,6 +39,7 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
     HsNestedLayersTableComponent,
     WmsLayerHighlightDirective,
     HsUrlDetailsComponent,
+    HsLayerTableComponent,
   ],
 })
 export class HsCommonUrlModule {}

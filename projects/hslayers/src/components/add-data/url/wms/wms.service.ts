@@ -43,6 +43,10 @@ class HsUrlWmsParams {
       use_resampling: false,
       use_tiles: true,
       visible: true,
+      table: {
+        trackBy: 'Name',
+        nameProperty: 'Title',
+      },
     };
   }
 }

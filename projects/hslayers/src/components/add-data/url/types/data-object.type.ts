@@ -31,4 +31,8 @@ export type urlDataObject = {
   use_tiles?: boolean;
   version?: string;
   visible?: boolean;
+  table: {
+    trackBy: string;
+    nameProperty: string;
+  };
 };

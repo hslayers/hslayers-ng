@@ -16,23 +16,7 @@
             <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translateHs: {app} }}</label>
         </div>
         <ul class="list-group">
-            <li *ngFor="let layer of appRef.data.layers; trackBy:( 'Name' | trackByProperty )"
-                class="list-group-item py-2 clearfix">
-                <div>
-                    <input type="checkbox" [(ngModel)]="layer.checked" name="checkedLayer"
-                        [ngModelOptions]="{standalone: true}" (change)="hsAddDataOwsService.changed(appRef.data,app)" />
-                    {{layer.Title}}
-                </div>
-                <div class="alert alert-primary d-flex m-1" role="alert"
-                    *ngIf="layer.featureCount > 1000 && layer.checked">
-                    <div class="w-100">
-                        <p class="mb-0" [hidden]="!layer.limitFeatureCount">{{'ADDLAYERS.WFS.selectedLayerContains' |
-                            translateHs: {app} }}
-                            {{layer.featureCount}} {{'ADDLAYERS.WFS.loadingToManyAtOnce' | translateHs: {app} }}
-                        </p>
-                    </div>
-                </div>
-            </li>
+            <hs-layer-table [app]="app" [type]="'wfs'" [injectedService]="hsUrlWfsService"> </hs-layer-table>
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
                 <div class="d-flex justify-content-center">
                     <hs-url-add class="w-100" [injectedService]="hsUrlWfsService" [layers]="appRef.data.layers"
