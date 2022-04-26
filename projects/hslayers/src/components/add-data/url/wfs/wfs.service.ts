@@ -38,6 +38,10 @@ class HsUrlWfsParams {
       srss: [],
       title: '',
       version: '',
+      table: {
+        trackBy: 'Name',
+        nameProperty: 'Title',
+      },
     };
     this.definedProjections = [
       'EPSG:3857',

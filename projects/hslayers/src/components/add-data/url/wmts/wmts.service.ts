@@ -26,6 +26,10 @@ class HsUrlWmtsParams {
       layers: [],
       title: '',
       version: '',
+      table: {
+        trackBy: 'Identifier',
+        nameProperty: 'Title',
+      },
     };
   }
 }

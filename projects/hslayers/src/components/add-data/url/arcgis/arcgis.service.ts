@@ -35,6 +35,10 @@ class HsUrlArcGisParams {
       tile_size: 512,
       use_resampling: false,
       use_tiles: true,
+      table: {
+        trackBy: 'id',
+        nameProperty: 'name',
+      },
     };
   }
 }

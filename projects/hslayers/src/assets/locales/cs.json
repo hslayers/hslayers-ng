@@ -255,7 +255,8 @@
     "downloadAsPng": "Stáhnout jako PNG",
     "height": "Výška",
     "preview": "Náhled",
-    "resetToDefault": "Obnovit výchozí hodnoty"
+    "resetToDefault": "Obnovit výchozí hodnoty",
+    "addLayers": "Přidat vrstvy"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -306,7 +307,10 @@
     "onlyMine": "Jen moje vlastní",
     "selectKeywords": "Vybrat klíčová slova",
     "selectThemes": "Vybrat témata",
-    "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!"
+    "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!",
+    "cswDialog": {
+      "servicesLoading": "Služba se načítá, čekejte prosím!"
+    }
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",

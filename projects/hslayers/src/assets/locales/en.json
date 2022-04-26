@@ -256,7 +256,8 @@
     "yes": "Yes",
     "zoomTo": "zoom to",
     "height": "Height",
-    "required": "Required"
+    "required": "Required",
+    "addLayers": "Add layers"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -311,7 +312,10 @@
     "compositionNotFound": "Composition not found",
     "sorryButComposition": "Sorry, but composition was deleted or incorrectly saved",
     "compositionNotLoaded": "Composition not loaded",
-    "weAreSorryBut": "We are sorry, but composition was not loaded due to some error"
+    "weAreSorryBut": "We are sorry, but composition was not loaded due to some error",
+    "cswDialog": {
+      "servicesLoading": "Service is loading, please wait!"
+    }
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",

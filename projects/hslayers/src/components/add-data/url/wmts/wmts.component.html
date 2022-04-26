@@ -10,30 +10,7 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
                 <div>{{appRef.data.title}}</div>
             </li>
-            <li *ngFor="let layer of appRef.data.layers; trackBy:( 'Identifier' | trackByProperty ); let index = index"
-                class="list-group-item clearfix">
-                <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}"
-                    (change)="hsAddDataOwsService.changed(appRef.data,app)" [attr.id]="'wmtslayer-'+index+app"
-                    name="wmtslayer-{{index}}" />
-                <label class="form-check-label m-0 ps-4 mw-100 d-flex align-items-center"
-                    [attr.for]="'wmtslayer-'+index+app"
-                    [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ms-2"
-                        style="max-width: 90%;">{{layer.Title}}</span></label>
-
-                <div *ngIf="layer.checked" class="d-flex flex-row justify-content-end align-items-baseline">
-                    {{'ADDDATA.CATALOGUE.addAs' | translateHs: {app} }}
-                    <div class="btn-group ms-2">
-                        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                            (click)="layer.base = true" [ngClass]="{'active':layer.base}">
-                            {{'COMPOSITONKEYWORDS.Basemap' | translateHs: {app} }}
-                        </button>
-                        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                            (click)="layer.base = false" [ngClass]="{'active': !layer.base}">
-                            {{'COMMON.layer' | translateHs: {app} }}
-                        </button>
-                    </div>
-                </div>
-            </li>
+            <hs-layer-table [app]="app" [type]="'wmts'" [injectedService]="hsUrlWmtsService"> </hs-layer-table>
         </ul>
         <li class="list-group-item hs-ows-layerlistheading clearfix bg-white" style="position: sticky;
         bottom: 0; z-index:10">

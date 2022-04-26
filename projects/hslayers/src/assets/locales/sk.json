@@ -255,7 +255,8 @@
     "height": "Výška",
     "preview": "Náhľad",
     "resetToDefault": "Obnoviť východzie hodnoty",
-    "steps": "Kroky"
+    "steps": "Kroky",
+    "addLayers": "Pridať vrstvy"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -306,7 +307,10 @@
     "onlyMine": "Len moje vlastné",
     "selectKeywords": "Vybrať kľúčové slová",
     "selectThemes": "Vybrať témy",
-    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!"
+    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!",
+    "cswDialog": {
+      "servicesLoading": "Služba sa načítava, čakajte prosím!"
+    }
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
