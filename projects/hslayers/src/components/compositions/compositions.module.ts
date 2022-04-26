@@ -2,8 +2,11 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
+import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
+import {HsCommonUrlModule} from '../add-data/common/url/url.module';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
@@ -27,6 +30,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsCompositionsInfoDialogComponent,
     HsCompositionsWarningDialogComponent,
     HsCompositionsListItemComponent,
+    CswLayersDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -35,8 +39,10 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsLanguageModule,
     HsCompositionsLayerParserModule,
     NgbDropdownModule,
+    NgbAccordionModule,
     HsLaymanModule,
     HsPagerModule,
+    HsCommonUrlModule,
   ],
   exports: [HsCompositionsComponent],
 })

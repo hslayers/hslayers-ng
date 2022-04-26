@@ -1,0 +1,11 @@
+.accordion-button::after {
+    content: unset !important;
+}
+
+.accordion-button:hover {
+    background-color: rgb(239 239 239)
+}
+
+.accordion-button i:hover {
+    color: #dc3545 !important;
+}

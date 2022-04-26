@@ -3,6 +3,7 @@ export * from './dialogs/info-dialog.component';
 export * from './dialogs/overwrite-dialog.component';
 export * from './dialogs/share-dialog.component';
 export * from './dialogs/warning-dialog.component';
+export * from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
 export * from './endpoints/compositions-endpoints.module';
 export * from './endpoints/compositions-layman.service';
 export * from './endpoints/compositions-micka.service';

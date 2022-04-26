@@ -1,4 +1,3 @@
-<p>layer-table works!</p>
 <div>
     <ng-container *ngIf="type === 'wms'; else simpleTable">
         <table class="table table-sm table-striped table-bordered hs-url-table">
@@ -10,8 +9,7 @@
             </thead>
             <tbody *ngFor="let layer of data.layers | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
                 <tr>
-                    <td [attr.rowspan]="layer.Style?.length ? 3 : 2"
-                        [ngClass]="{'align-middle': !hasNestedLayers(layer)}">
+                    <td [attr.rowspan]="layer.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !layer.Layer}">
                         <input type="checkbox" class="checkbox-lg" [(ngModel)]="layer.checked" name="layer"
                             style="cursor: pointer;" (change)="searchForChecked(layer)" />
                     </td>
@@ -37,7 +35,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr [hidden]="!hasNestedLayers(layer)">
+                <tr [hidden]="!layer.Layer">
                     <td colspan="3" style="padding-left: 1em">
                         <hs-nested-layers-table style="display: block;" [app]="app" [layers]="layer.Layer"
                             (layerChecked)="searchForChecked($event)">

@@ -4,9 +4,10 @@ import {Injectable} from '@angular/core';
 import * as xml2Json from 'xml-js';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {lastValueFrom, of} from 'rxjs';
+import {lastValueFrom} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
+import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
 import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../add-data/url/add-data-url.service';
@@ -21,13 +22,11 @@ import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService, generateUuid} from '../utils/utils.service';
 import {
   getFromComposition,
   getTitle,
-  setFromComposition,
   setMetadata,
-  setPath,
   setSwipeSide,
 } from '../../common/layer-extensions';
 import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
@@ -203,6 +202,7 @@ export class HsCompositionsParserService {
           type: type,
           title: layer.title,
           url: link.url,
+          id: generateUuid(),
         };
       }
     }
@@ -362,47 +362,44 @@ export class HsCompositionsParserService {
       }
     }
 
-    const layers = await this.jsonToLayers(obj, app);
-    if (layers?.length > 0) {
-      layers.forEach((lyr) => {
-        this.hsMapService.addLayer(
-          lyr as Layer<Source>,
-          app,
-          DuplicateHandling.RemoveOriginal
-        );
-      });
-      this.hsLayerManagerService.updateLayerListPositions(app);
-    }
     //CSW serviceType compostitions
-    if (obj.services) {
-      for (const service of obj.services) {
-        this.hsAddDataUrlService.get(app).typeSelected = service.type;
-        await this.hsAddDataOwsService.setUrlAndConnect(
-          {type: service.type, uri: service.url, getOnly: true},
-          app
-        );
-        const typeService = this.hsAddDataOwsService.get(app).typeService;
-        const layers = typeService.getLayers(app, false, true);
-        for (const layer of layers) {
-          setFromComposition(layer, true);
-          setPath(layer, obj.title);
-        }
-        typeService.addLayers(layers, app);
-      }
-    }
+    const layers = await this.jsonToLayers(obj, app);
 
-    if (obj.current_base_layer) {
-      this.hsMapService
-        .getMap(app)
-        .getLayers()
-        .forEach((lyr: Layer<Source>) => {
-          if (
-            getTitle(lyr) == obj.current_base_layer.title ||
-            getTitle(lyr) == obj.current_base_layer
-          ) {
-            lyr.setVisible(true);
-          }
+    const confirmed = obj.services
+      ? await this.hsDialogContainerService
+          .create(
+            CswLayersDialogComponent,
+            {app: app, services: obj.services},
+            app
+          )
+          .waitResult()
+      : true;
+
+    if (confirmed) {
+      if (layers?.length > 0) {
+        layers.forEach((lyr) => {
+          this.hsMapService.addLayer(
+            lyr as Layer<Source>,
+            app,
+            DuplicateHandling.RemoveOriginal
+          );
         });
+        this.hsLayerManagerService.updateLayerListPositions(app);
+      }
+
+      if (obj.current_base_layer) {
+        this.hsMapService
+          .getMap(app)
+          .getLayers()
+          .forEach((lyr: Layer<Source>) => {
+            if (
+              getTitle(lyr) == obj.current_base_layer.title ||
+              getTitle(lyr) == obj.current_base_layer
+            ) {
+              lyr.setVisible(true);
+            }
+          });
+      }
     }
   }
 
@@ -420,7 +417,6 @@ export class HsCompositionsParserService {
     ) {
       this.hsLayoutService.setMainPanel('layermanager', app);
     }
-
     this.get(app).composition_edited = false;
     this.hsEventBusService.compositionLoads.next({data: responseData, app});
   }
