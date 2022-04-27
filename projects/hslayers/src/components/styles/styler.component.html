@@ -26,6 +26,18 @@
             <button ngbDropdownItem (click)="hsStylerService.addRule('Cluster',data.app)">
               {{'STYLER.clusterRule' | translateHs : data}}
             </button>
+           
+           
+            <div ngbDropdown>
+              <div class="align-items-center d-flex justify-content-between" style="padding: 0.25rem 1rem;" id="dropdownAddColorMapRule" ngbDropdownToggle [title]="'STYLER.colorMap' | translateHs : data">
+                {{'STYLER.colorMap' | translateHs : data}}
+              </div>
+        
+              <div ngbDropdownMenu aria-labelledby="dropdownAddColorMapRule">
+                <button *ngFor="let colormap of colormaps" class="dropdown-item" type="button" (click)="hsStylerService.addRule('ColorMap',data.app, colormap)">{{colormap}}</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

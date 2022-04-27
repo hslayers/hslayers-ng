@@ -4,6 +4,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import colorScales from 'colormap/colorScale';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -33,6 +34,7 @@ export class HsStylerComponent
   downloadData: any;
   name = 'styler';
   appRef;
+  colormaps = Object.keys(colorScales);
   constructor(
     public hsStylerService: HsStylerService,
     public hsLayoutService: HsLayoutService,

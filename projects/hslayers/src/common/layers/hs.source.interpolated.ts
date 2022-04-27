@@ -190,7 +190,7 @@ export class InterpolatedSource extends IDW {
    */
   normalizeWeight(weight: string): void {
     const features = this.featureCache.getFeatures();
-    const weightValues = features.map((f) => parseInt(f.get(weight)));
+    const weightValues = features.map((f) => parseFloat(f.get(weight)));
     const min = Math.min(...weightValues);
     const max = Math.max(...weightValues);
 
