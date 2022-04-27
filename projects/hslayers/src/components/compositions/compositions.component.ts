@@ -272,4 +272,10 @@ export class HsCompositionsComponent
       this.data.app
     );
   }
+  /**
+   * Get save map panel status
+   */
+  saveMapAvailable(): boolean {
+    return this.hsLayoutService.panelEnabled('saveMap', this.data.app);
+  }
 }

@@ -1,11 +1,13 @@
 <div class="card hs-main-panel" [hidden]="!isVisible()">
-    <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translateHs : data" [app]="data.app">
+    <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translateHs : data"
+        [app]="data.app">
         <extra-buttons>
-            <button class="but-title-sm hs-extra-buttons" (click)="reload()" [title]="'COMMON.reload' | translateHs : data">
+            <button class="but-title-sm hs-extra-buttons" (click)="reload()"
+                [title]="'COMMON.reload' | translateHs : data">
                 <i class="glyphicon icon-fatredo"></i>
             </button>
             <button class="but-title-sm hs-extra-buttons" [title]="'PANEL_HEADER.SAVECOMPOSITION'|translateHs : data"
-                (click)="openSaveMapPanel()">
+                (click)="openSaveMapPanel()" [hidden]="!saveMapAvailable()">
                 <span class="icon-save-floppy"></span>
             </button>
             <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;"
