@@ -886,6 +886,9 @@
     "outlineOpacity": "Outline opacity",
     "outlineWidth": "Outline width",
     "perpendicularOffset": "Perpendicular offset",
+    "pleaseEnterAttrib": "Please enter the name of attribute by which to categorize",
+    "pleaseEnterMin": "Please enter the min value",
+    "pleaseEnterMax": "Please enter the max value",
     "radius": "Radius",
     "removeFilter": "Remove filter",
     "removeRule": "Remove rule",
@@ -916,7 +919,8 @@
     "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
     "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
-    "width": "Width"
+    "width": "Width",
+    "colorMap": "Color map"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

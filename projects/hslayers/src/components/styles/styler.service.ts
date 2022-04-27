@@ -7,6 +7,7 @@ import QGISStyleParser from 'geostyler-qgis-parser';
 import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import colormap from 'colormap';
 import {Cluster} from 'ol/source';
 import {
   FillSymbolizer,
@@ -21,6 +22,7 @@ import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -73,7 +75,8 @@ export class HsStylerService {
     private hsLogService: HsLogService,
     public sanitizer: DomSanitizer,
     private hsMapService: HsMapService,
-    private hsSaveMapService: HsSaveMapService
+    private hsSaveMapService: HsSaveMapService,
+    private srvLanguage: HsLanguageService
   ) {}
 
   get(app: string): HsStylerParams {
@@ -411,11 +414,69 @@ export class HsStylerService {
   }
 
   async addRule(
-    kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale' | 'Cluster',
-    app: string
+    kind:
+      | 'Simple'
+      | 'ByScale'
+      | 'ByFilter'
+      | 'ByFilterAndScale'
+      | 'Cluster'
+      | 'ColorMap',
+    app: string,
+    colorMapName?: string
   ): Promise<void> {
     const appRef = this.get(app);
     switch (kind) {
+      case 'ColorMap':
+        const colors = colormap({
+          colormap: colorMapName,
+          nshades: 11,
+          format: 'hex',
+          alpha: 1,
+        });
+        const attr = prompt(
+          this.srvLanguage.getTranslation('STYLER.pleaseEnterAttrib', {}, app),
+          ''
+        );
+        const values = appRef.layer
+          .getSource()
+          .getFeatures()
+          .map((f) => parseFloat(f.get(attr)));
+        let min = Math.min(...values);
+        let max = Math.max(...values);
+        const askForBound = (_default: string, msg: string) => {
+          return parseFloat(
+            prompt(this.srvLanguage.getTranslation(msg, {}, app), _default)
+          );
+        };
+        min = askForBound(min.toString(), 'STYLER.pleaseEnterMin');
+        max = askForBound(max.toString(), 'STYLER.pleaseEnterMax');
+        const step = (max - min) / 10.0;
+        appRef.styleObject.rules = colors.map((color) => {
+          const ix = colors.indexOf(color);
+          const from = min + ix * step;
+          const till = min + (ix + 1) * step;
+          return {
+            name: `${from.toFixed(2)} - ${till.toFixed(2)} ${attr}`,
+            filter: ['&&', ['>=', attr, from], ['<', attr, till]],
+            symbolizers: [
+              {
+                kind: 'Mark',
+                color: color,
+                strokeOpacity: 0.41,
+                strokeColor: 'white',
+                strokeWidth: 0.3,
+                wellKnownName: 'circle',
+                radius: 5,
+              },
+              {
+                kind: 'Fill',
+                color: color,
+                strokeOpacity: 0.2,
+              },
+            ],
+          };
+        });
+        break;
       case 'Cluster':
         appRef.styleObject.rules.push({
           name: 'Cluster rule',

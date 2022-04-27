@@ -4,6 +4,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import colorScales from 'colormap/colorScale';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -26,14 +27,14 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   layerTitle: string;
   private ngUnsubscribe = new Subject<void>();
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';
   appRef;
+  colormaps = Object.keys(colorScales);
   constructor(
     public hsStylerService: HsStylerService,
     public hsLayoutService: HsLayoutService,
