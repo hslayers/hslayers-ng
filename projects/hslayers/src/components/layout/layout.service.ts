@@ -484,11 +484,11 @@ export class HsLayoutService {
     });
   }
 
-  createPanel(panelComponent: Type<any>, app: string, data?: any): void {
+  createPanel(panelComponent: Type<any>, app?: string, data?: any): void {
     this.hsPanelContainerService.create(panelComponent, data || {}, app);
   }
 
-  createOverlay(panelComponent: Type<any>, app: string, data?: any): void {
+  createOverlay(panelComponent: Type<any>, app?: string, data?: any): void {
     this.hsOverlayPanelContainerService.create(panelComponent, data || {}, app);
   }
 }
