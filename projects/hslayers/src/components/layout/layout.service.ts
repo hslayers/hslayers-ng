@@ -484,7 +484,7 @@ export class HsLayoutService {
     });
   }
 
-  createPanel(panelComponent: Type<any>, app?: string, data?: any): void {
+createPanel(panelComponent: Type<any>, app = 'default', data?: any): void {
     this.hsPanelContainerService.create(panelComponent, data || {}, app);
   }
 
