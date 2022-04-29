@@ -316,7 +316,8 @@
     "weAreSorryBut": "We are sorry, but composition was not loaded due to some error",
     "cswDialog": {
       "servicesLoading": "Service is loading, please wait!",
-      "infoText": "Choose which layers you want to add to map! In case no layer is checked single layer with sublayers will be added."
+      "infoText": "Choose which layers you want to add to map! ",
+      "loadCompostion": "Load composition"
     }
   },
   "COMPOSITONINSPIRETHEMES": {
