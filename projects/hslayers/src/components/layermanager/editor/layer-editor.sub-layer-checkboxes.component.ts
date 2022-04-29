@@ -49,7 +49,10 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
     if (sublayer != undefined && sublayer.Layer) {
       for (const children of sublayer.Layer) {
         const nameOrId = children.Name;
-        Object.assign(this.checkedSubLayers, {
+        const sublayersObject = children.Layer
+          ? this.withChildren
+          : this.checkedSubLayers;
+        Object.assign(sublayersObject, {
           [nameOrId]: state,
         });
         this.appRef.checkedSubLayersTmp[nameOrId] = state;

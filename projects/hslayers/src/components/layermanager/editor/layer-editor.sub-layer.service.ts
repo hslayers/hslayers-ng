@@ -91,10 +91,20 @@ export class HsLayerEditorSublayerService {
 
       appRef.populatedLayers.push(wrapper.uid);
       const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
-      const subSubLayers = subLayersWithChild.map((sl) => sl.Layer).flat();
+      let subSubLayers = subLayersWithChild.flatMap((sl) => sl.Layer);
+      //Check one level deeper for the sublayers
+      subSubLayers = subSubLayers.filter((sl) => {
+        if (sl.Layer) {
+          subLayersWithChild.push(sl);
+        }
+        return sl.Layer;
+      });
       wrapper.withChildren = subLayersWithChild.reduce(toDictionary, {});
       //List either 3rd level layers or second if no 3rd level layer exists
-      const leafs = subSubLayers.length > 0 ? subSubLayers : subLayers;
+      const leafs =
+        subSubLayers.length > 0
+          ? [...subLayers.filter((sl) => !sl.Layer), ...subSubLayers]
+          : subLayers;
       wrapper.checkedSubLayers = leafs.reduce(toDictionary, {});
 
       appRef.checkedSubLayers = wrapper.checkedSubLayers;
