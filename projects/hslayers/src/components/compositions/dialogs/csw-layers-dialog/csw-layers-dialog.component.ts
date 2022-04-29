@@ -5,9 +5,14 @@ import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
+import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
-import {setFromComposition, setPath} from '../../../../common/layer-extensions';
+import {
+  setFromComposition,
+  setPath,
+  setSubLayers,
+} from '../../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-csw-layers-dialog',
@@ -24,7 +29,8 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     public HsDialogContainerService: HsDialogContainerService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataOwsService: HsAddDataOwsService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public hsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   close(): void {
@@ -76,21 +82,37 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   }
 
   /**
+   * Sets additional layer params
+   */
+  setLayerParams(layers, service, checkedOnly) {
+    for (const layer of layers) {
+      setFromComposition(layer, true);
+      setPath(layer, service.title);
+      if (this.hsLayerUtilsService.isLayerWMS(layer) && !checkedOnly) {
+        setSubLayers(
+          layer,
+          layers.map((l) => l.getSource().getParams().LAYERS).join(',')
+        );
+        layer.set('serviceLayer', true);
+        return [layer];
+      }
+    }
+    return layers;
+  }
+
+  /**
    * Creates service layers and adds them to the map
    */
   addLayers(): void {
     for (const service of this.data.services) {
       const checkedOnly = this.lookForChecked(service.data.layers);
       service.typeService.apps[this.data.app].data = service.data;
-      const layers = service.typeService.getLayers(
+      let layers = service.typeService.getLayers(
         this.data.app,
         checkedOnly,
         !checkedOnly
       );
-      for (const layer of layers) {
-        setFromComposition(layer, true);
-        setPath(layer, service.title);
-      }
+      layers = this.setLayerParams(layers, service, checkedOnly);
       service.typeService.addLayers(layers, this.data.app);
     }
     this.HsDialogContainerService.destroy(this, this.data.app);

@@ -50,13 +50,17 @@ export class HsLayerManagerMetadataService {
    * @param currentLayer
    * @returns Wms layer definition
    */
-  identifyLayerObject(layerName: string, currentLayer: WmsLayer): WmsLayer {
+  identifyLayerObject(
+    layerName: string,
+    currentLayer: WmsLayer,
+    serviceLayer: boolean = false
+  ): WmsLayer {
     // FIXME: Temporary bypass for layer names like 'UTM:evi'
     /*if (layerName.includes(':')) { //This is wrong because then we are not able to find layer by name
       layerName = layerName.slice(layerName.indexOf(':'));
     }*/
     // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementationally simpler
-    if (layerName == currentLayer.Name) {
+    if (layerName == currentLayer.Name || serviceLayer) {
       return currentLayer;
     } else if (Array.isArray(currentLayer.Layer)) {
       for (const subLayer of currentLayer.Layer) {
@@ -225,7 +229,11 @@ export class HsLayerManagerMetadataService {
       }
       this.fillMetadataUrlsIfNotExist(olLayer, caps);
     } else {
-      layerObj = this.identifyLayerObject(layerName, layerCaps);
+      layerObj = this.identifyLayerObject(
+        layerName,
+        layerCaps,
+        olLayer.get('serviceLayer')
+      );
       if (layerObj == undefined) {
         return;
       }

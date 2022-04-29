@@ -256,7 +256,9 @@
     "yes": "Jā",
     "zoomTo": "pietuvināt",
     "height": "Augstums",
-    "required": "Nepieciešams"
+    "required": "Nepieciešams",
+    "addLayers": "Pievienot slāņus",
+    "toggle": "Pārslēgt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -311,7 +313,12 @@
     "compositionNotFound": "Kompozīcija nav atrasta",
     "compositionNotLoaded": "Kompozīcija nav ielādēta",
     "sorryButComposition": "Atvainojiet, bet kompozīcija tika izdzēsta vai nepareizi saglabāta",
-    "weAreSorryBut": "Atvainojiet, kompozīcija netika ielādēta kļūdas dēļ"
+    "weAreSorryBut": "Atvainojiet, kompozīcija netika ielādēta kļūdas dēļ",
+    "cswDialog": {
+      "infoText": "Izvēlieties, kurus slāņus Jūs vēlaties pievienot kartei!",
+      "loadCompostion": "Ielādēt kompozīciju",
+      "servicesLoading": "Pakalpojums tiek ielādēts, lūdzu uzgaidiet!"
+    }
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",

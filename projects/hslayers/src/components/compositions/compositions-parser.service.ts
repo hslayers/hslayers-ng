@@ -240,11 +240,22 @@ export class HsCompositionsParserService {
     composition['services'] = operatesOn['services'];
 
     if (composition['layers']?.length > 0) {
-      //Map composition layer template for layer
-      //ONE layer per service or separately
-      //WMS LAYERS='x,y,z'
-      //WFS typeNames='y,y,y"
-      //
+      composition['layers'].filter((l) => {
+        l.className = l.type == 'wms' ? 'HSLayers.Layer.WMS' : null;
+        l.params = {
+          FORMAT: 'image/png',
+          INFO_FORMAT: 'text/html',
+          LAYERS: l.url
+            .split('&')
+            .find((p) => p.includes('LAYERS'))
+            .split('=')[1],
+          VERSION: l.url
+            .split('&')
+            .find((p) => p.includes('VERSION'))
+            .split('=')[1],
+        };
+        return l.className;
+      });
     }
 
     // "user": {

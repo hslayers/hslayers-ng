@@ -310,7 +310,7 @@
     "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!",
     "cswDialog": {
       "servicesLoading": "Služba se načítá, čekejte prosím!",
-      "infoText": "Vyberte vrstvy, které chcete přidat do mapy! \nV případě, že není zaškrtnuta žádná vrstva, bude přidána jedna vrstva reprezentující službu."
+      "infoText": "Vyberte vrstvy, které chcete přidat do mapy! reprezentující službu."
     }
   },
   "COMPOSITONINSPIRETHEMES": {

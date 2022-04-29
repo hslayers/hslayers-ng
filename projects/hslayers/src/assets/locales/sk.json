@@ -257,7 +257,8 @@
     "resetToDefault": "Obnoviť východzie hodnoty",
     "steps": "Kroky",
     "addLayers": "Pridať vrstvy",
-    "toggle": "Prepnúť"
+    "toggle": "Prepnúť",
+    "required": "Požadované"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -311,8 +312,13 @@
     "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!",
     "cswDialog": {
       "servicesLoading": "Služba sa načítava, čakajte prosím!",
-      "infoText": "Vyberte vrstvy, ktoré chcete pridať do mapy! \nAk nie je zaškrtnutá žiadna vrstva, pridá sa jedna vrstva reprezentujúca celú službu"
-    }
+      "infoText": "Vyberte vrstvy, ktoré chcete pridať do mapy!",
+      "loadCompostion": "Nahrať kompozíciu"
+    },
+    "compositionNotFound": "Kompozícia nebola nájdená",
+    "sorryButComposition": "Ľutujeme, ale kompozícia bola vymazaná alebo nesprávne uložená",
+    "compositionNotLoaded": "Kompozícia nebola načítaná",
+    "weAreSorryBut": "Ľutujeme, ale kompozícia sa nenačítala kvôli chybe nenačítala"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
@@ -756,7 +762,9 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba pri synchronizácii"
     },
-    "writeAccessRights": "Právo zápisu"
+    "writeAccessRights": "Právo zápisu",
+    "everyone": "Každý",
+    "perUser": "Vybraný užívateľ"
   },
   "SENSORS": {
     "1D": "1D",
