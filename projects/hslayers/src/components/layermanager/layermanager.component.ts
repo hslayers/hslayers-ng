@@ -170,6 +170,7 @@ export class HsLayerManagerComponent
       });
   }
   ngOnDestroy(): void {
+    this.hsLayerManagerService.destroy(this.data.app);
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
