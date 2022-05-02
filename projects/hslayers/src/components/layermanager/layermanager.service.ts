@@ -62,6 +62,7 @@ import {
   setSubLayers,
   setTitle,
 } from '../../common/layer-extensions';
+import {unByKey} from 'ol/Observable';
 
 class HsLayermanagerDataObject {
   folders: any;
@@ -126,6 +127,9 @@ class HsLayermanagerAppObject {
   zIndexValue = 0;
   lastProgressUpdate: number;
   layerEditorElement: any;
+  changeResolutionHandler;
+  addLayerHandler;
+  removeLayerHandler;
   constructor() {}
 }
 
@@ -134,18 +138,7 @@ class HsLayermanagerAppObject {
 })
 export class HsLayerManagerService {
   apps: {
-    [id: string]: {
-      map: any;
-      data: HsLayermanagerDataObject;
-      timer: any;
-      currentLayer: HsLayerDescriptor;
-      composition_id: string;
-      menuExpanded: boolean;
-      currentResolution: number;
-      zIndexValue: number;
-      lastProgressUpdate: number;
-      layerEditorElement: any;
-    };
+    [id: string]: HsLayermanagerAppObject;
   } = {default: new HsLayermanagerAppObject()};
 
   /**
@@ -1115,6 +1108,7 @@ export class HsLayerManagerService {
   async init(app: string): Promise<void> {
     await this.HsMapService.loaded(app);
     this.apps[app].map = this.HsMapService.getMap(app);
+    const appRef = this.apps[app];
     for (const lyr of this.HsMapService.getMap(app).getLayers().getArray()) {
       this.applyZIndex(lyr as Layer<Source>, app);
       await this.layerAdded(
@@ -1126,12 +1120,12 @@ export class HsLayerManagerService {
       );
     }
     this.sortFoldersByZ(app);
-    this.sortLayersByZ(this.apps[app].data.layers, app);
+    this.sortLayersByZ(appRef.data.layers, app);
     this.HsEventBusService.layerManagerUpdates.next({layer: null, app});
     this.toggleEditLayerByUrlParam(app);
     this.boxLayersInit(app);
 
-    this.apps[app].map.getView().on(
+    appRef.changeResolutionHandler = appRef.map.getView().on(
       'change:resolution',
       this.HsUtilsService.debounce(
         (e) => this.resolutionChangeDebounceCallback(app),
@@ -1141,16 +1135,24 @@ export class HsLayerManagerService {
       )
     );
 
-    this.apps[app].map.getLayers().on('add', (e) => {
+    appRef.addLayerHandler = appRef.map.getLayers().on('add', (e) => {
       this.applyZIndex(e.element, app, true);
       if (getShowInLayerManager(e.element) == false) {
         return;
       }
       this.layerAdded(e, app);
     });
-    this.apps[app].map
+    appRef.removeLayerHandler = appRef.map
       .getLayers()
       .on('remove', (e) => this.layerRemoved(e, app));
+  }
+
+  destroy(app: string): void {
+    const appRef = this.apps[app];
+    unByKey(appRef.changeResolutionHandler);
+    unByKey(appRef.addLayerHandler);
+    unByKey(appRef.removeLayerHandler);
+    delete this.apps[app];
   }
 
   private resolutionChangeDebounceCallback(app): void {
