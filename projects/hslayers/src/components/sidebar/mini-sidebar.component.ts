@@ -5,14 +5,16 @@ import {HsCoreService} from '../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
+import {Subject, delay, startWith, takeUntil} from 'rxjs';
 @Component({
   selector: 'hs-mini-sidebar',
   templateUrl: './partials/sidebar.html',
 })
 export class HsMiniSidebarComponent implements OnInit {
   @Input() app = 'default';
-  buttons: HsButton[];
+  buttons: HsButton[] = [];
   miniSidebarButton: {title: () => string};
+  ngUnsubscribe = new Subject<void>();
   constructor(
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
@@ -21,9 +23,12 @@ export class HsMiniSidebarComponent implements OnInit {
     private HsLanguageService: HsLanguageService
   ) {}
   ngOnInit() {
-    this.HsSidebarService.apps[this.app].buttons.subscribe((buttons) => {
-      this.buttons = buttons;
-    });
+    this.HsSidebarService.apps[this.app].buttons
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(startWith([]), delay(0))
+      .subscribe((buttons) => {
+        this.buttons = buttons;
+      });
     this.miniSidebarButton = {
       title: () =>
         this.HsLanguageService.getTranslation(
@@ -32,6 +37,11 @@ export class HsMiniSidebarComponent implements OnInit {
           this.app
         ),
     };
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
