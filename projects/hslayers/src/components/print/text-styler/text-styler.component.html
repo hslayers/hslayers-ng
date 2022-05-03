@@ -3,7 +3,7 @@
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('fill')"
       [ngStyle]="getColorPickerStyle('fill')" [ngModelOptions]="{standalone: true}" [(ngModel)]="textStyle.textColor" />
-    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event, 'fill')">
+    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event, 'fill')" width="320px">
     </color-sketch>
   </div>
 </div>
@@ -13,7 +13,7 @@
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('background')"
       [ngStyle]="getColorPickerStyle('background')" [ngModelOptions]="{standalone: true}"
       [(ngModel)]="textStyle.bcColor" />
-    <color-sketch *ngIf="bcPickerVisible" (onChangeComplete)="onPick($event, 'background')">
+    <color-sketch *ngIf="bcPickerVisible" (onChangeComplete)="onPick($event, 'background')" width="320px">
     </color-sketch>
   </div>
 </div>
