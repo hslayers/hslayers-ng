@@ -24,7 +24,9 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService, generateUuid} from '../utils/utils.service';
 import {
+  getBase,
   getFromComposition,
+  getRemovable,
   getTitle,
   setMetadata,
   setSwipeSide,
@@ -477,7 +479,11 @@ export class HsCompositionsParserService {
   removeCompositionLayers(app: string): void {
     const to_be_removed = [];
     this.hsMapService.getLayersArray(app).forEach((lyr) => {
-      if (getFromComposition(lyr)) {
+      if (
+        getFromComposition(lyr) ||
+        getRemovable(lyr) === undefined ||
+        getRemovable(lyr) == true
+      ) {
         to_be_removed.push(lyr);
       }
     });
