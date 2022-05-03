@@ -3,7 +3,7 @@
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="fillPickerVisible = !fillPickerVisible"
       [ngStyle]="getColorPickerStyle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="legendObj.bcColor" />
-    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event)">
+    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event)" width="320px">
     </color-sketch>
   </div>
 </div>
