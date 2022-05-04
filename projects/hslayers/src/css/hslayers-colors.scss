@@ -4,12 +4,16 @@
 $table-group-separator-color: white;
 
 .hsl {
-  .nav-link[class*='btn-']:hover{
+  .alert-status {
+    color: $secondary;
+  }
+
+  .nav-link[class*='btn-']:hover {
     color: white;
   }
 
   .hs-url-table .text-light th {
-     color: $light;
+    color: $light;
   }
 
   div.hs-info-area {
@@ -38,7 +42,7 @@ $table-group-separator-color: white;
     color: hsl(0, 0%, 100%);
   }
 
-  .basemapGallery .hs-miniMenu > div {
+  .basemapGallery .hs-miniMenu>div {
     background-color: hsla(0, 2%, 75%, 0.644);
   }
 
@@ -67,6 +71,7 @@ $table-group-separator-color: white;
   .activeLayer {
     background-color: rgba(0, 0, 0, 0.2);
   }
+
   .cdk-drag-placeholder {
     background-color: rgba(0, 0, 0, 0.24);
     color: white;
@@ -189,6 +194,7 @@ $table-group-separator-color: white;
   a.hs-sensor-type {
     color: hsl(0, 0%, 0%);
   }
+
   a.hs-sensor-unit {
     color: hsl(0, 0%, 0%);
     font-weight: bold;
@@ -221,12 +227,12 @@ $table-group-separator-color: white;
     background: white;
   }
 
-  .inputfile + label {
+  .inputfile+label {
     color: white;
     background-color: $primary;
   }
 
-  .inputfile + label:hover {
+  .inputfile+label:hover {
     background-color: $secondary;
   }
 
