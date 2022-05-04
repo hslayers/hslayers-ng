@@ -98,11 +98,13 @@ export class HsCommonLaymanAccessRightsComponent {
     if (right == 'read') {
       return this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.readAccessRights',
+        undefined,
         this.app
       );
     } else if (right == 'write') {
       return this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.writeAccessRights',
+        undefined,
         this.app
       );
     }
