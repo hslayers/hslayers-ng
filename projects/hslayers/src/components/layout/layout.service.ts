@@ -189,14 +189,16 @@ export class HsLayoutService {
   }
 
   async updSidebarPosition(app: string) {
-    const lastPosition = this.sidebarPosition.value;
-    if (window.innerWidth <= 767 && lastPosition.position != 'bottom') {
-      this.sidebarPosition.next({
-        app,
-        position: 'bottom',
-      });
+    const lastPosition = this.get(app).sidebarPosition;
+    if (window.innerWidth <= 767) {
+      if (lastPosition != 'bottom') {
+        this.sidebarPosition.next({
+          app,
+          position: 'bottom',
+        });
+      }
     } else {
-      if (this.HsConfig.apps[app].sidebarPosition != lastPosition.position) {
+      if (this.HsConfig.apps[app].sidebarPosition != lastPosition) {
         this.sidebarPosition.next({
           app,
           position: this.HsConfig.apps[app].sidebarPosition,
@@ -484,7 +486,7 @@ export class HsLayoutService {
     });
   }
 
-createPanel(panelComponent: Type<any>, app = 'default', data?: any): void {
+  createPanel(panelComponent: Type<any>, app = 'default', data?: any): void {
     this.hsPanelContainerService.create(panelComponent, data || {}, app);
   }
 
