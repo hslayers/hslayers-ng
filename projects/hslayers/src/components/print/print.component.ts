@@ -44,18 +44,8 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
         module: 'hs.print',
         order: 10,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.PRINT',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.PRINT',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.PRINT',
+        description: 'SIDEBAR.descriptions.PRINT',
         icon: 'icon-print',
       },
       this.data.app

@@ -21,8 +21,7 @@ import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 })
 export class HsStatisticsPanelComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   public title = '';
   name = 'statistics';
   appRef;
@@ -45,12 +44,8 @@ export class HsStatisticsPanelComponent
         order: 10,
         fits: true,
         visible: true,
-        title: () =>
-          this.hsLanguageService.getTranslation('PANEL_HEADER.STATISTICS'),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.STATISTICS'
-          ),
+        title: 'PANEL_HEADER.STATISTICS',
+        description: 'SIDEBAR.descriptions.STATISTICS',
         icon: 'icon-barchartasc',
       },
       this.data.app

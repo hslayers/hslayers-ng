@@ -25,8 +25,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -59,18 +58,8 @@ export class HsCompositionsComponent
         module: 'hs.compositions',
         order: 3,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.MAPCOMPOSITIONS',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.MAPCOMPOSITIONS',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.MAPCOMPOSITIONS',
+        description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
         icon: 'icon-map',
       },
       this.data.app

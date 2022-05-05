@@ -18,7 +18,8 @@ import {setHighlighted} from '../../common/feature-extensions';
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   loaderImage: string;
   timer: any;
   name = 'tripPlanner';
@@ -43,18 +44,8 @@ export class HsTripPlannerComponent
         module: 'hs-trip-planner',
         order: 17,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.TRIP_PLANNER',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.TRIP_PLANNER',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.TRIP_PLANNER',
+        description: 'SIDEBAR.descriptions.TRIP_PLANNER',
         icon: 'icon-sextant',
       },
       this.data.app

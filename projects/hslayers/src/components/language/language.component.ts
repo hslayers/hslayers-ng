@@ -11,7 +11,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsLanguageComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   available_languages: any;
   name = 'language';
   constructor(
@@ -31,18 +32,8 @@ export class HsLanguageComponent
         module: 'hs.language',
         order: 13,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.LANGUAGE',
-            undefined,
-            app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.LANGUAGE',
-            undefined,
-            app
-          ),
+        title: 'PANEL_HEADER.LANGUAGE',
+        description: 'SIDEBAR.descriptions.LANGUAGE',
         content: () => {
           return this.hsLanguageService
             .getCurrentLanguageCode(app)

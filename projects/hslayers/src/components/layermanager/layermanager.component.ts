@@ -41,8 +41,7 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('layerEditor', {static: false, read: ElementRef})
   layerEditorRef: ElementRef;
   map: any;
@@ -183,18 +182,8 @@ export class HsLayerManagerComponent
         module: 'hs.layermanager',
         order: 0,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.LM',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.LM',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.LM',
+        description: 'SIDEBAR.descriptions.LM',
         icon: 'icon-layers',
       },
       this.data.app

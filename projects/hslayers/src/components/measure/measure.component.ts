@@ -17,7 +17,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   type: string;
   name = 'measure';
   appRef;
@@ -91,18 +92,8 @@ export class HsMeasureComponent
           module: 'hs.measure',
           order: 2,
           fits: true,
-          title: () =>
-            this.hsLanguageService.getTranslation(
-              'PANEL_HEADER.MEASURE',
-              undefined,
-              app
-            ),
-          description: () =>
-            this.hsLanguageService.getTranslation(
-              'SIDEBAR.descriptions.MEASURE',
-              undefined,
-              app
-            ),
+          title: 'PANEL_HEADER.MEASURE',
+          description: 'SIDEBAR.descriptions.MEASURE',
           icon: 'icon-design',
           condition: true,
         },
