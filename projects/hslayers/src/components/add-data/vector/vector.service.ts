@@ -189,7 +189,10 @@ export class HsAddDataVectorService {
     descriptor.layerParams.source = src;
     Object.assign(
       descriptor.layerParams,
-      await this.hsStylerService.parseStyle(descriptor.layerParams.style, app)
+      await this.hsStylerService.parseStyle(
+        descriptor.layerParams.style ?? descriptor.layerParams.sld,
+        app
+      )
     );
     const lyr = new VectorLayer(descriptor.layerParams);
     return lyr;
@@ -248,6 +251,7 @@ export class HsAddDataVectorService {
           data.dataType != 'gpx' &&
           !data.url?.endsWith('json'),
         saveToLayman: data.saveToLayman,
+        sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
       },
       app,
       data.addUnder
