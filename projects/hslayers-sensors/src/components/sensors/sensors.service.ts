@@ -308,6 +308,18 @@ export class HsSensorsService {
           unit.sensors.sort((a, b) => {
             return b.sensor_id - a.sensor_id;
           });
+          for (const sensor of unit.sensors) {
+            sensor.sensor_name_translated =
+              this.hsLanguageService.getTranslationIgnoreNonExisting(
+                'SENSORS.SENSORNAMES',
+                sensor.sensor_name
+              );
+            sensor.phenomenon_name_translated =
+              this.hsLanguageService.getTranslationIgnoreNonExisting(
+                'SENSORS.PHENOMENON',
+                sensor.phenomenon_name
+              );
+          }
           unit.sensorTypes = this.hsUtilsService.removeDuplicates(
             unit.sensorTypes,
             'name'
@@ -374,6 +386,14 @@ export class HsSensorsService {
             if (sensorValues[sensor.sensor_id]) {
               sensor.lastObservationValue =
                 sensorValues[sensor.sensor_id].value;
+              const feature = this.apps[app].layer
+                .getSource()
+                .getFeatures()
+                .find((f) => getUnitId(f) == unit.unit_id);
+              feature.set(
+                sensor.sensor_name,
+                sensorValues[sensor.sensor_id].value
+              );
               sensor.lastObservationTimestamp =
                 sensorValues[sensor.sensor_id].timestamp;
             }
