@@ -96,10 +96,19 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
         this.sidebarVisible = visible;
       }
     });
-    window.addEventListener('resize', () => {
-      this.HsLayoutService.updPanelSpaceWidth(this.app);
-      this.HsLayoutService.updSidebarPosition(this.app);
-    });
+
+    window.addEventListener(
+      'resize',
+      this.HsUtilsService.debounce(
+        () => {
+          this.HsLayoutService.updPanelSpaceWidth(this.app);
+          this.HsLayoutService.updSidebarPosition(this.app);
+        },
+        50,
+        false,
+        this
+      )
+    );
   }
 
   ngAfterViewInit() {
