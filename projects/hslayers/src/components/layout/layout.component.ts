@@ -58,8 +58,10 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
       );
       this.HsLayoutService.get(this.app).sidebarRight = false;
       this.HsConfig.get(this.app).sidebarPosition = 'left';
+      this.sidebarPosition = 'left';
     } else if (this.HsConfig.get(this.app).sidebarPosition != 'invisible') {
       this.HsConfig.get(this.app).sidebarPosition = 'right';
+      this.sidebarPosition = 'right';
     }
 
     this.HsLayoutService.init(this.app);
