@@ -9,13 +9,15 @@
     )
     }}
     {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : data}}
-    {{
-    HsLanguageService.getTranslationIgnoreNonExisting(
-    "LAYERMANAGER.layerEditor",
-    (layerDescriptor | async).source,
-    undefined,
-    data.app
-    )
-    }}
+    <span class="text-truncate mw-100 d-block">
+      {{
+      HsLanguageService.getTranslationIgnoreNonExisting(
+      "LAYERMANAGER.layerEditor",
+      (layerDescriptor | async).source,
+      undefined,
+      data.app
+      )
+      }}
+    </span>
   </small>
 </div>

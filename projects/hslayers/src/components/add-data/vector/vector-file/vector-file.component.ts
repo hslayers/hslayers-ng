@@ -3,12 +3,14 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 
 import {Cluster} from 'ol/source';
 
+import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsLanguageService} from '../../../language/language.service';
@@ -21,6 +23,7 @@ import {
   HsUploadedFiles,
 } from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {Subject, takeUntil} from 'rxjs';
 import {accessRightsModel} from '../../common/access-rights.model';
 import {vectorDataObject} from '../vector-data.type';
 
@@ -28,7 +31,8 @@ import {vectorDataObject} from '../vector-data.type';
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
 })
-export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
+export class HsAddDataVectorFileComponent
+  implements OnInit, AfterViewInit, OnDestroy {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -40,8 +44,10 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsAddDataVectorService: HsAddDataVectorService,
+    public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
@@ -54,7 +60,23 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     this.fileInput = this.hsUploadComponent.getFileInput();
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   ngOnInit(): void {
+    const commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
+      this.app
+    );
+    commonFileServiceAppRef.dataObjectChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
+        this.data.showDetails = true;
+        Object.assign(this.data, data);
+        // this.clearInput();
+      });
+
     this.getAcceptedFormats();
     this.setToDefault();
   }
@@ -211,7 +233,6 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       abstract: '',
       addUnder: null,
       base64url: '',
-      dataType: this.dataType,
       extract_styles: false,
       featureCount: 0,
       features: [],
@@ -223,7 +244,9 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       srs: 'EPSG:4326',
       title: '',
       type: '',
+      dataType: this.dataType,
       url: undefined,
+      sld: null,
       access_rights: {
         'access_rights.write': 'private',
         'access_rights.read': 'EVERYONE',

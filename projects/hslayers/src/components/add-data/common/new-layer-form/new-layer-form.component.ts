@@ -47,6 +47,10 @@ export class HsNewLayerFormComponent implements OnInit {
   }
 
   async read(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileService.read(evt, this.app);
+    await this.hsFileService.read(
+      evt,
+      this.app,
+      this.data.dataType === 'geojson'
+    );
   }
 }

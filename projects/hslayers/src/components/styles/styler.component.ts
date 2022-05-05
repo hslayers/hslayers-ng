@@ -26,8 +26,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   layerTitle: string;
   private ngUnsubscribe = new Subject<void>();
   uploaderVisible = false;
@@ -103,7 +102,7 @@ export class HsStylerComponent
     });
     Promise.all(promises).then(async (fileContents) => {
       const sld = fileContents[0] as string;
-      await this.appRef.loadSld(sld);
+      await this.hsStylerService.loadSld(sld, this.data.app);
     });
   }
 }

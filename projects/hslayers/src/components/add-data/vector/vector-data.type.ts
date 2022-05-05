@@ -24,6 +24,7 @@ export type vectorDataObject = {
   showDetails?: boolean;
   sourceLayer?: VectorLayer<VectorSource<Geometry>>;
   srs?: string;
+  sld?: string;
   title?: string;
   type?: string;
   url?: string;

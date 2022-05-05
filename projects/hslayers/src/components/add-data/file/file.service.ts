@@ -13,7 +13,11 @@ export class HsFileService {
     public hsAddDataCommonFileService: HsAddDataCommonFileService
   ) {}
 
-  async read(evt: HsUploadedFiles, app: string): Promise<void> {
+  async read(
+    evt: HsUploadedFiles,
+    app: string,
+    readAsText: boolean = false
+  ): Promise<void> {
     const filesRead = [];
     const files = Array.from(evt.fileList);
     const promises = [];
@@ -33,7 +37,8 @@ export class HsFileService {
             });
             resolve(reader.result);
           };
-          reader.readAsArrayBuffer(file);
+          const readerMethod = readAsText ? 'readAsText' : 'readAsArrayBuffer';
+          reader[readerMethod](file);
         });
         promises.push(filePromise);
       }
