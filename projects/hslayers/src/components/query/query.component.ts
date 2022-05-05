@@ -23,8 +23,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
@@ -54,18 +53,8 @@ export class HsQueryComponent
         module: 'hs.query',
         order: 7,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.INFO',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.INFO',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.INFO',
+        description: 'SIDEBAR.descriptions.INFO',
         icon: 'icon-info-sign',
       },
       this.data.app

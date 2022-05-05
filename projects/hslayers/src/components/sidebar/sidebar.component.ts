@@ -19,7 +19,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;
   @Input() app = 'default';
   buttons: HsButton[] = [];
-  miniSidebarButton: {title: () => string};
+  miniSidebarButton: {title: string};
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
@@ -36,17 +36,21 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     this.HsSidebarService.get(this.app)
       .buttons.pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
-        this.buttons = buttons;
-        this.HsSidebarService.setPanelState(buttons, this.app);
-        this.HsSidebarService.setButtonVisibility(buttons, this.app);
+        this.buttons = buttons.map((button) => {
+          if (typeof button.title == 'function') {
+            button.title = button.title();
+          }
+          if (typeof button.description == 'function') {
+            button.description = button.description();
+          }
+          return button;
+        });
+        this.buttons.sort((a, b) => a.order - b.order);
+        this.HsSidebarService.setPanelState(this.buttons, this.app);
+        this.HsSidebarService.setButtonVisibility(this.buttons, this.app);
       });
     this.miniSidebarButton = {
-      title: () =>
-        this.HsLanguageService.getTranslation(
-          'SIDEBAR.additionalPanels',
-          undefined,
-          this.app
-        ),
+      title: 'SIDEBAR.additionalPanels',
     };
     if (panel) {
       setTimeout(() => {

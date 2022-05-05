@@ -92,8 +92,7 @@ export class HsSensorsService {
       module: 'hs.sensors',
       order: 6,
       fits: true,
-      title: () =>
-        this.hsLanguageService.getTranslation('PANEL_HEADER.SENSORS'),
+      title: 'PANEL_HEADER.SENSORS',
       description: '',
       icon: 'icon-weightscale',
     });

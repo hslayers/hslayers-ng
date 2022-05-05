@@ -14,8 +14,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSearchComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   replace = false;
   clearVisible = false;
   searchInputVisible: boolean;
@@ -45,18 +44,8 @@ export class HsSearchComponent
         module: 'hs.search',
         order: 15,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.SEARCH',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.SEARCH',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.SEARCH',
+        description: 'SIDEBAR.descriptions.SEARCH',
         icon: 'icon-search',
       },
       this.data.app

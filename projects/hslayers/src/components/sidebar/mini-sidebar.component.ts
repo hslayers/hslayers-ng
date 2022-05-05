@@ -13,7 +13,7 @@ import {Subject, delay, startWith, takeUntil} from 'rxjs';
 export class HsMiniSidebarComponent implements OnInit {
   @Input() app = 'default';
   buttons: HsButton[] = [];
-  miniSidebarButton: {title: () => string};
+  miniSidebarButton: {title: string};
   ngUnsubscribe = new Subject<void>();
   constructor(
     public HsCoreService: HsCoreService,
@@ -30,12 +30,7 @@ export class HsMiniSidebarComponent implements OnInit {
         this.buttons = buttons;
       });
     this.miniSidebarButton = {
-      title: () =>
-        this.HsLanguageService.getTranslation(
-          'SIDEBAR.additionalPanels',
-          undefined,
-          this.app
-        ),
+      title: 'SIDEBAR.additionalPanels',
     };
   }
 

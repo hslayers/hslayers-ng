@@ -109,15 +109,6 @@ export class HsSidebarService {
       });
   }
 
-  getButtonTitle(button): any {
-    return typeof button.title == 'function' ? button.title() : button.title;
-  }
-  getButtonDescription(button): any {
-    return typeof button.description == 'function'
-      ? button.description()
-      : button.description;
-  }
-
   /**
    * Function to set if a button is important and always visible
    * or only when the sidebar buttons are expanded

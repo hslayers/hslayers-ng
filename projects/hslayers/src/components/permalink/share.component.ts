@@ -63,18 +63,8 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
         module: 'hs.permalink',
         order: 11,
         fits: true,
-        title: () =>
-          this.hsLanguageService.getTranslation(
-            'PANEL_HEADER.PERMALINK',
-            undefined,
-            this.data.app
-          ),
-        description: () =>
-          this.hsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.PERMALINK',
-            undefined,
-            this.data.app
-          ),
+        title: 'PANEL_HEADER.PERMALINK',
+        description: 'SIDEBAR.descriptions.PERMALINK',
         icon: 'icon-share-alt',
       },
       this.data.app
