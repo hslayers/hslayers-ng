@@ -7,7 +7,7 @@
                 <i class="icon-search icon-primary"></i>
             </button>
         </div>
-        <hs-layman-current-user [app]="app" [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+        <hs-layman-current-user [app]="app" [endpoint]="hsLaymanService.getLaymanEndpoint()"></hs-layman-current-user><!-- TODO: Remove function call from template -->
     </div>
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
@@ -17,7 +17,7 @@
                 <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs : {app}  }}</span>
             </div>
             <div class="input-group-text border-0 ms-1"
-                *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
+                *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()"><!-- TODO: Remove function call from template -->
                 <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
                 <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs : {app}  }}</span>
             </div>
@@ -25,7 +25,7 @@
 
         <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
             <button class="btn btn-light hs-white-background hs-custom-toggle" (click)="openOptionsMenu()"
-                ngbDropdownToggle>{{translateString('COMMON',optionsButtonLabel)}}</button>
+                ngbDropdownToggle>{{translateString('COMMON',optionsButtonLabel)}}</button><!-- TODO: Remove function call from template -->
             <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1"
                 style="min-width: 23rem; max-width: 23rem;  overflow: visible" aria-labelledby="filtersDropdown">
                 <table class="p-1 ps-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
@@ -83,7 +83,7 @@
                                 <button type="button" ngbDropdownToggle
                                     class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 ps-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
-                                    {{translateString('ADDDATA.CATALOGUE.sortbyTypes', data.query.sortby)}}
+                                    {{translateString('ADDDATA.CATALOGUE.sortbyTypes', data.query.sortby)}}<!-- TODO: Remove function call from template -->
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="sortBy" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">

@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable">
+  <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable"><!-- TODO: Remove function call from template -->
     <hs-save-to-layman [data]="data" [app]="app"></hs-save-to-layman>
   </ng-container>
   <ng-container *ngIf="data.type === 'shp' || data.type === 'raster' || data.dataType === 'geojson'">

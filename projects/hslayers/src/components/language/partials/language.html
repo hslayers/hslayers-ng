@@ -1,11 +1,11 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="language" [title]="'PANEL_HEADER.LANGUAGE' | translateHs : data" [app]="data.app">
     </hs-panel-header>
     <div class="card-body">
         <ul class="m-3 hs-senslog-list list-group">
             <button *ngFor="let lang of available_languages" class="btn m-1"
                 [ngClass]="isCurrentLang(lang.key) ? ' btn-primary' : ' btn-secondary'"
-                (click)="setLanguage(lang.key)">{{lang.name}}</button>
+                (click)="setLanguage(lang.key)">{{lang.name}}</button><!-- TODO: Remove function call from template -->
         </ul>
     </div>
 </div>

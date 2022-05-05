@@ -1,4 +1,4 @@
-<div class="btn-group" [hidden]="!isVisible()">
+<div class="btn-group" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <button class="btn rounded-0 btn-light hs-toolbar-button"
         [ngClass]="appRef.highlightDrawButton ? 'btn-outline-danger' : 'btn-outline-secondary'"
         (click)="toggleDrawToolbar(data.app)">
@@ -104,7 +104,7 @@
                     <button class="btn btn-primary btn-sm hs-draw-selectAll w-100" [disabled]="!appRef.selectedLayer"
                         (click)="HsDrawService.selectAllFeatures(data.app); selectionTypeDropdown.close()"
                         data-toggle="tooltip" [title]="'STYLER.selection' | translateHs: data">
-                        {{translateString('DRAW',appRef.toggleSelectionString)}}
+                        {{translateString('DRAW',appRef.toggleSelectionString)}}<!-- TODO: Remove function call from template -->
                     </button>
                 </div>
             </div>

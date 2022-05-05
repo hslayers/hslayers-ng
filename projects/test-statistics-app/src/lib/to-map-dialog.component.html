@@ -21,7 +21,7 @@
                       mw-100
                     " aria-haspopup="true">
                             <div class="text-truncate" *ngIf="selectedLayer !== undefined">
-                                {{HsLayerUtilsService.translateTitle(selectedLayer.title, data.app)}}
+                                {{HsLayerUtilsService.translateTitle(selectedLayer.title, data.app)}}<!-- TODO: Remove function call from template -->
                             </div>
                         </button>
                         <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">

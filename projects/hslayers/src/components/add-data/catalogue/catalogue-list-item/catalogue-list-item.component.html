@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="d-none">
-        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
+        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'><!-- TODO: Remove function call from template -->
             <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
                 data-toggle="tooltip" [title]="'COMMON.download' | translateHs: {app} "><i
                     class="icon-download"></i></a>
@@ -81,7 +81,7 @@
         <div class="d-flex">
             <ul class="ms-auto p-2 list-unstyled" [hidden]="!explanationsVisible">
                 <li class="text-secondary small" *ngFor="let type of whatToAddTypes">
-                    {{type}} &ndash; {{translateString('ADDDATA.CATALOGUE.DESC', type)}}
+                    {{type}} &ndash; {{translateString('ADDDATA.CATALOGUE.DESC', type)}}<!-- TODO: Remove function call from template -->
                 </li>
             </ul>
         </div>

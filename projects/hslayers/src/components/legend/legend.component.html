@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="legend" [title]="'PANEL_HEADER.LEGEND' | translateHs : data" [app]="data.app">
     </hs-panel-header>
     <div class="card-body">
@@ -9,9 +9,9 @@
         </span>
         <ul class="list-group">
             <li *ngFor="let layer of filterDescriptors() | filter:legendFilter" class="list-group-item"
-                [hidden]="!hsLegendService.legendValid(layer)">
+                [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
                 <div>
-                    {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
+                    {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}<!-- TODO: Remove function call from template -->
                     <hs-legend-layer-directive [app]="data.app" [layer]="layer"></hs-legend-layer-directive>
                 </div>
 

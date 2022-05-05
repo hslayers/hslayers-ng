@@ -1,4 +1,4 @@
-<dd *ngIf="!isIterable()">{{value}}</dd>
+<dd *ngIf="!isIterable()">{{value}}</dd><!-- TODO: Remove function call from template -->
 <dl *ngFor="let item of entries">
     <dt>{{item.key || item[0]}}</dt>
     <hs-widgets-recursive-dd [value]="item.value || item[1]" [app]="app"></hs-widgets-recursive-dd>

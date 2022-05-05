@@ -12,7 +12,7 @@
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('background')"
       [ngStyle]="getColorPickerStyle('background')" [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="textStyle.bcColor" />
+      [(ngModel)]="textStyle.bcColor" /><!-- TODO: Remove function call from template -->
     <color-sketch *ngIf="bcPickerVisible" (onChangeComplete)="onPick($event, 'background')" width="320px">
     </color-sketch>
   </div>
@@ -43,7 +43,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.fontStyle"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="fontStyle" *ngFor="let fontStyle of stylingOptions.fontStyles">
-        {{getTranslation('PRINT',fontStyle)}}
+        {{getTranslation('PRINT',fontStyle)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>
@@ -54,7 +54,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textDraw"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="textDraw" *ngFor="let textDraw of stylingOptions.textDrawTypes">
-        {{getTranslation('COMMON',textDraw)}}
+        {{getTranslation('COMMON',textDraw)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>
@@ -65,7 +65,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posX"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="positionX" *ngFor="let positionX of positionOptions.positionsX">
-        {{getTranslation('PRINT',positionX)}}
+        {{getTranslation('PRINT',positionX)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>
@@ -77,7 +77,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posY"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="positionY" *ngFor="let positionY of positionOptions.positionsY">
-        {{getTranslation('PRINT',positionY)}}
+        {{getTranslation('PRINT',positionY)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>

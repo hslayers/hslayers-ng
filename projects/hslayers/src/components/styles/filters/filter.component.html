@@ -1,7 +1,7 @@
 <div>
-  <div *ngIf="hsFiltersService.isLogOp(filter)" class="card m-2">
+  <div *ngIf="hsFiltersService.isLogOp(filter)" class="card m-2"><!-- TODO: Remove function call from template -->
     <div class="d-flex flex-row card-header p-0">
-      <div class="p-2">{{hsFiltersService.humanReadableLogOp(filter[0])}}</div>
+      <div class="p-2">{{hsFiltersService.humanReadableLogOp(filter[0])}}</div><!-- TODO: Remove function call from template -->
       <hs-add-filter-button (clicks)="hsFiltersService.add($event.kind, true, filter)" [app]="app"></hs-add-filter-button>
       <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs : {app} " (click)="remove()">
         <span class="icon-trash"></span>
@@ -12,5 +12,5 @@
     </div>
   </div>
   <hs-comparison-filter *ngIf="filter.length > 1 && !(hsFiltersService.isLogOp(filter))" [app]="app" [filter]="filter"
-    (changes)="emitChange()" [parent]="parent"></hs-comparison-filter>
+    (changes)="emitChange()" [parent]="parent"></hs-comparison-filter><!-- TODO: Remove function call from template -->
 </div>

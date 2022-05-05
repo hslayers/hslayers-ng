@@ -2,6 +2,6 @@
     <hs-common-url type="wms" [app]="app" [(url)]="hsAddDataCommonService.get(app).url"
         (connect)="hsAddDataOwsService.connect(app)">
     </hs-common-url>
-    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
+    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress><!-- TODO: Remove function call from template -->
     <hs-url-details [injectedService]="hsUrlWmsService" [app]="app" type="wms"></hs-url-details>
 </form>

@@ -25,6 +25,6 @@
     <label>{{ "COMMON.abstract" | translateHs : data}}</label>
     <p [innerHtml]="
         HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract, data.app)
-      "></p>
+      "></p><!-- TODO: Remove function call from template -->
   </div>
 </ng-container>

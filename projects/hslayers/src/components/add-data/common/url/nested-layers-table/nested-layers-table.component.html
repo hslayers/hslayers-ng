@@ -29,7 +29,7 @@
             <td colspan="3">
                 <form class="form">
                     <div class="form-group" *ngFor="let dimension of sub_layer.Dimension">
-                        <ng-container *ngIf="isArray(dimension.values); else unsupported_dim_format">
+                        <ng-container *ngIf="isArray(dimension.values); else unsupported_dim_format"><!-- TODO: Remove function call from template -->
                             <label class="control-label">{{dimension.name}}:</label>
                             <div>
                                 <select class="form-control form-select" [(ngModel)]="dimension.value"

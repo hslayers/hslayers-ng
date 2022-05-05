@@ -1,7 +1,7 @@
 <!-- Feature header template -->
 <ng-template #featureHeader let-feature="feature" let-type="type">
   <div class="d-flex flex-row">
-    <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
+    <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div><!-- TODO: Remove function call from template -->
     <a class="p-1" *ngIf="isFeatureRemovable(feature) && type" (click)="removeFeature(feature)" data-toggle="tooltip"
       [title]="'QUERY.featurePopup.' + type | translateHs : data">
       <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
@@ -21,7 +21,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="attribute.displayFunction">
-      <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
+      <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div><!-- TODO: Remove function call from template -->
     </ng-container>
   </div>
 </ng-template>
@@ -29,13 +29,13 @@
 <!-- Layout for clustered layers -->
 <ng-container *ngFor="let feature of layerDescriptor.features">
   <div *ngIf="isClustered(feature); else nonClusteredPopUp"
-    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
+    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)"><!-- TODO: Remove function call from template -->
     <div class="d-flex flex-column">
       <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature}"></ng-container>
       <div [hidden]="!(attributesForHover.length > 0)" class="ms-1 mt-1">
         <ng-container *ngFor="let attribute of attributesForHover">
           <div *ngIf="attribute.feature"
-            [ngClass]="{'d-flex flex-column hs-hover-popup-feature' : hasMultipleSubFeatures(feature)}">
+            [ngClass]="{'d-flex flex-column hs-hover-popup-feature' : hasMultipleSubFeatures(feature)}"><!-- TODO: Remove function call from template -->
             <ng-container
               *ngTemplateOutlet="featureHeader;context:{feature: attribute.feature, type: 'removeClusterPart'}">
             </ng-container>
@@ -52,7 +52,7 @@
       <ng-container *ngTemplateOutlet="featureHeader;context:{feature: feature, type: 'removeFeature'}">
       </ng-container>
       <ng-container
-        *ngTemplateOutlet="featureAttribute;context:{attributes: data.service.serializeFeatureAttributes(feature, data.app)}">
+        *ngTemplateOutlet="featureAttribute;context:{attributes: data.service.serializeFeatureAttributes(feature, data.app)}"><!-- TODO: Remove function call from template -->
       </ng-container>
     </div>
   </ng-template>
