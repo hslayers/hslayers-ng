@@ -134,7 +134,7 @@ export class HsSensorsService {
         150,
         false,
         this
-      );
+      )();
     });
   }
 
