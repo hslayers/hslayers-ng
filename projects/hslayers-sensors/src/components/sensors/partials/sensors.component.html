@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel" [hidden]="!isVisible()">
+<div class="card panel-default hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="sensors" [app]="data.app" [title]="'PANEL_HEADER.SENSORS' | translateHs: data">
     </hs-panel-header>
     <div class="card-body">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <ul class="list-group">
-            <li *ngFor="let unit of filterQuery(query)" class="list-group-item">
+            <li *ngFor="let unit of filterQuery(query)" class="list-group-item"><!-- TODO: Remove function call from template -->
                 <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode"
                     [app]="data.app">
                 </hs-sensor-unit-list-item>

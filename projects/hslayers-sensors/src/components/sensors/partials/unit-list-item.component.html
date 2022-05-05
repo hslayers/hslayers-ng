@@ -3,7 +3,7 @@
     <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
         <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
             <a (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type"
-                style="line-height: 2em;">{{getTranslation(sensorType.name, 'SENSORNAMES')}}</a>
+                style="line-height: 2em;">{{getTranslation(sensorType.name, 'SENSORNAMES')}}</a><!-- TODO: Remove function call from template -->
             <ul class="list-group" [hidden]="!sensorType.expanded">
                 <li *ngFor="let sensor of sensorType.sensors" class="list-group-item p-1">
                     <div class="d-flex ">

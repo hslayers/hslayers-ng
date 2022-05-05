@@ -6,7 +6,7 @@
         <label class="form-check-label">{{subLayer}}</label>
     </div>
     <!-- object -->
-    <div *ngIf="!subLayerIsString(subLayer)" class="w-100">
+    <div *ngIf="!subLayerIsString(subLayer)" class="w-100"><!-- TODO: Remove function call from template -->
         <div class="d-flex">
             <div class="p-0 form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer.Name]"
@@ -47,7 +47,7 @@
                     <label class="form-check-label" [attr.for]="'hs-sublayers-'+subLayer">{{subLayer}}</label>
                 </div>
                 <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer" [app]="app"
-                    *ngIf="!subLayerIsString(subLayer)">
+                    *ngIf="!subLayerIsString(subLayer)"><!-- TODO: Remove function call from template -->
                 </hs-layer-editor-sub-layer-checkbox>
             </div>
         </div>

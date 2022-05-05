@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="info" [title]="'PANEL_HEADER.INFO' | translateHs : data" [app]="data.app"></hs-panel-header>
     <div class="card hs-main-panel" *ngIf="noFeatureSelected()">
         <div class="d-flex flex-column align-items-center p-4">

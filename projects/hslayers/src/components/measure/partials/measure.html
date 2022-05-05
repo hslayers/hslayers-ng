@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
   <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translateHs : data" [app]="data.app">
     <extra-title>&nbsp;<span [hidden]="!appRef.data.multipleShapeMode">{{'MEASURE.multipleShapes' |
         translateHs : data}}</span></extra-title>

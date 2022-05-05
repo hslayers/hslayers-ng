@@ -35,7 +35,7 @@
                         <a class="dropdown-item text-truncate" *ngFor="let layer of appRef.drawableLayers"
                             data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
                             (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer),
-                            app)}}</a>
+                            app)}}</a><!-- TODO: Remove function call from template -->
                     </div>
                     <div class="d-flex align-items-center w-100 flex-column"
                         *ngIf="appRef.drawableLaymanLayers.length > 0">
@@ -135,7 +135,7 @@
                 <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!appRef.selectedLayer"
                     (click)="HsDrawService.selectAllFeatures(app);selectionTypeDropdown.close()" data-toggle="tooltip"
                     [title]="'DRAW.deselectAllFeatures' | translateHs: {app} ">
-                    {{translateString('DRAW',appRef.toggleSelectionString)}}
+                    {{translateString('DRAW',appRef.toggleSelectionString)}}<!-- TODO: Remove function call from template -->
                 </button>
             </div>
         </div>
@@ -166,7 +166,7 @@
                                 data-toggle="tooltip"
                                 title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
                                 (click)="changeSnapSource(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer),
-                                app)}}</a>
+                                app)}}</a><!-- TODO: Remove function call from template -->
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@
     <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translateHs : {app} }}</label>
   </div>
 
-  <div class="form-group" *ngIf="hsAddDataVectorService.isKml(data.type, data.url)">
+  <div class="form-group" *ngIf="hsAddDataVectorService.isKml(data.type, data.url)"><!-- TODO: Remove function call from template -->
     <input type="checkbox" name="extractStyles" [(ngModel)]="data.extract_styles" />
     <label class="capabilities_label control-label ms-1">{{'ADDLAYERS.VECTOR.extractStyles' |
       translateHs : {app} }}</label>

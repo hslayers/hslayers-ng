@@ -13,7 +13,7 @@
                 <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
                 <div class="hs-panelplace">
                     <hs-mini-sidebar *ngIf="HsLayoutService.apps[app].minisidebar" [app]="app"
-                        [hidden]="!panelVisible('sidebar',app, this)">
+                        [hidden]="!panelVisible('sidebar',app, this)"><!-- TODO: Remove function call from template -->
                     </hs-mini-sidebar>
                     <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace" [app]="app">
                     </hs-panel-container>

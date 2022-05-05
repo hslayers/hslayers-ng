@@ -4,7 +4,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleType"
       [ngModelOptions]="{standalone: true}" style="flex-grow: 1;" (ngModelChange)="scaleObjChanged()">
       <option [ngValue]="scaleType" *ngFor="let scaleType of stylingOptions.scaleType">
-        {{getTranslation('PRINT',scaleType)}}
+        {{getTranslation('PRINT',scaleType)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>
@@ -21,7 +21,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleUnits"
       (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
       <option [ngValue]="scaleUnits.value" *ngFor="let scaleUnits of stylingOptions.scaleUnits">
-        {{getTranslation('PRINT',scaleUnits.name)}}
+        {{getTranslation('PRINT',scaleUnits.name)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>

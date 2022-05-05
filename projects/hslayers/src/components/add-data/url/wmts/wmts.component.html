@@ -5,7 +5,7 @@
 
     <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
     <div *ngIf="hsAddDataCommonService.get(app).showDetails && !hsAddDataCommonService.get(app).loadingInfo"
-        class="card">
+        class="card"><!-- TODO: Remove function call from template -->
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
                 <div>{{appRef.data.title}}</div>

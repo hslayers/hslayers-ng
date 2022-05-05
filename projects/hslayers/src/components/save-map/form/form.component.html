@@ -100,7 +100,7 @@
                         <input type="checkbox" class="form-check-input mt-0" name="hs-stclayer-{{i}}"
                             id="hs-stclayer-{{i}}" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}">
                         <label for="hs-stclayer-{{i}}" title="{{translateTitle(layer.title)}}"
-                            class="form-check-label mw-100 text-truncate">{{translateTitle(layer.title)}}</label>
+                            class="form-check-label mw-100 text-truncate">{{translateTitle(layer.title)}}<!-- TODO: Remove function call from template --></label>
                     </div>
                 </li>
                 <li class="list-group-item" style="padding: 3px">
@@ -194,7 +194,7 @@
     </div>
     <div class="mb-2 d-flex justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="stc-saveas" [hidden]="!(isAllowed())"
-            (click)="initiateSave(true)">{{'COMMON.save' | translateHs : {app} }}</button>
+            (click)="initiateSave(true)"><!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs : {app} }}</button>
         <a type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
             |
             translateHs: this}}</a>

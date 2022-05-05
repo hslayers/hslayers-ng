@@ -1,5 +1,5 @@
 <div class="hs-locate ol-unselectable ol-control hs-locateToggler" [hidden]="!isVisible()"
-    [ngClass]="{'ol-collapsed': collapsed}">
+    [ngClass]="{'ol-collapsed': collapsed}"><!-- TODO: Remove function call from template -->
     <button class="ol-has-tooltip blocate hs-locateToggler" [title]="'GEOLOCATION.locateMe' | translateHs : data"
         *ngIf="!getLocalization()" type="button" (click)="startLocalization()">
         <i class="glyphicon icon-gpsoff-gps hs-locateToggler"></i>
@@ -7,6 +7,6 @@
     <button *ngIf="getLocalization()" class="ol-has-tooltip blocate hs-locateToggler hs-locationButton" type="button"
         (click)="toggleTracking()" [title]="'GEOLOCATION.locateMe' | translateHs : data" (dblclick)="stopLocalization()">
         <i class="glyphicon hs-locateToggler"
-            [ngClass]="(isFollowing() && getLocalization()) ? 'icon-navigation' : 'icon-gpson'"></i>
+            [ngClass]="(isFollowing() && getLocalization()) ? 'icon-navigation' : 'icon-gpson'"></i><!-- TODO: Remove function call from template -->
     </button>
 </div>

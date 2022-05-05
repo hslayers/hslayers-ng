@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translateHs : data"
         [app]="data.app">
         <extra-buttons>
@@ -7,7 +7,7 @@
                 <i class="glyphicon icon-fatredo"></i>
             </button>
             <button class="but-title-sm hs-extra-buttons" [title]="'PANEL_HEADER.SAVECOMPOSITION'|translateHs : data"
-                (click)="openSaveMapPanel()" [hidden]="!saveMapAvailable()">
+                (click)="openSaveMapPanel()" [hidden]="!saveMapAvailable()"><!-- TODO: Remove function call from template -->
                 <span class="icon-save-floppy"></span>
             </button>
             <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;"
@@ -37,7 +37,7 @@
                 <i class="icon-search icon-primary"></i>
             </button>
         </div>
-        <hs-layman-current-user [app]="data.app" [endpoint]="getLaymanEndpoint()">
+        <hs-layman-current-user [app]="data.app" [endpoint]="getLaymanEndpoint()"><!-- TODO: Remove function call from template -->
         </hs-layman-current-user>
     </div>
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
@@ -47,7 +47,7 @@
                     name="catalogueRef.filterByExtent">
                 <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs : data}}</span>
             </div>
-            <div class="input-group-text border-0 ms-1" *ngIf="getLaymanEndpoint() && !isLaymanGuest()">
+            <div class="input-group-text border-0 ms-1" *ngIf="getLaymanEndpoint() && !isLaymanGuest()"><!-- TODO: Remove function call from template -->
                 <input type="checkbox" [(ngModel)]="catalogueRef.filterByOnlyMine" (change)='loadFilteredCompositions()'
                     name="catalogueRef.filterByOnlyMine">
                 <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs : data}}</span>
@@ -55,7 +55,7 @@
         </div>
         <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
             <button class="btn btn-light hs-white-background hs-custom-toggle" (click)="openOptionsMenu()"
-                ngbDropdownToggle>{{translateString('COMMON', optionsButtonLabel)}}</button>
+                ngbDropdownToggle>{{translateString('COMMON', optionsButtonLabel)}}</button><!-- TODO: Remove function call from template -->
             <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1"
                 style="min-width: 23rem; max-width: 23rem;  overflow: visible" aria-labelledby="filtersDropdown">
                 <table class="p-1 ps-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">

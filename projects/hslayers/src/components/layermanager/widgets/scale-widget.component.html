@@ -1,4 +1,4 @@
-<div class="form-group" [hidden]="!isScaleVisible()">
+<div class="form-group" [hidden]="!isScaleVisible()"><!-- TODO: Remove function call from template -->
   <label>{{ "COMMON.scale" | translateHs : data}}</label>
   <span *ngIf="minResolutionValid()"><span class="ms-1">{{ "COMMON.from" | translateHs : data}}</span> 1:{{
     minResolution

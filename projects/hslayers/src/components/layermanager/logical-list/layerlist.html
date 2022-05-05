@@ -1,10 +1,10 @@
 <div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
-    <ul class="list-group row">
+    <ul class="list-group row"><!-- TODO: Remove function call from template -->
         <li *ngFor="let layer of filtered_layers | filter:layerFilter" id="{{layer.idString()}}"
             class="list-group-item hs-lm-item"
             [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed === true}">
             <div class="d-flex">
-                <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''">
+                <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''"><!-- TODO: Remove function call from template -->
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                         (click)="hsLayerManagerService.changeLayerVisibility(!layer.visible, layer, app);hsLayerListService.toggleSublayersVisibility(layer,app);$event.stopPropagation()"
                         [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
@@ -56,7 +56,7 @@
                         data-placement="auto"></span>
                 </div>
             </div>
-            <hs-layermanager-time-editor [layer]="layer" class="d-flex" [app]="app" *ngIf="showLayerWmsT(layer)">
+            <hs-layermanager-time-editor [layer]="layer" class="d-flex" [app]="app" *ngIf="showLayerWmsT(layer)"><!-- TODO: Remove function call from template -->
             </hs-layermanager-time-editor>
         </li>
     </ul>

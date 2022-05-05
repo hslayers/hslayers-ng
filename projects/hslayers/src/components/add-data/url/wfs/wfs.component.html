@@ -6,7 +6,7 @@
     <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
 
     <div *ngIf="hsAddDataCommonService.get(app).showDetails && !hsAddDataCommonService.get(app).loadingInfo"
-        class="card p-2">
+        class="card p-2"><!-- TODO: Remove function call from template -->
 
         <!-- FIXME: unused -->
         <div class="card-title text-center fw-bold">{{title}}</div>

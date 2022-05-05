@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel hs-layermanager-card" [hidden]="!isVisible()">
+<div class="card panel-default hs-main-panel hs-layermanager-card" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translateHs : data" [app]="data.app">
         <extra-buttons>
             <div class="btn-group" ngbDropdown placement="left-top" display="dynamic">
@@ -34,8 +34,8 @@
             <div *ngFor="let box of appRef.data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
                 style="padding-right: 2px; padding-left: 2px;">
                 <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" title="{{getTitle(box)}}"
-                    (click)="activateTheme(box)">
-                    <img src="{{getThumbnail(box)}}" alt="{{getTitle(box)}}">
+                    (click)="activateTheme(box)"><!-- TODO: Remove function call from template -->
+                    <img src="{{getThumbnail(box)}}" alt="{{getTitle(box)}}"><!-- TODO: Remove function call from template -->
                 </a>
             </div>
         </div>
@@ -44,7 +44,7 @@
         </div>
 
         <ul *ngIf="!hsLayoutService.componentEnabled('basemapGallery', data.app)"
-            class="list-group hs-lm-baselayerlist">
+            class="list-group hs-lm-baselayerlist"><!-- TODO: Remove function call from template -->
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
@@ -73,7 +73,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted' : layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
-                        [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0">
+                        [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0"><!-- TODO: Remove function call from template -->
                         {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
                     </div>
                     <div class="ps-1 info_btn" style="cursor: pointer;">
@@ -119,13 +119,13 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
-                        [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0">
+                        [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0"><!-- TODO: Remove function call from template -->
                         {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
                     </div>
                 </div>
             </li>
         </ul>
-        <ul class="list-group hs-lm-mapcontentlist">
+        <ul class="list-group hs-lm-mapcontentlist"><!-- TODO: Remove function call from template -->
             <li *ngIf="!hsLayoutService.componentEnabled('basemapGallery', data.app)"
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
@@ -137,7 +137,7 @@
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="appRef.data.folders.sub_folders.length > 1" (click)="value.visible = !value.visible">
                     <span>{{hsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name, undefined,
-                        data.app)}}&nbsp;</span>
+                        data.app)}}&nbsp;<!-- TODO: Remove function call from template --></span>
                     <span class="glyphicon"
                         [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>

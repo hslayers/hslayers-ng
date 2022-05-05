@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
   <hs-panel-header name="tripPlaner" [title]="'PANEL_HEADER.TRIP_PLANNER' | translateHs : data" [app]="data.app">
   </hs-panel-header>
   <div class="card-body">
@@ -18,10 +18,10 @@
           [hidden]="!waypoint.editMode" (blur)="toggleEdit(waypoint)" />
       </div>
       <div class="p-1">
-        <img [hidden]="!waypoint.loading" [src]="HsUtilsService.getAjaxLoaderIcon(data.app)" />
+        <img [hidden]="!waypoint.loading" [src]="HsUtilsService.getAjaxLoaderIcon(data.app)" /><!-- TODO: Remove function call from template -->
       </div>
       <div class="p-1" style="height: 1.7em">
-        <div style="margin-top: 1em">{{ formatDistance(waypoint) }}</div>
+        <div style="margin-top: 1em">{{ formatDistance(waypoint) }}<!-- TODO: Remove function call from template --></div>
       </div>
       <div class="p-1">
         <a class="p-1" (click)="HsTripPlannerService.removeWaypoint(waypoint, data.app)" data-toggle="tooltip"

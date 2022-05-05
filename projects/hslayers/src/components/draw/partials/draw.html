@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()">
+<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
     <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translateHs: data" [app]="data.app">
         <extra-buttons>
             <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs: data">
@@ -31,7 +31,7 @@
             </ol>
             {{'DRAW.longerLoading' | translateHs: data}}
             <div class="d-flex justify-content-center pt-3">
-                <img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" />
+                <img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" /><!-- TODO: Remove function call from template -->
             </div>
         </div>
     </div>

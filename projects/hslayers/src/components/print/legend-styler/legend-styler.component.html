@@ -24,7 +24,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posX"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="positionX" *ngFor="let positionX of positionOptions.positionsX">
-        {{getTranslation('PRINT',positionX)}}
+        {{getTranslation('PRINT',positionX)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>
@@ -35,7 +35,7 @@
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posY"
       [ngModelOptions]="{standalone: true}">
       <option [ngValue]="positionY" *ngFor="let positionY of positionOptions.positionsY">
-        {{getTranslation('PRINT',positionY)}}
+        {{getTranslation('PRINT',positionY)}}<!-- TODO: Remove function call from template -->
       </option>
     </select>
   </div>
