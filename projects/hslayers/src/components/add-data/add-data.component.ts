@@ -61,7 +61,6 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   connectServiceFromUrlParam(type: AddDataUrlType): void {
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
     if (url) {
-      console.log('setparamsfromurl', this.data.app);
       this.hsLayoutService.setMainPanel('addData', this.data.app);
       this.hsAddDataService.get(this.data.app).dsSelected = 'url';
       this.hsAddDataUrlService.get(this.data.app).typeSelected = type;
