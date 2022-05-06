@@ -11,6 +11,7 @@ import {Tile} from 'ol/layer';
 import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
+import CircleStyle from 'ol/style/Circle';
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
@@ -59,9 +60,7 @@ export class HslayersAppComponent {
         maxFeaturesInCache: 500,
         maxFeaturesInExtent: 100,
         features: [],
-        weight: () => {
-          return 'fac2020';
-        },
+        weight: 'fac2020',
         loader: async ({extent, projection}) => {
           interpolatedSource.cancelUrlRequest.next();
           const extentIn4326 = transformExtent(extent, projection, 'EPSG:4326');
@@ -89,6 +88,7 @@ export class HslayersAppComponent {
         source: interpolatedSource as any,
         opacity: 0.5,
       });
+
 
       //Mandatory, otherwise nothing will be loaded with source loader
       const idwVectorLayer = new VectorLayer({
@@ -222,11 +222,11 @@ export class HslayersAppComponent {
             },
           },
           sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-              <StyledLayerDescriptor version="1.0.0" 
-                  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-                  xmlns="http://www.opengis.net/sld" 
-                  xmlns:ogc="http://www.opengis.net/ogc" 
-                  xmlns:xlink="http://www.w3.org/1999/xlink" 
+              <StyledLayerDescriptor version="1.0.0"
+                  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+                  xmlns="http://www.opengis.net/sld"
+                  xmlns:ogc="http://www.opengis.net/ogc"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <NamedLayer>
                   <Name>Simple point with stroke</Name>
