@@ -172,13 +172,4 @@ export class HsQueryFeatureListComponent implements OnInit {
   translateString(module: string, text: string): string {
     return this.hsFeatureCommonService.translateString(module, text, this.app);
   }
-
-  /**
-   * Get title translation
-   * @param title - Title to translate
-   * @returns Translated title
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title, this.app);
-  }
 }

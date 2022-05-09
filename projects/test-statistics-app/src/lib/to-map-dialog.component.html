@@ -21,15 +21,15 @@
                       mw-100
                     " aria-haspopup="true">
                             <div class="text-truncate" *ngIf="selectedLayer !== undefined">
-                                {{HsLayerUtilsService.translateTitle(selectedLayer.title, data.app)}}<!-- TODO: Remove function call from template -->
+                                {{selectedLayer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
                             </div>
                         </button>
                         <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item text-truncate" *ngFor="let layer of vectorLayers"
                                     data-toggle="tooltip"
-                                    title="{{HsLayerUtilsService.translateTitle(layer.title,data.app)}}"
-                                    (click)="selectLayer(layer);">{{HsLayerUtilsService.translateTitle(layer.title,data.app)}}</a>
+                                    title="{{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}"
+                                    (click)="selectLayer(layer);">{{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}</a>
                             </div>
                         </div>
                     </div>

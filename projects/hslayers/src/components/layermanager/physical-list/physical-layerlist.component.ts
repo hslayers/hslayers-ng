@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs';
 
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerShiftingService} from '../../../common/layer-shifting/layer-shifting.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
@@ -17,7 +16,6 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
   @Input() app = 'default';
   layerShiftingAppRef;
   constructor(
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsLayerShiftingService: HsLayerShiftingService
   ) {}
@@ -56,13 +54,5 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
       replacedLayer.layer,
       this.app
     );
-  }
-
-  /**
-   * Get title translation
-   * @param title - Title to translate
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title, this.app);
   }
 }

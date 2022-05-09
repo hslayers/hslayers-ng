@@ -172,12 +172,4 @@ export class HsMapSwipeComponent
   getRightLayers(): LayerListItem[] {
     return this.hsMapSwipeService.get(this.data.app).rightLayers;
   }
-
-  /**
-   * Get title translation
-   * @param title - Title to translate
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title, this.data.app);
-  }
 }

@@ -1,1 +1,1 @@
-<strong style="font-size: small;">{{translateTitle(layerDescriptor.title)}}<!-- TODO: Remove function call from template --></strong>
+<strong style="font-size: small;">{{layerDescriptor.title | translateHs : {app: data.app, module: 'LAYERS'} }}</strong>

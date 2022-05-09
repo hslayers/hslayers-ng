@@ -564,9 +564,18 @@ export class HslayersAppComponent {
             idwLayer,
             idwVectorLayer,
           ],
+          translationOverrides: {
+            lv: {
+              LAYERS: {
+                'Latvian municipalities (1 sub-layer)':
+                  'Latvijas novadi (1 apakšslānis)',
+              },
+            },
+          },
         },
         app.name
       );
+
       const dimensions = opticalMap.get('dimensions');
       if (dimensions) {
         opticalMap.get('dimensions').time.values = [

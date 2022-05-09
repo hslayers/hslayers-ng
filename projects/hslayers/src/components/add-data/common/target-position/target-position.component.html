@@ -5,7 +5,7 @@
             name="addUnder">
             <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs : {app} }}</option>
             <option [ngValue]="layer.layer" *ngFor="let layer of hsLayerManagerService.apps[app].data.layers">
-                {{hsLayerUtilsService.translateTitle(layer.title, app)}}</option><!-- TODO: Remove function call from template -->
+                {{layer.title | translateHs : {app, module: 'LAYERS'} }}</option>
         </select>
     </div>
 </div>

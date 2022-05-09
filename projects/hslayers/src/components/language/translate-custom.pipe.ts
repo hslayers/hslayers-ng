@@ -19,7 +19,8 @@ import {
 })
 export class TranslateCustomPipe
   extends TranslatePipe
-  implements PipeTransform {
+  implements PipeTransform
+{
   onLangChangeOverridden: boolean;
   constructor(
     private translate2: TranslateService,
@@ -59,16 +60,19 @@ export class TranslateCustomPipe
           query
       );
     }
+    let module: string;
+    if (interpolateParams.module != undefined) {
+      module = interpolateParams.module;
+    }
     const translator = this.hsLanguageService.getTranslator(
       interpolateParams.app
     );
-
     if (!this.onTranslationChange) {
       this.onTranslationChange = translator.onTranslationChange.subscribe(
         (event: TranslationChangeEvent) => {
           if (this.lastKey && event.lang === translator.currentLang) {
             this.lastKey = null;
-            this.updateTranslation(query, translator);
+            this.updateTranslation(query, translator, module);
           }
         }
       );
@@ -80,7 +84,7 @@ export class TranslateCustomPipe
         (event: LangChangeEvent) => {
           if (this.lastKey) {
             this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
-            this.updateTranslation(query, translator);
+            this.updateTranslation(query, translator, module);
           }
         }
       );
@@ -91,22 +95,28 @@ export class TranslateCustomPipe
     // store the params, in case they change
     this.lastParams = args;
 
-    this.updateTranslation(query, translator);
+    this.updateTranslation(query, translator, module);
     return this.value;
   }
 
   private updateTranslation(
     query: string,
-    translator: CustomTranslationService
+    translator: CustomTranslationService,
+    module: string
   ) {
     const onTranslation = (res: string) => {
       this.value = res !== undefined ? res : query;
+      if (module != undefined && res == module + '.' + query) {
+        this.value = query;
+      }
       this.lastKey = query;
     };
     if (translator.currentLang == undefined) {
       translator.currentLang = translator.defaultLang;
     }
-    translator.get(query).subscribe(onTranslation);
+    translator
+      .get((module ? module + '.' : '') + query)
+      .subscribe(onTranslation);
   }
 }
 

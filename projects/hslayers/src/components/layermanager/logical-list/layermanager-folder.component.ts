@@ -11,14 +11,4 @@ export class HsLayerManagerFolderComponent {
   constructor(
     public HsLanguageService: HsLanguageService /* Used in template */
   ) {}
-
-  /**
-   * @public
-   * @param {object} obj Folder object of current hierarchy
-   * @returns {boolean} True if subfolders exists
-   * @description Find if current folder has any subfolder
-   */
-  folderVisible(obj): boolean {
-    return obj.sub_folders.length > 0;
-  }
 }

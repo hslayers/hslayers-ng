@@ -11,7 +11,7 @@
             <li *ngFor="let layer of filterDescriptors() | filter:legendFilter" class="list-group-item"
                 [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
                 <div>
-                    {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}<!-- TODO: Remove function call from template -->
+                    {{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
                     <hs-legend-layer-directive [app]="data.app" [layer]="layer"></hs-legend-layer-directive>
                 </div>
 

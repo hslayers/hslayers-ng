@@ -33,9 +33,8 @@
                         <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' |
                             translateHs: {app} }}</label>
                         <a class="dropdown-item text-truncate" *ngFor="let layer of appRef.drawableLayers"
-                            data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
-                            (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer),
-                            app)}}</a><!-- TODO: Remove function call from template -->
+                            data-toggle="tooltip" title="{{getTitle(layer) | translateHs : {app, module: 'LAYERS'} }}"
+                            (click)="selectLayer(layer)">{{getTitle(layer) | translateHs : {app, module: 'LAYERS'} }}</a><!-- TODO: Remove function call from template -->
                     </div>
                     <div class="d-flex align-items-center w-100 flex-column"
                         *ngIf="appRef.drawableLaymanLayers.length > 0">
@@ -56,8 +55,8 @@
                             </div>
                         </div>
                         <a class="dropdown-item text-truncate" *ngFor="let layer of appRef.drawableLaymanLayers"
-                            data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(layer.title, app)}}"
-                            (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(layer.title, app)}}</a>
+                            data-toggle="tooltip" title="{{layer.title | translateHs : {app, module: 'LAYERS'} }}"
+                            (click)="selectLayer(layer)">{{layer.title | translateHs : {app, module: 'LAYERS'} }}</a>
                     </div>
                 </div>
             </div>
@@ -164,9 +163,8 @@
                         <div class="d-flex align-items-center w-100 flex-column">
                             <a class="dropdown-item text-truncate" *ngFor="let layer of appRef.drawableLayers"
                                 data-toggle="tooltip"
-                                title="{{HsLayerUtilsService.translateTitle(getTitle(layer), app)}}"
-                                (click)="changeSnapSource(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer),
-                                app)}}</a><!-- TODO: Remove function call from template -->
+                                title="{{getTitle(layer) | translateHs : {app, module: 'LAYERS'} }}"
+                                (click)="changeSnapSource(layer)">{{getTitle(layer) | translateHs : {app, module: 'LAYERS'} }}</a><!-- TODO: Remove function call from template -->
                         </div>
                     </div>
                 </div>

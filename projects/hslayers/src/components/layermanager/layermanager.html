@@ -1,5 +1,5 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translateHs : data" [app]="data.app">
+    <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translateHs : {app: data.app}" [app]="data.app">
         <extra-buttons>
             <div class="btn-group" ngbDropdown placement="left-top" display="dynamic">
                 <button ngbDropdownToggle class="btn but-title-sm" type="button"><i
@@ -8,22 +8,22 @@
                     <a class="dropdown-item" (click)="physicalLayerListEnabled = !physicalLayerListEnabled">
                         <i
                             class="glyphicon icon-layerorder hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.enablePhysicalLayerList'
-                        | translateHs : data}}
+                        | translateHs : {app: data.app} }}
                     </a>
                     <a class="dropdown-item" (click)="removeAllLayers()">
                         <i
                             class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
                         |
-                        translateHs : data}}
+                        translateHs : {app: data.app} }}
                     </a>
                     <a class="dropdown-item" (click)="hsCore.resetMap(data.app)">
                         <i class="glyphicon icon-fatredo hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
-                        translateHs : data}}
+                        translateHs : {app: data.app} }}
                     </a>
                     <a class="dropdown-item" *ngIf="appRef.data.layers?.length > 0 && !physicalLayerListEnabled"
                         (click)="toggleVisibilityForAll()">
                         <i class="glyphicon" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
-                        {{'LAYERMANAGER.toggleAllLayerVisibility'|translateHs : data}}
+                        {{'LAYERMANAGER.toggleAllLayerVisibility'|translateHs : {app: data.app} }}
                     </a>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
                         <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translateHs :
-                            data
+                            {app: data.app}
                             }}</span>
                     </div>
                     <div class="p-0">
@@ -73,8 +73,8 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted' : layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
-                        [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0"><!-- TODO: Remove function call from template -->
-                        {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
+                        [closeDelay]="layerTooltipDelay">
+                        {{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
                     </div>
                     <div class="ps-1 info_btn" style="cursor: pointer;">
                         <span class="icon-settingsthree-gears text-secondary"
@@ -93,7 +93,7 @@
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
                         <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translateHs :
-                            data
+                            {app: data.app}
                             }}</span>
                     </div>
                 </div>
@@ -119,8 +119,8 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
-                        [closeDelay]="hsConfig.get(data.app).layerTooltipDelay || 0"><!-- TODO: Remove function call from template -->
-                        {{hsLayerUtilsService.translateTitle(layer.title, data.app)}}
+                        [closeDelay]="layerTooltipDelay"><!-- TODO: Remove function call from template -->
+                        {{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
                     </div>
                 </div>
             </li>
@@ -136,8 +136,7 @@
                 [hidden]="physicalLayerListEnabled">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="appRef.data.folders.sub_folders.length > 1" (click)="value.visible = !value.visible">
-                    <span>{{hsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name, undefined,
-                        data.app)}}&nbsp;<!-- TODO: Remove function call from template --></span>
+                    <span>{{value.name | translateHs : {app: data.app, module: 'LAYERMANAGER'} }}&nbsp;</span>
                     <span class="glyphicon"
                         [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
