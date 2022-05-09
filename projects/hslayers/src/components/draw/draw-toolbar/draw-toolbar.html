@@ -1,4 +1,4 @@
-<div class="btn-group" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="btn-group" [hidden]="(isVisible$ | async) === false">
     <button class="btn rounded-0 btn-light hs-toolbar-button"
         [ngClass]="appRef.highlightDrawButton ? 'btn-outline-danger' : 'btn-outline-secondary'"
         (click)="toggleDrawToolbar(data.app)">

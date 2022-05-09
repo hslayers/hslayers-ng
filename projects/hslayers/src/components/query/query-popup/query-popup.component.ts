@@ -7,7 +7,7 @@ import {
   ViewRef,
 } from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
 import {HsConfig} from '../../../config.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
@@ -36,6 +36,7 @@ export class HsQueryPopupComponent
     app: string;
   };
   dataAppRef;
+  isVisible$ = new BehaviorSubject(true);
 
   constructor(
     private hsEventBusService: HsEventBusService,

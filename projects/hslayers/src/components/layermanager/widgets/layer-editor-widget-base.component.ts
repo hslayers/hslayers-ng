@@ -17,6 +17,8 @@ export class HsLayerEditorWidgetBaseComponent
   data: any;
   layerDescriptor = new BehaviorSubject<HsLayerDescriptor>(null);
   olLayer: Layer;
+  isVisible$ = new BehaviorSubject<boolean>(true);
+
   private ngBaseUnsubscribe = new Subject<void>();
   constructor(public hsLayerSelectorService: HsLayerSelectorService) {
     this.layerDescriptor.subscribe((descriptor) => {

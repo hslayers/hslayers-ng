@@ -105,8 +105,17 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       Object.assign(panelItem.data, this.data);
       componentRefInstance.data = panelItem.data;
     }
-    this.service
-      .get(this.app)
-      .panels.push(componentRef.instance as HsPanelComponent);
+    this.service.get(this.app).panels.push(componentRefInstance);
+    if (componentRefInstance.isVisible$) {
+      const visible = componentRefInstance.isVisible
+        ? componentRefInstance.isVisible()
+        : true;
+      componentRefInstance.isVisible$.next(visible);
+    } else {
+      console.warn(
+        componentRefInstance,
+        'should contain isVisible$ BehaviourSubject'
+      );
+    }
   }
 }

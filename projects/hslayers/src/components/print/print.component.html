@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="print" [title]="'PANEL_HEADER.PRINT' | translateHs : data">
         <extra-buttons>
             <button class="but-title-sm hs-extra-buttons mt-1" (click)="setToDefault()"

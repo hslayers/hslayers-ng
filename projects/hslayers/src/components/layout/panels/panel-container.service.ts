@@ -13,8 +13,11 @@ import {KeyNumberDict} from '../../../config.service';
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface {
-  apps: any = {default: new HsPanelContainerParams()};
+  implements HsPanelContainerServiceInterface
+{
+  apps: {[id: string]: HsPanelContainerParams} = {
+    default: new HsPanelContainerParams(),
+  };
   constructor() {}
 
   get(app: string): HsPanelContainerParams {

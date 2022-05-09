@@ -44,6 +44,8 @@ export class HsLayoutServiceMock {
     if (appRef.panel_statuses[which] !== undefined) {
       return appRef.panel_statuses[which] && this.panelEnabled(which, app);
     }
-    return appRef.mainpanel == which || (scope && scope.unpinned);
+    let tmp = false;
+    tmp = appRef.mainpanel == which || scope?.unpinned;
+    return tmp;
   }
 }
