@@ -155,14 +155,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Get title translation
-   * @param title - Title to translate
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title, this.app);
-  }
-
-  /**
    * Set bounding box property from the current OL map view
    */
   setCurrentBoundingBox(): void {

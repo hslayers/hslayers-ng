@@ -5,13 +5,9 @@
             *ngFor="let layer of layerShiftingAppRef.layersCopy;" cdkDrag>
             <div class="d-flex align-items-center justify-content-between p-0 hs-lm-item-title flex-grow-1"
                 style="word-break:break-all; cursor:move">
-                <p class="m-0">{{translateTitle(layer.title)}}<!-- TODO: Remove function call from template --></p>
+                <p class="m-0">{{layer.title | translateHs : {app, module: 'LAYERS'} }}</p>
                 <i class="icon-move text-secondary"></i>
             </div>
-            <!-- <div *cdkDragPreview class="mw-100 physical-layerlist-preview">
-                    <p class="m-0">{{translateTitle(layer.title)}}</p>
-                    <i class="icon-move text-secondary"></i>
-                </div> -->
         </div>
     </div>
 </div>

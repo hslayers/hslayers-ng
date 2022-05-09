@@ -95,14 +95,6 @@ export class HsLayerFeaturesComponent implements OnInit {
   }
 
   /**
-   * Get title translation
-   * @param title - Title to translate
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title, this.app);
-  }
-
-  /**
    * @param text - Text to translate to locale
    * @param app - App identifier
    * Translate provided text to selected locale language

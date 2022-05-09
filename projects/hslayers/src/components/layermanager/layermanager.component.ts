@@ -104,6 +104,8 @@ export class HsLayerManagerComponent
   getThumbnail = getThumbnail;
   name = 'layermanager';
   appRef;
+  layerTooltipDelay = 0;
+
   private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsCore: HsCoreService,
@@ -188,6 +190,7 @@ export class HsLayerManagerComponent
       },
       this.data.app
     );
+    this.layerTooltipDelay = this.hsConfig.get(this.data.app).layerTooltipDelay;
     this.layerlistVisible = true;
     this.init();
     this.hsLayerManagerService.init(this.data.app);

@@ -17,7 +17,7 @@
                     style="word-break:break-word;" [ngClass]="{'hover': layer.hasSublayers === true}"
                     [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
                     [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
-                    {{hsLayerUtilsService.translateTitle(layer.title, app)}}
+                    {{layer.title | translateHs : {app, module: 'LAYERS'} }}
                 </div>
                 <div class="p-0 me-1 ms-1 info_btn" *ngIf="layer.hasSublayers"
                     style="font-size: x-small; flex-grow: 20;"

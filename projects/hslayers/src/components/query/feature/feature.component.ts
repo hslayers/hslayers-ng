@@ -186,12 +186,4 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   translateString(module: string, text: string): string {
     return this.hsFeatureCommonService.translateString(module, text, this.app);
   }
-
-  /**
-   * Get title translation
-   * @param title - Title to translate
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title, this.app);
-  }
 }
