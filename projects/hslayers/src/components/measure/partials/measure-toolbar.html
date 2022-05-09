@@ -1,4 +1,4 @@
-<div class="nav-item" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="nav-item" [hidden]="(isVisible$ | async) === false">
     <div class="btn-group">
         <button class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary" [title]="'TOOLBAR.measureLinesAndPolygon' | translateHs : data" (click)="measureButtonClicked()">
             <i class="icon-design"></i>

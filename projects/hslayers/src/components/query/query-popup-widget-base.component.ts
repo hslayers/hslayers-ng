@@ -1,3 +1,4 @@
+import {BehaviorSubject} from 'rxjs';
 import {Component, ViewRef} from '@angular/core';
 
 import {HsPanelComponent} from '../layout/panels/panel-component.interface';
@@ -8,6 +9,7 @@ export class HsQueryPopupWidgetBaseComponent implements HsPanelComponent {
   name: string; //This could be used to enable/disable widgets by name on HsConfig level
   viewRef: ViewRef;
   data: any;
+  isVisible$ = new BehaviorSubject<boolean>(false);
 
   constructor() {}
 

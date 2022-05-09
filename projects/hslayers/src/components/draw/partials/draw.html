@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translateHs: data" [app]="data.app">
         <extra-buttons>
             <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs: data">

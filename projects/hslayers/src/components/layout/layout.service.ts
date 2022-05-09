@@ -9,6 +9,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
+import {HsPanelComponent} from './panels/panel-component.interface';
 import {HsPanelContainerService} from './panels/panel-container.service';
 
 const defaultLayoutParams = {
@@ -37,7 +38,7 @@ type HsLayoutParams = {
    */
   defaultPanel: string;
   /**
-   * @public
+   * Set panel visibility statuses. Multiple panels can be open at the same time this way
    */
   panel_statuses: any;
   /**
@@ -236,23 +237,33 @@ export class HsLayoutService {
   }
 
   /**
-   * @public
-   * @param {string} which Name of panel to test
-   * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
-   * @returns {boolean} Panel opened/closed status
-   * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
+   * Find if selected panel is currently opened (in sidebar or as unpinned window)
+   * @param which - Which Name of panel to test
+   * @param app - App name
+   * @param panelComponent - Instance of panel component. Used for toggling multiple panels at the same time
+   * @returns Panel opened/closed status
    */
-  panelVisible(which, app: string = 'default', scope?) {
+  panelVisible(
+    which: string,
+    app: string = 'default',
+    panelComponent?: HsPanelComponent
+  ) {
     const appRef = this.get(app);
-    if (scope) {
-      if (scope.panelName == undefined) {
-        scope.panelName = which;
+    if (panelComponent) {
+      if (panelComponent.name == undefined) {
+        panelComponent.name = which;
       }
     }
     if (appRef.panel_statuses[which] !== undefined) {
       return appRef.panel_statuses[which] && this.panelEnabled(which, app);
     }
-    return appRef.mainpanel == which || (scope && scope.unpinned);
+    if (appRef.mainpanel == which) {
+      return true;
+    } else if (panelComponent) {
+      return panelComponent.unpinned;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -378,6 +389,12 @@ export class HsLayoutService {
       this.HsConfig.get(app).panelWidths,
       componentRefInstance
     );
+    for (const p of this.hsPanelContainerService.apps[app].panels) {
+      const visible = p.isVisible();
+      if (p.isVisible$ && p.isVisible$.value != visible) {
+        p.isVisible$.next(visible);
+      }
+    }
     this.HsEventBusService.mainPanelChanges.next({which, app});
   }
 

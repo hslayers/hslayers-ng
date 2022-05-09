@@ -1,4 +1,4 @@
-<div class="nav-item" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="nav-item" [hidden]="(isVisible$ | async) === false">
     <div>
         <hs-search-input [app]="data.app"></hs-search-input>
         <hs-search-results [app]="data.app"></hs-search-results>

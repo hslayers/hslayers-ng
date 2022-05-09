@@ -1,4 +1,4 @@
-<div class="hs-toolbar" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="hs-toolbar" [hidden]="(isVisible$ | async) === false">
     <nav class="navbar navbar-expand p-0">
         <hs-panel-container 
             class="navbar-nav"

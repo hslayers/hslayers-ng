@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="card panel-default hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="permalink" [title]="'PANEL_HEADER.PERMALINK' | translateHs : data" [app]="data.app">
     </hs-panel-header>
     <div class="card-body">

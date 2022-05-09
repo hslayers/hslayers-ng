@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel" [hidden]="!isVisible()"><!-- TODO: Remove function call from template -->
+<div class="card panel-default hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="sensors" [app]="data.app" [title]="'PANEL_HEADER.SENSORS' | translateHs: data">
     </hs-panel-header>
     <div class="card-body">
