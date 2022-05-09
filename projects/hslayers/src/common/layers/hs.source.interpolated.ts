@@ -12,7 +12,7 @@ export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 
 export interface InterpolatedSourceOptions {
   features?: Feature<Geometry>[];
-  weight?: string;
+  weight: string;
   loader?(params: any): Promise<Feature[]>;
   colorMap?: ((v: number) => number[]) | string;
   strategy?: LoadingStrategy;
