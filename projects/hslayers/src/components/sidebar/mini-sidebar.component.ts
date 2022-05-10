@@ -19,15 +19,14 @@ export class HsMiniSidebarComponent implements OnInit {
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
     public HsLayoutService: HsLayoutService,
-    public HsConfig: HsConfig,
-    private HsLanguageService: HsLanguageService
+    public HsConfig: HsConfig
   ) {}
   ngOnInit() {
     this.HsSidebarService.apps[this.app].buttons
       .pipe(takeUntil(this.ngUnsubscribe))
       .pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
-        this.buttons = buttons;
+        this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
       });
     this.miniSidebarButton = {
       title: 'SIDEBAR.additionalPanels',
