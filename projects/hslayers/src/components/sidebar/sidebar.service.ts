@@ -9,7 +9,7 @@ import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 
-class HsSidebarParams {
+export class HsSidebarParams {
   extraButtons: Array<HsButton> = [];
   buttonsSubject: BehaviorSubject<HsButton[]> = new BehaviorSubject([]);
   /**
@@ -68,13 +68,20 @@ export class HsSidebarService {
         this.HsCoreService.updateMapSize(app);
       }, 550);
     });
+  }
 
-    this.HsEventBusService.layoutResizes.subscribe(() => {
-      for (const [appId, appObj] of Object.entries(this.apps)) {
-        const buttons = appObj.buttonsSubject.getValue();
-        this.setButtonVisibility(buttons, appId);
+  prepareForTemplate(buttons: HsButton[]): HsButton[] {
+    const tmp = buttons.map((button) => {
+      if (typeof button.title == 'function') {
+        button.title = button.title();
       }
+      if (typeof button.description == 'function') {
+        button.description = button.description();
+      }
+      return button;
     });
+    tmp.sort((a, b) => a.order - b.order);
+    return tmp;
   }
 
   setButtonVisibility(buttons: HsButton[], app: string) {
