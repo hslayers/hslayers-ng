@@ -10,6 +10,7 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
+import {HsConfig, HsConfigObject} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
@@ -17,7 +18,6 @@ import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
-import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-compositions',
@@ -25,7 +25,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -37,11 +38,12 @@ export class HsCompositionsComponent
   notSavedCompositionLoadingSubscription: Subscription;
   name = 'composition_browser';
   catalogueRef: HsCompositionsCatalogueParams;
+  configRef: HsConfigObject;
   constructor(
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
     public hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService,
+    private hsConfig: HsConfig,
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
@@ -64,6 +66,7 @@ export class HsCompositionsComponent
       },
       this.data.app
     );
+    this.configRef = this.hsConfig.get(this.data.app);
     this.hsCompositionsCatalogueService.init(this.data.app);
     this.hsCompositionsService.init(this.data.app);
     this.hsCompositionsMapService.init(this.data.app);
@@ -238,13 +241,6 @@ export class HsCompositionsComponent
    */
   isLaymanGuest(): boolean {
     return this.hsLaymanService.isLaymanGuest();
-  }
-
-  /**
-   * Get ajax loader icon
-   */
-  getAjaxLoaderIcon(): string {
-    return this.hsUtilsService.getAjaxLoaderIcon(this.data.app);
   }
 
   /**

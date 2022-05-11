@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
+import {HsConfig, HsConfigObject} from '../../config.service';
 import {HsDialogContainerService} from '../layout/public-api';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
@@ -18,6 +19,7 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   name = 'draw';
   selectedOption = 'draw';
   appRef;
+  configRef: HsConfigObject;
   constructor(
     public HsDrawService: HsDrawService,
     public hsLayoutService: HsLayoutService,
@@ -25,13 +27,15 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
     public HsQueryBaseService: HsQueryBaseService,
     public hsUtilsService: HsUtilsService,
     public hsSidebarService: HsSidebarService,
-    public HsDialogContainerService: HsDialogContainerService
+    public HsDialogContainerService: HsDialogContainerService,
+    private hsConfig: HsConfig
   ) {
     super(hsLayoutService);
   }
 
   ngOnInit(): void {
     this.appRef = this.HsDrawService.get(this.data.app);
+    this.configRef = this.hsConfig.get(this.data.app);
     this.appRef.layerMetadataDialog.subscribe(() => {
       this.HsDialogContainerService.create(
         HsDrawLayerMetadataDialogComponent,

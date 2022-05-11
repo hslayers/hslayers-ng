@@ -168,7 +168,7 @@
                         </hs-compositions-list-item>
                     </li>
                     <li class="list-group-item text-primary text-center py-2" *ngIf="catalogueRef.dataLoading"><img
-                            class="pe-2" [src]="getAjaxLoaderIcon()" />{{'COMMON.loading' |
+                            class="pe-2" [src]="configRef._ajaxLoaderPath" />{{'COMMON.loading' |
                         translateHs: data}}</li>
                     <li [hidden]="catalogueRef.compositionEntries.length > 0 || catalogueRef.dataLoading"
                         class="list-group-item">

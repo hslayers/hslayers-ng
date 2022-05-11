@@ -226,6 +226,7 @@ export class HsSensorsService {
    */
   createLayer(app: string) {
     const appRef = this.get(app);
+    const configRef = this.hsConfig.get(app);
     const me = this;
     appRef.bookmarkStyle = [
       new Style({
@@ -237,7 +238,7 @@ export class HsSensorsService {
           width: 2,
         }),
         image: new Icon({
-          src: this.hsUtilsService.getAssetsPath(app) + 'img/icons/wifi8.svg',
+          src: configRef.assetsPath + 'img/icons/wifi8.svg',
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),

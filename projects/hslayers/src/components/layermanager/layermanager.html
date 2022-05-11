@@ -35,7 +35,7 @@
                 style="padding-right: 2px; padding-left: 2px;">
                 <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" title="{{getTitle(box)}}"
                     (click)="activateTheme(box)"><!-- TODO: Remove function call from template -->
-                    <img src="{{getThumbnail(box)}}" alt="{{getTitle(box)}}"><!-- TODO: Remove function call from template -->
+                    <img [src]="box.thumbnail" alt="{{getTitle(box)}}"><!-- TODO: Remove function call from template -->
                 </a>
             </div>
         </div>

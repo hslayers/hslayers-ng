@@ -4,6 +4,7 @@ import {
   HsAddDataCommonFileService,
   HsAddDataCommonFileServiceParams,
 } from '../common-file.service';
+import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {fileDataObject} from '../../file/types/file-data-object.type';
@@ -16,14 +17,17 @@ export class HsAddLayerAuthorizedComponent implements OnInit {
   @Input() data: fileDataObject;
   @Input() app = 'default';
   appRef: HsAddDataCommonFileServiceParams;
+  configRef: HsConfigObject;
 
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsUtilsService: HsUtilsService,
-    public hsLaymanService: HsLaymanService
+    public hsLaymanService: HsLaymanService,
+    private hsConfig: HsConfig
   ) {}
 
   ngOnInit() {
     this.appRef = this.hsAddDataCommonFileService.get(this.app);
+    this.configRef = this.hsConfig.get(this.app);
   }
 }

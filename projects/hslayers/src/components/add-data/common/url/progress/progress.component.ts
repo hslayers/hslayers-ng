@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 import {HsAddDataService} from '../../../add-data.service';
+import {HsConfig, HsConfigObject} from '../../../../../config.service';
 import {HsUtilsService} from '../../../../utils/utils.service';
 
 @Component({
@@ -8,10 +9,16 @@ import {HsUtilsService} from '../../../../utils/utils.service';
   templateUrl: './progress.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HsUrlProgressComponent {
+export class HsUrlProgressComponent implements OnInit {
   @Input() app = 'default';
+  configRef: HsConfigObject;
   constructor(
     public hsAddDataService: HsAddDataService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    private hsConfig: HsConfig
   ) {}
+
+  ngOnInit() {
+    this.configRef = this.hsConfig.get(this.app);
+  }
 }

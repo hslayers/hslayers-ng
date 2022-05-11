@@ -16,7 +16,7 @@
             <a class="btn btn-sm" [hidden]="selectTypeToAddLayerVisible"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
-                <img [hidden]="!loadingInfo" [src]="hsUtilsService.getAjaxLoaderIcon(app)" />
+                <img [hidden]="!loadingInfo" [src]="configRef._ajaxLoaderPath" />
                 <span class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
                     translateHs: {app} }}</span>
             </a>

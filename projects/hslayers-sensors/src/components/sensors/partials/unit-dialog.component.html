@@ -41,7 +41,7 @@
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
                                 (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"
                                 [attr.aria-label]="'SENSORS.oneHour' | translateHs: data">{{getTranslation(interval.name)}}<img
-                                    [src]="getAjaxLoader()" [hidden]="!interval.loading"></button>
+                                    [src]="configRef._ajaxLoaderPath" [hidden]="!interval.loading"></button>
                         </div>
                     </div>
                     <div class="m-1">

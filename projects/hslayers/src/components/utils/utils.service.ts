@@ -457,16 +457,6 @@ export class HsUtilsService {
     return target.charAt(0).toUpperCase() + target.slice(1);
   }
 
-  getAssetsPath(app: string) {
-    let assetsPath = this.HsConfig.get(app).assetsPath || '';
-    assetsPath += assetsPath.endsWith('/') ? '' : '/';
-    return assetsPath;
-  }
-
-  getAjaxLoaderIcon(app: string) {
-    return this.getAssetsPath(app) + 'img/ajax-loader.gif';
-  }
-
   undefineEmptyString(str: string): any {
     if (str === undefined) {
       return undefined;

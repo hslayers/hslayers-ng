@@ -11,10 +11,6 @@ export class HsUtilsServiceMock {
     return this._instanceOf(obj, type);
   }
 
-  getAssetsPath() {
-    return 'assets/hslayers-ng/';
-  }
-
   _instanceOf(obj, klass) {
     if (this.isFunction(klass)) {
       return obj instanceof klass;
@@ -114,10 +110,6 @@ export class HsUtilsServiceMock {
       return undefined;
     }
     return str.trim() != '' ? str : undefined;
-  }
-
-  getAjaxLoaderIcon(): string {
-    return this.getAssetsPath() + 'img/ajax-loader.gif';
   }
 
   getParamsFromUrl() {

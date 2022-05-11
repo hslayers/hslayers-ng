@@ -1,14 +1,16 @@
 import {Component, Input, OnInit, ViewChild, ViewRef} from '@angular/core';
+import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
+
 import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
 
 import {HsCompositionsParserService} from '../../compositions-parser.service';
+import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {
   setFromComposition,
   setPath,
@@ -28,13 +30,15 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   @Input() data: any;
   servicesLoaded = false;
   layersString: string;
+  configRef: HsConfigObject;
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsUtilsService: HsUtilsService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsCompositionsParserService: HsCompositionsParserService
+    public hsCompositionsParserService: HsCompositionsParserService,
+    private hsConfig: HsConfig
   ) {}
 
   close(): void {
@@ -46,6 +50,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     if (this.data.layers) {
       this.layersString = this.data.layers.map((l) => l.title).join(', ');
     }
+    this.configRef = this.hsConfig.get(this.data.app);
     for (const service of this.data.services) {
       this.hsAddDataUrlService.get(this.data.app).typeSelected = service.type;
       await this.hsAddDataOwsService.setUrlAndConnect(

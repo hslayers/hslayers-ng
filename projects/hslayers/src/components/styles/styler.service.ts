@@ -21,6 +21,7 @@ import {StyleFunction, StyleLike} from 'ol/style/Style';
 import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
 
+import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
@@ -76,11 +77,12 @@ export class HsStylerService {
     public sanitizer: DomSanitizer,
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService,
-    private srvLanguage: HsLanguageService
+    private srvLanguage: HsLanguageService,
+    private hsConfig: HsConfig
   ) {}
 
   get(app: string): HsStylerParams {
-    if (this.apps[app ?? 'default'] == undefined) {
+    if (this.apps[app ?? ''] == undefined) {
       this.apps[app ?? 'default'] = new HsStylerParams();
     }
     return this.apps[app ?? 'default'];
@@ -88,11 +90,11 @@ export class HsStylerService {
 
   async init(app: string): Promise<void> {
     const appRef = this.get(app);
+    const configRef = this.hsConfig.get(app);
     await this.hsMapService.loaded(app);
     appRef.pin_white_blue = new Style({
       image: new Icon({
-        src:
-          this.hsUtilsService.getAssetsPath(app) + 'img/pin_white_blue32.png',
+        src: configRef.assetsPath + 'img/pin_white_blue32.png',
         crossOrigin: 'anonymous',
         anchor: [0.5, 1],
       }),
@@ -104,11 +106,10 @@ export class HsStylerService {
       return [
         new Style({
           image: new Icon({
-            src: getHighlighted(feature)
-              ? this.hsUtilsService.getAssetsPath(app) +
-                'img/pin_white_red32.png'
-              : this.hsUtilsService.getAssetsPath(app) +
-                'img/pin_white_blue32.png',
+            src:
+              configRef.assetsPath + getHighlighted(feature)
+                ? 'img/pin_white_red32.png'
+                : 'img/pin_white_blue32.png',
             crossOrigin: 'anonymous',
             anchor: [0.5, 1],
           }),

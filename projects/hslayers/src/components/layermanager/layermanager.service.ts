@@ -386,14 +386,15 @@ export class HsLayerManagerService {
    */
   getImage(layer: Layer<Source>, app: string): string {
     const thumbnail = getThumbnail(layer);
+    const configRef = this.HsConfig.get(app);
     if (thumbnail) {
       if (thumbnail.length > 10) {
         return thumbnail;
       } else {
-        return this.HsUtilsService.getAssetsPath(app) + 'img/' + thumbnail;
+        return configRef.assetsPath + 'img/' + thumbnail;
       }
     } else {
-      return this.HsUtilsService.getAssetsPath(app) + 'img/default.png';
+      return configRef.assetsPath + 'img/default.png';
     }
   }
 
@@ -673,6 +674,7 @@ export class HsLayerManagerService {
             visible = true;
           }
         }
+        (box as any).thumbnail = getThumbnail(box);
         setActive(box, baseVisible ? baseVisible : visible);
       }
     }
