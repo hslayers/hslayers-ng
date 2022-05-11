@@ -315,9 +315,10 @@
     "sorryButComposition": "Atvainojiet, bet kompozīcija tika izdzēsta vai nepareizi saglabāta",
     "weAreSorryBut": "Atvainojiet, kompozīcija netika ielādēta kļūdas dēļ",
     "cswDialog": {
-      "infoText": "Izvēlieties, kurus slāņus Jūs vēlaties pievienot kartei!",
+      "infoText": "Izvēlieties, kurus slāņus pievienot kartei no zemāk pieejamajiem pakalpojumiem!",
       "loadCompostion": "Ielādēt kompozīciju",
-      "servicesLoading": "Pakalpojums tiek ielādēts, lūdzu uzgaidiet!"
+      "servicesLoading": "Pakalpojums tiek ielādēts, lūdzu uzgaidiet!",
+      "otherLayers": "Citi slāņi, kas ir daļa no kompozīcijas"
     }
   },
   "COMPOSITONINSPIRETHEMES": {
@@ -916,7 +917,11 @@
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
-    "width": "Platums"
+    "width": "Platums",
+    "colorMap": "Krāsu karte",
+    "pleaseEnterAttrib": "Lūdzu, ievadiet atribūta nosaukumu, pēc kura klasificēt",
+    "pleaseEnterMax": "Lūdzu, ievadiet maksimālo vērtību",
+    "pleaseEnterMin": "Lūdzu, ievadiet minimālo vērtību"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"

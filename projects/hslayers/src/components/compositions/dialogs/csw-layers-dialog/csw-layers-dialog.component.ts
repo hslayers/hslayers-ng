@@ -2,6 +2,7 @@ import {Component, Input, OnInit, ViewChild, ViewRef} from '@angular/core';
 import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
 
+import {HsCompositionsParserService} from '../../compositions-parser.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
@@ -12,6 +13,7 @@ import {
   setFromComposition,
   setPath,
   setSubLayers,
+  setTitle,
 } from '../../../../common/layer-extensions';
 
 @Component({
@@ -25,12 +27,14 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   @ViewChild('acc') acc: NgbAccordion;
   @Input() data: any;
   servicesLoaded = false;
+  layersString: string;
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsUtilsService: HsUtilsService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsCompositionsParserService: HsCompositionsParserService
   ) {}
 
   close(): void {
@@ -39,6 +43,9 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   }
 
   async ngOnInit(): Promise<void> {
+    if (this.data.layers) {
+      this.layersString = this.data.layers.map((l) => l.title).join(', ');
+    }
     for (const service of this.data.services) {
       this.hsAddDataUrlService.get(this.data.app).typeSelected = service.type;
       await this.hsAddDataOwsService.setUrlAndConnect(
@@ -93,6 +100,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
           layer,
           layers.map((l) => l.getSource().getParams().LAYERS).join(',')
         );
+        setTitle(layer, service.title);
         layer.set('serviceLayer', true);
         return [layer];
       }
@@ -104,6 +112,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
    * Creates service layers and adds them to the map
    */
   addLayers(): void {
+    this.hsCompositionsParserService.removeCompositionLayers(this.data.app);
     for (const service of this.data.services) {
       const checkedOnly = this.lookForChecked(service.data.layers);
       service.typeService.apps[this.data.app].data = service.data;

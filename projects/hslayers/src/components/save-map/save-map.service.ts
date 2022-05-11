@@ -207,7 +207,7 @@ export class HsSaveMapService {
     layers.forEach((layer) => {
       const l = this.layer2json(layer, app);
       if (l) {
-        json.push(l);
+        json.unshift(l);
       }
     });
     return json;

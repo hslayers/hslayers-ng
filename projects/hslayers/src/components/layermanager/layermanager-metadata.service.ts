@@ -22,6 +22,7 @@ import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-ti
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
+import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
@@ -40,7 +41,8 @@ export class HsLayerManagerMetadataService {
     private HsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public HsDimensionTimeService: HsDimensionTimeService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public hsLog: HsLogService
+    public hsLog: HsLogService,
+    public hsUrlWmsService: HsUrlWmsService
   ) {}
 
   /**
@@ -61,7 +63,7 @@ export class HsLayerManagerMetadataService {
     }*/
     // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementationally simpler
     if (layerName == currentLayer.Name || serviceLayer) {
-      return currentLayer;
+      return serviceLayer ? this.getParsedLayers(currentLayer) : currentLayer;
     } else if (Array.isArray(currentLayer.Layer)) {
       for (const subLayer of currentLayer.Layer) {
         const found = this.identifyLayerObject(layerName, subLayer);
@@ -73,6 +75,15 @@ export class HsLayerManagerMetadataService {
       return this.identifyLayerObject(layerName, currentLayer.Layer);
     }
     return null;
+  }
+
+  getParsedLayers(layerObject): any {
+    const isUsable = layerObject.Layer.every((l) => l.Name); //Sublayers are all queriable
+    if (!isUsable) {
+      layerObject.Layer =
+        this.hsUrlWmsService.filterCapabilitiesLayers(layerObject);
+    }
+    return layerObject;
   }
 
   /**
