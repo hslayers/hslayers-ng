@@ -148,7 +148,7 @@ export class HsCompositionsLayerParserService {
     //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
     const url = decodeURIComponent(lyr_def.url);
     const sourceOptions = {
-      url: url.toLowerCase().replace('request:getcapabilities', ''),
+      url: url,
       attributions: lyr_def.attribution
         ? `<a href="${lyr_def.attribution.OnlineResource}">${lyr_def.attribution.Title}</a>`
         : undefined,

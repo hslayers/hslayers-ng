@@ -256,6 +256,7 @@ export class HsCompositionsParserService {
             .find((p) => p.includes('VERSION'))
             .split('=')[1],
         };
+        l.url = l.url.split('?')[0];
         return l.className;
       });
     }
@@ -509,6 +510,11 @@ export class HsCompositionsParserService {
       options = {responseType: 'text'};
       response = await lastValueFrom(this.$http.get(url, options));
       response = this.parseMickaWmcInfo(response);
+    } else if (url.includes('GetRecordById')) {
+      //CSW composition
+      options = {responseType: 'text'};
+      response = await lastValueFrom(this.$http.get(url, options));
+      response = this.parseMickaCSWInfo(response);
     } else {
       response = await lastValueFrom(this.$http.get(url, options));
     }
@@ -567,6 +573,61 @@ export class HsCompositionsParserService {
     return infoDetails;
   }
 
+  parseMickaCSWInfo(response: string) {
+    const res: any = xml2Json.xml2js(response, {compact: true});
+    console.log(res);
+    const serviceIdentification =
+      res['csw:GetRecordByIdResponse']['gmd:MD_Metadata'][
+        'gmd:identificationInfo'
+      ]['srv:SV_ServiceIdentification'];
+    const layersInfo = serviceIdentification['srv:operatesOn'];
+
+    const bbox =
+      serviceIdentification['srv:extent']['gmd:EX_Extent'][
+        'gmd:geographicElement'
+      ]['gmd:EX_GeographicBoundingBox'];
+    const infoDetails = {
+      title:
+        serviceIdentification['gmd:citation']['gmd:CI_Citation']['gmd:title'][
+          'gco:CharacterString'
+        ]._text,
+      abstract:
+        serviceIdentification['gmd:abstract']['gco:CharacterString']._text,
+      extent: [
+        parseFloat(bbox['gmd:eastBoundLongitude']['gco:Decimal']._text),
+        parseFloat(bbox['gmd:southBoundLatitude']['gco:Decimal']._text),
+        parseFloat(bbox['gmd:northBoundLatitude']['gco:Decimal']._text),
+        parseFloat(bbox['gmd:westBoundLongitude']['gco:Decimal']._text),
+      ],
+    };
+    if (layersInfo !== undefined) {
+      infoDetails['layers'] = layersInfo.map((lyr) => {
+        return {
+          title: lyr._attributes['xlink:title'],
+        };
+      });
+    }
+    let keywordsInfo = serviceIdentification['gmd:descriptiveKeywords'];
+    keywordsInfo = Array.isArray(keywordsInfo)
+      ? this.getCSWKeyWords(keywordsInfo)
+      : keywordsInfo['gmd:MD_Keywords']['gmd:keyword'];
+    if (keywordsInfo) {
+      Array.isArray(keywordsInfo);
+      infoDetails['keywords'] = keywordsInfo.map(
+        (kw) => kw['gco:CharacterString']._text
+      );
+    }
+    return infoDetails;
+  }
+
+  getCSWKeyWords(keywordInfo) {
+    let kw;
+    for (const keywordObject of keywordInfo) {
+      kw = keywordObject['gmd:MD_Keywords']['gmd:keyword'] ?? kw;
+    }
+    return [kw];
+  }
+
   /**
    * Load and display a warning dialog about out of bounds extent
    * @param extent - Extent value
@@ -623,7 +684,7 @@ export class HsCompositionsParserService {
           );
         }
       } else {
-        layers.push(layer);
+        layers.unshift(layer);
       }
     }
     return layers;
