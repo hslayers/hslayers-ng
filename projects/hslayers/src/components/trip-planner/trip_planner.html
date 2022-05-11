@@ -18,7 +18,7 @@
           [hidden]="!waypoint.editMode" (blur)="toggleEdit(waypoint)" />
       </div>
       <div class="p-1">
-        <img [hidden]="!waypoint.loading" [src]="HsUtilsService.getAjaxLoaderIcon(data.app)" /><!-- TODO: Remove function call from template -->
+        <img [hidden]="!waypoint.loading" [src]="configRef._ajaxLoaderPath" />
       </div>
       <div class="p-1" style="height: 1.7em">
         <div style="margin-top: 1em">{{ formatDistance(waypoint) }}<!-- TODO: Remove function call from template --></div>

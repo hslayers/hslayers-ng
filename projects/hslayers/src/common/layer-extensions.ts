@@ -6,6 +6,7 @@ import {Geometry} from 'ol/geom';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {Source} from 'ol/source';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
+import LayerGroup from 'ol/layer/Group';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
@@ -610,7 +611,7 @@ export function setThumbnail(layer: Layer<Source>, thumbnail: string): void {
   layer.set(THUMBNAIL, thumbnail);
 }
 
-export function getThumbnail(layer: Layer<Source>): string {
+export function getThumbnail(layer: Layer<Source> | LayerGroup): string {
   return layer.get(THUMBNAIL);
 }
 

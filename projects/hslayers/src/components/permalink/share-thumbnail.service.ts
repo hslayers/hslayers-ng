@@ -1,8 +1,9 @@
+
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
+import {HsConfig} from '../../config.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,10 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsShareThumbnailService {
   private renderer: Renderer2;
   constructor(
-    public HsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
     public HsLogService: HsLogService,
-    rendererFactory: RendererFactory2
+    rendererFactory: RendererFactory2,
+    private hsConfig: HsConfig
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -61,6 +62,7 @@ export class HsShareThumbnailService {
     const ctxTarget = targetCanvas.getContext('2d');
     this.setupContext(ctxTarget);
     this.setupContext(ctxCollector);
+    const configRef = this.hsConfig.get(app);
     Array.prototype.forEach.call(
       this.HsMapService.apps[app].mapElement.querySelectorAll(
         '.ol-layer canvas'
@@ -121,7 +123,7 @@ export class HsShareThumbnailService {
       this.HsLogService.warn(e);
       $element.setAttribute(
         'src',
-        this.HsUtilsService.getAssetsPath(app) + 'img/notAvailable.png'
+        configRef.assetsPath + 'img/notAvailable.png'
       );
     }
     $element.style.width = width + 'px';

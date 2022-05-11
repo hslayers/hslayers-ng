@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {HsConfig} from './../../config.service';
+import {HsConfig, HsConfigObject} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -23,6 +23,7 @@ export class HsTripPlannerComponent
   loaderImage: string;
   timer: any;
   name = 'tripPlanner';
+  configRef: HsConfigObject;
 
   constructor(
     public HsMapService: HsMapService,
@@ -51,10 +52,11 @@ export class HsTripPlannerComponent
       this.data.app
     );
     await this.HsTripPlannerService.init(this.data.app);
-    if (this.HsConfig.apps[this.data.app].default_layers === undefined) {
-      this.HsConfig.apps[this.data.app].default_layers = [];
+    this.configRef = this.HsConfig.apps[this.data.app];
+    if (this.configRef.default_layers === undefined) {
+      this.configRef.default_layers = [];
     } else {
-      this.HsConfig.apps[this.data.app].default_layers.push(
+      this.configRef.default_layers.push(
         this.HsTripPlannerService.apps[this.data.app].routeLayer
       );
     }

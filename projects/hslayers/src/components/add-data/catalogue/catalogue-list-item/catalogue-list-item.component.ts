@@ -6,7 +6,7 @@ import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsCommonEndpointsService} from './../../../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../../../config.service';
+import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
@@ -31,6 +31,7 @@ export class HsCatalogueListItemComponent implements OnInit {
   selectTypeToAddLayerVisible: boolean;
   whatToAddTypes;
   loadingInfo = false;
+  configRef: HsConfigObject;
   constructor(
     public hsConfig: HsConfig, //used in template
     public hsDatasourcesMetadataService: HsCatalogueMetadataService,
@@ -46,6 +47,7 @@ export class HsCatalogueListItemComponent implements OnInit {
 
   ngOnInit() {
     this.appRef = this.hsAddDataCatalogueService.get(this.app);
+    this.configRef = this.hsConfig.get(this.app);
   }
 
   /**

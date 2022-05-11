@@ -24,7 +24,7 @@
                     </hs-url-add>
                     <button *ngIf="appRef.loadingFeatures"
                         class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs: {app} }}<img
-                            class="ms-2" [src]="hsUtilsService.getAjaxLoaderIcon(app)" /></button>
+                            class="ms-2" [src]="configRef._ajaxLoaderPath" /></button>
                 </div>
             </li>
 

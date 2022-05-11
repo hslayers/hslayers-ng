@@ -38,7 +38,7 @@ type WhatToAddDescriptor = {
   recordType?: string;
 };
 
-class HsAddDataCatalogueParams {
+export class HsAddDataCatalogueParams {
   data: any = {
     query: {
       textFilter: '',

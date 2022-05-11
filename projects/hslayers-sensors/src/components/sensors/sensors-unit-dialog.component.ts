@@ -1,9 +1,8 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from 'hslayers-ng';
+import {HsConfig, HsConfigObject, HsDialogComponent} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
-import {HsUtilsService} from 'hslayers-ng';
 
 import {Aggregate} from './types/aggregate.type';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
@@ -15,24 +14,25 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
   templateUrl: './partials/unit-dialog.component.html',
 })
 export class HsSensorsUnitDialogComponent
-  implements HsDialogComponent, OnInit, OnDestroy
-{
+  implements HsDialogComponent, OnInit, OnDestroy {
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
   dialogStyle;
   private ngUnsubscribe = new Subject<void>();
   viewRef: ViewRef;
   data: any;
+  configRef: HsConfigObject;
 
   constructor(
     private hsLayoutService: HsLayoutService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private hsUtilsService: HsUtilsService,
+    private hsConfig: HsConfig,
     public elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
     this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible = true;
+    this.configRef = this.hsConfig.get(this.data.app);
     this.hsSensorsUnitDialogService.get(this.data.app).dialogElement =
       this.elementRef;
     this.timeButtonClicked(
@@ -99,13 +99,6 @@ export class HsSensorsUnitDialogComponent
    */
   getTranslation(text: string): string {
     return this.hsSensorsUnitDialogService.translate(text, 'SENSORNAMES');
-  }
-
-  /**
-   * Get ajax loader icon
-   */
-  getAjaxLoader(): string {
-    return this.hsUtilsService.getAjaxLoaderIcon(this.data.app);
   }
 
   /**

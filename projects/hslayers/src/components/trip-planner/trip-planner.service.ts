@@ -15,6 +15,7 @@ import {Point} from 'ol/geom';
 import {catchError, lastValueFrom, of, timeout} from 'rxjs';
 import {transform} from 'ol/proj';
 
+import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -86,7 +87,8 @@ export class HsTripPlannerService {
     private HsToastService: HsToastService,
     public HsLanguageService: HsLanguageService,
     private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private hsConfig: HsConfig
   ) {}
 
   async init(_app: string) {
@@ -94,6 +96,7 @@ export class HsTripPlannerService {
       this.apps[_app] = new HsTripPlannerData();
     }
     await this.HsMapService.loaded(_app);
+    const configRef = this.hsConfig.get(_app);
     (feature, resolution) => {
       return [
         new Style({
@@ -105,11 +108,10 @@ export class HsTripPlannerService {
             width: 3,
           }),
           image: new Icon({
-            src: getHighlighted(feature)
-              ? this.HsUtilsService.getAssetsPath(_app) +
-                'img/pin_white_red32.png'
-              : this.HsUtilsService.getAssetsPath(_app) +
-                'img/pin_white_blue32.png',
+            src:
+              configRef.assetsPath + getHighlighted(feature)
+                ? 'img/pin_white_red32.png'
+                : 'img/pin_white_blue32.png',
             crossOrigin: 'anonymous',
             anchor: [0.5, 1],
           }),

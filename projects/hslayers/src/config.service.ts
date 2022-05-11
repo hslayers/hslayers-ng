@@ -147,6 +147,10 @@ export class HsConfigObject {
    */
   pathExclusivity?: boolean;
   ngRouter?: boolean;
+  /*
+   *   Path of image to ajax loader animation,
+   *   which is calculated automatically from assetPath */
+  _ajaxLoaderPath?: string;
 
   constructor() {
     this.pathExclusivity = false;
@@ -264,7 +268,14 @@ export class HsConfig {
     ];
     delete newConfig.symbolizerIcons;
     Object.assign(appConfig, newConfig);
-    this.configChanges.next(this);
+
+    if (appConfig.assetsPath == undefined) {
+      appConfig.assetsPath = '';
+    }
+    appConfig.assetsPath += appConfig.assetsPath.endsWith('/') ? '' : '/';
+    appConfig._ajaxLoaderPath = appConfig.assetsPath + 'img/ajax-loader.gif';
+
+    this.configChanges.next(appConfig);
   }
 
   /**

@@ -31,7 +31,7 @@
             </ol>
             {{'DRAW.longerLoading' | translateHs: data}}
             <div class="d-flex justify-content-center pt-3">
-                <img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" /><!-- TODO: Remove function call from template -->
+                <img [src]="configRef._ajaxLoaderPath" />
             </div>
         </div>
     </div>

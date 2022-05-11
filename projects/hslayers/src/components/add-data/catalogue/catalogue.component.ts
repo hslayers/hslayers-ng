@@ -2,10 +2,13 @@ import {Component, Input, OnInit} from '@angular/core';
 
 import {DatasetType} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
-import {HsAddDataCatalogueService} from './catalogue.service';
+import {
+  HsAddDataCatalogueParams,
+  HsAddDataCatalogueService,
+} from './catalogue.service';
 import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../../config.service';
+import {HsConfig, HsConfigObject} from '../../../config.service';
 import {HsCoreService} from '../../core/core.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
@@ -25,13 +28,13 @@ export class HsAddDataCatalogueComponent implements OnInit {
   data: any;
   advancedSearch: boolean;
   queryCatalogs;
-  loaderImage;
   filterTypeMenu;
   textFieldTypes = ['AnyText', 'Abstract', 'Title'];
   dataTypes = ['all', 'service', 'dataset'];
   sortbyTypes = ['date', 'title', 'bbox'];
   optionsButtonLabel = 'more';
-  appRef;
+  appRef: HsAddDataCatalogueParams;
+  configRef: HsConfigObject;
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -47,10 +50,8 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
   ngOnInit(): void {
     this.appRef = this.hsAddDataCatalogueService.get(this.app);
-    this.data = this.hsAddDataCatalogueService.get(this.app).data;
-
-    this.loaderImage =
-      this.hsUtilsService.getAssetsPath(this.app) + 'img/ajax-loader.gif';
+    this.data = this.appRef.data;
+    this.configRef = this.hsConfig.get(this.app);
     this.queryCatalogs = () =>
       this.hsAddDataCatalogueService.queryCatalogs(this.data.app);
     this.hsAddDataCatalogueService.init(this.app);
@@ -58,10 +59,8 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
-    this.hsAddDataCatalogueService.get(this.app).selectedLayer =
-      this.hsAddDataCatalogueService.get(this.app).selectedLayer == layer
-        ? <HsAddDataLayerDescriptor>{}
-        : layer;
+    this.appRef.selectedLayer =
+      this.appRef.selectedLayer == layer ? <HsAddDataLayerDescriptor>{} : layer;
   }
 
   translateString(module: string, text: string): string {
@@ -107,7 +106,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
   datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {
     this.hsAddDataCatalogueService.datasetSelect(id_selected, this.app);
     if (endpoint) {
-      this.hsAddDataCatalogueService.get(this.app).selectedEndpoint = endpoint;
+      this.appRef.selectedEndpoint = endpoint;
     }
   }
 }

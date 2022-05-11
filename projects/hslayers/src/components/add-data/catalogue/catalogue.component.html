@@ -117,10 +117,10 @@
                         <hs-catalogue-list-item [layer]="layer" [app]="app"></hs-catalogue-list-item>
                     </li>
                     <li class='list-group-item text-primary text-center py-2' [hidden]="!appRef.dataLoading"><img
-                            class="pe-2" [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}</li>
+                            class="pe-2" [src]="configRef._ajaxLoaderPath" />{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}</li>
                     <li [hidden]='appRef.catalogEntries.length > 0 || appRef.dataLoading' class='list-group-item'
                         style="border-top-width: 1px; border-radius: inherit">
-                        {{'DATASOURCE_SELECTOR.noResults' | translateHs : {app}  }}</li>
+                        {{'DATASOURCE_SELECTOR.noResults' | translateHs : {app} }}</li>
                 </ul>
             </div>
             <ng-container *ngIf="appRef.matchedRecords !== 0 && !appRef.dataLoading">
