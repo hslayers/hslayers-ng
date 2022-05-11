@@ -172,14 +172,16 @@ export class HsCompositionsParserService {
       that means composition is enclosed in
       container which itself might contain title or extent
       properties */
-      await this.loadCompositionObject(
+      const loaded = await this.loadCompositionObject(
         response.data || response,
-        overwrite,
+        overwrite && !pre_parse, //For CSW comps we need to wait for dialog to resolve before removing existing layers
         app,
         response.title,
         response.extent
       );
-      this.finalizeCompositionLoading(response, app);
+      if (loaded) {
+        this.finalizeCompositionLoading(response, app);
+      }
       if (this.hsUtilsService.isFunction(callback)) {
         callback();
       }
@@ -354,7 +356,7 @@ export class HsCompositionsParserService {
     app: string = 'default',
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
-  ): Promise<void> {
+  ): Promise<boolean> {
     if (overwrite == undefined || overwrite == true) {
       this.removeCompositionLayers(app);
     }
@@ -383,7 +385,7 @@ export class HsCompositionsParserService {
       ? await this.hsDialogContainerService
           .create(
             CswLayersDialogComponent,
-            {app: app, services: obj.services},
+            {app: app, services: obj.services, layers: obj.layers},
             app
           )
           .waitResult()
@@ -414,7 +416,9 @@ export class HsCompositionsParserService {
             }
           });
       }
+      return true;
     }
+    return false;
   }
 
   /**
@@ -661,6 +665,7 @@ export class HsCompositionsParserService {
     if (j.data) {
       j = j.data;
     }
+    const baselayersOnTop = j.layers[0]?.base;
     for (const lyr_def of j.layers) {
       const layer = await this.jsonToLayer(lyr_def, app);
       if (layer == undefined) {
@@ -684,7 +689,8 @@ export class HsCompositionsParserService {
           );
         }
       } else {
-        layers.unshift(layer);
+        const addToList = baselayersOnTop ? 'push' : 'unshift';
+        layers[addToList](layer);
       }
     }
     return layers;

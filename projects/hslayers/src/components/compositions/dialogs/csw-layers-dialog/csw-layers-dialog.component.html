@@ -11,7 +11,7 @@
             <p class="py-3 text-danger m-auto w-75 ps-3">
                 {{'COMPOSITIONS.cswDialog.infoText' | translateHs: data}}
             </p>
-            <div class="modal-body w-75 mh-75 mb-5" style="max-height: 75vh; overflow-y: auto; margin:auto">
+            <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
                 <ngb-accordion [closeOthers]="true" #acc="ngbAccordion" (panelChange)="beforeChange($event)">
                     <ngb-panel [disabled]="!servicesLoaded" id="{{service.id}}" *ngFor="let service of data.services">
                         <ng-template ngbPanelHeader>
@@ -31,7 +31,8 @@
                                     class="accordion-button justify-content-between">{{'COMPOSITIONS.cswDialog.servicesLoading'
                                     |
                                     translateHs:
-                                    data}}<img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" /></button><!-- TODO: Remove function call from template -->
+                                    data}}<img [src]="hsUtilsService.getAjaxLoaderIcon(data.app)" /></button>
+                                <!-- TODO: Remove function call from template -->
                             </ng-template>
                         </ng-template>
                         <ng-template ngbPanelContent>
@@ -41,6 +42,10 @@
                     </ngb-panel>
                 </ngb-accordion>
             </div>
+            <div class="w-75 mh-75 m-auto p-3" [hidden]="layersString.length === 0">
+                {{'COMPOSITIONS.cswDialog.otherLayers' | translateHs: data}}: {{layersString}}
+            </div>
+
             <div class="modal-footer">
                 <button (click)="addLayers()" [disabled]="!servicesLoaded" type="button" class="btn btn-primary"
                     data-dismiss="modal">{{'COMMON.addLayers' |

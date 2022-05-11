@@ -262,15 +262,15 @@ describe('compositions', () => {
   it('should load composition from json', async function () {
     await loadComposition(component);
     expect(mockedMapService.getMap(app).getLayers().getLength()).toBe(7);
-    expect(getTitle(mockedMapService.getMap(app).getLayers().item(1))).toBe(
+    expect(getTitle(mockedMapService.getMap(app).getLayers().item(6))).toBe(
       'Measurement sketches'
     );
     expect(
-      mockedMapService.getMap(app).getLayers().item(5).getSource().getFeatures()
+      mockedMapService.getMap(app).getLayers().item(2).getSource().getFeatures()
         .length
     ).toBe(1);
     expect(
-      mockedMapService.getMap(app).getLayers().item(6).getSource().getFeatures()
+      mockedMapService.getMap(app).getLayers().item(1).getSource().getFeatures()
         .length
     ).toBe(0);
   });
@@ -283,7 +283,7 @@ describe('compositions', () => {
       mockedMapService
         .getMap(app)
         .getLayers()
-        .item(6)
+        .item(1)
         .getStyle()[2]
         .getStroke()
         .getColor()

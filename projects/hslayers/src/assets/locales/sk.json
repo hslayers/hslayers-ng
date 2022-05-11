@@ -312,8 +312,9 @@
     "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!",
     "cswDialog": {
       "servicesLoading": "Služba sa načítava, čakajte prosím!",
-      "infoText": "Vyberte vrstvy, ktoré chcete pridať do mapy!",
-      "loadCompostion": "Nahrať kompozíciu"
+      "infoText": "Z dostupných služieb vyberte vrstvy ktoe chcete pridať do mapy!",
+      "loadCompostion": "Nahrať kompozíciu",
+      "otherLayers": "Ďalšie vrstvy, ktoré sú súčasťou kompozície"
     },
     "compositionNotFound": "Kompozícia nebola nájdená",
     "sorryButComposition": "Ľutujeme, ale kompozícia bola vymazaná alebo nesprávne uložená",
