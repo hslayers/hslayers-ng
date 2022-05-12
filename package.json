@@ -101,7 +101,7 @@
     "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^16.2.4",
     "@compodoc/compodoc": "^1.1.19",
-    "@cypress/schematic": "^1.6.0",
+    "@cypress/schematic": "^1.7.0",
     "@types/jasmine": "~4.0.3",
     "@types/jasminewd2": "~2.0.10",
     "@typescript-eslint/eslint-plugin": "5.23.0",
