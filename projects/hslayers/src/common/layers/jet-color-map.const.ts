@@ -1,4 +1,4 @@
-import * as colormap from 'colormap';
+import colormap from 'colormap';
 export const JET_COLOR_MAP = colormap({
   colormap: 'jet',
   nshades: 100,
