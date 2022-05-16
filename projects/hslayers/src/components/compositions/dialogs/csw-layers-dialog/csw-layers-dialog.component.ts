@@ -4,12 +4,12 @@ import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
 
-import {HsCompositionsParserService} from '../../compositions-parser.service';
 import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
+import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {
   setFromComposition,
@@ -37,7 +37,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsUtilsService: HsUtilsService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsCompositionsParserService: HsCompositionsParserService,
+    public hsMapService: HsMapService,
     private hsConfig: HsConfig
   ) {}
 
@@ -117,7 +117,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
    * Creates service layers and adds them to the map
    */
   addLayers(): void {
-    this.hsCompositionsParserService.removeCompositionLayers(this.data.app);
+    this.hsMapService.removeCompositionLayers(this.data.app);
     for (const service of this.data.services) {
       const checkedOnly = this.lookForChecked(service.data.layers);
       service.typeService.apps[this.data.app].data = service.data;

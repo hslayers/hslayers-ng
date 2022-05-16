@@ -47,6 +47,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {
   getDimensions,
   getEnableProxy,
+  getFromComposition,
   getRemovable,
   getTitle,
 } from '../../common/layer-extensions';
@@ -303,8 +304,8 @@ export class HsMapService {
    * @param app - App identifier
    */
   setDefaultView = function (e, app): void {
-    let appRef = this.hsConfig.get(app);
-    let mapRef = this.getMap(app);
+    const appRef = this.hsConfig.get(app);
+    const mapRef = this.getMap(app);
     const center = appRef.default_view.getCenter();
     mapRef.getView().setCenter(center);
     const zoom = appRef.default_view.getZoom();
@@ -1129,6 +1130,26 @@ export class HsMapService {
       });
     while (to_be_removed.length > 0) {
       this.getMap(app ?? DEFAULT).removeLayer(to_be_removed.shift());
+    }
+  }
+
+  /**
+   * Remove all layers gained from composition from map
+   * @param app - App identifier
+   */
+  removeCompositionLayers(app: string): void {
+    const to_be_removed = [];
+    this.getLayersArray(app).forEach((lyr) => {
+      if (
+        getFromComposition(lyr) ||
+        getRemovable(lyr) === undefined ||
+        getRemovable(lyr) == true
+      ) {
+        to_be_removed.push(lyr);
+      }
+    });
+    while (to_be_removed.length > 0) {
+      this.getMap(app).removeLayer(to_be_removed.shift());
     }
   }
 
