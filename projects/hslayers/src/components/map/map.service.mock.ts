@@ -50,4 +50,8 @@ export class HsMapServiceMock {
   getLayersArray() {
     return [];
   }
+
+  removeCompositionLayers() {
+    return true;
+  }
 }
