@@ -23,15 +23,12 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService, generateUuid} from '../utils/utils.service';
+import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
 import {
-  getBase,
-  getFromComposition,
-  getRemovable,
   getTitle,
   setMetadata,
   setSwipeSide,
 } from '../../common/layer-extensions';
-import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
 import {parseExtent, transformExtentValue} from '../../common/extent-utils';
 import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
 
@@ -358,7 +355,7 @@ export class HsCompositionsParserService {
     extentFromContainer?: string | Array<number>
   ): Promise<boolean> {
     if (overwrite == undefined || overwrite == true) {
-      this.removeCompositionLayers(app);
+      this.hsMapService.removeCompositionLayers(app);
     }
     this.hsEventBusService.currentComposition.next(obj); //Doesnt seems to be used
     this.get(app).current_composition_title = titleFromContainer || obj.title;
@@ -474,27 +471,6 @@ export class HsCompositionsParserService {
         break;
     }
     this.hsEventBusService.compositionLoads.next({data: respError, app});
-  }
-
-  /**
-   * @public
-   * Remove all layers gained from composition from map
-   * @param app - App identifier
-   */
-  removeCompositionLayers(app: string): void {
-    const to_be_removed = [];
-    this.hsMapService.getLayersArray(app).forEach((lyr) => {
-      if (
-        getFromComposition(lyr) ||
-        getRemovable(lyr) === undefined ||
-        getRemovable(lyr) == true
-      ) {
-        to_be_removed.push(lyr);
-      }
-    });
-    while (to_be_removed.length > 0) {
-      this.hsMapService.getMap(app).removeLayer(to_be_removed.shift());
-    }
   }
 
   /**
