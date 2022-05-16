@@ -1,3 +1,63 @@
+# [9.1.0](https://github.com/hslayers/hslayers-ng/compare/9.0.0...9.1.0) (2022-05-16)
+
+
+### Bug Fixes
+
+* Access right translation ([96a5bee](https://github.com/hslayers/hslayers-ng/commit/96a5bee19a63cde9f583bb776b23d6f9178fd2ae))
+* Change structure for mapExtentChanges event subject ([9056ec2](https://github.com/hslayers/hslayers-ng/commit/9056ec206c9108942c5bd7cf5b614a9a783f68ea)), closes [#2951](https://github.com/hslayers/hslayers-ng/issues/2951)
+* Circular dependency in compositions ([bea2b11](https://github.com/hslayers/hslayers-ng/commit/bea2b112b069fdbbcdd5f2e000fd55c5ebd6a72b))
+* Clean map content when overwriting composition ([f20e357](https://github.com/hslayers/hslayers-ng/commit/f20e3571aea2f7a17b2e3de7e3bfb6129f666eea))
+* Cleanup after layer manager component is destroyed ([5d08430](https://github.com/hslayers/hslayers-ng/commit/5d08430119971d81f89272571418b4b30bcae568))
+* Display toasts for correct app instead of default ([6475fb8](https://github.com/hslayers/hslayers-ng/commit/6475fb8c64dba41abf007d2db23c7fb1a09d1511))
+* Expression changed errors in minisidebar ([0a0c8c1](https://github.com/hslayers/hslayers-ng/commit/0a0c8c19a6a6ba841754cb7e8936951cd4bdb74e))
+* filter duplicate layers or compositions ([f862306](https://github.com/hslayers/hslayers-ng/commit/f86230675127c1dcfcfcc0993df61323ea2bfdbf))
+* Fix translations and icon selector for symbolizers ([2494d12](https://github.com/hslayers/hslayers-ng/commit/2494d12d75b2437f049abe00e6a31f288af45196)), closes [#2925](https://github.com/hslayers/hslayers-ng/issues/2925) [#2924](https://github.com/hslayers/hslayers-ng/issues/2924)
+* Hide save current map btn, if saveMap is not enabled ([8e01059](https://github.com/hslayers/hslayers-ng/commit/8e010590bf6419b4ffa6da792a930adf09bc150a))
+* InterpolatedSource weight option is manditory ([8a8f961](https://github.com/hslayers/hslayers-ng/commit/8a8f961936886fcf9170aed47fec2853db27815f))
+* Only layers visible in layermanager should trigger compositionEdits ([2d93270](https://github.com/hslayers/hslayers-ng/commit/2d93270e7fd6840378edf403bde1316fdef50812))
+* Pass app to wmts url component ([64c272d](https://github.com/hslayers/hslayers-ng/commit/64c272d90684e625d8df9f4120f513ed6f9431d3))
+* Provide all params for addSld translation ([4da3174](https://github.com/hslayers/hslayers-ng/commit/4da317490c53db8f42ea2aab15fa6a276bd3c8df))
+* Provide default app id if none is present ([4f70ff0](https://github.com/hslayers/hslayers-ng/commit/4f70ff0b1240016085a6a4be17feb18cf60c53c2))
+* Reduce size of color picker and center it ([9a280f3](https://github.com/hslayers/hslayers-ng/commit/9a280f37ee4b247d30ad3cccbcd3aee3a65efcdb))
+* Remove unnecessary jQuery conflicting dropdown attrs ([6a719ba](https://github.com/hslayers/hslayers-ng/commit/6a719badba48bbb87d06eb1c8c744c688c625277))
+* Resetting of default view for multi-apps ([1c8e900](https://github.com/hslayers/hslayers-ng/commit/1c8e9000e7f871f0b6a0fa3021e513550c374b2f))
+* Save layers to composition in order 'higher zindex first /base map last ([f1f20e8](https://github.com/hslayers/hslayers-ng/commit/f1f20e8ee07506aa2ea5fb67df25e7ad20fc743d))
+* Selection of sensor after selecting feature in map ([fbae152](https://github.com/hslayers/hslayers-ng/commit/fbae1529d7806a2a2ec7078679593084841c2755))
+* Show users screenName or username if given name and family name is not provided ([f2625e4](https://github.com/hslayers/hslayers-ng/commit/f2625e41a2659ae74731be6c74cbfa14a4864624))
+* Sidebar button order after layout resize ([65250bc](https://github.com/hslayers/hslayers-ng/commit/65250bcc730571c5dfab9c1907ba84dd44e26b59))
+* Sidebar not toggleable in mobile layout ([c87e57c](https://github.com/hslayers/hslayers-ng/commit/c87e57c47823c2270ed45409b3faf5f41bbebce7))
+* Sublayers checkboxes ([8028932](https://github.com/hslayers/hslayers-ng/commit/802893244f6f490472f17327b487a12704dd1b3b))
+
+
+### Features
+
+* Ability to set access_rights per user ([ce6ef33](https://github.com/hslayers/hslayers-ng/commit/ce6ef336b26fb595631c27803b438b0472592fd8))
+* Allow SLD style for loaded geojson layers ([546f75d](https://github.com/hslayers/hslayers-ng/commit/546f75df3cf099c886ab90801d4e01039f5ae01d))
+* Parse few CSW compositon metadata ([94c3515](https://github.com/hslayers/hslayers-ng/commit/94c35153a6522ee7aab2f1c0a78b5e90b684292a))
+* Support creation of color maps through SLD filters ([9b8c4a6](https://github.com/hslayers/hslayers-ng/commit/9b8c4a68abfe64885e96737059e0d54b23fb1bdd))
+* **add-data:** Service list component ([b32c5d1](https://github.com/hslayers/hslayers-ng/commit/b32c5d16fe0d0c2504c5553ce6245ea88e56dd14))
+* Support function as getUrl result for vector layers ([8299f0f](https://github.com/hslayers/hslayers-ng/commit/8299f0fdf43ff23896e3ede56c47fa9051a51371))
+
+
+### Performance Improvements
+
+* Don't call functions from sidebar template ([c2adce0](https://github.com/hslayers/hslayers-ng/commit/c2adce065de5cb4da8e0d0ec5961fb088191f68b))
+* Don't compare whole data object, but just app string in pipe ([7ed060b](https://github.com/hslayers/hslayers-ng/commit/7ed060b4b9777f049a0c3bdf98873774ad615501))
+* Dont translate sensor names ([5b0c0ee](https://github.com/hslayers/hslayers-ng/commit/5b0c0ee174c48b9f75b3b05aac8b816458e0ebc4))
+* Generate color map for interpolated layer ([1cbabe2](https://github.com/hslayers/hslayers-ng/commit/1cbabe25f2bf62fe353ce0c6a1cc3355587b6683))
+* Move asset path handling to hsConfig ([68dd74a](https://github.com/hslayers/hslayers-ng/commit/68dd74a15162378d103f76f59490dd97a9212dd3)), closes [#2984](https://github.com/hslayers/hslayers-ng/issues/2984)
+
+
+### BREAKING CHANGES
+
+* Substitute `HsUtilsService.getAjaxLoaderIcon()` with `hsConfigRef._ajaxLoaderPath`.
+hsConfigRef can be filled by `HsConfig.get(app | 'default')` inside components ngOnInit.
+Substitute `HsUtilsService.getAssetsPath()` function with variable `configRef.assetsPath`.
+* npm i colormap
+* hsEventBusService.mapExtentChanges event data changes to {map, event, extent, app}
+
+
+
 # [9.0.0](https://github.com/hslayers/hslayers-ng/compare/8.1.0...9.0.0) (2022-04-20)
 
 
