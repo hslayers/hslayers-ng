@@ -46,7 +46,20 @@
             "scripts": [],
             "customWebpackConfig": {
               "path": "projects/hslayers-app/custom-webpack.config.js"
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "xml-utils",
+              "colormap",
+              "lru-cache",
+              "pbf",
+              "queue",
+              "xml-js",
+              "geostyler-legend",
+              "ol-popup",
+              "geostyler-openlayers-parser",
+              "geostyler-qgis-parser",
+              "geostyler-sld-parser"
+            ]
           },
           "configurations": {
             "production": {
@@ -156,7 +169,7 @@
             "polyfills": "projects/test-app/src/polyfills.ts",
             "tsConfig": "projects/test-app/tsconfig.app.json",
             "allowedCommonJsDependencies": [
-              "xml-utils/find-tags-by-name",
+              "xml-utils",
               "lru-cache",
               "pbf",
               "queue",
@@ -585,6 +598,19 @@
                 "input": "projects/hslayers-cesium-app/",
                 "output": "/"
               }
+            ], 
+            "allowedCommonJsDependencies": [
+              "xml-utils",
+              "colormap",
+              "lru-cache",
+              "pbf",
+              "queue",
+              "xml-js",
+              "geostyler-legend",
+              "ol-popup",
+              "geostyler-openlayers-parser",
+              "geostyler-qgis-parser",
+              "geostyler-sld-parser"
             ],
             "styles": [
               "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
@@ -613,7 +639,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-                  "maximumError": "7mb"
+                  "maximumError": "8mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -684,7 +710,8 @@
             "tsConfig": "projects/cesium-test-app/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
-              "xml-utils/find-tags-by-name",
+              "xml-utils",
+              "colormap",
               "lru-cache",
               "pbf",
               "queue",
@@ -692,6 +719,7 @@
               "geostyler-legend",
               "ol-popup",
               "geostyler-openlayers-parser",
+              "geostyler-qgis-parser",
               "geostyler-sld-parser"
             ],
             "assets": [
