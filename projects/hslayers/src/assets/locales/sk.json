@@ -313,13 +313,13 @@
     "cswDialog": {
       "servicesLoading": "Služba sa načítava, čakajte prosím!",
       "infoText": "Z dostupných služieb vyberte vrstvy ktoe chcete pridať do mapy!",
-      "loadCompostion": "Nahrať kompozíciu",
-      "otherLayers": "Ďalšie vrstvy, ktoré sú súčasťou kompozície"
+      "otherLayers": "Ďalšie vrstvy, ktoré sú súčasťou kompozície",
+      "loadComposition": "Nahrať kompozíciu"
     },
     "compositionNotFound": "Kompozícia nebola nájdená",
     "sorryButComposition": "Ľutujeme, ale kompozícia bola vymazaná alebo nesprávne uložená",
     "compositionNotLoaded": "Kompozícia nebola načítaná",
-    "weAreSorryBut": "Ľutujeme, ale kompozícia sa nenačítala kvôli chybe nenačítala"
+    "weAreSorryBut": "Ľutujeme, ale kompozícia sa kvôli chybe nenačítala"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",

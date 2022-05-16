@@ -49,10 +49,10 @@
             <span class="w-50">{{user.hslDisplayName}}</span>
             <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToRead"
                     [(ngModel)]="user.read"
-                    (change)="accessRightsChanged('access_rights.read', user.username, $event)">Read</label>
+                    (change)="accessRightsChanged('access_rights.read', user.username, $event)">{{'SAVECOMPOSITION.form.read' | translateHs : {app} }}</label>
             <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToWrite"
                     [(ngModel)]="user.write"
-                    (change)="accessRightsChanged('access_rights.write', user.username, $event)">Write</label>
+                    (change)="accessRightsChanged('access_rights.write', user.username, $event)">{{'SAVECOMPOSITION.form.write' | translateHs : {app} }}</label>
         </div>
     </div>
 </ng-template>

@@ -317,8 +317,8 @@
     "cswDialog": {
       "servicesLoading": "Service is loading, please wait!",
       "infoText": "Choose which layers you want to add to map from services available below! ",
-      "loadCompostion": "Load composition",
-      "otherLayers": "Other layers that are part of the composition"
+      "otherLayers": "Other layers that are part of the composition",
+      "loadComposition": "Load composition"
     }
   },
   "COMPOSITONINSPIRETHEMES": {
