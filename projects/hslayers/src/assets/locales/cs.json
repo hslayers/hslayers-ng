@@ -256,7 +256,9 @@
     "height": "Výška",
     "preview": "Náhled",
     "resetToDefault": "Obnovit výchozí hodnoty",
-    "addLayers": "Přidat vrstvy"
+    "addLayers": "Přidat vrstvy",
+    "required": "Vyžadováno",
+    "toggle": "Přepnout"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -310,8 +312,14 @@
     "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!",
     "cswDialog": {
       "servicesLoading": "Služba se načítá, čekejte prosím!",
-      "infoText": ""
-    }
+      "infoText": "Z dostupných služeb níže vyberte vrstvy, které chcete přidat do mapy!",
+      "loadComposition": "Načíst kompozici",
+      "otherLayers": "Další vrstvy, které jsou součástí této kompozice"
+    },
+    "compositionNotFound": "Kompozice nenalezena",
+    "compositionNotLoaded": "Kompozice nebyla načtena",
+    "sorryButComposition": "Omlouváme se, ale kompozice byla smazána nebo nesprávně uložena",
+    "weAreSorryBut": "Je nám líto, ale kompozici nebylo možné načíst kvůli chybě"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
@@ -767,7 +775,7 @@
       "state": "Stát",
       "toggleAll": "Přepnout vše",
       "userCurrentMapExtent": "Použít aktuální rozsah mapy",
-      "write": "Zápis"
+      "write": "Zapisovat"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte klíčová slova",
@@ -786,7 +794,9 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba při synchronizaci"
     },
-    "writeAccessRights": "Právo zápisu"
+    "writeAccessRights": "Právo zápisu",
+    "everyone": "Každý",
+    "perUser": "Vybraní uživatelé"
   },
   "SENSORS": {
     "1D": "1D",
@@ -907,7 +917,11 @@
     "warningAttribNotStoredNotVisualized": "Atribut není aktuálně zobrazen správně a není uložen v SLD",
     "warningAttribNotStoredVisualized": "Atribut je vizualizován, ale není uložen v SLD",
     "warningAttribStoredNotVisualized": "Atribut uložený v SLD, ale aktuálně není zobrazen správně",
-    "width": "Šířka"
+    "width": "Šířka",
+    "colorMap": "Barevná škála",
+    "pleaseEnterAttrib": "Napište prosím název atributu, podle kterého bude provedena klasifikace",
+    "pleaseEnterMax": "Napište prosím nejvyšší hodnotu",
+    "pleaseEnterMin": "Napište prosím nejnižší hodnotu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
