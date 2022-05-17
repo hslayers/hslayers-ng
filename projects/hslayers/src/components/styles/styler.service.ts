@@ -274,7 +274,10 @@ export class HsStylerService {
     app: string
   ): Promise<{sld?: string; qml?: string; style: StyleLike}> {
     if (!style) {
-      return {style: await this.sldToOlStyle(defaultStyle, app)};
+      return {
+        sld: defaultStyle,
+        style: await this.sldToOlStyle(defaultStyle, app),
+      };
     }
     if (
       typeof style == 'string' &&
