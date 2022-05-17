@@ -3,20 +3,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'SAVECOMPOSITION.dialogResult.savingCompositionStatus' | translateHs : data}}
+                    {{'SAVECOMPOSITION.dialogResult.savingCompositionStatus' | translateHs : {app: data.app} }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs : data}}">
+                    attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}">
                 </button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="alert alert-status" [hidden]="!appRef.statusData.status">
-                    {{'SAVECOMPOSITION.dialogResult.compositionSavedSuccessfully' | translateHs : data}}</div>
+                    {{'SAVECOMPOSITION.dialogResult.compositionSavedSuccessfully' | translateHs : {app: data.app} }}</div>
                 <div class="alert alert-danger" [hidden]="!!appRef.statusData.status">
-                    {{'SAVECOMPOSITION.dialogResult.compositionFailedToSave' | translateHs : data}}</div>
+                    {{'SAVECOMPOSITION.dialogResult.compositionFailedToSave' | translateHs : {app: data.app} }}</div>
                 <div class="alert alert-danger"
                     [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'not-saved')">
-                    {{'SAVECOMPOSITION.dialogResult.requestWasProcessed' | translateHs : data}}</div>
+                    {{'SAVECOMPOSITION.dialogResult.requestWasProcessed' | translateHs : {app: data.app} }}</div>
                 <div class="alert alert-danger"
                     [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'exists')">
                     Map already exists
@@ -24,7 +24,7 @@
                 </div>
                 <div class="alert alert-danger"
                     [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'error')">
-                    {{'SAVECOMPOSITION.dialogResult.serverDidNotRespond' | translateHs : data}}</div>
+                    {{'SAVECOMPOSITION.dialogResult.serverDidNotRespond' | translateHs : {app: data.app} }}</div>
                 <div class="alert alert-danger"
                     [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'error')">
                     <dl *ngFor="let item of appRef.statusData.error | keyvalue">
@@ -39,12 +39,12 @@
                 [ngClass]="{'justify-content-between' : appRef.statusData.resultCode === 'exists' }">
                 <div *ngIf="!appRef.statusData.status && appRef.statusData.resultCode === 'exists'">
                     <button type="button" class="btn btn-primary"
-                        (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs : data}}</button>
+                        (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs : {app: data.app} }}</button>
                     <button type="button" class="btn btn-primary ms-2"
-                        (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translateHs : data}}</button>
+                        (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translateHs : {app: data.app} }}</button>
                 </div>
                 <button type="button" class="btn btn-primary" (click)="close()" data-dismiss="modal">{{'COMMON.close' |
-                    translateHs : data}}</button>
+                    translateHs : {app: data.app} }}</button>
             </div>
         </div>
     </div>

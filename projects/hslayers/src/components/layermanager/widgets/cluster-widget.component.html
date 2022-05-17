@@ -15,7 +15,7 @@
     }}</label>
   </div>
   <div class="form-group flex-fill" *ngIf="cluster">
-    <label>{{ "COMMON.distance" | translateHs : data}}</label>
+    <label>{{ "COMMON.distance" | translateHs : {app: data.app} }}</label>
     <input
       name="layer-cluster-distance"
       type="range"

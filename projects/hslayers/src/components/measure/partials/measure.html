@@ -1,17 +1,17 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
   <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translateHs : data" [app]="data.app">
     <extra-title>&nbsp;<span [hidden]="!appRef.data.multipleShapeMode">{{'MEASURE.multipleShapes' |
-        translateHs : data}}</span></extra-title>
+        translateHs : {app: data.app} }}</span></extra-title>
   </hs-panel-header>
   <div class="card-body p-2">
     <div class="btn-group btn-group-toggle" style="margin-bottom: 10px">
       <label class="btn btn-secondary" [ngClass]="{'active': type === 'distance'}" for="hs-measure-distance">
-        {{'COMMON.distance' | translateHs : data}}
+        {{'COMMON.distance' | translateHs : {app: data.app} }}
         <input type="radio" name="type" id="hs-measure-distance" value="distance" [(ngModel)]="type"
           (ngModelChange)="changeMeasureParams()">
       </label>
       <label class="btn btn-secondary" [ngClass]="{'active': type === 'area'}" for="hs-measure-area">
-        {{'COMMON.area' | translateHs : data}}
+        {{'COMMON.area' | translateHs : {app: data.app} }}
         <input type="radio" name="type" id="hs-measure-area" value="area" [(ngModel)]="type"
           (ngModelChange)="changeMeasureParams()">
       </label>

@@ -5,11 +5,11 @@
       <a class="card-href" *ngFor="let metadataUrl of metadataService.metadataArray((layerDescriptor | async))"
         href="{{ metadataUrl.onlineResource }}" target="_blank" [title]="'COMMON.metadata' | translateHs : data">
         <span [hidden]="!metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : data}}
+          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : {app: data.app} }}
           {{ metadataUrl.type }}
         </span>
         <span [hidden]="metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs : data}}
+          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs : {app: data.app} }}
         </span>
       </a>
     </div>
@@ -17,12 +17,12 @@
     <div *ngIf="hasCopyright((layerDescriptor | async))">
       <a class="card-href" href="{{ getAttribution((layerDescriptor | async).layer).onlineResource }}" target="_blank"
         [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs : data">
-        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : data}}</a>
+        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : {app: data.app} }}</a>
     </div>
   </div>
 
   <div class="form-group" [hidden]="!abstract">
-    <label>{{ "COMMON.abstract" | translateHs : data}}</label>
+    <label>{{ "COMMON.abstract" | translateHs : {app: data.app} }}</label>
     <p [innerHtml]="
         HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract, data.app)
       "></p><!-- TODO: Remove function call from template -->

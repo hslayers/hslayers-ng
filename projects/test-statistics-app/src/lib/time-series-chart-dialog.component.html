@@ -3,14 +3,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'STATISTICS.TIME_SERIES_CHART' | translateHs : data}}
+                    {{'STATISTICS.TIME_SERIES_CHART' | translateHs : {app: data.app} }}
                 </h4>
                 <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
-                        class="visually-hidden">{{'COMMON.close' | translateHs : data}}</span></button>
+                        class="visually-hidden">{{'COMMON.close' | translateHs : {app: data.app} }}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.LOCATION_FILTER' | translateHs : data}}:
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.LOCATION_FILTER' | translateHs : {app: data.app} }}:
                     </p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
@@ -62,7 +62,7 @@
                 <div class="modal-footer">
                     <button class="btn btn-primary" [disabled]="!filteredRows" (click)="visualize();"
                         data-dismiss="modal">{{'STATISTICS.VISUALIZE'
-                        | translateHs : data}}</button>
+                        | translateHs : {app: data.app} }}</button>
                 </div>
             </div>
         </div>

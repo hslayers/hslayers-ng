@@ -7,7 +7,7 @@
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link" [ngClass]="{'btn-primary active': appRef.dsSelected === 'catalogue'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('catalogue')">
-                    {{'ADDDATA.catalogue' | translateHs : data}}
+                    {{'ADDDATA.catalogue' | translateHs : {app: data.app} }}
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
@@ -20,7 +20,7 @@
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link" [ngClass]="{'btn-primary active': appRef.dsSelected === 'file'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('file')">
-                    {{'ADDDATA.file' | translateHs : data}}
+                    {{'ADDDATA.file' | translateHs : {app: data.app} }}
                 </a>
             </li>
         </ul>

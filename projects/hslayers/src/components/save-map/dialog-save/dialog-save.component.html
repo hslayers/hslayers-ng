@@ -3,14 +3,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'SAVECOMPOSITION.dialogSave.saveComposition' | translateHs : data}}
+                    {{'SAVECOMPOSITION.dialogSave.saveComposition' | translateHs : {app: data.app} }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs : data}}"></button>
+                    attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}"></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto; text-align: center; font-size: 16px">
                 <div>
-                    {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translateHs : data}}
+                    {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translateHs : {app: data.app} }}
                 </div>
                 <div>
                     <b>{{appRef.compoData.title}}</b>
@@ -18,47 +18,47 @@
                 <div
                     *ngIf="!appRef.statusData?.titleFree && appRef.statusData?.hasPermission && !appRef.statusData?.changeTitle">
                     <div>
-                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translateHs : data}}
+                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translateHs : {app: data.app} }}
                         <b>{{appRef.compoData.title}}</b>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="save(false)">{{'SAVECOMPOSITION.dialogSave.yesSave'
-                            | translateHs : data}}</button>
+                            | translateHs : {app: data.app} }}</button>
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg"
                             (click)="selectNewTitle()">{{'SAVECOMPOSITION.dialogSave.noSaveAs'
-                            | translateHs : data}}</button>
+                            | translateHs : {app: data.app} }}</button>
                     </p>
                 </div>
 
                 <div
                     *ngIf="!appRef.statusData?.titleFree && appRef.statusData?.hasPermission && appRef.statusData?.changeTitle">
-                    <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translateHs : data}}</div>
+                    <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translateHs : {app: data.app} }}</div>
                     <p>
                         <input type="text" class="form-control hs-stc-title" [(ngModel)]="appRef.compoData.title">
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="save(true); close()">{{'COMMON.save'
-                            | translateHs : data}}</button>
+                            | translateHs : {app: data.app} }}</button>
                     </p>
                 </div>
 
                 <div *ngIf="!appRef.statusData?.titleFree || !appRef.statusData?.hasPermission">
                     <div>
                         <p *ngIf="!appRef.statusData?.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' |
-                            translateHs : data}}
+                            translateHs : {app: data.app} }}
                         </p>
                         <p *ngIf="!appRef.statusData?.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' |
-                            translateHs : data}}
+                            translateHs : {app: data.app} }}
                         </p>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="focusTitle()">{{'COMMON.ok' |
-                            translateHs : data}}</button>
+                            translateHs : {app: data.app} }}</button>
                     </p>
                 </div>
 

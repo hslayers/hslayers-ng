@@ -8,7 +8,7 @@
     data.app
     )
     }}<!-- TODO: Remove function call from template -->
-    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : data}}
+    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : {app: data.app} }}
     <span class="text-truncate mw-100 d-block">
       {{
       HsLanguageService.getTranslationIgnoreNonExisting(

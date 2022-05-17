@@ -1,7 +1,7 @@
 <div *ngIf="olLayer">
   <div *ngIf="HsLayerEditorService.legendVisible(data.app)"><!-- TODO: Remove function call from template -->
     <p style="text-align: center; font-weight: bold">
-      {{ "COMMON.legend" | translateHs : data}}
+      {{ "COMMON.legend" | translateHs : {app: data.app} }}
     </p>
     <hs-legend-layer-directive [app]="data.app" [layer]="HsLayerEditorService.apps[data.app].legendDescriptor">
     </hs-legend-layer-directive>

@@ -155,7 +155,7 @@ where position == 'bottom' if sidebar is located at bottom.
 npm i ol-ext
 ```
 * Hslayers wont compile without popperjs/core
-* Use `translateHs: {'app': data.app}` or just `translateHs: data` pipe provided by HsLanguageModule instead of `translate` which is provided by ngx-translate if you want to translate components which are integrated into hslayers application such as custom HSlayers-ng panels or widgets.
+* Use `translateHs: {'app': data.app}` or just `translateHs: {app: data.app} ` pipe provided by HsLanguageModule instead of `translate` which is provided by ngx-translate if you want to translate components which are integrated into hslayers application such as custom HSlayers-ng panels or widgets.
 * Buttons are now added by HsSidebarService.addButton() function
 
 

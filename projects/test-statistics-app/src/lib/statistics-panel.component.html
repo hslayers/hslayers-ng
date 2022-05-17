@@ -15,7 +15,7 @@
                 <ng-template ngbNavContent>
                     <div>
                         {{'STATISTICS.CURRENT_VARIABLES' |
-                        translateHs : data}}: {{appRef.corpus?.variables?.length ?? '0'}}
+                        translateHs : {app: data.app} }}: {{appRef.corpus?.variables?.length ?? '0'}}
 
                         <ng-container *ngIf="appRef.corpus?.variables?.length > 0">
                             <ul class="list-group hs-styler-content-list">
@@ -40,20 +40,20 @@
                             data-toggle="buttons">
                             <button type="button" class="btn btn-sm btn-primary m-1"
                                 (click)="correlate()">{{'STATISTICS.CORRELATE' |
-                                translateHs : data}}</button>
+                                translateHs : {app: data.app} }}</button>
                             <button type="button" class="btn btn-sm btn-primary m-1"
                                 (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
-                                translateHs : data}}</button>
+                                translateHs : {app: data.app} }}</button>
                             <button type="button" class="btn btn-sm btn-primary m-1"
                                 (click)="regression()">{{'STATISTICS.REGRESSION'
                                 |
-                                translateHs : data}}</button>
+                                translateHs : {app: data.app} }}</button>
                             <button type="button" class="btn btn-sm btn-secondary m-1"
                                 (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
-                                translateHs : data}}</button>
+                                translateHs : {app: data.app} }}</button>
                             <button type="button" class="btn btn-sm btn-danger m-1"
                                 (click)="clearAll()">{{'STATISTICS.CLEAR_ALL_DATA' |
-                                translateHs : data}}</button>
+                                translateHs : {app: data.app} }}</button>
                         </div>
                     </div>
                 </ng-template>

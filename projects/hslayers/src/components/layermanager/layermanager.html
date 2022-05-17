@@ -130,7 +130,7 @@
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs :
-                    data}}</span>
+                    {app: data.app} }}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of appRef.data.folders.sub_folders"
                 [hidden]="physicalLayerListEnabled">

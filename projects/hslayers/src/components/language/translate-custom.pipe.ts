@@ -31,6 +31,9 @@ export class TranslateCustomPipe
   }
 
   transform(query: string, ...args: any[]) {
+    if (query == undefined || query == '') {
+      return query;
+    }
     if (equals(query, this.lastKey) && equals(args, this.lastParams)) {
       return this.value;
     }

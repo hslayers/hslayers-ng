@@ -6,38 +6,38 @@
 
             <div class="form-group">
                 <label for="pure-map-link" class="control-label">{{'PERMALINK.sharePureMap' | translateHs :
-                    data}}</label>
+                    {app: data.app} }}</label>
                 <a [href]="HsShareService.data.pureMapUrl" target="_blank"
                     id="pure-map-link">{{HsShareService.data.pureMapUrl}}</a>
-                <p><sub class="text-danger">{{'PERMALINK.sharesOnlyMap' | translateHs : data}}</sub></p>
+                <p><sub class="text-danger">{{'PERMALINK.sharesOnlyMap' | translateHs : {app: data.app} }}</sub></p>
             </div>
             <br>
             <div class="form-group">
                 <label for="permalink-link" class="control-label">{{'PERMALINK.permalink' | translateHs :
-                    data}}</label><br />
+                    {app: data.app} }}</label><br />
                 <a [href]="HsShareService.data.permalinkUrl" target="_blank" style="overflow-x: hidden;"
                     id="permalink-link">{{HsShareService.data.permalinkUrl}}</a>
-                <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translateHs : data}}</sub></p>
+                <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translateHs : {app: data.app} }}</sub></p>
             </div>
             <hr>
 
             <fieldset class="form-group">
                 <label class="mb-2" style="font-size: 1.5em;" for="{{'share-link-' + data.app}}">{{'PERMALINK.linkFor' |
-                    translateHs : data}}&nbsp;<span [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
-                        translateHs : data}}/</span>{{'PERMALINK.socialShare' | translateHs : data}}
+                    translateHs : {app: data.app} }}&nbsp;<span [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
+                        translateHs : {app: data.app} }}/</span>{{'PERMALINK.socialShare' | translateHs : {app: data.app} }}
                 </label>
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" class="form-check-input" [name]="'share-link-' + data.app" value="puremap"
                             [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
-                        {{'PERMALINK.pureMap' | translateHs : data}}
+                        {{'PERMALINK.pureMap' | translateHs : {app: data.app} }}
                     </label>
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" class="form-check-input" [name]="'share-link-' + data.app" value="permalink"
                             [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
-                        {{'PERMALINK.permalink' | translateHs : data}}
+                        {{'PERMALINK.permalink' | translateHs : {app: data.app} }}
                     </label>
                 </div>
             </fieldset>
@@ -46,19 +46,19 @@
                     placeholder="'PERMALINK.embedCode' | translateHs : data" [(ngModel)]="HsShareService.data.embedCode"
                     [ngModelOptions]="{standalone: true}"></textarea>
                 <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translateHs :
-                    data}}</label>
+                    {app: data.app} }}</label>
                 <br>
             </div>
 
             <hr>
 
             <fieldset>
-                <h4>{{'PERMALINK.shareOnSocialNetwork' | translateHs : data}}</h4>
+                <h4>{{'PERMALINK.shareOnSocialNetwork' | translateHs : {app: data.app} }}</h4>
                 <div class="form-floating mb-3" [title]="'COMMON.fillInName' | translateHs : data">
                     <input type="text" class="form-control" id="hs-prmlnk-title"
                         [placeholder]="'COMMON.name' | translateHs : data" (change)="invalidateShareUrl()"
                         [(ngModel)]="HsShareService.data.title" [ngModelOptions]="{standalone: true}">
-                    <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translateHs : data}}</label>
+                    <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translateHs : {app: data.app} }}</label>
                 </div>
                 <div class="form-floating mb-3" [title]="'COMMON.fillInDescriptive' | translateHs : data">
                     <textarea class="form-control" id="hs-prmlnk-abstract"
@@ -66,24 +66,24 @@
                         [(ngModel)]="HsShareService.data.abstract"
                         [ngModelOptions]="{standalone: true}">                    </textarea>
                     <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translateHs :
-                        data}}</label>
+                        {app: data.app} }}</label>
                 </div>
 
                 <div class="form-group">
                     <div class="form-group">
                         <label class="control-label"><input type="checkbox" class="me-2" [(ngModel)]="new_share"
                                 [ngModelOptions]="{standalone: true}" /><span class="ng-scope">{{'PERMALINK.newShare' |
-                                translateHs : data}}</span></label>
+                                translateHs : {app: data.app} }}</span></label>
                     </div>
                     <div class="btn-group" role="group">
                         <button class="btn btn-secondary" (click)="shareOnSocial()">
-                            <i class="icon-share-alt"></i> {{'COMMON.share' | translateHs : data}}
+                            <i class="icon-share-alt"></i> {{'COMMON.share' | translateHs : {app: data.app} }}
                         </button>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">{{'COMMON.thumbnail' | translateHs : data}}</label>
+                    <label class="control-label">{{'COMMON.thumbnail' | translateHs : {app: data.app} }}</label>
                     <img class="img-thumbnail hs-permalink-thumbnail" alt="Thumbnail" width="256" height="256">
                 </div>
             </fieldset>

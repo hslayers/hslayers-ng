@@ -10,7 +10,7 @@
 <!-- List placeholder template -->
 <ng-template #listPlaceholder>
   <div class="p-2" style="border: 1px solid #ddd; text-align: center; color: rgba(0,0,0,0.3);">
-    {{'MAP_SWIPE.noLayers' | translateHs : data}}
+    {{'MAP_SWIPE.noLayers' | translateHs : {app: data.app} }}
   </div>
 </ng-template>
 
@@ -19,28 +19,28 @@
   </hs-panel-header>
   <div class="card-body m-2">
     <div class="alert alert-info ps-2" role="alert">
-      {{'MAP_SWIPE.dndLayers' | translateHs : data}}
+      {{'MAP_SWIPE.dndLayers' | translateHs : {app: data.app} }}
     </div>
     <div class="btn-group align-items-center d-flex justify-content-between" style="margin-bottom: 1rem;"
       data-toggle="buttons">
       <button class="btn btn-sm btn-secondary text-truncate" style="max-width: 30%;" type="button"
         (click)="setOrientation()" [disabled]="!appRef.swipeControlActive">
-        {{getOrientationButtonString() | translateHs : data}}
+        {{getOrientationButtonString() | translateHs : {app: data.app} }}
       </button>
       <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
         [disabled]="!appRef.swipeControlActive">
-        {{'MAP_SWIPE.resetSlider' | translateHs : data}}
+        {{'MAP_SWIPE.resetSlider' | translateHs : {app: data.app} }}
       </button>
       <button class="btn btn-sm btn-primary" type="button" (click)="setControl()"
         [ngClass]="appRef.swipeControlActive ? 'active' : ''">
-        {{getEnabledButtonString() | translateHs : data}}
+        {{getEnabledButtonString() | translateHs : {app: data.app} }}
       </button>
     </div>
     <div *ngIf="layersAvailable() && appRef.swipeControlActive" class="pt-1">
       <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
         <tbody>
           <tr style="text-align: center;">
-            <th colspan="2">{{'MAP_SWIPE.entireMap' | translateHs : data}}</th>
+            <th colspan="2">{{'MAP_SWIPE.entireMap' | translateHs : {app: data.app} }}</th>
           </tr>
           <tr class="mb-1">
             <td colspan="2" cdkDropList #entireMapList="cdkDropList" (cdkDropListExited)="placeholders.entire = true"
@@ -57,12 +57,12 @@
           </tr>
           <tr style="text-align: center;">
             <ng-container *ngIf="appRef.orientation === 'vertical'; else topDownLabels">
-              <th>{{'MAP_SWIPE.leftSide' | translateHs : data}}</th>
-              <th>{{'MAP_SWIPE.rightSide' | translateHs : data}}</th>
+              <th>{{'MAP_SWIPE.leftSide' | translateHs : {app: data.app} }}</th>
+              <th>{{'MAP_SWIPE.rightSide' | translateHs : {app: data.app} }}</th>
             </ng-container>
             <ng-template #topDownLabels>
-              <th>{{'MAP_SWIPE.top' | translateHs : data}}</th>
-              <th>{{'MAP_SWIPE.bottom' | translateHs : data}}</th>
+              <th>{{'MAP_SWIPE.top' | translateHs : {app: data.app} }}</th>
+              <th>{{'MAP_SWIPE.bottom' | translateHs : {app: data.app} }}</th>
             </ng-template>
           </tr>
           <tr>

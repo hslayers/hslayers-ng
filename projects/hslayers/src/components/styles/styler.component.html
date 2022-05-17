@@ -1,18 +1,18 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
   <div class="card-header d-flex align-items-center justify-content-between">
     <span class="panel-title">
-      {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs : data}}
+      {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs : {app: data.app} }}
       {{appRef.layerTitle}}
     </span>
     <button type="button" class="btn-close" (click)="layermanager()" [title]="'COMMON.close' | translateHs : data"
-      attr.aria-label="{{'COMMON.close' | translateHs : data}}">
+      attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}">
     </button>
   </div>
   <div class="card-body">
     <input class="form-control" *ngIf="appRef.styleObject" type="text" placeholder="Style name"
       [(ngModel)]="appRef.styleObject.name" />
     <div class="d-flex flex-row justify-content-end">
-      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs : data}}:</div>
+      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs : {app: data.app} }}:</div>
       <div class="p-1">
         <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-right">
           <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs : data"
@@ -21,16 +21,16 @@
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
             <button ngbDropdownItem (click)="hsStylerService.addRule('Simple',data.app)">
-              {{'STYLER.simpleRule' | translateHs : data}}
+              {{'STYLER.simpleRule' | translateHs : {app: data.app} }}
             </button>
             <button ngbDropdownItem (click)="hsStylerService.addRule('Cluster',data.app)">
-              {{'STYLER.clusterRule' | translateHs : data}}
+              {{'STYLER.clusterRule' | translateHs : {app: data.app} }}
             </button>
            
            
             <div ngbDropdown>
               <div class="align-items-center d-flex justify-content-between" style="padding: 0.25rem 1rem;" id="dropdownAddColorMapRule" ngbDropdownToggle [title]="'STYLER.colorMap' | translateHs : data">
-                {{'STYLER.colorMap' | translateHs : data}}
+                {{'STYLER.colorMap' | translateHs : {app: data.app} }}
               </div>
         
               <div ngbDropdownMenu aria-labelledby="dropdownAddColorMapRule">

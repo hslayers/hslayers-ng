@@ -6,7 +6,7 @@
                     {{data.title}}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs : data}}"></button>
+                    attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}"></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
                 <p class="fw-bold h6">{{data.message}}</p>
@@ -15,7 +15,7 @@
                     <div class="d-flex w-100 justify-content-center">
                         <button type="button" class="mt-1 btn btn-primary"
                             (click)="selectDeselectAll()">{{'SAVECOMPOSITION.form.toggleAll' |
-                            translateHs : data}}</button>
+                            translateHs : {app: data.app} }}</button>
                     </div>
                     <div class="d-flex align-items-center" style="word-break:break-all" *ngFor="let item of data.items">
                         <button type="button" class="btn btn-sm m-0 p-0"
@@ -27,10 +27,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translateHs : data"
-                    data-dismiss="modal">{{'COMMON.yes' | translateHs : data}}</button>
+                    data-dismiss="modal">{{'COMMON.yes' | translateHs : {app: data.app} }}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
                     [title]="'COMMON.no' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
-                    translateHs : data}}</button>
+                    translateHs : {app: data.app} }}</button>
             </div>
         </div>
     </div>
