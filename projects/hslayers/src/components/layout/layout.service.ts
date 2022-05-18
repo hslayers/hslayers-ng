@@ -168,9 +168,12 @@ export class HsLayoutService {
   }
 
   init(_app: string): void {
-    setTimeout((_) => {
-      this.parseConfig(_app);
-    }, 0);
+    this.parseConfig(_app);
+    this.HsConfig.configChanges.subscribe(({app, config}) => {
+      if (app == _app) {
+        this.parseConfig(_app);
+      }
+    });
     this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       this.updPanelSpaceWidth(app);
     });

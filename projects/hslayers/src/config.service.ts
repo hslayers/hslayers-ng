@@ -204,7 +204,8 @@ export class HsConfig {
   apps: {[id: string]: HsConfigObject} = {
     default: new HsConfigObject(),
   };
-  configChanges?: Subject<HsConfigObject> = new Subject();
+  configChanges?: Subject<{app: string; config: HsConfigObject}> =
+    new Subject();
   private defaultSymbolizerIcons? = [
     {name: 'favourite', url: 'img/icons/favourite28.svg'},
     {name: 'gps', url: 'img/icons/gps43.svg'},
@@ -275,7 +276,7 @@ export class HsConfig {
     appConfig.assetsPath += appConfig.assetsPath.endsWith('/') ? '' : '/';
     appConfig._ajaxLoaderPath = appConfig.assetsPath + 'img/ajax-loader.gif';
 
-    this.configChanges.next(appConfig);
+    this.configChanges.next({app, config: appConfig});
   }
 
   /**

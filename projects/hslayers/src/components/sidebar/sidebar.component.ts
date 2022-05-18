@@ -61,9 +61,13 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.HsSidebarService.setButtonVisibility(this.buttons, this.app);
       });
-    this.HsConfig.configChanges.pipe(takeUntil(this.end)).subscribe((_) => {
-      this.HsSidebarService.setPanelState(this.buttons, this.app);
-    });
+    this.HsConfig.configChanges
+      .pipe(takeUntil(this.end))
+      .subscribe(({app, config}) => {
+        if (app == this.app) {
+          this.HsSidebarService.setPanelState(this.buttons, this.app);
+        }
+      });
     this.HsSidebarService.sidebarLoad.next(this.app);
   }
 

@@ -3,6 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
+import {HsConfig} from '../../config.service';
 import {HsEventBusService} from './../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -31,7 +32,8 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    private hsConfig: HsConfig
   ) {
     super(hsLayoutService);
     this.hsEventBusService.compositionLoading
@@ -124,6 +126,13 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.composition_edited = true;
+      });
+    this.hsConfig.configChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app, config}) => {
+        if (this.data.app == app) {
+          this.isVisible$.next(this.isVisible());
+        }
       });
   }
   ngOnDestroy(): void {
