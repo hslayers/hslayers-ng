@@ -391,7 +391,7 @@ export class HsSensorsService {
                 .getFeatures()
                 .find((f) => getUnitId(f) == unit.unit_id);
               feature.set(
-                sensor.sensor_name,
+                sensor.sensor_name_translated,
                 sensorValues[sensor.sensor_id].value
               );
               sensor.lastObservationTimestamp =

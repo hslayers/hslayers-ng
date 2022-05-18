@@ -205,7 +205,7 @@ export class HsSensorsUnitDialogService {
             .map((s) => {
               const time = dayjs(val.time_stamp);
               s.sensor_name = this.translate(
-                appRef.sensorById[s.sensor_id].sensor_name,
+                appRef.sensorById[s.sensor_id].sensor_name_translated,
                 'SENSORNAMES'
               );
               s.time = time.format('DD.MM.YYYY HH:mm');
@@ -313,7 +313,7 @@ export class HsSensorsUnitDialogService {
           max: 0,
           avg: 0,
           sensor_id: sensor.sensor_id,
-          sensor_name: sensor.sensor_name,
+          sensor_name: sensor.sensor_name_translated,
         };
         const filteredObs = observations
           .filter((obs) => obs.sensor_id == sensor.sensor_id)
