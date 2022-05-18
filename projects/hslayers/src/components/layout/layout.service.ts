@@ -189,7 +189,10 @@ export class HsLayoutService {
   }
 
   updPanelSpaceWidth(app: string) {
-    this.panelSpaceWidth.next({app, width: this.getPanelSpaceWidth(app)});
+    //Timeout to repaint first to get width from element clientWidth
+    setTimeout(() => {
+      this.panelSpaceWidth.next({app, width: this.getPanelSpaceWidth(app)});
+    }, 0);
   }
 
   async updSidebarPosition(app: string) {
@@ -413,52 +416,10 @@ export class HsLayoutService {
 
   getPanelSpaceWidth(app: string): number {
     const appRef = this.get(app);
-    const panelWidths = {
-      default: 425,
-      ows: 700,
-      composition_browser: 550,
-      addData: 700,
-      mapSwipe: 550,
-    };
-    const layoutWidth = appRef.layoutElement.clientWidth;
-    Object.assign(panelWidths, this.HsConfig.get(app).panelWidths);
-    let tmp = panelWidths[appRef.mainpanel] || panelWidths.default;
-
-    if (typeof tmp === 'string' && tmp.includes('%')) {
-      const widthRatio = Number(tmp.replace('%', ''));
-      return layoutWidth * (widthRatio / 100);
-    }
-
-    if (layoutWidth <= 767 && window.innerWidth <= 767) {
-      tmp = layoutWidth;
-      appRef.sidebarToggleable = false;
-      return tmp;
-    } else {
-      appRef.sidebarToggleable =
-        this.HsConfig.get(app).sidebarToggleable != undefined
-          ? this.HsConfig.get(app).sidebarToggleable
-          : true;
-      if (!appRef.sidebarToggleable) {
-        return tmp;
-      }
-    }
-    if (appRef.sidebarExpanded && appRef.sidebarVisible) {
-      if (panelWidths[appRef.mainpanel]) {
-        tmp = panelWidths[appRef.mainpanel] + 48;
-      } else {
-        tmp = panelWidths.default + 48;
-      }
-    } else {
-      if (appRef.sidebarVisible) {
-        tmp = 48;
-      } else {
-        tmp = 0;
-      }
-    }
-    // if (tmp > layoutWidth * 0.45) {
-    //   tmp = layoutWidth * 0.45;
-    // }
-    return tmp;
+    const panelSpaceWidth = appRef.layoutElement.getElementsByClassName(
+      'hs-panelspace-wrapper'
+    )[0].clientWidth;
+    return panelSpaceWidth;
   }
 
   async updSidebarVisible(app: string, visible?: boolean): Promise<void> {
