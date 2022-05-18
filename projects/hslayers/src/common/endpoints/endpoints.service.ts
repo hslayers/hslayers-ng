@@ -19,9 +19,13 @@ export class HsCommonEndpointsService {
     public hsUtilsService: HsUtilsService
   ) {}
 
-  init(app: string): void {
-    this.fillEndpoints(app);
-    this.hsConfig.configChanges.subscribe(() => this.fillEndpoints(app));
+  init(_app: string): void {
+    this.fillEndpoints(_app);
+    this.hsConfig.configChanges.subscribe(({app, config}) => {
+      if (app == _app) {
+        this.fillEndpoints(app);
+      }
+    });
   }
 
   private fillEndpoints(app: string) {
