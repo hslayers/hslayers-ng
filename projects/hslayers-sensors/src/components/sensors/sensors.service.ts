@@ -331,6 +331,13 @@ export class HsSensorsService {
               ))
           );
         });
+        appRef.units.forEach((unit: HsSensorUnit) => {
+          unit.sensors.forEach((sensor) => {
+            this.hsSensorsUnitDialogService.get(app).sensorById[
+              sensor.sensor_id
+            ] = sensor;
+          });
+        });
         setInterval(() => this.fillLastObservations(app), 60000);
       });
   }
@@ -380,9 +387,6 @@ export class HsSensorsService {
         });
         appRef.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
-            this.hsSensorsUnitDialogService.get(app).sensorById[
-              sensor.sensor_id
-            ] = sensor;
             if (sensorValues[sensor.sensor_id]) {
               sensor.lastObservationValue =
                 sensorValues[sensor.sensor_id].value;
