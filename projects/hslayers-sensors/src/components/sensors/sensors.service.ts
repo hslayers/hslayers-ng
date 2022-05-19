@@ -30,12 +30,13 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 class SensorsServiceParams {
-  bookmarkStyle = null;
+  sensorMarkerStyle = null;
   units: any = [];
   layer = null;
   endpoint: SensLogEndpoint;
   labelStyle: Style;
 }
+const VISUALIZED_ATTR = 'visualizedAttr';
 @Injectable({
   providedIn: 'root',
 })
@@ -174,6 +175,10 @@ export class HsSensorsService {
    */
   selectSensor(sensor, app: string): void {
     this.hsSensorsUnitDialogService.selectSensor(sensor, app);
+    const appRef = this.get(app);
+    for (const feature of appRef.layer.getSource().getFeatures()) {
+      feature.set(VISUALIZED_ATTR, sensor.sensor_name);
+    }
     sensor.checked = true;
   }
 
@@ -227,8 +232,7 @@ export class HsSensorsService {
   createLayer(app: string) {
     const appRef = this.get(app);
     const configRef = this.hsConfig.get(app);
-    const me = this;
-    appRef.bookmarkStyle = [
+    appRef.sensorMarkerStyle = [
       new Style({
         fill: new Fill({
           color: 'rgba(255, 255, 255, 0.2)',
@@ -248,13 +252,25 @@ export class HsSensorsService {
     appRef.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
         title: 'Sensor units',
+        popUp: {
+          attributes: ['name'],
+        },
         editor: {
           editable: false,
         },
       },
       style: function (feature: Feature<Geometry>) {
-        me.get(app).labelStyle.getText().setText(getFeatureName(feature));
-        return me.get(app).bookmarkStyle;
+        if (
+          feature.get(VISUALIZED_ATTR) &&
+          feature.get(feature.get(VISUALIZED_ATTR))
+        ) {
+          appRef.labelStyle
+            .getText()
+            .setText(feature.get(feature.get(VISUALIZED_ATTR)).toString());
+        } else {
+          appRef.labelStyle.getText().setText(getFeatureName(feature));
+        }
+        return appRef.sensorMarkerStyle;
       },
       source: new VectorSource({}),
     });
@@ -362,44 +378,49 @@ export class HsSensorsService {
    */
   fillLastObservations(app: string): void {
     const appRef = this.get(app);
+    const url = appRef.endpoint.senslog2Path
+      ? `${appRef.endpoint.url}/${appRef.endpoint.senslog2Path}/rest/observation/last`
+      : `${appRef.endpoint.url}/${appRef.endpoint.senslog1Path}/SensorService`;
+    const params = appRef.endpoint.senslog2Path
+      ? {group_name: appRef.endpoint.group}
+      : {
+          Operation: 'GetLastObservations',
+          group: appRef.endpoint.group,
+          user: appRef.endpoint.user,
+        };
     this.http
 
-      .get(
-        this.hsUtilsService.proxify(
-          `${appRef.endpoint.url}/${appRef.endpoint.senslog1Path}/SensorService`,
-          app
-        ),
-        {
-          params: {
-            Operation: 'GetLastObservations',
-            group: appRef.endpoint.group,
-            user: appRef.endpoint.user,
-          },
-        }
-      )
+      .get(this.hsUtilsService.proxify(url, app), {
+        params,
+      })
       .subscribe((response: any) => {
         const sensorValues = {};
         response.forEach((sv) => {
-          sensorValues[sv.sensorId] = {
+          sensorValues[sv.unitId + sv.sensorId] = {
             value: sv.observedValue,
             timestamp: dayjs(sv.timeStamp).format('DD.MM.YYYY HH:mm'),
           };
         });
         appRef.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
-            if (sensorValues[sensor.sensor_id]) {
-              sensor.lastObservationValue =
-                sensorValues[sensor.sensor_id].value;
+            const reading = sensorValues[unit.unit_id + sensor.sensor_id];
+            if (reading) {
+              sensor.lastObservationValue = reading.value;
               const feature = this.apps[app].layer
                 .getSource()
                 .getFeatures()
                 .find((f) => getUnitId(f) == unit.unit_id);
-              feature.set(
-                sensor.sensor_name_translated,
-                sensorValues[sensor.sensor_id].value
-              );
-              sensor.lastObservationTimestamp =
-                sensorValues[sensor.sensor_id].timestamp;
+              if (feature) {
+                feature.set(sensor.sensor_name_translated, reading.value);
+                feature.set(
+                  sensor.sensor_name_translated + ' at ',
+                  reading.timeStamp
+                );
+              } else {
+                console.log(`No feature exists for unit ${unit.unit_id}`);
+              }
+
+              sensor.lastObservationTimestamp = reading.timestamp;
             }
           });
         });

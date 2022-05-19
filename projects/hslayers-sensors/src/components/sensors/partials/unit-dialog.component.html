@@ -26,7 +26,7 @@
                         <th>{{'SENSORS.avg' | translateHs: {app: data.app} }}</th>
                     </tr>
                     <tr *ngFor="let aggr of getAggregations()">
-                        <td>{{getTranslation(aggr.sensor_name)}}</td><!-- TODO: Remove function call from template -->
+                        <td>{{aggr.sensor_name}}</td>
                         <td>{{aggr.min}}</td>
                         <td>{{aggr.max}}</td>
                         <td>{{aggr.avg}}</td>
