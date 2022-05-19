@@ -193,6 +193,9 @@ export class HsSensorsService {
    * @param app - App identifier
    */
   selectUnit(unit: HsSensorUnit, app: string): void {
+    this.hsSensorsUnitDialogService
+      .get(app)
+      .unit?.feature.set('selected', undefined);
     this.hsSensorsUnitDialogService.get(app).unit = unit;
     unit.expanded = !unit.expanded;
     //this.selectSensor(unit.sensors[0]);
@@ -224,6 +227,7 @@ export class HsSensorsService {
         app
       )
       .then((_) => this.hsSensorsUnitDialogService.createChart(unit, app));
+    unit.feature.set('selected', true);
     this.hsMapService
       .getMap(app)
       .getView()
@@ -275,6 +279,7 @@ export class HsSensorsService {
         } else {
           this.labelStyle.getText().setText(getFeatureName(feature));
         }
+        this.labelStyle.getText().setScale(feature.get('selected') ? 2 : 1);
         return this.sensorMarkerStyle[app];
       },
       source: new VectorSource({}),
