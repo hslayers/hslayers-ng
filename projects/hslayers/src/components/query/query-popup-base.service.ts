@@ -116,6 +116,12 @@ export class HsQueryPopupBaseService {
       // Layer is not configured to show pop-ups
       return;
     }
+    if (attrsConfig.length == 1 && attrsConfig[0] == '*') {
+      attrsConfig = Object.keys(feature.getProperties()).filter(
+        (attr) => attr != 'geometry'
+      );
+      attrsConfig.sort((a, b) => (a < b ? -1 : 1));
+    }
     for (const attr of attrsConfig) {
       let attrName, attrLabel;
       let attrFunction = (x) => x;
