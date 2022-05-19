@@ -31,17 +31,19 @@ import {HsUtilsService} from 'hslayers-ng';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 class SensorsServiceParams {
-  sensorMarkerStyle = null;
   units: any = [];
   layer = null;
   endpoint: SensLogEndpoint;
-  labelStyle: Style;
 }
 const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
   providedIn: 'root',
 })
 export class HsSensorsService {
+  sensorMarkerStyle: {
+    [id: string]: Style[];
+  } = {};
+  labelStyle: Style;
   olStyle = new Style({
     geometry: function (feature) {
       let geometry = feature.getGeometry();
@@ -107,7 +109,7 @@ export class HsSensorsService {
    */
   init(app: string): void {
     const appRef = this.get(app);
-    appRef.labelStyle = this.olStyle;
+    this.labelStyle = this.olStyle;
     this.hsConfig.configChanges.subscribe(() => {
       if (this.hsConfig.get(app).senslog != appRef.endpoint) {
         this.setEndpoint(app);
@@ -235,7 +237,7 @@ export class HsSensorsService {
   createLayer(app: string) {
     const appRef = this.get(app);
     const configRef = this.hsConfig.get(app);
-    appRef.sensorMarkerStyle = [
+    this.sensorMarkerStyle[app] = [
       new Style({
         fill: new Fill({
           color: 'rgba(255, 255, 255, 0.2)',
@@ -250,7 +252,7 @@ export class HsSensorsService {
           anchor: [0.5, 1],
         }),
       }),
-      appRef.labelStyle,
+      this.labelStyle,
     ];
     appRef.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
@@ -262,18 +264,18 @@ export class HsSensorsService {
           editable: false,
         },
       },
-      style: function (feature: Feature<Geometry>) {
+      style: (feature: Feature<Geometry>) => {
         if (
           feature.get(VISUALIZED_ATTR) &&
           feature.get(feature.get(VISUALIZED_ATTR)) != undefined
         ) {
-          appRef.labelStyle
+          this.labelStyle
             .getText()
             .setText(feature.get(feature.get(VISUALIZED_ATTR)).toString());
         } else {
-          appRef.labelStyle.getText().setText(getFeatureName(feature));
+          this.labelStyle.getText().setText(getFeatureName(feature));
         }
-        return appRef.sensorMarkerStyle;
+        return this.sensorMarkerStyle[app];
       },
       source: new VectorSource({}),
     });
