@@ -16,8 +16,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel
-{
+  implements HsQueryPopupServiceModel {
   constructor(
     public hsMapService: HsMapService,
     private hsConfig: HsConfig,
@@ -103,7 +102,10 @@ export class HsQueryPopupService
     if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
     }
-    if (!this.HsQueryBaseService.get(app).queryActive) {
+    if (
+      !this.HsQueryBaseService.get(app).queryActive &&
+      this.hsConfig.get(app).popUpDisplay === 'click'
+    ) {
       return;
     }
     const tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
