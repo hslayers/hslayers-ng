@@ -1,10 +1,12 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {Geometry, MultiPolygon} from 'ol/geom';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {getWidth} from 'ol/extent';
@@ -22,11 +24,10 @@ import {HsDialogContainerService} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
-import {HsUtilsService} from 'hslayers-ng';
-
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {HsUtilsService} from 'hslayers-ng';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 class SensorsServiceParams {
@@ -36,7 +37,7 @@ class SensorsServiceParams {
   endpoint: SensLogEndpoint;
   labelStyle: Style;
 }
-const VISUALIZED_ATTR = 'visualizedAttr';
+const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
   providedIn: 'root',
 })
@@ -75,6 +76,7 @@ export class HsSensorsService {
   apps: {
     [id: string]: SensorsServiceParams;
   } = {default: new SensorsServiceParams()};
+  visualizedAttribute = new Subject<{app: string; attribute: string}>();
 
   constructor(
     private hsUtilsService: HsUtilsService,
@@ -179,6 +181,7 @@ export class HsSensorsService {
     for (const feature of appRef.layer.getSource().getFeatures()) {
       feature.set(VISUALIZED_ATTR, sensor.sensor_name);
     }
+    this.visualizedAttribute.next({app, attribute: sensor.sensor_name});
     sensor.checked = true;
   }
 
@@ -253,7 +256,7 @@ export class HsSensorsService {
       properties: {
         title: 'Sensor units',
         popUp: {
-          attributes: ['name'],
+          attributes: ['*'],
         },
         editor: {
           editable: false,
@@ -262,7 +265,7 @@ export class HsSensorsService {
       style: function (feature: Feature<Geometry>) {
         if (
           feature.get(VISUALIZED_ATTR) &&
-          feature.get(feature.get(VISUALIZED_ATTR))
+          feature.get(feature.get(VISUALIZED_ATTR)) != undefined
         ) {
           appRef.labelStyle
             .getText()
@@ -414,7 +417,7 @@ export class HsSensorsService {
                 feature.set(sensor.sensor_name_translated, reading.value);
                 feature.set(
                   sensor.sensor_name_translated + ' at ',
-                  reading.timeStamp
+                  reading.timestamp
                 );
               } else {
                 console.log(`No feature exists for unit ${unit.unit_id}`);
