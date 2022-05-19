@@ -6,4 +6,5 @@ export type SensLogEndpoint = {
   liteApiPath?: string;
   mapLogApiPath?: string;
   senslog1Path?: string;
+  senslog2Path?: string;
 };

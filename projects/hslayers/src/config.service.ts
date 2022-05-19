@@ -44,6 +44,7 @@ export class HsConfigObject {
     liteApiPath?: string;
     mapLogApiPath?: string;
     senslog1Path?: string;
+    senslog2Path?: string;
   };
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
