@@ -886,7 +886,10 @@
     "warningAttribNotStoredNotVisualized": "Atribút momentálne nie je zorazený správne a nie je uložený v SLD",
     "warningAttribNotStoredVisualized": "Atribút je vizualizovaný, ale nie je uložený v SLD",
     "warningAttribStoredNotVisualized": "Atribút uložený v SLD, ale aktuálne nie je zobrazený správne",
-    "width": "Šírka"
+    "width": "Šírka",
+    "colorMap": "Farebná škála",
+    "pleaseEnterAttrib": "Zadajte názov atribútu, podľa ktorého prebehne klasifikácia",
+    "pleaseEnterMin": "Zadajte minimálnu hodnotu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
