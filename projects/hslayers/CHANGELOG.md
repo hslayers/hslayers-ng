@@ -1,3 +1,34 @@
+# [9.2.0](https://github.com/hslayers/hslayers-ng/compare/9.1.0...9.2.0) (2022-05-20)
+
+
+### Bug Fixes
+
+* Display hover popup even when query is disabled ([97501a1](https://github.com/hslayers/hslayers-ng/commit/97501a197b103957c083878622f0d6f18c1e1e5e))
+* Dont forget to set sld layer param when parsing defaultStlye to ol style ([2dd49e5](https://github.com/hslayers/hslayers-ng/commit/2dd49e556741d64576b29a1f0ef138c01d0750bc))
+* Hide compositionInfo panel on config change ([3edd504](https://github.com/hslayers/hslayers-ng/commit/3edd504486d23df70148dba95ada8208d6af91cb))
+* Only layers visible in layermanager should trigger compositionEdits ([2d93270](https://github.com/hslayers/hslayers-ng/commit/2d93270e7fd6840378edf403bde1316fdef50812))
+* Provide all params for addSld translation ([4da3174](https://github.com/hslayers/hslayers-ng/commit/4da317490c53db8f42ea2aab15fa6a276bd3c8df))
+* Reduce size of color picker and center it ([9a280f3](https://github.com/hslayers/hslayers-ng/commit/9a280f37ee4b247d30ad3cccbcd3aee3a65efcdb))
+* Selection of sensor after selecting feature in map ([fbae152](https://github.com/hslayers/hslayers-ng/commit/fbae1529d7806a2a2ec7078679593084841c2755))
+* Sidebar button order after layout resize ([65250bc](https://github.com/hslayers/hslayers-ng/commit/65250bcc730571c5dfab9c1907ba84dd44e26b59))
+* Support senslog OTS2 endpoint ([e47286d](https://github.com/hslayers/hslayers-ng/commit/e47286d8ef26664147035892730962cf74803a3a))
+* **sensors:** Use translated sensor names in charts ([dcd6317](https://github.com/hslayers/hslayers-ng/commit/dcd6317f9fc9462108731fc1d8cb350752e906b0))
+
+### Features
+
+* **sensors:** Highlight selected unit ([cb2382f](https://github.com/hslayers/hslayers-ng/commit/cb2382f1d1e87c92d77bb7a1dd636e8e9bcbcbb3))
+* Support listing of all attributes in hover popup ([706d2a8](https://github.com/hslayers/hslayers-ng/commit/706d2a83b7abbf0cd974954f13f85f9b37ce11e5)), closes [#3037](https://github.com/hslayers/hslayers-ng/issues/3037)
+* Various improvements for visualizing sensor readings ([911c18a](https://github.com/hslayers/hslayers-ng/commit/911c18a606b677aa065245463839ebe12fb50970))
+* **sensors:** Read observations for particular unit from OTS2 ([9aaf84b](https://github.com/hslayers/hslayers-ng/commit/9aaf84b46f46da45ad4702ac01e42195611bb6c9))
+
+
+### Performance Improvements
+
+* Don't compare entire data object, but just app ([1a0136f](https://github.com/hslayers/hslayers-ng/commit/1a0136f29c856a796465e4c69679245b1b682809))
+* Don't trigger digests on marker painting ([16c8291](https://github.com/hslayers/hslayers-ng/commit/16c8291a7440a3216d0893a56992635025512de5))
+
+
+
 # [9.1.0](https://github.com/hslayers/hslayers-ng/compare/9.0.0...9.1.0) (2022-05-16)
 
 
