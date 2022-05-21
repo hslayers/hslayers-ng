@@ -1,4 +1,4 @@
-export type PostLayerResponse = {
+export type PostPatchLayerResponse = {
   name?: string;
   uuid?: string;
   url?: string;
@@ -6,4 +6,10 @@ export type PostLayerResponse = {
     file?: string;
     layman_original_parameter?: string;
   }[];
+  code?: number;
+  detail?: any;
+  error?: {
+    message: string;
+  };
+  message?: string;
 };

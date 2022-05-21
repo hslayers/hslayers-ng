@@ -8,7 +8,7 @@ import {HsAddDataVectorService} from '../vector.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {Subject, takeUntil} from 'rxjs';
-import {vectorDataObject} from '../vector-data.type';
+import {VectorDataObject} from '../vector-data.type';
 
 @Component({
   selector: 'hs-url-vector',
@@ -18,7 +18,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
 
-  data: vectorDataObject;
+  data: VectorDataObject;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(

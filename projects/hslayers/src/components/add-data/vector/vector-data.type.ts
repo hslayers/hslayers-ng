@@ -7,7 +7,7 @@ import {Source} from 'ol/source';
 import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
 import {accessRightsModel} from '../common/access-rights.model';
 
-export type vectorDataObject = {
+export type VectorDataObject = {
   abstract?: string;
   access_rights?: accessRightsModel;
   addUnder?: Layer<Source>;
@@ -24,7 +24,7 @@ export type vectorDataObject = {
   showDetails?: boolean;
   sourceLayer?: VectorLayer<VectorSource<Geometry>>;
   srs?: string;
-  sld?: string;
+  sld?: string | {content: string};
   title?: string;
   type?: string;
   url?: string;
