@@ -4,7 +4,7 @@ import {Source} from 'ol/source';
 import {FileDescriptor} from './file-descriptor.type';
 import {accessRightsModel} from '../../common/access-rights.model';
 
-export type fileDataObject = {
+export type FileDataObject = {
   abstract?: string;
   access_rights?: accessRightsModel;
   addUnder?: Layer<Source>;

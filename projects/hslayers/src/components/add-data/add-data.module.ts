@@ -7,11 +7,17 @@ import {HsAddDataComponent} from './add-data.component';
 import {HsAddDataFileModule} from './file/file.module';
 import {HsAddDataUrlModule} from './url/add-data-url.module';
 import {HsLanguageModule} from '../language/language.module';
+import {HsLayerOverwriteDialogComponent} from './dialog-overwrite-layer/overwrite-layer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsRenameLayerDialogComponent} from './dialog-rename-layer/rename-layer.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsAddDataComponent],
+  declarations: [
+    HsAddDataComponent,
+    HsLayerOverwriteDialogComponent,
+    HsRenameLayerDialogComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,

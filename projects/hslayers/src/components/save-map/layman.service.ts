@@ -46,7 +46,7 @@ import {
   wfsNotAvailable,
   wfsPendingOrStarting,
 } from './layman-utils';
-import {PostLayerResponse} from '../../common/layman/types/post-layer-response.type';
+import {PostPatchLayerResponse} from '../../common/layman/types/post-patch-layer-response.type';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {
   getAccessRights,
@@ -353,22 +353,22 @@ export class HsLaymanService implements HsSaverService {
   /**
    * Use resumable to chunk upload data larger than PREFER_RESUMABLE_SIZE_LIMIT(2MB)
    * @param files_to_async_upload - File array that will get uploaded asynchronously
-   * @param data - Layman's response after posting layers
+   * @param data - Layman's response after posting layer
    * @param endpoint - Layman's service endpoint
    */
   asyncUpload(
     files_to_async_upload: File[],
-    data: PostLayerResponse[],
+    data: PostPatchLayerResponse,
     endpoint: HsEndpoint
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       files_to_async_upload = files_to_async_upload.filter(
         (file_to_upload) =>
-          !!data[0]['files_to_upload'].find(
+          !!data['files_to_upload'].find(
             (expected_file) => file_to_upload.name === expected_file.file
           )
       );
-      const layername = data[0]['name'];
+      const layername = data['name'];
       const resumable = new Resumable({
         target: `${endpoint.url}/rest/workspaces/${endpoint.user}/layers/${layername}/chunk`,
         query: {

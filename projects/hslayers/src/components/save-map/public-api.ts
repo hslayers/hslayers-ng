@@ -22,3 +22,5 @@ export * from './types/map-composition.type';
 export * from './types/serialized-style.type';
 export * from './types/serialized-image.type';
 export * from './types/layer-json.type';
+export * from './types/async-upload.type';
+export * from './enums/overwrite-response';

@@ -24,21 +24,22 @@ import {
 } from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {Subject, takeUntil} from 'rxjs';
+import {VectorDataObject} from '../vector-data.type';
 import {accessRightsModel} from '../../common/access-rights.model';
-import {vectorDataObject} from '../vector-data.type';
 
 @Component({
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';
-  data: vectorDataObject;
+  data: VectorDataObject;
   fileInput: ElementRef;
   access_rights: accessRightsModel = {
     'access_rights.write': 'private',
@@ -162,7 +163,9 @@ export class HsAddDataVectorFileComponent
         } else {
           this.data.type = '';
         }
-        if (this.hsAddDataVectorService.isKml(this.data.type, this.data.url)) {
+        if (
+          this.hsAddDataVectorService.isKmlOrGpx(this.data.type, this.data.url)
+        ) {
           this.data.saveToLayman = false;
           this.data.saveAvailable = false;
         } else {

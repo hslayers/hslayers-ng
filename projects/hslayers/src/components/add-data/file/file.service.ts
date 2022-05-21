@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 
+import {FileDataObject} from './types/file-data-object.type';
 import {HsAddDataCommonFileService} from './../common/common-file.service';
 import {HsLanguageService} from './../../language/language.service';
 import {HsUploadedFiles} from './../../../common/upload/upload.component';
-import {fileDataObject} from './types/file-data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsFileService {
@@ -21,7 +21,7 @@ export class HsFileService {
     const filesRead = [];
     const files = Array.from(evt.fileList);
     const promises = [];
-    const data: fileDataObject = {};
+    const data: FileDataObject = {};
     try {
       if (!this.hsAddDataCommonFileService.filesValid(files, app)) {
         return;
@@ -63,7 +63,7 @@ export class HsFileService {
       );
     }
   }
-  checkShpFiles(data: fileDataObject, app: string): void {
+  checkShpFiles(data: FileDataObject, app: string): void {
     if (
       data.files.length == 3 ||
       this.hsAddDataCommonFileService.isZip(data.files[0].type)
@@ -82,7 +82,7 @@ export class HsFileService {
     }
   }
 
-  checkRasterFiles(data: fileDataObject, app: string): void {
+  checkRasterFiles(data: FileDataObject, app: string): void {
     if (
       data.files.length == 2 ||
       this.hsAddDataCommonFileService.isZip(data.files[0].type) ||

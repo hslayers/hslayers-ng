@@ -53,11 +53,11 @@ export class HsAddDataVectorService {
     });
   };
   constructor(
-    public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
-    public hsStylerService: HsStylerService,
-    public hsAddDataService: HsAddDataService,
-    public hsCommonEndpointsService: HsCommonEndpointsService
+    private hsMapService: HsMapService,
+    private hsUtilsService: HsUtilsService,
+    private hsStylerService: HsStylerService,
+    private hsAddDataService: HsAddDataService,
+    private hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   /**
@@ -266,8 +266,13 @@ export class HsAddDataVectorService {
     return layer;
   }
 
-  isKml(dataType: string, url: string): boolean {
-    if (dataType == 'kml' || url?.endsWith('kml')) {
+  isKmlOrGpx(dataType: string, url: string): boolean {
+    if (
+      dataType == 'kml' ||
+      url?.endsWith('kml') ||
+      dataType == 'gpx' ||
+      url?.endsWith('gpx')
+    ) {
       return true;
     } else {
       return false;
