@@ -25,8 +25,7 @@ import {HsUploadComponent} from '../../../common/upload/upload.component';
   template: '<div></div>',
 })
 export class HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   @Input() app = 'default';
   data: FileDataObject;
   fileInput: ElementRef;
@@ -75,8 +74,8 @@ export class HsAddDataFileBaseComponent
         this.clearInput();
       });
 
-    this.hsAddDataCommonFileService.pickEndpoint(this.app);
     this.setDataToDefault();
+    this.hsAddDataCommonFileService.pickEndpoint(this.app);
   }
 
   /**

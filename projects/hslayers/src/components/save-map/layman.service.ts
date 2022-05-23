@@ -6,6 +6,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
 import {GeoJSON, WFS} from 'ol/format';
+import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {
@@ -21,6 +22,7 @@ import {
 import {Source} from 'ol/source';
 
 import {AboutLayman} from './types/about-layman-response.type';
+import {AsyncUpload} from './types/async-upload.type';
 import {CompoData} from './types/compo-data.type';
 import {
   DeleteAllLayersResponse,
@@ -47,7 +49,8 @@ import {
   wfsPendingOrStarting,
 } from './layman-utils';
 import {PostPatchLayerResponse} from '../../common/layman/types/post-patch-layer-response.type';
-import {accessRightsModel} from '../add-data/common/access-rights.model';
+import {UpsertLayerObject} from './types/upsert-layer-object.type';
+import {WfsSyncParams} from './types/wfs-sync-params.type';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
@@ -57,19 +60,6 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
-
-export type WfsSyncParams = {
-  /** Endpoint description */
-  ep: HsEndpoint;
-  /** Array of features to add */
-  add: Feature<Geometry>[];
-  /** Array of features to update */
-  upd: Feature<Geometry>[];
-  /** Array of features to delete */
-  del: Feature<Geometry>[];
-  /** OpenLayers layer which has to have a title attribute */
-  layer: VectorLayer<VectorSource<Geometry>>;
-};
 
 @Injectable({
   providedIn: 'root',
@@ -225,50 +215,33 @@ export class HsLaymanService implements HsSaverService {
    * @param layerDesc - Previously fetched layer's descriptor
    * @returns Promise result of POST/PATCH
    */
-  private async makeUpsertLayerRequest(
+  async makeUpsertLayerRequest(
     endpoint: HsEndpoint,
-    geojson: Feature<Geometry>[],
-    description: {
-      title: string;
-      name: string;
-      crs: string;
-      workspace: string;
-      access_rights: accessRightsModel;
-      sld: string;
-    },
-    layerDesc?: HsLaymanLayerDescriptor
-  ): Promise<any> {
-    const formdata = new FormData();
+    geojson: GeoJSONFeatureCollection,
+    description: UpsertLayerObject
+  ): Promise<PostPatchLayerResponse> {
+    const formData = new FormData();
     if (geojson) {
-      formdata.append(
+      formData.append(
         'file',
         new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
         'blob.geojson'
       );
     }
-
-    const files_to_async_upload: File[] = [];
-    const sumFileSize = formdata
-      .getAll('file')
-      .filter((f) => (f as File).name)
-      .reduce((prev, f) => prev + (f as File).size, 0);
-    const async_upload = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
-    if (async_upload) {
-      this.switchFormDataToFileNames(formdata, files_to_async_upload);
-    }
+    const asyncUpload: AsyncUpload = this.prepareAsyncUpload(formData);
 
     //Empty blob causes Layman to return “Internal Server Error”
     if (description.sld) {
-      formdata.append(
+      formData.append(
         'sld',
         new Blob([description.sld], {type: 'application/octet-stream'}),
         'file.sld'
       );
     }
 
-    formdata.append('name', description.name);
-    formdata.append('title', description.title);
-    formdata.append('crs', description.crs);
+    formData.append('name', description.name);
+    formData.append('title', description.title);
+    formData.append('crs', description.crs);
 
     if (description.access_rights) {
       const write =
@@ -280,8 +253,8 @@ export class HsLaymanService implements HsSaverService {
           ? endpoint.user
           : description.access_rights['access_rights.read'] ?? 'EVERYONE';
 
-      formdata.append('access_rights.write', write);
-      formdata.append('access_rights.read', read);
+      formData.append('access_rights.write', write);
+      formData.append('access_rights.read', read);
     }
 
     const headers = new HttpHeaders();
@@ -292,32 +265,61 @@ export class HsLaymanService implements HsSaverService {
       withCredentials: true,
     };
     try {
-      let layerDesc2 = layerDesc;
+      let layerDesc;
       try {
-        if (layerDesc2 == undefined) {
-          layerDesc2 = await this.describeLayer(
-            endpoint,
-            description.name,
-            description.workspace
-          );
-        }
+        layerDesc = await this.describeLayer(
+          endpoint,
+          description.name,
+          description.workspace
+        );
       } catch (ex) {
         this.hsLogService.log(`Creating layer ${description.name}`);
       }
-      const data = await lastValueFrom(
-        this.http[layerDesc2?.name ? 'patch' : 'post']<any>(
-          `${endpoint.url}/rest/workspaces/${description.workspace}/layers${
-            layerDesc2?.name ? '/' + description.name : ''
-          }?${Math.random()}`,
-          formdata,
-          options
+      const exists = layerDesc?.name ? true : false;
+      const res = await this.tryLoadLayer(
+        endpoint,
+        formData,
+        asyncUpload,
+        layerDesc?.name,
+        exists
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
+   * Try to load layer to Layman's server
+   * @param endpoint - Endpoint's description
+   * @param formData - A set of key/value pairs representing layer fields and values, for HTTP request
+   * @param asyncUpload - Async upload data: Async upload state and files to upload
+   * @param layerName - Existing layer's name
+   * @returns Promise result of POST/PATCH
+   */
+  async tryLoadLayer(
+    endpoint: HsEndpoint,
+    formData: FormData,
+    asyncUpload: AsyncUpload,
+    layerName: string,
+    overwrite?: boolean
+  ): Promise<PostPatchLayerResponse> {
+    try {
+      let data = await lastValueFrom(
+        this.http[!overwrite ? 'post' : 'patch']<PostPatchLayerResponse>(
+          `${endpoint.url}/rest/workspaces/${endpoint.user}/layers${
+            !overwrite ? `?${Math.random()}` : `/${layerName}`
+          }`,
+          formData,
+          {withCredentials: true}
         )
       );
-
-      if (data && data.length > 0) {
-        if (async_upload) {
+      data = Array.isArray(data) ? data[0] : data;
+      //CHECK IF OK not auth etc.
+      if (data && !data.code) {
+        if (asyncUpload.async) {
           const promise = await this.asyncUpload(
-            files_to_async_upload,
+            asyncUpload.filesToAsyncUpload,
             data,
             endpoint
           );
@@ -328,9 +330,27 @@ export class HsLaymanService implements HsSaverService {
       } else {
         return data;
       }
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      this.hsLogService.error(error);
     }
+  }
+
+  /**
+   * Prepare files for async upload if needed
+   * @param formData - FormData object for HTTP request
+   * @returns File array for async upload
+   */
+  prepareAsyncUpload(formData: FormData): AsyncUpload {
+    const asyncUpload: AsyncUpload = {filesToAsyncUpload: []};
+    const sumFileSize = formData
+      .getAll('file')
+      .filter((f) => (f as File).name)
+      .reduce((prev, f) => prev + (f as File).size, 0);
+    const async_upload = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
+    if (async_upload) {
+      this.switchFormDataToFileNames(formData, asyncUpload.filesToAsyncUpload);
+    }
+    return asyncUpload;
   }
 
   /**
@@ -427,43 +447,58 @@ export class HsLaymanService implements HsSaverService {
     }
     const layerName = getLayerName(layer);
     let layerTitle = getTitle(layer);
-
-    const f = new GeoJSON();
     const crsSupported = this.supportedCRRList.includes(this.crs);
-    let geojson: Feature<Geometry>[];
-    if (withFeatures) {
-      if (!crsSupported) {
-        geojson = f.writeFeaturesObject(
-          layer
-            .getSource()
-            .getFeatures()
-            .map((f) => {
-              const f2 = f.clone();
-              f2.getGeometry().transform(this.crs, 'EPSG:3857');
-              return f2;
-            })
-        );
-      } else {
-        geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
-      }
-    }
 
     if ((endpoint?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
     setHsLaymanSynchronizing(layer, true);
-    await this.makeUpsertLayerRequest(endpoint, geojson, {
+    const data: UpsertLayerObject = {
       title: layerTitle,
       name: layerName,
       crs: crsSupported ? this.crs : 'EPSG:3857',
       workspace: getWorkspace(layer),
       access_rights: getAccessRights(layer),
       sld: getSld(layer),
-    });
+    };
+    await this.makeUpsertLayerRequest(
+      endpoint,
+      this.getFeatureGeoJSON(
+        layer.getSource().getFeatures(),
+        crsSupported,
+        withFeatures
+      ),
+      data
+    );
     setTimeout(async () => {
       await this.makeGetLayerRequest(endpoint, layer, app);
       setHsLaymanSynchronizing(layer, false);
     }, 2000);
+  }
+
+  getFeatureGeoJSON(
+    features: Feature<Geometry>[],
+    crsSupported: boolean,
+    withFeatures: boolean
+  ) {
+    const f = new GeoJSON();
+    let geojson: Feature<Geometry>[];
+    if (withFeatures) {
+      if (!crsSupported) {
+        geojson = f.writeFeaturesObject(
+          features.map((f) => {
+            const f2 = f.clone();
+            f2.getGeometry().transform(this.crs, 'EPSG:3857');
+            return f2;
+          })
+        );
+      } else {
+        geojson = f.writeFeaturesObject(features);
+      }
+      return geojson;
+    } else {
+      return;
+    }
   }
 
   /**

@@ -1,0 +1,31 @@
+<div class="modal in hs-layer-overwrite-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'COMMON.renameLayer' | translateHs: {app:
+          data.app}
+          }}</h4>
+        <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
+          attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y:auto">
+        <div class="form-floating m-2">
+          <input class="form-control" name="name" [(ngModel)]="newLayerName"
+            placeholder="'COMMON.name' | translateHs : data" />
+          <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translateHs : {app:
+            data.app}
+            }}</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="continue()"
+          data-dismiss="modal" [disabled]="newLayerName === data.currentName || !newLayerName">{{'COMMON.continue' |
+          translateHs: {app: data.app} }}</button>
+
+        <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
+          data-dismiss="modal">{{'COMMON.cancel' | translateHs: {app: data.app} }}</button>
+      </div>
+    </div>
+  </div>
+</div>

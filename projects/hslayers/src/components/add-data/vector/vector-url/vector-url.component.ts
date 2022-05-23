@@ -55,9 +55,12 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
    * Handler for adding non-wms service, file in template.
    */
   async add(): Promise<void> {
-    await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
-    this.hsLayoutService.setMainPanel('layermanager', this.app);
-    this.setDataToDefault();
+    const response: {layer; complete: boolean} =
+      await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
+    if (response.complete) {
+      this.hsLayoutService.setMainPanel('layermanager', this.app);
+      this.setDataToDefault();
+    }
   }
   /**
    * Reset data object to its default values

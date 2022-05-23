@@ -35,8 +35,10 @@
       <hs-new-layer-form [data]="data" [app]="app"></hs-new-layer-form>
     </div>
     <button class="btn btn-primary w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !data.sourceLayer"
-      (click)="add()"><i class="icon-plus"></i>
-      {{'COMMON.add' | translateHs: {app} }}
+      (click)="add()">
+      <i class="icon-plus" [hidden]="commonFileServiceAppRef.loadingToLayman"></i>
+      <img [src]="configRef._ajaxLoaderPath" [hidden]="!commonFileServiceAppRef.loadingToLayman" />
+      {{hsAddDataCommonFileService.getLoadingText(app)}}
     </button>
   </div>
 </form>

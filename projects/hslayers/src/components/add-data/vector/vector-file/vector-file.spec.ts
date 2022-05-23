@@ -121,11 +121,8 @@ describe('add-layers-vector', () => {
     component.data.srs = '';
     component.data.extract_styles = false;
 
-    const layer: Layer<Source> = await service.addNewLayer(
-      component.data,
-      'default'
-    );
-    expect(layer).toBeDefined();
-    expect(getTitle(layer)).toEqual('Cancer rates');
+    const response = await service.addNewLayer(component.data, 'default');
+    expect(response.layer).toBeDefined();
+    expect(getTitle(response.layer)).toEqual('Cancer rates');
   });
 });
