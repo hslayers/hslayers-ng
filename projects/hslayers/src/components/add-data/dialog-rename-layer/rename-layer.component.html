@@ -20,7 +20,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="continue()"
-          data-dismiss="modal" [disabled]="newLayerName === data.currentName || !newLayerName">{{'COMMON.continue' |
+          data-dismiss="modal" [disabled]="!newLayerName">{{'COMMON.continue' |
           translateHs: {app: data.app} }}</button>
 
         <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"

@@ -50,6 +50,10 @@ export class HsAddDataCommonFileService {
     private hsDialogContainerService: HsDialogContainerService
   ) {}
 
+  /**
+   * Get the params saved by the add data common file service for the current app
+   * @param app - App identifier
+   */
   get(app: string): HsAddDataCommonFileServiceParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new HsAddDataCommonFileServiceParams();
@@ -57,28 +61,16 @@ export class HsAddDataCommonFileService {
     return this.apps[app ?? 'default'];
   }
 
+  /**
+   * Clear service param values to default values
+   * @param app - App identifier
+   */
   clearParams(app: string): void {
     const appRef = this.get(app);
     appRef.asyncLoading = false;
     appRef.endpoint = null;
     appRef.loadingToLayman = false;
     this.hsLaymanService.totalProgress = 0;
-  }
-
-  getLoadingText(app: string): string {
-    return this.get(app).loadingToLayman
-      ? this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMMON',
-          'uploading',
-          undefined,
-          app
-        )
-      : this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMMON',
-          'add',
-          undefined,
-          app
-        );
   }
 
   /**
@@ -102,21 +94,17 @@ export class HsAddDataCommonFileService {
     }
   }
 
-  addTooltip(data: FileDataObject, app: string): string {
-    let tooltipString;
-    if (!data.srs && !data.name) {
-      tooltipString = 'nameAndSRSRequired';
-    }
-    if (data.srs && !data.name) {
-      tooltipString = 'nameRequired';
-    }
-    if (!data.srs && data.name) {
-      tooltipString = 'SRSRequired';
-    }
-    if (tooltipString) {
+  /**
+   * Get tooltip translated text
+   * @param data - File data object provided
+   * @param app - App identifier
+   * @returns Translated string
+   */
+  getToolTipText(data: FileDataObject, app: string): string {
+    if (!data.srs) {
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'ADDLAYERS',
-        tooltipString,
+        'SRSRequired',
         undefined,
         app
       );
@@ -130,6 +118,12 @@ export class HsAddDataCommonFileService {
     }
   }
 
+  /**
+   * Validate files before upload
+   * @param files - Files provided for upload
+   * @param app - App identifier
+   * @returns True, if files are valid for upload, false otherwise
+   */
   filesValid(files: File[], app: string): boolean {
     let isValid = true;
     if (files.filter((f) => f.size > FILE_UPLOAD_SIZE_LIMIT).length > 0) {
@@ -158,6 +152,11 @@ export class HsAddDataCommonFileService {
     return isValid;
   }
 
+  /**
+   * Check if file is a zip archive
+   * @param type - Uploaded file type
+   * @returns True, if upload file is a zip file, false otherwise
+   */
   isZip(type: string): boolean {
     return [
       'application/zip',
@@ -166,10 +165,20 @@ export class HsAddDataCommonFileService {
     ].includes(type);
   }
 
+  /**
+   * Check if file is a geotiff image
+   * @param type - Uploaded file type
+   * @returns True, if upload file is a geotiff image, false otherwise
+   */
   isGeotiff(type: string): boolean {
     return ['image/tiff', 'image/tif', 'image/gtiff'].includes(type);
   }
 
+  /**
+   * Check if file is a jp2 image
+   * @param type - Uploaded file type
+   * @returns True, if upload file is a jp2 image, false otherwise
+   */
   isJp2(type: string): boolean {
     return ['image/jp2'].includes(type);
   }
@@ -360,6 +369,12 @@ export class HsAddDataCommonFileService {
     return await dialogRef.waitResult();
   }
 
+  /**
+   * Process error server response after trying to load non-wms layer
+   * @param response - Http post/past response after loading layer to Layman
+   * @param data - Current data object to load
+   * @param app - App identifier
+   */
   async postLoadNonWmsError(
     response: PostPatchLayerResponse,
     data: FileDataObject,
@@ -391,6 +406,12 @@ export class HsAddDataCommonFileService {
     }
   }
 
+  /**
+   * Process success server response after trying to load non-wms layer
+   * @param response - Http post/past response after loading layer to Layman
+   * @param data - Current data object to load
+   * @param app - App identifier
+   */
   async postLoadNonWmsSuccess(
     response: PostPatchLayerResponse,
     data: FileDataObject,
@@ -472,6 +493,11 @@ export class HsAddDataCommonFileService {
     }
   }
 
+  /**
+   * Display error message toast, when called
+   * @param _options - Error message options: message, header or details
+   * @param app - App identifier
+   */
   displayErrorMessage(_options: errorMessageOptions = {}, app: string): void {
     this.hsToastService.createToastPopupMessage(
       _options.header,
@@ -484,6 +510,11 @@ export class HsAddDataCommonFileService {
     );
   }
 
+  /**
+   * Display error message toast, when called and broadcast event about a failed attempt to load wms layer
+   * @param _options - Error message options: message, header or details
+   * @param app - App identifier
+   */
   catchError(_options: errorMessageOptions = {}, app: string): void {
     this.displayErrorMessage(
       {
@@ -496,16 +527,30 @@ export class HsAddDataCommonFileService {
     this.get(app).layerAddedAsWms.next(false);
   }
 
+  /**
+   * Check if srs from data is supported by Layman
+   * @param data - Current data object to load
+   * @returns True, if srs is supported, false otherwise
+   */
   isSRSSupported(data: FileDataObject): boolean {
     return this.hsLaymanService.supportedCRRList.some((epsg) =>
       data.srs.endsWith(epsg)
     );
   }
 
+  /**
+   * Check if user is authorized as Layman user
+   * @returns True, if user is authorized, false otherwise
+   */
   isAuthorized(): boolean {
     return this.hsLaymanService.getLaymanEndpoint().authenticated;
   }
 
+  /**
+   * Set data object name based on uploaded files
+   * @param data - Current data object to load
+   * @param app - App identifier
+   */
   setDataName(data: FileDataObject, app: string): void {
     data.name = data.files[0].name.slice(0, -4);
     data.title = data.files[0].name.slice(0, -4);

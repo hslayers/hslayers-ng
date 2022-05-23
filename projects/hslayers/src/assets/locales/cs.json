@@ -44,6 +44,11 @@
       "selectAll": "Označit všechny vrstvy",
       "submitLayerName": "Zadejte název vrsty",
       "submitLayerTitle": "Zadejte titulek vrstvy"
+    },
+    "dialogOverWrite": {
+      "overwriteExistingLayer": "Vrstva již existuje!",
+      "doYouWishToOverwrite": "Chcete přepsat vrstvu:",
+      "noteForRepetiveDialog": "*Poznámka: Přejmenování a nahrání vrstvy selhalo, protože vrstva s tímto jménem již existuje!"
     }
   },
   "ADDLAYERS": {

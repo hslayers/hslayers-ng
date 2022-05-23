@@ -38,10 +38,10 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
+    const commonFileServiceRef = this.hsAddDataCommonFileService.get(
       this.app
     );
-    commonFileServiceAppRef.dataObjectChanged
+    commonFileServiceRef.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
         this.data.showDetails = true;

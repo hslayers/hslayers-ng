@@ -1,33 +1,34 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+import {FileDataObject} from '../../file/types/file-data-object.type';
 import {
   HsAddDataCommonFileService,
   HsAddDataCommonFileServiceParams,
 } from '../common-file.service';
 import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {fileDataObject} from '../../file/types/file-data-object.type';
 
 @Component({
   selector: 'hs-add-layer-authorized',
   templateUrl: 'add-layer-authorized.component.html',
 })
 export class HsAddLayerAuthorizedComponent implements OnInit {
-  @Input() data: fileDataObject;
+  @Input() data: FileDataObject;
   @Input() app = 'default';
-  appRef: HsAddDataCommonFileServiceParams;
+  commonFileServiceRef: HsAddDataCommonFileServiceParams;
   configRef: HsConfigObject;
-
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsUtilsService: HsUtilsService,
     public hsLaymanService: HsLaymanService,
     private hsConfig: HsConfig
   ) {}
 
   ngOnInit() {
-    this.appRef = this.hsAddDataCommonFileService.get(this.app);
+    this.commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     this.configRef = this.hsConfig.get(this.app);
+  }
+
+  async addAsWms(): Promise<any> {
+    await this.hsAddDataCommonFileService.addAsWms(this.data, this.app);
   }
 }
