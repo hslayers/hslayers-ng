@@ -295,7 +295,7 @@ export class HsAddDataVectorService {
         features: data.features,
         path: this.hsUtilsService.undefineEmptyString(data.folder_name),
         access_rights: data.access_rights,
-        workspace: commonFileRef.endpoint.user,
+        workspace: commonFileRef.endpoint?.user,
         queryCapabilities:
           data.dataType != 'kml' &&
           data.dataType != 'gpx' &&
