@@ -1,17 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Input} from '@angular/core';
+
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsLaymanLoginComponent} from './layman-login.component';
-import {HttpClient} from '@angular/common/http';
-import {Input} from '@angular/core';
+import {HsLaymanService} from '../../components/save-map/layman.service';
 
 @Component({
   selector: 'hs-layman-current-user',
   templateUrl: './layman-current-user.html',
 })
-export class HsLaymanCurrentUserComponent {
-  @Input() endpoint;
+export class HsLaymanCurrentUserComponent implements OnInit {
   @Input() app = 'default';
+  @Input() endpoint?;
   monitorTries = 0;
   DEFAULT_TIMER_INTERVAL = 2000;
   MAX_MONITOR_TRIES = 100;
@@ -19,10 +20,15 @@ export class HsLaymanCurrentUserComponent {
   getCurrentUserTimer;
 
   constructor(
-    private $http: HttpClient,
+    private hsLaymanService: HsLaymanService,
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService
   ) {}
+  ngOnInit(): void {
+    if (!this.endpoint) {
+      this.endpoint = this.hsLaymanService.getLaymanEndpoint();
+    }
+  }
 
   isGuest() {
     return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';

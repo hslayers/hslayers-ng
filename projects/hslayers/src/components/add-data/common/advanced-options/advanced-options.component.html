@@ -2,10 +2,10 @@
   <div class="form-floating mb-3">
     <input class="form-control" name="folder" [(ngModel)]="data.folder_name"
       placeholder="'ADDLAYERS.folderName' | translateHs : {app} " />
-    <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translateHs : {app} }}</label>
+    <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translateHs : {app}
+      }}</label>
   </div>
-
-  <div class="form-group" *ngIf="hsAddDataVectorService.isKml(data.type, data.url)"><!-- TODO: Remove function call from template -->
+  <div class="form-group" *ngIf="isKml">
     <input type="checkbox" name="extractStyles" [(ngModel)]="data.extract_styles" />
     <label class="capabilities_label control-label ms-1">{{'ADDLAYERS.VECTOR.extractStyles' |
       translateHs : {app} }}</label>

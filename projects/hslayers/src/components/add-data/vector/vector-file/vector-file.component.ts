@@ -36,8 +36,7 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -49,19 +48,19 @@ export class HsAddDataVectorFileComponent
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
-  commonFileServiceAppRef: HsAddDataCommonFileServiceParams;
+  commonFileServiceRef: HsAddDataCommonFileServiceParams;
   configRef: HsConfigObject;
   private ngUnsubscribe = new Subject<void>();
   constructor(
-    public hsAddDataVectorService: HsAddDataVectorService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsToastService: HsToastService,
+    private hsAddDataVectorService: HsAddDataVectorService,
+    private hsAddDataCommonFileService: HsAddDataCommonFileService,
+    private hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsLayerManagerService: HsLayerManagerService,
-    public hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayoutService: HsLayoutService,
-    public hsUtilsService: HsUtilsService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsLayerManagerService: HsLayerManagerService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsLayoutService: HsLayoutService,
+    private hsUtilsService: HsUtilsService,
     private hsConfig: HsConfig
   ) {}
   ngAfterViewInit(): void {
@@ -74,11 +73,9 @@ export class HsAddDataVectorFileComponent
   }
 
   ngOnInit(): void {
-    this.commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
-      this.app
-    );
+    this.commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     this.configRef = this.hsConfig.get(this.app);
-    this.commonFileServiceAppRef.dataObjectChanged
+    this.commonFileServiceRef.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
         this.data.showDetails = true;
@@ -186,9 +183,7 @@ export class HsAddDataVectorFileComponent
         } else {
           this.data.type = '';
         }
-        if (
-          this.hsAddDataVectorService.isKmlOrGpx(this.data.type, this.data.url)
-        ) {
+        if (this.hsAddDataVectorService.isKml(this.data.type, this.data.url)) {
           this.data.saveToLayman = false;
           this.data.saveAvailable = false;
         } else {

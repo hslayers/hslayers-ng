@@ -4,10 +4,11 @@ import {GPX, GeoJSON, KML} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Projection, get as getProjection} from 'ol/proj';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
-import {get as getProjection} from 'ol/proj';
 
+import Feature from 'ol/Feature';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
@@ -23,7 +24,6 @@ import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descripto
 import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
 import {
   getHsLaymanSynchronizing,
-  getName,
   setDefinition,
 } from '../../../common/layer-extensions';
 import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
@@ -79,7 +79,7 @@ export class HsAddDataVectorService {
    * @param addUnder -
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
-   * @returns Return Promise which return OpenLayers vector layer
+   * @returns Promise which return OpenLayers vector layer
    */
   addVectorLayer(
     type: string,
@@ -141,7 +141,7 @@ export class HsAddDataVectorService {
    * @param abstract - Abstract of new layer
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
-   * @returns Return Promise which return OpenLayers vector layer
+   * @returns Promise which return OpenLayer's vector layer
    */
   async createVectorLayer(
     type: string,
@@ -208,6 +208,11 @@ export class HsAddDataVectorService {
     return lyr;
   }
 
+  /**
+   * Fit map view to layer's extent
+   * @param lyr - Provided layer
+   * @param app - App identifier
+   */
   fitExtent(lyr: VectorLayer<VectorSource<Geometry>>, app: string): void {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
@@ -217,10 +222,19 @@ export class HsAddDataVectorService {
     }
   }
 
+  /**
+   * Set catalogue as active HSLayers panel
+   * @param app - App identifier
+   */
   setPanelToCatalogue(app: string): void {
     this.hsAddDataService.apps[app].dsSelected = 'catalogue';
   }
 
+  /**
+   * Listen to any source changes made
+   * @param src - Layer source provided
+   * @param app - App identifier
+   */
   changeListener(src, app: string): any {
     if (src.getState() == 'ready') {
       setTimeout(() => {
@@ -233,13 +247,23 @@ export class HsAddDataVectorService {
     }
   }
 
-  async awaitLayerSync(layer): Promise<any> {
+  /**
+   * Wait until layer synchonization is complete
+   * @param layer - Layer provided
+   */
+  async awaitLayerSync(layer: Layer): Promise<any> {
     while (getHsLaymanSynchronizing(layer)) {
       await new Promise((r) => setTimeout(r, 200));
     }
     return true;
   }
 
+  /**
+   * Add new layer to map and Layman (if possible)
+   * @param data - Layer data object provided
+   * @param app - App identifier
+   * @returns Created layer and layer adding state (true, if complete, false otherwise)
+   */
   async addNewLayer(
     data: VectorDataObject,
     app: string
@@ -292,6 +316,13 @@ export class HsAddDataVectorService {
     return addLayerRes;
   }
 
+  /**
+   * Check if layer with the same name exists in Layman database and provide the user to choose
+   * what action he wishes to take
+   * @param data - Layer data object provided
+   * @param app - App identifier
+   * @returns Action the user took, inside promted dialog
+   */
   async checkForLayerInLayman(
     data: VectorDataObject,
     app: string
@@ -355,13 +386,14 @@ export class HsAddDataVectorService {
     return result;
   }
 
-  isKmlOrGpx(dataType: string, url: string): boolean {
-    if (
-      dataType == 'kml' ||
-      url?.endsWith('kml') ||
-      dataType == 'gpx' ||
-      url?.endsWith('gpx')
-    ) {
+  /**
+   * Check if uploaded data are KML
+   * @param dataType - Uploaded data type
+   * @param url -  Upload source url
+   * @returns True, if data are in KML format, false otherwise
+   */
+  isKml(dataType: string, url: string): boolean {
+    if (dataType == 'kml' || url?.endsWith('kml')) {
       return true;
     } else {
       return false;
@@ -369,8 +401,10 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * @param extent -
-   * @param src -
+   * Try to fit layer extent as map view
+   * @param extent - Extent provided
+   * @param src - Layer source provided
+   * @param app - App identifier
    */
   tryFit(extent, src, app: string): void {
     if (
@@ -387,25 +421,30 @@ export class HsAddDataVectorService {
 
   /**
    * Tries to guess file type based on the file extension
-   * @param name - Parsed file name from uploaded file
+   * @param extension - Parsed file extension from uploaded file
    */
-  tryGuessTypeFromNameOrUrl(url: string): string {
-    if (url !== undefined) {
-      if (url.toLowerCase().endsWith('kml')) {
+  tryGuessTypeFromNameOrUrl(extension: string): string {
+    if (extension !== undefined) {
+      if (extension.toLowerCase().endsWith('kml')) {
         return 'kml';
       }
-      if (url.toLowerCase().endsWith('gpx')) {
+      if (extension.toLowerCase().endsWith('gpx')) {
         return 'gpx';
       }
       if (
-        url.toLowerCase().endsWith('geojson') ||
-        url.toLowerCase().endsWith('json')
+        extension.toLowerCase().endsWith('geojson') ||
+        extension.toLowerCase().endsWith('json')
       ) {
         return 'geojson';
       }
     }
   }
 
+  /**
+   * Create a object containing data from XML dataset
+   * @param file - File uploaded by the user
+   * @param type - Data type
+   */
   async createVectorObjectFromXml(file: File, type: string): Promise<any> {
     try {
       const uploadedContent = await this.readUploadedFileAsURL(file);
@@ -422,7 +461,13 @@ export class HsAddDataVectorService {
     }
   }
 
-  async readUploadedFile(file: any, app: string): Promise<any> {
+  /**
+   * Read uploaded file and extract the data as JSON object
+   * @param file - File uploaded by the user
+   * @param app - App identifier
+   * @returns JSON object with parsed data
+   */
+  async readUploadedFile(file: File, app: string): Promise<any> {
     let uploadedData: any = {};
     const fileType = this.tryGuessTypeFromNameOrUrl(file.name.toLowerCase());
     switch (fileType) {
@@ -449,8 +494,10 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * Reads and returns features from uploaded file as objects
+   * Read features from uploaded file as objects
    * @param json - Uploaded file parsed as json object
+   * @param app - App identifier
+   * @returns JSON object with file name and read features
    */
   createVectorObjectFromJson(json: any, app: string): any {
     let features = [];
@@ -469,7 +516,17 @@ export class HsAddDataVectorService {
     return object;
   }
 
-  transformFeaturesIfNeeded(features, projection, app: string): void {
+  /**
+   * Transform features to other projection if needed
+   * @param features - Extracted features from uploaded file
+   * @param projection - Projection to which transform the features
+   * @param app - App identifier
+   */
+  transformFeaturesIfNeeded(
+    features: Feature[],
+    projection: Projection,
+    app: string
+  ): void {
     const mapProjection = this.hsMapService
       .getMap(app)
       .getView()
@@ -488,10 +545,11 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * Converts uploaded kml or gpx files into GeoJSON format / parse loaded GeoJSON
+   * Convert uploaded kml or gpx files into GeoJSON format / parse loaded GeoJSON
    * @param file - Uploaded  kml, gpx or GeoJSON files
+   * @param app - App identifier
    */
-  async convertUploadedData(file: any, app: string): Promise<any> {
+  async convertUploadedData(file: File, app: string): Promise<any> {
     let parser;
     const uploadedData: any = {};
     try {
@@ -525,6 +583,11 @@ export class HsAddDataVectorService {
     }
   }
 
+  /**
+   * Try to find layer in Layman's database using Layman friendly layer name
+   * @param name - Layman friendly layer name to search by
+   * @param app - App identifier
+   */
   async lookupLaymanLayer(
     name: string,
     app: string

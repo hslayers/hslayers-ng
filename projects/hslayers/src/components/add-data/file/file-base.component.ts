@@ -52,10 +52,10 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnInit(): void {
-    const commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
+    const commonFileServiceRef = this.hsAddDataCommonFileService.get(
       this.app
     );
-    commonFileServiceAppRef.dataObjectChanged
+    commonFileServiceRef.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
         this.hsAddDataCommonService.get(this.app).showDetails = true;
@@ -63,7 +63,7 @@ export class HsAddDataFileBaseComponent
         this.clearInput();
       });
 
-    commonFileServiceAppRef.layerAddedAsWms
+    commonFileServiceRef.layerAddedAsWms
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((success) => {
         if (success) {
