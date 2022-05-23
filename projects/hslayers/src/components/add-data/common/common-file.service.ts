@@ -473,12 +473,7 @@ export class HsAddDataCommonFileService {
         layerName,
         endpoint.user
       );
-      if (
-        ['UPDATING'].includes(
-          descriptor?.layman_metadata?.publication_status
-        ) ||
-        ['STARTED', 'PENDING'].includes(descriptor?.wms.status)
-      ) {
+      if (['STARTED', 'PENDING'].includes(descriptor?.wms.status)) {
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(this.describeNewLayer(endpoint, layerName));
