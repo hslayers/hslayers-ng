@@ -1,24 +1,32 @@
 import {Injectable} from '@angular/core';
 
 import {GPX, GeoJSON, KML} from 'ol/format';
+import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 import {get as getProjection} from 'ol/proj';
 
+import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
+import {HsLaymanService} from '../../save-map/layman.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
+import {OverwriteResponse} from '../enums/overwrite-response';
+import {UpsertLayerObject} from '../../save-map/types/upsert-layer-object.type';
+import {VectorDataObject} from './vector-data.type';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
 import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
 import {
   getHsLaymanSynchronizing,
+  getName,
   setDefinition,
 } from '../../../common/layer-extensions';
+import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +65,8 @@ export class HsAddDataVectorService {
     private hsUtilsService: HsUtilsService,
     private hsStylerService: HsStylerService,
     private hsAddDataService: HsAddDataService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    private hsAddDataCommonFileService: HsAddDataCommonFileService,
+    private hsLaymanService: HsLaymanService
   ) {}
 
   /**
@@ -95,6 +104,7 @@ export class HsAddDataVectorService {
           options,
           app
         );
+
         /* 
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
@@ -230,7 +240,25 @@ export class HsAddDataVectorService {
     return true;
   }
 
-  async addNewLayer(data: any, app: string): Promise<any> {
+  async addNewLayer(
+    data: VectorDataObject,
+    app: string
+  ): Promise<{layer: VectorLayer<VectorSource<Geometry>>; complete: boolean}> {
+    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+    if (!commonFileRef.endpoint) {
+      this.hsAddDataCommonFileService.pickEndpoint(app);
+    }
+    const addLayerRes: {
+      layer: VectorLayer<VectorSource<Geometry>>;
+      complete: boolean;
+    } = {layer: null, complete: true};
+    if (data.saveToLayman && data.saveAvailable) {
+      const checkResult = await this.checkForLayerInLayman(data, app);
+      if (checkResult == OverwriteResponse.cancel) {
+        addLayerRes.complete = false;
+        return addLayerRes;
+      }
+    }
     const layer = await this.addVectorLayer(
       data.features.length != 0 ? data.type : data.dataType,
       data.url || data.base64url,
@@ -243,9 +271,7 @@ export class HsAddDataVectorService {
         features: data.features,
         path: this.hsUtilsService.undefineEmptyString(data.folder_name),
         access_rights: data.access_rights,
-        workspace: this.hsCommonEndpointsService.endpoints.filter(
-          (ep) => ep.type == 'layman'
-        )[0]?.user,
+        workspace: commonFileRef.endpoint.user,
         queryCapabilities:
           data.dataType != 'kml' &&
           data.dataType != 'gpx' &&
@@ -257,13 +283,76 @@ export class HsAddDataVectorService {
       data.addUnder
     );
     this.fitExtent(layer, app);
-
+    addLayerRes.layer = layer;
     if (data.saveToLayman) {
       this.awaitLayerSync(layer).then(() => {
         layer.getSource().dispatchEvent('addfeature');
       });
     }
-    return layer;
+    return addLayerRes;
+  }
+
+  async checkForLayerInLayman(
+    data: VectorDataObject,
+    app: string
+  ): Promise<OverwriteResponse> {
+    let result: OverwriteResponse;
+    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+    commonFileRef.loadingToLayman = true;
+    const fiendlyName = getLaymanFriendlyLayerName(data.name);
+    const descriptor = await this.lookupLaymanLayer(fiendlyName, app);
+    if (descriptor?.name == fiendlyName) {
+      result = await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
+        data,
+        app
+      );
+      switch (result) {
+        case OverwriteResponse.overwrite:
+          const crsSupported = this.hsLaymanService.supportedCRRList.includes(
+            data.srs
+          );
+          const layerDesc: UpsertLayerObject = {
+            title: data.title,
+            name: fiendlyName,
+            crs: crsSupported ? data.srs : 'EPSG:3857',
+            workspace: commonFileRef.endpoint.user,
+            access_rights: data.access_rights,
+            sld: data.sld as string,
+          };
+          let geoJson: GeoJSONFeatureCollection;
+          if (data.features?.length > 0) {
+            geoJson = this.hsLaymanService.getFeatureGeoJSON(
+              data.features,
+              crsSupported,
+              true
+            );
+          }
+          const upsertReq = await this.hsLaymanService.makeUpsertLayerRequest(
+            commonFileRef.endpoint,
+            geoJson,
+            layerDesc
+          );
+          await this.hsLaymanService.describeLayer(
+            commonFileRef.endpoint,
+            upsertReq.name,
+            commonFileRef.endpoint.user
+          );
+          // const found = this.hsMapService
+          //   .getLayersArray(app)
+          //   .filter((l) => getName(l) == data.name);
+          // if (found) {
+          //   this.hsMapService.apps[app].map.removeLayer(found as any);
+          // }
+          break;
+        case OverwriteResponse.add:
+          break;
+        case OverwriteResponse.cancel:
+          commonFileRef.loadingToLayman = false;
+          break;
+        default:
+      }
+    }
+    return result;
   }
 
   isKmlOrGpx(dataType: string, url: string): boolean {
@@ -434,5 +523,27 @@ export class HsAddDataVectorService {
     } catch (e) {
       console.error('Uploaded file is not supported' + e);
     }
+  }
+
+  async lookupLaymanLayer(
+    name: string,
+    app: string
+  ): Promise<HsLaymanLayerDescriptor> {
+    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+    let descriptor: HsLaymanLayerDescriptor;
+    if (this.hsAddDataCommonFileService.isAuthorized()) {
+      this.hsAddDataCommonFileService.pickEndpoint(app);
+      try {
+        descriptor = await this.hsLaymanService.describeLayer(
+          commonFileRef.endpoint,
+          name,
+          commonFileRef.endpoint.user
+        );
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+    return descriptor;
   }
 }

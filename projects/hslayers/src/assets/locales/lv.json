@@ -44,6 +44,9 @@
       "selectAll": "Izvēlēties visus slāņus",
       "submitLayerName": "Ievadiet slāņa nosaukumu",
       "submitLayerTitle": "Ievadiet slāņa nosaukumu"
+    },
+    "dialogOverWrite": {
+      "overwriteExistingLayer": "Slānis jau eksistē. Vai vēlaties pārrakstīt layer:"
     }
   },
   "ADDLAYERS": {

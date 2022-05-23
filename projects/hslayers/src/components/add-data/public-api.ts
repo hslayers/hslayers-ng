@@ -9,3 +9,4 @@ export * from './add-data.module';
 export * from './add-data.service';
 export * from './dialog-overwrite-layer/overwrite-layer.component';
 export * from './dialog-rename-layer/rename-layer.component';
+export * from '../add-data/enums/overwrite-response';

@@ -23,4 +23,5 @@ export * from './types/serialized-style.type';
 export * from './types/serialized-image.type';
 export * from './types/layer-json.type';
 export * from './types/async-upload.type';
-export * from './enums/overwrite-response';
+export * from './types/upsert-layer-object.type';
+export * from './types/wfs-sync-params.type';

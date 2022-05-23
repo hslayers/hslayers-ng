@@ -10,9 +10,13 @@ import {
 
 import {Cluster} from 'ol/source';
 
-import {HsAddDataCommonFileService} from '../../common/common-file.service';
+import {
+  HsAddDataCommonFileService,
+  HsAddDataCommonFileServiceParams,
+} from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
+import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
@@ -45,6 +49,8 @@ export class HsAddDataVectorFileComponent
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
+  commonFileServiceAppRef: HsAddDataCommonFileServiceParams;
+  configRef: HsConfigObject;
   private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsAddDataVectorService: HsAddDataVectorService,
@@ -55,7 +61,8 @@ export class HsAddDataVectorFileComponent
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    private hsConfig: HsConfig
   ) {}
   ngAfterViewInit(): void {
     this.fileInput = this.hsUploadComponent.getFileInput();
@@ -67,10 +74,11 @@ export class HsAddDataVectorFileComponent
   }
 
   ngOnInit(): void {
-    const commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
+    this.commonFileServiceAppRef = this.hsAddDataCommonFileService.get(
       this.app
     );
-    commonFileServiceAppRef.dataObjectChanged
+    this.configRef = this.hsConfig.get(this.app);
+    this.commonFileServiceAppRef.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
         this.data.showDetails = true;
@@ -100,9 +108,24 @@ export class HsAddDataVectorFileComponent
    * Handler for adding non-wms service, file in template.
    */
   async add(): Promise<void> {
-    this.uploadType == 'new'
-      ? await this.hsAddDataVectorService.addNewLayer(this.data, this.app)
-      : await this.updateExistingLayer();
+    if (this.uploadType == 'new') {
+      const response = await this.hsAddDataVectorService.addNewLayer(
+        this.data,
+        this.app
+      );
+      if (response.complete) {
+        this.moveToLayerManager();
+      }
+    } else {
+      await this.updateExistingLayer();
+      this.moveToLayerManager();
+    }
+  }
+
+  /**
+   * After layer has successfully been added to the map, move to LM panel and clean up the code
+   */
+  moveToLayerManager(): void {
     this.hsLayoutService.setMainPanel('layermanager', this.app);
     this.hsAddDataVectorService.setPanelToCatalogue(this.app);
     this.setToDefault();
@@ -257,5 +280,6 @@ export class HsAddDataVectorFileComponent
       sourceLayer: null,
       vectorLayers: null,
     };
+    this.hsAddDataCommonFileService.clearParams(this.app);
   }
 }

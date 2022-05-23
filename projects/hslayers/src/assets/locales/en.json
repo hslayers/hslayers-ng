@@ -44,6 +44,9 @@
       "selectAll": "Select all Layers",
       "submitLayerName": "Fill in layer name",
       "submitLayerTitle": "Fill in layer title"
+    },
+    "dialogOverWrite": {
+      "overwriteExistingLayer": "Layer already exists! Do You wish to overwrite layer:"
     }
   },
   "ADDLAYERS": {
