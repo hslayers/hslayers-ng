@@ -191,6 +191,7 @@ describe('compositions', () => {
               null
             ),
             null,
+            null,
             null
           ),
         },

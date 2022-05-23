@@ -10,9 +10,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {Layer} from 'ol/layer';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 
 import {HsAddDataVectorFileComponent} from './vector-file.component';
