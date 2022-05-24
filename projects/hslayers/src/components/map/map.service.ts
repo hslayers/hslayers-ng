@@ -1100,10 +1100,17 @@ export class HsMapService {
    * @param extent - Extent provided
    * @param app - App identifier
    */
-  fitExtent(extent: number[], app: string): void {
+  async fitExtent(extent: number[], app: string): Promise<void> {
+    const mapSize = this.getMap(app ?? DEFAULT).getSize();
+    if (!mapSize.every((p) => p > 0)) {
+      console.warn(
+        'Tried to fit extent but one of map dimensions were 0. Will wait a bit and try again!'
+      );
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
     this.getMap(app ?? DEFAULT)
       .getView()
-      .fit(extent, {size: this.getMap(app ?? DEFAULT).getSize()});
+      .fit(extent, {size: mapSize});
   }
 
   /**
