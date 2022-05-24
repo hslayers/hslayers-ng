@@ -348,7 +348,7 @@ export class HsAddDataVectorService {
             crs: crsSupported ? data.srs : 'EPSG:3857',
             workspace: commonFileRef.endpoint.user,
             access_rights: data.access_rights,
-            sld: data.sld as string,
+            sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
           };
           let geoJson: GeoJSONFeatureCollection;
           if (data.features?.length > 0) {
