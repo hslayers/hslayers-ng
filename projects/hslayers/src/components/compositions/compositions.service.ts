@@ -429,21 +429,25 @@ export class HsCompositionsService {
    * @param app - App identifier
    */
   async tryParseCompositionFromUrlParam(app: string): Promise<void> {
+    const configRef = this.hsConfig.get(app);
     let id =
-      this.hsConfig.get(app).defaultComposition ||
+      configRef.defaultComposition ||
       this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
     if (id) {
-      if (
-        !id.includes('http') &&
-        !id.includes(this.hsConfig.get(app).status_manager_url)
-      ) {
+      if (!id.includes('http') && !id.includes(configRef.status_manager_url)) {
         id =
           this.hsStatusManagerService.endpointUrl(app) +
           '?request=load&id=' +
           id;
       }
       try {
+        const defaultViewProperites = configRef.default_view?.getProperties();
+        this.hsCompositionsParserService.get(app).suspendZoomingToExtent =
+          defaultViewProperites?.hasOwnProperty('center') &&
+          defaultViewProperites?.hasOwnProperty('zoom');
         await this.hsCompositionsParserService.loadUrl(id, app);
+        this.hsCompositionsParserService.get(app).suspendZoomingToExtent =
+          false;
       } catch (error) {
         this.get(app).compositionNotFoundAtUrl.next({error, app});
         this.$log.warn(error);
