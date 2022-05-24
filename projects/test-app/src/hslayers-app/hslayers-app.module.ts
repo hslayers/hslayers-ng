@@ -1,17 +1,13 @@
-import {
-  ApplicationRef,
-  DoBootstrap,
-  NgModule,
-  Type,
-} from '@angular/core';
+import {ApplicationRef, DoBootstrap, NgModule, Type} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {HslayersAppComponent} from './hslayers-app.component';
 import {HslayersModule} from '../../../hslayers/src/public-api';
+import {SomeModule} from './some-panel/some-panel.module';
 
 @NgModule({
   declarations: [HslayersAppComponent],
-  imports: [BrowserModule, HslayersModule],
+  imports: [BrowserModule, HslayersModule, SomeModule],
   providers: [],
   bootstrap: [HslayersAppComponent],
 })
