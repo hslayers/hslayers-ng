@@ -14,10 +14,15 @@ import {transformExtent} from 'ol/proj';
 import CircleStyle from 'ol/style/Circle';
 import {HsConfig} from 'hslayers-ng/src/config.service';
 import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
+import {HsLayoutService} from 'hslayers-ng/src/components/layout/layout.service';
+import {HsPanelContainerService} from 'hslayers-ng/src/components/layout/panels/panel-container.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
+import {HsSidebarService} from 'hslayers-ng/src/components/sidebar/sidebar.service';
 import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
 import {InterpolatedSource} from 'hslayers-ng/src/common/layers/hs.source.interpolated';
+
 import {PopupWidgetComponent} from './popup-widget.component';
+import {SomeComponent} from './some-panel/some-panel.component';
 
 @Component({
   selector: 'hslayers-app',
@@ -30,8 +35,26 @@ export class HslayersAppComponent {
     private hsEventBusService: HsEventBusService,
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
     private hsUtilsService: HsUtilsService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    public hsSidebarService: HsSidebarService,
+    public hsPanelContainerService: HsPanelContainerService,
+    public hsLayoutService: HsLayoutService
   ) {
+    /* Create new button in the sidebar */
+    this.hsSidebarService.addButton({
+      panel: 'custom',
+      module: 'some',
+      order: 0,
+      title: 'Custom panel',
+      description: 'Custom panel with some fancy features',
+      icon: 'icon-analytics-piechart',
+    });
+    /* Create new panel itself */
+    this.hsPanelContainerService.create(SomeComponent, {});
+    /* Switch to it */
+    this.hsEventBusService.layoutLoads.subscribe(() => {
+      this.hsLayoutService.setDefaultPanel('custom');
+    });
     const apps = [
       {
         name: 'default',
@@ -88,7 +111,6 @@ export class HslayersAppComponent {
         source: interpolatedSource as any,
         opacity: 0.5,
       });
-
 
       //Mandatory, otherwise nothing will be loaded with source loader
       const idwVectorLayer = new VectorLayer({
