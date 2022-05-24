@@ -431,8 +431,8 @@ export class HsCompositionsService {
   async tryParseCompositionFromUrlParam(app: string): Promise<void> {
     const configRef = this.hsConfig.get(app);
     let id =
-      configRef.defaultComposition ||
-      this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition);
+      this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition) ||
+      configRef.defaultComposition;
     if (id) {
       if (!id.includes('http') && !id.includes(configRef.status_manager_url)) {
         id =
