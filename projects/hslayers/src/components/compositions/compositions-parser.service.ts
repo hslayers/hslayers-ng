@@ -50,6 +50,7 @@ class HsCompositionsParserParams {
   current_composition_title = '';
   current_composition_url: string;
   current_composition_workspace: string;
+  suspendZoomingToExtent: boolean;
 }
 @Injectable({
   providedIn: 'root',
@@ -360,7 +361,7 @@ export class HsCompositionsParserService {
     this.hsEventBusService.currentComposition.next(obj); //Doesnt seems to be used
     this.get(app).current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
-    if (possibleExtent !== undefined) {
+    if (possibleExtent !== undefined && !this.get(app).suspendZoomingToExtent) {
       const extent = parseExtent(possibleExtent);
       if (
         (extent[0][0] < -90 && extent[0][1] < -180) ||
