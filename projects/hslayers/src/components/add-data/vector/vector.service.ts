@@ -385,12 +385,6 @@ export class HsAddDataVectorService {
               commonFileRef.endpoint.user
             );
             return OverwriteResponse.overwrite;
-            // const found = this.hsMapService
-            //   .getLayersArray(app)
-            //   .filter((l) => getName(l) == data.name);
-            // if (found) {
-            //   this.hsMapService.apps[app].map.removeLayer(found as any);
-            // }
           }
           break;
         case OverwriteResponse.add:

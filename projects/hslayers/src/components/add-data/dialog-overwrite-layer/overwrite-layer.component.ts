@@ -16,6 +16,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
   data: {
     dataObj: FileDataObject | VectorDataObject;
+    repetive: boolean;
     app: string;
   };
 
@@ -49,11 +50,14 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
       this.data.app
     );
     const result = await renameDialogRef.waitResult();
-    if (result) {
+    if (!result) {
+      //Do nothing
+    } else {
       this.data.dataObj.name = result;
       this.data.dataObj.title = result;
+
+      this.hsDialogContainerService.destroy(this, this.data.app);
+      this.dialogItem.resolve('add');
     }
-    this.hsDialogContainerService.destroy(this, this.data.app);
-    this.dialogItem.resolve('add');
   }
 }

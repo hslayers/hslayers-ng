@@ -46,7 +46,9 @@
       "submitLayerTitle": "Fill in layer title"
     },
     "dialogOverWrite": {
-      "overwriteExistingLayer": "Layer already exists! Do You wish to overwrite layer:"
+      "overwriteExistingLayer": "Layer already exists!",
+      "doYouWishToOverwrite": "Do You wish to overwrite layer:",
+      "noteForRepetiveDialog": "*Note: Renaming and uploading layer failed, because such layer name already exists!"
     }
   },
   "ADDLAYERS": {

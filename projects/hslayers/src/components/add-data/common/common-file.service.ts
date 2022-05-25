@@ -312,7 +312,7 @@ export class HsAddDataCommonFileService {
   async addAsWms(
     data: FileDataObject,
     app: string,
-    overwrite?: boolean
+    options?: {overwrite?: boolean; repetive?: boolean}
   ): Promise<void> {
     try {
       const appRef = this.get(app);
@@ -340,10 +340,10 @@ export class HsAddDataCommonFileService {
         data.sld,
         data.access_rights,
         app,
-        overwrite
+        options?.overwrite
       );
       if (response?.code) {
-        await this.postLoadNonWmsError(response, data, app);
+        await this.postLoadNonWmsError(response, data, app, options?.repetive);
       } else {
         await this.postLoadNonWmsSuccess(response, data, app);
       }
@@ -359,12 +359,14 @@ export class HsAddDataCommonFileService {
    */
   async loadOverwriteLayerDialog(
     data: FileDataObject | VectorDataObject,
-    app: string
+    app: string,
+    repetive?: boolean
   ): Promise<OverwriteResponse> {
     const dialogRef = this.hsDialogContainerService.create(
       HsLayerOverwriteDialogComponent,
       {
         dataObj: data,
+        repetive,
         app,
       },
       app
@@ -381,16 +383,17 @@ export class HsAddDataCommonFileService {
   async postLoadNonWmsError(
     response: PostPatchLayerResponse,
     data: FileDataObject,
-    app: string
+    app: string,
+    repetive?: boolean
   ): Promise<void> {
     if (response.code == 17) {
-      const result = await this.loadOverwriteLayerDialog(data, app);
+      const result = await this.loadOverwriteLayerDialog(data, app, repetive);
       switch (result) {
         case OverwriteResponse.add:
-          this.addAsWms(data, app);
+          this.addAsWms(data, app, {repetive: true});
           break;
         case OverwriteResponse.overwrite:
-          this.addAsWms(data, app, true);
+          this.addAsWms(data, app, {overwrite: true});
           break;
         case OverwriteResponse.cancel:
         default:
@@ -509,11 +512,11 @@ export class HsAddDataCommonFileService {
    */
   displayErrorMessage(_options: errorMessageOptions = {}, app: string): void {
     this.hsToastService.createToastPopupMessage(
-      _options.header,
+      _options?.header ?? '',
       _options.message,
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
-        details: _options.details,
+        details: _options?.details,
       },
       app
     );
