@@ -127,7 +127,7 @@ export class HsAddDataCommonFileService {
   filesValid(files: File[], app: string): boolean {
     let isValid = true;
     if (files.filter((f) => f.size > FILE_UPLOAD_SIZE_LIMIT).length > 0) {
-      this.catchError(
+      this.displayErrorMessage(
         {
           message: 'ADDDATA.FILE.someOfTheUploadedFiles',
         },
@@ -137,7 +137,7 @@ export class HsAddDataCommonFileService {
     }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
     if (zipFilesCount === 1 && files.length > 1) {
-      this.catchError(
+      this.displayErrorMessage(
         {
           message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
         },
@@ -147,7 +147,10 @@ export class HsAddDataCommonFileService {
     }
     if (zipFilesCount > 1) {
       isValid = false;
-      this.catchError({message: 'ADDDATA.FILE.onlyOneZipFileCan'}, app);
+      this.displayErrorMessage(
+        {message: 'ADDDATA.FILE.onlyOneZipFileCan'},
+        app
+      );
     }
     return isValid;
   }
@@ -345,7 +348,7 @@ export class HsAddDataCommonFileService {
         await this.postLoadNonWmsSuccess(response, data, app);
       }
     } catch (err) {
-      this.catchError({message: err.message, details: null}, app);
+      this.displayErrorMessage({message: err.message, details: null}, app);
     }
   }
 
@@ -395,17 +398,28 @@ export class HsAddDataCommonFileService {
           return;
       }
     } else {
-      const errorMessage =
-        response?.error?.message ?? response?.message == 'Wrong parameter value'
-          ? `${response?.message} : ${response?.detail.parameter}`
-          : response?.message;
-      const errorDetails = response?.detail?.missing_extensions
-        ? Object.values(response.detail?.missing_extensions)
-        : [];
-      this.catchError({message: errorMessage, details: errorDetails}, app);
+      this.handleLaymanError(response, app);
     }
   }
 
+  /**
+   * Process success server response after trying to load non-wms layer
+   * @param response - Http post/past response after loading layer to Layman
+   * @param app - App identifier
+   */
+  handleLaymanError(response: PostPatchLayerResponse, app: string): void {
+    const errorMessage =
+      response?.error?.message ?? response?.message == 'Wrong parameter value'
+        ? `${response?.message} : ${response?.detail.parameter}`
+        : response?.message;
+    const errorDetails = response?.detail?.missing_extensions
+      ? Object.values(response.detail?.missing_extensions)
+      : [];
+    this.displayErrorMessage(
+      {message: errorMessage, details: errorDetails},
+      app
+    );
+  }
   /**
    * Process success server response after trying to load non-wms layer
    * @param response - Http post/past response after loading layer to Layman
@@ -489,7 +503,7 @@ export class HsAddDataCommonFileService {
   }
 
   /**
-   * Display error message toast, when called
+   * Display error message toast, when called and broadcast event about a failed attempt to load wms layer
    * @param _options - Error message options: message, header or details
    * @param app - App identifier
    */
@@ -499,22 +513,6 @@ export class HsAddDataCommonFileService {
       _options.message,
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
-        details: _options.details,
-      },
-      app
-    );
-  }
-
-  /**
-   * Display error message toast, when called and broadcast event about a failed attempt to load wms layer
-   * @param _options - Error message options: message, header or details
-   * @param app - App identifier
-   */
-  catchError(_options: errorMessageOptions = {}, app: string): void {
-    this.displayErrorMessage(
-      {
-        message: _options.message,
-        header: _options.header ?? 'ADDLAYERS.ERROR.someErrorHappened',
         details: _options.details,
       },
       app
