@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="statistics" [app]="data.app" [title]="'PANEL_HEADER.STATISTICS' | translateHs : data">
+    <hs-panel-header name="statistics" [app]="data.app" [title]="'PANEL_HEADER.STATISTICS' | translateHs : {app: data.app} ">
     </hs-panel-header>
     <div class="card-body">
 
@@ -28,7 +28,7 @@
                                         <div>
                                             <button class="btn btn-danger btn-sm me-0"
                                                 (click)="removeVariable(variable)" data-toggle="tooltip"
-                                                [title]="'STATISTICS.removeVariable' | translateHs : data">
+                                                [title]="'STATISTICS.removeVariable' | translateHs : {app: data.app} ">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </div>
