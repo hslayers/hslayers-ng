@@ -54,7 +54,7 @@ export class HsFileService {
         this.checkRasterFiles(data, app);
       }
     } catch (e) {
-      this.hsAddDataCommonFileService.catchError(
+      this.hsAddDataCommonFileService.displayErrorMessage(
         {
           message: e.message,
           header: this.fileUploadErrorHeader,
@@ -72,7 +72,7 @@ export class HsFileService {
     } else if (data.files.length > 3) {
       this.tooManyFiles(3, data.files.length, app);
     } else {
-      this.hsAddDataCommonFileService.catchError(
+      this.hsAddDataCommonFileService.displayErrorMessage(
         {
           message: 'ADDLAYERS.SHP.missingOneOrMore',
           header: this.fileUploadErrorHeader,
@@ -93,7 +93,7 @@ export class HsFileService {
     } else if (data.files.length > 2) {
       this.tooManyFiles(2, data.files.length, app);
     } else {
-      this.hsAddDataCommonFileService.catchError(
+      this.hsAddDataCommonFileService.displayErrorMessage(
         {
           message: 'ADDLAYERS.missingImageorWorldFile',
           header: this.fileUploadErrorHeader,
@@ -104,7 +104,7 @@ export class HsFileService {
   }
 
   tooManyFiles(allowed: number, length: number, app: string): void {
-    this.hsAddDataCommonFileService.catchError(
+    this.hsAddDataCommonFileService.displayErrorMessage(
       {
         message: this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.SHP',
