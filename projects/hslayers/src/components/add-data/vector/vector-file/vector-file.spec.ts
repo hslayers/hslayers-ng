@@ -20,6 +20,7 @@ import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig} from '../../../../config.service';
+import {HsConfigMock} from '../../../../config.service.mock';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLanguageModule} from '../../../language/language.module';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
@@ -32,10 +33,6 @@ import {HsUtilsService} from '../../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
 import {getTitle} from '../../../../common/layer-extensions';
 import {mockLayerUtilsService} from '../../../utils/layer-utils.service.mock';
-
-class HsConfigMock {
-  constructor() {}
-}
 
 class HsCommonLaymanServiceMock {
   constructor() {}

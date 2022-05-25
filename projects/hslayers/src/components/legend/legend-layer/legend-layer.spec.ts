@@ -15,6 +15,7 @@ import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../../config.service';
+import {HsConfigMock} from '../../../config.service.mock';
 import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -67,7 +68,7 @@ describe('HsLegendLayerComponent', () => {
       ],
       providers: [
         HsLegendService,
-        {provide: HsConfig, useValue: {}},
+        {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},

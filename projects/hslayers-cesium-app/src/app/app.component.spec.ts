@@ -2,26 +2,22 @@ import {TestBed, waitForAsync} from '@angular/core/testing';
 
 import {HsCesiumConfig} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng';
+import {HsConfigMock} from 'hslayers-ng/src/config.service.mock';
 
 import {AppComponent} from './app.component';
-class HsConfigMock {
-  constructor() {}
-}
 class HsCesiumConfigMock {
   constructor() {}
 }
 describe('AppComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AppComponent],
-        providers: [
-          {provide: HsConfig, useValue: new HsConfigMock()},
-          {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AppComponent],
+      providers: [
+        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
+      ],
+    }).compileComponents();
+  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
