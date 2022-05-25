@@ -46,7 +46,9 @@
       "submitLayerTitle": "Ievadiet slāņa nosaukumu"
     },
     "dialogOverWrite": {
-      "overwriteExistingLayer": "Slānis jau eksistē. Vai vēlaties pārrakstīt layer:"
+      "overwriteExistingLayer": "Slānis jau eksistē!",
+      "doYouWishToOverwrite": "Vai vēlaties pārrakstīt layer:",
+      "noteForRepetiveDialog": "*Piezīme: Slāņa pārdēvēšana un augšupielāde neizdevās, jo šāds slāņa nosaukums jau pastāv!"
     }
   },
   "ADDLAYERS": {
