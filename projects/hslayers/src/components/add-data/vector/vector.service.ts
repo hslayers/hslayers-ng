@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 
 import {GPX, GeoJSON, KML} from 'ol/format';
-import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Projection, get as getProjection} from 'ol/proj';
@@ -18,6 +17,7 @@ import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {OverwriteResponse} from '../enums/overwrite-response';
+import {PostPatchLayerResponse} from './../../../common/layman/types/post-patch-layer-response.type';
 import {UpsertLayerObject} from '../../save-map/types/upsert-layer-object.type';
 import {VectorDataObject} from './vector-data.type';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
@@ -278,7 +278,7 @@ export class HsAddDataVectorService {
     } = {layer: null, complete: true};
     if (data.saveToLayman && data.saveAvailable) {
       const checkResult = await this.checkForLayerInLayman(data, app);
-      if (checkResult == OverwriteResponse.cancel) {
+      if (!checkResult || checkResult == OverwriteResponse.cancel) {
         addLayerRes.complete = false;
         return addLayerRes;
       }
@@ -325,18 +325,23 @@ export class HsAddDataVectorService {
    */
   async checkForLayerInLayman(
     data: VectorDataObject,
-    app: string
+    app: string,
+    repetive?: boolean
   ): Promise<OverwriteResponse> {
-    let result: OverwriteResponse;
+    let upsertReq: PostPatchLayerResponse;
     const commonFileRef = this.hsAddDataCommonFileService.get(app);
     commonFileRef.loadingToLayman = true;
     const fiendlyName = getLaymanFriendlyLayerName(data.name);
     const descriptor = await this.lookupLaymanLayer(fiendlyName, app);
-    if (descriptor?.name == fiendlyName) {
-      result = await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
-        data,
-        app
-      );
+    if (descriptor?.name != fiendlyName) {
+      return OverwriteResponse.add;
+    } else {
+      const result =
+        await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
+          data,
+          app,
+          repetive
+        );
       switch (result) {
         case OverwriteResponse.overwrite:
           const crsSupported = this.hsLaymanService.supportedCRRList.includes(
@@ -345,45 +350,58 @@ export class HsAddDataVectorService {
           const layerDesc: UpsertLayerObject = {
             title: data.title,
             name: fiendlyName,
-            crs: crsSupported ? data.srs : 'EPSG:3857',
+            crs: this.hsMapService.getCurrentProj(app).getCode(),
             workspace: commonFileRef.endpoint.user,
             access_rights: data.access_rights,
             sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
           };
-          let geoJson: GeoJSONFeatureCollection;
-          if (data.features?.length > 0) {
-            geoJson = this.hsLaymanService.getFeatureGeoJSON(
+          upsertReq = await this.hsLaymanService.makeUpsertLayerRequest(
+            commonFileRef.endpoint,
+            this.hsLaymanService.getFeatureGeoJSON(
               data.features,
               crsSupported,
               true
-            );
-          }
-          const upsertReq = await this.hsLaymanService.makeUpsertLayerRequest(
-            commonFileRef.endpoint,
-            geoJson,
+            ),
             layerDesc
           );
-          await this.hsLaymanService.describeLayer(
-            commonFileRef.endpoint,
-            upsertReq.name,
-            commonFileRef.endpoint.user
-          );
-          // const found = this.hsMapService
-          //   .getLayersArray(app)
-          //   .filter((l) => getName(l) == data.name);
-          // if (found) {
-          //   this.hsMapService.apps[app].map.removeLayer(found as any);
-          // }
+          if (!upsertReq) {
+            return OverwriteResponse.cancel;
+          } else if (upsertReq?.code) {
+            switch (upsertReq.code) {
+              case 17:
+                await this.checkForLayerInLayman(data, app);
+                break;
+              default:
+                this.hsAddDataCommonFileService.handleLaymanError(
+                  upsertReq,
+                  app
+                );
+                return OverwriteResponse.cancel;
+            }
+          } else {
+            await this.hsLaymanService.describeLayer(
+              commonFileRef.endpoint,
+              upsertReq.name,
+              commonFileRef.endpoint.user
+            );
+            return OverwriteResponse.overwrite;
+            // const found = this.hsMapService
+            //   .getLayersArray(app)
+            //   .filter((l) => getName(l) == data.name);
+            // if (found) {
+            //   this.hsMapService.apps[app].map.removeLayer(found as any);
+            // }
+          }
           break;
         case OverwriteResponse.add:
+          await this.checkForLayerInLayman(data, app, true);
           break;
         case OverwriteResponse.cancel:
           commonFileRef.loadingToLayman = false;
-          break;
+          return OverwriteResponse.cancel;
         default:
       }
     }
-    return result;
   }
 
   /**
