@@ -27,6 +27,7 @@ import {
   DeleteSingleLayerResponse,
 } from '../../common/layman/types/delete-layer-response.type';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
@@ -87,7 +88,8 @@ export class HsLaymanService implements HsSaverService {
     private hsLogService: HsLogService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
+    private hsCommonLaymanService: HsCommonLaymanService
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
       if (data) {
@@ -749,21 +751,32 @@ export class HsLaymanService implements HsSaverService {
                     ),
                     app
                   );
-                  let message = 'LAYMAN.layerSuccessfullyRemoved';
-                  if (!layer) {
-                    message = 'LAYMAN.allLayersSuccessfullyRemoved';
+                  const response = Array.isArray(res) ? res[0] : res;
+                  if (response?.code) {
+                    this.hsCommonLaymanService.displayLaymanError(
+                      ds,
+                      'LAYMAN.deleteLayersRequest',
+                      response,
+                      app
+                    );
+                  } else {
+                    let message = 'LAYMAN.layerSuccessfullyRemoved';
+                    if (!layer) {
+                      message = 'LAYMAN.allLayersSuccessfullyRemoved';
+                    }
+                    const details = Array.isArray(res)
+                      ? res.map((item) => item.name)
+                      : [res.name];
+                    this.hsToastService.createToastPopupMessage(
+                      'LAYMAN.deleteLayersRequest',
+                      message,
+                      {
+                        toastStyleClasses: 'bg-success text-light',
+                        details,
+                      },
+                      app
+                    );
                   }
-                  this.hsToastService.createToastPopupMessage(
-                    'LAYMAN.deleteLayersRequest',
-                    message,
-                    {
-                      toastStyleClasses: 'bg-success text-light',
-                      details: (res as DeleteSingleLayerResponse)?.name
-                        ? [(res as DeleteSingleLayerResponse).name]
-                        : null,
-                    },
-                    app
-                  );
                 }
               ),
               catchError((e) => {

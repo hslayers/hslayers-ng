@@ -756,7 +756,7 @@ export class HsDrawService {
       (definition?.format?.toLowerCase().includes('wfs') && definition?.url) ||
       !isLayer
     ) {
-      await this.hsLaymanService.removeLayer(layerToRemove.name);
+      await this.hsLaymanService.removeLayer(app, layerToRemove);
     }
   }
 
