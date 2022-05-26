@@ -28,7 +28,10 @@ export class HsLanguageService {
     this.translateServiceFactory = translateServiceFactory;
     this.hsConfig.configChanges.subscribe(({app, config}) => {
       if (config.translationOverrides != undefined) {
-        this.getTranslator(app).reloadLang(this.getTranslator(app).currentLang);
+        const translator = this.getTranslator(app);
+        if (translator?.currentLang) {
+          translator.reloadLang(translator.currentLang);
+        }
       }
     });
   }
