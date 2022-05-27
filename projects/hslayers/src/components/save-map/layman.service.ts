@@ -41,6 +41,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {MapComposition} from './types/map-composition.type';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
+  SUPPORTED_SRS_LIST,
   getLayerName,
   getLaymanFriendlyLayerName,
   getSupportedSrsList,
@@ -119,6 +120,8 @@ export class HsLaymanService implements HsSaverService {
           );
           laymanEP.version = laymanVersion.about.applications.layman.version;
           this.supportedCRRList = getSupportedSrsList(laymanEP);
+        } else {
+          this.supportedCRRList = SUPPORTED_SRS_LIST.slice(0, 2);
         }
       }
     });

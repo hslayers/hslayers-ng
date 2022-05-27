@@ -36,7 +36,8 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -191,7 +192,7 @@ export class HsAddDataVectorFileComponent
           this.data.saveToLayman =
             this.hsCommonEndpointsService.endpoints.filter(
               (ep) => ep.type == 'layman'
-            )[0].authenticated;
+            )[0]?.authenticated;
         }
         //add layman endpoint url as url to allow sync
         if (
@@ -201,7 +202,7 @@ export class HsAddDataVectorFileComponent
         ) {
           this.data.url = this.hsCommonEndpointsService.endpoints.filter(
             (ep) => ep.type == 'layman'
-          )[0].url;
+          )[0]?.url;
         }
         this.data.showDetails = true;
       } else {
