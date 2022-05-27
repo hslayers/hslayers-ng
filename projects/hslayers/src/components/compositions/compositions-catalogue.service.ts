@@ -403,7 +403,10 @@ export class HsCompositionsCatalogueService {
     appRef.data.type = TYPES[0].name;
     appRef.data.keywords.forEach((kw) => (kw.selected = false));
     appRef.data.themes.forEach((th) => (th.selected = false));
-    appRef.filteredEndpoints.push(this.hsLaymanService.getLaymanEndpoint());
+    const laymanEndpoint = this.hsLaymanService.getLaymanEndpoint();
+    if (laymanEndpoint) {
+      appRef.filteredEndpoints.push(laymanEndpoint);
+    }
     this.loadFilteredCompositions(app);
   }
 }

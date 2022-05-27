@@ -539,7 +539,7 @@ export class HsAddDataCommonFileService {
    * @returns True, if user is authorized, false otherwise
    */
   isAuthorized(): boolean {
-    return this.hsLaymanService.getLaymanEndpoint().authenticated;
+    return this.hsLaymanService.getLaymanEndpoint()?.authenticated ?? false;
   }
 
   /**

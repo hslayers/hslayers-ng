@@ -161,14 +161,14 @@ export class HsDrawService {
 
     this.hsCommonLaymanService.authChange.subscribe(({endpoint}) => {
       this.fillDrawableLayers(_app);
-      appRef.isAuthorized = endpoint.authenticated;
+      appRef.isAuthorized = endpoint?.authenticated;
       //When metadata dialog window opened. Layer is being added
       if (appRef.selectedLayer && appRef.tmpDrawLayer) {
-        setWorkspace(appRef.selectedLayer, endpoint.user);
+        setWorkspace(appRef.selectedLayer, endpoint?.user);
         const definition = {
           format: appRef.isAuthorized ? 'hs.format.WFS' : null,
           url: appRef.isAuthorized
-            ? this.hsLaymanService.getLaymanEndpoint().url + '/wfs'
+            ? this.hsLaymanService.getLaymanEndpoint()?.url + '/wfs'
             : null,
         };
         setDefinition(appRef.selectedLayer, definition);
