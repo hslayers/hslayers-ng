@@ -333,7 +333,7 @@ export class HsAddDataVectorService {
     commonFileRef.loadingToLayman = true;
     const fiendlyName = getLaymanFriendlyLayerName(data.name);
     const descriptor = await this.lookupLaymanLayer(fiendlyName, app);
-    if (descriptor?.name != fiendlyName) {
+    if (!descriptor || descriptor?.name != fiendlyName) {
       return OverwriteResponse.add;
     } else {
       const result =
@@ -369,8 +369,7 @@ export class HsAddDataVectorService {
           } else if (upsertReq?.code) {
             switch (upsertReq.code) {
               case 17:
-                await this.checkForLayerInLayman(data, app);
-                break;
+                return await this.checkForLayerInLayman(data, app);
               default:
                 this.hsAddDataCommonFileService.handleLaymanError(
                   upsertReq,
@@ -386,10 +385,8 @@ export class HsAddDataVectorService {
             );
             return OverwriteResponse.overwrite;
           }
-          break;
         case OverwriteResponse.add:
-          await this.checkForLayerInLayman(data, app, true);
-          break;
+          return await this.checkForLayerInLayman(data, app, true);
         case OverwriteResponse.cancel:
           commonFileRef.loadingToLayman = false;
           return OverwriteResponse.cancel;
