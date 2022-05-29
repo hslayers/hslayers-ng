@@ -39,4 +39,12 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
     this.hsDialogContainerService.destroy(this, this.data.app);
     this.dialogItem.resolve(this.newLayerName);
   }
+
+  handleKeyUp(e: KeyboardEvent): void {
+    if (e.key == 'Enter') {
+      this.continue();
+    } else if (e.key == 'Escape') {
+      this.close();
+    }
+  }
 }
