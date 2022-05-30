@@ -11,6 +11,7 @@ import {
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
+import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
 import {HsLanguageModule} from '../language/language.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
@@ -54,6 +55,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsMetadataWidgetComponent,
     HsScaleWidgetComponent,
     HsClusterWidgetComponent,
+    HsIdwWidgetComponent,
     HsLegendWidgetComponent,
     HsOpacityWidgetComponent,
   ],
@@ -90,6 +92,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsClusterWidgetComponent,
     HsLegendWidgetComponent,
     HsOpacityWidgetComponent,
+    HsIdwWidgetComponent
   ],
 })
 export class HsLayerManagerModule {}

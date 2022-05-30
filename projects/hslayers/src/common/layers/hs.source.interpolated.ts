@@ -11,6 +11,8 @@ import {containsExtent, equals} from 'ol/extent';
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 
 export interface InterpolatedSourceOptions {
+  min?: number;
+  max?: number;
   features?: Feature<Geometry>[];
   weight: string;
   loader?(params: any): Promise<Feature[]>;
@@ -92,12 +94,44 @@ export class InterpolatedSource extends IDW {
     }
   }
 
+  get min() {
+    return this.options.min;
+  }
+
+  set min(value) {
+    this.options.min = value;
+    this.normalizeWeight(this.weight);
+    super.changed();
+  }
+
+  get max() {
+    return this.options.max;
+  }
+
+  set max(value) {
+    this.options.max = value;
+    this.normalizeWeight(this.weight);
+    super.changed();
+  }
+
+  get colorMap() {
+    return this.options.colorMap;
+  }
+
+  set colorMap(value) {
+    this.options.colorMap = value;
+    super.getColor = this.options.colorMap;
+    super.changed();
+  }
+
   get weight() {
     return this.options.weight;
   }
 
   set weight(value) {
     this.options.weight = value;
+    this.normalizeWeight(this.weight);
+    super.changed();
   }
 
   /**
@@ -193,13 +227,12 @@ export class InterpolatedSource extends IDW {
   normalizeWeight(weight: string): void {
     const features = this.featureCache.getFeatures();
     const weightValues = features.map((f) => parseFloat(f.get(weight)));
-    const min = Math.min(...weightValues);
-    const max = Math.max(...weightValues);
+    const min = this.options.min ?? Math.min(...weightValues);
+    const max = this.options.max ?? Math.max(...weightValues);
 
     features.forEach((f) => {
-      const normalizedWeight = Math.ceil(
-        ((f.get(weight) - min) / (max - min)) * 99
-      );
+      const val = Math.min(Math.max(f.get(weight), min), max); //https://www.webtips.dev/webtips/javascript/how-to-clamp-numbers-in-javascript
+      const normalizedWeight = Math.ceil(((val - min) / (max - min)) * 99);
       f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight, true);
     });
   }

@@ -13,6 +13,7 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsDrawService} from '../../draw/draw.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLanguageService} from './../../language/language.service';
 import {HsLayerDescriptor} from './../layer-descriptor.interface';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
@@ -83,6 +84,7 @@ export class HsLayerEditorComponent {
       HsLegendWidgetComponent,
       HsLayerEditorDimensionsComponent,
       HsOpacityWidgetComponent,
+      HsIdwWidgetComponent,
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {}, this.app);

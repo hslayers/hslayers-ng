@@ -21,6 +21,7 @@ export * from './dialogs/remove-all-dialog.component';
 export * from './dialogs/remove-layer-dialog.component';
 export * from './dialogs/copy-layer-dialog.component';
 export * from './widgets/cluster-widget.component';
+export * from './widgets/idw-widget.component';
 export * from './widgets/layer-editor-widget-base.component';
 export * from './widgets/layer-editor-widget-container.service';
 export * from './widgets/legend-widget.component';

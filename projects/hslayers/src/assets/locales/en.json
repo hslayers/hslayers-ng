@@ -550,7 +550,11 @@
       "vector (GeoJSON)": "Vector (GeoJSON)",
       "vector (KML)": "Vector (KML)",
       "vector (TopoJSON)": "Vector (TopoJSON)",
-      "zoomToLayer": "Zoom to layer"
+      "zoomToLayer": "Zoom to layer",
+      "interpolatedAttribute": "Interpolated attribute",
+      "colorMap": "Color map",
+      "min": "Min",
+      "max": "Max"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
