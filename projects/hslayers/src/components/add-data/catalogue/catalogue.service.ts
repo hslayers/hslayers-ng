@@ -418,7 +418,11 @@ export class HsAddDataCatalogueService {
     let whatToAdd: WhatToAddDescriptor;
 
     if (ds.type == 'micka') {
-      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
+      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(
+        ds,
+        layer,
+        app
+      );
     } else if (ds.type == 'layman') {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,

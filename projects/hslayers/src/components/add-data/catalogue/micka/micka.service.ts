@@ -295,7 +295,8 @@ export class HsMickaBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
+    app: string
   ): Promise<any> {
     let whatToAdd: any = {type: 'none'};
     const type = layer.type || layer.trida;
@@ -378,9 +379,20 @@ export class HsMickaBrowserService {
       //   };
       // }
     } else {
-      alert(`Datasource type "${type}" not supported.`);
+      console.warn(`Datasource type "${type}" not supported.`);
+      this.datasourceParsingError(
+        layer.title,
+        'unsupportedDatasourceType',
+        app
+      );
       return false;
     }
+
+    if (whatToAdd.type == 'none') {
+      this.datasourceParsingError(layer.title, 'urlInvalid', app);
+      return false;
+    }
+
     whatToAdd.recordType = type;
     whatToAdd.title = layer.title || 'Layer';
     whatToAdd.name =
@@ -389,5 +401,27 @@ export class HsMickaBrowserService {
         : layer.title;
     whatToAdd.abstract = layer.abstract || 'Layer';
     return whatToAdd;
+  }
+
+  datasourceParsingError(title: string, error: string, app: string) {
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation(
+        'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+        undefined,
+        app
+      ),
+      title +
+        ': ' +
+        this.hsLanguageService.getTranslation(
+          `ADDLAYERS.ERROR.${error}`,
+          undefined,
+          app
+        ),
+      {
+        disableLocalization: true,
+        serviceCalledFrom: 'HsMickaBrowserService',
+      },
+      app
+    );
   }
 }
