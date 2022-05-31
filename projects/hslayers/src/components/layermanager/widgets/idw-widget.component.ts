@@ -35,8 +35,7 @@ export function listNumericAttributes(features: Feature[]): string[] {
  */
 export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';
