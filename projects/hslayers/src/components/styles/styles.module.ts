@@ -6,6 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {HsAddColormapComponent} from './add-colormap.component';
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
 import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
@@ -52,6 +53,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsStylerPartBaseComponent,
     HsRuleListItemComponent,
     HsSymbolizerListItemComponent,
+    HsAddColormapComponent,
   ],
   imports: [
     CommonModule,
@@ -83,6 +85,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
     HsRuleListItemComponent,
+    HsAddColormapComponent,
   ],
 })
 export class HsStylerModule {}

@@ -70,45 +70,67 @@ export class InterpolatedSource extends IDW {
       weight: NORMALIZED_WEIGHT_PROPERTY_NAME,
     });
     if (options.colorMap) {
-      if (typeof options.colorMap == 'string') {
-        super.getColor = (v) => {
-          const black = [0, 0, 0, 255];
-          if (isNaN(v)) {
-            return black;
-          }
-          if (v > 99) {
-            v = 99;
-          }
-          if (v < 0) {
-            v = 0;
-          }
-          v = Math.floor(v);
-          return colorMaps[options.colorMap as string][v];
-        };
-      } else {
-        super.getColor = options.colorMap;
-      }
+      this.setColorMapFromOptions(options);
     }
     if (options.features) {
       this.fillFeatures(options.features);
     }
   }
 
-  get min() {
+  /**
+   * Uses colorMap property of options object. 
+   * Creates a function to return value from predefined color maps if name of color map is provided  
+   * or uses the passed function directly.
+   * @param options
+   */
+  private setColorMapFromOptions(options: InterpolatedSourceOptions) {
+    if (typeof options.colorMap == 'string') {
+      super.getColor = (v) => {
+        const black = [0, 0, 0, 255];
+        if (isNaN(v)) {
+          return black;
+        }
+        if (v > 99) {
+          v = 99;
+        }
+        if (v < 0) {
+          v = 0;
+        }
+        v = Math.floor(v);
+        return colorMaps[options.colorMap as string][v];
+      };
+    } else {
+      super.getColor = options.colorMap;
+    }
+  }
+
+  /**
+   * Get Minimum boundary used in normalization. Values under this minimum are set to it (clamped)
+   */
+  get min(): number {
     return this.options.min;
   }
 
-  set min(value) {
+  /**
+   * Set Minimum boundary used in normalization. Values under this minimum are set to it (clamped)
+   */
+  set min(value: number) {
     this.options.min = value;
     this.normalizeWeight(this.weight);
     super.changed();
   }
 
-  get max() {
+  /**
+   * Get Maximum boundary used in normalization. Values over this minimum are set to it (clamped)
+   */
+  get max(): number {
     return this.options.max;
   }
 
-  set max(value) {
+  /**
+   * Set Maximum boundary used in normalization. Values over this minimum are set to it (clamped)
+   */
+  set max(value: number) {
     this.options.max = value;
     this.normalizeWeight(this.weight);
     super.changed();
@@ -118,17 +140,23 @@ export class InterpolatedSource extends IDW {
     return this.options.colorMap;
   }
 
-  set colorMap(value) {
+  set colorMap(value: ((v: number) => number[]) | string) {
     this.options.colorMap = value;
-    super.getColor = this.options.colorMap;
+    this.setColorMapFromOptions(this.options);
     super.changed();
   }
 
-  get weight() {
+  /**
+   * Get the feature attribute used to get the values interpolated
+   */
+  get weight(): string {
     return this.options.weight;
   }
 
-  set weight(value) {
+  /**
+   * Set the feature attribute used to get the values interpolated
+   */
+  set weight(value: string) {
     this.options.weight = value;
     this.normalizeWeight(this.weight);
     super.changed();

@@ -26,21 +26,14 @@
             <button ngbDropdownItem (click)="hsStylerService.addRule('Cluster',data.app)">
               {{'STYLER.clusterRule' | translateHs : {app: data.app} }}
             </button>
-
-            <div ngbDropdown>
-              <div class="align-items-center d-flex justify-content-between" style="padding: 0.25rem 1rem;" id="dropdownAddColorMapRule" ngbDropdownToggle [title]="'STYLER.colorMap' | translateHs : data">
-                {{'STYLER.colorMap' | translateHs : {app: data.app} }}
-              </div>
-        
-              <div ngbDropdownMenu aria-labelledby="dropdownAddColorMapRule">
-                <button *ngFor="let colormap of colormaps" class="dropdown-item" type="button" (click)="hsStylerService.addRule('ColorMap',data.app, colormap)">{{colormap}}</button>
-              </div>
-            </div>
-
+            <button ngbDropdownItem (click)="appRef.colorMapDialogVisible = !appRef.colorMapDialogVisible">
+              {{'STYLER.colorMap' | translateHs : {app: data.app} }}
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <add-colormap [layer] = "appRef.layer" [data]="data" (canceled)="appRef.colorMapDialogVisible = false" *ngIf="appRef.colorMapDialogVisible"></add-colormap>
     <ng-container *ngIf="appRef.styleObject">
       <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="appRef.styleObject.rules">

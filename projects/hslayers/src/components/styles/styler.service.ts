@@ -58,6 +58,7 @@ class HsStylerParams {
 
   pin_white_blue;
   pin_white_blue_highlight;
+  colorMapDialogVisible = false;
 }
 
 @Injectable({
@@ -426,42 +427,36 @@ export class HsStylerService {
       | 'Cluster'
       | 'ColorMap',
     app: string,
-    colorMapName?: string
+    options?: {
+      min?: number;
+      max?: number;
+      colorMapName?: string;
+      attribute?: string;
+    }
   ): Promise<void> {
     const appRef = this.get(app);
     switch (kind) {
       case 'ColorMap':
         const colors = colormap({
-          colormap: colorMapName,
+          colormap: options.colorMapName,
           nshades: 11,
           format: 'hex',
           alpha: 1,
         });
-        const attr = prompt(
-          this.srvLanguage.getTranslation('STYLER.pleaseEnterAttrib', {}, app),
-          ''
-        );
-        const values = appRef.layer
-          .getSource()
-          .getFeatures()
-          .map((f) => parseFloat(f.get(attr)));
-        let min = Math.min(...values);
-        let max = Math.max(...values);
-        const askForBound = (_default: string, msg: string) => {
-          return parseFloat(
-            prompt(this.srvLanguage.getTranslation(msg, {}, app), _default)
-          );
-        };
-        min = askForBound(min.toString(), 'STYLER.pleaseEnterMin');
-        max = askForBound(max.toString(), 'STYLER.pleaseEnterMax');
-        const step = (max - min) / 10.0;
+        const step = (options.max - options.min) / 10.0;
         appRef.styleObject.rules = colors.map((color) => {
           const ix = colors.indexOf(color);
-          const from = min + ix * step;
-          const till = min + (ix + 1) * step;
+          const from = options.min + ix * step;
+          const till = options.min + (ix + 1) * step;
           return {
-            name: `${from.toFixed(2)} - ${till.toFixed(2)} ${attr}`,
-            filter: ['&&', ['>=', attr, from], ['<', attr, till]],
+            name: `${from.toFixed(2)} - ${till.toFixed(2)} ${
+              options.attribute
+            }`,
+            filter: [
+              '&&',
+              ['>=', options.attribute, from],
+              ['<', options.attribute, till],
+            ],
             symbolizers: [
               {
                 kind: 'Mark',
