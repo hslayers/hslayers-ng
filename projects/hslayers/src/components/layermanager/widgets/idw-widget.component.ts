@@ -4,6 +4,7 @@ import VectorSource from 'ol/source/Vector';
 import colorScales from 'colormap/colorScale';
 import colormap from 'colormap';
 
+import {Feature} from 'ol';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
@@ -37,17 +38,18 @@ export class HsIdwWidgetComponent
     const srcAsIDW = this.getIdwSource();
     const underSource = srcAsIDW.featureCache as VectorSource;
     const features = underSource.getFeatures();
-    this.attributes =
-      features.length > 0
-        ? Object.keys(features[0].getProperties()).filter(
-            (attr) => {
-              return (
-                attr != 'geometry' && !isNaN(Number(features[0].get(attr)))
-              );
-            } //Check if number
-          )
-        : [];
+    this.attributes = this.listNumericAttributes(features);
     this.weightAttribute = srcAsIDW.weight;
+  }
+
+  listNumericAttributes(features: Feature[]): string[] {
+    return features.length > 0
+      ? Object.keys(features[0].getProperties()).filter(
+          (attr) => {
+            return attr != 'geometry' && !isNaN(Number(features[0].get(attr)));
+          } //Check if number
+        )
+      : [];
   }
 
   getIdwSource(): InterpolatedSource {
@@ -69,15 +71,7 @@ export class HsIdwWidgetComponent
 
   setColorMap(): void {
     const srcAsIDW = this.getIdwSource();
-    const generatedColorMap = colormap({
-      colormap: this.colorMap,
-      nshades: 100,
-      format: 'rgb',
-      alpha: 255,
-    }).map((v) => {
-      v[3] = 255;
-      return v;
-    });
+    const generatedColorMap = this.generateColormap(100);
 
     srcAsIDW.colorMap = (v) => {
       const black = [0, 0, 0, 255];
@@ -93,5 +87,17 @@ export class HsIdwWidgetComponent
       v = Math.floor(v);
       return generatedColorMap[v];
     };
+  }
+
+  generateColormap(nshades: number) {
+    return colormap({
+      colormap: this.colorMap,
+      nshades,
+      format: 'rgb',
+      alpha: 255,
+    }).map((v) => {
+      v[3] = 255;
+      return v;
+    });
   }
 }
