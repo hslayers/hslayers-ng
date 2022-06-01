@@ -337,7 +337,7 @@ export class HsMickaBrowserService {
         //Filter invalid links
         //TODO: possible kml, geojson, shp
         layer.links = layer.links.filter((link) =>
-          ['wms', 'wfs'].some((type) =>
+          ['wms', 'wfs','wmts'].some((type) =>
             link.protocol?.toLowerCase().includes(type)
           )
         );
@@ -351,6 +351,16 @@ export class HsMickaBrowserService {
             type: 'WMS',
           };
         }
+        //Check WMTS endpoints
+        if (
+          layer.links.some((link) =>
+            link.protocol?.toLowerCase().includes('wmts')
+          )
+        ) {
+          whatToAdd = {
+            type: 'WMTS',
+          };
+        }
         //Check WFS endpoints
         if (
           layer.links.some((link) =>
@@ -362,7 +372,7 @@ export class HsMickaBrowserService {
         //Parse links
         whatToAdd.link = Array.isArray(whatToAdd.type)
           ? layer.links.map((link) => link.url)
-          : this.getLayerLink(layer, 'wfs');
+          : this.getLayerLink(layer, whatToAdd.type.toLowerCase());
         this.parseWorkspaceFromURL(whatToAdd);
       } else {
         return false;

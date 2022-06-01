@@ -110,6 +110,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.get(app).layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.get(app).data.layers,
+          'wfs',
           app
         );
         const collection = this.getLayers(app, true, false, style);

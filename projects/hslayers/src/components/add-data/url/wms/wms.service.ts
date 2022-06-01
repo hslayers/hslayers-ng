@@ -114,6 +114,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.get(app).layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.get(app).data.layers,
+          'wms',
           app
         );
         return this.getLayers(app, true);
