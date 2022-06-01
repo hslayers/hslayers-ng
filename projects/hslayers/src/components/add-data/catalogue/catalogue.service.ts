@@ -529,6 +529,16 @@ export class HsAddDataCatalogueService {
         app
       );
       this.hsAddDataVectorService.fitExtent(layer, app);
+    } else if (whatToAdd.type == 'WMTS' && ds.type == 'micka') {
+      //Micka only
+      await this.hsAddDataOwsService.connectToOWS(
+        {
+          type: whatToAdd.type.toLowerCase(),
+          uri: decodeURIComponent(whatToAdd.link),
+          layer: whatToAdd.name,
+        },
+        app
+      );
     } else {
       this.hsLayoutService.setMainPanel('layermanager', app);
     }
