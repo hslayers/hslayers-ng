@@ -66,14 +66,17 @@ export class HsAddDataCommonService {
     this.get(app).url = url;
   }
 
-  checkTheSelectedLayer(services: any, app: string) {
+  checkTheSelectedLayer(services: any, serviceType: string, app: string) {
     if (!services) {
       return;
     }
+    const nameOrTitle = serviceType !== 'wmts';
     for (const layer of services) {
       //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
-      const layerName = layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase();
+      const layerName = nameOrTitle
+        ? layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase()
+        : layer.Identifier?.toLowerCase();
       if (layerName === this.get(app).layerToSelect.toLowerCase()) {
         layer.checked = true;
       }
