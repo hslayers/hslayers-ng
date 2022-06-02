@@ -7,7 +7,7 @@ import {HsButton} from './button.interface';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutParams, HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarParams, HsSidebarService} from './sidebar.service';
 
@@ -22,6 +22,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   miniSidebarButton: {title: string};
   private end = new Subject<void>();
   private serviceAppRef: HsSidebarParams;
+  layoutAppRef: HsLayoutParams;
 
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -37,6 +38,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
     this.serviceAppRef = this.HsSidebarService.get(this.app);
+    this.layoutAppRef = this.HsLayoutService.get(this.app);
     this.serviceAppRef.buttons
       .pipe(startWith([]), delay(0))
       .pipe(takeUntil(this.end))

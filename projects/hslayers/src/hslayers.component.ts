@@ -75,7 +75,10 @@ export class HslayersComponent implements OnInit {
     app: string,
     data?: any
   ): void {
-    if (this.hsConfig.apps[this.id].panelsEnabled[name]) {
+    if (
+      this.hsConfig.apps[this.id] == undefined ||
+      this.hsConfig.apps[this.id].panelsEnabled[name]
+    ) {
       this.HsPanelContainerService.create(panelComponent, data || {}, app);
     }
   }

@@ -52,17 +52,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
 
     this.HsLayoutService.get(this.app).contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
-    if (this.HsConfig.get(this.app).sidebarPosition === 'left') {
-      this.HsLayoutService.get(this.app).contentWrapper.classList.add(
-        'flex-reverse'
-      );
-      this.HsLayoutService.get(this.app).sidebarRight = false;
-      this.HsConfig.get(this.app).sidebarPosition = 'left';
-      this.sidebarPosition = 'left';
-    } else if (this.HsConfig.get(this.app).sidebarPosition != 'invisible') {
-      this.HsConfig.get(this.app).sidebarPosition = 'right';
-      this.sidebarPosition = 'right';
-    }
 
     this.HsLayoutService.init(this.app);
 
@@ -91,6 +80,12 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     this.HsLayoutService.sidebarPosition.subscribe(({app, position}) => {
       if (this.app == app) {
         this.sidebarPosition = position;
+        if (position === 'left') {
+          this.HsLayoutService.get(this.app).contentWrapper.classList.add(
+            'flex-reverse'
+          );
+          this.HsLayoutService.get(this.app).sidebarRight = false;
+        }
       }
     });
     this.HsLayoutService.sidebarVisible.subscribe(({app, visible}) => {

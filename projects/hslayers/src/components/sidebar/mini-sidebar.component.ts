@@ -2,8 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutParams, HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
 import {Subject, delay, startWith, takeUntil} from 'rxjs';
 @Component({
@@ -15,6 +14,7 @@ export class HsMiniSidebarComponent implements OnInit {
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
   ngUnsubscribe = new Subject<void>();
+  layoutAppRef: HsLayoutParams;
   constructor(
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
@@ -22,6 +22,7 @@ export class HsMiniSidebarComponent implements OnInit {
     public HsConfig: HsConfig
   ) {}
   ngOnInit() {
+    this.layoutAppRef = this.HsLayoutService.get(this.app);
     this.HsSidebarService.apps[this.app].buttons
       .pipe(takeUntil(this.ngUnsubscribe))
       .pipe(startWith([]), delay(0))

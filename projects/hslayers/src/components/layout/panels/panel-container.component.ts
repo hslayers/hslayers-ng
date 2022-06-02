@@ -88,14 +88,16 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
-    /**
-     * Assign panel width class to a component host first child
-     * Used to define panelSpace panel width
-     */
-    this.service.setPanelWidth(
-      this.HsConfig.get(this.app).panelWidths,
-      componentRefInstance
-    );
+    if (this.HsConfig.get(this.app)) {
+      /**
+       * Assign panel width class to a component host first child
+       * Used to define panelSpace panel width
+       */
+      this.service.setPanelWidth(
+        this.HsConfig.get(this.app).panelWidths,
+        componentRefInstance
+      );
+    }
 
     /* When component doesn't create its own data object 
     set data by merging two sources: html attribute (this.data) and parameter passed 

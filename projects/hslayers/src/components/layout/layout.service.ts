@@ -29,7 +29,7 @@ const defaultLayoutParams = {
   sidebarPosition: 'left',
 };
 
-type HsLayoutParams = {
+export type HsLayoutParams = {
   /**
    * Storage of default main panel.
    * This panel is opened during initialization of app and also when other panel than default is closed.
@@ -217,15 +217,20 @@ export class HsLayoutService {
   parseConfig(app: string) {
     const appRef = this.get(app);
     appRef.panel_enabled = {};
-    for (const key of Object.keys(this.HsConfig.get(app).panelsEnabled)) {
-      this.panelEnabled(key, app, this.getPanelEnableState(key, app));
+    const configRef = this.HsConfig.get(app);
+    if (configRef) {
+      for (const key of Object.keys(configRef.panelsEnabled)) {
+        this.panelEnabled(key, app, this.getPanelEnableState(key, app));
+      }
+      appRef.sidebarToggleable = configRef.hasOwnProperty('sidebarToggleable')
+        ? configRef.sidebarToggleable
+        : true;
     }
 
-    appRef.sidebarToggleable = this.HsConfig.get(app).hasOwnProperty(
-      'sidebarToggleable'
-    )
-      ? this.HsConfig.get(app).sidebarToggleable
-      : true;
+    this.sidebarPosition.next({
+      app,
+      position: configRef?.sidebarPosition ?? 'left',
+    });
   }
 
   getPanelEnableState(panel, app: string): boolean {

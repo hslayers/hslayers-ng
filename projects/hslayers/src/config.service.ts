@@ -294,6 +294,9 @@ export class HsConfig {
   }
 
   get(app: string = 'default'): HsConfigObject {
+    if (this.apps[app] == undefined) {
+      return this.apps['default'];
+    }
     return this.apps[app];
   }
 
