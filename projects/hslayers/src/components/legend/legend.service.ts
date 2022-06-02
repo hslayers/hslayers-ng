@@ -15,7 +15,9 @@ import {Style} from 'ol/style';
 import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
+import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
 import {defaultStyle} from '../styles/styles';
 import {
   getAutoLegend,
@@ -26,6 +28,7 @@ import {
   getSld,
   getTitle,
 } from '../../common/layer-extensions';
+import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
 
 //Following type-defs are missing in the OL export
 declare type StyleFunction = (
@@ -40,6 +43,7 @@ declare type StyleLike = Style | Array<Style> | StyleFunction;
 export class HsLegendService {
   constructor(
     public hsUtilsService: HsUtilsService,
+    public hsStylerService: HsStylerService,
     private hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer
@@ -192,6 +196,69 @@ export class HsLegendService {
     );
   }
 
+  generateInterpolatedLayerLegend(layer: Layer<any>, app: string) {
+    const source = layer.getSource();
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '75%');
+    svg.setAttribute('height', '100%');
+    svg.setAttribute('style', 'max-width: 7em');
+
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    const linearGradient = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'linearGradient'
+    );
+    const id = `${app}-idwGradient-${getLaymanFriendlyLayerName(
+      layer.get('name')
+    )}`;
+
+    linearGradient.setAttribute('id', id);
+    linearGradient.setAttribute('gradientTransform', 'rotate(90)');
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('width', '50%');
+    rect.setAttribute('height', '100%');
+    rect.setAttribute('fill', `url('#${id}')`);
+
+    const arr = Array.from(Array(100).keys());
+    for (const i of arr.filter((e, i) => i % 5 === 5 - 1).reverse()) {
+      const color = source.getColor(i);
+      const stop = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'stop'
+      );
+      stop.setAttribute('offset', `${100 - i}%`);
+      const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
+      stop.setAttribute('stop-color', rgb);
+
+      linearGradient.appendChild(stop);
+    }
+    defs.appendChild(linearGradient);
+
+    const max = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    max.setAttribute('x', '50%');
+    max.setAttribute('y', '10%');
+    max.innerHTML = 'High';
+
+    const min = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    min.setAttribute('x', '50%');
+    min.setAttribute('y', '95%');
+    min.innerHTML = 'Low';
+
+    svg.appendChild(defs);
+    svg.appendChild(rect);
+    svg.appendChild(max);
+    svg.appendChild(min);
+    return {
+      autoLegend: true,
+      title: getTitle(layer),
+      lyr: layer,
+      type: 'vector',
+      visible: layer.getVisible(),
+      svg: this.sanitizer.bypassSecurityTrustHtml(svg.outerHTML),
+    };
+  }
+
   /**
    * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
    * @param layer - OpenLayers layer
@@ -253,6 +320,10 @@ export class HsLegendService {
         type: 'static',
         visible: layer.getVisible(),
       };
+    } else if (
+      this.hsUtilsService.instOf(layer.getSource(), InterpolatedSource)
+    ) {
+      return this.generateInterpolatedLayerLegend(layer, app);
     } else {
       return undefined;
     }

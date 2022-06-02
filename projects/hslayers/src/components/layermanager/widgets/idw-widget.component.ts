@@ -2,12 +2,13 @@ import {Component, OnInit} from '@angular/core';
 
 import VectorSource from 'ol/source/Vector';
 import colorScales from 'colormap/colorScale';
-import colormap from 'colormap';
 
 import {Feature} from 'ol';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
+import {HsLegendService} from '../../legend/legend.service';
+import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {InterpolatedSource} from '../../../common/layers/hs.source.interpolated';
 
@@ -46,6 +47,8 @@ export class HsIdwWidgetComponent
 
   constructor(
     public HsLanguageService: HsLanguageService,
+    public hsLegendService: HsLegendService,
+    public hsStylerService: HsStylerService,
     hsLayerSelectorService: HsLayerSelectorService,
     private hsUtilsService: HsUtilsService
   ) {
@@ -100,33 +103,6 @@ export class HsIdwWidgetComponent
 
   setColorMap(): void {
     const srcAsIDW = this.getIdwSource();
-    const generatedColorMap = this.generateColormap(this.colorMap, 100);
-
-    srcAsIDW.colorMap = (v) => {
-      const black = [0, 0, 0, 255];
-      if (isNaN(v)) {
-        return black;
-      }
-      if (v > 99) {
-        v = 99;
-      }
-      if (v < 0) {
-        v = 0;
-      }
-      v = Math.floor(v);
-      return generatedColorMap[v];
-    };
-  }
-
-  generateColormap(name: string, nshades: number) {
-    return colormap({
-      colormap: name,
-      nshades,
-      format: 'rgb',
-      alpha: 255,
-    }).map((v) => {
-      v[3] = 255;
-      return v;
-    });
+    srcAsIDW.colorMap = this.colorMap;
   }
 }

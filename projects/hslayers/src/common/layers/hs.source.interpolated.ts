@@ -1,5 +1,6 @@
 import IDW from 'ol-ext/source/IDW';
 import VectorSource, {LoadingStrategy} from 'ol/source/Vector';
+import colormap from 'colormap';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
@@ -85,20 +86,7 @@ export class InterpolatedSource extends IDW {
    */
   private setColorMapFromOptions(options: InterpolatedSourceOptions) {
     if (typeof options.colorMap == 'string') {
-      super.getColor = (v) => {
-        const black = [0, 0, 0, 255];
-        if (isNaN(v)) {
-          return black;
-        }
-        if (v > 99) {
-          v = 99;
-        }
-        if (v < 0) {
-          v = 0;
-        }
-        v = Math.floor(v);
-        return colorMaps[options.colorMap as string][v];
-      };
+      super.getColor = this.getColorMap();
     } else {
       super.getColor = options.colorMap;
     }
@@ -263,6 +251,37 @@ export class InterpolatedSource extends IDW {
       const normalizedWeight = Math.ceil(((val - min) / (max - min)) * 99);
       f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight, true);
     });
+  }
+
+  getColorMap() {
+    const clrMap = this.generateColormap(this.options.colorMap as string, 100);
+    return (v) => {
+      const black = [0, 0, 0, 255];
+      if (isNaN(v)) {
+        return black;
+      }
+      if (v > 99) {
+        v = 99;
+      }
+      if (v < 0) {
+        v = 0;
+      }
+      v = Math.floor(v);
+      return clrMap[v];
+    };
+  }
+
+  generateColormap(name: string, nshades: number, reverse: boolean = false) {
+    const cmap = colormap({
+      colormap: name,
+      nshades,
+      format: 'rgb',
+      alpha: 255,
+    }).map((v) => {
+      v[3] = 255;
+      return v;
+    });
+    return reverse ? cmap.reverse() : cmap;
   }
 }
 
