@@ -208,7 +208,7 @@ export class HsLegendService {
       'http://www.w3.org/2000/svg',
       'linearGradient'
     );
-    const id = `${app}-idwGradient-${getLaymanFriendlyLayerName(
+    const id = `${+new Date()}-idwGradient-${getLaymanFriendlyLayerName(
       layer.get('name')
     )}`;
 

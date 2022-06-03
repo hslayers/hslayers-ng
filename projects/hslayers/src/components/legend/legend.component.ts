@@ -1,5 +1,5 @@
 import Map from 'ol/Map';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
@@ -13,16 +13,20 @@ import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
 })
-export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
+export class HsLegendComponent
+  extends HsPanelBaseComponent
+  implements OnInit, OnDestroy {
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
-
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public hsLegendService: HsLegendService,
     public hsMapService: HsMapService,
@@ -34,6 +38,10 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
     public hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
+  }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnInit(): void {
@@ -63,6 +71,14 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
       this.data.app
     );
     if (descriptor) {
+      const source: any = layer.getSource();
+      if (this.hsUtilsService.instOf(source, InterpolatedSource)) {
+        (source as InterpolatedSource).colorMapChanged
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(() => {
+            this.layerSourcePropChanged({target: source});
+          });
+      }
       this.layerDescriptors.push(descriptor);
       this.refreshList();
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
@@ -174,10 +190,12 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
         .then((newDescriptor) => {
           if (
             newDescriptor.subLayerLegends != descriptor.subLayerLegends ||
-            newDescriptor.title != descriptor.title
+            newDescriptor.title != descriptor.title ||
+            this.hsLayerUtilsService.isLayerIDW(descriptor.lyr)
           ) {
             this.layerDescriptors[this.layerDescriptors.indexOf(descriptor)] =
               newDescriptor;
+            this.refreshList();
           }
         });
     }

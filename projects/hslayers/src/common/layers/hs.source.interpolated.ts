@@ -4,7 +4,6 @@ import colormap from 'colormap';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
-import {JET_COLOR_MAP} from './jet-color-map.const';
 import {Projection} from 'ol/proj';
 import {Subject} from 'rxjs';
 import {containsExtent, equals} from 'ol/extent';
@@ -23,11 +22,10 @@ export interface InterpolatedSourceOptions {
   maxFeaturesInCache?: number;
 }
 
-export const colorMaps = {'jet': JET_COLOR_MAP};
-
 export class InterpolatedSource extends IDW {
   featureCache: VectorSource = new VectorSource({});
   cancelUrlRequest: Subject<void> = new Subject();
+  colorMapChanged: Subject<void> = new Subject();
   geoJSONFeatures: string[] = [];
 
   constructor(public options: InterpolatedSourceOptions) {
@@ -250,6 +248,7 @@ export class InterpolatedSource extends IDW {
     } else {
       super.getColor = options.colorMap;
     }
+    this.colorMapChanged.next();
   }
 
   /**

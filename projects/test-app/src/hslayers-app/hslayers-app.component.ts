@@ -115,6 +115,7 @@ export class HslayersAppComponent {
       //Mandatory, otherwise nothing will be loaded with source loader
       const idwVectorLayer = new VectorLayer({
         properties: {
+          title: 'IDW vector source',
           showInLayerManager: false,
           visible: idwLayer.getVisible(),
         },
