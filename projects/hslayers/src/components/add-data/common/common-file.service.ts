@@ -549,7 +549,7 @@ export class HsAddDataCommonFileService {
    */
   setDataName(data: FileDataObject, app: string): void {
     data.name = data.files[0].name.slice(0, -4);
-    data.title = data.files[0].name.slice(0, -4);
+    data.title = data.name;
     this.get(app).dataObjectChanged.next(data);
   }
 }
