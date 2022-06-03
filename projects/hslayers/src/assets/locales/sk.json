@@ -529,7 +529,7 @@
     },
     "dimensions": "Dimenzie",
     "editorButtons": "Editačné tlačidlá",
-    "enablePhysicalLayerList": "Povoliť/zakázať fyzický zoznam vrstiev",
+    "enablePhysicalLayerList": "Povoliť/zakázať radenie vrstiev",
     "layerEditor": {
       "cluster": "Zhlukovať",
       "copyLayer": "Kopírovať vybranú vrstvu",

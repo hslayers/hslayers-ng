@@ -534,7 +534,7 @@
     },
     "dimensions": "Dimenze",
     "editorButtons": "Editační tlačítka",
-    "enablePhysicalLayerList": "Vypnout/Zapnout fyzický seznam vrstev",
+    "enablePhysicalLayerList": "Vypnout/Zapnout řazení vrstev",
     "layerEditor": {
       "cluster": "Shlukovat",
       "copyLayer": "Kopírovat vybranou vrstvu",

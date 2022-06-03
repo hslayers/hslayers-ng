@@ -88,7 +88,7 @@
       "removeAllAdded": "Supprimer les calques ajoutés"
     },
     "dimensions": "",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list",
+    "enablePhysicalLayerList": "Enable/Disable layer reordering",
     "layerEditor": {
       "cluster": "Grappe",
       "copyright": "Droits d'auteur",

@@ -87,7 +87,7 @@
       "removeAllAdded": "Verwijder alle toegevoegde lagen"
     },
     "dimensions": "Dimensies",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list",
+    "enablePhysicalLayerList": "Enable/Disable layer reordering",
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Auteursrechten",
