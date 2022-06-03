@@ -144,10 +144,12 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     for (const layer of appRef.data.layers) {
       this.getLayersRecursively(layer, undefined, collection, app);
     }
-    this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWmtsParams(); //Replaces setDataToDefault
     this.hsAddDataCommonService.setPanelToCatalogue(app);
+    if (collection.length > 0) {
+      this.hsLayoutService.setMainPanel('layermanager', app);
+    }
     return collection;
     //FIX ME: to implement
     // this.zoomToLayers();

@@ -530,12 +530,16 @@ export class HsAddDataCatalogueService {
       );
       this.hsAddDataVectorService.fitExtent(layer, app);
     } else if (whatToAdd.type == 'WMTS' && ds.type == 'micka') {
-      //Micka only
+      //Micka only  yet
+      if (whatToAdd.recordType === 'service') {
+        this.datasetSelect('url', app);
+      }
       await this.hsAddDataOwsService.connectToOWS(
         {
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
-          layer: whatToAdd.name,
+          layer:
+            whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
         },
         app
       );
