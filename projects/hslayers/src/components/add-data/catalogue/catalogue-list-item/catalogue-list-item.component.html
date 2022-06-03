@@ -40,7 +40,8 @@
         </div>
     </div>
     <div class="d-none">
-        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'><!-- TODO: Remove function call from template -->
+        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
+            <!-- TODO: Remove function call from template -->
             <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
                 data-toggle="tooltip" [title]="'COMMON.download' | translateHs: {app} "><i
                     class="icon-download"></i></a>
@@ -58,7 +59,10 @@
             <i class="icon-remove"></i>
         </button>
     </div> -->
-    <div class="card bg-light align-items-center" [hidden]="!selectTypeToAddLayerVisible">
+    <div [hidden]="!loadingInfo" class='list-group-item text-primary text-center py-2'><img class="pe-2"
+            [src]="configRef._ajaxLoaderPath" />{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}</div>
+
+    <div class="card bg-light align-items-center" [hidden]="!selectTypeToAddLayerVisible || loadingInfo">
         <div class="d-flex flex-row justify-content-between align-items-center w-100">
             <div class="px-3">
                 <span class="btn btn-sm" disabled="true" aria-disabled="true">{{
@@ -81,7 +85,8 @@
         <div class="d-flex">
             <ul class="ms-auto p-2 list-unstyled" [hidden]="!explanationsVisible">
                 <li class="text-secondary small" *ngFor="let type of whatToAddTypes">
-                    {{type}} &ndash; {{translateString('ADDDATA.CATALOGUE.DESC', type)}}<!-- TODO: Remove function call from template -->
+                    {{type}} &ndash; {{translateString('ADDDATA.CATALOGUE.DESC', type)}}
+                    <!-- TODO: Remove function call from template -->
                 </li>
             </ul>
         </div>

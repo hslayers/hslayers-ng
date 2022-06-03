@@ -285,6 +285,13 @@ export class HsMickaBrowserService {
     }
   }
 
+  private isLinkValid(link: any, type: string) {
+    return (
+      link.protocol?.toLowerCase().includes(type) ||
+      link.url.toLowerCase().includes(`service=${type}`)
+    );
+  }
+
   /**
    * @param ds - Configuration of selected datasource (from app config)
    * @param layer - Micka layer for which to get metadata
@@ -337,36 +344,22 @@ export class HsMickaBrowserService {
         //Filter invalid links
         //TODO: possible kml, geojson, shp
         layer.links = layer.links.filter((link) =>
-          ['wms', 'wfs','wmts'].some((type) =>
-            link.protocol?.toLowerCase().includes(type)
-          )
+          ['wms', 'wfs', 'wmts'].some((type) => this.isLinkValid(link, type))
         );
         //Check WMS endpoints
-        if (
-          layer.links.some((link) =>
-            link.protocol?.toLowerCase().includes('wms')
-          )
-        ) {
+        if (layer.links.some((link) => this.isLinkValid(link, 'wms'))) {
           whatToAdd = {
             type: 'WMS',
           };
         }
         //Check WMTS endpoints
-        if (
-          layer.links.some((link) =>
-            link.protocol?.toLowerCase().includes('wmts')
-          )
-        ) {
+        if (layer.links.some((link) => this.isLinkValid(link, 'wmts'))) {
           whatToAdd = {
             type: 'WMTS',
           };
         }
         //Check WFS endpoints
-        if (
-          layer.links.some((link) =>
-            link.protocol?.toLowerCase().includes('wfs')
-          )
-        ) {
+        if (layer.links.some((link) => this.isLinkValid(link, 'wfs'))) {
           whatToAdd.type = whatToAdd.type == 'WMS' ? ['WMS', 'WFS'] : 'WFS';
         }
         //Parse links

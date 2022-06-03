@@ -196,10 +196,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     ];
 
     appRef.data.base = false;
-    this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlArcGisParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
+    if (collection.length > 0) {
+      this.hsLayoutService.setMainPanel('layermanager', app);
+    }
     return collection;
   }
 

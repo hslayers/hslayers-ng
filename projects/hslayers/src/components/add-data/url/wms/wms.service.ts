@@ -321,6 +321,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   getLayerBBox(serviceLayer: any, crs: any, app: string): any {
+    //Can be called without valid serviceLayer as part of micka dataset loading pipeline
+    if (!serviceLayer) { 
+      return; 
+    }
     const appRef = this.get(app);
     let boundingbox = serviceLayer.BoundingBox;
     let preferred;
@@ -441,10 +445,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.zoomToLayers(app);
     }
     appRef.data.base = false;
-    this.hsLayoutService.setMainPanel('layermanager', app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWmsParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
+    if (collection.length > 0) {
+      this.hsLayoutService.setMainPanel('layermanager', app);
+    }
     return collection;
   }
 

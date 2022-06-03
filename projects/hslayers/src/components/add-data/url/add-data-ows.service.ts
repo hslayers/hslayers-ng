@@ -5,6 +5,7 @@ import {Source} from 'ol/source';
 
 import {AddDataUrlType} from './types/url.type';
 import {HsAddDataCommonService} from '../common/common.service';
+import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
@@ -34,6 +35,7 @@ export class HsAddDataOwsService {
   } = {default: new HsAddDataOwsParams()};
 
   constructor(
+    public hsAddDataService: HsAddDataService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsHistoryListService: HsHistoryListService,
@@ -66,6 +68,7 @@ export class HsAddDataOwsService {
       getOnly?: boolean;
     }
   ): Promise<Layer<Source>[]> {
+    const typeBeingSelected = this.hsAddDataUrlService.get(app).typeSelected;
     await this.setTypeServices(app);
     const appRef = this.get(app);
     const url = this.hsAddDataCommonService.get(app).url;
@@ -111,6 +114,22 @@ export class HsAddDataOwsService {
         if (response?.length > 0) {
           appRef.typeService.addLayers(response, app);
         }
+        //Note:
+        //!response condition would result in inifinite connectToOWS calls
+        //response?.length by design also checks for hsAddDataCommonService.layerToSelect
+        if (response?.length == 0) { 
+          console.log('Empty response when layer selected');
+          this.hsAddDataService.selectType('url', app);
+          await this.connectToOWS(
+            {
+              type: typeBeingSelected,
+              uri: url,
+              layer: undefined,
+            },
+            app
+          );
+        }
+
         if (this.hsUrlArcGisService.isImageService(app)) {
           const layers = this.hsUrlArcGisService.getLayers(app);
           this.hsUrlArcGisService.addLayers(layers, app);
