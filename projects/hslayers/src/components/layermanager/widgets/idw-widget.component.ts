@@ -2,13 +2,11 @@ import {Component, OnInit} from '@angular/core';
 
 import VectorSource from 'ol/source/Vector';
 import colorScales from 'colormap/colorScale';
-
 import {Feature} from 'ol';
+
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsLegendService} from '../../legend/legend.service';
-import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {InterpolatedSource} from '../../../common/layers/hs.source.interpolated';
 
@@ -49,8 +47,6 @@ export class HsIdwWidgetComponent
 
   constructor(
     public HsLanguageService: HsLanguageService,
-    public hsLegendService: HsLegendService,
-    public hsStylerService: HsStylerService,
     hsLayerSelectorService: HsLayerSelectorService,
     private hsUtilsService: HsUtilsService
   ) {
