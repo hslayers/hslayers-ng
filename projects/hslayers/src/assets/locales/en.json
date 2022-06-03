@@ -536,7 +536,7 @@
     },
     "dimensions": "Dimensions",
     "editorButtons": "Editor buttons",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list",
+    "enablePhysicalLayerList": "Enable/Disable layer reordering",
     "layerEditor": {
       "cluster": "Cluster",
       "copyLayer": "Copy selected layer",
