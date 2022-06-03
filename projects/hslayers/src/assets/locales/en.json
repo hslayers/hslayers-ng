@@ -264,7 +264,8 @@
     "height": "Height",
     "required": "Required",
     "addLayers": "Add layers",
-    "toggle": "Toggle"
+    "toggle": "Toggle",
+    "reversed": "Reversed"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

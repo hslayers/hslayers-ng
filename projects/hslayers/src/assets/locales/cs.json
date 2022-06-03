@@ -263,7 +263,8 @@
     "resetToDefault": "Obnovit výchozí hodnoty",
     "addLayers": "Přidat vrstvy",
     "required": "Vyžadováno",
-    "toggle": "Přepnout"
+    "toggle": "Přepnout",
+    "reversed": "Obrácené"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

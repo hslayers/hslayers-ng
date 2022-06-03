@@ -258,7 +258,8 @@
     "steps": "Kroky",
     "addLayers": "Pridať vrstvy",
     "toggle": "Prepnúť",
-    "required": "Požadované"
+    "required": "Požadované",
+    "reversed": "Obrátené"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

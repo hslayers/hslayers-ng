@@ -30,7 +30,7 @@ export class InterpolatedSource extends IDW {
   cancelUrlRequest: Subject<void> = new Subject();
   geoJSONFeatures: string[] = [];
 
-  constructor(private options: InterpolatedSourceOptions) {
+  constructor(public options: InterpolatedSourceOptions) {
     super({
       // Source that contains the data
       source: new VectorSource({
@@ -77,21 +77,6 @@ export class InterpolatedSource extends IDW {
       this.fillFeatures(options.features);
     }
   }
-
-  /**
-   * Uses colorMap property of options object. 
-   * Creates a function to return value from predefined color maps if name of color map is provided  
-   * or uses the passed function directly.
-   * @param options
-   */
-  private setColorMapFromOptions(options: InterpolatedSourceOptions) {
-    if (typeof options.colorMap == 'string') {
-      super.getColor = this.getColorMap();
-    } else {
-      super.getColor = options.colorMap;
-    }
-  }
-
   /**
    * Get Minimum boundary used in normalization. Values under this minimum are set to it (clamped)
    */
@@ -253,8 +238,25 @@ export class InterpolatedSource extends IDW {
     });
   }
 
+  /**
+   * Assingns colorMap function based on colorMap option used.
+   * Predefined color maps if name of color map is provided
+   * or uses the passed function directly.
+   * @param options
+   */
+  private setColorMapFromOptions(options: InterpolatedSourceOptions) {
+    if (typeof options.colorMap == 'string') {
+      super.getColor = this.getColorMap();
+    } else {
+      super.getColor = options.colorMap;
+    }
+  }
+
+  /**
+   * Creates a function to return value from predefined color maps if name of color map is provided
+   */
   getColorMap() {
-    const clrMap = this.generateColormap(this.options.colorMap as string, 100);
+    const clrMap = this.generateColormap(this.options.colorMap as string);
     return (v) => {
       const black = [0, 0, 0, 255];
       if (isNaN(v)) {
@@ -271,7 +273,16 @@ export class InterpolatedSource extends IDW {
     };
   }
 
-  generateColormap(name: string, nshades: number, reverse: boolean = false) {
+  /**
+   * Gets predefined colorMap array based on name and number of shades.
+   * If you want to reverse defined color map add '-reverse' to the map name
+   * @param name Predefined color map name [https://github.com/bpostlethwaite/colormap]
+   * @param nshades Number of shades [default = 100]
+   * @returns Array of colors
+   */
+  generateColormap(name: string, nshades: number = 100): number[] {
+    const reverse = name.includes('-reverse');
+    name = reverse ? name.split('-')[0] : name;
     const cmap = colormap({
       colormap: name,
       nshades,

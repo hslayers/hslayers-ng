@@ -36,12 +36,14 @@ export function listNumericAttributes(features: Feature[]): string[] {
  */
 export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';
   colorMaps = Object.keys(colorScales);
   colorMap: string;
+  reversed: boolean;
   min: number | string = '';
   max: number | string = '';
 
@@ -63,6 +65,19 @@ export class HsIdwWidgetComponent
       return;
     }
     this.fillAttributes();
+    this.fillColorMapValue();
+  }
+
+  /**
+   * Sets colorMap variable value if predefined colorMap is used
+   */
+  fillColorMapValue() {
+    const srcAsIDW = this.getIdwSource();
+    const colorMap = srcAsIDW.options.colorMap;
+    if (typeof colorMap === 'string') {
+      this.reversed = colorMap.includes('-reverse');
+      this.colorMap = this.reversed ? colorMap.split('-')[0] : colorMap;
+    }
   }
 
   /**
@@ -103,6 +118,8 @@ export class HsIdwWidgetComponent
 
   setColorMap(): void {
     const srcAsIDW = this.getIdwSource();
-    srcAsIDW.colorMap = this.colorMap;
+    srcAsIDW.colorMap = this.reversed
+      ? `${this.colorMap}-reverse`
+      : this.colorMap;
   }
 }
