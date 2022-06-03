@@ -305,10 +305,13 @@ export class HsMapService {
    */
   setDefaultView = function (e, app): void {
     const appRef = this.hsConfig.get(app);
+    if (!appRef.default_view) {
+      return;
+    }
     const mapRef = this.getMap(app);
-    const center = appRef.default_view.getCenter();
+    const center = appRef.default_view?.getCenter();
     mapRef.getView().setCenter(center);
-    const zoom = appRef.default_view.getZoom();
+    const zoom = appRef.default_view?.getZoom();
     mapRef.getView().setZoom(zoom);
   };
   /**
