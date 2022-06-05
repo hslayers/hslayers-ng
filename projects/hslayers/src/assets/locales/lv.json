@@ -263,7 +263,9 @@
     "height": "Augstums",
     "required": "Nepieciešams",
     "addLayers": "Pievienot slāņus",
-    "toggle": "Pārslēgt"
+    "toggle": "Pārslēgt",
+    "apply": "Uzstādīt",
+    "reversed": "Apgriezti"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -550,7 +552,11 @@
       "vector (GeoJSON)": "Vektoru (GeoJSON)",
       "vector (KML)": "Vektoru (KML)",
       "vector (TopoJSON)": "Vektoru (TopoJSON)",
-      "zoomToLayer": "Tuvināt līdz slānim"
+      "zoomToLayer": "Tuvināt līdz slānim",
+      "colorMap": "Toņu karte",
+      "max": "Maks.",
+      "min": "Min.",
+      "interpolatedAttribute": "Interpolējamais atribūts"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
