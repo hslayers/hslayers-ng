@@ -609,7 +609,8 @@ export class HsAddDataVectorService {
         descriptor = await this.hsLaymanService.describeLayer(
           commonFileRef.endpoint,
           name,
-          commonFileRef.endpoint.user
+          commonFileRef.endpoint.user,
+          true
         );
       } catch (error) {
         console.error(error);
