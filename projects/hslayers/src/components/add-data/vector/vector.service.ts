@@ -519,7 +519,14 @@ export class HsAddDataVectorService {
     const object = {
       name: json.name,
       title: json.name,
-      srs: projection,
+      srs: epsg4326Aliases
+        .map((proj) => proj.getCode())
+        .some((code) => code === projection.getCode())
+        ? getProjection('EPSG:4326')
+        : this.hsLaymanService.supportedCRRList.indexOf(projection.getCode()) >
+          -1
+        ? projection
+        : getProjection('EPSG:4326'),
       features,
     };
     return object;
