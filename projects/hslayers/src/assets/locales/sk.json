@@ -44,6 +44,11 @@
       "selectAll": "Označiť všetky vrstvy",
       "submitLayerName": "Zadajte názov vrstvy",
       "submitLayerTitle": "Zadajte titulok vrstvy"
+    },
+    "dialogOverWrite": {
+      "doYouWishToOverwrite": "Chcete prepísať vrstvu:",
+      "noteForRepetiveDialog": "*Poznámka: Premenovanie a nahrávanie vrstvy zlyhalo, pretože takýto názov vrstvy už existuje!",
+      "overwriteExistingLayer": "Vrstva už existuje!"
     }
   },
   "ADDLAYERS": {
@@ -260,7 +265,8 @@
     "addLayers": "Pridať vrstvy",
     "toggle": "Prepnúť",
     "required": "Požadované",
-    "reversed": "Obrátené"
+    "reversed": "Obrátené",
+    "apply": "Použiť"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -547,7 +553,11 @@
       "vector (GeoJSON)": "Vektorová (GeoJSON)",
       "vector (KML)": "Vektorová (KML)",
       "vector (TopoJSON)": "Vektorová (TopoJSON)",
-      "zoomToLayer": "Priblížiť na vrstvu"
+      "zoomToLayer": "Priblížiť na vrstvu",
+      "colorMap": "Farebná škála",
+      "interpolatedAttribute": "Interpolovaný atribút",
+      "max": "Max",
+      "min": "Min"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
@@ -891,7 +901,8 @@
     "width": "Šírka",
     "colorMap": "Farebná škála",
     "pleaseEnterAttrib": "Zadajte názov atribútu, podľa ktorého prebehne klasifikácia",
-    "pleaseEnterMin": "Zadajte minimálnu hodnotu"
+    "pleaseEnterMin": "Zadajte minimálnu hodnotu",
+    "pleaseEnterMax": "Zadajte maximálnu hodnotu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
