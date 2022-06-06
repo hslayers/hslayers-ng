@@ -691,7 +691,8 @@ export class HsLaymanService implements HsSaverService {
   async describeLayer(
     endpoint: HsEndpoint,
     layerName: string,
-    workspace: string
+    workspace: string,
+    ignoreStatus?: boolean
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
@@ -705,23 +706,26 @@ export class HsLaymanService implements HsSaverService {
           }
         )
       );
-      if (response?.code == 15 || response?.code == 15 || wfsFailed(response)) {
-        return null;
-      }
-      if (
-        response.wfs &&
-        (wfsPendingOrStarting(response) || response.wfs?.url == undefined)
-      ) {
-        if (!this.pendingLayers.includes(layerName)) {
-          this.pendingLayers.push(layerName);
-          this.laymanLayerPending.next(this.pendingLayers);
-        }
-        await new Promise((resolve) => setTimeout(resolve, 3500));
-        return this.describeLayer(endpoint, layerName, workspace);
-      }
-      if (response.name) {
-        this.managePendingLayers(layerName);
-        return response;
+      switch (true) {
+        case response?.code == 15 ||
+          response?.code == 15 ||
+          wfsFailed(response):
+          return null;
+        case response.name && ignoreStatus:
+          return response;
+        case response.wfs &&
+          (wfsPendingOrStarting(response) || response.wfs?.url == undefined):
+          if (!this.pendingLayers.includes(layerName)) {
+            this.pendingLayers.push(layerName);
+            this.laymanLayerPending.next(this.pendingLayers);
+          }
+          await new Promise((resolve) => setTimeout(resolve, 3500));
+          return this.describeLayer(endpoint, layerName, workspace);
+        default:
+          if (response.name) {
+            this.managePendingLayers(layerName);
+            return response;
+          }
       }
     } catch (ex) {
       this.managePendingLayers(layerName);
