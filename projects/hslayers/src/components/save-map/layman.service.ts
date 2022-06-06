@@ -71,7 +71,7 @@ export class HsLaymanService implements HsSaverService {
   laymanLayerPending: Subject<string[]> = new Subject();
   totalProgress = 0;
   deleteQuery: Subscription;
-  supportedCRRList: string[];
+  supportedCRRList = SUPPORTED_SRS_LIST.slice(0, 2);
   constructor(
     private hsUtilsService: HsUtilsService,
     private http: HttpClient,
@@ -120,8 +120,6 @@ export class HsLaymanService implements HsSaverService {
           );
           laymanEP.version = laymanVersion.about.applications.layman.version;
           this.supportedCRRList = getSupportedSrsList(laymanEP);
-        } else {
-          this.supportedCRRList = SUPPORTED_SRS_LIST.slice(0, 2);
         }
       }
     });
