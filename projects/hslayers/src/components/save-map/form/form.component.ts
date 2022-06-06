@@ -116,9 +116,8 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   /**
    * Triggered when composition's title input field receives user's input
    */
-  titleChanged(): void {
+  nameChanged(): void {
     this.overwrite = false;
-    this.appRef.missingTitle = false;
     this.appRef.missingName = false;
   }
 

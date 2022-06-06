@@ -1,16 +1,7 @@
 <div class="form">
     <div class="form-floating mb-2">
-        <input type="text" class="form-control"
-            [ngStyle]="{'border-color': appRef.missingTitle ? '#ff0000' : '#ced4da'}" name="hs-save-map-title"
-            placeholder="'COMMON.title' | translateHs : {app} " [(ngModel)]="appRef.compoData.title"
-            (ngModelChange)="titleChanged()">
-        <label for="hs-save-map-title">{{'COMMON.title' | translateHs : {app} }} *</label>
-        <span class="d-flex justify-content-end text-danger" *ngIf="appRef.missingTitle">{{'COMMON.required' |
-            translateHs : {app} }}</span>
-    </div>
-    <div class="form-floating mb-2">
         <input type="text" class="form-control" [ngStyle]="{'border-color': appRef.missingName ? '#ff0000' : '#ced4da'}"
-            name="hs-save-map-name" [(ngModel)]="appRef.compoData.name" (ngModelChange)="titleChanged()"
+            name="hs-save-map-name" [(ngModel)]="appRef.compoData.name" (ngModelChange)="nameChanged()"
             placeholder="'COMMON.name' | translateHs : {app} ">
         <label for="hs-save-map-name">{{'COMMON.name' | translateHs : {app} }} *</label>
         <span class="d-flex justify-content-end text-danger" *ngIf="appRef.missingName">{{'COMMON.required' |
@@ -100,7 +91,8 @@
                         <input type="checkbox" class="form-check-input mt-0" name="hs-stclayer-{{i}}"
                             id="hs-stclayer-{{i}}" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}">
                         <label for="hs-stclayer-{{i}}" title="{{layer.title | translateHs : {app, module: 'LAYERS'} }}"
-                            class="form-check-label mw-100 text-truncate">{{layer.title | translateHs : {app, module: 'LAYERS'} }}</label>
+                            class="form-check-label mw-100 text-truncate">{{layer.title | translateHs : {app, module:
+                            'LAYERS'} }}</label>
                     </div>
                 </li>
                 <li class="list-group-item" style="padding: 3px">
@@ -194,7 +186,9 @@
     </div>
     <div class="mb-2 d-flex justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="stc-saveas" [hidden]="!(isAllowed())"
-            (click)="initiateSave(true)"><!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs : {app} }}</button>
+            (click)="initiateSave(true)">
+            <!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs : {app} }}
+        </button>
         <a type="button" class="btn btn-secondary" (click)="saveCompoJson()" id="stc-download">{{'COMMON.download'
             |
             translateHs: this}}</a>

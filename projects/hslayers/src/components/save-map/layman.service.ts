@@ -163,7 +163,7 @@ export class HsLaymanService implements HsSaverService {
           'blob.json'
         );
         formdata.append('name', compoData.name);
-        formdata.append('title', compoData.title);
+        formdata.append('title', compoData.name);
         formdata.append('abstract', compoData.abstract);
         const headers = new HttpHeaders();
         headers.append('Content-Type', null);

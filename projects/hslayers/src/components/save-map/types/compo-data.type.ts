@@ -4,7 +4,6 @@ import {BoundingBoxObject} from './bounding-box-object.type';
 import {accessRightsModel} from '../../add-data/common/access-rights.model';
 
 export type CompoData = {
-  title?: string;
   name?: string;
   abstract?: string;
   keywords?: string;

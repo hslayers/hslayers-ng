@@ -13,13 +13,13 @@
                     {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translateHs : {app: data.app} }}
                 </div>
                 <div>
-                    <b>{{appRef.compoData.title}}</b>
+                    <b>{{appRef.compoData.name}}</b>
                 </div>
                 <div
                     *ngIf="!appRef.statusData?.titleFree && appRef.statusData?.hasPermission && !appRef.statusData?.changeTitle">
                     <div>
                         {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translateHs : {app: data.app} }}
-                        <b>{{appRef.compoData.title}}</b>
+                        <b>{{appRef.compoData.name}}</b>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
@@ -28,7 +28,7 @@
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg"
-                            (click)="selectNewTitle()">{{'SAVECOMPOSITION.dialogSave.noSaveAs'
+                            (click)="selectNewName()">{{'SAVECOMPOSITION.dialogSave.noSaveAs'
                             | translateHs : {app: data.app} }}</button>
                     </p>
                 </div>
@@ -37,7 +37,7 @@
                     *ngIf="!appRef.statusData?.titleFree && appRef.statusData?.hasPermission && appRef.statusData?.changeTitle">
                     <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translateHs : {app: data.app} }}</div>
                     <p>
-                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="appRef.compoData.title">
+                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="appRef.compoData.name">
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"

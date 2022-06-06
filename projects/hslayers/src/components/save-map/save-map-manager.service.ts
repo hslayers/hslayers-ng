@@ -33,7 +33,6 @@ export class HsSaveMapManagerParams {
     groups: [],
   };
   compoData: CompoData = {
-    title: '',
     name: '',
     abstract: '',
     keywords: '',
@@ -66,7 +65,6 @@ export class HsSaveMapManagerParams {
   preSaveCheckCompleted: Subject<{endpoint; app: string}> = new Subject();
   changeTitle: boolean;
   currentUser: string;
-  missingTitle = false;
   missingName = false;
   missingAbstract = false;
 
@@ -101,12 +99,11 @@ export class HsSaveMapManagerService {
         const responseData = data.data ?? data;
         appRef.compoData.id = responseData.id;
         appRef.compoData.abstract = responseData.abstract;
-        appRef.compoData.title = responseData.title;
         appRef.compoData.name = responseData.name;
         appRef.compoData.keywords = responseData.keywords;
         appRef.compoData.currentComposition = responseData;
         appRef.compoData.workspace = responseData.workspace;
-        appRef.compoData.currentCompositionTitle = appRef.compoData.title;
+        appRef.compoData.currentCompositionTitle = appRef.compoData.name;
         if (Object.keys(data).length !== 0) {
           this.validateForm(app);
         }
@@ -206,7 +203,7 @@ export class HsSaveMapManagerService {
       const response: any = await lastValueFrom(
         this.http.post(this.hsStatusManagerService.endpointUrl(app), {
           project: this.hsConfig.get(app).project_name,
-          title: appRef.compoData.title,
+          title: appRef.compoData.name,
           request: 'rightToSave',
         })
       );
@@ -394,12 +391,12 @@ export class HsSaveMapManagerService {
   }
 
   /**
-   * Callback for saving with new title
+   * Callback for saving with new name
    * @param app - App identifier
    */
-  selectNewTitle(app: string): void {
+  selectNewName(app: string): void {
     const appRef = this.get(app);
-    appRef.compoData.title = appRef.statusData.guessedTitle;
+    appRef.compoData.name = appRef.statusData.guessedTitle;
     appRef.changeTitle = true;
   }
 
@@ -410,14 +407,9 @@ export class HsSaveMapManagerService {
    */
   validateForm(app: string): boolean {
     const appRef = this.get(app);
-    appRef.missingTitle = !appRef.compoData.title;
     appRef.missingName = !appRef.compoData.name;
     appRef.missingAbstract = !appRef.compoData.abstract;
-    return (
-      !!appRef.compoData.title &&
-      !!appRef.compoData.name &&
-      !!appRef.compoData.abstract
-    );
+    return !!appRef.compoData.name && !!appRef.compoData.abstract;
   }
 
   /**
@@ -428,7 +420,6 @@ export class HsSaveMapManagerService {
     const appRef = this.get(app);
     appRef.compoData.id = '';
     appRef.compoData.abstract = '';
-    appRef.compoData.title = '';
     appRef.compoData.name = '';
     appRef.compoData.currentCompositionTitle = '';
     appRef.compoData.keywords = '';
@@ -490,7 +481,7 @@ export class HsSaveMapManagerService {
   focusTitle(app: string) {
     const appRef = this.get(app);
     if (appRef.statusData.guessedTitle) {
-      appRef.compoData.title = appRef.statusData.guessedTitle;
+      appRef.compoData.name = appRef.statusData.guessedTitle;
     }
     //TODO Check if this works and input is focused
     this.hsLayoutService
