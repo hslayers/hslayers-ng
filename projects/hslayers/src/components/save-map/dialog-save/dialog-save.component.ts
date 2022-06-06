@@ -42,8 +42,8 @@ export class HsSaveMapDialogComponent implements HsDialogComponent, OnInit {
   /**
    * Select new composition's title
    */
-  selectNewTitle(): void {
-    this.hsSaveMapManagerService.selectNewTitle(this.data.app);
+  selectNewName(): void {
+    this.hsSaveMapManagerService.selectNewName(this.data.app);
   }
 
   /**

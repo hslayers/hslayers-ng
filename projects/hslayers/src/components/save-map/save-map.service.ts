@@ -96,7 +96,7 @@ export class HsSaveMapService {
     const bbox = this.getBboxFromObject(compoData.bbox);
     const json: MapComposition = {
       abstract: compoData.abstract,
-      title: compoData.title,
+      title: compoData.name,
       keywords: compoData.keywords,
       nativeExtent: transformExtent(
         bbox,
