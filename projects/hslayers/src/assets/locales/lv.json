@@ -36,7 +36,8 @@
     "FILE": {
       "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
       "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu",
-      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
+      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem",
+      "zipFileContainsAFile": "Arhivētais fails satur failus, kas pārsniedz maksimālo atļauto faila lielumu, ko var glabāt datu bāzē"
     },
     "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
     "saveToDatabase": "Saglabāt datubāzē",
@@ -64,7 +65,8 @@
       "someErrorHappened": "Radās kļūda vai trūkst ievades",
       "srsNotSupported": "Atlasītās koordinātu atskaites sistēmas (CRS/SRS) netiek atbalstītas. Lai turpinātu, lūdzu, norādiet failu EPSG: 3857 vai EPSG: 4326 projekcijā.",
       "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
-      "urlInvalid": "Nav pieejama vai ari nav derīga pieprasītā slāņa URL adrese!"
+      "urlInvalid": "Nav pieejama vai ari nav derīga pieprasītā slāņa URL adrese!",
+      "unsupportedDatasourceType": "Neatbalstīts datu avota veids"
     },
     "externalDataSource": "Ārējais datu avots (hipersaite)",
     "featureCount": "Grafisko objektu skaits",
