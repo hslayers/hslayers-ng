@@ -56,7 +56,7 @@
     "cesium": "^1.94.2",
     "colormap": "^2.3.2",
     "d3": "^6.7.0",
-    "dayjs": "^1.11.2",
+    "dayjs": "^1.11.3",
     "deepmerge": "^4.2.2",
     "geostyler-legend": "^2.1.1",
     "geostyler-openlayers-parser": "^3.0.2",
