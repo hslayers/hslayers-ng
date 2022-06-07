@@ -31,6 +31,7 @@ export class HsAddDataCommonFileServiceParams {
   endpoint: HsEndpoint = null;
   layerAddedAsWms: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<FileDataObject> = new Subject();
+  fileUploadErrorHeader = 'ADDLAYERS.couldNotUploadSelectedFile';
 }
 
 @Injectable({providedIn: 'root'})
@@ -213,20 +214,21 @@ export class HsAddDataCommonFileService {
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
     const appRef = this.get(app);
-    const formData = await this.constructFormData(
-      endpoint,
-      files,
-      name,
-      title,
-      abstract,
-      srs,
-      sld,
-      access_rights
-    );
-    const asyncUpload: AsyncUpload =
-      this.hsLaymanService.prepareAsyncUpload(formData);
-    appRef.asyncLoading = asyncUpload.async;
     try {
+      const formData = await this.constructFormData(
+        endpoint,
+        files,
+        name,
+        title,
+        abstract,
+        srs,
+        sld,
+        access_rights
+      );
+      const asyncUpload: AsyncUpload =
+        this.hsLaymanService.prepareAsyncUpload(formData);
+      appRef.asyncLoading = asyncUpload.async;
+
       const res = await this.hsLaymanService.tryLoadLayer(
         endpoint,
         formData,
@@ -263,17 +265,29 @@ export class HsAddDataCommonFileService {
     access_rights: accessRightsModel
   ): Promise<FormData> {
     const formdata = new FormData();
-    let zipContent;
+    let zipFile;
+    const zip = new JSZip();
     if (this.isZip(files[0].type)) {
-      zipContent = new Blob([files[0].content], {type: files[0].type});
+      const zipContent = await zip.loadAsync(files[0].content);
+      const zipFilesData = Object.keys(zipContent.files).map(async (name) => {
+        return await zipContent.files[name].async('arraybuffer');
+      });
+      if (
+        zipFilesData.find(
+          async (data) => (await data).byteLength > FILE_UPLOAD_SIZE_LIMIT
+        )
+      ) {
+        throw new Error('ADDDATA.FILE.zipFileContainsAFile');
+      } else {
+        zipFile = new Blob([files[0].content], {type: files[0].type});
+      }
     } else {
-      const zip = new JSZip();
       files.forEach((file) => {
         zip.file(file.name, file.content);
       });
-      zipContent = await zip.generateAsync({type: 'blob'});
+      zipFile = await zip.generateAsync({type: 'blob'});
     }
-    formdata.append('file', zipContent, files[0].name.split('.')[0] + '.zip');
+    formdata.append('file', zipFile, files[0].name.split('.')[0] + '.zip');
 
     if (sld) {
       formdata.append(
@@ -512,7 +526,7 @@ export class HsAddDataCommonFileService {
    */
   displayErrorMessage(_options: errorMessageOptions = {}, app: string): void {
     this.hsToastService.createToastPopupMessage(
-      _options?.header ?? '',
+      _options?.header ?? this.get(app).fileUploadErrorHeader,
       _options.message,
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
