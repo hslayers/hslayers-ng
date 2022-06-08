@@ -1,6 +1,6 @@
 <div class="d-flex flex-column">
     <div class="">
-        <a data-toggle="tooltip" [title]="layer.description || ''">{{layer.title || layer.description}}</a>
+        <a data-toggle="tooltip" [title]="layer.abstract || ''">{{layer.title || layer.abstract}}</a>
     </div>
     <div class="d-flex flex-column w-100 justify-content-around mt-2" *ngIf="appRef.selectedLayer?.id === layer.id">
         <hr class="hs-dotted-line w-100 ">
@@ -30,13 +30,22 @@
                 <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
                     translateHs: {app} }}</span>
             </a>
-            <a class="btn btn-sm" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
-                data-placement="bottom"
-                [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs: {app} ">
-                <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
-                    [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
-                    *ngIf="layer.editable">{{'COMMON.removeLayer' | translateHs: {app} }}</span>
-            </a>
+            <ng-container *ngIf="layer.endpoint?.authenticated">
+                <a class="btn btn-sm" (click)="$event.stopPropagation();showPermissions(layer)" data-toggle="tooltip"
+                    data-placement="bottom"
+                    [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs: {app} ">
+                    <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
+                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
+                        *ngIf="layer.editable">{{'COMMON.setPermissions' | translateHs: {app} }}</span>
+                </a>
+                <a class="btn btn-sm" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
+                    data-placement="bottom"
+                    [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs: {app} ">
+                    <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
+                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
+                        *ngIf="layer.editable">{{'COMMON.removeLayer' | translateHs: {app} }}</span>
+                </a>
+            </ng-container>
         </div>
     </div>
     <div class="d-none">
@@ -62,7 +71,8 @@
     <div [hidden]="!loadingInfo" class='list-group-item text-primary text-center py-2'><img class="pe-2"
             [src]="configRef._ajaxLoaderPath" />{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}</div>
 
-    <div class="card bg-light align-items-center" [hidden]="!selectTypeToAddLayerVisible || loadingInfo">
+    <div class="card bg-light align-items-center"
+        [hidden]="!selectTypeToAddLayerVisible || loadingInfo || appRef.selectedLayer?.id !== layer.id">
         <div class="d-flex flex-row justify-content-between align-items-center w-100">
             <div class="px-3">
                 <span class="btn btn-sm" disabled="true" aria-disabled="true">{{
