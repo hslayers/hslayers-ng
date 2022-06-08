@@ -268,7 +268,9 @@
     "required": "Required",
     "addLayers": "Add layers",
     "toggle": "Toggle",
-    "reversed": "Reversed"
+    "reversed": "Reversed",
+    "setPermissions": "Set permissions",
+    "selectAndSavePermissions": "Select and confirm permissions for"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
