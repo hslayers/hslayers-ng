@@ -11,6 +11,7 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
@@ -127,7 +128,11 @@ export class HsCompositionsMapService {
    * @param state - Highlighte state
    * @param app - App identifier
    */
-  highlightComposition(composition, state, app: string) {
+  highlightComposition(
+    composition: HsMapCompositionDescriptor,
+    state: boolean,
+    app: string
+  ) {
     if (composition.featureId !== undefined) {
       const found = this.get(app)
         .extentLayer.getSource()

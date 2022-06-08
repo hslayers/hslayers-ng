@@ -14,6 +14,7 @@ import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsMapCompositionDescriptor} from './../models/composition-descriptor.model';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {addExtentFeature} from '../../../common/extent-utils';
@@ -160,7 +161,7 @@ export class HsCompositionsLaymanService {
       : response.body.length;
 
     endpoint.compositions = response.body.map((record) => {
-      const tmp = {
+      const tmp: HsMapCompositionDescriptor = {
         name: record.name,
         title: record.title,
         access_rights: record.access_rights,
@@ -180,7 +181,7 @@ export class HsCompositionsLaymanService {
           this.hsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
-          tmp.featureId = extentFeature.getId();
+          tmp.featureId = extentFeature.getId().toString();
           response.body.extentFeatureCreated(extentFeature);
         }
       }
@@ -193,7 +194,11 @@ export class HsCompositionsLaymanService {
    * @param endpoint - Layman endpoint selected
    * @param composition - Composition to be deleted
    */
-  async delete(endpoint: HsEndpoint, composition, app: string): Promise<void> {
+  async delete(
+    endpoint: HsEndpoint,
+    composition: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     await lastValueFrom(this.$http.delete(url, {withCredentials: true}));
     this.hsEventBusService.compositionDeletes.next({composition, app});
@@ -204,7 +209,10 @@ export class HsCompositionsLaymanService {
    * @param composition - Composition selected
    * @param app - App identifier
    */
-  async getInfo(composition: any, app: string): Promise<any> {
+  async getInfo(
+    composition: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.displayWarningToast(
@@ -245,9 +253,8 @@ export class HsCompositionsLaymanService {
   /**
    * Reset Layman composition paging values
    * @param endpoint - Layman endpoint selected
-   * @param app - App identifier
    */
-  resetCompositionCounter(endpoint: HsEndpoint, app: string): void {
+  resetCompositionCounter(endpoint: HsEndpoint): void {
     endpoint.compositionsPaging.start = 0;
     endpoint.compositionsPaging.next = endpoint.compositionsPaging.limit;
     endpoint.compositionsPaging.matched = 0;

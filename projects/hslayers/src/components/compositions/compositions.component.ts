@@ -16,6 +16,7 @@ import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
@@ -25,15 +26,14 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
   addCompositionUrlVisible = false;
   optionsButtonLabel = 'more';
   optionsMenuOpen = false;
-  selectedCompId: any;
+  selectedCompId: string;
   loadFilteredCompositions: any;
   notSavedCompositionLoadingSubscription: Subscription;
   name = 'composition_browser';
@@ -95,7 +95,10 @@ export class HsCompositionsComponent
    * @param state - Target state of composition ( True - highlighted, False - normal)
    * Highlight (or dim) composition, toggle visual state of composition extent on map
    */
-  highlightComposition(composition, state: boolean): void {
+  highlightComposition(
+    composition: HsMapCompositionDescriptor,
+    state: boolean
+  ): void {
     composition.highlighted = state;
     this.hsCompositionsMapService.highlightComposition(
       composition,
@@ -109,7 +112,7 @@ export class HsCompositionsComponent
    * Load selected composition in map, if current composition was edited display Overwrite dialog
    */
 
-  addCompositionUrl(url): void {
+  addCompositionUrl(url: string): void {
     if (
       this.hsCompositionsParserService.get(this.data.app).composition_edited ==
       true
@@ -203,7 +206,7 @@ export class HsCompositionsComponent
    * Act on composition clicked
    * @param composition - Composition list item selected
    */
-  compositionClicked(composition): void {
+  compositionClicked(composition: HsMapCompositionDescriptor): void {
     if (
       this.selectedCompId != this.hsCompositionsService.commonId(composition)
     ) {

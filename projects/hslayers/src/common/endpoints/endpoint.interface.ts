@@ -1,4 +1,5 @@
 import {HsAddDataLayerDescriptor} from '../../components/add-data/catalogue/layer-descriptor.model';
+import {HsMapCompositionDescriptor} from '../../components/compositions/models/composition-descriptor.model';
 
 export enum EndpointErrorHandling {
   ignore = 'ignore',
@@ -20,7 +21,7 @@ export interface HsEndpoint {
   listLoading?;
   layers?: HsAddDataLayerDescriptor[];
   originalConfiguredUser?;
-  user?;
+  user?: string;
   authenticated?: boolean;
   code_list_url?: string;
   code_lists?;
@@ -32,7 +33,7 @@ export interface HsEndpoint {
     matched?;
     next?;
   };
-  compositions?: any;
+  compositions?: HsMapCompositionDescriptor[];
   compositionsPaging?: {
     start?: number;
     limit: number;

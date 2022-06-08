@@ -9,8 +9,6 @@ import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
 import {DuplicateHandling, HsMapService} from '../map/map.service';
-import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
-import {HsAddDataUrlService} from '../add-data/url/add-data-url.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
@@ -72,9 +70,7 @@ export class HsCompositionsParserService {
     private hsLanguageService: HsLanguageService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsLayerManagerService: HsLayerManagerService,
-    private hsToastService: HsToastService,
-    private hsAddDataOwsService: HsAddDataOwsService,
-    private hsAddDataUrlService: HsAddDataUrlService
+    private hsToastService: HsToastService
   ) {}
 
   /**

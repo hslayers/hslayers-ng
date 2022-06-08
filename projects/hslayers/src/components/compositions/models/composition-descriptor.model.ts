@@ -1,36 +1,23 @@
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 
-export interface HsAddDataLayerDescriptor {
+export interface HsMapCompositionDescriptor {
   abstract?: string;
-  formats?;
   name?: string;
-  serviceType?;
-  thumbnail?;
   title?: string;
-  trida?;
-  type: string[];
-  file?: {
-    path?: string;
-    file_type?: string;
-  };
-  links?;
-  wms?: {
-    url?: string;
-  };
-  wfs?: {
-    url?: string;
-  };
   endpoint?: HsEndpoint;
   id?: string;
+  uuid?: string;
+  serviceType?: string;
+  thumbnail?;
   workspace?: string;
   editable?: boolean;
-  style?: {
-    url?: string;
-    type?: string;
-  };
+  link?: string;
+  links?: {
+    url: string;
+  }[];
+  url?: string;
   featureId?: string;
   highlighted?: boolean;
-  toRemove?: boolean;
   access_rights?: {
     read: string[];
     write: string[];
