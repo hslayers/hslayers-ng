@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input, OnInit} from '@angular/core';
 
-import {HsAddDataCatalogueService} from '../catalogue.service';
+import {
+  HsAddDataCatalogueParams,
+  HsAddDataCatalogueService,
+} from '../catalogue.service';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
@@ -14,22 +17,23 @@ import {HsLanguageService} from '../../../language/language.service';
 import {HsLaymanBrowserService} from '../layman/layman.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLogService} from '../../../../common/log/log.service';
+import {HsSetPermissionsDialogComponent} from './../../../../common/layman/dialog-set-permissions/set-permissions.component';
 import {HsUtilsService} from '../../../utils/utils.service';
 @Component({
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
 })
 export class HsCatalogueListItemComponent implements OnInit {
-  @Input() layer;
+  @Input() layer: HsAddDataLayerDescriptor;
   @Input() app = 'default';
-  appRef;
+  appRef: HsAddDataCatalogueParams;
   explanationsVisible: boolean;
   metadata;
-  selected_ds;
-  selected_layer;
+  selected_ds: HsEndpoint;
+  selected_layer: HsAddDataLayerDescriptor;
   selectedType: string; //do not rename to 'type', would clash in the template
   selectTypeToAddLayerVisible: boolean;
-  whatToAddTypes;
+  whatToAddTypes: string[];
   loadingInfo = false;
   configRef: HsConfigObject;
   constructor(
@@ -136,6 +140,24 @@ export class HsCatalogueListItemComponent implements OnInit {
       {
         selectedLayer: this.selected_layer,
         selectedDS: this.selected_ds,
+        app: this.app,
+      },
+      this.app
+    );
+  }
+
+  /**
+   * Show permissions dialog window for selected layer.
+   * @param layer - Metadata record of selected layer
+   */
+  async showPermissions(layer: HsAddDataLayerDescriptor): Promise<void> {
+    if (!this.layer.endpoint?.authenticated) {
+    }
+    this.hsDialogContainerService.create(
+      HsSetPermissionsDialogComponent,
+      {
+        recordType: 'layer',
+        selectedRecord: layer,
         app: this.app,
       },
       this.app
