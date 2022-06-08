@@ -288,17 +288,13 @@ export class HsAddDataCommonFileService {
     formdata.append('abstract', abstract);
     formdata.append('crs', srs);
 
-    const write =
-      access_rights['access_rights.write'] == 'private'
-        ? endpoint.user
-        : access_rights['access_rights.write'];
-    const read =
-      access_rights['access_rights.read'] == 'private'
-        ? endpoint.user
-        : access_rights['access_rights.read'];
+    const rights = this.hsLaymanService.parseAccessRightsForLayman(
+      endpoint,
+      access_rights
+    );
 
-    formdata.append('access_rights.write', write);
-    formdata.append('access_rights.read', read);
+    formdata.append('access_rights.write', rights.write);
+    formdata.append('access_rights.read', rights.read);
     return formdata;
   }
 

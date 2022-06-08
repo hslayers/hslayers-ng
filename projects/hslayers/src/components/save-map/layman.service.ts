@@ -52,6 +52,7 @@ import {
 import {PostPatchLayerResponse} from '../../common/layman/types/post-patch-layer-response.type';
 import {UpsertLayerObject} from './types/upsert-layer-object.type';
 import {WfsSyncParams} from './types/wfs-sync-params.type';
+import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
@@ -128,6 +129,31 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
+   * Update composition's access rights
+   * @param compName - Composition's name
+   * @param endpoint - Endpoint's description
+   * @param access_rights - Composition's new access rights
+   * @returns Promise result of composition's PATCH request
+   */
+  async updateCompositionAccessRights(
+    compName: string,
+    endpoint: HsEndpoint,
+    access_rights: accessRightsModel
+  ): Promise<any> {
+    const rights = this.parseAccessRightsForLayman(endpoint, access_rights);
+    const formdata = new FormData();
+    formdata.append('name', compName);
+    formdata.append('access_rights.read', rights.read);
+    formdata.append('access_rights.write', rights.write);
+    return await this.makeMapPostPatchRequest(
+      endpoint,
+      endpoint.user,
+      compName,
+      formdata,
+      false
+    );
+  }
+  /**
    * Save composition to Layman's database
    * @param compositionJson - Json with composition's definition
    * @param endpoint - Endpoint's description
@@ -141,14 +167,84 @@ export class HsLaymanService implements HsSaverService {
     compoData: CompoData,
     saveAsNew: boolean
   ): Promise<any> {
+    const rights = this.parseAccessRightsForLayman(
+      endpoint,
+      compoData.access_rights
+    );
+    const formdata = new FormData();
+    formdata.append(
+      'file',
+      new Blob([JSON.stringify(compositionJson)], {
+        type: 'application/json',
+      }),
+      'blob.json'
+    );
+    formdata.append('name', compoData.name);
+    formdata.append('title', compoData.title);
+    formdata.append('abstract', compoData.abstract);
+    formdata.append('access_rights.read', rights.read);
+    formdata.append('access_rights.write', rights.write);
+
+    const workspace = compoData.workspace
+      ? saveAsNew
+        ? endpoint.user
+        : compoData.workspace
+      : endpoint.user;
+    return await this.makeMapPostPatchRequest(
+      endpoint,
+      workspace,
+      compoData.name,
+      formdata,
+      saveAsNew,
+      compositionJson
+    );
+  }
+
+  /**
+   * Save composition to Layman's database
+   * @param endpoint - Endpoint's description
+   * @param access_rights - Provided access rights
+   * @returns Access rights object as two strings, one for read access and the other for write access
+   */
+  parseAccessRightsForLayman(
+    endpoint: HsEndpoint,
+    access_rights: accessRightsModel
+  ): {
+    write: string;
+    read: string;
+  } {
     const write =
-      compoData.access_rights['access_rights.write'] == 'private'
+      access_rights['access_rights.write'] == 'private'
         ? endpoint.user
-        : compoData.access_rights['access_rights.write'];
+        : access_rights['access_rights.write'];
     const read =
-      compoData.access_rights['access_rights.read'] == 'private'
+      access_rights['access_rights.read'] == 'private'
         ? endpoint.user
-        : compoData.access_rights['access_rights.read'];
+        : access_rights['access_rights.read'];
+    return {write, read};
+  }
+
+  /**
+   * Save composition to Layman's database
+   * @param endpoint - Endpoint's description
+   * @param workspace - Current Layman's workspace
+   * @param mapName - Map composition's name
+   * @param formdata - FormData object used for sending data over HTTP request
+   * @param saveAsNew - Save as new composition
+   * @param compositionJson - Json with composition's definition
+   * @returns Promise result of POST/PATCH request
+   */
+  async makeMapPostPatchRequest(
+    endpoint: HsEndpoint,
+    workspace: string,
+    mapName: string,
+    formdata: FormData,
+    saveAsNew: boolean,
+    compositionJson?: MapComposition
+  ): Promise<any> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', null);
+    headers.append('Accept', 'application/json');
     try {
       let response: any;
       let success = false;
@@ -156,29 +252,6 @@ export class HsLaymanService implements HsSaverService {
       let amendmentsApplied = false;
       //If at First You Don't Succeed, Try, Try Again
       while (!success) {
-        const formdata = new FormData();
-        formdata.append(
-          'file',
-          new Blob([JSON.stringify(compositionJson)], {
-            type: 'application/json',
-          }),
-          'blob.json'
-        );
-        formdata.append('name', compoData.name);
-        formdata.append('title', compoData.title);
-        formdata.append('abstract', compoData.abstract);
-        const headers = new HttpHeaders();
-        headers.append('Content-Type', null);
-        headers.append('Accept', 'application/json');
-        formdata.append('access_rights.read', read);
-        formdata.append('access_rights.write', write);
-
-        const workspace = compoData.workspace
-          ? saveAsNew
-            ? endpoint.user
-            : compoData.workspace
-          : endpoint.user;
-
         const options = {
           headers: headers,
           withCredentials: true,
@@ -186,7 +259,7 @@ export class HsLaymanService implements HsSaverService {
         response = await lastValueFrom(
           this.http[saveAsNew ? 'post' : 'patch'](
             `${endpoint.url}/rest/workspaces/${workspace}/maps${
-              saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
+              saveAsNew ? `?${Math.random()}` : `/${mapName}`
             }`,
             formdata,
             options
@@ -199,7 +272,10 @@ export class HsLaymanService implements HsSaverService {
           if (amendmentsApplied) {
             break;
           }
-          featuresTypeFallback(response, compositionJson);
+          if (compositionJson) {
+            featuresTypeFallback(response, compositionJson);
+          }
+
           amendmentsApplied = true;
         }
       }
@@ -224,14 +300,15 @@ export class HsLaymanService implements HsSaverService {
     description: UpsertLayerObject
   ): Promise<PostPatchLayerResponse> {
     const formData = new FormData();
+    let asyncUpload: AsyncUpload;
     if (geojson) {
       formData.append(
         'file',
         new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
         'blob.geojson'
       );
+      asyncUpload = this.prepareAsyncUpload(formData);
     }
-    const asyncUpload: AsyncUpload = this.prepareAsyncUpload(formData);
 
     //Empty blob causes Layman to return “Internal Server Error”
     if (description.sld) {
@@ -244,20 +321,17 @@ export class HsLaymanService implements HsSaverService {
 
     formData.append('name', description.name);
     formData.append('title', description.title);
-    formData.append('crs', description.crs);
-
+    if (description.crs) {
+      formData.append('crs', description.crs);
+    }
     if (description.access_rights) {
-      const write =
-        description.access_rights['access_rights.write'] == 'private'
-          ? endpoint.user
-          : description.access_rights['access_rights.write'] ?? 'EVERYONE';
-      const read =
-        description.access_rights['access_rights.read'] == 'private'
-          ? endpoint.user
-          : description.access_rights['access_rights.read'] ?? 'EVERYONE';
+      const rights = this.parseAccessRightsForLayman(
+        endpoint,
+        description.access_rights
+      );
 
-      formData.append('access_rights.write', write);
-      formData.append('access_rights.read', read);
+      formData.append('access_rights.write', rights.write);
+      formData.append('access_rights.read', rights.read);
     }
 
     const headers = new HttpHeaders();
@@ -320,7 +394,7 @@ export class HsLaymanService implements HsSaverService {
       data = Array.isArray(data) ? data[0] : data;
       //CHECK IF OK not auth etc.
       if (data && !data.code) {
-        if (asyncUpload.async) {
+        if (asyncUpload?.async) {
           const promise = await this.asyncUpload(
             asyncUpload.filesToAsyncUpload,
             data,
