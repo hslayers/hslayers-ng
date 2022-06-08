@@ -6,6 +6,7 @@ import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access
 import {HsLanguageModule} from '../../components/language/language.module';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
+import {HsSetPermissionsDialogComponent} from './dialog-set-permissions/set-permissions.component';
 import {HsUiExtensionsModule} from '../widgets/ui-extensions.module';
 
 @NgModule({
@@ -14,12 +15,14 @@ import {HsUiExtensionsModule} from '../widgets/ui-extensions.module';
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
+    HsSetPermissionsDialogComponent,
   ],
   imports: [CommonModule, HsLanguageModule, HsUiExtensionsModule, FormsModule],
   exports: [
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
+    HsSetPermissionsDialogComponent,
   ],
 })
 export class HsLaymanModule {}
