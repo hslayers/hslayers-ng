@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {lastValueFrom, map} from 'rxjs';
@@ -18,19 +18,45 @@ enum GrantingOptions {
   selector: 'hs-layman-access-rights',
   templateUrl: './layman-access-rights.html',
 })
-export class HsCommonLaymanAccessRightsComponent {
+export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: accessRightsModel;
   @Input() app = 'default';
   grantingOptions = GrantingOptions;
   currentOption: string = GrantingOptions.EVERYONE;
   allUsers: LaymanUser[] = [];
   userSearch: string;
+  endpoint: HsEndpoint;
   constructor(
     private hsLanguageService: HsLanguageService,
     private hsLaymanService: HsLaymanService,
     private $http: HttpClient,
     private hsLog: HsLogService
   ) {}
+  async ngOnInit(): Promise<void> {
+    this.endpoint = this.hsLaymanService.getLaymanEndpoint();
+    const readAccess = this.access_rights['access_rights.read'].split(',');
+    const writeAccess = this.access_rights['access_rights.write'].split(',');
+    if (readAccess.length > 1 || writeAccess.length > 1) {
+      this.currentOption = GrantingOptions.PERUSER;
+      await this.getAllUsers();
+      this.tickFoundUsers(readAccess, 'read');
+      this.tickFoundUsers(writeAccess, 'write');
+    }
+  }
+
+  /**
+   * Tick found user checkboxes in UI that have access rights
+   * @param users - Username list that have access rights
+   * @param type - Access right type (read or write)
+   */
+  tickFoundUsers(users: string[], type: string): void {
+    users.forEach((user) => {
+      const found = this.allUsers.find((u) => u.username == user);
+      if (found) {
+        found[type] = true;
+      }
+    });
+  }
 
   /**
    * Change access rights for everyone
@@ -60,14 +86,18 @@ export class HsCommonLaymanAccessRightsComponent {
    */
   rightsChangedPerUser(type: string, value: string, event?: any): void {
     if (event.target.checked && type == 'access_rights.write') {
-      (this.access_rights['access_rights.read'] as string[]).push(value);
+      this.access_rights['access_rights.read'] = this.access_rights[
+        'access_rights.read'
+      ].concat(',' + value);
       this.findLaymanUser(value).read = event.target.checked;
     } else if (!event.target.checked && type == 'access_rights.read') {
       this.removeUserRights('access_rights.write', value);
       this.findLaymanUser(value).write = event.target.checked;
     }
     event.target.checked
-      ? this.access_rights[type].push(value)
+      ? (this.access_rights[type] = this.access_rights[type].concat(
+          ',' + value
+        ))
       : this.removeUserRights(type, value);
   }
 
@@ -85,9 +115,10 @@ export class HsCommonLaymanAccessRightsComponent {
    * @param username - User username provided
    */
   removeUserRights(type: string, username: string): void {
-    this.access_rights[type] = this.access_rights[type].filter(
-      (u: string) => u != username
-    );
+    this.access_rights[type] = this.access_rights[type]
+      .split(',')
+      .filter((u: string) => u != username)
+      .join(',');
   }
 
   /**
@@ -114,9 +145,11 @@ export class HsCommonLaymanAccessRightsComponent {
    * Change access granting options (everyone or per_user)
    * @param option - Access granting option
    */
-  changeGrantingOptions(option: 'per_user' | 'everyone'): void {
+  async changeGrantingOptions(option: 'per_user' | 'everyone'): Promise<void> {
     if (option == this.grantingOptions.PERUSER) {
-      this.getAllUsers();
+      await this.getAllUsers();
+      this.access_rights['access_rights.read'] = this.endpoint.user;
+      this.access_rights['access_rights.write'] = this.endpoint.user;
     } else {
       this.allUsers = [];
       this.access_rights['access_rights.read'] = 'EVERYONE';
@@ -129,15 +162,14 @@ export class HsCommonLaymanAccessRightsComponent {
    * Get all registered users from Layman's endpoint service
    */
   async getAllUsers(): Promise<void> {
-    const endpoint: HsEndpoint = this.hsLaymanService.getLaymanEndpoint();
-    if (endpoint?.authenticated) {
-      const url = `${endpoint.url}/rest/users`;
+    if (this.endpoint?.authenticated) {
+      const url = `${this.endpoint.url}/rest/users`;
       try {
         this.allUsers = await lastValueFrom(
           this.$http.get<LaymanUser[]>(url, {withCredentials: true}).pipe(
             map((res: any[]) => {
               return res
-                .filter((user) => user.username != endpoint.user)
+                .filter((user) => user.username != this.endpoint.user)
                 .map((user) => {
                   const laymanUser: LaymanUser = {
                     username: user.username,
@@ -153,8 +185,6 @@ export class HsCommonLaymanAccessRightsComponent {
             })
           )
         );
-        this.access_rights['access_rights.read'] = [endpoint.user];
-        this.access_rights['access_rights.write'] = [endpoint.user];
       } catch (e) {
         this.hsLog.error(e);
       }
