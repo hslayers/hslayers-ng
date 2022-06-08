@@ -193,6 +193,7 @@ export class HsLaymanBrowserService {
           featureId: layer.featureId,
           highlighted: false,
           workspace: layer.workspace,
+          access_rights: layer.access_rights,
           editable: layer.access_rights.write.some((user) => {
             return [dataset.user, 'EVERYONE'].includes(user);
           }),

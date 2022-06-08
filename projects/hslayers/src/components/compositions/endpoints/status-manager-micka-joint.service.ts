@@ -13,6 +13,7 @@ import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsStatusManagerService} from './compositions-status-manager.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsMapCompositionDescriptor} from '../models/composition-descriptor.model';
 import {HsToastService} from '../../layout/toast/toast.service';
 
 @Injectable({
@@ -98,7 +99,10 @@ export class HsCompositionsStatusManagerMickaJointService {
    * @param composition - Composition selected
    * @param app - App identifier
    */
-  async getInfo(composition, app: string): Promise<any> {
+  async getInfo(
+    composition: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<any> {
     const compLinks = composition.link || composition.links;
     if (compLinks === undefined) {
       return;
@@ -145,7 +149,11 @@ export class HsCompositionsStatusManagerMickaJointService {
    * @param composition - Composition to be deleted
    * @param app - App identifier
    */
-  async delete(endpoint, composition, app): Promise<void> {
+  async delete(
+    endpoint: HsEndpoint,
+    composition: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<void> {
     await this.hsCompositionsStatusManagerService.delete(
       endpoint,
       composition,

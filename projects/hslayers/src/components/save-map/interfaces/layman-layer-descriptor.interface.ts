@@ -54,8 +54,8 @@ export interface HsLaymanLayerDescriptor {
     error?: any;
   };
   access_rights?: {
-    read?: string[];
-    write?: string[];
+    read: string[];
+    write: string[];
   };
   bounding_box?: number[];
   native_crs?: any;

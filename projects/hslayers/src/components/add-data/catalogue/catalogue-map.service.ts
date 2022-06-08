@@ -11,6 +11,7 @@ import {transform} from 'ol/proj';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLogService} from '../../../common/log/log.service';
+import {HsMapCompositionDescriptor} from '../../compositions/models/composition-descriptor.model';
 import {HsMapService} from '../../map/map.service';
 import {HsSaveMapService} from '../../save-map/save-map.service';
 import {
@@ -140,7 +141,11 @@ export class HsAddDataCatalogueMapService {
     this.get(app).extentLayer.getSource().addFeatures([extentFeature]);
   }
 
-  highlightLayer(composition, state, app: string): void {
+  highlightLayer(
+    composition: HsMapCompositionDescriptor,
+    state: boolean,
+    app: string
+  ): void {
     if (composition.featureId !== undefined) {
       const found = this.get(app)
         .extentLayer.getSource()

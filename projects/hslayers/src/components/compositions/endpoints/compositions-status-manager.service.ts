@@ -41,7 +41,7 @@ export class HsCompositionsStatusManagerService {
    * @param bbox - Bounding box
    * @param app - App identifier
    */
-  loadList(ds, params, bbox, app: string) {
+  loadList(ds, params, bbox: number[], app: string) {
     let url = this.hsStatusManagerService.endpointUrl(app);
     const query = params.query;
     const textFilter =

@@ -11,6 +11,7 @@ import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -21,7 +22,7 @@ import {
 } from './compositions-option-values';
 
 export class HsCompositionsCatalogueParams {
-  compositionEntries: any[] = [];
+  compositionEntries: HsMapCompositionDescriptor[] = [];
   /**
    *List of sort by values (currently hard-coded selection),that will be applied in compositions lookup
    */
@@ -320,7 +321,7 @@ export class HsCompositionsCatalogueService {
     const appRef = this.get(app);
     appRef.listStart = 0;
     appRef.listNext = appRef.recordsPerPage;
-    this.hsCompositionsService.resetCompositionCounter(app);
+    this.hsCompositionsService.resetCompositionCounter();
   }
   /**
    * Clears all data saved regarding loaded compositions
