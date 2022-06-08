@@ -134,7 +134,7 @@ export class HsCompositionsMickaService {
           this.hsMapService.getCurrentProj(app)
         );
         if (extentFeature) {
-          record.featureId = extentFeature.getId();
+          record.featureId = extentFeature.getId().toString();
           response.extentFeatureCreated(extentFeature);
         }
       }

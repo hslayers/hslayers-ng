@@ -19,6 +19,7 @@ import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
+import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
@@ -137,18 +138,14 @@ export class HsCompositionsService {
 
   /**
    * Reset composition counters for datasource endpoints
-   * @param app - App identifier
    */
-  resetCompositionCounter(app: string): void {
+  resetCompositionCounter(): void {
     this.hsCommonEndpointsService.endpoints.forEach((ep) => {
       switch (ep.type) {
         case 'micka':
           return this.hsCompositionsMickaService.resetCompositionCounter(ep);
         case 'layman':
-          return this.hsCompositionsLaymanService.resetCompositionCounter(
-            ep,
-            app
-          );
+          return this.hsCompositionsLaymanService.resetCompositionCounter(ep);
         default:
           this.$log.warn(`Endpoint type '${ep.type} not supported`);
       }
@@ -187,7 +184,10 @@ export class HsCompositionsService {
    * @param record - Datasource record selected
    * @param app - App identifier
    */
-  async shareComposition(record, app: string): Promise<any> {
+  async shareComposition(
+    record: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<any> {
     const appRef = this.get(app);
     const recordLink = encodeURIComponent(this.getRecordLink(record));
     const permalinkOverride = this.hsConfig.get(app).permalinkLocation;
@@ -236,7 +236,10 @@ export class HsCompositionsService {
    * @param composition - Composition selected
    * @param app - App identifier
    */
-  async getCompositionInfo(composition, app: string): Promise<any> {
+  async getCompositionInfo(
+    composition: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<any> {
     const info = await this.managerByType(composition.endpoint).getInfo(
       composition
     );
@@ -248,7 +251,7 @@ export class HsCompositionsService {
    * Get record external link
    * @param record - Datasource record selected
    */
-  getRecordLink(record): string {
+  getRecordLink(record: HsMapCompositionDescriptor): string {
     try {
       let url;
       if (record.link !== undefined) {
@@ -310,7 +313,10 @@ export class HsCompositionsService {
     }
   }
 
-  async getRecordUrl(record, app: string): Promise<string | any> {
+  async getRecordUrl(
+    record: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<string | any> {
     const recordEndpoint = record.endpoint;
     if (recordEndpoint.type == 'micka') {
       return record.serviceType == 'CSW'
@@ -329,7 +335,10 @@ export class HsCompositionsService {
    * @param record - Datasource record selected
    * @param app - App identifier
    */
-  async loadCompositionParser(record, app: string): Promise<void> {
+  async loadCompositionParser(
+    record: HsMapCompositionDescriptor,
+    app: string
+  ): Promise<void> {
     const url = await this.getRecordUrl(record, app);
     if (url) {
       //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
@@ -391,7 +400,11 @@ export class HsCompositionsService {
    * @param app - App identifier
    * @param overwrite - Overwrite existing map composition with the new one
    */
-  loadComposition(url, app: string, overwrite?: boolean): Promise<void> {
+  loadComposition(
+    url: string,
+    app: string,
+    overwrite?: boolean
+  ): Promise<void> {
     return this.hsCompositionsParserService.loadUrl(url, app, overwrite);
   }
 
@@ -459,7 +472,7 @@ export class HsCompositionsService {
    * Get composition common id value
    * @param composition - Composition selected
    */
-  commonId(composition): string {
+  commonId(composition: HsMapCompositionDescriptor): string {
     if (composition === undefined) {
       return '';
     }
