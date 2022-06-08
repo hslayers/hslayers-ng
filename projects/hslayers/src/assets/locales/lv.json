@@ -265,7 +265,9 @@
     "addLayers": "Pievienot slāņus",
     "toggle": "Pārslēgt",
     "apply": "Uzstādīt",
-    "reversed": "Apgriezti"
+    "reversed": "Apgriezti",
+    "selectAndSavePermissions": "Atlasiet un apstipriniet atļaujas",
+    "setPermissions": "Iestatīt atļaujas"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
