@@ -305,6 +305,7 @@ export class HsLaymanService implements HsSaverService {
     layerName: string,
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
+    layerName = getLaymanFriendlyLayerName(layerName);
     try {
       let data = await lastValueFrom(
         this.http[!overwrite ? 'post' : 'patch']<PostPatchLayerResponse>(
