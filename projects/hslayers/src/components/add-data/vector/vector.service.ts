@@ -331,9 +331,11 @@ export class HsAddDataVectorService {
     let upsertReq: PostPatchLayerResponse;
     const commonFileRef = this.hsAddDataCommonFileService.get(app);
     commonFileRef.loadingToLayman = true;
-    const fiendlyName = getLaymanFriendlyLayerName(data.name);
-    const descriptor = await this.lookupLaymanLayer(fiendlyName, app);
-    if (!descriptor || descriptor?.name != fiendlyName) {
+    const exists = await this.hsAddDataCommonFileService.lookupLaymanLayer(
+      data.name,
+      app
+    );
+    if (!exists) {
       return OverwriteResponse.add;
     } else {
       const result =
@@ -349,7 +351,7 @@ export class HsAddDataVectorService {
           );
           const layerDesc: UpsertLayerObject = {
             title: data.title,
-            name: fiendlyName,
+            name: getLaymanFriendlyLayerName(data.name),
             crs: this.hsMapService.getCurrentProj(app).getCode(),
             workspace: commonFileRef.endpoint.user,
             access_rights: data.access_rights,
@@ -597,33 +599,5 @@ export class HsAddDataVectorService {
     } catch (e) {
       console.error('Uploaded file is not supported' + e);
     }
-  }
-
-  /**
-   * Try to find layer in Layman's database using Layman friendly layer name
-   * @param name - Layman friendly layer name to search by
-   * @param app - App identifier
-   */
-  async lookupLaymanLayer(
-    name: string,
-    app: string
-  ): Promise<HsLaymanLayerDescriptor> {
-    const commonFileRef = this.hsAddDataCommonFileService.get(app);
-    let descriptor: HsLaymanLayerDescriptor;
-    if (this.hsAddDataCommonFileService.isAuthorized()) {
-      this.hsAddDataCommonFileService.pickEndpoint(app);
-      try {
-        descriptor = await this.hsLaymanService.describeLayer(
-          commonFileRef.endpoint,
-          name,
-          commonFileRef.endpoint.user,
-          true
-        );
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    }
-    return descriptor;
   }
 }

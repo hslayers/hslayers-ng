@@ -22,6 +22,7 @@ import {PostPatchLayerResponse} from '../../../common/layman/types/post-patch-la
 import {VectorDataObject} from '../vector/vector-data.type';
 import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
+import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
 export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
 
@@ -243,6 +244,36 @@ export class HsAddDataCommonFileService {
   }
 
   /**
+   * Try to find layer in Layman's database using Layman friendly layer name
+   * @param name - Layman friendly layer name to search by
+   * @param app - App identifier
+   */
+  async lookupLaymanLayer(name: string, app: string): Promise<boolean> {
+    const fiendlyName = getLaymanFriendlyLayerName(name);
+    const commonFileRef = this.get(app);
+    let descriptor: HsLaymanLayerDescriptor;
+    if (this.isAuthorized()) {
+      this.pickEndpoint(app);
+      try {
+        descriptor = await this.hsLaymanService.describeLayer(
+          commonFileRef.endpoint,
+          name,
+          commonFileRef.endpoint.user,
+          true
+        );
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+    if (!descriptor || descriptor?.name != fiendlyName) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
    * Construct a set of key/value pairs from, that can be easily sent using HTTP
    * @param endpoint - Layman endpoint description (url, name, user)
    * @param files - Array of files
@@ -321,13 +352,14 @@ export class HsAddDataCommonFileService {
    * answer with wms service url to add to map
    * @param data - Current data object for upload
    * @param app - App identifier
-   * @param overwrite - (Optional) Overwrite existing layman layer
+   * @param options - (Optional) overwrite: Overwrite existing layman layer, repetive: Called for more the one time
    */
   async addAsWms(
     data: FileDataObject,
     app: string,
     options?: {overwrite?: boolean; repetive?: boolean}
   ): Promise<void> {
+    let exists: boolean;
     try {
       const appRef = this.get(app);
       appRef.loadingToLayman = true;
@@ -344,22 +376,34 @@ export class HsAddDataCommonFileService {
           )
         );
       }
-      const response = await this.loadNonWmsLayer(
-        appRef.endpoint,
-        data.files,
-        data.name,
-        data.title,
-        data.abstract,
-        data.srs,
-        data.sld,
-        data.access_rights,
-        app,
-        options?.overwrite
-      );
-      if (response?.code) {
-        await this.postLoadNonWmsError(response, data, app, options?.repetive);
+      if (!options?.overwrite) {
+        exists = await this.lookupLaymanLayer(data.name, app);
+      }
+      if (exists) {
+        this.callOverwriteDialog(data, app, options?.repetive);
       } else {
-        await this.postLoadNonWmsSuccess(response, data, app);
+        const response = await this.loadNonWmsLayer(
+          appRef.endpoint,
+          data.files,
+          data.name,
+          data.title,
+          data.abstract,
+          data.srs,
+          data.sld,
+          data.access_rights,
+          app,
+          options?.overwrite
+        );
+        if (response?.code) {
+          await this.postLoadNonWmsError(
+            response,
+            data,
+            app,
+            options?.repetive
+          );
+        } else {
+          await this.postLoadNonWmsSuccess(response, data, app);
+        }
       }
     } catch (err) {
       this.displayErrorMessage({message: err.message, details: null}, app);
@@ -367,7 +411,7 @@ export class HsAddDataCommonFileService {
   }
 
   /**
-   * Open overwrite layer dialog
+   * Load overwrite layer dialog
    * @param data - Current data object for upload
    * @param app - App identifier
    */
@@ -389,6 +433,32 @@ export class HsAddDataCommonFileService {
   }
 
   /**
+   * Call for overwrite dialog
+   * @param data - Current data object to load
+   * @param app - App identifier
+   * @param repetive - Called for more the one time
+   */
+  async callOverwriteDialog(
+    data: FileDataObject,
+    app: string,
+    repetive?: boolean
+  ): Promise<OverwriteResponse> {
+    const result = await this.loadOverwriteLayerDialog(data, app, repetive);
+    switch (result) {
+      case OverwriteResponse.add:
+        this.addAsWms(data, app, {repetive: true});
+        break;
+      case OverwriteResponse.overwrite:
+        this.addAsWms(data, app, {overwrite: true});
+        break;
+      case OverwriteResponse.cancel:
+      default:
+        this.get(app).loadingToLayman = false;
+        return;
+    }
+  }
+
+  /**
    * Process error server response after trying to load non-wms layer
    * @param response - Http post/past response after loading layer to Layman
    * @param data - Current data object to load
@@ -401,19 +471,7 @@ export class HsAddDataCommonFileService {
     repetive?: boolean
   ): Promise<void> {
     if (response.code == 17) {
-      const result = await this.loadOverwriteLayerDialog(data, app, repetive);
-      switch (result) {
-        case OverwriteResponse.add:
-          this.addAsWms(data, app, {repetive: true});
-          break;
-        case OverwriteResponse.overwrite:
-          this.addAsWms(data, app, {overwrite: true});
-          break;
-        case OverwriteResponse.cancel:
-        default:
-          this.get(app).loadingToLayman = false;
-          return;
-      }
+      this.callOverwriteDialog(data, app, repetive);
     } else {
       this.handleLaymanError(response, app);
     }
