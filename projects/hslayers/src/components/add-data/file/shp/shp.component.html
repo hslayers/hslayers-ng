@@ -4,6 +4,10 @@
             [uploader]="'shpdbfshx-'+app">
         </hs-file-upload>
     </div>
+    <div *ngIf="data.files?.length === 0"
+        class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
+        <p class="m-0"> {{'ADDLAYERS.SHP.neededFiles' | translateHs : {app} }}</p>
+    </div>
     <div *ngIf="hsAddDataCommonService.get(app).showDetails">
         <div class="d-flex flex-row justify-content-around">
             <div class="d-flex flex-column justify-content-center">
