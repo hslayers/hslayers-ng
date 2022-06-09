@@ -281,7 +281,7 @@ export class HsLaymanService implements HsSaverService {
         endpoint,
         formData,
         asyncUpload,
-        layerDesc?.name,
+        layerDesc?.name ? description.name : '',
         exists
       );
       return res;
@@ -308,9 +308,9 @@ export class HsLaymanService implements HsSaverService {
     layerName = getLaymanFriendlyLayerName(layerName);
     try {
       let data = await lastValueFrom(
-        this.http[!overwrite ? 'post' : 'patch']<PostPatchLayerResponse>(
+        this.http[overwrite ? 'patch' : 'post']<PostPatchLayerResponse>(
           `${endpoint.url}/rest/workspaces/${endpoint.user}/layers${
-            !overwrite ? `?${Math.random()}` : `/${layerName}`
+            overwrite ? `/${layerName}` : `?${Math.random()}`
           }`,
           formData,
           {withCredentials: true}
