@@ -131,12 +131,14 @@ export class HsLaymanService implements HsSaverService {
    * @param compName - Composition's name
    * @param endpoint - Endpoint's description
    * @param access_rights - Composition's new access rights
+   * @param app - App identifier
    * @returns Promise result of composition's PATCH request
    */
   async updateCompositionAccessRights(
     compName: string,
     endpoint: HsEndpoint,
-    access_rights: accessRightsModel
+    access_rights: accessRightsModel,
+    app: string
   ): Promise<any> {
     const rights = this.parseAccessRightsForLayman(endpoint, access_rights);
     const formdata = new FormData();
@@ -148,7 +150,8 @@ export class HsLaymanService implements HsSaverService {
       endpoint.user,
       compName,
       formdata,
-      false
+      false,
+      app
     );
   }
   /**
@@ -157,13 +160,15 @@ export class HsLaymanService implements HsSaverService {
    * @param endpoint - Endpoint's description
    * @param compoData - Additional data for composition
    * @param saveAsNew - Save as new composition
+   * @param app - App identifier
    * @returns Promise result of POST
    */
   async save(
     compositionJson: MapComposition,
     endpoint: HsEndpoint,
     compoData: CompoData,
-    saveAsNew: boolean
+    saveAsNew: boolean,
+    app: string
   ): Promise<any> {
     const rights = this.parseAccessRightsForLayman(
       endpoint,
@@ -193,6 +198,7 @@ export class HsLaymanService implements HsSaverService {
       compoData.name,
       formdata,
       saveAsNew,
+      app,
       compositionJson
     );
   }
@@ -228,6 +234,7 @@ export class HsLaymanService implements HsSaverService {
    * @param mapName - Map composition's name
    * @param formdata - FormData object used for sending data over HTTP request
    * @param saveAsNew - Save as new composition
+   * @param app - App identifier
    * @param compositionJson - Json with composition's definition
    * @returns Promise result of POST/PATCH request
    */
@@ -237,6 +244,7 @@ export class HsLaymanService implements HsSaverService {
     mapName: string,
     formdata: FormData,
     saveAsNew: boolean,
+    app: string,
     compositionJson?: MapComposition
   ): Promise<any> {
     const headers = new HttpHeaders();
@@ -261,7 +269,23 @@ export class HsLaymanService implements HsSaverService {
             formdata,
             options
           )
-        );
+        ).catch((err) => {
+          this.hsToastService.createToastPopupMessage(
+            this.hsLanguageService.getTranslation(
+              'COMMON.setPermissionsError',
+              undefined,
+              app
+            ),
+            this.hsLanguageService.getTranslationIgnoreNonExisting(
+              'COMMON',
+              'somethingWentWrong',
+              app
+            ),
+            {serviceCalledFrom: 'HsLaymanService'},
+            app
+          );
+          return err;
+        });
         //Unsuccessfull request response contains code,detail and message properties
         if (!response.code) {
           success = true;
@@ -288,13 +312,14 @@ export class HsLaymanService implements HsSaverService {
    * @param geojson - Geojson's object with features to send to server
    * @param description - Object containing {name, title, crs, workspace, access_rights} of
    * layer to retrieve
-   * @param layerDesc - Previously fetched layer's descriptor
+   * @param app - App identifier
    * @returns Promise result of POST/PATCH
    */
   async makeUpsertLayerRequest(
     endpoint: HsEndpoint,
     geojson: GeoJSONFeatureCollection,
-    description: UpsertLayerObject
+    description: UpsertLayerObject,
+    app: string
   ): Promise<PostPatchLayerResponse> {
     const formData = new FormData();
     let asyncUpload: AsyncUpload;
@@ -355,6 +380,7 @@ export class HsLaymanService implements HsSaverService {
         formData,
         asyncUpload,
         layerDesc?.name ? description.name : '',
+        app,
         exists
       );
       return res;
@@ -369,6 +395,8 @@ export class HsLaymanService implements HsSaverService {
    * @param formData - A set of key/value pairs representing layer fields and values, for HTTP request
    * @param asyncUpload - Async upload data: Async upload state and files to upload
    * @param layerName - Existing layer's name
+   * @param app - App identifier
+   * @param overwrite - (Optional) Should overwrite existing layer
    * @returns Promise result of POST/PATCH
    */
   async tryLoadLayer(
@@ -376,6 +404,7 @@ export class HsLaymanService implements HsSaverService {
     formData: FormData,
     asyncUpload: AsyncUpload,
     layerName: string,
+    app: string,
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
     layerName = getLaymanFriendlyLayerName(layerName);
@@ -388,7 +417,23 @@ export class HsLaymanService implements HsSaverService {
           formData,
           {withCredentials: true}
         )
-      );
+      ).catch((err) => {
+        this.hsToastService.createToastPopupMessage(
+          this.hsLanguageService.getTranslation(
+            'COMMON.setPermissionsError',
+            undefined,
+            app
+          ),
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'COMMON',
+            'somethingWentWrong',
+            app
+          ),
+          {serviceCalledFrom: 'HsLaymanService'},
+          app
+        );
+        return err;
+      });
       data = Array.isArray(data) ? data[0] : data;
       //CHECK IF OK not auth etc.
       if (data && !data.code) {
@@ -543,7 +588,8 @@ export class HsLaymanService implements HsSaverService {
         crsSupported,
         withFeatures
       ),
-      data
+      data,
+      app
     );
     setTimeout(async () => {
       await this.makeGetLayerRequest(endpoint, layer, app);
