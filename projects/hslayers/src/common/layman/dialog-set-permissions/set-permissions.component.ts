@@ -7,6 +7,7 @@ import {HsDialogComponent} from '../../../components/layout/dialogs/dialog-compo
 import {HsDialogContainerService} from '../../../components/layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../components/layout/dialogs/dialog-item';
 import {HsLaymanService} from '../../../components/save-map/layman.service';
+import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
 import {UpsertLayerObject} from '../../../components/save-map/types/upsert-layer-object.type';
 import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
 
@@ -15,7 +16,8 @@ import {accessRightsModel} from '../../../components/add-data/common/access-righ
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
@@ -77,6 +79,7 @@ export class HsSetPermissionsDialogComponent
    * Save permissions for selected record
    */
   async savePermissions(): Promise<void> {
+    let response: PostPatchLayerResponse | any;
     switch (this.data.recordType) {
       case 'layer':
         const layerDesc: UpsertLayerObject = {
@@ -85,20 +88,28 @@ export class HsSetPermissionsDialogComponent
           workspace: this.data.selectedRecord.endpoint.user,
           access_rights: this.currentAccessRights,
         };
-        await this.hsLaymanService.makeUpsertLayerRequest(
+        response = await this.hsLaymanService.makeUpsertLayerRequest(
           this.data.selectedRecord.endpoint,
           null,
-          layerDesc
+          layerDesc,
+          this.data.app
         );
+        if (response?.error) {
+          return;
+        }
         this.hsAddDataCatalogueService.reloadData(this.data.app);
         this.close();
         break;
       case 'composition':
-        await this.hsLaymanService.updateCompositionAccessRights(
+        response = await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
           this.data.selectedRecord.endpoint,
-          this.currentAccessRights
+          this.currentAccessRights,
+          this.data.app
         );
+        if (response?.error) {
+          return;
+        }
         this.hsCompositionsCatalogueService.loadFilteredCompositions(
           this.data.app
         );

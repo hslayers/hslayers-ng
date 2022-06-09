@@ -235,6 +235,7 @@ export class HsAddDataCommonFileService {
         formData,
         asyncUpload,
         name,
+        app,
         overwrite
       );
       return res;
