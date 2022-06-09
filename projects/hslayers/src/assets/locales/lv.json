@@ -267,7 +267,9 @@
     "apply": "Uzstādīt",
     "reversed": "Apgriezti",
     "selectAndSavePermissions": "Atlasiet un apstipriniet atļaujas",
-    "setPermissions": "Iestatīt atļaujas"
+    "setPermissions": "Iestatīt atļaujas",
+    "setPermissionsError": "Atļauju iestatīšanas kļūda",
+    "somethingWentWrong": "Radās problēma. Lūdzu, mēģiniet vēlreiz!"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

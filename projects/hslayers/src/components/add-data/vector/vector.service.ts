@@ -362,7 +362,8 @@ export class HsAddDataVectorService {
               crsSupported,
               true
             ),
-            layerDesc
+            layerDesc,
+            app
           );
           if (!upsertReq) {
             return OverwriteResponse.cancel;
