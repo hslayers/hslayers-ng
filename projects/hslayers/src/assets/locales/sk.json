@@ -35,7 +35,7 @@
     "file": "Súbor",
     "FILE": {
       "onlyOneZipFileCan": "Súbory ZIP je možné nahrávať len po jednom",
-      "someOfTheUploadedFiles": "Nahrávaný súbor prekročil maximálnu povolenú veľkosť",
+      "someOfTheUploadedFiles": "Nahrávaný súbor prekročil maximálnu povolenú veľkosť 20MB",
       "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi"
     },
     "requestServiceLayers": "Vyžiadať vrstvy služby",
