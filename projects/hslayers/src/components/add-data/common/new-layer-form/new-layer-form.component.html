@@ -1,6 +1,6 @@
 <div>
 
-  <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translateHs : {app} }}</sub></p>
+  <p [hidden]="data?.srs"><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translateHs : {app} }}</sub></p>
 
   <div *ngIf="data.type === 'raster'"
     class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
