@@ -23,7 +23,8 @@ const CHART_DIV = '.hs-statistics-regression';
   templateUrl: './regression-dialog.component.html',
 })
 export class HsStatisticsRegressionDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: {
     app: string;
   };
@@ -262,11 +263,12 @@ export class HsStatisticsRegressionDialogComponent
                   regressionVars
                     .map(
                       (col) =>
-                        `datum.shiftedReal${col.factorName} * ${col.coefficient}`
+                        `if(datum.shiftedReal${col.factorName} == null, null, datum.shiftedReal${col.factorName} * ${col.coefficient}`
                     )
-                    .join('') + ` + ${this.multipleRegressionOutput.constant}`,
+                    .join('') + ` + ${this.multipleRegressionOutput.constant})`,
                 'as': 'predicted_value',
               },
+              {'type': 'filter', 'expr': 'datum.predicted_value != null'},
             ],
           },
         ],
@@ -333,7 +335,9 @@ export class HsStatisticsRegressionDialogComponent
               'type': 'symbol',
               'encode': {
                 'enter': {
-                  'tooltip': {'field': col.factorName},
+                  'tooltip': {
+                    'signal': `{title: 'Observed factor', 'value': datum.${col.factorName}}`,
+                  },
                   'stroke': {'scale': 'color', 'value': col.factorName},
                   'shape': {'value': 'diamond'},
                   'size': {'value': 30},
@@ -355,7 +359,9 @@ export class HsStatisticsRegressionDialogComponent
                 'type': 'symbol',
                 'encode': {
                   'enter': {
-                    'tooltip': {'field': 'Y'},
+                    'tooltip': {
+                      'signal': `{title: 'Observed outcome', 'value': datum.Y}`,
+                    },
                     stroke: {scale: 'color', value: 'Observed Y'},
                     shape: {value: 'diamond'},
                     size: {value: 30},
@@ -376,9 +382,12 @@ export class HsStatisticsRegressionDialogComponent
               'from': {
                 'data': 'predictions',
               },
-              'type': 'line',
+              'type': 'symbol',
               'encode': {
                 'enter': {
+                  'tooltip': {
+                    'signal': `{title: 'Predicted outcome', 'value': datum.predicted_value}`,
+                  },
                   'stroke': {
                     'scale': 'color',
                     'value': 'Predicted Y',
