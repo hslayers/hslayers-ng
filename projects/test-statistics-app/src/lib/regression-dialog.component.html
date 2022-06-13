@@ -1,10 +1,10 @@
 <div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 90%; height: calc(var(--vh, 1vh) * 100 - 50);">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">
                     <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                        <div ngbDropdown placement="bottom-right">
+                        <div ngbDropdown placement="bottom-left">
                             <button type="button" ngbDropdownToggle class="
                       btn btn-sm
                       rounded-0
@@ -31,7 +31,7 @@
                 <button (click)="close()" class="btn-close" data-dismiss="modal"><span aria-hidden="true"></span><span
                         class="visually-hidden">{{'COMMON.close' | translateHs : {app: data.app} }}</span></button>
             </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+            <div class="modal-body" style="height: 51em; overflow-y:auto">
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
                     <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translateHs : {app: data.app} }}:</p>
@@ -48,7 +48,7 @@
                                 {{selectedVariable}}
                             </div>
                         </button>
-                        <div ngbDropdownMenu style="transform: translateX(25%); width: 15em">
+                        <div ngbDropdownMenu style="transform: translateX(25%); width: 34em;">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item text-truncate" *ngFor="let col of appRef.corpus.variables"
                                     data-toggle="tooltip" (click)="selectVariable(col)">{{col}}</a>
@@ -109,17 +109,15 @@
                         </li>
                     </ng-container>
                 </ul>
-                <div class="container-fluid"
+                <div class="d-flex flex-column"
                     *ngIf="multipleRegressionOutput && selectedRegressionType.name === 'multi-linear'">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="hs-statistics-multi-regression"
-                                [ngStyle]="{'min-width': '400px', 'min-height': '300px'}">
-                            </div>
+                    <div class="align-self-stretch">
+                        <div class="hs-statistics-multi-regression"
+                            [ngStyle]="{'min-width': '400px', 'min-height': '400px'}">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-9">
+                    <div class="align-self-start">
+                        
                             Y - {{selectedVariable}} <br />
                             <span *ngFor="let col of multipleRegressionOutput.variables">
                                 X{{multipleRegressionOutput.variables.indexOf(col)}} - {{col.name}} <br />
@@ -127,7 +125,7 @@
                             Y = <span
                                 *ngFor="let col of multipleRegressionOutput.variables">X{{multipleRegressionOutput.variables.indexOf(col)}}
                                 * {{col.coefficient}}</span> + {{multipleRegressionOutput.constant}}
-                        </div>
+                        
                         <!-- <div class="col-3">
                             <button type="button" class="btn btn-primary m-1"
                                 (click)="openPredictionDialog(selectedVariable, multipleRegressionOutput)">{{'STATISTICS.PREDICT'
