@@ -282,6 +282,8 @@ export class HsAddDataVectorService {
         addLayerRes.complete = false;
         return addLayerRes;
       }
+      //Create layer on layman: OverwriteResponse.add
+      await this.upsertLayer(data, app);
     }
     const layer = await this.addVectorLayer(
       data.features.length != 0 ? data.type : data.dataType,
@@ -292,7 +294,7 @@ export class HsAddDataVectorService {
       data.srs,
       {
         extractStyles: data.extract_styles,
-        features: data.features,
+        features: data.saveToLayman ? null : data.features, //Features are being posted to Layman in original CRS and will be fetched later
         path: this.hsUtilsService.undefineEmptyString(data.folder_name),
         access_rights: data.access_rights,
         workspace: commonFileRef.endpoint?.user,
@@ -314,6 +316,40 @@ export class HsAddDataVectorService {
       });
     }
     return addLayerRes;
+  }
+
+  /**
+   * makeUpsertLayerRequest wrapper,
+   * Send layer's definition and features to Layman
+   * @param nativeFeatures Whether to use geometry without trasformation.
+   */
+  async upsertLayer(
+    data: VectorDataObject,
+    app: string
+  ): Promise<PostPatchLayerResponse> {
+    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+
+    const crsSupported = this.hsLaymanService.supportedCRRList.includes(
+      data.srs
+    );
+    const layerDesc: UpsertLayerObject = {
+      title: data.title,
+      name: getLaymanFriendlyLayerName(data.name),
+      crs: this.getFeaturesProjection(getProjection(data.nativeSRS)).getCode(),
+      workspace: commonFileRef.endpoint.user,
+      access_rights: data.access_rights,
+      sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
+    };
+    return this.hsLaymanService.makeUpsertLayerRequest(
+      commonFileRef.endpoint,
+      this.hsLaymanService.getFeatureGeoJSON(
+        data.nativeFeatures,
+        crsSupported,
+        true
+      ),
+      layerDesc,
+      app
+    );
   }
 
   /**
@@ -346,27 +382,7 @@ export class HsAddDataVectorService {
         );
       switch (result) {
         case OverwriteResponse.overwrite:
-          const crsSupported = this.hsLaymanService.supportedCRRList.includes(
-            data.srs
-          );
-          const layerDesc: UpsertLayerObject = {
-            title: data.title,
-            name: getLaymanFriendlyLayerName(data.name),
-            crs: this.hsMapService.getCurrentProj(app).getCode(),
-            workspace: commonFileRef.endpoint.user,
-            access_rights: data.access_rights,
-            sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
-          };
-          upsertReq = await this.hsLaymanService.makeUpsertLayerRequest(
-            commonFileRef.endpoint,
-            this.hsLaymanService.getFeatureGeoJSON(
-              data.features,
-              crsSupported,
-              true
-            ),
-            layerDesc,
-            app
-          );
+          upsertReq = await this.upsertLayer(data, app);
           if (!upsertReq) {
             return OverwriteResponse.cancel;
           } else if (upsertReq?.code) {
@@ -506,6 +522,32 @@ export class HsAddDataVectorService {
   }
 
   /**
+   * Tries guessing EPSG by parsing json as URN e.g. urn:ogc:def:crs:EPSG::4326
+   */
+  // tryGuessingProjectionFromFile(json) {
+  //   const crsDef = json.crs.properties.name;
+  //   if (crsDef.includes('EPSG')) {
+  //     const parts = crsDef.split(':');
+  //     return getProjection(`EPSG:${parts[parts.length - 1]}`);
+  //   }
+  // }
+
+
+  /**
+   * Returns layman supported projection 
+   */
+  getFeaturesProjection(projection: Projection): Projection {
+    return epsg4326Aliases
+      .map((proj) => proj.getCode())
+      .some((code) => code === projection.getCode())
+      ? getProjection('EPSG:4326')
+      : this.hsLaymanService.supportedCRRList.indexOf(projection.getCode()) > -1
+      ? projection
+      : getProjection('EPSG:4326');
+    //Features in map CRS
+  }
+
+  /**
    * Read features from uploaded file as objects
    * @param json - Uploaded file parsed as json object
    * @param app - App identifier
@@ -515,6 +557,9 @@ export class HsAddDataVectorService {
     let features = [];
     const format = new GeoJSON();
     const projection = format.readProjection(json);
+    // if (!projection) {
+    //   projection = this.tryGuessingProjectionFromFile(json);
+    // }
     if (json.features?.length > 0) {
       features = format.readFeatures(json);
       this.transformFeaturesIfNeeded(features, projection, app);
@@ -522,15 +567,10 @@ export class HsAddDataVectorService {
     const object = {
       name: json.name,
       title: json.name,
-      srs: epsg4326Aliases
-        .map((proj) => proj.getCode())
-        .some((code) => code === projection.getCode())
-        ? getProjection('EPSG:4326')
-        : this.hsLaymanService.supportedCRRList.indexOf(projection.getCode()) >
-          -1
-        ? projection
-        : getProjection('EPSG:4326'),
-      features,
+      srs: this.getFeaturesProjection(projection),
+      features: features, //Features in map crs
+      nativeFeatures: format.readFeatures(json), //Fetures in native CRS
+      nativeSRS: projection,
     };
     return object;
   }
@@ -593,6 +633,8 @@ export class HsAddDataVectorService {
           app
         );
       }
+      uploadedData.nativeFeatures = parser.readFeatures(uploadedContent);
+      uploadedData.nativeSRS = parser.readProjection(uploadedContent);
       uploadedData.title = file.name.split('.')[0].trim();
       uploadedData.name = uploadedData.title;
       uploadedData.type = fileType;
