@@ -20,7 +20,7 @@
     <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs : {app} }}</label>
 
   </div>
-  <div class="form-group">
+  <div class="form-group" *ngIf="data.dataType === 'shp'">
     <div class="input-group">
       <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs : {app} }}</span>
       <select class="form-control form-select" [(ngModel)]="data.srs" name="srs">

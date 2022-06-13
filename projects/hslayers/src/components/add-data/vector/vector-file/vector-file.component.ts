@@ -36,8 +36,7 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -179,6 +178,14 @@ export class HsAddDataVectorFileComponent
           this.data.features = [];
           this.data.featureCount = 0;
         }
+        if (uploadedData.nativeFeatures !== undefined) {
+          this.data.nativeFeatures = uploadedData.nativeFeatures;
+        }
+
+        if (uploadedData.nativeSRS !== undefined) {
+          this.data.nativeSRS = uploadedData.nativeSRS.getCode();
+        }
+
         if (uploadedData.type !== undefined) {
           this.data.type = uploadedData.type;
         } else {

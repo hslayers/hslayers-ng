@@ -16,6 +16,7 @@ export type VectorDataObject = {
   extract_styles?: boolean;
   featureCount?: number;
   features?: Array<any>;
+  nativeFeatures?: Array<any>;
   folder_name?: string;
   name?: string;
   // Not possible to save KML to layman yet
@@ -24,6 +25,7 @@ export type VectorDataObject = {
   showDetails?: boolean;
   sourceLayer?: VectorLayer<VectorSource<Geometry>>;
   srs?: string;
+  nativeSRS?: string;
   sld?: string | {content: string};
   title?: string;
   type?: string;
