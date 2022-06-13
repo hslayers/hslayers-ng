@@ -20,12 +20,13 @@
     <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs : {app} }}</label>
 
   </div>
-  <div class="form-group" *ngIf="data.dataType === 'shp'">
+  <div class="form-group" *ngIf="data.dataType === 'shp' || data.type === 'raster'">
     <div class="input-group">
       <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs : {app} }}</span>
       <select class="form-control form-select" [(ngModel)]="data.srs" name="srs">
         <option [ngValue]="null" disabled selected hidden>{{'ADDLAYERS.SRSRequired' | translateHs : {app} }}</option>
-        <option *ngFor="let epsg of hsLaymanService.supportedCRRList" [ngValue]="epsg">{{epsg}}</option>
+        <option *ngFor="let epsg of hsLaymanService.supportedCRRList | filter: srsFilter" [ngValue]="epsg">{{epsg}}
+        </option>
       </select>
     </div>
   </div>
