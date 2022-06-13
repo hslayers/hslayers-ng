@@ -9,6 +9,7 @@ import {ColumnWrapper} from './column-wrapper.type';
 import {HsDialogComponent, HsDialogContainerService} from 'hslayers-ng';
 import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {HsStatisticsService, ShiftBy} from './statistics.service';
+import {isDatumDef} from 'vega-lite/build/src/channeldef';
 import {linearRegression} from 'simple-statistics';
 
 dayjs.extend(utc);
@@ -336,7 +337,7 @@ export class HsStatisticsRegressionDialogComponent
               'encode': {
                 'enter': {
                   'tooltip': {
-                    'signal': `{title: 'Observed factor', 'value': datum.${col.factorName}}`,
+                    'signal': `{title: 'Historical data', '${col.name}': datum.${col.factorName}, 'time': datum.time, 'location': datum.location}`,
                   },
                   'stroke': {'scale': 'color', 'value': col.factorName},
                   'shape': {'value': 'diamond'},
@@ -360,7 +361,7 @@ export class HsStatisticsRegressionDialogComponent
                 'encode': {
                   'enter': {
                     'tooltip': {
-                      'signal': `{title: 'Observed outcome', 'value': datum.Y}`,
+                      'signal': `{title: 'Historical data', '${this.selectedVariable}': datum.Y, 'time': datum.time, 'location': datum.location}`,
                     },
                     stroke: {scale: 'color', value: 'Observed Y'},
                     shape: {value: 'diamond'},
@@ -386,7 +387,7 @@ export class HsStatisticsRegressionDialogComponent
               'encode': {
                 'enter': {
                   'tooltip': {
-                    'signal': `{title: 'Predicted outcome', 'value': datum.predicted_value}`,
+                    'signal': `{title: 'Prediction', '${this.selectedVariable}': datum.predicted_value, 'time': datum.time, 'location': datum.location}`,
                   },
                   'stroke': {
                     'scale': 'color',
@@ -406,10 +407,29 @@ export class HsStatisticsRegressionDialogComponent
         'legends': [
           {
             'fill': 'color',
+            'labelLimit': 500,
+            'orient': 'top',
             'encode': {
               'title': {
                 'update': {
                   'fontSize': {'value': 14},
+                },
+              },
+              'labels': {
+                'update': {
+                  'text': {
+                    'signal': `if(datum.index < ${
+                      regressionVars.length
+                    }, datum.label + ' ' + [${regressionVars
+                      .map((col) => `'${col.name}'`)
+                      .join(',')}][datum.index], if(datum.index == ${
+                      regressionVars.length
+                    }, 'Predicted Y ${this.selectedVariable}', 'Observed Y ${
+                      this.selectedVariable
+                    }'))`,
+                  },
+                  'fontSize': {'value': 12},
+                  'fill': {'value': 'black'},
                 },
               },
               'legend': {
