@@ -10,7 +10,6 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 import Feature from 'ol/Feature';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
@@ -66,7 +65,7 @@ export class HsAddDataVectorService {
     private hsStylerService: HsStylerService,
     private hsAddDataService: HsAddDataService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsLaymanService: HsLaymanService
+    private hsLaymanService: HsLaymanService,
   ) {}
 
   /**
@@ -486,6 +485,7 @@ export class HsAddDataVectorService {
       return object;
     } catch (e) {
       console.log('Uploaded file is not supported!');
+      return {error: 'couldNotUploadSelectedFile'};
     }
   }
 
@@ -516,25 +516,14 @@ export class HsAddDataVectorService {
           }
         } catch (e) {
           console.log('Uploaded file is not supported!', e);
+          return {error: 'couldNotUploadSelectedFile'};
         }
     }
     return uploadedData;
   }
 
   /**
-   * Tries guessing EPSG by parsing json as URN e.g. urn:ogc:def:crs:EPSG::4326
-   */
-  // tryGuessingProjectionFromFile(json) {
-  //   const crsDef = json.crs.properties.name;
-  //   if (crsDef.includes('EPSG')) {
-  //     const parts = crsDef.split(':');
-  //     return getProjection(`EPSG:${parts[parts.length - 1]}`);
-  //   }
-  // }
-
-
-  /**
-   * Returns layman supported projection 
+   * Returns layman supported projection
    */
   getFeaturesProjection(projection: Projection): Projection {
     return epsg4326Aliases
@@ -557,9 +546,11 @@ export class HsAddDataVectorService {
     let features = [];
     const format = new GeoJSON();
     const projection = format.readProjection(json);
-    // if (!projection) {
-    //   projection = this.tryGuessingProjectionFromFile(json);
-    // }
+    if (!projection) {
+      return {
+        error: 'ERROR.srsNotSupported',
+      };
+    }
     if (json.features?.length > 0) {
       features = format.readFeatures(json);
       this.transformFeaturesIfNeeded(features, projection, app);
@@ -641,6 +632,7 @@ export class HsAddDataVectorService {
       return uploadedData;
     } catch (e) {
       console.error('Uploaded file is not supported' + e);
+      return {error: 'couldNotUploadSelectedFile'};
     }
   }
 }

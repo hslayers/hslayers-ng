@@ -36,7 +36,8 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() dataType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -150,7 +151,7 @@ export class HsAddDataVectorFileComponent
         f,
         this.app
       );
-      if (uploadedData !== undefined) {
+      if (uploadedData !== undefined && !uploadedData.error) {
         uploadedData.url !== undefined
           ? (this.data.base64url = uploadedData.url)
           : ((this.data.url = undefined), (this.data.base64url = undefined));
@@ -223,7 +224,7 @@ export class HsAddDataVectorFileComponent
           ),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
-            'couldNotUploadSelectedFile',
+            `${uploadedData?.error ?? 'someErrorHappened'}`,
             undefined,
             this.app
           ),
