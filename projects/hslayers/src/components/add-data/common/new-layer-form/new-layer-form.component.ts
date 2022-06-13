@@ -18,7 +18,9 @@ export class HsNewLayerFormComponent implements OnInit {
   @Input() data: any;
   @Input() app = 'default';
   appRef: HsAddDataCommonFileServiceParams;
-
+  srsFilter = (srs: string): boolean => {
+    return true;
+  };
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsLanguageService: HsLanguageService,
@@ -28,6 +30,11 @@ export class HsNewLayerFormComponent implements OnInit {
 
   ngOnInit() {
     this.appRef = this.hsAddDataCommonFileService.get(this.app);
+    if (this.data.type === 'raster') {
+      this.srsFilter = (item): boolean => {
+        return ['4326', '3857'].some((epsg) => item.includes(epsg));
+      };
+    }
   }
 
   sldTitle(): string {

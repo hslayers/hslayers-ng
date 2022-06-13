@@ -11,10 +11,17 @@ import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
 import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component';
+import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, FormsModule, HsLanguageModule, HsLaymanModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HsLanguageModule,
+    HsLaymanModule,
+    HsUiExtensionsModule,
+  ],
   exports: [
     HsGetCapabilitiesErrorComponent,
     HsAdvancedOptionsComponent,
