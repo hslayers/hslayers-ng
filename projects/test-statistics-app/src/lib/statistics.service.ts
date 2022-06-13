@@ -221,7 +221,7 @@ export class HsStatisticsService {
    * @returns
    */
   shiftTime(variable: string, time: string, variableShifts: ShiftBy) {
-    return parseInt(time) - (variableShifts[variable] ?? 0);
+    return parseInt(time) + (variableShifts[variable] ?? 0);
   }
 
   async clear(app: string): Promise<void> {
