@@ -1,5 +1,6 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="statistics" [app]="data.app" [title]="'PANEL_HEADER.STATISTICS' | translateHs : {app: data.app} ">
+    <hs-panel-header name="statistics" [app]="data.app"
+        [title]="'PANEL_HEADER.STATISTICS' | translateHs : {app: data.app} ">
     </hs-panel-header>
     <div class="card-body">
 
@@ -38,24 +39,24 @@
                         </ng-container>
                         <div class="btn-group mt-2 align-items-center d-flex justify-content-between"
                             data-toggle="buttons">
-                            <button type="button" class="btn btn-sm btn-primary m-1"
+                            <button type="button" class="btn btn-sm btn-primary "
                                 (click)="correlate()">{{'STATISTICS.CORRELATE' |
                                 translateHs : {app: data.app} }}</button>
-                            <button type="button" class="btn btn-sm btn-primary m-1"
-                                (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
-                                translateHs : {app: data.app} }}</button>
-                            <button type="button" class="btn btn-sm btn-primary m-1"
+                            <button type="button" class="btn btn-sm btn-primary "
                                 (click)="regression()">{{'STATISTICS.REGRESSION'
                                 |
                                 translateHs : {app: data.app} }}</button>
-                            <button type="button" class="btn btn-sm btn-primary m-1"
+                            <button type="button" class="btn btn-sm btn-primary "
                                 (click)="predict()">{{'STATISTICS.PREDICT'
                                 |
                                 translateHs : {app: data.app} }}</button>
-                            <button type="button" class="btn btn-sm btn-secondary m-1"
+                            <button type="button" class="btn btn-sm btn-secondary "
+                                (click)="timeSeries()">{{'STATISTICS.TIME_SERIES_CHART' |
+                                translateHs : {app: data.app} }}</button>
+                            <button type="button" class="btn btn-sm btn-secondary "
                                 (click)="visualizeInMap()">{{'STATISTICS.VISUALIZE_MAP' |
                                 translateHs : {app: data.app} }}</button>
-                            <button type="button" class="btn btn-sm btn-danger m-1"
+                            <button type="button" class="btn btn-sm btn-danger "
                                 (click)="clearAll()">{{'STATISTICS.CLEAR_ALL_DATA' |
                                 translateHs : {app: data.app} }}</button>
                         </div>
