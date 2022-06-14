@@ -1,8 +1,7 @@
-import {ImageWMS, Source, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {Source, Vector as VectorSource, XYZ} from 'ol/source';
 
-import VectorSource from 'ol/source/Vector';
 import {HsDimensionDescriptor} from './dimension';
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
@@ -66,13 +65,6 @@ export class HsDimensionService {
       }
     }
     return tmp;
-  }
-
-  dimensionType(dimension) {
-    if (dimension.type == undefined) {
-      return null;
-    }
-    return dimension.type;
   }
 
   /**

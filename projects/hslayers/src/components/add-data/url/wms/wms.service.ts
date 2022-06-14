@@ -81,7 +81,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   get(app: string): HsUrlWmsParams {
-    if (this.apps[app ?? 'default'] == undefined) {
+    if (this.apps[app ?? 'default'] === undefined) {
       this.apps[app ?? 'default'] = new HsUrlWmsParams();
     }
     return this.apps[app ?? 'default'];
@@ -354,7 +354,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Filters out layers without 'Name' parameter
    */
-  filterCapabilitiesLayers(layers: WmsLayer | Array<WmsLayer>): Array<any> {
+  filterCapabilitiesLayers(
+    layers: WmsLayer | Array<WmsLayer>
+  ): Array<WmsLayer> {
     if (Array.isArray(layers)) {
       return layers;
     }
@@ -405,7 +407,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   getLayers(
     app: string,
     checkedOnly: boolean,
-    shallow: boolean = false
+    shallow = false
   ): Layer<Source>[] {
     const appRef = this.get(app);
     if (appRef.data.layers === undefined) {
@@ -514,7 +516,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         app
       ),
       maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MaxScaleDenominatorview,
+        layer.MaxScaleDenominator,
         app
       ),
       removable: true,
@@ -570,13 +572,13 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
 
   /**
    * Loop through the list of layers and call getLayer recursively
-   * @param layer - Layer selected
+   * @param layer - Layer selected. A descriptor similar to WmsLayer, but has additional properties, also specific to WFS and ArcGIS layers
    * @param options - Add layers recursively options
-   * (checkedOnly?: boolean; shallow?: boolean;style?: string;)
-   * @param collection - Layers created and retreived collection
+   * (checkedOnly?: boolean; shallow?: boolean; style?: string;)
+   * @param collection - Layers created and retrieved collection
    */
   getLayersRecursively(
-    layer: any, //TODO better typing
+    layer: any, //TODO: better typing. It is a wrapper similar to WmsLayer, but has additional properties, also specific to WFS and ArcGIS layers
     options: addLayersRecursivelyOptions = {checkedOnly: true},
     collection: Layer<Source>[],
     app: string
