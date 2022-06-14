@@ -50,6 +50,7 @@ export class HsStatisticsPredictionChartDialogComponent
   };
   regressionParams: any;
   shifts: {};
+  observations: any;
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
@@ -141,6 +142,7 @@ export class HsStatisticsPredictionChartDialogComponent
         this.predictedVariable
       ] = tmp;
     }
+    this.visualize();
   }
 
   applyFilters() {
@@ -150,49 +152,21 @@ export class HsStatisticsPredictionChartDialogComponent
   }
 
   async visualize(): Promise<void> {
-    /* const observations = this.colWrappers
-      .filter(
-        (col) =>
-          col.name == this.data.factor.name ||
-          col.name == this.predictedVariable
-      )
-      .reduce(
-        (acc, col) =>
-          acc.concat(
-            this.filteredRows.map((s) => {
-              const item = {
-                value: s.values[col.name],
-                name: col.name,
-                time: s.time,
-                time_stamp: undefined,
-              };
-              try {
-                const time = dayjs(s.time);
-                item.time_stamp = time.toDate().toISOString();
-              } catch (ex) {}
-              return item;
-            })
-          ),
-        []
-      );
-    observations.sort((a, b) => {
-      if (a.time_stamp > b.time_stamp) {
-        return 1;
+    this.observations = [];
+    for (const year of this.years) {
+      for (const variable of [
+        ...this.regressionParams.variables,
+        {name: this.predictedVariable},
+      ]) {
+        this.observations.push({
+          name: variable.name,
+          time: year.toString(),
+          value:
+            this.dict[this.selectedLocation + '::' + year].values[
+              variable.name
+            ],
+        });
       }
-      if (b.time_stamp > a.time_stamp) {
-        return -1;
-      }
-      return 0;
-    });
-    
-    const chartDiv = this.elementRef.nativeElement.querySelector(CHART_DIV);
-    const maxTime = max(observations.map((obs) => obs.time));
-    
-    const chartHeight = chartDiv.parentElement.offsetHeight - 40;*/
-    try {
-      //      vegaEmbed(chartDiv, chartData);
-    } catch (ex) {
-      console.warn('Could not create vega chart:', ex);
     }
   }
 }
