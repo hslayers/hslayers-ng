@@ -72,6 +72,10 @@ exports.handleProxyRes = (proxyRes, req, res) => {
         res.end(body);
       }
       else {
+        if ([500, 501, 502, 503].find(code => proxyRes.statusCode == code)) {
+          res.statusMessage = proxyRes.statusMessage;
+          res.status(proxyRes.statusCode);
+        }
         res.end(Buffer.concat(body));
       }
     }
