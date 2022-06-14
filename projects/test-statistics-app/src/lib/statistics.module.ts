@@ -12,6 +12,7 @@ import {HsStatisticsHistogramComponent} from './histogram-chart-dialog.component
 import {HsStatisticsPanelComponent} from './statistics-panel.component';
 import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {HsStatisticsRegressionDialogComponent} from './regression-dialog.component';
+import {HsStatisticsTimeSeriesChartComponent} from './time-series-chart';
 import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
 import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 import {HsStatisticsUploadPanelComponent} from './upload-panel';
@@ -28,6 +29,7 @@ import {HsStatisticsUploadPanelComponent} from './upload-panel';
     HsStatisticsHistogramComponent,
     HsStatisticsPredictionChartDialogComponent,
     AbsPipe,
+    HsStatisticsTimeSeriesChartComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,7 @@ import {HsStatisticsUploadPanelComponent} from './upload-panel';
     HsStatisticsRegressionDialogComponent,
     HsStatisticsPredictionChartDialogComponent,
     HsStatisticsHistogramComponent,
+    HsStatisticsTimeSeriesChartComponent,
   ],
 })
 export class HsStatisticsModule {}
