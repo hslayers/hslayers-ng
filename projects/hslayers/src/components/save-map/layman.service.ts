@@ -875,7 +875,8 @@ export class HsLaymanService implements HsSaverService {
   async removeLayer(
     app: string,
     layer?: Layer<Source> | string
-  ): Promise<void> {
+  ): Promise<boolean> {
+    let success: boolean;
     return new Promise((resolve, reject): void => {
       if (this.deleteQuery) {
         this.deleteQuery.unsubscribe();
@@ -919,6 +920,7 @@ export class HsLaymanService implements HsSaverService {
                       response,
                       app
                     );
+                    success = false;
                   } else {
                     let message = 'LAYMAN.layerSuccessfullyRemoved';
                     if (!layer) {
@@ -936,13 +938,14 @@ export class HsLaymanService implements HsSaverService {
                       },
                       app
                     );
+                    success = true;
                   }
                 }
               ),
               catchError((e) => {
                 this.hsToastService.createToastPopupMessage(
                   this.hsLanguageService.getTranslation(
-                    'COMMON.warning',
+                    'LAYMAN.deleteLayersRequest',
                     undefined,
                     app
                   ),
@@ -950,7 +953,7 @@ export class HsLaymanService implements HsSaverService {
                     'SAVECOMPOSITION',
                     'removeLayerError',
                     {
-                      error: e.error.message,
+                      error: e.error.message ?? e.message,
                       layer:
                         layer instanceof Layer
                           ? (layer as Layer<Source>).get('title')
@@ -961,13 +964,14 @@ export class HsLaymanService implements HsSaverService {
                   {serviceCalledFrom: 'HsLaymanService'},
                   app
                 );
+                success = false;
                 return of(e);
               })
             );
           observables.push(response);
         });
       this.deleteQuery = forkJoin(observables).subscribe(() => {
-        resolve();
+        resolve(success);
       });
     });
   }

@@ -99,7 +99,10 @@ export class HsCommonLaymanService {
         this.detectAuthChange(endpoint, app);
         break;
       default:
-        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
+        simplifiedResponse = responseBody.message;
+        if (responseBody.detail) {
+          simplifiedResponse = simplifiedResponse + ' ' + responseBody.detail;
+        }
     }
     //If response is object, it is an error response
     this.hsToastService.createToastPopupMessage(

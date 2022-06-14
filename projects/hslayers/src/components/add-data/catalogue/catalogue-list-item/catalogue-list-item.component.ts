@@ -205,10 +205,17 @@ export class HsCatalogueListItemComponent implements OnInit {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      await this.hsLaymanService.removeLayer(this.app, layer.name);
-      this.appRef.catalogEntries = this.appRef.catalogEntries.filter((item) => {
-        return item.id != layer.id;
-      });
+      const success = await this.hsLaymanService.removeLayer(
+        this.app,
+        layer.name
+      );
+      if (success) {
+        this.appRef.catalogEntries = this.appRef.catalogEntries.filter(
+          (item) => {
+            return item.id != layer.id;
+          }
+        );
+      }
     }
   }
 }
