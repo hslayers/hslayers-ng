@@ -96,6 +96,8 @@ export class HsStatisticsTimeSeriesChartComponent implements OnChanges {
             'color': {
               'field': 'name',
               'legend': {
+                'labelLimit': 500,
+                'orient': 'top',
                 'title': this.HsLanguageService.getTranslation(
                   'STATISTICS.VARIABLES'
                 ),

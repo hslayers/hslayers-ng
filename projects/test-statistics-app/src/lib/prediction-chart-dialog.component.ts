@@ -1,9 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewRef} from '@angular/core';
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import {default as vegaEmbed} from 'vega-embed';
-
 import {ColumnWrapper} from './column-wrapper.type';
 import {CorpusItemValues, HsStatisticsService} from './statistics.service';
 import {
@@ -11,11 +7,9 @@ import {
   HsDialogContainerService,
   HsLanguageService,
   HsLayerUtilsService,
+  HsUtilsService,
 } from 'hslayers-ng';
-import {max} from 'simple-statistics';
 
-dayjs.extend(utc);
-const CHART_DIV = '.hs-statistics-prediction';
 /**
  * Dialog window to choose variables and filters to visualize data on map.
  * Can be used both for uploaded, but not yet stored data or
@@ -51,13 +45,15 @@ export class HsStatisticsPredictionChartDialogComponent
   regressionParams: any;
   shifts: {};
   observations: any;
+  functionSketchVisible = false;
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public HsLayerUtilsService: HsLayerUtilsService,
     private HsLanguageService: HsLanguageService,
     private elementRef: ElementRef,
-    public hsStatisticsService: HsStatisticsService
+    public hsStatisticsService: HsStatisticsService,
+    private hsUtilsService: HsUtilsService
   ) {}
 
   ngOnInit(): void {
@@ -168,5 +164,20 @@ export class HsStatisticsPredictionChartDialogComponent
         });
       }
     }
+  }
+
+  functionSketched(variableName, e: {[key: string]: number}) {
+    for (const year of Object.keys(e)) {
+      this.dict[this.selectedLocation + '::' + year].values[variableName] =
+        e[year];
+    }
+    this.hsUtilsService.debounce(
+      () => {
+        this.predict();
+      },
+      200,
+      false,
+      this
+    )();
   }
 }

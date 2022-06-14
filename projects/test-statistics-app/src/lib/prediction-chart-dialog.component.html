@@ -49,19 +49,27 @@
 
                 <table class="table">
                     <tr>
-                        <th>Variable</th>
+                        <th>{{ "STATISTICS.VARIABLE" | translateHs : {app: data.app} }}</th>
+                        <th>
+                            <div class="form-group">
+                                <input type="checkbox" [(ngModel)]="functionSketchVisible"/>
+                                <label class="control-label ms-1">{{ "STATISTICS.FUNCTION" | translateHs : {app: data.app} }}</label>
+                            </div>
+                        </th>
                         <th *ngFor="let year of years">
                             {{year}}
                         </th>
                     </tr>
                     <tr *ngFor="let col of variables">
                         <td>{{col.name}}</td>
+                        <td><hs-sketch-function [data]="data" *ngIf="functionSketchVisible" (set)="functionSketched(col.name, $event)" [years]="years"></hs-sketch-function></td>
                         <td *ngFor="let year of years">
                             <input class="form-control form-control-sm" (change)="predict()" [(ngModel)]="dict[selectedLocation + '::'+ year].values[col.name]" />
                         </td>
                     </tr>
                     <tr class="table-primary">
                         <td>{{predictedVariable}}</td>
+                        <td></td>
                         <td *ngFor="let year of years">
                             <input class="form-control form-control-sm" readonly [(ngModel)]="dict[selectedLocation + '::'+ year].values[predictedVariable]" />
                         </td>
