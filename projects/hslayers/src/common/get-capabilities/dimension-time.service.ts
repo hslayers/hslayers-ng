@@ -153,41 +153,6 @@ export class HsDimensionTimeService {
     return false;
   }
 
-  //TODO: just copy-pasted from "layerIsWmsT()", needs clean-up FIXME: delete
-  parseDimensionParam(layer: Layer<Source>): void {
-    const dimensions = getDimensions(layer);
-    if (dimensions && dimensions['time']) {
-      const timedata: any = {};
-      let value = dimensions['time'].values || dimensions['time'].value;
-      if (Array.isArray(value)) {
-        value = value[0];
-      }
-      if (
-        typeof value === 'string' ||
-        this.HsUtilsService.instOf(value, String)
-      ) {
-        value = value.replace(/\s*/g, '');
-
-        if (value.search('/') > -1) {
-          const interval = value.split('/').map((d) => {
-            if (d.search('Z') > -1) {
-              d = d.replace('Z', '00:00');
-            }
-            return d;
-          });
-
-          if (interval.length == 3) {
-            timedata.timeStep = this.parseInterval(interval[2]);
-            interval.pop();
-          }
-          if (interval.length == 2) {
-            timedata.timeInterval = interval;
-          }
-        }
-      }
-    }
-  }
-
   /**
    * Make initial setup for WM(T)S-t layers
    * @param currentLayer - Layer for which the time is being set up
