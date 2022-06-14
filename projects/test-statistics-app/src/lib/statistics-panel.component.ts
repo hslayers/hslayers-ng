@@ -121,6 +121,8 @@ export class HsStatisticsPanelComponent
               TILL: 'Till',
               STORE_MODEL: 'Store model',
               MODEL_NAME: 'Model name',
+              FUNCTION: 'Function',
+              DRAG_TO_DRAW: 'Drag mouse in this area to draw',
             },
           },
         },

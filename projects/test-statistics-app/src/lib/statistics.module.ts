@@ -16,6 +16,7 @@ import {HsStatisticsTimeSeriesChartComponent} from './time-series-chart';
 import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
 import {HsStatisticsToMapDialogComponent} from './to-map-dialog.component';
 import {HsStatisticsUploadPanelComponent} from './upload-panel';
+import { HsSketchFunctionComponent } from './sketch-function.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -30,6 +31,7 @@ import {HsStatisticsUploadPanelComponent} from './upload-panel';
     HsStatisticsPredictionChartDialogComponent,
     AbsPipe,
     HsStatisticsTimeSeriesChartComponent,
+    HsSketchFunctionComponent,
   ],
   imports: [
     CommonModule,
@@ -51,6 +53,7 @@ import {HsStatisticsUploadPanelComponent} from './upload-panel';
     HsStatisticsPredictionChartDialogComponent,
     HsStatisticsHistogramComponent,
     HsStatisticsTimeSeriesChartComponent,
+    HsSketchFunctionComponent,
   ],
 })
 export class HsStatisticsModule {}
