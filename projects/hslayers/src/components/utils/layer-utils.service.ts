@@ -302,11 +302,13 @@ export class HsLayerUtilsService {
     );
   }
 
-  getSourceParams(source: ImageWMS | TileWMS | TileArcGISRest): any {
+  getSourceParams(
+    source: ImageWMS | TileWMS | TileArcGISRest
+  ): Record<string, any> {
     return source.getParams();
   }
 
-  getLayerParams(layer: Layer<Source>): any {
+  getLayerParams(layer: Layer<Source>): Record<string, any> {
     const src = layer.getSource();
     if (this.HsUtilsService.instOf(src, ImageWMS)) {
       return this.getSourceParams(src as ImageWMS);

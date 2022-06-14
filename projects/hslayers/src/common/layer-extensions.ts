@@ -1,12 +1,12 @@
 import Feature from 'ol/Feature';
+import LayerGroup from 'ol/layer/Group';
+import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from './dom-feature-link.type';
-import {Geometry} from 'ol/geom';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
-import {Source} from 'ol/source';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
-import LayerGroup from 'ol/layer/Group';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
@@ -222,8 +222,8 @@ export interface DimensionsList {
 }
 
 /**
- * Set the dimensions defintion. TODO: Extend description
- * @param layer 
+ * Set the dimensions definition. TODO: Extend description
+ * @param layer - OL layer
  * @param dimensions
  * @example
  *  dimensions: \{
