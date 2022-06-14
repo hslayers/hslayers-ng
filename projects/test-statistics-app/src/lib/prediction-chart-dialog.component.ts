@@ -5,13 +5,13 @@ import utc from 'dayjs/plugin/utc';
 import {default as vegaEmbed} from 'vega-embed';
 
 import {ColumnWrapper} from './column-wrapper.type';
+import {CorpusItemValues, HsStatisticsService} from './statistics.service';
 import {
   HsDialogComponent,
   HsDialogContainerService,
   HsLanguageService,
   HsLayerUtilsService,
 } from 'hslayers-ng';
-import {HsStatisticsService, ShiftBy} from './statistics.service';
 import {max} from 'simple-statistics';
 
 dayjs.extend(utc);
@@ -29,9 +29,6 @@ export class HsStatisticsPredictionChartDialogComponent
   implements HsDialogComponent, OnInit
 {
   @Input() data: {
-    predictedVariable: string;
-    factor: ColumnWrapper;
-    shifts: ShiftBy;
     app: string;
   };
   viewRef: ViewRef;
@@ -41,7 +38,18 @@ export class HsStatisticsPredictionChartDialogComponent
   filteredRows: any[];
   locationColumn: string;
   locationValues: string[];
-  colWrappers: {checked: boolean; name: string}[];
+  predictions: any;
+  selectedPrediction: any;
+  variables: ColumnWrapper[];
+  predictedVariable: string;
+  fromYear = new Date().getFullYear();
+  tillYear = new Date().getFullYear() + 10;
+  years: number[];
+  dict: {
+    [key: string]: {values: CorpusItemValues; location?: string; time?: string};
+  };
+  regressionParams: any;
+  shifts: {};
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
@@ -52,43 +60,44 @@ export class HsStatisticsPredictionChartDialogComponent
   ) {}
 
   ngOnInit(): void {
-    let tmpTimeValues = [];
-    let tmpLocValues = [];
-
     this.locationColumn = 'location';
     this.timeColumn = 'time';
-    tmpTimeValues = Object.keys(
-      this.hsStatisticsService.get(this.data.app).corpus.dict
-    )
-      .map(
-        (key) => this.hsStatisticsService.get(this.data.app).corpus.dict[key]
-      )
-      .map((row) => row.time);
-    tmpLocValues = Object.keys(
-      this.hsStatisticsService.get(this.data.app).corpus.dict
-    )
-      .map(
-        (key) => this.hsStatisticsService.get(this.data.app).corpus.dict[key]
-      )
-      .map((row) => row.location);
 
-    this.timeValues = tmpTimeValues.filter((value, index, self) => {
-      //Return only unique items https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-      return self.indexOf(value) === index;
-    });
-
-    this.locationValues = tmpLocValues.filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
-    this.colWrappers = this.hsStatisticsService
-      .get(this.data.app)
-      .corpus.variables.map((col) => {
-        return {checked: true, name: col};
-      });
+    this.predictions = this.hsStatisticsService.get(this.data.app).predictions;
   }
 
   close(): void {
     this.HsDialogContainerService.destroy(this, this.data.app);
+  }
+
+  dateRangeChanged() {
+    const range = (start: number, end: number) =>
+      Array.from({length: end - start}, (v, k) => k + start);
+    this.years = range(Math.floor(this.fromYear), Math.floor(this.tillYear));
+    this.fillPlaceholders();
+  }
+
+  selectPrediction(prediction) {
+    this.selectedPrediction = prediction;
+    this.variables = prediction.variables;
+    this.regressionParams = prediction.coefficients;
+    this.predictedVariable = prediction.predictedVariable;
+    this.dict = Object.assign(
+      {},
+      this.hsStatisticsService.get(this.data.app).corpus.dict
+    );
+    const tmpLocValues = Object.keys(this.dict)
+      .map((key) => this.dict[key])
+      .map((row) => row.location);
+
+    this.locationValues = tmpLocValues.filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
+    this.shifts = this.variables.reduce(
+      (obj, item) => Object.assign(obj, {[item.name]: item.shift}),
+      {}
+    );
+    this.dateRangeChanged();
   }
 
   selectFilter(value: any): void {
@@ -97,22 +106,55 @@ export class HsStatisticsPredictionChartDialogComponent
     this.visualize();
   }
 
+  fillPlaceholders() {
+    for (const year of this.years) {
+      if (this.dict[this.selectedLocation + '::' + year] == undefined) {
+        this.dict[this.selectedLocation + '::' + year] = {
+          values: {},
+          time: year.toString(),
+          location: this.selectedLocation,
+        };
+      }
+    }
+  }
+
+  predict() {
+    for (const year of this.years) {
+      let tmp = 0;
+      for (const variable of this.regressionParams.variables) {
+        const key = this.hsStatisticsService.adjustDictionaryKey(
+          this.dict,
+          this.selectedLocation + '::' + year,
+          variable.name,
+          this.shifts
+        );
+        if (this.dict[key] === undefined) {
+          tmp = null;
+          continue;
+        }
+        tmp += variable.coefficient * this.dict[key].values[variable.name];
+      }
+      if (tmp !== null) {
+        tmp += this.regressionParams.constant;
+      }
+      this.dict[this.selectedLocation + '::' + year].values[
+        this.predictedVariable
+      ] = tmp;
+    }
+  }
+
   applyFilters() {
-    this.filteredRows = Object.keys(
-      this.hsStatisticsService.get(this.data.app).corpus.dict
-    )
-      .map(
-        (key) => this.hsStatisticsService.get(this.data.app).corpus.dict[key]
-      )
+    this.filteredRows = Object.keys(this.dict)
+      .map((key) => this.dict[key])
       .filter((row) => row.location == this.selectedLocation);
   }
 
   async visualize(): Promise<void> {
-    const observations = this.colWrappers
+    /* const observations = this.colWrappers
       .filter(
         (col) =>
           col.name == this.data.factor.name ||
-          col.name == this.data.predictedVariable
+          col.name == this.predictedVariable
       )
       .reduce(
         (acc, col) =>
@@ -142,376 +184,13 @@ export class HsStatisticsPredictionChartDialogComponent
       }
       return 0;
     });
+    
     const chartDiv = this.elementRef.nativeElement.querySelector(CHART_DIV);
     const maxTime = max(observations.map((obs) => obs.time));
-    const chartHeight = chartDiv.parentElement.offsetHeight - 40;
-    const chartData: any = {
-      '$schema': 'https://vega.github.io/schema/vega/v5.json',
-      'config': {
-        'mark': {'tooltip': null},
-        'axis': {
-          'labelColor': 'black',
-          'labelFontSize': 10,
-          'titleFontSize': 16,
-          'titleFontWeight': '600',
-        },
-      },
-      'width': chartDiv.parentElement.offsetWidth - 40,
-      'height': chartHeight,
-      'autosize': {
-        'type': 'fit',
-        'contains': 'padding',
-      },
-      'data': [
-        {
-          'name': 'realX',
-          'values': observations.filter(
-            (obs) => obs.name == this.data.factor.name
-          ),
-          'transform': [{'type': 'filter', 'expr': 'isValid(datum.value)'}],
-        },
-        {
-          'name': 'realY',
-          'values': observations.filter(
-            (obs) => obs.name == this.data.predictedVariable
-          ),
-          'transform': [{'type': 'filter', 'expr': 'isValid(datum.value)'}],
-        },
-        {
-          'name': 'inputs',
-          'values': [],
-          'on': [
-            {'trigger': 'shift && clear', 'remove': true},
-            {'trigger': '!shift && clicked', 'insert': 'clicked'},
-          ],
-        },
-        {
-          'name': 'predictions',
-          'values': [],
-          'on': [
-            {'trigger': 'shift && clear', 'remove': true},
-            {'trigger': '!shift && clicked2', 'insert': 'clicked2'},
-          ],
-          'transform': [
-            {
-              'type': 'formula',
-              'expr': `datum.time  ${
-                this.data.shifts[this.data.factor.name] ?? ''
-              }`,
-              'as': 'shifted_year',
-            },
-            {
-              'type': 'lookup',
-              'from': 'realX',
-              'key': 'time',
-              'fields': ['shifted_year'],
-              'values': ['value'],
-              'as': ['shiftedRealX'],
-            },
-            {
-              'type': 'lookup',
-              'from': 'inputs',
-              'key': 'time',
-              'fields': ['shifted_year'],
-              'values': ['value'],
-              'as': ['shiftedInput'],
-            },
-            {
-              'type': 'formula',
-              'expr': `(datum.shiftedRealX || datum.shiftedInput) * ${this.data.factor.regressionOutput.m} + ${this.data.factor.regressionOutput.b}`,
-              'as': 'predicted_value',
-            },
-          ],
-        },
-      ],
-      'signals': [
-        {
-          'name': 'mouseY',
-          'description': 'A value that updates in response to mousemove.',
-          'update': '1000',
-          'on': [{'events': 'mousemove', 'update': "invert('y', y())"}],
-        },
-        {
-          'name': 'mouseX',
-          'description': 'A value that updates in response to mousemove.',
-          'update': '1000',
-          'on': [{'events': 'mousemove', 'update': 'x()'}],
-        },
-        {
-          'name': 'shift',
-          'value': false,
-          'on': [
-            {'events': 'click', 'update': 'event.shiftKey', 'force': true},
-          ],
-        },
-        {
-          'name': 'year',
-          'description': 'A date value that updates in response to mousemove.',
-          'init': maxTime,
-          'on': [
-            {'events': 'click', 'update': `shift ? ${maxTime} : year + 1`},
-          ],
-        },
-        {
-          'name': 'clicked',
-          'value': null,
-          'on': [
-            {
-              'events': 'click',
-              'update': "{time: toString(year), name: 'Input', value: mouseY}",
-              'force': true,
-            },
-          ],
-        },
-        {
-          'name': 'clicked2',
-          'value': null,
-          'on': [
-            {
-              'events': 'click',
-              'update':
-                "{time: toString(year), name: 'Prediction', value: mouseY}",
-              'force': true,
-            },
-          ],
-        },
-        {
-          'name': 'clear',
-          'value': true,
-          'on': [
-            {'events': 'mouseup[!event.item]', 'update': 'true', 'force': true},
-          ],
-        },
-      ],
-      'scales': [
-        {
-          'name': 'x',
-          'type': 'point',
-          'range': 'width',
-          'padding': 1,
-          'domain': {
-            'fields': [
-              {'data': 'realX', 'field': 'time'},
-              {'data': 'realY', 'field': 'time'},
-              {'data': 'inputs', 'field': 'time'},
-              {'data': 'predictions', 'field': 'time'},
-            ],
-          },
-        },
-        {
-          'name': 'y',
-          'type': 'linear',
-          'range': 'height',
-          'nice': true,
-          'zero': true,
-          'domain': {
-            'fields': [
-              {'data': 'realX', 'field': 'value'},
-              {'data': 'realY', 'field': 'value'},
-              {'data': 'predictions', 'field': 'value'},
-              {'data': 'inputs', 'field': 'value'},
-              {'data': 'predictions', 'field': 'predicted_value'},
-            ],
-          },
-        },
-        {
-          'name': 'color',
-          'type': 'ordinal',
-          'range': 'category',
-          'domain': {
-            'fields': [
-              {'data': 'realX', 'field': 'name'},
-              {'data': 'realY', 'field': 'name'},
-              {'data': 'inputs', 'field': 'name'},
-              {'data': 'predictions', 'field': 'name'},
-            ],
-          },
-        },
-      ],
-      'axes': [
-        {
-          'orient': 'bottom',
-          'scale': 'x',
-          'title': this.HsLanguageService.getTranslation(
-            'STATISTICS.TIMESTAMP'
-          ),
-          'titleY': 40,
-          'titleX': 305,
-        },
-        {
-          'orient': 'left',
-          'scale': 'y',
-          'title': this.HsLanguageService.getTranslation('STATISTICS.VALUE'),
-        },
-      ],
-      'marks': [
-        {
-          'type': 'group',
-          'from': {
-            'facet': {'name': 'series', 'data': 'realX', 'groupby': 'name'},
-          },
-          'marks': [
-            {
-              'type': 'line',
-              'from': {'data': 'series'},
-              'encode': {
-                'enter': {
-                  'stroke': {'scale': 'color', 'field': 'name'},
-                  'strokeWidth': {'value': 2},
-                },
-                'update': {
-                  'strokeOpacity': {'value': 1},
-                  'x': {'scale': 'x', 'field': 'time'},
-                  'y': {'scale': 'y', 'field': 'value'},
-                },
-                'hover': {'strokeOpacity': {'value': 0.5}},
-              },
-            },
-          ],
-        },
-        {
-          'type': 'group',
-          'from': {
-            'facet': {'name': 'series', 'data': 'realY', 'groupby': 'name'},
-          },
-          'marks': [
-            {
-              'type': 'line',
-              'from': {'data': 'series'},
-              'encode': {
-                'enter': {
-                  'stroke': {'scale': 'color', 'field': 'name'},
-                  'strokeWidth': {'value': 2},
-                },
-                'update': {
-                  'strokeOpacity': {'value': 1},
-                  'x': {'scale': 'x', 'field': 'time'},
-                  'y': {'scale': 'y', 'field': 'value'},
-                },
-                'hover': {'strokeOpacity': {'value': 0.5}},
-              },
-            },
-          ],
-        },
-        {
-          'type': 'group',
-          'from': {
-            'facet': {
-              'name': 'input_series',
-              'data': 'inputs',
-              'groupby': 'name',
-            },
-          },
-          'marks': [
-            {
-              'type': 'symbol',
-              'from': {'data': 'input_series'},
-              'encode': {
-                'enter': {
-                  'stroke': {'scale': 'color', 'field': 'name'},
-                  'strokeWidth': {'value': 2},
-                },
-                'update': {
-                  'x': {'scale': 'x', 'field': 'time'},
-                  'y': {'scale': 'y', 'field': 'value'},
-                  'strokeOpacity': {'value': 1},
-                },
-                'hover': {'strokeOpacity': {'value': 0.5}},
-              },
-            },
-          ],
-        },
-        {
-          'type': 'group',
-          'from': {
-            'facet': {
-              'name': 'predictive_series',
-              'data': 'predictions',
-              'groupby': 'name',
-            },
-          },
-          'marks': [
-            {
-              'type': 'line',
-              'from': {'data': 'predictive_series'},
-              'encode': {
-                'enter': {
-                  'stroke': {'scale': 'color', 'field': 'name'},
-                  'strokeWidth': {'value': 2},
-                },
-                'update': {
-                  'x': {'scale': 'x', 'field': 'time'},
-                  'y': {'scale': 'y', 'field': 'predicted_value'},
-                  'strokeOpacity': {'value': 1},
-                },
-                'hover': {'strokeOpacity': {'value': 0.5}},
-              },
-            },
-          ],
-        },
-        {
-          'type': 'rect',
-          'encode': {
-            'enter': {
-              'fill': {'value': '#939597'},
-              'fillOpacity': {'value': 0.5},
-            },
-            'update': {
-              'x': {'signal': 'width - 30'},
-              'y': {'scale': 'y', 'value': 0},
-              'width': {'value': 30},
-              'height': {'signal': '-height'},
-            },
-          },
-        },
-        {
-          'type': 'text',
-          'encode': {
-            'enter': {'fill': {'value': '#000'}},
-            'update': {
-              'x': {'signal': 'width - 30'},
-              'y': {'scale': 'y', 'signal': 'mouseY'},
-              'text': {'signal': "mouseX > width - 50 ? round(mouseY) : ''"},
-            },
-          },
-        },
-        {
-          'type': 'text',
-          'encode': {
-            'enter': {'fill': {'value': '#000'}},
-            'update': {
-              'x': {'signal': 'width - 20'},
-              'y': {
-                'scale': 'y',
-                'signal':
-                  'mouseX > width - 50 ? mouseY + mouseY / 10 + 300 : 50',
-              },
-              'angle': {'value': -90},
-              'text': {'value': 'Click here to add guessed input values'},
-            },
-          },
-        },
-        {
-          'type': 'symbol',
-          'encode': {
-            'enter': {
-              'stroke': {'value': '#FF0000'},
-              'strokeWidth': {'value': 2},
-            },
-            'update': {
-              'x': {'signal': 'width - 40'},
-              'y': {
-                'scale': 'y',
-                'signal': 'mouseX > width - 50 ? mouseY : 50',
-              },
-              'strokeOpacity': {'value': 0.3},
-            },
-          },
-        },
-      ],
-    };
+    
+    const chartHeight = chartDiv.parentElement.offsetHeight - 40;*/
     try {
-      vegaEmbed(chartDiv, chartData);
+      //      vegaEmbed(chartDiv, chartData);
     } catch (ex) {
       console.warn('Could not create vega chart:', ex);
     }
