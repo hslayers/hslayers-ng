@@ -583,6 +583,20 @@ export class HslayersAppComponent {
                 crossOrigin: 'anonymous',
               }),
             }),
+            new Tile({
+              properties: {
+                title: 'EVI',
+              },
+              source: new TileWMS({
+                url: 'https://eo.lesprojekt.cz/geoserver/nemecek/wms',
+                params: {
+                  LAYERS: 'EVI',
+                  INFO_FORMAT: undefined,
+                  FORMAT: 'image/png; mode=8bit',
+                },
+                crossOrigin: 'anonymous',
+              }),
+            }),
             opticalMap,
             idwLayer,
             idwVectorLayer,
