@@ -112,6 +112,7 @@ export class HsStatisticsTimeSeriesChartComponent implements OnChanges {
               },
               'field': 'time',
               'sort': false,
+              'timeUnit': 'year',
               'type': 'temporal',
             },
             'y': {
