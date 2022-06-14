@@ -33,6 +33,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   timeDisplayLocale = 'en-US';
   timesInSync: boolean;
   private ngUnsubscribe = new Subject<void>();
+
   constructor(
     public hsEventBusService: HsEventBusService,
     public hsDimensionTimeService: HsDimensionTimeService,
@@ -42,15 +43,16 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     this.hsDimensionTimeService.layerTimeChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({layer: layerDescriptor, time, app}) => {
-        if (app == this.app) {
-          if (this.layer.uid !== layerDescriptor.uid) {
-            return;
-          }
-          if (!this.availableTimes) {
-            this.fillAvailableTimes(layerDescriptor);
-          }
-          this.setCurrentTimeIfAvailable(time);
+        if (app != this.app) {
+          return;
         }
+        if (this.layer.uid !== layerDescriptor.uid) {
+          return;
+        }
+        if (!this.availableTimes) {
+          this.fillAvailableTimes(layerDescriptor);
+        }
+        this.setCurrentTimeIfAvailable(time);
       });
 
     this.hsEventBusService.layerTimeSynchronizations

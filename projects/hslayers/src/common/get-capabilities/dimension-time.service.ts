@@ -8,7 +8,7 @@ import {HsLayerDescriptor} from '../../components/layermanager/layer-descriptor.
 import {HsLogService} from '../log/log.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {WmsLayer} from './wms-get-capabilities-response.interface';
-import {getDimensions, setDimensions} from '../layer-extensions';
+import {getDimensions, setDimension, setDimensions} from '../layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -301,6 +301,9 @@ export class HsDimensionTimeService {
   private polyfillLayerDimensionsValues(
     layerDescriptor: HsLayerDescriptor
   ): void {
+    if (!getDimensions(layerDescriptor.layer)?.time) {
+      setDimension(layerDescriptor.layer, {label: 'time'}, 'time');
+    }
     const dimensionTimeProp = getDimensions(layerDescriptor.layer).time;
     dimensionTimeProp.label = dimensionTimeProp.label ?? 'time';
     dimensionTimeProp.default =
