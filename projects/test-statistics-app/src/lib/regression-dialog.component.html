@@ -34,7 +34,8 @@
             <div class="modal-body" style="height: 51em; overflow-y:auto">
 
                 <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex">
-                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translateHs : {app: data.app} }}:</p>
+                    <p class="m-0 p-0 flex-fill text-primary">{{'STATISTICS.VARIABLE' | translateHs : {app: data.app}
+                        }}:</p>
                     <div ngbDropdown placement="bottom-right" style="max-width: 50%">
                         <button type="button" ngbDropdownToggle class="
                       btn btn-sm
@@ -99,10 +100,16 @@
                                         Y = X * {{col.regressionOutput.m}} + {{col.regressionOutput.b}}
                                     </div>
                                     <div class="col-3">
-                                        <button type="button" class="btn btn-primary m-1"
-                                            (click)="openPredictionDialog(selectedVariable, col)">{{'STATISTICS.PREDICT'
-                                            |
-                                            translateHs : {app: data.app} }}</button>
+                                        <div class="input-group">
+                                            <span class="input-group-text">{{ "STATISTICS.MODEL_NAME" | translateHs :
+                                                {app: data.app}
+                                                }}</span>
+                                            <input class="form-control" [(ngModel)]="modelName" name="modelName" />
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="storePrediction(col)">{{'STATISTICS.STORE_MODEL'
+                                                |
+                                                translateHs : {app: data.app} }}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -117,21 +124,24 @@
                         </div>
                     </div>
                     <div class="align-self-start">
-                        
-                            Y - {{selectedVariable}} <br />
-                            <span *ngFor="let col of multipleRegressionOutput.variables">
-                                X{{multipleRegressionOutput.variables.indexOf(col)}} - {{col.name}} <br />
-                            </span>
-                            Y = <span
-                                *ngFor="let col of multipleRegressionOutput.variables">X{{multipleRegressionOutput.variables.indexOf(col)}}
-                                * {{col.coefficient}}</span> + {{multipleRegressionOutput.constant}}
-                        
-                        <!-- <div class="col-3">
-                            <button type="button" class="btn btn-primary m-1"
-                                (click)="openPredictionDialog(selectedVariable, multipleRegressionOutput)">{{'STATISTICS.PREDICT'
-                                |
-                                translateHs : {app: data.app} }}</button>
-                        </div>-->
+
+                        Y - {{selectedVariable}} <br />
+                        <span *ngFor="let col of multipleRegressionOutput.variables">
+                            X{{multipleRegressionOutput.variables.indexOf(col)}} - {{col.name}} <br />
+                        </span>
+                        Y = <span
+                            *ngFor="let col of multipleRegressionOutput.variables">X{{multipleRegressionOutput.variables.indexOf(col)}}
+                            * {{col.coefficient}}</span> + {{multipleRegressionOutput.constant}}
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-text">{{ "STATISTICS.MODEL_NAME" | translateHs : {app: data.app}
+                            }}</span>
+                        <input class="form-control" [(ngModel)]="modelName" name="modelName" />
+                        <button type="button" class="btn btn-primary"
+                            (click)="storePrediction()">{{'STATISTICS.STORE_MODEL'
+                            |
+                            translateHs : {app: data.app} }}</button>
                     </div>
                 </div>
             </div>

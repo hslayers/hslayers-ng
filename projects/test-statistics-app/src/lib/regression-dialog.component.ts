@@ -9,7 +9,6 @@ import {ColumnWrapper} from './column-wrapper.type';
 import {HsDialogComponent, HsDialogContainerService} from 'hslayers-ng';
 import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {HsStatisticsService, ShiftBy} from './statistics.service';
-import {isDatumDef} from 'vega-lite/build/src/channeldef';
 import {linearRegression} from 'simple-statistics';
 
 dayjs.extend(utc);
@@ -24,8 +23,7 @@ const CHART_DIV = '.hs-statistics-regression';
   templateUrl: './regression-dialog.component.html',
 })
 export class HsStatisticsRegressionDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   @Input() data: {
     app: string;
   };
@@ -37,10 +35,11 @@ export class HsStatisticsRegressionDialogComponent
   locationColumn: string;
   locationValues: string[];
   colWrappers: ColumnWrapper[];
-  regressionTypes = [
+  regressionTypes: {title: string; name: 'linear' | 'multi-linear'}[] = [
     {title: 'Linear', name: 'linear'},
     {title: 'Multiple linear', name: 'multi-linear'},
   ];
+  modelName: string;
   selectedRegressionType = this.regressionTypes[0];
   multipleRegressionOutput;
   shifts: ShiftBy = {};
@@ -115,13 +114,6 @@ export class HsStatisticsRegressionDialogComponent
         break;
       default:
     }
-  }
-  clone(observations) {
-    return observations.map((o) => {
-      const tmp = {};
-      Object.assign(tmp, o);
-      return tmp;
-    });
   }
   visualizeMulti() {
     const factors = this.colWrappers
@@ -219,16 +211,16 @@ export class HsStatisticsRegressionDialogComponent
           ...this.multipleRegressionOutput.variables.map((col) => {
             return {
               'name': 'real' + col.factorName,
-              'values': this.clone(observations),
+              'values': this.hsStatisticsService.clone(observations),
             };
           }),
           {
             'name': 'realY',
-            'values': this.clone(observations),
+            'values': this.hsStatisticsService.clone(observations),
           },
           {
             'name': 'predictions',
-            'values': this.clone(observations),
+            'values': this.hsStatisticsService.clone(observations),
             'transform': [
               ...regressionVars.map((col) => {
                 return {
@@ -579,13 +571,27 @@ export class HsStatisticsRegressionDialogComponent
     }, 0);
   }
 
-  openPredictionDialog(predictedVariable: string, factor: ColumnWrapper): void {
+  storePrediction(col?: ColumnWrapper) {
+    this.hsStatisticsService.addPrediction(
+      this.data.app,
+      this.modelName,
+      this.selectedRegressionType.name,
+      this.multipleRegressionOutput,
+      this.selectedVariable,
+      this.selectRegressionType.name == 'linear'
+        ? [col]
+        : this.colWrappers.filter(
+            (col) => col.checked && col.name !== this.selectedVariable
+          )
+    );
+    this.openPredictionDialog(this.selectedVariable);
+  }
+
+  openPredictionDialog(predictedVariable: string): void {
     this.hsDialogContainerService.create(
       HsStatisticsPredictionChartDialogComponent,
       {
         predictedVariable,
-        factor,
-        shifts: this.shifts,
         app: this.data.app,
       },
       this.data.app

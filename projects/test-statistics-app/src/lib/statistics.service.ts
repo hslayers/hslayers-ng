@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import {ColumnWrapper} from './column-wrapper.type';
 import {
   HsConfirmDialogComponent,
   HsDialogContainerService,
@@ -33,6 +34,7 @@ class StatisticsServiceParams {
   corpus: CorpusItems = {dict: {}, variables: [], uses: {}};
   clearData$: Subject<void> = new Subject();
   activeTab = 1;
+  predictions: any = [];
 }
 
 @Injectable({
@@ -56,6 +58,10 @@ export class HsStatisticsService {
     if (savedCorpus) {
       this.get(app).corpus = JSON.parse(savedCorpus);
     }
+    const savedPredictions = localStorage.getItem('hs_statistics_predictions');
+    if (savedPredictions) {
+      this.get(app).predictions = JSON.parse(savedPredictions);
+    }
   }
   /**
    * Get the params saved by the statistics service for the current app
@@ -66,6 +72,14 @@ export class HsStatisticsService {
       this.apps[app ?? 'default'] = new StatisticsServiceParams();
     }
     return this.apps[app ?? 'default'];
+  }
+
+  clone(observations) {
+    return observations.map((o) => {
+      const tmp = {};
+      Object.assign(tmp, o);
+      return tmp;
+    });
   }
 
   store(rows: any[], columns: string[], uses: Usage, app: string): void {
@@ -109,6 +123,28 @@ export class HsStatisticsService {
     localStorage.setItem(
       'hs_statistics_table',
       JSON.stringify({rows: rows, columns: columns})
+    );
+  }
+
+  addPrediction(
+    app: string,
+    name: string,
+    type: 'linear' | 'multi-linear',
+    coefficients: any,
+    predictedVariable: string,
+    variables: ColumnWrapper[]
+  ) {
+    const appRef = this.get(app);
+    appRef.predictions.push({
+      name,
+      type,
+      predictedVariable,
+      coefficients,
+      variables,
+    });
+    localStorage.setItem(
+      'hs_statistics_predictions',
+      JSON.stringify(appRef.predictions)
     );
   }
 
@@ -160,7 +196,12 @@ export class HsStatisticsService {
     const dict = this.get(app).corpus.dict;
     const tmpSamples = variables.map((variable) => {
       const keys = Object.keys(dict).map((key) =>
-        this.adjustDictionaryKey(key, variable, variableShifts, app)
+        this.adjustDictionaryKey(
+          this.get(app).corpus.dict,
+          key,
+          variable,
+          variableShifts
+        )
       );
       return {
         values: keys.map((key) =>
@@ -200,13 +241,19 @@ export class HsStatisticsService {
    * @param app - App identifier
    * @returns
    */
-  private adjustDictionaryKey(
+  adjustDictionaryKey(
+    dict: {
+      [key: string]: {
+        values: CorpusItemValues;
+        location?: string;
+        time?: string;
+      };
+    },
     key: string,
     variable: string,
-    variableShifts: ShiftBy,
-    app: string
+    variableShifts: ShiftBy
   ): string {
-    const origEntry = this.get(app).corpus.dict[key];
+    const origEntry = dict[key];
     return (
       origEntry.location +
       '::' +

@@ -9,6 +9,7 @@ import {
   HsSidebarService,
 } from 'hslayers-ng';
 import {HsStatisticsCorrelationsComponent} from './correlations.component';
+import {HsStatisticsPredictionChartDialogComponent} from './prediction-chart-dialog.component';
 import {HsStatisticsRegressionDialogComponent} from './regression-dialog.component';
 import {HsStatisticsService} from './statistics.service';
 import {HsStatisticsTimeSeriesChartDialogComponent} from './time-series-chart-dialog.component';
@@ -114,6 +115,12 @@ export class HsStatisticsPanelComponent
               LOCATION_PROPERTY: 'Location property',
               DOWNLOAD_TEMPLATE_HINT: `Upload data in CSV format. A template can be downloaded`,
               HERE: 'here',
+              OPTIONAL: '(optional)',
+              PREDICTIONS: 'Predictions',
+              FROM: 'From',
+              TILL: 'Till',
+              STORE_MODEL: 'Store model',
+              MODEL_NAME: 'Model name',
             },
           },
         },
@@ -161,6 +168,14 @@ export class HsStatisticsPanelComponent
   regression(): void {
     this.hsDialogContainerService.create(
       HsStatisticsRegressionDialogComponent,
+      {app: this.data.app},
+      this.data.app
+    );
+  }
+
+  predict(): void {
+    this.hsDialogContainerService.create(
+      HsStatisticsPredictionChartDialogComponent,
       {app: this.data.app},
       this.data.app
     );
