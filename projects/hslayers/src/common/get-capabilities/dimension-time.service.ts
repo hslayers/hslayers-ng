@@ -115,7 +115,8 @@ export class HsDimensionTimeService {
    * @returns True for WMS layer with time support
    */
   layerIsWmsT(layer: HsLayerDescriptor | Layer<Source>): boolean {
-    const olLayer: Layer<Source> = (layer as any).layer ?? layer;
+    const olLayer: Layer<Source> =
+      (layer as HsLayerDescriptor).layer ?? (layer as Layer<Source>);
     if (!olLayer) {
       return false;
     }
@@ -199,7 +200,6 @@ export class HsDimensionTimeService {
     currentLayer.time = {
       default: defaultTime,
       timePoints,
-      //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
     };
     this.polyfillLayerDimensionsValues(currentLayer);
     this.setLayerTime(currentLayer, defaultTime, app);
