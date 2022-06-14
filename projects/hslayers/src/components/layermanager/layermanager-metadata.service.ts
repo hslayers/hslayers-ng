@@ -254,7 +254,11 @@ export class HsLayerManagerMetadataService {
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
       ) {
-        this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
+        this.HsDimensionTimeService.setupTimeLayer(
+          layerDescriptor,
+          app,
+          layerObj
+        );
       }
       if (layerObj.Layer && getSubLayers(olLayer)) {
         layerObj.maxResolution = this.searchForScaleDenominator(layerObj, app);
