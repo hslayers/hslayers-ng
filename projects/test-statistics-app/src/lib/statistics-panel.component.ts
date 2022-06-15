@@ -47,7 +47,7 @@ export class HsStatisticsPanelComponent
         visible: true,
         title: 'PANEL_HEADER.STATISTICS',
         description: 'SIDEBAR.descriptions.STATISTICS',
-        icon: 'icon-barchartasc',
+        icon: 'statistics-icon-barchartasc',
       },
       this.data.app
     );
