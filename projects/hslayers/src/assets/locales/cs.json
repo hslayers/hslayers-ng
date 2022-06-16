@@ -594,7 +594,8 @@
       "outOfRange": "Vybraný čas je mimo meze",
       "outOfRangeDescription": "Tato vrstva může zobrazovat různá data v závislosti na vybraném čase. Čas se může dostat \"mimo meze\" pokud je synchronizován s jinou vrstvou, ale tato vrstva nemá žádná data pro daný okamžik. Klikněte pro vybrání platného data a času. Také můžete vypnout synchronizaci času vrstev.",
       "syncTimes": "Synchronizovat časy",
-      "syncTimesTooltip": "Synchronizovat čas všech vrstev"
+      "syncTimesTooltip": "Synchronizovat čas všech vrstev",
+      "loading": "Načítám dostupné časy ..."
     },
     "toggleAllLayerVisibility": "Přepnout viditelnost všech vrstev",
     "User generated": "Uživatelský"
