@@ -145,7 +145,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * Toogle layer rename control on panel (through layer rename variable)
+   * Toggle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename(): void {
     this.tmpTitle = undefined;

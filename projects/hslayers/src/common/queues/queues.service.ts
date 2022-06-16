@@ -3,7 +3,7 @@ import queue from 'queue';
 import {Injectable} from '@angular/core';
 
 type Queues = {
-  [usecase: string]: {
+  [useCase: string]: {
     q: any; // queueObject
   };
 };

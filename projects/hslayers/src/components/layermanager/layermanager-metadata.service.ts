@@ -280,7 +280,7 @@ export class HsLayerManagerMetadataService {
       }
       this.collectLegend(layerObj, legends);
     }
-    if (getCachedCapabilities(olLayer) == undefined) {
+    if (getCachedCapabilities(olLayer) === undefined) {
       setCacheCapabilities(olLayer, layerObj);
     }
     this.parseAttribution(olLayer, getCachedCapabilities(olLayer));
@@ -331,6 +331,7 @@ export class HsLayerManagerMetadataService {
     if (!url) {
       return;
     }
+    //ArcGIS
     if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
       const wrapper = await this.HsArcgisGetCapabilitiesService.request(
         url,
@@ -341,7 +342,9 @@ export class HsLayerManagerMetadataService {
       } else {
         this.parseArcGisCaps(layerDescriptor, wrapper.response);
       }
-    } else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+    }
+    //WMS
+    else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url, app);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
@@ -351,13 +354,12 @@ export class HsLayerManagerMetadataService {
       const caps: WMSGetCapabilitiesResponse = parser.read(wrapper.response);
       const params = this.HsLayerUtilsService.getLayerParams(layer);
       const layerNameInParams: string = params.LAYERS;
-
       this.parseWmsCaps(layerDescriptor, layerNameInParams, caps, app);
       const sublayers = getSubLayers(layer);
       if (sublayers) {
         if (!(Array.isArray(sublayers) && sublayers.length == 0)) {
           /* When capabilities have been queried, it's safe to override LAYERS
-         param now to not render the container layer, but sublayers.*/
+            param now to not render the container layer, but sublayers.*/
           this.HsLayerUtilsService.updateLayerParams(layer, {
             LAYERS: getSubLayers(layer),
           });
@@ -423,6 +425,7 @@ export class HsLayerManagerMetadataService {
       }
     }
   }
+
   parseArcGisCaps(layerDescriptor: HsLayerDescriptor, resp: any) {
     const olLayer = layerDescriptor.layer;
     const params = this.HsLayerUtilsService.getLayerParams(olLayer);
