@@ -30,21 +30,21 @@ export class HsPanelContainerService
   /**
    * Create new dynamic panels. They are replayed in the PanelContainerComponent
    * in case of race conditions existing where panels are created before the
-   * container component is even added to the dom.
-   * @param component PanelComponent class
-   * @param data Extra data to give the new panel
-   * @param app App id
-   * @param panelObserver ReplaySubject to which you need to add the panel components. This is used when panels in this service are used only sometimes (for particular layers)
+   * container component is even added to the DOM.
+   * @param component - PanelComponent class
+   * @param data-  Extra data to give the new panel
+   * @param app - App id
+   * @param panelObserver - ReplaySubject to which you need to add the panel components. This is used when panels in this service are used only sometimes (for particular layers)
    */
   create(
     component: Type<any>,
     data: any,
-    app: string = 'default',
+    app = 'default',
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
-    if (data && data.app == undefined) {
+    if (data && data.app === undefined) {
       data.app = app;
-    } else if (data == undefined) {
+    } else if (data === undefined) {
       data = {app};
     }
     (panelObserver ?? this.get(app).panelObserver).next(

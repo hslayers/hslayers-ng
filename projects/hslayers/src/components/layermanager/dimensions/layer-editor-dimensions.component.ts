@@ -21,7 +21,8 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit {
+  implements OnDestroy, OnChanges, OnInit
+{
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private ngUnsubscribe = new Subject<void>();

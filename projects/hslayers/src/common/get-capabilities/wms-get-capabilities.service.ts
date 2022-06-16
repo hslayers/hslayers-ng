@@ -134,29 +134,28 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
   /**
    * Load all layers of selected service to the map
    *
-   * @param capabilities_xml XML response of GetCapabilities of selected service
-   * @param path
+   * @param capabilitiesXml - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(capabilities_xml, app: string, path: string): Layer<Source>[] {
+  service2layers(capabilitiesXml, app: string, path: string): Layer<Source>[] {
     const parser = new WMSCapabilities();
-    const caps = parser.read(capabilities_xml);
+    const caps = parser.read(capabilitiesXml);
     let service = caps.Capability.Layer;
-    if (service.length == undefined && service.Layer != undefined) {
+    if (service.length === undefined && service.Layer != undefined) {
       service = [service];
     }
     //const srss = caps.Capability.Layer.CRS;
-    const image_formats = caps.Capability.Request.GetMap.Format;
-    const query_formats = caps.Capability.Request.GetFeatureInfo
+    const imageFormats = caps.Capability.Request.GetMap.Format;
+    const queryFormats = caps.Capability.Request.GetFeatureInfo
       ? caps.Capability.Request.GetFeatureInfo.Format
       : [];
-    const image_format = getPreferredFormat(image_formats, [
+    const image_format = getPreferredFormat(imageFormats, [
       'image/png; mode=8bit',
       'image/png',
       'image/gif',
       'image/jpeg',
     ]);
-    const query_format = getPreferredFormat(query_formats, [
+    const query_format = getPreferredFormat(queryFormats, [
       'application/vnd.esri.wms_featureinfo_xml',
       'application/vnd.ogc.gml',
       'application/vnd.ogc.wms_xml',

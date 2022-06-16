@@ -454,10 +454,10 @@ export class HsCompositionsService {
           id;
       }
       try {
-        const defaultViewProperites = configRef.default_view?.getProperties();
+        const defaultViewProperties = configRef.default_view?.getProperties();
         this.hsCompositionsParserService.get(app).suspendZoomingToExtent =
-          defaultViewProperites?.hasOwnProperty('center') &&
-          defaultViewProperites?.hasOwnProperty('zoom');
+          defaultViewProperties?.hasOwnProperty('center') &&
+          defaultViewProperties?.hasOwnProperty('zoom');
         await this.hsCompositionsParserService.loadUrl(id, app);
         this.hsCompositionsParserService.get(app).suspendZoomingToExtent =
           false;
