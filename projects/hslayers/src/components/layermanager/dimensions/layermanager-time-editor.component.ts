@@ -3,7 +3,7 @@ import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsConfig} from '../../../config.service';
+import {HsConfig, HsConfigObject} from '../../../config.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
@@ -16,12 +16,16 @@ import {HsLayoutService} from '../../layout/layout.service';
 export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   @Input() layer: HsLayerDescriptor;
   @Input() app = 'default';
+  availableTimes: Array<string>;
+  availableTimesFetched = false;
+  configRef: HsConfigObject;
   /**
    * ISO format time
    */
   currentTime: string;
   currentTimeIdx: number;
-  availableTimes: Array<string>;
+  hasPreviousTime = false;
+  hasFollowingTime = false;
   @ViewChild('hstimeselector') selectElement;
   selectVisible: boolean;
   timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
@@ -58,17 +62,27 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     this.hsEventBusService.layerTimeSynchronizations
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({sync, time, app}) => {
-        if (app == this.app) {
-          this.timesInSync = sync;
-          if (sync) {
-            this.hideTimeSelect();
-            this.setCurrentTimeIfAvailable(time);
-            if (this.currentTime) {
-              this.setLayerTime();
-            }
+        if (app != this.app) {
+          return;
+        }
+        this.timesInSync = sync;
+        if (sync) {
+          this.hideTimeSelect();
+          this.setCurrentTimeIfAvailable(time);
+          if (this.currentTime) {
+            this.setLayerTime();
           }
         }
       });
+  }
+
+  ngOnInit(): void {
+    this.configRef = this.hsConfig.get(this.app);
+    this.selectVisible = false;
+    this.timesInSync = false;
+    if (this.layer.time) {
+      this.fillAvailableTimes(this.layer);
+    }
   }
 
   ngOnDestroy(): void {
@@ -77,70 +91,65 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * This gets called from subscriber and also OnInit because
-   * subscriber could have been set up after the event was broadcasted
+   * Sets hasPreviousTime and hasFollowingTime properties
    */
-  private fillAvailableTimes(layer: HsLayerDescriptor) {
-    this.availableTimes = layer.time.timePoints;
-    this.setDateTimeFormatting();
-    this.setCurrentTimeIfAvailable(this.layer.time.default);
-    if (!this.currentTimeDefined()) {
-      this.currentTime = this.availableTimes[0];
-      this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
+  checkPrevFollowTimesAvailability(): boolean {
+    if (!this.availableTimes) {
+      return;
+    }
+    if (this.currentTimeIdx > 0) {
+      this.hasPreviousTime = true;
+    } else {
+      this.hasPreviousTime = false;
+    }
+    if (this.currentTimeIdx < this.availableTimes.length - 1) {
+      this.hasFollowingTime = true;
+    } else {
+      this.hasFollowingTime = false;
     }
   }
 
-  ngOnInit(): void {
-    this.selectVisible = false;
-    this.timesInSync = false;
-    if (this.layer.time) {
-      this.fillAvailableTimes(this.layer);
-    }
-  }
-
-  currentTimeDefined(): boolean {
-    return this.currentTime !== undefined && this.currentTime !== null;
-  }
-
-  hasPreviousTime(): boolean {
-    return this.availableTimes && this.currentTimeIdx > 0;
-  }
-
-  hasFollowingTime(): boolean {
-    return (
-      this.availableTimes &&
-      this.currentTimeIdx < this.availableTimes.length - 2
-    );
-  }
-
+  /**
+   * Handler for the "prev" button click
+   */
   previousTime(): void {
-    if (this.hasPreviousTime()) {
-      this.currentTime = this.availableTimes[--this.currentTimeIdx];
-      if (this.timesInSync) {
-        this.hsEventBusService.layerTimeSynchronizations.next({
-          sync: this.timesInSync,
-          time: this.currentTime,
-          app: this.app,
-        });
-      }
-      this.setLayerTime();
+    if (!this.hasPreviousTime) {
+      return;
     }
+    this.currentTime = this.availableTimes[--this.currentTimeIdx];
+    if (this.timesInSync) {
+      this.hsEventBusService.layerTimeSynchronizations.next({
+        sync: this.timesInSync,
+        time: this.currentTime,
+        app: this.app,
+      });
+    }
+    this.setLayerTime();
+    this.checkPrevFollowTimesAvailability();
   }
 
+  /**
+   * Handler for the "next" button click
+   */
   followingTime(): void {
-    if (this.hasFollowingTime()) {
-      this.currentTime = this.availableTimes[++this.currentTimeIdx];
-      if (this.timesInSync) {
-        this.hsEventBusService.layerTimeSynchronizations.next({
-          sync: this.timesInSync,
-          time: this.currentTime,
-          app: this.app,
-        });
-      }
-      this.setLayerTime();
+    if (!this.hasFollowingTime) {
+      return;
     }
+    this.currentTime = this.availableTimes[++this.currentTimeIdx];
+    if (this.timesInSync) {
+      this.hsEventBusService.layerTimeSynchronizations.next({
+        sync: this.timesInSync,
+        time: this.currentTime,
+        app: this.app,
+      });
+    }
+    this.setLayerTime();
+    this.checkPrevFollowTimesAvailability();
   }
 
+  /**
+   * Handler for a time selection from the SELECT element
+   */
   selectTime(): void {
     this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
     if (this.timesInSync) {
@@ -151,6 +160,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       });
     }
     this.setLayerTime();
+    this.checkPrevFollowTimesAvailability();
   }
 
   setCurrentTimeIfAvailable(time: string): void {
@@ -161,8 +171,12 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       this.currentTime = null;
       this.currentTimeIdx = -1;
     }
+    this.checkPrevFollowTimesAvailability();
   }
 
+  /**
+   * Set selected 'time' on the layer object
+   */
   setLayerTime(): void {
     setTimeout(() => {
       this.hsDimensionTimeService.setLayerTime(
@@ -189,6 +203,22 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       time: this.currentTime,
       app: this.app,
     });
+  }
+
+  /**
+   * This gets called from subscriber and also OnInit because
+   * subscriber could have been set up after the event was broadcasted
+   */
+  private fillAvailableTimes(layer: HsLayerDescriptor) {
+    this.availableTimes = layer.time.timePoints;
+    this.setDateTimeFormatting();
+    this.setCurrentTimeIfAvailable(this.layer.time.default);
+    if (!this.currentTime) {
+      this.currentTime = this.availableTimes[0];
+      this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
+    }
+    this.availableTimesFetched = true;
+    this.checkPrevFollowTimesAvailability();
   }
 
   private setDateTimeFormatting() {
