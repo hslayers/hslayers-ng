@@ -329,7 +329,7 @@ export class HsAddDataVectorService {
     const commonFileRef = this.hsAddDataCommonFileService.get(app);
 
     const crsSupported = this.hsLaymanService.supportedCRRList.includes(
-      data.srs
+      data.nativeSRS
     );
     const layerDesc: UpsertLayerObject = {
       title: data.title,
