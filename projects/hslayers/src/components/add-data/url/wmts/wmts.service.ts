@@ -6,12 +6,14 @@ import {Layer, Tile} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {Extent} from 'ol/extent';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {addAnchors} from '../../../../common/attribution-utils';
+import {transformExtent} from 'ol/proj';
 import {urlDataObject} from '../types/data-object.type';
 
 class HsUrlWmtsParams {
@@ -211,6 +213,21 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     }
   }
 
+  /***
+   * Get WMTS layer bounding box
+   */
+  getWMTSExtent(identifier: string, app: string): Extent {
+    const caps = this.get(app).data.caps;
+    const layer = caps.Contents.Layer.find((l) => l.Identifier == identifier);
+    return layer?.WGS84BoundingBox
+      ? transformExtent(
+          layer.WGS84BoundingBox,
+          'EPSG:4326',
+          this.hsMapService.getCurrentProj(app)
+        )
+      : undefined;
+  }
+
   /**
    * Get WMTS layer
    * Uses previously received capabilities response as a reference for the source
@@ -219,6 +236,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   getLayer(layer, options, app: string): Layer<Source> {
     try {
       const wmts = new Tile({
+        extent: this.getWMTSExtent(layer.Identifier, app),
         properties: {
           title: layer.Title,
           name: layer.Title,
