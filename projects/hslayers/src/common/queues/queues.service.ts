@@ -37,8 +37,14 @@ export class HsQueuesService {
    * @param useCase - Queue for
    * @param app - App identifier
    * @param customConcurrency - (Optional) custom concurrency
+   * @param timeout - (Optional) Timeout of one queue item
    */
-  ensureQueue(useCase: string, app: string, customConcurrency?: number): queue {
+  ensureQueue(
+    useCase: string,
+    app: string,
+    customConcurrency?: number,
+    timeout?: number
+  ): queue {
     const appRef = this.get(app);
     if (appRef.queues[useCase]) {
       return appRef.queues[useCase].q;
@@ -46,10 +52,14 @@ export class HsQueuesService {
     const newQueue: {
       q: any;
     } = {
-      q: queue({results: [], concurrency: customConcurrency || 5}),
+      q: queue({
+        results: [],
+        concurrency: customConcurrency || 5,
+        autostart: true,
+        timeout,
+      }),
     };
     appRef.queues[useCase] = newQueue;
-    newQueue.q.autostart = true;
     newQueue.q.on('end', () => {
       delete appRef.queues[useCase];
     });

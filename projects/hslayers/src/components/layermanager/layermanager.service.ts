@@ -279,7 +279,8 @@ export class HsLayerManagerService {
         const que = this.HsQueuesService.ensureQueue(
           'wmsGetCapabilities',
           app,
-          1
+          1,
+          5000
         );
         que.push(async (cb) => {
           try {
