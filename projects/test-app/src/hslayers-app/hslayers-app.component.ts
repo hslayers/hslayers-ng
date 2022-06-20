@@ -601,6 +601,7 @@ export class HslayersAppComponent {
             idwLayer,
             idwVectorLayer,
           ],
+          timeDisplayFormat: 'dd.MM.yyyy.',
           translationOverrides: {
             lv: {
               LAYERS: {

@@ -2,10 +2,10 @@
   <button type="button" class="btn btn-sm text-info" (click)="previousTime()" [disabled]="!hasPreviousTime">
     <i class="glyphicon icon-chevron-left"></i>
   </button>
-  <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
-    *ngIf="availableTimesFetched; else loading">
-    <span *ngIf="currentTime; else outOfRange">
-      {{currentTime | date:timeDisplayFormat:'cs'}}
+  <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()"
+    [hidden]="selectVisible">
+    <span [hidden]="!currentTimeDefined()">
+      {{currentTime | date:timeDisplayFormat:timeDisplayFormat}}
     </span>
   </button>
   <ng-template #loading>
@@ -23,7 +23,7 @@
   <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime" (change)="selectTime();hideTimeSelect();"
     (blur)="hideTimeSelect()">
     <option *ngFor="let time of availableTimes" [ngValue]="time">
-      {{time | date:timeDisplayFormat:timeDisplayLocale}}
+      {{time | date:timeDisplayFormat:timeDisplayFormat}}
     </option>
   </select>
   <button type="button" class="btn btn-sm text-info" (click)="followingTime()" [disabled]="!hasFollowingTime">
