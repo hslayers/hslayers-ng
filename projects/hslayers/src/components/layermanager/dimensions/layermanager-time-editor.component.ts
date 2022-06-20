@@ -29,12 +29,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   @ViewChild('hstimeselector') selectElement;
   selectVisible: boolean;
   timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
-  /**
-   * currently hard-coded and not changes
-   * TODO: needs to load locale data via registerLocaleData() from '\@angular/common'
-   * see https://stackoverflow.com/questions/34904683/how-to-set-locale-in-datepipe-in-angular-2
-   */
-  timeDisplayLocale = 'en-US';
   timesInSync: boolean;
   private ngUnsubscribe = new Subject<void>();
 
