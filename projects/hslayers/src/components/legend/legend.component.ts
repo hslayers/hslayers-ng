@@ -161,7 +161,8 @@ export class HsLegendComponent
     const que = this.hsQueuesService.ensureQueue(
       'addLayerToLegends',
       this.data.app,
-      3
+      3,
+      10000
     );
     que.push(async (cb) => {
       await this.addLayerToLegends(e.element);
