@@ -48,7 +48,10 @@ class HsCompositionsParserParams {
   current_composition_title = '';
   current_composition_url: string;
   current_composition_workspace: string;
-  suspendZoomingToExtent: boolean;
+  loadingOptions = {
+    suspendZoomingToExtent: false,
+    suspendPanelChange: false,
+  };
 }
 @Injectable({
   providedIn: 'root',
@@ -357,7 +360,10 @@ export class HsCompositionsParserService {
     this.hsEventBusService.currentComposition.next(obj); //Doesnt seems to be used
     this.get(app).current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
-    if (possibleExtent !== undefined && !this.get(app).suspendZoomingToExtent) {
+    if (
+      possibleExtent !== undefined &&
+      !this.get(app).loadingOptions.suspendZoomingToExtent
+    ) {
       const extent = parseExtent(possibleExtent);
       if (
         (extent[0][0] < -90 && extent[0][1] < -180) ||
@@ -421,15 +427,18 @@ export class HsCompositionsParserService {
    * @param app - App identifier
    */
   finalizeCompositionLoading(responseData, app: string): void {
-    const open_lm_after_comp_loaded =
-      this.hsConfig.get(app).open_lm_after_comp_loaded;
+    const configRef = this.hsConfig.get(app);
+    const open_lm_after_comp_loaded = configRef.open_lm_after_comp_loaded;
+    const appRef = this.get(app);
     if (
-      open_lm_after_comp_loaded === true ||
-      open_lm_after_comp_loaded === undefined
+      (open_lm_after_comp_loaded === true ||
+        open_lm_after_comp_loaded === undefined) &&
+      !appRef.loadingOptions.suspendPanelChange
     ) {
+      appRef.loadingOptions.suspendPanelChange = false;
       this.hsLayoutService.setMainPanel('layermanager', app);
     }
-    this.get(app).composition_edited = false;
+    appRef.composition_edited = false;
     this.hsEventBusService.compositionLoads.next({data: responseData, app});
   }
 

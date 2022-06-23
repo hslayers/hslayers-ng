@@ -455,12 +455,20 @@ export class HsCompositionsService {
       }
       try {
         const defaultViewProperties = configRef.default_view?.getProperties();
-        this.hsCompositionsParserService.get(app).suspendZoomingToExtent =
+        const compoParserServiceRef = this.hsCompositionsParserService.get(app);
+
+        /**
+         * Little bit tricky but solution to force affect default composition loading behavior. Used to prevent
+         * passing params all the way down the loading pipeline
+         */
+        compoParserServiceRef.loadingOptions.suspendZoomingToExtent =
           defaultViewProperties?.hasOwnProperty('center') &&
           defaultViewProperties?.hasOwnProperty('zoom');
+        compoParserServiceRef.loadingOptions.suspendPanelChange =
+          configRef.sidebarClosed;
+
         await this.hsCompositionsParserService.loadUrl(id, app);
-        this.hsCompositionsParserService.get(app).suspendZoomingToExtent =
-          false;
+        compoParserServiceRef.loadingOptions.suspendZoomingToExtent = false;
       } catch (error) {
         this.get(app).compositionNotFoundAtUrl.next({error, app});
         this.$log.warn(error);
