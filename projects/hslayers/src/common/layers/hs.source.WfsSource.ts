@@ -51,19 +51,20 @@ export class WfsSource extends Vector<Geometry> {
         if (srs.includes('4326') || srs.includes('4258')) {
           extent = [extent[1], extent[0], extent[3], extent[2]];
         }
-
+        const params = {
+          service: 'wfs',
+          version: data_version, // == '2.0.0' ? '1.1.0' : data_version,
+          request: 'GetFeature',
+          srsName: srs,
+          output_format: output_format,
+          // count: layer.limitFeatureCount ? 1000 : '',
+          BBOX: extent.join(',') + ',' + srs,
+        };
+        params[data_version.startsWith('1') ? 'typeName' : 'typeNames'] =
+          layer_name;
         let url = [
           provided_url,
-          hsUtilsService.paramsToURLWoEncode({
-            service: 'wfs',
-            version: data_version, // == '2.0.0' ? '1.1.0' : data_version,
-            request: 'GetFeature',
-            typeName: layer_name,
-            srsName: srs,
-            output_format: output_format,
-            // count: layer.limitFeatureCount ? 1000 : '',
-            BBOX: extent.join(',') + ',' + srs,
-          }),
+          hsUtilsService.paramsToURLWoEncode(params),
         ].join('?');
 
         url = hsUtilsService.proxify(url, app);

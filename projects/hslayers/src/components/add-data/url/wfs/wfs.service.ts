@@ -240,15 +240,16 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   parseFeatureCount(app: string): void {
     const appRef = this.get(app);
     for (const layer of appRef.data.layers) {
+      const params = {
+        service: 'wfs',
+        version: appRef.data.version, //== '2.0.0' ? '1.1.0' : this.version,
+        request: 'GetFeature',
+        resultType: 'hits',
+      };
+      params[appRef.data.version.startsWith('1') ? 'typeName' : 'typeNames'] = layer.Name;
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
-        this.hsUtilsService.paramsToURLWoEncode({
-          service: 'wfs',
-          version: appRef.data.version, //== '2.0.0' ? '1.1.0' : this.version,
-          request: 'GetFeature',
-          typeName: layer.Name,
-          resultType: 'hits',
-        }),
+        this.hsUtilsService.paramsToURLWoEncode(params),
       ].join('?');
 
       this.http
