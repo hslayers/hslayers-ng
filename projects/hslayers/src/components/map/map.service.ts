@@ -519,17 +519,35 @@ export class HsMapService {
       '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=542.5,89.2,456.9,5.517,2.275,5.516,6.96 +units=m +no_defs'
     );
     proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#5514',
+      proj4.defs('EPSG:5514')
+    );
+
+    proj4.defs(
       'EPSG:4258',
       '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'
     );
+    proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#4258',
+      proj4.defs('EPSG:4258')
+    );
+
     proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
     proj4.defs(
       'EPSG:3995',
       '+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
     );
     proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#3995',
+      proj4.defs('EPSG:3995')
+    );
+    proj4.defs(
       'EPSG:3031',
       '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
+    );
+    proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#3031',
+      proj4.defs('EPSG:3031')
     );
     register(proj4);
     if (this.hsConfig.get(app).componentsEnabled?.mapControls == false) {
