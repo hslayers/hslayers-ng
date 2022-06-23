@@ -3,8 +3,8 @@
     <i class="glyphicon icon-chevron-left"></i>
   </button>
   <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()"
-    [hidden]="selectVisible">
-    <span [hidden]="!currentTimeDefined()">
+    *ngIf="availableTimesFetched; else loading">
+    <span *ngIf="currentTime; else outOfRange">
       {{currentTime | date:timeDisplayFormat:timeDisplayFormat}}
     </span>
   </button>
