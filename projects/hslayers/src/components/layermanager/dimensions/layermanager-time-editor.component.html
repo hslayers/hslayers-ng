@@ -2,7 +2,7 @@
   <button type="button" class="btn btn-sm text-info" (click)="previousTime()" [disabled]="!hasPreviousTime">
     <i class="glyphicon icon-chevron-left"></i>
   </button>
-  <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()"
+  <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
     *ngIf="availableTimesFetched; else loading">
     <span *ngIf="currentTime; else outOfRange">
       {{currentTime | date:timeDisplayFormat:timeDisplayFormat}}
