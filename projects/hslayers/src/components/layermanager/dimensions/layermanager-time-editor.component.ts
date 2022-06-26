@@ -48,7 +48,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
           return;
         }
         if (!this.availableTimes) {
-          this.fillAvailableTimes(layerDescriptor);
+          this.fillAvailableTimes(layerDescriptor, time);
         }
         this.setCurrentTimeIfAvailable(time);
       });
@@ -75,7 +75,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     this.selectVisible = false;
     this.timesInSync = false;
     if (this.layer.time) {
-      this.fillAvailableTimes(this.layer);
+      this.fillAvailableTimes(this.layer, undefined);
     }
   }
 
@@ -203,11 +203,11 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
    * This gets called from subscriber and also OnInit because
    * subscriber could have been set up after the event was broadcasted
    */
-  private fillAvailableTimes(layer: HsLayerDescriptor) {
+  private fillAvailableTimes(layer: HsLayerDescriptor, defaultTime: string) {
     this.availableTimes = layer.time.timePoints;
     this.setDateTimeFormatting();
-    this.setCurrentTimeIfAvailable(this.layer.time.default);
-    if (!this.currentTime) {
+    this.setCurrentTimeIfAvailable(defaultTime ?? this.layer.time.default);
+    if (!this.currentTime && this.availableTimes.length > 0) {
       this.currentTime = this.availableTimes[0];
       this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
     }

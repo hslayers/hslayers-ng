@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
+import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 
 import {HsLayerDescriptor} from '../../components/layermanager/layer-descriptor.interface';
 import {HsLogService} from '../log/log.service';
@@ -188,7 +188,26 @@ export class HsDimensionTimeService {
     let today = new Date().toISOString();
     today = today.slice(0, today.indexOf('T'));
     let defaultTime;
-    if (timePoints.includes(hsLayerTimeConfig?.default)) {
+    let layerParams = {};
+    const isTileWms = this.HsUtilsService.instOf(olLayer.getSource(), TileWMS);
+    if (isTileWms) {
+      const src = olLayer.getSource() as TileWMS;
+      layerParams = src.getParams();
+      src.on('change', (_) => {
+        this.syncQueryParamToDimension(src, olLayer, currentLayer, app);
+      });
+    }
+    const isImgWms = this.HsUtilsService.instOf(olLayer.getSource(), ImageWMS);
+    if (isImgWms) {
+      const src = olLayer.getSource() as ImageWMS;
+      layerParams = src.getParams();
+      src.on('change', (_) => {
+        this.syncQueryParamToDimension(src, olLayer, currentLayer, app);
+      });
+    }
+    if (layerParams['TIME'] && timePoints.includes(layerParams['TIME'])) {
+      defaultTime = layerParams['TIME'];
+    } else if (timePoints.includes(hsLayerTimeConfig?.default)) {
       defaultTime = hsLayerTimeConfig.default;
     } else if (timePoints.includes(serviceLayerTimeConfig?.default)) {
       defaultTime = serviceLayerTimeConfig.default;
@@ -203,6 +222,28 @@ export class HsDimensionTimeService {
     };
     this.polyfillLayerDimensionsValues(currentLayer);
     this.setLayerTime(currentLayer, defaultTime, app);
+  }
+
+  /**
+   * When PARAMS object on layer source is set directly from outside
+   * we want to monitor it and set time dimension separately to
+   * update the time selector. The actual dimension value will be
+   * set in postProcessDimensionValue function of
+   * get-capabilities/dimension class.
+   */
+  private syncQueryParamToDimension(
+    src: TileWMS | ImageWMS,
+    olLayer,
+    currentLayer: HsLayerDescriptor,
+    app: string
+  ) {
+    const timeFromParams = src.getParams()['TIME'];
+    if (
+      timeFromParams &&
+      timeFromParams != getDimensions(olLayer)?.time.value
+    ) {
+      this.setLayerTime(currentLayer, timeFromParams, app);
+    }
   }
 
   /**
