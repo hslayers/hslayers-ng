@@ -20,7 +20,11 @@ export class HsQueryAttributeRowComponent implements OnInit {
   change(): void {
     if (this.feature?.feature) {
       const feature = this.feature.feature;
-      feature.set(this.attribute.name, JSON.parse(this.tmpObjectValue));
+      if (this.isObject) {
+        feature.set(this.attribute.name, JSON.parse(this.tmpObjectValue));
+      } else {
+        feature.set(this.attribute.name, this.attribute.value);
+      }
     }
   }
 
