@@ -468,6 +468,7 @@ export class HsLaymanService implements HsSaverService {
       .reduce((prev, f) => prev + (f as File).size, 0);
     const async_upload = sumFileSize >= PREFER_RESUMABLE_SIZE_LIMIT;
     if (async_upload) {
+      asyncUpload.async = async_upload;
       this.switchFormDataToFileNames(formData, asyncUpload.filesToAsyncUpload);
     }
     return asyncUpload;
