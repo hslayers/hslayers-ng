@@ -24,7 +24,7 @@ import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
-export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
+export const FILE_UPLOAD_SIZE_LIMIT = 20 * 1024 * 1024; //20MB
 
 export class HsAddDataCommonFileServiceParams {
   loadingToLayman = false;
@@ -305,8 +305,8 @@ export class HsAddDataCommonFileService {
         return await zipContent.files[name].async('arraybuffer');
       });
       if (
-        zipFilesData.find(
-          async (data) => (await data).byteLength > FILE_UPLOAD_SIZE_LIMIT
+        (await Promise.all(zipFilesData)).find(
+          (f) => f.byteLength > FILE_UPLOAD_SIZE_LIMIT
         )
       ) {
         throw new Error('ADDDATA.FILE.zipFileContainsAFile');
