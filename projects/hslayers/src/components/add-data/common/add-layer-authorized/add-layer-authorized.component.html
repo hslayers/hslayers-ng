@@ -6,9 +6,13 @@
     <i class="icon-plus" [hidden]="commonFileServiceRef.loadingToLayman"></i>
     <img [src]="configRef._ajaxLoaderPath" [hidden]="!commonFileServiceRef.loadingToLayman" />
     <span [hidden]="commonFileServiceRef.loadingToLayman">{{'COMMON.add' | translateHs : {app} }}</span>
-    <span [hidden]="!commonFileServiceRef.loadingToLayman">{{'COMMON.uploading' | translateHs : {app} }}</span>
-    <ngb-progressbar *ngIf="commonFileServiceRef.loadingToLayman && commonFileServiceRef.asyncLoading" showValue="true"
-      class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
+    <span *ngIf="commonFileServiceRef.loadingToLayman && commonFileServiceRef.asyncLoading">{{'COMMON.uploading' |
+      translateHs : {app} }}</span>
+    <span *ngIf="commonFileServiceRef.loadingToLayman && commonFileServiceRef.readingData">{{'COMMON.reading' |
+      translateHs : {app} }}</span>
+    <ngb-progressbar
+      *ngIf="commonFileServiceRef.loadingToLayman && (commonFileServiceRef.asyncLoading || commonFileServiceRef.readingData)"
+      showValue="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
     </ngb-progressbar>
   </button>
 </div>

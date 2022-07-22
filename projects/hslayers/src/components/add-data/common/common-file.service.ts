@@ -24,9 +24,10 @@ import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
-export const FILE_UPLOAD_SIZE_LIMIT = 20 * 1024 * 1024; //20MB
+export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
 
 export class HsAddDataCommonFileServiceParams {
+  readingData = false;
   loadingToLayman = false;
   asyncLoading = false;
   endpoint: HsEndpoint = null;
@@ -128,14 +129,20 @@ export class HsAddDataCommonFileService {
    */
   filesValid(files: File[], app: string): boolean {
     let isValid = true;
-    if (files.filter((f) => f.size > FILE_UPLOAD_SIZE_LIMIT).length > 0) {
-      this.displayErrorMessage(
+    if (
+      files.find(
+        (f) => f.name.endsWith('shp') && f.size > FILE_UPLOAD_SIZE_LIMIT
+      )
+    ) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.SHP.exceedingSize',
+        'ADDLAYERS.SHP.considerUsingZip',
         {
-          message: 'ADDDATA.FILE.someOfTheUploadedFiles',
+          serviceCalledFrom: 'HsAddDataCommonFileService',
+          toastStyleClasses: 'bg-warning text-white',
         },
         app
       );
-      return false;
     }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
     if (zipFilesCount === 1 && files.length > 1) {
@@ -224,7 +231,8 @@ export class HsAddDataCommonFileService {
         abstract,
         srs,
         sld,
-        access_rights
+        access_rights,
+        app
       );
       const asyncUpload: AsyncUpload =
         this.hsLaymanService.prepareAsyncUpload(formData);
@@ -240,6 +248,7 @@ export class HsAddDataCommonFileService {
       );
       return res;
     } catch (err) {
+      this.get(app).readingData = false;
       throw err;
     }
   }
@@ -275,6 +284,45 @@ export class HsAddDataCommonFileService {
   }
 
   /**
+   * Convert value from one range to another
+   * @param value - value to convert
+   * @param oldRange - min, max of values range
+   * @param newRange - min, max of values range. Default to 0 - 1
+   */
+  convertRange(
+    value: number,
+    oldRange: {min: number; max: number},
+    newRange = {min: 0, max: 1}
+  ): number {
+    return (
+      ((value - oldRange.min) * (newRange.max - newRange.min)) /
+        (oldRange.max - oldRange.min) +
+      newRange.min
+    );
+  }
+
+  /**
+   * Calculates progress of individual file being zipped by transforimg value into 0 - 1 scale
+   */
+  calculateFileProgress(value, nrOfFiles): number {
+    const unit = 100 / nrOfFiles;
+    const breakpoints = new Array(nrOfFiles).fill(unit);
+    //Get breakpoints eg. [33,66,99] for nrOfFiles = 3
+    for (const [index, item] of breakpoints.entries()) {
+      if (breakpoints[index - 1]) {
+        breakpoints[index] = item + breakpoints[index - 1];
+      }
+    }
+    const rangeMaxIdx = breakpoints.findIndex((b) => value < b);
+    const newRangeMax = breakpoints[rangeMaxIdx];
+    const newRangeMin = breakpoints[rangeMaxIdx - 1]
+      ? breakpoints[rangeMaxIdx - 1]
+      : 0;
+
+    return this.convertRange(value, {min: newRangeMin, max: newRangeMax});
+  }
+
+  /**
    * Construct a set of key/value pairs from, that can be easily sent using HTTP
    * @param endpoint - Layman endpoint description (url, name, user)
    * @param files - Array of files
@@ -294,30 +342,30 @@ export class HsAddDataCommonFileService {
     abstract: string,
     srs: string,
     sld: FileDescriptor,
-    access_rights: accessRightsModel
+    access_rights: accessRightsModel,
+    app: string
   ): Promise<FormData> {
+    this.get(app).readingData = true;
     const formdata = new FormData();
     let zipFile;
     const zip = new JSZip();
     if (this.isZip(files[0].type)) {
-      const zipContent = await zip.loadAsync(files[0].content);
-      const zipFilesData = Object.keys(zipContent.files).map(async (name) => {
-        return await zipContent.files[name].async('arraybuffer');
-      });
-      if (
-        (await Promise.all(zipFilesData)).find(
-          (f) => f.byteLength > FILE_UPLOAD_SIZE_LIMIT
-        )
-      ) {
-        throw new Error('ADDDATA.FILE.zipFileContainsAFile');
-      } else {
-        zipFile = new Blob([files[0].content], {type: files[0].type});
-      }
+      zipFile = new Blob([files[0].content], {type: files[0].type});
     } else {
       files.forEach((file) => {
         zip.file(file.name, file.content);
       });
-      zipFile = await zip.generateAsync({type: 'blob'});
+      zipFile = await zip.generateAsync(
+        {type: 'blob', streamFiles: true},
+        (metadata) => {
+          setTimeout(() => {
+            this.hsLaymanService.totalProgress = this.calculateFileProgress(
+              metadata.percent,
+              files.length
+            );
+          }, 0);
+        }
+      );
     }
     formdata.append('file', zipFile, files[0].name.split('.')[0] + '.zip');
 
@@ -341,6 +389,7 @@ export class HsAddDataCommonFileService {
 
     formdata.append('access_rights.write', rights.write);
     formdata.append('access_rights.read', rights.read);
+    this.get(app).readingData = false;
     return formdata;
   }
 
