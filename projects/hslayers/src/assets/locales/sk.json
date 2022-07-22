@@ -93,7 +93,9 @@
       "maximumNumberOf": "Maximálny povolený počet súborov je {{allowed}}, ale vybrané sú{{dĺžka}}",
       "missingOneOrMore": "Chýba jeden alebo viac súborov Shapefile. Nahrajte súbory s príponami *.shp, *.shx, *.dbf",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
-      "SLDStyleFile": "Súbor so štýlmi"
+      "SLDStyleFile": "Súbor so štýlmi",
+      "considerUsingZip": "Zvážte použitie formátu „.zip“ pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia",
+      "exceedingSize": "Načítavaný súbor Shapefile presahuje odporúčanú veľkosť"
     },
     "srs": "SRS",
     "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!",
@@ -266,7 +268,8 @@
     "toggle": "Prepnúť",
     "required": "Požadované",
     "reversed": "Obrátené",
-    "apply": "Použiť"
+    "apply": "Použiť",
+    "reading": "Načítavanie dát"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

@@ -95,7 +95,9 @@
       "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf or zip containing these files.",
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file",
-      "neededFiles": "Load files with extensions *.shp, *.shx, *.dbf or zip file containing these files."
+      "neededFiles": "Load files with extensions *.shp, *.shx, *.dbf or zip file containing these files.",
+      "considerUsingZip": "Consider using '.zip' format for shapefiles bigger than 10MB of size. Upload is much quicker",
+      "exceedingSize": "Shapefile being loaded exceeds recommended size"
     },
     "srs": "SRS",
     "SRSRequired": "'SRS' field required to proceed!",
@@ -272,7 +274,8 @@
     "setPermissions": "Set permissions",
     "selectAndSavePermissions": "Select and confirm permissions for",
     "setPermissionsError": "Set permissions error",
-    "somethingWentWrong": "Something went wrong, please try again!"
+    "somethingWentWrong": "Something went wrong, please try again!",
+    "reading": "Reading data"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
