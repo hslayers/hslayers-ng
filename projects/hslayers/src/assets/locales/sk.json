@@ -94,7 +94,7 @@
       "missingOneOrMore": "Chýba jeden alebo viac súborov Shapefile. Nahrajte súbory s príponami *.shp, *.shx, *.dbf",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
-      "considerUsingZip": "Zvážte použitie formátu „.zip“ pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia",
+      "considerUsingZip": "Zvážte použitie formátu „.zip“ pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia.",
       "exceedingSize": "Načítavaný súbor Shapefile presahuje odporúčanú veľkosť"
     },
     "srs": "SRS",

@@ -36,8 +36,7 @@
     "FILE": {
       "onlyOneZipFileCan": "Only one zip file can be uploaded at once",
       "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size of 20MB",
-      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files",
-      "zipFileContainsAFile": "Zip file contains files, that exeeds maximum allowed file size of 20MB, that can be stored on the database"
+      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
     },
     "requestServiceLayers": "Request service layers",
     "saveToDatabase": "Save to database",

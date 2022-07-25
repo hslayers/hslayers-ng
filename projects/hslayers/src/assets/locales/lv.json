@@ -36,8 +36,7 @@
     "FILE": {
       "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
       "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu 20MB",
-      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem",
-      "zipFileContainsAFile": "Arhivētais fails satur failus, kas pārsniedz maksimālo atļauto faila lielumu, ko var glabāt datu bāzē"
+      "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
     },
     "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
     "saveToDatabase": "Saglabāt datubāzē",
