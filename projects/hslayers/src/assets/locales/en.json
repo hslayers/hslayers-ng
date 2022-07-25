@@ -96,7 +96,7 @@
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file",
       "neededFiles": "Load files with extensions *.shp, *.shx, *.dbf or zip file containing these files.",
-      "considerUsingZip": "Consider using '.zip' format for shapefiles bigger than 10MB of size. Upload is much quicker",
+      "considerUsingZip": "Consider using '.zip' format for shapefiles bigger than 10MB of size, that way upload will be much quicker.",
       "exceedingSize": "Shapefile being loaded exceeds recommended size"
     },
     "srs": "SRS",
