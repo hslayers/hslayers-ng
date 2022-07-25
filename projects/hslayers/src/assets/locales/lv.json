@@ -94,7 +94,10 @@
       "maximumNumberOf": "Maksimālais atļautais failu skaits ir {{allowed}}, taču tika atlasīti {{length}}",
       "missingOneOrMore": "Trūkst viena vai vairāku ShapeFile failu. Ielādējiet failus ar paplašinājumiem *.shp, *.shx, *.dbf",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
-      "SLDStyleFile": "Stila datne"
+      "SLDStyleFile": "Stila datne",
+      "considerUsingZip": "Apsveriet iespēju izmantot .zip failu formātu failiem, kuru izmērs ir lielāks par 10 MB, tādējādi augšupielāde būs daudz ātrāka.",
+      "exceedingSize": "Ielādētais Shapefails pārsniedz ieteicamo izmēru",
+      "neededFiles": "Ielādējiet failus ar paplašinājumiem *.shp, *.shx, *.dbf vai zip failu, kas satur šos failus."
     },
     "srs": "Ģeodēziskā atskaites sistēma",
     "SRSRequired": "Lai turpinātu, ir jānorāda lauks 'SRS'!",
@@ -271,7 +274,8 @@
     "selectAndSavePermissions": "Atlasiet un apstipriniet atļaujas",
     "setPermissions": "Iestatīt atļaujas",
     "setPermissionsError": "Atļauju iestatīšanas kļūda",
-    "somethingWentWrong": "Radās problēma. Lūdzu, mēģiniet vēlreiz!"
+    "somethingWentWrong": "Radās problēma. Lūdzu, mēģiniet vēlreiz!",
+    "reading": "Datu lasīšana"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -604,7 +608,8 @@
       "outOfRange": "Atlasītais laiks ir ārpus diapazona",
       "outOfRangeDescription": "Šis slānis var parādīt dažādus datus, pamatojoties uz izvēlēto laiku. Laiks var nonākt \"ārpus diapazona\", ja tas tiek sinhronizēts ar citu slāni, taču šim slānim nav datu par šo laika periodu. Noklikšķiniet, lai izvēlētos derīgu datumu un laiku. Varat arī atspējot slāņa laika sinhronizāciju.",
       "syncTimes": "Sinhronizēt laikus",
-      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
+      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem",
+      "loading": "Notiek pieejamo laiku iegūšana..."
     },
     "toggleAllLayerVisibility": "Pārslēgt visu slāņu redzamību",
     "User generated": "Lietotāja ģenerēti"
