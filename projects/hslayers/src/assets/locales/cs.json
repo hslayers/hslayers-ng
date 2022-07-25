@@ -93,7 +93,10 @@
       "maximumNumberOf": "Povoleny maximálně {{allowed}} soubory, ale bylo vybráno {{length}}",
       "missingOneOrMore": "Chybí jeden nebo více souborů Shapefile. Nahrajte soubory s příponami *.shp, *.shx, *.dbf",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
-      "SLDStyleFile": "Soubor se styly"
+      "SLDStyleFile": "Soubor se styly",
+      "considerUsingZip": "Pro soubory shapefile větší než 10 MB zvažte použití formátu \".zip\". Rychlost zpracování bude podstatně větší.",
+      "neededFiles": "Nahrajte soubory s příponami *.shp, *.shx, *.dbf, nebo soubor ZIP, obsahující tyto soubory.",
+      "exceedingSize": "Načítaný soubor Shapefile překračuje doporučenou velikost"
     },
     "srs": "SRS",
     "SRSRequired": "Pro pokračování je nutné vyplnit pole 'SRS'!",
@@ -265,7 +268,13 @@
     "addLayers": "Přidat vrstvy",
     "required": "Vyžadováno",
     "toggle": "Přepnout",
-    "reversed": "Obrácené"
+    "reversed": "Obrácené",
+    "apply": "Použít",
+    "reading": "Čtení dat",
+    "selectAndSavePermissions": "Vybrat a potvrdit oprávnění pro",
+    "setPermissions": "Nastavit oprávnění",
+    "setPermissionsError": "Chyba při nastavování oprávnění",
+    "somethingWentWrong": "Něco se pokazilo, prosím, zkuste to znovu!"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -552,7 +561,11 @@
       "vector (GeoJSON)": "Vektorová (GeoJSON)",
       "vector (KML)": "Vektorová (KML)",
       "vector (TopoJSON)": "Vektorová (TopoJSON)",
-      "zoomToLayer": "Přiblížit na vrstvu"
+      "zoomToLayer": "Přiblížit na vrstvu",
+      "interpolatedAttribute": "Interpolovaný atribut",
+      "max": "Maximum",
+      "min": "Minimum",
+      "colorMap": "Barevná škála"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
