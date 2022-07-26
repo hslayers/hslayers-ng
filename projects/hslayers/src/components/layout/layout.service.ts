@@ -372,9 +372,15 @@ export class HsLayoutService {
    * Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
    * @public
    * @param which - New panel to activate (panel name)
+   * @param app - Application's ID
    * @param by_gui - Whether function call came as result of GUI action
    */
-  setMainPanel(which: string, app: string, by_gui?: boolean): Promise<void> {
+  //TODO: introduce a new breaking change = change fction pattern to (which, {app, byGui}) => Promise<void>
+  setMainPanel(
+    which: string,
+    app: string = 'default',
+    by_gui?: boolean
+  ): Promise<void> {
     const appRef = this.get(app);
     if (!this.panelEnabled(which, app)) {
       return;

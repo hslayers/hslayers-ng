@@ -5,8 +5,9 @@ import {lastValueFrom} from 'rxjs';
 import {HsConfig} from '../../config.service';
 import {CustomTranslationService as HsCustomTranslationService} from './custom-translate.service';
 
-const DEFAULT_LANG = 'en';
-class HsLangageObject {
+const DEFAULT_LANG = 'en' as const;
+
+class HsLanguageObject {
   /** App-Language pair such as `app-1|en` */
   language: string;
   translationService: HsCustomTranslationService;
@@ -18,8 +19,9 @@ class HsLangageObject {
 export class HsLanguageService {
   translateServiceFactory: any;
   apps: {
-    [id: string]: HsLangageObject;
+    [id: string]: HsLanguageObject;
   } = {};
+
   constructor(
     @Inject(HsCustomTranslationService) translateServiceFactory: any,
     private HttpClient: HttpClient,
@@ -67,7 +69,7 @@ export class HsLanguageService {
    * @returns Returns language code
    * Get code of current language
    */
-  getCurrentLanguageCode(app: string): string {
+  getCurrentLanguageCode(app: string = 'default'): string {
     if (
       typeof this.apps[app].language == 'undefined' ||
       this.apps[app].language == ''
@@ -82,8 +84,8 @@ export class HsLanguageService {
    * @returns Returns available languages
    * Get array of available languages based
    */
-  listAvailableLanguages(app: string): any {
-    const language_code_name_map = {
+  listAvailableLanguages(app: string = 'default'): any {
+    const languageCodeNameMap = {
       'en': 'English',
       'cs': 'Česky',
       'fr': 'Français',
@@ -96,10 +98,10 @@ export class HsLanguageService {
       .getLangs()
       .map((l) => l.split('|')[1])) {
       if (
-        language_code_name_map.hasOwnProperty(lang) &&
+        languageCodeNameMap.hasOwnProperty(lang) &&
         langs.filter((l) => l.key == lang).length == 0
       ) {
-        langs.push({key: lang, name: language_code_name_map[lang]});
+        langs.push({key: lang, name: languageCodeNameMap[lang]});
       }
     }
     return langs;
