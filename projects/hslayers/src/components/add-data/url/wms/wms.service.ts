@@ -322,8 +322,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
 
   getLayerBBox(serviceLayer: any, crs: any, app: string): any {
     //Can be called without valid serviceLayer as part of micka dataset loading pipeline
-    if (!serviceLayer) { 
-      return; 
+    if (!serviceLayer) {
+      return;
     }
     const appRef = this.get(app);
     let boundingbox = serviceLayer.BoundingBox;
