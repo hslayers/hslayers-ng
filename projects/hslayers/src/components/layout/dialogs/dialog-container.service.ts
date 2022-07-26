@@ -22,7 +22,7 @@ export class HsDialogContainerService {
   constructor() {}
 
   get(app: string = 'default'): HsDialogContainerParams {
-    if (this.apps[app] == undefined) {
+    if (this.apps[app] === undefined) {
       this.apps[app] = new HsDialogContainerParams();
     }
     return this.apps[app];
