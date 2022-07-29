@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
 
 import {AddDataUrlType} from './types/url.type';
 import {AddDataUrlValues} from './add-data-url-values';
@@ -10,15 +11,15 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsShareUrlService} from '../../permalink/share-url.service';
-import {Subject, takeUntil} from 'rxjs';
 import {servicesSupportedByUrl} from './services-supported.const';
 
 @Component({
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.component.html',
 })
-export class HsAddDataUrlComponent implements OnInit {
+export class HsAddDataUrlComponent implements OnInit, OnDestroy {
   types: {id: AddDataUrlType; text: string}[];
   @Input() app = 'default';
   appRef;
@@ -28,6 +29,7 @@ export class HsAddDataUrlComponent implements OnInit {
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
     public hsShareUrlService: HsShareUrlService,
+    public hsLog: HsLogService,
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataOwsService: HsAddDataOwsService,
@@ -54,7 +56,7 @@ export class HsAddDataUrlComponent implements OnInit {
       .get(this.app)
       .addDataCapsParsingError.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((e) => {
-        console.warn(this.app);
+        this.hsLog.warn(this.app);
         let error = e.toString();
         if (error?.includes('Unsuccessful OAuth2')) {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(

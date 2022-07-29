@@ -9,6 +9,7 @@ import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsUrlArcGisService} from './arcgis/arcgis.service';
 import {HsUrlTypeServiceModel} from './models/url-type-service.model';
 import {HsUrlWfsService} from './wfs/wfs.service';
@@ -39,6 +40,7 @@ export class HsAddDataOwsService {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsHistoryListService: HsHistoryListService,
+    public hsLog: HsLogService,
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsUrlArcGisService: HsUrlArcGisService,
     public hsUrlWfsService: HsUrlWfsService,
@@ -115,10 +117,10 @@ export class HsAddDataOwsService {
           appRef.typeService.addLayers(response, app);
         }
         //Note:
-        //!response condition would result in inifinite connectToOWS calls
+        //!response condition would result in infinite connectToOWS calls
         //response?.length by design also checks for hsAddDataCommonService.layerToSelect
         if (response?.length == 0) {
-          console.log('Empty response when layer selected');
+          this.hsLog.log('Empty response when layer selected');
           this.hsAddDataService.selectType('url', app);
           await this.connectToOWS(
             {

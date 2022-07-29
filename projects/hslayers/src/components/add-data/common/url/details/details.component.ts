@@ -1,4 +1,3 @@
-
 import {AfterContentInit, Component, Input} from '@angular/core';
 
 import {AddDataUrlType} from '../../../url/types/url.type';

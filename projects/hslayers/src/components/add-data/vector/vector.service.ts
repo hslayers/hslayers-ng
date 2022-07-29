@@ -247,7 +247,7 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * Wait until layer synchonization is complete
+   * Wait until layer synchronization is complete
    * @param layer - Layer provided
    */
   async awaitLayerSync(layer: Layer): Promise<any> {
@@ -356,7 +356,7 @@ export class HsAddDataVectorService {
    * what action he wishes to take
    * @param data - Layer data object provided
    * @param app - App identifier
-   * @returns Action the user took, inside promted dialog
+   * @returns Action the user took, inside prompted dialog
    */
   async checkForLayerInLayman(
     data: VectorDataObject,
@@ -560,7 +560,7 @@ export class HsAddDataVectorService {
       title: json.name,
       srs: this.getFeaturesProjection(projection),
       features: features, //Features in map crs
-      nativeFeatures: format.readFeatures(json), //Fetures in native CRS
+      nativeFeatures: format.readFeatures(json), //Features in native CRS
       nativeSRS: projection,
     };
     return object;

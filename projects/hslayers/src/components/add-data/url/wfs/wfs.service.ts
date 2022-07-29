@@ -246,7 +246,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         request: 'GetFeature',
         resultType: 'hits',
       };
-      params[appRef.data.version.startsWith('1') ? 'typeName' : 'typeNames'] = layer.Name;
+      params[appRef.data.version.startsWith('1') ? 'typeName' : 'typeNames'] =
+        layer.Name;
       const url = [
         this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
         this.hsUtilsService.paramsToURLWoEncode(params),
@@ -324,7 +325,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
-   * @param shallow - Wether to go through full depth of layer tree or to stop on first queriable
+   * @param shallow - Wether to go through full depth of layer tree or to stop on first queryable
    */
   getLayers(
     app: string,
@@ -349,7 +350,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param layer - Layer selected
    * @param options - Add layers recursively options
    * (checkedOnly?: boolean; style?: string;)
-   * @param collection - Layers created and retreived collection
+   * @param collection - Layers created and retrieved collection
    */
   getLayersRecursively(
     layer,
