@@ -1,0 +1,9 @@
+<form class="form-horizontal" name="frmConnectGeosparql" role="form">
+    <hs-common-url type="geosparql" [app]="app" [(url)]="data.url"
+        (connect)="connect()">
+    </hs-common-url>
+    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
+    <div *ngIf="data.showDetails">
+        TODO: It worked!
+    </div>
+</form>

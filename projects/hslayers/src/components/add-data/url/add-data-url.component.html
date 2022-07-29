@@ -14,6 +14,7 @@
         <hs-url-wfs *ngIf="appRef.typeSelected === 'wfs'" [app]="app"></hs-url-wfs>
         <hs-url-wms *ngIf="appRef.typeSelected === 'wms'" [app]="app"></hs-url-wms>
         <hs-url-wmts *ngIf="appRef.typeSelected === 'wmts'" [app]="app"></hs-url-wmts>
+        <hs-url-geosparql *ngIf="appRef.typeSelected === 'geosparql'" [app]="app"></hs-url-geosparql>
         <hs-url-vector *ngIf="appRef.typeSelected === 'geojson'" [app]="app" [fileType]="appRef.typeSelected">
         </hs-url-vector>
         <hs-url-vector *ngIf="appRef.typeSelected === 'kml'" [app]="app" [fileType]="appRef.typeSelected">

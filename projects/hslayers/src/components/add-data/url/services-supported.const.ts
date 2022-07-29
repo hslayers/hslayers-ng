@@ -6,4 +6,5 @@ export const servicesSupportedByUrl = [
   'gpx',
   'geojson',
   'arcgis',
+  'geosparql',
 ] as const;
