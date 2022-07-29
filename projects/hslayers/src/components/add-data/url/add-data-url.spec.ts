@@ -3,33 +3,32 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {lastValueFrom} from 'rxjs';
 
-import {CommonModule} from '@angular/common';
+import serviceEndpoints from '../../../../test/data/service-endpoints.json';
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
-import {HsLanguageModule} from '../../language/language.module';
-import {HsUrlArcGisModule} from './arcgis/arcgis.module';
-import {HsUrlWfsModule} from './wfs/wfs.module';
-import {HsUrlWmsModule} from './wms/wms.module';
-import {HsUrlWmtsModule} from './wmts/wmts.module';
-
 import {HsConfig} from '../../../config.service';
 import {HsConfigMock} from '../../../config.service.mock';
+import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
-import {HsUtilsService} from '../../utils/utils.service';
-import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
-import {lastValueFrom} from 'rxjs';
-import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
-
-import serviceEndpoints from '../../../../test/data/service-endpoints.json';
 import {HsMapService} from '../../map/map.service';
 import {HsMapServiceMock} from '../../map/map.service.mock';
+import {HsUrlArcGisModule} from './arcgis/arcgis.module';
+import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
+import {HsUrlWfsModule} from './wfs/wfs.module';
+import {HsUrlWmsModule} from './wms/wms.module';
+import {HsUrlWmtsModule} from './wmts/wmts.module';
+import {HsUtilsService} from '../../utils/utils.service';
+import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 
 let httpClient;
 let hsWmsGetCapabilitiesService;
@@ -61,10 +60,11 @@ describe('HsAddDataUrlComponent', () => {
         CommonModule,
         FormsModule,
         HsLanguageModule,
-        HsUrlWmsModule,
-        HsUrlArcGisModule,
-        HsUrlWfsModule,
         HsAddDataVectorModule,
+        HsUrlArcGisModule,
+        HsUrlGeoSparqlModule,
+        HsUrlWfsModule,
+        HsUrlWmsModule,
         HsUrlWmtsModule,
       ],
       providers: [
@@ -79,11 +79,11 @@ describe('HsAddDataUrlComponent', () => {
     httpClient = TestBed.inject(HttpClient);
     //Mock server response
     hsWmsGetCapabilitiesService.request = async (url) => {
-      const serviceURUL = url.includes('?')
+      const serviceURL = url.includes('?')
         ? url.substring(0, url.indexOf('?'))
         : url;
       const r = await lastValueFrom(
-        httpClient.get(serviceURUL + '?service=WMS&request=getCapabilities', {
+        httpClient.get(serviceURL + '?service=WMS&request=getCapabilities', {
           responseType: 'text',
         })
       );

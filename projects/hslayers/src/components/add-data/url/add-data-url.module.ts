@@ -6,6 +6,7 @@ import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
 import {HsLanguageModule} from '../../language/language.module';
 import {HsUrlArcGisModule} from './arcgis/arcgis.module';
+import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
@@ -17,10 +18,11 @@ import {HsUrlWmtsModule} from './wmts/wmts.module';
     CommonModule,
     FormsModule,
     HsLanguageModule,
-    HsUrlWmsModule,
-    HsUrlArcGisModule,
-    HsUrlWfsModule,
     HsAddDataVectorModule,
+    HsUrlArcGisModule,
+    HsUrlGeoSparqlModule,
+    HsUrlWfsModule,
+    HsUrlWmsModule,
     HsUrlWmtsModule,
   ],
   exports: [HsAddDataUrlComponent],
