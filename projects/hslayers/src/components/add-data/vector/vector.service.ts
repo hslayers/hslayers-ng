@@ -65,7 +65,7 @@ export class HsAddDataVectorService {
     private hsStylerService: HsStylerService,
     private hsAddDataService: HsAddDataService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsLaymanService: HsLaymanService,
+    private hsLaymanService: HsLaymanService
   ) {}
 
   /**
@@ -318,9 +318,9 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * makeUpsertLayerRequest wrapper,
-   * Send layer's definition and features to Layman
-   * @param nativeFeatures Whether to use geometry without trasformation.
+   * Prepare layer for upsertion to Layman
+   * @param data - Vector data object
+   * @param app - App identifier
    */
   async upsertLayer(
     data: VectorDataObject,
