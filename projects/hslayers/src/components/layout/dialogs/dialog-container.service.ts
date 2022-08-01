@@ -1,13 +1,13 @@
 import {Injectable, Type} from '@angular/core';
 
-import {Subject} from 'rxjs';
+import {ReplaySubject, Subject} from 'rxjs';
 
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogItem} from './dialog-item';
 
 class HsDialogContainerParams {
   dialogs: Array<any> = [];
-  dialogObserver: Subject<HsDialogItem> = new Subject();
+  dialogObserver: ReplaySubject<HsDialogItem> = new ReplaySubject();
   dialogDestroyObserver: Subject<any> = new Subject();
 }
 
