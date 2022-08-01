@@ -9,9 +9,10 @@ import {HsSearchModule} from 'hslayers-ng';
 import {HsLayerManagerModule, HsQueryModule, HsStylerModule} from 'hslayers-ng';
 import {HsStatisticsModule} from '../lib/statistics.module';
 import {HslayersAppComponent} from './app.component';
+import {InfoDialogComponent} from './info.component';
 
 @NgModule({
-  declarations: [HslayersAppComponent],
+  declarations: [HslayersAppComponent, InfoDialogComponent],
   imports: [
     BrowserModule,
     HsCoreModule,
