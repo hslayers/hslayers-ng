@@ -1,0 +1,34 @@
+<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    About
+                </h4>
+                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
+                    attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+                </button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                This tool allows to easily visualize statistical data in <a
+                    href="https://support.microsoft.com/en-us/office/save-a-workbook-to-text-format-txt-or-csv-3e9a9d6c-70da-4255-aa28-fcacf1f081e6">CSV
+                    format</a>, calculate <a href="https://en.wikipedia.org/wiki/Correlation">correlations</a> between
+                variables as well as create and run predictive models calculated using linear and <a
+                    href="https://corporatefinanceinstitute.com/resources/knowledge/other/multiple-linear-regression/">multiple-linear</a>
+                regression.
+                <br />
+                <hr />
+                <small>
+                    This application was supported by PoliRural (<a href="https://polirural.eu"
+                        target="_blank">https://polirural.eu</a>).<br />
+                    <img src="https://polirural.eu/wp-content/uploads/2019/08/EU.jpg" style="width: 67px;" />
+                    It received funding from the European Union’s Horizon 2020 research and innovation programme under
+                    grant agreement no. 818496</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="close()" title="Dismiss"
+                    data-dismiss="modal">Dismiss</button>
+            </div>
+        </div>
+    </div>
+</div>

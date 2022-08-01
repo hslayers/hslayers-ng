@@ -8,6 +8,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import vidzeme from '../assets/vidzeme.json';
 import {
   HsConfig,
+  HsDialogContainerService,
   HsLayerManagerComponent,
   HsLayoutService,
   HsQueryComponent,
@@ -18,6 +19,7 @@ import {
   HsToolbarPanelContainerService,
 } from 'hslayers-ng';
 import {HsStatisticsPanelComponent} from '../lib/statistics-panel.component';
+import {InfoDialogComponent} from './info.component';
 
 @Component({
   selector: 'hslayers-app',
@@ -30,7 +32,8 @@ export class HslayersAppComponent {
     public HsConfig: HsConfig,
     hsLayoutService: HsLayoutService,
     hsQueryPopupService: HsQueryPopupService,
-    hsToolbarPanelContainerService: HsToolbarPanelContainerService
+    hsToolbarPanelContainerService: HsToolbarPanelContainerService,
+    hsDialogContainerService: HsDialogContainerService
   ) {
     this.HsConfig.update(
       {
@@ -204,6 +207,7 @@ export class HslayersAppComponent {
     hsLayoutService.createOverlay(HsQueryPopupComponent, this.app, {
       service: hsQueryPopupService,
     });
+    hsDialogContainerService.create(InfoDialogComponent, {}, this.app);
   }
   title = 'hslayers-workspace';
 }
