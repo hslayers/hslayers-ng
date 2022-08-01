@@ -8,6 +8,7 @@ import {FileDataObject} from '../file/types/file-data-object.type';
 import {FileDescriptor} from '../file/types/file-descriptor.type';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
+import {HsAddDataUrlService} from '../url/add-data-url.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
@@ -17,6 +18,7 @@ import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-de
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsToastService} from '../../layout/toast/toast.service';
+import {HsUtilsService} from '../../utils/utils.service';
 import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from '../../../common/layman/types/post-patch-layer-response.type';
 import {VectorDataObject} from '../vector/vector-data.type';
@@ -50,7 +52,9 @@ export class HsAddDataCommonFileService {
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsLaymanService: HsLaymanService,
     private hsAddDataOwsService: HsAddDataOwsService,
-    private hsDialogContainerService: HsDialogContainerService
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsUtilsService: HsUtilsService,
+    private hsAddDataUrlService: HsAddDataUrlService
   ) {}
 
   /**
@@ -74,6 +78,36 @@ export class HsAddDataCommonFileService {
     appRef.endpoint = null;
     appRef.loadingToLayman = false;
     this.hsLaymanService.totalProgress = 0;
+  }
+
+  /**
+   * Check if provided url exists and is obtainable
+   * @param url - Provided url
+   * @param app - App identifier
+   */
+  async isUrlObtainable(url: string, app: string): Promise<boolean> {
+    if (!url || url === '') {
+      return;
+    }
+    url = this.hsUtilsService.proxify(url, app);
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+      if (response.status === 200) {
+        return true;
+      } else {
+        this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+          response.statusText
+        );
+        return;
+      }
+    } catch (e) {
+      this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+        e.message
+      );
+      return;
+    }
   }
 
   /**

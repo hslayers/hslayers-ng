@@ -117,7 +117,7 @@ export class HsAddDataOwsService {
         //Note:
         //!response condition would result in inifinite connectToOWS calls
         //response?.length by design also checks for hsAddDataCommonService.layerToSelect
-        if (response?.length == 0) { 
+        if (response?.length == 0) {
           console.log('Empty response when layer selected');
           this.hsAddDataService.selectType('url', app);
           await this.connectToOWS(
@@ -142,9 +142,8 @@ export class HsAddDataOwsService {
 
   /**
    * Connect to service of specified Url
-   * @param url - Url of requested service
-   * @param layer - Optional layer to select, when
-   * getCapabilities arrives
+   * @param params - Connection params
+   * @param app - App identifier
    */
   async setUrlAndConnect(
     params: owsConnection,

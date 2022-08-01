@@ -2,12 +2,12 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {Subject, takeUntil} from 'rxjs';
 import {VectorDataObject} from '../vector-data.type';
 
 @Component({
@@ -28,8 +28,14 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
     public hsLayoutService: HsLayoutService
   ) {}
   connect = async (): Promise<void> => {
-    this.hsHistoryListService.addSourceHistory(this.dataType, this.data.url);
-    this.data.showDetails = true;
+    const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
+      this.data.url,
+      this.app
+    );
+    if (obtainable) {
+      this.hsHistoryListService.addSourceHistory(this.dataType, this.data.url);
+      this.data.showDetails = true;
+    }
   };
 
   ngOnDestroy(): void {
@@ -38,9 +44,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const commonFileServiceRef = this.hsAddDataCommonFileService.get(
-      this.app
-    );
+    const commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     commonFileServiceRef.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
