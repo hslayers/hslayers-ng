@@ -12,7 +12,6 @@ export type VectorDataObject = {
   access_rights?: accessRightsModel;
   addUnder?: Layer<Source>;
   base64url?: string;
-  dataType?: string;
   extract_styles?: boolean;
   featureCount?: number;
   features?: Array<any>;

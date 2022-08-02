@@ -285,7 +285,7 @@ export class HsAddDataVectorService {
       await this.upsertLayer(data, app);
     }
     const layer = await this.addVectorLayer(
-      data.features.length != 0 ? data.type : data.dataType,
+      data.features.length != 0 ? '' : data.type,
       data.url || data.base64url,
       data.name,
       data.title,
@@ -298,8 +298,8 @@ export class HsAddDataVectorService {
         access_rights: data.access_rights,
         workspace: commonFileRef.endpoint?.user,
         queryCapabilities:
-          data.dataType != 'kml' &&
-          data.dataType != 'gpx' &&
+          data.type != 'kml' &&
+          data.type != 'gpx' &&
           !data.url?.endsWith('json'),
         saveToLayman: data.saveToLayman,
         sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
@@ -415,12 +415,12 @@ export class HsAddDataVectorService {
 
   /**
    * Check if uploaded data are KML
-   * @param dataType - Uploaded data type
+   * @param fileType - Uploaded data type
    * @param url -  Upload source url
    * @returns True, if data are in KML format, false otherwise
    */
-  isKml(dataType: string, url: string): boolean {
-    if (dataType == 'kml' || url?.endsWith('kml')) {
+  isKml(fileType: string, url: string): boolean {
+    if (fileType == 'kml' || url?.endsWith('kml')) {
       return true;
     } else {
       return false;

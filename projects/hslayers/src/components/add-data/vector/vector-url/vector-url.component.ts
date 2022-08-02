@@ -15,7 +15,7 @@ import {VectorDataObject} from '../vector-data.type';
   templateUrl: 'vector-url.component.html',
 })
 export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
-  @Input() dataType: 'geojson' | 'kml' | 'gpx';
+  @Input() fileType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
 
   data: VectorDataObject;
@@ -33,7 +33,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
       this.app
     );
     if (obtainable) {
-      this.hsHistoryListService.addSourceHistory(this.dataType, this.data.url);
+      this.hsHistoryListService.addSourceHistory(this.fileType, this.data.url);
       this.data.showDetails = true;
     }
   };
@@ -86,8 +86,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
       sld: null,
       srs: 'EPSG:4326',
       title: '',
-      type: '',
-      dataType: this.dataType,
+      type: this.fileType,
       url: undefined,
     };
   }
