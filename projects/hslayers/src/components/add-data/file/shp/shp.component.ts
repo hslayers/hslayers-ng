@@ -16,7 +16,7 @@ export class HsFileShpComponent
   extends HsAddDataFileBaseComponent
   implements OnInit, AfterViewInit
 {
-  dataType: AddDataFileType = 'shp';
+  fileType: AddDataFileType = 'shp';
 
   constructor(
     public hsFileService: HsFileService,
@@ -33,7 +33,7 @@ export class HsFileShpComponent
 
   ngOnInit(): void {
     this.acceptedFormats = '.shp, .shx, .dbf, .sbn, .zip';
-    this.baseDataType = this.dataType;
+    this.baseFileType = this.fileType;
     super.ngOnInit();
   }
 

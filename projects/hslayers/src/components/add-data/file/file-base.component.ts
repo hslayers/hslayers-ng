@@ -25,12 +25,13 @@ import {HsUploadComponent} from '../../../common/upload/upload.component';
   template: '<div></div>',
 })
 export class HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() app = 'default';
   data: FileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
-  baseDataType: AddDataFileType;
+  baseFileType: AddDataFileType;
   private ngUnsubscribe = new Subject<void>();
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   constructor(
@@ -52,9 +53,7 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnInit(): void {
-    const commonFileServiceRef = this.hsAddDataCommonFileService.get(
-      this.app
-    );
+    const commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     commonFileServiceRef.dataObjectChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
@@ -98,7 +97,7 @@ export class HsAddDataFileBaseComponent
       sld: null,
       srs: null,
       title: '',
-      type: this.baseDataType,
+      type: this.baseFileType,
     };
     this.hsAddDataCommonFileService.clearParams(this.app);
     this.hsAddDataCommonService.clearParams(this.app);

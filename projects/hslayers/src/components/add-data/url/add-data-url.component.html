@@ -14,11 +14,11 @@
         <hs-url-wfs *ngIf="appRef.typeSelected === 'wfs'" [app]="app"></hs-url-wfs>
         <hs-url-wms *ngIf="appRef.typeSelected === 'wms'" [app]="app"></hs-url-wms>
         <hs-url-wmts *ngIf="appRef.typeSelected === 'wmts'" [app]="app"></hs-url-wmts>
-        <hs-url-vector *ngIf="appRef.typeSelected === 'geojson'" [app]="app" [dataType]="appRef.typeSelected">
+        <hs-url-vector *ngIf="appRef.typeSelected === 'geojson'" [app]="app" [fileType]="appRef.typeSelected">
         </hs-url-vector>
-        <hs-url-vector *ngIf="appRef.typeSelected === 'kml'" [app]="app" [dataType]="appRef.typeSelected">
+        <hs-url-vector *ngIf="appRef.typeSelected === 'kml'" [app]="app" [fileType]="appRef.typeSelected">
         </hs-url-vector>
-        <hs-url-vector *ngIf="appRef.typeSelected === 'gpx'" [app]="app" [dataType]="appRef.typeSelected">
+        <hs-url-vector *ngIf="appRef.typeSelected === 'gpx'" [app]="app" [fileType]="appRef.typeSelected">
         </hs-url-vector>
     </div>
 </div>

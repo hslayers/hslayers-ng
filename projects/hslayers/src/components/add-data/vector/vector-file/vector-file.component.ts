@@ -36,9 +36,8 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
-  @Input() dataType: 'geojson' | 'kml' | 'gpx';
+  implements OnInit, AfterViewInit, OnDestroy {
+  @Input() fileType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
@@ -89,7 +88,7 @@ export class HsAddDataVectorFileComponent
   }
 
   getAcceptedFormats(): void {
-    switch (this.dataType) {
+    switch (this.fileType) {
       case 'kml':
         this.acceptedFormats = '.kml';
         break;
@@ -131,7 +130,7 @@ export class HsAddDataVectorFileComponent
 
   async updateExistingLayer(): Promise<void> {
     let features = this.data.features.length > 0 ? this.data.features : [];
-    if (this.dataType != 'geojson') {
+    if (this.fileType != 'geojson') {
       const nonJson = await this.hsAddDataVectorService.convertUploadedData(
         this.fileInput.nativeElement.files[0],
         this.app
@@ -190,7 +189,7 @@ export class HsAddDataVectorFileComponent
         if (uploadedData.type !== undefined) {
           this.data.type = uploadedData.type;
         } else {
-          this.data.type = '';
+          this.data.type = this.fileType;
         }
         if (this.hsAddDataVectorService.isKml(this.data.type, this.data.url)) {
           this.data.saveToLayman = false;
@@ -275,8 +274,7 @@ export class HsAddDataVectorFileComponent
       srs: 'EPSG:4326',
       nativeSRS: undefined,
       title: '',
-      type: '',
-      dataType: this.dataType,
+      type: this.fileType,
       url: undefined,
       sld: null,
       access_rights: {
