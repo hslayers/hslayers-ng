@@ -88,7 +88,7 @@
     "zone.js": "~0.11.5"
   },
   "devDependencies": {
-    "@angular-architects/module-federation": "^14.2.3",
+    "@angular-architects/module-federation": "^14.3.10",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular-devkit/build-angular": "^14.1.1",
     "@angular-eslint/builder": "^13.5.0",
