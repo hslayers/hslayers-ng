@@ -114,7 +114,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsdoc": "39.3.3",
     "eslint-plugin-prefer-arrow": "1.2.3",
-    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-tsdoc": "^0.2.16",
     "eslint-stats": "^1.0.1",
     "jasmine-core": "~4.2.0",
