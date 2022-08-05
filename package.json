@@ -99,7 +99,7 @@
     "@angular/cli": "^14.1.1",
     "@angular/compiler-cli": "^14.1.1",
     "@commitlint/cli": "^17.0.3",
-    "@commitlint/config-conventional": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.3",
     "@compodoc/compodoc": "^1.1.19",
     "@cypress/schematic": "^2.0.0",
     "@types/jasmine": "~4.0.3",
