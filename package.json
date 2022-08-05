@@ -63,7 +63,7 @@
     "geostyler-qgis-parser": "^1.0.0",
     "geostyler-sld-parser": "^3.2.2",
     "geostyler-style": "^5.1.0",
-    "jszip": "^3.10.0",
+    "jszip": "^3.10.1",
     "multiregress": "^1.0.0",
     "ngx-color": "^8.0.0",
     "ngx-cookie-service": "^14.0.1",
