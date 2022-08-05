@@ -491,13 +491,13 @@
               ]
             },
             "development": {
-							"buildOptimizer": false,
-							"optimization": false,
-							"vendorChunk": true,
-							"extractLicenses": false,
-							"sourceMap": true,
-							"namedChunks": true
-						}
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
           }
         },
         "serve": {
@@ -512,8 +512,8 @@
               "browserTarget": "test-statistics-app:build:production"
             },
             "development": {
-							"browserTarget": "test-statistics-app:build:development"
-						}
+              "browserTarget": "test-statistics-app:build:development"
+            }
           },
           "defaultConfiguration": "development"
         },
@@ -598,7 +598,7 @@
                 "input": "projects/hslayers-cesium-app/",
                 "output": "/"
               }
-            ], 
+            ],
             "allowedCommonJsDependencies": [
               "xml-utils",
               "colormap",
