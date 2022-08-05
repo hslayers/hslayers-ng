@@ -1067,7 +1067,6 @@
       }
     }
   },
-  "defaultProject": "hslayers-app",
   "cli": {
     "analytics": false
   }

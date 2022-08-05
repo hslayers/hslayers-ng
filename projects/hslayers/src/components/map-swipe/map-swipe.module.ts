@@ -9,15 +9,14 @@ import {HsMapSwipeComponent} from './map-swipe.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 
 @NgModule({
-  declarations: [HsMapSwipeComponent],
-  imports: [
-    CommonModule,
-    HsPanelHelpersModule,
-    FormsModule,
-    HsLanguageModule,
-    DragDropModule,
-  ],
-  exports: [HsMapSwipeComponent],
-  entryComponents: [HsMapSwipeComponent],
+    declarations: [HsMapSwipeComponent],
+    imports: [
+        CommonModule,
+        HsPanelHelpersModule,
+        FormsModule,
+        HsLanguageModule,
+        DragDropModule,
+    ],
+    exports: [HsMapSwipeComponent]
 })
 export class HsMapSwipeModule {}

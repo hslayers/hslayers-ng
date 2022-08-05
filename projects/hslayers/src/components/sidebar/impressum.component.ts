@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 
-import packageJson from '../../package.json';
+import packageJson from '../../../package.json';
 import {HsConfig} from '../../config.service';
 
 @Component({
