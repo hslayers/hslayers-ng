@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 
-import packageJson from '../../../package.json';
 import {HsConfig} from '../../config.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class HsImpressumComponent {
   logoDisabled = false;
   logoPath: string;
   constructor(public hsConfig: HsConfig) {
-    this.version = packageJson.version;
+    this.version = '9.3.0';
   }
 
   ngOnInit() {
