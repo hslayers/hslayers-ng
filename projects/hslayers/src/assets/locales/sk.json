@@ -95,7 +95,8 @@
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
       "considerUsingZip": "Zvážte použitie formátu „.zip“ pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia.",
-      "exceedingSize": "Načítavaný súbor Shapefile presahuje odporúčanú veľkosť"
+      "exceedingSize": "Načítavaný súbor Shapefile presahuje odporúčanú veľkosť",
+      "neededFiles": "Nahrajte súbory s príponami *.shp, *.shx, *.dbf, alebo súbor ZIP, obsahujúci tieto súbory."
     },
     "srs": "SRS",
     "SRSRequired": "Pre pokračovanie je potrebné pole 'SRS'!",
@@ -269,7 +270,11 @@
     "required": "Požadované",
     "reversed": "Obrátené",
     "apply": "Použiť",
-    "reading": "Načítavanie dát"
+    "reading": "Načítavanie dát",
+    "selectAndSavePermissions": "Vyberte a potvrďte oprávnenia pre",
+    "setPermissions": "Nastaviť oprávnenia",
+    "somethingWentWrong": "Niečo sa pokazilo, skúste to znova prosím!",
+    "setPermissionsError": "Chyba pri nastavovaní oprávnení"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -602,7 +607,8 @@
       "outOfRange": "Vybraný čas je mimo rozsah",
       "outOfRangeDescription": "Táto vrstva môže zobrazovať rôzne údaje na základe vybratého času. Čas sa môže dostať „mimo rozsah“, keď je synchronizovaný s inou vrstvou, ale táto vrstva pre daný časový úsek nemá žiadne údaje. Kliknutím vyberte platný dátum a čas. Môžete tiež vypnúť synchronizáciu času vo vrstve.",
       "syncTimes": "Synchronizovať časy",
-      "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev"
+      "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev",
+      "loading": "Načítavajú sa dostupné časy..."
     },
     "toggleAllLayerVisibility": "Prepnúť viditeľnosť všetkých vrstiev",
     "User generated": "Užívateľské"
