@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 
-import {
-  HsPanelComponent,
-  HsQueryPopupWidgetBaseComponent,
-} from 'hslayers-ng/src/public-api';
+import {HsPanelComponent, HsQueryPopupWidgetBaseComponent} from 'hslayers-ng';
 
 @Component({
   selector: 'popup-widget',
@@ -11,8 +8,7 @@ import {
 })
 export class PopupWidgetComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements HsPanelComponent
-{
+  implements HsPanelComponent {
   constructor() {
     super();
   }

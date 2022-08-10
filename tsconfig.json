@@ -29,12 +29,10 @@
         "node_modules/ol/*"
       ],
       "hslayers-ng": [
-        "dist/hslayers/*",
-        "dist/hslayers"
+        "projects/hslayers/src/public-api.ts",
       ],
       "hslayers-ng/*": [
-        "projects/hslayers/*",
-        "projects/hslayers"
+        "projects/hslayers/src/*",
       ],
       "@ngx-translate/*": [
         "node_modules/@ngx-translate/*"
