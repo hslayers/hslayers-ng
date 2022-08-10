@@ -3,6 +3,9 @@ import {Injectable} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataUrlService} from '../add-data-url.service';
+import {HsLanguageService} from '../../../language/language.service';
+import {HsLogService} from '../../../../common/log/log.service';
 import {urlDataObject} from '../types/data-object.type';
 
 class HsUrlGeoSparqlParams {
@@ -26,7 +29,10 @@ export class HsUrlGeoSparqlService {
 
   constructor(
     public httpClient: HttpClient,
-    public hsAddDataService: HsAddDataService
+    public hsAddDataService: HsAddDataService,
+    public hsLanguageService: HsLanguageService,
+    public hsLog: HsLogService,
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {}
 
   get(app: string): HsUrlGeoSparqlParams {
@@ -57,9 +63,32 @@ export class HsUrlGeoSparqlService {
       if (parsedResponse.activeElement.localName === 'RDF') {
         return true;
       }
-    } catch {
-      TODO: null;
+    } catch (e) {
+      this.hsLog.warn(e);
+      this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS.GEOSPARQL',
+          'invalidEndpoint',
+          null,
+          app
+        )
+      );
     }
     return false;
+  }
+
+  /**
+   * Searches for variables (words beginning on question mark) in the query string and returns an array of the variables found.
+   * The regex pattern for allowed variable characters is created based on:
+   * https://www.w3.org/TR/sparql11-query/#rVARNAME
+   */
+  findParamsInQuery(query: string): string[] {
+    const regex =
+      /\?[0-9A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u10000-\uEFFFF]+/g;
+    return [...new Set(query.match(regex))].map((item) => item.slice(1));
+  }
+
+  async runQuery() {
+    return;
   }
 }

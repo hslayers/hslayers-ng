@@ -71,6 +71,12 @@
     "featureCount": "Feature count",
     "filesSelected": "Files selected",
     "folderName": "Folder name",
+    "GEOSPARQL": {
+      "fillInQuery": "Write or paste your SPARQL query here",
+      "invalidEndpoint": "Source URL does not seem to represent a valid SPARQL endpoint!",
+      "pickGeomParam": "Which variable holds the geometry of the queried features?",
+      "sendQuery": "Send query"
+    },
     "GPServerServicesAreNotSupported": "GPServer services are not supported!",
     "imageFormat": "Image format",
     "layerNameAlreadyExists": "Layer name already exists",
@@ -221,6 +227,7 @@
     "preview": "Preview",
     "print": "Print",
     "projection": "Projection",
+    "query": "Query",
     "radius": "Radius",
     "reload": "Reload",
     "removeLayer": "Remove layer",

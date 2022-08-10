@@ -2,7 +2,9 @@ import {Component, Input} from '@angular/core';
 
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
+import {HsAddDataVectorService} from '../../vector/vector.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
+import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUrlGeoSparqlService} from './geosparql.service';
 
 @Component({
@@ -11,27 +13,33 @@ import {HsUrlGeoSparqlService} from './geosparql.service';
 })
 export class HsUrlGeoSparqlComponent {
   @Input() app = 'default';
+  querySuccessful: boolean;
+  showDetails: boolean;
+  validEndpoint: boolean;
   data: {
-    showDetails: boolean;
-    url: string;
-    validEndpoint: boolean;
+    geomProperty?: string;
+    properties?: string[];
+    query?: string;
+    title?: string;
+    url?: string;
   };
 
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
+    public hsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
+    public hsLayoutService: HsLayoutService,
     public hsUrlGeoSparqlService: HsUrlGeoSparqlService
   ) {
-    this.data = {
-      showDetails: false,
-      url: undefined,
-      validEndpoint: true,
-    };
+    this.data = {};
+    this.querySuccessful = false;
+    this.showDetails = false;
+    this.validEndpoint = true;
   }
 
   connect = async (): Promise<void> => {
-    this.resetData();
+    this.setDataToDefault();
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
       this.data.url,
       this.app
@@ -40,16 +48,33 @@ export class HsUrlGeoSparqlComponent {
       return;
     }
     this.hsHistoryListService.addSourceHistory('geosparql', this.data.url);
-    this.data.validEndpoint = await this.hsUrlGeoSparqlService.verifyEndpoint(
-      this.data.url
+    this.validEndpoint = await this.hsUrlGeoSparqlService.verifyEndpoint(
+      this.data.url,
+      this.app
     );
-    if (this.data.validEndpoint) {
-      this.data.showDetails = true;
+    if (this.validEndpoint) {
+      this.showDetails = true;
     }
   };
 
-  private resetData() {
-    this.data.showDetails = false;
-    this.data.validEndpoint = true;
+  async add(): Promise<void> {
+    const response: {layer; complete: boolean} =
+      await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
+    if (response.complete) {
+      this.hsLayoutService.setMainPanel('layermanager', this.app);
+      this.setDataToDefault();
+    }
+  }
+
+  findParamsInQuery() {
+    this.data.properties = this.hsUrlGeoSparqlService.findParamsInQuery(
+      this.data.query
+    );
+  }
+
+  private setDataToDefault() {
+    this.querySuccessful = false;
+    this.showDetails = false;
+    this.validEndpoint = true;
   }
 }

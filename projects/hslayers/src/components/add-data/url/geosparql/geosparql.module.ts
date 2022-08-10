@@ -1,18 +1,19 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {NgModule} from '@angular/core';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
+import {HsLanguageModule} from '../../../language/language.module';
 import {HsUrlGeoSparqlComponent} from './geosparql.component';
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
     HsAddDataCommonModule,
     HsCommonUrlModule,
+    HsLanguageModule,
   ],
   exports: [HsUrlGeoSparqlComponent],
   declarations: [HsUrlGeoSparqlComponent],

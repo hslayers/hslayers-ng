@@ -1,10 +1,41 @@
 <form class="form-horizontal" name="frmConnectGeosparql" role="form">
-    <hs-common-url type="geosparql" [app]="app" [(url)]="data.url"
-        (connect)="connect()">
-    </hs-common-url>
-    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
-    <div *ngIf="data.showDetails">
-        TODO: It worked!
+  <hs-common-url type="geosparql" [app]="app" [(url)]="data.url" (connect)="connect()">
+  </hs-common-url>
+  <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
+  <div *ngIf="!validEndpoint">
+    <p class="text-danger">{{'ADDLAYERS.GEOSPARQL.invalidEndpoint' | translateHs: {app} }}</p>
+  </div>
+
+  <div *ngIf="showDetails">
+    <hr>
+    <div class="form-floating mb-3">
+      <textarea class="form-control" id='hs-ows-abstract'
+        [placeholder]="'ADDLAYERS.GEOSPARQL.fillInQuery' | translateHs : {app} " name="query" [(ngModel)]="data.query"
+        (input)="findParamsInQuery()">
+      </textarea>
+      <label for="query" class="capabilities_label control-label">{{'COMMON.query' | translateHs : {app} }}</label>
     </div>
-    <div *ngIf="!data.validEndpoint">Source URL is not a valid SPARQL endpoint!</div>
+
+    <div class="mb-3">
+      <p class="text-secondary" [hidden]="data.properties === undefined || data.properties.length === 0">{{'ADDLAYERS.GEOSPARQL.pickGeomParam' | translateHs: {app} }}</p>
+      <ng-container *ngFor="let variable of data.properties">
+        <input type="radio" class="btn-check" name="variables" id="var-{{variable}}" autocomplete="off" [(ngModel)]="data.geomProperty" [value]="variable">
+        <label class="btn btn-sm" [ngClass]="data.geomProperty === variable ? 'btn-success' : 'btn-outline-primary'" for="var-{{variable}}">?{{variable}}</label>
+        &nbsp;
+      </ng-container>
+    </div>
+
+    <button class="btn btn-primary w-100 mt-2" [disabled]="!data.geomProperty" (click)="hsUrlGeoSparqlService.runQuery()"><i
+        class="icon-link"></i>
+      {{'ADDLAYERS.GEOSPARQL.sendQuery' | translateHs: {app} }}
+    </button>
+  </div>
+
+  <div *ngIf="querySuccessful">
+    <hs-new-layer-form [data]="data" [app]="app"></hs-new-layer-form>
+    <button class="btn btn-primary w-100 mt-2" [disabled]="!data.title" (click)="add()"><i class="icon-plus"></i>
+      {{'COMMON.add' | translateHs: {app} }}
+    </button>
+  </div>
+
 </form>
