@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 
+import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsUrlGeoSparqlService} from './geosparql.service';
@@ -18,6 +19,7 @@ export class HsUrlGeoSparqlComponent {
 
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
+    public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsHistoryListService: HsHistoryListService,
     public hsUrlGeoSparqlService: HsUrlGeoSparqlService
   ) {
@@ -29,10 +31,12 @@ export class HsUrlGeoSparqlComponent {
   }
 
   connect = async (): Promise<void> => {
-    if (!this.data.url.endsWith('sparql')) {
-      //TODO: show some explanatory warning message
-      // or do not check this here?
-      // or only show warning instead of return?
+    this.resetData();
+    const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
+      this.data.url,
+      this.app
+    );
+    if (!obtainable) {
       return;
     }
     this.hsHistoryListService.addSourceHistory('geosparql', this.data.url);
@@ -43,4 +47,9 @@ export class HsUrlGeoSparqlComponent {
       this.data.showDetails = true;
     }
   };
+
+  private resetData() {
+    this.data.showDetails = false;
+    this.data.validEndpoint = true;
+  }
 }
