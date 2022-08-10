@@ -11,15 +11,14 @@ import {Tile} from 'ol/layer';
 import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
-import CircleStyle from 'ol/style/Circle';
-import {HsConfig} from 'hslayers-ng/src/config.service';
-import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import {HsLayoutService} from 'hslayers-ng/src/components/layout/layout.service';
-import {HsPanelContainerService} from 'hslayers-ng/src/components/layout/panels/panel-container.service';
-import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/src/components/query/query-popup-widget-container.service';
-import {HsSidebarService} from 'hslayers-ng/src/components/sidebar/sidebar.service';
-import {HsUtilsService} from 'hslayers-ng/src/components/utils/utils.service';
-import {InterpolatedSource} from 'hslayers-ng/src/common/layers/hs.source.interpolated';
+import {HsConfig} from 'hslayers-ng/config.service';
+import {HsEventBusService} from 'hslayers-ng/components/core/event-bus.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
+import {HsPanelContainerService} from 'hslayers-ng/components/layout/panels/panel-container.service';
+import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query/query-popup-widget-container.service';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar/sidebar.service';
+import {HsUtilsService} from 'hslayers-ng/components/utils/utils.service';
+import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolated';
 
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
