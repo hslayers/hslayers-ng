@@ -424,8 +424,8 @@
           "style": "sass"
         }
       },
-      "root": "",
-      "sourceRoot": "projects/",
+      "root": "projects/test-statistics-app",
+      "sourceRoot": "projects/test-statistics-app/src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -467,7 +467,8 @@
               "projects/test-statistics-app/src/styles.sass"
             ],
             "scripts": [],
-            "extraWebpackConfig": "projects/test-statistics-app/webpack.config.js"
+            "extraWebpackConfig": "projects/test-statistics-app/webpack.config.js",
+            "commonChunk": false
           },
           "configurations": {
             "production": {
@@ -504,7 +505,6 @@
           "builder": "ngx-build-plus:dev-server",
           "options": {
             "port": 5100,
-            "browserTarget": "test-statistics-app:build",
             "extraWebpackConfig": "projects/test-statistics-app/webpack.config.js"
           },
           "configurations": {
