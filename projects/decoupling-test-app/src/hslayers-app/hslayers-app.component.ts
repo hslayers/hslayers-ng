@@ -8,12 +8,12 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from '../../../hslayers/src/config.service';
-import {HsEventBusService} from 'hslayers-ng/src/components/core/event-bus.service';
-import {HsLayoutService} from 'hslayers-ng/src/components/layout/public-api';
-import {HsQueryPopupComponent} from 'hslayers-ng/src/components/query/query-popup/query-popup.component';
-import {HsQueryPopupService} from 'hslayers-ng/src/components/query/query-popup.service';
+import {HsEventBusService} from 'hslayers-ng/components/core/event-bus.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout/public-api';
+import {HsQueryPopupComponent} from 'hslayers-ng/components/query/query-popup/query-popup.component';
+import {HsQueryPopupService} from 'hslayers-ng/components/query/query-popup.service';
 //import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
-//import {HsToolbarPanelContainerService} from 'hslayers-ng/src/components/toolbar/toolbar-panel-container.service';
+//import {HsToolbarPanelContainerService} from 'hslayers-ng/components/toolbar/toolbar-panel-container.service';
 
 @Component({
   selector: 'hslayers-app',
