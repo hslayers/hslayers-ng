@@ -57,7 +57,7 @@ In your angular.json file copy cesium assets to the previously mentioned directo
  "assets": [
               {
                 "glob": "**/*",
-                "input": "./node_modules/hslayers-ng/src/assets",
+                "input": "./node_modules/hslayers-ng/assets",
                 "output": "./assets/hslayers-ng/"
               },    
               {

@@ -6,10 +6,10 @@ import {HsCoreModule} from '../../../hslayers/src/components/core/core.module';
   HsGeolocationModule,
   HsInfoModule,
   HsSearchModule,
-} from 'hslayers-ng/src/public-api'; */
+} from 'hslayers-ng/public-api'; */
 import {HsLayoutModule} from '../../../hslayers/src/components/layout/layout.module';
-//import {HsMeasureModule} from 'hslayers-ng/src/components/measure/public-api';
-//import {HsDrawModule} from 'hslayers-ng/src/components/draw/public-api';
+//import {HsMeasureModule} from 'hslayers-ng/components/measure/public-api';
+//import {HsDrawModule} from 'hslayers-ng/components/draw/public-api';
 import {HsDrawModule} from '../../../hslayers/src/components/draw/draw.module';
 import {HsLanguageModule} from '../../../hslayers/src/components/language/language.module';
 import {HsQueryModule} from '../../../hslayers/src/components/query/query.module';

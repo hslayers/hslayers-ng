@@ -2,7 +2,7 @@ import {TestBed, waitForAsync} from '@angular/core/testing';
 
 import {HsCesiumConfig} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng';
-import {HsConfigMock} from 'hslayers-ng/src/config.service.mock';
+import {HsConfigMock} from 'hslayers-ng/config.service.mock';
 
 import {AppComponent} from './app.component';
 class HsCesiumConfigMock {
