@@ -478,6 +478,7 @@
               "extractLicenses": true,
               "vendorChunk": true,
               "buildOptimizer": true,
+              "baseHref": "/statistical-predictions/",
               "budgets": [
                 {
                   "type": "initial",
