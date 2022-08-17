@@ -1,6 +1,6 @@
 <div #hslayout class="hs-page-wrapper hsl" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper d-flex w-100 h-100"
-        [ngClass]="{'hs-open': HsLayoutService.apps[app].sidebarExpanded && sidebarVisible, 'hs-sb-right': sidebarPosition === 'right' && sidebarVisible, 'hs-sb-left': sidebarPosition === 'left' && sidebarVisible,'hs-sb-bottom': sidebarPosition === 'bottom'}">
+        [ngClass]="{'hs-open': HsLayoutService.apps[app].sidebarExpanded && sidebarVisible, 'hs-sb-right': sidebarPosition === 'right' && sidebarVisible, 'hs-sb-left': sidebarPosition === 'left' && sidebarVisible, 'hs-sb-bottom': sidebarPosition === 'bottom'}">
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space d-flex">
             <hs-map class="hs-flex-fill d-flex" [app]="app"></hs-map>

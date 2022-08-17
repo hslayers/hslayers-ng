@@ -1,4 +1,4 @@
-import {BehaviorSubject, lastValueFrom} from 'rxjs';
+import {BehaviorSubject, delay, lastValueFrom} from 'rxjs';
 import {
   ComponentFactoryResolver,
   Injectable,
@@ -180,10 +180,10 @@ export class HsLayoutService {
     this.updPanelSpaceWidth(_app);
     this.updSidebarPosition(_app);
     this.updSidebarVisible(_app, true);
-    this.sidebarVisible.subscribe(({app, visible}) => {
+    this.sidebarVisible.pipe(delay(0)).subscribe(({app, visible}) => {
       this.apps[app].sidebarVisible = visible;
     });
-    this.sidebarPosition.subscribe(({app, position}) => {
+    this.sidebarPosition.pipe(delay(0)).subscribe(({app, position}) => {
       this.apps[app].sidebarPosition = position;
     });
   }

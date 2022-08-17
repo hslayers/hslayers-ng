@@ -14,6 +14,7 @@ import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {delay} from 'rxjs';
 
 @Component({
   selector: 'hs-layout',
@@ -77,17 +78,19 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
         this.panelSpaceWidth = width;
       }
     });
-    this.HsLayoutService.sidebarPosition.subscribe(({app, position}) => {
-      if (this.app == app) {
-        this.sidebarPosition = position;
-        if (position === 'left') {
-          this.HsLayoutService.get(this.app).contentWrapper.classList.add(
-            'flex-reverse'
-          );
-          this.HsLayoutService.get(this.app).sidebarRight = false;
+    this.HsLayoutService.sidebarPosition
+      .pipe(delay(0))
+      .subscribe(({app, position}) => {
+        if (this.app == app) {
+          this.sidebarPosition = position;
+          if (position === 'left') {
+            this.HsLayoutService.get(this.app).contentWrapper.classList.add(
+              'flex-reverse'
+            );
+            this.HsLayoutService.get(this.app).sidebarRight = false;
+          }
         }
-      }
-    });
+      });
     this.HsLayoutService.sidebarVisible.subscribe(({app, visible}) => {
       if (this.app == app) {
         this.sidebarVisible = visible;
