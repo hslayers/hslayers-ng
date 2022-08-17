@@ -3,7 +3,7 @@ import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import ImageWrapper from 'ol/Image';
 import VectorLayer from 'ol/layer/Vector';
-import proj4 from 'proj4';
+import projx from 'proj4';
 import {
   Cluster,
   ImageArcGISRest,
@@ -75,6 +75,8 @@ class AppData {
   Otherwise some weird rendering problems appear in multi-apps mode  */
   placeholderOsm: Layer<Source>;
 }
+
+const proj4 = projx.default ?? projx;
 
 @Injectable({
   providedIn: 'root',
