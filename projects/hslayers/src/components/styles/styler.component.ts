@@ -11,11 +11,13 @@ import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUploadedFiles} from '../../common/upload/upload.component';
 import {HsUtilsService} from '../utils/utils.service';
@@ -27,7 +29,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   layerTitle: string;
   private ngUnsubscribe = new Subject<void>();
   uploaderVisible = false;
@@ -42,7 +45,8 @@ export class HsStylerComponent
     public sanitizer: DomSanitizer,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsUtilsService: HsUtilsService,
-    public hsSaveMapService: HsSaveMapService
+    public hsSaveMapService: HsSaveMapService,
+    public hsDialogContainerService: HsDialogContainerService
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerSelectedFromUrl
@@ -73,7 +77,21 @@ export class HsStylerComponent
     this.ngUnsubscribe.complete();
   }
 
-  layermanager(): void {
+  async close(): Promise<void> {
+    if (this.appRef.unsavedChange) {
+      const dialog = this.hsDialogContainerService.create(
+        HsStylerEditDialogComponent,
+        {},
+        this.data.app
+      );
+      const confirmed = await dialog.waitResult();
+      if (confirmed == 'no') {
+        return;
+      } else if (confirmed == 'yes') {
+        this.hsStylerService.setSld(this.data.app);
+      }
+      this.appRef.unsavedChange = false;
+    }
     this.hsLayoutService.setMainPanel('layermanager', this.data.app);
   }
 

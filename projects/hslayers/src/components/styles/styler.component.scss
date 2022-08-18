@@ -59,4 +59,8 @@ li.list-group-item.hs-list-item-header span.glyphicon{
 li.list-group-item.hs-list-item-header:hover {
   background-color: rgba(185, 185, 185, 0.75);
 }
+.card-footer{
+  position: sticky;
+  bottom: 0;
+}
 

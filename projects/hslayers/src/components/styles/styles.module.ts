@@ -25,6 +25,7 @@ import {HsScaleDenominatorComponent} from './filters/scale-denominator.component
 import {HsSelectIconDialogComponent} from './symbolizers/select-icon-dialog/select-icon-dialog.component';
 import {HsSliderComponent} from './symbolizers/slider/slider.component';
 import {HsStylerComponent} from './styler.component';
+import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
 import {HsStylerPartBaseComponent} from './style-part-base.component';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
@@ -54,6 +55,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsRuleListItemComponent,
     HsSymbolizerListItemComponent,
     HsAddColormapComponent,
+    HsStylerEditDialogComponent,
   ],
   imports: [
     CommonModule,

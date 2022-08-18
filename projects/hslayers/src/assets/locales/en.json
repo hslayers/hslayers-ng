@@ -274,7 +274,9 @@
     "selectAndSavePermissions": "Select and confirm permissions for",
     "setPermissionsError": "Set permissions error",
     "somethingWentWrong": "Something went wrong, please try again!",
-    "reading": "Reading data"
+    "reading": "Reading data",
+    "unsavedChanges": "Unsaved changes",
+    "return": "Return"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -942,7 +944,9 @@
     "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
     "width": "Width",
-    "colorMap": "Color map"
+    "colorMap": "Color map",
+    "unsavedChanges": "You have unsaved style changes. Make sure to save changes before leaving to preserve them",
+    "exitWithoutSave": "Exit without save"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

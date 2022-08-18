@@ -188,6 +188,8 @@ describe('compositions', () => {
               mockedMapService,
               null,
               null,
+              null,
+              null,
               null
             ),
             null,

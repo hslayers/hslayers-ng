@@ -274,7 +274,8 @@
     "setPermissions": "Iestatīt atļaujas",
     "setPermissionsError": "Atļauju iestatīšanas kļūda",
     "somethingWentWrong": "Radās problēma. Lūdzu, mēģiniet vēlreiz!",
-    "reading": "Datu lasīšana"
+    "reading": "Datu lasīšana",
+    "unsavedChanges": "Nesaglabātas izmaiņas"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

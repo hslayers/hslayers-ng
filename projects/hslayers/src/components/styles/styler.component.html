@@ -4,7 +4,7 @@
       {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs : {app: data.app} }}
       {{appRef.layerTitle}}
     </span>
-    <button type="button" class="btn-close" (click)="layermanager()" [title]="'COMMON.close' | translateHs : data"
+    <button type="button" class="btn-close" (click)="close()" [title]="'COMMON.close' | translateHs : data"
       attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}">
     </button>
   </div>
@@ -33,7 +33,8 @@
         </div>
       </div>
     </div>
-    <add-colormap [layer] = "appRef.layer" [data]="data" (canceled)="appRef.colorMapDialogVisible = false" *ngIf="appRef.colorMapDialogVisible"></add-colormap>
+    <add-colormap [layer]="appRef.layer" [data]="data" (canceled)="appRef.colorMapDialogVisible = false"
+      *ngIf="appRef.colorMapDialogVisible"></add-colormap>
     <ng-container *ngIf="appRef.styleObject">
       <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="appRef.styleObject.rules">
@@ -43,26 +44,38 @@
       </ul>
     </ng-container>
   </div>
-  <div class="card-footer">
+  <div class="card-footer bg-white px-1">
     <div class="form-group m-3" *ngIf="uploaderVisible">
       <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="data.app" uploader="hs-sld-upload"
         acceptedFormats=".sld">
       </hs-file-upload>
     </div>
-    <div class="btn-group" role="group" [attr.aria-label]="'STYLER.manageStyle' | translateHs : data">
-      <a class="btn btn-secondary" download="style.sld" [hsDownload]="appRef.sld" mimeType="text/plain"
-        [href]="downloadData" (downloadPrepared)="downloadData = $event"
-        [title]="'STYLER.downloadSld' | translateHs : data">
-        <i class="icon-download"></i></a>
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="btn-group" role="group" [attr.aria-label]="'STYLER.manageStyle' | translateHs : data">
+        <a class="btn btn-secondary" download="style.sld" [hsDownload]="appRef.sld" mimeType="text/plain"
+          [href]="downloadData" (downloadPrepared)="downloadData = $event"
+          [title]="'STYLER.downloadSld' | translateHs : data">
+          <i class="icon-download"></i></a>
 
-      <button class="btn btn-secondary" (click)="uploadSld()" data-toggle="tooltip"
-        [title]="'STYLER.uploadSld' | translateHs : data">
-        <i class="icon-upload"></i>
-      </button>
-      <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip"
-        [title]="'STYLER.clear' | translateHs : data">
-        <i class="icon-trash"></i>
-      </button>
+        <button class="btn btn-secondary" (click)="uploadSld()" data-toggle="tooltip"
+          [title]="'STYLER.uploadSld' | translateHs : data">
+          <i class="icon-upload"></i>
+        </button>
+        <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip"
+          [title]="'STYLER.clear' | translateHs : data">
+          <i class="icon-trash"></i>
+        </button>
+      </div>
+      <div class="d-flex justify-content-between" *ngIf="appRef.isAuthorized && appRef
+      .unsavedChange">
+        <div class="alert alert-danger p-1 m-0" role="alert">
+          {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }} <button class="btn btn-primary"
+            (click)="hsStylerService.setSld(data.app)" data-toggle="tooltip"
+            [title]="'STYLER.unsavedChanges' | translateHs : data">
+            <i class="icon-save-floppy"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

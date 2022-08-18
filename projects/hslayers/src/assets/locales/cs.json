@@ -274,7 +274,9 @@
     "selectAndSavePermissions": "Vybrat a potvrdit oprávnění pro",
     "setPermissions": "Nastavit oprávnění",
     "setPermissionsError": "Chyba při nastavování oprávnění",
-    "somethingWentWrong": "Něco se pokazilo, prosím, zkuste to znovu!"
+    "somethingWentWrong": "Něco se pokazilo, prosím, zkuste to znovu!",
+    "unsavedChanges": "Neuložené změny",
+    "return": "Vrátit se"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -942,7 +944,8 @@
     "colorMap": "Barevná škála",
     "pleaseEnterAttrib": "Napište prosím název atributu, podle kterého bude provedena klasifikace",
     "pleaseEnterMax": "Napište prosím nejvyšší hodnotu",
-    "pleaseEnterMin": "Napište prosím nejnižší hodnotu"
+    "pleaseEnterMin": "Napište prosím nejnižší hodnotu",
+    "exitWithoutSave": "Odejít bez uložení"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"

@@ -274,7 +274,9 @@
     "selectAndSavePermissions": "Vyberte a potvrďte oprávnenia pre",
     "setPermissions": "Nastaviť oprávnenia",
     "somethingWentWrong": "Niečo sa pokazilo, skúste to znova prosím!",
-    "setPermissionsError": "Chyba pri nastavovaní oprávnení"
+    "setPermissionsError": "Chyba pri nastavovaní oprávnení",
+    "unsavedChanges": "Neuložené zmeny",
+    "return": "Vrátiť sa"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -911,7 +913,9 @@
     "colorMap": "Farebná škála",
     "pleaseEnterAttrib": "Zadajte názov atribútu, podľa ktorého prebehne klasifikácia",
     "pleaseEnterMin": "Zadajte minimálnu hodnotu",
-    "pleaseEnterMax": "Zadajte maximálnu hodnotu"
+    "pleaseEnterMax": "Zadajte maximálnu hodnotu",
+    "unsavedChanges": "Máte neuložené zmeny štýlu.\nAby sa zmeny zachovali, nezabudnite ich pred odchodom uložiť",
+    "exitWithoutSave": "Ukončiť bez uloženia"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
