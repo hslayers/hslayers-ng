@@ -197,6 +197,7 @@ export class HsConfigObject {
       addData: 700,
       mapSwipe: 550,
     };
+    this.sidebarPosition = 'right';
   }
 }
 
