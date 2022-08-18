@@ -387,7 +387,7 @@ export class HslayersAppComponent {
             mapSwipe: true,
           },
           enabledLanguages: 'sk, lv, en',
-          language: 'en',
+          language: 'lv',
           assetsPath: 'assets',
           saveMapStateOnReload: true,
           symbolizerIcons: [
