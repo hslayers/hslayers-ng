@@ -1,0 +1,29 @@
+<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }}
+                </h4>
+                <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
+                    attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}"></button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                <p class="fw-bold h6">{{data?.message}}</p>
+                <p class="h6 small">{{'STYLER.unsavedChanges' | translateHs : {app: data.app} }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="yes()"
+                    [title]="'COMMON.save' | translateHs : data" data-dismiss="modal">{{'COMMON.save' | translateHs :
+                    {app: data.app} }}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel"
+                    [title]="'COMMON.return' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.return'
+                    |
+                    translateHs : {app: data.app} }}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel"
+                    [title]="'STYLER.exitWithoutSave' | translateHs : data" (click)="exitWithoutSave()"
+                    data-dismiss="modal">{{'STYLER.exitWithoutSave' | translateHs : {app: data.app} }}</button>
+            </div>
+        </div>
+    </div>
+</div>

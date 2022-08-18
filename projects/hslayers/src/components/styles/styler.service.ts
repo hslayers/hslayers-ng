@@ -21,10 +21,12 @@ import {StyleFunction, StyleLike} from 'ol/style/Style';
 import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
 
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
@@ -44,6 +46,7 @@ import {parseStyle} from './backwards-compatibility';
 
 class HsStylerParams {
   layer: VectorLayer<VectorSource<Geometry>> = null;
+  layerBeingMonitored: boolean;
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
@@ -55,10 +58,12 @@ class HsStylerParams {
     : new QGISStyleParser();
 
   sld: string;
+  isAuthorized: boolean;
 
   pin_white_blue;
   pin_white_blue_highlight;
   colorMapDialogVisible = false;
+  unsavedChange = false;
 }
 
 @Injectable({
@@ -79,7 +84,9 @@ export class HsStylerService {
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService,
     private srvLanguage: HsLanguageService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
+    private hsCommonLaymanService: HsCommonLaymanService,
+    private hsLayerSynchronizerService: HsLayerSynchronizerService
   ) {}
 
   get(app: string): HsStylerParams {
@@ -134,6 +141,10 @@ export class HsStylerService {
         }
       }
     );
+
+    this.hsCommonLaymanService.authChange.subscribe(({endpoint}) => {
+      appRef.isAuthorized = endpoint?.authenticated;
+    });
   }
 
   isVectorLayer(layer: any): boolean {
@@ -316,6 +327,8 @@ export class HsStylerService {
         return;
       }
       appRef.layer = layer;
+      appRef.layerBeingMonitored =
+        !!this.hsLayerSynchronizerService.syncedLayers.find((l) => l == layer);
       appRef.layerTitle = getTitle(layer);
       const sld = getSld(layer);
       const qml = getQml(layer);
@@ -539,6 +552,25 @@ export class HsStylerService {
     );
   }
 
+  /**
+   * Checks whether SLD should be indicated or saved right away.
+   * Indicate only when user is logged in Layman and layer is being monitored otherwise save
+   */
+  resolveSldChange(appRef: HsStylerParams, app: string) {
+    if (appRef.isAuthorized && appRef.layerBeingMonitored) {
+      appRef.unsavedChange = true;
+    } else {
+      this.setSld(app);
+    }
+  }
+
+  /**Set SLD parameter of layer*/
+  setSld(app: string) {
+    const appRef = this.get(app);
+    setSld(appRef.layer, appRef.sld);
+    appRef.unsavedChange = false;
+  }
+
   async save(app: string): Promise<void> {
     try {
       const appRef = this.get(app);
@@ -559,8 +591,8 @@ export class HsStylerService {
       }
       appRef.layer.setStyle(style);
       const sld = await this.jsonToSld(appRef.styleObject, app);
-      setSld(appRef.layer, sld);
       appRef.sld = sld;
+      this.resolveSldChange(appRef, app);
       appRef.onSet.next(appRef.layer);
     } catch (ex) {
       this.hsLogService.error(ex);
