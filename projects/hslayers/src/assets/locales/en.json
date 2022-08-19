@@ -75,7 +75,7 @@
       "fillInQuery": "Write or paste your SPARQL query here",
       "invalidEndpoint": "Source URL does not seem to represent a valid SPARQL endpoint!",
       "pickGeomParam": "Which variable holds the geometry of the queried features?",
-      "sendQuery": "Send query"
+      "pickIdParam": "Which variable holds a unique ID of the queried features?"
     },
     "GPServerServicesAreNotSupported": "GPServer services are not supported!",
     "imageFormat": "Image format",

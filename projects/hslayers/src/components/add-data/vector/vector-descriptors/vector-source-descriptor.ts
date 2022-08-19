@@ -3,8 +3,8 @@ import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 
-import SparqlJson from '../../../../common/layers/hs.source.SparqlJson';
 import {HsVectorLayerOptions} from '../vector-layer-options.type';
+import {SparqlJson} from '../../../../common/layers/hs.source.SparqlJson';
 import {VectorSourceFromUrl} from '../vector-source-from-url';
 
 export class VectorSourceDescriptor {
@@ -14,8 +14,12 @@ export class VectorSourceDescriptor {
     fromComposition?: boolean;
     srs?: any;
     url?: string;
+    endpointUrl?: string;
+    query?: string;
+    optimization?: string;
     format?: any;
-    geom_attribute?: string;
+    geomAttribute?: string;
+    idAttribute?: string;
     options?: HsVectorLayerOptions;
     category_field?: string;
     projection?: any;
@@ -62,13 +66,19 @@ export class VectorSourceDescriptor {
         break;
       case 'sparql':
         this.sourceParams = {
-          geom_attribute: '?geom',
-          url: url,
-          category_field: 'http://www.openvoc.eu/poi#categoryWaze',
+          geomAttribute: options.geomAttribute ?? '?geom',
+          idAttribute: options.idAttribute,
+          url: url.includes('=') ? url : null,
+          endpointUrl: url,
+          query: options.query,
+          category_field:
+            url.includes('foodie-cloud') || url.includes('plan4all')
+              ? 'http://www.openvoc.eu/poi#categoryWaze'
+              : null,
+          optimization: url.includes('wikidata') ? 'wikibase' : undefined,
           projection: 'EPSG:3857',
           minResolution: 1,
           maxResolution: 38,
-          //#####feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
         };
         this.sourceClass = SparqlJson;
         break;

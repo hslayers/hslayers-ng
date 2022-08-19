@@ -138,7 +138,7 @@
       "fillInQuery": "Napište nebo vložte váš dotaz SPARQL zde",
       "invalidEndpoint": "Adresa URL zdroje nevypadá jako validní SPARQL endpoint!",
       "pickGeomParam": "Která proměnná obsahuje geometrii dotazovaných prvků?",
-      "sendQuery": "Odeslat dotaz"
+      "pickIdParam": "Která proměnná obsahuje unikátní identifikátor dotazovaných prvků?"
     }
   },
   "COMMON": {

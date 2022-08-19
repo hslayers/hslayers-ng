@@ -8,11 +8,15 @@ export type HsVectorLayerOptions = {
   visible?: boolean;
   path?: string;
   fromComposition?: boolean;
+  geomAttribute?: string;
+  idAttribute?: string;
   style?: any;
+  endpointUrl?: string;
   extractStyles?: boolean;
   features?: Feature<Geometry>[];
   workspace?: string;
   access_rights?: accessRightsModel;
+  query?: string;
   queryCapabilities?: boolean;
   sld?: string;
   saveToLayman?: boolean;

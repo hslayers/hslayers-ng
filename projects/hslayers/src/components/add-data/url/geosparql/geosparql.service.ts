@@ -58,8 +58,6 @@ export class HsUrlGeoSparqlService {
         blobText,
         'application/xml'
       );
-      console.log(parsedResponse);
-      console.log(parsedResponse.activeElement.localName);
       if (parsedResponse.activeElement.localName === 'RDF') {
         return true;
       }
@@ -86,9 +84,5 @@ export class HsUrlGeoSparqlService {
     const regex =
       /\?[0-9A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u10000-\uEFFFF]+/g;
     return [...new Set(query.match(regex))].map((item) => item.slice(1));
-  }
-
-  async runQuery() {
-    return;
   }
 }
