@@ -1,10 +1,12 @@
 #!/bin/sh
 echo "What kind of a release?"
-select yn in "patch" "minor" "major"; do
+select yn in "patch" "minor" "major" "premajor" "prerelease"; do
     case $yn in
         patch ) TYPE="patch"; break;;
         minor ) TYPE="minor"; break;;
         major ) TYPE="major"; break;;
+        premajor ) TYPE="premajor --preid=next"; break;;
+        prelelease ) TYPE="prerelease --preid=next"; break;;
     esac
 done
 cd projects/hslayers
