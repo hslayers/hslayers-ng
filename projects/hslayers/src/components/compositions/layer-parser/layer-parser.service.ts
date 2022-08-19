@@ -338,7 +338,7 @@ export class HsCompositionsLayerParserService {
     }
 
     const src = new SparqlJson({
-      geom_attribute: '?geom',
+      geomAttribute: '?geom',
       url: url,
       category: 'http://www.openvoc.eu/poi#categoryWaze',
       projection: 'EPSG:3857',

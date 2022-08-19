@@ -15,9 +15,12 @@ export type VectorDataObject = {
   extract_styles?: boolean;
   featureCount?: number;
   features?: Array<any>;
+  geomProperty?: string;
+  idProperty?: string;
   nativeFeatures?: Array<any>;
   folder_name?: string;
   name?: string;
+  query?: string;
   // Not possible to save KML to layman yet
   saveAvailable?: boolean;
   saveToLayman?: boolean;

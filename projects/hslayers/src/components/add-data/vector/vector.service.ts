@@ -17,6 +17,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from './../../../common/layman/types/post-patch-layer-response.type';
+import {SparqlJson} from '../../../common/layers/hs.source.SparqlJson';
 import {UpsertLayerObject} from '../../save-map/types/upsert-layer-object.type';
 import {VectorDataObject} from './vector-data.type';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
@@ -192,7 +193,8 @@ export class HsAddDataVectorService {
     );
 
     const src =
-      sourceDescriptor.sourceClass == VectorSource
+      sourceDescriptor.sourceClass == VectorSource ||
+      sourceDescriptor.sourceClass == SparqlJson
         ? new sourceDescriptor.sourceClass(sourceDescriptor.sourceParams)
         : new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
@@ -203,8 +205,7 @@ export class HsAddDataVectorService {
         app
       )
     );
-    const lyr = new VectorLayer(descriptor.layerParams);
-    return lyr;
+    return new VectorLayer(descriptor.layerParams);
   }
 
   /**
@@ -285,7 +286,7 @@ export class HsAddDataVectorService {
       await this.upsertLayer(data, app);
     }
     const layer = await this.addVectorLayer(
-      data.features.length != 0 ? '' : data.type,
+      data.features?.length > 0 ? '' : data.type,
       data.url || data.base64url,
       data.name,
       data.title,
@@ -294,15 +295,19 @@ export class HsAddDataVectorService {
       {
         extractStyles: data.extract_styles,
         features: data.saveToLayman ? null : data.features, //Features are being posted to Layman in original CRS and will be fetched later
+        geomAttribute: `?${data.geomProperty}`,
+        idAttribute: `?${data.idProperty}`,
         path: this.hsUtilsService.undefineEmptyString(data.folder_name),
         access_rights: data.access_rights,
         workspace: commonFileRef.endpoint?.user,
+        query: data.query,
         queryCapabilities:
           data.type != 'kml' &&
           data.type != 'gpx' &&
+          data.type != 'sparql' &&
           !data.url?.endsWith('json'),
         saveToLayman: data.saveToLayman,
-        sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
+        sld: typeof data.sld === 'string' ? data.sld : data.sld?.content,
       },
       app,
       data.addUnder

@@ -17,9 +17,13 @@ export class HsUrlGeoSparqlComponent {
   showDetails: boolean;
   validEndpoint: boolean;
   data: {
+    abstract?: string;
     geomProperty?: string;
+    idProperty?: string;
+    name?: string;
     properties?: string[];
     query?: string;
+    type: string;
     title?: string;
     url?: string;
   };
@@ -32,7 +36,9 @@ export class HsUrlGeoSparqlComponent {
     public hsLayoutService: HsLayoutService,
     public hsUrlGeoSparqlService: HsUrlGeoSparqlService
   ) {
-    this.data = {};
+    this.data = {
+      type: 'sparql',
+    };
     this.querySuccessful = false;
     this.showDetails = false;
     this.validEndpoint = true;
