@@ -1,4 +1,4 @@
-<div #hslayout class="hs-page-wrapper hsl" style="width: 100%; height: 100%;">
+<div #hslayout class="hsl hs-page-wrapper" style="width: 100%; height: 100%; min-height: inherit !important">
     <div class="hs-content-wrapper d-flex w-100 h-100"
         [ngClass]="{'hs-open': HsLayoutService.apps[app].sidebarExpanded && sidebarVisible, 'hs-sb-right': sidebarPosition === 'right' && sidebarVisible, 'hs-sb-left': sidebarPosition === 'left' && sidebarVisible, 'hs-sb-bottom': sidebarPosition === 'bottom'}">
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
@@ -13,7 +13,8 @@
                 <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
                 <div class="hs-panelplace">
                     <hs-mini-sidebar *ngIf="HsLayoutService.apps[app].minisidebar" [app]="app"
-                        [hidden]="!panelVisible('sidebar',app, this)"><!-- TODO: Remove function call from template -->
+                        [hidden]="!panelVisible('sidebar',app, this)">
+                        <!-- TODO: Remove function call from template -->
                     </hs-mini-sidebar>
                     <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace" [app]="app">
                     </hs-panel-container>

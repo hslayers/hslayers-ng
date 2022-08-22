@@ -1,4 +1,4 @@
-<div #hslayout class="hs-page-wrapper hsl w-100 h-100">
+<div #hslayout class="hsl hs-page-wrapper w-100 h-100" style="min-height: inherit !important">
     <div class="hs-content-wrapper d-flex w-100 h-100" [ngClass]="{
         'hs-open': HsLayoutService.sidebarExpanded && sidebarVisible,
         'hs-sb-right': HsConfig.get(app).sidebarPosition === 'right' && sidebarVisible,

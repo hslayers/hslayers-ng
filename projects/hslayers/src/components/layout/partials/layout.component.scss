@@ -1,5 +1,6 @@
 .hs-content-wrapper {
     position: relative;
+    min-height: inherit;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 
     &.hs-open .hs-panelspace{

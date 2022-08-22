@@ -11,6 +11,7 @@ hslayers-material {
     }
 
     .hs-map-space {
+        min-height: inherit;
 	flex: 1 1 auto;
 	position: relative;
     }
