@@ -137,8 +137,12 @@
     "GEOSPARQL": {
       "fillInQuery": "Napište nebo vložte váš dotaz SPARQL zde",
       "invalidEndpoint": "Adresa URL zdroje nevypadá jako validní SPARQL endpoint!",
-      "pickGeomParam": "Která proměnná obsahuje geometrii dotazovaných prvků?",
-      "pickIdParam": "Která proměnná obsahuje unikátní identifikátor dotazovaných prvků?"
+      "pickGeomParamPt1": "Která proměnná obsahuje",
+      "pickGeomParamName": "geometrii",
+      "pickGeomParamPt2": "dotazovaných prvků?",
+      "pickIdParamPt1": "Která proměnná obsahuje",
+      "pickIdParamName": "unikátní identifikátor",
+      "pickIdParamPt2": "dotazovaných prvků?"
     }
   },
   "COMMON": {

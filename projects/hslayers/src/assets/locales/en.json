@@ -5,7 +5,7 @@
       "addAs": "Add as",
       "DESC": {
         "WFS": "Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.",
-        "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features."
+        "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlying layer features."
       },
       "filterType": "Search within",
       "loading": "Loading data",
@@ -74,8 +74,12 @@
     "GEOSPARQL": {
       "fillInQuery": "Write or paste your SPARQL query here",
       "invalidEndpoint": "Source URL does not seem to represent a valid SPARQL endpoint!",
-      "pickGeomParam": "Which variable holds the geometry of the queried features?",
-      "pickIdParam": "Which variable holds a unique ID of the queried features?"
+      "pickGeomParamPt1": "Which variable holds the",
+      "pickGeomParamName": "geometry",
+      "pickGeomParamPt2": "of the queried features?",
+      "pickIdParamPt1": "Which variable holds a",
+      "pickIdParamName": "unique ID",
+      "pickIdParamPt2": "of the queried features?"
     },
     "GPServerServicesAreNotSupported": "GPServer services are not supported!",
     "imageFormat": "Image format",
@@ -87,7 +91,7 @@
     "nameAndSRSRequired": "'Name' and 'SRS' field required to proceed!",
     "nameRequired": "'Name' field required to proceed!",
     "none": "None (at top)",
-    "OlDoesNotRecognizeProjection": "Ol does not recognize requested layers projection",
+    "OlDoesNotRecognizeProjection": "OL does not recognize requested layers projection",
     "queryFormat": "Query format",
     "Raster image": "Raster image",
     "rasterImageryWith": "Raster imagery with georeferencing is currently only supported on EPSG:4326 and EPSG:3857 coordinate systems. Please make sure your data meets these requirements before uploading.",
@@ -315,7 +319,7 @@
       "shareMap": "Share map"
     },
     "dialogWarning": {
-      "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
+      "outOfBounds": "Composition extent is out of EPSG:4326 boundaries.",
       "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders."
     },
     "endpointUrlIsNotDefined": "Endpoint url is not defined!",
@@ -447,8 +451,8 @@
     "boxSelection": "Box selection",
     "boxSelectionActivated": "Box selection activated",
     "definedStyle": "Defined style",
-    "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
-    "deleteNotePlural": "* All selected layers will be deleted completely. In case you want to delete all selected layers from the current compositon only (preserving it in database) do so in 'LayerManager' panel.",
+    "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current composition only (preserving it in database) do so in 'Layermanager' panel.",
+    "deleteNotePlural": "* All selected layers will be deleted completely. In case you want to delete all selected layers from the current composition only (preserving it in database) do so in 'LayerManager' panel.",
     "deselectAllFeatures": "Deselect all features",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
@@ -460,7 +464,7 @@
       "layerTitle": "Layer title",
       "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
       "loadServerLayers": "Load layer from server",
-      "nameOfFolder": "Name of folder in layer-manager hierararchy"
+      "nameOfFolder": "Name of folder in layer-manager hierarchy"
     },
     "drawToolbar": {
       "addDrawLayer": "Add new draw layer",
@@ -477,7 +481,7 @@
         "split": "Split",
         "union": "Union"
       },
-      "featureCanBeEditedbyOptions": "can be edited by one of the avaliable options",
+      "featureCanBeEditedbyOptions": "can be edited by one of the available options",
       "featureEditor": "Feature editor",
       "noIntersection": "No common intersection found for selected features",
       "onlyOneFeatureToEdit": "Only one feature can be edited (split) at the time!",
@@ -749,7 +753,7 @@
       "copyFeature": "Copy feature",
       "copyFeatures": "Copy features",
       "featurecopySucc": "Feature was successfully copied into layer: ",
-      "featureEdited": "Feature change successfull",
+      "featureEdited": "Feature change successful",
       "featuremoveSucc": "Feature was successfully moved to layer: ",
       "moveFeature": "Move feature",
       "moveFeatures": "Move features",
@@ -820,7 +824,7 @@
     "public": "Public",
     "readAccessRights": "Read access rights",
     "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}",
-    "saveOrOverwrite": "This compositon was created by another user",
+    "saveOrOverwrite": "This composition was created by another user",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     },
@@ -856,7 +860,7 @@
       "LANGUAGE": "Change language",
       "LEGEND": "Legend",
       "LM": "Manage and style your layers in composition",
-      "MAP_SWIPE": "Map swipe cotrol layer manager",
+      "MAP_SWIPE": "Map swipe control layer manager",
       "MAPCOMPOSITIONS": "List available map compositions",
       "MEASURE": "Measure distance or area at map",
       "PERMALINK": "Share map",
