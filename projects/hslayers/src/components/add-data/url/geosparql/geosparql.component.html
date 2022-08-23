@@ -18,7 +18,8 @@
 
     <div class="mb-3">
       <p class="text-secondary" [hidden]="data.properties === undefined || data.properties.length === 0">
-        {{'ADDLAYERS.GEOSPARQL.pickGeomParam' | translateHs: {app} }}</p>
+        {{'ADDLAYERS.GEOSPARQL.pickGeomParamPt1' | translateHs: {app} }} <strong>{{'ADDLAYERS.GEOSPARQL.pickGeomParamName' | translateHs: {app} }}</strong> {{'ADDLAYERS.GEOSPARQL.pickGeomParamPt2' | translateHs: {app} }}
+      </p>
       <ng-container *ngFor="let variable of data.properties">
         <input type="radio" class="btn-check" name="variables" id="var-geom-{{variable}}" autocomplete="off"
           [(ngModel)]="data.geomProperty" [value]="variable">
@@ -31,7 +32,8 @@
 
     <div class="mb-3">
       <p class="text-secondary" [hidden]="data.properties === undefined || data.properties.length === 0">
-        {{'ADDLAYERS.GEOSPARQL.pickIdParam' | translateHs: {app} }}</p>
+        {{'ADDLAYERS.GEOSPARQL.pickIdParamPt1' | translateHs: {app} }} <strong>{{'ADDLAYERS.GEOSPARQL.pickIdParamName' | translateHs: {app} }}</strong> {{'ADDLAYERS.GEOSPARQL.pickIdParamPt2' | translateHs: {app} }}
+      </p>
       <ng-container *ngFor="let variable of data.properties">
         <input type="radio" class="btn-check" name="variables" id="var-id-{{variable}}" autocomplete="off"
           [(ngModel)]="data.idProperty" [value]="variable">
