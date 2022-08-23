@@ -45,12 +45,14 @@ export class HsUrlGeoSparqlComponent {
   }
 
   connect = async (): Promise<void> => {
+    this.hsAddDataCommonService.get(this.app).loadingInfo = true;
     this.setDataToDefault();
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
       this.data.url,
       this.app
     );
     if (!obtainable) {
+      this.hsAddDataCommonService.get(this.app).loadingInfo = false;
       return;
     }
     this.hsHistoryListService.addSourceHistory('geosparql', this.data.url);
@@ -61,6 +63,7 @@ export class HsUrlGeoSparqlComponent {
     if (this.validEndpoint) {
       this.showDetails = true;
     }
+    this.hsAddDataCommonService.get(this.app).loadingInfo = false;
   };
 
   async add(): Promise<void> {
