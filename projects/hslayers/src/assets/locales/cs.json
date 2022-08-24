@@ -628,6 +628,7 @@
   },
   "LAYERS": {
     "existingLayer": "Existující vrstva",
+    "featuresLoadError": "Načítání prvků selhalo",
     "newLayer": "Nová vrstva"
   },
   "LAYMAN": {

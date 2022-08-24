@@ -46,9 +46,8 @@ export type SparqlOptions = {
   strategy?;
   /**
    * @deprecated
-   * Kept only for basic backwards compatibility. You should split your 'url' param into
+   * Shorthand, which usage is discouraged. You should split your 'url' param into
    * 'endpointUrl','query' and possibly 'endpointOptions', if needed.
-   * TODO: remove in 5.0
    */
   url?: string;
   /**
@@ -131,13 +130,25 @@ export class SparqlJson extends Vector<Geometry> {
         let data;
         try {
           data = await response.clone().json();
-        } catch {
-          null;
+        } catch (err) {
+          if (console) {
+            console.warn(
+              'SPARQL results response not formatted as valid JSON. Trying to parse XML...',
+              err
+            );
+          }
         }
         if (!data) {
-          data = this.xmlJson2sparqlJson(
-            xml2Json.xml2js(await response.text())
-          );
+          try {
+            data = this.xmlJson2sparqlJson(
+              xml2Json.xml2js(await response.text())
+            );
+          } catch (err) {
+            this.dispatchEvent('featuresloaderror');
+            console.error('Unable to parse SPARQL response XML!', err);
+            this.set('loaded', true);
+            return;
+          }
         }
         /*if (console) {
           console.log(
@@ -181,7 +192,7 @@ export class SparqlJson extends Vector<Geometry> {
         this.set('last_feature_count', Object.keys(objects).length);
         if (this.loadCounter == 0) {
           this.set('loaded', true);
-          this.dispatchEvent('imageloadend');
+          this.dispatchEvent('featuresloadend');
         }
       },
       strategy:
@@ -308,12 +319,7 @@ export class SparqlJson extends Vector<Geometry> {
   }
 
   /**
-   * @param entities
-   * @param src
-   * @param options
-   * @param occupied_xy
-   * @param category_map
-   * @param category_id
+   * @param src - OL Source
    */
   createFeatures({
     entities,

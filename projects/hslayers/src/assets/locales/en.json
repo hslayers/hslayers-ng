@@ -628,6 +628,7 @@
   },
   "LAYERS": {
     "existingLayer": "Existing layer",
+    "featuresLoadError": "Loading features failed",
     "newLayer": "New layer"
   },
   "LAYMAN": {
