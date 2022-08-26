@@ -19,24 +19,26 @@ import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
+export class HsShareAppData {
+  pureMapUrl = '';
+  permalinkUrl = '';
+  shareLink = 'permalink';
+  embedCode = '';
+  shareUrlValid = false;
+  title = '';
+  abstract = '';
+  shareUrl = '';
+  thumbnail: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsShareService {
-  /**
-   * @public
-   * @description variables which describe sharable link: url, title, abstract etc.
-   */
-  data: any = {
-    pureMapUrl: '',
-    permalinkUrl: '',
-    shareLink: 'permalink',
-    embedCode: '',
-    shareUrlValid: false,
-    title: '',
-    abstract: '',
-    shareUrl: '',
-  };
+  apps: {
+    [id: string]: HsShareAppData;
+  } = {default: new HsShareAppData()};
+
   constructor(
     public HsConfig: HsConfig,
     public HsShareUrlService: HsShareUrlService,
@@ -55,17 +57,33 @@ export class HsShareService {
     this.HsEventBusService.compositionLoads.subscribe(({data, app}) => {
       if (data.data) {
         data = data.data;
-        this.data.title = data.title;
+        const appRef = this.get(app);
+        appRef.title = data.title;
         if (this.HsConfig.get(app).social_hashtag) {
-          this.data.title += ' ' + this.HsConfig.get(app).social_hashtag;
+          appRef.title += ' ' + this.HsConfig.get(app).social_hashtag;
         }
-        this.data.abstract = data.abstract;
+        appRef.abstract = data.abstract;
       }
     });
   }
 
+  /**
+   * Get the params saved by the for the current app
+   * @param app - App identifier
+   */
+  get(app: string): HsShareAppData {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsShareAppData();
+    }
+    return this.apps[app ?? 'default'];
+  }
+
   init(app1: string): void {
+    const shareUrlAppRef = this.HsShareUrlService.get(app1);
     this.HsEventBusService.mainPanelChanges.subscribe(async ({which, app}) => {
+      if (app != app1) {
+        return;
+      }
       if (this.HsLayoutService.apps[app].mainpanel == 'permalink') {
         this.generateThumbnail(
           this.HsLayoutService.get(app).contentWrapper.querySelector(
@@ -75,7 +93,7 @@ export class HsShareService {
           app
         );
 
-        this.HsShareUrlService.statusSaving = true;
+        shareUrlAppRef.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl(app);
         const layers = this.HsMapService.getLayersArray(app)
           .filter(
@@ -107,43 +125,46 @@ export class HsShareService {
               JSON.stringify({
                 data,
                 permalink: true,
-                id: this.HsShareUrlService.id,
+                id: shareUrlAppRef.id,
                 project: this.HsConfig.get(app1).project_name,
                 request: 'save',
               })
             )
           );
-          this.HsShareUrlService.statusSaving = false;
-          this.HsShareUrlService.permalinkRequestUrl =
-            status_url + '?request=load&id=' + this.HsShareUrlService.id;
+          shareUrlAppRef.statusSaving = false;
+          shareUrlAppRef.permalinkRequestUrl =
+            status_url + '?request=load&id=' + shareUrlAppRef.id;
           this.HsShareUrlService.update(app1);
         } catch (ex) {
+          shareUrlAppRef.statusSaving = false;
           this.HsLogService.error('Error saving permalink layers.', ex);
           throw ex;
         }
       }
     });
 
-    this.HsShareUrlService.browserUrlUpdated.subscribe(async () => {
+    this.HsShareUrlService.browserUrlUpdated.subscribe(async ({app, url}) => {
       if (
-        this.HsLayoutService.apps[app1].mainpanel == 'permalink' ||
-        this.HsLayoutService.apps[app1].mainpanel == 'shareMap'
+        app1 == app &&
+        (this.HsLayoutService.apps[app1].mainpanel == 'permalink' ||
+          this.HsLayoutService.apps[app1].mainpanel == 'shareMap')
       ) {
-        this.data.shareUrlValid = false;
+        const appRef = this.get(app);
+        appRef.shareUrlValid = false;
         try {
-          this.data.pureMapUrl = await this.HsUtilsService.shortUrl(
+          appRef.pureMapUrl = await this.HsUtilsService.shortUrl(
             this.HsShareUrlService.getPureMapUrl(app1),
             app1
           );
-          this.data.permalinkUrl = await this.HsUtilsService.shortUrl(
+          appRef.permalinkUrl = await this.HsUtilsService.shortUrl(
             this.HsShareUrlService.getPermalinkUrl(app1),
             app1
           );
-          this.getEmbedCode();
+          this.getEmbedCode(app);
         } catch (ex) {
           this.HsLogService.log('Error creating short URL', ex);
-          this.data.pureMapUrl = this.HsShareUrlService.getPureMapUrl(app1);
-          this.data.permalinkUrl = this.HsShareUrlService.getPermalinkUrl(app1);
+          appRef.pureMapUrl = this.HsShareUrlService.getPureMapUrl(app1);
+          appRef.permalinkUrl = url;
         }
       }
     });
@@ -176,12 +197,13 @@ export class HsShareService {
    * @description Get correct Embed code with correct share link type
    * @returns {string} embeddable iframe html code
    */
-  getEmbedCode(): string {
-    this.data.embedCode =
+  getEmbedCode(app: string): string {
+    const appRef = this.get(app);
+    appRef.embedCode =
       '<iframe src="' +
-      this.getShareUrl() +
+      this.getShareUrl(app) +
       '" width="1000" height="700"></iframe>';
-    return this.data.embedCode;
+    return appRef.embedCode;
   }
 
   /**
@@ -189,12 +211,13 @@ export class HsShareService {
    * @returns {string} Share URL
    * @description Get share Url based on app choice
    */
-  getShareUrl(): string {
+  getShareUrl(app: string): string {
     let tmp;
-    if (this.data.shareLink == 'permalink') {
-      tmp = this.data.permalinkUrl;
-    } else if (this.data.shareLink == 'puremap') {
-      tmp = this.data.pureMapUrl;
+    const appRef = this.get(app);
+    if (appRef.shareLink == 'permalink') {
+      tmp = appRef.permalinkUrl;
+    } else if (appRef.shareLink == 'puremap') {
+      tmp = appRef.pureMapUrl;
     }
     return tmp;
   }
@@ -204,16 +227,17 @@ export class HsShareService {
    * @returns {string} Encoded share URL
    * @description Get encoded share Url based on app choice
    */
-  getShareUrlEncoded(): string {
-    return encodeURIComponent(this.getShareUrl());
+  getShareUrlEncoded(app: string): string {
+    return encodeURIComponent(this.getShareUrl(app));
   }
 
   /**
    * @public
    * @description Make current share url invalid for social sharing
    */
-  invalidateShareUrl(): void {
-    this.data.shareUrlValid = false;
+  invalidateShareUrl(app: string): void {
+    const appRef = this.get(app);
+    appRef.shareUrlValid = false;
   }
 
   /**
@@ -223,9 +247,11 @@ export class HsShareService {
    * @description Share map on social network
    */
   async shareOnSocial(newShare: boolean, app: string): Promise<void> {
-    if (!this.data.shareUrlValid) {
-      if (this.HsShareUrlService.shareId === null || newShare) {
-        this.HsShareUrlService.shareId = this.HsUtilsService.generateUuid();
+    const appRef = this.get(app);
+    if (!appRef.shareUrlValid) {
+      if (this.HsShareUrlService.get(app).shareId === null || newShare) {
+        this.HsShareUrlService.get(app).shareId =
+          this.HsUtilsService.generateUuid();
       }
       try {
         const endpointUrl = this.HsStatusManagerService.endpointUrl(app);
@@ -238,31 +264,33 @@ export class HsShareService {
             endpointUrl,
             JSON.stringify({
               request: 'socialShare',
-              id: this.HsShareUrlService.shareId,
-              url: encodeURIComponent(this.getShareUrl()),
-              title: this.data.title,
-              description: this.data.abstract,
-              image: this.data.thumbnail,
+              id: this.HsShareUrlService.get(app).shareId,
+              url: encodeURIComponent(this.getShareUrl(app)),
+              title: appRef.title,
+              description: appRef.abstract,
+              image: appRef.thumbnail,
             }),
             {headers, responseType: 'text'}
           )
         );
 
         const shortUrl = await this.HsUtilsService.shortUrl(
-          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`,
+          `${endpointUrl}?request=socialshare&id=${
+            this.HsShareUrlService.get(app).shareId
+          }`,
           app
         );
         const shareUrl = shortUrl;
-        this.openInShareApi(this.data.title, this.data.abstract, shareUrl, app);
-        this.data.shareUrlValid = true;
+        this.openInShareApi(appRef.title, appRef.abstract, shareUrl, app);
+        appRef.shareUrlValid = true;
       } catch (ex) {
         this.HsLogService.log('Error creating short URL', ex);
       }
     } else {
       this.openInShareApi(
-        this.data.title,
-        this.data.abstract,
-        this.getShareUrl(),
+        appRef.title,
+        appRef.abstract,
+        this.getShareUrl(app),
         app
       );
     }
@@ -279,11 +307,12 @@ export class HsShareService {
         console.log(response);
       })
       .catch((error) => {
+        const appRef = this.get(app);
         this.HsToastService.createToastPopupMessage(
           this.HsLanguageService.getTranslation(
             'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
             undefined,
-            this.data.app
+            app
           ),
           this.HsLanguageService.getTranslationIgnoreNonExisting(
             'ERRORMESSAGES',
@@ -320,7 +349,8 @@ export class HsShareService {
   }
 
   rendered($element, app: string, newRender?): void {
-    this.data.thumbnail = this.HsShareThumbnailService.rendered(
+    const appRef = this.get(app);
+    appRef.thumbnail = this.HsShareThumbnailService.rendered(
       $element,
       app,
       newRender
