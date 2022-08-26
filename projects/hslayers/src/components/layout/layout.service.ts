@@ -1,6 +1,7 @@
 import {BehaviorSubject, delay, lastValueFrom} from 'rxjs';
 import {
   ComponentFactoryResolver,
+  ElementRef,
   Injectable,
   Type,
   ViewContainerRef,
@@ -484,5 +485,9 @@ export class HsLayoutService {
 
   createOverlay(panelComponent: Type<any>, app?: string, data?: any): void {
     this.hsOverlayPanelContainerService.create(panelComponent, data || {}, app);
+  }
+
+  scrollTo(el: ElementRef) {
+    el.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }
