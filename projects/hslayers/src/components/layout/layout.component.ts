@@ -13,6 +13,7 @@ import {HsLayoutService} from './layout.service';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {delay} from 'rxjs';
 
@@ -44,7 +45,8 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     private elementRef: ElementRef,
     private HsUtilsService: HsUtilsService,
     public HsPanelContainerService: HsPanelContainerService,
-    public HsOverlayPanelContainerService: HsOverlayPanelContainerService
+    public HsOverlayPanelContainerService: HsOverlayPanelContainerService,
+    private hsShareUrlService: HsShareUrlService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +64,11 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
         'content',
         'width=device-width, initial-scale=0.6, maximum-scale=2, user-scalable=no'
       );
+    }
+
+    const appInUrl = this.hsShareUrlService.getParamValue('app');
+    if (appInUrl != undefined && this.app == appInUrl) {
+      this.HsLayoutService.scrollTo(this.elementRef);
     }
 
     this.HsEventBusService.layoutLoads.next({
