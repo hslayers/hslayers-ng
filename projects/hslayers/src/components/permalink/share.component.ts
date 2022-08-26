@@ -4,9 +4,10 @@ import {HsCoreService} from '../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsShareService} from './share.service';
+import {HsShareAppData, HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
+
 @Component({
   selector: 'hs-share',
   templateUrl: './partials/share.component.html',
@@ -14,6 +15,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;
   name = 'permalink';
+  appRef: HsShareAppData;
 
   constructor(
     public HsShareService: HsShareService,
@@ -31,7 +33,7 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
    * @description Create Iframe tag for embedded map
    */
   updateEmbedCode(): string {
-    return this.HsShareService.getEmbedCode();
+    return this.HsShareService.getEmbedCode(this.data.app);
   }
 
   /**
@@ -39,14 +41,14 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
    * @description Select right share Url based on shareLink property (either Permalink Url or PureMap url)
    */
   getShareUrl(): string {
-    return this.HsShareService.getShareUrl();
+    return this.HsShareService.getShareUrl(this.data.app);
   }
 
   /**
    * @description Set share Url state invalid
    */
   invalidateShareUrl(): void {
-    this.HsShareService.invalidateShareUrl();
+    this.HsShareService.invalidateShareUrl(this.data.app);
   }
 
   /**
@@ -69,7 +71,9 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
       },
       this.data.app
     );
+
     this.HsShareUrlService.init(this.data.app);
     this.HsShareService.init(this.data.app);
+    this.appRef = this.HsShareService.get(this.data.app);
   }
 }

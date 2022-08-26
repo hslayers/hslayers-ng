@@ -41,7 +41,7 @@ export class HsShareThumbnailService {
     ctx.imageSmoothingEnabled = false;
   }
 
-  rendered($element, app: string, newRender?): void {
+  rendered($element, app: string, newRender?): string {
     if (!$element) {
       return;
     }

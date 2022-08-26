@@ -15,23 +15,30 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
-@Injectable({providedIn: 'root'})
-export class HsShareUrlService {
+export class HsShareUrlAppData {
+  current_url = '';
+  params = {};
+  customParams = {};
+  updateDebouncer = {};
   url_generation = true;
   //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
   paramTimer = null;
   shareId = null;
-  current_url = '';
   permalinkRequestUrl = '';
-  params = {};
-  customParams = {};
-  updateDebouncer = {};
   id: any;
   urlUntilParams: string;
   param_string: string;
+  statusSaving = false;
+}
+
+@Injectable({providedIn: 'root'})
+export class HsShareUrlService {
+  apps: {
+    [id: string]: HsShareUrlAppData;
+  } = {default: new HsShareUrlAppData()};
+
   private ngUnsubscribe = new Subject<void>();
-  public statusSaving = false;
-  public browserUrlUpdated: Subject<void> = new Subject();
+  public browserUrlUpdated: Subject<{app: string; url: string}> = new Subject();
 
   constructor(
     public HsMapService: HsMapService,
@@ -45,40 +52,37 @@ export class HsShareUrlService {
     private Location: Location,
     private zone: NgZone,
     private PlatformLocation: PlatformLocation
-  ) {
-    this.keepTrackOfGetParams();
-  }
+  ) {}
 
-  private keepTrackOfGetParams() {
+  private keepTrackOfGetParams(app: string) {
+    const appRef = this.get(app);
     const params = this.parse(location.search);
     /* We keep track of most hsl params separately so don't process 
     them here. Only third party params are interesting */
     for (const key of Object.keys(HS_PRMS_REGENERATED)) {
       delete params[HS_PRMS_REGENERATED[key]];
     }
-    Object.assign(this.customParams, params);
+    Object.assign(appRef.customParams, params);
+  }
+
+  /**
+   * Get the params saved by the for the current app
+   * @param app - App identifier
+   */
+  get(app: string): HsShareUrlAppData {
+    if (this.apps[app ?? 'default'] == undefined) {
+      this.apps[app ?? 'default'] = new HsShareUrlAppData();
+    }
+    return this.apps[app ?? 'default'];
   }
 
   /**
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(app: string): void {
-    if (Object.entries(this.HsConfig.apps).length > 1) {
-      if (!this.ngUnsubscribe.closed) {
-        this.current_url = location.origin + location.pathname + '?';
-        this.id = this.HsUtilsService.generateUuid();
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
-      }
-      this.browserUrlUpdated.next();
-      /**
-       * FIXME: ?
-       * Some third party params ( mentioned in keepTrackOfGetParams ) might need to be handled separately?
-       */
-      return;
-    }
+    const appRef = this.get(app);
     const view = this.HsMapService.getMap(app).getView();
-    this.id = this.HsUtilsService.generateUuid();
+    appRef.id = this.HsUtilsService.generateUuid();
 
     const externalLayers = this.HsMapService.getLayersArray(app).filter(
       (lyr) => !(getShowInLayerManager(lyr) === false)
@@ -94,30 +98,35 @@ export class HsShareUrlService {
     const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers, app);
 
     const pnlMain = this.HsLayoutService.get(app).mainpanel;
-    this.push(HS_PRMS.panel, pnlMain == 'permalink' ? 'layermanager' : pnlMain);
+    this.push(
+      HS_PRMS.panel,
+      pnlMain == 'permalink' ? 'layermanager' : pnlMain,
+      app
+    );
 
-    this.push(HS_PRMS.x, view.getCenter()[0]);
-    this.push(HS_PRMS.y, view.getCenter()[1]);
-    this.push(HS_PRMS.zoom, view.getZoom());
+    this.push(HS_PRMS.x, view.getCenter()[0], app);
+    this.push(HS_PRMS.y, view.getCenter()[1], app);
+    this.push(HS_PRMS.zoom, view.getZoom(), app);
     if (this.HsLanguageService.apps[app].language) {
-      this.push(HS_PRMS.lang, this.HsLanguageService.apps[app].language);
+      this.push(HS_PRMS.lang, this.HsLanguageService.apps[app].language, app);
     }
-    this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'));
+    this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'), app);
     if (this.HsCore.puremapApp) {
-      this.push(HS_PRMS.pureMap, 'true');
+      this.push(HS_PRMS.pureMap, 'true', app);
     }
-    for (const cP in this.customParams) {
-      this.push(cP, this.customParams[cP]);
+    for (const cP in appRef.customParams) {
+      this.push(cP, appRef.customParams[cP], app);
     }
-    if (this.statusSaving) {
+    this.push('app', app, app); //Needs to be after customParams got from URL to overwrite app value
+    if (appRef.statusSaving) {
       return;
     }
     this.HsUtilsService.debounce(
       () => {
         let locationPath = this.pathName();
-        const paramsSerialized = Object.keys(this.params)
+        const paramsSerialized = Object.keys(appRef.params)
           .map((key) => {
-            return {key, value: this.params[key]};
+            return {key, value: appRef.params[key]};
           })
           .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
           .join('&');
@@ -128,12 +137,14 @@ export class HsShareUrlService {
         ) {
           locationPath = locationPath.replace(baseHref, '');
         }
-        this.Location.replaceState(locationPath, paramsSerialized);
-        this.browserUrlUpdated.next();
+        if (Object.entries(this.HsConfig.apps).length == 1) {
+          this.Location.replaceState(locationPath, paramsSerialized);
+        }
+        this.browserUrlUpdated.next({app, url: this.getPermalinkUrl(app)});
       },
       300,
       false,
-      this.updateDebouncer
+      appRef.updateDebouncer
     )();
   }
 
@@ -142,22 +153,25 @@ export class HsShareUrlService {
    * Create permalink Url to map
    */
   getPermalinkUrl(app: string): string {
+    const appRef = this.get(app);
     if (this.HsCore.isMobile() && this.HsConfig.get(app).permalinkLocation) {
       //Deprecated? - isMobile??
       return (
         this.HsConfig.get(app).permalinkLocation.origin +
-        this.current_url.replace(
+        appRef.current_url.replace(
           this.pathName(),
           this.HsConfig.get(app).permalinkLocation.pathname
         ) +
-        `&${HS_PRMS.permalink}=${encodeURIComponent(this.permalinkRequestUrl)}`
+        `&${HS_PRMS.permalink}=${encodeURIComponent(
+          appRef.permalinkRequestUrl
+        )}`
       ).replace(
         this.pathName(),
         this.HsConfig.get(app).permalinkLocation.pathname
       );
     } else {
-      return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
-        this.permalinkRequestUrl
+      return `${appRef.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
+        appRef.permalinkRequestUrl
       )}`;
     }
   }
@@ -255,26 +269,28 @@ export class HsShareUrlService {
    * @param new_value Value for pushed parameter
    * Push new key-value pair into paramater object and update Url string with new params
    */
-  push(key, new_value): void {
+  push(key, new_value, app: string): void {
+    const appRef = this.get(app);
     if (new_value === undefined) {
-      delete this.params[key];
+      delete appRef.params[key];
     } else {
-      this.params[key] = new_value;
+      appRef.params[key] = new_value;
     }
-    const new_params_string = this.stringify(this.params);
-    this.param_string = new_params_string;
-    this.urlUntilParams = location.origin + location.pathname;
-    this.current_url = this.urlUntilParams + '?' + new_params_string;
+    const new_params_string = this.stringify(appRef.params);
+    appRef.param_string = new_params_string;
+    appRef.urlUntilParams = location.origin + location.pathname;
+    appRef.current_url = appRef.urlUntilParams + '?' + new_params_string;
   }
 
   /**
    * @param param - Param to get current value and remove
    * Returns param value and removes custom param when it is called
    */
-  getParamValAndRemove(param: string): string {
+  getParamValAndRemove(param: string, app: string): string {
+    const appRef = this.get(app);
     const value = this.getParamValue(param);
-    if (this.customParams[param]) {
-      delete this.customParams[param];
+    if (appRef.customParams[param]) {
+      delete appRef.customParams[param];
     }
     return value;
   }
@@ -311,13 +327,14 @@ export class HsShareUrlService {
    * Update values for custom parameters which get added to the url and usually are application specific
    */
   updateCustomParams(params, app): void {
+    const appRef = this.get(app);
     for (const param in params) {
-      this.customParams[param] = params[param];
+      appRef.customParams[param] = params[param];
     }
-    if (this.paramTimer !== null) {
-      clearTimeout(this.paramTimer);
+    if (appRef.paramTimer !== null) {
+      clearTimeout(appRef.paramTimer);
     }
-    this.paramTimer = setTimeout(() => {
+    appRef.paramTimer = setTimeout(() => {
       this.update(app);
     }, 1000);
   }
@@ -326,9 +343,11 @@ export class HsShareUrlService {
    * @param map Openlayers map
    */
   async init(app: string): Promise<void> {
+    const appRef = this.get(app);
+    this.keepTrackOfGetParams(app);
     await this.HsMapService.loaded(app);
     const map = this.HsMapService.getMap(app);
-    if (this.url_generation) {
+    if (appRef.url_generation) {
       let timer = null;
       this.HsEventBusService.mapExtentChanges
         .pipe(takeUntil(this.ngUnsubscribe))

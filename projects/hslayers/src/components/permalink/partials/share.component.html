@@ -7,16 +7,16 @@
             <div class="form-group">
                 <label for="pure-map-link" class="control-label">{{'PERMALINK.sharePureMap' | translateHs :
                     {app: data.app} }}</label>
-                <a [href]="HsShareService.data.pureMapUrl" target="_blank"
-                    id="pure-map-link">{{HsShareService.data.pureMapUrl}}</a>
+                <a [href]="appRef.pureMapUrl" target="_blank"
+                    id="pure-map-link">{{appRef.pureMapUrl}}</a>
                 <p><sub class="text-danger">{{'PERMALINK.sharesOnlyMap' | translateHs : {app: data.app} }}</sub></p>
             </div>
             <br>
             <div class="form-group">
                 <label for="permalink-link" class="control-label">{{'PERMALINK.permalink' | translateHs :
                     {app: data.app} }}</label><br />
-                <a [href]="HsShareService.data.permalinkUrl" target="_blank" style="overflow-x: hidden;"
-                    id="permalink-link">{{HsShareService.data.permalinkUrl}}</a>
+                <a [href]="appRef.permalinkUrl" target="_blank" style="overflow-x: hidden;"
+                    id="permalink-link">{{appRef.permalinkUrl}}</a>
                 <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translateHs : {app: data.app} }}</sub></p>
             </div>
             <hr>
@@ -29,21 +29,21 @@
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" class="form-check-input" [name]="'share-link-' + data.app" value="puremap"
-                            [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
+                            [(ngModel)]="appRef.shareLink" (click)="updateEmbedCode()">
                         {{'PERMALINK.pureMap' | translateHs : {app: data.app} }}
                     </label>
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" class="form-check-input" [name]="'share-link-' + data.app" value="permalink"
-                            [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
+                            [(ngModel)]="appRef.shareLink" (click)="updateEmbedCode()">
                         {{'PERMALINK.permalink' | translateHs : {app: data.app} }}
                     </label>
                 </div>
             </fieldset>
             <div class="form-floating mb-3" [hidden]="!HsCore.embeddedEnabled">
                 <textarea class="form-control" style="height: 80px" id="permalink-embed"
-                    placeholder="'PERMALINK.embedCode' | translateHs : data" [(ngModel)]="HsShareService.data.embedCode"
+                    placeholder="'PERMALINK.embedCode' | translateHs : data" [(ngModel)]="appRef.embedCode"
                     [ngModelOptions]="{standalone: true}"></textarea>
                 <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translateHs :
                     {app: data.app} }}</label>
@@ -57,13 +57,13 @@
                 <div class="form-floating mb-3" [title]="'COMMON.fillInName' | translateHs : data">
                     <input type="text" class="form-control" id="hs-prmlnk-title"
                         [placeholder]="'COMMON.name' | translateHs : data" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.data.title" [ngModelOptions]="{standalone: true}">
+                        [(ngModel)]="appRef.title" [ngModelOptions]="{standalone: true}">
                     <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translateHs : {app: data.app} }}</label>
                 </div>
                 <div class="form-floating mb-3" [title]="'COMMON.fillInDescriptive' | translateHs : data">
                     <textarea class="form-control" id="hs-prmlnk-abstract"
                         [placeholder]="'COMMON.abstract' | translateHs : data" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.data.abstract"
+                        [(ngModel)]="appRef.abstract"
                         [ngModelOptions]="{standalone: true}">                    </textarea>
                     <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translateHs :
                         {app: data.app} }}</label>
