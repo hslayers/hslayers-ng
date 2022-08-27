@@ -102,7 +102,7 @@
     "@cypress/schematic": "^2.0.3",
     "@types/jasmine": "~4.0.3",
     "@types/jasminewd2": "~2.0.10",
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.33.1",
     "codelyzer": "^6.0.2",
     "cypress": "~10.6.0",
