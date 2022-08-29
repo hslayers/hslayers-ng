@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import {Feature} from 'ol';
+import {Feature, getUid} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
@@ -44,7 +44,7 @@ export class HsQueryFeatureListComponent implements OnInit {
    */
   trackById(index, item) {
     if (item.feature) {
-      return item.feature.ol_uid;
+      return getUid(item.feature);
     } else {
       return JSON.stringify(item);
     }

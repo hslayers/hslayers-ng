@@ -20,6 +20,7 @@ import {Icon, Style} from 'ol/style';
 import {StyleFunction, StyleLike} from 'ol/style/Style';
 import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
+import {getUid} from 'ol';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -64,6 +65,7 @@ class HsStylerParams {
   pin_white_blue_highlight;
   colorMapDialogVisible = false;
   unsavedChange = false;
+  changesStore = new Map();
 }
 
 @Injectable({
@@ -327,10 +329,14 @@ export class HsStylerService {
         return;
       }
       appRef.layer = layer;
+      console.log('Layer uid', getUid(appRef.layer));
       appRef.layerBeingMonitored =
         !!this.hsLayerSynchronizerService.syncedLayers.find((l) => l == layer);
+      appRef.unsavedChange = appRef.changesStore.has(getUid(layer));
       appRef.layerTitle = getTitle(layer);
-      const sld = getSld(layer);
+      const sld = appRef.unsavedChange
+        ? appRef.changesStore.get(getUid(layer))
+        : getSld(layer);
       const qml = getQml(layer);
       if (sld != undefined) {
         appRef.styleObject = await this.sldToJson(sld, app);
@@ -340,6 +346,11 @@ export class HsStylerService {
         appRef.styleObject = blankStyleObj;
       }
       this.geostylerWorkaround(app);
+      if (appRef.unsavedChange) {
+        //Update appRef.sld string in case styler for layer with unsaved changes was opened.
+        //Could have been changed by styling other layer in the meantime
+        this.save(app);
+      }
     } catch (ex) {
       appRef.styleObject = blankStyleObj;
       this.hsLogService.error(ex.message);
@@ -558,6 +569,7 @@ export class HsStylerService {
    */
   resolveSldChange(appRef: HsStylerParams, app: string) {
     if (appRef.isAuthorized && appRef.layerBeingMonitored) {
+      appRef.changesStore.set(getUid(appRef.layer), appRef.sld);
       appRef.unsavedChange = true;
     } else {
       this.setSld(app);
@@ -568,6 +580,7 @@ export class HsStylerService {
   setSld(app: string) {
     const appRef = this.get(app);
     setSld(appRef.layer, appRef.sld);
+    appRef.changesStore.delete(getUid(appRef.layer));
     appRef.unsavedChange = false;
   }
 
