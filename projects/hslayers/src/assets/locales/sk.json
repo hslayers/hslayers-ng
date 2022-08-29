@@ -133,6 +133,16 @@
     },
     "WMTS": {
       "tileMatrix": "Matica dlaždíc"
+    },
+    "GEOSPARQL": {
+      "fillInQuery": "Sem napíšte alebo prilepte váš SPARQL dotaz",
+      "invalidEndpoint": "Zdá sa, že adresa URL zdroja nepredstavuje platný SPARQL endpoint!",
+      "pickGeomParamName": "geometriu",
+      "pickGeomParamPt1": "Ktorá premenná obsahuje",
+      "pickGeomParamPt2": "z dotazovaných prvkov?",
+      "pickIdParamName": "unikátny identifikátor",
+      "pickIdParamPt1": "Ktorá premenná obsahuje",
+      "pickIdParamPt2": "z dopytovaných prvkov?"
     }
   },
   "COMMON": {
@@ -276,7 +286,8 @@
     "somethingWentWrong": "Niečo sa pokazilo, skúste to znova prosím!",
     "setPermissionsError": "Chyba pri nastavovaní oprávnení",
     "unsavedChanges": "Neuložené zmeny",
-    "return": "Vrátiť sa"
+    "return": "Vrátiť sa",
+    "query": "Dotaz"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -617,7 +628,8 @@
   },
   "LAYERS": {
     "existingLayer": "Existujúca vrstva",
-    "newLayer": "Nová vrstva"
+    "newLayer": "Nová vrstva",
+    "featuresLoadError": "Načítanie prvkov zlyhalo"
   },
   "LAYMAN": {
     "allLayersSuccessfullyRemoved": "Všetky vrstvy boli úspešne vymazané",
