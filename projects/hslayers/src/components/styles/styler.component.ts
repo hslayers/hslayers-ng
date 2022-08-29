@@ -29,8 +29,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   layerTitle: string;
   private ngUnsubscribe = new Subject<void>();
   uploaderVisible = false;
@@ -90,7 +89,6 @@ export class HsStylerComponent
       } else if (confirmed == 'yes') {
         this.hsStylerService.setSld(this.data.app);
       }
-      this.appRef.unsavedChange = false;
     }
     this.hsLayoutService.setMainPanel('layermanager', this.data.app);
   }
