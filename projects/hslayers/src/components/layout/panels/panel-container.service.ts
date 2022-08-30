@@ -77,7 +77,7 @@ export class HsPanelContainerService
     panelWidths: KeyNumberDict,
     componentRefInstance: HsPanelComponent
   ): void {
-    if (componentRefInstance == undefined) {
+    if (componentRefInstance === undefined) {
       return;
     }
     const pnlWidth =
