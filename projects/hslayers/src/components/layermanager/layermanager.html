@@ -6,8 +6,7 @@
                     [title]="'LAYERMANAGER.enablePhysicalLayerList' | translateHs : {app: data.app}">
                     <i class="glyphicon icon-layerorder"></i>
                 </button>
-                <button ngbDropdownToggle class="btn but-title-sm" type="button"><i
-                        class="icon-menu"></i></button>
+                <button ngbDropdownToggle class="btn but-title-sm" type="button"><i class="icon-menu"></i></button>
                 <div ngbDropdownMenu>
                     <a class="dropdown-item" (click)="removeAllLayers()">
                         <i
@@ -33,7 +32,8 @@
             <div *ngFor="let box of appRef.data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
                 style="padding-right: 2px; padding-left: 2px;">
                 <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" title="{{getTitle(box)}}"
-                    (click)="activateTheme(box)"><!-- TODO: Remove function call from template -->
+                    (click)="activateTheme(box)">
+                    <!-- TODO: Remove function call from template -->
                     <img [src]="box.thumbnail" alt="{{getTitle(box)}}"><!-- TODO: Remove function call from template -->
                 </a>
             </div>
@@ -43,7 +43,8 @@
         </div>
 
         <ul *ngIf="!hsLayoutService.componentEnabled('basemapGallery', data.app)"
-            class="list-group hs-lm-baselayerlist"><!-- TODO: Remove function call from template -->
+            class="list-group hs-lm-baselayerlist">
+            <!-- TODO: Remove function call from template -->
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
@@ -71,8 +72,7 @@
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted' : layer.grayed}"
-                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
-                        [closeDelay]="layerTooltipDelay">
+                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
                         {{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
                     </div>
                     <div class="ps-1 info_btn" style="cursor: pointer;">
@@ -117,14 +117,15 @@
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
-                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''"
-                        [closeDelay]="layerTooltipDelay"><!-- TODO: Remove function call from template -->
+                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
+                        <!-- TODO: Remove function call from template -->
                         {{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
                     </div>
                 </div>
             </li>
         </ul>
-        <ul class="list-group hs-lm-mapcontentlist"><!-- TODO: Remove function call from template -->
+        <ul class="list-group hs-lm-mapcontentlist">
+            <!-- TODO: Remove function call from template -->
             <li *ngIf="!hsLayoutService.componentEnabled('basemapGallery', data.app)"
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
@@ -164,7 +165,7 @@
         </div> -->
         </ul>
         <hs-layer-editor [current-layer]="appRef.currentLayer" #layerEditor [app]="data.app"
-            [hidden]="!(appRef.currentLayer !== null) || appRef.menuExpanded" class="hs-layerpanel">
+            [hidden]="!appRef.currentLayer" class="hs-layerpanel w-100">
         </hs-layer-editor>
     </div>
 </div>
