@@ -14,7 +14,8 @@
                 </div>
                 <div class="hs-miniMenu" [hidden]="!(layer.galleryMiniMenu === true && layer.active)"
                     [ngStyle]="{'position':'absolute'}"
-                    [ngClass]="{'expanded': hsLayerManagerService.apps[data.app].menuExpanded}"><!-- TODO: Remove function call from template -->
+                    [ngClass]="{'expanded': hsLayerManagerService.apps[data.app].menuExpanded}">
+                    <!-- TODO: Remove function call from template -->
                     <div class="ps-1 w-100" *ngIf="!hsLayerManagerService.apps[data.app].menuExpanded"
                         (click)="hsLayerManagerService.setGreyscale(layer, data.app)">
                         <label class="form-check-label m-0"
@@ -22,19 +23,16 @@
                         <p class="ms-1 mb-0">
                             {{'LAYERMANAGER.baseMapGallery.grayscale' | translateHs : {app: data.app} }}</p>
                     </div>
-                    <label class="ps-2 mb-0 w-100" [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}"
-                        (click)="expandMenu(layer)">
-
+                    <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100"
+                        [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}" (click)="expandMenu(layer)">
                         {{hsLayerManagerService.apps[data.app].menuExpanded ? 'Less ': 'More'}}</label>
-                    <hs-layer-editor [current-layer]="layer" *ngIf="hsLayerManagerService.apps[data.app].menuExpanded"
-                        [app]="data.app" class="hs-layerpanel w-100" #layerEditor>
-                    </hs-layer-editor>
                 </div>
 
                 <img [ngClass]="{'active': layer.active, 'hs-ale': !layer.active}" src="{{layer.thumbnail}}"
                     alt="Basemap thumbnail" style="width:100%">
                 <a class="dropdown-item" [ngClass]="{'active': layer.active}"
-                    style="white-space: pre-line; overflow-wrap: anywhere;">{{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}</a>
+                    style="white-space: pre-line; overflow-wrap: anywhere;">{{layer.title | translateHs : {app:
+                    data.app, module: 'LAYERS'} }}</a>
             </div>
             <div (click)="toggleBasemap()">
                 <div style="height: 4em; width: 100%; background: white"

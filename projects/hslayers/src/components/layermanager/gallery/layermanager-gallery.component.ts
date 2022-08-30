@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component,  ViewChild} from '@angular/core';
 
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager.service';
@@ -11,6 +11,7 @@ import {getBase} from '../../../common/layer-extensions';
 @Component({
   selector: 'hs-layermanager-gallery',
   templateUrl: './basemap-gallery.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   menuExpanded = false;
@@ -58,7 +59,7 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
       );
     }
   }
-  expandMenu(layer) {
+  expandMenu(layer: HsLayerDescriptor): void {
     this.hsLayerManagerService.toggleLayerEditor(
       layer,
       'settings',
