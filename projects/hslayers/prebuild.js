@@ -6,20 +6,19 @@ const writeFile = util.promisify(fs.writeFile);
 /**
  *
  */
-async function copyPackageJson() {
+async function changeImpressumHslVersion() {
   // File destination.txt will be created or overwritten by default.
   const packageJson = JSON.parse(
     await readFile('projects/hslayers/package.json', 'utf8')
   );
-  delete packageJson.peerDependencies;
-  delete packageJson.scripts;
-  delete packageJson.devDependencies;
-  delete packageJson.dependencies;
+
+  let impressumSrc = await readFile('projects/hslayers/src/components/sidebar/impressum.component.ts', 'utf8')
+
+  impressumSrc = impressumSrc.replace(/this.version.=.'.*?'/, `this.version = '${packageJson.version}\'`);
   await writeFile(
-    'projects/hslayers/src/package.json',
-    JSON.stringify(packageJson, '', 2)
+    'projects/hslayers/src/components/sidebar/impressum.component.ts',
+    impressumSrc
   );
-  console.log('package.json was stripped and copied to src');
 }
 
-copyPackageJson();
+changeImpressumHslVersion();
