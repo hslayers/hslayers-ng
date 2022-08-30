@@ -262,6 +262,7 @@ export class HsConfig {
     //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
     Object.assign(appConfig.panelWidths, newConfig.panelWidths);
+    delete newConfig.panelWidths;
     //See componentsEnabled ^
     Object.assign(appConfig.panelsEnabled, newConfig.panelsEnabled);
     delete newConfig.panelsEnabled;
