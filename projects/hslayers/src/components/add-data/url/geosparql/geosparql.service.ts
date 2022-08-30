@@ -58,7 +58,7 @@ export class HsUrlGeoSparqlService {
         blobText,
         'application/xml'
       );
-      if (parsedResponse.activeElement.localName === 'RDF') {
+      if (parsedResponse?.activeElement?.localName?.toLowerCase() === 'rdf') {
         return true;
       }
     } catch (e) {
