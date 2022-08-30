@@ -238,7 +238,7 @@ export class HsConfig {
     ]) {
       if (newConfig[prop] != undefined) {
         console.error(
-          `HsConfig.get(app).${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
+          `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
         );
       }
     }

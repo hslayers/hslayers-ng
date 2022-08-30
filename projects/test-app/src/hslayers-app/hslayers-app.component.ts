@@ -358,6 +358,9 @@ export class HslayersAppComponent {
       this.hsConfig.update(
         {
           sidebarPosition: app.sidebarPosition,
+          panelWidths: {
+            custom: 555,
+          },
           queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
           datasources: [
             {
