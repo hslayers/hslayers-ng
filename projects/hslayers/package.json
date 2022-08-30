@@ -45,7 +45,7 @@
     "jszip": "^3.7.1",
     "ngx-color": "^7.0.0",
     "ngx-cookie-service": "^14.0.0",
-    "ol": "~6.9.0, || >=6.14.1",
+    "ol": ">=6.14.1",
     "ol-ext": "^3.2.3",
     "ol-popup": "^4.0.0",
     "polygon-splitter": "^0.0.5",

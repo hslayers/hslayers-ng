@@ -13,7 +13,8 @@ HSLayers-NG is a library which extends OpenLayers 6 functionality by providing a
 | 6                | 12.x                | 4.x         |
 | 7                | 12.x                | 5.x         |
 | 8                | 13.x                | 5.x         |
-| 9                | 13.x                | 5.x         | 6.14.1
+| 9                | 13.x                | 5.x         | ^6.14.1
+| 10               | 14.x                | 5.x         | ^6.14.1
 
 ## Demo
 
