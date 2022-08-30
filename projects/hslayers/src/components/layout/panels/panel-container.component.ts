@@ -1,6 +1,5 @@
 import {
   Component,
-  ComponentFactoryResolver,
   EventEmitter,
   Input,
   OnDestroy,
@@ -39,10 +38,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @Output() init = new EventEmitter<void>();
   interval: any;
   private ngUnsubscribe = new Subject<void>();
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private HsConfig: HsConfig
-  ) {}
+  constructor(private hsConfig: HsConfig) {}
   ngOnDestroy(): void {
     const appRef = this.service.get(this.app);
     if (appRef.panelObserver && this.reusePanelObserver !== true) {
@@ -80,21 +76,17 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   }
 
   loadPanel(panelItem: HsPanelItem): void {
-    const componentFactory =
-      this.componentFactoryResolver.resolveComponentFactory(
-        panelItem.component
-      );
     const viewContainerRef = this.panelHost.viewContainerRef;
-    const componentRef = viewContainerRef.createComponent(componentFactory);
+    const componentRef = viewContainerRef.createComponent(panelItem.component);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
-    if (this.HsConfig.get(this.app)) {
+    if (this.hsConfig.get(this.app)) {
       /**
        * Assign panel width class to a component host first child
        * Used to define panelSpace panel width
        */
       this.service.setPanelWidth(
-        this.HsConfig.get(this.app).panelWidths,
+        this.hsConfig.get(this.app).panelWidths,
         componentRefInstance
       );
     }
