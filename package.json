@@ -67,7 +67,7 @@
     "ngx-cookie-service": "^14.0.1",
     "ol": "^6.15.1",
     "ol-ext": "^3.2.30",
-    "ol-popup": "^4.0.0",
+    "ol-popup": "^5.0.0",
     "papaparse": "^5",
     "passport-oauth2-middleware": "^1.0.3",
     "polygon-clipping": "^0.15.3",
