@@ -8,7 +8,7 @@
             [ngClass]="layoutAppRef.sidebarExpanded ? (layoutAppRef.sidebarPosition === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (layoutAppRef.sidebarPosition === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </span><!-- TODO: Remove function call from template -->
 
-    <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item"
+    <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item" [attr.data-cy]="button.panel"
         [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button, app)"
         [ngClass]="{'active': layoutAppRef.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
         title="{{button.description | translateHs: {app} }}"><!-- TODO: Remove function call from template -->
@@ -16,7 +16,7 @@
             data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
             title="{{button.description | translateHs: {app} }}">{{button.content()}}</span>
-        <span [ngStyle]="{'margin-left' : button.panel === 'language' ? '14px' : '20px'}" [attr.data-cy]="button.panel"
+        <span [ngStyle]="{'margin-left' : button.panel === 'language' ? '14px' : '20px'}" 
             class="hs-sidebar-item-title">{{button.title | translateHs: {app} }}</span>
     </span>
 <!-- TODO: Remove function call from template -->
