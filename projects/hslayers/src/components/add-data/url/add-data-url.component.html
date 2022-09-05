@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <button *ngFor="let type of types" [ngClass]="{'active': type.id === appRef.typeSelected }"
                 (click)="selectType(type.id,app)" style="margin: 3px;"
-                class="btn btn-light btn-outline-secondary rounded btn-sm mt-1 col-sm-3 position-relative">
+                class="btn btn-outline-secondary rounded btn-sm mt-1 col-sm-3 position-relative">
                 {{type.text}}
                 <span *ngIf="type.id === 'geosparql'" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">&beta;</span>
             </button>
