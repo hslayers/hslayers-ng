@@ -8,8 +8,10 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsConfig} from '../../config.service';
 import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
 import {HsSaverService} from './interfaces/saver-service.interface';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {MapComposition} from './types/map-composition.type';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,33 +20,15 @@ export class HsStatusManagerService implements HsSaverService {
     private http: HttpClient,
     private hsConfig: HsConfig,
     private hsUtilsService: HsUtilsService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private HsShareUrlService: HsShareUrlService
   ) {}
 
   /**
-   * Get status manager endpoint's url
-   * @param app - App identifier
+   * @deprecated Use the new {@link HsShareUrlService.endpointUrl} method instead.
    */
   endpointUrl(app: string): string {
-    let hostName = location.protocol + '//' + location.host;
-
-    if (this.hsConfig.get(app).hostname?.status_manager?.url) {
-      return this.hsConfig.get(app).hostname.status_manager.url;
-    }
-    if (this.hsConfig.get(app).hostname?.user?.url) {
-      hostName = this.hsConfig.get(app).hostname.user.url;
-    } else if (this.hsConfig.get(app).hostname?.default?.url) {
-      hostName = this.hsConfig.get(app).hostname.default.url;
-    }
-
-    if (this.hsConfig.get(app).status_manager_url?.includes('://')) {
-      //Full url specified
-      return this.hsConfig.get(app).status_manager_url;
-    } else {
-      return (
-        hostName + (this.hsConfig.get(app).status_manager_url || '/share/')
-      );
-    }
+    return this.HsShareUrlService.endpointUrl(app);
   }
 
   /**

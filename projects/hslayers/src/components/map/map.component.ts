@@ -28,7 +28,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   unregisterMapSyncCenterHandlerSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
-    public HsPermalinkUrlService: HsShareUrlService,
+    public HsShareUrlService: HsShareUrlService,
     public HsCoreService: HsCoreService,
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
@@ -40,7 +40,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       });
   }
   ngAfterViewInit(): void {
-    const visibleLayersParam = this.HsPermalinkUrlService.getParamValue(
+    const visibleLayersParam = this.HsShareUrlService.getParamValue(
       HS_PRMS.visibleLayers
     );
     if (visibleLayersParam) {
@@ -49,7 +49,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     this.zone.runOutsideAngular(() =>
       this.HsMapService.init(this.map.nativeElement, this.app)
     );
-    const pos = this.HsPermalinkUrlService.getParamValues([
+    const pos = this.HsShareUrlService.getParamValues([
       HS_PRMS.x,
       HS_PRMS.y,
       HS_PRMS.zoom,
@@ -63,7 +63,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       );
     }
     if (
-      this.HsPermalinkUrlService.getParamValue(HS_PRMS.pureMap) ||
+      this.HsShareUrlService.getParamValue(HS_PRMS.pureMap) ||
       this.HsConfig.get(this.app).pureMap == true
     ) {
       this.HsCoreService.setPuremapApp(true, this.app);

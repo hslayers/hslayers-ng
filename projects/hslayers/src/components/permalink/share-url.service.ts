@@ -1,8 +1,8 @@
+import {HttpClient} from '@angular/common/http';
 import {Injectable, NgZone} from '@angular/core';
 import {Location, PlatformLocation} from '@angular/common';
 
-import {Map} from 'ol';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, lastValueFrom, takeUntil} from 'rxjs';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from '../../config.service';
@@ -13,7 +13,9 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {MapComposition} from '../save-map/types/map-composition.type';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
+import {transformExtent} from 'ol/proj';
 
 export class HsShareUrlAppData {
   current_url = '';
@@ -29,6 +31,7 @@ export class HsShareUrlAppData {
   urlUntilParams: string;
   param_string: string;
   statusSaving = false;
+  data: MapComposition;
 }
 
 @Injectable({providedIn: 'root'})
@@ -45,13 +48,14 @@ export class HsShareUrlService {
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
     public HsSaveMapService: HsSaveMapService,
-    public HsConfig: HsConfig,
+    public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
     private Location: Location,
     private zone: NgZone,
-    private PlatformLocation: PlatformLocation
+    private PlatformLocation: PlatformLocation,
+    private HttpClient: HttpClient
   ) {}
 
   private keepTrackOfGetParams(app: string) {
@@ -77,6 +81,73 @@ export class HsShareUrlService {
   }
 
   /**
+   * Get HSL server share service endpoint's url
+   * @param app - App identifier
+   */
+  endpointUrl(app: string): string {
+    let hostName = location.protocol + '//' + location.host;
+
+    if (this.hsConfig.get(app).hostname?.status_manager?.url) {
+      return this.hsConfig.get(app).hostname.status_manager.url;
+    }
+    if (this.hsConfig.get(app).hostname?.user?.url) {
+      hostName = this.hsConfig.get(app).hostname.user.url;
+    } else if (this.hsConfig.get(app).hostname?.default?.url) {
+      hostName = this.hsConfig.get(app).hostname.default.url;
+    }
+
+    if (this.hsConfig.get(app).status_manager_url?.includes('://')) {
+      //Full url specified
+      return this.hsConfig.get(app).status_manager_url;
+    } else {
+      return (
+        hostName + (this.hsConfig.get(app).status_manager_url || '/share/')
+      );
+    }
+  }
+
+  /**
+   * Updates permalink composition. Used without data prop to update extent of the composition
+   * @param app - App identifier
+   * @param data - Map compositon data
+   * @returns
+   */
+  async updatePermalinkComposition(
+    app: string,
+    data?: MapComposition
+  ): Promise<any> {
+    const appRef = this.get(app);
+    const status_url = this.endpointUrl(app);
+    const bbox = this.HsSaveMapService.getBboxFromObject(
+      this.HsMapService.describeExtent(app)
+    );
+    appRef.data = data ?? {
+      ...appRef.data,
+      nativeExtent: transformExtent(
+        bbox,
+        'EPSG:4326',
+        this.HsMapService.getCurrentProj(app)
+      ),
+      extent: bbox,
+    };
+    await lastValueFrom(
+      this.HttpClient.post(
+        status_url,
+        JSON.stringify({
+          data: appRef.data,
+          permalink: true,
+          id: appRef.id,
+          project: this.hsConfig.get(app).project_name,
+          request: 'save',
+        })
+      )
+    );
+    appRef.statusSaving = false;
+    appRef.permalinkRequestUrl = status_url + '?request=load&id=' + appRef.id;
+    this.update(app);
+  }
+
+  /**
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(app: string): void {
@@ -92,7 +163,7 @@ export class HsShareUrlService {
       .map((lyr) => getTitle(lyr));
 
     const addedLayers = externalLayers.filter(
-      (lyr) => !this.HsConfig.get(app).default_layers?.includes(lyr)
+      (lyr) => !this.hsConfig.get(app).default_layers?.includes(lyr)
     );
     //This might become useful, but url size is limited, so we are not using it
     const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers, app);
@@ -135,11 +206,11 @@ export class HsShareUrlService {
         const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
         if (
           locationPath.indexOf(baseHref) == 0 &&
-          this.HsConfig.get(app).ngRouter
+          this.hsConfig.get(app).ngRouter
         ) {
           locationPath = locationPath.replace(baseHref, '');
         }
-        if (Object.entries(this.HsConfig.apps).length == 1) {
+        if (Object.entries(this.hsConfig.apps).length == 1) {
           this.Location.replaceState(locationPath, paramsSerialized);
         }
         this.browserUrlUpdated.next({app, url: this.getPermalinkUrl(app)});
@@ -156,20 +227,20 @@ export class HsShareUrlService {
    */
   getPermalinkUrl(app: string): string {
     const appRef = this.get(app);
-    if (this.HsCore.isMobile() && this.HsConfig.get(app).permalinkLocation) {
+    if (this.HsCore.isMobile() && this.hsConfig.get(app).permalinkLocation) {
       //Deprecated? - isMobile??
       return (
-        this.HsConfig.get(app).permalinkLocation.origin +
+        this.hsConfig.get(app).permalinkLocation.origin +
         appRef.current_url.replace(
           this.pathName(),
-          this.HsConfig.get(app).permalinkLocation.pathname
+          this.hsConfig.get(app).permalinkLocation.pathname
         ) +
         `&${HS_PRMS.permalink}=${encodeURIComponent(
           appRef.permalinkRequestUrl
         )}`
       ).replace(
         this.pathName(),
-        this.HsConfig.get(app).permalinkLocation.pathname
+        this.hsConfig.get(app).permalinkLocation.pathname
       );
     } else {
       return `${appRef.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
@@ -350,6 +421,7 @@ export class HsShareUrlService {
     await this.HsMapService.loaded(app);
     const map = this.HsMapService.getMap(app);
     if (appRef.url_generation) {
+      //FIXME : always true
       let timer = null;
       this.HsEventBusService.mapExtentChanges
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -357,7 +429,7 @@ export class HsShareUrlService {
           this.HsUtilsService.debounce(
             ({map, event, extent, app}) => {
               this.zone.run(() => {
-                this.update(app);
+                this.updatePermalinkComposition(app);
               });
             },
             200,

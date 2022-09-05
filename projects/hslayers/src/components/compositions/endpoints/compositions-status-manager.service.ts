@@ -11,7 +11,7 @@ import {
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
-import {HsStatusManagerService} from '../../save-map/status-manager.service';
+import {HsShareUrlService} from '../../permalink/share-url.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
@@ -20,7 +20,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsCompositionsStatusManagerService {
   constructor(
-    private hsStatusManagerService: HsStatusManagerService,
+    private HsShareUrlService: HsShareUrlService,
     private hsConfig: HsConfig,
     private hsUtilsService: HsUtilsService,
     private $http: HttpClient,
@@ -42,7 +42,7 @@ export class HsCompositionsStatusManagerService {
    * @param app - App identifier
    */
   loadList(ds, params, bbox: number[], app: string) {
-    let url = this.hsStatusManagerService.endpointUrl(app);
+    let url = this.HsShareUrlService.endpointUrl(app);
     const query = params.query;
     const textFilter =
       query && query.title !== undefined && query.title != ''
@@ -124,13 +124,13 @@ export class HsCompositionsStatusManagerService {
             }
             if (record.link == undefined) {
               record.link =
-                this.hsStatusManagerService.endpointUrl(app) +
+                this.HsShareUrlService.endpointUrl(app) +
                 '?request=load&id=' +
                 record.id;
             }
             if (record.thumbnail == undefined) {
               record.thumbnail =
-                this.hsStatusManagerService.endpointUrl(app) +
+                this.HsShareUrlService.endpointUrl(app) +
                 '?request=loadthumb&id=' +
                 record.id;
             }
@@ -160,7 +160,7 @@ export class HsCompositionsStatusManagerService {
    */
   async delete(endpoint, composition, app: string): Promise<void> {
     let url =
-      this.hsStatusManagerService.endpointUrl(app) +
+      this.HsShareUrlService.endpointUrl(app) +
       '?request=delete&id=' +
       composition.id +
       '&project=' +

@@ -28,7 +28,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
-    public HsPermalinkUrlService: HsShareUrlService,
+    public HsShareUrlService: HsShareUrlService,
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService
   ) {}
@@ -36,7 +36,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     this.end.next();
   }
   ngOnInit(): void {
-    const panel = this.HsPermalinkUrlService.getParamValue(HS_PRMS.panel);
+    const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);
     this.serviceAppRef = this.HsSidebarService.get(this.app);
     this.layoutAppRef = this.HsLayoutService.get(this.app);
     this.serviceAppRef.buttons
