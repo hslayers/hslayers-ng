@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <button *ngFor="let type of types" [ngClass]="{'active': type.id === typeSelected }"
                 (click)="selectType(type.id)" style="margin: 3px;"
-                class="btn btn-light btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
+                class="btn btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
                 {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS', type.text, undefined, app)}}
                 <!-- TODO: Remove function call from template -->
             </button>

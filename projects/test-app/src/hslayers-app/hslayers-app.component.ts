@@ -106,6 +106,7 @@ export class HslayersAppComponent {
         colorMap: 'jet',
       });
       const idwLayer = new ImageLayer({
+        visible: true,
         properties: {title: 'IDW layer'},
         source: interpolatedSource as any,
         opacity: 0.5,
@@ -113,6 +114,7 @@ export class HslayersAppComponent {
 
       //Mandatory, otherwise nothing will be loaded with source loader
       const idwVectorLayer = new VectorLayer({
+        visible: true,
         properties: {
           title: 'IDW vector source',
           showInLayerManager: false,
@@ -230,6 +232,7 @@ export class HslayersAppComponent {
         ],
       };
       const points = new VectorLayer({
+        visible: true,
         properties: {
           title: 'Points',
           synchronize: false,
@@ -306,6 +309,7 @@ export class HslayersAppComponent {
               </StyledLayerDescriptor>
               `;
       const polygons = new VectorLayer({
+        visible: true,
         properties: {
           title: 'Polygons',
           synchronize: false,
@@ -352,7 +356,7 @@ export class HslayersAppComponent {
           path: 'Vegetation indexes and satellite imagery',
         },
         maxZoom: 18,
-        visible: false,
+        visible: true,
         opacity: 1,
       });
       this.hsConfig.update(
@@ -390,7 +394,7 @@ export class HslayersAppComponent {
             mapSwipe: true,
           },
           enabledLanguages: 'sk, lv, en',
-          language: 'lv',
+          language: 'en',
           assetsPath: 'assets',
           saveMapStateOnReload: true,
           symbolizerIcons: [
@@ -459,6 +463,7 @@ export class HslayersAppComponent {
             }),
 
             new VectorLayer({
+              visible: true,
               properties: {
                 title: 'Clusters without SLD',
                 synchronize: false,
@@ -485,6 +490,7 @@ export class HslayersAppComponent {
               source: new VectorSource({features}),
             }),
             new VectorLayer({
+              visible: true,
               properties: {
                 title: 'Polygons',
                 synchronize: false,
@@ -523,6 +529,7 @@ export class HslayersAppComponent {
               }),
             }),
             new VectorLayer({
+              visible: true,
               properties: {
                 title: 'Polygons with display f-n',
                 synchronize: false,
@@ -554,6 +561,7 @@ export class HslayersAppComponent {
             polygons,
             points,
             new Tile({
+              visible: true,
               properties: {
                 title: 'Latvian municipalities (parent layer)',
                 queryFilter: (map, layer, pixel) => {
@@ -571,6 +579,7 @@ export class HslayersAppComponent {
               }),
             }),
             new Tile({
+              visible: true,
               properties: {
                 title: 'Latvian municipalities (1 sub-layer)',
                 sublayers: 'publicwfs:arisparish',
@@ -586,6 +595,7 @@ export class HslayersAppComponent {
               }),
             }),
             new Tile({
+              visible: true,
               properties: {
                 title: 'EVI',
               },

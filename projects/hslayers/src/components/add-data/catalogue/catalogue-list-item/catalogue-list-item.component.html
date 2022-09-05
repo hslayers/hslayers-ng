@@ -2,7 +2,7 @@
     <div class="">
         <a data-toggle="tooltip" [title]="layer.abstract || ''">{{layer.title || layer.abstract}}</a>
     </div>
-    <div class="d-flex flex-column w-100 justify-content-around mt-2" *ngIf="appRef.selectedLayer?.id === layer.id">
+    <div class="hs-catalogue-item-body d-flex flex-column w-100 justify-content-around mt-2" *ngIf="appRef.selectedLayer?.id === layer.id">
         <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
             <!-- <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
@@ -13,32 +13,32 @@
                             </button>
                             <span class="ms-2">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translateHs: {app} }}</span>
                         </div> -->
-            <a class="btn btn-sm" [hidden]="selectTypeToAddLayerVisible"
+            <a class="btn btn-sm border-0" [hidden]="selectTypeToAddLayerVisible"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
                 <img [hidden]="!loadingInfo" [src]="configRef._ajaxLoaderPath" />
                 <span class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
                     translateHs: {app} }}</span>
             </a>
-            <a class="btn btn-sm" [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs: {app} "
+            <a class="btn btn-sm border-0" [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs: {app} "
                 (click)="$event.stopPropagation();abortAdd()" [hidden]="!selectTypeToAddLayerVisible">
                 <i class="icon-remove text-danger"></i><span
                     class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' |
                     translateHs: {app} }}</span>
             </a>
-            <a class="btn btn-sm" (click)="showMetadata(layer.endpoint, layer)">
+            <a class="btn btn-sm border-0" (click)="showMetadata(layer.endpoint, layer)">
                 <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
                     translateHs: {app} }}</span>
             </a>
             <ng-container *ngIf="layer.endpoint?.authenticated">
-                <a class="btn btn-sm" (click)="$event.stopPropagation();showPermissions(layer)" data-toggle="tooltip"
+                <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)" data-toggle="tooltip"
                     data-placement="bottom"
                     [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs: {app} ">
                     <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
                         [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
                         *ngIf="layer.editable">{{'COMMON.setPermissions' | translateHs: {app} }}</span>
                 </a>
-                <a class="btn btn-sm" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
+                <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
                     data-placement="bottom"
                     [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs: {app} ">
                     <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
@@ -51,7 +51,7 @@
     <div class="d-none">
         <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
             <!-- TODO: Remove function call from template -->
-            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
+            <a class="btn btn-sm border-0 btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
                 data-toggle="tooltip" [title]="'COMMON.download' | translateHs: {app} "><i
                     class="icon-download"></i></a>
         </div>
@@ -75,7 +75,7 @@
         [hidden]="!selectTypeToAddLayerVisible || loadingInfo || appRef.selectedLayer?.id !== layer.id">
         <div class="d-flex flex-row justify-content-between align-items-center w-100">
             <div class="px-3">
-                <span class="btn btn-sm" disabled="true" aria-disabled="true">{{
+                <span class="btn btn-sm disabled border-0" disabled="true" aria-disabled="true">{{
                     'ADDDATA.CATALOGUE.addAs' |
                     translateHs: {app} }}&nbsp;</span>
                 <div class="btn-group btn-group-toggle h-100 pe-2 align-items-center" data-toggle="buttons">
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div>
-                <a class="btn btn-sm" (click)="$event.stopPropagation();toggleExplanations()"
+                <a class="btn btn-sm border-0" (click)="$event.stopPropagation();toggleExplanations()"
                     [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translateHs: {app} ">
                     <i class="icon-question-sign text-primary"></i>
                 </a>

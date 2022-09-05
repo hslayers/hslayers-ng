@@ -1,21 +1,21 @@
 <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
-<div class="mt-2" [ngClass]="{'d-none': getCommonId(composition) !== selectedCompId}">
+<div class="hs-comp-item-body mt-2" [ngClass]="{'d-none': getCommonId(composition) !== selectedCompId}">
     <hr class="hs-dotted-line">
     <div class="btn-group w-100" role="group">
-        <a class="btn btn-sm" (click)="$event.stopPropagation();openComposition(composition)">
+        <a class="btn btn-sm border-0" (click)="$event.stopPropagation();openComposition(composition)">
             <i class="icon-map icon-primary"></i><span class="ms-1">{{'COMMON.open' |
                 translateHs: {app} }}</span>
         </a>
-        <a class="btn btn-sm" (click)="$event.stopPropagation();detailComposition(composition)">
+        <a class="btn btn-sm border-0" (click)="$event.stopPropagation();detailComposition(composition)">
             <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
                 translateHs: {app} }}</span>
         </a>
-        <a class="btn btn-sm" (click)="$event.stopPropagation();shareComposition(composition)">
+        <a class="btn btn-sm border-0" (click)="$event.stopPropagation();shareComposition(composition)">
             <i class="icon-share-alt icon-primary"></i><span class="ms-1">{{'COMMON.share' |
                 translateHs: {app} }}</span>
         </a>
         <ng-container *ngIf="composition.endpoint?.authenticated">
-            <a class="btn btn-sm" (click)="$event.stopPropagation();showPermissions(composition)" data-toggle="tooltip"
+            <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(composition)" data-toggle="tooltip"
                 data-placement="bottom"
                 [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translateHs: {app} ">
                 <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !composition.editable}"
@@ -23,7 +23,7 @@
                     [hidden]="!composition.editable" class="ms-1">{{'COMMON.setPermissions' |
                     translateHs: {app} }}</span>
             </a>
-            <a class="btn btn-sm" (click)="$event.stopPropagation();confirmDelete(composition)" data-toggle="tooltip"
+            <a class="btn btn-sm border-0" (click)="$event.stopPropagation();confirmDelete(composition)" data-toggle="tooltip"
                 data-placement="bottom"
                 [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translateHs: {app} ">
                 <i class="icon-trash icon-primary" [ngClass]="{'text-muted': !composition.editable}"

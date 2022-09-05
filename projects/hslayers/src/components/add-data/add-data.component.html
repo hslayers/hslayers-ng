@@ -5,20 +5,20 @@
     <div class="card-body">
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'btn-primary active': appRef.dsSelected === 'catalogue'}" role="tab"
+                <a class="nav-link" [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'catalogue'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('catalogue')">
                     {{'ADDDATA.catalogue' | translateHs : {app: data.app} }}
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link"
-                    [ngClass]="{'btn-primary active': appRef.dsSelected === 'url' || appRef.dsSelected === 'OWS'}"
+                    [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'url' || appRef.dsSelected === 'OWS'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('url')">
                     URL
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'btn-primary active': appRef.dsSelected === 'file'}" role="tab"
+                <a class="nav-link" [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'file'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('file')">
                     {{'ADDDATA.file' | translateHs : {app: data.app} }}
                 </a>

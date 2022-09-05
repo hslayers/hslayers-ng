@@ -29,6 +29,9 @@
 .hsl-search-result {
     z-index: 2;
 }
+.hs-search-address-input{
+    font-size: 1rem !important;
+}
 
 @media only screen and (max-width: $mobile-layout-breakpoint) {
     .hs-search-address-input{

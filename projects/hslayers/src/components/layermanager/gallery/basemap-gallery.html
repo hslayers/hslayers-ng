@@ -2,7 +2,7 @@
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
         [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
         <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" aria-haspopup="true">
-            <i class="glyphicon icon-map x-large p-0"></i>
+            <i class="glyphicon icon-map x-large p-0" style="line-height: inherit;"></i>
         </button>
         <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
             <div *ngFor="let layer of hsLayerManagerService.apps[data.app].data.baselayers" [attr.data-cy]="layer.title"
