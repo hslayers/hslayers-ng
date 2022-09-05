@@ -21,7 +21,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
   app = 'default';
   constructor(
     public HsCesiumService: HsCesiumService,
-    public HsPermalinkUrlService: HsShareUrlService,
+    public HsShareUrlService: HsShareUrlService,
     public HsCoreService: HsCoreService,
     public HsMapService: HsMapService,
     public HsSidebarService: HsSidebarService,
@@ -36,12 +36,12 @@ export class HslayersCesiumComponent implements AfterViewInit {
       this.HsCesiumService.init(this.app);
     }, 100);
 
-    const view = this.HsPermalinkUrlService.getParamValue(HS_PRMS.view);
+    const view = this.HsShareUrlService.getParamValue(HS_PRMS.view);
     if (view != '2d') {
-      this.HsPermalinkUrlService.updateCustomParams({view: '3d'}, this.app);
+      this.HsShareUrlService.updateCustomParams({view: '3d'}, this.app);
       this.HsMapService.visible = false;
     } else {
-      this.HsPermalinkUrlService.updateCustomParams({view: '2d'}, this.app);
+      this.HsShareUrlService.updateCustomParams({view: '2d'}, this.app);
     }
 
     this.HsSidebarService.addButton(
@@ -74,7 +74,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
   toggleCesiumMap() {
     this.HsMapService.visible = !this.HsMapService.visible;
     this.visible = !this.HsMapService.visible;
-    this.HsPermalinkUrlService.updateCustomParams(
+    this.HsShareUrlService.updateCustomParams(
       {
         view: this.HsMapService.visible ? '2d' : '3d',
       },

@@ -16,6 +16,7 @@ import {HsLogService} from './../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {MapComposition} from './types/map-composition.type';
@@ -86,6 +87,7 @@ export class HsSaveMapManagerService {
     private hsSaveMapService: HsSaveMapService,
     private hsConfig: HsConfig,
     private http: HttpClient,
+    private hsShareUrlService: HsShareUrlService,
     private hsStatusManagerService: HsStatusManagerService,
     private hsLaymanService: HsLaymanService,
     private hsLayoutService: HsLayoutService,
@@ -201,7 +203,7 @@ export class HsSaveMapManagerService {
     try {
       const appRef = this.get(app);
       const response: any = await lastValueFrom(
-        this.http.post(this.hsStatusManagerService.endpointUrl(app), {
+        this.http.post(this.hsShareUrlService.endpointUrl(app), {
           project: this.hsConfig.get(app).project_name,
           title: appRef.compoData.name,
           request: 'rightToSave',

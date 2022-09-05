@@ -14,7 +14,6 @@ import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsShareThumbnailService} from './share-thumbnail.service';
 import {HsShareUrlService} from './share-url.service';
-import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
@@ -44,7 +43,6 @@ export class HsShareService {
     public HsShareUrlService: HsShareUrlService,
     public HsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
-    public HsStatusManagerService: HsStatusManagerService,
     public HsLayoutService: HsLayoutService,
     public HsSaveMapService: HsSaveMapService,
     public HsEventBusService: HsEventBusService,
@@ -94,7 +92,7 @@ export class HsShareService {
         );
 
         shareUrlAppRef.statusSaving = true;
-        const status_url = this.HsStatusManagerService.endpointUrl(app);
+        const status_url = this.HsShareUrlService.endpointUrl(app);
         const layers = this.HsMapService.getLayersArray(app)
           .filter(
             (l) =>
@@ -119,22 +117,7 @@ export class HsShareService {
             {},
             app
           );
-          await lastValueFrom(
-            this.HttpClient.post(
-              status_url,
-              JSON.stringify({
-                data,
-                permalink: true,
-                id: shareUrlAppRef.id,
-                project: this.HsConfig.get(app1).project_name,
-                request: 'save',
-              })
-            )
-          );
-          shareUrlAppRef.statusSaving = false;
-          shareUrlAppRef.permalinkRequestUrl =
-            status_url + '?request=load&id=' + shareUrlAppRef.id;
-          this.HsShareUrlService.update(app1);
+          await this.HsShareUrlService.updatePermalinkComposition(app1, data);
         } catch (ex) {
           shareUrlAppRef.statusSaving = false;
           this.HsLogService.error('Error saving permalink layers.', ex);
@@ -254,7 +237,7 @@ export class HsShareService {
           this.HsUtilsService.generateUuid();
       }
       try {
-        const endpointUrl = this.HsStatusManagerService.endpointUrl(app);
+        const endpointUrl = this.HsShareUrlService.endpointUrl(app);
         const headers = new HttpHeaders().set(
           'Content-Type',
           'text/plain; charset=utf-8'

@@ -21,7 +21,6 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsShareUrlService} from '../permalink/share-url.service';
-import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -45,9 +44,8 @@ export class HsCompositionsService {
     private hsCore: HsCoreService,
     private hsCompositionsParserService: HsCompositionsParserService,
     private hsConfig: HsConfig,
-    private hsPermalinkUrlService: HsShareUrlService,
     private hsUtilsService: HsUtilsService,
-    private hsStatusManagerService: HsStatusManagerService,
+    private HsShareUrlService: HsShareUrlService,
     private hsCompositionsMickaService: HsCompositionsMickaService,
     private hsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
     private hsCompositionsLaymanService: HsCompositionsLaymanService,
@@ -63,9 +61,7 @@ export class HsCompositionsService {
     });
 
     this.hsEventBusService.compositionLoadStarts.subscribe(({id, app}) => {
-      id = `${this.hsStatusManagerService.endpointUrl(
-        app
-      )}?request=load&id=${id}`;
+      id = `${this.HsShareUrlService.endpointUrl(app)}?request=load&id=${id}`;
       this.hsCompositionsParserService.loadUrl(id, app);
     });
   }
@@ -202,7 +198,7 @@ export class HsCompositionsService {
     );
     return await lastValueFrom(
       this.http.post(
-        this.hsStatusManagerService.endpointUrl(app),
+        this.HsShareUrlService.endpointUrl(app),
         JSON.stringify({
           request: 'socialShare',
           id: appRef.shareId,
@@ -222,7 +218,7 @@ export class HsCompositionsService {
   async getShareUrl(app: string): Promise<string> {
     try {
       return await this.hsUtilsService.shortUrl(
-        this.hsStatusManagerService.endpointUrl(app) +
+        this.HsShareUrlService.endpointUrl(app) +
           '?request=socialshare&id=' +
           this.get(app).shareId,
         app
@@ -360,7 +356,7 @@ export class HsCompositionsService {
    */
   async parsePermalinkLayers(app: string): Promise<void> {
     await this.hsMapService.loaded(app);
-    const permalink = this.hsPermalinkUrlService.getParamValue(
+    const permalink = this.HsShareUrlService.getParamValue(
       HS_PRMS.permalink
     );
     if (!permalink) {
@@ -389,6 +385,7 @@ export class HsCompositionsService {
           DuplicateHandling.RemoveOriginal
         );
       }
+      this.hsMapService.fitExtent(response.data.nativeExtent, app);
     } else {
       this.$log.log('Error loading permalink layers');
     }
@@ -444,14 +441,11 @@ export class HsCompositionsService {
   async tryParseCompositionFromUrlParam(app: string): Promise<void> {
     const configRef = this.hsConfig.get(app);
     let id =
-      this.hsPermalinkUrlService.getParamValue(HS_PRMS.composition) ||
+      this.HsShareUrlService.getParamValue(HS_PRMS.composition) ||
       configRef.defaultComposition;
     if (id) {
       if (!id.includes('http') && !id.includes(configRef.status_manager_url)) {
-        id =
-          this.hsStatusManagerService.endpointUrl(app) +
-          '?request=load&id=' +
-          id;
+        id = this.HsShareUrlService.endpointUrl(app) + '?request=load&id=' + id;
       }
       try {
         const defaultViewProperties = configRef.default_view?.getProperties();
