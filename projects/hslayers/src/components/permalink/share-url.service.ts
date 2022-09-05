@@ -114,8 +114,10 @@ export class HsShareUrlService {
     if (this.HsCore.puremapApp) {
       this.push(HS_PRMS.pureMap, 'true', app);
     }
-    for (const cP in appRef.customParams) {
-      this.push(cP, appRef.customParams[cP], app);
+    for (const [key, value] of Object.entries(appRef.customParams)) {
+      if (key !== 'hs-permalink') {
+        this.push(key, value, app);
+      }
     }
     this.push('app', app, app); //Needs to be after customParams got from URL to overwrite app value
     if (appRef.statusSaving) {
