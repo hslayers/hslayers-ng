@@ -6,13 +6,14 @@
     <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
 
     <div *ngIf="hsAddDataCommonService.get(app).showDetails && !hsAddDataCommonService.get(app).loadingInfo"
-        class="card p-2"><!-- TODO: Remove function call from template -->
+        class="card p-2">
+        <!-- TODO: Remove function call from template -->
 
         <!-- FIXME: unused -->
         <div class="card-title text-center fw-bold">{{title}}</div>
         <div class="form-floating mb-2">
             <input class="form-control" [(ngModel)]="appRef.data.folder_name" name="hs-addData-wfs-folder"
-                placeholder="'ADDLAYERS.folderName' | translateHs: {app} " />
+                [placeholder]="'ADDLAYERS.folderName' | translateHs: {app} " />
             <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translateHs: {app} }}</label>
         </div>
         <ul class="list-group">

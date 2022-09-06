@@ -2,14 +2,14 @@
     <div class="form-floating mb-2">
         <input type="text" class="form-control" [ngStyle]="{'border-color': appRef.missingName ? '#ff0000' : '#ced4da'}"
             name="hs-save-map-name" [(ngModel)]="appRef.compoData.name" (ngModelChange)="nameChanged()"
-            placeholder="'COMMON.name' | translateHs : {app} ">
+            [placeholder]="'COMMON.name' | translateHs : {app} ">
         <label for="hs-save-map-name">{{'COMMON.name' | translateHs : {app} }} *</label>
         <span class="d-flex justify-content-end text-danger" *ngIf="appRef.missingName">{{'COMMON.required' |
             translateHs : {app} }}</span>
     </div>
     <div class="form-floating mb-2">
         <textarea class="form-control" name="hs-save-map-abstract"
-            placeholder="'COMMON.abstract' | translateHs : {app} "
+            [placeholder]="'COMMON.abstract' | translateHs : {app} "
             [ngStyle]="{'border-color': appRef.missingAbstract ? '#ff0000' : '#ced4da'}"
             [(ngModel)]="appRef.compoData.abstract" (ngModelChange)="abstractChanged()"></textarea>
         <label for="hs-save-map-abstract">{{'COMMON.abstract' | translateHs : {app} }} *</label>
@@ -18,7 +18,7 @@
     </div>
     <div class="form-floating mb-2">
         <input type="text" class="form-control" name="hs-save-map-keywords"
-            placeholder="'COMMON.keywords' | translateHs : {app} " [(ngModel)]="appRef.compoData.keywords">
+            [placeholder]="'COMMON.keywords' | translateHs : {app} " [(ngModel)]="appRef.compoData.keywords">
         <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs : {app} }}</label>
     </div>
     <label class="form-group">{{'COMMON.thumbnail' | translateHs : {app} }}
@@ -110,14 +110,14 @@
     <div class="form">
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.name" name="hs-savemap-userdata-name"
-                placeholder="'SAVECOMPOSITION.form.person' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.person' | translateHs : {app} ">
             <label for="hs-savemap-userdata-name">{{'SAVECOMPOSITION.form.person' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.organization"
                 name="hs-savemap-userdata-organization"
-                placeholder="'SAVECOMPOSITION.form.organization' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.organization' | translateHs : {app} ">
             <label for="hs-savemap-userdata-porganizationosition"> {{'SAVECOMPOSITION.form.organization' |
                 translateHs : {app} }}</label>
         </div>
@@ -125,51 +125,53 @@
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.position"
                 name="hs-savemap-userdata-position"
-                placeholder="'SAVECOMPOSITION.form.position' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.position' | translateHs : {app} ">
             <label for="hs-savemap-userdata-position">{{'SAVECOMPOSITION.form.position' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.address"
-                name="hs-savemap-userdata-address" placeholder="'SAVECOMPOSITION.form.address' | translateHs : {app} ">
+                name="hs-savemap-userdata-address"
+                [placeholder]="'SAVECOMPOSITION.form.address' | translateHs : {app} ">
             <label for="hs-savemap-userdata-address">{{'SAVECOMPOSITION.form.address' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.city" name="hs-savemap-userdata-city"
-                placeholder="'SAVECOMPOSITION.form.city' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.city' | translateHs : {app} ">
             <label for="hs-savemap-userdata-city">{{'SAVECOMPOSITION.form.city' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.state" name="hs-savemap-userdata-state"
-                placeholder="'SAVECOMPOSITION.form.state' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.state' | translateHs : {app} ">
             <label for="hs-savemap-userdata-state">{{'SAVECOMPOSITION.form.state' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.postalCode"
                 name="hs-savemap-userdata-postalcode"
-                placeholder="'SAVECOMPOSITION.form.postalCode' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.postalCode' | translateHs : {app} ">
             <label for="hs-savemap-userdata-postalcode">{{'SAVECOMPOSITION.form.postalCode' | translateHs : {app}
                 }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.country"
-                name="hs-savemap-userdata-country" placeholder="'SAVECOMPOSITION.form.country' | translateHs : {app} ">
+                name="hs-savemap-userdata-country"
+                [placeholder]="'SAVECOMPOSITION.form.country' | translateHs : {app} ">
             <label for="hs-savemap-userdata-country">{{'SAVECOMPOSITION.form.country' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.phone" name="hs-savemap-userdata-phone"
-                placeholder="'SAVECOMPOSITION.form.phone' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.phone' | translateHs : {app} ">
             <label for="hs-savemap-userdata-phone">{{'SAVECOMPOSITION.form.phone' | translateHs : {app} }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="appRef.userData.email" name="hs-savemap-userdata-email"
-                placeholder="'SAVECOMPOSITION.form.email' | translateHs : {app} ">
+                [placeholder]="'SAVECOMPOSITION.form.email' | translateHs : {app} ">
             <label for="hs-savemap-userdata-email"> {{'SAVECOMPOSITION.form.email' | translateHs : {app} }}</label>
         </div>
     </div>

@@ -12,7 +12,7 @@
       <div class="modal-body" style="overflow-y:auto">
         <div class="form-floating m-2">
           <input class="form-control" name="name" [(ngModel)]="newLayerName"
-            placeholder="'COMMON.name' | translateHs : data" (keyup)="handleKeyUp($event)" />
+            [placeholder]="'COMMON.name' | translateHs : data" (keyup)="handleKeyUp($event)" />
           <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translateHs : {app:
             data.app}
             }}</label>
