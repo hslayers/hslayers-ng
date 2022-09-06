@@ -8,7 +8,7 @@
   </div>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-    (changes)="emitChange()" label="{{'STYLER.textColor' | translateHs: this}}"></hs-symbolizer-color-picker>
+    (changes)="emitChange()" [label]="'STYLER.textColor' | translateHs: this"></hs-symbolizer-color-picker>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.font' | translateHs: this}}:</div>
@@ -75,14 +75,14 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05"
-    min="0" max="1" label="{{'STYLER.opacity' | translateHs: this"
-    warning="{{'STYLER.warningAttribNotStoredVisualized' | translateHs: this}}"></hs-symbolizer-slider>
+    min="0" max="1" [label]="'STYLER.opacity' | translateHs: this"
+    warning="{{'STYLER.warningAttribNotStoredVisualized' | translateHs: this"></hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="haloColor" (changes)="emitChange()"
-    label="{{'STYLER.haloColor' | translateHs: this}}"></hs-symbolizer-color-picker>
+    [label]="'STYLER.haloColor' | translateHs: this"></hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="haloWidth" (changes)="emitChange()" step="1"
-    min="0" max="20" label="{{'STYLER.haloWidth' | translateHs: this"></hs-symbolizer-slider>
+    min="0" max="20" [label]="'STYLER.haloWidth' | translateHs: this"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.offsetX' | translateHs: this}}:</div>
@@ -101,7 +101,7 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="rotate" (changes)="emitChange()" step="1"
-    min="0" max="360" label="{{'STYLER.rotation' | translateHs: this}}"></hs-symbolizer-slider>
+    min="0" max="360" [label]="'STYLER.rotation' | translateHs: this"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translateHs: this}}:</div>

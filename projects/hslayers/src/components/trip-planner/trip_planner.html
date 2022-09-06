@@ -3,11 +3,11 @@
   </hs-panel-header>
   <div class="card-body">
     <hs-trip-planner-layer-selector usage="route" [app]="data.app"
-      label="{{'TRIP_PLANNER.routerLayer' | translateHs : {app: data.app} }}"
+      [label]="'TRIP_PLANNER.routerLayer' | translateHs : {app: data.app} "
       [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.route">
     </hs-trip-planner-layer-selector>
     <hs-trip-planner-layer-selector usage="waypoints" [app]="data.app"
-      label="{{'TRIP_PLANNER.waypointLayer' | translateHs : {app: data.app} }}"
+      [label]="'TRIP_PLANNER.waypointLayer' | translateHs : {app: data.app} "
       [selectedwrapper]="HsTripPlannerService.apps[data.app].selectedLayerWrapper.waypoints">
     </hs-trip-planner-layer-selector>
 
@@ -21,7 +21,9 @@
         <img [hidden]="!waypoint.loading" [src]="configRef._ajaxLoaderPath" />
       </div>
       <div class="p-1" style="height: 1.7em">
-        <div style="margin-top: 1em">{{ formatDistance(waypoint) }}<!-- TODO: Remove function call from template --></div>
+        <div style="margin-top: 1em">{{ formatDistance(waypoint) }}
+          <!-- TODO: Remove function call from template -->
+        </div>
       </div>
       <div class="p-1">
         <a class="p-1" (click)="HsTripPlannerService.removeWaypoint(waypoint, data.app)" data-toggle="tooltip"
@@ -34,7 +36,8 @@
       {{'TRIP_PLANNER.waypointDrawingHint' | translateHs : {app: data.app} }}
     </div>
     <br />
-    <a (click)="HsTripPlannerService.clearAll(data.app)">{{'TRIP_PLANNER.clearWaypoints' | translateHs : {app: data.app} }}</a>
+    <a (click)="HsTripPlannerService.clearAll(data.app)">{{'TRIP_PLANNER.clearWaypoints' | translateHs : {app: data.app}
+      }}</a>
     <br />
     <div class="d-flex flex-row">
       <div class="p-1 flex-grow-1">
