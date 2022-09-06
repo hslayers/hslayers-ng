@@ -22,7 +22,8 @@
         <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs : {app} }}</label>
     </div>
     <label class="form-group">{{'COMMON.thumbnail' | translateHs : {app} }}
-        <img class="hs-stc-thumbnail img-thumbnail" alt="Composition thumbnail" width="256" height="256">
+        <img class="hs-stc-thumbnail img-thumbnail" [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs : {app}"
+            width="256" height="256">
     </label>
     <hs-layman-access-rights *ngIf="endpoint?.type === 'layman'" [app]="app"
         [(access_rights)]="appRef.compoData.access_rights">

@@ -624,7 +624,8 @@
       "loading": "Notiek pieejamo laiku iegūšana..."
     },
     "toggleAllLayerVisibility": "Pārslēgt visu slāņu redzamību",
-    "User generated": "Lietotāja ģenerēti"
+    "User generated": "Lietotāja ģenerēti",
+    "basemapThumbnail": "Pamatkartes sīktēls"
   },
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
@@ -831,7 +832,8 @@
     },
     "writeAccessRights": "Rakstīšanas piekļuves tiesības",
     "everyone": "Visi",
-    "perUser": "Atsevišķiem lietotājiem"
+    "perUser": "Atsevišķiem lietotājiem",
+    "compositionThumbnail": "Kompozīcijas sīktēls"
   },
   "SENSORS": {
     "1D": "1d",

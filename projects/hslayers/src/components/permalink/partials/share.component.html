@@ -85,7 +85,8 @@
 
                 <div class="form-group">
                     <label class="control-label">{{'COMMON.thumbnail' | translateHs : {app: data.app} }}</label>
-                    <img class="img-thumbnail hs-permalink-thumbnail" alt="Thumbnail" width="256" height="256">
+                    <img class="img-thumbnail hs-permalink-thumbnail"
+                        [alt]="'COMMON.thumbnail' | translateHs : {app: data.app}" width="256" height="256">
                 </div>
             </fieldset>
         </div>

@@ -624,7 +624,8 @@
       "loading": "Fetching available times ..."
     },
     "toggleAllLayerVisibility": "Toggle visibility of all layers",
-    "User generated": "User generated"
+    "User generated": "User generated",
+    "basemapThumbnail": "Basemap thumbnail"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",
@@ -831,7 +832,8 @@
     },
     "writeAccessRights": "Write access rights",
     "perUser": "Per user",
-    "everyone": "Everyone"
+    "everyone": "Everyone",
+    "compositionThumbnail": "Composition thumbnail"
   },
   "SENSORS": {
     "1D": "1D",
