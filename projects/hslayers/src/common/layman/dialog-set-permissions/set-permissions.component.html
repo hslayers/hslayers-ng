@@ -5,7 +5,7 @@
         <h4 class="modal-title">{{'COMMON.selectAndSavePermissions' | translateHs: {app:
           data.app} }}: {{data.selectedRecord.name}}</h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+          [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
         </button>
       </div>
       <div class="modal-body" style="overflow-y:auto">

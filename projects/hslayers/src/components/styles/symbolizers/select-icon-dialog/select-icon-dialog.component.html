@@ -4,14 +4,16 @@
       <div class="modal-header d-flex flex-column">
         <div class="d-flex w-100 align-items-center">
           <h4 class="modal-title">{{'STYLER.selectIcon' | translateHs : {app: data.app} }}</h4>
-          <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}">
+          <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
+            [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
           </button>
         </div>
       </div>
       <div class="modal-body" style="max-height: 400px; overflow-y: auto">
         <div class="d-flex flex-wrap">
-          <div *ngFor="let icon of hsConfig.get(data.app).symbolizerIcons" [ngClass]="{'bg-primary': data.selectedIcon === icon}"
-            class="p-1" (click)="iconSelected(icon)"><!-- TODO: Remove function call from template -->
+          <div *ngFor="let icon of hsConfig.get(data.app).symbolizerIcons"
+            [ngClass]="{'bg-primary': data.selectedIcon === icon}" class="p-1" (click)="iconSelected(icon)">
+            <!-- TODO: Remove function call from template -->
             <img [src]="icon.url" />
           </div>
         </div>

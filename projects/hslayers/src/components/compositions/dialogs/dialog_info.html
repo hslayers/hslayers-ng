@@ -3,10 +3,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{data.info.title}} <span>{{'COMPOSITIONS.dialogInfo.details' | translateHs: {app: data.app} }}</span>
+                    {{data.info.title}} <span>{{'COMPOSITIONS.dialogInfo.details' | translateHs: {app: data.app}
+                        }}</span>
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">

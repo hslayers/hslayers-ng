@@ -2,18 +2,18 @@
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
     (changes)="emitChange()" label="{{'STYLER.color' | translateHs : {app} }}"></hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05" min="0"
-    max="1" label="{{'STYLER.opacity' | translateHs : {app} }}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05"
+    min="0" max="1" label="{{'STYLER.opacity' | translateHs : {app} }}"></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="width" (changes)="emitChange()" step="0.1" min="0" max="20"
-    label="{{'STYLER.width' | translateHs : {app} }}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="width" (changes)="emitChange()" step="0.1"
+    min="0" max="20" label="{{'STYLER.width' | translateHs : {app} }}"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row flex-wrap">
     <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translateHs : {app} }}:</div>
     <input class="form-control me-1 form-select-sm" style="width: 3em"
       *ngFor="let dash of symbolizer.dasharray; let i = index" [ngModelOptions]="{standalone: true}"
       [(ngModel)]="symbolizer.dasharray[i]" (change)="emitChange()" />
-    <div class="btn-group" role="group" attr.aria-label="{{'STYLER.dashPattern' | translateHs : {app} }}">
+    <div class="btn-group" role="group" [attr.aria-label]="'STYLER.dashPattern' | translateHs : {app} ">
       <button class="btn btn-outline-primary btn-sm" (click)="addDashItem()">
         <span class="icon-plus"></span>
       </button>
@@ -23,8 +23,9 @@
     </div>
   </div>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="blur" (changes)="emitChange()" step="0.1" min="0" max="20"
-    label="{{'STYLER.blur' | translateHs : {app} }}" warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="blur" (changes)="emitChange()" step="0.1"
+    min="0" max="20" label="{{'STYLER.blur' | translateHs : {app} }}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">
   </hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
@@ -37,8 +38,8 @@
     </div>
   </div>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="gapWidth" (changes)="emitChange()" step="1" min="0"
-    max="10" label="{{'STYLER.gapWidth' | translateHs : {app} }}"
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="gapWidth" (changes)="emitChange()" step="1"
+    min="0" max="10" label="{{'STYLER.gapWidth' | translateHs : {app} }}"
     warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
@@ -51,27 +52,29 @@
     </div>
   </div>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="miterLimit" (changes)="emitChange()" step="1" min="0"
-    max="90" label="{{'STYLER.miterLimit' | translateHs : {app} }}"
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="miterLimit" (changes)="emitChange()" step="1"
+    min="0" max="90" label="{{'STYLER.miterLimit' | translateHs : {app} }}"
     warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="perpendicularOffset" (changes)="emitChange()" step="1"
-    min="0" max="20" label="{{'STYLER.perpendicularOffset' | translateHs : {app} }}"
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="perpendicularOffset" (changes)="emitChange()"
+    step="1" min="0" max="20" label="{{'STYLER.perpendicularOffset' | translateHs : {app} }}"
     warning="{{'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="roundLimit" (changes)="emitChange()" step="1" min="0"
-    max="90" label="{{'STYLER.roundLimit' | translateHs : {app} }}"
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="roundLimit" (changes)="emitChange()" step="1"
+    min="0" max="90" label="{{'STYLER.roundLimit' | translateHs : {app} }}"
     warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="spacing" (changes)="emitChange()" step="1" min="0" max="20"
-    label="{{'STYLER.spacing' | translateHs : {app} }}" warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="spacing" (changes)="emitChange()" step="1"
+    min="0" max="20" label="{{'STYLER.spacing' | translateHs : {app} }}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">
   </hs-symbolizer-slider>
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1 mt-2">
       {{'STYLER.graphicFill' | translateHs : {app} }}:
     </div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} }}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
       <div ngbDropdown #graphicLineMenu="ngbDropdown" class="d-inline-block" placement="top-right">
         <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
@@ -90,18 +93,19 @@
   </div>
 
   <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
-  (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
-</hs-mark-symbolizer>
+    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
+  </hs-mark-symbolizer>
 
-<hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
-  (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
-</hs-icon-symbolizer>
+  <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
+    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
+  </hs-icon-symbolizer>
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1 mt-2">
       {{'STYLER.graphicStroke' | translateHs : {app} }}:
     </div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} }}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
       <div ngbDropdown #graphicStrokeMenu="ngbDropdown" class="d-inline-block" placement="top-right">
         <button class="btn btn-outline-primary btn-sm" id="dropdownAddStrokeSymbolizer" ngbDropdownToggle>
@@ -119,8 +123,9 @@
     </div>
   </div>
 
-  <hs-mark-symbolizer (remove)="symbolizer.graphicStroke = undefined" [app]="app" [symbolizer]="symbolizer.graphicStroke"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.mark">
+  <hs-mark-symbolizer (remove)="symbolizer.graphicStroke = undefined" [app]="app"
+    [symbolizer]="symbolizer.graphicStroke" (changes)="emitChange()"
+    *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.mark">
   </hs-mark-symbolizer>
 
   <hs-icon-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"

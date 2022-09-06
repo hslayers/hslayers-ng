@@ -1,22 +1,25 @@
 <form class="form">
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="color" opacityAttribute="opacity"
-    (changes)="opacityFix(); emitChange()" label="{{'STYLER.fillColor' | translateHs : {app} }}"></hs-symbolizer-color-picker>
+    (changes)="opacityFix(); emitChange()" label="{{'STYLER.fillColor' | translateHs : {app} }}">
+  </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="opacityFix(); emitChange()" step="0.05"
-    min="0" max="1" label="{{'STYLER.opacity' | translateHs : {app} }}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="opacityFix(); emitChange()"
+    step="0.05" min="0" max="1" label="{{'STYLER.opacity' | translateHs : {app} }}"></hs-symbolizer-slider>
 
-  <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="outlineColor" opacityAttribute="outlineOpacity"
-    (changes)="emitChange()" label="{{'STYLER.outlineColor' | translateHs : {app} }}"></hs-symbolizer-color-picker>
+  <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="outlineColor"
+    opacityAttribute="outlineOpacity" (changes)="emitChange()" label="{{'STYLER.outlineColor' | translateHs : {app} }}">
+  </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="outlineOpacity" (changes)="emitChange()" step="0.05"
-    min="0" max="1" label="{{'STYLER.outlineOpacity' | translateHs : {app} }}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="outlineOpacity" (changes)="emitChange()"
+    step="0.05" min="0" max="1" label="{{'STYLER.outlineOpacity' | translateHs : {app} }}"></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="outlineWidth" (changes)="emitChange()" step="0.1" min="0"
-    max="20" label="{{'STYLER.outlineWidth' | translateHs : {app} }}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="outlineWidth" (changes)="emitChange()"
+    step="0.1" min="0" max="20" label="{{'STYLER.outlineWidth' | translateHs : {app} }}"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translateHs : {app} }}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} }}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
       <div ngbDropdown #graphicFillMenu="ngbDropdown" class="d-inline-block" placement="top-right">
         <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
@@ -30,9 +33,11 @@
     </div>
   </div>
 
-  <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill" (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
-    </hs-mark-symbolizer>
-  
-  <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill" (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
-    </hs-icon-symbolizer>
+  <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
+    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
+  </hs-mark-symbolizer>
+
+  <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
+    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
+  </hs-icon-symbolizer>
 </form>

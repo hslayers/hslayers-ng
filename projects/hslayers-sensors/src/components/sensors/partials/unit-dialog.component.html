@@ -5,10 +5,11 @@
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
                 <h4 class="modal-title">
-                    {{'SENSORS.sensorUnit' | translateHs: {app: data.app} }} {{getUnitDescription()}}<!-- TODO: Remove function call from template -->
+                    {{'SENSORS.sensorUnit' | translateHs: {app: data.app} }} {{getUnitDescription()}}
+                    <!-- TODO: Remove function call from template -->
                 </h4>
                 <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}"></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} "></button>
             </div>
             <div class="modal-body" style="max-height: 260px; overflow-y: auto">
                 <div class="container-fluid">
@@ -36,7 +37,8 @@
             <div class="modal-footer" style="padding: 0.2rem 0.3rem;">
                 <div class="d-flex w-100">
                     <div class="m-1">
-                        <div class="btn-group" role="group"><!-- TODO: Remove function call from template -->
+                        <div class="btn-group" role="group">
+                            <!-- TODO: Remove function call from template -->
                             <button type="button" class="btn btn-"
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
                                 (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"

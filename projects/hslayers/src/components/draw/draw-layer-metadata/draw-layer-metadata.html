@@ -7,7 +7,7 @@
                         {{'COMMON.newDrawingLayer' | translateHs: {app: data.app} }}
                     </h4>
                     <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
-                        attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+                        [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
                     </button>
                 </div>
                 <p class="m-0 p-0" style="font-size: small; color: red;">
