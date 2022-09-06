@@ -13,7 +13,7 @@
             </p>
             <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
                 <ngb-accordion [closeOthers]="true" #acc="ngbAccordion" (panelChange)="beforeChange($event)">
-                    <ngb-panel [disabled]="!servicesLoaded" id="{{service.id}}" *ngFor="let service of data.services">
+                    <ngb-panel [disabled]="!servicesLoaded" [id]="service.id" *ngFor="let service of data.services">
                         <ng-template ngbPanelHeader>
                             <button ngbPanelToggle *ngIf="service.loaded; else loadingLayers"
                                 class="accordion-button justify-content-between">{{service.title}}

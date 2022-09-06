@@ -27,7 +27,7 @@
                             class="icon-download"></i></button>
                     <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
                         <a class="dropdown-item" *ngFor="let format of exportFormats"
-                            download="{{format.name}}_file.{{format.ext}}" [hsDownload]="format.serializedData"
+                            [download]="format.name + '_file.' + format.ext" [hsDownload]="format.serializedData"
                             [mimeType]="format.mimeType" [href]="format.downloadData"
                             (downloadPrepared)="format.downloadData = $event">
                             {{format.name}}</a>

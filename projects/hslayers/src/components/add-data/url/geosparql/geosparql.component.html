@@ -8,17 +8,19 @@
 
   <div *ngIf="showDetails">
     <hr class="mb-3">
-      <div class="form-floating mb-3">
-        <textarea class="form-control" id='hs-ows-abstract'
-          [placeholder]="'ADDLAYERS.GEOSPARQL.fillInQuery' | translateHs : {app} " name="query" [(ngModel)]="data.query"
-          (input)="findParamsInQuery()">
+    <div class="form-floating mb-3">
+      <textarea class="form-control" id='hs-ows-abstract'
+        [placeholder]="'ADDLAYERS.GEOSPARQL.fillInQuery' | translateHs : {app} " name="query" [(ngModel)]="data.query"
+        (input)="findParamsInQuery()">
         </textarea>
-        <label for="query" class="capabilities_label control-label">{{'COMMON.query' | translateHs : {app} }}</label>
-      </div>
+      <label for="query" class="capabilities_label control-label">{{'COMMON.query' | translateHs : {app} }}</label>
+    </div>
 
     <div class="mb-3">
       <p class="text-secondary" [hidden]="data.properties === undefined || data.properties.length === 0">
-        {{'ADDLAYERS.GEOSPARQL.pickGeomParamPt1' | translateHs: {app} }} <strong>{{'ADDLAYERS.GEOSPARQL.pickGeomParamName' | translateHs: {app} }}</strong> {{'ADDLAYERS.GEOSPARQL.pickGeomParamPt2' | translateHs: {app} }}
+        {{'ADDLAYERS.GEOSPARQL.pickGeomParamPt1' | translateHs: {app} }}
+        <strong>{{'ADDLAYERS.GEOSPARQL.pickGeomParamName' | translateHs: {app} }}</strong>
+        {{'ADDLAYERS.GEOSPARQL.pickGeomParamPt2' | translateHs: {app} }}
       </p>
       <ng-container *ngFor="let variable of data.properties">
         <input type="radio" class="btn-check" name="variables" id="var-geom-{{variable}}" autocomplete="off"
@@ -32,7 +34,8 @@
 
     <div class="mb-3">
       <p class="text-secondary" [hidden]="data.properties === undefined || data.properties.length === 0">
-        {{'ADDLAYERS.GEOSPARQL.pickIdParamPt1' | translateHs: {app} }} <strong>{{'ADDLAYERS.GEOSPARQL.pickIdParamName' | translateHs: {app} }}</strong> {{'ADDLAYERS.GEOSPARQL.pickIdParamPt2' | translateHs: {app} }}
+        {{'ADDLAYERS.GEOSPARQL.pickIdParamPt1' | translateHs: {app} }} <strong>{{'ADDLAYERS.GEOSPARQL.pickIdParamName' |
+          translateHs: {app} }}</strong> {{'ADDLAYERS.GEOSPARQL.pickIdParamPt2' | translateHs: {app} }}
       </p>
       <ng-container *ngFor="let variable of data.properties">
         <input type="radio" class="btn-check" name="variables" id="var-id-{{variable}}" autocomplete="off"
@@ -46,8 +49,8 @@
 
     <hs-new-layer-form [data]="data" [app]="app"></hs-new-layer-form>
 
-    <button class="btn btn-primary w-100 mt-2" [disabled]="!(data.geomProperty && data.idProperty && data.title)" (click)="add()"><i
-        class="icon-plus"></i>
+    <button class="btn btn-primary w-100 mt-2" [disabled]="!(data.geomProperty && data.idProperty && data.title)"
+      (click)="add()"><i class="icon-plus"></i>
       {{'COMMON.add' | translateHs: {app} }}
     </button>
   </div>

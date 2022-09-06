@@ -57,8 +57,8 @@
                     class="icon-calcplus"></i></button>
             <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
-                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button"
-                    (click)="toggleEditMenu()"><i class="icon-settingsthree-gears"></i></button>
+                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
+                        class="icon-settingsthree-gears"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
                     <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
                         translateHs : {app} }}</a>
@@ -71,7 +71,7 @@
                     (click)="toggleExportMenu(app)" [title]="'QUERY.downloadAs' | translateHs : {app} "><i
                         class="icon-download"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
-                    <a class="dropdown-item" download="{{format.name}}_file.{{format.ext}}"
+                    <a class="dropdown-item" [download]="format.name + '_file.' + format.ext"
                         [hsDownload]="format.serializedData" [mimeType]="format.mimeType" [href]="format.downloadData"
                         (downloadPrepared)="format.downloadData = $event"
                         *ngFor="let format of exportFormats">{{format.name}}</a>

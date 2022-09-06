@@ -100,7 +100,7 @@
                         <ul class="list-group w-100">
                             <li *ngFor="let layer of appRef.drawableLaymanLayers" class="clearfix"
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
-                                <b><a data-toggle="tooltip" title="{{layer.description}}">{{layer.title}}</a></b>
+                                <b><a data-toggle="tooltip" [title]="layer.description">{{layer.title}}</a></b>
                                 <span class="float-right">
                                     <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
                                         data-toggle="tooltip"
