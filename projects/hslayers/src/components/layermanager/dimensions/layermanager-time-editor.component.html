@@ -14,11 +14,11 @@
     </div>&nbsp;<span class="text-muted">{{'LAYERMANAGER.time.loading'| translateHs: {app} }}</span>
   </ng-template>
   <ng-template #outOfRange>
-    <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body"
-    data-placement="auto" [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs : {app} "
-    [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
-    {{'LAYERMANAGER.time.outOfRange' | translateHs : {app} }}
-  </span>
+    <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
+      [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs : {app} "
+      [closeDelay]="hsConfig.get(app).layerTooltipDelay || 0">
+      {{'LAYERMANAGER.time.outOfRange' | translateHs : {app} }}
+    </span>
   </ng-template>
   <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime" (change)="selectTime();hideTimeSelect();"
     (blur)="hideTimeSelect()">
@@ -33,7 +33,7 @@
 <div class="p-0">
   <button type="button" class="btn btn-sm px-0"
     [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
-    title="{{'LAYERMANAGER.time.syncTimesTooltip' | translateHs : {app} }}">
+    [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs : {app} ">
     <i class="glyphicon icon-timeline"></i>
     <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs : {app} }}</span>
   </button>

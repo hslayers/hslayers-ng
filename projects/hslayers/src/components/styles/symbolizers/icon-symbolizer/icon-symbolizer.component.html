@@ -5,16 +5,17 @@
       <div class="input-group mb-3">
         <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.image"
           (change)="emitChange()" />
-          <button class="btn btn-outline-secondary" (click)="showIconSelector()" type="button">
-            ...
-          </button>
+        <button class="btn btn-outline-secondary" (click)="showIconSelector()" type="button">
+          ...
+        </button>
       </div>
     </div>
   </div>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translateHs : {app} }}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select form-select-sm" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -26,22 +27,23 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.opacity' | translateHs : {app} }}:</div>
     <div class="p-1 w-75">
-      <input type="range" class="w-100" step="0.05" min="0" max="1" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.opacity"
-        (change)="emitChange()" />
+      <input type="range" class="w-100" step="0.05" min="0" max="1" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.opacity" (change)="emitChange()" />
     </div>
   </div>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.size' | translateHs : {app} }}:</div>
     <div class="p-1 w-75">
-      <input type="range" class="w-100" step="0.2" min="0.1" max="10" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.size"
-        (change)="emitChange()" />
+      <input type="range" class="w-100" step="0.2" min="0.1" max="10" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.size" (change)="emitChange()" />
     </div>
   </div>
 
   <div class="d-flex flex-row" *ngIf="symbolizer.offset !== undefined">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchorX' | translateHs : {app} }}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1 w-75">
       <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.offset[0]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
@@ -51,7 +53,8 @@
 
   <div class="d-flex flex-row" *ngIf="symbolizer.offset !== undefined">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchorY' | translateHs : {app} }}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1 w-75">
       <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.offset[1]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
@@ -61,8 +64,8 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.rotation' | translateHs : {app} }}:</div>
     <div class="p-1 w-75">
-      <input type="range" class="w-100" step="1" min="0" max="360" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.rotate"
-        (change)="emitChange()" />
+      <input type="range" class="w-100" step="1" min="0" max="360" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.rotate" (change)="emitChange()" />
     </div>
   </div>
 </form>

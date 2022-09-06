@@ -6,12 +6,13 @@
                     {{'SAVECOMPOSITION.dialogResult.savingCompositionStatus' | translateHs : {app: data.app} }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}">
+                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
                 </button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="alert alert-status" [hidden]="!appRef.statusData.status">
-                    {{'SAVECOMPOSITION.dialogResult.compositionSavedSuccessfully' | translateHs : {app: data.app} }}</div>
+                    {{'SAVECOMPOSITION.dialogResult.compositionSavedSuccessfully' | translateHs : {app: data.app} }}
+                </div>
                 <div class="alert alert-danger" [hidden]="!!appRef.statusData.status">
                     {{'SAVECOMPOSITION.dialogResult.compositionFailedToSave' | translateHs : {app: data.app} }}</div>
                 <div class="alert alert-danger"
@@ -39,9 +40,11 @@
                 [ngClass]="{'justify-content-between' : appRef.statusData.resultCode === 'exists' }">
                 <div *ngIf="!appRef.statusData.status && appRef.statusData.resultCode === 'exists'">
                     <button type="button" class="btn btn-primary"
-                        (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs : {app: data.app} }}</button>
+                        (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs : {app: data.app}
+                        }}</button>
                     <button type="button" class="btn btn-primary ms-2"
-                        (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translateHs : {app: data.app} }}</button>
+                        (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translateHs : {app: data.app}
+                        }}</button>
                 </div>
                 <button type="button" class="btn btn-primary" (click)="close()" data-dismiss="modal">{{'COMMON.close' |
                     translateHs : {app: data.app} }}</button>

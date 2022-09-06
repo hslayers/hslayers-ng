@@ -6,7 +6,7 @@
                     {{'ADDLAYERS.capabilitiesParsingProblem' | translateHs : {app: data.app} }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}"></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} "></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <p>{{'ADDLAYERS.ERROR.thereWasErrorWhile' | translateHs : {app: data.app} }}</p>

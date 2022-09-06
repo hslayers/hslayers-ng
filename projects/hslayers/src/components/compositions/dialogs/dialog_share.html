@@ -6,7 +6,7 @@
                     <span>{{'COMPOSITIONS.dialogShare.shareMap' | translateHs: {app: data.app} }}</span> {{data.title}}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">

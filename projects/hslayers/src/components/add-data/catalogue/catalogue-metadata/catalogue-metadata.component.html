@@ -5,13 +5,15 @@
                 <h4 class="modal-title">
                     {{'DATASOURCE_SELECTOR.metadataFor' | translateHs: {app: data.app} }} {{ selectedLayer.title}}
                 </h4>
-                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}"></button>
+                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
+                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} "></button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
                 <ng-container *ngFor="let key of selectedLayerKeys">
                     <dl *ngIf="key!=='feature'">
                         <dt>{{key}}</dt>
-                        <hs-widgets-recursive-dd [value]="selectedLayer[key]" [app]="data.app"></hs-widgets-recursive-dd>
+                        <hs-widgets-recursive-dd [value]="selectedLayer[key]" [app]="data.app">
+                        </hs-widgets-recursive-dd>
                     </dl>
                 </ng-container>
             </div>
@@ -29,7 +31,8 @@
                 <div *ngIf="selectedDS.type === 'layman'">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
-                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs: {app: data.app} }}
+                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs: {app:
+                            data.app} }}
                             {{type}}</span>
                     </button>
                 </div>

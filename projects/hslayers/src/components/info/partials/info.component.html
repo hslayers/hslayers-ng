@@ -6,10 +6,13 @@
                 <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
             </div>
             <div class="hs-info-composition-container" *ngIf="!composition_edited">
-                <div class="hs-info-composition-title" title="{{'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs : {app: data.app} }}">{{'INFOCOMPONENT.newMap' | translateHs : {app: data.app} }}</div>
+                <div class="hs-info-composition-title"
+                    [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs : {app: data.app} ">
+                    {{'INFOCOMPONENT.newMap' | translateHs : {app: data.app} }}</div>
             </div>
             <div class="hs-info-composition-container" *ngIf="composition_edited">
-                <div class="hs-info-composition-title">{{'INFOCOMPONENT.unsavedMap' | translateHs : {app: data.app} }}</div>
+                <div class="hs-info-composition-title">{{'INFOCOMPONENT.unsavedMap' | translateHs : {app: data.app} }}
+                </div>
                 <div class="hs-info-composition-abstract" [hidden]="!!(!layer_loading.length && composition_edited)">
                     {{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs : {app: data.app} }}</div>
             </div>

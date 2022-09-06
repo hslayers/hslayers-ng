@@ -13,8 +13,8 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.font' | translateHs: this}}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-select-sm form-select" (change)="emitChange()" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font"
-        multiple>
+      <select class="form-control form-select-sm form-select" (change)="emitChange()"
+        [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font" multiple>
         <option *ngFor="let font of fonts" [ngValue]="font">{{font}}</option>
       </select>
     </div>
@@ -30,7 +30,8 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.justify' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs: this}}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.justify" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -41,7 +42,8 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.transform' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs: this}}">!</span>
+    <span class="badge bg-warning mt-2"
+      [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.transform" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -52,7 +54,7 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.fontStyle' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translateHs: this}}">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontStyle" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -63,49 +65,47 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.fontWeight' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translateHs: this}}">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
-      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontWeight" (change)="emitChange()"
-        [ngModelOptions]="{standalone: true}">
+      <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontWeight"
+        (change)="emitChange()" [ngModelOptions]="{standalone: true}">
         <option *ngFor="let fontWeight of fontWeights">{{fontWeight}}</option>
       </select>
     </div>
   </div>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05" min="0"
-    max="1" label="{{'STYLER.opacity' | translateHs: this}}"
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05"
+    min="0" max="1" label="{{'STYLER.opacity' | translateHs: this"
     warning="{{'STYLER.warningAttribNotStoredVisualized' | translateHs: this}}"></hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="haloColor" (changes)="emitChange()"
     label="{{'STYLER.haloColor' | translateHs: this}}"></hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="haloWidth" (changes)="emitChange()" step="1" min="0"
-    max="20" label="{{'STYLER.haloWidth' | translateHs: this}}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="haloWidth" (changes)="emitChange()" step="1"
+    min="0" max="20" label="{{'STYLER.haloWidth' | translateHs: this"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.offsetX' | translateHs: this}}:</div>
     <div class="p-1 w-75">
-      <input class="w-100" type="range" step="1" min="-40" max="40"
-        [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.offset[0]" *ngIf="symbolizer.offset !== undefined"
-        (change)="emitChange()" />
+      <input class="w-100" type="range" step="1" min="-40" max="40" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.offset[0]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
     </div>
   </div>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.offsetY' | translateHs: this}}:</div>
     <div class="p-1 w-75">
-      <input class="w-100" type="range" step="1" min="-40" max="40"
-        [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.offset[1]" *ngIf="symbolizer.offset !== undefined"
-        (change)="emitChange()" />
+      <input class="w-100" type="range" step="1" min="-40" max="40" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.offset[1]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
     </div>
   </div>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="rotate" (changes)="emitChange()" step="1" min="0" max="360"
-    label="{{'STYLER.rotation' | translateHs: this}}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="rotate" (changes)="emitChange()" step="1"
+    min="0" max="360" label="{{'STYLER.rotation' | translateHs: this}}"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" title="{{'STYLER.warningAttribStoredNotVisualized' | translateHs: this}}">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">

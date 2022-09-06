@@ -3,9 +3,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{'COMPOSITIONS.cswDialog.loadComposition' | translateHs: {app: data.app} }}
-                    </h4>
+                </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
                 </button>
             </div>
             <p class="py-3 text-danger m-auto w-75 ps-3">

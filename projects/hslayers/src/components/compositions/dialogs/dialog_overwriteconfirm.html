@@ -2,26 +2,30 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{{'COMPOSITIONS.dialogoverwriteConfirm.overwriteExistingMap' | translateHs: {app: data.app} 
+                <h4 class="modal-title">{{'COMPOSITIONS.dialogoverwriteConfirm.overwriteExistingMap' | translateHs:
+                    {app: data.app}
                     }}</h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    attr.aria-label="{{'COMMON.close' | translateHs: {app: data.app} }}">
+                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 {{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translateHs: {app: data.app} }}
                 <b>{{data.composition_name_to_be_loaded}}</b>
-                <br>{{'COMPOSITIONS.dialogoverwriteConfirm.thereAreCurrentlyUnsavedChanges' | translateHs: {app: data.app} }}
+                <br>{{'COMPOSITIONS.dialogoverwriteConfirm.thereAreCurrentlyUnsavedChanges' | translateHs: {app:
+                data.app} }}
                 <br>{{'COMPOSITIONS.dialogoverwriteConfirm.whatDoYouWant' | translateHs: {app: data.app} }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="overwrite()"
                     data-dismiss="modal">{{'COMMON.continue' | translateHs: {app: data.app} }}</button>
                 <button type="button" class="btn btn-primary compositions-btn-add" (click)="add();"
-                    data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.mergeCompositions' | translateHs: {app: data.app} 
+                    data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.mergeCompositions' | translateHs: {app:
+                    data.app}
                     }}</button>
                 <button type="button" class="btn btn-primary compositions-btn-save" (click)="save()"
-                    data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.saveChangesFirst' | translateHs: {app: data.app} 
+                    data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.saveChangesFirst' | translateHs: {app:
+                    data.app}
                     }}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
                     data-dismiss="modal">{{'COMMON.cancel' | translateHs: {app: data.app} }}</button>

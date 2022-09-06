@@ -5,7 +5,7 @@
       {{appRef.layerTitle}}
     </span>
     <button type="button" class="btn-close" (click)="close()" [title]="'COMMON.close' | translateHs : data"
-      attr.aria-label="{{'COMMON.close' | translateHs : {app: data.app} }}">
+      [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
     </button>
   </div>
   <div class="card-body">
