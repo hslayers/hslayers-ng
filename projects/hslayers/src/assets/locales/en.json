@@ -958,7 +958,8 @@
     "width": "Width",
     "colorMap": "Color map",
     "unsavedChanges": "You have unsaved style changes. Make sure to save changes before leaving to preserve them",
-    "exitWithoutSave": "Exit without save"
+    "exitWithoutSave": "Exit without save",
+    "styleName": "Style name"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

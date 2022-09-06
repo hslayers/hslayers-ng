@@ -35,7 +35,7 @@
                 <form *ngIf="type === 'draw'">
                     <div class="form-floating mb-3">
                         <input class="form-control" [(ngModel)]="title" (ngModelChange)="titleChanged()" name="title"
-                            placeholder="'DRAW.drawLayerMetadata.layerTitle' | translateHs: {app: data.app} " />
+                            [placeholder]="'DRAW.drawLayerMetadata.layerTitle' | translateHs: {app: data.app} " />
                         <label for="title" class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' |
                             translateHs: {app: data.app} }}</label>
 
@@ -52,7 +52,7 @@
                             [title]="'DRAW.drawLayerMetadata.nameOfFolder' | translateHs: {app: data.app} ">
                             <input class="form-control" [(ngModel)]="path" (ngModelChange)="pathChanged()" name="path"
                                 [placeholder]="'COMMON.folder' | translateHs: {app: data.app} " />
-                            <label for="path" class="control-label">{{'COMMON.folder' | translateHs: {app: data.app} 
+                            <label for="path" class="control-label">{{'COMMON.folder' | translateHs: {app: data.app}
                                 }}</label>
                         </div>
                         <div class="card">
@@ -103,7 +103,8 @@
                                 <b><a data-toggle="tooltip" title="{{layer.description}}">{{layer.title}}</a></b>
                                 <span class="float-right">
                                     <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
-                                        data-toggle="tooltip" [title]="'ADDLAYERS.WFS.addToMap' | translateHs: {app: data.app} "><i
+                                        data-toggle="tooltip"
+                                        [title]="'ADDLAYERS.WFS.addToMap' | translateHs: {app: data.app} "><i
                                             class="icon-plus"></i></button>
                                 </span>
                             </li>

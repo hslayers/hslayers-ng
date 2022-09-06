@@ -1,6 +1,6 @@
 <div class="form-floating mb-2">
   <input type="text" class="form-control" id="imprint-author" [(ngModel)]="imprintObj.author"
-    placeholder="'COMMON.author' | translateHs : {app} " />
+    [placeholder]="'COMMON.author' | translateHs : {app} " />
   <label for="imprint-author" class="control-label">{{'COMMON.author' | translateHs : {app} }}</label>
 </div>
 <div class="form-floating mb-2">

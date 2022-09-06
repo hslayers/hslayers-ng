@@ -1,7 +1,7 @@
 <div class="hs-advanced-options">
   <div class="form-floating mb-3">
     <input class="form-control" name="folder" [(ngModel)]="data.folder_name"
-      placeholder="'ADDLAYERS.folderName' | translateHs : {app} " />
+      [placeholder]="'ADDLAYERS.folderName' | translateHs : {app} " />
     <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translateHs : {app}
       }}</label>
   </div>

@@ -958,7 +958,8 @@
     "pleaseEnterMax": "Lūdzu, ievadiet maksimālo vērtību",
     "pleaseEnterMin": "Lūdzu, ievadiet minimālo vērtību",
     "exitWithoutSave": "Iziet nesaglabājot",
-    "unsavedChanges": "Jums ir nesaglabātas stila izmaiņas. Lūdzu, pirms iziešanas tās saglabājiet!"
+    "unsavedChanges": "Jums ir nesaglabātas stila izmaiņas. Lūdzu, pirms iziešanas tās saglabājiet!",
+    "styleName": "Stila nosaukums"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"

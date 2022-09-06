@@ -9,8 +9,8 @@
     </button>
   </div>
   <div class="card-body">
-    <input class="form-control" *ngIf="appRef.styleObject" type="text" placeholder="Style name"
-      [(ngModel)]="appRef.styleObject.name" />
+    <input class="form-control" *ngIf="appRef.styleObject" type="text"
+      [placeholder]="'STYLER.styleName' | translateHs : data" [(ngModel)]="appRef.styleObject.name" />
     <div class="d-flex flex-row justify-content-end">
       <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs : {app: data.app} }}:</div>
       <div class="p-1">

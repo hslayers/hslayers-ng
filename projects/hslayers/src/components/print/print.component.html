@@ -11,8 +11,9 @@
         <div class="card-body">
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="print-title" [(ngModel)]="print.titleObj.text"
-                    placeholder="'COMMON.title' | translateHs : {app: data.app} " />
-                <label for="print-title" class="control-label">{{'COMMON.title' | translateHs : {app: data.app} }}</label>
+                    [placeholder]="'COMMON.title' | translateHs : {app: data.app} " />
+                <label for="print-title" class="control-label">{{'COMMON.title' | translateHs : {app: data.app}
+                    }}</label>
             </div>
             <div class="d-flex justify-content-around mb-2">
                 <div class="form-check border-0">
@@ -49,29 +50,33 @@
                 (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
                 {{'PRINT.titleStylingOptions' | translateHs : {app: data.app} }}
             </button>
-            <hs-print-text-styler *ngIf="getStylerVisible('title')" [app]="data.app" [textStyle]="print.titleObj.textStyle"
-                [objectName]="'title'"><!-- TODO: Remove function call from template -->
+            <hs-print-text-styler *ngIf="getStylerVisible('title')" [app]="data.app"
+                [textStyle]="print.titleObj.textStyle" [objectName]="'title'">
+                <!-- TODO: Remove function call from template -->
             </hs-print-text-styler>
             <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.legendStylingOptions' | translateHs : {app: data.app} }}
             </button>
             <hs-print-legend-styler *ngIf="getStylerVisible('legend') && print.legendObj.include" [app]="data.app"
-                [legendObj]="print.legendObj"><!-- TODO: Remove function call from template -->
+                [legendObj]="print.legendObj">
+                <!-- TODO: Remove function call from template -->
             </hs-print-legend-styler>
             <button [disabled]="!print.imprintObj.include" type="button" (click)="setStylerVisible('imprint')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.imprintStylingOptions' | translateHs : {app: data.app} }}
             </button>
             <hs-print-imprint-styler *ngIf="getStylerVisible('imprint') && print.imprintObj.include" [app]="data.app"
-                [imprintObj]="print.imprintObj"><!-- TODO: Remove function call from template -->
+                [imprintObj]="print.imprintObj">
+                <!-- TODO: Remove function call from template -->
             </hs-print-imprint-styler>
             <button [disabled]="!print.scaleObj.include" type="button" (click)="setStylerVisible('scale')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.scaleStylingOptions' | translateHs : {app: data.app} }}
             </button>
             <hs-print-scale-styler *ngIf="getStylerVisible('scale') && print.scaleObj.include" [app]="data.app"
-                [scaleObj]="print.scaleObj"><!-- TODO: Remove function call from template -->
+                [scaleObj]="print.scaleObj">
+                <!-- TODO: Remove function call from template -->
             </hs-print-scale-styler>
             <div class="mb-2 mt-2 d-flex justify-content-start" *ngIf="!isLoading()">
                 <button type="button" class="btn btn-primary me-2 w-50" (click)="printLayout(true)">{{'COMMON.print' |
@@ -79,11 +84,12 @@
                 <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
                     translateHs : {app: data.app} }}</button>
                 <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
-                    [title]="'COMMON.downloadAsPng' | translateHs : {app: data.app}"><i class="icon-download"></i></button>
+                    [title]="'COMMON.downloadAsPng' | translateHs : {app: data.app}"><i
+                        class="icon-download"></i></button>
             </div>
             <div class="d-flex justify-content-center btn-group w-75 m-auto" *ngIf="isLoading()">
-                <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs : {app: data.app} }}...<img class="ms-2"
-                        [src]="configRef._ajaxLoaderPath" /></button>
+                <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs : {app: data.app}
+                    }}...<img class="ms-2" [src]="configRef._ajaxLoaderPath" /></button>
                 <button class="btn btn-secondary" (click)="cancelLoading()">&#10006;
                 </button>
             </div>
