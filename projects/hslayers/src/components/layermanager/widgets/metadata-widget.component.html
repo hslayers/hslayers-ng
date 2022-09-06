@@ -3,7 +3,7 @@
     <!-- Metadata -->
     <div class="pt-2">
       <a class="card-href" *ngFor="let metadataUrl of metadataService.metadataArray((layerDescriptor | async))"
-        href="{{ metadataUrl.onlineResource }}" target="_blank" [title]="'COMMON.metadata' | translateHs : data">
+        [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translateHs : data">
         <span [hidden]="!metadataUrl.type">
           {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : {app: data.app} }}
           {{ metadataUrl.type }}
@@ -15,7 +15,7 @@
     </div>
     <!-- Copyright -->
     <div *ngIf="hasCopyright((layerDescriptor | async))">
-      <a class="card-href" href="{{ getAttribution((layerDescriptor | async).layer).onlineResource }}" target="_blank"
+      <a class="card-href" [hre="getAttribution((layerDescriptor | async).layer).onlineResource" target="_blank"
         [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs : data">
         {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : {app: data.app} }}</a>
     </div>

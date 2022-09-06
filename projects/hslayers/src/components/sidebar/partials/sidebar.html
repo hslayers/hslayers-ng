@@ -11,15 +11,16 @@
     <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item" [attr.data-cy]="button.panel"
         [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button, app)"
         [ngClass]="{'active': layoutAppRef.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
-        title="{{button.description | translateHs: {app} }}"><!-- TODO: Remove function call from template -->
+        [title]="button.description | translateHs: {app}">
+        <!-- TODO: Remove function call from template -->
         <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
             data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
-            title="{{button.description | translateHs: {app} }}">{{button.content()}}</span>
-        <span [ngStyle]="{'margin-left' : button.panel === 'language' ? '14px' : '20px'}" 
+            [title]="button.description | translateHs: {app} ">{{button.content()}}</span>
+        <span [ngStyle]="{'margin-left' : button.panel === 'language' ? '14px' : '20px'}"
             class="hs-sidebar-item-title">{{button.title | translateHs: {app} }}</span>
     </span>
-<!-- TODO: Remove function call from template -->
+    <!-- TODO: Remove function call from template -->
     <span class="hs-sidebar-item  list-group-item" *ngIf="layoutAppRef.minisidebar"
         (click)="HsLayoutService.setMainPanel('sidebar', app, true)"
         [ngClass]="{'active': layoutAppRef.mainpanel === 'sidebar'}">

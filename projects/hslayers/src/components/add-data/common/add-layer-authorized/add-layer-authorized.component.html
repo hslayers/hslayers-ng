@@ -1,5 +1,5 @@
 <div class="w-100 mt-2" style="display: inline-block;" data-toggle="tooltip" data-placement="top"
-  title="{{hsAddDataCommonFileService.getToolTipText(data, app)}}">
+  [title]="hsAddDataCommonFileService.getToolTipText(data, app)">
   <!-- TODO: Remove function call from template -->
   <button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100"
     [disabled]="!data.name || !data.srs" (click)="addAsWms()">

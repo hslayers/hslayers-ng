@@ -31,10 +31,10 @@
         <div class="nav nav-pills" [hidden]="!hasBoxImages()">
             <div *ngFor="let box of appRef.data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
                 style="padding-right: 2px; padding-left: 2px;">
-                <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" title="{{getTitle(box)}}"
+                <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" [title]="getTitle(box)"
                     (click)="activateTheme(box)">
                     <!-- TODO: Remove function call from template -->
-                    <img [src]="box.thumbnail" alt="{{getTitle(box)}}"><!-- TODO: Remove function call from template -->
+                    <img [src]="box.thumbnail" [alt]="getTitle(box)"><!-- TODO: Remove function call from template -->
                 </a>
             </div>
         </div>
@@ -59,7 +59,7 @@
                 </div>
             </li>
             <li class="list-group-item hs-lm-item" *ngFor="let layer of appRef.data.baselayers | filter:baselayerFilter"
-                [ngClass]="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" id="{{layer.idString()}}">
+                [ngClass]="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" [id]="layer.idString()">
                 <div class="d-flex">
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"

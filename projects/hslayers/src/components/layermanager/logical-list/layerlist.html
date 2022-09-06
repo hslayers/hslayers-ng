@@ -1,16 +1,19 @@
 <div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
-    <ul class="list-group row"><!-- TODO: Remove function call from template -->
-        <li *ngFor="let layer of filtered_layers | filter:layerFilter" id="{{layer.idString()}}"
+    <ul class="list-group row">
+        <!-- TODO: Remove function call from template -->
+        <li *ngFor="let layer of filtered_layers | filter:layerFilter" [id]="layer.idString()"
             class="list-group-item hs-lm-item"
             [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed === true}">
             <div class="d-flex">
-                <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''"><!-- TODO: Remove function call from template -->
+                <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''">
+                    <!-- TODO: Remove function call from template -->
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                         (click)="hsLayerManagerService.changeLayerVisibility(!layer.visible, layer, app);hsLayerListService.toggleSublayersVisibility(layer,app);$event.stopPropagation()"
                         [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
                 <ng-template #abstractTooltip>
-                    <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, app)"></span>
+                    <span
+                        [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract, app)"></span>
                 </ng-template>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
                     (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings', app)"
@@ -30,19 +33,20 @@
 
                 <div class="p-0 " [hidden]="layerValid(layer)">
                     <i class="icon-warning-sign hs-lm-warning-scale"
-                        [title]="'LAYERMANAGER.layerList.noAvailableInScale' | translateHs : {app} " data-toggle="tooltip"
-                        data-container="body" data-placement="auto" [hidden]="!layer.grayed"
+                        [title]="'LAYERMANAGER.layerList.noAvailableInScale' | translateHs : {app} "
+                        data-toggle="tooltip" data-container="body" data-placement="auto" [hidden]="!layer.grayed"
                         (click)="$event.stopPropagation()"></i>
                 </div>
                 <div class="p-0" [hidden]="!layerValid(layer)">
                     <i class="icon-warning-sign alert-danger bg-white hs-lm-warning-error"
-                        [title]="'LAYERMANAGER.layerList.layerNotAvailable' | translateHs : {app} " data-toggle="tooltip"
-                        data-container="body" data-placement="auto" (click)="$event.stopPropagation()"></i>
-                </div>
-                <div class="p-0" [hidden]="!getHsLaymanSynchronizing(layer.layer)">
-                    <i class="icon-cloudaltsync" [title]="'LAYERMANAGER.layerList.sendingToLayman' | translateHs : {app} "
+                        [title]="'LAYERMANAGER.layerList.layerNotAvailable' | translateHs : {app} "
                         data-toggle="tooltip" data-container="body" data-placement="auto"
                         (click)="$event.stopPropagation()"></i>
+                </div>
+                <div class="p-0" [hidden]="!getHsLaymanSynchronizing(layer.layer)">
+                    <i class="icon-cloudaltsync"
+                        [title]="'LAYERMANAGER.layerList.sendingToLayman' | translateHs : {app} " data-toggle="tooltip"
+                        data-container="body" data-placement="auto" (click)="$event.stopPropagation()"></i>
                 </div>
                 <div class="p-0" [hidden]="!hsLayerListService.isLayerQueryable(layer)">
                     <i class="icon-info-sign hs-lm-queryable"
@@ -56,7 +60,8 @@
                         data-placement="auto"></span>
                 </div>
             </div>
-            <hs-layermanager-time-editor [layer]="layer" class="d-flex" [app]="app" *ngIf="showLayerWmsT(layer)"><!-- TODO: Remove function call from template -->
+            <hs-layermanager-time-editor [layer]="layer" class="d-flex" [app]="app" *ngIf="showLayerWmsT(layer)">
+                <!-- TODO: Remove function call from template -->
             </hs-layermanager-time-editor>
         </li>
     </ul>

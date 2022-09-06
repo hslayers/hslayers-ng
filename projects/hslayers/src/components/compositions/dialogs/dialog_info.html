@@ -30,7 +30,7 @@
                 <div class="row" *ngIf="data.info.thumbnail">
                     <div class="col-md-3"><b>{{'COMMON.thumbnail' | translateHs: {app: data.app} }}</b></div>
                     <div class="col-md-9"><img
-                            src="{{data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail}}"></div>
+                            [src]="data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail"></div>
                 </div>
                 <div class="row" *ngIf="data.info.url && data.info">
                     <div class="col-md-3"><b>{{'COMMON.url' | translateHs: {app: data.app} }}</b></div>

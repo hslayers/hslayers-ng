@@ -21,7 +21,7 @@
             <hr>
 
             <fieldset class="form-group">
-                <label class="mb-2" style="font-size: 1.5em;" for="{{'share-link-' + data.app}}">{{'PERMALINK.linkFor' |
+                <label class="mb-2" style="font-size: 1.5em;" [for]="'share-link-' + data.app">{{'PERMALINK.linkFor' |
                     translateHs : {app: data.app} }}&nbsp;<span [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
                         translateHs : {app: data.app} }}/</span>{{'PERMALINK.socialShare' | translateHs : {app:
                     data.app} }}
