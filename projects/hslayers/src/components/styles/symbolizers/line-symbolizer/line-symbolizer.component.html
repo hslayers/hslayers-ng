@@ -1,12 +1,12 @@
 <form class="form">
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-    (changes)="emitChange()" label="{{'STYLER.color' | translateHs : {app} }}"></hs-symbolizer-color-picker>
+    (changes)="emitChange()" [label]="'STYLER.color' | translateHs : {app} "></hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05"
-    min="0" max="1" label="{{'STYLER.opacity' | translateHs : {app} }}"></hs-symbolizer-slider>
+    min="0" max="1" [label]="'STYLER.opacity' | translateHs : {app} "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="width" (changes)="emitChange()" step="0.1"
-    min="0" max="20" label="{{'STYLER.width' | translateHs : {app} }}"></hs-symbolizer-slider>
+    min="0" max="20" [label]="'STYLER.width' | translateHs : {app} "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row flex-wrap">
     <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translateHs : {app} }}:</div>
@@ -24,7 +24,7 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="blur" (changes)="emitChange()" step="0.1"
-    min="0" max="20" label="{{'STYLER.blur' | translateHs : {app} }}"
+    min="0" max="20" [label]="'STYLER.blur' | translateHs : {app} "
     warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">
   </hs-symbolizer-slider>
 
@@ -39,8 +39,8 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="gapWidth" (changes)="emitChange()" step="1"
-    min="0" max="10" label="{{'STYLER.gapWidth' | translateHs : {app} }}"
-    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
+    min="0" max="10" [label]="'STYLER.gapWidth' | translateHs : {app} "
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.join' | translateHs : {app} }}:</div>
@@ -53,20 +53,20 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="miterLimit" (changes)="emitChange()" step="1"
-    min="0" max="90" label="{{'STYLER.miterLimit' | translateHs : {app} }}"
-    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
+    min="0" max="90" [label]="'STYLER.miterLimit' | translateHs : {app} "
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="perpendicularOffset" (changes)="emitChange()"
-    step="1" min="0" max="20" label="{{'STYLER.perpendicularOffset' | translateHs : {app} }}"
-    warning="{{'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
+    step="1" min="0" max="20" [label]="'STYLER.perpendicularOffset' | translateHs : {app} "
+    warning="{{'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="roundLimit" (changes)="emitChange()" step="1"
-    min="0" max="90" label="{{'STYLER.roundLimit' | translateHs : {app} }}"
-    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}"></hs-symbolizer-slider>
+    min="0" max="90" [label]="'STYLER.roundLimit' | translateHs : {app} "
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="spacing" (changes)="emitChange()" step="1"
-    min="0" max="20" label="{{'STYLER.spacing' | translateHs : {app} }}"
-    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} }}">
+    min="0" max="20" [label]="'STYLER.spacing' | translateHs : {app} "
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translateHs : {app} ">
   </hs-symbolizer-slider>
 
   <div class="d-flex flex-row justify-content-end">
