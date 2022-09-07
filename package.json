@@ -63,7 +63,7 @@
     "geostyler-sld-parser": "^4.0.0",
     "geostyler-style": "^6.0.0",
     "jszip": "^3.10.1",
-    "ngx-color": "^8.0.2",
+    "ngx-color": "^8.0.3",
     "ngx-cookie-service": "^14.0.1",
     "ol": "^6.15.1",
     "ol-ext": "^3.2.30",
