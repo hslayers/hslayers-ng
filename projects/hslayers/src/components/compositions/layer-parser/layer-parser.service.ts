@@ -88,6 +88,7 @@ export class HsCompositionsLayerParserService {
       properties: {
         title: lyr_def.title,
         info_format: lyr_def.info_format,
+        base: lyr_def.base,
       },
     });
 

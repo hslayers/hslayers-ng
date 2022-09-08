@@ -737,6 +737,7 @@ export class HsCompositionsParserService {
         return;
     }
     if (resultLayer) {
+      resultLayer = await resultLayer; //createWMTSLayer returns Promise which need to be resolved first
       setMetadata(resultLayer, lyr_def.metadata);
       setSwipeSide(resultLayer, lyr_def.swipeSide);
     }
