@@ -227,7 +227,7 @@ export class HsCompositionsLayerParserService {
       opacity: lyr_def.opacity || 1,
       source,
     };
-    const new_layer = new lyr_def.singleTile()
+    const new_layer = lyr_def.singleTile
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
       : new Tile(layerOptions as TileOptions<TileSource>);
 
