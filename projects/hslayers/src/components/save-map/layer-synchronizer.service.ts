@@ -53,7 +53,7 @@ export class HsLayerSynchronizerService {
     const layerAdded = (e) => this.addLayer(e.element, app);
     map.getLayers().on('add', layerAdded);
     map.getLayers().on('remove', (e) => {
-      this.removeLayer(e.element);
+      this.removeLayer(e.element as VectorLayer<VectorSource>);
     });
     map.getLayers().forEach((lyr) => {
       layerAdded({

@@ -7,6 +7,7 @@ import {Source} from 'ol/source';
 import {DOMFeatureLink} from './dom-feature-link.type';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
+import BaseLayer from 'ol/layer/Base';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
@@ -287,7 +288,7 @@ export function setDomFeatureLinks(
   layer.set(DOM_FEATURE_LINKS, domFeatureLinks);
 }
 
-export function getDomFeatureLinks(layer: Layer<Source>): DOMFeatureLink[] {
+export function getDomFeatureLinks(layer: BaseLayer): DOMFeatureLink[] {
   return layer.get(DOM_FEATURE_LINKS);
 }
 
@@ -580,7 +581,7 @@ export function setShowInLayerManager(
   layer.set(SHOW_IN_LAYER_MANAGER, showInLayerManager);
 }
 
-export function getShowInLayerManager(layer: Layer<Source>): boolean {
+export function getShowInLayerManager(layer: BaseLayer): boolean {
   return layer.get(SHOW_IN_LAYER_MANAGER);
 }
 
