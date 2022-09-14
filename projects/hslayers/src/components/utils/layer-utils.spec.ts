@@ -158,9 +158,7 @@ describe('HsLayerUtilsService', () => {
       'https://openlayers.org/en/latest/examples/wmts.html'
     );
     layerUrl = hsLayerUtils.getURL(tileOSMLayer);
-    expect(layerUrl).toEqual(
-      'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    );
+    expect(layerUrl).toEqual('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
   });
   it('check if layer is in LayerManager', () => {
     setShowInLayerManager(tileWMTSLayer, true);
