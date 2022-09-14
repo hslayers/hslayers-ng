@@ -46,7 +46,7 @@ class HsLayerUtilsServiceMock {
 describe('HsStyler', () => {
   const layer = new VectorLayer({
     properties: {title: 'Point'},
-    source: new VectorSource({
+    source: new VectorSource<Point | Polygon>({
       features: [
         new Feature({geometry: new Point([0, 0]), name: 'test'}),
         new Feature({
