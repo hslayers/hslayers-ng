@@ -620,7 +620,7 @@ export class HsLayerManagerService {
    * @private
    * @param e - Events emitted by ol.Collection instances are instances of this type.
    */
-  layerRemoved(e: CollectionEvent, app: string): void {
+  layerRemoved(e: CollectionEvent<Layer>, app: string): void {
     this.cleanFolders(e.element, app);
     for (let i = 0; i < this.apps[app].data.layers.length; i++) {
       if (this.apps[app].data.layers[i].layer == e.element) {

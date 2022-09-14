@@ -181,7 +181,7 @@ export class HsCesiumLayersService {
     const map = await this.HsMapService.loaded(app);
     map.getLayers().on('add', (e) => {
       const lyr = e.element;
-      this.processOlLayer(lyr, app);
+      this.processOlLayer(lyr as Layer, app);
     });
   }
 

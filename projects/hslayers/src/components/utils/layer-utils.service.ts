@@ -19,6 +19,7 @@ import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
+import BaseLayer from 'ol/layer/Base';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsMapService} from '../map/map.service';
@@ -228,11 +229,17 @@ export class HsLayerUtilsService {
    * @param layer - Selected layer
    * @returns True for Vector layer
    */
-  isLayerVectorLayer(layer: Layer<Source>): boolean {
+  isLayerVectorLayer(layer: BaseLayer): boolean {
     if (
       this.HsUtilsService.instOf(layer, VectorLayer) &&
-      (this.HsUtilsService.instOf(layer.getSource(), Cluster) ||
-        this.HsUtilsService.instOf(layer.getSource(), VectorSource))
+      (this.HsUtilsService.instOf(
+        (layer as VectorLayer<VectorSource>).getSource(),
+        Cluster
+      ) ||
+        this.HsUtilsService.instOf(
+          (layer as VectorLayer<VectorSource>).getSource(),
+          VectorSource
+        ))
     ) {
       return true;
     }

@@ -1,3 +1,4 @@
+import BaseLayer from 'ol/layer/Base';
 import Map from 'ol/Map';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Layer} from 'ol/layer';
@@ -124,7 +125,7 @@ export class HsLegendComponent
    * Remove selected layer from legend items
    * @param layer - Layer to remove from legend
    */
-  removeLayerFromLegends(layer: Layer<Source>): void {
+  removeLayerFromLegends(layer: BaseLayer): void {
     for (let i = 0; i < this.layerDescriptors.length; i++) {
       if (this.layerDescriptors[i].lyr == layer) {
         this.layerDescriptors.splice(i, 1);

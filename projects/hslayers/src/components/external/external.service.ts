@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 
+import BaseLayer from 'ol/layer/Base';
 import Feature from 'ol/Feature';
 import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
-import {Map} from 'ol';
 import {ObjectEvent} from 'ol/Object';
 import {Source} from 'ol/source';
+import {getCenter} from 'ol/extent';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';
 import {
@@ -17,7 +18,6 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryPopupService} from '../query/query-popup.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getCenter} from 'ol/extent';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
@@ -52,7 +52,7 @@ export class HsExternalService {
     map.getLayers().on('remove', (e) => this.layerRemoved(e.element));
   }
 
-  layerRemoved(layer: Layer<Source>): void {
+  layerRemoved(layer: BaseLayer): void {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       for (const key of Object.keys(this.featureLinks)) {
         const link = this.featureLinks[key];
@@ -64,10 +64,10 @@ export class HsExternalService {
     }
   }
 
-  layerAdded(layer: Layer<Source>, app: string): void {
+  layerAdded(layer: BaseLayer, app: string): void {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (getDomFeatureLinks(layer)) {
-        this.processLinks(layer, app);
+        this.processLinks(layer as Layer, app);
       }
       layer.on('propertychange', (e) => {
         this.hsUtilsService.debounce(
