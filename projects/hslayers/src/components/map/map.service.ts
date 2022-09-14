@@ -74,6 +74,7 @@ class AppData {
   /* This is a hacky solution so map would always have some layer. 
   Otherwise some weird rendering problems appear in multi-apps mode  */
   placeholderOsm: Layer<Source>;
+  defaultDesktopControls: any;
 }
 
 const proj4 = projx.default ?? projx;
@@ -261,7 +262,7 @@ export class HsMapService {
    * @param app - App identifier
    * @param defaultDesktopControls - Default controls
    */
-  createDefaultViewButton(app: string, defaultDesktopControls): void {
+  async createDefaultViewButton(app: string): Promise<void> {
     const rendered = this.apps[app].renderer;
     const button = rendered.createElement('button');
     button.addEventListener(
@@ -280,11 +281,10 @@ export class HsMapService {
     rendered.addClass(this.element, 'hs-defaultView');
     rendered.addClass(this.element, 'ol-unselectable');
     rendered.addClass(this.element, 'ol-control');
-
     rendered.setAttribute(
       this.element,
       'title',
-      this.hsLanguageService.getTranslation(
+      await this.hsLanguageService.awaitTranslation(
         'MAP.zoomToInitialWindow',
         undefined,
         app
@@ -296,7 +296,7 @@ export class HsMapService {
     const defaultViewControl = new Control({
       element: this.element,
     });
-    defaultDesktopControls.push(defaultViewControl);
+    this.getMap(app).addControl(defaultViewControl);
   }
 
   /**
@@ -352,16 +352,14 @@ export class HsMapService {
       const defaultMobileControls = controlDefaults({
         zoom: false,
       });
-      const defaultDesktopControls = controlDefaults({
+      const controls = controlDefaults({
         attributionOptions: {
           collapsible: true,
           collapsed: true,
         },
       });
-      defaultDesktopControls.removeAt(1);
-      defaultDesktopControls.push(new ScaleLine());
-
-      const controls = defaultDesktopControls;
+      controls.removeAt(1);
+      controls.push(new ScaleLine());
       const placeholderOsm = new Tile({
         source: new OSM(),
         visible: true,
@@ -385,6 +383,7 @@ export class HsMapService {
         map,
         renderer: this.rendererFactory.createRenderer(null, null),
         featureLayerMapping: {},
+        defaultDesktopControls: controls,
       };
       const view = map.getView();
       this.originalView = {
@@ -404,15 +403,12 @@ export class HsMapService {
         this.extentChanged(e, app);
       });
 
-      setTimeout(() => {
-        //make sure translations are loaded
-        if (
-          this.hsConfig.get(app).componentsEnabled?.defaultViewButton &&
-          this.hsConfig.get(app).componentsEnabled?.guiOverlay != false
-        ) {
-          this.createDefaultViewButton(app, defaultDesktopControls);
-        }
-      }, 500);
+      if (
+        this.hsConfig.get(app).componentsEnabled?.defaultViewButton &&
+        this.hsConfig.get(app).componentsEnabled?.guiOverlay != false
+      ) {
+        this.createDefaultViewButton(app);
+      }
     }
 
     const interactions = {

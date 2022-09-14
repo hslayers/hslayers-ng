@@ -13,6 +13,7 @@ import {Injectable} from '@angular/core';
 import {Observable, forkJoin, from, lastValueFrom, map} from 'rxjs';
 
 export class WebpackTranslateLoader implements TranslateLoader {
+  loaded = {};
   constructor(public HsConfig: HsConfig, private HttpClient: HttpClient) {}
 
   /**
@@ -57,6 +58,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
                 `${hsConfig.get(app).assetsPath}/locales/${lang}.json`
               )
             );
+            this.loaded[lang] = true;
             resolve(res);
           })();
         })

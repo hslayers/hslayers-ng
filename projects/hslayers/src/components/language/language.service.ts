@@ -3,7 +3,10 @@ import {Inject, Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
-import {CustomTranslationService as HsCustomTranslationService} from './custom-translate.service';
+import {
+  CustomTranslationService as HsCustomTranslationService,
+  WebpackTranslateLoader,
+} from './custom-translate.service';
 
 const DEFAULT_LANG = 'en' as const;
 
@@ -125,7 +128,20 @@ export class HsLanguageService {
     params?: any,
     app: string = 'default'
   ): Promise<string> {
-    return await lastValueFrom(this.getTranslator(app).get(str, params));
+    const translator = this.getTranslator(app);
+    const lang = translator.currentLang.includes('|')
+      ? translator.currentLang.split('|')[1]
+      : translator.currentLang;
+    const MAX_CONFIG_POLLS = 10;
+    let counter = 0;
+    while (
+      !(translator.currentLoader as WebpackTranslateLoader).loaded[lang] &&
+      counter++ < MAX_CONFIG_POLLS
+    ) {
+      await new Promise((resolve2) => setTimeout(resolve2, 500));
+    }
+    const value = await lastValueFrom(translator.get(str, params));
+    return value;
   }
 
   /**
