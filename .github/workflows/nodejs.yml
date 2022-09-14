@@ -19,7 +19,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
       run: |
-        npm ci
+        npm ci --force
         npm run build
         npm run build-app
         npm run build-sensors
