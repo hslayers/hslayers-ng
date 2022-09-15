@@ -98,7 +98,6 @@ export class HsMapService {
    * Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    */
   duration = 400;
-  element: any;
   visible: boolean;
   /** Copy of the default_view for map resetting purposes */
   originalView: {center: number[]; zoom: number; rotation: number};
@@ -277,12 +276,12 @@ export class HsMapService {
     rendered.addClass(icon, 'glyphicon');
     rendered.addClass(icon, 'icon-globe');
 
-    this.element = rendered.createElement('div');
-    rendered.addClass(this.element, 'hs-defaultView');
-    rendered.addClass(this.element, 'ol-unselectable');
-    rendered.addClass(this.element, 'ol-control');
+    const element = rendered.createElement('div');
+    rendered.addClass(element, 'hs-defaultView');
+    rendered.addClass(element, 'ol-unselectable');
+    rendered.addClass(element, 'ol-control');
     rendered.setAttribute(
-      this.element,
+      element,
       'title',
       await this.hsLanguageService.awaitTranslation(
         'MAP.zoomToInitialWindow',
@@ -292,9 +291,9 @@ export class HsMapService {
     );
 
     rendered.appendChild(button, icon);
-    rendered.appendChild(this.element, button);
+    rendered.appendChild(element, button);
     const defaultViewControl = new Control({
-      element: this.element,
+      element,
     });
     this.getMap(app).addControl(defaultViewControl);
   }
@@ -307,13 +306,16 @@ export class HsMapService {
    */
   setDefaultView = function (e, app): void {
     const appRef = this.hsConfig.get(app);
+    let viewToSet;
     if (!appRef.default_view) {
-      return;
+      viewToSet = this.createPlaceholderView();
+    } else {
+      viewToSet = appRef.default_view;
     }
     const mapRef = this.getMap(app);
-    const center = appRef.default_view?.getCenter();
+    const center = viewToSet?.getCenter();
     mapRef.getView().setCenter(center);
-    const zoom = appRef.default_view?.getZoom();
+    const zoom = viewToSet?.getZoom();
     mapRef.getView().setZoom(zoom);
   };
   /**
