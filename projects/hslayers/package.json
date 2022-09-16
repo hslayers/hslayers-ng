@@ -41,7 +41,7 @@
     "geostyler-sld-parser": "^3.0.0",
     "geostyler-qgis-parser": "^1.0.0",
     "geostyler-style": "^5.0.0",
-    "geostyler-legend": "^2.1.0",
+    "geostyler-legend": "^2.1.0, ^3.0.0",
     "jszip": "^3.7.1",
     "ngx-color": "^7.0.0",
     "ngx-cookie-service": "^14.0.0",
