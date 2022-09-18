@@ -75,6 +75,9 @@ class AppData {
   Otherwise some weird rendering problems appear in multi-apps mode  */
   placeholderOsm: Layer<Source>;
   defaultDesktopControls: any;
+  visibleLayersInUrl?: string[];
+  permalink?: string;
+  externalCompositionId?: string;
 }
 
 const proj4 = projx.default ?? projx;
@@ -88,7 +91,6 @@ export class HsMapService {
   } = {
     default: new AppData(),
   };
-  visibleLayersInUrl: string[];
   //timer variable for extent change event
   timer = null;
   puremap: any;
@@ -512,7 +514,7 @@ export class HsMapService {
       });
     }
 
-    this.repopulateLayers(this.visibleLayersInUrl, app);
+    this.repopulateLayers(this.apps[app].visibleLayersInUrl, app);
 
     proj4.defs(
       'EPSG:5514',
@@ -791,23 +793,50 @@ export class HsMapService {
   repopulateLayers(visibilityOverrides: string[], app: string): void {
     const appConfig = this.hsConfig.get(app);
     if (appConfig.box_layers) {
+      let boxLayers: Layer[] = [];
       appConfig.box_layers.forEach((box) => {
-        for (const lyr of box.getLayers().getArray() as Layer<Source>[]) {
-          this.addLayer(
-            lyr,
-            app,
-            DuplicateHandling.IgnoreNew,
-            visibilityOverrides
-          );
-        }
+        boxLayers = boxLayers.concat(
+          (box.getLayers().getArray() as Layer<Source>[]).filter(
+            (layer) => layer
+          )
+        );
       });
+      this.addLayersFromAppConfig(boxLayers, visibilityOverrides, app);
     }
 
     if (appConfig.default_layers) {
-      const layers = appConfig.default_layers.filter((lyr) => lyr);
-      if (layers.length > 0) {
+      const defaultLayers: Layer[] = appConfig.default_layers.filter(
+        (lyr) => lyr
+      );
+      if (defaultLayers.length > 0) {
         this.getMap(app).removeLayer(this.apps[app].placeholderOsm);
       }
+      this.addLayersFromAppConfig(defaultLayers, visibilityOverrides, app);
+    }
+  }
+
+  /**
+   * Add layers from app config (box_layers and default_layers)
+   * While adding check if hs-composition URL param or defaultComposition is set, if so, filter config's layers by removable property
+   * If permalink URL param is set, do not add any of config's layers.
+   * @public
+   * @param app - App identifier
+   * Get current map projection
+   * @returns Projection
+   */
+  addLayersFromAppConfig(
+    layers: Layer[],
+    visibilityOverrides: string[],
+    app: string
+  ): void {
+    const mapRef = this.apps[app];
+    if (mapRef.externalCompositionId) {
+      layers = layers.filter(
+        (layer) =>
+          getRemovable(layer) === undefined || getRemovable(layer) == true
+      );
+    }
+    if (!mapRef.permalink) {
       layers.forEach((lyr: Layer<Source>) => {
         this.addLayer(
           lyr,

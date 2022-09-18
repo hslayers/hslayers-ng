@@ -356,9 +356,7 @@ export class HsCompositionsService {
    */
   async parsePermalinkLayers(app: string): Promise<void> {
     await this.hsMapService.loaded(app);
-    const permalink = this.HsShareUrlService.getParamValue(
-      HS_PRMS.permalink
-    );
+    const permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
     if (!permalink) {
       return;
     }

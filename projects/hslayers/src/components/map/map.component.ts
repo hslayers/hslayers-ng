@@ -40,11 +40,18 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       });
   }
   ngAfterViewInit(): void {
+    const appConfig = this.HsConfig.get(this.app);
+    const mapRef = this.HsMapService.apps[this.app];
     const visibleLayersParam = this.HsShareUrlService.getParamValue(
       HS_PRMS.visibleLayers
     );
+    mapRef.permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
+    mapRef.externalCompositionId =
+      this.HsShareUrlService.getParamValue(HS_PRMS.composition) ||
+      appConfig.defaultComposition;
+
     if (visibleLayersParam) {
-      this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
+      mapRef.visibleLayersInUrl = visibleLayersParam.split(';');
     }
     this.zone.runOutsideAngular(() =>
       this.HsMapService.init(this.map.nativeElement, this.app)
@@ -64,7 +71,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     }
     if (
       this.HsShareUrlService.getParamValue(HS_PRMS.pureMap) ||
-      this.HsConfig.get(this.app).pureMap == true
+      appConfig.pureMap == true
     ) {
       this.HsCoreService.setPuremapApp(true, this.app);
     }
