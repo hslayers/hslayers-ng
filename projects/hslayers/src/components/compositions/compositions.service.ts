@@ -80,8 +80,11 @@ export class HsCompositionsService {
    * @param _app - App identifier
    */
   init(_app: string) {
-    this.tryParseCompositionFromUrlParam(_app);
-    this.parsePermalinkLayers(_app);
+    const permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
+    permalink
+      ? this.parsePermalinkLayers(permalink, _app)
+      : this.tryParseCompositionFromUrlParam(_app);
+
     if (this.hsConfig.get(_app).saveMapStateOnReload) {
       //Load composition data from cookies only if it is anticipated
       setTimeout(() => {
@@ -354,12 +357,8 @@ export class HsCompositionsService {
    * Load layers received through permalink to map
    * @param app - App identifier
    */
-  async parsePermalinkLayers(app: string): Promise<void> {
+  async parsePermalinkLayers(permalink: string, app: string): Promise<void> {
     await this.hsMapService.loaded(app);
-    const permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
-    if (!permalink) {
-      return;
-    }
     const layersUrl = this.hsUtilsService.proxify(permalink, app);
     const response: any = await lastValueFrom(this.http.get(layersUrl));
     if (response.success == true) {
