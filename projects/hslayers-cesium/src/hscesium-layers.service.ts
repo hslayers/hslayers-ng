@@ -401,7 +401,7 @@ export class HsCesiumLayersService {
       lyr.setVisible(
         this.HsMapService.layerTitleInArray(
           lyr as Layer<Source>,
-          this.HsMapService.visibleLayersInUrl
+          this.HsMapService.apps[app].visibleLayersInUrl
         ) || lyr.getVisible()
       );
       if (this.HsUtilsService.instOf(lyr, ImageLayer)) {
