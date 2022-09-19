@@ -388,6 +388,8 @@ export class HsMapService {
         renderer: this.rendererFactory.createRenderer(null, null),
         featureLayerMapping: {},
         defaultDesktopControls: controls,
+        permalink: this.apps[app].permalink,
+        externalCompositionId: this.apps[app].externalCompositionId,
       };
       const view = map.getView();
       this.originalView = {
@@ -831,10 +833,7 @@ export class HsMapService {
   ): void {
     const mapRef = this.apps[app];
     if (mapRef.externalCompositionId) {
-      layers = layers.filter(
-        (layer) =>
-          getRemovable(layer) === undefined || getRemovable(layer) == true
-      );
+      layers = layers.filter((layer) => getRemovable(layer) === false);
     }
     if (!mapRef.permalink) {
       layers.forEach((lyr: Layer<Source>) => {
