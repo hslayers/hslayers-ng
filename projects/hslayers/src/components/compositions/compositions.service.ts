@@ -85,7 +85,7 @@ export class HsCompositionsService {
       ? this.parsePermalinkLayers(permalink, _app)
       : this.tryParseCompositionFromUrlParam(_app);
 
-    if (this.hsConfig.get(_app).saveMapStateOnReload) {
+    if (this.hsConfig.get(_app).saveMapStateOnReload && !permalink) {
       //Load composition data from cookies only if it is anticipated
       setTimeout(() => {
         this.tryParseCompositionFromCookie(_app);
