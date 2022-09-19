@@ -5,9 +5,9 @@
     "find-circular": "npx madge --circular --extensions ts ./"
   },
   "peerDependencies": {
-    "ol": "^6.0.0",
+    "ol": "^7.0.0",
     "@angular/common": "^14.0.0",
-    "@angular/compiler": "14.0.0",
+    "@angular/compiler": "^14.0.0",
     "@angular/core": "^14.0.0",
     "@angular/forms": "^14.0.0",
     "@angular/localize": "^14.0.0",
@@ -17,7 +17,7 @@
     "dayjs": "^1.0.0",
     "ol-popup": "^4.0.0, ^5.0.0",
     "proj4": "^2.6.0",
-    "rxjs": "^6.0.0",
+    "rxjs": "^7.0.0",
     "vega": "^5.0.0",
     "vega-embed": "^6.0.0",
     "vega-lite": "~5.0.0"
