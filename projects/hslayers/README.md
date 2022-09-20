@@ -12,9 +12,9 @@ HSLayers-NG is a library which extends OpenLayers 6 functionality by providing a
 | 5                | 11.x                | 4.x         |
 | 6                | 12.x                | 4.x         |
 | 7                | 12.x                | 5.x         |
-| 8                | 13.x                | 5.x         |
-| 9                | 13.x                | 5.x         | ^6.14.1
-| 10               | 14.x                | 5.x         | ^6.14.1
+| 8                | 14.x                | 5.x         |
+| 9                | 14.x                | 5.x         | ^6.14.1
+| 10               | 14.x                | 5.x         | ^6.14.1, ^7.0.0
 
 ## Demo
 
@@ -40,7 +40,7 @@ It will install hslayers-ng for the default application specified in your angula
 `ng add hslayers-ng --project myProject`
 
 Add peer dependencies:
-`npm i bootstrap@^5.0.0 ol@>=6.14.1 @angular/cdk@^13 @angular/common@^13 @angular/core@^13 @angular/forms@^13 @ngx-translate/core@^14 @ngx-translate/http-loader@^7 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^12 ol-popup@^4.0.0 proj4@^2.7.0 share-api-polyfill@^1.0.0 @angular/compiler@^13.0.0 @angular/platform-browser@^13.0.0 @angular/platform-browser-dynamic@^13.0.0 @angular/localize@^13.0.0 rxjs@^7.0.0 zone.js@~0.11.4 xml-js@^1.0.0 ngx-cookie-service@^13.0.0 geostyler-style@^5 geostyler-sld-parser@^3 geostyler-openlayers-parser@^3 geostyler-legend ngx-color@^7 queue@^6 resumablejs@^1 d3@^6 geostyler-qgis-parser@^1 jszip@^3 polygon-splitter@^0.0.7 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^3`
+`npm i bootstrap@^5.0.0 ol@>=7.0.0 @angular/cdk@^14 @angular/common@^14 @angular/core@^14 @angular/forms@^14 @ngx-translate/core@^14 @ngx-translate/http-loader@^7 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^13 ol-popup@^5.0.0 proj4@^2.7.0 share-api-polyfill@^1.0.0 @angular/compiler@^14.0.0 @angular/platform-browser@^14.0.0 @angular/platform-browser-dynamic@^14.0.0 @angular/localize@^14.0.0 rxjs@^7.0.0 zone.js@~0.11.8 xml-js@^1.0.0 ngx-cookie-service@^14.0.0 geostyler-style@^7 geostyler-sld-parser@^4 geostyler-openlayers-parser@^4 geostyler-legend ngx-color@^7 queue@^6 resumablejs@^1 d3@^6 geostyler-qgis-parser@^1 jszip@^3 polygon-splitter@^0.0.7 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4`
 
 For using hslayers-ng prebuilt bundle including angular, bootstrap etc. dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 
