@@ -164,6 +164,8 @@ export class HsSensorsUnitDialogComponent
       'width': sidebarAtBot ? '100%' : `calc(${widthWithoutPanelSpace})`,
       'bottom': sidebarAtBot ? '46.5em' : '0',
       'height': sidebarAtBot ? '5em' : 'auto',
+      'background-color': 'transparent',
+      'pointer-events': 'none',
     };
   }
 
