@@ -6,7 +6,7 @@ select yn in "patch" "minor" "major" "premajor" "prerelease"; do
         minor ) TYPE="minor"; break;;
         major ) TYPE="major"; break;;
         premajor ) TYPE="premajor --preid=next"; break;;
-        prelelease ) TYPE="prerelease --preid=next --tag next"; break;;
+        prerelease ) TYPE="prerelease --preid=next --tag next"; break;;
     esac
 done
 cd projects/hslayers
