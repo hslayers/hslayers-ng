@@ -4,7 +4,12 @@ module.exports = {
   devtool: false,
   resolve: {
     fallback: {
-      fs: false
+      fs: false,
+      Buffer: false,
+      http: false,
+      https: false,
+      zlib: false,
+      url: false
     },
   },
   module: {

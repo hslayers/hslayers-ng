@@ -5,16 +5,6 @@
     "types": ["node", "cesium"],
     "target": "ES5",
     "skipLibCheck": true,
-    "paths": {
-      "@angular/*": [ "node_modules/@angular/*" ],
-      "rxjs/*": [ "node_modules/rxjs/*" ],
-      "hslayers-ng": ["projects/hslayers/src/public-api"],
-      "hslayers-ng/*": ["projects/hslayers/*", "projects/hslayers"],
-      "hslayers-cesium": ["projects/hslayers-cesium/src/public-api"],
-      "hslayers-cesium/*": ["projects/hslayers-cesium/*", "projects/hslayers-cesium"],
-      "ol/*": ["node_modules/ol/*"],
-      "cesium/*": ["node_modules/cesium/*"]
-    }
   },
   "files": [
     "src/main.ts",

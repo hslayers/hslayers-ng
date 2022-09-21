@@ -460,7 +460,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/cesium/Source/Workers",
+                "input": "./node_modules/cesium/Build/Cesium/Workers",
                 "output": "./assets/cesium/Workers"
               },
               {
@@ -620,7 +620,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/cesium/Source/Workers",
+                "input": "./node_modules/cesium/Build/Cesium/Workers",
                 "output": "./assets/cesium/Workers"
               },
               {
