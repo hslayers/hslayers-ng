@@ -243,11 +243,50 @@ export class InterpolatedSource extends IDW {
    * @param options
    */
   private setColorMapFromOptions(options: InterpolatedSourceOptions) {
+    let getColor;
     if (typeof options.colorMap == 'string') {
-      super.getColor = this.getColorMap();
+      getColor = this.getColorMap();
     } else {
-      super.getColor = options.colorMap;
+      getColor = options.colorMap;
     }
+    super.computeImage = (e) => {
+      const pts = e.data.pts;
+      const width = e.data.width;
+      const height = e.data.height;
+      const imageData = new Uint8ClampedArray(width * height * 4);
+      // Compute image
+      let x, y;
+      for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+          let t = 0,
+            b = 0;
+          for (let i = 0; i < pts.length; ++i) {
+            const dx = x - pts[i][0];
+            const dy = y - pts[i][1];
+            const d = dx * dx + dy * dy;
+
+            // Inverse distance weighting - Shepard's method
+            if (d === 0) {
+              b = 1;
+              t = pts[i][2];
+              break;
+            }
+            const inv = 1 / (d * d);
+            t += inv * pts[i][2];
+            b += inv;
+          }
+          // Set color
+          const color = getColor(t / b);
+          // Convert to RGB
+          const pos = (y * width + x) * 4;
+          imageData[pos] = color[0];
+          imageData[pos + 1] = color[1];
+          imageData[pos + 2] = color[2];
+          imageData[pos + 3] = color[3];
+        }
+      }
+      return {type: 'image', data: imageData, width: width, height: height};
+    };
     this.colorMapChanged.next();
   }
 
