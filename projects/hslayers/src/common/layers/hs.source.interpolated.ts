@@ -249,6 +249,7 @@ export class InterpolatedSource extends IDW {
     } else {
       getColor = options.colorMap;
     }
+    super.getColor = getColor;
     super.computeImage = (e) => {
       const pts = e.data.pts;
       const width = e.data.width;
