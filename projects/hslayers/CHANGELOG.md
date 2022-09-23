@@ -1,3 +1,109 @@
+# [10.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/9.2.0...10.0.0-next.1) (2022-09-23)
+
+
+### Bug Fixes
+
+* Add back missing ngIf after rebase ([c77c6a4](https://github.com/hslayers/hslayers-ng/commit/c77c6a4e4991c249f7ec8597b8c5ac781d97efe7))
+* Add time shift instead of substracting ([56bb8f1](https://github.com/hslayers/hslayers-ng/commit/56bb8f1f3b382dba505e65da4bdf1637ef009a42))
+* Async check of zip file size ([626acde](https://github.com/hslayers/hslayers-ng/commit/626acdea10f4ec1a73a096ddb4e66bc45ef53145))
+* Async chunk upload ([79ffc0d](https://github.com/hslayers/hslayers-ng/commit/79ffc0d9247e7e565b232a45c911473c50dd9686))
+* Await translations to load ([6e66a88](https://github.com/hslayers/hslayers-ng/commit/6e66a880693687662f8b332a34f472addefab5a9))
+* Check for 4236 proj. aliases when uploading geojson file ([96296ef](https://github.com/hslayers/hslayers-ng/commit/96296eff4fbf249f62f65c726a1f27c9992cfbb4))
+* Check if default_view property exists ([0867719](https://github.com/hslayers/hslayers-ng/commit/086771963dc6efb3df8adc15facd5dbbea0a4f87))
+* Check if Layman endpoint exists where needed ([8305b17](https://github.com/hslayers/hslayers-ng/commit/8305b1779e3a6f8352225115f632c8c82847ab85))
+* Correctly react to overwrite dialog actions ([fd723b5](https://github.com/hslayers/hslayers-ng/commit/fd723b557f70928659b2454f8b06a37ac6b7d292))
+* Custom color maps on ol-ext 4 IDW layers ([acc3e36](https://github.com/hslayers/hslayers-ng/commit/acc3e368e9eab29d0aca0d7474ab14170e03682a))
+* Do not call singleTile as constructor ([9738921](https://github.com/hslayers/hslayers-ng/commit/9738921166f75419d90ca9fac8d2b749a7b8779a))
+* Don't rely on package.json to fill version info in impressum ([3e181d9](https://github.com/hslayers/hslayers-ng/commit/3e181d9720c0294318fd4c286f4b45196e73ae3b))
+* Fix layman layer deletion ([f797f2c](https://github.com/hslayers/hslayers-ng/commit/f797f2c9b2ad60d303bf178534d7211754e3effc)), closes [#3114](https://github.com/hslayers/hslayers-ng/issues/3114)
+* Fixed multiple layer removal ([6a2c897](https://github.com/hslayers/hslayers-ng/commit/6a2c8971d297d4d14cba35b808fcf7b38f1ef2b6))
+* Format time by config instead of hardcoded cs ([115bc9f](https://github.com/hslayers/hslayers-ng/commit/115bc9f59bd7557640a0855fffe97b781a760718))
+* If hsConfig language property is provided, set the languageService language to it as well ([5a8c674](https://github.com/hslayers/hslayers-ng/commit/5a8c674f9d8a4c80feb400d78975f1a561ca9e52))
+* inherit parent el min-height, so the map doesn't disappear when no panel is enabled (For statistics) ([d1ac3e6](https://github.com/hslayers/hslayers-ng/commit/d1ac3e687cc4d9d954f0e77e538e097b843245dd))
+* Initialise map data permalink, visibleLayersInUrl, externalCompositionId properties ([248aa25](https://github.com/hslayers/hslayers-ng/commit/248aa25396bfc7480ef83f62da33821775afe55c))
+* Recreate permalink and externalCompositionId params when creating map service ([6138cef](https://github.com/hslayers/hslayers-ng/commit/6138cefd9d25924c7bb47bb19311d8b6c8d3a751))
+* Save getColor function also as a property to allow legend creation ([0958805](https://github.com/hslayers/hslayers-ng/commit/0958805c9245e3178f0e472450bcca2d542374ab))
+* **config:** Delete already assigned property ([b99cbeb](https://github.com/hslayers/hslayers-ng/commit/b99cbeb0a5bd764ff5bb394fa7193600159a12bc)), closes [#3309](https://github.com/hslayers/hslayers-ng/issues/3309)
+* **sensors:** Set modal dialog background ([cd2a3c5](https://github.com/hslayers/hslayers-ng/commit/cd2a3c53a9e0d6bb7f56ac85701e1f618d2aac7c))
+* Ignore wfs status, when looking for layer descriptor adding vector layers ([4463b38](https://github.com/hslayers/hslayers-ng/commit/4463b383ed6f9988cfeced0cc25c5001ef9f3404))
+* Make importing of proj4 safer ([3e9aabb](https://github.com/hslayers/hslayers-ng/commit/3e9aabb47d428b8d6d6526fd2ddf038c7dcc2958))
+* Make sure map is initiated properly before trying to fit extent ([1ffbb03](https://github.com/hslayers/hslayers-ng/commit/1ffbb03565670a2a05918d01374bde41c9c8d4ce))
+* Overwrite geojson with sld ([8caab93](https://github.com/hslayers/hslayers-ng/commit/8caab938aaf5dfa0eee0b8dd6f31823301b71e9e))
+* Prevent sidebar from opening when loading defaultComposition and config sidebarClosed is set to true ([6a81946](https://github.com/hslayers/hslayers-ng/commit/6a819463c0f17a72ad6937c4f84b8ae2abc782a8)), closes [#3149](https://github.com/hslayers/hslayers-ng/issues/3149)
+* Provide header text for file upload error ([53eb812](https://github.com/hslayers/hslayers-ng/commit/53eb812c96b862225d66e4392c9d303ee1d13c98))
+* Provide layer name from the descriptor if layer doesn't exists ([a714db6](https://github.com/hslayers/hslayers-ng/commit/a714db6b5a6a59b5308e35d9daf5d2d880e763d6))
+* Saving of attribute value when it's not object ([c41622e](https://github.com/hslayers/hslayers-ng/commit/c41622e6e740750ba3e66b1d3cd7b498598918fd))
+* Set UI for LaymanAccessRights component on Init ([9f86aff](https://github.com/hslayers/hslayers-ng/commit/9f86aff586421bd2fdfdf18149b6984bca6da0a9))
+* Show dialogs also when they are created on startup ([d53105f](https://github.com/hslayers/hslayers-ng/commit/d53105f4f38e6c9942d896b4dfaf7d7f562121d7)), closes [#3190](https://github.com/hslayers/hslayers-ng/issues/3190)
+* Tweak types for OL7 ([564fcd0](https://github.com/hslayers/hslayers-ng/commit/564fcd0eda718ecc97c33fc11ce44e2a0e499bfe))
+* Zooming to default view buttons in multi-apps ([4f586a8](https://github.com/hslayers/hslayers-ng/commit/4f586a8eb78ea2660132fe51efcb323eb46e3835))
+* **permalink:** Dont parse hs-permalink along with other customParams ([990e586](https://github.com/hslayers/hslayers-ng/commit/990e586c1a634bcdcd7b3f07313232ebb0a96d12))
+* **scss:** Override wagtail theme css ([0d4ff17](https://github.com/hslayers/hslayers-ng/commit/0d4ff176f33c2a1058979c37d7cbb30905a634df))
+* **wmts:** Allow sharing WMTS layers as base ([a2e24d2](https://github.com/hslayers/hslayers-ng/commit/a2e24d2a03beeeec16c2e8023751352c4770116e))
+* Basemap gallery widgets created twice ([8dec9d2](https://github.com/hslayers/hslayers-ng/commit/8dec9d2e9943a93ee12c4d28f7945f247a2a2401))
+* Declare default sidebarPostion ([45ef536](https://github.com/hslayers/hslayers-ng/commit/45ef536854ba533bce97f0cc274a4d7c754596d8)), closes [#3257](https://github.com/hslayers/hslayers-ng/issues/3257)
+* Delay sidebarPosition monitoring to not get ExpressionChangedAfterItHasBeenCheckedError ([3a8cf22](https://github.com/hslayers/hslayers-ng/commit/3a8cf22b2a7c80274f51b6c52967170d0b9e5234))
+* Multiple app support when generating permalink ([a93aabf](https://github.com/hslayers/hslayers-ng/commit/a93aabf069c8dfd4be20b771ff1bd9a50d3ec549))
+* Reset translations dictionary when overrides provided in config ([70f6de2](https://github.com/hslayers/hslayers-ng/commit/70f6de2968e41ae68238cfa5edeb984c82f7ed42))
+* Set tag when publishing next prerelease version ([3cea146](https://github.com/hslayers/hslayers-ng/commit/3cea1460c06974320359529358d27412a09478f8))
+* **hslayers-server:** Pass correct HTTP response status code for most frequent errors ([b95a75b](https://github.com/hslayers/hslayers-ng/commit/b95a75b0925ed792581675898730a24b5b3f9e16))
+* **LayerManager:** Pass 'app' property to service ([b4d2b59](https://github.com/hslayers/hslayers-ng/commit/b4d2b59d4a2b9690948104a7812b9116a4674d33))
+* **LayerManager:** Safely polyfill dimensions ([f003c63](https://github.com/hslayers/hslayers-ng/commit/f003c63b00080bbcb48298f9099c5dc4b686bbcb))
+* **SCSS:** Add new Bootstrap stylesheet ([8c01e81](https://github.com/hslayers/hslayers-ng/commit/8c01e81666523846f8ea5167b05b9d01f2edf05c))
+* **statistics:** Better predictions and filter out nulls ([935c092](https://github.com/hslayers/hslayers-ng/commit/935c092022e0a36aefab2a91e764531eceb471ec))
+* **statistics:** Fix building of statistics app for ng14 ([b3fb761](https://github.com/hslayers/hslayers-ng/commit/b3fb761e9b80c893ae5bd056770fcc65f23b0b95))
+* **statistics:** Set title for statistics app ([e15ff73](https://github.com/hslayers/hslayers-ng/commit/e15ff7353019dbb749b22b03972763ab889d06eb))
+* Provide SUPPORTED_SRS_LIST first 2 srs as default ([bfd3bc6](https://github.com/hslayers/hslayers-ng/commit/bfd3bc68e4acf16730dcb68df4ba7b3babf108d9))
+* Relead current translations only if current lang set ([0010114](https://github.com/hslayers/hslayers-ng/commit/0010114827fb9cdb8d2d8842e61b9c5c0e815200))
+* Return result of recursive checkForLayerInLayman func ([125808d](https://github.com/hslayers/hslayers-ng/commit/125808dc6ae7bdb59bab6d7648aee46d22c6061d))
+* Show SRS input for SHP file type ([4544f7a](https://github.com/hslayers/hslayers-ng/commit/4544f7acfc066dd6c5ab8cfcf6e60e2a88d471a1))
+* WFS version 2 getFeature params, URI EPSG aliases ([5c81dee](https://github.com/hslayers/hslayers-ng/commit/5c81deec5e964ad75e36f1d6fe23c46ce966dba9)), closes [#3151](https://github.com/hslayers/hslayers-ng/issues/3151)
+
+
+### Features
+
+* **add-data:** Finalise GeoSPARQL UI ([a985101](https://github.com/hslayers/hslayers-ng/commit/a985101132e6f4584f693422446286fe9944aeb2))
+* **add-data:** Make use of new isUrlObtainable() ([56fb0e7](https://github.com/hslayers/hslayers-ng/commit/56fb0e7102ab97c9783b783e1ca9094ccdfb7d94))
+* **add-data:** Mock GeoSPARQL add-data option ([11f07de](https://github.com/hslayers/hslayers-ng/commit/11f07de2cf68095ac991ab133d33fb573fd1e35d))
+* **add-data:** Verify SPARQL endpoint URL ([78590d5](https://github.com/hslayers/hslayers-ng/commit/78590d5fd843852dfc374afcc7d5856c265bc500))
+* **LM:** Show toast message when layer load fails ([7546aaf](https://github.com/hslayers/hslayers-ng/commit/7546aaf494e6784da0620b05da7ff9403c8e12b3))
+* A nicer dialog to specify colorMap style options ([4ada5e0](https://github.com/hslayers/hslayers-ng/commit/4ada5e00333bed0e8343178111b576e8c778d929)), closes [#3025](https://github.com/hslayers/hslayers-ng/issues/3025)
+* Add a dialog explaining statistics app ([80de9f0](https://github.com/hslayers/hslayers-ng/commit/80de9f0064e5328f77c17d0604de89bbc88c27eb))
+* Add posiblity to use reversed colorMap + add code desription ([afd0614](https://github.com/hslayers/hslayers-ng/commit/afd0614a1d2d80194edca914d70254dfe3a0ff9d))
+* Added set permissions feature to add data and compositions catalog items ([098b71b](https://github.com/hslayers/hslayers-ng/commit/098b71b5efba334b9d80d844470a143ff057d8d0))
+* Assign extent to WMTS layers ([5d498f4](https://github.com/hslayers/hslayers-ng/commit/5d498f460363057ed15080034c97ec3a36fa5328))
+* Check if url is obtainable for add-data-vector-url ([a127019](https://github.com/hslayers/hslayers-ng/commit/a1270191f7835fdc990cd29bedffe52327747abc)), closes [#3189](https://github.com/hslayers/hslayers-ng/issues/3189)
+* Load WMTS datasets from Micka endpoint ([e97f86d](https://github.com/hslayers/hslayers-ng/commit/e97f86d68f493a20d4139adeece8652c73475b45))
+* Provide ability to overwrite existing layman layers from file upload ([1ed41a5](https://github.com/hslayers/hslayers-ng/commit/1ed41a50604543c89a5b940a5d3040bcbb643729))
+* Provide details if overwrite dialog appears again ([798dd3d](https://github.com/hslayers/hslayers-ng/commit/798dd3d544732fda96adc6f4c62ef850c65bc8d3))
+* Scroll to app if its present in the URL ([5759608](https://github.com/hslayers/hslayers-ng/commit/57596081a3682f77088ad1faaf47778c4df450f0))
+* Support timeout parameter in queues ([bdd71d2](https://github.com/hslayers/hslayers-ng/commit/bdd71d2de8dc621b2bab2198e7585fff08363a61))
+* Update dimension from TIME param im WMS sources ([1980c5f](https://github.com/hslayers/hslayers-ng/commit/1980c5fdbb34ad7fc29202db06720907d3492cb3))
+* Upgrade to Angular 14 ([09939e4](https://github.com/hslayers/hslayers-ng/commit/09939e423773fe41060f97f2685ee12e1a5e0166))
+* **statistics:** Create function sketcher ([9268bc6](https://github.com/hslayers/hslayers-ng/commit/9268bc6444407ae2c82e4de183b6458087cce814))
+* **statistics:** Dialog to fill in input for prediction models ([ec50fcf](https://github.com/hslayers/hslayers-ng/commit/ec50fcfa2d0872b2ed3e2064daa80f2ac8b2824a))
+* **statistics:** Storing of prediction models ([4cc322d](https://github.com/hslayers/hslayers-ng/commit/4cc322d853751d5d3b473a620fa149461a04ea7c))
+* **statistics:** Visualize predictions ([23e3800](https://github.com/hslayers/hslayers-ng/commit/23e38007ff5d6d73ad015fc2801bbf18fbcbc854))
+* **wms-t:** Show loader if dates not fetched yet ([9856c89](https://github.com/hslayers/hslayers-ng/commit/9856c89f459c0f8f34b5d1a083f0e0ec4c9ef0da))
+* Respond to keypress event for rename layer dialog ([333a81a](https://github.com/hslayers/hslayers-ng/commit/333a81a3c76d64d43991416bf2768273c2661b65))
+* Update IDW layer legend on colorMap change ([4649bf4](https://github.com/hslayers/hslayers-ng/commit/4649bf485d83ec18b8827136dd20412bdc15619b))
+* Widget for setting bounds and colormap for IDW layer ([4ea2eac](https://github.com/hslayers/hslayers-ng/commit/4ea2eac9f50f141ece88b10e64b88415e9cb1f22))
+
+
+### Reverts
+
+* Set ol-ext back to 4 ([87f54ad](https://github.com/hslayers/hslayers-ng/commit/87f54ad3725435d2534c9a45bf308af0205bfd4e))
+
+
+* !feat(add-data): Implement GeoSPARQL logic ([8401e8d](https://github.com/hslayers/hslayers-ng/commit/8401e8d062abc0a7281b3ada6706b00deeb87ed3))
+
+
+### BREAKING CHANGES
+
+* for SparqlJson consumers
+
+
+
 # [10.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/9.2.0...10.0.0-next.0) (2022-08-19)
 
 
