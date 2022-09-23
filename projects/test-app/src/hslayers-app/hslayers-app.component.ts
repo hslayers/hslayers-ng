@@ -103,7 +103,7 @@ export class HslayersAppComponent {
             return interpolatedSource.parseFeatures(response, projection);
           } catch (error) {}
         },
-        colorMap: 'jet',
+        colorMap: 'copper',
       });
       const idwLayer = new ImageLayer({
         visible: true,
