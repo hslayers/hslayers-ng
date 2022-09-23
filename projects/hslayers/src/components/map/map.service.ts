@@ -75,9 +75,9 @@ class AppData {
   Otherwise some weird rendering problems appear in multi-apps mode  */
   placeholderOsm: Layer<Source>;
   defaultDesktopControls: any;
-  visibleLayersInUrl?: string[];
-  permalink?: string;
-  externalCompositionId?: string;
+  visibleLayersInUrl?: string[] = [];
+  permalink?: string = '';
+  externalCompositionId?: string = '';
 }
 
 const proj4 = projx.default ?? projx;
@@ -112,6 +112,13 @@ export class HsMapService {
     public hsLanguageService: HsLanguageService,
     private rendererFactory: RendererFactory2
   ) {}
+
+  get(app: string = 'default'): AppData {
+    if (this.apps[app] == undefined) {
+      this.apps[app] = new AppData();
+    }
+    return this.apps[app];
+  }
   /**
    * Returns the associated layer for feature.
    * This is used in query-vector.service to get the layer of clicked
@@ -388,8 +395,8 @@ export class HsMapService {
         renderer: this.rendererFactory.createRenderer(null, null),
         featureLayerMapping: {},
         defaultDesktopControls: controls,
-        permalink: this.apps[app].permalink,
-        externalCompositionId: this.apps[app].externalCompositionId,
+        permalink: this.apps[app]?.permalink,
+        externalCompositionId: this.apps[app]?.externalCompositionId,
       };
       const view = map.getView();
       this.originalView = {

@@ -41,7 +41,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   }
   ngAfterViewInit(): void {
     const appConfig = this.HsConfig.get(this.app);
-    const mapRef = this.HsMapService.apps[this.app];
+    const mapRef = this.HsMapService.get(this.app);
     const visibleLayersParam = this.HsShareUrlService.getParamValue(
       HS_PRMS.visibleLayers
     );
