@@ -1020,14 +1020,13 @@ $list-group-item-padding-x: 1.25rem;
     pointer-events: auto;
   }
 
-  .ol-control button:hover {
-    background-color: $primary;
-  }
-
   .ol-control button {
-    background-color: var(#003c8a80);
     font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica,
       sans-serif;
+
+    &:hover {
+      background-color: $primary;
+    }
   }
 
   /**
@@ -1042,6 +1041,10 @@ $list-group-item-padding-x: 1.25rem;
     transform: translate(-50%, -50%);
     -ms-touch-action: none;
     touch-action: none;
+
+    & button {
+      background-color: #809aba;
+    }
   }
 
   .ol-swipe:before {
