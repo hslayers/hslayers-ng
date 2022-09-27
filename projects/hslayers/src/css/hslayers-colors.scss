@@ -1,3 +1,13 @@
+:root,
+:host {
+  --ol-background-color: #809aba;
+  --ol-subtle-background-color: #809aba;
+  --ol-partial-background-color: #809aba;
+
+  --ol-subtle-foreground-color: white;
+  --ol-foreground-color: white;
+}
+
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 
@@ -311,6 +321,8 @@ $table-group-separator-color: white;
 
   .ol-control button:hover {
     background-color: $primary;
+    color: white;
+    outline: none
   }
 
   .ol-swipe button {

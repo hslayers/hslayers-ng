@@ -1,10 +1,20 @@
 /* Default values for customizable variables */
-
 //Mobile layout breakpoint
 $mobile-layout-breakpoint-value: 767 !default; //will be used in TS files
 $mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this will be used in hsl styles
 
 @import "ol/ol";
+
+:root,
+:host {
+  --ol-background-color: #809aba;
+  --ol-subtle-background-color: #809aba;
+  --ol-partial-background-color: #809aba;
+
+  --ol-subtle-foreground-color: white;
+  --ol-foreground-color: white;
+}
+
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
 @import "bootstrap/scss/functions";
@@ -13,6 +23,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this
 $table-group-separator-color: white;
 $list-group-item-padding-y: 0.75rem;
 $list-group-item-padding-x: 1.25rem;
+
 
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
@@ -1026,6 +1037,8 @@ $list-group-item-padding-x: 1.25rem;
 
     &:hover {
       background-color: $primary;
+      color: white;
+      outline: none
     }
   }
 
