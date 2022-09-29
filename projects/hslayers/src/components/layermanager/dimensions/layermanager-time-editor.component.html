@@ -1,5 +1,5 @@
 <div class="p-0 flex-grow-1">
-  <button type="button" class="btn btn-sm text-info" (click)="previousTime()" [disabled]="!hasPreviousTime">
+  <button type="button" class="btn btn-sm text-info border-0" (click)="previousTime()" [disabled]="!hasPreviousTime">
     <i class="glyphicon icon-chevron-left"></i>
   </button>
   <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
@@ -26,7 +26,7 @@
       {{time | date:timeDisplayFormat:timeDisplayFormat}}
     </option>
   </select>
-  <button type="button" class="btn btn-sm text-info" (click)="followingTime()" [disabled]="!hasFollowingTime">
+  <button type="button" class="btn btn-sm text-info border-0" (click)="followingTime()" [disabled]="!hasFollowingTime">
     <i class="glyphicon icon-chevron-right"></i>
   </button>
 </div>
