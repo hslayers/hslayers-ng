@@ -113,6 +113,7 @@ export class InterpolatedSource extends IDW {
   set colorMap(value: ((v: number) => number[]) | string) {
     this.options.colorMap = value;
     super.getColor = getColorMapFromOptions(this.options);
+    this.colorMapChanged.next();
     super.changed();
   }
 
