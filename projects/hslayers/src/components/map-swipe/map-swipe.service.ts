@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Map} from 'ol';
@@ -53,7 +53,8 @@ export class HsMapSwipeService {
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerService: HsLayerManagerService,
     public hsShareUrlService: HsShareUrlService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    private zone: NgZone
   ) {}
 
   /**
@@ -140,10 +141,14 @@ export class HsMapSwipeService {
    */
   initSwipeControl(app: string): void {
     const appRef = this.get(app);
-    appRef.swipeCtrl = new SwipeControl({
-      orientation: appRef.orientation,
-      app: app,
+
+    this.zone.runOutsideAngular(() => {
+      appRef.swipeCtrl = new SwipeControl({
+        orientation: appRef.orientation,
+        app: app,
+      });
     });
+
     if (appRef.swipeControlActive) {
       appRef.swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
       this.hsMapService.getMap(app).addControl(appRef.swipeCtrl);

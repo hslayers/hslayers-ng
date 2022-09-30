@@ -31,6 +31,7 @@ export class SwipeControl extends Control {
   rightLayers: LayerListItem[];
   isMoving: boolean;
   app: string;
+  listeners = new Map<string, any>();
   constructor(options?: SwipeControlOptions) {
     const button = document.createElement('button');
     const element = document.createElement('div');
@@ -229,35 +230,33 @@ export class SwipeControl extends Control {
   }
 
   private move(e) {
-    let l: number;
     switch (e.type) {
       case 'touchcancel':
       case 'touchend':
       case 'mouseup': {
         this.isMoving = false;
-        [
-          'mouseup',
-          'mousemove',
-          'touchend',
-          'touchcancel',
-          'touchmove',
-        ].forEach((eventName) => {
-          document.removeEventListener(eventName, this.move);
+        this.listeners.forEach((value, key) => {
+          document.removeEventListener(key, value);
         });
+        this.listeners.clear();
         break;
       }
       case 'mousedown':
       case 'touchstart': {
-        this.isMoving = true;
-        [
-          'mouseup',
-          'mousemove',
-          'touchend',
-          'touchcancel',
-          'touchmove',
-        ].forEach((eventName) => {
-          document.addEventListener(eventName, this.move.bind(this));
-        });
+        if (!this.isMoving) {
+          this.isMoving = true;
+          [
+            'mouseup',
+            'mousemove',
+            'touchend',
+            'touchcancel',
+            'touchmove',
+          ].forEach((eventName) => {
+            const callback = this.move.bind(this);
+            this.listeners.set(eventName, callback);
+            document.addEventListener(eventName, callback);
+          });
+        }
       }
       // fallthrough
       case 'mousemove':
