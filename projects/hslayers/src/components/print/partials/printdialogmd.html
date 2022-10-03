@@ -1,4 +1,4 @@
-<div class="print" layout="column" style="max-height100%;">
+<div class="print" layout="column" style="max-height: 100%;">
     <md-toolbar class="md-hue-3" flex="none" hide-gt-sm="">
         <h1 class="md-toolbar-tools">{{'COMMON.print' | translateHs : {app: data.app} }}</h1>
     </md-toolbar>
@@ -12,6 +12,7 @@
     </div>
     <md-divider></md-divider>
     <div layout-padding="" layout="row" layout-align="space-around center">
-        <md-button class="md-raised md-accent" (click)="print()">{{'COMMON.print' | translateHs : {app: data.app} }}</md-button>
+        <md-button class="md-raised md-accent" (click)="print()">{{'COMMON.print' | translateHs : {app: data.app} }}
+        </md-button>
     </div>
 </div>
