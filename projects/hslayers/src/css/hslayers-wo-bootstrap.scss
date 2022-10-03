@@ -76,10 +76,9 @@ $list-group-item-padding-x: 1.25rem;
 
   /* app css stylesheet */
   .icon-spin {
-    -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1000ms infinite linear;
+    -webkit-animation: spin 1500ms infinite linear;
+    animation: spin 1500ms infinite linear;
     position: relative;
-    top: 1px;
     display: inline-block;
     font-style: normal;
     font-weight: 400;
