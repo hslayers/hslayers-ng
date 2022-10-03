@@ -4,17 +4,6 @@ $mobile-layout-breakpoint-value: 767 !default; //will be used in TS files
 $mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this will be used in hsl styles
 
 @import "ol/ol";
-
-:root,
-:host {
-  --ol-background-color: #809aba;
-  --ol-subtle-background-color: #809aba;
-  --ol-partial-background-color: #809aba;
-
-  --ol-subtle-foreground-color: white;
-  --ol-foreground-color: white;
-}
-
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
 @import "bootstrap/scss/functions";
@@ -160,10 +149,9 @@ $list-group-item-padding-x: 1.25rem;
 
   /* app css stylesheet */
   .icon-spin {
-    -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1000ms infinite linear;
+    -webkit-animation: spin 1500ms infinite linear;
+    animation: spin 1500ms infinite linear;
     position: relative;
-    top: 1px;
     display: inline-block;
     font-style: normal;
     font-weight: 400;
@@ -1035,10 +1023,11 @@ $list-group-item-padding-x: 1.25rem;
     font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica,
       sans-serif;
 
-    &:hover {
-      background-color: $primary;
+    &:hover,
+    &:active {
+      background-color: $secondary;
       color: white;
-      outline: none
+      outline: none;
     }
   }
 
@@ -1056,7 +1045,14 @@ $list-group-item-padding-x: 1.25rem;
     touch-action: none;
 
     & button {
-      background-color: #809aba;
+      box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+      background-color: var(--ol-subtle-foreground-color);
+
+      &:active,
+      &:hover {
+        cursor: pointer;
+        background-color: $secondary;
+      }
     }
   }
 
@@ -1067,10 +1063,12 @@ $list-group-item-padding-x: 1.25rem;
     bottom: -5000px;
     left: 50%;
     width: 2px;
-    background: white;
+    background-color: var(--ol-subtle-foreground-color);
     z-index: -1;
     -webkit-transform: translate(-2px, 0);
     transform: translate(-2px, 0);
+    pointer-events: none;
+
   }
 
   .ol-swipe.horizontal:before {
@@ -1080,7 +1078,6 @@ $list-group-item-padding-x: 1.25rem;
     bottom: auto;
     width: auto;
     height: 2px;
-    background: white;
   }
 
   .ol-swipe:after,
@@ -1092,9 +1089,10 @@ $list-group-item-padding-x: 1.25rem;
     bottom: 25%;
     left: 50%;
     width: 2px;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--ol-background-color);
     transform: translate(-1px, 0);
     -webkit-transform: translate(-1px, 0);
+    pointer-events: none;
   }
 
   .ol-swipe button:after {

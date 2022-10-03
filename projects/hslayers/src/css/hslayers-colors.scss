@@ -1,13 +1,3 @@
-:root,
-:host {
-  --ol-background-color: #809aba;
-  --ol-subtle-background-color: #809aba;
-  --ol-partial-background-color: #809aba;
-
-  --ol-subtle-foreground-color: white;
-  --ol-foreground-color: white;
-}
-
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 
@@ -319,14 +309,38 @@ $table-group-separator-color: white;
     color: gray;
   }
 
-  .ol-control button:hover {
-    background-color: $primary;
-    color: white;
-    outline: none
+  .ol-control button {
+
+    &:hover,
+    &:active {
+      background-color: $secondary;
+      color: white;
+      outline: none;
+    }
   }
 
-  .ol-swipe button {
-    background-color: #809aba;
+  .ol-swipe {
+    &:before {
+      background-color: var(--ol-subtle-foreground-color);
+    }
+
+    & button {
+      background-color: #809aba;
+      box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+      background-color: var(--ol-subtle-foreground-color);
+
+      &:active,
+      &:hover {
+        cursor: pointer;
+        background-color: $secondary;
+      }
+    }
+  }
+
+  .ol-swipe:after,
+  .ol-swipe button:before,
+  .ol-swipe button:after {
+    background: var(--ol-background-color);
   }
 
 }

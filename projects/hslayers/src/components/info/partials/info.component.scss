@@ -1,8 +1,8 @@
 	div.hs-info-area {
-		background-color: hsla(214, 50%, 37%, 0.4);
+		background-color: var(--ol-background-color);
+		color: var(--ol-subtle-foreground-color);
 		border-radius: 4px;
 		bottom: 1.9em;
-		color: hsl(0, 0%, 100%);
 		left: 0.5em;
 		padding: 1px;
 		pointer-events: initial;
@@ -18,9 +18,10 @@
 		position: absolute;
 		text-align: center;
 		width: 2em;
-		top: -30px;
+		top: -35px;
 		left: 3px;
-		background-color: hsla(214, 100%, 27%, 0.3);
+		background-color: var(--ol-background-color);
+		color: var(--ol-subtle-foreground-color);
 	}
 
 	div.hs-info-composition {
@@ -32,12 +33,14 @@
 		font-size: 12px;
 		line-height: 12px;
 		padding: 4px;
-
+		width: 100%;
 	}
 
 	div.hs-info-composition-title {
 		font-weight: bold;
-		padding-bottom: 6px;
+		margin-bottom: 6px;
+		box-shadow: rgb(17 17 26 / 10%) 0px 1px 2px;
+		padding-block: 0.1rem;
 	}
 
 	div.hs-info-composition-image>span {
@@ -54,6 +57,7 @@
 		overflow: hidden;
 		display: inline-block;
 		position: relative;
-		width: 260px;
+		width: auto;
+		max-width: 260px;
 		white-space: nowrap;
 	}

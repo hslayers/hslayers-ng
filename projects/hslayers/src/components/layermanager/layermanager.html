@@ -2,7 +2,8 @@
     <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translateHs : {app: data.app}" [app]="data.app">
         <extra-buttons>
             <div class="btn-group" ngbDropdown placement="left-top" display="dynamic">
-                <button type="button" class="btn border-0" (click)="physicalLayerListEnabled = !physicalLayerListEnabled"
+                <button type="button" class="btn border-0"
+                    (click)="physicalLayerListEnabled = !physicalLayerListEnabled"
                     [title]="'LAYERMANAGER.enablePhysicalLayerList' | translateHs : {app: data.app}">
                     <i class="glyphicon icon-layerorder"></i>
                 </button>
