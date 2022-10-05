@@ -17,6 +17,8 @@ dependencygraph.svg
 .tern-project
 .vscode/
 .env
+.env.*
+!.env.example
 *.bat
 /.vs
 stats.json
