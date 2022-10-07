@@ -1,5 +1,5 @@
 	div.hs-info-area {
-		background-color: var(--ol-background-color);
+		background-color: var(--ol-partial-background-color);
 		color: var(--ol-subtle-foreground-color);
 		border-radius: 4px;
 		bottom: 1.9em;
@@ -9,6 +9,14 @@
 		position: absolute;
 		vertical-align: bottom;
 		z-index: 3;
+
+		&>div {
+			padding: 0.1rem;
+		}
+
+		& div {
+			max-width: 250px;
+		}
 	}
 
 	div.hs-info-composition-image {
@@ -20,7 +28,7 @@
 		width: 2em;
 		top: -35px;
 		left: 3px;
-		background-color: var(--ol-background-color);
+		background-color: var(--ol-partial-background-color);
 		color: var(--ol-subtle-foreground-color);
 	}
 
@@ -32,14 +40,11 @@
 	div.hs-info-composition-container {
 		font-size: 12px;
 		line-height: 12px;
-		padding: 4px;
 		width: 100%;
 	}
 
 	div.hs-info-composition-title {
 		font-weight: bold;
-		margin-bottom: 6px;
-		box-shadow: rgb(17 17 26 / 10%) 0px 1px 2px;
 		padding-block: 0.1rem;
 	}
 
@@ -51,9 +56,7 @@
 	.hs-info-layers,
 	div.hs-info-composition-edited {
 		font-size: 12px;
-		padding: 0 12px 12px 12px;
 		text-overflow: ellipsis;
-		height: 29px;
 		overflow: hidden;
 		display: inline-block;
 		position: relative;

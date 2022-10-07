@@ -1,24 +1,22 @@
 <div class="hs-info-container" [hidden]="(isVisible$ | async) === false">
-    <div class="hs-info-area">
-        <div class="hs-info-composition hs-main-panel" [hidden]="!!compositionLoaded()">
+    <div class="hs-info-area p-1">
+        <div class="hs-info-composition" [hidden]="!!compositionLoaded()">
             <div class="hs-info-composition-image" [hidden]="!!composition_loaded">
                 <span class="icon-refresh icon-spin"></span>
                 <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
             </div>
-            <div class="hs-info-composition-container" *ngIf="!composition_edited">
+            <div class="hs-info-composition-container" *ngIf="!composition_edited && !layer_loading.length">
                 <div class="hs-info-composition-title"
                     [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs : {app: data.app} ">
                     {{'INFOCOMPONENT.newMap' | translateHs : {app: data.app} }}</div>
             </div>
             <div class="hs-info-composition-container" *ngIf="composition_edited">
-                <div class="hs-info-composition-title">{{'INFOCOMPONENT.unsavedMap' | translateHs : {app: data.app} }}
-                </div>
                 <div class="hs-info-composition-abstract" [hidden]="!!(!layer_loading.length && composition_edited)">
                     {{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs : {app: data.app} }}</div>
             </div>
         </div>
 
-        <div class="hs-info-composition" [hidden]="!compositionLoaded()">
+        <div class="hs-info-composition" *ngIf="compositionLoaded()">
             <div class="hs-info-composition-image">
                 <span class="icon-refresh icon-spin" [hidden]="!!composition_loaded"></span>
                 <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
@@ -30,7 +28,7 @@
         </div>
 
         <div class="hs-info-layers" [hidden]="!layer_loading.length">
-            <span>{{'COMMON.loading' | translateHs : {app: data.app} }}: </span>
+            <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs : {app: data.app} }}: </div>
             <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
         </div>
 
