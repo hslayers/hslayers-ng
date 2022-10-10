@@ -40,6 +40,7 @@ import {
   getQml,
   getSld,
   getTitle,
+  setQml,
   setSld,
 } from '../../common/layer-extensions';
 import {getHighlighted} from '../../common/feature-extensions';
@@ -59,13 +60,14 @@ class HsStylerParams {
     : new QGISStyleParser();
 
   sld: string;
+  qml: string;
   isAuthorized: boolean;
 
   pin_white_blue;
   pin_white_blue_highlight;
   colorMapDialogVisible = false;
   unsavedChange = false;
-  changesStore = new Map();
+  changesStore = new Map<string, {sld: string; qml: string}>();
 }
 
 @Injectable({
@@ -275,6 +277,7 @@ export class HsStylerService {
       }
     }
     this.get(app).sld = sld;
+    this.get(app).qml = qml;
   }
 
   /**
@@ -293,13 +296,10 @@ export class HsStylerService {
         style: await this.sldToOlStyle(defaultStyle, app),
       };
     }
-    if (
-      typeof style == 'string' &&
-      (style as string).includes('StyledLayerDescriptor')
-    ) {
+    const styleType = this.guessStyleFormat(style);
+    if (styleType == 'sld') {
       return {sld: style, style: await this.sldToOlStyle(style, app)};
-    }
-    if (typeof style == 'string' && (style as string).includes('<qgis')) {
+    } else if (styleType == 'qml') {
       return {qml: style, style: await this.qmlToOlStyle(style, app)};
     } else if (
       typeof style == 'object' &&
@@ -309,6 +309,16 @@ export class HsStylerService {
       return parseStyle(style);
     } else {
       return {style};
+    }
+  }
+
+  guessStyleFormat(style: any): 'qml' | 'sld' {
+    if (typeof style == 'string') {
+      if ((style as string).includes('StyledLayerDescriptor')) {
+        return 'sld';
+      } else if ((style as string).includes('<qgis')) {
+        return 'qml';
+      }
     }
   }
 
@@ -329,15 +339,13 @@ export class HsStylerService {
         return;
       }
       appRef.layer = layer;
-      console.log('Layer uid', getUid(appRef.layer));
       appRef.layerBeingMonitored =
         !!this.hsLayerSynchronizerService.syncedLayers.find((l) => l == layer);
       appRef.unsavedChange = appRef.changesStore.has(getUid(layer));
       appRef.layerTitle = getTitle(layer);
-      const sld = appRef.unsavedChange
+      const {sld, qml} = appRef.unsavedChange
         ? appRef.changesStore.get(getUid(layer))
-        : getSld(layer);
-      const qml = getQml(layer);
+        : {sld: getSld(layer), qml: getQml(layer)};
       if (sld != undefined) {
         appRef.styleObject = await this.sldToJson(sld, app);
       } else if (qml != undefined) {
@@ -564,22 +572,26 @@ export class HsStylerService {
   }
 
   /**
-   * Checks whether SLD should be indicated or saved right away.
+   * Checks whether SLD/QML should be indicated or saved right away.
    * Indicate only when user is logged in Layman and layer is being monitored otherwise save
    */
   resolveSldChange(appRef: HsStylerParams, app: string) {
     if (appRef.isAuthorized && appRef.layerBeingMonitored) {
-      appRef.changesStore.set(getUid(appRef.layer), appRef.sld);
+      appRef.changesStore.set(getUid(appRef.layer), {
+        sld: appRef.sld,
+        qml: appRef.qml,
+      });
       appRef.unsavedChange = true;
     } else {
-      this.setSld(app);
+      this.setSldQml(app);
     }
   }
 
-  /**Set SLD parameter of layer*/
-  setSld(app: string) {
+  /**Set SLD/QML parameter of layer*/
+  setSldQml(app: string) {
     const appRef = this.get(app);
     setSld(appRef.layer, appRef.sld);
+    setQml(appRef.layer, appRef.qml);
     appRef.changesStore.delete(getUid(appRef.layer));
     appRef.unsavedChange = false;
   }
@@ -656,15 +668,28 @@ export class HsStylerService {
     await this.save(app);
   }
 
-  async loadSld(sld: string, app: string): Promise<void> {
+  /**
+   * Load style in SLD/QML and set it to current layer
+   * @param styleString
+   * @param app
+   */
+  async loadStyle(styleString: string, app: string): Promise<void> {
     try {
       const appRef = this.get(app);
-      await appRef.sldParser.readStyle(sld);
-      setSld(appRef.layer, sld);
+      const styleFmt = this.guessStyleFormat(styleString);
+      if (styleFmt == 'sld') {
+        await appRef.sldParser.readStyle(styleString);
+        setQml(appRef.layer, undefined);
+        setSld(appRef.layer, styleString);
+      } else if (styleFmt == 'qml') {
+        await appRef.qmlParser.readStyle(styleString);
+        setSld(appRef.layer, undefined);
+        setQml(appRef.layer, styleString);
+      }
       await this.fill(appRef.layer, app);
       await this.save(app);
     } catch (err) {
-      console.warn('SLD could not be parsed');
+      console.warn('SLD could not be parsed', err);
     }
   }
 }

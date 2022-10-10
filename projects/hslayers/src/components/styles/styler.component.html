@@ -47,7 +47,7 @@
   <div class="card-footer bg-white px-1">
     <div class="form-group m-3" *ngIf="uploaderVisible">
       <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="data.app" uploader="hs-sld-upload"
-        acceptedFormats=".sld">
+        acceptedFormats=".sld, .qml">
       </hs-file-upload>
     </div>
     <div class="d-flex align-items-center justify-content-between">
@@ -70,7 +70,7 @@
       .unsavedChange">
         <div class="alert alert-danger p-1 m-0" role="alert">
           {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }} <button class="btn btn-primary"
-            (click)="hsStylerService.setSld(data.app)" data-toggle="tooltip"
+            (click)="hsStylerService.setSldQml(data.app)" data-toggle="tooltip"
             [title]="'STYLER.unsavedChanges' | translateHs : data">
             <i class="icon-save-floppy"></i>
           </button>

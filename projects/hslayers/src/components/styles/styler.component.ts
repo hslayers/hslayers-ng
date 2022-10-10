@@ -87,7 +87,7 @@ export class HsStylerComponent
       if (confirmed == 'no') {
         return;
       } else if (confirmed == 'yes') {
-        this.hsStylerService.setSld(this.data.app);
+        this.hsStylerService.setSldQml(this.data.app);
       }
     }
     this.hsLayoutService.setMainPanel('layermanager', this.data.app);
@@ -119,8 +119,8 @@ export class HsStylerComponent
       });
     });
     Promise.all(promises).then(async (fileContents) => {
-      const sld = fileContents[0] as string;
-      await this.hsStylerService.loadSld(sld, this.data.app);
+      const styleString = fileContents[0] as string;
+      await this.hsStylerService.loadStyle(styleString, this.data.app);
     });
   }
 }

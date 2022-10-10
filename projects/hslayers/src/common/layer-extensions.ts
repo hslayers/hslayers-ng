@@ -375,6 +375,10 @@ export function setSld(layer: Layer<Source>, sld: string): void {
   layer.set(HS_SLD, sld);
 }
 
+export function setQml(layer: Layer<Source>, qml: string): void {
+  layer.set(HS_QML, qml);
+}
+
 export function setHsLaymanSynchronizing(
   layer: Layer<Source>,
   hsLaymanSynchronizing: boolean
