@@ -14,6 +14,7 @@ import {
   Filter,
   Style as GeoStylerStyle,
   Rule,
+  WellKnownName,
 } from 'geostyler-style';
 import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
@@ -350,9 +351,11 @@ export class HsStylerService {
         appRef.styleObject = await this.sldToJson(sld, app);
       } else if (qml != undefined) {
         appRef.styleObject = await this.qmlToJson(qml, app);
+        //Note: https://github.com/hslayers/hslayers-ng/issues/3431
       } else {
         appRef.styleObject = blankStyleObj;
       }
+      this.fixSymbolizerBugs(appRef.styleObject);
       this.geostylerWorkaround(app);
       if (appRef.unsavedChange) {
         //Update appRef.sld string in case styler for layer with unsaved changes was opened.
@@ -362,6 +365,21 @@ export class HsStylerService {
     } catch (ex) {
       appRef.styleObject = blankStyleObj;
       this.hsLogService.error(ex.message);
+    }
+  }
+
+  private fixSymbolizerBugs(styleObject: GeoStylerStyle) {
+    if (styleObject.rules) {
+      for (const rule of styleObject.rules) {
+        if (rule.symbolizers) {
+          for (const symb of rule.symbolizers) {
+            if (symb.kind == 'Mark' && symb.wellKnownName !== undefined) {
+              symb.wellKnownName =
+                symb.wellKnownName.toLowerCase() as WellKnownName;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -390,6 +408,7 @@ export class HsStylerService {
   async sldToOlStyle(sld: string, app: string): Promise<StyleLike> {
     try {
       const sldObject = await this.sldToJson(sld, app);
+      this.fixSymbolizerBugs(sldObject);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
       this.hsLogService.error(ex);
@@ -402,6 +421,7 @@ export class HsStylerService {
   async qmlToOlStyle(qml: string, app: string): Promise<StyleLike> {
     try {
       const styleObject = await this.qmlToJson(qml, app);
+      this.fixSymbolizerBugs(styleObject);
       return await this.geoStylerStyleToOlStyle(styleObject);
     } catch (ex) {
       this.hsLogService.error(ex);
