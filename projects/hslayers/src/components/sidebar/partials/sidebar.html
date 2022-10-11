@@ -17,8 +17,8 @@
             data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
             [title]="button.description | translateHs: {app} ">{{button.content()}}</span>
-        <span [ngStyle]="{'margin-left' : button.panel === 'language' ? '14px' : '20px'}"
-            class="hs-sidebar-item-title">{{button.title | translateHs: {app} }}</span>
+        <span [ngClass]="{'language': button.panel === 'language'}" class="hs-sidebar-item-title">{{button.title |
+            translateHs: {app} }}</span>
     </span>
     <!-- TODO: Remove function call from template -->
     <span class="hs-sidebar-item  list-group-item" *ngIf="layoutAppRef.minisidebar"

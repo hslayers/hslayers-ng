@@ -91,8 +91,12 @@ div.hs-panelspace:not(.buttons) hs-sidebar~div.hs-panelplace {
     border-bottom-right-radius: 0;
 }
 
-.hs-sidebar-item-title {
+.hs-sidebar-item-title:not(.language) {
     margin-left: 20px;
+}
+
+.hs-sidebar-item-title {
+    margin-left: 14px;
 }
 
 .hs-panelspace:not(.labels) .hs-sidebar-list span.hs-sidebar-item-title {
