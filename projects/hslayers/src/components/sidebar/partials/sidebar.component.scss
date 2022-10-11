@@ -1,6 +1,6 @@
 .hs-sidebar-item {
     color: $primary;
-    background-color:white;
+    background-color: white;
     cursor: pointer;
 }
 
@@ -29,18 +29,19 @@ hs-sidebar {
 .hs-panelspace.labels hs-sidebar {
     width: 400px;
 }
+
 .hs-panelspace:not(.buttons) hs-sidebar {
     display: none;
 }
 
 .hs-content-wrapper.hs-sb-left:not(.hs-open) hs-sidebar {
-    background-color:white;
+    background-color: white;
     right: auto;
     width: 48px;
 }
 
 .hs-content-wrapper.hs-sb-right:not(.hs-open) hs-sidebar {
-    background-color:white;
+    background-color: white;
     left: auto;
     width: 48px;
 }
@@ -64,10 +65,11 @@ div.hs-panelplace {
     margin-left: 49px;
 }
 
-div.hs-panelplace > div {
+div.hs-panelplace>div {
     height: 100%;
 }
-div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
+
+div.hs-panelspace:not(.buttons) hs-sidebar~div.hs-panelplace {
     margin-left: 0;
     width: 400px;
 }
@@ -114,13 +116,14 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 }
 
 hs-sidebar hs-panel-header.sidebar-header {
-    display:  none;
+    display: none;
 }
 
 hs-sidebar .hs-sidebar-item.hs-panel-hidden {
     display: none !important;
 }
-hs-mini-sidebar .hs-sidebar-item:not(.hs-panel-hidden){
+
+hs-mini-sidebar .hs-sidebar-item:not(.hs-panel-hidden) {
     display: none !important;
 }
 
@@ -131,6 +134,7 @@ hs-mini-sidebar .hs-sidebar-list {
     flex-wrap: wrap;
     margin: auto;
 }
+
 hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
     display: flex;
     flex-direction: column;
@@ -138,15 +142,18 @@ hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
     text-align: center;
     width: 100%;
 }
+
 hs-mini-sidebar .hs-sidebar-item-title {
     display: block !important;
-    margin: 0;
+    margin: 0 !important;
     font-size: 10px;
 }
 
-hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
+hs-sidebar~div.hs-panelplace {
+    overflow-x: hidden;
+}
 
-@media only screen and (max-width: $mobile-layout-breakpoint) { 
+@media only screen and (max-width: $mobile-layout-breakpoint) {
 
     .hs-content-wrapper .hs-sidebar-item-title:not(.hs-mini-sidebar) {
         display: none;
@@ -155,31 +162,37 @@ hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
     hs-sidebar {
         display: flex;
     }
+
     hs-sidebar {
         position: unset;
         width: 100% !important;
     }
-    hs-sidebar ~ div.hs-panelplace {
+
+    hs-sidebar~div.hs-panelplace {
         margin: auto;
         height: 35vh;
         padding-top: 0.5em;
         scrollbar-width: none;
         width: 95%;
     }
-    hs-sidebar > div.list-group {
+
+    hs-sidebar>div.list-group {
         flex-direction: row !important;
         justify-content: space-evenly;
     }
-    .hs-sidebar-list .list-group-item{
+
+    .hs-sidebar-list .list-group-item {
         white-space: normal;
     }
 
     .hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
         width: 100%;
     }
-    div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper{
+
+    div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         width: 100%;
     }
+
     .hs-content-wrapper div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
         width: 100%;
     }
@@ -194,6 +207,7 @@ hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
         justify-content: center;
         padding: 0.55rem 1.05rem;
     }
+
     .hs-sidebar-item [class*=" icon-"] {
         font-size: x-large;
     }
@@ -207,13 +221,14 @@ hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
     }
 
     hs-mini-sidebar hs-panel-header.sidebar-header {
-        display:  none;
+        display: none;
     }
 
     hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
         width: 25%;
         height: 80px;
     }
+
     hs-mini-sidebar .hs-sidebar-item-title {
         display: block !important;
         margin: 0;
@@ -228,6 +243,7 @@ hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
     hs-sidebar .hs-panel-hidden {
         display: none !important;
     }
+
     hs-mini-sidebar .hs-sidebar-item:not(.hs-panel-hidden) {
         display: none !important;
     }
