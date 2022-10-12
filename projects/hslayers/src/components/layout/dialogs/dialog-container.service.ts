@@ -17,9 +17,17 @@ class HsDialogContainerParams {
 export class HsDialogContainerService {
   apps: {
     [key: string]: HsDialogContainerParams;
-  } = {default: new HsDialogContainerParams()};
+  } = {};
 
   constructor() {}
+
+  cleanup(app?: string) {
+    if (app) {
+      delete this.apps[app];
+    } else {
+      this.apps = {};
+    }
+  }
 
   get(app: string = 'default'): HsDialogContainerParams {
     if (this.apps[app] === undefined) {
