@@ -25,6 +25,14 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
     super();
   }
 
+  cleanup(app?: string) {
+    if (app) {
+      delete this.apps[app];
+    } else {
+      this.apps = {};
+    }
+  }
+
   /**
    * Initialize query popup widgets
    * @param widgetNames - Array of widget names

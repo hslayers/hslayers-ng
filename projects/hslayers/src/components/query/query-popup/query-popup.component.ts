@@ -25,7 +25,8 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './query-popup.component.html',
 })
 export class HsQueryPopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit {
+  implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit
+{
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -74,6 +75,7 @@ export class HsQueryPopupComponent
     this.hsMapService
       .getMap(this.data.app)
       .removeOverlay(this.dataAppRef.hoverPopup);
+    this.hsQueryPopupWidgetContainerService.cleanup(this.data.app);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
