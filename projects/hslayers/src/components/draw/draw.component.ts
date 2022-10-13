@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsConfig, HsConfigObject} from '../../config.service';
 import {HsDialogContainerService} from '../layout/public-api';
@@ -15,11 +17,14 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-draw',
   templateUrl: './partials/draw.html',
 })
-export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
+export class HsDrawComponent
+  extends HsPanelBaseComponent
+  implements OnInit, OnDestroy {
   name = 'draw';
   selectedOption = 'draw';
   appRef;
   configRef: HsConfigObject;
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     public HsDrawService: HsDrawService,
     public hsLayoutService: HsLayoutService,
@@ -32,17 +37,23 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
   ) {
     super(hsLayoutService);
   }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   ngOnInit(): void {
     this.appRef = this.HsDrawService.get(this.data.app);
     this.configRef = this.hsConfig.get(this.data.app);
-    this.appRef.layerMetadataDialog.subscribe(() => {
-      this.HsDialogContainerService.create(
-        HsDrawLayerMetadataDialogComponent,
-        {service: this.HsDrawService, app: this.data.app},
-        this.data.app
-      );
-    });
+    this.appRef.layerMetadataDialog
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.HsDialogContainerService.create(
+          HsDrawLayerMetadataDialogComponent,
+          {service: this.HsDrawService, app: this.data.app},
+          this.data.app
+        );
+      });
 
     this.hsSidebarService.addButton(
       {
