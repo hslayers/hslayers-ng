@@ -1,10 +1,13 @@
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Component, Input, OnInit} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsDrawService} from '../draw.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
+
 import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
@@ -12,7 +15,7 @@ import {getTitle} from '../../../common/layer-extensions';
   templateUrl: './draw-panel.component.html',
   styleUrls: ['./draw-panel.component.scss'],
 })
-export class DrawPanelComponent implements OnInit {
+export class DrawPanelComponent implements OnInit, OnDestroy {
   onFeatureSelected: any;
   onFeatureDeselected: any;
   drawToolbarExpanded: any;
@@ -24,6 +27,7 @@ export class DrawPanelComponent implements OnInit {
   getTitle = getTitle;
   @Input() app = 'default';
   sidebarPosition: string;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     public HsDrawService: HsDrawService,
@@ -31,14 +35,20 @@ export class DrawPanelComponent implements OnInit {
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService
   ) {}
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   ngOnInit() {
     this.appRef = this.HsDrawService.get(this.app);
-    this.hsLayoutService.sidebarPosition.subscribe(({app, position}) => {
-      if (this.app == app) {
-        this.sidebarPosition = position;
-      }
-    });
+    this.hsLayoutService.sidebarPosition
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app, position}) => {
+        if (this.app == app) {
+          this.sidebarPosition = position;
+        }
+      });
   }
 
   translateString(module: string, text: string): string {
