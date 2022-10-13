@@ -3,9 +3,12 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
+
+import {Subject, delay, takeUntil} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -15,13 +18,12 @@ import {HsOverlayPanelContainerService} from './overlay-panel-container.service'
 import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {delay} from 'rxjs';
 
 @Component({
   selector: 'hs-layout',
   templateUrl: './partials/layout.html',
 })
-export class HsLayoutComponent implements AfterViewInit, OnInit {
+export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() app = 'default';
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
@@ -29,7 +31,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
   panelSpaceWidth: number;
   sidebarPosition: string;
   sidebarVisible: boolean;
-
+  private ngUnsubscribe = new Subject<void>();
   panelVisible(which, app: string, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, app, scope);
   }
@@ -48,6 +50,11 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService,
     private hsShareUrlService: HsShareUrlService
   ) {}
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   ngOnInit(): void {
     this.HsLayoutService.get(this.app).layoutElement =
@@ -80,13 +87,16 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
       viewContainerRef: this.mapHost.viewContainerRef,
       app: this.app,
     });
-    this.HsLayoutService.panelSpaceWidth.subscribe(({app, width}) => {
-      if (this.app == app) {
-        this.panelSpaceWidth = width;
-      }
-    });
+    this.HsLayoutService.panelSpaceWidth
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app, width}) => {
+        if (this.app == app) {
+          this.panelSpaceWidth = width;
+        }
+      });
     this.HsLayoutService.sidebarPosition
       .pipe(delay(0))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({app, position}) => {
         if (this.app == app) {
           this.sidebarPosition = position;
@@ -98,11 +108,13 @@ export class HsLayoutComponent implements AfterViewInit, OnInit {
           }
         }
       });
-    this.HsLayoutService.sidebarVisible.subscribe(({app, visible}) => {
-      if (this.app == app) {
-        this.sidebarVisible = visible;
-      }
-    });
+    this.HsLayoutService.sidebarVisible
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({app, visible}) => {
+        if (this.app == app) {
+          this.sidebarVisible = visible;
+        }
+      });
 
     window.addEventListener(
       'resize',
