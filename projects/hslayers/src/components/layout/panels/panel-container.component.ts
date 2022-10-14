@@ -37,7 +37,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @Input() panelObserver?: ReplaySubject<HsPanelItem>;
   @Output() init = new EventEmitter<void>();
   interval: any;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(private hsConfig: HsConfig) {}
   ngOnDestroy(): void {
     const appRef = this.service.get(this.app);
@@ -48,19 +48,19 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     for (const p of appRef.panels) {
       this.service.destroy(p, this.app);
     }
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
   ngOnInit(): void {
     const appRef = this.service.get(this.app);
     appRef.panels = [];
     (this.panelObserver ?? appRef.panelObserver)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((item: HsPanelItem) => {
         this.loadPanel(item);
       });
     appRef.panelDestroyObserver
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((item: HsPanelComponent) => {
         this.destroyPanel(item);
       });

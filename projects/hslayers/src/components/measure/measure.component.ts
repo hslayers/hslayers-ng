@@ -22,7 +22,7 @@ export class HsMeasureComponent
   type: string;
   name = 'measure';
   appRef;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
@@ -34,8 +34,8 @@ export class HsMeasureComponent
     super(hsLayoutService);
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit() {
@@ -55,7 +55,7 @@ export class HsMeasureComponent
       });
     }
     this.hsEventBusService.measurementStarts
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app}) => {
         if (app == app) {
           this.hsLayoutService.panelEnabled('toolbar', app, false);
@@ -63,7 +63,7 @@ export class HsMeasureComponent
       });
 
     this.hsEventBusService.measurementEnds
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app}) => {
         if (app == app) {
           this.hsLayoutService.panelEnabled('toolbar', app, true);
@@ -71,7 +71,7 @@ export class HsMeasureComponent
       });
 
     this.hsEventBusService.mainPanelChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({which, app}) => {
         if (this.hsLayoutService.get(app).mainpanel == 'measure') {
           this.hsMeasureService.activateMeasuring(this.type, app);

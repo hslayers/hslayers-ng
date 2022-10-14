@@ -13,7 +13,7 @@ export class HsMiniSidebarComponent implements OnInit {
   @Input() app = 'default';
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
-  ngUnsubscribe = new Subject<void>();
+  end = new Subject<void>();
   layoutAppRef: HsLayoutParams;
   constructor(
     public HsCoreService: HsCoreService,
@@ -24,7 +24,7 @@ export class HsMiniSidebarComponent implements OnInit {
   ngOnInit() {
     this.layoutAppRef = this.HsLayoutService.get(this.app);
     this.HsSidebarService.apps[this.app].buttons
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
         this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
@@ -35,8 +35,8 @@ export class HsMiniSidebarComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   /**

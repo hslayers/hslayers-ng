@@ -24,25 +24,25 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
     this.HsDialogContainerService.cleanup(this.app);
   }
   ngOnInit(): void {
     this.HsDialogContainerService.get(this.app)
-      .dialogObserver.pipe(takeUntil(this.ngUnsubscribe))
+      .dialogObserver.pipe(takeUntil(this.end))
       .subscribe((item: HsDialogItem) => {
         this.loadDialog(item);
       });
 
     this.HsDialogContainerService.get(this.app)
-      .dialogDestroyObserver.pipe(takeUntil(this.ngUnsubscribe))
+      .dialogDestroyObserver.pipe(takeUntil(this.end))
       .subscribe((item: HsDialogComponent) => {
         this.destroyDialog(item);
       });

@@ -30,7 +30,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   selectVisible: boolean;
   timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
   timesInSync: boolean;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
 
   constructor(
     public hsEventBusService: HsEventBusService,
@@ -39,7 +39,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     public hsConfig: HsConfig
   ) {
     this.hsDimensionTimeService.layerTimeChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({layer: layerDescriptor, time, app}) => {
         if (app != this.app) {
           return;
@@ -54,7 +54,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       });
 
     this.hsEventBusService.layerTimeSynchronizations
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({sync, time, app}) => {
         if (app != this.app) {
           return;
@@ -80,8 +80,8 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   /**

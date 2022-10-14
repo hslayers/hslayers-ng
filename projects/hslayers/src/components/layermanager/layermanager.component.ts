@@ -106,7 +106,7 @@ export class HsLayerManagerComponent
   appRef;
   layerTooltipDelay = 0;
 
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     public hsCore: HsCoreService,
     public hsUtilsService: HsUtilsService,
@@ -124,7 +124,7 @@ export class HsLayerManagerComponent
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerRemovals
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((layer: Layer<Source>) => {
         if (
           this.hsLayerManagerService?.apps[this.data.app].currentLayer?.layer ==
@@ -143,7 +143,7 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.compositionLoads
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({data}) => {
         if (data.error == undefined) {
           if (data.data != undefined && data.data.id != undefined) {
@@ -160,7 +160,7 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.compositionDeletes
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({composition, app}) => {
         if (
           composition.id ==
@@ -172,8 +172,8 @@ export class HsLayerManagerComponent
   }
   ngOnDestroy(): void {
     this.hsLayerManagerService.destroy(this.data.app);
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit(): void {
@@ -316,7 +316,7 @@ export class HsLayerManagerComponent
   init(): void {
     this.hsLayerSynchronizerService.init(this.data.app);
     this.hsEventBusService.mapResets
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app}) => {
         if (app == this.data.app) {
           this.hsLayerManagerService.apps[this.data.app].composition_id = null;

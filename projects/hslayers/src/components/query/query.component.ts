@@ -28,7 +28,7 @@ export class HsQueryComponent
   popupOpens: Subject<any> = new Subject();
   name = 'info';
   //To Unsubscribe all subscribers
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   //To deactivate queries (unsubscribe subscribers) per app
   queryDeactivator = new Subject<void>();
   queryBaseAppRef;
@@ -62,14 +62,14 @@ export class HsQueryComponent
     this.hsQueryWmsService.init(this.data.app);
     this.queryBaseAppRef = this.hsQueryBaseService.get(this.data.app);
     this.layoutAppRef = this.hsLayoutService.get(this.data.app);
-    this.popupOpens.pipe(takeUntil(this.ngUnsubscribe)).subscribe((source) => {
+    this.popupOpens.pipe(takeUntil(this.end)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
         this.popup.hide();
       }
     });
 
     this.hsQueryVectorService.featureRemovals
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((feature) => {
         this.queryBaseAppRef.features.splice(
           this.queryBaseAppRef.features.indexOf(feature),
@@ -82,7 +82,7 @@ export class HsQueryComponent
     await this.hsQueryBaseService.init(this.data.app);
     //add current panel queryable - activate/deactivate
     this.hsEventBusService.mainPanelChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({which, app}) => {
         if (this.data.app == app) {
           if (this.hsQueryBaseService.currentPanelQueryable(this.data.app)) {
@@ -100,7 +100,7 @@ export class HsQueryComponent
         }
       });
     this.hsQueryBaseService.queryStatusChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({status, app}) => {
         if (app == this.data.app) {
           this.queryStatusChanged(status);
@@ -122,7 +122,7 @@ export class HsQueryComponent
       return;
     }
     this.hsQueryBaseService.getFeatureInfoStarted
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .pipe(takeUntil(this.queryDeactivator))
       .subscribe(({evt, app}) => {
         if (this.data.app == app) {
@@ -137,7 +137,7 @@ export class HsQueryComponent
       });
 
     this.hsQueryBaseService.getFeatureInfoCollected
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .pipe(takeUntil(this.queryDeactivator))
       .subscribe((coordinate) => {
         const invisiblePopup: HTMLIFrameElement =
@@ -166,8 +166,8 @@ export class HsQueryComponent
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   /**

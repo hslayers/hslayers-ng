@@ -23,7 +23,7 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
   types: {id: AddDataUrlType; text: string}[];
   @Input() app = 'default';
   appRef;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
 
   constructor(
     public hsConfig: HsConfig,
@@ -54,7 +54,7 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
     }
     this.hsAddDataUrlService
       .get(this.app)
-      .addDataCapsParsingError.pipe(takeUntil(this.ngUnsubscribe))
+      .addDataCapsParsingError.pipe(takeUntil(this.end))
       .subscribe((e) => {
         this.hsLog.warn(this.app);
         let error = e.toString();
@@ -89,8 +89,8 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   selectType(type: AddDataUrlType, app: string): void {

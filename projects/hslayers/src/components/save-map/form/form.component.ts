@@ -26,7 +26,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   @Input() app = 'default';
   appRef: HsSaveMapManagerParams;
 
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     private hsSaveMapManagerService: HsSaveMapManagerService,
     private hsCoreService: HsCoreService,
@@ -38,13 +38,13 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.appRef = this.hsSaveMapManagerService.get(this.app);
     this.appRef.endpointSelected
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((endpoint) => {
         this.endpoint = endpoint;
       });
 
     this.appRef.saveMapResulted
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({statusData, app}) => {
         if (statusData.overWriteNeeded) {
           this.overwrite = true;
@@ -59,8 +59,8 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   /**

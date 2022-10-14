@@ -19,12 +19,13 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   name = 'draw';
   selectedOption = 'draw';
   appRef;
   configRef: HsConfigObject;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     public HsDrawService: HsDrawService,
     public hsLayoutService: HsLayoutService,
@@ -38,22 +39,20 @@ export class HsDrawComponent
     super(hsLayoutService);
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit(): void {
     this.appRef = this.HsDrawService.get(this.data.app);
     this.configRef = this.hsConfig.get(this.data.app);
-    this.appRef.layerMetadataDialog
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.HsDialogContainerService.create(
-          HsDrawLayerMetadataDialogComponent,
-          {service: this.HsDrawService, app: this.data.app},
-          this.data.app
-        );
-      });
+    this.appRef.layerMetadataDialog.pipe(takeUntil(this.end)).subscribe(() => {
+      this.HsDialogContainerService.create(
+        HsDrawLayerMetadataDialogComponent,
+        {service: this.HsDrawService, app: this.data.app},
+        this.data.app
+      );
+    });
 
     this.hsSidebarService.addButton(
       {

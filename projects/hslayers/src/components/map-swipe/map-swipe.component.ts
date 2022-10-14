@@ -27,7 +27,7 @@ export class HsMapSwipeComponent
   extends HsPanelBaseComponent
   implements OnDestroy, OnInit
 {
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
     entire: true,
@@ -95,8 +95,8 @@ export class HsMapSwipeComponent
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
   /**
    * Modify arrays after drag and drop

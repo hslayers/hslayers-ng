@@ -40,7 +40,7 @@ export class HsShareUrlService {
     [id: string]: HsShareUrlAppData;
   } = {default: new HsShareUrlAppData()};
 
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   public browserUrlUpdated: Subject<{app: string; url: string}> = new Subject();
 
   constructor(
@@ -424,7 +424,7 @@ export class HsShareUrlService {
       //FIXME : always true
       let timer = null;
       this.HsEventBusService.mapExtentChanges
-        .pipe(takeUntil(this.ngUnsubscribe))
+        .pipe(takeUntil(this.end))
         .subscribe(
           this.HsUtilsService.debounce(
             ({map, event, extent, app}) => {
@@ -448,7 +448,7 @@ export class HsShareUrlService {
             clearTimeout(timer);
           }
           timer = setTimeout(() => {
-            if (!this.ngUnsubscribe.closed) {
+            if (!this.end.closed) {
               this.update(app);
             }
           }, 1000);

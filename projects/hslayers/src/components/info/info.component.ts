@@ -29,7 +29,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   composition_id: number;
   info_image: string;
   composition_edited: boolean;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
@@ -37,7 +37,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   ) {
     super(hsLayoutService);
     this.hsEventBusService.compositionLoading
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((data) => {
         if (data.error === undefined) {
           if (data.data !== undefined) {
@@ -56,7 +56,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
 
     this.hsEventBusService.compositionLoads
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({data}) => {
         if (data.error !== undefined) {
           const temp_abstract = this.composition_abstract;
@@ -73,7 +73,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
 
     this.hsEventBusService.layerLoadings
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({layer, progress, app}) => {
         if (app == this.data.app) {
           if (!this.layer_loading.includes(getTitle(layer))) {
@@ -84,7 +84,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
 
     this.hsEventBusService.layerLoads
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({layer, app}) => {
         if (app == this.data.app) {
           for (let i = 0; i < this.layer_loading.length; i++) {
@@ -100,7 +100,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
 
     this.hsEventBusService.compositionDeletes
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({composition, app}) => {
         if (app == this.data.app) {
           if (composition.id == this.composition_id) {
@@ -111,7 +111,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
 
     this.hsEventBusService.mapResets
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app}) => {
         if (app == this.data.app) {
           delete this.composition_title;
@@ -123,12 +123,12 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
 
     this.hsEventBusService.compositionEdits
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(() => {
         this.composition_edited = true;
       });
     this.hsConfig.configChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app, config}) => {
         if (this.data.app == app) {
           this.isVisible$.next(this.isVisible());
@@ -136,8 +136,8 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       });
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   trackByFn(index: number): number {

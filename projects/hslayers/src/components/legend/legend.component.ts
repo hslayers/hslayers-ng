@@ -27,7 +27,7 @@ export class HsLegendComponent
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     public hsLegendService: HsLegendService,
     public hsMapService: HsMapService,
@@ -41,8 +41,8 @@ export class HsLegendComponent
     super(hsLayoutService);
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class HsLegendComponent
       const source: any = layer.getSource();
       if (this.hsUtilsService.instOf(source, InterpolatedSource)) {
         (source as InterpolatedSource).colorMapChanged
-          .pipe(takeUntil(this.ngUnsubscribe))
+          .pipe(takeUntil(this.end))
           .subscribe(() => {
             this.layerSourcePropChanged({target: source});
           });

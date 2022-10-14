@@ -31,7 +31,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   panelSpaceWidth: number;
   sidebarPosition: string;
   sidebarVisible: boolean;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   panelVisible(which, app: string, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, app, scope);
   }
@@ -52,8 +52,8 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit(): void {
@@ -88,7 +88,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       app: this.app,
     });
     this.HsLayoutService.panelSpaceWidth
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app, width}) => {
         if (this.app == app) {
           this.panelSpaceWidth = width;
@@ -96,7 +96,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       });
     this.HsLayoutService.sidebarPosition
       .pipe(delay(0))
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app, position}) => {
         if (this.app == app) {
           this.sidebarPosition = position;
@@ -109,7 +109,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         }
       });
     this.HsLayoutService.sidebarVisible
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app, visible}) => {
         if (this.app == app) {
           this.sidebarVisible = visible;

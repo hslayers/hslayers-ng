@@ -21,11 +21,10 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit
-{
+  implements OnDestroy, OnChanges, OnInit {
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
 
   constructor(
     public hsDimensionService: HsDimensionService,
@@ -37,22 +36,20 @@ export class HsLayerEditorDimensionsComponent
   ) {
     super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({layer}) => {
         if (layer == this.olLayer) {
           this.ngOnChanges();
         }
       });
-    this.layerDescriptor
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((descriptor) => {
-        this.ngOnChanges();
-      });
+    this.layerDescriptor.pipe(takeUntil(this.end)).subscribe((descriptor) => {
+      this.ngOnChanges();
+    });
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnChanges(): void {

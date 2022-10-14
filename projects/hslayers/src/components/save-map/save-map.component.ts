@@ -26,7 +26,7 @@ export class HsSaveMapComponent
   endpoints: HsEndpoint[];
   isAuthorized = false;
   name = 'saveMap';
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     //Used in template
     private hsConfig: HsConfig,
@@ -58,7 +58,7 @@ export class HsSaveMapComponent
     );
 
     this.hsCommonEndpointsService.endpointsFilled
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((filled) => {
         if (!filled || !this.data?.app) {
           return;
@@ -86,7 +86,7 @@ export class HsSaveMapComponent
       });
 
     this.hsCommonLaymanService.authChange
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({endpoint, app}) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
@@ -95,7 +95,7 @@ export class HsSaveMapComponent
 
     this.hsSaveMapManagerService
       .get(this.data.app)
-      .endpointSelected.pipe(takeUntil(this.ngUnsubscribe))
+      .endpointSelected.pipe(takeUntil(this.end))
       .subscribe((endpoint) => {
         if (endpoint) {
           this.endpoint = endpoint;
@@ -107,7 +107,7 @@ export class HsSaveMapComponent
 
     this.hsSaveMapManagerService
       .get(this.data.app)
-      .panelOpened.pipe(takeUntil(this.ngUnsubscribe))
+      .panelOpened.pipe(takeUntil(this.end))
       .subscribe((composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
@@ -133,8 +133,8 @@ export class HsSaveMapComponent
     this.hsSaveMapDialogSpawnerService.init(this.data.app);
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   /**

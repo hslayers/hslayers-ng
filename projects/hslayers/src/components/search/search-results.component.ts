@@ -20,13 +20,13 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
   searchResultsVisible: boolean;
   @Input() app = 'default';
   fcode_zoom_map: any;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsSearchService: HsSearchService
   ) {
     this.hsEventBusService.searchResultsReceived
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app}) => {
         if (app == this.app) {
           this.searchResultsReceived();
@@ -34,7 +34,7 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
       });
 
     this.hsEventBusService.clearSearchResults
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app}) => {
         if (app == this.app) {
           this.clear();
@@ -45,8 +45,8 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
     this.hsSearchService.init(this.app);
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
   /**
    * Handler for receiving results of search request, sends results to correct parser

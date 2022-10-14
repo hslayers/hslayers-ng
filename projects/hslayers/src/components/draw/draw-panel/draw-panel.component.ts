@@ -27,7 +27,7 @@ export class DrawPanelComponent implements OnInit, OnDestroy {
   getTitle = getTitle;
   @Input() app = 'default';
   sidebarPosition: string;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
 
   constructor(
     public HsDrawService: HsDrawService,
@@ -36,14 +36,14 @@ export class DrawPanelComponent implements OnInit, OnDestroy {
     public HsLanguageService: HsLanguageService
   ) {}
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit() {
     this.appRef = this.HsDrawService.get(this.app);
     this.hsLayoutService.sidebarPosition
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({app, position}) => {
         if (this.app == app) {
           this.sidebarPosition = position;

@@ -29,9 +29,10 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   layerTitle: string;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';
@@ -49,7 +50,7 @@ export class HsStylerComponent
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerSelectedFromUrl
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((layer: Layer<Source>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
           this.hsStylerService.fill(
@@ -59,7 +60,7 @@ export class HsStylerComponent
         }
       });
     this.hsEventBusService.mainPanelChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe(({which, app}) => {
         if (which == 'styler' && app == this.data.app) {
           this.hsStylerService.fill(this.appRef.layer, this.data.app);
@@ -72,8 +73,8 @@ export class HsStylerComponent
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   async close(): Promise<void> {

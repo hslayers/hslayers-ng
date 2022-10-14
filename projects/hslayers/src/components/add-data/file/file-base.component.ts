@@ -32,7 +32,7 @@ export class HsAddDataFileBaseComponent
   fileInput: ElementRef;
   acceptedFormats: string;
   baseFileType: AddDataFileType;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
@@ -55,7 +55,7 @@ export class HsAddDataFileBaseComponent
   ngOnInit(): void {
     const commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     commonFileServiceRef.dataObjectChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((data) => {
         this.hsAddDataCommonService.get(this.app).showDetails = true;
         Object.assign(this.data, data);
@@ -63,7 +63,7 @@ export class HsAddDataFileBaseComponent
       });
 
     commonFileServiceRef.layerAddedAsWms
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((success) => {
         if (success) {
           this.hsLayoutService.setMainPanel('layermanager', this.app);
@@ -104,7 +104,7 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 }

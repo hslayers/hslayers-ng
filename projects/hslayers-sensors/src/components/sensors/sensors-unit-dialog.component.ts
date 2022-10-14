@@ -17,7 +17,7 @@ export class HsSensorsUnitDialogComponent
   implements HsDialogComponent, OnInit, OnDestroy {
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
   dialogStyle;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   viewRef: ViewRef;
   data: any;
   configRef: HsConfigObject;
@@ -39,8 +39,8 @@ export class HsSensorsUnitDialogComponent
       this.hsSensorsUnitDialogService.get(this.data.app).intervals[2]
     );
     combineLatest([
-      this.hsLayoutService.panelSpaceWidth.pipe(takeUntil(this.ngUnsubscribe)),
-      this.hsLayoutService.sidebarPosition.pipe(takeUntil(this.ngUnsubscribe)),
+      this.hsLayoutService.panelSpaceWidth.pipe(takeUntil(this.end)),
+      this.hsLayoutService.sidebarPosition.pipe(takeUntil(this.end)),
     ]).subscribe(([panelSpace, sidebar]) => {
       if (panelSpace.app == this.data.app && sidebar.app == this.data.app) {
         this.calculateDialogStyle(
@@ -186,7 +186,7 @@ export class HsSensorsUnitDialogComponent
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 }

@@ -19,7 +19,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   @Input() app = 'default';
 
   data: VectorDataObject;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
 
   constructor(
     public hsHistoryListService: HsHistoryListService,
@@ -39,14 +39,14 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   };
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit(): void {
     const commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     commonFileServiceRef.dataObjectChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((data) => {
         this.data.showDetails = true;
         Object.assign(this.data, data);

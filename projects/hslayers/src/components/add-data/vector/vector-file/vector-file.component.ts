@@ -50,7 +50,7 @@ export class HsAddDataVectorFileComponent
   };
   commonFileServiceRef: HsAddDataCommonFileServiceParams;
   configRef: HsConfigObject;
-  private ngUnsubscribe = new Subject<void>();
+  private end = new Subject<void>();
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
@@ -68,15 +68,15 @@ export class HsAddDataVectorFileComponent
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.end.next();
+    this.end.complete();
   }
 
   ngOnInit(): void {
     this.commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
     this.configRef = this.hsConfig.get(this.app);
     this.commonFileServiceRef.dataObjectChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntil(this.end))
       .subscribe((data) => {
         this.data.showDetails = true;
         Object.assign(this.data, data);
