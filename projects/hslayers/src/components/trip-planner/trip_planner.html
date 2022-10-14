@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-  <hs-panel-header name="tripPlaner" [title]="'PANEL_HEADER.TRIP_PLANNER' | translateHs : data" [app]="data.app">
+  <hs-panel-header name="tripPlanner" [title]="'PANEL_HEADER.TRIP_PLANNER' | translateHs : data" [app]="data.app">
   </hs-panel-header>
   <div class="card-body">
     <hs-trip-planner-layer-selector usage="route" [app]="data.app"
