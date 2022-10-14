@@ -29,6 +29,7 @@ import {SomeComponent} from './some-panel/some-panel.component';
   styleUrls: ['./hslayers-app.component.scss'],
 })
 export class HslayersAppComponent {
+  multiAppMode = false;
   constructor(
     public hsConfig: HsConfig,
     private hsEventBusService: HsEventBusService,
@@ -39,6 +40,7 @@ export class HslayersAppComponent {
     public hsPanelContainerService: HsPanelContainerService,
     public hsLayoutService: HsLayoutService
   ) {
+    this.multiAppMode = location.pathname.includes('/multi-apps');
     /* Create new button in the sidebar */
     this.hsSidebarService.addButton({
       panel: 'custom',
@@ -54,7 +56,7 @@ export class HslayersAppComponent {
     this.hsEventBusService.layoutLoads.subscribe(() => {
       this.hsLayoutService.setDefaultPanel('custom');
     });
-    const apps = [
+    const apps: any[] = [
       {
         name: 'default',
         panelsEnabled: {
@@ -66,7 +68,9 @@ export class HslayersAppComponent {
         },
         sidebarPosition: 'right',
       },
-      {
+    ];
+    if (this.multiAppMode) {
+      apps.push({
         name: 'app-2',
         panelsEnabled: {
           compositionLoadingProgress: true,
@@ -75,8 +79,8 @@ export class HslayersAppComponent {
           feature_table: true,
         },
         sidebarPosition: 'left',
-      },
-    ];
+      });
+    }
     for (const app of apps) {
       const interpolatedSource = new InterpolatedSource({
         maxFeaturesInCache: 500,

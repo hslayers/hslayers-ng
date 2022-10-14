@@ -1,8 +1,8 @@
 <a id="poly1">Polygon 1</a>
 <a id="poly2">Polygon 2</a>
-<hslayers style="height: 60vh"></hslayers>
+<hslayers [ngStyle]="multiAppMode ? {'height': '60vh'} : {'height': 'calc(100vh - 1.3em)'}"></hslayers>
 
-<div class="container hsl">
+<div class="container hsl" *ngIf="multiAppMode">
     <div class="row justify-content-md-center">
         <div class="col col-1">
 
@@ -47,4 +47,4 @@
         </div>
     </div>
 </div>
-<hslayers style="height: 70vh" id="app-2"></hslayers>
+<hslayers *ngIf="multiAppMode" style="height: 70vh" id="app-2"></hslayers>
