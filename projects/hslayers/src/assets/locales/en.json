@@ -287,7 +287,8 @@
     "somethingWentWrong": "Something went wrong, please try again!",
     "reading": "Reading data",
     "unsavedChanges": "Unsaved changes",
-    "return": "Return"
+    "return": "Return",
+    "composition": "Composition"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
