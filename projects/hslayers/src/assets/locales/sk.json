@@ -287,7 +287,8 @@
     "setPermissionsError": "Chyba pri nastavovaní oprávnení",
     "unsavedChanges": "Neuložené zmeny",
     "return": "Vrátiť sa",
-    "query": "Dotaz"
+    "query": "Dotaz",
+    "composition": "Kompozícia"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

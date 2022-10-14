@@ -287,7 +287,8 @@
     "width": "Šířka",
     "wrongCombinationOfParams": "Neplatná kombinace parametrů",
     "yes": "Ano",
-    "zoomTo": "zvětšit na"
+    "zoomTo": "zvětšit na",
+    "composition": "Kompozice"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

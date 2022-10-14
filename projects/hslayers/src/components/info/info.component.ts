@@ -63,10 +63,8 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
           const temp_title = this.composition_title;
           this.composition_abstract = data.abstract;
           this.composition_title = data.title;
-          this.info_image = 'icon-warning-sign';
           this.composition_title = temp_title;
           this.composition_abstract = temp_abstract;
-          this.info_image = 'icon-map';
         }
         this.composition_loaded = true;
         this.composition_edited = false;

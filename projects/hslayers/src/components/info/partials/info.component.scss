@@ -1,40 +1,39 @@
 	div.hs-info-area {
-		background-color: var(--ol-partial-background-color);
 		color: var(--ol-subtle-foreground-color);
-		border-radius: 4px;
-		bottom: 1.9em;
-		left: 0.5em;
-		padding: 1px;
+		bottom: 1.5em;
+		left: 0.3em;
 		pointer-events: initial;
 		position: absolute;
 		vertical-align: bottom;
 		z-index: 3;
 
 		&>div {
-			padding: 0.1rem;
+			padding: 0.25rem;
+			margin: 0.15rem 0;
+			border-radius: 0.25rem;
+			background-color: var(--ol-partial-background-color);
 		}
 
 		& div {
-			max-width: 250px;
+			max-width: 14em;
 		}
 	}
 
+	.hs-info-composition-title-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.15rem;
+	}
+
 	div.hs-info-composition-image {
-		background-size: 76px 76px;
-		font-size: 15px;
-		height: 2em;
-		position: absolute;
 		text-align: center;
-		width: 2em;
-		top: -35px;
-		left: 3px;
-		background-color: var(--ol-partial-background-color);
 		color: var(--ol-subtle-foreground-color);
 	}
 
 	div.hs-info-composition {
 		display: flex;
-		max-width: 300px;
+		max-width: 14em;
 	}
 
 	div.hs-info-composition-container {
@@ -55,12 +54,9 @@
 
 	.hs-info-layers,
 	div.hs-info-composition-edited {
+		box-sizing: content-box;
 		font-size: 12px;
-		text-overflow: ellipsis;
-		overflow: hidden;
 		display: inline-block;
-		position: relative;
-		width: auto;
-		max-width: 260px;
-		white-space: nowrap;
+		max-width: 14em;
+		width: 14em;
 	}
