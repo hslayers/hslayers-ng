@@ -126,7 +126,7 @@
     "useTiles": "Use tiles",
     "Vector": {
       "addingFiles": "Adding {{featuresCount}} features into:",
-      "addSld": "Add SLD file",
+      "addSld": "Add SLD/QML file",
       "chooseFiles": "Choose files...",
       "chooseLayer": "Please, choose a layer from list...",
       "dragAndDropFiles": "Drag and drop files",

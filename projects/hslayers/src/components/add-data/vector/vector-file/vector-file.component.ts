@@ -276,7 +276,7 @@ export class HsAddDataVectorFileComponent
       title: '',
       type: this.fileType,
       url: undefined,
-      sld: null,
+      serializedStyle: null,
       access_rights: {
         'access_rights.write': 'private',
         'access_rights.read': 'EVERYONE',

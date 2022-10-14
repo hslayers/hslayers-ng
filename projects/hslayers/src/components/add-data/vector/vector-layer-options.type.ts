@@ -1,5 +1,7 @@
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
+import {Style} from 'ol/style';
+import {StyleFunction} from 'ol/style/Style';
 
 import {accessRightsModel} from '../common/access-rights.model';
 
@@ -10,7 +12,7 @@ export type HsVectorLayerOptions = {
   fromComposition?: boolean;
   geomAttribute?: string;
   idAttribute?: string;
-  style?: any;
+  style?: string | Style | Array<Style> | StyleFunction;
   endpointUrl?: string;
   extractStyles?: boolean;
   features?: Feature<Geometry>[];
@@ -19,5 +21,6 @@ export type HsVectorLayerOptions = {
   query?: string;
   queryCapabilities?: boolean;
   sld?: string;
+  qml?: string;
   saveToLayman?: boolean;
 };

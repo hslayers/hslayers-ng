@@ -56,6 +56,7 @@ import {accessRightsModel} from '../add-data/common/access-rights.model';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
+  getQml,
   getSld,
   getTitle,
   getWorkspace,
@@ -333,10 +334,10 @@ export class HsLaymanService implements HsSaverService {
     }
 
     //Empty blob causes Layman to return “Internal Server Error”
-    if (description.sld) {
+    if (description.style) {
       formData.append(
         'sld',
-        new Blob([description.sld], {type: 'application/octet-stream'}),
+        new Blob([description.style], {type: 'application/octet-stream'}),
         'file.sld'
       );
     }
@@ -580,7 +581,7 @@ export class HsLaymanService implements HsSaverService {
       crs: crsSupported ? this.crs : 'EPSG:3857',
       workspace: getWorkspace(layer),
       access_rights: getAccessRights(layer),
-      sld: getSld(layer),
+      style: getSld(layer) || getQml(layer),
     };
     await this.makeUpsertLayerRequest(
       endpoint,
