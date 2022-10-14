@@ -21,7 +21,7 @@
             class="hs-sidebar-item-title">{{button.title | translateHs: {app} }}</span>
     </span>
     <!-- TODO: Remove function call from template -->
-    <span class="hs-sidebar-item  list-group-item" *ngIf="layoutAppRef.minisidebar"
+    <span class="hs-sidebar-item  list-group-item hs-sidebar-additional-items" *ngIf="layoutAppRef.minisidebar"
         (click)="HsLayoutService.setMainPanel('sidebar', app, true)"
         [ngClass]="{'active': layoutAppRef.mainpanel === 'sidebar'}">
         <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"
