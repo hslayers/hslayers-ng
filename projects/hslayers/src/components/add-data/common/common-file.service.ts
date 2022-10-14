@@ -469,7 +469,7 @@ export class HsAddDataCommonFileService {
           data.title,
           data.abstract,
           data.srs,
-          data.sld,
+          data.serializedStyle,
           data.access_rights,
           app,
           options?.overwrite

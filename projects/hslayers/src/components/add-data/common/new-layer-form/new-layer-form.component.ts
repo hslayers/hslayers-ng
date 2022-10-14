@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+import {FileDataObject} from '../../file/types/file-data-object.type';
 import {
   HsAddDataCommonFileService,
   HsAddDataCommonFileServiceParams,
 } from '../common-file.service';
 import {HsFileService} from '../../file/file.service';
-import {HsLanguageService} from './../../../../components/language/language.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsUploadedFiles} from './../../../../common/upload/upload.component';
 
@@ -15,7 +15,7 @@ import {HsUploadedFiles} from './../../../../common/upload/upload.component';
 })
 export class HsNewLayerFormComponent implements OnInit {
   advancedPanelVisible = false;
-  @Input() data: any;
+  @Input() data: FileDataObject;
   @Input() app = 'default';
   appRef: HsAddDataCommonFileServiceParams;
   srsFilter = (srs: string): boolean => {
@@ -23,7 +23,6 @@ export class HsNewLayerFormComponent implements OnInit {
   };
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsLanguageService: HsLanguageService,
     private hsFileService: HsFileService,
     public hsLaymanService: HsLaymanService
   ) {}
@@ -35,17 +34,6 @@ export class HsNewLayerFormComponent implements OnInit {
         return ['4326', '3857'].some((epsg) => item.includes(epsg));
       };
     }
-  }
-
-  sldTitle(): string {
-    return this.data.sld
-      ? this.data.sld.name
-      : this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS.Vector',
-          'addSld',
-          undefined,
-          this.app
-        );
   }
 
   async read(evt: HsUploadedFiles): Promise<void> {

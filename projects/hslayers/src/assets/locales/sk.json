@@ -116,7 +116,7 @@
     "useTiles": "Použíť dlaždice",
     "Vector": {
       "addingFiles": "Pridávanie {{featuresCount}} prvkov do:",
-      "addSld": "Pridať súbor SLD",
+      "addSld": "Pridať súbor SLD/QML",
       "chooseFiles": "Vyberte súbory...",
       "chooseLayer": "Vyberte vrstvu zo zoznamu ...",
       "dragAndDropFiles": "Pretiahnite súbory",

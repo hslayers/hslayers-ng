@@ -201,7 +201,8 @@ export class HsAddDataVectorService {
     Object.assign(
       descriptor.layerParams,
       await this.hsStylerService.parseStyle(
-        descriptor.layerParams.style ?? descriptor.layerParams.sld,
+        descriptor.layerParams.style ??
+          (descriptor.layerParams.sld || descriptor.layerParams.qml),
         app
       )
     );
@@ -285,6 +286,11 @@ export class HsAddDataVectorService {
       //Create layer on layman: OverwriteResponse.add
       await this.upsertLayer(data, app);
     }
+    const serializedStyle =
+      typeof data.serializedStyle === 'string'
+        ? data.serializedStyle
+        : data.serializedStyle?.content;
+    const styleFormat = this.hsStylerService.guessStyleFormat(serializedStyle);
     const layer = await this.addVectorLayer(
       data.features?.length > 0 ? '' : data.type,
       data.url || data.base64url,
@@ -307,7 +313,8 @@ export class HsAddDataVectorService {
           data.type != 'sparql' &&
           !data.url?.endsWith('json'),
         saveToLayman: data.saveToLayman,
-        sld: typeof data.sld === 'string' ? data.sld : data.sld?.content,
+        sld: styleFormat == 'sld' ? serializedStyle : undefined,
+        qml: styleFormat == 'qml' ? serializedStyle : undefined,
       },
       app,
       data.addUnder
@@ -336,13 +343,17 @@ export class HsAddDataVectorService {
     const crsSupported = this.hsLaymanService.supportedCRRList.includes(
       data.nativeSRS
     );
+    const style =
+      typeof data.serializedStyle == 'string'
+        ? data.serializedStyle
+        : data.serializedStyle?.content;
     const layerDesc: UpsertLayerObject = {
       title: data.title,
       name: getLaymanFriendlyLayerName(data.name),
       crs: this.getFeaturesProjection(getProjection(data.nativeSRS)).getCode(),
       workspace: commonFileRef.endpoint.user,
       access_rights: data.access_rights,
-      sld: typeof data.sld == 'string' ? data.sld : data.sld?.content,
+      style,
     };
     return this.hsLaymanService.makeUpsertLayerRequest(
       commonFileRef.endpoint,

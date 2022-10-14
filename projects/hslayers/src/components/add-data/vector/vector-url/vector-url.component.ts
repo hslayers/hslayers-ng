@@ -83,7 +83,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
       saveAvailable: false,
       saveToLayman: false,
       showDetails: false,
-      sld: null,
+      serializedStyle: null,
       srs: 'EPSG:4326',
       title: '',
       type: this.fileType,

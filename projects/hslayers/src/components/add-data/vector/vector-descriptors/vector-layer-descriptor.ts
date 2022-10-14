@@ -22,6 +22,7 @@ export class VectorLayerDescriptor {
     access_rights: accessRightsModel;
     queryCapabilities: boolean;
     sld: string;
+    qml: string;
   };
 
   constructor(
@@ -52,6 +53,7 @@ export class VectorLayerDescriptor {
       removable: true,
       path: options.path,
       sld: options.sld,
+      qml: options.qml,
       visible: options.visible,
       workspace: options.workspace,
       access_rights: options.access_rights,

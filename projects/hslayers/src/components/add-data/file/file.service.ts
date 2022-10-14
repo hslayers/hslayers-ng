@@ -46,8 +46,8 @@ export class HsFileService {
       if (evt.uploader.includes('shpdbfshx')) {
         data.files = filesRead;
         this.checkShpFiles(data, app);
-      } else if (evt.uploader.includes('sld')) {
-        data.sld = filesRead[0];
+      } else if (evt.uploader.includes('style')) {
+        data.serializedStyle = filesRead[0];
         this.hsAddDataCommonFileService.get(app).dataObjectChanged.next(data);
       } else if (evt.uploader.includes('hs-file-raster')) {
         data.files = filesRead;

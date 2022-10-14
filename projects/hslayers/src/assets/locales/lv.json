@@ -116,7 +116,7 @@
     "useTiles": "Izmantojiet \"flīzes\"",
     "Vector": {
       "addingFiles": "Pievienot {{featuresCount}} grafiskos objektus iekš",
-      "addSld": "Pievienot SLD failu",
+      "addSld": "Pievienot SLD/QML failu",
       "chooseFiles": "Izvēlieties failus...",
       "chooseLayer": "Lūdzu, izvēlieties slāni no saraksta...",
       "dragAndDropFiles": "Velciet un nometiet failus",

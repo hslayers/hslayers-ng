@@ -14,7 +14,7 @@ export type FileDataObject = {
   name?: string;
   saveAvailable?: boolean;
   saveToLayman?: boolean;
-  sld?: FileDescriptor;
+  serializedStyle?: FileDescriptor;
   srs?: string;
   title?: string;
   type?: string;

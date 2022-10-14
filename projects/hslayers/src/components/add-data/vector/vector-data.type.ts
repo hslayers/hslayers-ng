@@ -28,7 +28,7 @@ export type VectorDataObject = {
   sourceLayer?: VectorLayer<VectorSource<Geometry>>;
   srs?: string;
   nativeSRS?: string;
-  sld?: string | {content: string};
+  serializedStyle?: string | {content: string};
   title?: string;
   type?: string;
   url?: string;

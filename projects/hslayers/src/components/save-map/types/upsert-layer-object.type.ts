@@ -6,5 +6,5 @@ export type UpsertLayerObject = {
   crs?: string;
   workspace?: string;
   access_rights?: accessRightsModel;
-  sld?: string;
+  style?: string; //sld param is deprecated in Layman. Use style instead
 };
