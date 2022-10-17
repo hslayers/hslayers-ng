@@ -3,6 +3,7 @@
 import {defineConfig} from 'cypress';
 
 export default defineConfig({
+  projectId: '69m3n7',
   fixturesFolder: 'cypress/fixtures',
   e2e: {
     // We've imported your old cypress plugins here.
