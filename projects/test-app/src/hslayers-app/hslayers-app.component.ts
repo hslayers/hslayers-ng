@@ -110,7 +110,7 @@ export class HslayersAppComponent {
         colorMap: 'copper',
       });
       const idwLayer = new ImageLayer({
-        visible: true,
+        visible: false,
         properties: {title: 'IDW layer'},
         source: interpolatedSource as any,
         opacity: 0.5,
@@ -360,7 +360,7 @@ export class HslayersAppComponent {
           path: 'Vegetation indexes and satellite imagery',
         },
         maxZoom: 18,
-        visible: true,
+        visible: false,
         opacity: 1,
       });
       this.hsConfig.update(
@@ -565,7 +565,7 @@ export class HslayersAppComponent {
             polygons,
             points,
             new Tile({
-              visible: true,
+              visible: false,
               properties: {
                 title: 'Latvian municipalities (parent layer)',
                 queryFilter: (map, layer, pixel) => {
@@ -583,7 +583,7 @@ export class HslayersAppComponent {
               }),
             }),
             new Tile({
-              visible: true,
+              visible: false,
               properties: {
                 title: 'Latvian municipalities (1 sub-layer)',
                 sublayers: 'publicwfs:arisparish',
@@ -599,7 +599,7 @@ export class HslayersAppComponent {
               }),
             }),
             new Tile({
-              visible: true,
+              visible: false,
               properties: {
                 title: 'EVI',
               },

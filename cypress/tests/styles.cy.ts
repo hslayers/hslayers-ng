@@ -4,9 +4,11 @@ describe('Hslayers application', () => {
     //Open layer manager
     cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
     //Turn off all layers
-    cy.get('hs-layermanager-layer-list li').each((layer) => {
-      cy.wrap(layer).find('.d-flex div:first').click();
-    });
+    cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
+      (button) => {
+        cy.wrap(button).click();
+      }
+    );
   });
 
   it('Styler should open', () => {
