@@ -1,6 +1,6 @@
 {
   "name": "hslayers-cesium",
-  "version": "10.0.0-next.1",
+  "version": "10.0.0",
   "description": "HSLayers-NG 3D mapping library",
   "author": "Plan4All",
   "keywords": [

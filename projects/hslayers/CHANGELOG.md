@@ -1,3 +1,30 @@
+# [10.0.0](https://github.com/hslayers/hslayers-ng/compare/10.0.0-next.1...10.0.0) (2022-10-21)
+
+
+### Bug Fixes
+
+* Clean up replay subjects when destroying containers ([06a02b5](https://github.com/hslayers/hslayers-ng/commit/06a02b5387e87a93c8fd5a9eba144d9845751d2b))
+* Fix i18n string for layer deletion ([e911c12](https://github.com/hslayers/hslayers-ng/commit/e911c12c408abe18f24d267d0c217c02605fc54a))
+* Map swipe button style ([1e33407](https://github.com/hslayers/hslayers-ng/commit/1e334072bf3426af4779f138fdd20bfec1b333cc))
+* Trigger colorMapChanged event ([8cb62f3](https://github.com/hslayers/hslayers-ng/commit/8cb62f3d0867794b924b0445cdd1b9801d0f7cb8))
+* Unsubscribe draw-panel sidebarpos subscription ([858a2ee](https://github.com/hslayers/hslayers-ng/commit/858a2eed7a11f8633b4b5e11fa8cfeb60a6e70b6))
+* Unsubscribe layout components subscriptions ([6a67c18](https://github.com/hslayers/hslayers-ng/commit/6a67c180970eaf2703917e808942b670c1e3cfbc))
+* Walkaround of wellKnowName bug when parsing qml ([14fb5b3](https://github.com/hslayers/hslayers-ng/commit/14fb5b3b5b0d7014e505318874c03a08e1d63299)), closes [#3431](https://github.com/hslayers/hslayers-ng/issues/3431)
+* **i18n:** Add space to message ([9199033](https://github.com/hslayers/hslayers-ng/commit/919903392637fc1ae6031d1cb4b604a880fd45e6))
+* **sensors:** Set chart dialog position in case of bottom placement ([2fc5f91](https://github.com/hslayers/hslayers-ng/commit/2fc5f918555ae75e9ca1264747761392e6326fb9))
+
+
+### Features
+
+* Support loading of QML in style panel upload ([f8d99f2](https://github.com/hslayers/hslayers-ng/commit/f8d99f22bc4ce5b63017982e994e433af82fc6f9)), closes [#3433](https://github.com/hslayers/hslayers-ng/issues/3433)
+
+
+### Performance Improvements
+
+* Withdraw swipe control from Zone.js ([c8d3d4e](https://github.com/hslayers/hslayers-ng/commit/c8d3d4e07961f8fa342dc50c69f7ad676c641e2d))
+
+
+
 # [10.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/9.2.0...10.0.0-next.1) (2022-09-23)
 
 
