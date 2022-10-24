@@ -85,10 +85,12 @@ export class HsCompositionsLayerParserService {
   async createWMTSLayer(lyr_def, app: string): Promise<Tile<TileSource>> {
     const wmts = new Tile({
       source: new WMTS({} as any),
+      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
         title: lyr_def.title,
         info_format: lyr_def.info_format,
         base: lyr_def.base,
+        greyscale: lyr_def.greyscale,
       },
     });
 
@@ -169,6 +171,7 @@ export class HsCompositionsLayerParserService {
       showInLayerManager: lyr_def.displayInLayerSwitcher,
       abstract: lyr_def.name || lyr_def.abstract,
       base: lyr_def.base,
+      greyscale: lyr_def.greyscale,
       metadata: lyr_def.metadata,
       dimensions: lyr_def.dimensions,
       legends: legends,
@@ -176,6 +179,7 @@ export class HsCompositionsLayerParserService {
       opacity: lyr_def.opacity || 1,
       source,
       subLayers: lyr_def.subLayers,
+      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
     };
     const new_layer = lyr_def.singleTile
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
@@ -220,6 +224,8 @@ export class HsCompositionsLayerParserService {
       showInLayerManager: lyr_def.displayInLayerSwitcher,
       abstract: lyr_def.name || lyr_def.abstract,
       base: lyr_def.base,
+      greyscale: lyr_def.greyscale,
+      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       metadata: lyr_def.metadata,
       dimensions: lyr_def.dimensions,
       legends: legends,
@@ -260,12 +266,14 @@ export class HsCompositionsLayerParserService {
       minResolution: lyr_def.minResolution || 0,
       opacity: lyr_def.opacity || 1,
       source,
+      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
         title: lyr_def.title,
         fromComposition: true,
         showInLayerManager: lyr_def.displayInLayerSwitcher,
         abstract: lyr_def.name || lyr_def.abstract,
         base: lyr_def.base || lyr_def.url.indexOf('openstreetmap') > -1,
+        greyscale: lyr_def.greyscale,
         metadata: lyr_def.metadata,
         dimensions: lyr_def.dimensions,
         legends: legends,
@@ -301,6 +309,7 @@ export class HsCompositionsLayerParserService {
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       opacity: lyr_def.opacity || 1,
+      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       source,
       properties: {
         title: lyr_def.title,
@@ -308,6 +317,7 @@ export class HsCompositionsLayerParserService {
         showInLayerManager: lyr_def.displayInLayerSwitcher,
         abstract: lyr_def.name || lyr_def.abstract,
         base: lyr_def.base,
+        greyscale: lyr_def.greyscale,
         metadata: lyr_def.metadata,
         dimensions: lyr_def.dimensions,
         legends: legends,

@@ -546,7 +546,7 @@
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
     "baseMapGallery": {
-      "grayscale": "Šedotón",
+      "greyscale": "Šedotón",
       "noBaseMap": "Bez podkladu"
     },
     "dialogRemoveAll": {

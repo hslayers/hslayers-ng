@@ -545,7 +545,7 @@
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
     "baseMapGallery": {
-      "grayscale": "Pelēktoņu",
+      "greyscale": "Pelēktoņu",
       "noBaseMap": "Nav pamatkartes"
     },
     "dialogRemoveAll": {

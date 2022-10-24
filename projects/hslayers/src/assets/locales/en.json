@@ -546,7 +546,7 @@
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
     "baseMapGallery": {
-      "grayscale": "Grayscale",
+      "greyscale": "Greyscale",
       "noBaseMap": "No basemap"
     },
     "dialogRemoveAll": {

@@ -1,12 +1,11 @@
-import {ChangeDetectionStrategy, Component,  ViewChild} from '@angular/core';
-
+import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsPanelBaseComponent} from '../../layout/panels/panel-base.component';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
-import {getBase} from '../../../common/layer-extensions';
+import {getBase, getGreyscale} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-gallery',
@@ -15,6 +14,7 @@ import {getBase} from '../../../common/layer-extensions';
 })
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   menuExpanded = false;
+  getGreyscale = getGreyscale;
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
   constructor(
     public hsLayoutService: HsLayoutService,

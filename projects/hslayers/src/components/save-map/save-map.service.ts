@@ -13,6 +13,7 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
+import {CompoData} from './types/compo-data.type';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
@@ -39,6 +40,7 @@ import {
   getBase,
   getDefinition,
   getDimensions,
+  getGreyscale,
   getLegends,
   getMetadata,
   getName,
@@ -52,6 +54,7 @@ import {
   getWfsUrl,
   getWorkspace,
 } from '../../common/layer-extensions';
+import {transformExtent} from 'ol/proj';
 
 const LCLSTORAGE_EXPIRE = 5000;
 
@@ -334,6 +337,9 @@ export class HsSaveMapService {
     json.swipeSide = getSwipeSide(layer);
     json.opacity = layer.getOpacity();
     json.base = getBase(layer) ?? false;
+    if (json.base) {
+      json.greyscale = getGreyscale(layer);
+    }
     json.title = getTitle(layer);
     if (getTitle(layer) == undefined) {
       this.hsLogService.warn('Layer title undefined', layer);

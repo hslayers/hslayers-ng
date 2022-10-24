@@ -4,10 +4,10 @@ import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import BaseLayer from 'ol/layer/Base';
 import {DOMFeatureLink} from './dom-feature-link.type';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
-import BaseLayer from 'ol/layer/Base';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
@@ -27,6 +27,7 @@ const EXCLUSIVE = 'exclusive';
 const FEATURE_INFO_LANG = 'featureInfoLang';
 const FROM_COMPOSITION = 'fromComposition';
 const GET_FEATURE_INFO_TARGET = 'getFeatureInfoTarget';
+const GREYSCALE = 'greyscale';
 const HS_LAYMAN_SYNCHRONIZING = 'hsLaymanSynchronizing';
 const HS_QML = 'qml';
 const HS_SLD = 'sld';
@@ -361,6 +362,14 @@ export function setFeatureInfoTarget(
 
 export function getFeatureInfoTarget(layer: Layer<Source>): string {
   return layer.get(GET_FEATURE_INFO_TARGET);
+}
+
+export function getGreyscale(layer: Layer<Source>): boolean {
+  return layer.get(GREYSCALE);
+}
+
+export function setGreyscale(layer: Layer<Source>, greyscale: boolean): void {
+  layer.set(GREYSCALE, greyscale);
 }
 
 export function getSld(layer: Layer<Source>): string {

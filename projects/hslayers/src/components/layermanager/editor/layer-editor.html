@@ -15,13 +15,13 @@
             <div class="btn-group m-auto d-flex w-75" *ngIf="currentLayer.visible && getBase(currentLayer.layer)">
                 <button class="btn btn-sm btn-outline-primary  w-50"
                     (click)="HsLayerManagerService.setGreyscale(currentLayer, app)"
-                    [ngClass]="{'active' : !currentLayer.grayscale}" data-toggle="tooltip"
+                    [ngClass]="{'active' : !getGreyscale(currentLayer.layer)}" data-toggle="tooltip"
                     [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs : {app} ">{{'COMMON.color' |
                     translateHs : {app} }}</button>
                 <button class="btn btn-sm btn-outline-primary  w-50"
                     (click)="HsLayerManagerService.setGreyscale(currentLayer, app)"
-                    [ngClass]="{'active' : currentLayer.grayscale}" data-toggle="tooltip"
-                    [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs : {app} ">{{'LAYERMANAGER.baseMapGallery.grayscale'
+                    [ngClass]="{'active' : getGreyscale(currentLayer.layer)}" data-toggle="tooltip"
+                    [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs : {app} ">{{'LAYERMANAGER.baseMapGallery.greyscale'
                     | translateHs : {app} }}</button>
             </div>
         </div>

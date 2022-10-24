@@ -19,9 +19,9 @@
                     <div class="ps-1 w-100" *ngIf="!hsLayerManagerService.apps[data.app].menuExpanded"
                         (click)="hsLayerManagerService.setGreyscale(layer, data.app)">
                         <label class="form-check-label m-0"
-                            [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
+                            [ngClass]="getGreyscale(layer.layer) ? 'hs-checkmark' : 'hs-uncheckmark'"></label>
                         <p class="ms-1 mb-0">
-                            {{'LAYERMANAGER.baseMapGallery.grayscale' | translateHs : {app: data.app} }}</p>
+                            {{'LAYERMANAGER.baseMapGallery.greyscale' | translateHs : {app: data.app} }}</p>
                     </div>
                     <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100"
                         [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}" (click)="expandMenu(layer)">
