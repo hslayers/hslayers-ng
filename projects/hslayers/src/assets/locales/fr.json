@@ -79,7 +79,7 @@
   "LAYERMANAGER": {
     "baselayers": "Fond de carte de base",
     "baseMapGallery": {
-      "grayscale": "Niveaux de gris",
+      "greyscale": "Niveaux de gris",
       "noBaseMap": "Pas de fond de carte"
     },
     "dialogRemoveAll": {

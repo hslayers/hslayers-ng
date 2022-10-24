@@ -43,4 +43,5 @@ export type LayerJSON = {
   workspace?: string;
   features?: GeoJSONFeatureCollection;
   style?: SerializedStyle | string;
+  greyscale?: boolean;
 };

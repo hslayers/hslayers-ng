@@ -34,6 +34,7 @@ import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {
   getBase,
   getCachedCapabilities,
+  getGreyscale,
   getRemovable,
   getTitle,
   setTitle,
@@ -58,6 +59,7 @@ export class HsLayerEditorComponent {
 
   layer_renamer_visible = false;
   getBase = getBase;
+  getGreyscale = getGreyscale;
   tmpTitle: string = undefined;
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,

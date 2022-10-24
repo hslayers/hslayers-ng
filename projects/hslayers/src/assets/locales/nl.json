@@ -78,7 +78,7 @@
   "LAYERMANAGER": {
     "baselayers": "Basislagen",
     "baseMapGallery": {
-      "grayscale": "Grijstinten",
+      "greyscale": "Grijstinten",
       "noBaseMap": "Geen basiskaart"
     },
     "dialogRemoveAll": {

@@ -57,6 +57,7 @@ import {
   getThumbnail,
   getTitle,
   setActive,
+  setGreyscale,
   setName,
   setOrigLayers,
   setPath,
@@ -1092,19 +1093,19 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Makes layer grayscale
+   * Makes layer greyscale
    * @param layer - Selected layer (currentLayer)
    */
   setGreyscale(layer: HsLayerDescriptor, app): void {
     const layerContainer = this.hsLayoutService.apps[
       app
     ].contentWrapper.querySelector('.ol-layers > div:first-child');
-    if (layerContainer.classList.contains('hs-grayscale')) {
-      layerContainer.classList.remove('hs-grayscale');
-      layer.grayscale = false;
+    if (layerContainer.classList.contains('hs-greyscale')) {
+      layerContainer.classList.remove('hs-greyscale');
+      setGreyscale(layer.layer, false);
     } else {
-      layerContainer.classList.add('hs-grayscale');
-      layer.grayscale = true;
+      layerContainer.classList.add('hs-greyscale');
+      setGreyscale(layer.layer, true);
     }
 
     setTimeout(() => {
