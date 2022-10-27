@@ -34,7 +34,9 @@ import {
   getTitle,
 } from '../../common/layer-extensions';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsLayerUtilsService {
   constructor(
     public HsUtilsService: HsUtilsService,

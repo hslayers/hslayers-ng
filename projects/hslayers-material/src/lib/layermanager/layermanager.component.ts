@@ -35,7 +35,9 @@ class HsLayerFlatNode {
   layer?: HsLayerDescriptor;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsLayerDatabase {
   dataChange = new BehaviorSubject<HsLayerNode[]>([]);
   @Input() app = 'default';

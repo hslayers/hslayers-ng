@@ -201,7 +201,9 @@ export class HsConfigObject {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsConfig {
   apps: {[id: string]: HsConfigObject} = {
     default: new HsConfigObject(),

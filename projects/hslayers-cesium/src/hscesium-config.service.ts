@@ -21,7 +21,9 @@ export class HsCesiumConfigObject {
   cesiumTime?: JulianDate;
   constructor() {}
 }
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCesiumConfig {
   apps: {[id: string]: HsCesiumConfigObject} = {
     default: {},
