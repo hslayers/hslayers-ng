@@ -77,7 +77,7 @@
     "resumablejs": "^1.1.0",
     "rxjs": "^7.5.7",
     "share-api-polyfill": "^1.1.1",
-    "tslib": "^2.4.0",
+    "tslib": "^2.4.1",
     "vega": "5.22.1",
     "vega-embed": "6.21.0",
     "vega-lite": "~5.6.0",
