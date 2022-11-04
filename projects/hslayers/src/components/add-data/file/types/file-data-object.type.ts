@@ -11,6 +11,7 @@ export type FileDataObject = {
   extract_styles?: boolean;
   files?: FileDescriptor[];
   folder_name?: string;
+  loadAsType?: 'wms' | 'wfs';
   name?: string;
   saveAvailable?: boolean;
   saveToLayman?: boolean;

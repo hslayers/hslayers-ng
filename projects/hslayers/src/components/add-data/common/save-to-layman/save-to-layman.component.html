@@ -2,11 +2,11 @@
   <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
     {{'ADDDATA.saveToDatabase' | translateHs : {app} }}
     <div class="btn-group ms-2">
-      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.saveToLayman = true"
+      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(true)"
         [ngClass]="{'active':data.saveToLayman}">
         {{'COMMON.yes' | translateHs : {app} }}
       </button>
-      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.saveToLayman = false"
+      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(false)"
         [ngClass]="{'active': !data.saveToLayman}">
         {{'COMMON.no' | translateHs : {app} }}
       </button>
