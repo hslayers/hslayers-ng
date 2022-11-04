@@ -11,4 +11,17 @@
       translateHs : {app} }}</label>
   </div>
   <hs-target-position [(addUnder)]="data.addUnder" [app]="app"></hs-target-position>
+  <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4" *ngIf="data.loadAsType">
+    {{'ADDDATA.loadAs' | translateHs : {app} }}
+    <div class="btn-group ms-2">
+      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.loadAsType = 'wms'"
+        [ngClass]="{'active': data.loadAsType === 'wms'}">
+        WMS
+      </button>
+      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="data.loadAsType = 'wfs'"
+        [ngClass]="{'active': data.loadAsType === 'wfs'}">
+        WFS
+      </button>
+    </div>
+  </div>
 </div>

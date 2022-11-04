@@ -293,7 +293,7 @@ export class HsAddDataCommonFileService {
    * @param app - App identifier
    */
   async lookupLaymanLayer(name: string, app: string): Promise<boolean> {
-    const fiendlyName = getLaymanFriendlyLayerName(name);
+    const friendlyName = getLaymanFriendlyLayerName(name);
     const commonFileRef = this.get(app);
     let descriptor: HsLaymanLayerDescriptor;
     if (this.isAuthorized()) {
@@ -310,7 +310,7 @@ export class HsAddDataCommonFileService {
         throw error;
       }
     }
-    if (!descriptor || descriptor?.name != fiendlyName) {
+    if (!descriptor || descriptor?.name != friendlyName) {
       return false;
     } else {
       return true;
@@ -336,7 +336,7 @@ export class HsAddDataCommonFileService {
   }
 
   /**
-   * Calculates progress of individual file being zipped by transforimg value into 0 - 1 scale
+   * Calculates progress of individual file being zipped by transforming value into 0 - 1 scale
    */
   calculateFileProgress(value, nrOfFiles): number {
     const unit = 100 / nrOfFiles;
@@ -366,7 +366,7 @@ export class HsAddDataCommonFileService {
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param sld - Array of sld files
    * @param access_rights - User access rights for the new layer,
-   * @returns Formdata object for HTTP request
+   * @returns FormData object for HTTP request
    */
   async constructFormData(
     endpoint: HsEndpoint,
@@ -432,7 +432,7 @@ export class HsAddDataCommonFileService {
    * answer with wms service url to add to map
    * @param data - Current data object for upload
    * @param app - App identifier
-   * @param options - (Optional) overwrite: Overwrite existing layman layer, repetive: Called for more the one time
+   * @param options - (Optional) overwrite: Overwrite existing layman layer, repetitive: Called for more the one time
    */
   async addAsWms(
     data: FileDataObject,

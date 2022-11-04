@@ -10,6 +10,8 @@ import {
 
 import {Cluster} from 'ol/source';
 
+import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
+import {FileDataObject} from '../../file/types/file-data-object.type';
 import {
   HsAddDataCommonFileService,
   HsAddDataCommonFileServiceParams,
@@ -42,7 +44,7 @@ export class HsAddDataVectorFileComponent
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';
-  data: VectorDataObject;
+  data: VectorDataObject & FileDataObject;
   fileInput: ElementRef;
   access_rights: accessRightsModel = {
     'access_rights.write': 'private',
@@ -200,6 +202,9 @@ export class HsAddDataVectorFileComponent
             this.hsCommonEndpointsService.endpoints.filter(
               (ep) => ep.type == 'layman'
             )[0]?.authenticated;
+          if (this.data.saveToLayman) {
+            this.data.loadAsType = DEFAULT_VECTOR_LOAD_TYPE;
+          }
         }
         //add layman endpoint url as url to allow sync
         if (
@@ -254,7 +259,7 @@ export class HsAddDataVectorFileComponent
     }
   }
   /**
-   * Reset data object to its default valuess
+   * Reset data object to its default values
    */
   setDataToDefault(): void {
     this.data = {

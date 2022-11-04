@@ -236,7 +236,7 @@ export class HsLaymanService implements HsSaverService {
    * @param formdata - FormData object used for sending data over HTTP request
    * @param saveAsNew - Save as new composition
    * @param app - App identifier
-   * @param compositionJson - Json with composition's definition
+   * @param compositionJson - JSON with composition's definition
    * @returns Promise result of POST/PATCH request
    */
   async makeMapPostPatchRequest(
@@ -287,7 +287,7 @@ export class HsLaymanService implements HsSaverService {
           );
           return err;
         });
-        //Unsuccessfull request response contains code,detail and message properties
+        //Unsuccessful request response contains code, detail and message properties
         if (!response.code) {
           success = true;
         } else {

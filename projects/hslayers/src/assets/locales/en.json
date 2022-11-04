@@ -38,6 +38,7 @@
       "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size of 20MB",
       "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
     },
+    "loadAs": "When uploaded load layer as ...",
     "requestServiceLayers": "Request service layers",
     "saveToDatabase": "Save to database",
     "URL": {
@@ -101,10 +102,10 @@
     "SHP": {
       "loginRequired": "User login is required before layer can be loaded",
       "maximumNumberOf": "Maximum number of {{allowed}} files allowed, but {{length}} selected",
-      "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf or zip containing these files.",
+      "missingOneOrMore": "Missing one or more Shape files. Load files with extensions *.shp, *.shx, *.dbf or a zip containing these files.",
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "Style file",
-      "neededFiles": "Load files with extensions *.shp, *.shx, *.dbf or zip file containing these files.",
+      "neededFiles": "Load files with extensions *.shp, *.shx, *.dbf or a zip file containing these files.",
       "considerUsingZip": "Consider using '.zip' format for shapefiles bigger than 10MB of size, that way upload will be much quicker.",
       "exceedingSize": "Shapefile being loaded exceeds recommended size"
     },
