@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
-import VectorLayer from 'ol/layer/Vector';
+import {Vector as VectorLayer} from 'ol/layer';
 import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {Geometry, MultiPolygon} from 'ol/geom';

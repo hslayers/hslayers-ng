@@ -8,9 +8,7 @@
     "experimentalDecorators": true,
     "inlineSources": true,
     "types": [],
-    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "lib": [
       "dom",
       "es2018"
