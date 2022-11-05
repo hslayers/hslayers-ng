@@ -1,11 +1,11 @@
-import Feature from 'ol/Feature';
-import VectorSource from 'ol/source/Vector';
 import {Injectable} from '@angular/core';
 
+import {Cluster, Source} from 'ol/source';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
-import {Cluster, Source} from 'ol/source';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';

@@ -52,7 +52,7 @@ Configuring hslayers-ng is described in more depth in [wiki](https://github.com/
 Use HsConfig service injected in your component to set applications layers, looks and behavior. See full list of [config options](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters)
 ```
   import {Vector as VectorSource} from 'ol/source';
-  import VectorLayer from 'ol/layer/Vector';
+  import {Vector as VectorLayer} from 'ol/layer';
   import {HsConfig} from 'hslayers-ng';
   ...
  constructor(private HsConfig: HsConfig) {

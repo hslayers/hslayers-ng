@@ -1,13 +1,13 @@
 import {Injectable, NgZone} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Circle, Geometry} from 'ol/geom';
 import {Cluster, Source} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {Layer} from 'ol/layer';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 

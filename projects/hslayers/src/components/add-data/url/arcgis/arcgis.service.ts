@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 
-import ImageLayer from 'ol/layer/Image';
-import ImageSource from 'ol/source/Image';
-import TileSource from 'ol/source/Tile';
 import {ImageArcGISRest, Source, TileArcGISRest} from 'ol/source';
+import {Image as ImageLayer} from 'ol/layer';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
+import {Image as ImageSource} from 'ol/source';
 import {Layer} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {Tile as TileSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';

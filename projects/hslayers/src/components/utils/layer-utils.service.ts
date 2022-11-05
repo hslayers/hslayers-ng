@@ -1,9 +1,9 @@
 import {Injectable, NgZone} from '@angular/core';
 
 import Feature from 'ol/Feature';
-import FeatureFormat from 'ol/format/Feature';
+import {default as FeatureFormat} from 'ol/format/Feature';
 import IDW from 'ol-ext/source/IDW';
-import TileLayer from 'ol/layer/Tile';
+import {Tile as TileLayer} from 'ol/layer';
 import {
   Cluster,
   ImageWMS,
@@ -34,7 +34,9 @@ import {
   getTitle,
 } from '../../common/layer-extensions';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsLayerUtilsService {
   constructor(
     public HsUtilsService: HsUtilsService,

@@ -2,8 +2,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import Resumable from 'resumablejs';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
 import {GeoJSON, WFS} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
@@ -20,6 +18,8 @@ import {
   of,
 } from 'rxjs';
 import {Source} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {AboutLayman} from './types/about-layman-response.type';
 import {AsyncUpload} from './types/async-upload.type';

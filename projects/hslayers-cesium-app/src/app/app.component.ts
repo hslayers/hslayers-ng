@@ -7,9 +7,9 @@ import {
 } from '@angular/core';
 
 import * as proj from 'ol/proj';
-import GeoJSON from 'ol/format/GeoJSON';
-import VectorLayer from 'ol/layer/Vector';
-import View from 'ol/View';
+import {GeoJSON} from 'ol/format';
+import {Vector as VectorLayer} from 'ol/layer';
+import {View} from 'ol';
 import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';

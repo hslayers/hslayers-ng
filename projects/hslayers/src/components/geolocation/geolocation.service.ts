@@ -4,10 +4,10 @@ import {lastValueFrom} from 'rxjs';
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import Rotate from 'ol/control/Rotate';
-import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Circle as CircleGeom, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';

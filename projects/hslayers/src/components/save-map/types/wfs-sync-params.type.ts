@@ -1,7 +1,7 @@
 import Feature from 'ol/Feature';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 

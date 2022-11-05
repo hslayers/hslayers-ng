@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Geometry, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
 

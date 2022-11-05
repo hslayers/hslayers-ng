@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {SerializedStyle} from './types/serialized-style.type';
 
 import Map from 'ol/Map';
-import VectorSource from 'ol/source/Vector';
 import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
   Cluster,
@@ -20,6 +19,7 @@ import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Layer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {BoundingBoxObject} from './types/bounding-box-object.type';

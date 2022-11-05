@@ -10,8 +10,8 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
-import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../../config.service';

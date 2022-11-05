@@ -7,8 +7,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import VectorLayer from 'ol/layer/Vector';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {of} from 'rxjs';
 

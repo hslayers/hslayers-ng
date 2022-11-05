@@ -6,7 +6,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 
-import VectorLayer from 'ol/layer/Vector';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Feature} from 'ol';
 import {LineString, Polygon} from 'ol/geom';
 import {Point} from 'ol/geom';

@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Layer, Tile} from 'ol/layer';
 import {Source, WMTS} from 'ol/source';
+import {WMTSCapabilities} from 'ol/format';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';

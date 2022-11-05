@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import * as proj from 'ol/proj';
-import GeoJSON from 'ol/format/GeoJSON';
-import View from 'ol/View';
+import {GeoJSON} from 'ol/format';
+import {View} from 'ol';
 import {
   BingMaps,
   ImageArcGISRest,

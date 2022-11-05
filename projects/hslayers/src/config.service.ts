@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import View from 'ol/View';
 import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+import {View} from 'ol';
 
 import {AddDataFileType} from './components/add-data/file/types/file.type';
 import {AddDataUrlType} from './components/add-data/url/types/url.type';
@@ -201,7 +201,9 @@ export class HsConfigObject {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsConfig {
   apps: {[id: string]: HsConfigObject} = {
     default: new HsConfigObject(),

@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
-import VectorLayer from 'ol/layer/Vector';
+import {Vector as VectorLayer} from 'ol/layer';
 import {get, transformExtent} from 'ol/proj';
 
 import WfsSource from '../../../../common/layers/hs.source.WfsSource';

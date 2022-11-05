@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
-import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {ObjectEvent} from 'ol/Object';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 

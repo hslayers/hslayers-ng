@@ -1,8 +1,8 @@
-import VectorSource from 'ol/source/Vector';
 import {Circle, Geometry, LineString, Point, Polygon} from 'ol/geom';
 import {Cluster, Source} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from './../../../config.service';
 import {HsMapService} from '../../map/map.service';
