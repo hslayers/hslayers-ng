@@ -56,12 +56,18 @@ export class HsLanguageService {
 
   getTranslator(app: string): HsCustomTranslationService {
     if (this.apps[app] == undefined) {
-      this.apps[app] = {
-        language: app + '|' + DEFAULT_LANG,
-        translationService: this.translateServiceFactory(
+      let translationService;
+      if (typeof this.translateServiceFactory == 'object') {
+        translationService = this.translateServiceFactory;
+      } else if (typeof this.translateServiceFactory == 'function') {
+        translationService = this.translateServiceFactory(
           this.hsConfig,
           this.HttpClient
-        ),
+        );
+      }
+      this.apps[app] = {
+        language: app + '|' + DEFAULT_LANG,
+        translationService,
       };
     }
     return this.apps[app].translationService;

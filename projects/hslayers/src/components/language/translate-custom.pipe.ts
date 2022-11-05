@@ -23,7 +23,7 @@ export class TranslateCustomPipe
 {
   onLangChangeOverridden: boolean;
   constructor(
-    private translate2: TranslateService,
+    private translate2: CustomTranslationService,
     private _theRef: ChangeDetectorRef,
     private hsLanguageService: HsLanguageService
   ) {

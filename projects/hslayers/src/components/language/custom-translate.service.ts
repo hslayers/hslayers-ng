@@ -88,7 +88,9 @@ export class WebpackTranslateLoader implements TranslateLoader {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class CustomTranslationService extends TranslateService {
   constructor(HsConfig: HsConfig, HttpClient: HttpClient) {
     super(
