@@ -17,7 +17,9 @@ export type Measurement = {
   unit: string;
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsUtilsService {
   constructor(
     public HsConfig: HsConfig,
