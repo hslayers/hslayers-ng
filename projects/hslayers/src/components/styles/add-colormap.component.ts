@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import colorScales from 'colormap/colorScale';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from '../../components/layermanager/widgets/layer-editor-widget-base.component';

@@ -2,13 +2,13 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import colorScales from 'colormap/colorScale';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -29,8 +29,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   layerTitle: string;
   private end = new Subject<void>();
   uploaderVisible = false;

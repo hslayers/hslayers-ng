@@ -5,8 +5,6 @@ import Feature from 'ol/Feature';
 import OpenLayersParser from 'geostyler-openlayers-parser';
 import QGISStyleParser from 'geostyler-qgis-parser';
 import SLDParser from 'geostyler-sld-parser';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import colormap from 'colormap';
 import {Cluster} from 'ol/source';
 import {
@@ -20,6 +18,8 @@ import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
 import {StyleFunction, StyleLike} from 'ol/style/Style';
 import {Subject} from 'rxjs';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {createDefaultStyle} from 'ol/style/Style';
 import {getUid} from 'ol';
 

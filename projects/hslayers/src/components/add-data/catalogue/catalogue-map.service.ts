@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
@@ -20,27 +20,30 @@ import {
 } from '../../../common/feature-extensions';
 
 class HsAddDataCatalogueMapParams {
-  extentLayer: VectorLayer<VectorSource<Geometry>> = new VectorLayer({
-    source: new Vector(),
-    properties: {
-      title: 'Datasources extents',
-      showInLayerManager: false,
-      removable: false,
-    },
-    style: function (feature, resolution) {
-      return [
-        new Style({
-          stroke: new Stroke({
-            color: '#005CB6',
-            width: getHighlighted(feature as Feature<Geometry>) ? 4 : 1,
+  extentLayer: VectorLayer<VectorSource<Geometry>>;
+  constructor() {
+    this.extentLayer = new VectorLayer({
+      source: new Vector(),
+      properties: {
+        title: 'Datasources extents',
+        showInLayerManager: false,
+        removable: false,
+      },
+      style: function (feature, resolution) {
+        return [
+          new Style({
+            stroke: new Stroke({
+              color: '#005CB6',
+              width: getHighlighted(feature as Feature<Geometry>) ? 4 : 1,
+            }),
+            fill: new Fill({
+              color: 'rgba(0, 0, 255, 0.01)',
+            }),
           }),
-          fill: new Fill({
-            color: 'rgba(0, 0, 255, 0.01)',
-          }),
-        }),
-      ];
-    },
-  });
+        ];
+      },
+    });
+  }
   initRun = false;
 }
 
@@ -50,7 +53,7 @@ class HsAddDataCatalogueMapParams {
 export class HsAddDataCatalogueMapService {
   apps: {
     [id: string]: HsAddDataCatalogueMapParams;
-  } = {default: new HsAddDataCatalogueMapParams()};
+  } = {};
 
   constructor(
     public hsMapService: HsMapService,

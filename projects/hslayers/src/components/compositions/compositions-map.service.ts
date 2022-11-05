@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 
-import VectorSource from 'ol/source/Vector';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -14,6 +13,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {Vector as VectorSource} from 'ol/source';
 import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
 
 @Injectable({
@@ -22,11 +22,7 @@ import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
 export class HsCompositionsMapService {
   apps: {
     [id: string]: {extentLayer: VectorLayer<VectorSource<Geometry>>};
-  } = {
-    default: {
-      extentLayer: this.createNewExtentLayer(),
-    },
-  };
+  } = {};
   constructor(
     private hsEventBusService: HsEventBusService,
     private hsMapService: HsMapService,

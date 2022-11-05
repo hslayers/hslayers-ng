@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 
 import Feature from 'ol/Feature';
-import GeoJSON from 'ol/format/GeoJSON';
-import Point from 'ol/geom/Point';
+import {GeoJSON} from 'ol/format';
 import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
+import {Point} from 'ol/geom';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 

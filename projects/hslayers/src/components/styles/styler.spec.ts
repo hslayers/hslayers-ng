@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import Feature from 'ol/Feature';
-import VectorLayer from 'ol/layer/Vector';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Point, Polygon} from 'ol/geom';
 import {Style} from 'ol/style';
 import {Vector as VectorSource} from 'ol/source';

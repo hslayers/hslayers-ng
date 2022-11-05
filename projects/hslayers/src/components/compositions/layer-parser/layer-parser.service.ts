@@ -2,9 +2,7 @@ import {Injectable} from '@angular/core';
 
 import ImageSource from 'ol/source/Image';
 import TileSource from 'ol/source/Tile';
-import VectorSource from 'ol/source/Vector';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {
@@ -24,6 +22,8 @@ import {
 } from 'ol/layer';
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {Vector as VectorSource} from 'ol/source';
+import {WMTSCapabilities} from 'ol/format';
 
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataCommonService} from '../../add-data/common/common.service';

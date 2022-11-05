@@ -5,16 +5,16 @@ import {
   OnInit,
 } from '@angular/core';
 
-import GeoJSON from 'ol/format/GeoJSON';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import View from 'ol/View';
+import {GeoJSON} from 'ol/format';
 import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config.service';
 import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
 import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {OSM, XYZ} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+import {View} from 'ol';
 import {transform} from 'ol/proj';
 
 @Component({

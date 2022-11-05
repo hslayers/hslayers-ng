@@ -5,12 +5,12 @@ import Feature from 'ol/Feature';
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
 import RenderFeature from 'ol/render/Feature';
 import SLDParser from 'geostyler-sld-parser';
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {Source, ImageStatic as Static, XYZ} from 'ol/source';
 import {Style} from 'ol/style';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';

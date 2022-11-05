@@ -7,8 +7,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import VectorLayer from 'ol/layer/Vector';
 import {Subject} from 'rxjs';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';

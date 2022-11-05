@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Observable, Subject, Subscription} from 'rxjs';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import SparqlJson from '../../common/layers/hs.source.SparqlJson';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';

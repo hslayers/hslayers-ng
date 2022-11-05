@@ -2,7 +2,7 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import ImageWrapper from 'ol/Image';
-import VectorLayer from 'ol/layer/Vector';
+import {Vector as VectorLayer} from 'ol/layer';
 import projx from 'proj4';
 import {
   Cluster,

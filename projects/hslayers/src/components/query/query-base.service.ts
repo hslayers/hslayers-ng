@@ -1,9 +1,8 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
 
-import CircleStyle from 'ol/style/Circle';
-import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Circle as CircleStyle} from 'ol/style';
 import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
 import {Feature, Map} from 'ol';
 import {FeatureLike} from 'ol/Feature';
@@ -11,6 +10,7 @@ import {Geometry, Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';

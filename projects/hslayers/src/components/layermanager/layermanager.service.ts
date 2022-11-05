@@ -1,7 +1,6 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
 
-import VectorSource from 'ol/source/Vector';
 import {Cluster, ImageWMS, Source, TileArcGISRest, TileWMS} from 'ol/source';
 import {CollectionEvent} from 'ol/Collection';
 import {GeoJSON} from 'ol/format';
@@ -13,6 +12,7 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from '../permalink/get-params';

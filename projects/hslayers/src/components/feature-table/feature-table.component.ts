@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';
@@ -18,7 +18,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   layers: VectorLayer<VectorSource<Geometry>>[] = [];
   name = 'feature_table';
   constructor(

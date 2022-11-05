@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import Feature from 'ol/Feature';
-import GeoJSON from 'ol/format/GeoJSON';
-import Point from 'ol/geom/Point';
+import {GeoJSON} from 'ol/format';
+import {Point} from 'ol/geom';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';

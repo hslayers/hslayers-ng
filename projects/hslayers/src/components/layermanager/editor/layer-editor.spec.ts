@@ -7,9 +7,9 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';

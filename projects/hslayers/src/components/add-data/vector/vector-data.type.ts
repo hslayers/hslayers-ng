@@ -1,8 +1,8 @@
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
 import {accessRightsModel} from '../common/access-rights.model';

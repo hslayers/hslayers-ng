@@ -3,9 +3,9 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import * as polygonClipping from 'polygon-clipping';
 import Feature from 'ol/Feature';
 import Polygon from 'ol/geom/Polygon';
-import VectorLayer from 'ol/layer/Vector';
 import polygonSplitter from 'polygon-splitter';
 import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDrawService} from '../draw.service';
 import {HsEventBusService} from '../../core/event-bus.service';

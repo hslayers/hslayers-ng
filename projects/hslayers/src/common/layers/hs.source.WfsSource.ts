@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
+import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {lastValueFrom} from 'rxjs';

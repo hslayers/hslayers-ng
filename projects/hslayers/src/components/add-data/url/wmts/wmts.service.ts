@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Layer, Tile} from 'ol/layer';
 import {Source} from 'ol/source';
+import {WMTSCapabilities} from 'ol/format';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {Extent} from 'ol/extent';

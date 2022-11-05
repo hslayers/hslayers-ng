@@ -1,10 +1,10 @@
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import {Draw} from 'ol/interaction';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry, LineString, Polygon} from 'ol/geom';
 import {Injectable} from '@angular/core';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';

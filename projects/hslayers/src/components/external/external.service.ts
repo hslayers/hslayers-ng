@@ -2,11 +2,11 @@ import {Injectable} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
 import Feature from 'ol/Feature';
-import VectorSource from 'ol/source/Vector';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
 import {Source} from 'ol/source';
+import {Vector as VectorSource} from 'ol/source';
 import {getCenter} from 'ol/extent';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';

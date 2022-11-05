@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import VectorSource from 'ol/source/Vector';
 import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
@@ -34,8 +34,7 @@ export function listNumericAttributes(features: Feature[]): string[] {
  */
 export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';
