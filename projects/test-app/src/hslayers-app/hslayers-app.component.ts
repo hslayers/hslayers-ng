@@ -509,7 +509,7 @@ export class HslayersAppComponent {
                     domSelector: '#poly1',
                     feature: 'poly1',
                     event: 'mouseover',
-                    actions: ['zoomToExtent'],
+                    actions: ['zoomToExtent', 'select'],
                   },
                   {
                     domSelector: '#poly2',
