@@ -13,7 +13,6 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {CompoData} from './types/compo-data.type';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
@@ -54,7 +53,6 @@ import {
   getWfsUrl,
   getWorkspace,
 } from '../../common/layer-extensions';
-import {transformExtent} from 'ol/proj';
 
 const LCLSTORAGE_EXPIRE = 5000;
 
