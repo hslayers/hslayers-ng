@@ -7,7 +7,7 @@ import {Layer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
 import {Source} from 'ol/source';
 import {Vector as VectorSource} from 'ol/source';
-import {getCenter} from 'ol/extent';
+import {getCenter, buffer} from 'ol/extent';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';
 import {
@@ -17,7 +17,10 @@ import {
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryPopupService} from '../query/query-popup.service';
+import {HsQueryBaseService} from '../query/query-base.service';
+import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
@@ -39,7 +42,10 @@ export class HsExternalService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    private hsQueryPopupService: HsQueryPopupService
+    private hsQueryPopupService: HsQueryPopupService,
+    private hsQueryBaseService: HsQueryBaseService,
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsLayoutService: HsLayoutService
   ) {}
 
   async init(app: string) {
@@ -163,7 +169,9 @@ export class HsExternalService {
     if (!this.hsMapService.getLayerForFeature(feature, app)?.getVisible()) {
       return;
     }
-    const extent = feature.getGeometry().getExtent();
+    const geom = feature.getGeometry();
+    // do not zoom strictly to the extent, but a bit bigger area - needed especially for points
+    const extent = buffer(geom.getExtent(), 100);
     const center = getCenter(extent);
     const map = this.hsMapService.getMap(app);
     switch (action) {
@@ -181,6 +189,15 @@ export class HsExternalService {
       case 'hidePopup':
         this.hsQueryPopupService.closePopup(app);
         break;
+      case 'select':
+        const select = this.hsQueryBaseService.get(app).selector;
+        select.getFeatures().clear();
+        this.hsQueryBaseService.apps[app].clear('features');
+        select.getFeatures().push(feature);
+        this.hsQueryVectorService.createFeatureAttributeList(app);
+        this.hsLayoutService.setMainPanel('info', app);
+        this.hsLayoutService.get(app).sidebarExpanded = true;
+        break;
       default:
         if (typeof action == 'function') {
           action(feature, domElement, e);
@@ -194,10 +211,9 @@ export class HsExternalService {
     link: DOMFeatureLink,
     domElement: Element
   ): Feature<Geometry> {
-    if (typeof link.feature == 'string') {
+    if (typeof link.feature == 'string' || typeof link.feature == 'number') {
       return source
-        .getFeatures()
-        .find((feature) => feature.get('id'), link.feature);
+        .getFeatureById(link.feature)
     } else if (this.hsUtilsService.instOf(link.feature, Feature)) {
       return link.feature as Feature<Geometry>;
     } else if (typeof link.feature == 'function') {
