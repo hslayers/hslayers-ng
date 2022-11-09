@@ -35,7 +35,12 @@ export class HsConfigObject {
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
   sidebarPosition?: string;
+  default_layers?: Layer<Source>[];
   box_layers?: Group[];
+  base_layers?: {
+    url: string;
+    default: string;
+  };
   senslog?: {
     url: string;
     user_id: number;
@@ -48,7 +53,6 @@ export class HsConfigObject {
   };
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
-  default_layers?: Layer<Source>[];
   defaultComposition?: string;
   default_view?: View;
   panelsEnabled?: {

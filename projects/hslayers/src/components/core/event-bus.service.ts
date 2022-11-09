@@ -141,6 +141,7 @@ export class HsEventBusService {
    * Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
    * @event compositionLoading
+   * @deprecated
    */
   compositionLoading: Subject<any> = new Subject();
   currentComposition: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -165,5 +166,9 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null
   );
+  /**
+   * Fires when composition holding basemaps should be loaded
+   */
+  loadBaseLayersComposition: Subject<{app: string}> = new Subject();
   constructor() {}
 }

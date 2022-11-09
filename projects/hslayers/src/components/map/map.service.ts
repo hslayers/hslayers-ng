@@ -2,7 +2,6 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import ImageWrapper from 'ol/Image';
-import {Vector as VectorLayer} from 'ol/layer';
 import projx from 'proj4';
 import {
   Cluster,
@@ -35,6 +34,7 @@ import {Feature, ImageTile, Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer, Tile} from 'ol/layer';
 import {Projection, transform, transformExtent} from 'ol/proj';
+import {Vector as VectorLayer} from 'ol/layer';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
@@ -822,6 +822,7 @@ export class HsMapService {
       }
       this.addLayersFromAppConfig(defaultLayers, visibilityOverrides, app);
     }
+    this.hsEventBusService.loadBaseLayersComposition.next({app});
   }
 
   /**
@@ -1198,19 +1199,26 @@ export class HsMapService {
 
   /**
    * Remove all layers gained from composition from map
+   * @param force Remove all removable layers no matter fromComposition param
    * @param app - App identifier
    */
-  removeCompositionLayers(app: string): void {
-    const to_be_removed = [];
-    this.getLayersArray(app).forEach((lyr) => {
-      if (
-        getFromComposition(lyr) ||
-        getRemovable(lyr) === undefined ||
-        getRemovable(lyr) == true
-      ) {
-        to_be_removed.push(lyr);
-      }
-    });
+  removeCompositionLayers(force: boolean, app: string): void {
+    const configRef = this.hsConfig.get(app);
+    let to_be_removed = this.getLayersArray(app).filter(
+      (lyr) => getRemovable(lyr) === undefined || getRemovable(lyr) == true
+    );
+    if (!force) {
+      to_be_removed = to_be_removed.filter((lyr) => {
+        const fromComposition = getFromComposition(lyr);
+        if (configRef.base_layers && fromComposition) {
+          return true;
+        } else if (fromComposition) {
+          return true;
+        }
+        return false;
+      });
+    }
+
     while (to_be_removed.length > 0) {
       this.getMap(app).removeLayer(to_be_removed.shift());
     }

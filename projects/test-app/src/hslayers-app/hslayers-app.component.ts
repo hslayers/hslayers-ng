@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import Feature from 'ol/Feature';
-import {GeoJSON} from 'ol/format';
-import {Point} from 'ol/geom';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {GeoJSON} from 'ol/format';
 import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
+import {Point} from 'ol/geom';
 import {Tile} from 'ol/layer';
 import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
@@ -365,6 +365,12 @@ export class HslayersAppComponent {
       });
       this.hsConfig.update(
         {
+          base_layers: {
+            url: 'https://hub.lesprojekt.cz/rest/workspaces/leitnerfilip/maps/corine_layerorder/file',
+            default: 'tbd',
+          },
+          defaultComposition:
+            'https://atlas2.kraj-lbc.cz/rest/workspaces/fzadrazil/maps/vodstvo',
           sidebarPosition: app.sidebarPosition,
           panelWidths: {
             custom: 555,
@@ -400,7 +406,7 @@ export class HslayersAppComponent {
           enabledLanguages: 'sk, lv, en',
           language: 'en',
           assetsPath: 'assets',
-          saveMapStateOnReload: true,
+          saveMapStateOnReload: false,
           symbolizerIcons: [
             {name: 'bag', url: '/assets/icons/bag1.svg'},
             {name: 'banking', url: '/assets/icons/banking4.svg'},
