@@ -71,12 +71,12 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
     );
   }
 
-  layerFilter = (item): boolean => {
+  layerFilter = (item: HsLayerDescriptor): boolean => {
     const r = new RegExp(
       this.hsLayerManagerService.apps[this.app].data.filter,
       'i'
     );
-    return r.test(item.title);
+    return r.test(item.title) && item.showInLayerManager;
   };
 
   showLayerWmsT(layer: HsLayerDescriptor): boolean {

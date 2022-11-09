@@ -40,6 +40,7 @@ export interface HsLayerDescriptor {
   position?: number;
   settings?: boolean;
   sublayers?: boolean;
+  showInLayerManager?: boolean;
   thumbnail?: string;
   title?: string;
   trackBy?: string;

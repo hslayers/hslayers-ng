@@ -51,11 +51,14 @@ export class HsLayerShiftingService {
   }
 
   /**
-   * Get available layers
+   * Function by which to filter the displayed layers.
+   * Usually just by showInLayermanager property.
    * @param app - App identifier
    */
-  private getAvailableLayers(app: string) {
-    return this.hsLayerManagerService.get(app).data.layers;
+  private layerFilter(app: string) {
+    return this.hsLayerManagerService
+      .get(app)
+      .data.layers.filter((l) => l.showInLayerManager ?? true);
   }
 
   /**
@@ -73,11 +76,11 @@ export class HsLayerShiftingService {
    * @param app - App identifier
    */
   fillLayers(app: string): void {
-    if (!this.getAvailableLayers(app)) {
+    if (!this.layerFilter(app)) {
       return;
     }
     this.get(app).layersCopy = this.hsLayerManagerService.sortLayersByZ(
-      this.getAvailableLayers(app).map((l) => {
+      this.layerFilter(app).map((l) => {
         return {title: l.title, layer: l.layer};
       }),
       app
