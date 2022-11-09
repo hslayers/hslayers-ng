@@ -1203,19 +1203,12 @@ export class HsMapService {
    * @param app - App identifier
    */
   removeCompositionLayers(force: boolean, app: string): void {
-    const configRef = this.hsConfig.get(app);
     let to_be_removed = this.getLayersArray(app).filter(
       (lyr) => getRemovable(lyr) === undefined || getRemovable(lyr) == true
     );
     if (!force) {
       to_be_removed = to_be_removed.filter((lyr) => {
-        const fromComposition = getFromComposition(lyr);
-        if (configRef.base_layers && fromComposition) {
-          return true;
-        } else if (fromComposition) {
-          return true;
-        }
-        return false;
+        return getFromComposition(lyr);
       });
     }
 
