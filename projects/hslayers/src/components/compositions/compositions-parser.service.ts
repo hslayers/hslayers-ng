@@ -98,7 +98,7 @@ export class HsCompositionsParserService {
    * @param pre_parse - Optional function for pre-parsing loaded data about composition to accepted format
    */
   async loadUrl(
-    url: string | any, //CSW recrod object
+    url: string | any, //CSW record object
     app: string,
     overwrite?: boolean,
     callback?,
@@ -160,7 +160,7 @@ export class HsCompositionsParserService {
     if (this.checkLoadSuccess(response)) {
       appRef.composition_loaded = url;
       if (this.hsUtilsService.isFunction(pre_parse)) {
-        response = await pre_parse(response);
+        response = await pre_parse({response, app});
       }
       response.workspace = appRef.current_composition_workspace;
       /*
@@ -227,17 +227,17 @@ export class HsCompositionsParserService {
     return {layers, services};
   }
 
-  async parseCSW(record) {
+  async parseCSW({response, app}) {
     const composition = {};
 
-    composition['name'] = getLaymanFriendlyLayerName(record.title);
-    composition['title'] = record.title;
+    composition['name'] = getLaymanFriendlyLayerName(response.title);
+    composition['title'] = response.title;
     composition['scale'] = 1; //not nice
     composition['schema_version'] = '2.0.0'; //not nice
-    composition['title'] = record.title;
-    composition['abstract'] = record.abstract;
+    composition['title'] = response.title;
+    composition['abstract'] = response.abstract;
 
-    const operatesOn = this.getCSWLayers(record);
+    const operatesOn = this.getCSWLayers(response);
     composition['layers'] = operatesOn['layers'];
     composition['services'] = operatesOn['services'];
 
@@ -272,7 +272,7 @@ export class HsCompositionsParserService {
    * Parse WMC to JSON object
    * @param response - Response from http get request requesting composition data
    */
-  parseWMC(response: string): any {
+  parseWMC({response, app}): any {
     let res: any = xml2Json.xml2js(response, {compact: true});
     res = res.ViewContext;
     const compositionJSON: any = {
