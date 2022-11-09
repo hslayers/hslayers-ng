@@ -363,14 +363,21 @@ export class HsCompositionsService {
 
   /**
    * Parse composition by setting all  response object layers to base
+   * @param respone Compostion data
    */
-  parseBaseLayersComposition(data) {
+  parseBaseLayersComposition({response, app}) {
     return {
-      ...data,
-      layers: data.layers.map((l) => {
-        return {...l, base: true, fromComposition: false};
+      ...response,
+      layers: response.layers.map((l) => {
+        return {
+          ...l,
+          base: true,
+          fromComposition: false,
+          visibility: false,
+        };
       }),
       basemapCompostion: true,
+      current_base_layer: {title: this.hsConfig.get(app).base_layers.default},
     };
   }
 
@@ -385,7 +392,7 @@ export class HsCompositionsService {
       app,
       false,
       undefined,
-      this.parseBaseLayersComposition
+      this.parseBaseLayersComposition.bind(this)
     );
   }
 
