@@ -1,5 +1,6 @@
 import IDW from 'ol-ext/source/IDW';
-import VectorSource, {LoadingStrategy} from 'ol/source/Vector';
+import {Vector as VectorSource} from 'ol/source';
+import {LoadingStrategy} from 'ol/source/Vector';
 import colormap from 'colormap';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';

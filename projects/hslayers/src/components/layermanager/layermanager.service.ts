@@ -64,6 +64,7 @@ import {
   setQueryable,
   setSubLayers,
   setTitle,
+  SHOW_IN_LAYER_MANAGER,
 } from '../../common/layer-extensions';
 
 class HsLayermanagerDataObject {
@@ -218,12 +219,7 @@ export class HsLayerManagerService {
   ): Promise<void> {
     const layer = e.element;
     this.checkLayerHealth(layer);
-    if (
-      getShowInLayerManager(layer) !== null &&
-      getShowInLayerManager(layer) == false
-    ) {
-      return;
-    }
+    const showInLayerManager = getShowInLayerManager(layer) ?? true;
     layer.on('change:visible', (e) => this.layerVisibilityChanged(e, app));
     if (
       this.hsLayerUtilsService.isLayerVectorLayer(layer) &&
@@ -250,6 +246,7 @@ export class HsLayerManagerService {
       layer,
       grayed: !this.isLayerInResolutionInterval(layer, app),
       visible: layer.getVisible(),
+      showInLayerManager,
       uid: this.hsUtilsService.generateUuid(),
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
@@ -263,6 +260,9 @@ export class HsLayerManagerService {
     layer.on('propertychange', (event) => {
       if (event.key == 'title') {
         layerDescriptor.title = this.hsLayerUtilsService.getLayerTitle(layer);
+      }
+      if (event.key == SHOW_IN_LAYER_MANAGER) {
+        layerDescriptor.showInLayerManager = getShowInLayerManager(layer) ?? true;
       }
     });
 
