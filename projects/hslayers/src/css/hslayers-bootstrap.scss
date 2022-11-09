@@ -227,6 +227,15 @@ $list-group-item-padding-x: 1.25rem;
     position: relative;
   }
 
+  .hs-map-space > hs-panel-container {
+    left: 0; top: 0; width: 100%; height: 100%; position: absolute; pointer-events: none;
+  }
+
+  /* To not disable pointer-events for all hs-panel-containers children too*/
+  .hs-map-space hs-panel-container > * {
+    pointer-events: auto;
+  }
+
   .flex-reverse {
     flex-direction: row-reverse;
   }
