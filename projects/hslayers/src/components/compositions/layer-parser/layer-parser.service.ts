@@ -165,7 +165,7 @@ export class HsCompositionsLayerParserService {
       : new TileWMS(sourceOptions);
     const layerOptions = {
       title: lyr_def.title,
-      fromComposition: true,
+      fromComposition: lyr_def.fromComposition ?? true,
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       showInLayerManager: lyr_def.displayInLayerSwitcher,
@@ -176,7 +176,7 @@ export class HsCompositionsLayerParserService {
       dimensions: lyr_def.dimensions,
       legends: legends,
       path: lyr_def.path,
-      opacity: lyr_def.opacity || 1,
+      opacity: parseInt(lyr_def.opacity) || 1,
       source,
       subLayers: lyr_def.subLayers,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
@@ -218,7 +218,7 @@ export class HsCompositionsLayerParserService {
       : new TileArcGISRest(sourceOptions);
     const layerOptions = {
       title: lyr_def.title,
-      fromComposition: true,
+      fromComposition: lyr_def.fromComposition ?? true,
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       showInLayerManager: lyr_def.displayInLayerSwitcher,
@@ -230,7 +230,7 @@ export class HsCompositionsLayerParserService {
       dimensions: lyr_def.dimensions,
       legends: legends,
       path: lyr_def.path,
-      opacity: lyr_def.opacity || 1,
+      opacity: parseInt(lyr_def.opacity) || 1,
       source,
     };
     const new_layer = lyr_def.singleTile
@@ -264,12 +264,12 @@ export class HsCompositionsLayerParserService {
     const new_layer = new Tile({
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
-      opacity: lyr_def.opacity || 1,
+      opacity: parseInt(lyr_def.opacity) || 1,
       source,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
         title: lyr_def.title,
-        fromComposition: true,
+        fromComposition: lyr_def.fromComposition ?? true,
         showInLayerManager: lyr_def.displayInLayerSwitcher,
         abstract: lyr_def.name || lyr_def.abstract,
         base: lyr_def.base || lyr_def.url.indexOf('openstreetmap') > -1,
@@ -308,12 +308,12 @@ export class HsCompositionsLayerParserService {
     const new_layer = new ImageLayer({
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
-      opacity: lyr_def.opacity || 1,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
+      opacity: parseInt(lyr_def.opacity) || 1,
       source,
       properties: {
         title: lyr_def.title,
-        fromComposition: true,
+        fromComposition: lyr_def.fromComposition ?? true,
         showInLayerManager: lyr_def.displayInLayerSwitcher,
         abstract: lyr_def.name || lyr_def.abstract,
         base: lyr_def.base,
@@ -358,11 +358,11 @@ export class HsCompositionsLayerParserService {
     const lyr = new VectorLayer({
       properties: {
         title: lyr_def.title,
-        fromComposition: true,
+        fromComposition: lyr_def.fromComposition ?? true,
         definition,
       },
       source: src,
-      opacity: lyr_def.opacity || 1,
+      opacity: parseInt(lyr_def.opacity) || 1,
       style: style,
     });
     lyr.setVisible(lyr_def.visibility);
@@ -400,8 +400,8 @@ export class HsCompositionsLayerParserService {
         }
       }
       const options: HsVectorLayerOptions = {
-        opacity: lyr_def.opacity || 1,
-        fromComposition: true,
+        opacity: parseInt(lyr_def.opacity) || 1,
+        fromComposition: lyr_def.fromComposition ?? true,
         path: lyr_def.path,
         visible: lyr_def.visibility,
         // Extract workspace name for partial backwards compatibility.
@@ -488,7 +488,7 @@ export class HsCompositionsLayerParserService {
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
             {
-              opacity: lyr_def.opacity,
+              opacity: parseInt(lyr_def.opacity),
               visible: lyr_def.visibility,
               path: lyr_def.path,
               fromComposition: lyr_def.fromComposition,

@@ -36,25 +36,6 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
     private hsConfig: HsConfig
   ) {
     super(hsLayoutService);
-    this.hsEventBusService.compositionLoading
-      .pipe(takeUntil(this.end))
-      .subscribe((data) => {
-        if (data.error === undefined) {
-          if (data.data !== undefined) {
-            this.composition_abstract = data.data.abstract;
-            this.composition_title = data.data.title;
-            this.composition_id = data.data.id;
-          } else {
-            this.composition_abstract = data.abstract;
-            this.composition_title = data.title;
-            this.composition_id = data.id;
-          }
-          this.composition_loaded = false;
-          //Composition image (should be glyphicon?)
-          this.info_image = 'icon-map';
-        }
-      });
-
     this.hsEventBusService.compositionLoads
       .pipe(takeUntil(this.end))
       .subscribe(({data}) => {

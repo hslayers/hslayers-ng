@@ -80,12 +80,20 @@ export class HsCompositionsService {
    * @param _app - App identifier
    */
   init(_app: string) {
+    const configRef = this.hsConfig.get(_app);
+
     const permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
     permalink
       ? this.parsePermalinkLayers(permalink, _app)
       : this.tryParseCompositionFromUrlParam(_app);
 
-    if (this.hsConfig.get(_app).saveMapStateOnReload && !permalink) {
+    if (configRef.base_layers && !permalink) {
+      this.hsEventBusService.loadBaseLayersComposition.subscribe(({app}) => {
+        this.loadBaseLayersComposition(app);
+      });
+    }
+
+    if (configRef.saveMapStateOnReload && !permalink) {
       //Load composition data from cookies only if it is anticipated
       setTimeout(() => {
         this.tryParseCompositionFromCookie(_app);
@@ -354,6 +362,34 @@ export class HsCompositionsService {
   }
 
   /**
+   * Parse composition by setting all  response object layers to base
+   */
+  parseBaseLayersComposition(data) {
+    return {
+      ...data,
+      layers: data.layers.map((l) => {
+        return {...l, base: true, fromComposition: false};
+      }),
+      basemapCompostion: true,
+    };
+  }
+
+  /**
+   * Load base layers received as composition
+   * @param app - App identifier
+   */
+  loadBaseLayersComposition(app: string): void {
+    const configRef = this.hsConfig.get(app);
+    this.hsCompositionsParserService.loadUrl(
+      configRef.base_layers.url,
+      app,
+      false,
+      undefined,
+      this.parseBaseLayersComposition
+    );
+  }
+
+  /**
    * Load layers received through permalink to map
    * @param app - App identifier
    */
@@ -370,7 +406,7 @@ export class HsCompositionsService {
         //Some old structure, where layers are stored in data
         data.data.layers = response.data;
       }
-      this.hsMapService.removeCompositionLayers(app);
+      this.hsMapService.removeCompositionLayers(true, app);
       const layers = await this.hsCompositionsParserService.jsonToLayers(
         data,
         app
