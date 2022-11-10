@@ -1,5 +1,6 @@
 import {Injectable, TemplateRef} from '@angular/core';
 
+import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from './../layout.service';
 
@@ -60,7 +61,8 @@ export class HsToastService {
 
   constructor(
     public HsLanguageService: HsLanguageService,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private hsConfig: HsConfig
   ) {}
   /**
    * @param toast - Toast pop up
@@ -126,7 +128,9 @@ export class HsToastService {
         header: options.disableLocalization
           ? header
           : this.HsLanguageService.getTranslation(header, undefined, app),
-        delay: options.customDelay || 7000,
+        delay:
+          options.customDelay ||
+          (this.hsConfig.get(app).errorToastDuration ?? 7000),
         autohide: true,
         classname: options.toastStyleClasses || `bg-danger text-light`,
         serviceCalledFrom: options.serviceCalledFrom,

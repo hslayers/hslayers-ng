@@ -455,6 +455,7 @@ export class HslayersAppComponent {
           ],
           status_manager_url: 'http://localhost:8086',
           popUpDisplay: 'hover',
+          errorToastDuration: 1000,
           default_layers: [
             new Tile({
               source: new OSM(),

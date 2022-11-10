@@ -75,6 +75,7 @@ export class HsConfigObject {
     addData?: boolean;
     mapSwipe?: boolean;
   };
+  errorToastDuration?: number;
   advancedForm?: boolean;
   project_name?: string;
   hostname?: {
