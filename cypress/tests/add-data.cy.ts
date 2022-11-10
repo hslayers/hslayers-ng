@@ -47,4 +47,9 @@ describe('Hslayers application', () => {
       );
     });
   });
+
+  it('Layer should be visible on map', () => {
+    cy.wait(500); //Need to wait for failed layman request error toast to disappear if HsConfig.errorToastDuration is large
+    cy.get('.hs-ol-map').matchImage();
+  });
 });
