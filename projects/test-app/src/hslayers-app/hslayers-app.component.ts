@@ -515,7 +515,7 @@ export class HslayersAppComponent {
                     domSelector: '#poly2',
                     feature: 'poly2',
                     event: 'mouseover',
-                    actions: ['showPopup'],
+                    actions: ['zoomToExtent', 'showPopup'],
                   },
                 ],
                 editor: {
