@@ -1,9 +1,7 @@
 import {Injectable, NgZone} from '@angular/core';
 
 import Feature from 'ol/Feature';
-import {default as FeatureFormat} from 'ol/format/Feature';
 import IDW from 'ol-ext/source/IDW';
-import {Tile as TileLayer} from 'ol/layer';
 import {
   Cluster,
   ImageWMS,
@@ -14,9 +12,11 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
+import {default as FeatureFormat} from 'ol/format/Feature';
 import {GPX, GeoJSON, KML, TopoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
 import BaseLayer from 'ol/layer/Base';
@@ -161,16 +161,16 @@ export class HsLayerUtilsService {
    * @returns True for ol.layer.Tile and ol.layer.Image
    */
   isLayerWMS(layer: Layer<Source>): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, TileLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), TileWMS)
-    ) {
+    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const src = layer.getSource();
+    const isTileWMSSource = this.HsUtilsService.instOf(src, TileWMS);
+    if (isTileLayer && isTileWMSSource) {
       return true;
     }
-    if (
-      this.HsUtilsService.instOf(layer, ImageLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
-    ) {
+    const src2 = layer.getSource();
+    const isImageLayer = this.HsUtilsService.instOf(layer, ImageLayer);
+    const isImageWMSSource = this.HsUtilsService.instOf(src2, ImageWMS);
+    if (isImageLayer && isImageWMSSource) {
       return true;
     }
     return false;
@@ -178,40 +178,40 @@ export class HsLayerUtilsService {
 
   // todo
   isLayerWMTS(layer: Layer<Source>): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, TileLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), WMTS)
-    ) {
+    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const src = layer.getSource();
+    const isWMTSSource = this.HsUtilsService.instOf(src, WMTS);
+    if (isTileLayer && isWMTSSource) {
       return true;
     }
     return false;
   }
 
   isLayerXYZ(layer: Layer<Source>): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, TileLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), XYZ)
-    ) {
+    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const src = layer.getSource();
+    const isXYZSource = this.HsUtilsService.instOf(src, XYZ);
+    if (isTileLayer && isXYZSource) {
       return true;
     }
     return false;
   }
 
   isLayerArcgis(layer: Layer<Source>): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, TileLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), TileArcGISRest)
-    ) {
+    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const src = layer.getSource();
+    const isArcgisSource = this.HsUtilsService.instOf(src, TileArcGISRest);
+    if (isTileLayer && isArcgisSource) {
       return true;
     }
     return false;
   }
 
   isLayerIDW(layer: Layer<Source>): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, ImageLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), IDW)
-    ) {
+    const isImageLayer = this.HsUtilsService.instOf(layer, ImageLayer);
+    const src = layer.getSource();
+    const isIDWSource = this.HsUtilsService.instOf(src, IDW);
+    if (isImageLayer && isIDWSource) {
       return true;
     }
     return false;
