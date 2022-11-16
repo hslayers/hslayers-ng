@@ -1,6 +1,6 @@
 <li
   class="list-group-item hs-list-item-header list-group-item-primary d-flex justify-content-between align-items-center mb-1 me-3 ms-3"
-  (click)="symbolizerVisible = !symbolizerVisible;">
+  (click)="symbolizerVisible = !symbolizerVisible;" [attr.data-test]="getSymbolizerName(symbolizer)">
   <div>
     <button type="button" style="border: none; background-color: transparent; cursor: move">
       <i class="icon-move text-secondary"></i>
