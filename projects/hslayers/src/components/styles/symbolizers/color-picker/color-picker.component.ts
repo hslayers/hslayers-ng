@@ -34,6 +34,22 @@ export class HsColorPickerComponent extends HsStylerPartBaseComponent {
     this.emitChange();
   }
 
+  inputChanged() {
+    try {
+      const rgb = this.hsColorPickerService.hex2Rgb(
+        this.symbolizer[this.attribute]
+      );
+      this.fontColor = this.hsColorPickerService.generateFontColor([
+        rgb.r,
+        rgb.g,
+        rgb.b,
+      ]);
+      this.emitChange();
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
   colorPickerStyle(): string {
     return this.hsColorPickerService.colorPickerStyle(
       this.symbolizer[this.attribute],
