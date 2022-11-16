@@ -114,8 +114,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="type === 'draw'"
-                    (click)="confirm()">{{'DRAW.drawToolbar.addLayer' | translateHs: {app: data.app} }}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()">{{'COMMON.cancel'
+                    (click)="confirm()" data-test="Confirm add layer">{{'DRAW.drawToolbar.addLayer' | translateHs: {app: data.app} }}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()" data-test="Cancel add layer">{{'COMMON.cancel'
                     | translateHs: {app: data.app} }}</button>
             </div>
         </div>
