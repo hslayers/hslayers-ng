@@ -2,7 +2,7 @@
     <ul class="list-group row">
         <!-- TODO: Remove function call from template -->
         <li *ngFor="let layer of filtered_layers | filter:layerFilter" [id]="layer.idString()"
-            class="list-group-item hs-lm-item"
+            class="list-group-item hs-lm-item" [attr.data-test]="layer.title"
             [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed === true}">
             <div class="d-flex">
                 <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''">
