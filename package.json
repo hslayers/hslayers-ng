@@ -106,7 +106,7 @@
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "codelyzer": "^6.0.2",
-    "cypress": "~11.0.1",
+    "cypress": "~11.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.27.0",
     "eslint-config-openlayers": "14.0.0",
