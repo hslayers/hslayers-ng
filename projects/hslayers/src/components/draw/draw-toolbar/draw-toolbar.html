@@ -120,7 +120,7 @@
                     data-toggle="tooltip" [title]="'DRAW.drawToolbar.finishFeature' | translateHs: {app: data.app} ">
                     <i class="icon-check"></i></button>
             </div>
-            <button ngbDropdownToggle type="button" style="line-height: 1 !important;"
+            <button ngbDropdownToggle type="button" data-test="Geometry menu" style="line-height: 1 !important;"
                 [ngClass]="{active: appRef.type }" class="btn  btn-light rounded-0 btn-outline-secondary"
                 aria-haspopup="true">
                 <label *ngIf="!appRef.type" class="m-0">{{'DRAW.drawToolbar.selectType' | translateHs: {app: data.app} }}</label>
