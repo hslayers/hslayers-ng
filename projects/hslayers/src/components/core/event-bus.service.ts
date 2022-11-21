@@ -166,9 +166,5 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null
   );
-  /**
-   * Fires when composition holding basemaps should be loaded
-   */
-  loadBaseLayersComposition: Subject<{app: string}> = new Subject();
   constructor() {}
 }
