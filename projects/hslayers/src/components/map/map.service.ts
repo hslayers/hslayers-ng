@@ -822,7 +822,6 @@ export class HsMapService {
       }
       this.addLayersFromAppConfig(defaultLayers, visibilityOverrides, app);
     }
-    this.hsEventBusService.loadBaseLayersComposition.next({app});
   }
 
   /**

@@ -88,9 +88,7 @@ export class HsCompositionsService {
       : this.tryParseCompositionFromUrlParam(_app);
 
     if (configRef.base_layers && !permalink) {
-      this.hsEventBusService.loadBaseLayersComposition.subscribe(({app}) => {
-        this.loadBaseLayersComposition(app);
-      });
+      this.loadBaseLayersComposition(_app);
     }
 
     if (configRef.saveMapStateOnReload && !permalink) {
@@ -103,6 +101,11 @@ export class HsCompositionsService {
       if (app == _app) {
         this.hsCompositionsParserService.get(app).composition_loaded = null;
         this.hsCompositionsParserService.get(app).composition_edited = false;
+
+        if (configRef.base_layers && !permalink) {
+          this.loadBaseLayersComposition(_app);
+        }
+        this.tryParseCompositionFromUrlParam(_app);
       }
     });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
