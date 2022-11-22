@@ -101,7 +101,7 @@ export class HsLayerSynchronizerService {
     const definition = getDefinition(layer);
     return (
       this.hsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      //Test whether fromat cointains 'wfs' AND does not contian 'external'. Case insensitive
+      //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
       new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
         definition?.format?.toLowerCase()
       )
@@ -251,6 +251,7 @@ export class HsLayerSynchronizerService {
       app
     );
   }
+
   /**
    * Handler for feature property change event
    * @param feature - Feature whose property change event was captured
@@ -274,6 +275,7 @@ export class HsLayerSynchronizerService {
       app
     );
   }
+
   /**
    * Sync any feature changes inside a layer, that is being stored on Layman's service database
    * @param add - Features being added

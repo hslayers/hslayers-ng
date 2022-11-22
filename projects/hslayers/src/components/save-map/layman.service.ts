@@ -410,14 +410,14 @@ export class HsLaymanService implements HsSaverService {
   ): Promise<PostPatchLayerResponse> {
     layerName = getLaymanFriendlyLayerName(layerName);
     try {
+      const postOrPatch = overwrite ? 'patch' : 'post';
+      const url = `${endpoint.url}/rest/workspaces/${endpoint.user}/layers${
+        overwrite ? `/${layerName}` : `?${Math.random()}`
+      }`;
       let data = await lastValueFrom(
-        this.http[overwrite ? 'patch' : 'post']<PostPatchLayerResponse>(
-          `${endpoint.url}/rest/workspaces/${endpoint.user}/layers${
-            overwrite ? `/${layerName}` : `?${Math.random()}`
-          }`,
-          formData,
-          {withCredentials: true}
-        )
+        this.http[postOrPatch]<PostPatchLayerResponse>(url, formData, {
+          withCredentials: true,
+        })
       ).catch((err) => {
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation(
@@ -757,21 +757,17 @@ export class HsLaymanService implements HsSaverService {
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized anytime */
     const endpoint = {...ep};
-    let descr: HsLaymanLayerDescriptor;
+    let desc: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);
     try {
-      descr = await this.describeLayer(
-        endpoint,
-        layerName,
-        getWorkspace(layer)
-      );
+      desc = await this.describeLayer(endpoint, layerName, getWorkspace(layer));
       if (
-        descr === null || //In case of response?.code == 15 || 32
-        (descr.wfs.status == descr.wms.status && wfsNotAvailable(descr))
+        desc === null || //In case of response?.code == 15 || 32
+        (desc.wfs.status == desc.wms.status && wfsNotAvailable(desc))
       ) {
         return null;
-      } else if (descr?.name && !wfsNotAvailable(descr)) {
-        this.cacheLaymanDescriptor(layer, descr, endpoint);
+      } else if (desc?.name && !wfsNotAvailable(desc)) {
+        this.cacheLaymanDescriptor(layer, desc, endpoint);
       }
     } catch (ex) {
       //If Layman returned 404
@@ -783,13 +779,13 @@ export class HsLaymanService implements HsSaverService {
         version 2.0.0. Currently only 3.1.1 is possible */
       const response: string = await lastValueFrom(
         this.http.get(
-          descr.wfs.url +
+          desc.wfs.url +
             '?' +
             this.hsUtilsService.paramsToURL({
               service: 'wfs',
               version: '1.1.0',
               request: 'GetFeature',
-              typeNames: `${getWorkspace(layer)}:${descr.name}`,
+              typeNames: `${getWorkspace(layer)}:${desc.name}`,
               r: Math.random(),
               srsName: this.hsMapService.getCurrentProj(app).getCode(),
             }),
