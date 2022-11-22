@@ -72,13 +72,19 @@ export class HsAddDataCommonService {
     }
     const nameOrTitle = serviceType !== 'wmts';
     for (const layer of services) {
-      //TODO: If Layman allows layers with different casing,
+      let layerName = nameOrTitle
+        ? layer.Name ?? layer.Title
+        : layer.Identifier;
+      //NOTE: If Layman allows layers with different casing,
       // then remove the case lowering
-      const layerName = nameOrTitle
-        ? layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase()
-        : layer.Identifier?.toLowerCase();
+      layerName = layerName.toLowerCase();
+      // Removing the workspace (like user:my_layer)
+      layerName = layerName.includes(':')
+        ? layerName.split(':').slice(1).join(':')
+        : layerName;
       if (layerName === this.get(app).layerToSelect.toLowerCase()) {
         layer.checked = true;
+        return;
       }
     }
   }
@@ -87,7 +93,6 @@ export class HsAddDataCommonService {
     if (e?.status === 401) {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
-
         'ADDLAYERS.unauthorizedAccess',
         {serviceCalledFrom: 'HsAddDataCommonUrlService'},
         app

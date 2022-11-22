@@ -38,7 +38,7 @@
       "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size of 20MB",
       "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
     },
-    "loadAs": "When uploaded load layer as ...",
+    "loadAs": "When uploaded, load layer as ...",
     "requestServiceLayers": "Request service layers",
     "saveToDatabase": "Save to database",
     "URL": {

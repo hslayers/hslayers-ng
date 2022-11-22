@@ -39,7 +39,6 @@ export class HsAddDataVectorService {
         temporaryFileReader.abort();
         reject(new DOMException('Problem parsing input file.'));
       };
-
       temporaryFileReader.onload = () => {
         resolve(temporaryFileReader.result);
       };
@@ -53,13 +52,13 @@ export class HsAddDataVectorService {
         temporaryFileReader.abort();
         reject(new DOMException('Problem parsing input file.'));
       };
-
       temporaryFileReader.onload = () => {
         resolve(temporaryFileReader.result);
       };
       temporaryFileReader.readAsDataURL(inputFile);
     });
   };
+
   constructor(
     private hsMapService: HsMapService,
     private hsUtilsService: HsUtilsService,
@@ -104,10 +103,9 @@ export class HsAddDataVectorService {
           options,
           app
         );
-
         /* 
         TODO: Should have set definition property with protocol inside 
-        so layer synchronizer would know if to sync 
+        so layer synchronizer would know if to sync
         */
         if (options.saveToLayman) {
           if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
@@ -121,7 +119,6 @@ export class HsAddDataVectorService {
             });
           }
         }
-
         if (this.hsMapService.getMap(app)) {
           this.hsAddDataService.addLayer(lyr, app, addUnder);
         }
@@ -141,7 +138,7 @@ export class HsAddDataVectorService {
    * @param abstract - Abstract of new layer
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
-   * @returns Promise which return OpenLayer's vector layer
+   * @returns Promise which returns OpenLayer's vector layer
    */
   async createVectorLayer(
     type: string,
@@ -432,7 +429,7 @@ export class HsAddDataVectorService {
   /**
    * Check if uploaded data are KML
    * @param fileType - Uploaded data type
-   * @param url -  Upload source url
+   * @param url - Upload source url
    * @returns True, if data are in KML format, false otherwise
    */
   isKml(fileType: string, url: string): boolean {

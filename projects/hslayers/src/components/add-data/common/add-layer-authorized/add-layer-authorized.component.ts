@@ -5,6 +5,7 @@ import {
   HsAddDataCommonFileService,
   HsAddDataCommonFileServiceParams,
 } from '../common-file.service';
+import {HsAddDataVectorService} from '../../vector/vector.service';
 import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 
@@ -19,6 +20,7 @@ export class HsAddLayerAuthorizedComponent implements OnInit {
   configRef: HsConfigObject;
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
+    private hsAddDataVectorService: HsAddDataVectorService,
     public hsLaymanService: HsLaymanService,
     private hsConfig: HsConfig
   ) {}
@@ -28,7 +30,7 @@ export class HsAddLayerAuthorizedComponent implements OnInit {
     this.configRef = this.hsConfig.get(this.app);
   }
 
-  async addAsWms(): Promise<any> {
-    await this.hsAddDataCommonFileService.addAsWms(this.data, this.app);
+  async add(): Promise<void> {
+    await this.hsAddDataCommonFileService.addAsService(this.data, this.app);
   }
 }

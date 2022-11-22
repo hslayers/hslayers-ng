@@ -26,14 +26,14 @@ import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
-export const FILE_UPLOAD_SIZE_LIMIT = 10 * 1024 * 1024; //10MB
+export const FILE_UPLOAD_SIZE_LIMIT = 10485760 as const; //10 * 1024 * 1024 = 10MB
 
 export class HsAddDataCommonFileServiceParams {
   readingData = false;
   loadingToLayman = false;
   asyncLoading = false;
   endpoint: HsEndpoint = null;
-  layerAddedAsWms: Subject<boolean> = new Subject();
+  layerAddedAsService: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<FileDataObject> = new Subject();
   fileUploadErrorHeader = 'ADDLAYERS.couldNotUploadSelectedFile';
 }
@@ -45,16 +45,16 @@ export class HsAddDataCommonFileService {
   } = {default: new HsAddDataCommonFileServiceParams()};
 
   constructor(
+    private hsAddDataOwsService: HsAddDataOwsService,
+    private hsAddDataUrlService: HsAddDataUrlService,
+    private hsAddDataService: HsAddDataService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsLanguageService: HsLanguageService,
+    private hsLaymanService: HsLaymanService,
     private hsLog: HsLogService,
     private hsToastService: HsToastService,
-    private hsAddDataService: HsAddDataService,
-    private hsLanguageService: HsLanguageService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsLaymanService: HsLaymanService,
-    private hsAddDataOwsService: HsAddDataOwsService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsUtilsService: HsUtilsService,
-    private hsAddDataUrlService: HsAddDataUrlService
+    private hsUtilsService: HsUtilsService
   ) {}
 
   /**
@@ -432,12 +432,15 @@ export class HsAddDataCommonFileService {
    * answer with wms service url to add to map
    * @param data - Current data object for upload
    * @param app - App identifier
-   * @param options - (Optional) overwrite: Overwrite existing layman layer, repetitive: Called for more the one time
+   * @param options - (Optional) overwrite: Overwrite existing layman layer, repetive: Called for more than one time
    */
-  async addAsWms(
+  async addAsService(
     data: FileDataObject,
     app: string,
-    options?: {overwrite?: boolean; repetive?: boolean}
+    options?: {
+      overwrite?: boolean;
+      repetive?: boolean;
+    }
   ): Promise<void> {
     let exists: boolean;
     try {
@@ -526,10 +529,10 @@ export class HsAddDataCommonFileService {
     const result = await this.loadOverwriteLayerDialog(data, app, repetive);
     switch (result) {
       case OverwriteResponse.add:
-        this.addAsWms(data, app, {repetive: true});
+        this.addAsService(data, app, {repetive: true});
         break;
       case OverwriteResponse.overwrite:
-        this.addAsWms(data, app, {overwrite: true});
+        this.addAsService(data, app, {overwrite: true});
         break;
       case OverwriteResponse.cancel:
       default:
@@ -577,7 +580,7 @@ export class HsAddDataCommonFileService {
   }
   /**
    * Process success server response after trying to load non-wms layer
-   * @param response - Http post/past response after loading layer to Layman
+   * @param response - HTTP POST/PATCH response after loading layer to Layman
    * @param data - Current data object to load
    * @param app - App identifier
    */
@@ -611,22 +614,24 @@ export class HsAddDataCommonFileService {
         },
         app
       );
-      appRef.layerAddedAsWms.next(false);
+      appRef.layerAddedAsService.next(false);
       return;
     }
     this.hsLaymanService.totalProgress = 0;
     this.hsAddDataService.selectType('url', app);
-    appRef.layerAddedAsWms.next(true);
+    appRef.layerAddedAsService.next(true);
+    const serviceType = data.loadAsType ?? 'wms';
     await this.hsAddDataOwsService.connectToOWS(
       {
-        type: 'wms',
-        uri: descriptor.wms.url,
+        type: serviceType,
+        uri: descriptor[serviceType].url,
         layer: data.name,
         owrCache: true,
       },
       app
     );
   }
+
   /**
    * @param endpoint - Selected endpoint (should be Layman)
    * @param layerName - Name of the layer to describe
@@ -672,7 +677,7 @@ export class HsAddDataCommonFileService {
       },
       app
     );
-    this.get(app).layerAddedAsWms.next(false);
+    this.get(app).layerAddedAsService.next(false);
   }
 
   /**

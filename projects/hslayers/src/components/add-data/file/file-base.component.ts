@@ -62,7 +62,7 @@ export class HsAddDataFileBaseComponent
         this.clearInput();
       });
 
-    commonFileServiceRef.layerAddedAsWms
+    commonFileServiceRef.layerAddedAsService
       .pipe(takeUntil(this.end))
       .subscribe((success) => {
         if (success) {

@@ -53,6 +53,7 @@ export class HsAddDataVectorFileComponent
   commonFileServiceRef: HsAddDataCommonFileServiceParams;
   configRef: HsConfigObject;
   private end = new Subject<void>();
+
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
@@ -65,6 +66,7 @@ export class HsAddDataVectorFileComponent
     private hsUtilsService: HsUtilsService,
     private hsConfig: HsConfig
   ) {}
+
   ngAfterViewInit(): void {
     this.fileInput = this.hsUploadComponent.getFileInput();
   }
@@ -258,6 +260,7 @@ export class HsAddDataVectorFileComponent
       this.fileInput.nativeElement.value = '';
     }
   }
+
   /**
    * Reset data object to its default values
    */
