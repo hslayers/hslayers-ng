@@ -803,8 +803,8 @@ export class HsDrawService {
       },
     });
 
-    this.setInteraction(drawInteraction, app, drawState);
-
+    this.setInteraction(drawInteraction, app);
+    appRef.draw.setActive(drawState);
     this.addHandler(
       appRef,
       drawInteraction.on('drawstart', (e: DrawEvent) => {
@@ -834,18 +834,22 @@ export class HsDrawService {
     this.toggleSnapping(app, snapSourceToBeUsed);
   }
 
+  /**
+   * Register event handlers on draw interactions, so they can be unsubscribed after
+   */
   addHandler(appRef: HsDrawServiceParams, e: EventsKey) {
     appRef.eventHandlers.push(e);
   }
 
-  async setInteraction(
-    interaction: Draw,
-    app: string,
-    active: boolean
-  ): Promise<void> {
+  /**
+   * Add draw interaction on map and set some enhancements on it which dont depend on activateDrawing function
+   * @param interaction
+   * @param app
+   * @param active
+   */
+  async setInteraction(interaction: Draw, app: string): Promise<void> {
     const appRef = this.get(app);
     appRef.draw = interaction;
-    appRef.draw.setActive(active);
     const map = await this.hsMapService.loaded(app);
     map.addInteraction(interaction);
 
@@ -876,10 +880,16 @@ export class HsDrawService {
     );
   }
 
-  private translate(key: string, app: string, params?: any) {
+  /**
+   * Syntactic sugar for translating
+   */
+  private translate(key: string, app: string, params?: any): string {
     return this.hsLanguageService.getTranslation(key, params, app);
   }
 
+  /**
+   * Display warning if symbolizer for current geometry being drawn is not present on layer
+   */
   private checkForMatchingSymbolizer(app: string) {
     const appRef = this.get(app);
     if (!this.hasRequiredSymbolizer(app)) {
