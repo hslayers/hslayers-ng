@@ -514,19 +514,14 @@ export class HsDrawService {
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
    * @returns {Promise}
    */
-  deactivateDrawing(app: string): Promise<undefined> {
+  async deactivateDrawing(app: string): Promise<void> {
     const appRef = this.get(app);
-
-    return new Promise((resolve, reject) => {
-      this.hsMapService.loaded(app).then((map) => {
-        this.afterDrawEnd(app);
-        if (appRef.draw) {
-          map.removeInteraction(appRef.draw);
-          appRef.draw = null;
-        }
-        resolve(null);
-      });
-    });
+    const map = await this.hsMapService.loaded(app);
+    this.afterDrawEnd(app);
+    if (appRef.draw) {
+      map.removeInteraction(appRef.draw);
+      appRef.draw = null;
+    }
   }
 
   stopDrawing(app: string): void {
@@ -815,7 +810,7 @@ export class HsDrawService {
    * creating the interactions
    * Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
    */
-  activateDrawing(
+  async activateDrawing(
     {
       onDrawStart,
       onDrawEnd = (e, app) => this.onDrawEnd(e, app),
@@ -824,89 +819,87 @@ export class HsDrawService {
       drawState = true,
     }: activateParams,
     app: string = 'default'
-  ): void {
+  ): Promise<void> {
     const appRef = this.get(app);
     appRef.onDeselected = onDeselected;
     appRef.onSelected = onSelected;
-    this.deactivateDrawing(app).then(() => {
-      this.hsQueryBaseService.deactivateQueries(app);
-      appRef.draw = new Draw({
-        source: appRef.source,
-        type: /** GeometryType */ appRef.type,
-        condition: (e) => {
-          if (e.originalEvent.buttons === 1) {
-            //left click
-            return true;
-          } else if (e.originalEvent.buttons === 2) {
-            //right click
-            if (appRef.type == 'Polygon') {
-              const vertexCount = (appRef.draw as any).sketchLineCoords_
-                ?.length;
-              return this.rightClickCondition(4, vertexCount, app);
-            } else if (appRef.type == 'LineString') {
-              const vertexCount = (appRef.draw as any).sketchCoords_?.length;
-              return this.rightClickCondition(2, vertexCount - 1, app);
-            }
+    await this.deactivateDrawing(app);
+    this.hsQueryBaseService.deactivateQueries(app);
+    appRef.draw = new Draw({
+      source: appRef.source,
+      type: /** GeometryType */ appRef.type,
+      condition: (e) => {
+        if (e.originalEvent.buttons === 1) {
+          //left click
+          return true;
+        } else if (e.originalEvent.buttons === 2) {
+          //right click
+          if (appRef.type == 'Polygon') {
+            const vertexCount = (appRef.draw as any).sketchLineCoords_?.length;
+            return this.rightClickCondition(4, vertexCount, app);
+          } else if (appRef.type == 'LineString') {
+            const vertexCount = (appRef.draw as any).sketchCoords_?.length;
+            return this.rightClickCondition(2, vertexCount - 1, app);
           }
-        },
-      });
+        }
+      },
+    });
 
-      appRef.draw.setActive(drawState);
-      this.hsMapService.loaded(app).then((map) => {
-        map.addInteraction(appRef.draw);
-      });
+    appRef.draw.setActive(drawState);
+    this.hsMapService.loaded(app).then((map) => {
+      map.addInteraction(appRef.draw);
+    });
 
-      appRef.draw.on('drawstart', (e: DrawEvent) => {
-        if (!this.hasRequiredSymbolizer(app)) {
-          this.hsToastService.createToastPopupMessage(
-            this.hsLanguageService.getTranslation(
-              'DRAW.stylingMissing',
-              undefined,
-              app
-            ),
-            `${this.hsLanguageService.getTranslation(
-              'DRAW.stylingMissingWarning',
-              {
-                type: appRef.type,
-                symbolizer: appRef.requiredSymbolizer[appRef.type].join(' or '),
-                panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
-              },
-              app
-            )}`,
+    appRef.draw.on('drawstart', (e: DrawEvent) => {
+      if (!this.hasRequiredSymbolizer(app)) {
+        this.hsToastService.createToastPopupMessage(
+          this.hsLanguageService.getTranslation(
+            'DRAW.stylingMissing',
+            undefined,
+            app
+          ),
+          `${this.hsLanguageService.getTranslation(
+            'DRAW.stylingMissingWarning',
             {
-              serviceCalledFrom: 'HsDrawService',
+              type: appRef.type,
+              symbolizer: appRef.requiredSymbolizer[appRef.type].join(' or '),
+              panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
             },
             app
-          );
-        }
-        appRef.drawActive = true;
-        appRef.modify.setActive(false);
-        if (onDrawStart) {
-          onDrawStart(e);
-        }
-        if (this.hsUtilsService.runningInBrowser()) {
-          document.addEventListener('keyup', this.keyUp.bind(this, e, app));
-        }
-      });
-
-      appRef.draw.on('drawend', (e: DrawEvent) => {
-        if (appRef.type == 'Circle') {
-          e.feature.setGeometry(fromCircle(e.feature.getGeometry() as Circle));
-        }
-        if (onDrawEnd) {
-          onDrawEnd(e, app);
-        }
-        if (this.hsUtilsService.runningInBrowser()) {
-          document.removeEventListener('keyup', this.keyUp.bind(this, e, app));
-        }
-      });
-
-      //Add snap interaction -  must be added after the Modify and Draw interactions
-      const snapSourceToBeUsed = appRef.snapSource
-        ? appRef.snapSource
-        : appRef.source;
-      this.toggleSnapping(app, snapSourceToBeUsed);
+          )}`,
+          {
+            serviceCalledFrom: 'HsDrawService',
+          },
+          app
+        );
+      }
+      appRef.drawActive = true;
+      appRef.modify.setActive(false);
+      if (onDrawStart) {
+        onDrawStart(e);
+      }
+      if (this.hsUtilsService.runningInBrowser()) {
+        document.addEventListener('keyup', this.keyUp.bind(this, e, app));
+      }
     });
+
+    appRef.draw.on('drawend', (e: DrawEvent) => {
+      if (appRef.type == 'Circle') {
+        e.feature.setGeometry(fromCircle(e.feature.getGeometry() as Circle));
+      }
+      if (onDrawEnd) {
+        onDrawEnd(e, app);
+      }
+      if (this.hsUtilsService.runningInBrowser()) {
+        document.removeEventListener('keyup', this.keyUp.bind(this, e, app));
+      }
+    });
+
+    //Add snap interaction -  must be added after the Modify and Draw interactions
+    const snapSourceToBeUsed = appRef.snapSource
+      ? appRef.snapSource
+      : appRef.source;
+    this.toggleSnapping(app, snapSourceToBeUsed);
   }
 
   /**
