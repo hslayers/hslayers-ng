@@ -11,6 +11,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 
+import {EventsKey} from 'ol/events';
 import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -47,6 +48,7 @@ import {
   setTitle,
   setWorkspace,
 } from '../../common/layer-extensions';
+import {unByKey} from 'ol/Observable';
 
 type activateParams = {
   onDrawStart?;
@@ -519,6 +521,9 @@ export class HsDrawService {
     const map = await this.hsMapService.loaded(app);
     this.afterDrawEnd(app);
     if (appRef.draw) {
+      for (const key of appRef.eventHandlers) {
+        unByKey(key);
+      }
       map.removeInteraction(appRef.draw);
       appRef.draw = null;
     }
@@ -825,7 +830,7 @@ export class HsDrawService {
     appRef.onSelected = onSelected;
     await this.deactivateDrawing(app);
     this.hsQueryBaseService.deactivateQueries(app);
-    appRef.draw = new Draw({
+    const drawInteraction = new Draw({
       source: appRef.source,
       type: /** GeometryType */ appRef.type,
       condition: (e) => {
@@ -845,61 +850,103 @@ export class HsDrawService {
       },
     });
 
-    appRef.draw.setActive(drawState);
-    this.hsMapService.loaded(app).then((map) => {
-      map.addInteraction(appRef.draw);
-    });
+    this.setInteraction(drawInteraction, app, drawState);
 
-    appRef.draw.on('drawstart', (e: DrawEvent) => {
-      if (!this.hasRequiredSymbolizer(app)) {
-        this.hsToastService.createToastPopupMessage(
-          this.hsLanguageService.getTranslation(
-            'DRAW.stylingMissing',
-            undefined,
-            app
-          ),
-          `${this.hsLanguageService.getTranslation(
-            'DRAW.stylingMissingWarning',
-            {
-              type: appRef.type,
-              symbolizer: appRef.requiredSymbolizer[appRef.type].join(' or '),
-              panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
-            },
-            app
-          )}`,
-          {
-            serviceCalledFrom: 'HsDrawService',
-          },
-          app
-        );
-      }
-      appRef.drawActive = true;
-      appRef.modify.setActive(false);
-      if (onDrawStart) {
-        onDrawStart(e);
-      }
-      if (this.hsUtilsService.runningInBrowser()) {
-        document.addEventListener('keyup', this.keyUp.bind(this, e, app));
-      }
-    });
+    this.addHandler(
+      appRef,
+      drawInteraction.on('drawstart', (e: DrawEvent) => {
+        this.checkForMatchingSymbolizer(app);
+        if (onDrawStart) {
+          onDrawStart(e);
+        }
+      })
+    );
 
-    appRef.draw.on('drawend', (e: DrawEvent) => {
-      if (appRef.type == 'Circle') {
-        e.feature.setGeometry(fromCircle(e.feature.getGeometry() as Circle));
-      }
-      if (onDrawEnd) {
-        onDrawEnd(e, app);
-      }
-      if (this.hsUtilsService.runningInBrowser()) {
-        document.removeEventListener('keyup', this.keyUp.bind(this, e, app));
-      }
-    });
+    this.addHandler(
+      appRef,
+      drawInteraction.on('drawend', (e: DrawEvent) => {
+        if (appRef.type == 'Circle') {
+          e.feature.setGeometry(fromCircle(e.feature.getGeometry() as Circle));
+        }
+        if (onDrawEnd) {
+          onDrawEnd(e, app);
+        }
+      })
+    );
 
     //Add snap interaction -  must be added after the Modify and Draw interactions
     const snapSourceToBeUsed = appRef.snapSource
       ? appRef.snapSource
       : appRef.source;
     this.toggleSnapping(app, snapSourceToBeUsed);
+  }
+
+  addHandler(appRef: HsDrawServiceParams, e: EventsKey) {
+    appRef.eventHandlers.push(e);
+  }
+
+  async setInteraction(
+    interaction: Draw,
+    app: string,
+    active: boolean
+  ): Promise<void> {
+    const appRef = this.get(app);
+    appRef.draw = interaction;
+    appRef.draw.setActive(active);
+    const map = await this.hsMapService.loaded(app);
+    map.addInteraction(interaction);
+
+    this.addHandler(
+      appRef,
+      interaction.on('drawstart', (e: DrawEvent) => {
+        if (this.hsUtilsService.runningInBrowser()) {
+          document.addEventListener('keyup', this.keyUp.bind(this, e, app));
+        }
+      })
+    );
+
+    this.addHandler(
+      appRef,
+      interaction.on('drawstart', () => {
+        appRef.drawActive = true;
+        appRef.modify.setActive(false);
+      })
+    );
+
+    this.addHandler(
+      appRef,
+      interaction.on('drawend', (e: DrawEvent) => {
+        if (this.hsUtilsService.runningInBrowser()) {
+          document.removeEventListener('keyup', this.keyUp.bind(this, e, app));
+        }
+      })
+    );
+  }
+
+  private checkForMatchingSymbolizer(app: string) {
+    const appRef = this.get(app);
+    if (!this.hasRequiredSymbolizer(app)) {
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
+          'DRAW.stylingMissing',
+          undefined,
+          app
+        ),
+        `${this.hsLanguageService.getTranslation(
+          'DRAW.stylingMissingWarning',
+          {
+            type: appRef.type,
+            symbolizer: appRef.requiredSymbolizer[appRef.type].join(' or '),
+            panel: this.hsLanguageService.getTranslation('PANEL_HEADER.LM'),
+          },
+          app
+        )}`,
+        {
+          serviceCalledFrom: 'HsDrawService',
+        },
+        app
+      );
+    }
   }
 
   /**

@@ -1,5 +1,6 @@
 import {Collection} from 'ol';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
+import {EventsKey} from 'ol/events';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -39,6 +40,7 @@ export class HsDrawServiceParams {
   isAuthorized: boolean;
   onlyMine = true;
   addedLayersRemoved = false;
+  eventHandlers: EventsKey[] = [];
 
   public drawingLayerChanges: Subject<{
     layer: Layer<Source>;
