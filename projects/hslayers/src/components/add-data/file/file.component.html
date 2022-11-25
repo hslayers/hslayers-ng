@@ -1,9 +1,8 @@
 <div class="d-flex justify-content-center flex-column align-items-center m-3">
-    <div class="container ">
-        <div class="row justify-content-center">
+    <div class="container px-md-5">
+        <div class="row justify-content-center gap-1">
             <button *ngFor="let type of types" [ngClass]="{'active': type.id === typeSelected }"
-                (click)="selectType(type.id)" style="margin: 3px;"
-                class="btn btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
+                (click)="selectType(type.id)" class="btn btn-outline-secondary rounded btn-sm col-sm-3 flex-grow-1">
                 {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS', type.text, undefined, app)}}
                 <!-- TODO: Remove function call from template -->
             </button>

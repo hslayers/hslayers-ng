@@ -163,6 +163,10 @@ hs-sidebar~div.hs-panelplace {
         display: none;
     }
 
+    .hs-panelspace:not(.labels) .hs-sidebar-list span.hs-sidebar-item-title {
+        font-size: medium;
+    }
+
     hs-sidebar {
         display: flex;
     }
@@ -174,7 +178,7 @@ hs-sidebar~div.hs-panelplace {
 
     hs-sidebar~div.hs-panelplace {
         margin: auto;
-        height: 35vh;
+        min-height: 35vh;
         padding-top: 0.5em;
         scrollbar-width: none;
         width: 95%;
@@ -195,6 +199,7 @@ hs-sidebar~div.hs-panelplace {
 
     div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         width: 100%;
+        height: auto;
     }
 
     .hs-content-wrapper div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
@@ -229,8 +234,8 @@ hs-sidebar~div.hs-panelplace {
     }
 
     hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
-        width: 25%;
-        height: 80px;
+        width: 30%;
+        font-size: xxx-large;
     }
 
     hs-mini-sidebar .hs-sidebar-item-title {

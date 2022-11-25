@@ -413,7 +413,32 @@ export class HsLayoutService {
         p.isVisible$.next(visible);
       }
     }
+    if (
+      appRef.contentWrapper
+        .querySelector('.hs-panelspace-wrapper')
+        .classList.contains('expanded')
+    ) {
+      appRef.contentWrapper
+        .querySelector('.hs-panelspace-expander')
+        .dispatchEvent(new MouseEvent('click'));
+    }
     this.HsEventBusService.mainPanelChanges.next({which, app});
+  }
+
+  /**
+   * Toggles 'expanded' class on panelspace-wrapper. Switching height between 40 to 70vh
+   */
+  resizePanelSpaceWrapper(e: MouseEvent, app: string): void {
+    const target: HTMLSpanElement = e.target as HTMLSpanElement;
+    target.classList.toggle('icon-chevron-down');
+
+    const contentWrapper = this.get(app).contentWrapper;
+    const panelSpaceWrapper = contentWrapper.querySelector(
+      '.hs-panelspace-wrapper'
+    );
+    if (panelSpaceWrapper) {
+      panelSpaceWrapper.classList.toggle('expanded');
+    }
   }
 
   /**

@@ -1,14 +1,18 @@
 .hs-search-address {
     z-index: 2;
 }
+
 .hs-toolbar #hs-search-address {
     max-width: 125px;
 }
+
 #searchresults {
     top: 45px;
     min-width: 250px;
 }
-.search-panel hs-search-input, .search-panel hs-search-results{
+
+.search-panel hs-search-input,
+.search-panel hs-search-results {
     width: 100%;
 }
 
@@ -22,6 +26,7 @@
     z-index: 5;
     background: transparent;
 }
+
 .clearSearch:hover {
     color: $primary;
 }
@@ -29,12 +34,13 @@
 .hsl-search-result {
     z-index: 2;
 }
-.hs-search-address-input{
-    font-size: 1rem !important;
+
+.hs-search-address-input {
+    font-size: $bs-btn-font-size !important;
 }
 
 @media only screen and (max-width: $mobile-layout-breakpoint) {
-    .hs-search-address-input{
+    .hs-search-address-input {
         max-width: 20vw !important;
     }
 }

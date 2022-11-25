@@ -3,6 +3,13 @@
 $mobile-layout-breakpoint-value: 767 !default; //will be used in TS files
 $mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this will be used in hsl styles
 
+
+@media screen and (max-width:767px) {
+  :root {
+    font-size: 115%
+  }
+}
+
 @import "ol/ol";
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
@@ -12,7 +19,8 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this
 $table-group-separator-color: white;
 $list-group-item-padding-y: 0.75rem;
 $list-group-item-padding-x: 1.25rem;
-
+$bs-btn-font-size: 1rem;
+// calc(1.35rem - 0.25vw)
 
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
@@ -72,6 +80,9 @@ $list-group-item-padding-x: 1.25rem;
     }
   }
 
+  .btn {
+    --bs-btn-font-size: #{$bs-btn-font-size};
+  }
 
   //CSS override for each bs5 theme-color - used to force style against hub themes
   @each $color,
@@ -227,12 +238,17 @@ $list-group-item-padding-x: 1.25rem;
     position: relative;
   }
 
-  .hs-map-space > hs-panel-container {
-    left: 0; top: 0; width: 100%; height: 100%; position: absolute; pointer-events: none;
+  .hs-map-space>hs-panel-container {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
   }
 
   /* To not disable pointer-events for all hs-panel-containers children too*/
-  .hs-map-space hs-panel-container > * {
+  .hs-map-space hs-panel-container>* {
     pointer-events: auto;
   }
 
@@ -274,7 +290,7 @@ $list-group-item-padding-x: 1.25rem;
   }
 
   .hs-layerpanel {
-    max-height: 27.875em;
+    // max-height: 27.875em;
     overflow-y: auto;
     border: 0;
     margin-bottom: 0;
@@ -528,14 +544,14 @@ $list-group-item-padding-x: 1.25rem;
   /**********************************/
 
   @media only screen and (max-width: $mobile-layout-breakpoint) {
-    input[type="checkbox"] {
-      transform: scale(2, 2);
-      margin-right: 0.5em;
-      margin-left: 0.5em;
+
+    .d-mw-md-block {
+      display: block !important;
     }
 
-    input[type="radio"] {
-      transform: scale(2, 2);
+    input[type="checkbox"] {
+      margin-right: 0.5em;
+      margin-left: 0.5em;
     }
 
     div .form-check-inline {
