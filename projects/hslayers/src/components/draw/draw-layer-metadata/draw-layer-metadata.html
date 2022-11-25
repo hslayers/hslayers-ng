@@ -10,7 +10,7 @@
                         [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
                     </button>
                 </div>
-                <p class="m-0 p-0" style="font-size: small; color: red;">
+                <p class="m-0 p-0" style="font-size: 0.75rem; color: red;">
                     {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs: {app: data.app} }}</p>
             </div>
             <div *ngIf="!appRef.isAuthorized && appRef.laymanEndpoint !== undefined" class="alert alert-danger"

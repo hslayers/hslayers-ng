@@ -1,3 +1,10 @@
+@media screen and (max-width:767px) {
+  :root {
+    font-size: 115%
+  }
+}
+
+
 @import "ol/ol";
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
@@ -21,12 +28,15 @@ $list-group-item-padding-x: 1.25rem;
 }
 
 .hsl {
-  &.hs-mobile-view {
-    @for $i from 0 through 14 {
-      .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25) } {
-        width: 400 + ($i * 25)+px;
-      }
+  @for $i from 0 through 20 {
+    &:not(.hs-mobile-view) .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
+      width: 400 + ($i * 25)+px;
     }
+  }
+
+  hs-panel-container.hs-panelplace>*>div[class*="hs-panel-width-"] {
+    max-width: 65rem;
+    margin: auto
   }
 
   .alert {
@@ -145,10 +155,6 @@ $list-group-item-padding-x: 1.25rem;
     height: 100%;
   }
 
-  .x-large {
-    font-size: x-large !important;
-  }
-
   .cursor-pointer {
     cursor: pointer;
   }
@@ -174,7 +180,7 @@ $list-group-item-padding-x: 1.25rem;
   }
 
   .hs-layerpanel {
-    max-height: 27.875em;
+    //max-height: 27.875em;
     overflow-y: auto;
     border: 0;
     margin-bottom: 0;
@@ -278,7 +284,7 @@ $list-group-item-padding-x: 1.25rem;
 
   .but-title-sm {
     float: right;
-    font-size: 14px;
+    font-size: 0.85rem;
     font-weight: 700;
     line-height: 17px;
     filter: alpha(opacity=20);
@@ -311,10 +317,6 @@ $list-group-item-padding-x: 1.25rem;
   .thumbnail {
     margin-top: 3px;
     margin-bottom: 3px;
-  }
-
-  .btn .close {
-    font-size: 20px;
   }
 
   .modal {
@@ -387,16 +389,16 @@ $list-group-item-padding-x: 1.25rem;
     margin-top: 10px;
   }
 
-  .hs-composition-share-dialog .modal-body,
-  .composition-info-dialog .modal-body {
-    font-size: 14px;
-  }
-
   /**********************************/
   /** SIDEBAR&TOOLBAR RESPONSIVITY **/
   /**********************************/
 
   &.hs-mobile-view {
+    .d-mw-md-block {
+      display: block !important;
+    }
+
+
     input[type="checkbox"] {
       transform: scale(2, 2);
       margin-right: 0.5em;
@@ -426,11 +428,6 @@ $list-group-item-padding-x: 1.25rem;
       position: absolute !important;
     }
 
-    .removeIcon {
-      line-height: 1.5;
-      font-size: large;
-    }
-
     .panel-footer {
       padding: 5px;
     }
@@ -452,7 +449,7 @@ $list-group-item-padding-x: 1.25rem;
     }
 
     .ol-control button {
-      font-size: 1.5em;
+      font-size: 1rem;
     }
 
     .hs-ol-map .ol-zoom {
@@ -471,7 +468,7 @@ $list-group-item-padding-x: 1.25rem;
     }
 
     .hs-draw-selectAll {
-      font-size: medium;
+      font-size: 1rem;
     }
 
     #stc-layerlist .list-group-item {
@@ -637,7 +634,7 @@ $list-group-item-padding-x: 1.25rem;
   }
 
   .hs-hover-popup-feature {
-    font-size: small;
+    font-size: 0.8rem;
     line-height: 1;
     margin-bottom: 2px;
     border-bottom: 1px solid hsl(0, 0%, 78%);

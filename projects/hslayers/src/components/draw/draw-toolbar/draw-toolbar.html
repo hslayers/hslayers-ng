@@ -10,7 +10,7 @@
                 class="btn btn-light rounded-0 btn-secondary dropdown-toggle hs-draw-layer-toggle d-flex align-items-center"
                 [hidden]="!(appRef.hasSomeDrawables || appRef.tmpDrawLayer)"
                 (click)="controlLayerListAction(); HsDrawService.fillDrawableLayers(data.app) "
-                style="max-width: 125px; overflow: hidden; font-size: smaller; z-index: 2;"
+                style="max-width: 125px; overflow: hidden; font-size: 0.9rem; z-index: 2;"
                 [ngClass]="appRef.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
                 <div class="text-truncate pe-1">{{HsDrawService.selectedLayerString(data.app)}}</div>
             </button>

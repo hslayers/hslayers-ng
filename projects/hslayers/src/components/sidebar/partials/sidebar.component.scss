@@ -150,7 +150,7 @@ hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
 hs-mini-sidebar .hs-sidebar-item-title {
     display: block !important;
     margin: 0 !important;
-    font-size: 10px;
+    font-size: 0.65rem;
 }
 
 hs-sidebar~div.hs-panelplace {
@@ -164,7 +164,7 @@ hs-sidebar~div.hs-panelplace {
     }
 
     .hs-panelspace:not(.labels) .hs-sidebar-list span.hs-sidebar-item-title {
-        font-size: medium;
+        font-size: 1rem;
     }
 
     hs-sidebar {
@@ -217,8 +217,8 @@ hs-sidebar~div.hs-panelplace {
         padding: 0.55rem 1.05rem;
     }
 
-    .hs-sidebar-item [class*=" icon-"] {
-        font-size: x-large;
+    .hs-sidebar-item {
+        align-self: center;
     }
 
     hs-mini-sidebar .hs-sidebar-list {
@@ -235,13 +235,7 @@ hs-sidebar~div.hs-panelplace {
 
     hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
         width: 30%;
-        font-size: xxx-large;
-    }
-
-    hs-mini-sidebar .hs-sidebar-item-title {
-        display: block !important;
-        margin: 0;
-        font-size: 10px;
+        font-size: 2rem;
     }
 
     hs-mini-sidebar .list-group-item {

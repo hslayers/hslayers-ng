@@ -17,7 +17,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
 }
 
 ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon {
-    font-size: x-small;
+    font-size: 0.65rem
 }
 
 li.hs-lm-item.hovering {
@@ -100,21 +100,14 @@ hs-layermanager-time-editor button.btn {
     }
 }
 
-.hs-timeSync-toggle {
-    font-size: smaller;
-}
-
 &.hs-mobile-view {
     ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon {
-        font-size: small;
+        font-size: 0.8rem;
     }
+}
 
-    .hs-timeSync-toggle,
-    .hs-lm-time-editor-currentTime {
-        font-size: large;
-    }
-
-    .hs-lm-item .icon-settingsthree-gears {
-        font-size: xx-large;
+@media screen and (max-width:767px) {
+    &.hs-mobile-view .hs-lm-item .icon-settingsthree-gears {
+        font-size: 1.2rem;
     }
 }

@@ -4,6 +4,12 @@
   }
 }
 
+// @media screen and (min-width:767px) {
+//   hslayers .hs-mobile-view {
+//     font-size: 85%
+//   }
+// }
+
 @import "ol/ol";
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
@@ -13,7 +19,6 @@
 $table-group-separator-color: white;
 $list-group-item-padding-y: 0.75rem;
 $list-group-item-padding-x: 1.25rem;
-$bs-btn-font-size: 1rem;
 // calc(1.35rem - 0.25vw)
 
 @import "bootstrap/scss/maps";
@@ -72,8 +77,9 @@ $bs-btn-font-size: 1rem;
     }
   }
 
-  .btn {
-    --bs-btn-font-size: #{$bs-btn-font-size};
+  hs-panel-container.hs-panelplace>*>div[class*="hs-panel-width-"] {
+    max-width: 65rem;
+    margin: auto
   }
 
   //CSS override for each bs5 theme-color - used to force style against hub themes
@@ -253,10 +259,6 @@ $bs-btn-font-size: 1rem;
     height: 100%;
   }
 
-  .x-large {
-    font-size: x-large !important;
-  }
-
   .cursor-pointer {
     cursor: pointer;
   }
@@ -387,7 +389,7 @@ $bs-btn-font-size: 1rem;
 
   .but-title-sm {
     float: right;
-    font-size: 14px;
+    font-size: 0.85rem;
     line-height: 17px;
     color: $secondary;
     filter: alpha(opacity=20);
@@ -432,10 +434,6 @@ $bs-btn-font-size: 1rem;
     color: white;
   }
 
-  .btn .close {
-    font-size: 20px;
-  }
-
   .modal {
     font-family: Roboto, "Helvetica Neue", sans-serif;
   }
@@ -468,7 +466,7 @@ $bs-btn-font-size: 1rem;
     padding: 0.09em 0.4em 0.05em 0.35em;
     border-radius: 0.2em;
     font-weight: 1000;
-    font-size: small;
+    font-size: 0.8rem;
   }
 
   .hs-uncheckmark::before {
@@ -522,11 +520,6 @@ $bs-btn-font-size: 1rem;
     background-color: hsl(0, 0%, 93%);
   }
 
-  .hs-composition-share-dialog .modal-body,
-  .composition-info-dialog .modal-body {
-    font-size: 14px;
-  }
-
   hs-panel-header {
     background-color: white;
   }
@@ -561,11 +554,6 @@ $bs-btn-font-size: 1rem;
       position: absolute !important;
     }
 
-    .removeIcon {
-      line-height: 1.5;
-      font-size: large;
-    }
-
     .panel-footer {
       padding: 5px;
     }
@@ -587,11 +575,11 @@ $bs-btn-font-size: 1rem;
     }
 
     .ol-control button {
-      font-size: 1.5em;
+      font-size: 1rem;
     }
 
     .hs-ol-map .ol-zoom {
-      bottom: 0.2em;
+      bottom: 2rem;
       top: auto;
       right: 5px;
       left: auto;
@@ -606,7 +594,7 @@ $bs-btn-font-size: 1rem;
     }
 
     .hs-draw-selectAll {
-      font-size: medium;
+      font-size: 1rem;
     }
 
     #stc-layerlist .list-group-item {
@@ -812,7 +800,7 @@ $bs-btn-font-size: 1rem;
   }
 
   .hs-hover-popup-feature {
-    font-size: small;
+    font-size: 0.8rem;
     line-height: 1;
     margin-bottom: 2px;
     border-bottom: 1px solid hsl(0, 0%, 78%);
@@ -967,28 +955,28 @@ $bs-btn-font-size: 1rem;
   .ol-attribution {
     left: auto;
     right: 5px;
-    bottom: 0.2em;
+    bottom: 0.2rem;
   }
 
   .ol-attribution.ol-uncollapsible {
     right: 5px;
-    bottom: 0.2em;
+    bottom: 0.2rem;
   }
 
   .hs-ol-map .ol-scale-line {
     right: auto;
-    left: 0.5em;
+    left: 0.5rem;
   }
 
   .hs-ol-map .ol-zoom {
-    bottom: 2.4em;
+    bottom: 2.4rem;
     top: auto;
     right: 5px;
     left: auto;
   }
 
   .hs-ol-map .hs-defaultView {
-    bottom: 6.65em;
+    bottom: 5rem;
     top: auto;
     right: 5px;
     left: auto;
