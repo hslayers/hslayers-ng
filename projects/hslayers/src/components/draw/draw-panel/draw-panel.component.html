@@ -19,7 +19,8 @@
         </ng-template>
 
         <div *ngIf="appRef.hasSomeDrawables || appRef.tmpDrawLayer; else noLayerAvailable"
-            class="flex-row w-100 m-auto justify-content-center align-items-center text-primary" style="display: flex;">
+            class="flex-row w-100 m-auto justify-content-center align-items-center text-primary py-3 py-md-0"
+            style="display: flex;">
             <p class="m-0 p-0">{{'DRAW.drawingTo' | translateHs: {app} }}</p>
             <div ngbDropdown style="max-width: 50%;" placement="bottom">
                 <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"

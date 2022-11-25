@@ -59,7 +59,8 @@
                     </div>
                 </div>
             </li>
-            <li class="list-group-item hs-lm-item" *ngFor="let layer of appRef.data.baselayers | filter:baselayerFilter"
+            <li class="list-group-item hs-lm-item my-2 my-md-0"
+                *ngFor="let layer of appRef.data.baselayers | filter:baselayerFilter"
                 [ngClass]="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" [id]="layer.idString()">
                 <div class="d-flex">
                     <div class="p-0">

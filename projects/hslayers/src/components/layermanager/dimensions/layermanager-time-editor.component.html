@@ -2,7 +2,8 @@
   <button type="button" class="btn btn-sm text-info border-0" (click)="previousTime()" [disabled]="!hasPreviousTime">
     <i class="glyphicon icon-chevron-left"></i>
   </button>
-  <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
+  <button class="hs-lm-time-editor-currentTime btn btn-sm text-info px-0"
+    (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
     *ngIf="availableTimesFetched; else loading">
     <span *ngIf="currentTime; else outOfRange">
       {{currentTime | date:timeDisplayFormat:timeDisplayFormat}}
@@ -31,7 +32,7 @@
   </button>
 </div>
 <div class="p-0">
-  <button type="button" class="btn btn-sm px-0 me-1"
+  <button type="button" class="hs-timeSync-toggle btn px-0 py-md-1 py-2"
     [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
     [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs : {app} ">
     <i class="glyphicon icon-timeline"></i>

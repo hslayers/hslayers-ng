@@ -3,7 +3,7 @@
     min-height: inherit;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 
-    &.hs-open .hs-panelspace{
+    &.hs-open .hs-panelspace {
         min-width: 425px;
     }
 }
@@ -22,7 +22,7 @@
     z-index: 2;
     transition: width 100ms ease-out;
 
-    &.labels{
+    &.labels {
         width: 425px;
     }
 }
@@ -30,6 +30,7 @@
 .hs-sb-right .hs-panelspace {
     right: 0;
 }
+
 .hs-sb-left .hs-panelspace {
     left: 0;
 }
@@ -39,6 +40,7 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     width: 48px;
     overflow-x: hidden;
 }
+
 .hs-panelspace-wrapper {
     height: 100%;
     padding-left: 0;
@@ -46,12 +48,13 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     overflow-y: auto;
 }
 
-.hs-content-wrapper label.form-group { display: block; }
-
+.hs-content-wrapper label.form-group {
+    display: block;
+}
 
 @media only screen and (max-width: $mobile-layout-breakpoint) {
 
-    .hs-content-wrapper{
+    .hs-content-wrapper {
         flex-direction: column;
         position: unset;
     }
@@ -64,6 +67,7 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         width: 100%;
         transition: none;
     }
+
     .hs-panelspace.expanded {
         min-width: 300px;
     }
@@ -71,11 +75,17 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     .hs-panelspace-wrapper {
         display: flex;
         flex-direction: column;
-        scrollbar-width: none; /* firefox */
-        max-height: 40vh;
+        scrollbar-width: none;
+        /* firefox */
+        height: 40vh;
         overflow-y: visible;
         font-size: x-large;
         width: 100%;
+        transition: height 0.5s ease-in-out;
+
+        &.expanded {
+            height: 70vh;
+        }
     }
 
     #panelspace {

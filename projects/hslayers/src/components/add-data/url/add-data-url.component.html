@@ -1,11 +1,12 @@
-<div class="d-flex justify-content-center flex-column align-items-center m-3">
-    <div class="container ">
-        <div class="row justify-content-center">
+<div class="d-flex justify-content-center flex-column align-items-center m-3 px-md-4">
+    <div class="container px-md-4">
+        <div class="row justify-content-center gap-1">
             <button *ngFor="let type of types" [ngClass]="{'active': type.id === appRef.typeSelected }"
-                (click)="selectType(type.id,app)" style="margin: 3px;"
-                class="btn btn-outline-secondary rounded btn-sm mt-1 col-sm-3 position-relative">
+                (click)="selectType(type.id,app)"
+                class="btn btn-outline-secondary rounded btn-sm col-sm-3 position-relative flex-grow-1">
                 {{type.text}}
-                <span *ngIf="type.id === 'geosparql'" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">&beta;</span>
+                <span *ngIf="type.id === 'geosparql'"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">&beta;</span>
             </button>
         </div>
     </div>

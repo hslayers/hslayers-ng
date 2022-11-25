@@ -17,6 +17,7 @@
 # icon-refresh U+f078
 # icon-chevron-right U+f488
 # icon-chevron-left U+f489
+# icon-chevron-up U+f48a
 # icon-chevron-down U+f48b
 # icon-upload U+f47a
 # icon-share-alt U+f16c
@@ -83,5 +84,5 @@
 # icon-copy U+f0c9
 # icon-lock U+f0be
 # icon-th-large U+f112
-pyftsubset whhg-font/font/webhostinghub-glyphs.ttf --unicodes="U+F1CA,U+f4c2,U+f315,U+f209,U+f00b,U+f000,U+002b,U+f022,U+f2b4,U+f078,U+f488,U+f489,U+f48b,U+f47a,U+f47c,U+f0ce,U+f47b,U+f20a,U+f397,U+f1bf,U+f772,U+f1b7,U+00d7,U+f487,U+f19b,U+f23a,U+f36c,U+f316,U+f127,U+f0c5,U+f1b8,U+f1ed,U+f319,U+f692,U+f01b,U+f187,U+f0d2,U+f0c8,U+f571,U+f572,U+f782,U+f53d,U+f109,U+f125,U+f309,U+f4d2,U+f30c,U+2212,U+f16c,U+f21e,U+f21f,U+f269,U+f470,U+f310,U+f307,U+f7ac,U+f210,U+f5d5,U+f0a3,U+f4d0,U+f09e,U+f6ec,U+f0dc,U+f301,U+f2fe,U+f675,U+f207,U+f206,U+f253,U+f11b,U+f332,U+f322,U+f05c,U+f7e6,U+f4e6,U+f0c9,U+f0be,U+f112"  --output-file="whhg-font/font/subset.ttf"
+pyftsubset whhg-font/font/webhostinghub-glyphs.ttf --unicodes="U+F1CA,U+f4c2,U+f315,U+f209,U+f00b,U+f000,U+002b,U+f022,U+f2b4,U+f078,U+f488,U+f489,U+f48b,U+f48a,U+f47a,U+f47c,U+f0ce,U+f47b,U+f20a,U+f397,U+f1bf,U+f772,U+f1b7,U+00d7,U+f487,U+f19b,U+f23a,U+f36c,U+f316,U+f127,U+f0c5,U+f1b8,U+f1ed,U+f319,U+f692,U+f01b,U+f187,U+f0d2,U+f0c8,U+f571,U+f572,U+f782,U+f53d,U+f109,U+f125,U+f309,U+f4d2,U+f30c,U+2212,U+f16c,U+f21e,U+f21f,U+f269,U+f470,U+f310,U+f307,U+f7ac,U+f210,U+f5d5,U+f0a3,U+f4d0,U+f09e,U+f6ec,U+f0dc,U+f301,U+f2fe,U+f675,U+f207,U+f206,U+f253,U+f11b,U+f332,U+f322,U+f05c,U+f7e6,U+f4e6,U+f0c9,U+f0be,U+f112"  --output-file="whhg-font/font/subset.ttf"
 ttf2eot whhg-font/font/subset.ttf whhg-font/font/subset.eot

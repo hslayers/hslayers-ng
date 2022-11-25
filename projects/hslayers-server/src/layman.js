@@ -77,7 +77,7 @@ OAuth2.prototype.userProfile = (access_token, done) => {
       // reserve username in Layman in case it does not exist yet
       authnUtil.ensureUsername(access_token, response.body);
 
-      console.log(response.body);
+      console.log('LAYMAN RESPONSE BODY',response.body);
       done(null, response.body);
     } catch (error) {
       console.log(error.response.body);

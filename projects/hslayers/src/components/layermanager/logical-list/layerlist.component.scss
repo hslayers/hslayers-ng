@@ -21,6 +21,16 @@ i.hs-lm-queryable {
 }
 
 .exclusive .hs-checkmark::before,
-.exclusive .hs-uncheckmark::before{
+.exclusive .hs-uncheckmark::before {
     border-radius: 50%;
+}
+
+.hs-sublayer-toggle {
+    font-size: x-small;
+}
+
+@media only screen and (max-width: $mobile-layout-breakpoint) {
+    .hs-sublayer-toggle {
+        font-size: medium;
+    }
 }

@@ -48,6 +48,7 @@ li.hs-dr-item {
     word-wrap: break-word;
     border-left: 0;
     border-right: 0;
+    border-top: 0;
     padding: 0.1em;
     padding-top: 0.4em;
     padding-left: 0.2em;
@@ -95,12 +96,25 @@ hs-layermanager-time-editor button.btn {
     line-height: inherit;
 
     &:disabled {
-        color: $gray-500  !important;
+        color: $gray-500 !important;
     }
+}
+
+.hs-timeSync-toggle {
+    font-size: smaller;
 }
 
 @media only screen and (max-width: $mobile-layout-breakpoint) {
     ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon {
         font-size: small;
+    }
+
+    .hs-timeSync-toggle,
+    .hs-lm-time-editor-currentTime {
+        font-size: large;
+    }
+
+    .hs-lm-item .icon-settingsthree-gears {
+        font-size: xx-large;
     }
 }
