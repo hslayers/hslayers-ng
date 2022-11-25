@@ -2,7 +2,7 @@
     <hs-panel-header name="language" [title]="'PANEL_HEADER.LANGUAGE' | translateHs : data" [app]="data.app">
     </hs-panel-header>
     <div class="card-body">
-        <ul class="m-3 hs-senslog-list list-group">
+        <ul class="m-3 list-group m-auto w-75 py-md-2">
             <button *ngFor="let lang of available_languages" class="btn m-2 m-md-1 p-4 p-md-2"
                 [ngClass]="isCurrentLang(lang.key) ? ' btn-primary' : ' btn-secondary'"
                 (click)="setLanguage(lang.key)">{{lang.name}}</button><!-- TODO: Remove function call from template -->

@@ -10,7 +10,7 @@
                 (click)="openSaveMapPanel()" [hidden]="!saveMapAvailable()"><!-- TODO: Remove function call from template -->
                 <span class="icon-save-floppy"></span>
             </button>
-            <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;"
+            <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="padding: 1px 6px;"
                 [title]="'COMPOSITIONS.import' | translateHs : data">
                 <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event, data.app)"
                     accept=".json" style="display: none;">

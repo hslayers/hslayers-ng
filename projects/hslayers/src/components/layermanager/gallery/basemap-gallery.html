@@ -1,7 +1,7 @@
 <div class="basemapGallery" style="z-index: 101;" [hidden]="(isVisible$ | async) === false">
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
         [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
-        <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" aria-haspopup="true">
+        <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" style="font-size: 1rem" aria-haspopup="true">
             <i class="glyphicon icon-th-large x-large p-0" style="line-height: inherit;"></i>
         </button>
         <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">

@@ -1,27 +1,33 @@
 .hs-locate:not(.ol-collapsed) {
     background: hsla(0, 0%, 100%, 0.8);
 }
+
 .hs-locate,
 .ol-has-tooltip [role="tooltip"],
 .ol-scale-line-inner {
     font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
 }
+
 .hs-locate {
     text-align: right;
-    bottom: 9.2em;
+    bottom: 7rem;
     right: 5px;
     max-width: calc(100% - 1.3em);
     z-index: 100;
 }
+
 .hs-locate ul {
     float: left;
 }
+
 .hs-locate button {
     float: right;
 }
+
 .hs-locate .btn-primary {
     background-color: #0069d9 !important;
 }
+
 .hs-locate.ol-collapsed ul,
 .hs-locate:not(.ol-collapsed) button:hover [role="tooltip"] {
     display: none;
@@ -32,15 +38,17 @@
 }
 
 .ol-rotate {
-    bottom: 11.5em;
+    bottom: 9rem;
     left: auto;
     right: 5px;
     top: auto;
 }
+
 .ol-rotate.hidden {
     visibility: hidden;
     opacity: 0%;
 }
+
 .ol-rotate button:not(.active) {
     background-color: hsla(200, 1%, 53%, 0.7);
 }

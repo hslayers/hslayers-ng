@@ -57,11 +57,6 @@
   border: 0.1rem solid hsl(211, 100%, 50%);
 }
 
-.basemapGallery div span.glyphicon {
-  font-size: smaller;
-  /* color:rgb(0, 123, 255); */
-}
-
 .basemapGallery .hs-miniMenu {
   width: 100%;
   height: 100%;
@@ -80,13 +75,14 @@
 .basemapGallery .hs-miniMenu>div {
   display: flex;
   flex-direction: row;
+  align-items: baseline;
   background-color: hsla(0, 2%, 75%, 0.644);
   cursor: pointer;
 }
 
 .basemapGallery .hs-miniMenu p {
   cursor: pointer;
-  font-size: "medium";
+  font-size: 1rem;
 }
 
 .basemapGallery .hs-miniMenu.expanded {
@@ -125,18 +121,16 @@
 }
 
 &.hs-mobile-view {
-  .basemapGallery a {
-    font-size: x-large !important;
+  .basemapGallery .galleryDropdown img {
+    height: 6em;
   }
 
-  .hs-content-wrapper>div.hs-map-space>hs.layermanager.gallery>div>div>div>button {
-    font-size: x-large;
+  .basemapGallery .hs-miniMenu {
+    max-width: 90vw;
   }
+}
 
-  .basemapGallery div span.glyphicon {
-    font-size: large;
-  }
-
+@media screen and (max-width:767px) {
   .basemapGallery .galleryDropdown {
     column-gap: 0.5rem;
     row-gap: 1rem;
@@ -153,8 +147,11 @@
     }
   }
 
-  .basemapGallery .hs-miniMenu {
-    max-width: 90vw;
-    font-size: larger;
+  .basemapGallery {
+
+    & div span.glyphicon,
+    & a {
+      font-size: 1.2rem
+    }
   }
 }

@@ -1,4 +1,4 @@
-<div class="hs-sidebar-list hs-main-panel list-group">
+<div class="card hs-sidebar-list hs-main-panel list-group">
     <hs-panel-header class="sidebar-header w-100" *ngIf="layoutAppRef.minisidebar" name="additional"
         [title]="'SIDEBAR.additionalPanels' | translateHs: {app} " [app]="app"></hs-panel-header>
 
@@ -8,7 +8,7 @@
             [ngClass]="layoutAppRef.sidebarExpanded ? (layoutAppRef.sidebarPosition === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (layoutAppRef.sidebarPosition === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </span><!-- TODO: Remove function call from template -->
 
-    <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item" [attr.data-cy]="button.panel"
+    <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item h-100 d-flex align-items-center" [attr.data-cy]="button.panel"
         [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button, app)"
         [ngClass]="{'active': layoutAppRef.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
         [title]="button.description | translateHs: {app}">

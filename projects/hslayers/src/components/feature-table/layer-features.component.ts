@@ -26,7 +26,7 @@ type Operation = {
         border: 1px solid #dddddd;
         text-align: left;
         padding: 6px;
-        font-size: 14px;
+        font-size: 0.875rem;
       }
       .tdbreak {
         overflow-wrap: break-word;
