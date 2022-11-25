@@ -29,7 +29,7 @@ i.hs-lm-queryable {
     font-size: x-small;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
+&.hs-mobile-view {
     .hs-sublayer-toggle {
         font-size: medium;
     }

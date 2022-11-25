@@ -3,6 +3,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HS_PRMS} from '../permalink/get-params';
+import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
@@ -21,6 +22,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   clearVisible = false;
   searchResultsReceivedSubscription: Subscription;
   constructor(
+    private hsConfig: HsConfig,
     private hsSearchService: HsSearchService,
     private hsEventBusService: HsEventBusService,
     private hsShareUrlService: HsShareUrlService
@@ -40,7 +42,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
       this.query = query;
       this.queryChanged();
     }
-    window.innerWidth < 767
+    window.innerWidth < this.hsConfig.get(this.app).mobileBreakpoint
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);
   }

@@ -157,7 +157,7 @@ hs-sidebar~div.hs-panelplace {
     overflow-x: hidden;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
+&.hs-mobile-view {
 
     .hs-content-wrapper .hs-sidebar-item-title:not(.hs-mini-sidebar) {
         display: none;

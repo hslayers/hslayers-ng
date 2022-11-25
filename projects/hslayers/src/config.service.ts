@@ -36,6 +36,7 @@ export class HsConfigObject {
   sidebarClosed?: boolean;
   sidebarPosition?: string;
   default_layers?: Layer<Source>[];
+  mobileBreakpoint?: number;
   box_layers?: Group[];
   base_layers?: {
     url: string;
@@ -206,6 +207,7 @@ export class HsConfigObject {
       mapSwipe: 550,
     };
     this.sidebarPosition = 'right';
+    this.mobileBreakpoint = 767;
   }
 }
 
@@ -263,6 +265,10 @@ export class HsConfig {
     if (appConfig == undefined) {
       this.apps[app] = new HsConfigObject();
       appConfig = this.apps[app];
+    }
+    if (newConfig.sidebarPosition === 'bottom') {
+      /**Set hight enough value to make sure class setting mobile-view is not toggled*/
+      newConfig.mobileBreakpoint = 9999;
     }
     appConfig.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
       val.url = (appConfig.assetsPath ?? '') + val.url;

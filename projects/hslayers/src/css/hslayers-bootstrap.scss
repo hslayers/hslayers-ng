@@ -1,9 +1,3 @@
-/* Default values for customizable variables */
-//Mobile layout breakpoint
-$mobile-layout-breakpoint-value: 767 !default; //will be used in TS files
-$mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this will be used in hsl styles
-
-
 @media screen and (max-width:767px) {
   :root {
     font-size: 115%
@@ -72,11 +66,9 @@ $bs-btn-font-size: 1rem;
   // Utilities
   @import "bootstrap/scss/utilities/api";
 
-  @media screen and (min-width:767px) {
-    @for $i from 0 through 20 {
-      .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
-        width: 400 + ($i * 25)+px;
-      }
+  @for $i from 0 through 20 {
+    &:not(.hs-mobile-view) .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
+      width: 400 + ($i * 25)+px;
     }
   }
 
@@ -543,7 +535,7 @@ $bs-btn-font-size: 1rem;
   /** SIDEBAR&TOOLBAR RESPONSIVITY **/
   /**********************************/
 
-  @media only screen and (max-width: $mobile-layout-breakpoint) {
+  &.hs-mobile-view {
 
     .d-mw-md-block {
       display: block !important;
@@ -556,10 +548,6 @@ $bs-btn-font-size: 1rem;
 
     div .form-check-inline {
       margin-right: 0 !important;
-    }
-
-    .hs-content-wrapper {
-      position: unset;
     }
 
     .hs-sb-bottom .hs-ol-map {

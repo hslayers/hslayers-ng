@@ -38,6 +38,10 @@ export class HsCoreService {
         }
       }
     );
+
+    this.HsEventBusService.updateMapSize.subscribe((app) => {
+      this.updateMapSize(app);
+    });
   }
 
   /**
@@ -46,24 +50,22 @@ export class HsCoreService {
    * @public
    */
   init(app: string): void {
-    if (window.innerWidth < 767 || this.HsConfig.get(app).sidebarClosed) {
+    const config = this.HsConfig.get(app);
+    if (window.innerWidth < config.mobileBreakpoint || config.sidebarClosed) {
       this.HsLayoutService.get(app).sidebarExpanded = false;
       this.HsLayoutService.get(app).sidebarLabels = false;
     } else {
       this.HsLayoutService.get(app).sidebarExpanded = true;
     }
-    const languages = this.HsConfig.get(app).enabledLanguages
-      ? this.HsConfig.get(app)
-          .enabledLanguages.split(',')
-          .map((lang) => lang.trim())
+    const languages = config.enabledLanguages
+      ? config.enabledLanguages.split(',').map((lang) => lang.trim())
       : ['cs', 'lv'];
     const translateService = this.hsLanguageService.getTranslator(app);
     translateService.addLangs(languages.map((l) => `${app}|${l}`));
     translateService.setDefaultLang(`${app}|en`);
-    if (this.HsConfig.get(app).language) {
-      translateService.use(`${app}|${this.HsConfig.get(app).language}`);
-      this.hsLanguageService.apps[app].language =
-        this.HsConfig.get(app).language;
+    if (config.language) {
+      translateService.use(`${app}|${config.language}`);
+      this.hsLanguageService.apps[app].language = config.language;
     } else {
       translateService.use(translateService.getDefaultLang());
     }
@@ -128,7 +130,7 @@ export class HsCoreService {
     if (this.HsMapService.getMap(app)) {
       this.HsMapService.getMap(app).updateSize();
       if (
-        window.innerWidth < 767 ||
+        window.innerWidth < this.HsConfig.get(app).mobileBreakpoint ||
         this.HsLayoutService.get(app).mainpanel != ''
       ) {
         this.HsLayoutService.get(app).smallWidth = true; //deprecated

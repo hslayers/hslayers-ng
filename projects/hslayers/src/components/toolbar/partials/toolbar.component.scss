@@ -11,8 +11,10 @@
     z-index: 101;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
-    .hs-sb-left .hs-toolbar, .hs-sb-left .hs-toolbar{
+&.hs-mobile-view {
+
+    .hs-sb-left .hs-toolbar,
+    .hs-sb-left .hs-toolbar {
         margin-left: 0 !important;
     }
 }

@@ -39,7 +39,7 @@
     font-size: $bs-btn-font-size !important;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
+&.hs-mobile-view {
     .hs-search-address-input {
         max-width: 20vw !important;
     }
