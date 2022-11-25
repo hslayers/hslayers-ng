@@ -8,9 +8,10 @@
             <hs-panel-container [service]="HsOverlayPanelContainerService" [app]="app"></hs-panel-container>
         </div>
         <div class="d-none d-mw-md-block" style="position:relative;">
-            <span class="hs-panelspace-expander icon-chevron-up bg-primary text-white px-4"
-                (click)="HsLayoutService.resizePanelSpaceWrapper($event,app)"
-                style="position:absolute; right:45vw; bottom:100%"></span>
+            <span class="hs-panelspace-expander btn btn-primary rounded-top px-4 py-0 icon-chevron-up"
+                [ngClass]="{'disabled': !(HsLayoutService.apps[app].sidebarExpanded && sidebarVisible)}"
+                (click)="resizePanelSpaceWrapper($event,app)">
+            </span>
         </div>
         <div class="hs-panelspace" [hidden]="!sidebarVisible"
             [ngClass]="{'labels': HsLayoutService.apps[app].sidebarLabels, 'buttons': HsLayoutService.apps[app].sidebarButtons}">

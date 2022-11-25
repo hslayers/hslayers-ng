@@ -197,8 +197,12 @@ export class HsLayoutService {
   }
 
   async updSidebarPosition(app: string) {
-    const lastPosition = this.get(app).sidebarPosition;
-    if (window.innerWidth <= 767) {
+    const appRef = this.get(app);
+    const lastPosition = appRef.sidebarPosition;
+    const config = this.HsConfig.apps[app];
+    const hslElement = document.querySelector('.hsl');
+    if (window.innerWidth <= config.mobileBreakpoint) {
+      hslElement.classList.add('hs-mobile-view');
       if (lastPosition != 'bottom') {
         this.sidebarPosition.next({
           app,
@@ -206,10 +210,11 @@ export class HsLayoutService {
         });
       }
     } else {
-      if (this.HsConfig.apps[app].sidebarPosition != lastPosition) {
+      hslElement.classList.remove('hs-mobile-view');
+      if (config.sidebarPosition != lastPosition) {
         this.sidebarPosition.next({
           app,
-          position: this.HsConfig.apps[app].sidebarPosition,
+          position: config.sidebarPosition,
         });
       }
     }
@@ -413,32 +418,7 @@ export class HsLayoutService {
         p.isVisible$.next(visible);
       }
     }
-    if (
-      appRef.contentWrapper
-        .querySelector('.hs-panelspace-wrapper')
-        .classList.contains('expanded')
-    ) {
-      appRef.contentWrapper
-        .querySelector('.hs-panelspace-expander')
-        .dispatchEvent(new MouseEvent('click'));
-    }
     this.HsEventBusService.mainPanelChanges.next({which, app});
-  }
-
-  /**
-   * Toggles 'expanded' class on panelspace-wrapper. Switching height between 40 to 70vh
-   */
-  resizePanelSpaceWrapper(e: MouseEvent, app: string): void {
-    const target: HTMLSpanElement = e.target as HTMLSpanElement;
-    target.classList.toggle('icon-chevron-down');
-
-    const contentWrapper = this.get(app).contentWrapper;
-    const panelSpaceWrapper = contentWrapper.querySelector(
-      '.hs-panelspace-wrapper'
-    );
-    if (panelSpaceWrapper) {
-      panelSpaceWrapper.classList.toggle('expanded');
-    }
   }
 
   /**

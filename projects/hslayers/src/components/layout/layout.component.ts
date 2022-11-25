@@ -58,7 +58,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.HsLayoutService.get(this.app).layoutElement =
-      this.elementRef.nativeElement;
+      this.elementRef.nativeElement.querySelector('.hs');
 
     this.HsLayoutService.get(this.app).contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
@@ -135,7 +135,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement.parentElement;
 
-    if (window.innerWidth < 767) {
+    if (window.innerWidth < this.HsConfig.get(this.app).mobileBreakpoint) {
       document.body.style.margin = '0px';
     }
 
@@ -166,5 +166,24 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         'Main element (<hslayers>) needs height property to be defined...fallback value added'
       );
     }
+  }
+
+  /**
+   * Toggles 'expanded' class on panelspace-wrapper. Switching height between 40 to 70vh
+   */
+  resizePanelSpaceWrapper(e: MouseEvent, app: string): void {
+    const target: HTMLSpanElement = e.target as HTMLSpanElement;
+    target.classList.toggle('icon-chevron-down');
+
+    const contentWrapper = this.HsLayoutService.get(this.app).contentWrapper;
+    const panelSpaceWrapper = contentWrapper.querySelector(
+      '.hs-panelspace-wrapper'
+    );
+    if (panelSpaceWrapper) {
+      panelSpaceWrapper.classList.toggle('expanded');
+    }
+    setTimeout(() => {
+      this.HsEventBusService.updateMapSize.next(this.app);
+    }, 500);
   }
 }
