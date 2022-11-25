@@ -194,9 +194,11 @@ export class HsSidebarService {
    * @description Toggles minisidebar button
    */
   fitsSidebar(button: HsButton, app: string): boolean {
+    const mobileBreakpoint = this.HsConfig.get(app).mobileBreakpoint;
     const dimensionToCheck =
-      window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
-    this.HsLayoutService.get(app).sidebarToggleable = window.innerWidth > 767;
+      window.innerWidth > mobileBreakpoint ? 'clientHeight' : 'clientWidth';
+    this.HsLayoutService.get(app).sidebarToggleable =
+      window.innerWidth > mobileBreakpoint;
     let maxNumberOfButtons = Math.floor(
       this.HsLayoutService.get(app).layoutElement[dimensionToCheck] / 65
     );

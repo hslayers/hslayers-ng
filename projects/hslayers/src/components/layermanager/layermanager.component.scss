@@ -104,7 +104,7 @@ hs-layermanager-time-editor button.btn {
     font-size: smaller;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
+&.hs-mobile-view {
     ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon {
         font-size: small;
     }

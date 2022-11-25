@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -23,6 +24,7 @@ export class HsSearchComponent
 
   constructor(
     private hsEventBusService: HsEventBusService,
+    private hsConfig: HsConfig,
     public hsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
     public hsSidebarService: HsSidebarService
@@ -50,7 +52,7 @@ export class HsSearchComponent
       },
       this.data.app
     );
-    window.innerWidth < 767
+    window.innerWidth < this.hsConfig.get(this.data.app).mobileBreakpoint
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);
   }

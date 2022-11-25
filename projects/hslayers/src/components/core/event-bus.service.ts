@@ -166,5 +166,6 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null
   );
+  updateMapSize: Subject<string> = new Subject();
   constructor() {}
 }

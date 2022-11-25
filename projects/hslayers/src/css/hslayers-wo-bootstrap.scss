@@ -1,9 +1,3 @@
-/* Default values for customizable variables */
-
-//Mobile layout breakpoint
-$mobile-layout-breakpoint-value: 767 !default; //will be used in TS files
-$mobile-layout-breakpoint: $mobile-layout-breakpoint-value+"px" !default; //this will be used in hsl styles
-
 @import "ol/ol";
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
@@ -27,7 +21,7 @@ $list-group-item-padding-x: 1.25rem;
 }
 
 .hsl {
-  @media screen and (min-width:767px) {
+  &.hs-mobile-view {
     @for $i from 0 through 14 {
       .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25) } {
         width: 400 + ($i * 25)+px;
@@ -402,7 +396,7 @@ $list-group-item-padding-x: 1.25rem;
   /** SIDEBAR&TOOLBAR RESPONSIVITY **/
   /**********************************/
 
-  @media only screen and (max-width: $mobile-layout-breakpoint) {
+  &.hs-mobile-view {
     input[type="checkbox"] {
       transform: scale(2, 2);
       margin-right: 0.5em;

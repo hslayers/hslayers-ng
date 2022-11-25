@@ -124,7 +124,7 @@
   overflow-wrap: anywhere;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
+&.hs-mobile-view {
   .basemapGallery a {
     font-size: x-large !important;
   }

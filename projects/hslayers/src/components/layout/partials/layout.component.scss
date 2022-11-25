@@ -52,8 +52,18 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     display: block;
 }
 
-@media only screen and (max-width: $mobile-layout-breakpoint) {
+.hs-panelspace-expander {
+    position: absolute;
+    right: 45%;
+    bottom: 100%;
+    border-radius: 0;
+    font-size: 0.8rem;
+    //to overwrite bootstrap btn
+    font-family: 'WebHostingHub-Glyphs';
+}
 
+
+@mixin mobile-view {
     .hs-content-wrapper {
         flex-direction: column;
         position: unset;
@@ -91,4 +101,14 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     #panelspace {
         display: flex;
     }
+}
+
+//Default behaviour
+// @media only screen and (max-width: $mobile-layout-breakpoint) {
+//     @include mobile-view
+// }
+
+//Forced by config
+&.hs-mobile-view {
+    @include mobile-view
 }
