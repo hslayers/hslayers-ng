@@ -413,10 +413,21 @@ export class HsCompositionsParserService {
               getTitle(lyr) == obj.current_base_layer.title ||
               getTitle(lyr) == obj.current_base_layer
             ) {
-              lyr.setVisible(true);
+              const layerDescriptor =
+                this.hsLayerManagerService.getLayerDescriptorForOlLayer(
+                  lyr,
+                  true,
+                  app
+                );
+              this.hsLayerManagerService.changeBaseLayerVisibility(
+                true,
+                layerDescriptor,
+                app
+              );
             }
           });
       }
+
       return true;
     }
     return false;

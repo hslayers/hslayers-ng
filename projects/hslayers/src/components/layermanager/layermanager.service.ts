@@ -486,13 +486,18 @@ export class HsLayerManagerService {
    * Get layer container object for OL layer
    * @private
    * @param layer - to get layer title
+   * @param base - Wether to search within base layers or not. Defaults to false
    * @returns Layer container which is used in layer-list directive
    */
   getLayerDescriptorForOlLayer(
     layer: Layer<Source>,
+    base = false,
     app: string
   ): HsLayerDescriptor {
-    const tmp = this.apps[app].data.layers.filter((l) => l.layer == layer);
+    const layers = base ? 'baselayers' : 'layers';
+    const tmp = (this.apps[app].data[layers] as Array<any>).filter(
+      (l) => l.layer == layer
+    );
     if (tmp.length > 0) {
       return tmp[0];
     }
@@ -731,22 +736,14 @@ export class HsLayerManagerService {
         if ($event) {
           //&& this.apps[app].data.baselayer != layer.title
           for (const baseLayer of this.apps[app].data.baselayers) {
+            const isToggledLayer = baseLayer == layer;
             if (baseLayer.layer) {
-              baseLayer.layer.setVisible(false);
-              baseLayer.visible = false;
-              baseLayer.active = false;
-              if (baseLayer != layer) {
+              baseLayer.layer.setVisible(isToggledLayer);
+              baseLayer.visible = isToggledLayer;
+              baseLayer.active = isToggledLayer;
+              if (!isToggledLayer) {
                 baseLayer.galleryMiniMenu = false;
               }
-            }
-          }
-          for (const baseLayer of this.apps[app].data.baselayers) {
-            if (baseLayer.layer && baseLayer == layer) {
-              baseLayer.layer.setVisible(true);
-              baseLayer.visible = true;
-              baseLayer.active = true;
-              //this.apps[app].data.baselayer = layer.title;
-              break;
             }
           }
         } else {
@@ -760,14 +757,12 @@ export class HsLayerManagerService {
         if ($event) {
           layer.active = true;
           for (const baseLayer of this.apps[app].data.baselayers) {
-            if (baseLayer != layer) {
-              baseLayer.active = false;
-              baseLayer.visible = false;
-            } else {
+            const isToggledLayer = baseLayer == layer;
+            if (isToggledLayer) {
               baseLayer.layer.setVisible(true);
-              baseLayer.visible = true;
-              //this.apps[app].data.baselayer = layer.title;
             }
+            baseLayer.active = isToggledLayer;
+            baseLayer.visible = isToggledLayer;
           }
         } else {
           for (const baseLayer of this.apps[app].data.baselayers) {
