@@ -30,14 +30,14 @@
 
                 <img [ngClass]="{'active': layer.active, 'hs-ale': !layer.active}" [src]="layer.thumbnail"
                     [alt]="'LAYERMANAGER.basemapThumbnail' | translateHs : {app: data.app} " style="width:100%">
-                <a class="dropdown-item" [ngClass]="{'active': layer.active}"
+                <a class="dropdown-item flex-grow-1 d-flex align-items-center" [ngClass]="{'active': layer.active}"
                     style="white-space: pre-line; overflow-wrap: anywhere;">{{layer.title | translateHs : {app:
                     data.app, module: 'LAYERS'} }}</a>
             </div>
             <div (click)="toggleBasemap()">
-                <div style="height: 4em; width: 100%; background: white"
+                <div style="height: 4.5em; width: 100%; background: white"
                     [ngClass]="{'active': !hsLayerManagerService.apps[data.app].data.baselayersVisible}"></div>
-                <a class="dropdown-item"
+                <a class="dropdown-item flex-grow-1 d-flex align-items-center"
                     [ngClass]="{'active': !hsLayerManagerService.apps[data.app].data.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
                     | translateHs : {app: data.app} }}</a>
             </div>
