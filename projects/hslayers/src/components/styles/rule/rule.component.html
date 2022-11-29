@@ -49,10 +49,10 @@
     </div>
   </div>
   <ng-container *ngIf="rule.symbolizers.length > 0">
-    <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
+    <ul class="list-group hs-styler-content-list align-items-end" cdkDropList (cdkDropListDropped)="drop($event)"
       [cdkDropListData]="rule.symbolizers">
       <ng-container *ngFor="let symbolizer of rule.symbolizers">
-        <hs-symbolizer-list-item cdkDrag [rule]="rule" [app]="app" [symbolizer]="symbolizer" (changes)="emitChange()">
+        <hs-symbolizer-list-item style="width: 98%" cdkDrag [rule]="rule" [app]="app" [symbolizer]="symbolizer" (changes)="emitChange()">
         </hs-symbolizer-list-item>
       </ng-container>
     </ul>

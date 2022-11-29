@@ -13,7 +13,7 @@
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
             <div class="input-group-text border-0">
-                <input type="checkbox" [(ngModel)]="data.filterByExtent" (change)="queryByFilter()"
+                <input type="checkbox" class="checkbox-lg" [(ngModel)]="data.filterByExtent" (change)="queryByFilter()"
                     name="filterByExtent">
                 <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs : {app} }}</span>
             </div>
@@ -47,7 +47,7 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="searchType" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
-                                    <li *ngFor="let searchType of textFieldTypes; let index = index">
+                                    <li *ngFor="let searchType of textFieldTypes; let index = index" class="p-2 p-md-0">
                                         <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="searchType-index" [checked]="(index === 0)"
                                                 (change)="selectType(searchType);searchTypeDropdown.close()">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
@@ -69,7 +69,7 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="type" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
-                                    <li *ngFor="let type of dataTypes; let index = index">
+                                    <li *ngFor="let type of dataTypes; let index = index" class="p-2 p-md-0">
                                         <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="type-index" [checked]="(index === 1)"
                                                 (change)="selectQueryType(type, 'type');resourceType.close()">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
@@ -91,7 +91,7 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="sortBy" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
-                                    <li *ngFor="let sortType of sortbyTypes, let index = index;">
+                                    <li *ngFor="let sortType of sortbyTypes, let index = index;" class="p-2 p-md-0">
                                         <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="sort-index" [checked]="(index === 0)"
                                                 (change)="selectQueryType(sortType, 'sortby');sortByDrop.close()">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',

@@ -1,7 +1,7 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translateHs : data"
         [app]="data.app">
-        <extra-buttons>
+        <extra-buttons class="d-flex align-items-center">
             <button class="but-title-sm hs-extra-buttons" (click)="reload()"
                 [title]="'COMMON.reload' | translateHs : data">
                 <i class="glyphicon icon-fatredo"></i>
@@ -43,7 +43,7 @@
     <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
         <div class="d-flex">
             <div class="input-group-text border-0">
-                <input type="checkbox" [(ngModel)]="catalogueRef.filterByExtent" (change)='loadFilteredCompositions()'
+                <input type="checkbox" class="checkbox-lg" [(ngModel)]="catalogueRef.filterByExtent" (change)='loadFilteredCompositions()'
                     name="catalogueRef.filterByExtent">
                 <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs : {app: data.app} }}</span>
             </div>
@@ -87,7 +87,7 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="keywords" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width: 15rem">
-                                    <li *ngFor="let keyword of catalogueRef.data.keywords, let index = index;">
+                                    <li *ngFor="let keyword of catalogueRef.data.keywords, let index = index;" class="p-1 p-md-0">
                                         <label style="cursor: pointer;"><input class="me-2" type="checkbox"
                                                 [(ngModel)]="keyword.selected" name="keyword[index]"
                                                 (change)="loadFilteredCompositions()">{{translateString('COMPOSITONKEYWORDS',
@@ -108,7 +108,7 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="inspireThemes" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width: 20rem">
-                                    <li *ngFor="let theme of catalogueRef.data.themes, let index = index;">
+                                    <li *ngFor="let theme of catalogueRef.data.themes, let index = index;" class="p-1 p-md-0">
                                         <label style="cursor: pointer;"><input class="me-2" type="checkbox"
                                                 [(ngModel)]="theme.selected" name="theme[index]"
                                                 (change)="loadFilteredCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
@@ -131,7 +131,7 @@
                                 </button>
                                 <ul ngbDropdownMenu aria-labelledby="sortBy" class="ps-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
-                                    <li *ngFor="let item of catalogueRef.sortByValues, let index = index;">
+                                    <li *ngFor="let item of catalogueRef.sortByValues, let index = index;" class="p-2 p-md-0">
                                         <label style="cursor: pointer;"><input class="me-2" type="radio"
                                                 name="sort-index" [checked]="(index === 0)"
                                                 (change)="sortByValueChanged(item);sortByDrop.close()">{{translateString('COMPOSITONSORTVALUES',
