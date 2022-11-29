@@ -58,7 +58,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.HsLayoutService.get(this.app).layoutElement =
-      this.elementRef.nativeElement.querySelector('.hs');
+      this.elementRef.nativeElement.querySelector('.hsl');
 
     this.HsLayoutService.get(this.app).contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');

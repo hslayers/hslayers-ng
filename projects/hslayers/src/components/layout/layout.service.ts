@@ -200,7 +200,7 @@ export class HsLayoutService {
     const appRef = this.get(app);
     const lastPosition = appRef.sidebarPosition;
     const config = this.HsConfig.apps[app];
-    const hslElement = document.querySelector('.hsl');
+    const hslElement = appRef.layoutElement;
     if (window.innerWidth <= config.mobileBreakpoint) {
       hslElement.classList.add('hs-mobile-view');
       if (lastPosition != 'bottom') {
