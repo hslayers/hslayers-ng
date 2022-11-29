@@ -50,6 +50,7 @@ class HsEventBusServiceMock {
   olMapLoads: Subject<{map; app}> = new Subject();
   layoutLoads: Subject<any> = new Subject();
   layoutResizes: Subject<any> = new Subject();
+  updateMapSize: Subject<any> = new Subject();
 }
 
 class CommonEndpointsServiceMock {
