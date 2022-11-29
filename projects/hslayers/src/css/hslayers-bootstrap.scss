@@ -113,6 +113,10 @@ $list-group-item-padding-x: 1.25rem;
     box-shadow: #0000003d 0px 3px 8px;
   }
 
+  .card {
+    box-shadow: none;
+  }
+
   .alert {
     width: auto;
   }
