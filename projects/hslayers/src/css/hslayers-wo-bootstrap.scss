@@ -130,6 +130,10 @@ $list-group-item-padding-x: 1.25rem;
     filter: grayscale(100%);
   }
 
+  .grayed {
+    color: #cccccc;
+  }
+
   .hs-main-panel {
     border: none;
     margin-bottom: 0;
@@ -144,6 +148,20 @@ $list-group-item-padding-x: 1.25rem;
     min-height: inherit;
     flex: 1 1 auto;
     position: relative;
+  }
+
+  .hs-map-space>hs-panel-container {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  /* To not disable pointer-events for all hs-panel-containers children too*/
+  .hs-map-space hs-panel-container>* {
+    pointer-events: auto;
   }
 
   .flex-reverse {
@@ -349,7 +367,7 @@ $list-group-item-padding-x: 1.25rem;
     padding: 0.09em 0.4em 0.05em 0.35em;
     border-radius: 0.2em;
     font-weight: 1000;
-    font-size: small;
+    font-size: 0.8rem;
   }
 
   .sublayerContainer .hs-checkmark::before,
@@ -398,23 +416,13 @@ $list-group-item-padding-x: 1.25rem;
       display: block !important;
     }
 
-
     input[type="checkbox"] {
-      transform: scale(2, 2);
       margin-right: 0.5em;
       margin-left: 0.5em;
     }
 
-    input[type="radio"] {
-      transform: scale(2, 2);
-    }
-
     div .form-check-inline {
       margin-right: 0 !important;
-    }
-
-    .hs-content-wrapper {
-      position: unset;
     }
 
     .hs-sb-bottom .hs-ol-map {
@@ -453,7 +461,7 @@ $list-group-item-padding-x: 1.25rem;
     }
 
     .hs-ol-map .ol-zoom {
-      bottom: 0.2em;
+      bottom: 2rem;
       top: auto;
       right: 5px;
       left: auto;
@@ -576,6 +584,10 @@ $list-group-item-padding-x: 1.25rem;
     margin-right: 0.5em;
   }
 
+  .hs-extra-button {
+    margin-right: 0.5em;
+  }
+
   .dropdown-toggle.hs-custom-toggle::after {
     display: inline-block;
     width: 0.47em;
@@ -691,6 +703,19 @@ $list-group-item-padding-x: 1.25rem;
 
   /////////////////////
 
+  .hs-popup-layer {
+    line-height: 1.2;
+  }
+
+  .hs-hover-popup .icon-remove-circle {
+    float: right
+  }
+
+  .hs-hover-popup .card {
+    padding: 5px;
+    overflow-y: auto;
+  }
+
   @import "../components/layout/partials/layout.component.scss";
   @import "../components/layermanager/layermanager.component.scss";
   @import "../components/layermanager/logical-list/layerlist.component.scss";
@@ -707,28 +732,28 @@ $list-group-item-padding-x: 1.25rem;
   .ol-attribution {
     left: auto;
     right: 5px;
-    bottom: 0.2em;
+    bottom: 0.2rem;
   }
 
   .ol-attribution.ol-uncollapsible {
     right: 5px;
-    bottom: 0.2em;
+    bottom: 0.2rem;
   }
 
   .hs-ol-map .ol-scale-line {
     right: auto;
-    left: 0.5em;
+    left: 0.5rem;
   }
 
   .hs-ol-map .ol-zoom {
-    bottom: 2.4em;
+    bottom: 2.4rem;
     top: auto;
     right: 5px;
     left: auto;
   }
 
   .hs-ol-map .hs-defaultView {
-    bottom: 6.65em;
+    bottom: 5rem;
     top: auto;
     right: 5px;
     left: auto;
@@ -825,5 +850,70 @@ $list-group-item-padding-x: 1.25rem;
   .ol-control button {
     font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica,
       sans-serif;
+  }
+
+  /**
+ * Taken from https://github.com/Viglino/ol-ext/blob/master/dist/ol-ext.css#L4030
+ */
+
+  .ol-swipe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -ms-touch-action: none;
+    touch-action: none;
+  }
+
+  .ol-swipe:before {
+    content: "";
+    position: absolute;
+    top: -5000px;
+    bottom: -5000px;
+    left: 50%;
+    width: 2px;
+    z-index: -1;
+    -webkit-transform: translate(-2px, 0);
+    transform: translate(-2px, 0);
+    pointer-events: none;
+
+  }
+
+  .ol-swipe.horizontal:before {
+    left: -5000px;
+    right: -5000px;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+  }
+
+  .ol-swipe:after,
+  .ol-swipe button:before,
+  .ol-swipe button:after {
+    content: "";
+    position: absolute;
+    top: 25%;
+    bottom: 25%;
+    left: 50%;
+    width: 2px;
+    transform: translate(-1px, 0);
+    -webkit-transform: translate(-1px, 0);
+    pointer-events: none;
+  }
+
+  .ol-swipe button:after {
+    transform: translateX(5px);
+    -webkit-transform: translateX(5px);
+  }
+
+  .ol-swipe button:before {
+    transform: translateX(-7px);
+    -webkit-transform: translateX(-7px);
+  }
+
+  .sketch-picker {
+    margin: 7px;
   }
 }
