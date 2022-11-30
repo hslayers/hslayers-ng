@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 
-import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
 import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
 import Camera from 'cesium/Source/Scene/Camera';
