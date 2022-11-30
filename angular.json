@@ -753,14 +753,6 @@
               "tsConfig": "projects/hslayers-sensors/tsconfig.lib.prod.json"
             }
           }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/hslayers-sensors/test/test.ts",
-            "tsConfig": "projects/hslayers-sensors/tsconfig.spec.json",
-            "karmaConfig": "projects/hslayers-sensors/karma.conf.js"
-          }
         }
       }
     },
@@ -944,5 +936,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }
