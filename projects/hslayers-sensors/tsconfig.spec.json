@@ -8,9 +8,7 @@
     ],
     "resolveJsonModule":true
   },
-  "files": [
-    "test/test.ts"
-  ],
+  "files": [],
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"
