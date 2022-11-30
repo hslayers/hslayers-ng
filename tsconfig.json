@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "lib": [
       "es2019",
       "dom"
@@ -29,10 +29,10 @@
         "node_modules/ol/*"
       ],
       "hslayers-ng": [
-        "projects/hslayers/src/public-api.ts",
+        "projects/hslayers/src/public-api.ts"
       ],
       "hslayers-ng/*": [
-        "projects/hslayers/src/*",
+        "projects/hslayers/src/*"
       ],
       "@ngx-translate/*": [
         "node_modules/@ngx-translate/*"
@@ -52,8 +52,9 @@
       ],
       "cesium/*": [
         "node_modules/cesium/*"
-      ],
-    }
+      ]
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableResourceInlining": true,
