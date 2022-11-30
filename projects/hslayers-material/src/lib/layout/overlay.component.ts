@@ -7,7 +7,7 @@ import {
   HsLayerManagerService,
   HsMapService,
 } from 'hslayers-ng';
-import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {MouseWheelZoom} from 'ol/interaction';
 import {Vector as VectorLayer} from 'ol/layer';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
