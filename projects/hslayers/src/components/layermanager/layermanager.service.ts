@@ -738,7 +738,8 @@ export class HsLayerManagerService {
           for (const baseLayer of this.apps[app].data.baselayers) {
             const isToggledLayer = baseLayer == layer;
             if (baseLayer.layer) {
-              baseLayer.layer.setVisible(isToggledLayer);
+              //Dont trigger change:visible event when isToggledLayer = false
+              baseLayer.layer.set('visible', isToggledLayer, !isToggledLayer);
               baseLayer.visible = isToggledLayer;
               baseLayer.active = isToggledLayer;
               if (!isToggledLayer) {
