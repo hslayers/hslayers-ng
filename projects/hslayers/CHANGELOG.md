@@ -1,3 +1,27 @@
+## [11.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/10.0.0...11.0.0-next.0) (2022-12-02)
+
+
+### Bug Fixes
+
+* Apply style on color hex input changes ([6b9548c](https://github.com/hslayers/hslayers-ng/commit/6b9548c3fad7456184fd679e7f06fb7fd5f2f06a))
+* Center labels for additional panels ([0d9b662](https://github.com/hslayers/hslayers-ng/commit/0d9b6626dbe2708b6f5381746d84370c60cee0b7)), closes [#3437](https://github.com/hslayers/hslayers-ng/issues/3437)
+* Do not fire compositionEdits event only when showInLayerManager is explicitly set to false not just falsy ([75d6cc1](https://github.com/hslayers/hslayers-ng/commit/75d6cc13a76e21b8d4b552daf8cae130afa264ee))
+* Don't cache getCapabilities, if response is error or no data was found ([1de6bbc](https://github.com/hslayers/hslayers-ng/commit/1de6bbc477a113c4e74c3174044b9a90b126316e))
+* Don't import cesium widgets css twice ([d68134d](https://github.com/hslayers/hslayers-ng/commit/d68134daaef2cc9567794dc3279b39aa4304a5db))
+* Migrate to new NgMaterial components ([9e0c10f](https://github.com/hslayers/hslayers-ng/commit/9e0c10ffa576ba005354f28e110f1eddf5ca2d84))
+* Monitor showInLayerManager state change ([24ed343](https://github.com/hslayers/hslayers-ng/commit/24ed343596c7e2a050e095c1f3176226fa432dab))
+* Overlay panel container need to fill screen ([425cf2c](https://github.com/hslayers/hslayers-ng/commit/425cf2c0b44ac7ca518432764dad0cf550f3430f))
+* Provide translation service and utils in root ([47ba93d](https://github.com/hslayers/hslayers-ng/commit/47ba93d439818021c199f583e59260385ae3e394))
+* Remove duplicit declarations from save map service ([308f932](https://github.com/hslayers/hslayers-ng/commit/308f93284e748a68f4c0a230bfcfb6933cd5e484))
+* Use tree shakable module imports for federation ([b911316](https://github.com/hslayers/hslayers-ng/commit/b91131641685adff3271651c9f105b1aeda87dff))
+
+
+### Features
+
+* Make error toast duration configurable ([40560b8](https://github.com/hslayers/hslayers-ng/commit/40560b8832c9dda8fb90e35eae996c77243544d6))
+* New feature select DOM action ([9f04700](https://github.com/hslayers/hslayers-ng/commit/9f0470070bcf4f5e68e40f3d12f57e2283a02bc9))
+* Use grayscale map composition param ([fe749bd](https://github.com/hslayers/hslayers-ng/commit/fe749bd549bf7a2490855e6729b8dc56c0548842))
+
 # [10.0.0](https://github.com/hslayers/hslayers-ng/compare/10.0.0-next.1...10.0.0) (2022-10-21)
 
 
