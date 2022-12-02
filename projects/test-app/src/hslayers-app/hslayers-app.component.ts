@@ -400,7 +400,7 @@ export class HslayersAppComponent {
           },
           layersInFeatureTable: [points],
           componentsEnabled: {
-            basemapGallery: false,
+            basemapGallery: true,
             mapSwipe: true,
           },
           enabledLanguages: 'sk, lv, en',

@@ -37,11 +37,34 @@ describe('Hslayers layout', () => {
     cy.get('.hs-defaultView').first().should('be.visible');
   });
 
-  it('should start in mobile view', () => {
+  it('should start in mobile view and be switched to normal later', () => {
     cy.viewport(766, 1000);
     cy.get('.hs-content-wrapper')
       .first()
       .invoke('css', 'flex-direction', 'none')
-      .should('have.css', 'flex-direction', 'column');
+      .should('have.css', 'flex-direction', 'column')
+      .then(() => {
+        cy.viewport(1200, 1000);
+        cy.wait(250);
+        cy.get('.hs-page-wrapper').should('not.have.class', 'hs-mobile-view');
+      });
+  });
+
+  it('should toggle mobile sidebar', () => {
+    cy.viewport(766, 1000);
+    cy.get('.hs-panelspace-expander')
+      .click()
+      .then((a) => {
+        cy.get('.hs-panelspace-wrapper')
+          .should('have.class', 'expanded')
+          .should('have.css', 'height', `700px`);
+        cy.get('.hs-panelspace-expander')
+          .click()
+          .then((a) => {
+            cy.get('.hs-panelspace-wrapper')
+              .should('not.have.class', 'expanded')
+              .should('have.css', 'height', `400px`);
+          });
+      });
   });
 });
