@@ -119,6 +119,11 @@
   }
 }
 
+.basemapGallery .galleryDropdown a.dropdown-item {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
 @media only screen and (max-width: $mobile-layout-breakpoint) {
   .basemapGallery a {
     font-size: x-large !important;
@@ -133,11 +138,19 @@
   }
 
   .basemapGallery .galleryDropdown {
-    width: 15.5em;
-  }
+    column-gap: 0.5rem;
+    row-gap: 1rem;
+    max-height: 90vh;
 
-  .basemapGallery .galleryDropdown img {
-    height: 6em;
+    &>div {
+      width: 15em;
+      max-height: 15em;
+      box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+    }
+
+    &>div img {
+      height: 5.5em;
+    }
   }
 
   .basemapGallery .hs-miniMenu {
