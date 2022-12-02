@@ -39,6 +39,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
+  SHOW_IN_LAYER_MANAGER,
   getAbstract,
   getActive,
   getBase,
@@ -64,7 +65,6 @@ import {
   setQueryable,
   setSubLayers,
   setTitle,
-  SHOW_IN_LAYER_MANAGER,
 } from '../../common/layer-extensions';
 
 class HsLayermanagerDataObject {
@@ -262,7 +262,8 @@ export class HsLayerManagerService {
         layerDescriptor.title = this.hsLayerUtilsService.getLayerTitle(layer);
       }
       if (event.key == SHOW_IN_LAYER_MANAGER) {
-        layerDescriptor.showInLayerManager = getShowInLayerManager(layer) ?? true;
+        layerDescriptor.showInLayerManager =
+          getShowInLayerManager(layer) ?? true;
       }
     });
 
