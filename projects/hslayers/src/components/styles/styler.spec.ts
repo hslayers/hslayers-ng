@@ -8,9 +8,9 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import Feature from 'ol/Feature';
-import {Vector as VectorLayer} from 'ol/layer';
 import {Point, Polygon} from 'ol/geom';
 import {Style} from 'ol/style';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
@@ -31,7 +31,6 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {debounceTime, takeLast} from 'rxjs';
 
 class emptyMock {
   constructor() {}
@@ -139,27 +138,10 @@ describe('HsStyler', () => {
     expect(nextSpy).toHaveBeenCalled();
   });
   it('SLD should be generated from OL style', async () => {
-    const sld = (await service.parseStyle({fill: '#000'}, app)).sld.replace(
-      /\s/g,
-      ''
-    );
+    const style = await service.parseStyle({fill: {color: '#000000'}}, app);
+    const sld = style.sld.replace(/\s/g, '');
     expect(sld).toBe(
-      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-    <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <NamedLayer>
-        <Name/>
-        <UserStyle>
-          <Name/>
-          <Title/>
-          <FeatureTypeStyle>
-            <Rule>
-              <Name/>
-              <PolygonSymbolizer/>
-            </Rule>
-          </FeatureTypeStyle>
-        </UserStyle>
-      </NamedLayer>
-    </StyledLayerDescriptor>`.replace(/\s/g, '')
+      `<?xmlversion="1.0"encoding="UTF-8"standalone="yes"?><StyledLayerDescriptorversion="1.0.0"xsi:schemaLocation="http://www.opengis.net/sldStyledLayerDescriptor.xsd"xmlns="http://www.opengis.net/sld"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><Name>rule</Name><UserStyle><Name>rule</Name><Title>rule</Title><FeatureTypeStyle><Rule><Name>rule</Name><PolygonSymbolizer><Fill><CssParametername="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(/\s/g, '')
     );
   });
 });

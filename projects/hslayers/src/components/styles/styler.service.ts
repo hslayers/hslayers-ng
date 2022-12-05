@@ -306,8 +306,9 @@ export class HsStylerService {
       typeof style == 'object' &&
       !this.hsUtilsService.instOf(style, Style)
     ) {
+      const newLocal = await parseStyle(style);
       //Backwards compatibility with style encoded in custom JSON object
-      return parseStyle(style);
+      return newLocal;
     } else {
       return {style};
     }
