@@ -144,5 +144,8 @@
     "rules": {
       "subject-case": "sentence-case"
     }
+  },
+  "browser": {
+    "timers": false
   }
 }
