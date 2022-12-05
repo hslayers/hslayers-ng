@@ -84,7 +84,7 @@ async function convertHsStyleToSld(json: any): Promise<string> {
     symbolizers.push(createLineSymbol(json));
   }
   if (symbolizers.length > 0) {
-    const name = '';
+    const name = 'rule';
     const sldModel = {
       name,
       rules: [{name, symbolizers}],
@@ -92,7 +92,8 @@ async function convertHsStyleToSld(json: any): Promise<string> {
     const parser = (SLDParser as any).default
       ? new (SLDParser as any).default()
       : new SLDParser();
-    return (await parser.writeStyle(sldModel)).output;
+    const result = await parser.writeStyle(sldModel);
+    return result.output;
   }
 }
 
