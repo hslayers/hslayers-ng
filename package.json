@@ -55,7 +55,7 @@
     "bootstrap": "^5.2.2",
     "cesium": "^1.99.0",
     "colormap": "^2.3.2",
-    "d3": "^6.7.0",
+    "d3": "^7.7.0",
     "dayjs": "^1.11.6",
     "deepmerge": "^4.2.2",
     "geostyler-legend": "^4.0.0",
