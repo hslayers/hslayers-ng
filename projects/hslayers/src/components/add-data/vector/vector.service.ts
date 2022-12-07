@@ -11,6 +11,7 @@ import Feature from 'ol/Feature';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsLaymanService} from '../../save-map/layman.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -60,12 +61,13 @@ export class HsAddDataVectorService {
   };
 
   constructor(
-    private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService,
-    private hsStylerService: HsStylerService,
-    private hsAddDataService: HsAddDataService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsLaymanService: HsLaymanService
+    private hsAddDataService: HsAddDataService,
+    private hsLaymanService: HsLaymanService,
+    private hsLog: HsLogService,
+    private hsMapService: HsMapService,
+    private hsStylerService: HsStylerService,
+    private hsUtilsService: HsUtilsService
   ) {}
 
   /**
@@ -497,7 +499,7 @@ export class HsAddDataVectorService {
       };
       return object;
     } catch (e) {
-      console.log('Uploaded file is not supported!');
+      this.hsLog.warn('Uploaded file is not supported!');
       return {error: 'couldNotUploadSelectedFile'};
     }
   }
@@ -509,7 +511,7 @@ export class HsAddDataVectorService {
    * @returns JSON object with parsed data
    */
   async readUploadedFile(file: File, app: string): Promise<any> {
-    let uploadedData: any = {};
+    let uploadedData;
     const fileType = this.tryGuessTypeFromNameOrUrl(file.name.toLowerCase());
     switch (fileType) {
       case 'kml':
@@ -528,7 +530,7 @@ export class HsAddDataVectorService {
             return uploadedData;
           }
         } catch (e) {
-          console.log('Uploaded file is not supported!', e);
+          this.hsLog.warn('Uploaded file is not supported!', e);
           return {error: 'couldNotUploadSelectedFile'};
         }
     }
@@ -556,7 +558,7 @@ export class HsAddDataVectorService {
    * @returns JSON object with file name and read features
    */
   createVectorObjectFromJson(json: any, app: string): any {
-    let features = [];
+    let features: Feature[] = [];
     const format = new GeoJSON();
     const projection = format.readProjection(json);
     if (!projection) {
@@ -608,8 +610,8 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * Convert uploaded kml or gpx files into GeoJSON format / parse loaded GeoJSON
-   * @param file - Uploaded  kml, gpx or GeoJSON files
+   * Convert uploaded KML or GPX files into GeoJSON format / parse loaded GeoJSON
+   * @param file - Uploaded KML, GPX or GeoJSON files
    * @param app - App identifier
    */
   async convertUploadedData(file: File, app: string): Promise<any> {
@@ -644,7 +646,7 @@ export class HsAddDataVectorService {
       uploadedData.type = fileType;
       return uploadedData;
     } catch (e) {
-      console.error('Uploaded file is not supported' + e);
+      this.hsLog.warn('Uploaded file is not supported' + e);
       return {error: 'couldNotUploadSelectedFile'};
     }
   }

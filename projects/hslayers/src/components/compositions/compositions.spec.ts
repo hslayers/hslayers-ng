@@ -176,8 +176,11 @@ describe('compositions', () => {
         {
           provide: HsAddDataVectorService,
           useValue: new HsAddDataVectorService(
+            null,
+            null,
+            null,
+            null,
             mockedMapService,
-            mockedUtilsService,
             new HsStylerService(
               null,
               mockedUtilsService,
@@ -192,9 +195,7 @@ describe('compositions', () => {
               null,
               null
             ),
-            null,
-            null,
-            null
+            mockedUtilsService
           ),
         },
         {
