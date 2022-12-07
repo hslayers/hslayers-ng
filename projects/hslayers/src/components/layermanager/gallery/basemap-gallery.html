@@ -25,7 +25,13 @@
                     </div>
                     <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100"
                         [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}" (click)="expandMenu(layer)">
-                        {{hsLayerManagerService.apps[data.app].menuExpanded ? 'Less ': 'More'}}</label>
+                        <ng-container *ngIf="hsLayerManagerService.apps[data.app].menuExpanded;else more">
+                            {{'COMMON.less' | translateHs : {app: data.app} }}
+                        </ng-container>
+                        <ng-template #more>
+                            {{'COMMON.more' | translateHs : {app: data.app} }}
+                        </ng-template>
+                    </label>
                 </div>
 
                 <img [ngClass]="{'active': layer.active}" [src]="layer.thumbnail"
