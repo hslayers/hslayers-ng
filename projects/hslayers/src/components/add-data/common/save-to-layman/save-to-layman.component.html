@@ -1,6 +1,12 @@
 <ng-container *ngIf="data.type !== 'shp' && data.type !== 'raster'">
   <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
-    {{'ADDDATA.saveToDatabase' | translateHs : {app} }}
+    <div>
+      {{'ADDDATA.saveToDatabase' | translateHs : {app} }}
+      <a class="btn btn-sm border-0" (click)="$event.stopPropagation();toggleDescVisibility()"
+        [title]="'ADDDATA.saveToDbExplanation' | translateHs: {app} ">
+        <i class="icon-info-sign text-primary"></i>
+      </a>
+    </div>
     <div class="btn-group ms-2">
       <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(true)"
         [ngClass]="{'active':data.saveToLayman}">
@@ -11,6 +17,9 @@
         {{'COMMON.no' | translateHs : {app} }}
       </button>
     </div>
+  </div>
+  <div class="mb-1 ps-4 fst-italic text-secondary" [hidden]="!descriptionVisible">
+    {{'ADDDATA.saveToDbExplanation' | translateHs: {app} }}
   </div>
 </ng-container>
 <div class="ps-4 mt-3">

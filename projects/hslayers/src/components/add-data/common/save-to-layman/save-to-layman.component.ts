@@ -10,6 +10,7 @@ import {FileDataObject} from '../../file/types/file-data-object.type';
 export class HsSaveToLaymanComponent {
   @Input() data: FileDataObject;
   @Input() app = 'default';
+  descriptionVisible = false;
 
   constructor() {}
 
@@ -20,5 +21,9 @@ export class HsSaveToLaymanComponent {
     } else {
       this.data.loadAsType = undefined;
     }
+  }
+
+  toggleDescVisibility() {
+    this.descriptionVisible = !this.descriptionVisible;
   }
 }
