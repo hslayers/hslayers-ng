@@ -41,6 +41,7 @@
     "loadAs": "When uploaded, load layer as ...",
     "requestServiceLayers": "Request service layers",
     "saveToDatabase": "Save to database",
+    "saveToDbExplanation": "The data will be uploaded to a database on the server and will be later available via the Data Catalogue. No matter the input format, all vector data are loaded as a GeoJSON from the database.",
     "URL": {
       "selectAll": "Select all Layers",
       "submitLayerName": "Fill in layer name",

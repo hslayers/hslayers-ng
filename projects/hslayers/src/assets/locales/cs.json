@@ -50,7 +50,8 @@
       "doYouWishToOverwrite": "Chcete přepsat vrstvu:",
       "noteForRepetiveDialog": "*Poznámka: Přejmenování a nahrání vrstvy selhalo, protože vrstva s tímto jménem již existuje!"
     },
-    "loadAs": "Po nahrání načíst jako ..."
+    "loadAs": "Po nahrání načíst jako ...",
+    "saveToDbExplanation": "Data budou nahrána do databáze na serveru a později budou dostupná skrze Datový katalog. Nezávisle na vstupním formátu, všechna vektorová data jsou z databáze načtena jako GeoJSON."
   },
   "ADDLAYERS": {
     "addSelected": "Přidat označené vrstvy do mapy",
@@ -626,7 +627,8 @@
       "loading": "Načítám dostupné časy ..."
     },
     "toggleAllLayerVisibility": "Přepnout viditelnost všech vrstev",
-    "User generated": "Uživatelský"
+    "User generated": "Uživatelský",
+    "basemapThumbnail": "Náhled podkladové mapy"
   },
   "LAYERS": {
     "existingLayer": "Existující vrstva",
@@ -833,7 +835,8 @@
     },
     "writeAccessRights": "Právo zápisu",
     "everyone": "Každý",
-    "perUser": "Vybraní uživatelé"
+    "perUser": "Vybraní uživatelé",
+    "compositionThumbnail": "Náhled kompozice"
   },
   "SENSORS": {
     "1D": "1D",
@@ -966,7 +969,9 @@
     "icon": "Ikona",
     "text": "Text",
     "line": "Linie",
-    "fill": "Výplň"
+    "fill": "Výplň",
+    "styleName": "Název stylu",
+    "unsavedChanges": "Máte neuložené změny stylu. Aby se změny zachovaly, ujistěte se před odchodem, že jste je uložili"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
