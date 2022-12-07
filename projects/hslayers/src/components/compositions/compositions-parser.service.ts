@@ -356,7 +356,10 @@ export class HsCompositionsParserService {
     extentFromContainer?: string | Array<number>
   ): Promise<boolean> {
     if (overwrite == undefined || overwrite == true) {
-      this.hsMapService.removeCompositionLayers(overwrite == true, app);
+      this.hsMapService.removeCompositionLayers({
+        force: overwrite == true,
+        app,
+      });
     }
     this.hsEventBusService.currentComposition.next(obj); //Doesnt seems to be used
     this.get(app).current_composition_title = titleFromContainer || obj.title;

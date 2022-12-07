@@ -51,6 +51,7 @@ import {
   getRemovable,
   getTitle,
 } from '../../common/layer-extensions';
+import {removeCompositionLayersOptions} from './models/remove-composition-layers-options';
 
 export enum DuplicateHandling {
   AddDuplicate = 0,
@@ -1198,10 +1199,9 @@ export class HsMapService {
 
   /**
    * Remove all layers gained from composition from map
-   * @param force Remove all removable layers no matter fromComposition param
-   * @param app - App identifier
+   * @param options Configuration object {force, app}
    */
-  removeCompositionLayers(force: boolean, app: string): void {
+  removeCompositionLayers({force, app}: removeCompositionLayersOptions): void {
     let to_be_removed = this.getLayersArray(app).filter(
       (lyr) => getRemovable(lyr) === undefined || getRemovable(lyr) == true
     );
