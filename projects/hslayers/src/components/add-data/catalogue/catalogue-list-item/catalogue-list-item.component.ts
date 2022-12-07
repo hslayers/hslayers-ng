@@ -29,8 +29,6 @@ export class HsCatalogueListItemComponent implements OnInit {
   appRef: HsAddDataCatalogueParams;
   explanationsVisible: boolean;
   metadata;
-  selected_ds: HsEndpoint;
-  selected_layer: HsAddDataLayerDescriptor;
   selectedType: string; //do not rename to 'type', would clash in the template
   selectTypeToAddLayerVisible: boolean;
   whatToAddTypes: string[];
@@ -126,9 +124,6 @@ export class HsCatalogueListItemComponent implements OnInit {
     endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
-    this.selected_layer = layer;
-    this.selected_ds = endpoint;
-
     if (endpoint.type == 'layman') {
       await this.hsLaymanBrowserService.fillLayerMetadata(
         endpoint,
@@ -138,12 +133,11 @@ export class HsCatalogueListItemComponent implements OnInit {
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
-
     this.hsDialogContainerService.create(
       HsCatalogueMetadataComponent,
       {
-        selectedLayer: this.selected_layer,
-        selectedDS: this.selected_ds,
+        selectedLayer: layer,
+        selectedDS: endpoint,
         app: this.app,
       },
       this.app
@@ -156,6 +150,7 @@ export class HsCatalogueListItemComponent implements OnInit {
    */
   async showPermissions(layer: HsAddDataLayerDescriptor): Promise<void> {
     if (!this.layer.endpoint?.authenticated) {
+      return;
     }
     this.hsDialogContainerService.create(
       HsSetPermissionsDialogComponent,

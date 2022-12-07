@@ -2,6 +2,7 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 
 export interface HsAddDataLayerDescriptor {
   abstract?: string;
+  bbox;
   formats?;
   name?: string;
   serviceType?;

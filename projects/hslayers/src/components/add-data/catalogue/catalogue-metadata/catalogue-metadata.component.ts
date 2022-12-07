@@ -13,11 +13,15 @@ import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
   templateUrl: './catalogue-metadata.component.html',
 })
 export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
-  @Input() data;
+  @Input() data: {
+    selectedLayer: HsAddDataLayerDescriptor;
+    selectedDS: HsEndpoint;
+    app: string;
+  };
 
-  selectedLayer;
-  selectedLayerKeys;
-  selectedDS;
+  selectedLayer: HsAddDataLayerDescriptor;
+  selectedLayerKeys: string[];
+  selectedDS: HsEndpoint;
   viewRef: ViewRef;
 
   constructor(
