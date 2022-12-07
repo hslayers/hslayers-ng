@@ -1,7 +1,6 @@
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
-import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsHistoryListModule} from './../../common/history-list/history-list.module';
@@ -21,7 +20,6 @@ import {HsUtilsModule} from './../utils/utils.module';
     HsUtilsModule,
     HsConfirmModule,
     HsMapModule,
-    HsCommonEndpointsModule,
   ],
   exports: [],
   providers: [HsConfig],

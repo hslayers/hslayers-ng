@@ -15,7 +15,6 @@ import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../../config.service';
 import {HsConfigMock} from '../../../../config.service.mock';
-import {HsGetCapabilitiesModule} from '../../../../common/get-capabilities/get-capabilities.module';
 import {HsLanguageModule} from '../../../language/language.module';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsMapService} from '../../../map/map.service';
@@ -61,7 +60,6 @@ describe('add-data-url', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         CommonModule,
-        HsGetCapabilitiesModule,
         HsPanelHelpersModule,
         HttpClientModule,
         FormsModule,
