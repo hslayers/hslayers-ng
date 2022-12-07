@@ -599,6 +599,13 @@ export class HsLaymanService implements HsSaverService {
     }, 2000);
   }
 
+  /**
+   * Converts OL Feature objects into a GeoJSON
+   * @param features - Array of OL Features
+   * @param crsSupported - True if current CRS is supported by Layman
+   * @param withFeatures FIXME: What is this good for?
+   * @returns GeoJSON representation of the input features
+   */
   getFeatureGeoJSON(
     features: Feature<Geometry>[],
     crsSupported: boolean,
@@ -606,22 +613,21 @@ export class HsLaymanService implements HsSaverService {
   ) {
     const f = new GeoJSON();
     let geojson: Feature<Geometry>[];
-    if (withFeatures) {
-      if (!crsSupported) {
-        geojson = f.writeFeaturesObject(
-          features.map((f) => {
-            const f2 = f.clone();
-            f2.getGeometry().transform(this.crs, 'EPSG:3857');
-            return f2;
-          })
-        );
-      } else {
-        geojson = f.writeFeaturesObject(features);
-      }
-      return geojson;
-    } else {
+    if (!withFeatures) {
       return;
     }
+    if (!crsSupported) {
+      geojson = f.writeFeaturesObject(
+        features.map((f) => {
+          const f2 = f.clone();
+          f2.getGeometry().transform(this.crs, 'EPSG:3857');
+          return f2;
+        })
+      );
+    } else {
+      geojson = f.writeFeaturesObject(features);
+    }
+    return geojson;
   }
 
   /**

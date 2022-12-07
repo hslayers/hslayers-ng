@@ -104,8 +104,10 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
     }
     const layers = this.hsShareUrlService.getParamValue(`hs-${type}-layers`);
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
-
-    // const serviceName = `hsAddLayersWmsService`;
+    if (!url) {
+      this.hsAddDataUrlService.get(this.app).connectFromParams = false;
+      return;
+    }
     if (layers) {
       for (const layer of layers.split(';')) {
         this.hsAddDataOwsService.connectToOWS(

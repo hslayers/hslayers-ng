@@ -33,6 +33,9 @@ export class HsAddDataCommonFileServiceParams {
   loadingToLayman = false;
   asyncLoading = false;
   endpoint: HsEndpoint = null;
+  /**
+   * @param success - true when layer added successfully
+   */
   layerAddedAsService: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<FileDataObject> = new Subject();
   fileUploadErrorHeader = 'ADDLAYERS.couldNotUploadSelectedFile';
@@ -380,7 +383,7 @@ export class HsAddDataCommonFileService {
     app: string
   ): Promise<FormData> {
     this.get(app).readingData = true;
-    const formdata = new FormData();
+    const formData = new FormData();
     let zipFile;
     const zip = new JSZip();
     if (this.isZip(files[0].type)) {
@@ -401,30 +404,29 @@ export class HsAddDataCommonFileService {
         }
       );
     }
-    formdata.append('file', zipFile, files[0].name.split('.')[0] + '.zip');
-
+    formData.append('file', zipFile, files[0].name.split('.')[0] + '.zip');
     if (sld) {
-      formdata.append(
+      formData.append(
         'sld',
         new Blob([sld.content], {type: sld.type}),
         sld.name
       );
     }
-    formdata.append('name', name);
+    formData.append('name', name);
     title = title == '' ? name : title;
-    formdata.append('title', title);
-    formdata.append('abstract', abstract);
-    formdata.append('crs', srs);
+    formData.append('title', title);
+    formData.append('abstract', abstract);
+    formData.append('crs', srs);
 
     const rights = this.hsLaymanService.parseAccessRightsForLayman(
       endpoint,
       access_rights
     );
 
-    formdata.append('access_rights.write', rights.write);
-    formdata.append('access_rights.read', rights.read);
+    formData.append('access_rights.write', rights.write);
+    formData.append('access_rights.read', rights.read);
     this.get(app).readingData = false;
-    return formdata;
+    return formData;
   }
 
   /**

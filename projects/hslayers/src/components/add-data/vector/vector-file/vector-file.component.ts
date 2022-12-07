@@ -7,8 +7,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
 
 import {Cluster} from 'ol/source';
+import {GeoJSON} from 'ol/format';
 
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
 import {FileDataObject} from '../../file/types/file-data-object.type';
@@ -23,13 +25,13 @@ import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
+import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {
   HsUploadComponent,
   HsUploadedFiles,
 } from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {Subject, takeUntil} from 'rxjs';
 import {VectorDataObject} from '../vector-data.type';
 import {accessRightsModel} from '../../common/access-rights.model';
 
@@ -38,7 +40,8 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
   @Input() app = 'default';
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -57,14 +60,15 @@ export class HsAddDataVectorFileComponent
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsConfig: HsConfig,
+    public hsLanguageService: HsLanguageService,
     private hsLayerManagerService: HsLayerManagerService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService,
-    private hsConfig: HsConfig
+    private hsMapService: HsMapService,
+    private hsToastService: HsToastService,
+    private hsUtilsService: HsUtilsService
   ) {}
 
   ngAfterViewInit(): void {
@@ -106,21 +110,46 @@ export class HsAddDataVectorFileComponent
   }
 
   /**
-   * Handler for adding non-wms service, file in template.
+   * Handler for adding vector file, file in template.
    */
   async add(): Promise<void> {
     if (this.uploadType == 'new') {
-      const response = await this.hsAddDataVectorService.addNewLayer(
-        this.data,
-        this.app
-      );
-      if (response.complete) {
-        this.moveToLayerManager();
+      if (this.data.loadAsType === 'wms') {
+        await this.addAsWms();
+      } else {
+        const response = await this.hsAddDataVectorService.addNewLayer(
+          this.data,
+          this.app
+        );
+        if (!response.complete) {
+          return;
+        }
       }
     } else {
       await this.updateExistingLayer();
-      this.moveToLayerManager();
     }
+    this.moveToLayerManager();
+  }
+
+  /**
+   * Upload vector file to Layman then load it as WMS
+   * Converts already parsed features into GeoJSON.
+   * We intentionally ignore if the file was originally KML or GPX as only GeoJSON is supported natively by Layman.
+   */
+  async addAsWms(): Promise<void> {
+    this.data.files = [
+      {
+        name: this.data.name + '.geojson',
+        type: '',
+        // It is kinda silly to first parse and then serialise the features again, but the current UI/IX design prevents doing it differently
+        content: new GeoJSON().writeFeatures(this.data.features),
+      },
+    ];
+    this.data.srs = this.hsMapService.getCurrentProj(this.app).getCode();
+    return await this.hsAddDataCommonFileService.addAsService(
+      this.data,
+      this.app
+    );
   }
 
   /**
