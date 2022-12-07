@@ -10,6 +10,8 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../../common/endpoints/endpoint.interface';
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';
@@ -37,13 +39,19 @@ export class HsLaymanBrowserService {
    * Loads datasets metadata from Layman
    * @param endpoint - Configuration of selected datasource (from app config)
    * extent feature is created. Has one parameter: feature
-   * @param data -
+   * @param app - Application identifier
+   * @param data - Query parameters
    */
   queryCatalog(
     endpoint: HsEndpoint,
     app: string,
-    data?: any,
-    extentFeatureCreated?
+    data?: {
+      onlyMine: boolean;
+      limit?: string | number;
+      query: any;
+      filterByExtent?: boolean;
+    },
+    extentFeatureCreated?: (feature: Feature<Geometry>) => void
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint, app);
     const withPermissionOrMine = data?.onlyMine
@@ -109,7 +117,6 @@ export class HsLaymanBrowserService {
               app
             );
           }
-
           return x.body;
         }),
         catchError(async (e) => {

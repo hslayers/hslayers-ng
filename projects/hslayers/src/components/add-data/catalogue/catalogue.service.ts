@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {forkJoin} from 'rxjs';
 
@@ -180,7 +180,7 @@ export class HsAddDataCatalogueService {
 
   /**
    * Queries all configured catalogs for datasources (layers)
-   * @param suspendLimitCalculation -
+   * @param suspendLimitCalculation
    */
   queryCatalogs(app: string, suspendLimitCalculation?: boolean): void {
     const appRef = this.get(app);
@@ -530,7 +530,7 @@ export class HsAddDataCatalogueService {
       );
       this.hsAddDataVectorService.fitExtent(layer, app);
     } else if (whatToAdd.type == 'WMTS' && ds.type == 'micka') {
-      //Micka only  yet
+      //Micka only yet
       if (whatToAdd.recordType === 'service') {
         this.datasetSelect('url', app);
       }
@@ -554,8 +554,9 @@ export class HsAddDataCatalogueService {
     this.hsAddDataService.selectType(id_selected, app);
     this.calcExtentLayerVisibility(app);
   }
+
   /**
-   * Clear query variable
+   * Clear the "query" property
    */
   clear(app: string): void {
     const appRef = this.get(app);
@@ -567,20 +568,6 @@ export class HsAddDataCatalogueService {
     appRef.data.query.sortby = '';
   }
 
-  /**
-   *
-   */
-  private dataSourceExistsAndEmpty(app: string): boolean {
-    return !!this.get(app).endpointsWithDatasources;
-  }
-
-  /**
-   *
-   */
-  private panelVisible(app: string): boolean {
-    return this.hsLayoutService.panelVisible('addData', app);
-  }
-
   calcExtentLayerVisibility(app: string): void {
     this.hsAddDataCatalogueMapService
       .get(app)
@@ -588,5 +575,13 @@ export class HsAddDataCatalogueService {
         this.panelVisible(app) &&
           this.hsAddDataService.get(app).dsSelected == 'catalogue'
       );
+  }
+
+  private dataSourceExistsAndEmpty(app: string): boolean {
+    return !!this.get(app).endpointsWithDatasources;
+  }
+
+  private panelVisible(app: string): boolean {
+    return this.hsLayoutService.panelVisible('addData', app);
   }
 }

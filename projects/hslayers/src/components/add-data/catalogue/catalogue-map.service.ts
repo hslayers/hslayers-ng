@@ -71,7 +71,7 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
-   * @param evt -
+   * @param evt - Event object
    */
   mapPointerMoved(evt, app: string): void {
     const featuresUnderMouse = this.get(app)
@@ -88,10 +88,7 @@ export class HsAddDataCatalogueMapService {
     }
   }
 
-  /**
-   * @param map -
-   */
-  async init(app): Promise<void> {
+  async init(app: string): Promise<void> {
     const appRef = this.get(app);
     if (!appRef.initRun) {
       await this.hsMapService.loaded(app);
@@ -108,8 +105,8 @@ export class HsAddDataCatalogueMapService {
   }
 
   /**
+   * Removes layer extent features from map
    * @param dataset - Configuration of selected datasource (from app config)
-   * Remove layer extent features from map
    */
   clearDatasetFeatures(dataset, app: string): void {
     if (dataset.layers) {
@@ -123,16 +120,6 @@ export class HsAddDataCatalogueMapService {
         }
       });
     }
-  }
-
-  /**
-   * Test if it possible to zoom to layer overview (bbox has to be defined
-   * in metadata of selected layer)
-   * @param layer - TODO
-   * @returns Returns if bbox is specified and thus layer is zoomable
-   */
-  isZoomable(layer): boolean {
-    return layer.bbox !== undefined;
   }
 
   /**
@@ -164,7 +151,7 @@ export class HsAddDataCatalogueMapService {
    * @param bbox - Bounding box of selected layer
    */
   zoomTo(bbox, app: string): void {
-    if (bbox === undefined) {
+    if (!bbox) {
       return;
     }
     let b = null;
