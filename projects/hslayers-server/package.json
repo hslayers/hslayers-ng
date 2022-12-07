@@ -14,7 +14,7 @@
   },
   "author": "plan4all",
   "dependencies": {
-    "better-sqlite3": "^7.5.0",
+    "better-sqlite3": "^7.6.2",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
