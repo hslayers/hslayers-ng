@@ -14,7 +14,7 @@ const readmeMd = fs.readFileSync(
 );
 
 // Parse Markdown syntax to HTML syntax
-const readmeHtml = marked(readmeMd);
+const readmeHtml = marked.marked(readmeMd);
 
 // Load Handlebars-style template to be filled
 const index = fs.readFileSync(
