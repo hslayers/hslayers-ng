@@ -117,7 +117,10 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
    * Creates service layers and adds them to the map
    */
   addLayers(): void {
-    this.hsMapService.removeCompositionLayers(true, this.data.app);
+    this.hsMapService.removeCompositionLayers({
+      force: true,
+      app: this.data.app,
+    });
     for (const service of this.data.services) {
       const checkedOnly = this.lookForChecked(service.data.layers);
       service.typeService.apps[this.data.app].data = service.data;

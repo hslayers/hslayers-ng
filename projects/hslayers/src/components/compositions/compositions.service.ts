@@ -416,7 +416,7 @@ export class HsCompositionsService {
         //Some old structure, where layers are stored in data
         data.data.layers = response.data;
       }
-      this.hsMapService.removeCompositionLayers(true, app);
+      this.hsMapService.removeCompositionLayers({force: true, app});
       const layers = await this.hsCompositionsParserService.jsonToLayers(
         data,
         app
