@@ -30,15 +30,35 @@ describe('Hslayers application', () => {
 
   it('Style can be reset to default', () => {
     cy.get('hs-styles button[title="Reset to default style"]').click();
+    cy.wait(500);
     cy.get('hs-symbolizer').should('not.exist');
     cy.get('hs-rule-list-item').click();
     cy.get('hs-symbolizer-list-item:first').click();
     cy.get(
-      'hs-symbolizer hs-mark-symbolizer input[ng-reflect-model="#0099ff"]:first'
+      'hs-symbolizer hs-symbolizer-color-picker[data-cy="mark-symbolizer-color"] input'
     ).should(
       'have.attr',
       'style',
-      'background-color: rgb(0, 153, 255); color: white;'
+      'background-color: rgb(255, 255, 255); color: black;'
+    );
+  });
+
+  it('Should support SLD 1.1.0', () => {
+    cy.get('hs-styles button[title="Reset to default style"]').click();
+    cy.get('hs-styles button[title="Upload style as SLD file"]').click();
+    cy.get('hs-styles input[type=file]').selectFile(
+      'cypress/fixtures/sld-1.1.0.sld',
+      {force: true}
+    );
+    cy.wait(500);
+    cy.get('hs-rule-list-item').click();
+    cy.get('hs-symbolizer-list-item').click();
+    cy.get(
+      'hs-symbolizer hs-symbolizer-color-picker[data-cy="mark-symbolizer-color"] input'
+    ).should(
+      'have.attr',
+      'style',
+      'background-color: rgb(190, 207, 80); color: black;'
     );
   });
 });
