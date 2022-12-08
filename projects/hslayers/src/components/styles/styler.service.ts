@@ -1,12 +1,14 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
-import OpenLayersParser from 'geostyler-openlayers-parser';
-import QGISStyleParser from 'geostyler-qgis-parser';
-import SLDParser, {ConstructorParams, SldVersion} from 'geostyler-sld-parser';
 import colormap from 'colormap';
 import {Cluster} from 'ol/source';
+import {
+  ConstructorParams,
+  SldStyleParser as SLDParser,
+  SldVersion,
+} from 'geostyler-sld-parser';
+import {Feature} from 'ol';
 import {
   FillSymbolizer,
   Filter,
@@ -16,6 +18,8 @@ import {
 } from 'geostyler-style';
 import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
+import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
+import {QGISStyleParser} from 'geostyler-qgis-parser';
 import {StyleFunction, StyleLike} from 'ol/style/Style';
 import {Subject} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -53,9 +57,7 @@ class HsStylerParams {
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
-  qmlParser = (QGISStyleParser as any).default
-    ? new (QGISStyleParser as any).default()
-    : new QGISStyleParser();
+  qmlParser = new QGISStyleParser();
 
   sld: string;
   qml: string;
@@ -431,9 +433,7 @@ export class HsStylerService {
   public async geoStylerStyleToOlStyle(
     sldObject: GeoStylerStyle
   ): Promise<StyleLike> {
-    const olConverter = (OpenLayersParser as any).default
-      ? new (OpenLayersParser as any).default()
-      : new OpenLayersParser();
+    const olConverter = new OpenLayersParser();
     const {output: style} = await olConverter.writeStyle(sldObject);
     return style;
   }
