@@ -5,6 +5,7 @@
     <button type="button" style="border: none; background-color: transparent; cursor: move">
       <i class="icon-move text-secondary"></i>
     </button>
+    <span [innerHtml]="svg"></span>
     <span>{{rule.name || 'untitled rule'}}&nbsp;</span>
   </div>
   <div>
@@ -17,6 +18,6 @@
 </li>
 
 <ng-container *ngIf="ruleVisible">
-  <hs-rule [rule]="rule" (changes)="hsStylerService.save(app)" [app]="app" (mousedown)="$event.stopPropagation()">
+  <hs-rule [rule]="rule" (changes)="hsStylerService.save(app); generateLegend()" [app]="app" (mousedown)="$event.stopPropagation()">
   </hs-rule>
 </ng-container>
