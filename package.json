@@ -146,6 +146,10 @@
     }
   },
   "browser": {
-    "timers": false
+    "timers": false,
+    "buffer": false,
+    "path-browserify": false,
+    "path": false,
+    "fs": false
   }
 }
