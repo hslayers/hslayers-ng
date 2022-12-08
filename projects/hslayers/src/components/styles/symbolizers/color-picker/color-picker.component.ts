@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {ColorEvent} from 'ngx-color';
 import {FillSymbolizer, MarkSymbolizer, TextSymbolizer} from 'geostyler-style';
@@ -10,9 +10,22 @@ import {HsStylerPartBaseComponent} from '../../style-part-base.component';
   selector: 'hs-symbolizer-color-picker',
   templateUrl: './color-picker.component.html',
 })
-export class HsColorPickerComponent extends HsStylerPartBaseComponent {
+export class HsColorPickerComponent
+  extends HsStylerPartBaseComponent
+  implements OnInit
+{
   constructor(public hsColorPickerService: HsColorPickerService) {
     super();
+  }
+  ngOnInit(): void {
+    const rgb = this.hsColorPickerService.hex2Rgb(
+      this.symbolizer[this.attribute]
+    );
+    this.fontColor = this.hsColorPickerService.generateFontColor([
+      rgb.r,
+      rgb.g,
+      rgb.b,
+    ]);
   }
   @Input() symbolizer: MarkSymbolizer | FillSymbolizer | TextSymbolizer;
   @Input() attribute: string;
