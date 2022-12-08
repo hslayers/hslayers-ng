@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import Feature from 'ol/Feature';
 import OpenLayersParser from 'geostyler-openlayers-parser';
 import QGISStyleParser from 'geostyler-qgis-parser';
-import SLDParser from 'geostyler-sld-parser';
+import SLDParser, {ConstructorParams, SldVersion} from 'geostyler-sld-parser';
 import colormap from 'colormap';
 import {Cluster} from 'ol/source';
 import {
@@ -53,9 +53,6 @@ class HsStylerParams {
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
-  sldParser = (SLDParser as any).default
-    ? new (SLDParser as any).default()
-    : new SLDParser();
   qmlParser = (QGISStyleParser as any).default
     ? new (QGISStyleParser as any).default()
     : new QGISStyleParser();
@@ -69,6 +66,7 @@ class HsStylerParams {
   colorMapDialogVisible = false;
   unsavedChange = false;
   changesStore = new Map<string, {sld: string; qml: string}>();
+  sldVersion: SldVersion = '1.0.0';
 }
 
 @Injectable({
@@ -294,12 +292,12 @@ export class HsStylerService {
     if (!style) {
       return {
         sld: defaultStyle,
-        style: await this.sldToOlStyle(defaultStyle, app),
+        style: await this.sldToOlStyle(defaultStyle),
       };
     }
     const styleType = this.guessStyleFormat(style);
     if (styleType == 'sld') {
-      return {sld: style, style: await this.sldToOlStyle(style, app)};
+      return {sld: style, style: await this.sldToOlStyle(style)};
     } else if (styleType == 'qml') {
       return {qml: style, style: await this.qmlToOlStyle(style, app)};
     } else if (
@@ -349,7 +347,8 @@ export class HsStylerService {
         ? appRef.changesStore.get(getUid(layer))
         : {sld: getSld(layer), qml: getQml(layer)};
       if (sld != undefined) {
-        appRef.styleObject = await this.sldToJson(sld, app);
+        appRef.styleObject = await this.sldToJson(sld);
+        this.get(app).sldVersion = this.guessSldVersion(sld);
       } else if (qml != undefined) {
         appRef.styleObject = await this.qmlToJson(qml, app);
         //Note: https://github.com/hslayers/hslayers-ng/issues/3431
@@ -406,9 +405,9 @@ export class HsStylerService {
   /**
    * Convert SLD to OL style object
    */
-  async sldToOlStyle(sld: string, app: string): Promise<StyleLike> {
+  async sldToOlStyle(sld: string): Promise<StyleLike> {
     try {
-      const sldObject = await this.sldToJson(sld, app);
+      const sldObject = await this.sldToJson(sld);
       this.fixSymbolizerBugs(sldObject);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
@@ -439,13 +438,32 @@ export class HsStylerService {
     return style;
   }
 
+  guessSldVersion(sld: string): SldVersion {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(sld, 'text/xml');
+      if (
+        xmlDoc.documentElement.attributes.getNamedItem('version')?.value ==
+        '1.1.0'
+      ) {
+        return '1.1.0';
+      }
+      return '1.0.0';
+    } catch (ex) {
+      return '1.0.0';
+    }
+  }
+
   /**
    * Convert SLD text to JSON which is easier to edit in Angular.
    * @param sld -
    * @returns
    */
-  private async sldToJson(sld: string, app: string): Promise<GeoStylerStyle> {
-    const {output: sldObject} = await this.get(app).sldParser.readStyle(sld);
+  private async sldToJson(sld: string): Promise<GeoStylerStyle> {
+    const options: ConstructorParams = {};
+    options.sldVersion = this.guessSldVersion(sld);
+    const sldParser = new SLDParser(options);
+    const {output: sldObject} = await sldParser.readStyle(sld);
     return sldObject;
   }
 
@@ -467,7 +485,8 @@ export class HsStylerService {
     styleObject: GeoStylerStyle,
     app: string
   ): Promise<string> {
-    const {output: sld} = await this.get(app).sldParser.writeStyle(styleObject);
+    const sldParser = new SLDParser({sldVersion: this.get(app).sldVersion});
+    const {output: sld} = await sldParser.writeStyle(styleObject);
     return sld;
   }
 
@@ -699,7 +718,10 @@ export class HsStylerService {
       const appRef = this.get(app);
       const styleFmt = this.guessStyleFormat(styleString);
       if (styleFmt == 'sld') {
-        await appRef.sldParser.readStyle(styleString);
+        const sldParser = new SLDParser({
+          sldVersion: this.guessSldVersion(styleString),
+        });
+        await sldParser.readStyle(styleString);
         setQml(appRef.layer, undefined);
         setSld(appRef.layer, styleString);
       } else if (styleFmt == 'qml') {
