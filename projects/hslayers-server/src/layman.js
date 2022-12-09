@@ -28,7 +28,7 @@ app.use(cors(corsOptions));
 var refreshStrategy = new OAuth2Refresh({
   refreshWindow: 10, // Time in seconds to perform a token refresh before it expires
   userProperty: 'ticket', // Active user property name to store OAuth tokens
-  authenticationURL: '/login', // URL to redirect unathorized users to
+  authenticationURL: '/login', // URL to redirect unauthorized users to
   callbackParameter: 'callback' //URL query parameter name to pass a return URL
 });
 
@@ -121,7 +121,7 @@ app.use(`/client/geoserver`, gsProxy);
 
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
+    res.send(req.session.passport.user.username); // TODO: - close opener window/modal popup
   }
   else
     res.send("<a href='/login'>Login</a>");
@@ -131,7 +131,9 @@ app.get('/login', passport.authenticate('oauth2'));
 
 app.get('/logout', (req, res) => {
   authnUtil.deleteUserSession(req);
-  req.logout();
+  req.logout((err) => {
+    if (err) console.log(err);
+  });
   res.redirect('/');
 });
 
