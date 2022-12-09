@@ -432,9 +432,9 @@ $list-group-item-padding-x: 1.25rem;
     font-family: Roboto, "Helvetica Neue", sans-serif;
   }
 
-  /*************/
+  /****************/
   /** CHECKBOXES **/
-  /*************/
+  /****************/
   .hs-checkmark,
   .hs-uncheckmark {
     position: relative;
@@ -890,6 +890,20 @@ $list-group-item-padding-x: 1.25rem;
   .hs-hover-popup .card {
     padding: 5px;
     overflow-y: auto;
+  }
+
+  .hs-vector-layer-legend {
+    svg {
+      background: white;
+    }
+  }
+
+  .hs-styler-rule {
+    cursor: move;
+  }
+
+  .hs-styler-rule:hover {
+    box-shadow: none;
   }
 
   @import "../components/layout/partials/layout.component.scss";

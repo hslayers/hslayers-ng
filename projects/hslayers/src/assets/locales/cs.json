@@ -958,7 +958,8 @@
     "pleaseEnterAttrib": "Napište prosím název atributu, podle kterého bude provedena klasifikace",
     "pleaseEnterMax": "Napište prosím nejvyšší hodnotu",
     "pleaseEnterMin": "Napište prosím nejnižší hodnotu",
-    "exitWithoutSave": "Odejít bez uložení"
+    "exitWithoutSave": "Odejít bez uložení",
+    "untitledRule": "Pravidlo bez názvu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
