@@ -38,17 +38,19 @@ ul.hs-styler-content-list {
     border-bottom: 1px solid white;
 }
 
-li.list-group-item.hs-list-item-header {
+li.list-group-item {
     padding: 0.3em;
-    width: 100%;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 0;
-
-    .btn-danger{
-      margin-right: 1rem;
+    .hs-list-item-header{
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0;
+  
+      .btn-danger{
+        margin-right: 1rem;
+      }
     }
 }
 
