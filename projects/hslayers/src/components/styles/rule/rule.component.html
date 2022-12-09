@@ -1,11 +1,4 @@
 <div>
-  <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.name' | translateHs : {app} }}:</div>
-    <div class="p-1 w-75">
-      <input class="form-control form-control-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="rule.name"
-        (change)="emitChange()" />
-    </div>
-  </div>
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">
       {{'STYLER.filtersAndScales' | translateHs : {app} }}:

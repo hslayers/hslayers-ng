@@ -30,7 +30,7 @@ export class HsRuleListItemComponent implements OnInit {
     const obj: GeoStylerStyle = {name: '', rules: [this.rule]};
     const legendOpts: any = {
       styles: [obj],
-      size: [50, 35],
+      size: [47, 31],
       hideRect: true,
     };
     const legendRenderer = (LegendRenderer as any).default
@@ -38,6 +38,9 @@ export class HsRuleListItemComponent implements OnInit {
       : new LegendRenderer(legendOpts);
     const el = document.createElement('div');
     await legendRenderer.render(el);
-    this.svg = this.sanitizer.bypassSecurityTrustHtml(el.innerHTML);
+    const svgText = el.innerHTML
+      .replace('0 0 47 35', '0 0 47 31')
+      .replace('height="35"', 'height="31"');
+    this.svg = this.sanitizer.bypassSecurityTrustHtml(svgText);
   }
 }

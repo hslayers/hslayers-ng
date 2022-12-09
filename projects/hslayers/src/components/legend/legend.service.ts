@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 import Feature from 'ol/Feature';
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
 import RenderFeature from 'ol/render/Feature';
+import {Style as GeoStylerStyle} from 'geostyler-style';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
@@ -93,7 +94,7 @@ export class HsLegendService {
         ? new (SLDParser as any).default()
         : new SLDParser();
       let sld = getSld(currentLayer);
-      let sldObject;
+      let sldObject: GeoStylerStyle;
       if (!sld) {
         let layerStyle = currentLayer.getStyle();
         if (typeof layerStyle == 'function') {
@@ -120,6 +121,7 @@ export class HsLegendService {
         sld = defaultStyle;
         sldObject = (await parser.readStyle(sld)).output;
       }
+      this.fixOpacity(sldObject);
       const legendOpts: any = {
         styles: [sldObject],
         size: [300, 200],
@@ -133,6 +135,16 @@ export class HsLegendService {
       return el.innerHTML;
     } catch (ex) {
       throw ex;
+    }
+  }
+
+  private fixOpacity(sldObject: GeoStylerStyle) {
+    for (const rule of sldObject.rules) {
+      for (const symbol of rule.symbolizers) {
+        if (symbol.kind == 'Fill' && symbol.fillOpacity && !symbol.opacity) {
+          symbol.opacity = symbol.fillOpacity;
+        }
+      }
     }
   }
 

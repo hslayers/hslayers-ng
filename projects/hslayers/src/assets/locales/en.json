@@ -962,7 +962,8 @@
     "colorMap": "Color map",
     "unsavedChanges": "You have unsaved style changes. Make sure to save changes before leaving to preserve them",
     "exitWithoutSave": "Exit without save",
-    "styleName": "Style name"
+    "styleName": "Style name",
+    "untitledRule": "Untitled rule"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
