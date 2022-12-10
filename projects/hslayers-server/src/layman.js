@@ -11,7 +11,7 @@ const sqlite = require('better-sqlite3');
 const got = require('got');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const authnUtil = require("./oauth2/util");
+const authnUtil = require('./oauth2/util');
 const sessionUtil = require('./oauth2/session');
 
 const app = express();
@@ -32,16 +32,17 @@ var refreshStrategy = new OAuth2Refresh({
   callbackParameter: 'callback' //URL query parameter name to pass a return URL
 });
 
-passport.use('main', refreshStrategy);  //Main authorization strategy that authenticates user and performs token refresh if needed
+passport.use('main', refreshStrategy); //Main authorization strategy that authenticates user and performs token refresh if needed
 
-var strategy = new OAuth2({
-  authorizationURL: process.env.OAUTH2_AUTH_URL,
-  tokenURL: process.env.OAUTH2_TOKEN_URL,
-  clientID: process.env.OAUTH2_CLIENT_ID,
-  clientSecret: process.env.OAUTH2_SECRET,
-  callbackURL: process.env.OAUTH2_CALLBACK_URL,
-  passReqToCallback: false //Must be omitted or set to false in order to work with OAuth2RefreshTokenStrategy
-},
+var strategy = new OAuth2(
+  {
+    authorizationURL: process.env.OAUTH2_AUTH_URL,
+    tokenURL: process.env.OAUTH2_TOKEN_URL,
+    clientID: process.env.OAUTH2_CLIENT_ID,
+    clientSecret: process.env.OAUTH2_SECRET,
+    callbackURL: process.env.OAUTH2_CALLBACK_URL,
+    passReqToCallback: false //Must be omitted or set to false in order to work with OAuth2RefreshTokenStrategy
+  },
   refreshStrategy.getOAuth2StrategyCallback()
 );
 
@@ -63,14 +64,13 @@ app.use(authnUtil.addIncomingTimestamp);
 
 // Get user profile from Layman instead of CMS
 OAuth2.prototype.userProfile = (access_token, done) => {
-
   (async () => {
     try {
       const response = await got(process.env.LAYMAN_USER_PROFILE_URL, {
         responseType: 'json',
         headers: {
-          'AuthorizationIssUrl': process.env.OAUTH2_AUTH_URL,
-          'Authorization': `Bearer ${access_token}`,
+          AuthorizationIssUrl: process.env.OAUTH2_AUTH_URL,
+          Authorization: `Bearer ${access_token}`,
         }
       });
 
@@ -79,15 +79,15 @@ OAuth2.prototype.userProfile = (access_token, done) => {
 
       console.log(response.body);
       done(null, response.body);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error.response.body);
     }
   })();
 };
 
 // Layman proxy for whole REST API
-app.use(`/rest`,
+app.use(
+  `/rest`,
   createProxyMiddleware({
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
@@ -96,13 +96,12 @@ app.use(`/rest`,
     onProxyReq: (proxyReq, req, res) => {
       try {
         authnUtil.addAuthenticationHeaders(proxyReq, req, res);
-      }
-      catch (error) {
+      } catch (error) {
         res.send(error);
       }
     },
     onProxyRes: authnUtil.handleProxyRes
-  }),
+  })
 );
 
 const gsProxy = createProxyMiddleware({
@@ -120,11 +119,13 @@ app.use(`/geoserver`, gsProxy);
 app.use(`/client/geoserver`, gsProxy);
 
 app.get('/', (req, res) => {
-  if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
+  if (
+    req.session.passport &&
+    req.session.passport.user &&
+    req.session.passport.user.authenticated
+  ) {
     res.send(req.session.passport.user.username); // TODO: - close opener window/modal popup
-  }
-  else
-    res.send("<a href='/login'>Login</a>");
+  } else res.send("<a href='/login'>Login</a>");
 });
 
 app.get('/login', passport.authenticate('oauth2'));
@@ -137,9 +138,20 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error' }), function (req, res) {
-  if (req.session.passport && req.session.passport.user && (req.session.passport.user.authenticated || req.session.passport.user.ticket)) {
-    res.send(`Logged in as ${req.session.passport.user.username || req.session.passport.user.claims.screen_name}. You can now close this window and return back to the map.
+app.get(
+  '/callback',
+  passport.authenticate('oauth2', { failureRedirect: '/error' }),
+  function (req, res) {
+    if (
+      req.session.passport &&
+      req.session.passport.user &&
+      (req.session.passport.user.authenticated ||
+        req.session.passport.user.ticket)
+    ) {
+      res.send(`Logged in as ${
+        req.session.passport.user.claims.screen_name ||
+        req.session.passport.user.username
+      }. You can now close this window and return back to the map.
     <script>
     function inIframe () {
         try {
@@ -153,14 +165,19 @@ app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error'
     }
     </script>
     `);
+    } else res.send("<a href='/login'>Login</a>");
   }
-  else
-    res.send("<a href='/login'>Login</a>");
-});
+);
 
 app.get('/error', (req, res) => {
   res.send("error");
 });
 
 // start the service on the port xxxx
-app.listen(process.env.LAYMAN_PORT || 8087, () => console.log(`HSLayers auth service for Layman listening on port ${process.env.LAYMAN_PORT || 8087}`));
+app.listen(process.env.LAYMAN_PORT || 8087, () =>
+  console.log(
+    `HSLayers auth service for Layman listening on port ${
+      process.env.LAYMAN_PORT || 8087
+    }`
+  )
+);

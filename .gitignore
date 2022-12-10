@@ -20,7 +20,7 @@ dependencygraph.svg
 .env.*
 !.env.example
 *.bat
-/.vs
+.vs
 stats.json
 .lingua
 bundle
