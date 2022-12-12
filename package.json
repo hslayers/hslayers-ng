@@ -123,7 +123,7 @@
     "karma-chrome-launcher": "~3.1.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.0.0",
-    "ng-packagr": "^15.0.1",
+    "ng-packagr": "^15.0.3",
     "ngx-build-plus": "^15.0.0",
     "prettier": "^2.7.1",
     "puppeteer": "^19.4.0",
