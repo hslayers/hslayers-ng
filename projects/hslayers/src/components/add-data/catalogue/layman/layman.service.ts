@@ -235,6 +235,11 @@ export class HsLaymanBrowserService {
         })
       );
       if (data.code || data.message) {
+        if (data.code == 32) {
+          endpoint.user = 'anonymous';
+          endpoint.authenticated = false;
+          this.hsCommonLaymanService.authChange.next({endpoint, app});
+        }
         this.hsToastService.createToastPopupMessage(
           data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
           data.detail ?? `${data.code}/${data.sub_code}`,
