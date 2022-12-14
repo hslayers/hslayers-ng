@@ -4,7 +4,7 @@
   <button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100"
     [disabled]="!data.name || !data.srs" (click)="addAsWms()">
     <i class="icon-plus" [hidden]="commonFileServiceRef.loadingToLayman"></i>
-    <img [src]="configRef._ajaxLoaderPath" [hidden]="!commonFileServiceRef.loadingToLayman" />
+    <span class="hs-loader" [hidden]="!commonFileServiceRef.loadingToLayman"></span>
     <span [hidden]="commonFileServiceRef.loadingToLayman">{{'COMMON.add' | translateHs : {app} }}</span>
     <span *ngIf="commonFileServiceRef.loadingToLayman && commonFileServiceRef.asyncLoading">{{'COMMON.uploading' |
       translateHs : {app} }}</span>

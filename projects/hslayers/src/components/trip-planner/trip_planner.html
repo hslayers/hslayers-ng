@@ -18,7 +18,7 @@
           [hidden]="!waypoint.editMode" (blur)="toggleEdit(waypoint)" />
       </div>
       <div class="p-1">
-        <img [hidden]="!waypoint.loading" [src]="configRef._ajaxLoaderPath" />
+        <span [hidden]="!waypoint.loading" class="hs-loader hs-loader-dark"></span>
       </div>
       <div class="p-1" style="height: 1.7em">
         <div style="margin-top: 1em">{{ formatDistance(waypoint) }}

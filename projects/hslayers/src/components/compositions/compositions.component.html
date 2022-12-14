@@ -167,8 +167,8 @@
                             [selectedCompId]="selectedCompId">
                         </hs-compositions-list-item>
                     </li>
-                    <li class="list-group-item text-primary text-center py-2" *ngIf="catalogueRef.dataLoading"><img
-                            class="pe-2" [src]="configRef._ajaxLoaderPath" />{{'COMMON.loading' |
+                    <li class="list-group-item text-primary text-center py-2" *ngIf="catalogueRef.dataLoading"><span
+                            class="hs-loader hs-loader-dark pe-2"></span>&emsp;{{'COMMON.loading' |
                         translateHs: {app: data.app} }}</li>
                     <li [hidden]="catalogueRef.compositionEntries.length > 0 || catalogueRef.dataLoading"
                         class="list-group-item">
