@@ -36,10 +36,14 @@
     </div>
     <button class="btn btn-primary w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !data.sourceLayer"
       (click)="add()">
-      <i class="icon-plus" [hidden]="commonFileServiceRef.loadingToLayman"></i>
-      <img [src]="configRef._ajaxLoaderPath" [hidden]="!commonFileServiceRef.loadingToLayman" />
-      <span [hidden]="commonFileServiceRef.loadingToLayman">{{'COMMON.add' | translateHs : {app} }}</span>
-      <span [hidden]="!commonFileServiceRef.loadingToLayman">{{'COMMON.uploading' | translateHs : {app} }}</span>
+      <span [hidden]="commonFileServiceRef.loadingToLayman">
+        <i class="icon-plus"></i>&emsp;
+        {{'COMMON.add' | translateHs : {app} }}
+      </span>
+      <span [hidden]="!commonFileServiceRef.loadingToLayman">
+        <span class="hs-loader"></span>&emsp;
+        {{'COMMON.uploading' | translateHs : {app} }}
+      </span>
     </button>
   </div>
 </form>

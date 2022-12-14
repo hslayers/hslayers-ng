@@ -148,14 +148,17 @@ export class HsConfigObject {
   timeDisplayFormat?: string;
 
   /**
-   *  Determines behavior of exclusive layers (layer.exclusive = true) visibility
-   *  If set to true, only layers with same path are affected by exclusivity
+   * Determines behavior of exclusive layers (layer.exclusive = true) visibility
+   * If set to true, only layers with same path are affected by exclusivity
    */
   pathExclusivity?: boolean;
   ngRouter?: boolean;
-  /*
-   *   Path of image to ajax loader animation,
-   *   which is calculated automatically from assetPath */
+  /**
+   * Path of image to ajax loader animation,
+   * which is calculated automatically from assetPath
+   * TODO: REMOVE in 12.0
+   * @deprecated - replace the image with <span class="hs-loader"></span> or <span class="hs-loader hs-loader-dark"></span>
+   */
   _ajaxLoaderPath?: string;
 
   constructor() {

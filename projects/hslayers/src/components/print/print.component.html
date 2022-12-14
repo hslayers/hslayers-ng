@@ -89,7 +89,7 @@
             </div>
             <div class="d-flex justify-content-center btn-group w-75 m-auto" *ngIf="isLoading()">
                 <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs : {app: data.app}
-                    }}...<img class="ms-2" [src]="configRef._ajaxLoaderPath" /></button>
+                    }}...<span class="hs-loader ms-2"></span></button>
                 <button class="btn btn-secondary" (click)="cancelLoading()">&#10006;
                 </button>
             </div>

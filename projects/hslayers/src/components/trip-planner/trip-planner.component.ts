@@ -20,7 +20,6 @@ export class HsTripPlannerComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
-  loaderImage: string;
   timer: any;
   name = 'tripPlanner';
   configRef: HsConfigObject;

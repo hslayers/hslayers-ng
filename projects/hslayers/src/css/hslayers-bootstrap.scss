@@ -906,6 +906,47 @@ $list-group-item-padding-x: 1.25rem;
     box-shadow: none;
   }
 
+  /*
+  * Loader by https://cssloaders.github.io/
+  */
+  .hs-loader {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: white;
+    transform: rotateX(65deg) rotate(45deg);
+    color: $gray-200;
+    animation: layers1 1s linear infinite alternate;
+  }
+
+  .hs-loader-dark {
+    background: $primary;
+    color: $gray-400
+  }
+
+  .hs-loader:after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    animation: layerTr 1s linear infinite alternate;
+  }
+
+  .hs-loader-dark:after {
+    background: rgba(82, 162, 216, 0.7);
+  }
+
+  @keyframes layers1 {
+    0% {box-shadow: 0px 0px 0 0px}
+    90% , 100% {box-shadow: 0.75em 0.75em 0 -1px}
+  }
+
+  @keyframes layerTr {
+    0% {transform:  translate(0, 0) scale(1)}
+    100% {transform: translate(-0.75em, -0.75em) scale(1)}
+  }
+
   @import "../components/layout/partials/layout.component.scss";
   @import "../components/layermanager/layermanager.component.scss";
   @import "../components/layermanager/logical-list/layerlist.component.scss";

@@ -68,9 +68,10 @@
             <i class="icon-remove"></i>
         </button>
     </div> -->
-    <div [hidden]="!loadingInfo" class='list-group-item text-primary text-center py-2'><img class="pe-2"
-            [src]="configRef._ajaxLoaderPath" />{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}</div>
-
+    <div [hidden]="!loadingInfo" class="list-group-item text-primary text-center py-2">
+        <span class="pe-2 hs-loader hs-loader-dark"></span>
+        &emsp;{{'ADDDATA.CATALOGUE.loading' | translateHs : {app} }}
+    </div>
     <div class="card bg-light align-items-center"
         [hidden]="!selectTypeToAddLayerVisible || loadingInfo || appRef.selectedLayer?.id !== layer.id">
         <div class="d-flex flex-row justify-content-between align-items-center w-100">

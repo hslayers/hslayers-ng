@@ -24,8 +24,8 @@
                         [app]="app">
                     </hs-url-add>
                     <button *ngIf="appRef.loadingFeatures"
-                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs: {app} }}<img
-                            class="ms-2" [src]="configRef._ajaxLoaderPath" /></button>
+                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs: {app} }}&emsp;<span
+                            class="ms-2 hs-loader"></span></button>
                 </div>
             </li>
 
