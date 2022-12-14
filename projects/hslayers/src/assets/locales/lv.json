@@ -49,7 +49,9 @@
       "overwriteExistingLayer": "Slānis jau eksistē!",
       "doYouWishToOverwrite": "Vai vēlaties pārrakstīt layer:",
       "noteForRepetiveDialog": "*Piezīme: Slāņa pārdēvēšana un augšupielāde neizdevās, jo šāds slāņa nosaukums jau pastāv!"
-    }
+    },
+    "loadAs": "Augšupielādējot, ielādēt slāni kā...",
+    "saveToDbExplanation": "Dati tiks augšupielādēti servera datu bāzē un vēlāk būs pieejami caur datu katalogu. Neatkarīgi no ievades formāta visi vektoru dati tiek ielādēti kā GeoJSON no datu bāzes."
   },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
