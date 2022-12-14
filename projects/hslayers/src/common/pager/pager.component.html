@@ -1,8 +1,8 @@
 <div class="card-footer" *ngIf="resultsVisible()"> <!-- TODO: Remove function call from template -->
   <ul class="pagination d-flex justify-content-center m-1 align-items-center">
-    <li class="page-item" [ngClass]="{'disabled': appRef.listStart === 0 }"
-      [ngStyle]="{'color' : appRef.listStart === 0 ? '#555' : '#007bff'}">
-      <a class="page-link" (click)="getPreviousRecords()"><span aria-hidden="true">&laquo;</span></a>
+    <li class="page-item">
+      <a class="page-link" (click)="getPreviousRecords()" [ngClass]="{'disabled': appRef.listStart === 0 }"><span
+          aria-hidden="true">&laquo;</span></a>
     </li>
     <li class="page-item" *ngIf="appRef.listNext !== appRef.matchedRecords">
       <span class="page-link">
@@ -16,9 +16,10 @@
         {{appRef.listStart + 1}} -
         {{appRef.matchedRecords}}</span>
     </li>
-    <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }"
-      [ngStyle]="{'color' : nextPageAvailable() ? '#555' : '#007bff'}"> <!-- TODO: Remove function call from template -->
-      <a class="page-link" (click)="getNextRecords()"><span aria-hidden="true">&raquo;</span></a>
+    <li class="page-item">
+      <!-- TODO: Remove function call from template -->
+      <a class="page-link" (click)="getNextRecords()" [ngClass]="{'disabled': nextPageAvailable() }"><span
+          aria-hidden="true">&raquo;</span></a>
     </li>
     <li ngbDropdown display="dynamic" placement="top-right" class="pe-3" style="position: absolute;
     right: 0;">
