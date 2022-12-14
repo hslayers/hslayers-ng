@@ -130,7 +130,11 @@ export class HsCatalogueListItemComponent implements OnInit {
     this.selected_ds = endpoint;
 
     if (endpoint.type == 'layman') {
-      await this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
+      await this.hsLaymanBrowserService.fillLayerMetadata(
+        endpoint,
+        layer,
+        this.app
+      );
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);

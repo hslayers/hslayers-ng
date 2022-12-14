@@ -307,7 +307,8 @@ export class HsDrawService {
     if (!(layer instanceof Layer)) {
       metadata = await this.hsLaymanBrowserService.fillLayerMetadata(
         appRef.laymanEndpoint,
-        layer
+        layer,
+        app
       );
     }
     if (metadata) {

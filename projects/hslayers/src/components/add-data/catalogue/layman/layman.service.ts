@@ -221,7 +221,8 @@ export class HsLaymanBrowserService {
    */
   async fillLayerMetadata(
     endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
+    app = 'default'
   ): Promise<HsAddDataLayerDescriptor> {
     const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
@@ -233,6 +234,15 @@ export class HsLaymanBrowserService {
           withCredentials: true,
         })
       );
+      if (data.code || data.message) {
+        this.hsToastService.createToastPopupMessage(
+          data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+          data.detail ?? `${data.code}/${data.sub_code}`,
+          {},
+          app
+        );
+        return;
+      }
 
       layer.type =
         data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
@@ -258,7 +268,10 @@ export class HsLaymanBrowserService {
     layer: HsAddDataLayerDescriptor,
     app: string
   ): Promise<any> {
-    const lyr = await this.fillLayerMetadata(ds, layer);
+    const lyr = await this.fillLayerMetadata(ds, layer, app);
+    if (!lyr) {
+      return;
+    }
     let style: string = undefined;
     if (lyr.style?.url) {
       style = await this.getStyleFromUrl(lyr.style?.url);

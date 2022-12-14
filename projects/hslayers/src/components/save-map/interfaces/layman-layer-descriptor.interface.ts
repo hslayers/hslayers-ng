@@ -66,9 +66,24 @@ export interface HsLaymanLayerDescriptor {
     status?: StatusStateType;
     error?: any;
   };
-  code?: any;
   exists?: boolean;
   layman_metadata?: {
     publication_status: 'COMPLETE' | 'INCOMPLETE' | 'UPDATING';
   };
+  /**
+   * Only when error
+   */
+  message?: string;
+  /**
+   * Only when error
+   */
+  detail?: string;
+  /**
+   * Only when error
+   */
+  code?: number;
+  /**
+   * Only when error
+   */
+  sub_code?: number;
 }
