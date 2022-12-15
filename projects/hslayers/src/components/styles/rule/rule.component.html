@@ -5,11 +5,13 @@
     </div>
     <div class="p-1">
       <div class="btn-group" role="group" aria-label="Filters and scales">
-        <button [title]="'STYLER.toggleFilters' | translateHs : {app} " class="btn btn-outline-primary btn-sm"
+        <button [title]="'STYLER.toggleFilters' | translateHs : {app} " class="btn btn-sm"
+          [ngClass]="{'btn-outline-primary': rule.filter && rule.filter.length > 0, 'btn-outline-secondary': rule.filter === undefined || rule.filter.length === 0}"
           (click)="filtersVisible = !filtersVisible">
           <span class="icon-filter"></span>
         </button>
-        <button [title]="'STYLER.toggleScaleDenominators' | translateHs : {app} " class="btn btn-outline-primary btn-sm"
+        <button [title]="'STYLER.toggleScaleDenominators' | translateHs : {app} " class="btn btn-sm"
+        [ngClass]="{'btn-outline-primary': rule.scaleDenominator && (rule.scaleDenominator.min !== undefined || rule.scaleDenominator.max !== undefined), 'btn-outline-secondary': rule.scaleDenominator === undefined || (rule.scaleDenominator.min === undefined && rule.scaleDenominator.max === undefined)}"
           (click)="scalesVisible = !scalesVisible">
           <span class="icon-design"></span>
         </button>
