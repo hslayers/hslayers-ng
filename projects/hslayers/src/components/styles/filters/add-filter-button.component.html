@@ -1,20 +1,20 @@
 <div class="p-1">
-  <div ngbDropdown class="d-inline-block">
-    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs : {app} " id="dropdownAddFilter"
+  <div ngbDropdown class="d-inline-block" #menu="ngbDropdown">
+    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs : {app} "
       ngbDropdownToggle>
       <span class="icon-plus"></span>
     </button>
-    <div ngbDropdownMenu aria-labelledby="dropdownAddFilter">
-      <button ngbDropdownItem (click)="emitClick('AND')">
+    <div ngbDropdownMenu>
+      <button ngbDropdownItem (click)="emitClick('AND'); menu.close()">
         {{'STYLER.andFilter' | translateHs : {app} }}
       </button>
-      <button ngbDropdownItem (click)="emitClick('OR')">
+      <button ngbDropdownItem (click)="emitClick('OR'); menu.close()">
         {{'STYLER.orFilter' | translateHs : {app} }}
       </button>
-      <button ngbDropdownItem (click)="emitClick('NOT')">
+      <button ngbDropdownItem (click)="emitClick('NOT'); menu.close()">
         {{'STYLER.notFilter' | translateHs : {app} }}
       </button>
-      <button ngbDropdownItem (click)="emitClick('COMPARE')">
+      <button ngbDropdownItem (click)="emitClick('COMPARE'); menu.close()">
         {{'STYLER.comparisonFilter' | translateHs : {app} }}
       </button>
     </div>
