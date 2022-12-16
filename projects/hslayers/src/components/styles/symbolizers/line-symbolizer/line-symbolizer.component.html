@@ -98,11 +98,11 @@
   </div>
 
   <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
+    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark" [submenu]="true">
   </hs-mark-symbolizer>
 
   <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
+    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon" [submenu]="true">
   </hs-icon-symbolizer>
 
   <div class="d-flex flex-row justify-content-end">
@@ -134,12 +134,13 @@
   </div>
 
   <hs-mark-symbolizer (remove)="symbolizer.graphicStroke = undefined" [app]="app"
-    [symbolizer]="symbolizer.graphicStroke" (changes)="emitChange()"
+    [symbolizer]="symbolizer.graphicStroke" (changes)="emitChange()" [submenu]="true"
     *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.mark">
   </hs-mark-symbolizer>
 
-  <hs-icon-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.icon">
+  <hs-icon-symbolizer (remove)="symbolizer.graphicStroke = undefined" [app]="app"
+    [symbolizer]="symbolizer.graphicStroke" (changes)="emitChange()" [submenu]="true"
+    *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.icon">
   </hs-icon-symbolizer>
 
 </form>
