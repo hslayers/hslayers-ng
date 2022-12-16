@@ -113,10 +113,10 @@
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
           <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">
-            Mark
+            {{'STYLER.mark' | translateHs : {app} }}
           </button>
           <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Icon')">
-            Icon
+            {{'STYLER.icon' | translateHs : {app} }}
           </button>
         </div>
       </div>

@@ -30,8 +30,12 @@
             <span class="icon-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
-            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark'); graphicFillMenu.close()">Mark</button>
-            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon'); graphicFillMenu.close()">Icon</button>
+            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark'); graphicFillMenu.close()">
+              {{'STYLER.mark' | translateHs : {app} }}
+            </button>
+            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon'); graphicFillMenu.close()">
+              {{'STYLER.icon' | translateHs : {app} }}
+            </button>
           </div>
         </div>
         <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined" (click)="symbolizer.graphicFill = undefined">
