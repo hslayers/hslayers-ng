@@ -963,7 +963,8 @@
     "unsavedChanges": "You have unsaved style changes. Make sure to save changes before leaving to preserve them",
     "exitWithoutSave": "Exit without save",
     "styleName": "Style name",
-    "untitledRule": "Untitled rule"
+    "untitledRule": "Untitled rule",
+    "warningFillNotVisualizedDueToGraphic": "Attribute is not visualized when graphic fill is present. Please create two fill symbolizers to have a background"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

@@ -1,6 +1,9 @@
 <form class="form">
+   
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="color" opacityAttribute="opacity"
     (changes)="opacityFix(); emitChange()" [label]="'STYLER.fillColor' | translateHs : {app}">
+    <span class="badge bg-warning mt-2" *ngIf="symbolizer.graphicFill !== undefined"
+      [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translateHs : {app} ">!</span>
   </hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="opacityFix(); emitChange()"
@@ -21,23 +24,28 @@
     <span class="badge bg-warning mt-2"
       [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
-      <div ngbDropdown #graphicFillMenu="ngbDropdown" class="d-inline-block" placement="top-right">
-        <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
-          <span class="icon-plus"></span>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
-          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">Mark</button>
-          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon')">Icon</button>
+      <div class="btn-group me-3">
+        <div ngbDropdown class="btn-group d-inline-block" role="group" #graphicFillMenu="ngbDropdown" placement="top-right">
+          <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
+            <span class="icon-plus"></span>
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
+            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark'); graphicFillMenu.close()">Mark</button>
+            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon'); graphicFillMenu.close()">Icon</button>
+          </div>
         </div>
+        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined" (click)="symbolizer.graphicFill = undefined">
+          <span class="icon-trash"></span>
+        </button>
       </div>
     </div>
   </div>
 
-  <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
+  <hs-mark-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill"
     (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
   </hs-mark-symbolizer>
 
-  <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [app]="app" [symbolizer]="symbolizer.graphicFill"
+  <hs-icon-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill"
     (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
   </hs-icon-symbolizer>
 </form>
