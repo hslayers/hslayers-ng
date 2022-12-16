@@ -959,7 +959,8 @@
     "pleaseEnterMax": "Napište prosím nejvyšší hodnotu",
     "pleaseEnterMin": "Napište prosím nejnižší hodnotu",
     "exitWithoutSave": "Odejít bez uložení",
-    "untitledRule": "Pravidlo bez názvu"
+    "untitledRule": "Pravidlo bez názvu",
+    "warningFillNotVisualizedDueToGraphic": "Jestli je přítomna výplň, atribut nebude vizualizován. "
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"

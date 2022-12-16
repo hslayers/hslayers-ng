@@ -928,7 +928,8 @@
     "pleaseEnterMin": "Zadajte minimálnu hodnotu",
     "pleaseEnterMax": "Zadajte maximálnu hodnotu",
     "unsavedChanges": "Máte neuložené zmeny štýlu.\nAby sa zmeny zachovali, nezabudnite ich pred odchodom uložiť",
-    "exitWithoutSave": "Ukončiť bez uloženia"
+    "exitWithoutSave": "Ukončiť bez uloženia",
+    "warningFillNotVisualizedDueToGraphic": "Ak je prítomná výplň, atribút nebude vizualizovaný. "
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
