@@ -1,6 +1,7 @@
 <div>
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{label}}</div>
+    <ng-content></ng-content>
     <div class="p-1 w-75">
       <input class="form-control form-select-sm" (click)="pickerVisible = !pickerVisible" (change)="inputChanged()" [ngStyle]="colorPickerStyle()"
         [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer[attribute]" />
