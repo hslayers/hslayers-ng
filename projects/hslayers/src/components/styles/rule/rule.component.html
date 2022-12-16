@@ -29,11 +29,21 @@
           <span class="icon-plus"></span>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownAddSymbolizer">
-          <button ngbDropdownItem (click)="addSymbolizer('Mark')">Mark</button>
-          <button ngbDropdownItem (click)="addSymbolizer('Icon')">Icon</button>
-          <button ngbDropdownItem (click)="addSymbolizer('Text')">Text</button>
-          <button ngbDropdownItem (click)="addSymbolizer('Line')">Line</button>
-          <button ngbDropdownItem (click)="addSymbolizer('Fill')">Fill</button>
+          <button ngbDropdownItem (click)="addSymbolizer('Mark')">
+            {{'STYLER.mark' | translateHs : {app} }}
+          </button>
+          <button ngbDropdownItem (click)="addSymbolizer('Icon')">
+            {{'STYLER.icon' | translateHs : {app} }}
+          </button>
+          <button ngbDropdownItem (click)="addSymbolizer('Text')">
+            {{'STYLER.text' | translateHs : {app} }}
+          </button>
+          <button ngbDropdownItem (click)="addSymbolizer('Line')">
+            {{'STYLER.line' | translateHs : {app} }}
+          </button>
+          <button ngbDropdownItem (click)="addSymbolizer('Fill')">
+            {{'STYLER.fill' | translateHs : {app} }}
+          </button>
         </div>
       </div>
     </div>

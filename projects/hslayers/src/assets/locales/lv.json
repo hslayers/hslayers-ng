@@ -287,7 +287,8 @@
     "reading": "Datu lasīšana",
     "unsavedChanges": "Nesaglabātas izmaiņas",
     "return": "Atgriezties",
-    "query": "Vaicājums"
+    "query": "Vaicājums",
+    "composition": "Kompozīcija"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -910,7 +911,7 @@
     "level": "Līmenis",
     "lineSymbolizer": "Līniju simbolizētājs",
     "manageStyle": "Pārvaldīt stilu",
-    "markSymbolizer": "Atzīmju simbolizētājs",
+    "markSymbolizer": "Marķieru simbolizētājs",
     "maxScale": "Maks. mērogs",
     "minScale": "Min. mērogs",
     "miterLimit": "Dekoru limits",
@@ -963,7 +964,12 @@
     "unsavedChanges": "Jums ir nesaglabātas stila izmaiņas. Lūdzu, pirms iziešanas tās saglabājiet!",
     "styleName": "Stila nosaukums",
     "untitledRule": "Bez nosaukuma",
-    "warningFillNotVisualizedDueToGraphic": "Atribūts tiek ignorēts, ja izmanto grafisko pildījumu. Lai iegūtu fona krāsu, lūdzu, izveidojiet divus pildījuma simbolētājus."
+    "warningFillNotVisualizedDueToGraphic": "Atribūts tiek ignorēts, ja izmanto grafisko pildījumu. Lai iegūtu fona krāsu, lūdzu, izveidojiet divus pildījuma simbolētājus.",
+    "fill": "Pildījums",
+    "line": "Līnija",
+    "text": "Teksts",
+    "mark": "Marķieris",
+    "icon": "Ikona"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
