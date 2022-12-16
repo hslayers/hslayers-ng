@@ -76,18 +76,23 @@
     <span class="badge bg-warning mt-2"
       [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
-      <div ngbDropdown #graphicLineMenu="ngbDropdown" class="d-inline-block" placement="top-right">
-        <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
-          <span class="icon-plus"></span>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
-          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">
-            Mark
+      <div class="btn-group me-3">
+        <div ngbDropdown #graphicLineMenu="ngbDropdown" class="d-inline-block" placement="top-right">
+          <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
+            <span class="icon-plus"></span>
           </button>
-          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon')">
-            Icon
-          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
+            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">
+              {{'STYLER.mark' | translateHs : {app} }}
+            </button>
+            <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon')">
+              {{'STYLER.icon' | translateHs : {app} }}
+            </button>
+          </div>
         </div>
+        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined" (click)="symbolizer.graphicFill = undefined">
+          <span class="icon-trash"></span>
+        </button>
       </div>
     </div>
   </div>
@@ -107,18 +112,23 @@
     <span class="badge bg-warning mt-2"
       [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
-      <div ngbDropdown #graphicStrokeMenu="ngbDropdown" class="d-inline-block" placement="top-right">
-        <button class="btn btn-outline-primary btn-sm" id="dropdownAddStrokeSymbolizer" ngbDropdownToggle>
-          <span class="icon-plus"></span>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
-          <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">
-            {{'STYLER.mark' | translateHs : {app} }}
+      <div class="btn-group me-3">
+        <div ngbDropdown #graphicStrokeMenu="ngbDropdown" class="d-inline-block" placement="top-right">
+          <button class="btn btn-outline-primary btn-sm" id="dropdownAddStrokeSymbolizer" ngbDropdownToggle>
+            <span class="icon-plus"></span>
           </button>
-          <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Icon')">
-            {{'STYLER.icon' | translateHs : {app} }}
-          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
+            <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">
+              {{'STYLER.mark' | translateHs : {app} }}
+            </button>
+            <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Icon')">
+              {{'STYLER.icon' | translateHs : {app} }}
+            </button>
+          </div>
         </div>
+        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicStroke !== undefined" (click)="symbolizer.graphicStroke = undefined">
+          <span class="icon-trash"></span>
+        </button>
       </div>
     </div>
   </div>
