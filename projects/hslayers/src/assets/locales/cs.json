@@ -960,7 +960,7 @@
     "pleaseEnterMin": "Napište prosím nejnižší hodnotu",
     "exitWithoutSave": "Odejít bez uložení",
     "untitledRule": "Pravidlo bez názvu",
-    "warningFillNotVisualizedDueToGraphic": "Jestli je přítomna výplň, atribut nebude vizualizován. "
+    "warningFillNotVisualizedDueToGraphic": "Atribut není vizualizován, pokud je použita grafická výplň. Pro nastavení barevného pozadí pod grafickou výplní použijte prosím dvě symboliky výplně."
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
