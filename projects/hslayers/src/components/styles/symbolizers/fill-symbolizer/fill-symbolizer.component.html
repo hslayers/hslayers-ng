@@ -45,11 +45,11 @@
     </div>
   </div>
 
-  <hs-mark-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill"
+  <hs-mark-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true"
     (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
   </hs-mark-symbolizer>
 
-  <hs-icon-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill"
+  <hs-icon-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true"
     (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
   </hs-icon-symbolizer>
 </form>
