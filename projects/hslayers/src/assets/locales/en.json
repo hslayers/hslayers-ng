@@ -964,7 +964,7 @@
     "exitWithoutSave": "Exit without save",
     "styleName": "Style name",
     "untitledRule": "Untitled rule",
-    "warningFillNotVisualizedDueToGraphic": "Attribute is not visualized when graphic fill is present. Please create two fill symbolizers to have a background"
+    "warningFillNotVisualizedDueToGraphic": "Attribute is not visualized when graphic fill is present. Please create two fill symbolizers to have a background under the graphic fill."
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
