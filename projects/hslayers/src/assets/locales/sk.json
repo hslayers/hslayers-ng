@@ -49,7 +49,9 @@
       "doYouWishToOverwrite": "Chcete prepísať vrstvu:",
       "noteForRepetiveDialog": "*Poznámka: Premenovanie a nahrávanie vrstvy zlyhalo, pretože takýto názov vrstvy už existuje!",
       "overwriteExistingLayer": "Vrstva už existuje!"
-    }
+    },
+    "loadAs": "Po nahraní načítať ako ...",
+    "saveToDbExplanation": "Dáta  budú nahrané do databázy na serveri a neskôr budú dostupné prostredníctvom Dátového katalógu. Bez ohľadu na vstupný formát sa všetky vektorové dáta z databázy načítajú ako GeoJSON."
   },
   "ADDLAYERS": {
     "addSelected": "Pridať označené vrstvy do mapy",
@@ -625,7 +627,8 @@
       "loading": "Načítavajú sa dostupné časy..."
     },
     "toggleAllLayerVisibility": "Prepnúť viditeľnosť všetkých vrstiev",
-    "User generated": "Užívateľské"
+    "User generated": "Užívateľské",
+    "basemapThumbnail": "Náhľad podkladovej mapy"
   },
   "LAYERS": {
     "existingLayer": "Existujúca vrstva",
@@ -801,7 +804,8 @@
     },
     "writeAccessRights": "Právo zápisu",
     "everyone": "Každý",
-    "perUser": "Vybraný užívateľ"
+    "perUser": "Vybraný užívateľ",
+    "compositionThumbnail": "Náhľad kompozície"
   },
   "SENSORS": {
     "1D": "1D",
@@ -929,7 +933,14 @@
     "pleaseEnterMax": "Zadajte maximálnu hodnotu",
     "unsavedChanges": "Máte neuložené zmeny štýlu.\nAby sa zmeny zachovali, nezabudnite ich pred odchodom uložiť",
     "exitWithoutSave": "Ukončiť bez uloženia",
-    "warningFillNotVisualizedDueToGraphic": "Ak je prítomná výplň, atribút nebude vizualizovaný. "
+    "warningFillNotVisualizedDueToGraphic": "Ak je prítomná výplň, atribút nebude vizualizovaný. ",
+    "fill": "Výplň",
+    "icon": "Ikona",
+    "line": "Línia",
+    "mark": "Značka",
+    "styleName": "Názov štýlu",
+    "text": "Text",
+    "untitledRule": "Pravidlo bez názvu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
