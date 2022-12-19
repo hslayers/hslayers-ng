@@ -88,6 +88,7 @@ $list-group-item-padding-x: 1.25rem;
     .btn-#{$color} {
       &:focus:not(.bg-transparent) {
         background-color: var(--bs-btn-hover-bg) !important;
+        color: var(--bs-btn-active-color) !important;
       }
 
       &:hover:not(.bg-transparent) {
@@ -934,13 +935,24 @@ $list-group-item-padding-x: 1.25rem;
   }
 
   @keyframes layers1 {
-    0% {box-shadow: 0px 0px 0 0px}
-    90% , 100% {box-shadow: 0.75em 0.75em 0 -1px}
+    0% {
+      box-shadow: 0px 0px 0 0px
+    }
+
+    90%,
+    100% {
+      box-shadow: 0.75em 0.75em 0 -1px
+    }
   }
 
   @keyframes layerTr {
-    0% {transform:  translate(0, 0) scale(1)}
-    100% {transform: translate(-0.75em, -0.75em) scale(1)}
+    0% {
+      transform: translate(0, 0) scale(1)
+    }
+
+    100% {
+      transform: translate(-0.75em, -0.75em) scale(1)
+    }
   }
 
   @import "../components/layout/partials/layout.component.scss";
