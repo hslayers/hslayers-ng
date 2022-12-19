@@ -8,7 +8,7 @@
       [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
     </button>
   </div>
-  <div class="card-body">
+  <div class="card-body pe-2">
     <input class="form-control" *ngIf="appRef.styleObject" type="text"
       [placeholder]="'STYLER.styleName' | translateHs : data" [(ngModel)]="appRef.styleObject.name" />
     <div class="d-flex flex-row justify-content-end">
