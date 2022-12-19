@@ -109,7 +109,7 @@
     "codelyzer": "^6.0.2",
     "cypress": "~12.1.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "eslint-config-openlayers": "14.0.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsdoc": "39.6.4",
