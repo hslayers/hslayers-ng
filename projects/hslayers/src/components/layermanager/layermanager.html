@@ -1,13 +1,13 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translateHs : {app: data.app}" [app]="data.app">
-        <extra-buttons>
+        <extra-buttons class="d-flex align-items-center">
             <div class="btn-group" ngbDropdown placement="left-top" display="dynamic">
-                <button type="button" class="btn border-0"
+                <button type="button" class="border-0 but-title-sm hs-extra-buttons" 
                     (click)="physicalLayerListEnabled = !physicalLayerListEnabled"
                     [title]="'LAYERMANAGER.enablePhysicalLayerList' | translateHs : {app: data.app}">
                     <i class="glyphicon icon-layerorder"></i>
                 </button>
-                <button ngbDropdownToggle class="btn but-title-sm me-1" type="button"><i class="icon-menu"></i></button>
+                <button ngbDropdownToggle class="but-title-sm  hs-extra-buttons me-1" type="button"><i class="icon-menu"></i></button>
                 <div ngbDropdownMenu>
                     <a class="dropdown-item" (click)="removeAllLayers()">
                         <i
