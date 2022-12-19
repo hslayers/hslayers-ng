@@ -1,5 +1,5 @@
 describe('Hslayers application', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/');
   });
 
