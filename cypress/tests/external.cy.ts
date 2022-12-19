@@ -1,5 +1,5 @@
 describe('Hslayers application', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/');
     //Open layer manager
     cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();

@@ -1,5 +1,5 @@
 describe('Hslayers application', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/');
     //Open layer manager
     cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
@@ -11,13 +11,17 @@ describe('Hslayers application', () => {
     );
   });
 
-  it('Styler should open', () => {
+  function openStyler(){
     cy.get('.hs-lm-layerlist:not([hidden]):last .hs-lm-item:first')
       .find('.d-flex .info_btn')
       .click();
     cy.get('hs-layer-editor button[title="Style layer"]').click();
     cy.get('hs-rule-list-item').click();
     cy.get('hs-symbolizer-list-item').click();
+  }
+
+  it('Styler should open', () => {
+    openStyler();
     cy.get('hs-symbolizer').should('exist');
     cy.get('hs-symbolizer').should('have.length', 1);
     cy.get('hs-symbolizer hs-mark-symbolizer').should('exist');
@@ -29,6 +33,7 @@ describe('Hslayers application', () => {
   });
 
   it('Style can be reset to default', () => {
+    openStyler();
     cy.get('hs-styles button[title="Reset to default style"]').click();
     cy.wait(500);
     cy.get('hs-symbolizer').should('not.exist');
@@ -44,6 +49,7 @@ describe('Hslayers application', () => {
   });
 
   it('Should support SLD 1.1.0', () => {
+    openStyler();
     cy.get('hs-styles button[title="Reset to default style"]').click();
     cy.get('hs-styles button[title="Upload style as SLD file"]').click();
     cy.get('hs-styles input[type=file]').selectFile(
