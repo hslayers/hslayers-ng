@@ -66,7 +66,7 @@
     "jszip": "^3.10.1",
     "ngx-color": "^8.0.3",
     "ngx-cookie-service": "^15.0.0",
-    "ol": "^7.1.0",
+    "ol": "^7.2.2",
     "ol-ext": "^4.0.3",
     "ol-popup": "^4.0.0, ^5.0.0",
     "papaparse": "^5",
