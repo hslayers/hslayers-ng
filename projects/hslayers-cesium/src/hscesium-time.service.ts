@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 
-import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
-import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import dayjs from 'dayjs';
-import knockout from 'cesium/Source/ThirdParty/knockout';
-import {HsEventBusService, getTitle} from 'hslayers-ng';
+import {HsEventBusService, getTitle, HsUtilsService} from 'hslayers-ng';
+import {Viewer, WebMapServiceImageryProvider} from 'cesium';
 import {default as utc} from 'dayjs/plugin/utc';
 
 import {HsCesiumLayersService} from './hscesium-layers.service';
@@ -17,7 +15,8 @@ export class HsCesiumTimeService {
   } = {default: {viewer: null}};
   constructor(
     public HsCesiumLayersService: HsCesiumLayersService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    private hsUtilsService: HsUtilsService
   ) {}
 
   init(viewer: Viewer, app: string) {
@@ -26,67 +25,66 @@ export class HsCesiumTimeService {
   }
 
   monitorTimeLine(app: string) {
-    knockout
-      .getObservable(this.apps[app].viewer.clockViewModel, 'currentTime')
-      .subscribe((value) => {
-        let something_changed = false;
-        for (let i = 0; i < this.apps[app].viewer.imageryLayers.length; i++) {
-          let round_time = new Date(value.toString());
-          round_time.setMilliseconds(0);
-          round_time.setMinutes(0);
-          round_time.setSeconds(0);
+    this.apps[app].viewer.clock.onTick.addEventListener((clock) => {
+      const value = clock.currentTime;
+      let something_changed = false;
+      for (let i = 0; i < this.apps[app].viewer.imageryLayers.length; i++) {
+        let round_time = new Date(value.toString());
+        round_time.setMilliseconds(0);
+        round_time.setMinutes(0);
+        round_time.setSeconds(0);
 
-          const layer = this.apps[app].viewer.imageryLayers.get(i);
-          if (layer.imageryProvider instanceof WebMapServiceImageryProvider) {
-            const prmCache = this.HsCesiumLayersService.findParamCache(
-              layer,
-              app
-            );
-            if (prmCache && this.getTimeParameter(layer)) {
-              if (prmCache.dimensions.time) {
-                let min_dist = Number.MAX_VALUE;
-                let min_i = -1;
-                for (
-                  let pt = 0;
-                  pt < prmCache.dimensions.time.values.length;
-                  pt++
-                ) {
-                  const diff2 =
-                    round_time.getTime() -
-                    prmCache.dimensions.time.values[pt].getTime();
-                  if (diff2 > 0 && diff2 < min_dist) {
-                    min_dist = diff2;
-                    min_i = pt;
-                  }
+        const layer = this.apps[app].viewer.imageryLayers.get(i);
+        if (this.hsUtilsService.instOf(layer.imageryProvider , WebMapServiceImageryProvider)) {
+          const prmCache = this.HsCesiumLayersService.findParamCache(
+            layer,
+            app
+          );
+          if (prmCache && this.getTimeParameter(layer)) {
+            if (prmCache.dimensions.time) {
+              let min_dist = Number.MAX_VALUE;
+              let min_i = -1;
+              for (
+                let pt = 0;
+                pt < prmCache.dimensions.time.values.length;
+                pt++
+              ) {
+                const diff2 =
+                  round_time.getTime() -
+                  prmCache.dimensions.time.values[pt].getTime();
+                if (diff2 > 0 && diff2 < min_dist) {
+                  min_dist = diff2;
+                  min_i = pt;
                 }
-                round_time = prmCache.dimensions.time.values[min_i];
               }
-              const diff = Math.abs(
-                round_time.getTime() -
-                  new Date(
-                    prmCache.parameters[this.getTimeParameter(layer)]
-                  ).getTime()
+              round_time = prmCache.dimensions.time.values[min_i];
+            }
+            const diff = Math.abs(
+              round_time.getTime() -
+                new Date(
+                  prmCache.parameters[this.getTimeParameter(layer)]
+                ).getTime()
+            );
+            if (diff > 1000 * 60) {
+              //console.log('Was', prmCache.parameters[this.getTimeParameter(layer)], 'New', round_time)
+              this.HsCesiumLayersService.changeLayerParam(
+                layer,
+                this.getTimeParameter(layer),
+                round_time.toISOString(),
+                app
               );
-              if (diff > 1000 * 60) {
-                //console.log('Was', prmCache.parameters[this.getTimeParameter(layer)], 'New', round_time)
-                this.HsCesiumLayersService.changeLayerParam(
-                  layer,
-                  this.getTimeParameter(layer),
-                  round_time.toISOString(),
-                  app
-                );
-                something_changed = true;
-              }
+              something_changed = true;
             }
           }
         }
-        this.HsCesiumLayersService.removeLayersWithOldParams(app);
-        if (something_changed) {
-          this.HsEventBusService.cesiumTimeLayerChanges.next(
-            this.getLayerListTimes(app)
-          );
-        }
-      });
+      }
+      this.HsCesiumLayersService.removeLayersWithOldParams(app);
+      if (something_changed) {
+        this.HsEventBusService.cesiumTimeLayerChanges.next(
+          this.getLayerListTimes(app)
+        );
+      }
+    });
   }
 
   getLayerListTimes(app: string) {

@@ -1,14 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import Cartographic from 'cesium/Source/Core/Cartographic';
-import Entity from 'cesium/Source/DataSources/Entity';
-import Math from 'cesium/Source/Core/Math';
-import SceneMode from 'cesium/Source/Scene/SceneMode';
-import ScreenSpaceEventHandler from 'cesium/Source/Core/ScreenSpaceEventHandler';
-import ScreenSpaceEventType from 'cesium/Source/Core/ScreenSpaceEventType';
-import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
-import defined from 'cesium/Source/Core/defined';
+import {
+  Cartographic,
+  Entity,
+  Math,
+  SceneMode,
+  ScreenSpaceEventHandler,
+  ScreenSpaceEventType,
+  Viewer,
+  defined,
+} from 'cesium';
 import {HsConfig, HsMapService, HsUtilsService} from 'hslayers-ng';
 
 import {HsCesiumQueryPopupService} from './query-popup.service';

@@ -1,24 +1,19 @@
 import {Injectable} from '@angular/core';
 
-import Cartesian3 from 'cesium/Source/Core/Cartesian3';
-import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
-import GeoJsonDataSource from 'cesium/Source/DataSources/GeoJsonDataSource';
-import GetFeatureInfoFormat from 'cesium/Source/Scene/GetFeatureInfoFormat';
-import {Image as ImageLayer} from 'ol/layer';
-import {Image as ImageSource} from 'ol/source';
-import KmlDataSource from 'cesium/Source/DataSources/KmlDataSource';
-import Layer from 'ol/layer/Layer';
-import OpenStreetMapImageryProvider from 'cesium/Source/Scene/OpenStreetMapImageryProvider';
-import Resource from 'cesium/Source/Core/Resource';
-import {Tile as TileLayer} from 'ol/layer';
-import TileSource from 'ol/source/Tile';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
-import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
-import WebMercatorTilingScheme from 'cesium/Source/Core/WebMercatorTilingScheme';
-import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
 import dayjs from 'dayjs';
+import {
+  Cartesian3,
+  CesiumTerrainProvider,
+  GeoJsonDataSource,
+  GetFeatureInfoFormat,
+  KmlDataSource,
+  OpenStreetMapImageryProvider,
+  Resource,
+  Viewer,
+  WebMapServiceImageryProvider,
+  WebMercatorTilingScheme,
+  createWorldTerrain,
+} from 'cesium';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
@@ -33,9 +28,14 @@ import {
   getTitle,
 } from 'hslayers-ng';
 import {HsLayerUtilsService} from 'hslayers-ng';
+import {Image as ImageLayer} from 'ol/layer';
+import {Image as ImageSource} from 'ol/source';
 import {ImageWMS, Source} from 'ol/source';
+import {Layer, Tile as TileLayer} from 'ol/layer';
 import {OSM, TileWMS} from 'ol/source';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
+import {Tile as TileSource, Vector as VectorSource} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 import {default as proj4} from 'proj4';
 
 import {HsCesiumConfig} from './hscesium-config.service';

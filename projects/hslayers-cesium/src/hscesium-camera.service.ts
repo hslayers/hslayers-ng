@@ -1,15 +1,17 @@
 import {Injectable} from '@angular/core';
 
-import Cartesian2 from 'cesium/Source/Core/Cartesian2';
-import Cartesian3 from 'cesium/Source/Core/Cartesian3';
-import Cartographic from 'cesium/Source/Core/Cartographic';
-import CesiumMath from 'cesium/Source/Core/Math';
-import Ellipsoid from 'cesium/Source/Core/Ellipsoid';
-import Rectangle from 'cesium/Source/Core/Rectangle';
-import SceneMode from 'cesium/Source/Scene/SceneMode';
-import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
+import {
+  Cartesian2,
+  Cartesian3,
+  Cartographic,
+  Math as CesiumMath,
+  Ellipsoid,
+  PerspectiveFrustum,
+  Rectangle,
+  SceneMode,
+  Viewer,
+} from 'cesium';
 import {HsConfig, HsMapService} from 'hslayers-ng';
-import {PerspectiveFrustum} from 'cesium';
 import {get as getProj, transformExtent} from 'ol/proj';
 
 export class CesiumCameraServiceParams {

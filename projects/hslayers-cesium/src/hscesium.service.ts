@@ -1,26 +1,30 @@
 import {Injectable} from '@angular/core';
 
-import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
-import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
-import Camera from 'cesium/Source/Scene/Camera';
-import Cartesian3 from 'cesium/Source/Core/Cartesian3';
-import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
-import Ion from 'cesium/Source/Core/Ion';
-import SceneMode from 'cesium/Source/Scene/SceneMode';
-import ShadowMode from 'cesium/Source/Scene/ShadowMode';
-import SkyBox from 'cesium/Source/Scene/SkyBox';
-import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
-import WebMercatorProjection from 'cesium/Source/Core/WebMercatorProjection';
-import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
+import {
+  BingMapsImageryProvider,
+  BingMapsStyle,
+  Camera,
+  Cartesian3,
+  CesiumTerrainProvider,
+  Ion,
+  SceneMode,
+  ShadowMode,
+  SkyBox,
+  Viewer,
+  WebMercatorProjection,
+  createWorldTerrain,
+} from 'cesium';
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
-import {HsEventBusService} from 'hslayers-ng';
-import {HsLayerManagerService} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
-import {HsMapService} from 'hslayers-ng';
-import {HsQueryPopupComponent} from 'hslayers-ng';
-import {HsUtilsService} from 'hslayers-ng';
+import {
+  HsEventBusService,
+  HsLayerManagerService,
+  HsLayoutService,
+  HsMapService,
+  HsQueryPopupComponent,
+  HsUtilsService,
+} from 'hslayers-ng';
 import {Subject} from 'rxjs';
 
 import {HsCesiumConfig} from './hscesium-config.service';
