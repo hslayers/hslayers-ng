@@ -43,26 +43,7 @@ class HsLayerUtilsServiceMock {
 }
 
 describe('HsStyler', () => {
-  const layer = new VectorLayer({
-    properties: {title: 'Point'},
-    source: new VectorSource<Point | Polygon>({
-      features: [
-        new Feature({geometry: new Point([0, 0]), name: 'test'}),
-        new Feature({
-          geometry: new Polygon([
-            [
-              [1e6, 6e6],
-              [1e6, 8e6],
-              [3e6, 8e6],
-              [3e6, 6e6],
-              [1e6, 6e6],
-            ],
-          ]),
-          name: 'test',
-        }),
-      ],
-    }),
-  });
+  let layer;
 
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -80,6 +61,26 @@ describe('HsStyler', () => {
   let service: HsStylerService;
   const app = 'default';
   beforeEach(() => {
+    layer = new VectorLayer({
+      properties: {title: 'Point'},
+      source: new VectorSource<Point | Polygon>({
+        features: [
+          new Feature({geometry: new Point([0, 0]), name: 'test'}),
+          new Feature({
+            geometry: new Polygon([
+              [
+                [1e6, 6e6],
+                [1e6, 8e6],
+                [3e6, 8e6],
+                [3e6, 6e6],
+                [1e6, 6e6],
+              ],
+            ]),
+            name: 'test',
+          }),
+        ],
+      }),
+    });
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
