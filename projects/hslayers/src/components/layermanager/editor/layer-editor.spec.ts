@@ -48,15 +48,16 @@ describe('layermanager editor', () => {
   let fixture: ComponentFixture<HsLayerEditorComponent>;
   let clusterWidgetComponent: HsClusterWidgetComponent;
   let clusterWidgetFixture: ComponentFixture<HsClusterWidgetComponent>;
-  const layerForCluster = new VectorLayer({
-    properties: {
-      title: 'Bookmarks',
-    },
-    source: new VectorSource({}),
-  });
+  let layerForCluster;
   let hsConfig: HsConfig;
   const app = 'default';
   beforeAll(() => {
+    layerForCluster = new VectorLayer({
+      properties: {
+        title: 'Bookmarks',
+      },
+      source: new VectorSource({}),
+    });
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,

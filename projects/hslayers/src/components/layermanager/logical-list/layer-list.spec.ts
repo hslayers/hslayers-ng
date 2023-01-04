@@ -45,17 +45,18 @@ describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
   const params = {'LAYERS': 'BSS', 'TILED': true};
-  const subLayerContainerLayer = new ImageLayer({
-    properties: {title: 'test'},
-    source: new ImageWMS({
-      url: 'http://geoservices.brgm.fr/geologie',
-      params,
-      crossOrigin: 'anonymous',
-    }),
-  });
+  let subLayerContainerLayer;
   layerUtilsMock.getLayerParams.and.returnValue(params);
   let hsConfig: HsConfig;
   beforeAll(() => {
+    subLayerContainerLayer = new ImageLayer({
+      properties: {title: 'test'},
+      source: new ImageWMS({
+        url: 'http://geoservices.brgm.fr/geologie',
+        params,
+        crossOrigin: 'anonymous',
+      }),
+    });
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,

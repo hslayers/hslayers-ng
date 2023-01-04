@@ -27,41 +27,47 @@ import {mockLanguageService} from '../language/language.service.mock';
 const mockedLanguageService = mockLanguageService();
 
 describe('HsLayerUtilsService', () => {
-  const vectorLayer = new VectorLayer({
-    properties: {title: 'vectorLayer'},
-    source: new Vector(),
-  });
-  const tileWMSLayer = new Tile({
-    properties: {title: 'tileWMSLayer'},
-    source: new TileWMS({
-      params: {
-        INFO_FORMAT: undefined,
-      },
-    }),
-  });
-  const imageWMSLayer = new ImageLayer({
-    properties: {title: 'imageWMSLayer'},
-    source: new ImageWMS({
-      url: 'http://example',
-      params: {INFO_FORMAT: 'application/json'},
-    }),
-  });
-  const tileOSMLayer = new Tile({
-    properties: {title: 'tileOSMLayer'},
-    source: new OSM(),
-  });
-  const tileWMTSLayer = new Tile({
-    properties: {
-      title: 'tileWMTSLayer',
-    },
-    source: new WMTS({
-      url: 'https://openlayers.org/en/latest/examples/wmts.html',
-    } as any),
-  });
-  const imageWMSNoParams = new ImageLayer({
-    source: new ImageWMS({params: {}, url: 'http://example'}),
-  });
+  let vectorLayer;
+  let tileWMSLayer;
+  let imageWMSLayer;
+  let tileOSMLayer;
+  let tileWMTSLayer;
+  let imageWMSNoParams;
   beforeAll(() => {
+    vectorLayer = new VectorLayer({
+      properties: {title: 'vectorLayer'},
+      source: new Vector(),
+    });
+    tileWMSLayer = new Tile({
+      properties: {title: 'tileWMSLayer'},
+      source: new TileWMS({
+        params: {
+          INFO_FORMAT: undefined,
+        },
+      }),
+    });
+    imageWMSLayer = new ImageLayer({
+      properties: {title: 'imageWMSLayer'},
+      source: new ImageWMS({
+        url: 'http://example',
+        params: {INFO_FORMAT: 'application/json'},
+      }),
+    });
+    tileOSMLayer = new Tile({
+      properties: {title: 'tileOSMLayer'},
+      source: new OSM(),
+    });
+    tileWMTSLayer = new Tile({
+      properties: {
+        title: 'tileWMTSLayer',
+      },
+      source: new WMTS({
+        url: 'https://openlayers.org/en/latest/examples/wmts.html',
+      } as any),
+    });
+    imageWMSNoParams = new ImageLayer({
+      source: new ImageWMS({params: {}, url: 'http://example'}),
+    });
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,

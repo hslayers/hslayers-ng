@@ -64,12 +64,13 @@ describe('HsDrawPanel', () => {
     endpointsFilled: of([]),
   };
 
-  const layer = new VectorLayer({
-    properties: {title: 'Point'},
-    source: new VectorSource({}),
-  });
+  let layer;
 
   beforeAll(() => {
+    layer = new VectorLayer({
+      properties: {title: 'Point'},
+      source: new VectorSource({}),
+    });
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
