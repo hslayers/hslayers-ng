@@ -9,6 +9,7 @@ import {HsQueryBaseService} from './query-base.service';
 import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
+import {HsQueryVectorService} from './query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Injectable({
@@ -16,14 +17,16 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel {
+  implements HsQueryPopupServiceModel
+{
   constructor(
     public hsMapService: HsMapService,
     private hsConfig: HsConfig,
     public hsUtilsService: HsUtilsService,
     public zone: NgZone,
     private HsQueryBaseService: HsQueryBaseService,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
+    private hsQueryVectorService: HsQueryVectorService
   ) {
     super(
       hsMapService,
@@ -108,11 +111,25 @@ export class HsQueryPopupService
     ) {
       return;
     }
-    const tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
+    let tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
       e.map,
       e.pixel,
       app
     );
+    if (this.hsConfig.get(app).popUpDisplay === 'click') {
+      /* Theres a separate process for selecting features 
+    by select interaction not by pixel which is better for point features. 
+    Merge those results */
+      tmpFeatures = [
+        ...this.hsQueryVectorService
+          .get(app)
+          .selector.getFeatures()
+          .getArray()
+          .filter((f) => !tmpFeatures.includes(f)),
+        ...tmpFeatures,
+      ];
+    }
+
     if (
       tmpFeatures.some(
         (f) =>
