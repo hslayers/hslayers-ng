@@ -135,7 +135,7 @@ export class HsMapService {
       feature.setId(this.hsUtilsService.generateUuid());
     }
     const fid = feature.getId();
-    if (this.apps[app].featureLayerMapping[fid]) {
+    if (this.apps[app].featureLayerMapping[fid]?.length > 0) {
       return this.refineLayerSearch(
         this.apps[app].featureLayerMapping[fid],
         feature
