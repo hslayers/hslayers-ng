@@ -459,7 +459,7 @@ export class HsStylerService {
    * @param sld -
    * @returns
    */
-  private async sldToJson(sld: string): Promise<GeoStylerStyle> {
+  async sldToJson(sld: string): Promise<GeoStylerStyle> {
     const options: ConstructorParams = {};
     options.sldVersion = this.guessSldVersion(sld);
     const sldParser = new SLDParser(options);
@@ -472,7 +472,7 @@ export class HsStylerService {
    * @param qml -
    * @returns
    */
-  private async qmlToJson(qml: string, app: string): Promise<GeoStylerStyle> {
+  async qmlToJson(qml: string, app: string): Promise<GeoStylerStyle> {
     const result = await this.get(app).qmlParser.readStyle(qml);
     if (result.output) {
       return result.output;
