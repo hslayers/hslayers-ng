@@ -84,7 +84,7 @@ export class HsLegendComponent
       this.refreshList();
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
       if (this.hsLayerUtilsService.isLayerWMS(layer)) {
-        layer.getSource().on('change', (e) => {
+        layer.getSource()?.on('change', (e) => {
           this.hsUtilsService.debounce(
             this.layerSourcePropChanged(e),
             100,

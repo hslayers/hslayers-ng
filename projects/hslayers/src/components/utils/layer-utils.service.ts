@@ -476,6 +476,9 @@ export class HsLayerUtilsService {
    * @returns True invalid, false valid source
    */
   layerInvalid(layer: HsLayerDescriptor): boolean {
+    if (!layer.layer?.getSource()) {
+      return true;
+    }
     return layer.loadProgress?.error;
   }
 

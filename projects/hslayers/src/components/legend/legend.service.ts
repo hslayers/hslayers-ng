@@ -87,7 +87,7 @@ export class HsLegendService {
         return;
       }
       const styleArray: Array<Style | Style[]> = [];
-      if (!currentLayer.getStyle) {
+      if (!currentLayer.getStyle()) {
         return;
       }
       const parser = (SLDParser as any).default
@@ -116,7 +116,7 @@ export class HsLegendService {
         sldObject = (await parser.readStyle(sld)).output;
       }
 
-      //In case sld was not valid for parser, create a new one from default style
+      //In case SLD was not valid for parser, create a new one from default style
       if (!sldObject) {
         sld = defaultStyle;
         sldObject = (await parser.readStyle(sld)).output;

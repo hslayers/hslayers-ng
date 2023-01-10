@@ -78,7 +78,7 @@ export class HsLayerManagerMetadataService {
   }
 
   getParsedLayers(layerObject): any {
-    const isUsable = layerObject.Layer.every((l) => l.Name); //Sublayers are all queriable
+    const isUsable = layerObject.Layer.every((l) => l.Name); //Sublayers are all queryable
     if (!isUsable) {
       layerObject.Layer =
         this.hsUrlWmsService.filterCapabilitiesLayers(layerObject);
@@ -328,7 +328,7 @@ export class HsLayerManagerMetadataService {
   ): Promise<boolean> {
     const layer = layerDescriptor.layer;
     const url = this.HsLayerUtilsService.getURL(layer);
-    if (!url) {
+    if (!url || url.length === 0) {
       return;
     }
     //ArcGIS

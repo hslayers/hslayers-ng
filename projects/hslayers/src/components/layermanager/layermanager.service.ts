@@ -867,6 +867,10 @@ export class HsLayerManagerService {
   loadingEvents(layer: HsLayerDescriptor, app: string): void {
     const olLayer = layer.layer;
     const source: any = olLayer.getSource();
+    if (!source) {
+      this.hsLog.error(`Layer ${getTitle(olLayer)} has no source`);
+      return;
+    }
     const loadProgress = {
       loadCounter: 0,
       loadTotal: 0,
