@@ -7,7 +7,7 @@
             onload="if(this.height<6) { this.parentNode.removeChild(this); }">
     </div>
     <div *ngIf="layer.type === 'vector'">
-        <p *ngFor="let category of layer.lyr.getSource().legend_categories"><!-- TODO: Remove function call from template --><span
+        <p *ngFor="let category of layer.lyr.getSource()?.legend_categories"><!-- TODO: Remove function call from template --><span
                 [ngStyle]="{'background-color': category.color}">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
         </p>
     </div>
