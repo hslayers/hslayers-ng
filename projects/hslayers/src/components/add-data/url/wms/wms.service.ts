@@ -301,40 +301,43 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
         const [west, south, east, north] = curr;
         //minimum easting
-        if (-180 <= west < acc[0]) {
+        if (-180 <= west && west < acc[0]) {
           acc[0] = west;
         }
         //minimum northing
-        if (-90 <= south < acc[1]) {
+        if (-90 <= south && south < acc[1]) {
           acc[1] = south;
         }
         //maximum easting
-        if (180 >= east > acc[2]) {
+        if (180 >= east && east > acc[2]) {
           acc[2] = east;
         }
         //maximum northing
-        if (90 >= north > acc[3]) {
+        if (90 >= north && north > acc[3]) {
           acc[3] = north;
         }
         return acc;
       });
   }
 
-  getLayerBBox(serviceLayer: any, crs: any, app: string): any {
+  getLayerBBox(serviceLayer: any, crs: string, app: string): number[] {
     //Can be called without valid serviceLayer as part of micka dataset loading pipeline
     if (!serviceLayer) {
       return;
     }
     const appRef = this.get(app);
     let boundingbox = serviceLayer.BoundingBox;
-    let preferred;
     if (Array.isArray(serviceLayer.BoundingBox)) {
-      preferred = boundingbox.filter((bboxInCrs) => {
+      const preferred = boundingbox.find((bboxInCrs) => {
         return bboxInCrs.crs == appRef.data.map_projection;
-      })[0];
-    }
-    if (preferred) {
-      boundingbox = preferred.extent;
+      });
+      boundingbox =
+        preferred?.extent ??
+        transformExtent(
+          serviceLayer.BoundingBox[0].extent,
+          serviceLayer.BoundingBox[0].crs ?? crs, //Use BBOX object crs - when missing assume its same as layer's
+          this.hsMapService.getMap(app).getView().getProjection()
+        );
     } else if (crs !== undefined) {
       if (serviceLayer.EX_GeographicBoundingBox !== undefined) {
         boundingbox = transformExtent(
@@ -348,7 +351,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = serviceLayer.LatLonBoundingBox;
       }
     }
-    return boundingbox; // TODO: ?? serviceLayer.BoundingBox; (is more complex, contains SRS definition etc.)
+    return boundingbox;
   }
 
   /**
