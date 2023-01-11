@@ -35,6 +35,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
+    this.HsSidebarService.destroy(this.app);
   }
   ngOnInit(): void {
     const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);

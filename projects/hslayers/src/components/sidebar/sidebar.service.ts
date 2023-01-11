@@ -50,6 +50,10 @@ export class HsSidebarService {
     return this.apps[app];
   }
 
+  destroy(app: string = 'default'): void {
+    delete this.apps[app];
+  }
+
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig,
