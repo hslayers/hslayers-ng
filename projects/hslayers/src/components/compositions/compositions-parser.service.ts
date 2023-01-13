@@ -176,8 +176,8 @@ export class HsCompositionsParserService {
         response.title,
         response.extent
       );
-      //Don't trigger compositionLoads when loading basemapCompostion
-      if (loaded && !response.basemapCompostion) {
+      //Don't trigger compositionLoads when loading basemapComposition
+      if (loaded && !response.basemapComposition) {
         this.finalizeCompositionLoading(response, app);
       }
       if (this.hsUtilsService.isFunction(callback)) {
@@ -189,7 +189,7 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * Parse url from CSW compostion format layer/service
+   * Parse URL from CSW composition format layer/service
    */
   parseCSWLayer(layer) {
     if (!layer.online) {
