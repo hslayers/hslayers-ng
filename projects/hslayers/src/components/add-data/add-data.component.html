@@ -1,9 +1,9 @@
-<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="addData" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translateHs : data"
-        [app]="data.app">
+<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;"
+    [hidden]="(isVisible$ | async) === false">
+    <hs-panel-header name="addData" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translateHs : data" [app]="data.app">
     </hs-panel-header>
-    <div class="card-body">
-        <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
+    <div class="card-body" style="overflow-y: auto;">
+        <ul class="nav flex-column flex-sm-row dss-tabs sticky-top bg-white" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link" [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'catalogue'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('catalogue')">
