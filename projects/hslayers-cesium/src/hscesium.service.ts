@@ -238,6 +238,15 @@ export class HsCesiumService {
         }
       );
 
+      //Remove overlays registered when init was called last time (when switching between 2d/3d)
+      for (const p of this.HsLayoutService.hsOverlayPanelContainerService.get(
+        app
+      ).panels) {
+        if (this.HsUtilsService.instOf(p, HsQueryPopupComponent)) {
+          this.HsLayoutService.hsOverlayPanelContainerService.destroy(p, app);
+        }
+      }
+
       this.HsLayoutService.createOverlay(HsQueryPopupComponent, app, {
         service: this.hsCesiumQueryPopupService,
         app,
