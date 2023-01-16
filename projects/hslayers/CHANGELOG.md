@@ -1,3 +1,68 @@
+# [11.0.0](https://github.com/hslayers/hslayers-ng/compare/10.0.0...11.0.0) (2023-01-16)
+
+
+### Bug Fixes
+
+*  Error: Can't resolve 'timers' ([538661f](https://github.com/hslayers/hslayers-ng/commit/538661f604d7e5b704130df98f6bdb7d87da87b2))
+* Apply style on color hex input changes ([6b9548c](https://github.com/hslayers/hslayers-ng/commit/6b9548c3fad7456184fd679e7f06fb7fd5f2f06a))
+* Baselayer toggling ([e87d9df](https://github.com/hslayers/hslayers-ng/commit/e87d9dfcc3c3db1f96977bb1ca9be90451b4d16e))
+* Bootstrap button focus text color ([ad2e7a9](https://github.com/hslayers/hslayers-ng/commit/ad2e7a92d320fd27c9388a8dda0d350a948c221c)), closes [#3645](https://github.com/hslayers/hslayers-ng/issues/3645)
+* Calculate style foreground color on init ([d161227](https://github.com/hslayers/hslayers-ng/commit/d1612279cd01bb3e2084424bbef2916ef03ea513))
+* Center labels for additional panels ([0d9b662](https://github.com/hslayers/hslayers-ng/commit/0d9b6626dbe2708b6f5381746d84370c60cee0b7)), closes [#3437](https://github.com/hslayers/hslayers-ng/issues/3437)
+* Composition/add-data item list overflow triggering map extent change ([873e88e](https://github.com/hslayers/hslayers-ng/commit/873e88e3973b29f12106d8ed5d7fb5176c21d310))
+* Configurable mobilebreakpoint/sidebar position for multiapp ([85a5dff](https://github.com/hslayers/hslayers-ng/commit/85a5dfffc6d70ba4e8ef654c2d64d25ee3a11b85))
+* current_base_layer composition param ([a58af0f](https://github.com/hslayers/hslayers-ng/commit/a58af0f7063628dc3003786ea6696ed0e1a60365))
+* Do not fire compositionEdits event only when showInLayerManager is explicitly set to false not just falsy ([75d6cc1](https://github.com/hslayers/hslayers-ng/commit/75d6cc13a76e21b8d4b552daf8cae130afa264ee))
+* Don't cache getCapabilities, if response is error or no data was found ([1de6bbc](https://github.com/hslayers/hslayers-ng/commit/1de6bbc477a113c4e74c3174044b9a90b126316e))
+* Don't import cesium widgets css twice ([08d30e4](https://github.com/hslayers/hslayers-ng/commit/08d30e433c255e7abdcf2b3f80289865f788e72e))
+* Feature by Id not found in some cases ([57e1c0b](https://github.com/hslayers/hslayers-ng/commit/57e1c0b050fabfdbea511a28e0f3ec8a655a487b))
+* Fix sidebar duplication when hslayers component loaded twice ([ed845a6](https://github.com/hslayers/hslayers-ng/commit/ed845a64307d1de56d58bebbb6146bcc3440f268))
+* Handle ol.Layer without ol.Source ([64cd453](https://github.com/hslayers/hslayers-ng/commit/64cd453bf05cee1c46cfa4010bbdf557eb8eda21))
+* Make symbolizer headings smaller ([19103e1](https://github.com/hslayers/hslayers-ng/commit/19103e19cdda9b66bedb78378749b365f68daa87))
+* Module imports for geostyler classes ([cc2ced8](https://github.com/hslayers/hslayers-ng/commit/cc2ced874874355f3ac7e9091dcacfac6e7cb36e))
+* Properly disable pagination buttons ([6954247](https://github.com/hslayers/hslayers-ng/commit/695424773f54fb19d3efeeb47e2b260b869c317c))
+* Unregister previous HsQueryPopupComponent when init called again ([44ac787](https://github.com/hslayers/hslayers-ng/commit/44ac78782230de05b2bd0c6e5a41860aed105438))
+* **add-data-catalogue:** Handle login timeout ([7c0aade](https://github.com/hslayers/hslayers-ng/commit/7c0aadef8acb463a93d1edeb745ea8556e9d79ce)), closes [#3608](https://github.com/hslayers/hslayers-ng/issues/3608)
+* **cesium:** Cesium Es6 module imports ([39dcdad](https://github.com/hslayers/hslayers-ng/commit/39dcdad0a14729c3d7ecb2be13ab36a6199a4d79))
+* **docs:** Fix gen-doc script ([1f3c092](https://github.com/hslayers/hslayers-ng/commit/1f3c092a03b3b4f41b08d907e4e01b42fd169c42))
+* Hide menu after adding style rule filter ([09d739b](https://github.com/hslayers/hslayers-ng/commit/09d739bcb743dd5f2b4e31764ae3e4f23ea6459c))
+* Migrate to new NgMaterial components ([c450457](https://github.com/hslayers/hslayers-ng/commit/c45045737ffc436cf0dccef1f7c6dfffc9067110))
+* Monitor showInLayerManager state change ([24ed343](https://github.com/hslayers/hslayers-ng/commit/24ed343596c7e2a050e095c1f3176226fa432dab))
+* Overlay panel container need to fill screen ([425cf2c](https://github.com/hslayers/hslayers-ng/commit/425cf2c0b44ac7ca518432764dad0cf550f3430f))
+* Provide translation service and utils in root ([47ba93d](https://github.com/hslayers/hslayers-ng/commit/47ba93d439818021c199f583e59260385ae3e394))
+* Remove duplicit declarations from save map service ([308f932](https://github.com/hslayers/hslayers-ng/commit/308f93284e748a68f4c0a230bfcfb6933cd5e484))
+* Select feature if clicked on symbol, but not exactly in geom ([c9b80fd](https://github.com/hslayers/hslayers-ng/commit/c9b80fd97e04f3ac60ebfa5a72f28d70c932ed30))
+* Support sld 1.1.0 style definition ([db1310d](https://github.com/hslayers/hslayers-ng/commit/db1310d90ea8176612b3e4da3c67a090b306be77)), closes [#3579](https://github.com/hslayers/hslayers-ng/issues/3579)
+* **hs-server:** Provide logout callback ([72b0669](https://github.com/hslayers/hslayers-ng/commit/72b066948b76b40ab6e7c25d3f07d0278ee9233c))
+* Use tree shakable module imports for federation ([b911316](https://github.com/hslayers/hslayers-ng/commit/b91131641685adff3271651c9f105b1aeda87dff))
+
+
+### Features
+
+* Allow 'sidebarPosition' to be configured to 'bottom' by choice not by mediaQuery. ([2810a50](https://github.com/hslayers/hslayers-ng/commit/2810a50450df037cf0951ae24a4f7f1d4e050201))
+* Expandable mobileview sidebat + UI enhancements ([2cf8b44](https://github.com/hslayers/hslayers-ng/commit/2cf8b44bbcb0d4ea09e045cca03f7cd9f1ecf1f2))
+* **add-data:** Allow to load SHP as WFS ([57aea27](https://github.com/hslayers/hslayers-ng/commit/57aea279e256f263a661fa1e46be590eabb7f3a5))
+* **add-data:** Allow to load vector-data as WMS ([8e1bdf6](https://github.com/hslayers/hslayers-ng/commit/8e1bdf677dc93b363b5ff5a00489e5fbcb6cc836))
+* **add-data:** Mock "load as" UI ([9a1a0b2](https://github.com/hslayers/hslayers-ng/commit/9a1a0b24452815bad83409a26b113b1a7a8d98eb))
+* **add-data-catalogue:** Refresh Layman auth ([f4bcd0a](https://github.com/hslayers/hslayers-ng/commit/f4bcd0a3b01b2ceb219e7409adaeebc6ef5970be))
+* **config:** Add possibility to use base_layers config param to load baselayers as composition ([44c2015](https://github.com/hslayers/hslayers-ng/commit/44c201564cd6a6a6a045ba4036a95a728205fd91))
+* **i18n:** Add new strings for symbolizer types ([d34d77a](https://github.com/hslayers/hslayers-ng/commit/d34d77aef4fe515b52e3f5336738fb85fec71172))
+* Display legend for each rule in styler panel ([b186d9e](https://github.com/hslayers/hslayers-ng/commit/b186d9ebdb76a56b71e2badb8e8a97bf6f501e12))
+* Improve graphics fill warnings and button to remove graphic ([673e90b](https://github.com/hslayers/hslayers-ng/commit/673e90bddc3671407bfd90f88141884cbd4e6691)), closes [#3444](https://github.com/hslayers/hslayers-ng/issues/3444)
+* Make error toast duration configurable ([40560b8](https://github.com/hslayers/hslayers-ng/commit/40560b8832c9dda8fb90e35eae996c77243544d6))
+* New feature select DOM action ([9f04700](https://github.com/hslayers/hslayers-ng/commit/9f0470070bcf4f5e68e40f3d12f57e2283a02bc9))
+* Style filter/scale toggles differently if filter exists ([d6ba3c6](https://github.com/hslayers/hslayers-ng/commit/d6ba3c64ec0e80de99df4633163e5a00487e77f2))
+* **config:** Use base_layers.default to set which layer from basemap composition should be visible ([a0981a7](https://github.com/hslayers/hslayers-ng/commit/a0981a7eaf1fa28c0c07ef8e5c4eb8200ab3e314))
+* **UI:** Replace loader icon with CSS loader ([575dcc5](https://github.com/hslayers/hslayers-ng/commit/575dcc58af741d1d559c2942eb49ff1342fdc3f8))
+* Use grayscale map composition param ([fe749bd](https://github.com/hslayers/hslayers-ng/commit/fe749bd549bf7a2490855e6729b8dc56c0548842))
+
+
+### Reverts
+
+* Re-enable external anchors for selecting features ([b6bb006](https://github.com/hslayers/hslayers-ng/commit/b6bb00696b1ebbe62e80723d9ed4ce40e0e3017d))
+
+
+
 ## [11.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/10.0.0...11.0.0-next.0) (2022-12-02)
 
 
