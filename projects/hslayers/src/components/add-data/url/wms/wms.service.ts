@@ -335,7 +335,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         preferred?.extent ??
         transformExtent(
           serviceLayer.BoundingBox[0].extent,
-          serviceLayer.BoundingBox[0].crs ?? crs, //Use BBOX object crs - when missing assume its same as layer's
+          serviceLayer.BoundingBox[0].crs || crs, //Use BBOX object crs - when missing assume its same as layer's
           this.hsMapService.getMap(app).getView().getProjection()
         );
     } else if (crs !== undefined) {
