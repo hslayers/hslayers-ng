@@ -1,3 +1,4 @@
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import ImageSource from 'ol/source/Image';
@@ -34,9 +35,11 @@ import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUrlWfsService} from '../../add-data/url/wfs/wfs.service';
+import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
+import {WfsSource} from '../../../common/layers/hs.source.WfsSource';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
@@ -53,7 +56,9 @@ export class HsCompositionsLayerParserService {
     private HsUrlWfsService: HsUrlWfsService,
     private hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     private hsAddDataCommonService: HsAddDataCommonService,
-    private HsLaymanBrowserService: HsLaymanBrowserService
+    private HsLaymanBrowserService: HsLaymanBrowserService,
+    private HsUtilsService: HsUtilsService,
+    private HttpClient: HttpClient
   ) {}
 
   /**
@@ -62,17 +67,36 @@ export class HsCompositionsLayerParserService {
    * @param app - App identifier
    * Initiate creation of WFS layer through HsUrlWfsService
    */
-  async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>[]> {
-    this.hsAddDataCommonService.get(app).layerToSelect = lyr_def.name;
-    const wrapper = await this.hsWfsGetCapabilitiesService.request(
-      lyr_def.protocol.url,
-      app
-    );
-    return await this.HsUrlWfsService.listLayerFromCapabilities(
-      wrapper,
-      app,
-      lyr_def.style
-    );
+  async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>> {
+    const newLayer = new VectorLayer({
+      properties: {
+        name: lyr_def.name,
+        title: lyr_def.title.replace(/\//g, '&#47;'),
+        path: lyr_def.path,
+        removable: true,
+        sld: lyr_def.sld ?? lyr_def.style,
+        qml: lyr_def.qml,
+        wfsUrl: lyr_def.protocol.url.split('?')[0],
+      },
+      source: new WfsSource(
+        this.HsUtilsService,
+        this.HttpClient,
+        {
+          data_version: lyr_def.protocol.version,
+          output_format: lyr_def.protocol.output_format,
+          crs: lyr_def.projection,
+          provided_url: lyr_def.protocol.url.split('?')[0],
+          layer_name: lyr_def.name,
+          map_projection: this.HsMapService.getMap(app)
+            .getView()
+            .getProjection(),
+        },
+        app
+      ),
+      renderOrder: null,
+      //Used to determine whether its URL WFS service when saving to compositions
+    });
+    return newLayer;
   }
 
   /**
