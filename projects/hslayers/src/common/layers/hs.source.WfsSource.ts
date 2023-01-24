@@ -48,14 +48,20 @@ export class WfsSource extends Vector<Geometry> {
         const srs = crs.toUpperCase();
 
         extent = transformExtent(extent, projection.getCode(), srs);
-        if (srs.includes('4326') || srs.includes('4258')) {
+        if (/*srs.includes('4326') || */ srs.includes('4258')) {
           extent = [extent[1], extent[0], extent[3], extent[2]];
         }
+        //https://gis.stackexchange.com/questions/30602/openlayers-wfs-flip-coordinates
+        //Do this, so feature coordinates would be in the right order. Without urn they aren't
+        //Can test with https://hub4everybody.com/geoserver/jan_vrobel/wfs
+        const srsWithUrn = srs.includes('urn')
+          ? srs
+          : 'urn:x-ogc:def:crs:' + srs;
         const params = {
           service: 'wfs',
           version: data_version, // == '2.0.0' ? '1.1.0' : data_version,
           request: 'GetFeature',
-          srsName: srs,
+          srsName: srsWithUrn,
           output_format: output_format,
           // count: layer.limitFeatureCount ? 1000 : '',
           BBOX: extent.join(',') + ',' + srs,

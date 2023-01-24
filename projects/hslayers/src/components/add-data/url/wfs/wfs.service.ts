@@ -436,7 +436,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   getLayer(layer, options: addLayerOptions, app: string): Layer<Source> {
     const appRef = this.get(app);
-    const new_layer = new VectorLayer({
+    const newLayer = new VectorLayer({
       properties: {
         name: options.layerName,
         title: layer.Title.replace(/\//g, '&#47;'),
@@ -467,7 +467,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });
-    return new_layer;
+    return newLayer;
   }
 
   /**

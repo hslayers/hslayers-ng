@@ -728,7 +728,10 @@ export class HsCompositionsParserService {
       case 'Vector':
       case 'hs.format.LaymanWfs':
         if (lyr_def.protocol?.format == 'hs.format.externalWFS') {
-          this.hsCompositionsLayerParserService.createWFSLayer(lyr_def, app);
+          resultLayer = this.hsCompositionsLayerParserService.createWFSLayer(
+            lyr_def,
+            app
+          );
         } else {
           resultLayer =
             await this.hsCompositionsLayerParserService.createVectorLayer(
@@ -748,7 +751,7 @@ export class HsCompositionsParserService {
         return;
     }
     if (resultLayer) {
-      resultLayer = await resultLayer; //createWMTSLayer returns Promise which need to be resolved first
+      resultLayer = await resultLayer; //createWMTSLayer returns Promise which needs to be resolved first
       setMetadata(resultLayer, lyr_def.metadata);
       setSwipeSide(resultLayer, lyr_def.swipeSide);
     }
