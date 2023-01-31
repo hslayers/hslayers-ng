@@ -746,20 +746,12 @@ export class HsMapService {
   }
 
   /**
-   * Function to add layer to map which also checks if
-   * the layer is not already present and also proxifies the layer if needed.
-   * Generally for non vector layers it would be better to use this function than to add to OL map directly
-   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.getMap(app).addLayer.
-   *
-   * @param lyr - Layer to add
-   * @param duplicateHandling - How to handle duplicate layers (same class and title)
-   * @param visibleOverride - Override the visibility using an array layer titles, which
+   * Checks if layer already exists in map and resolves based on duplicateHandling strategy
    */
-  addLayer(
+  resolveDuplicateLayer(
     lyr: Layer<Source>,
     app: string,
-    duplicateHandling?: DuplicateHandling,
-    visibleOverride?: string[]
+    duplicateHandling?: DuplicateHandling
   ): void {
     if (this.layerAlreadyExists(lyr, app ?? DEFAULT)) {
       if (getTitle(lyr) === getTitle(this.apps[app].placeholderOsm)) {
@@ -778,6 +770,25 @@ export class HsMapService {
         default:
       }
     }
+  }
+
+  /**
+   * Function to add layer to map which also checks if
+   * the layer is not already present and also proxifies the layer if needed.
+   * Generally for non vector layers it would be better to use this function than to add to OL map directly
+   * and rely on layer manager service to do the proxification and also it's shorter than to use HsMapService.getMap(app).addLayer.
+   *
+   * @param lyr - Layer to add
+   * @param duplicateHandling - How to handle duplicate layers (same class and title)
+   * @param visibleOverride - Override the visibility using an array layer titles, which
+   */
+  addLayer(
+    lyr: Layer<Source>,
+    app: string,
+    duplicateHandling?: DuplicateHandling,
+    visibleOverride?: string[]
+  ): void {
+    this.resolveDuplicateLayer(lyr, app, duplicateHandling);
     if (visibleOverride) {
       lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
     }

@@ -10,6 +10,7 @@ import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -18,7 +19,6 @@ import {HsDimensionService} from '../../../../common/get-capabilities/dimension.
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
@@ -545,6 +545,11 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    */
   addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
+      this.hsMapService.resolveDuplicateLayer(
+        l,
+        app,
+        DuplicateHandling.RemoveOriginal
+      );
       this.hsAddDataService.addLayer(l, app, this.get(app).data.add_under);
     }
   }
