@@ -11,12 +11,12 @@ import {Tile as TileSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -313,7 +313,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
-      this.hsMapService.getMap(app).addLayer(l);
+      this.hsMapService.addLayer(l, app, DuplicateHandling.RemoveOriginal);
     }
   }
 

@@ -7,10 +7,10 @@ import {get, transformExtent} from 'ol/proj';
 
 import WfsSource from '../../../../common/layers/hs.source.WfsSource';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
+import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
@@ -436,6 +436,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   addLayers(layers: Layer<Source>[], app: string): void {
     for (const l of layers) {
+      this.hsMapService.resolveDuplicateLayer(
+        l,
+        app,
+        DuplicateHandling.RemoveOriginal
+      );
       this.hsMapService.getMap(app).addLayer(l);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);
