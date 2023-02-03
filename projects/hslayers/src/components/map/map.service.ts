@@ -608,9 +608,15 @@ export class HsMapService {
   }
 
   /**
+   * Two layers are considered equal when they equal in the following properties:
+   *  * title
+   *  * type of source
+   *  * list of sublayers
+   *  * URL
+   *  * and when there are multiple URLs defined for a layer, there must be at least one matching URL for both the layers.
    * @param existingLayer - Layer 1. Usually the one which is already added to map
    * @param newLayer - Layer 2. Usually the one which will be added to map
-   * @returns True or false
+   * @returns True if the layers are equal, false otherwise
    */
   layersEqual(existingLayer, newLayer): boolean {
     if (newLayer === 'undefined') {
