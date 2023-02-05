@@ -39,7 +39,7 @@
       "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi"
     },
     "requestServiceLayers": "Vyžiadať vrstvy služby",
-    "saveToDatabase": "Uložit do databázy",
+    "saveToCatalogue": "Uložit do katalógu",
     "URL": {
       "selectAll": "Označiť všetky vrstvy",
       "submitLayerName": "Zadajte názov vrstvy",
