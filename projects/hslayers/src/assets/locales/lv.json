@@ -39,7 +39,7 @@
       "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
     },
     "requestServiceLayers": "Pieprasīt pakalpojumu slāņus",
-    "saveToDatabase": "Saglabāt datubāzē",
+    "saveToCatalogue": "Saglabāt datubāzē",
     "URL": {
       "selectAll": "Izvēlēties visus slāņus",
       "submitLayerName": "Ievadiet slāņa nosaukumu",
