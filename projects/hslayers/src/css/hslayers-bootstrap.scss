@@ -82,6 +82,10 @@ $list-group-item-padding-x: 1.25rem;
     margin: auto
   }
 
+  .form-control:not(.form-control-sm):not(.form-control-lg) {
+    font-size: $font-size-base;
+  }
+
   //CSS override for each bs5 theme-color - used to force style against hub themes
   @each $color,
   $value in $theme-colors {

@@ -34,6 +34,10 @@ $list-group-item-padding-x: 1.25rem;
     }
   }
 
+  .form-control:not(.form-control-sm):not(.form-control-lg) {
+    font-size: 1rem;
+  }
+
   hs-panel-container.hs-panelplace>*>div[class*="hs-panel-width-"] {
     max-width: 65rem;
     margin: auto
