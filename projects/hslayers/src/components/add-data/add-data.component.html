@@ -3,7 +3,7 @@
     <hs-panel-header name="addData" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translateHs : data" [app]="data.app">
     </hs-panel-header>
     <div class="card-body" style="overflow-y: auto;">
-        <ul class="nav flex-column flex-sm-row dss-tabs sticky-top bg-white" role="tablist">
+        <ul class="nav flex-column flex-sm-row dss-tabs sticky-md-top bg-white" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link" [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'catalogue'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('catalogue')">
