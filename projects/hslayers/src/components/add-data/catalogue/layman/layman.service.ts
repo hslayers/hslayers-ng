@@ -54,8 +54,10 @@ export class HsLaymanBrowserService {
     extentFeatureCreated?: (feature: Feature<Geometry>) => void
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint, app);
+    const loggedIn =
+      endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
     const withPermissionOrMine = data?.onlyMine
-      ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
+      ? loggedIn
         ? `workspaces/${endpoint.user}/`
         : ''
       : '';
@@ -95,7 +97,7 @@ export class HsLaymanBrowserService {
     endpoint.httpCall = this.http
       .get(url, {
         observe: 'response',
-        withCredentials: true,
+        withCredentials: loggedIn,
         responseType: 'json',
         params,
       })
