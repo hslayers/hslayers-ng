@@ -323,6 +323,7 @@ export class HsAddDataVectorService {
     if (data.saveToLayman) {
       this.awaitLayerSync(layer).then(() => {
         layer.getSource().dispatchEvent('addfeature');
+        this.fitExtent(layer, app);
       });
     }
     return addLayerRes;
