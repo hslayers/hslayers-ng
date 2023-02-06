@@ -50,7 +50,8 @@ export class HsCompositionsLaymanService {
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint, app);
     endpoint.compositionsPaging.loaded = false;
-
+    const loggedIn =
+      endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
     const query = params.query.title ? params.query.title : '';
     const sortBy =
       params.sortBy == 'date:D'
@@ -70,7 +71,7 @@ export class HsCompositionsLaymanService {
     const bbox = params.filterByExtent ? b.join(',') : '';
 
     const withPermissionOrMine = params.filterByOnlyMine
-      ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
+      ? loggedIn
         ? `workspaces/${endpoint.user}/`
         : ''
       : '';
@@ -79,7 +80,7 @@ export class HsCompositionsLaymanService {
     endpoint.listLoading = this.$http
       .get(url, {
         observe: 'response',
-        withCredentials: true,
+        withCredentials: loggedIn,
         params: {
           'limit': `${endpoint.compositionsPaging.limit}`,
           'offset': `${endpoint.compositionsPaging.start}`,
