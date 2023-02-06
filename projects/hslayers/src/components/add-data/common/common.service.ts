@@ -72,19 +72,13 @@ export class HsAddDataCommonService {
     }
     const nameOrTitle = serviceType !== 'wmts';
     for (const layer of services) {
-      let layerName = nameOrTitle
-        ? layer.Name ?? layer.Title
-        : layer.Identifier;
-      //NOTE: If Layman allows layers with different casing,
+      //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
-      layerName = layerName.toLowerCase();
-      // Removing the workspace (like user:my_layer)
-      layerName = layerName.includes(':')
-        ? layerName.split(':').slice(1).join(':')
-        : layerName;
+      const layerName = nameOrTitle
+        ? layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase()
+        : layer.Identifier?.toLowerCase();
       if (layerName === this.get(app).layerToSelect.toLowerCase()) {
         layer.checked = true;
-        return;
       }
     }
   }
