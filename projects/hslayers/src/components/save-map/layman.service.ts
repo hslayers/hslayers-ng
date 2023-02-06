@@ -836,7 +836,7 @@ export class HsLaymanService implements HsSaverService {
           wfsFailed(response):
           return null;
         case response.name && ignoreStatus:
-          return response;
+          return {...response, workspace};
         case response.wfs &&
           (wfsPendingOrStarting(response) || response.wfs?.url == undefined):
           if (!this.pendingLayers.includes(layerName)) {
@@ -848,7 +848,7 @@ export class HsLaymanService implements HsSaverService {
         default:
           if (response.name) {
             this.managePendingLayers(layerName);
-            return response;
+            return {...response, workspace};
           }
       }
     } catch (ex) {

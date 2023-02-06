@@ -627,7 +627,10 @@ export class HsAddDataCommonFileService {
       {
         type: serviceType,
         uri: descriptor[serviceType].url,
-        layer: data.name,
+        layer:
+          serviceType === 'wms'
+            ? data.name
+            : `${descriptor.workspace}:${data.name}`,
         owrCache: true,
       },
       app
