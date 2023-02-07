@@ -25,6 +25,7 @@ import {
   getQueryFilter,
   getTitle,
 } from '../../common/layer-extensions';
+import {jsonGetFeatureInfo} from 'hslayers-ng/common/get-feature-info/json-get-feature-info.type';
 
 @Injectable({
   providedIn: 'root',
@@ -173,7 +174,7 @@ export class HsQueryWmsService {
     if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
       const parser = new WMSGetFeatureInfo();
       const features = parser.readFeatures(response);
-      this.parseGmlResponse(features, layer, app);
+      this.parseXmlResponse(features, layer, app);
     }
     if (infoFormat.includes('html')) {
       if (response.length <= 1) {
@@ -190,10 +191,7 @@ export class HsQueryWmsService {
       }
     }
     if (infoFormat.includes('json')) {
-      //FIXME
-      const resJSON = JSON.parse(response);
-      this.hsQueryBaseService.get(app).set(resJSON.features, 'customFeatures');
-      console.log('jsonquery');
+      this.parseJSONResponse(JSON.parse(response), layer, app);
     }
     this.infoCounter--;
     if (this.infoCounter === 0) {
@@ -202,12 +200,38 @@ export class HsQueryWmsService {
   }
 
   /**
-   * Parse Information from GetFeatureInfo request. If result came in XML format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
-   * @param doc - Parsed HTML document from GetFeatureInfoRequest response
+   * Parse Information from JSON based GetFeatureInfo response.
+   * @param response - jsonGetFeatureInfo
    * @param layer - Target layer
    * @param app - App identifier
    */
-  parseGmlResponse(
+  parseJSONResponse(
+    response: jsonGetFeatureInfo,
+    layer: Layer<Source>,
+    app: string
+  ) {
+    for (const feature of response.features) {
+      const group = {
+        name: 'Feature',
+        layer: this.hsLayerUtilsService.getLayerName(layer),
+        attributes: Object.entries(feature.properties).map(([key, value]) => {
+          return {
+            'name': key,
+            'value': value,
+          };
+        }),
+      };
+      this.updateFeatureList(true, group, app);
+    }
+  }
+
+  /**
+   * Parse Information from XML based GetFeatureInfo response.
+   * @param features - Parsed features
+   * @param layer - Target layer
+   * @param app - App identifier
+   */
+  parseXmlResponse(
     features: Feature<Geometry>[],
     layer: Layer<Source>,
     app: string
@@ -238,22 +262,20 @@ export class HsQueryWmsService {
       //   };
       //   this.updateFeatureList(updated, group, app);
       // }
+      const geometryName = feature.getGeometryName();
       const group = {
         name: 'Feature',
         layer: this.hsLayerUtilsService.getLayerName(layer),
-        attributes: [],
+        attributes: Object.entries(feature.getProperties())
+          .filter((attr) => attr[0] !== geometryName)
+          .map(([key, value]) => {
+            updated = true;
+            return {
+              'name': key,
+              'value': value,
+            };
+          }),
       };
-      const geometryName = feature.getGeometryName();
-      for (const [key, value] of Object.entries(feature.getProperties())) {
-        if (key === geometryName) {
-          continue;
-        }
-        group.attributes.push({
-          'name': key,
-          'value': value,
-        });
-        updated = true;
-      }
       this.updateFeatureList(updated, group, app);
     });
   }
