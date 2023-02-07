@@ -270,7 +270,7 @@ export class HsQueryWmsService {
         };
         this.updateFeatureList(updated, group, app);
       }
-      const featureNode = feature.firstChild as any;
+      const featureNode = feature.firstElementChild;
       const group = {
         name: 'Feature',
         layer: this.hsLayerUtilsService.getLayerName(layer),
