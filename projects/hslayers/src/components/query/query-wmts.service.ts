@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import {Layer} from 'ol/layer';
-import {WMTS} from 'ol/source';
-import {transform} from 'ol/proj';
+import { Layer } from 'ol/layer';
+import { WMTS } from 'ol/source';
+import { transform } from 'ol/proj';
 
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {getInfoFormat} from '../../common/layer-extensions';
+import { HsMapService } from '../map/map.service';
+import { HsUtilsService } from '../utils/utils.service';
+import { getInfoFormat } from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class HsQueryWmtsService {
   constructor(
     private hsMapService: HsMapService,
     private hsUtilsService: HsUtilsService
-  ) {}
+  ) { }
 
   /**
    * Parse request URL
@@ -29,7 +29,7 @@ export class HsQueryWmtsService {
     layer: Layer<WMTS>,
     coordinate: number[],
     app: string
-  ): Promise<{url: string; format: string}> {
+  ): Promise<{ url: string; format: string }> {
     const source = layer.getSource();
 
     coordinate = transform(
@@ -70,6 +70,7 @@ export class HsQueryWmtsService {
       J: y,
       TILEMATRIXSET: source.getMatrixSet(),
       TileMatrix: tileMatrix,
+      feature_count: source.getLayer().length,
     };
 
     const url = [urls, this.hsUtilsService.paramsToURLWoEncode(params)].join(

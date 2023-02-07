@@ -1,10 +1,13 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import WMSGetFeatureInfo from 'ol/format/WMSGetFeatureInfo';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {lastValueFrom} from 'rxjs';
 
+import Feature from 'ol/Feature';
+import {Geometry} from 'ol/geom';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -14,7 +17,6 @@ import {HsQueryWmtsService} from './query-wmts.service';
 import {HsUtilsService, instOf} from '../utils/utils.service';
 import {
   getBase,
-  getCustomInfoTemplate,
   getFeatureInfoLang,
   getFeatureInfoTarget,
   getInfoFormat,
@@ -168,43 +170,10 @@ export class HsQueryWmsService {
     layer: Layer<Source>,
     app: string
   ): void {
-    /* Maybe this will work in future OL versions
-     * var format = new GML();
-     *  console.log(format.readFeatures(response, {}));
-     */
-    const queryBaseAppRef = this.hsQueryBaseService.get(app);
-    const customInfoTemplate = getCustomInfoTemplate(layer) || false;
-
     if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
-      const oParser = new DOMParser();
-      const oDOM = oParser.parseFromString(response, 'application/xml');
-      const doc = oDOM.documentElement;
-
-      //This is suggests that WMTS only provides gml, is that the case?
-      //http://opengeospatial.github.io/e-learning/wmts/text/operations.html
-      if (infoFormat.includes('gml') || instOf(layer.getSource(), WMTS)) {
-        this.parseGmlResponse(doc, layer, customInfoTemplate, app);
-      } else if (
-        infoFormat == 'text/xml' ||
-        infoFormat === 'application/vnd.ogc.wms_xml'
-      ) {
-        if (doc.childNodes[1]['attributes'] != undefined) {
-          const group = {
-            name: 'Feature',
-            attributes: doc.childNodes[1]['attributes'],
-            layer: getTitle(layer) || getName(layer),
-            customInfoTemplate: customInfoTemplate,
-          };
-          if (customInfoTemplate) {
-            queryBaseAppRef.set(group, 'customFeatures');
-            queryBaseAppRef.dataCleared = false;
-          } else {
-            queryBaseAppRef.set(group, 'features');
-          }
-        } else {
-          return;
-        }
-      }
+      const parser = new WMSGetFeatureInfo();
+      const features = parser.readFeatures(response);
+      this.parseGmlResponse(features, layer, app);
     }
     if (infoFormat.includes('html')) {
       if (response.length <= 1) {
@@ -221,6 +190,7 @@ export class HsQueryWmsService {
       }
     }
     if (infoFormat.includes('json')) {
+      //FIXME
       const resJSON = JSON.parse(response);
       this.hsQueryBaseService.get(app).set(resJSON.features, 'customFeatures');
       console.log('jsonquery');
@@ -235,110 +205,57 @@ export class HsQueryWmsService {
    * Parse Information from GetFeatureInfo request. If result came in XML format, Infopanel data are updated. If response is in HTML, popup window is updated and shown.
    * @param doc - Parsed HTML document from GetFeatureInfoRequest response
    * @param layer - Target layer
-   * @param customInfoTemplate - Custom info template
    * @param app - App identifier
    */
   parseGmlResponse(
-    doc: HTMLElement,
+    features: Feature<Geometry>[],
     layer: Layer<Source>,
-    customInfoTemplate: string | boolean,
     app: string
   ): void {
     let updated = false;
-    let features = doc.querySelectorAll('gml\\:featureMember');
-    if (features.length == 0) {
-      features = doc.querySelectorAll('featureMember');
-    }
     features.forEach((feature) => {
-      const layerName = getTitle(layer) || getName(layer);
-      const layers = feature.getElementsByTagName('Layer');
-      for (const fioLayer of Array.from(layers)) {
-        const featureName = fioLayer.attributes[0].nodeValue;
-        const attrs = fioLayer.getElementsByTagName('Attribute');
-        const attributes = [];
-        for (const attr of Array.from(attrs)) {
-          attributes.push({
-            'name': attr.attributes[0].nodeValue,
-            'value': attr.innerHTML,
-          });
-        }
-        const group = {
-          layer: layerName,
-          name: featureName,
-          attributes,
-          customInfoTemplate,
-        };
-        this.updateFeatureList(updated, group, app);
-      }
-      const featureNode = feature.firstElementChild;
+      /**
+       * TODO: Layered response need to be refactored as well but I havent found and example yet
+       * so I don't really know how to handle those. Multiple layers in one request are handled by loop
+       */
+      //const layerName = getTitle(layer) || getName(layer);
+      // const layers = feature.getElementsByTagName('Layer');
+      // for (const fioLayer of Array.from(layers)) {
+      //   const featureName = fioLayer.attributes[0].nodeValue;
+      //   const attrs = fioLayer.getElementsByTagName('Attribute');
+      //   const attributes = [];
+      //   for (const attr of Array.from(attrs)) {
+      //     attributes.push({
+      //       'name': attr.attributes[0].nodeValue,
+      //       'value': attr.innerHTML,
+      //     });
+      //   }
+      //   const group = {
+      //     layer: layerName,
+      //     name: featureName,
+      //     attributes,
+      //     customInfoTemplate,
+      //   };
+      //   this.updateFeatureList(updated, group, app);
+      // }
       const group = {
         name: 'Feature',
         layer: this.hsLayerUtilsService.getLayerName(layer),
         attributes: [],
       };
-      for (const attribute in featureNode.children) {
-        if (featureNode.children[attribute].childElementCount == 0) {
-          group.attributes.push({
-            'name': featureNode.children[attribute].localName,
-            'value': featureNode.children[attribute].innerHTML,
-          });
-          updated = true;
+      const geometryName = feature.getGeometryName();
+      for (const [key, value] of Object.entries(feature.getProperties())) {
+        if (key === geometryName) {
+          continue;
         }
+        group.attributes.push({
+          'name': key,
+          'value': value,
+        });
+        updated = true;
       }
       this.updateFeatureList(updated, group, app);
     });
-    const msGMLOutputs = doc.querySelectorAll('msGMLOutput');
-    if (msGMLOutputs?.length > 0) {
-      msGMLOutputs.forEach((output) => {
-        this.extractMsGMLAttributes(output, updated, customInfoTemplate, app);
-      });
-    } else if (doc.nodeName == 'msGMLOutput') {
-      this.extractMsGMLAttributes(doc, updated, customInfoTemplate, app);
-    }
-  }
-
-  /**
-   * Extract MsGMLOutput feature attributes
-   * @param output - MsGMLOutput from parsed HTML document
-   * @param updated - Is feature list updated
-   * @param customInfoTemplate - Custom info template
-   * @param app - App identifier
-   */
-  extractMsGMLAttributes(
-    output: Element,
-    updated: boolean,
-    customInfoTemplate: string | boolean,
-    app: string
-  ): void {
-    for (const layer_i in output.children) {
-      const layer = output.children[layer_i];
-      let layer_name = '';
-      if (layer.children == undefined) {
-        continue;
-      }
-      for (let feature_i = 0; feature_i < layer.children.length; feature_i++) {
-        const feature = layer.children[feature_i];
-        if (feature.nodeName == 'gml:name') {
-          layer_name = feature.innerHTML;
-        } else {
-          const group = {
-            name: layer_name + ' Feature',
-            attributes: [],
-            customInfoTemplate,
-          };
-          for (const attribute in feature.children) {
-            if (feature.children[attribute].childElementCount == 0) {
-              group.attributes.push({
-                'name': feature.children[attribute].localName,
-                'value': feature.children[attribute].innerHTML,
-              });
-              updated = true;
-            }
-          }
-          this.updateFeatureList(updated, group, app);
-        }
-      }
-    }
   }
 
   /**
@@ -395,6 +312,10 @@ export class HsQueryWmsService {
           : this.hsMapService.getCurrentProj(app),
         {
           INFO_FORMAT: source.getParams().INFO_FORMAT,
+          /**
+           * FIXME: Might return multiple results for the same layer not always 1 of each
+           */
+          feature_count: source.getParams().LAYERS.split(',').length || 1,
         }
       );
       if (
