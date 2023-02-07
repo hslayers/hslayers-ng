@@ -85,18 +85,12 @@ export class HsQueryWmsService {
       layer?: string;
       name?: any;
       attributes?: any[];
-      customInfoTemplate?: string | boolean;
     },
     app: string
   ): void {
     const queryBaseAppRef = this.hsQueryBaseService.get(app);
     if (updated) {
-      if (group.customInfoTemplate) {
-        queryBaseAppRef.set(group, 'customFeatures');
-        queryBaseAppRef.dataCleared = false;
-      } else {
-        queryBaseAppRef.set(group, 'features');
-      }
+      queryBaseAppRef.set(group, 'features');
     }
   }
 
