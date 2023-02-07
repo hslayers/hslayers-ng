@@ -17,7 +17,6 @@ const AUTO_LEGEND = 'autoLegend';
 const BASE = 'base';
 const CAPABILITIES = 'capabilities';
 const CLUSTER = 'cluster';
-const CUSTOM_INFO_TEMPLATE = 'customInfoTemplate';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
@@ -181,17 +180,6 @@ export function setCluster(layer: Layer<Source>, clusterActive: boolean): void {
 
 export function getCluster(layer: Layer<Source>): boolean {
   return layer.get(CLUSTER);
-}
-
-export function setCustomInfoTemplate(
-  layer: Layer<Source>,
-  customInfoTemplate: string
-): void {
-  layer.set(CUSTOM_INFO_TEMPLATE, customInfoTemplate);
-}
-
-export function getCustomInfoTemplate(layer: Layer<Source>): string {
-  return layer.get(CUSTOM_INFO_TEMPLATE);
 }
 
 export function setDefinition(
@@ -686,8 +674,6 @@ export const HsLayerExt = {
   getBase,
   setCluster,
   getCluster,
-  setCustomInfoTemplate,
-  getCustomInfoTemplate,
   setDefinition,
   getDefinition,
   setDimensions,

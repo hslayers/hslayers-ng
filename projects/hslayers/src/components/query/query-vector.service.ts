@@ -19,13 +19,12 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getFeatures} from '../../common/feature-extensions';
 import {
-  getCustomInfoTemplate,
   getOnFeatureSelected,
   getQueryable,
   getVirtualAttributes,
 } from '../../common/layer-extensions';
-import {getFeatures} from '../../common/feature-extensions';
 
 type AttributeValuePair = {
   name;
@@ -43,7 +42,6 @@ type FeatureDescription = {
   }[];
   hstemplate: any;
   feature: any;
-  customInfoTemplate: SafeHtml;
 };
 
 @Injectable({
@@ -352,7 +350,6 @@ export class HsQueryVectorService {
     const hstemplate = feature.get('hstemplate')
       ? feature.get('hstemplate')
       : null;
-    let customInfoTemplate = null;
     feature.getKeys().forEach((key) => {
       if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) {
         return;
@@ -371,9 +368,6 @@ export class HsQueryVectorService {
       }
     });
     const layer = this.hsMapService.getLayerForFeature(feature, app);
-    if (layer && getCustomInfoTemplate(layer)) {
-      customInfoTemplate = getCustomInfoTemplate(layer);
-    }
     if (layer && getVirtualAttributes(layer)) {
       const virtualAttributes = getVirtualAttributes(layer);
       for (const key of Object.keys(virtualAttributes)) {
@@ -394,8 +388,6 @@ export class HsQueryVectorService {
         stats: this.addDefaultStats(feature, app),
         hstemplate,
         feature,
-        customInfoTemplate:
-          this.domSanitizer.bypassSecurityTrustHtml(customInfoTemplate),
       };
       tmp.push(featureDescription);
     }
