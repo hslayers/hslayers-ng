@@ -20,12 +20,10 @@ import {
   getFeatureInfoLang,
   getFeatureInfoTarget,
   getInfoFormat,
-  getName,
   getPopupClass,
   getQueryFilter,
-  getTitle,
 } from '../../common/layer-extensions';
-import {jsonGetFeatureInfo} from 'hslayers-ng/common/get-feature-info/json-get-feature-info.type';
+import {jsonGetFeatureInfo} from '../../common/get-feature-info/json-get-feature-info.type';
 
 @Injectable({
   providedIn: 'root',
