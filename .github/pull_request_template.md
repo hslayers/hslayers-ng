@@ -46,7 +46,7 @@ Please check the type of change your PR introduces:
 
 ## Checklist
 
-- [ ] I understand and agree that the changes in this PR will be licensed under the [MIT License]
+- [x] I understand and agree that the changes in this PR will be licensed under the [MIT License]
 - [ ] I have followed the [guidelines for contributing](https://github.com/hslayers/hslayers-ng/blob/master/CONTRIBUTING.md)
 - [ ] The proposed change fits to the content of the [code of conduct](https://github.com/hslayers/hslayers-ng/blob/master/CODE_OF_CONDUCT.md)
 - [ ] I have added or updated tests and documentation, and the test suite passes (run `npm test` locally)
