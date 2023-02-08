@@ -14,8 +14,9 @@ import {HsUploadedFiles} from '../../../../common/upload/upload.component';
 })
 export class HsFileRasterComponent
   extends HsAddDataFileBaseComponent
-  implements OnInit {
-  fileType: AddDataFileType = 'raster';
+  implements OnInit
+{
+  @Input() fileType: Extract<AddDataFileType, 'raster' | 'raster-ts'>;
   constructor(
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
@@ -27,7 +28,9 @@ export class HsFileRasterComponent
   ngOnInit(): void {
     this.baseFileType = this.fileType;
     this.acceptedFormats =
-      '.tif, .tifw, .tiff, .tiffw, .gtiff, .gtiffw, .tfw, .png, .pngw, .pgw, .png.aux.xml, .jpg, .jpgw, .jgw, .jpg.aux.xml, .jp2, .jp2w, .j2w, .zip, .wld';
+      this.fileType === 'raster-ts'
+        ? '.zip'
+        : '.tif, .tifw, .tiff, .tiffw, .gtiff, .gtiffw, .tfw, .png, .pngw, .pgw, .png.aux.xml, .jpg, .jpgw, .jgw, .jpg.aux.xml, .jp2, .jp2w, .j2w, .zip, .wld';
     super.ngOnInit();
   }
 
