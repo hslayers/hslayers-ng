@@ -14,6 +14,7 @@
         <p *ngFor="let file of data.files">{{file.name}}</p>
       </div>
     </div>
+    <hs-file-raster-timeseries *ngIf="fileType === 'raster-ts'" [data]="data"> </hs-file-raster-timeseries>
     <hs-new-layer-form [data]="data" [app]="app"></hs-new-layer-form>
     <hs-add-layer-authorized [data]="data" [app]="app"></hs-add-layer-authorized>
   </div>

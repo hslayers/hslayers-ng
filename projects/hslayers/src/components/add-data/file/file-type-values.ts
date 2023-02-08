@@ -21,4 +21,8 @@ export const AddDataFileValues: Array<{id: AddDataFileType; text: string}> = [
     id: 'raster',
     text: 'Raster image',
   },
+  {
+    id: 'raster-ts',
+    text: 'Raster time series',
+  },
 ];

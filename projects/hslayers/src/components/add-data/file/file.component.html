@@ -13,6 +13,7 @@
         <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'gpx'" [app]="app"></hs-file-vector>
         <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'kml'" [app]="app"></hs-file-vector>
         <hs-file-shp *ngIf="typeSelected === 'shp'" [app]="app"></hs-file-shp>
-        <hs-file-raster *ngIf="typeSelected === 'raster'" [app]="app"></hs-file-raster>
+        <hs-file-raster [fileType]="typeSelected" *ngIf="typeSelected === 'raster'" [app]="app"></hs-file-raster>
+        <hs-file-raster [fileType]="typeSelected" *ngIf="typeSelected === 'raster-ts'" [app]="app"></hs-file-raster>
     </div>
 </div>
