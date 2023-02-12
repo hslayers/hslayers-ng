@@ -21,7 +21,7 @@
     "dotenv": "^14.2.0",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "got": "11.8.5",
+    "got": "12.5.3",
     "http": "0.0.1-security",
     "http-proxy-middleware": "^2.0.1",
     "passport": "^0.6.0",
