@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,6 +14,7 @@ import {RasterTimeseriesComponent} from './raster-timeseries/raster-timeseries.c
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     HsAddDataCommonModule,
     HsCommonUrlModule,
     HsLanguageModule,
