@@ -5,3 +5,14 @@
         padding: 0.5rem !important;
     }
 }
+
+.verification-pending {
+    label {
+        color: var(--bs-warning);
+        opacity: 1 !important;
+    }
+
+    input {
+        border-color: var(--bs-warning);
+    }
+}
