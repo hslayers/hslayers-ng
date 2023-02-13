@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 
 import {AsyncUpload} from '../../save-map/types/async-upload.type';
 import {FileDataObject} from '../file/types/file-data-object.type';
-import {FileDescriptor} from '../file/types/file-descriptor.type';
+import {FileFormData} from '../file/types/file-form-data.type';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
@@ -22,7 +22,6 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from '../../../common/layman/types/post-patch-layer-response.type';
 import {VectorDataObject} from '../vector/vector-data.type';
-import {accessRightsModel} from '../common/access-rights.model';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
@@ -248,13 +247,7 @@ export class HsAddDataCommonFileService {
    */
   async loadNonWmsLayer(
     endpoint: HsEndpoint,
-    files: FileDescriptor[],
-    name: string,
-    title: string,
-    abstract: string,
-    srs: string,
-    sld: FileDescriptor,
-    access_rights: accessRightsModel,
+    formDataParams: FileFormData,
     app: string,
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
@@ -262,13 +255,7 @@ export class HsAddDataCommonFileService {
     try {
       const formData = await this.constructFormData(
         endpoint,
-        files,
-        name,
-        title,
-        abstract,
-        srs,
-        sld,
-        access_rights,
+        formDataParams,
         app
       );
       const asyncUpload: AsyncUpload =
@@ -279,7 +266,7 @@ export class HsAddDataCommonFileService {
         endpoint,
         formData,
         asyncUpload,
-        name,
+        formDataParams.name,
         app,
         overwrite
       );
@@ -373,16 +360,13 @@ export class HsAddDataCommonFileService {
    */
   async constructFormData(
     endpoint: HsEndpoint,
-    files: FileDescriptor[],
-    name: string,
-    title: string,
-    abstract: string,
-    srs: string,
-    sld: FileDescriptor,
-    access_rights: accessRightsModel,
+    formDataParams: FileFormData,
     app: string
   ): Promise<FormData> {
     this.get(app).readingData = true;
+    const {files, name, abstract, srs, access_rights, timeRegex, format} =
+      formDataParams;
+    const sld = formDataParams.serializedStyle;
     const formData = new FormData();
     let zipFile;
     const zip = new JSZip();
@@ -412,8 +396,14 @@ export class HsAddDataCommonFileService {
         sld.name
       );
     }
+    if (timeRegex) {
+      formData.append('time_regex', timeRegex);
+    }
+    if (format) {
+      formData.append('format', format);
+    }
     formData.append('name', name);
-    title = title == '' ? name : title;
+    const title = formDataParams.title == '' ? name : formDataParams.title;
     formData.append('title', title);
     formData.append('abstract', abstract);
     formData.append('crs', srs);
@@ -469,13 +459,17 @@ export class HsAddDataCommonFileService {
       } else {
         const response = await this.loadNonWmsLayer(
           appRef.endpoint,
-          data.files,
-          data.name,
-          data.title,
-          data.abstract,
-          data.srs,
-          data.serializedStyle,
-          data.access_rights,
+          {
+            files: data.files,
+            name: data.name,
+            title: data.title,
+            abstract: data.abstract,
+            srs: data.srs,
+            serializedStyle: data.serializedStyle,
+            access_rights: data.access_rights,
+            timeRegex: data.timeRegex,
+            format: data.format,
+          },
           app,
           options?.overwrite
         );

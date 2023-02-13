@@ -33,4 +33,14 @@ export class HsAddLayerAuthorizedComponent implements OnInit {
   async add(): Promise<void> {
     await this.hsAddDataCommonFileService.addAsService(this.data, this.app);
   }
+
+  private hasNameAndSrs() {
+    return this.data.name && this.data.srs;
+  }
+
+  canAdd() {
+    return this.data.type == 'raster-ts'
+      ? this.hasNameAndSrs() && this.data.timeRegex
+      : this.hasNameAndSrs();
+  }
 }
