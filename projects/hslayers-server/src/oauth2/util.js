@@ -1,4 +1,4 @@
-const got = require('got');
+const got = import('got');
 require('dotenv').config();
 
 

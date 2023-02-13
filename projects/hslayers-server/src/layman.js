@@ -8,7 +8,7 @@ const passport = require('passport');
 const OAuth2 = require('passport-oauth2').Strategy;
 const OAuth2Refresh = require('passport-oauth2-middleware').Strategy;
 const sqlite = require('better-sqlite3');
-const got = require('got');
+const got = import('got');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const authnUtil = require('./oauth2/util');
