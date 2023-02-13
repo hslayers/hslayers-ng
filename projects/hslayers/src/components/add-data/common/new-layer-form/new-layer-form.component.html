@@ -1,6 +1,6 @@
 <div>
 
-  <div *ngIf="data.type === 'raster'"
+  <div *ngIf="data.type.includes('raster')"
     class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
     <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translateHs : {app} }}</p>
   </div>

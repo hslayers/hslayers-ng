@@ -1,22 +1,14 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {FileDescriptor} from './file-descriptor.type';
-import {accessRightsModel} from '../../common/access-rights.model';
+import {FileFormDataObject} from './file-form-data.type';
 
-export type FileDataObject = {
-  abstract?: string;
-  access_rights?: accessRightsModel;
+export type FileDataObject = FileFormDataObject & {
   addUnder?: Layer<Source>;
   extract_styles?: boolean;
-  files?: FileDescriptor[];
   folder_name?: string;
   loadAsType?: 'wms' | 'wfs';
-  name?: string;
   saveAvailable?: boolean;
   saveToLayman?: boolean;
-  serializedStyle?: FileDescriptor;
-  srs?: string;
-  title?: string;
   type?: string;
 };

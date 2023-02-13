@@ -48,11 +48,12 @@ export class RasterTimeseriesComponent implements OnInit {
   verifyInputs(): void {
     this.form.patchValue({verified: true});
     this.accordionComponent.expand('hs-timeseries-acc');
+    this.data.timeRegex = `${this.form.controls.regex.value}`;
+    this.data.format = `format=${this.form.controls.format.value}`;
     /**
      * TODO:
      * - If raster-ts active its neccessary for verified control to be true
      * to be able to 'Add' layer
-     * - use options object for constructFormData
      */
   }
 
@@ -78,6 +79,7 @@ export class RasterTimeseriesComponent implements OnInit {
     } else {
       this.selectedString = undefined;
       this.formVisible = false;
+      this.data.timeRegex = undefined;
 
       this.hsToastService.createToastPopupMessage(
         'Selected string is invalid',

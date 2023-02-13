@@ -29,7 +29,7 @@ export class HsNewLayerFormComponent implements OnInit {
 
   ngOnInit() {
     this.appRef = this.hsAddDataCommonFileService.get(this.app);
-    if (this.data.type === 'raster') {
+    if (this.data.type.includes('raster')) {
       this.srsFilter = (item): boolean => {
         return ['4326', '3857'].some((epsg) => item.includes(epsg));
       };
