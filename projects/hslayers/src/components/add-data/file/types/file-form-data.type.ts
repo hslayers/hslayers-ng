@@ -10,7 +10,6 @@ export type FileFormData = {
   srs: string;
   title: string;
   timeRegex?: string;
-  format?: string;
 };
 
 type Optional<T> = {[P in keyof T]?: T[P]};
