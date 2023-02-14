@@ -364,7 +364,7 @@ export class HsAddDataCommonFileService {
     app: string
   ): Promise<FormData> {
     this.get(app).readingData = true;
-    const {files, name, abstract, srs, access_rights, timeRegex, format} =
+    const {files, name, abstract, srs, access_rights, timeRegex} =
       formDataParams;
     const sld = formDataParams.serializedStyle;
     const formData = new FormData();
@@ -398,9 +398,6 @@ export class HsAddDataCommonFileService {
     }
     if (timeRegex) {
       formData.append('time_regex', timeRegex);
-    }
-    if (format) {
-      formData.append('format', format);
     }
     formData.append('name', name);
     const title = formDataParams.title == '' ? name : formDataParams.title;
@@ -468,7 +465,6 @@ export class HsAddDataCommonFileService {
             serializedStyle: data.serializedStyle,
             access_rights: data.access_rights,
             timeRegex: data.timeRegex,
-            format: data.format,
           },
           app,
           options?.overwrite

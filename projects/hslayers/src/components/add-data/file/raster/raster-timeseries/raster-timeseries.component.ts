@@ -49,12 +49,8 @@ export class RasterTimeseriesComponent implements OnInit {
     this.form.patchValue({verified: true});
     this.accordionComponent.expand('hs-timeseries-acc');
     this.data.timeRegex = `${this.form.controls.regex.value}`;
-    this.data.format = `format=${this.form.controls.format.value}`;
-    /**
-     * TODO:
-     * - If raster-ts active its neccessary for verified control to be true
-     * to be able to 'Add' layer
-     */
+    //Will be used as a part of timeRegex directly
+    // `format=${this.form.controls.format.value}`;
   }
 
   private checkStringValidity(): boolean {
