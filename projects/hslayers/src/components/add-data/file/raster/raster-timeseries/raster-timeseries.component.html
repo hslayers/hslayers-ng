@@ -1,13 +1,12 @@
 <div class="d-flex flex-column justify-content-between w-100 pb-2">
-    <div class="d-flex w-100 input-group">
-        <form class="form-floating  flex-fill">
-            <input #hsTimeseriesTitle readonly type="text" class="form-control form-control-sm" id="hs-timeseries-title"
+    <div class="d-flex w-100 flex-column">
+        <form class="input-group">
+            <input #hsTimeseriesTitle readonly type="text" class="form-control" id="hs-timeseries-title"
                 [value]="fileTitle" [ngClass]="{'is-invalid': !selectedString}">
-            <label for="hs-timeseries-title" [ngClass]="{'text-danger': !selectedString}">Highlight
-                timestamp in title</label>
+            <button type="button" (click)="selectDateString($event)" class="btn btn-sm btn-primary">Select</button>
         </form>
-
-        <button type="button" (click)="selectDateString($event)" class="btn btn-sm btn-primary">Select</button>
+        <label for="hs-timeseries-title" class="text-danger small" [hidden]="selectedString">Highlight
+            and select timestamp in title</label>
     </div>
 
     <ngb-accordion #acc="ngbAccordion" class="my-2" [hidden]="!formVisible" activeIds="hs-timeseries-acc">
