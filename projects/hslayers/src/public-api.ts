@@ -10,21 +10,22 @@ export * from './hslayers.module';
  * COMMON
  */
 export * from './common/confirm/public-api';
-export * from './common/remove-multiple/public-api';
 export * from './common/download/public-api';
 export * from './common/endpoints/public-api';
 export * from './common/feature-extensions';
 export * from './common/get-capabilities/public-api';
+export * from './common/get-feature-info/public-api';
 export * from './common/history-list/public-api';
+export * from './common/layer-shifting/public-api';
 export * from './common/layer-extensions';
 export * from './common/layers/public-api';
 export * from './common/layman/public-api';
 export * from './common/log/public-api';
+export * from './common/pager/public-api';
 export * from './common/queues/public-api';
+export * from './common/remove-multiple/public-api';
 export * from './common/upload/public-api';
 export * from './common/widgets/public-api';
-export * from './common/pager/public-api';
-export * from './common/layer-shifting/public-api';
 /*
  * COMPONENTS
  */
