@@ -1,12 +1,12 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import WMSGetFeatureInfo from 'ol/format/WMSGetFeatureInfo';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
+import {WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
