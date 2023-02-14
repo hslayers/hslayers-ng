@@ -96,21 +96,23 @@ export class RasterTimeseriesComponent implements OnInit {
    * Get first special character from string selected by user
    * Assuming its separator
    */
-  private getSpecialCharacters(input: string): string {
-    const specialCharacters = input.match(/[._\/-]/g) || [];
-    return specialCharacters[0];
+  private getSeparator(input: string): string {
+    const separators = input.match(/[._\/-]/g) || [];
+    return separators[0];
   }
 
   /**
    *Infer regex pattern from selected string
    */
   inferRegexPatternFromString(timestamp: string): string {
-    const specialCharacter = this.getSpecialCharacters(timestamp);
+    const separator = this.getSeparator(timestamp);
 
-    if (specialCharacter) {
-      let parts = timestamp.split(specialCharacter);
+    if (separator) {
+      let parts = timestamp.split(separator);
       parts = parts.map((part) => `[0-9]{${part.length}}`);
-      return parts.join(specialCharacter);
+      return parts.join(separator);
+    } else {
+      return `[0-9]{${this.selectedString.length}}`;
     }
   }
 
