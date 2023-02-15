@@ -1,4 +1,3 @@
-const got = import('got');
 require('dotenv').config();
 
 
@@ -9,7 +8,8 @@ exports.addIncomingTimestamp = (req, res, next) => {
 
 exports.ensureUsername = async (access_token, profile) => {
   if (!profile['username']) {
-    var response = await got.patch(`${process.env.LAYMAN_USER_PROFILE_URL}?adjust_username=true`, {
+    const got = await import('got');
+    var response = await got.got.patch(`${process.env.LAYMAN_USER_PROFILE_URL}?adjust_username=true`, {
       responseType: 'json',
       headers: {
         'AuthorizationIssUrl': process.env.OAUTH2_AUTH_URL,
@@ -28,8 +28,8 @@ exports.deleteUserSession = async (req) => {
     const user = req.session.passport.user;
 
     try {
-
-      let response = await got.delete(process.env.LAYMAN_USER_PROFILE_URL, {
+      const got = await import('got');
+      let response = await got.got.delete(process.env.LAYMAN_USER_PROFILE_URL, {
         headers: getAuthenticationHeaders(user)
       });
 

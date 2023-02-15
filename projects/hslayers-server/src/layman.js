@@ -8,7 +8,6 @@ const passport = require('passport');
 const OAuth2 = require('passport-oauth2').Strategy;
 const OAuth2Refresh = require('passport-oauth2-middleware').Strategy;
 const sqlite = require('better-sqlite3');
-const got = import('got');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const authnUtil = require('./oauth2/util');
@@ -66,7 +65,8 @@ app.use(authnUtil.addIncomingTimestamp);
 OAuth2.prototype.userProfile = (access_token, done) => {
   (async () => {
     try {
-      const response = await got(process.env.LAYMAN_USER_PROFILE_URL, {
+      const got = await import('got');
+      const response = await got.got(process.env.LAYMAN_USER_PROFILE_URL, {
         responseType: 'json',
         headers: {
           AuthorizationIssUrl: process.env.OAUTH2_AUTH_URL,
