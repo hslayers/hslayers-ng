@@ -53,9 +53,20 @@ export class RasterTimeseriesComponent implements OnInit {
     // `format=${this.form.controls.format.value}`;
   }
 
+  /**
+   * Checks the validity of the selected string
+   * String is valid if:
+   * - matches one of the following regex datetime formats
+   *    -[0-9]{8}T[0-9]{9}Z eg 20220510T050948Z
+   *    -[0-9]{8}T[0-9]{9} eg. 20220510T050948
+   * - consist of digits only or digits and separators  ., _, /, or -
+   */
   private checkStringValidity(): boolean {
     return (
-      !/[a-zA-Z]/.test(this.selectedString) && this.selectedString.length > 0
+      this.selectedString.length > 0 &&
+      (/^[0-9T._/-]+(?<![a-zA-Z])$/.test(this.selectedString) ||
+        /[0-9]{8}T[0-9]{9}Z/.test(this.selectedString) ||
+        /[0-9]{8}T[0-9]{9}/.test(this.selectedString))
     );
   }
 
@@ -79,7 +90,7 @@ export class RasterTimeseriesComponent implements OnInit {
 
       this.hsToastService.createToastPopupMessage(
         'Selected string is invalid',
-        'Selected string is missing or contains alphabetical characters.',
+        'Selected string is missing or is not supported.',
         {
           toastStyleClasses: 'bg-danger text-light',
           customDelay: 7000,
@@ -102,7 +113,8 @@ export class RasterTimeseriesComponent implements OnInit {
    */
   inferRegexPatternFromString(timestamp: string): string {
     const separator = this.getSeparator(timestamp);
-
+    // /[0-9]{8}T[0-9]{9}Z/.test(this.selectedString)
+    // /[0-9]{8}T[0-9]{9}/.test(this.selectedString)
     if (separator) {
       let parts = timestamp.split(separator);
       parts = parts.map((part) => `[0-9]{${part.length}}`);
