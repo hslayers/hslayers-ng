@@ -1,0 +1,9 @@
+.hsl {
+  @media screen and (min-width:767px) {
+    @for $i from 0 through 20 {
+      .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
+        width: 400 + ($i * 25)+px;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/hslayers-material",
+  "assets": ["src/css/hslayers-material.scss"],
   "lib": {
     "entryFile": "src/public-api.ts"
   }

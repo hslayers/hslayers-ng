@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HsMatImportsModule} from '../material-module';
 
 import {HsAttributionDialogComponent} from './attribution-dialog.component';
-import {HsLayoutService, HsMapModule} from 'hslayers-ng';
+import {HsLayoutService, HsMapModule, HsPanelHelpersModule} from 'hslayers-ng';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsMatLayerManagerModule} from '../layermanager/layermanager.module';
 import {HsMatLayoutComponent} from './layout.component';
@@ -22,6 +22,7 @@ import {HsMatOverlayComponent} from './overlay.component';
     HsMatImportsModule,
     HsMatLayerManagerModule,
     HsMapModule,
+    HsPanelHelpersModule
   ],
   providers: [HsLayoutService],
   exports: [HsMatLayoutComponent, HsMatOverlayComponent]

@@ -1,53 +1,36 @@
 <div #hslayout class="hsl hs-page-wrapper w-100 h-100" style="min-height: inherit !important">
     <div class="hs-content-wrapper d-flex w-100 h-100" [ngClass]="{
-        'hs-open': HsLayoutService.sidebarExpanded && sidebarVisible,
-        'hs-sb-right': HsConfig.get(app).sidebarPosition === 'right' && sidebarVisible,
-        'hs-sb-left': HsConfig.get(app).sidebarPosition === 'left' && sidebarVisible,
-        'hs-sb-bottom': HsLayoutService.sidebarBottom()
+        'hs-open': hsLayoutService.apps[app].sidebarExpanded && sidebarVisible,
+        'hs-sb-right': hsConfig.get(app).sidebarPosition === 'right' && sidebarVisible,
+        'hs-sb-left': hsConfig.get(app).sidebarPosition === 'left' && sidebarVisible,
+        'hs-sb-bottom': hsConfig.get(app).sidebarPosition === 'bottom' && sidebarVisible
     }">
         <div class="hs-map-space d-flex">
             <hs-map class="hs-flex-fill d-flex"></hs-map>
             <hs-mat-overlay class="hs-overlay hs-flex-fill w-100 h-100"></hs-mat-overlay>
             <ng-template map-host></ng-template>
-            <!-- <hs-layermanager-gallery *ngIf="HsLayoutService.componentEnabled('basemapGallery')"></hs-layermanager-gallery> -->
-            <!-- <hs-toolbar [hidden]="!(panelEnabled('toolbar') && HsLayoutService.componentEnabled('toolbar'))"> -->
+            <!-- <hs-layermanager-gallery *ngIf="hsLayoutService.componentEnabled('basemapGallery')"></hs-layermanager-gallery> -->
+            <!-- <hs-toolbar [hidden]="!(panelEnabled('toolbar') && hsLayoutService.componentEnabled('toolbar'))"> -->
             <!-- </hs-toolbar> -->
-            <!-- <hs-geolocation [hidden]="!HsLayoutService.componentEnabled('geolocationButton')"></hs-geolocation> -->
+            <!-- <hs-geolocation [hidden]="!hsLayoutService.componentEnabled('geolocationButton')"></hs-geolocation> -->
             <!-- <div class="hs-info-container" [hidden]="!panelEnabled('compositionLoadingProgress')"> -->
             <!--     <div class="hs-info-area"> -->
             <!--         <hs-info></hs-info> -->
             <!--     </div> -->
             <!-- </div> -->
-            <!-- <hs-toast aria-live="polite" aria-atomic="true" [ngClass]="HsConfig.get(app).sidebarPosition == 'left' ? 'align-items-end' : 'align-items-start'" ></hs-toast> -->
+            <!-- <hs-toast aria-live="polite" aria-atomic="true" [ngClass]="hsConfig.get(app).sidebarPosition == 'left' ? 'align-items-end' : 'align-items-start'" ></hs-toast> -->
         </div>
         <div class="hs-panelspace" *ngIf="sidebarVisible"
-            [ngClass]="{'labels': HsLayoutService.sidebarLabels, 'buttons': HsLayoutService.sidebarButtons}"
+            [ngClass]="{'labels': hsLayoutService.apps[app].sidebarLabels, 'buttons': hsLayoutService.apps[app].sidebarButtons}"
             [ngStyle]="{width: panelSpaceWidth + 'px'}">
             <div class="hs-panelspace-wrapper me-1">
                 <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
                 <div class="hs-panelplace">
-                    <hs-mat-layer-manager [hidden]="!panelVisible('layermanager', this)"></hs-mat-layer-manager>
-                    <hs-legend [hidden]="!panelVisible('legend', this)"></hs-legend>
-                    <hs-compositions [hidden]="!panelVisible('composition_browser', this)"></hs-compositions>
-                    <hs-measure [hidden]="!panelVisible('measure', this)"></hs-measure>
-                    <hs-print [hidden]="!panelVisible('print', this)"></hs-print>
-                    <hs-styles [hidden]="!panelVisible('styler', this)"></hs-styles>
-                    <hs-share [hidden]="!panelVisible('permalink', this)"></hs-share>
-                    <hs-query class="hs-infopanel" [hidden]="!panelVisible('info', this)"></hs-query>
-                    <hs-save-map [hidden]="!panelVisible('saveMap', this)"></hs-save-map>
-                    <hs-language [hidden]="!panelVisible('language', this)"></hs-language>
-                    <hs-feature-table [hidden]="!panelVisible('feature_table', this)"></hs-feature-table>
-                    <hs-search *ngIf="panelVisible('search')" [hidden]="!panelVisible('search', this)">
-                    </hs-search>
-                    <hs-trip-planner *ngIf="panelVisible('tripPlanner')" [hidden]="!panelVisible('tripPlanner', this)">
-                    </hs-trip-planner>
-                    <hs-mini-sidebar [app]="app" *ngIf="HsLayoutService.minisidebar"
-                        [hidden]="!panelVisible('sidebar', this)"></hs-mini-sidebar>
-                    <hs-draw [hidden]="!panelVisible('draw', this)"></hs-draw>
-                    <hs-add-data [hidden]="!panelVisible('addData', this)"></hs-add-data>
-                    <hs-panel-container class="hs-panelplace" [app]="app"
-                        [ngStyle]="{width: (panelSpaceWidth - 50) + 'px'}">
-                    </hs-panel-container>
+                    <hs-panel-container
+                        [service]="hsPanelContainerService"
+                        [app]="app"
+                        class="hs-panelplace"
+                    ></hs-panel-container>
                 </div>
             </div>
         </div>

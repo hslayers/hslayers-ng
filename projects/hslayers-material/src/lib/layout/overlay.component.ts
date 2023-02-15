@@ -67,6 +67,9 @@ export class HsMatOverlayComponent implements OnInit {
     });
   }
 
+  // TODO: leads to NG0100: ExpressionChangedAfterItHasBeenCheckedError
+  // when the application is loading
+  // need to investigate if this can lead to bugs
   canZoomOut(): boolean {
     const mapView = this.HsMapService.getMap(this.app)?.getView();
     return mapView?.getZoom() > mapView?.getMinZoom();

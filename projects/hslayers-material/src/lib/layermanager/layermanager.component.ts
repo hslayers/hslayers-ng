@@ -1,5 +1,5 @@
 import {BehaviorSubject} from 'rxjs';
-import {Component, Injectable, Input} from '@angular/core';
+import {Component, Injectable, Input, ElementRef} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -184,7 +184,7 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
           this.HsLayerManagerService.changeLayerVisibility(
             true,
             node.layer,
-            this.app
+            this.data.app
           )
         );
 
@@ -195,7 +195,7 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
           this.HsLayerManagerService.changeLayerVisibility(
             false,
             node.layer,
-            this.app
+            this.data.app
           )
         );
     });
@@ -203,6 +203,10 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
     // this.dataSource.data = _database.data;
     // this.checklistSelection.select(...this.dataSource.data.filter(node => node.layer?.visible));
   }
+
+  // don't assign layer editor reference to hsLayerManagerService
+  // until implemented is HSM
+  ngAfterViewInit(): void {}
 
   getLevel = (node: HsLayerFlatNode) => node.level;
 
