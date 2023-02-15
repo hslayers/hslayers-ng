@@ -306,23 +306,27 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
     const appRef = this.get(app);
     let boundingbox = serviceLayer.BoundingBox;
-    if (Array.isArray(serviceLayer.BoundingBox)) {
+    if (Array.isArray(boundingbox)) {
       const preferred = boundingbox.find((bboxInCrs) => {
         return bboxInCrs.crs == appRef.data.map_projection;
       });
-      boundingbox =
-        preferred?.extent ??
-        transformExtent(
-          serviceLayer.BoundingBox[0].extent,
-          serviceLayer.BoundingBox[0].crs || crs, //Use BBOX object crs - when missing assume its same as layer's
-          this.hsMapService.getMap(app).getView().getProjection()
+
+      if (preferred?.extent) {
+        boundingbox = preferred?.extent;
+      } else {
+        boundingbox = boundingbox.filter((b) => b.crs != 'CRS:84');
+        boundingbox = transformExtent(
+          boundingbox[0].extent,
+          boundingbox[0].crs || crs, //Use BBOX object crs - when missing assume its same as layer's
+          this.hsMapService.getCurrentProj(app)
         );
+      }
     } else if (crs !== undefined) {
       if (serviceLayer.EX_GeographicBoundingBox !== undefined) {
         boundingbox = transformExtent(
           serviceLayer.EX_GeographicBoundingBox,
           'EPSG:4326',
-          this.hsMapService.getMap(app).getView().getProjection()
+          this.hsMapService.getCurrentProj(app)
         );
       }
     } else {
