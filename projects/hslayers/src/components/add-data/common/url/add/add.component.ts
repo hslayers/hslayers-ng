@@ -50,8 +50,12 @@ export class HsUrlAddComponent {
     if (this.injectedService.addServices && this.services) {
       this.injectedService.addServices(this.services, this.app);
     }
-    //FIXME: to implement
-    // this.injectedService.zoomToLayers();
+    //NOTE: THIS CAN BE DONE IF WE CHOSE TO RESET DEFAULT SOMEWHERE ELSE OTHER THAN
+    // injectedService.getLayers. add-data/url/<type>/<type>.component.ts constructor maybe?
+    // zoomToLayers implemented for wms, wfs
+    // if (this.injectedService.zoomToLayers) {
+    //   this.injectedService.zoomToLayers(this.app);
+    // }
   }
 
   changed(): void {

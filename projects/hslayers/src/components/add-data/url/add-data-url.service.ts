@@ -111,4 +111,31 @@ export class HsAddDataUrlService {
     this.get(app).addingAllowed =
       records?.some((l) => l.checked) ?? this.get(app).typeSelected == 'arcgis';
   }
+
+  /**
+   * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
+   */
+  calcCombinedExtent(layers: number[][]): number[] {
+    return layers.reduce((acc, curr) => {
+      //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
+      const [west, south, east, north] = curr;
+      //minimum easting
+      if (-180 <= west && west < acc[0]) {
+        acc[0] = west;
+      }
+      //minimum northing
+      if (-90 <= south && south < acc[1]) {
+        acc[1] = south;
+      }
+      //maximum easting
+      if (180 >= east && east > acc[2]) {
+        acc[2] = east;
+      }
+      //maximum northing
+      if (90 >= north && north > acc[3]) {
+        acc[3] = north;
+      }
+      return acc;
+    });
+  }
 }

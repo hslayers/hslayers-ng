@@ -254,7 +254,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.hsAddDataUrlService.searchForChecked(appRef.data.layers, app);
       //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
-        appRef.data.extent = this.getLayerBBox(
+        appRef.data.extent = this.getLayerExtent(
           serviceLayer,
           appRef.data.srs,
           app
@@ -293,35 +293,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   calcAllLayersExtent(serviceLayers: any, app: string): any {
     const appRef = this.get(app);
     if (!Array.isArray(serviceLayers)) {
-      return this.getLayerBBox(serviceLayers, appRef.data.srs, app);
+      return this.getLayerExtent(serviceLayers, appRef.data.srs, app);
     }
-    return serviceLayers
-      .map((lyr) => this.getLayerBBox(lyr, appRef.data.srs, app))
-      .reduce((acc, curr) => {
-        //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
-        const [west, south, east, north] = curr;
-        //minimum easting
-        if (-180 <= west && west < acc[0]) {
-          acc[0] = west;
-        }
-        //minimum northing
-        if (-90 <= south && south < acc[1]) {
-          acc[1] = south;
-        }
-        //maximum easting
-        if (180 >= east && east > acc[2]) {
-          acc[2] = east;
-        }
-        //maximum northing
-        if (90 >= north && north > acc[3]) {
-          acc[3] = north;
-        }
-        return acc;
-      });
+    const layerExtents = serviceLayers.map((lyr) =>
+      this.getLayerExtent(lyr, appRef.data.srs, app)
+    );
+    return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
   }
 
-  getLayerBBox(serviceLayer: any, crs: string, app: string): number[] {
-    //Can be called without valid serviceLayer as part of micka dataset loading pipeline
+  getLayerExtent(serviceLayer: any, crs: string, app: string): number[] {
+    //Get called without valid serviceLayer as part of micka dataset loading pipeline
     if (!serviceLayer) {
       return;
     }
@@ -447,9 +428,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           app
         );
       }
-      this.zoomToLayers(app);
     }
     appRef.data.base = false;
+    this.zoomToLayers(app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWmsParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
@@ -525,7 +506,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       removable: true,
       abstract: layer.Abstract,
       metadata,
-      extent: this.getLayerBBox(layer, options.crs, app),
+      extent: this.getLayerExtent(layer, options.crs, app),
       path: options.path,
       dimensions: dimensions,
       legends: legends,
@@ -627,7 +608,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Zoom map to one layers or combined layer list extent
    */
-  private zoomToLayers(app: string) {
+  zoomToLayers(app: string) {
     if (this.get(app).data.extent) {
       this.hsMapService.fitExtent(this.get(app).data.extent, app);
     }
