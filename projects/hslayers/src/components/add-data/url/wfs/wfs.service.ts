@@ -9,6 +9,7 @@ import WfsSource from '../../../../common/layers/hs.source.WfsSource';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
@@ -27,7 +28,7 @@ class HsUrlWfsParams {
   constructor() {
     this.data = {
       add_all: null,
-      bbox: null,
+      extent: null,
       folder_name: 'WFS',
       layers: [],
       map_projection: undefined,
@@ -67,17 +68,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    public hsAddDataCommonService: HsAddDataCommonService
-  ) {
-    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
-      this.get(app).data.map_projection = this.hsMapService
-        .getMap(app)
-        .getView()
-        .getProjection()
-        .getCode()
-        .toUpperCase();
-    });
-  }
+    public hsAddDataCommonService: HsAddDataCommonService,
+    private hsAddDataUrlService: HsAddDataUrlService
+  ) {}
 
   get(app: string): HsUrlWfsParams {
     if (this.apps[app ?? 'default'] == undefined) {
@@ -106,7 +99,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       return;
     }
     try {
-      const bbox = await this.parseCapabilities(wrapper.response, app);
+      await this.parseCapabilities(wrapper.response, app);
       if (this.hsAddDataCommonService.get(app).layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.get(app).data.layers,
@@ -114,7 +107,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           app
         );
         const collection = this.getLayers(app, true, false, style);
-        this.zoomToBBox(bbox, app);
+        this.zoomToLayers(app);
         return collection;
       }
     } catch (e) {
@@ -126,10 +119,19 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Parse information received in WFS getCapabilities response
    * @param response - A stringified XML response to getCapabilities request
    */
-  async parseCapabilities(response: string, app: string): Promise<any> {
+  async parseCapabilities(response: string, app: string): Promise<void> {
     try {
       const appRef = this.get(app);
       appRef.loadingFeatures = false;
+
+      appRef.data.map_projection =
+        appRef.data.map_projection ??
+        this.hsMapService
+          .getMap(app)
+          .getView()
+          .getProjection()
+          .getCode()
+          .toUpperCase();
 
       let caps: any = xml2Json.xml2js(response, {compact: true});
       if (caps['wfs:WFS_Capabilities']) {
@@ -150,9 +152,14 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       appRef.data.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType
         : [caps.FeatureTypeList.FeatureType];
+
       if (layer) {
-        appRef.data.bbox =
-          layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
+        appRef.data.extent = this.getLayerExtent(
+          layer,
+          appRef.data.map_projection,
+          app
+        );
+        layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
 
         const srsType = layer && layer.DefaultSRS ? 'SRS' : 'CRS';
         if (layer['Default' + srsType] !== undefined) {
@@ -183,6 +190,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
             appRef.data.srss.push(srs);
           }
         }
+      } else {
+        appRef.data.extent = this.calcAllLayersExtent(appRef.data.layers, app);
       }
 
       appRef.data.output_format = this.getPreferredFormat(appRef.data.version);
@@ -211,9 +220,36 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         });
       }
       this.hsAddDataCommonService.get(app).loadingInfo = false;
-      return appRef.data.bbox;
     } catch (e) {
       throw new Error(e);
+    }
+  }
+
+  getLayerExtent(lyr: any, crs: string, app: string): number[] {
+    let bbox = lyr.WGS84BoundingBox || lyr.OutputFormats.WGS84BoundingBox;
+    const lowerCorner = bbox.LowerCorner.split(' ').map(Number);
+    const upperCorner = bbox.UpperCorner.split(' ').map(Number);
+    bbox = [...lowerCorner, ...upperCorner];
+    return transformExtent(bbox, 'EPSG:4326', crs);
+  }
+
+  /**
+   * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
+   */
+  calcAllLayersExtent(layers: any, app: string): any {
+    const appRef = this.get(app);
+    const layerExtents: number[][] = layers.map((lyr) => {
+      return this.getLayerExtent(lyr, appRef.data.map_projection, app);
+    });
+    return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
+  }
+
+  /**
+   * Zoom map to one layers or combined layer list extent
+   */
+  zoomToLayers(app: string): void {
+    if (this.get(app).data.extent) {
+      this.hsMapService.fitExtent(this.get(app).data.extent, app);
     }
   }
 
@@ -339,6 +375,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     for (const layer of appRef.data.layers) {
       this.getLayersRecursively(layer, {style}, collection, app);
     }
+    this.zoomToLayers(app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWfsParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
@@ -407,6 +444,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         sld: options.sld,
         qml: options.qml,
         wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+        // extent: this.getLayerExtent(layer, options.crs, app),
       },
       source: new WfsSource(
         this.hsUtilsService,
@@ -444,36 +482,5 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.hsMapService.getMap(app).addLayer(l);
     }
     this.hsLayoutService.setMainPanel('layermanager', app);
-  }
-
-  private zoomToBBox(bbox: any, app: string) {
-    const appRef = this.get(app);
-    if (!bbox) {
-      return;
-    }
-    if (bbox.LowerCorner) {
-      bbox = [
-        bbox.LowerCorner.split(' ')[0],
-        bbox.LowerCorner.split(' ')[1],
-        bbox.UpperCorner.split(' ')[0],
-        bbox.UpperCorner.split(' ')[1],
-      ];
-    }
-    if (!appRef.data.map_projection) {
-      appRef.data.map_projection = this.hsMapService
-        .getMap(app)
-        .getView()
-        .getProjection()
-        .getCode()
-        .toUpperCase();
-    }
-    const extent = transformExtent(
-      bbox,
-      'EPSG:4326',
-      appRef.data.map_projection
-    );
-    if (extent) {
-      this.hsMapService.fitExtent(extent, app);
-    }
   }
 }
