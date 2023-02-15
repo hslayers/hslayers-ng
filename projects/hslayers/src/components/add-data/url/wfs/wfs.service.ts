@@ -234,6 +234,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
   calcAllLayersExtent(layers: Layer<Source>[], app: string): any {
+    if (layers.length == 0) {
+      return undefined;
+    }
     const appRef = this.get(app);
     const selectedLayerNames = layers.map((l) => l.get('name'));
     layers = appRef.data.layers.filter((lyr) => {

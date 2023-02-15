@@ -292,6 +292,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (!Array.isArray(layers)) {
       return [...layers.getExtent()];
     }
+    if (layers.length == 0) {
+      return undefined;
+    }
     const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread need to not create reference
     return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
   }
