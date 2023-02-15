@@ -11,6 +11,12 @@ const cors_proxy = require('cors-anywhere').createServer({
   httpProxyOptions: {
     // Disable X-Forwarded-* headers since some map servers use it to generate URLs in capabilities
     xfwd: false,
+    ssl: {
+      //https://nodejs.org/api/tls.html#tlscreatesecurecontextoptions
+      //https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options
+      //https://github.com/rwinlib/openssl/blob/b78d57f34d726627aeadcb6867e439dcc4f89e07/include/openssl/ssl.h#L343
+      secureOptions: (1 << 2)
+    },
   }
 });
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
