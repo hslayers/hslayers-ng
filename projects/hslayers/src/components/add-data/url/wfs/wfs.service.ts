@@ -190,10 +190,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
             appRef.data.srss.push(srs);
           }
         }
-      } else {
-        appRef.data.extent = this.calcAllLayersExtent(appRef.data.layers, app);
       }
-
       appRef.data.output_format = this.getPreferredFormat(appRef.data.version);
 
       appRef.data.srss = this.parseEPSG(appRef.data.srss, app);
@@ -236,8 +233,12 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcAllLayersExtent(layers: any, app: string): any {
+  calcAllLayersExtent(layers: Layer<Source>[], app: string): any {
     const appRef = this.get(app);
+    const selectedLayerNames = layers.map((l) => l.get('name'));
+    layers = appRef.data.layers.filter((lyr) => {
+      return selectedLayerNames.includes(lyr.Name);
+    });
     const layerExtents: number[][] = layers.map((lyr) => {
       return this.getLayerExtent(lyr, appRef.data.map_projection, app);
     });
@@ -375,6 +376,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     for (const layer of appRef.data.layers) {
       this.getLayersRecursively(layer, {style}, collection, app);
     }
+    appRef.data.extent = this.calcAllLayersExtent(collection, app);
     this.zoomToLayers(app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWfsParams();

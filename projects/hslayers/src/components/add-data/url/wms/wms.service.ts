@@ -259,8 +259,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           appRef.data.srs,
           app
         );
-      } else {
-        appRef.data.extent = this.calcAllLayersExtent(appRef.data.layers, app);
       }
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
@@ -290,14 +288,11 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcAllLayersExtent(serviceLayers: any, app: string): any {
-    const appRef = this.get(app);
-    if (!Array.isArray(serviceLayers)) {
-      return this.getLayerExtent(serviceLayers, appRef.data.srs, app);
+  calcAllLayersExtent(layers: Layer<Source>[] | Layer<Source>): any {
+    if (!Array.isArray(layers)) {
+      return [...layers.getExtent()];
     }
-    const layerExtents = serviceLayers.map((lyr) =>
-      this.getLayerExtent(lyr, appRef.data.srs, app)
-    );
+    const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread need to not create reference
     return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
   }
 
@@ -429,6 +424,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         );
       }
     }
+    appRef.data.extent = this.calcAllLayersExtent(collection);
     appRef.data.base = false;
     this.zoomToLayers(app);
     this.hsAddDataCommonService.clearParams(app);
