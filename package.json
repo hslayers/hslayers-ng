@@ -34,7 +34,8 @@
     "commit-log": "git log --pretty=format:\"+ %as %s (%H)\" c738091dd004550a4e2fb0e188d0baaf488a1020..aaad3ddad24cac4879b56a217b2e46f42391b4cd > changelog.md",
     "commit": "git-cz",
     "deps-graph": "madge --exclude '.*(layer-extensions)\\.ts$' --dot projects/decoupling-test-app/src/hslayers-app/hslayers-app.module.ts > graph.gv",
-    "proxy": "cd ./projects/hslayers-server && node server.js -l"
+    "proxy": "cd ./projects/hslayers-server && node server.js -l",
+    "prepare-release": "cd ./scripts && bump-version.sh"
   },
   "private": true,
   "dependencies": {
