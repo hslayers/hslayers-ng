@@ -1,7 +1,3 @@
----
-assignees: jmacura
----
-
 # Thank you 💞
 
 Thank you for considering giving code and/or documentation back to this project, you're awesome and we appreciate your work.
