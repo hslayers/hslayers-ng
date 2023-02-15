@@ -6,6 +6,8 @@ import {AddDataUrlType} from './types/url.type';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
+import {HsMapService} from '../../map/map.service';
+import {transform} from 'ol/proj';
 
 class HsAddDataUrlParams {
   typeSelected: AddDataUrlType;
@@ -25,7 +27,8 @@ export class HsAddDataUrlService {
   constructor(
     public hsLog: HsLogService,
     public hsLanguageService: HsLanguageService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    private hsMapsService: HsMapService
   ) {}
 
   get(app: string): HsAddDataUrlParams {
@@ -115,24 +118,27 @@ export class HsAddDataUrlService {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcCombinedExtent(layers: number[][]): number[] {
-    return layers.reduce((acc, curr) => {
+  calcCombinedExtent(extents: number[][]): number[] {
+    const currentMapProj = this.hsMapsService.getCurrentProj();
+    const bounds = transform([180, 90], 'EPSG:4326', currentMapProj);
+
+    return extents.reduce((acc, curr) => {
       //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
       const [west, south, east, north] = curr;
       //minimum easting
-      if (-180 <= west && west < acc[0]) {
+      if (bounds[1] * -1 <= west && west < acc[0]) {
         acc[0] = west;
       }
       //minimum northing
-      if (-90 <= south && south < acc[1]) {
+      if (bounds[0] * -1 <= south && south < acc[1]) {
         acc[1] = south;
       }
       //maximum easting
-      if (180 >= east && east > acc[2]) {
+      if (bounds[1] >= east && east > acc[2]) {
         acc[2] = east;
       }
       //maximum northing
-      if (90 >= north && north > acc[3]) {
+      if (bounds[0] >= north && north > acc[3]) {
         acc[3] = north;
       }
       return acc;
