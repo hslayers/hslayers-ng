@@ -30,6 +30,7 @@ import {HsAddDataCommonService} from '../../add-data/common/common.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
@@ -49,6 +50,7 @@ export class HsCompositionsLayerParserService {
     private HsStylerService: HsStylerService,
     private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     private HsLanguageService: HsLanguageService,
+    private hsLog: HsLogService,
     private HsToastService: HsToastService,
     private HsUrlWfsService: HsUrlWfsService,
     private hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
@@ -60,19 +62,27 @@ export class HsCompositionsLayerParserService {
    * @public
    * @param lyr_def - Layer definition object
    * @param app - App identifier
-   * Initiate creation of WFS layer thorough HsUrlWfsService
+   * Initiate creation of WFS layer through HsUrlWfsService
    */
-  async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>[]> {
+  async createWFSLayer(lyr_def, app: string): Promise<Layer<Source>> {
     this.hsAddDataCommonService.get(app).layerToSelect = lyr_def.name;
     const wrapper = await this.hsWfsGetCapabilitiesService.request(
       lyr_def.protocol.url,
       app
     );
-    return await this.HsUrlWfsService.listLayerFromCapabilities(
+    const layers = await this.HsUrlWfsService.listLayerFromCapabilities(
       wrapper,
       app,
       lyr_def.style
     );
+    if (layers?.length != 1) {
+      this.hsLog.error(
+        'createWFSLayer failed due to unexpected number of returned layers'
+      );
+      this.hsLog.log('lyr_def', lyr_def);
+      return;
+    }
+    return layers[0];
   }
 
   /**
