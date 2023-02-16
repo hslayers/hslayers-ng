@@ -10,27 +10,20 @@
     </div>
 
     <ngb-accordion #acc="ngbAccordion" class="my-2" [hidden]="!formVisible" activeIds="hs-timeseries-acc">
-        <ngb-panel id="hs-timeseries-acc" title="Infered params">
+        <ngb-panel id="hs-timeseries-acc">
+            <ng-template ngbPanelHeader let-opened="opened">
+                <button ngbPanelToggle class="accordion-button text-black-50">Selected string: <span
+                        class="text-black ps-1">{{selectedString}}</span></button>
+            </ng-template>
             <ng-template ngbPanelContent>
-                <form [formGroup]="form" class="d-flex flex-column">
-                    <div class="text-black-50">
-                        Selected string: <span class="text-black">{{selectedString}}</span>
+                <form [formGroup]="form" class="d-flex flex-column ">
+                    <div class="form-floating mt-2 flex-fill"
+                        [ngClass]="{'verification-pending': !form.get('verified').value}">
+                        <input formControlName="regex" type="text" class="form-control form-control-sm"
+                            id="hs-timeseries-regex" [ngClass]="{'is-valid': form.get('verified').value}">
+                        <label for="hs-timeseries-regex">Infered regex pattern</label>
                     </div>
-                    <div class="d-flex flex-column justify-content-between flex-md-row gap-2">
-                        <div class="form-floating mt-2 flex-fill"
-                            [ngClass]="{'verification-pending': !form.get('verified').value}">
-                            <input formControlName="regex" type="text" class="form-control form-control-sm"
-                                id="hs-timeseries-regex">
-                            <label for="hs-timeseries-regex">Infered regex pattern</label>
-                        </div>
-                        <div class="form-floating mt-2 flex-fill"
-                            [ngClass]="{'verification-pending': !form.get('verified').value}">
-                            <input formControlName="format" type="text" class="form-control form-control-sm"
-                                id="hs-timeseries-format">
-                            <label for="hs-timeseries-format">Infered date format</label>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-baseline justify-content-end" *ngIf="!form.get('verified').value">
+                    <div class="d-flex justify-content-between">
                         <p class="text-black-50 small">Verify infered values before you continue</p>
                         <button type="button" (click)="verifyInputs()"
                             class="btn btn-sm btn-primary m-2 w-25">Verify</button>
