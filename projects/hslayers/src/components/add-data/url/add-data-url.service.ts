@@ -28,7 +28,7 @@ export class HsAddDataUrlService {
     public hsLog: HsLogService,
     public hsLanguageService: HsLanguageService,
     public hsLayoutService: HsLayoutService,
-    private hsMapsService: HsMapService
+    private hsMapService: HsMapService
   ) {}
 
   get(app: string): HsAddDataUrlParams {
@@ -119,7 +119,7 @@ export class HsAddDataUrlService {
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
   calcCombinedExtent(extents: number[][]): number[] {
-    const currentMapProj = this.hsMapsService.getCurrentProj();
+    const currentMapProj = this.hsMapService.getCurrentProj();
     const bounds = transform([180, 90], 'EPSG:4326', currentMapProj);
 
     return extents.reduce((acc, curr) => {

@@ -317,7 +317,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = boundingbox.filter((b) => b.crs != 'CRS:84');
         boundingbox = transformExtent(
           boundingbox[0].extent,
-          boundingbox[0].crs || crs, //Use BBOX object crs - when missing assume its same as layer's
+          boundingbox[0].crs || crs, //Use BBOX object crs - when missing assume it's same as layer's
           this.hsMapService.getCurrentProj(app)
         );
       }

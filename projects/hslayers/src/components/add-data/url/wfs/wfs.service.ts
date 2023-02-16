@@ -249,7 +249,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Zoom map to one layers or combined layer list extent
+   * Zoom map to one layer or combined layer list extent
    */
   zoomToLayers(app: string): void {
     if (this.get(app).data.extent) {
