@@ -231,7 +231,7 @@ export class HsQueryWmsService {
     let updated = false;
     features.forEach((feature) => {
       /**
-       * TODO: Layered response need to be refactored as well but I havent found and example yet
+       * TODO: Layered response need to be refactored as well but I haven't found an example yet
        * so I don't really know how to handle those. Multiple layers in one request are handled by loop
        */
       //const layerName = getTitle(layer) || getName(layer);
