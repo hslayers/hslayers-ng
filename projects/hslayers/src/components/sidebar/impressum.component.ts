@@ -13,7 +13,7 @@ export class HsImpressumComponent {
   logoDisabled = false;
   logoPath: string;
   constructor(public hsConfig: HsConfig) {
-    this.version = '11.0.0';
+    this.version = '11.1.0';
   }
 
   ngOnInit() {

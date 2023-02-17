@@ -1,3 +1,24 @@
+# [11.1.0](https://github.com/hslayers/hslayers-ng/compare/11.0.0...11.1.0) (2023-02-17)
+
+
+### Bug Fixes
+
+* Add data tablist sticky only on wider screens ([5177e91](https://github.com/hslayers/hslayers-ng/commit/5177e91f68b262ac9941123897106aa118b76277))
+* **compositions:** Pass on created WFS layer ([90d5eb2](https://github.com/hslayers/hslayers-ng/commit/90d5eb2f46ad4385a1c08365531c834f33838428)), closes [#3817](https://github.com/hslayers/hslayers-ng/issues/3817)
+* Don't use default imports ([cb99ee6](https://github.com/hslayers/hslayers-ng/commit/cb99ee6988a0134c9ed100e9f128cf69c44c7569))
+* Don't try to calculate combined extent when collection is empty ([6791a79](https://github.com/hslayers/hslayers-ng/commit/6791a799c6284572ad31a8f53fe23ef17b94a503))
+* Don't use CRS:84 extent as transformation input when parsing WMS layer extent prop ([2c99595](https://github.com/hslayers/hslayers-ng/commit/2c99595f1c9b06cffb44ff1852f288d633aa6f49))
+* Form control font-size ([17f75c7](https://github.com/hslayers/hslayers-ng/commit/17f75c772bd486deafd7fd9bc2b6aa09f65d35d3))
+* jsonGetFeatureInfo type import ([ad0cb43](https://github.com/hslayers/hslayers-ng/commit/ad0cb43ba0bf819de26d0000e1b2066abeff9f59))
+* Load Layman WFS ([b538e9e](https://github.com/hslayers/hslayers-ng/commit/b538e9e4e7489bfa7a3190d2f363842b936a0eab))
+* Parsing of linted GML getFeatureInfo response ([39e6f28](https://github.com/hslayers/hslayers-ng/commit/39e6f28db7f35012d4697b58af7c68e8788398dd)), closes [#3780](https://github.com/hslayers/hslayers-ng/issues/3780)
+* Remove already existing layer ([0b64b0f](https://github.com/hslayers/hslayers-ng/commit/0b64b0f6cb0dbdd332ac9ecad9f366d8bf908fae))
+* Try to fit to content when new Layman layer added and synced ([5a52b76](https://github.com/hslayers/hslayers-ng/commit/5a52b768f18a99ccfaef5edb2fa632525e160e4c))
+* WMTS getFeatureinfo ([a0cc7e2](https://github.com/hslayers/hslayers-ng/commit/a0cc7e21a0465863a729906396ba2d64c93d4589))
+* Wrong usage of nullish coalescing operator when transforming WMS bbox. ([54bb820](https://github.com/hslayers/hslayers-ng/commit/54bb8208c015306d5d01d5caabf4ea78ccd54083))
+
+
+
 # [11.0.0](https://github.com/hslayers/hslayers-ng/compare/10.0.0...11.0.0) (2023-01-16)
 
 
