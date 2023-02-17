@@ -12,7 +12,7 @@
   "bin": {
     "hslayers-server": "./server.js"
   },
-  "author": "plan4all",
+  "author": "Plan4all",
   "dependencies": {
     "better-sqlite3": "^7.6.2",
     "connect-sqlite3": "^0.9.11",

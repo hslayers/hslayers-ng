@@ -14,12 +14,10 @@
     "angular"
   ],
   "homepage": "https://ng.hslayers.org/",
-  "bugs": {
-    "url": "https://github.com/hslayers/hslayers-ng/issues"
-  },
+  "bugs": "https://github.com/hslayers/hslayers-ng/issues",
   "repository": {
     "type": "git",
-    "directory": "https://github.com/hslayers/hslayers-ng"
+    "url": "https://github.com/hslayers/hslayers-ng.git"
   },
   "license": "MIT",
   "scripts": {},

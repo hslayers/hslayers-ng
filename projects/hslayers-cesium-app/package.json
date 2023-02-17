@@ -23,10 +23,8 @@
     "cesium",
     "angular"
   ],
-  "author": "Plan4All",
+  "author": "Plan4all",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/hslayers/hslayers-ng/issues"
-  },
+  "bugs": "https://github.com/hslayers/hslayers-ng/issues",
   "homepage": "https://ng.hslayers.org/"
 }
