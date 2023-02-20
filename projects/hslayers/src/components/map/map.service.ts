@@ -544,7 +544,29 @@ export class HsMapService {
       proj4.defs('EPSG:4258')
     );
 
+    proj4.defs(
+      'EPSG:32633',
+      '+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs'
+    );
+    proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#32633',
+      proj4.defs('EPSG:32633')
+    );
+    proj4.defs(
+      'EPSG:32634',
+      '+proj=utm +zone=34 +datum=WGS84 +units=m +no_defs +type=crs'
+    );
+    proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#32634',
+      proj4.defs('EPSG:32634')
+    );
+
     proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
+    proj4.defs(
+      'http://www.opengis.net/gml/srs/epsg.xml#4326',
+      proj4.defs('EPSG:4326')
+    );
+
     proj4.defs(
       'EPSG:3995',
       '+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
