@@ -36,7 +36,10 @@
     "FILE": {
       "onlyOneZipFileCan": "Súbory ZIP je možné nahrávať len po jednom",
       "someOfTheUploadedFiles": "Nahrávaný súbor prekročil maximálnu povolenú veľkosť 20MB",
-      "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi"
+      "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi",
+      "highlightAndSelect": "Vyznačte a vyberte ",
+      "inferedRegex": "Odvodený regulárny výraz",
+      "verifyInferedRegex": "Pred pokračovaním overte odvodený regulárny výraz"
     },
     "requestServiceLayers": "Vyžiadať vrstvy služby",
     "saveToCatalogue": "Uložit do katalógu",
@@ -290,7 +293,9 @@
     "unsavedChanges": "Neuložené zmeny",
     "return": "Vrátiť sa",
     "query": "Dotaz",
-    "composition": "Kompozícia"
+    "composition": "Kompozícia",
+    "select": "Vybrať",
+    "verify": "Overiť"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

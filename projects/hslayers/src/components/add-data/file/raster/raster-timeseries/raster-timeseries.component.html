@@ -3,17 +3,19 @@
         <form class="input-group">
             <input #hsTimeseriesTitle readonly type="text" class="form-control" id="hs-timeseries-title"
                 [value]="fileTitle" [ngClass]="{'is-invalid': !selectedString}">
-            <button type="button" (click)="selectDateString($event)" class="btn btn-sm btn-primary">Select</button>
+            <button type="button" (click)="selectDateString($event)" class="btn btn-sm btn-primary">{{'COMMON.select' |
+                translateHs : {app} }}</button>
         </form>
-        <label for="hs-timeseries-title" class="text-danger small" [hidden]="selectedString">Highlight
-            and select timestamp in title</label>
+        <label for="hs-timeseries-title" class="text-danger small pt-1"
+            [hidden]="selectedString">{{'ADDDATA.FILE.highlightAndSelect' | translateHs: {app} }}</label>
+
     </div>
 
     <ngb-accordion #acc="ngbAccordion" class="my-2" [hidden]="!formVisible" activeIds="hs-timeseries-acc">
         <ngb-panel id="hs-timeseries-acc">
             <ng-template ngbPanelHeader let-opened="opened">
-                <button ngbPanelToggle class="accordion-button text-black-50">Selected string: <span
-                        class="text-black ps-1">{{selectedString}}</span></button>
+                <button ngbPanelToggle class="accordion-button text-black-50">{{'ADDDATA.FILE.selectedString' |
+                    translateHs: {app} }}: <span class="text-black ps-1">{{selectedString}}</span></button>
             </ng-template>
             <ng-template ngbPanelContent>
                 <form [formGroup]="form" class="d-flex flex-column ">
@@ -21,12 +23,15 @@
                         [ngClass]="{'verification-pending': !form.get('verified').value}">
                         <input formControlName="regex" type="text" class="form-control form-control-sm"
                             id="hs-timeseries-regex" [ngClass]="{'is-valid': form.get('verified').value}">
-                        <label for="hs-timeseries-regex">Infered regex pattern</label>
+                        <label for="hs-timeseries-regex">{{'ADDDATA.FILE.inferedRegex' |
+                            translateHs: {app} }}</label>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <p class="text-black-50 small">Verify infered datetime pattern before you continue</p>
+                        <p class="text-black-50 small pt-1">{{'ADDDATA.FILE.verifyInferedRegex' |
+                            translateHs: {app} }}</p>
                         <button type="button" (click)="verifyInputs()"
-                            class="btn btn-sm btn-primary m-2 w-25">Verify</button>
+                            class="btn btn-sm btn-primary m-2 w-25">{{'COMMON.verify' |
+                            translateHs: {app} }}</button>
                     </div>
                 </form>
             </ng-template>
