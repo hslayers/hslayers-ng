@@ -36,7 +36,11 @@
     "FILE": {
       "onlyOneZipFileCan": "Only one zip file can be uploaded at once",
       "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size of 20MB",
-      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files"
+      "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files",
+      "highlightAndSelect": "Highlight and select timestamp in title",
+      "selectedString": "Selected string",
+      "inferedRegex": "Infered regex pattern",
+      "verifyInferedRegex": "Verify infered datetime regex pattern before you continue"
     },
     "loadAs": "When uploaded, load layer as ...",
     "requestServiceLayers": "Request service layers",
@@ -290,7 +294,9 @@
     "reading": "Reading data",
     "unsavedChanges": "Unsaved changes",
     "return": "Return",
-    "composition": "Composition"
+    "composition": "Composition",
+    "select": "Select",
+    "verify": "Verify"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
