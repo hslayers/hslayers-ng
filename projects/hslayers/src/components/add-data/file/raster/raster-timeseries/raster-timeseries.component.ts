@@ -47,8 +47,6 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       /* Regex string encoding of date patter used in file name  */
       regex: ['', Validators.required],
-      /* Date format used in file name eg. YYYY.MM.DD  */
-      format: ['yyyyMMdd', Validators.required],
       verified: [false, Validators.requiredTrue],
     });
   }
@@ -68,6 +66,8 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
       .dataObjectChanged.pipe(takeUntil(this.end))
       .subscribe((data) => {
         if (data.files) {
+          this.resetForm();
+          this.data.srs = undefined;
           this.getFileTitle(data.files[0].content);
         }
       });
@@ -86,8 +86,6 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
     this.form.patchValue({verified: true});
     this.accordionComponent.expand('hs-timeseries-acc');
     this.data.timeRegex = `${this.form.controls.regex.value}`;
-    //Will be used as a part of timeRegex directly
-    // `format=${this.form.controls.format.value}`;
   }
 
   /**
