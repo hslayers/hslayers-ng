@@ -1,4 +1,11 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 
@@ -6,16 +13,24 @@ import {loadAsync} from 'jszip';
 
 import {FileDataObject} from '../../types/file-data-object.type';
 import {FileDescriptor} from '../../types/file-descriptor.type';
+import {HsAddDataCommonFileService} from '../../../common/common-file.service';
 import {HsToastService} from '../../../../layout/toast/toast.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'hs-file-raster-timeseries',
   templateUrl: './raster-timeseries.component.html',
   styleUrls: ['./raster-timeseries.component.scss'],
 })
-export class RasterTimeseriesComponent implements OnInit {
+export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   @Input() data: FileDataObject;
+  @Input() app: string;
+
   @ViewChild('acc') accordionComponent: NgbAccordion;
+  @ViewChild('hsTimeseriesTitle') fileTitleInput: ElementRef<HTMLInputElement>;
+
+  private end = new Subject<void>();
 
   form: FormGroup;
   formVisible = false;
@@ -24,7 +39,11 @@ export class RasterTimeseriesComponent implements OnInit {
   fileTitle: string;
 
   selectedString: string;
-  constructor(private fb: FormBuilder, private hsToastService: HsToastService) {
+  constructor(
+    private fb: FormBuilder,
+    private hsToastService: HsToastService,
+    private hsAddDataCommonFileService: HsAddDataCommonFileService
+  ) {
     this.form = this.fb.group({
       /* Regex string encoding of date patter used in file name  */
       regex: ['', Validators.required],
@@ -34,10 +53,28 @@ export class RasterTimeseriesComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.end.next();
+    this.end.complete();
+  }
+
   ngOnInit() {
     this.tsData = this.data.files[0];
 
-    loadAsync(this.tsData.content).then((zip) => {
+    this.getFileTitle(this.tsData.content);
+
+    this.hsAddDataCommonFileService
+      .get(this.app)
+      .dataObjectChanged.pipe(takeUntil(this.end))
+      .subscribe((data) => {
+        if (data.files) {
+          this.getFileTitle(data.files[0].content);
+        }
+      });
+  }
+
+  private getFileTitle(content: string | ArrayBuffer): void {
+    loadAsync(content).then((zip) => {
       // Get an array of filenames within the zip archive
       const filenames = Object.keys(zip.files);
       this.fileTitle = filenames[0];
@@ -61,32 +98,32 @@ export class RasterTimeseriesComponent implements OnInit {
    *    -[0-9]{8}T[0-9]{9} eg. 20220510T050948
    * - consist of digits only or digits and separators  ., _, /, or -
    */
-  private checkStringValidity(): boolean {
-    return (
-      this.selectedString.length > 0 &&
-      (/^[0-9T._/-]+(?<![a-zA-Z])$/.test(this.selectedString) ||
-        /[0-9]{8}T[0-9]{9}Z/.test(this.selectedString) ||
-        /[0-9]{8}T[0-9]{9}/.test(this.selectedString))
-    );
+  private checkStringValidity(): string | undefined {
+    return [
+      /^[0-9T._/-]+(?<![a-zA-Z])$/,
+      /[0-9]{8}T[0-9]{9}Z/,
+      /[0-9]{8}T[0-9]{9}/,
+    ].find((r: RegExp) => {
+      return r.test(this.selectedString);
+    })?.source;
   }
 
   selectDateString(e: MouseEvent): void {
     e.preventDefault();
-    //Reset verified control
+    //Reset verified control and data value (its added on verify to control form submition)
     this.form.patchValue({verified: false});
+    this.data.timeRegex = undefined;
     //Get selected string
     this.selectedString = this.getSelectedText();
 
     const isValid = this.checkStringValidity();
     if (isValid) {
       this.form.patchValue({
-        regex: this.inferRegexPatternFromString(this.selectedString),
+        regex: this.inferRegexPatternFromString(this.selectedString, isValid),
       });
       this.formVisible = true;
     } else {
-      this.selectedString = undefined;
-      this.formVisible = false;
-      this.data.timeRegex = undefined;
+      this.resetForm();
 
       this.hsToastService.createToastPopupMessage(
         'Selected string is invalid',
@@ -111,13 +148,16 @@ export class RasterTimeseriesComponent implements OnInit {
   /**
    *Infer regex pattern from selected string
    */
-  inferRegexPatternFromString(timestamp: string): string {
+  inferRegexPatternFromString(timestamp: string, regex: string): string {
+    if (regex !== '^[0-9T._/-]+(?<![a-zA-Z])$') {
+      return regex;
+    }
     const separator = this.getSeparator(timestamp);
     // /[0-9]{8}T[0-9]{9}Z/.test(this.selectedString)
     // /[0-9]{8}T[0-9]{9}/.test(this.selectedString)
     if (separator) {
       let parts = timestamp.split(separator);
-      parts = parts.map((part) => `[0-9]{${part.length}}`);
+      parts = parts.map((part) => `([0-9]{${part.length}})`);
       return parts.join(separator);
     } else {
       return `[0-9]{${this.selectedString.length}}`;
@@ -129,12 +169,27 @@ export class RasterTimeseriesComponent implements OnInit {
    * Necessarry workaround because of Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=85686
    */
   private getSelectedText(): string {
-    const inputElement = document.getElementById(
-      'hs-timeseries-title'
-    ) as HTMLInputElement;
+    const inputElement = this.fileTitleInput.nativeElement;
     return inputElement.value.substring(
       inputElement.selectionStart,
       inputElement.selectionEnd
     );
+  }
+
+  private resetSelection(): void {
+    const inputElement = this.fileTitleInput.nativeElement;
+    inputElement.selectionStart = undefined;
+    inputElement.selectionEnd = undefined;
+  }
+
+  /**
+   * Reset form controls to default values
+   */
+  private resetForm(): void {
+    this.selectedString = undefined;
+    this.formVisible = false;
+    this.data.timeRegex = undefined;
+    this.form.patchValue({verified: false});
+    this.resetSelection();
   }
 }
