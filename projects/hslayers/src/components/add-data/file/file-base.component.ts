@@ -95,7 +95,7 @@ export class HsAddDataFileBaseComponent
       saveAvailable: true,
       saveToLayman: true,
       serializedStyle: null,
-      srs: null,
+      srs: undefined,
       title: '',
       type: this.baseFileType,
     };

@@ -1,10 +1,5 @@
 <div>
 
-  <div *ngIf="data.type.includes('raster')"
-    class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-    <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translateHs : {app} }}</p>
-  </div>
-
   <div class="form-floating mb-3">
     <input [placeholder]="'ADDDATA.URL.submitLayerName' | translateHs : {app} " class="form-control" name="name"
       [(ngModel)]="data.name" (ngModelChange)="data.title = data.name" />
@@ -18,7 +13,10 @@
     <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs : {app} }}</label>
 
   </div>
-
+  <div *ngIf="data.type.includes('raster')"
+    class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
+    <p class="m-0"> {{'ADDLAYERS.rasterImageryWith' | translateHs : {app} }}</p>
+  </div>
   <div class="d-flex w-100 flex-column">
     <div class="form-floating" *ngIf="data.type === 'shp' || data.type.includes('raster')">
       <select class="form-select rounded-0" id="hs-add-data-crs" [(ngModel)]="data.srs" name="srs"
