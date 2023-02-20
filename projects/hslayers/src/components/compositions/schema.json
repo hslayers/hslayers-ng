@@ -317,7 +317,7 @@
                   "hs.format.externalWFS",
                   "hs.format.Sparql"
                 ],
-                "title": "Layer protocol format"
+                "title": "Layer procol format"
               },
               "url": {
                 "$id": "#/properties/layers/items/properties/protocol/properties/url",
