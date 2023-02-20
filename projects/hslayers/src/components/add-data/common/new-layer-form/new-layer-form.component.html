@@ -18,14 +18,14 @@
     <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs : {app} }}</label>
 
   </div>
-  <div class="form-group" *ngIf="data.type === 'shp' || data.type.includes('raster')">
-    <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs : {app} }}</span>
-      <select class="form-control form-select" [(ngModel)]="data.srs" name="srs">
-        <option [ngValue]="null" disabled selected hidden>{{'ADDLAYERS.SRSRequired' | translateHs : {app} }}</option>
+
+  <div class="d-flex w-100 flex-column">
+    <div class="form-floating" *ngIf="data.type === 'shp' || data.type.includes('raster')">
+      <select class="form-select rounded-0" id="hs-add-data-crs" [(ngModel)]="data.srs" name="srs"
+        [ngClass]="data?.srs ? 'is-valid mb-2' : 'is-invalid'" aria-label="CRS floating label select">
         <option *ngFor="let epsg of hsLaymanService.supportedCRRList | filter: srsFilter" [ngValue]="epsg">{{epsg}}
-        </option>
       </select>
+      <label for="hs-add-data-crs">{{'ADDLAYERS.srs' | translateHs : {app} }}</label>
     </div>
   </div>
   <p [hidden]="data?.srs"><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translateHs : {app} }}</sub></p>
