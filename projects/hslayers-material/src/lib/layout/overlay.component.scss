@@ -8,13 +8,18 @@
 
     section {
 	position: absolute;
+	display: flex;
+
+	.mat-mdc-fab.default-button,
+	.mat-mdc-mini-fab.default-button
+	{
+	    --mdc-fab-container-color: #fff;
+	    --mdc-fab-icon-color: #000;
+	    --mat-mdc-fab-color: #000;
+	}
 
 	button {
 	    margin: 6px 8px;
-
-	    &.shift-1-up .mat-icon {
-		transform: translateY(-1px);
-	    }
 	}
     }
 

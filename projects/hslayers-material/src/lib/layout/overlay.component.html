@@ -1,4 +1,4 @@
-<section layout="row" class="buttons bottom right">
+<section class="buttons bottom right">
     <button mat-icon-button
         class="attributions-button"
         (click)="openAttributionDialog($event)"
@@ -10,8 +10,9 @@
     </button>
 </section>
 
-<section layout="row" class="buttons top right">
+<section class="buttons top right">
     <button mat-mini-fab
+        class="default-button"
         (click)="adjustZoom(-1)"
         [class.mat-accent]="false"
         [disabled]="!canZoomOut()"
@@ -20,8 +21,8 @@
         aria-label="Zoom out button">
         –
     </button>
-
     <button mat-mini-fab
+        class="default-button"
         (click)="adjustZoom(1)"
         [class.mat-accent]="false"
         [disabled]="!canZoomIn()"
@@ -30,20 +31,16 @@
         aria-label="Zoom in button">
         +
     </button>
-
     <button mat-mini-fab
         (click)="defaultView()"
-        class="shift-1-up"
         color="primary"
         matTooltip="Default view"
         matTooltipPosition="below"
         aria-label="Go to the default view">
         <mat-icon>home</mat-icon>
     </button>
-
     <button mat-mini-fab
         (click)="maxView()"
-        class="shift-1-up"
         color="primary"
         matTooltip="Display all"
         matTooltipPosition="below"
