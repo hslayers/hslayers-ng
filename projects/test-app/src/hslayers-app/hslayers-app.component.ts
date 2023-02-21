@@ -392,7 +392,7 @@ export class HslayersAppComponent {
             },
           ],
           proxyPrefix: window.location.hostname.includes('localhost')
-            ? `${window.location.protocol}//${window.location.hostname}:8085/`
+            ? `${window.location.protocol}//127.0.0.1:8085/`
             : '/proxy/',
           panelsEnabled: app.panelsEnabled,
           mapSwipeOptions: {

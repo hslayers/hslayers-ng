@@ -23,7 +23,7 @@ describe('Hslayers application', () => {
 
     //it('Wms capabilities should be retrieved', () => {
     cy.get(`hs-url-wms hs-common-url input`).type(
-      'https://hub.lesprojekt.cz/geoserver/leitnerfilip_wms/ows'
+      'https://watlas.lesprojekt.cz/geoserver/filip_wms/ows'
     );
     cy.get(`hs-url-wms hs-common-url input + button`).click();
     cy.wait(1000);
