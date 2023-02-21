@@ -287,8 +287,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (layers.length == 0) {
       return undefined;
     }
-    const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread need to not create reference
-    return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
+    try {
+      const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread needed to not create reference
+      return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
+    } catch (error) {
+      console.warn(`Empty extent for ${layers}`, error);
+    }
   }
 
   getLayerExtent(serviceLayer: any, crs: string, app: string): number[] {
@@ -328,7 +332,14 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = serviceLayer.LatLonBoundingBox;
       }
     }
-    return boundingbox;
+    return (
+      boundingbox ||
+      transformExtent(
+        [-180, -90, 180, 90],
+        'EPSG:4326',
+        this.hsMapService.getCurrentProj(app)
+      )
+    );
   }
 
   /**
