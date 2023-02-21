@@ -25,7 +25,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
 import {MatLegacyListModule as MatListModule} from '@angular/material/legacy-list';
-import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/menu';
+import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatLegacyPaginatorModule as MatPaginatorModule} from '@angular/material/legacy-paginator';
 import {MatLegacyProgressBarModule as MatProgressBarModule} from '@angular/material/legacy-progress-bar';
@@ -37,7 +37,7 @@ import {MatLegacySliderModule as MatSliderModule} from '@angular/material/legacy
 import {MatLegacySlideToggleModule as MatSlideToggleModule} from '@angular/material/legacy-slide-toggle';
 import {MatLegacySnackBarModule as MatSnackBarModule} from '@angular/material/legacy-snack-bar';
 import {MatSortModule} from '@angular/material/sort';
-import {MatLegacyTableModule as MatTableModule} from '@angular/material/table';
+import {MatLegacyTableModule as MatTableModule} from '@angular/material/legacy-table';
 import {MatLegacyTabsModule as MatTabsModule} from '@angular/material/legacy-tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatLegacyTooltipModule as MatTooltipModule} from '@angular/material/legacy-tooltip';

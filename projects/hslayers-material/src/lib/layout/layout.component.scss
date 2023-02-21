@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '@angular/material' as mat;
 
 hslayers-material {
   height: 100%;
@@ -18,7 +18,7 @@ hslayers-material {
 
     .hs-panelspace {
 	z-index: 1;
-	@include mat-elevation(2);
+	@include mat.elevation(2);
     }
 
     .hs-flex-fill {
