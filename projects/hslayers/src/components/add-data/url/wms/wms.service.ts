@@ -246,20 +246,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         }
       }
 
-      const serviceLayer = this.hsAddDataUrlService.selectLayerByName(
+      this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         appRef.data.layers,
         'Name'
       );
       this.hsAddDataUrlService.searchForChecked(appRef.data.layers, app);
-      //TODO: shalln't we move this logic after the layer is added to map?
-      if (layerToSelect) {
-        appRef.data.extent = this.getLayerExtent(
-          serviceLayer,
-          appRef.data.srs,
-          app
-        );
-      }
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
       appRef.data.get_map_url = this.removePortIfProxified(
@@ -306,7 +298,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
     const appRef = this.get(app);
     let boundingbox = serviceLayer.BoundingBox;
-    if (Array.isArray(boundingbox)) {
+    if (
+      crs !== undefined &&
+      serviceLayer.EX_GeographicBoundingBox !== undefined
+    ) {
+      boundingbox = transformExtent(
+        serviceLayer.EX_GeographicBoundingBox,
+        'EPSG:4326',
+        this.hsMapService.getCurrentProj(app)
+      );
+    } else if (Array.isArray(boundingbox)) {
       const preferred = boundingbox.find((bboxInCrs) => {
         return bboxInCrs.crs == appRef.data.map_projection;
       });
@@ -314,18 +315,11 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       if (preferred?.extent) {
         boundingbox = preferred?.extent;
       } else {
+        //NOTE: For some reason (maybe WMS 1.1.1/1.1.0) sometimes CRS:84 might hold correct order of coordinates
         boundingbox = boundingbox.filter((b) => b.crs != 'CRS:84');
         boundingbox = transformExtent(
           boundingbox[0].extent,
-          boundingbox[0].crs || crs, //Use BBOX object crs - when missing assume it's same as layer's
-          this.hsMapService.getCurrentProj(app)
-        );
-      }
-    } else if (crs !== undefined) {
-      if (serviceLayer.EX_GeographicBoundingBox !== undefined) {
-        boundingbox = transformExtent(
-          serviceLayer.EX_GeographicBoundingBox,
-          'EPSG:4326',
+          boundingbox[0].crs || crs,
           this.hsMapService.getCurrentProj(app)
         );
       }
