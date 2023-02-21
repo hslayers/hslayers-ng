@@ -39,6 +39,22 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   fileTitle: string;
 
   selectedString: string;
+
+  supportedRegex = [
+    {
+      regex: /[0-9]{8}T[0-9]{9}Z/,
+      timeregex: '([0-9]{8})T([0-9]{9})Z',
+    },
+    {
+      regex: /[0-9]{8}T[0-9]{9}/,
+      timeregex: '([0-9]{8})T([0-9]{9})',
+    },
+    {
+      regex: /^[0-9T._/-]+(?<![a-zA-Z])$/,
+      timeregex: undefined,
+    },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private hsToastService: HsToastService,
@@ -97,13 +113,11 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
    * - consist of digits only or digits and separators  ., _, /, or -
    */
   private checkStringValidity(): string | undefined {
-    return [
-      /^[0-9T._/-]+(?<![a-zA-Z])$/,
-      /[0-9]{8}T[0-9]{9}Z/,
-      /[0-9]{8}T[0-9]{9}/,
-    ].find((r: RegExp) => {
-      return r.test(this.selectedString);
-    })?.source;
+    return this.supportedRegex
+      .map((val) => val.regex)
+      .find((r: RegExp) => {
+        return r.test(this.selectedString);
+      })?.source;
   }
 
   selectDateString(e: MouseEvent): void {
@@ -148,7 +162,9 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
    */
   inferRegexPatternFromString(timestamp: string, regex: string): string {
     if (regex !== '^[0-9T._/-]+(?<![a-zA-Z])$') {
-      return regex;
+      return this.supportedRegex.find(
+        (val) => val.regex.toString().replace(/\//g, '') == regex
+      ).timeregex;
     }
     const separator = this.getSeparator(timestamp);
     // /[0-9]{8}T[0-9]{9}Z/.test(this.selectedString)
