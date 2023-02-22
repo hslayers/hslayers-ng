@@ -153,11 +153,8 @@ export class HsLayerSynchronizerService {
     layer: VectorLayer<VectorSource<Geometry>>
   ): HsEndpoint {
     const layerDefinition = getDefinition(layer);
-    return (this.hsCommonEndpointsService.endpoints || [])
-      .filter(
-        (ds) => ds.type.includes('layman') && layerDefinition?.url?.includes(ds.url)
-      )
-      .pop();
+    const laymanEp = this.hsCommonLaymanService?.layman;
+    return layerDefinition?.url?.includes(laymanEp?.url) ? laymanEp : undefined;
   }
 
   /**

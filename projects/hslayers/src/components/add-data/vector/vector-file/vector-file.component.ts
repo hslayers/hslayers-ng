@@ -20,6 +20,7 @@ import {
 } from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
@@ -61,6 +62,7 @@ export class HsAddDataVectorFileComponent
     private hsAddDataVectorService: HsAddDataVectorService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
     private hsLayerManagerService: HsLayerManagerService,
@@ -230,9 +232,7 @@ export class HsAddDataVectorFileComponent
         } else {
           this.data.saveAvailable = true;
           this.data.saveToLayman =
-            this.hsCommonEndpointsService.endpoints.filter(
-              (ep) => ep.type.includes('layman')
-            )[0]?.authenticated;
+            this.hsCommonLaymanService.layman?.authenticated;
           if (this.data.saveToLayman) {
             this.data.loadAsType = DEFAULT_VECTOR_LOAD_TYPE;
           }
@@ -243,9 +243,7 @@ export class HsAddDataVectorFileComponent
             undefined &&
           this.data.saveToLayman
         ) {
-          this.data.url = this.hsCommonEndpointsService.endpoints.filter(
-            (ep) => ep.type.includes('layman')
-          )[0]?.url;
+          this.data.url = this.hsCommonLaymanService.layman?.url;
         }
         this.data.showDetails = true;
       } else {

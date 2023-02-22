@@ -8,6 +8,7 @@ import {ProjectionLike, transform} from 'ol/proj';
 import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';
 
+import {HsCommonLaymanService} from '../..//common/layman/layman.service';
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
 
@@ -25,6 +26,7 @@ export class HsUtilsService {
     public HsConfig: HsConfig,
     private http: HttpClient,
     private LogService: HsLogService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
@@ -36,9 +38,7 @@ export class HsUtilsService {
    * @returns Encoded Url with path to hsproxy.cgi script
    */
   proxify(url: string, app: string = 'default', toEncoding?: boolean): string {
-    const laymanEp = this.HsConfig.get(app).datasources?.find((ep) =>
-      ep.type.includes('layman')
-    );
+    const laymanEp = this.hsCommonLaymanService.layman;
     if (
       url.startsWith(this.HsConfig.get(app).proxyPrefix) ||
       (laymanEp && url.startsWith(laymanEp.url))

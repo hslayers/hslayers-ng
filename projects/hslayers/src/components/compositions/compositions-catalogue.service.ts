@@ -9,7 +9,6 @@ import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsMapService} from '../map/map.service';
@@ -76,7 +75,6 @@ export class HsCompositionsCatalogueService {
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsDialogContainerService: HsDialogContainerService,
-    public hsLaymanService: HsLaymanService,
     public hsCommonLaymanService: HsCommonLaymanService,
     private _zone: NgZone
   ) {
@@ -404,7 +402,7 @@ export class HsCompositionsCatalogueService {
     appRef.data.type = TYPES[0].name;
     appRef.data.keywords.forEach((kw) => (kw.selected = false));
     appRef.data.themes.forEach((th) => (th.selected = false));
-    const laymanEndpoint = this.hsLaymanService.getLaymanEndpoint();
+    const laymanEndpoint = this.hsCommonLaymanService.layman;
     if (laymanEndpoint) {
       appRef.filteredEndpoints.push(laymanEndpoint);
     }

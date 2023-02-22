@@ -9,8 +9,7 @@
         </button>
       </div>
       <div class="modal-body" style="overflow-y:auto">
-        <hs-layman-access-rights *ngIf="data.selectedRecord.endpoint?.type.includes('layman')" [app]="data.app"
-          [(access_rights)]="currentAccessRights">
+        <hs-layman-access-rights [app]="data.app" [(access_rights)]="currentAccessRights">
         </hs-layman-access-rights>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" (click)="savePermissions()" data-dismiss="modal">{{'COMMON.save'
