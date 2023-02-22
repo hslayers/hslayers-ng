@@ -20,7 +20,7 @@ export interface HsEndpoint {
   language?;
   listLoading?;
   layers?: HsAddDataLayerDescriptor[];
-  originalConfiguredUser?;
+  originalConfiguredUser?: 'anonymous';
   user?: string;
   authenticated?: boolean;
   code_list_url?: string;

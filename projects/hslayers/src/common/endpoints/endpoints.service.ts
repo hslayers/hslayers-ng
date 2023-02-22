@@ -60,8 +60,8 @@ export class HsCommonEndpointsService {
           paging: {
             itemsPerPage: this.getItemsPerPageConfig(ds),
           },
-          user: ds.user,
-          originalConfiguredUser: ds.user,
+          user: 'anonymous',
+          originalConfiguredUser: 'anonymous',
           getCurrentUserIfNeeded: async () =>
             await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp, app),
         };

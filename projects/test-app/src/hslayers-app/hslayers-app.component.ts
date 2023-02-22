@@ -380,7 +380,6 @@ export class HslayersAppComponent {
             {
               title: 'Layman',
               url: 'http://localhost:8087',
-              user: 'anonymous',
               type: 'layman',
             },
             {
