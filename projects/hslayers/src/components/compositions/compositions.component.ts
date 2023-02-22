@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {
   HsCompositionsCatalogueParams,
   HsCompositionsCatalogueService,
@@ -13,7 +13,6 @@ import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsConfig, HsConfigObject} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -27,7 +26,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -51,7 +51,7 @@ export class HsCompositionsComponent
     private hsLaymanService: HsLaymanService,
     private hsSidebarService: HsSidebarService,
     private hsLanguageService: HsLanguageService,
-    public hsCommonEndpointService: HsCommonEndpointsService
+    public hsCommonLaymanService: HsCommonLaymanService
   ) {
     super(hsLayoutService);
   }
@@ -232,20 +232,6 @@ export class HsCompositionsComponent
   sortByValueChanged(sortBy: any): void {
     this.catalogueRef.data.sortBy = sortBy;
     this.loadFilteredCompositions();
-  }
-
-  /**
-   * Get layman endpoint reference
-   */
-  getLaymanEndpoint(): HsEndpoint {
-    return this.hsLaymanService.getLaymanEndpoint();
-  }
-
-  /**
-   * Check if Layman user is a guest
-   */
-  isLaymanGuest(): boolean {
-    return this.hsLaymanService.isLaymanGuest();
   }
 
   /**
