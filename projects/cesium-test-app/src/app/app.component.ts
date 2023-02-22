@@ -134,7 +134,6 @@ export class AppComponent implements OnInit {
             url: 'http://localhost:8087',
             user: 'anonymous',
             type: 'layman',
-            liferayProtocol: 'https',
           },
         ],
         proxyPrefix: window.location.hostname.includes('localhost')
