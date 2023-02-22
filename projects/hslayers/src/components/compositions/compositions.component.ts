@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {
   HsCompositionsCatalogueParams,
   HsCompositionsCatalogueService,
@@ -49,7 +50,8 @@ export class HsCompositionsComponent
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
     private hsLaymanService: HsLaymanService,
     private hsSidebarService: HsSidebarService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
+    public hsCommonEndpointService: HsCommonEndpointsService
   ) {
     super(hsLayoutService);
   }
