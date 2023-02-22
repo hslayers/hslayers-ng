@@ -86,7 +86,9 @@ export class HsLaymanService implements HsSaverService {
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
       if (data) {
-        const laymanEP = data.endpoints.find((ep) => ep.type == 'layman');
+        const laymanEP = data.endpoints.find((ep) =>
+          ep.type.includes('layman')
+        );
         if (laymanEP) {
           const laymanVersion: AboutLayman = await lastValueFrom(
             this.http
@@ -888,7 +890,7 @@ export class HsLaymanService implements HsSaverService {
       }
       const observables: Observable<any>[] = [];
       (this.hsCommonEndpointsService.endpoints || [])
-        .filter((ds) => ds.type == 'layman')
+        .filter((ds) => ds.type.includes('layman'))
         .forEach((ds) => {
           let url;
           if (layer) {
@@ -987,7 +989,7 @@ export class HsLaymanService implements HsSaverService {
   getLaymanEndpoint(): HsEndpoint {
     return this.hsCommonEndpointsService.endpoints?.find(
       //FIXME..."?" was not there before multiple apps. Added to bypass while refactoring other
-      (e) => e.type == 'layman'
+      (e) => e.type.includes('layman')
     );
   }
 

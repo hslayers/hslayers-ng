@@ -140,7 +140,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     }
     if (this.endpoint.type == 'statusmanager') {
       return !this.hsCoreService.isAuthorized();
-    } else if (this.endpoint.type == 'layman') {
+    } else if (this.endpoint.type.includes('layman')) {
       return true;
     }
   }

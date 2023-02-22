@@ -24,11 +24,10 @@
                     [hidden]='selectedDS.type!=="micka" || hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer) === "#"'>
                     <i class="icon-share-alt"></i> RDF
                 </a><!-- TODO: Remove function call from template -->
-                <button type="button" class="btn btn-success"
-                    [hidden]="selectedLayer.bbox === undefined"
+                <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
                     (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox, data.app)">{{'COMMON.zoomTo' |
                     translateHs: {app: data.app} }}</button>
-                <div *ngIf="selectedDS.type === 'layman'">
+                <div *ngIf="selectedDS.type.includes('layman')">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
                         <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs: {app:

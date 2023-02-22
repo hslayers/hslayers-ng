@@ -198,7 +198,7 @@ export class HsAddDataCatalogueService {
 
         //TODO Mark non functional endpoint
         for (const endpoint of appRef.endpointsWithDatasources) {
-          if (!appRef.data.onlyMine || endpoint.type == 'layman') {
+          if (!appRef.data.onlyMine || endpoint.type.includes('layman')) {
             const promise = this.queryCatalog(endpoint, app);
             observables.push(promise);
           }
@@ -247,7 +247,7 @@ export class HsAddDataCatalogueService {
   createLayerList(app: string): void {
     const appRef = this.get(app);
     for (const endpoint of appRef.endpointsWithDatasources) {
-      if (!appRef.data.onlyMine || endpoint.type == 'layman') {
+      if (!appRef.data.onlyMine || endpoint.type.includes('layman')) {
         if (endpoint.layers) {
           endpoint.layers.forEach((layer) => {
             layer.endpoint = endpoint;
@@ -289,7 +289,7 @@ export class HsAddDataCatalogueService {
         ).length == 0
     );
 
-    if (endpoint.type != 'layman') {
+    if (endpoint.type.includes('layman')) {
       appRef.matchedRecords -= endpoint.layers.length - filteredLayers.length;
     }
     appRef.catalogEntries = appRef.catalogEntries.concat(filteredLayers);
@@ -361,6 +361,7 @@ export class HsAddDataCatalogueService {
         );
         return query;
       case 'layman':
+      case 'layman-wagtail':
         query = this.hsLaymanBrowserService.queryCatalog(
           catalog,
           app,
@@ -423,7 +424,7 @@ export class HsAddDataCatalogueService {
         layer,
         app
       );
-    } else if (ds.type == 'layman') {
+    } else if (ds.type.includes('layman')) {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
         layer,
@@ -454,8 +455,8 @@ export class HsAddDataCatalogueService {
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
           layer:
-            ds.type == 'layman' || whatToAdd.recordType === 'dataset'
-              ? ds.type == 'layman'
+            ds.type.includes('layman') || whatToAdd.recordType === 'dataset'
+              ? ds.type.includes('layman')
                 ? layer.name
                 : whatToAdd.name
               : undefined,

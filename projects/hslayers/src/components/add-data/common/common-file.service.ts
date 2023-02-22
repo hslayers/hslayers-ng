@@ -121,13 +121,13 @@ export class HsAddDataCommonFileService {
     const appRef = this.get(app);
     const endpoints = this.hsCommonEndpointsService.endpoints;
     if (endpoints && endpoints.length > 0) {
-      const laymans = endpoints.filter((ep) => ep.type == 'layman');
+      const laymans = endpoints.filter((ep) => ep.type.includes('layman'));
       if (laymans.length > 0) {
         appRef.endpoint = laymans[0];
       } else {
         appRef.endpoint = endpoints[0];
       }
-      if (appRef.endpoint && appRef.endpoint.type == 'layman') {
+      if (appRef.endpoint && appRef.endpoint.type.includes('layman')) {
         appRef.endpoint.getCurrentUserIfNeeded(appRef.endpoint, app);
       }
     }

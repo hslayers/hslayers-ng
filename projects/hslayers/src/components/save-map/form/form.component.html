@@ -25,10 +25,10 @@
         <img class="hs-stc-thumbnail img-thumbnail" [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs : {app}"
             width="256" height="256">
     </label>
-    <hs-layman-access-rights *ngIf="endpoint?.type === 'layman'" [app]="app"
+    <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')" [app]="app"
         [(access_rights)]="appRef.compoData.access_rights">
     </hs-layman-access-rights>
-    <ng-container *ngIf="appRef.statusData?.groups?.length > 0 && endpoint?.type !== 'layman'">
+    <ng-container *ngIf="appRef.statusData?.groups?.length > 0 && !endpoint?.type.includes('layman')">
         <table class="table table-condensed">
             <tbody>
                 <tr>

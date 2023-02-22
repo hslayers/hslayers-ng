@@ -1075,7 +1075,7 @@ export class HsMapService {
       (src as TileImage).setTileLoadFunction((tile: ImageTile, src) => {
         const laymanEp = this.hsConfig
           .get(app)
-          .datasources?.find((ep) => ep.type == 'layman');
+          .datasources?.find((ep) => ep.type.includes('layman'));
         if (laymanEp && src.startsWith(laymanEp.url)) {
           this.laymanWmsLoadingFunction(tile, src);
         } else {
@@ -1107,7 +1107,7 @@ export class HsMapService {
     }
     const laymanEp = this.hsConfig
       .get(app)
-      .datasources?.find((ep) => ep.type == 'layman');
+      .datasources?.find((ep) => ep.type.includes('layman'));
     if (laymanEp && src.startsWith(laymanEp.url)) {
       this.laymanWmsLoadingFunction(image, src);
       return;

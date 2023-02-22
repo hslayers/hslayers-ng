@@ -231,7 +231,7 @@ export class HsAddDataVectorFileComponent
           this.data.saveAvailable = true;
           this.data.saveToLayman =
             this.hsCommonEndpointsService.endpoints.filter(
-              (ep) => ep.type == 'layman'
+              (ep) => ep.type.includes('layman')
             )[0]?.authenticated;
           if (this.data.saveToLayman) {
             this.data.loadAsType = DEFAULT_VECTOR_LOAD_TYPE;
@@ -244,7 +244,7 @@ export class HsAddDataVectorFileComponent
           this.data.saveToLayman
         ) {
           this.data.url = this.hsCommonEndpointsService.endpoints.filter(
-            (ep) => ep.type == 'layman'
+            (ep) => ep.type.includes('layman')
           )[0]?.url;
         }
         this.data.showDetails = true;
