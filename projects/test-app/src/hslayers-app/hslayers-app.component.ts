@@ -382,7 +382,6 @@ export class HslayersAppComponent {
               url: 'http://localhost:8087',
               user: 'anonymous',
               type: 'layman',
-              liferayProtocol: 'https',
             },
             {
               title: 'Micka',
