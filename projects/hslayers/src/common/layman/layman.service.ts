@@ -18,6 +18,10 @@ export class HsCommonLaymanService {
     undefined
   );
 
+  public get layman(): HsEndpoint {
+    return this.layman$.getValue();
+  }
+
   constructor(
     private $http: HttpClient,
     public hsToastService: HsToastService,

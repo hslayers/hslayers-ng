@@ -9,7 +9,7 @@ import {lastValueFrom, takeUntil} from 'rxjs';
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
 import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsCapabilityCacheService} from './capability-cache.service';
-import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../layman/layman.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -24,7 +24,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     public hsEventBusService: HsEventBusService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsCommonLaymanService: HsCommonLaymanService,
     public hsAddDataService: HsAddDataService,
     private hsCapabilityCacheService: HsCapabilityCacheService
   ) {}
@@ -113,9 +113,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
           .get(url, {
             responseType: 'text',
             withCredentials: url.includes(
-              this.hsCommonEndpointsService?.endpoints.filter((ep) =>
-                ep.type.includes('layman')
-              )[0]?.url
+              this.hsCommonLaymanService.layman?.url
             ),
           })
           .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))

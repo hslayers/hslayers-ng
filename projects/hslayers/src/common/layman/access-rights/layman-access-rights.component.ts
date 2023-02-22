@@ -3,9 +3,9 @@ import {HttpClient} from '@angular/common/http';
 
 import {lastValueFrom, map} from 'rxjs';
 
+import {HsCommonLaymanService} from '../layman.service';
 import {HsEndpoint} from '../../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../components/language/language.service';
-import {HsLaymanService} from '../../../components/save-map/layman.service';
 import {HsLogService} from './../../log/log.service';
 import {LaymanUser} from '../types/layman-user.type';
 import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
@@ -28,12 +28,12 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   endpoint: HsEndpoint;
   constructor(
     private hsLanguageService: HsLanguageService,
-    private hsLaymanService: HsLaymanService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private $http: HttpClient,
     private hsLog: HsLogService
   ) {}
   async ngOnInit(): Promise<void> {
-    this.endpoint = this.hsLaymanService.getLaymanEndpoint();
+    this.endpoint = this.hsCommonLaymanService.layman;
     const readAccess = this.access_rights['access_rights.read'].split(',');
     const writeAccess = this.access_rights['access_rights.write'].split(',');
     if (readAccess.length > 1 || writeAccess.length > 1) {

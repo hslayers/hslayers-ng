@@ -20,7 +20,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   endpoint: HsEndpoint = null;
   endpoints: HsEndpoint[];
   isAuthorized = false;
@@ -63,23 +64,15 @@ export class HsSaveMapComponent
           return;
         }
         if (filled.endpoints?.length > 0 && !this.endpoint) {
-          const laymans = filled.endpoints.filter((ep) =>
-            ep.type.includes('layman')
-          );
-          if (laymans.length > 0) {
+          const laymanEp = this.hsCommonLaymanService.layman;
+          if (laymanEp) {
             this.hsSaveMapManagerService.selectEndpoint(
-              laymans[0],
+              laymanEp,
               this.data.app
             );
           } else {
             this.hsSaveMapManagerService.selectEndpoint(
               filled.endpoints[0],
-              this.data.app
-            );
-          }
-          if (this.endpoint && this.endpoint.type.includes('layman')) {
-            this.hsCommonLaymanService.detectAuthChange(
-              this.endpoint,
               this.data.app
             );
           }

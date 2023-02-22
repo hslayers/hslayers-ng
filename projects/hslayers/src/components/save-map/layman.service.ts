@@ -981,26 +981,6 @@ export class HsLaymanService implements HsSaverService {
       });
     });
   }
-
-  /**
-   * Get Layman's endpoint description
-   * @returns Layman's endpoint description
-   */
-  getLaymanEndpoint(): HsEndpoint {
-    return this.hsCommonEndpointsService.endpoints?.find(
-      //FIXME..."?" was not there before multiple apps. Added to bypass while refactoring other
-      (e) => e.type.includes('layman')
-    );
-  }
-
-  /**
-   * Check if the current Layman's user is anonymous (Not logged in)
-   * @returns True if user is not logged in, false otherwise
-   */
-  isLaymanGuest(): boolean {
-    const endpoint = this.getLaymanEndpoint();
-    return endpoint.user == endpoint.originalConfiguredUser;
-  }
 }
 
 /**

@@ -9,7 +9,7 @@ import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
 import {DuplicateHandling, HsMapService} from '../map/map.service';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsConfig} from '../../config.service';
@@ -71,7 +71,7 @@ export class HsCompositionsParserService {
     private $log: HsLogService,
     private hsEventBusService: HsEventBusService,
     private hsLanguageService: HsLanguageService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerManagerService: HsLayerManagerService,
     private hsToastService: HsToastService
   ) {}
@@ -120,8 +120,7 @@ export class HsCompositionsParserService {
       options['responseType'] = 'text';
     }
     options['withCredentials'] = url.includes(
-      this.hsCommonEndpointsService?.endpoints.find((ep) => ep.type.includes('layman'))
-        ?.url
+      this.hsCommonLaymanService.layman?.url
     );
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {

@@ -10,6 +10,7 @@ import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
@@ -56,7 +57,8 @@ export class HsAddDataCommonFileService {
     private hsLaymanService: HsLaymanService,
     private hsLog: HsLogService,
     private hsToastService: HsToastService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
+    private hsCommonLaymanService: HsCommonLaymanService
   ) {}
 
   /**
@@ -121,14 +123,12 @@ export class HsAddDataCommonFileService {
     const appRef = this.get(app);
     const endpoints = this.hsCommonEndpointsService.endpoints;
     if (endpoints && endpoints.length > 0) {
-      const laymans = endpoints.filter((ep) => ep.type.includes('layman'));
-      if (laymans.length > 0) {
-        appRef.endpoint = laymans[0];
+      const layman = this.hsCommonLaymanService.layman;
+      if (layman) {
+        appRef.endpoint = layman;
+        appRef.endpoint.getCurrentUserIfNeeded(appRef.endpoint, app);
       } else {
         appRef.endpoint = endpoints[0];
-      }
-      if (appRef.endpoint && appRef.endpoint.type.includes('layman')) {
-        appRef.endpoint.getCurrentUserIfNeeded(appRef.endpoint, app);
       }
     }
   }
@@ -693,7 +693,7 @@ export class HsAddDataCommonFileService {
    * @returns True, if user is authorized, false otherwise
    */
   isAuthorized(): boolean {
-    return this.hsLaymanService.getLaymanEndpoint()?.authenticated ?? false;
+    return this.hsCommonLaymanService.layman?.authenticated ?? false;
   }
 
   /**

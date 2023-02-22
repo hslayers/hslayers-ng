@@ -170,7 +170,7 @@ export class HsDrawService {
         const definition = {
           format: appRef.isAuthorized ? 'hs.format.WFS' : null,
           url: appRef.isAuthorized
-            ? this.hsLaymanService.getLaymanEndpoint()?.url + '/wfs'
+            ? this.hsCommonLaymanService.layman?.url + '/wfs'
             : null,
         };
         setDefinition(appRef.selectedLayer, definition);
@@ -223,7 +223,7 @@ export class HsDrawService {
     while (this.hsMapService.findLayerByTitle(tmpTitle, app)) {
       tmpTitle = `${this.translate('DRAW.drawLayer', app)} ${i++}`;
     }
-    const layman = this.hsLaymanService.getLaymanEndpoint();
+    const layman = this.hsCommonLaymanService.layman;
     const drawLayer = new VectorLayer({
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
@@ -570,7 +570,7 @@ export class HsDrawService {
     }
     appRef.addedLayersRemoved = false;
     appRef.drawableLayers = drawables;
-    appRef.laymanEndpoint = this.hsLaymanService.getLaymanEndpoint();
+    appRef.laymanEndpoint = this.hsCommonLaymanService.layman;
     if (appRef.laymanEndpoint) {
       await lastValueFrom(
         this.hsLaymanBrowserService.queryCatalog(appRef.laymanEndpoint, app, {

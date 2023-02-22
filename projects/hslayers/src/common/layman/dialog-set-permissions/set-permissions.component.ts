@@ -2,10 +2,12 @@ import {Component, OnInit, ViewRef} from '@angular/core';
 
 import {HsAddDataCatalogueService} from '../../../components/add-data/catalogue/catalogue.service';
 import {HsAddDataLayerDescriptor} from '../../../components/add-data/catalogue/layer-descriptor.model';
+import {HsCommonLaymanService} from '../layman.service';
 import {HsCompositionsCatalogueService} from '../../../components/compositions/compositions-catalogue.service';
 import {HsDialogComponent} from '../../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../components/layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../components/layout/dialogs/dialog-item';
+import {HsEndpoint} from 'hslayers-ng';
 import {HsLaymanService} from '../../../components/save-map/layman.service';
 import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
 import {UpsertLayerObject} from '../../../components/save-map/types/upsert-layer-object.type';
@@ -29,8 +31,10 @@ export class HsSetPermissionsDialogComponent
     selectedRecord: HsAddDataLayerDescriptor;
     app: string;
   };
+  endpoint: HsEndpoint;
 
   constructor(
+    public hsCommonLaymanService: HsCommonLaymanService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLaymanService: HsLaymanService,
     private hsAddDataCatalogueService: HsAddDataCatalogueService,
@@ -38,7 +42,9 @@ export class HsSetPermissionsDialogComponent
   ) {}
 
   ngOnInit(): void {
-    if (!this.data.selectedRecord?.access_rights) {
+    //Can set permision for layman endpoint only
+    this.endpoint = this.hsCommonLaymanService.layman;
+    if (!this.data.selectedRecord?.access_rights || !this.endpoint) {
       this.close();
       return;
     }
@@ -50,7 +56,7 @@ export class HsSetPermissionsDialogComponent
    * so it can be used for Layman access rights component
    */
   parseCurrentPermissions(): void {
-    const currentUser = this.data.selectedRecord.endpoint.user;
+    const currentUser = this.endpoint.user;
     let read: string[] = this.data.selectedRecord.access_rights.read;
     let write: string[] = this.data.selectedRecord.access_rights.write;
     if (read.includes('EVERYONE')) {
@@ -85,11 +91,11 @@ export class HsSetPermissionsDialogComponent
         const layerDesc: UpsertLayerObject = {
           name: this.data.selectedRecord.name,
           title: this.data.selectedRecord.title,
-          workspace: this.data.selectedRecord.endpoint.user,
+          workspace: this.endpoint.user,
           access_rights: this.currentAccessRights,
         };
         response = await this.hsLaymanService.makeUpsertLayerRequest(
-          this.data.selectedRecord.endpoint,
+          this.endpoint,
           null,
           layerDesc,
           this.data.app
@@ -103,7 +109,7 @@ export class HsSetPermissionsDialogComponent
       case 'composition':
         response = await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
-          this.data.selectedRecord.endpoint,
+          this.endpoint,
           this.currentAccessRights,
           this.data.app
         );
