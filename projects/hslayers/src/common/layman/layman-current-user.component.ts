@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Input} from '@angular/core';
 
+import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsLaymanLoginComponent} from './layman-login.component';
-import {HsLaymanService} from '../../components/save-map/layman.service';
+import {Observable, map} from 'rxjs';
 
 @Component({
   selector: 'hs-layman-current-user',
@@ -23,19 +24,20 @@ export class HsLaymanCurrentUserComponent implements OnInit {
    * Controls availability of Log in button in HSL components.
    * Not available for wagtial endpoints as login is handled via separate hub proxy
    */
-  inAppLogin = true;
+  inAppLogin: Observable<boolean>;
   constructor(
-    private hsLaymanService: HsLaymanService,
     public HsCommonLaymanService: HsCommonLaymanService,
-    public HsDialogContainerService: HsDialogContainerService
+    public HsDialogContainerService: HsDialogContainerService,
+    private hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   ngOnInit(): void {
-    if (!this.endpoint) {
-      this.endpoint = this.hsLaymanService.getLaymanEndpoint();
-    }
-
-    this.inAppLogin = this.endpoint.type === 'layman';
+    this.inAppLogin = this.hsCommonEndpointsService.endpointsFilled.pipe(
+      map((data) => {
+        this.endpoint = data.endpoints.find((ep) => ep.type.includes('layman'));
+        return this.endpoint.type === 'layman';
+      })
+    );
   }
 
   isGuest() {
