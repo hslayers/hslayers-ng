@@ -75,6 +75,9 @@ export class HsCommonEndpointsService {
       .sort((a, b) => a.type.localeCompare(b.type));
 
     if (this.endpoints) {
+      this.hsCommonLaymanService.layman$.next(
+        this.endpoints.find((ep) => ep.type.includes('layman'))
+      );
       this.endpointsFilled.next({endpoints: this.endpoints, app});
     }
   }

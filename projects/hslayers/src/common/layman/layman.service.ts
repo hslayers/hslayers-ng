@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Subject, lastValueFrom} from 'rxjs';
+import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
 import {HsEndpoint} from '../endpoints/endpoint.interface';
@@ -13,6 +13,11 @@ import {HsToastService} from '../../components/layout/toast/toast.service';
 })
 export class HsCommonLaymanService {
   authChange: Subject<{endpoint: HsEndpoint; app: string}> = new Subject();
+
+  layman$: BehaviorSubject<HsEndpoint | undefined> = new BehaviorSubject(
+    undefined
+  );
+
   constructor(
     private $http: HttpClient,
     public hsToastService: HsToastService,

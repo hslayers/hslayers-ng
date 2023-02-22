@@ -32,9 +32,10 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.inAppLogin = this.hsCommonEndpointsService.endpointsFilled.pipe(
-      map((data) => {
-        this.endpoint = data.endpoints.find((ep) => ep.type.includes('layman'));
+    this.inAppLogin = this.HsCommonLaymanService.layman$.pipe(
+      map((layman) => {
+        //Assign recieved layman endpoint to local variable
+        this.endpoint = layman;
         return this.endpoint.type === 'layman';
       })
     );
