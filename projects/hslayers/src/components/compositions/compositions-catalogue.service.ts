@@ -267,7 +267,7 @@ export class HsCompositionsCatalogueService {
     appRef.filteredEndpoints =
       this.getFilteredEndpointsForCompositions().filter((ep: HsEndpoint) => {
         if (appRef.filterByOnlyMine) {
-          return !appRef.filterByOnlyMine || ep.type == 'layman';
+          return !appRef.filterByOnlyMine || ep.type.includes('layman');
         } else {
           return true;
         }

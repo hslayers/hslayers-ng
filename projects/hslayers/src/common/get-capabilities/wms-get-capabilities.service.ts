@@ -113,8 +113,8 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
           .get(url, {
             responseType: 'text',
             withCredentials: url.includes(
-              this.hsCommonEndpointsService?.endpoints.filter(
-                (ep) => ep.type == 'layman'
+              this.hsCommonEndpointsService?.endpoints.filter((ep) =>
+                ep.type.includes('layman')
               )[0]?.url
             ),
           })

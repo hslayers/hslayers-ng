@@ -155,6 +155,7 @@ export class HsCompositionsService {
         case 'micka':
           return this.hsCompositionsMickaService.resetCompositionCounter(ep);
         case 'layman':
+        case 'layman-wagtail':
           return this.hsCompositionsLaymanService.resetCompositionCounter(ep);
         default:
           this.$log.warn(`Endpoint type '${ep.type} not supported`);
@@ -171,6 +172,7 @@ export class HsCompositionsService {
       case 'micka':
         return this.hsCompositionsStatusManagerMickaJointService;
       case 'layman':
+      case 'layman-wagtail':
         return this.hsCompositionsLaymanService;
       default:
         this.$log.warn(`Endpoint type '${endpoint.type} not supported`);
@@ -271,7 +273,7 @@ export class HsCompositionsService {
           (l) => l.url.includes('/file') || l.url.endsWith('.wmc')
         )[0].url;
       }
-      if (record.endpoint?.type == 'layman') {
+      if (record.endpoint?.type.includes('layman')) {
         url = record.url + '/file' + '?timestamp=' + Date.now();
       }
       return url;
@@ -332,7 +334,7 @@ export class HsCompositionsService {
       return record.serviceType == 'CSW'
         ? await this.getLaymanTemplateRecordObject(record, app)
         : this.getRecordLink(record);
-    } else if (recordEndpoint.type == 'layman') {
+    } else if (recordEndpoint.type.includes('layman')) {
       return record.url + '/file';
     } else {
       this.$log.warn(`Endpoint type '${recordEndpoint.type} not supported`);

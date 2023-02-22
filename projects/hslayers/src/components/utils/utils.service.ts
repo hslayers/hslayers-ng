@@ -36,8 +36,8 @@ export class HsUtilsService {
    * @returns Encoded Url with path to hsproxy.cgi script
    */
   proxify(url: string, app: string = 'default', toEncoding?: boolean): string {
-    const laymanEp = this.HsConfig.get(app).datasources?.find(
-      (ep) => ep.type == 'layman'
+    const laymanEp = this.HsConfig.get(app).datasources?.find((ep) =>
+      ep.type.includes('layman')
     );
     if (
       url.startsWith(this.HsConfig.get(app).proxyPrefix) ||

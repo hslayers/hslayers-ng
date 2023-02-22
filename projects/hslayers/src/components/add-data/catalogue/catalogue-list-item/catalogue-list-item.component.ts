@@ -124,7 +124,7 @@ export class HsCatalogueListItemComponent implements OnInit {
     endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
-    if (endpoint.type == 'layman') {
+    if (endpoint.type.includes('layman')) {
       await this.hsLaymanBrowserService.fillLayerMetadata(
         endpoint,
         layer,

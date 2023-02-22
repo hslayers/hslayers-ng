@@ -15,7 +15,9 @@ export class EndpointsWithDatasourcesPipe implements PipeTransform {
       case 'exclusive':
         return endpoints.filter((ep) => ep.type != typeToFilter);
       case 'inclusive':
-        return endpoints.filter((ep) => ep.type == typeToFilter);
+        return endpoints.filter(
+          (ep) => ep.type == typeToFilter || ep.type.includes(typeToFilter)
+        );
       default:
         return endpoints;
     }

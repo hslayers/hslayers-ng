@@ -19,15 +19,23 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   timerInterval = this.DEFAULT_TIMER_INTERVAL;
   getCurrentUserTimer;
 
+  /**
+   * Controls availability of Log in button in HSL components.
+   * Not available for wagtial endpoints as login is handled via separate hub proxy
+   */
+  inAppLogin = true;
   constructor(
     private hsLaymanService: HsLaymanService,
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService
   ) {}
+
   ngOnInit(): void {
     if (!this.endpoint) {
       this.endpoint = this.hsLaymanService.getLaymanEndpoint();
     }
+
+    this.inAppLogin = this.endpoint.type === 'layman';
   }
 
   isGuest() {

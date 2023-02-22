@@ -120,7 +120,7 @@ export class HsCompositionsParserService {
       options['responseType'] = 'text';
     }
     options['withCredentials'] = url.includes(
-      this.hsCommonEndpointsService?.endpoints.find((ep) => ep.type == 'layman')
+      this.hsCommonEndpointsService?.endpoints.find((ep) => ep.type.includes('layman'))
         ?.url
     );
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(

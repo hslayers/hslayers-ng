@@ -251,7 +251,7 @@ export class HsSaveMapManagerService {
       }
       const compositionJson = this.generateCompositionJson(app, tempCompoData);
       let saver: HsSaverService = this.hsStatusManagerService;
-      if (endpoint.type == 'layman') {
+      if (endpoint.type.includes('layman')) {
         saver = this.hsLaymanService;
       }
       saver
@@ -263,7 +263,7 @@ export class HsSaveMapManagerService {
           if (endpoint.type == 'statusmanager') {
             status = j.saved;
           }
-          if (endpoint.type == 'layman') {
+          if (endpoint.type.includes('layman')) {
             if (saveAsNew) {
               status = j.length == 1 && j[0].uuid !== undefined;
             } else {
@@ -271,7 +271,7 @@ export class HsSaveMapManagerService {
             }
           }
           if (!status) {
-            if (endpoint.type == 'layman' && j.status == 'CONFLICT') {
+            if (endpoint.type.includes('layman') && j.status == 'CONFLICT') {
               compInfo.id = j[0].uuid;
               compInfo.name = j[0].name;
             }

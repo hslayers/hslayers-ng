@@ -20,8 +20,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   endpoint: HsEndpoint = null;
   endpoints: HsEndpoint[];
   isAuthorized = false;
@@ -64,7 +63,9 @@ export class HsSaveMapComponent
           return;
         }
         if (filled.endpoints?.length > 0 && !this.endpoint) {
-          const laymans = filled.endpoints.filter((ep) => ep.type == 'layman');
+          const laymans = filled.endpoints.filter((ep) =>
+            ep.type.includes('layman')
+          );
           if (laymans.length > 0) {
             this.hsSaveMapManagerService.selectEndpoint(
               laymans[0],
@@ -76,7 +77,7 @@ export class HsSaveMapComponent
               this.data.app
             );
           }
-          if (this.endpoint && this.endpoint.type == 'layman') {
+          if (this.endpoint && this.endpoint.type.includes('layman')) {
             this.hsCommonLaymanService.detectAuthChange(
               this.endpoint,
               this.data.app
@@ -110,8 +111,8 @@ export class HsSaveMapComponent
       .subscribe((composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
-          const found = this.hsCommonEndpointsService.endpoints.filter(
-            (ep) => ep.type == openedType
+          const found = this.hsCommonEndpointsService.endpoints.filter((ep) =>
+            ep.type.includes(openedType)
           );
           if (found.length > 0) {
             this.hsSaveMapManagerService.selectEndpoint(
