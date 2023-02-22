@@ -7,7 +7,7 @@ import {
   HsAddDataCatalogueService,
 } from './catalogue.service';
 import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig, HsConfigObject} from '../../../config.service';
 import {HsCoreService} from '../../core/core.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
@@ -37,14 +37,14 @@ export class HsAddDataCatalogueComponent implements OnInit {
   configRef: HsConfigObject;
   constructor(
     public hsLanguageService: HsLanguageService,
-    public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
     public hsConfig: HsConfig, //Used in template
     public hsCore: HsCoreService, //Used in template
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //Used in template
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
-    public hsLaymanService: HsLaymanService //Used in template
+    public hsLaymanService: HsLaymanService, //Used in template
+    public hsCommonLaymanService: HsCommonLaymanService
   ) {
     this.advancedSearch = false;
   }
@@ -101,12 +101,5 @@ export class HsAddDataCatalogueComponent implements OnInit {
   highlightLayer(layer, state: boolean, app: string): void {
     layer.highlighted = state;
     this.hsAddDataCatalogueMapService.highlightLayer(layer, state, app);
-  }
-
-  datasetSelect(id_selected: DatasetType, endpoint?: HsEndpoint): void {
-    this.hsAddDataCatalogueService.datasetSelect(id_selected, this.app);
-    if (endpoint) {
-      this.appRef.selectedEndpoint = endpoint;
-    }
   }
 }
