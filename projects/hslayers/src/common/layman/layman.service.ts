@@ -61,7 +61,7 @@ export class HsCommonLaymanService {
   async getCurrentUserIfNeeded(endpoint, app: string): Promise<void> {
     if (
       endpoint.user === undefined ||
-      ['anonymous', 'browser'].includes(endpoint.user)
+      endpoint.user === endpoint.originalConfiguredUser
     ) {
       await this.detectAuthChange(endpoint, app);
     }
@@ -74,7 +74,7 @@ export class HsCommonLaymanService {
     } catch (ex) {
       console.warn(ex);
     } finally {
-      endpoint.user = 'anonymous';
+      endpoint.user = endpoint.originalConfiguredUser;
       endpoint.authenticated = false;
       this.authChange.next({endpoint, app});
     }

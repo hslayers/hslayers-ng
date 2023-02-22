@@ -54,8 +54,7 @@ export class HsLaymanBrowserService {
     extentFeatureCreated?: (feature: Feature<Geometry>) => void
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint, app);
-    const loggedIn =
-      endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+    const loggedIn = endpoint.user !== endpoint.originalConfiguredUser;
     const withPermissionOrMine = data?.onlyMine
       ? loggedIn
         ? `workspaces/${endpoint.user}/`
@@ -245,7 +244,7 @@ export class HsLaymanBrowserService {
       );
       if (data.code || data.message) {
         if (data.code == 32) {
-          endpoint.user = 'anonymous';
+          endpoint.user = endpoint.originalConfiguredUser;
           endpoint.authenticated = false;
           this.hsCommonLaymanService.authChange.next({endpoint, app});
         }

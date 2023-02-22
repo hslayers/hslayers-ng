@@ -31,7 +31,7 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   }
 
   isGuest() {
-    return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';
+    return this.endpoint.user == 'anonymous';
   }
 
   logout(): void {

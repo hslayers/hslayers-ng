@@ -997,7 +997,7 @@ export class HsLaymanService implements HsSaverService {
    */
   isLaymanGuest(): boolean {
     const endpoint = this.getLaymanEndpoint();
-    return endpoint.user == 'anonymous' || endpoint.user == 'browser';
+    return endpoint.user == endpoint.originalConfiguredUser;
   }
 }
 
