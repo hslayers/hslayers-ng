@@ -32,7 +32,7 @@ export class HsLayerTableComponent implements AfterContentInit {
     public hsUrlWmsService: HsUrlWmsService,
     public hsAddDataCommonService: HsAddDataCommonService
   ) {}
-  
+
   ngAfterContentInit(): void {
     this.data = this.injectedService.get(this.app).data;
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
@@ -55,6 +55,15 @@ export class HsLayerTableComponent implements AfterContentInit {
     }
     if (whichArray == 'services') {
       this.hsAddDataUrlService.searchForChecked(this.data.services, this.app);
+    }
+  }
+
+  /**
+   * Collapse ArcGIS MapServer expanded service. Used as a way to step back
+   */
+  collapseServices() {
+    if (this.injectedService.collapseServices) {
+      this.injectedService.collapseServices(this.app);
     }
   }
 

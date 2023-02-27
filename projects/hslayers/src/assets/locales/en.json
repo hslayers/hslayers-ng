@@ -300,7 +300,8 @@
     "return": "Return",
     "composition": "Composition",
     "select": "Select",
-    "verify": "Verify"
+    "verify": "Verify",
+    "stepBack": "Step back"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

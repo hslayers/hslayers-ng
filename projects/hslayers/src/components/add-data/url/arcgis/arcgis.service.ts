@@ -13,6 +13,7 @@ import {transformExtent} from 'ol/proj';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
+import {HsAddDataOwsService} from '../add-data-ows.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
@@ -30,6 +31,7 @@ class HsUrlArcGisParams {
 
   constructor() {
     this.data = {
+      serviceExpanded: false,
       map_projection: '',
       register_metadata: true,
       tile_size: 512,
@@ -336,8 +338,26 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       appRef.data.get_map_url,
       app
     );
+    appRef.data.serviceExpanded = true;
     await this.listLayerFromCapabilities(wrapper, app);
   }
+
+  /**
+   * Step back to the top layer of capabilities
+   */
+  async collapseServices(app: string) {
+    const appRef = this.get(app);
+    appRef.data.get_map_url = this.hsAddDataCommonService
+      .get(app)
+      .url.toLowerCase();
+    const wrapper = await this.hsArcgisGetCapabilitiesService.request(
+      appRef.data.get_map_url,
+      app
+    );
+    appRef.data.serviceExpanded = false;
+    await this.listLayerFromCapabilities(wrapper, app);
+  }
+
   /**
    * Add services layers
    * @param services - Services selected
