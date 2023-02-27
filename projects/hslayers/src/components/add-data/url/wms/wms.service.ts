@@ -277,24 +277,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
   }
 
-  /**
-   * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
-   */
-  calcAllLayersExtent(layers: Layer<Source>[] | Layer<Source>) {
-    if (!Array.isArray(layers)) {
-      return [...layers.getExtent()];
-    }
-    if (layers.length == 0) {
-      return undefined;
-    }
-    try {
-      const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread needed to not create reference
-      return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
-    } catch (error) {
-      console.warn(`Empty extent for ${layers}`, error);
-    }
-  }
-
   getLayerExtent(serviceLayer: any, crs: string, app: string): number[] {
     //Get called without valid serviceLayer as part of micka dataset loading pipeline
     if (!serviceLayer) {
@@ -436,7 +418,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         );
       }
     }
-    appRef.data.extent = this.calcAllLayersExtent(collection);
+    appRef.data.extent =
+      this.hsAddDataUrlService.calcAllLayersExtent(collection);
     appRef.data.base = false;
     this.zoomToLayers(app);
     this.hsAddDataCommonService.clearParams(app);
