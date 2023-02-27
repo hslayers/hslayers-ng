@@ -300,7 +300,8 @@
     "query": "Dotaz",
     "composition": "Kompozícia",
     "select": "Vybrať",
-    "verify": "Overiť"
+    "verify": "Overiť",
+    "stepBack": "Krok späť"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

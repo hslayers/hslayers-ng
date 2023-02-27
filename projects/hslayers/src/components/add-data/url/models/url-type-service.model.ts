@@ -38,4 +38,5 @@ export interface HsUrlTypeServiceModel {
   addServices?(services: Service[], app: string);
   isImageService?(app: string): boolean;
   zoomToLayers?(app: string): void;
+  collapseServices?(app: string): void;
 }

@@ -48,8 +48,15 @@
     <ng-template #simpleTable>
         <table class="table table-sm table-striped table-bordered">
             <thead>
-                <th style="width:1em">&nbsp;</th>
-                <th>{{'COMMON.name' | translateHs: {app} }}</th>
+                <th class="border-0" style="width:1em">&nbsp;</th>
+                <div class="d-flex justify-content-between">
+                    <th class="border-0">{{'COMMON.name' | translateHs: {app} }}</th>
+                    <button [hidden]="type !== 'arcgis' || !data.serviceExpanded" type="button"
+                        class="btn btn-sm px-2 border-0" (click)="collapseServices()"
+                        [title]="'COMMON.stepBack' | translateHs: {app}">
+                        <i class="glyphicon icon-chevron-left"></i>
+                    </button>
+                </div>
             </thead>
             <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
                 <tr>

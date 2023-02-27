@@ -300,7 +300,8 @@
     "zoomTo": "zvětšit na",
     "composition": "Kompozice",
     "select": "Vybrat",
-    "verify": "Ověřit"
+    "verify": "Ověřit",
+    "stepBack": "Krok zpět"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
