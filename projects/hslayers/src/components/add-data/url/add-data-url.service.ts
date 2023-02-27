@@ -7,6 +7,8 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
 class HsAddDataUrlParams {
@@ -113,6 +115,18 @@ export class HsAddDataUrlService {
   searchForChecked(records: Array<any>, app: string): void {
     this.get(app).addingAllowed =
       records?.some((l) => l.checked) ?? this.get(app).typeSelected == 'arcgis';
+  }
+
+  /**
+   * Calculate cumulative bounding box which encloses all the provided layers (service layer definitions)
+   * Common for WMS/WMTS (WFS has its own implementation)
+   */
+  calcAllLayersExtent(layers: Layer<Source>[]): any {
+    if (layers.length == 0) {
+      return undefined;
+    }
+    const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread need to not create reference
+    return this.calcCombinedExtent(layerExtents);
   }
 
   /**
