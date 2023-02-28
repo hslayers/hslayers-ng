@@ -36,7 +36,11 @@
     "FILE": {
       "onlyOneZipFileCan": "Lze nahrát pouze jeden soubor ZIP najednou",
       "someOfTheUploadedFiles": "Nahrávaný soubor přesahuje maximální povolenou velikost 20MB",
-      "zipFileCannotBeUploaded": "Soubor archivu nemůže být nahrát současně s běžnými soubory"
+      "zipFileCannotBeUploaded": "Soubor archivu nemůže být nahrát současně s běžnými soubory",
+      "highlightAndSelect": "Označte a vyberte časovou značku v názvu",
+      "inferredRegex": "Odvozený regulární výraz",
+      "selectedString": "Vybraný řetězec",
+      "verifyInferredRegex": "Před pokračováním ověřte odvozený regulární výraz"
     },
     "requestServiceLayers": "Vyžádat vrstvy",
     "saveToCatalogue": "Uložit do katalogu",
@@ -86,6 +90,7 @@
     "OlDoesNotRecognizeProjection": "OL nezná požadované kartografické zobrazení vrstvy",
     "queryFormat": "Formát dotazu",
     "Raster image": "Rastrový snímek",
+    "Raster time series": "Časová řada snímků",
     "rasterImageryWith": "Georeferencované rastrové snímky jsou v současnosti podporované pouze v souřadnicových systémech EPSG:4326 a EPSG:3857. Prosím, ujistěte se před nahráním, že vaše data splňují tyto požadavky.",
     "registerMetadata": "Registrovat metadata",
     "resampleLayer": "Převzorkovat vrstvu",
@@ -290,7 +295,9 @@
     "wrongCombinationOfParams": "Neplatná kombinace parametrů",
     "yes": "Ano",
     "zoomTo": "zvětšit na",
-    "composition": "Kompozice"
+    "composition": "Kompozice",
+    "select": "Vybrat",
+    "verify": "Ověřit"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
