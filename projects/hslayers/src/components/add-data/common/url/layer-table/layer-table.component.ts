@@ -67,14 +67,14 @@ export class HsLayerTableComponent implements AfterContentInit {
     }
   }
 
-  expandService(service: Service): void {
+  async expandService(service: Service): Promise<void> {
     if (this.injectedService.expandService) {
       this.injectedService.expandService(service, this.app);
       if (
         this.injectedService.isImageService &&
         this.injectedService.isImageService(this.app)
       ) {
-        const layers = this.injectedService.getLayers(this.app);
+        const layers = await this.injectedService.getLayers(this.app);
         this.injectedService.addLayers(layers, this.app);
       }
     }

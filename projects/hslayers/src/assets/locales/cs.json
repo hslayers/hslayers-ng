@@ -153,7 +153,8 @@
     },
     "addsld": "Přidat soubor SLD",
     "addqml": "Přidat soubor QML",
-    "addsldqml": "Přidat soubor SLD/QML"
+    "addsldqml": "Přidat soubor SLD/QML",
+    "layerExtentParsingProblem": "Při zpracování rozsahu vybraných vrstev nastal problém"
   },
   "COMMON": {
     "abstract": "Abstrakt",

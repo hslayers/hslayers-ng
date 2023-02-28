@@ -10,6 +10,7 @@ import {HsMapService} from '../../map/map.service';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
+import {urlDataObject} from './types/data-object.type';
 
 class HsAddDataUrlParams {
   typeSelected: AddDataUrlType;
@@ -157,5 +158,14 @@ export class HsAddDataUrlService {
       }
       return acc;
     });
+  }
+
+  /**
+   * Zoom map to one layers or combined layer list extent
+   */
+  zoomToLayers(data: urlDataObject, app: string) {
+    if (data.extent) {
+      this.hsMapService.fitExtent(data.extent, app);
+    }
   }
 }

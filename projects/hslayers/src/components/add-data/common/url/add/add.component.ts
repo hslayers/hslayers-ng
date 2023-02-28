@@ -42,9 +42,10 @@ export class HsUrlAddComponent {
     this.changed();
   }
 
-  add(): void {
+  async add(): Promise<void> {
     if (this.layers) {
-      const layers = this.injectedService.getLayers(this.app, true);
+      //getLayers is async for ArcGIS Mapserver type
+      const layers = await this.injectedService.getLayers(this.app, true);
       this.injectedService.addLayers(layers, this.app);
     }
     if (this.injectedService.addServices && this.services) {

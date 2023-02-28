@@ -25,9 +25,13 @@ export interface HsUrlTypeServiceModel {
     checkedOnly?: boolean,
     shallow?: boolean,
     style?: string
-  ): Layer<Source>[];
+  ): Layer<Source>[] | Promise<Layer<Source>[]>;
   addLayers(layers: Layer<Source>[], app: string): void;
-  getLayer(layer: any, options: addLayerOptions, app: string): Layer<Source>;
+  getLayer(
+    layer: any,
+    options: addLayerOptions,
+    app: string
+  ): Layer<Source> | Promise<Layer<Source>>;
   getLayersRecursively?(
     layer: any,
     options: addLayersRecursivelyOptions,
