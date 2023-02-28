@@ -280,7 +280,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcAllLayersExtent(layers: Layer<Source>[] | Layer<Source>): any {
+  calcAllLayersExtent(layers: Layer<Source>[] | Layer<Source>) {
     if (!Array.isArray(layers)) {
       return [...layers.getExtent()];
     }
