@@ -133,7 +133,7 @@ export class HsAddDataOwsService {
         }
 
         if (this.hsUrlArcGisService.isImageService(app)) {
-          const layers = this.hsUrlArcGisService.getLayers(app);
+          const layers = await this.hsUrlArcGisService.getLayers(app);
           this.hsUrlArcGisService.addLayers(layers, app);
         }
       }

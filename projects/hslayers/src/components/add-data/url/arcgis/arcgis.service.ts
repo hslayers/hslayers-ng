@@ -10,10 +10,13 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {Tile as TileSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
+import {
+  ArcGISResResponseLayerExtent,
+  ArcGISRestResponseLayer,
+} from '../types/argis-response-type';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
-import {HsAddDataOwsService} from '../add-data-ows.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
@@ -168,7 +171,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer
    */
-  getLayers(app: string): Layer<Source>[] {
+  async getLayers(app: string): Promise<Layer<Source>[]> {
     const appRef = this.get(app);
 
     if (
@@ -180,7 +183,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     }
     const checkedLayers = appRef.data.layers?.filter((l) => l.checked);
     const collection = [
-      this.getLayer(
+      await this.getLayer(
         checkedLayers,
         {
           layerTitle: appRef.data.title.replace(/\//g, '&#47;'),
@@ -196,7 +199,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         app
       ),
     ];
-
+    this.hsAddDataUrlService.zoomToLayers(appRef.data, app);
     appRef.data.base = false;
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlArcGisParams();
@@ -218,21 +221,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  getLayer(
-    layers: {
-      defaultVisibility?: boolean; //FIXME: unused
-      geometryType: string; //FIXME: unused
-      id: number;
-      maxScale: number; //FIXME: unused
-      minScale: number; //FIXME: unused
-      name: string; //FIXME: unused
-      parentLayerId: number; //FIXME: unused
-      subLayerIds: number[]; //FIXME: unused
-      type: string; //FIXME: unused
-    }[],
+  async getLayer(
+    layers: ArcGISRestResponseLayer[],
     options: addLayerOptions,
     app: string
-  ): Layer<Source> {
+  ): Promise<Layer<Source>> {
     const appRef = this.get(app);
     const attributions = [];
     const dimensions = {};
@@ -261,29 +254,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       ? new TileArcGISRest(sourceParams)
       : new ImageArcGISRest(sourceParams);
 
-    let mapExtent;
-    try {
-      mapExtent = transformExtent(
-        [
-          appRef.data.extent.xmin,
-          appRef.data.extent.ymin,
-          appRef.data.extent.xmax,
-          appRef.data.extent.ymax,
-        ],
-        'EPSG:' + appRef.data.srs,
-        appRef.data.map_projection
-      );
-    } catch (error) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-        'ADDLAYERS.OlDoesNotRecognizeProjection',
-        {
-          serviceCalledFrom: 'HsUrlArcGisService',
-          details: [`${options.layerTitle}`, `EPSG: ${appRef.data.srs}`],
-        },
-        app
-      );
-    }
+    appRef.data.extent = await this.calcAllLayersExtent(layers, options, app);
 
     const layerParams = {
       properties: {
@@ -292,7 +263,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         removable: true,
         path: options.path,
         base: appRef.data.base,
-        extent: mapExtent,
+        extent: appRef.data.extent,
         dimensions,
       },
       source,
@@ -307,6 +278,57 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       : new ImageLayer(layerParams as ImageOptions<ImageSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     return new_layer;
+  }
+
+  /**
+   * Calculate cumulative bounding box which encloses all the checked layers (ArcGISRestResponseLayer)
+   */
+  async calcAllLayersExtent(
+    layers: ArcGISRestResponseLayer[],
+    options: addLayerOptions,
+    app: string
+  ) {
+    const appRef = this.get(app);
+    try {
+      const layersCaps = await Promise.all(
+        layers.map(async (l) => {
+          return await this.hsArcgisGetCapabilitiesService.request(
+            `${appRef.data.get_map_url}/${l.id}`,
+            app
+          );
+        })
+      );
+      const layersExtents = layersCaps.map((l) => {
+        const extent = l.response.extent;
+        const data = appRef.data;
+        return this.transformLayerExtent(extent, data);
+      });
+      return this.hsAddDataUrlService.calcCombinedExtent(layersExtents);
+    } catch (error) {
+      if (error.message.includes('getCode')) {
+        this.hsToastService.createToastPopupMessage(
+          'ADDLAYERS.capabilitiesParsingProblem',
+          'ADDLAYERS.OlDoesNotRecognizeProjection',
+          {
+            serviceCalledFrom: 'HsUrlArcGisService',
+            details: [`${options.layerTitle}`, `EPSG: ${appRef.data.srs}`],
+          },
+          app
+        );
+      } else {
+        this.hsToastService.createToastPopupMessage(
+          'ADDLAYERS.capabilitiesParsingProblem',
+          'ADDLAYERS.layerExtentParsingProblem',
+          {
+            serviceCalledFrom: 'HsUrlArcGisService',
+            toastStyleClasses: 'bg-warning text-white',
+          },
+          app
+        );
+        const data = appRef.data;
+        return this.transformLayerExtent(data.extent, data);
+      }
+    }
   }
 
   /**
@@ -367,7 +389,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     for (const service of services.filter((s) => s.checked)) {
       this.hsAddDataCommonService.get(app).url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service, app);
-      const layers = this.getLayers(app);
+      const layers = await this.getLayers(app);
       this.addLayers(layers, app);
     }
   }
@@ -384,5 +406,18 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   isGpService(str: string): boolean {
     return str.toLowerCase().includes('gpserver');
+  }
+  /**
+   * Transforms provided extent to a map projection
+   */
+  private transformLayerExtent(
+    extent: ArcGISResResponseLayerExtent,
+    data: urlDataObject
+  ): number[] {
+    return transformExtent(
+      [extent.xmin, extent.ymin, extent.xmax, extent.ymax],
+      'EPSG:' + data.srs,
+      data.map_projection
+    );
   }
 }

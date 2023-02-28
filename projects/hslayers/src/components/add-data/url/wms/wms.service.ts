@@ -421,7 +421,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     appRef.data.extent =
       this.hsAddDataUrlService.calcAllLayersExtent(collection);
     appRef.data.base = false;
-    this.zoomToLayers(app);
+    this.hsAddDataUrlService.zoomToLayers(appRef.data, app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWmsParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
@@ -593,15 +593,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           app
         );
       }
-    }
-  }
-
-  /**
-   * Zoom map to one layers or combined layer list extent
-   */
-  zoomToLayers(app: string) {
-    if (this.get(app).data.extent) {
-      this.hsMapService.fitExtent(this.get(app).data.extent, app);
     }
   }
 }

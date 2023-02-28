@@ -153,7 +153,8 @@
     "Raster time series": "Časová rada snímkov",
     "addsld": "Pridať súbor SLD",
     "addqml": "Pridať súbor QML",
-    "addsldqml": "Pridať súbor SLD/QML"
+    "addsldqml": "Pridať súbor SLD/QML",
+    "layerExtentParsingProblem": "Pri spracovaní údajov o rozsahu vybraných vrstieb sa vyskytol problém"
   },
   "COMMON": {
     "abstract": "Abstrakt",

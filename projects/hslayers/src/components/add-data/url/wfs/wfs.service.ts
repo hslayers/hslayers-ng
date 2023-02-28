@@ -110,7 +110,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           app
         );
         const collection = this.getLayers(app, true, false, style);
-        this.zoomToLayers(app);
+        this.hsAddDataUrlService.zoomToLayers(this.get(app).data, app);
         return collection;
       }
     } catch (e) {
@@ -252,15 +252,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Zoom map to one layer or combined layer list extent
-   */
-  zoomToLayers(app: string): void {
-    if (this.get(app).data.extent) {
-      this.hsMapService.fitExtent(this.get(app).data.extent, app);
-    }
-  }
-
-  /**
    * Get preferred GML version format
    * @param version - GML version
    */
@@ -385,7 +376,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.getLayersRecursively(layer, {style}, collection, app);
     }
     appRef.data.extent = this.calcAllLayersExtent(collection, app);
-    this.zoomToLayers(app);
+    this.hsAddDataUrlService.zoomToLayers(appRef.data, app);
     this.hsAddDataCommonService.clearParams(app);
     this.apps[app] = new HsUrlWfsParams();
     this.hsAddDataCommonService.setPanelToCatalogue(app);
