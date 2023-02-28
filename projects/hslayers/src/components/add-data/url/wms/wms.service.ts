@@ -418,8 +418,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         );
       }
     }
-    appRef.data.extent =
-      this.hsAddDataUrlService.calcAllLayersExtent(collection);
+    appRef.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(
+      collection,
+      app
+    );
     appRef.data.base = false;
     this.hsAddDataUrlService.zoomToLayers(appRef.data, app);
     this.hsAddDataCommonService.clearParams(app);
