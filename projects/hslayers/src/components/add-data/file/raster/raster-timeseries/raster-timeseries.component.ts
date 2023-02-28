@@ -9,14 +9,14 @@ import {
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 
+import {Subject} from 'rxjs';
 import {loadAsync} from 'jszip';
+import {takeUntil} from 'rxjs/operators';
 
 import {FileDataObject} from '../../types/file-data-object.type';
 import {FileDescriptor} from '../../types/file-descriptor.type';
 import {HsAddDataCommonFileService} from '../../../common/common-file.service';
 import {HsToastService} from '../../../../layout/toast/toast.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'hs-file-raster-timeseries',
@@ -61,7 +61,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
     private hsAddDataCommonFileService: HsAddDataCommonFileService
   ) {
     this.form = this.fb.group({
-      /* Regex string encoding of date patter used in file name  */
+      /* Regex string encoding of date pattern used in file name  */
       regex: ['', Validators.required],
       verified: [false, Validators.requiredTrue],
     });
@@ -97,7 +97,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** On click handler used by user to mark infered inputs as verified */
+  /** On click handler used by user to mark inferred inputs as verified */
   verifyInputs(): void {
     this.form.patchValue({verified: true});
     this.accordionComponent.expand('hs-timeseries-acc');
@@ -122,7 +122,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
 
   selectDateString(e: MouseEvent): void {
     e.preventDefault();
-    //Reset verified control and data value (its added on verify to control form submition)
+    //Reset verified control and data value (it's added on verify to control form submission)
     this.form.patchValue({verified: false});
     this.data.timeRegex = undefined;
     //Get selected string
@@ -150,7 +150,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
 
   /**
    * Get first special character from string selected by user
-   * Assuming its separator
+   * Assuming it's separator
    */
   private getSeparator(input: string): string {
     const separators = input.match(/[._\/-]/g) || [];
@@ -180,7 +180,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
 
   /**
    * Extract selected text from element.
-   * Necessarry workaround because of Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=85686
+   * Necessary workaround because of Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=85686
    */
   private getSelectedText(): string {
     const inputElement = this.fileTitleInput.nativeElement;

@@ -260,11 +260,6 @@ export class HsCompositionsParserService {
         return l.className;
       });
     }
-
-    // "user": {
-    //   "email": "leitnerfilip@gmail.com",
-    //   "name": "Filip Leitner"
-    // }
     return composition;
   }
 
@@ -361,7 +356,7 @@ export class HsCompositionsParserService {
         app,
       });
     }
-    this.hsEventBusService.currentComposition.next(obj); //Doesnt seems to be used
+    this.hsEventBusService.currentComposition.next(obj); //Doesn't seem to be used
     this.get(app).current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (
@@ -382,7 +377,7 @@ export class HsCompositionsParserService {
       }
     }
 
-    //CSW serviceType compostitions
+    //CSW serviceType compositions
     const layers = await this.jsonToLayers(obj, app);
 
     const confirmed = obj.services
