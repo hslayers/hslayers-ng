@@ -39,8 +39,8 @@
       "zipFileCannotBeUploaded": "Archive file cannot be uploaded together with regular files",
       "highlightAndSelect": "Highlight and select timestamp in title",
       "selectedString": "Selected string",
-      "inferedRegex": "Infered regex pattern",
-      "verifyInferedRegex": "Verify infered datetime regex pattern before you continue"
+      "inferredRegex": "Inferred regex pattern",
+      "verifyInferredRegex": "Verify inferred datetime regex pattern before you continue"
     },
     "loadAs": "When uploaded, load layer as ...",
     "requestServiceLayers": "Request service layers",
@@ -100,6 +100,7 @@
     "OlDoesNotRecognizeProjection": "OL does not recognize requested layers projection",
     "queryFormat": "Query format",
     "Raster image": "Raster image",
+    "Raster time series": "Raster time series",
     "rasterImageryWith": "Raster imagery with georeferencing is currently only supported on EPSG:4326 and EPSG:3857 coordinate systems. Please make sure your data meets these requirements before uploading.",
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
