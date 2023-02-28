@@ -7,6 +7,8 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
@@ -31,7 +33,8 @@ export class HsAddDataUrlService {
     public hsLog: HsLogService,
     public hsLanguageService: HsLanguageService,
     public hsLayoutService: HsLayoutService,
-    private hsMapService: HsMapService
+    private hsMapService: HsMapService,
+    private hsToastService: HsToastService
   ) {}
 
   get(app: string): HsAddDataUrlParams {
@@ -122,12 +125,25 @@ export class HsAddDataUrlService {
    * Calculate cumulative bounding box which encloses all the provided layers (service layer definitions)
    * Common for WMS/WMTS (WFS has its own implementation)
    */
-  calcAllLayersExtent(layers: Layer<Source>[]): any {
+  calcAllLayersExtent(layers: Layer<Source>[], app: string): any {
     if (layers.length == 0) {
       return undefined;
     }
-    const layerExtents = layers.map((lyr) => [...lyr.getExtent()]); //Spread need to not create reference
-    return this.calcCombinedExtent(layerExtents);
+    try {
+      const layerExtents = layers.map((lyr) => [...lyr?.getExtent()]); //Spread need to not create reference
+      return this.calcCombinedExtent(layerExtents);
+    } catch (error) {
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+        'ADDLAYERS.layerExtentParsingProblem',
+        {
+          serviceCalledFrom: 'HsAddDataUrlService',
+          toastStyleClasses: 'bg-warning text-white',
+        },
+        app
+      );
+      return undefined;
+    }
   }
 
   /**
