@@ -39,7 +39,8 @@
       "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi",
       "highlightAndSelect": "Vyznačte a vyberte ",
       "inferredRegex": "Odvodený regulárny výraz",
-      "verifyInferredRegex": "Pred pokračovaním overte odvodený regulárny výraz"
+      "verifyInferredRegex": "Pred pokračovaním overte odvodený regulárny výraz",
+      "selectedString": "Vybraný reťazec"
     },
     "requestServiceLayers": "Vyžiadať vrstvy služby",
     "saveToCatalogue": "Uložit do katalógu",
@@ -148,7 +149,8 @@
       "pickIdParamName": "unikátny identifikátor",
       "pickIdParamPt1": "Ktorá premenná obsahuje",
       "pickIdParamPt2": "z dopytovaných prvkov?"
-    }
+    },
+    "Raster time series": "Časová rada snímkov"
   },
   "COMMON": {
     "abstract": "Abstrakt",
