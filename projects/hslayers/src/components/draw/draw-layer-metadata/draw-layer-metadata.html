@@ -98,7 +98,8 @@
                             </div>
                         </div>
                         <ul class="list-group w-100">
-                            <li *ngFor="let layer of appRef.drawableLaymanLayers" class="clearfix"
+                            <li *ngFor="let layer of appRef.drawableLaymanLayers"
+                                class="justify-content-between d-flex align-items-center"
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
                                 <b><a data-toggle="tooltip" [title]="layer.description">{{layer.title}}</a></b>
                                 <span class="float-right">
@@ -114,8 +115,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="type === 'draw'"
-                    (click)="confirm()" data-test="Confirm add layer">{{'DRAW.drawToolbar.addLayer' | translateHs: {app: data.app} }}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()" data-test="Cancel add layer">{{'COMMON.cancel'
+                    (click)="confirm()" data-test="Confirm add layer">{{'DRAW.drawToolbar.addLayer' | translateHs: {app:
+                    data.app} }}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()"
+                    data-test="Cancel add layer">{{'COMMON.cancel'
                     | translateHs: {app: data.app} }}</button>
             </div>
         </div>
