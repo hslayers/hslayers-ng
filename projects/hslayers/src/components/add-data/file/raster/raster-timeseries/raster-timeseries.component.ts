@@ -42,15 +42,11 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
 
   supportedRegex = [
     {
-      regex: /[0-9]{8}T[0-9]{9}Z/,
-      timeregex: '([0-9]{8})T([0-9]{9})Z',
+      regex: /^[0-9]{8}T([0-9]{6}([0-9]{3})?)(Z)?$/,
+      timeregex: '([0-9]{8})T([0-9]{X})',
     },
     {
-      regex: /[0-9]{8}T[0-9]{9}/,
-      timeregex: '([0-9]{8})T([0-9]{9})',
-    },
-    {
-      regex: /^[0-9T._/-]+(?<![a-zA-Z])$/,
+      regex: /^[0-9._/-]+(?<![a-zA-Z])$/,
       timeregex: undefined,
     },
   ];
@@ -161,14 +157,16 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
    *Infer regex pattern from selected string
    */
   inferRegexPatternFromString(timestamp: string, regex: string): string {
-    if (regex !== '^[0-9T._/-]+(?<![a-zA-Z])$') {
-      return this.supportedRegex.find(
-        (val) => val.regex.toString().replace(/\//g, '') == regex
-      ).timeregex;
+    if (regex !== '^[0-9._/-]+(?<![a-zA-Z])$') {
+      const match = timestamp.match(regex);
+      return (
+        this.supportedRegex[0].timeregex.replace(
+          'X',
+          match[1].length.toString()
+        ) + (match[3] ? 'Z' : '')
+      );
     }
     const separator = this.getSeparator(timestamp);
-    // /[0-9]{8}T[0-9]{9}Z/.test(this.selectedString)
-    // /[0-9]{8}T[0-9]{9}/.test(this.selectedString)
     if (separator) {
       let parts = timestamp.split(separator);
       parts = parts.map((part) => `([0-9]{${part.length}})`);

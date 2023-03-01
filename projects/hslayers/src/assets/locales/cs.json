@@ -40,7 +40,7 @@
       "highlightAndSelect": "Označte a vyberte časovou značku v názvu",
       "inferredRegex": "Odvozený regulární výraz",
       "selectedString": "Vybraný řetězec",
-      "verifyInferredRegex": "Před pokračováním ověřte odvozený regulární výraz"
+      "verifyInferredRegex": "Před pokračováním ověřte a potvrďte odvozený regulární výraz"
     },
     "requestServiceLayers": "Vyžádat vrstvy",
     "saveToCatalogue": "Uložit do katalogu",

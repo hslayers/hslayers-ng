@@ -40,7 +40,7 @@
       "highlightAndSelect": "Highlight and select timestamp in title",
       "selectedString": "Selected string",
       "inferredRegex": "Inferred regex pattern",
-      "verifyInferredRegex": "Verify inferred datetime regex pattern before you continue"
+      "verifyInferredRegex": "Please review and confirm the datetime format before proceeding"
     },
     "loadAs": "When uploaded, load layer as ...",
     "requestServiceLayers": "Request service layers",
