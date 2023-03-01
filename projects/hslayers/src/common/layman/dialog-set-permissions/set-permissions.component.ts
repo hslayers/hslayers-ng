@@ -7,7 +7,7 @@ import {HsCompositionsCatalogueService} from '../../../components/compositions/c
 import {HsDialogComponent} from '../../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../components/layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../components/layout/dialogs/dialog-item';
-import {HsEndpoint} from 'hslayers-ng';
+import {HsEndpoint} from '../../endpoints/endpoint.interface';
 import {HsLaymanService} from '../../../components/save-map/layman.service';
 import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
 import {UpsertLayerObject} from '../../../components/save-map/types/upsert-layer-object.type';

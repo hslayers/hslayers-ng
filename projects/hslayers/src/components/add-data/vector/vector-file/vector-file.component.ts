@@ -19,7 +19,6 @@ import {
   HsAddDataCommonFileServiceParams,
 } from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
-import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig, HsConfigObject} from '../../../../config.service';
 import {HsLanguageService} from '../../../language/language.service';
@@ -61,7 +60,6 @@ export class HsAddDataVectorFileComponent
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
