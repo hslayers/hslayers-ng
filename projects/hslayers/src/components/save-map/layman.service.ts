@@ -73,7 +73,7 @@ export class HsLaymanService implements HsSaverService {
   laymanLayerPending: Subject<string[]> = new Subject();
   totalProgress = 0;
   deleteQuery: Subscription;
-  supportedCRRList = SUPPORTED_SRS_LIST.slice(0, 2);
+  supportedCRRList: string[] = SUPPORTED_SRS_LIST;
   constructor(
     private hsUtilsService: HsUtilsService,
     private http: HttpClient,
