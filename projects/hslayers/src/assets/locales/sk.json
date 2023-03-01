@@ -39,7 +39,7 @@
       "zipFileCannotBeUploaded": "Súbor archívu nie je možné nahrať spolu s bežnými súbormi",
       "highlightAndSelect": "Vyznačte a vyberte ",
       "inferredRegex": "Odvodený regulárny výraz",
-      "verifyInferredRegex": "Pred pokračovaním overte odvodený regulárny výraz",
+      "verifyInferredRegex": "Pred pokračovaním overte a potvrďte odvodený regulárny výraz",
       "selectedString": "Vybraný reťazec"
     },
     "requestServiceLayers": "Vyžiadať vrstvy služby",
