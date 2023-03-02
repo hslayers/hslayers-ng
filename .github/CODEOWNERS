@@ -1,5 +1,5 @@
-. @jmacura
-. @FilipLeitner
-./projects/hslayers-server @fzadrazil
-./projects/hslayers-material @SLeitgeb
-./projects/hslayers-material-app @SLeitgeb
+* @jmacura
+* @FilipLeitner
+./projects/hslayers-server/ @fzadrazil
+./projects/hslayers-material/ @SLeitgeb
+./projects/hslayers-material-app/ @SLeitgeb
