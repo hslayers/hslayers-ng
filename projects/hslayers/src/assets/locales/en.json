@@ -302,7 +302,7 @@
     "composition": "Composition",
     "select": "Select",
     "verify": "Verify",
-    "stepBack": "Step back"
+    "back": "Back"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
