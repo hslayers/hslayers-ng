@@ -28,6 +28,10 @@ export class HsCommonLaymanService {
     public hsLanguageService: HsLanguageService
   ) {}
 
+  isAuthorized() {
+    return this.layman.authenticated;
+  }
+
   /**
    *  Monitor if authorization state has changed and
    * return true and broadcast authChange event if so .
@@ -45,7 +49,7 @@ export class HsCommonLaymanService {
       let somethingChanged = false;
       if (res.code === 32) {
         endpoint.authenticated = false;
-        endpoint.user = endpoint.originalConfiguredUser;
+        endpoint.user = undefined;
       }
       if (res.username) {
         if (endpoint.user != res.username) {
@@ -55,10 +59,10 @@ export class HsCommonLaymanService {
           this.authChange.next({endpoint, app});
         }
       } else {
-        if (endpoint.user != endpoint.originalConfiguredUser) {
+        if (endpoint.user != undefined) {
           somethingChanged = true;
         }
-        endpoint.user = endpoint.originalConfiguredUser;
+        endpoint.user = undefined;
       }
       return somethingChanged;
     } catch (e) {
@@ -68,10 +72,7 @@ export class HsCommonLaymanService {
   }
 
   async getCurrentUserIfNeeded(endpoint, app: string): Promise<void> {
-    if (
-      endpoint.user === undefined ||
-      endpoint.user === endpoint.originalConfiguredUser
-    ) {
+    if (endpoint.user === undefined) {
       await this.detectAuthChange(endpoint, app);
     }
   }
@@ -83,7 +84,7 @@ export class HsCommonLaymanService {
     } catch (ex) {
       console.warn(ex);
     } finally {
-      endpoint.user = endpoint.originalConfiguredUser;
+      endpoint.user = undefined;
       endpoint.authenticated = false;
       this.authChange.next({endpoint, app});
     }

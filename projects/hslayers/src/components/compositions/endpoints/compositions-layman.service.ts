@@ -50,7 +50,7 @@ export class HsCompositionsLaymanService {
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint, app);
     endpoint.compositionsPaging.loaded = false;
-    const loggedIn = endpoint.user !== endpoint.originalConfiguredUser;
+    const loggedIn = !!endpoint.user;
     const query = params.query.title ? params.query.title : '';
     const sortBy =
       params.sortBy == 'date:D'

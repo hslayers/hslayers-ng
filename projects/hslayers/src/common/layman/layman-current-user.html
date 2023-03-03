@@ -1,16 +1,16 @@
 <div *ngIf="endpoint && inAppLogin | async" style="margin-left: 1em; float: right; ">
     <a class="btn btn-primary" style="border-radius: 0.25rem; color: #fff;" (click)="login();"
-        *ngIf="isGuest() && sameDomain()">
+        *ngIf="!isAuthorized() && sameDomain()">
         <!-- TODO: Remove function call from template -->
         {{'COMPOSITIONS.loginToCatalogue' | translateHs : {app} }}
     </a>
     <a class="btn btn-primary" style="border-radius: 0.25rem; color: #fff;" (click)="login();"
-        *ngIf="isGuest() && !sameDomain()" [href]="authUrl()" target="_blank">
+        *ngIf="!isAuthorized() && !sameDomain()" [href]="authUrl()" target="_blank">
         <!-- TODO: Remove function call from template -->
         {{'COMPOSITIONS.loginToCatalogue' | translateHs : {app} }}
     </a>
     <a class="btn btn-primary text-truncate"
         style="border-radius: 0.25rem; color: #fff; max-width:25ch; white-space:nowrap" (click)="logout()"
-        *ngIf="!isGuest()">{{'COMMON.Logout' | translateHs : {app} }}
+        *ngIf="isAuthorized()">{{'COMMON.Logout' | translateHs : {app} }}
         {{endpoint.user}}</a><!-- TODO: Remove function call from template -->
 </div>

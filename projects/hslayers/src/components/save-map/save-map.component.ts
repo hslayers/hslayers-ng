@@ -82,7 +82,7 @@ export class HsSaveMapComponent
     this.hsCommonLaymanService.authChange
       .pipe(takeUntil(this.end))
       .subscribe(({endpoint, app}) => {
-        this.isAuthorized = endpoint.user !== endpoint.originalConfiguredUser;
+        this.isAuthorized = !!endpoint.user;
         this.hsSaveMapManagerService.get(app).currentUser = endpoint.user;
       });
 

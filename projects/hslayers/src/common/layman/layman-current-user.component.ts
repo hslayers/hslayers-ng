@@ -21,8 +21,8 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   getCurrentUserTimer;
 
   /**
-   * Controls availability of Log in button in HSL components.
-   * Not available for wagtial endpoints as login is handled via separate hub proxy
+   * Controls availability of "Log in" button in HSL components.
+   * Not available for Wagtail endpoints as login is handled via separate hub proxy
    */
   inAppLogin: Observable<boolean>;
   constructor(
@@ -41,8 +41,8 @@ export class HsLaymanCurrentUserComponent implements OnInit {
     );
   }
 
-  isGuest() {
-    return this.endpoint.user == 'anonymous';
+  isAuthorized() {
+    return this.HsCommonLaymanService.isAuthorized();
   }
 
   logout(): void {
