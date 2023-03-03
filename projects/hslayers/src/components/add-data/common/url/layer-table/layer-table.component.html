@@ -51,10 +51,11 @@
                 <th class="border-0" style="width:1em">&nbsp;</th>
                 <div class="d-flex justify-content-between">
                     <th class="border-0">{{'COMMON.name' | translateHs: {app} }}</th>
-                    <button [hidden]="type !== 'arcgis' || !data.serviceExpanded" type="button"
-                        class="btn btn-sm px-2 border-0" (click)="collapseServices()"
-                        [title]="'COMMON.stepBack' | translateHs: {app}">
-                        <i class="glyphicon icon-chevron-left"></i>
+                    <button *ngIf="type === 'arcgis' && data.serviceExpanded" type="button"
+                        class="btn btn-sm px-2 border-0 d-flex" (click)="collapseServices()"
+                        [title]="'COMMON.back' | translateHs: {app}">
+                        <i class="glyphicon icon-chevron-left text-black-50"></i>
+                        <span class="text-black-50 fw-bold">{{'COMMON.back' | translateHs: {app} }}</span>
                     </button>
                 </div>
             </thead>

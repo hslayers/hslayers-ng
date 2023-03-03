@@ -302,7 +302,7 @@
     "composition": "Kompozícia",
     "select": "Vybrať",
     "verify": "Overiť",
-    "stepBack": "Krok späť"
+    "back": "Späť"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
