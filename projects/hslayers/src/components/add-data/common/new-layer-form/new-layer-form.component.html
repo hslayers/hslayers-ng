@@ -24,7 +24,7 @@
   </div>
   <p [hidden]="data?.srs"><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translateHs : {app} }}</sub></p>
 
-  <ng-container *ngIf="hsAddDataCommonFileService.isAuthorized() && data.saveAvailable">
+  <ng-container *ngIf="hsAddDataCommonFileService.isAuthenticated() && data.saveAvailable">
     <!-- TODO: Remove function call from template -->
     <hs-save-to-layman [data]="data" [app]="app"></hs-save-to-layman>
   </ng-container>

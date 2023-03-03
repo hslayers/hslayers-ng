@@ -13,7 +13,7 @@
                 <p class="m-0 p-0" style="font-size: 0.75rem; color: red;">
                     {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs: {app: data.app} }}</p>
             </div>
-            <div *ngIf="!appRef.isAuthorized && appRef.laymanEndpoint !== undefined" class="alert alert-danger"
+            <div *ngIf="!appRef.isAuthenticated && appRef.laymanEndpoint !== undefined" class="alert alert-danger"
                 role="alert">
                 <p class="text-center">
                     {{'DRAW.notAuthorized' | translateHs: {app: data.app} }}
@@ -21,7 +21,7 @@
                 <hs-layman-current-user [app]="data.app" [endpoint]="endpoint"></hs-layman-current-user>
             </div>
             <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
-                *ngIf="appRef.drawableLaymanLayers.length > 0 && appRef.isAuthorized">
+                *ngIf="appRef.drawableLaymanLayers.length > 0 && appRef.isAuthenticated">
                 <button type="button" class="btn btn-sm rounded  hs-toolbar-button" (click)="type = 'draw'"
                     [ngClass]="type === 'draw' ? 'btn-primary' : 'btn-secondary'">
                     {{'DRAW.drawToolbar.addDrawLayer' | translateHs: {app: data.app} }}
@@ -40,7 +40,7 @@
                             translateHs: {app: data.app} }}</label>
 
                     </div>
-                    <hs-layman-access-rights *ngIf="appRef.isAuthorized" [app]="data.app"
+                    <hs-layman-access-rights *ngIf="appRef.isAuthenticated" [app]="data.app"
                         [(access_rights)]="access_rights">
                     </hs-layman-access-rights>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">

@@ -286,7 +286,7 @@ export class HsAddDataCommonFileService {
     const friendlyName = getLaymanFriendlyLayerName(name);
     const commonFileRef = this.get(app);
     let descriptor: HsLaymanLayerDescriptor;
-    if (this.isAuthorized()) {
+    if (this.isAuthenticated()) {
       this.pickEndpoint(app);
       try {
         descriptor = await this.hsLaymanService.describeLayer(
@@ -692,7 +692,7 @@ export class HsAddDataCommonFileService {
    * Check if user is authorized as Layman user
    * @returns True, if user is authorized, false otherwise
    */
-  isAuthorized(): boolean {
+  isAuthenticated(): boolean {
     return this.hsCommonLaymanService.layman?.authenticated ?? false;
   }
 

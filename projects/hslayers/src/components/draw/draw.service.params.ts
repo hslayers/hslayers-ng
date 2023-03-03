@@ -37,7 +37,7 @@ export class HsDrawServiceParams {
   onDeselected: any;
   laymanEndpoint: any;
   previouslySelected: any;
-  isAuthorized: boolean;
+  isAuthenticated: boolean;
   onlyMine = true;
   addedLayersRemoved = false;
   eventHandlers: EventsKey[] = [];
