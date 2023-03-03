@@ -734,7 +734,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * Cache Layman's layer descriptor so it can be used layer on
+   * Cache Layman's layer descriptor so it can be used later on
    * @param layer - Layer interacted with
    * @param layer - Layman's layer descriptor
    * @param endpoint - Layman's endpoint description
