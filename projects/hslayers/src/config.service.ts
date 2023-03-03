@@ -10,6 +10,7 @@ import {View} from 'ol';
 
 import {AddDataFileType} from './components/add-data/file/types/file.type';
 import {AddDataUrlType} from './components/add-data/url/types/url.type';
+import {HsEndpoint} from './common/endpoints/endpoint.interface';
 import {QueryPopupWidgetsType} from './components/query/widgets/widgets.type';
 import {WidgetItem} from './components/query/widgets/widget-item.type';
 
@@ -126,7 +127,7 @@ export class HsConfigObject {
   draggable_windows?: boolean;
   connectTypes?: AddDataUrlType[];
   uploadTypes?: AddDataFileType[];
-  datasources?: any;
+  datasources?: HsEndpoint[];
   panelWidths?: KeyNumberDict;
   sidebarToggleable?: boolean;
   sizeMode?: string;
