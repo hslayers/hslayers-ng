@@ -28,7 +28,7 @@ export class HsCommonLaymanService {
     public hsLanguageService: HsLanguageService
   ) {}
 
-  isAuthorized() {
+  isAuthenticated() {
     return this.layman.authenticated;
   }
 

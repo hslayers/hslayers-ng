@@ -1,8 +1,8 @@
 <div class="w-100 mt-2" style="display: inline-block;" data-toggle="tooltip" data-placement="top"
   [title]="hsAddDataCommonFileService.getToolTipText(data, app)">
   <!-- TODO: Remove function call from template -->
-  <button *ngIf="hsAddDataCommonFileService.isAuthorized()" class="btn btn-primary w-100" [disabled]="!canAdd()"
-    (click)="add()">
+  <button *ngIf="hsAddDataCommonFileService.isAuthenticated()" class="btn btn-primary w-100" [disabled]="!canAdd()"
+    (click)="add()" [disabled]="!data.name || !data.srs">
     <i class="icon-plus" [hidden]="commonFileServiceRef.loadingToLayman"></i>
     <span class="hs-loader" [hidden]="!commonFileServiceRef.loadingToLayman"></span>
     <span [hidden]="commonFileServiceRef.loadingToLayman">{{'COMMON.add' | translateHs : {app} }}</span>
@@ -16,7 +16,7 @@
     </ngb-progressbar>
   </button>
 </div>
-<div *ngIf="!hsAddDataCommonFileService.isAuthorized()"
+<div *ngIf="!hsAddDataCommonFileService.isAuthenticated()"
   class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
   <!-- TODO: Remove function call from template -->
   <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs : {app} }}</p>

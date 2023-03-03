@@ -163,13 +163,13 @@ export class HsDrawService {
 
     this.hsCommonLaymanService.authChange.subscribe(({endpoint}) => {
       this.fillDrawableLayers(_app);
-      appRef.isAuthorized = endpoint?.authenticated;
+      appRef.isAuthenticated = endpoint?.authenticated;
       //When metadata dialog window opened. Layer is being added
       if (appRef.selectedLayer && appRef.tmpDrawLayer) {
         setWorkspace(appRef.selectedLayer, endpoint?.user);
         const definition = {
-          format: appRef.isAuthorized ? 'hs.format.WFS' : null,
-          url: appRef.isAuthorized
+          format: appRef.isAuthenticated ? 'hs.format.WFS' : null,
+          url: appRef.isAuthenticated
             ? this.hsCommonLaymanService.layman?.url + '/wfs'
             : null,
         };
@@ -239,8 +239,8 @@ export class HsDrawService {
       this.hsConfig.get(app).defaultDrawLayerPath || 'User generated'
     ); //TODO: Translate this
     setDefinition(drawLayer, {
-      format: appRef.isAuthorized ? 'hs.format.WFS' : null,
-      url: appRef.isAuthorized ? layman.url + '/wfs' : null,
+      format: appRef.isAuthenticated ? 'hs.format.WFS' : null,
+      url: appRef.isAuthenticated ? layman.url + '/wfs' : null,
     });
     setWorkspace(drawLayer, layman?.user);
     appRef.tmpDrawLayer = true;
@@ -716,7 +716,7 @@ export class HsDrawService {
   }
 
   getDeleteNote(app: string, plural?: boolean): string {
-    return this.get(app).isAuthorized
+    return this.get(app).isAuthenticated
       ? this.translate(
           plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote',
           app

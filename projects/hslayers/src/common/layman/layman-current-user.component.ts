@@ -41,8 +41,8 @@ export class HsLaymanCurrentUserComponent implements OnInit {
     );
   }
 
-  isAuthorized() {
-    return this.HsCommonLaymanService.isAuthorized();
+  isAuthenticated() {
+    return this.HsCommonLaymanService.isAuthenticated();
   }
 
   logout(): void {

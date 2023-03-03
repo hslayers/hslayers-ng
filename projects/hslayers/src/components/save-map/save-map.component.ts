@@ -24,7 +24,7 @@ export class HsSaveMapComponent
 {
   endpoint: HsEndpoint = null;
   endpoints: HsEndpoint[];
-  isAuthorized = false;
+  isAuthenticated = false;
   name = 'saveMap';
   private end = new Subject<void>();
   constructor(
@@ -82,7 +82,7 @@ export class HsSaveMapComponent
     this.hsCommonLaymanService.authChange
       .pipe(takeUntil(this.end))
       .subscribe(({endpoint, app}) => {
-        this.isAuthorized = !!endpoint.user;
+        this.isAuthenticated = !!endpoint.user;
         this.hsSaveMapManagerService.get(app).currentUser = endpoint.user;
       });
 

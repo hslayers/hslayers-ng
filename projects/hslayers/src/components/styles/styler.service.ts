@@ -61,7 +61,7 @@ class HsStylerParams {
 
   sld: string;
   qml: string;
-  isAuthorized: boolean;
+  isAuthenticated: boolean;
 
   pin_white_blue;
   pin_white_blue_highlight;
@@ -148,7 +148,7 @@ export class HsStylerService {
     );
 
     this.hsCommonLaymanService.authChange.subscribe(({endpoint}) => {
-      appRef.isAuthorized = endpoint?.authenticated;
+      appRef.isAuthenticated = endpoint?.authenticated;
     });
   }
 
@@ -616,7 +616,7 @@ export class HsStylerService {
    * Indicate only when user is logged in Layman and layer is being monitored otherwise save
    */
   resolveSldChange(appRef: HsStylerParams, app: string) {
-    if (appRef.isAuthorized && appRef.layerBeingMonitored) {
+    if (appRef.isAuthenticated && appRef.layerBeingMonitored) {
       appRef.changesStore.set(getUid(appRef.layer), {
         sld: appRef.sld,
         qml: appRef.qml,
