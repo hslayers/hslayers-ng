@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject, Subscription, delay, startWith, takeUntil} from 'rxjs';
+import {Subject, Subscription, delay, of, startWith, takeUntil} from 'rxjs';
 
 import {HS_PRMS} from '../permalink/get-params';
 import {HsButton} from './button.interface';
@@ -24,6 +24,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   private serviceAppRef: HsSidebarParams;
   layoutAppRef: HsLayoutParams;
 
+  isVisible = of(true);
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
