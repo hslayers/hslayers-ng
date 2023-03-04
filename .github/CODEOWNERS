@@ -1,5 +1,5 @@
-* @jmacura
-* @FilipLeitner
+* @jmacura @FilipLeitner
+**/package*.json @jmacura
 ./projects/hslayers-server/ @fzadrazil
 ./projects/hslayers-material/ @SLeitgeb
 ./projects/hslayers-material-app/ @SLeitgeb
