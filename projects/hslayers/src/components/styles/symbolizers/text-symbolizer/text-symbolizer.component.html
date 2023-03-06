@@ -54,7 +54,6 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.fontStyle' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontStyle" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -65,7 +64,6 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.fontWeight' | translateHs: this}}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs: this">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontWeight"
         (change)="emitChange()" [ngModelOptions]="{standalone: true}">
