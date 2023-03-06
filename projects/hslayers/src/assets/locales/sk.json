@@ -302,7 +302,8 @@
     "composition": "Kompozícia",
     "select": "Vybrať",
     "verify": "Overiť",
-    "back": "Späť"
+    "back": "Späť",
+    "savingChanges": "Ukladanie zmien"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

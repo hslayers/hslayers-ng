@@ -919,6 +919,7 @@ $list-group-item-padding-x: 1.25rem;
     transform: rotateX(65deg) rotate(45deg);
     color: $gray-200;
     animation: layers1 1s linear infinite alternate;
+    margin: 0 0.5em;
   }
 
   .hs-loader-dark {

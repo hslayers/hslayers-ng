@@ -3,7 +3,11 @@ import {Source} from 'ol/source';
 
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
-import {getName, getTitle} from '../../common/layer-extensions';
+import {
+  getHsLaymanSynchronizing,
+  getName,
+  getTitle,
+} from '../../common/layer-extensions';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [
@@ -84,5 +88,16 @@ export function isAtLeastVersions(ep: HsEndpoint, version: string) {
     }
   }
 
+  return true;
+}
+
+/**
+ * Wait until layer synchronization is complete
+ * @param layer - OL Layer
+ */
+export async function awaitLayerSync(layer: Layer): Promise<any> {
+  while (getHsLaymanSynchronizing(layer)) {
+    await new Promise((r) => setTimeout(r, 200));
+  }
   return true;
 }

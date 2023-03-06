@@ -302,7 +302,8 @@
     "composition": "Composition",
     "select": "Select",
     "verify": "Verify",
-    "back": "Back"
+    "back": "Back",
+    "savingChanges": "Saving changes"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

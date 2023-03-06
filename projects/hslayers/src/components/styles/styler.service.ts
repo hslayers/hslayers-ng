@@ -39,6 +39,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {awaitLayerSync} from '../save-map/layman-utils';
 import {defaultStyle} from './styles';
 import {
   getCluster,
@@ -68,6 +69,7 @@ class HsStylerParams {
   colorMapDialogVisible = false;
   unsavedChange = false;
   changesStore = new Map<string, {sld: string; qml: string}>();
+  syncing = false;
   sldVersion: SldVersion = '1.0.0';
 }
 
@@ -633,7 +635,12 @@ export class HsStylerService {
     setSld(appRef.layer, appRef.sld);
     setQml(appRef.layer, appRef.qml);
     appRef.changesStore.delete(getUid(appRef.layer));
-    appRef.unsavedChange = false;
+
+    appRef.syncing = true;
+    awaitLayerSync(appRef.layer).then(() => {
+      appRef.syncing = false;
+      appRef.unsavedChange = false;
+    });
   }
 
   async save(app: string): Promise<void> {
