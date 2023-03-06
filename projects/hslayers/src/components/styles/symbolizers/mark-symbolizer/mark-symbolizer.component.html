@@ -2,8 +2,8 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.symbol' | translateHs : {app} }}:</div>
     <div class="p-1 w-75">
-      <select class="form-control form-select-sm form-select"  data-cy="mark-symbolizer-well-known-name" [(ngModel)]="symbolizer.wellKnownName"
-        (change)="emitChange()" [ngModelOptions]="{standalone: true}">
+      <select class="form-control form-select-sm form-select" data-cy="mark-symbolizer-well-known-name"
+        [(ngModel)]="symbolizer.wellKnownName" (change)="emitChange()" [ngModelOptions]="{standalone: true}">
         <option *ngFor="let wellKnownName of wellKnownNames">
           {{wellKnownName}}
         </option>
@@ -11,12 +11,12 @@
     </div>
   </div>
 
-  <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
+  <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="fillOpacity"
     (changes)="emitChange()" data-cy="mark-symbolizer-color" [label]="'STYLER.fillColor' | translateHs : {app} ">
   </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="emitChange()" step="0.05"
-    min="0" max="1" [label]="'STYLER.opacity' | translateHs : {app} "></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="fillOpacity" (changes)="emitChange()"
+    step="0.05" min="0" max="1" [label]="'STYLER.fillOpacity' | translateHs : {app} "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="radius" (changes)="emitChange()" step="1"
     min="0" max="100" data-cy="mark-symbolizer-radius" [label]="'STYLER.radius' | translateHs : {app} ">
