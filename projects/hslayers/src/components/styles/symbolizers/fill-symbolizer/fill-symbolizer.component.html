@@ -1,5 +1,5 @@
 <form class="form">
-   
+
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="color" opacityAttribute="opacity"
     (changes)="opacityFix(); emitChange()" [label]="'STYLER.fillColor' | translateHs : {app}">
     <span class="badge bg-warning mt-2" *ngIf="symbolizer.graphicFill !== undefined"
@@ -21,11 +21,10 @@
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translateHs : {app} }}:</div>
-    <span class="badge bg-warning mt-2"
-      [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs : {app} ">!</span>
     <div class="p-1">
       <div class="btn-group">
-        <div ngbDropdown class="btn-group d-inline-block" role="group" #graphicFillMenu="ngbDropdown" placement="top-right">
+        <div ngbDropdown class="btn-group d-inline-block" role="group" #graphicFillMenu="ngbDropdown"
+          placement="top-right">
           <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
             <span class="icon-plus"></span>
           </button>
@@ -38,18 +37,19 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined" (click)="symbolizer.graphicFill = undefined">
+        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined"
+          (click)="symbolizer.graphicFill = undefined">
           <span class="icon-trash"></span>
         </button>
       </div>
     </div>
   </div>
 
-  <hs-mark-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
+  <hs-mark-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true" (changes)="emitChange()"
+    *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
   </hs-mark-symbolizer>
 
-  <hs-icon-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
+  <hs-icon-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true" (changes)="emitChange()"
+    *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
   </hs-icon-symbolizer>
 </form>

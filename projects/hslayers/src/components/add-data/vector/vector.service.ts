@@ -24,10 +24,10 @@ import {VectorDataObject} from './vector-data.type';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
 import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
 import {
-  getHsLaymanSynchronizing,
-  setDefinition,
-} from '../../../common/layer-extensions';
-import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
+  awaitLayerSync,
+  getLaymanFriendlyLayerName,
+} from '../../save-map/layman-utils';
+import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -248,17 +248,6 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * Wait until layer synchronization is complete
-   * @param layer - Layer provided
-   */
-  async awaitLayerSync(layer: Layer): Promise<any> {
-    while (getHsLaymanSynchronizing(layer)) {
-      await new Promise((r) => setTimeout(r, 200));
-    }
-    return true;
-  }
-
-  /**
    * Add new layer to map and Layman (if possible)
    * @param data - Layer data object provided
    * @param app - App identifier
@@ -321,7 +310,7 @@ export class HsAddDataVectorService {
     this.fitExtent(layer, app);
     addLayerRes.layer = layer;
     if (data.saveToLayman) {
-      this.awaitLayerSync(layer).then(() => {
+      awaitLayerSync(layer).then(() => {
         layer.getSource().dispatchEvent('addfeature');
         this.fitExtent(layer, app);
       });

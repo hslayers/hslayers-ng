@@ -68,13 +68,20 @@
       </div>
       <div class="d-flex justify-content-between" *ngIf="appRef.isAuthenticated && appRef
       .unsavedChange">
-        <div class="alert alert-danger p-1 m-0" role="alert">
-          {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }} <button class="btn btn-primary"
+        <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert"
+          *ngIf="!appRef.syncing; else layerSyncing">
+          {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }} <button class="btn btn-primary btn-sm m-1"
             (click)="hsStylerService.setSldQml(data.app)" data-toggle="tooltip"
             [title]="'STYLER.unsavedChanges' | translateHs : data">
             <i class="icon-save-floppy"></i>
           </button>
         </div>
+        <ng-template #layerSyncing>
+          <div class="d-flex align-items-center p-2 bg-secondary text-white rounded btn">
+            <span class="hs-loader hs-loader-dark"></span>
+            {{'COMMON.savingChanges' | translateHs : {app: data.app} }}
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

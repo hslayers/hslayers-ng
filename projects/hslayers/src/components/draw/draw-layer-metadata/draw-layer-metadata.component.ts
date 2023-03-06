@@ -5,8 +5,11 @@ import {HsDrawService} from '../draw.service';
 import {HsMapService} from '../../map/map.service';
 import {accessRightsModel} from '../../add-data/common/access-rights.model';
 import {
+  awaitLayerSync,
+  getLaymanFriendlyLayerName,
+} from '../../save-map/layman-utils';
+import {
   getEditor,
-  getHsLaymanSynchronizing,
   getPath,
   getTitle,
   setAccessRights,
@@ -15,7 +18,6 @@ import {
   setPath,
   setTitle,
 } from '../../../common/layer-extensions';
-import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
@@ -94,7 +96,7 @@ export class HsDrawLayerMetadataDialogComponent
     appService.fillDrawableLayers(this.data.app);
     this.tmpFeatures = this.layer.getSource().getFeatures();
     //Dispatch add feature event in order to trigger sync
-    this.awaitLayerSync(this.layer).then(() => {
+    awaitLayerSync(this.layer).then(() => {
       const event = this.tmpFeatures ? this.getEventType() : 'addfeature';
       this.layer.getSource().dispatchEvent(event);
     });
@@ -113,13 +115,6 @@ export class HsDrawLayerMetadataDialogComponent
   cancel(): void {
     this.appRef.selectedLayer = this.appRef.previouslySelected;
     this.HsDialogContainerService.destroy(this, this.data.app);
-  }
-
-  async awaitLayerSync(layer): Promise<any> {
-    while (getHsLaymanSynchronizing(layer)) {
-      await new Promise((r) => setTimeout(r, 200));
-    }
-    return true;
   }
 
   pathChanged(): void {
