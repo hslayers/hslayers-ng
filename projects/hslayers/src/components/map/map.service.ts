@@ -776,7 +776,7 @@ export class HsMapService {
     duplicateHandling?: DuplicateHandling
   ): void {
     if (this.layerAlreadyExists(lyr, app ?? DEFAULT)) {
-      if (getTitle(lyr) === getTitle(this.apps[app].placeholderOsm)) {
+      if (this.hsUtilsService.instOf(lyr.getSource(), OSM)) {
         duplicateHandling = DuplicateHandling.RemoveOriginal;
       }
       switch (duplicateHandling) {
