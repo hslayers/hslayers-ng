@@ -28,7 +28,7 @@
     <!-- TODO: Remove function call from template -->
     <hs-save-to-layman [data]="data" [app]="app"></hs-save-to-layman>
   </ng-container>
-  <ng-container *ngIf="data.type === 'shp' || data.type === 'raster' || data.type === 'geojson'">
+  <ng-container *ngIf="data.type === 'shp' || data.type.includes('raster') || data.type === 'geojson'">
     <div class="d-flex justify-content-between align-items-center">
       <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translateHs : {app} }}</p>
       <label class="dropzone-label">
