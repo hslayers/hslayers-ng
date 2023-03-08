@@ -43,7 +43,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   supportedRegex = [
     {
       regex: /^[0-9]{8}T([0-9]{6}([0-9]{3})?)(Z)?$/,
-      timeregex: '([0-9]{8})T([0-9]{X})',
+      timeregex: '[0-9]{8}T[0-9]{6}',
     },
     {
       regex: /^[0-9._/-]+(?<![a-zA-Z])$/,
@@ -159,12 +159,16 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   inferRegexPatternFromString(timestamp: string, regex: string): string {
     if (regex !== '^[0-9._/-]+(?<![a-zA-Z])$') {
       const match = timestamp.match(regex);
-      return (
-        this.supportedRegex[0].timeregex.replace(
-          'X',
-          match[1].length.toString()
-        ) + (match[3] ? 'Z' : '')
-      );
+      const hasMs = match[1].length == 9;
+      let timeregex = this.supportedRegex[0].timeregex;
+      //has Z postfix
+      if (match[3]) {
+        //If miliseconds are included in timestamp ignore them
+        timeregex = hasMs ? `(${timeregex})${match[2]}(Z)` : `${timeregex}Z`;
+      }
+      //timeregex alone would work but in UI its a bit more clear that
+      //only first 6 time digits are used
+      return hasMs ? `(${timeregex})${match[2]}` : timeregex;
     }
     const separator = this.getSeparator(timestamp);
     if (separator) {
