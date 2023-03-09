@@ -1,9 +1,9 @@
 <div *ngIf="olLayer">
-  <div *ngIf="HsLayerEditorService.legendVisible(data.app)"><!-- TODO: Remove function call from template -->
+  <div *ngIf="HsLayerEditorService.legendVisible()"><!-- TODO: Remove function call from template -->
     <p style="text-align: center; font-weight: bold">
-      {{ "COMMON.legend" | translateHs : {app: data.app} }}
+      {{ "COMMON.legend" | translateHs }}
     </p>
-    <hs-legend-layer-directive [app]="data.app" [layer]="HsLayerEditorService.apps[data.app].legendDescriptor">
+    <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor">
     </hs-legend-layer-directive>
     <hr />
   </div>

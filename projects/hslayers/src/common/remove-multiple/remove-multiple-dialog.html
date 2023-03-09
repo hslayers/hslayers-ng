@@ -6,7 +6,7 @@
                     {{data.title}}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} "></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
                 <p class="fw-bold h6">{{data.message}}</p>
@@ -15,7 +15,7 @@
                     <div class="d-flex w-100 justify-content-center">
                         <button type="button" class="mt-1 btn btn-primary"
                             (click)="selectDeselectAll()">{{'SAVECOMPOSITION.form.toggleAll' |
-                            translateHs : {app: data.app} }}</button>
+                            translateHs }}</button>
                     </div>
                     <div class="d-flex align-items-center" style="word-break:break-all" *ngFor="let item of data.items">
                         <button type="button" class="btn btn-sm m-0 p-0"
@@ -26,12 +26,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="yes()"
-                    [title]="'COMMON.yes' | translateHs : data" data-dismiss="modal">{{'COMMON.yes' | translateHs :
-                    {app: data.app} }}</button>
+                <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translateHs"
+                    data-dismiss="modal">{{'COMMON.yes' |
+                    translateHs}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.no' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
-                    translateHs : {app: data.app} }}</button>
+                    [title]="'COMMON.no' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
+                    translateHs }}</button>
             </div>
         </div>
     </div>

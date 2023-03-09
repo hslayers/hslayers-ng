@@ -14,13 +14,10 @@ export type HsFeatureLayer = {
   panelObserver: ReplaySubject<HsPanelItem>;
 };
 
-export interface HsQueryPopupServiceModel {
-  registerPopup(nativeElement: any, app: string);
-  apps: {
-    [key: string]: HsQueryPopupData;
-  };
-  fillFeatures(features: Feature<Geometry>[], app: string);
-  showPopup(e: any, app: string): void;
-  closePopup(app: string): void;
-  serializeFeatureAttributes(feature: Feature<Geometry>, app: string): any[];
+export interface HsQueryPopupServiceModel extends HsQueryPopupData {
+  registerPopup(nativeElement: any);
+  fillFeatures(features: Feature<Geometry>[]);
+  showPopup(e: any): void;
+  closePopup(): void;
+  serializeFeatureAttributes(feature: Feature<Geometry>): any[];
 }

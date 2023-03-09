@@ -4,7 +4,6 @@ import {
   HsConfig,
   HsMapService,
   HsQueryPopupBaseService,
-  HsQueryPopupData,
   HsQueryPopupServiceModel,
   HsQueryPopupWidgetContainerService,
   HsUtilsService,
@@ -32,28 +31,13 @@ export class HsCesiumQueryPopupService
     );
   }
 
-  async init(app: string) {
-    this.setAppIfNeeded(app);
-  }
-
-  /**
-   * Get the params saved by the cesium query popup service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): HsQueryPopupData {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsQueryPopupData();
-    }
-    return this.apps[app ?? 'default'];
-  }
-  registerPopup(nativeElement: any, app: string) {
+  registerPopup(nativeElement: any) {
     nativeElement.style.position = 'absolute';
-    this.get(app).hoverPopup = nativeElement;
+    this.hoverPopup = nativeElement;
   }
 
-  showPopup(e: any, app: string): void {
-    const appRef = this.get(app);
-    appRef.hoverPopup.style.left = e.pixel.x + 4 + 'px';
-    appRef.hoverPopup.style.top = e.pixel.y + 4 + 'px';
+  showPopup(e: any): void {
+    this.hoverPopup.style.left = e.pixel.x + 4 + 'px';
+    this.hoverPopup.style.top = e.pixel.y + 4 + 'px';
   }
 }

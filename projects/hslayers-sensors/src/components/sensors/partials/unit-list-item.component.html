@@ -3,7 +3,8 @@
     <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
         <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
             <a (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type"
-                style="line-height: 2em;">{{getTranslation(sensorType.name, 'SENSORNAMES')}}</a><!-- TODO: Remove function call from template -->
+                style="line-height: 2em;">{{getTranslation(sensorType.name,
+                'SENSORNAMES')}}</a><!-- TODO: Remove function call from template -->
             <ul class="list-group" [hidden]="!sensorType.expanded">
                 <li *ngFor="let sensor of sensorType.sensors" class="list-group-item p-1">
                     <div class="d-flex ">
@@ -17,13 +18,13 @@
 
                             <a *ngIf="viewMode === 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 <b>{{sensor.sensor_name_translated}}</b><span class="ms-1">{{'SENSORS.measure' |
-                                    translateHs: {app} }}</span> {{sensor.phenomenon_name}}</a>
+                                    translateHs }}</span> {{sensor.phenomenon_name}}</a>
                             <a *ngIf="viewMode === 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 {{sensor.phenomenon_name_translated}}</a>
                         </div>
                         <div class="p-0">
                             <span class="badge bg-dark rounded-pill">{{sensor.lastObservationValue}} {{sensor.uom}}
-                                <br><small>{{'SENSORS.at' | translateHs: {app} }}
+                                <br><small>{{'SENSORS.at' | translateHs }}
                                     {{sensor.lastObservationTimestamp}}</small></span>
                         </div>
                     </div>

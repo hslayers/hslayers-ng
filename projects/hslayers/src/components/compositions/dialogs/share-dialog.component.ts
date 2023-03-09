@@ -8,7 +8,7 @@ import {HsShareService} from '../../permalink/share.service';
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
-  data: {url; title; abstract; app: string};
+  data: {url; title; abstract; };
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
@@ -16,7 +16,7 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 
   shareOnSocial() {
@@ -24,7 +24,7 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
       this.data.title,
       this.data.abstract,
       this.data.url,
-      this.data.app
+      
     );
   }
 }

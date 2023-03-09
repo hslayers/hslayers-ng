@@ -74,12 +74,12 @@ describe('HsMapService', () => {
   });
 
   it('should create map object', async () => {
-    const map = await service.loaded(app);
+    const map = await service.loaded();
     expect(map).toBeDefined();
   });
 
   it('should not add duplicate layers', async () => {
-    await service.loaded(app);
+    await service.loaded();
     const layer1 = new VectorLayer({
       properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
@@ -90,12 +90,12 @@ describe('HsMapService', () => {
       properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
     });
-    const exists = service.layerAlreadyExists(layer2, app);
+    const exists = service.layerAlreadyExists(layer2);
     expect(exists).toBe(true);
   });
 
   it('find layer for feature', async () => {
-    await service.loaded(app);
+    await service.loaded();
     const featureLayer = new VectorLayer({
       properties: {title: 'Feature layer'},
       source: new VectorSource({}),
@@ -103,7 +103,7 @@ describe('HsMapService', () => {
     service.apps[app].map.addLayer(featureLayer);
     const feature = new Feature({geometry: new Point([0, 0]), name: 'test'});
     featureLayer.getSource().addFeatures([feature]);
-    const foundLayer = service.getLayerForFeature(feature, app);
+    const foundLayer = service.getLayerForFeature(feature);
     expect(foundLayer).toBe(featureLayer);
   });
 });

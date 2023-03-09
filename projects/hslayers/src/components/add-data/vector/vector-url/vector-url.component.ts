@@ -16,7 +16,6 @@ import {VectorDataObject} from '../vector-data.type';
 })
 export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
-  @Input() app = 'default';
 
   data: VectorDataObject;
   private end = new Subject<void>();
@@ -29,8 +28,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   ) {}
   connect = async (): Promise<void> => {
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
-      this.data.url,
-      this.app
+      this.data.url
     );
     if (obtainable) {
       this.hsHistoryListService.addSourceHistory(this.fileType, this.data.url);
@@ -44,8 +42,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
-    commonFileServiceRef.dataObjectChanged
+    this.hsAddDataCommonFileService.dataObjectChanged
       .pipe(takeUntil(this.end))
       .subscribe((data) => {
         this.data.showDetails = true;
@@ -60,9 +57,9 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
    */
   async add(): Promise<void> {
     const response: {layer; complete: boolean} =
-      await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
+      await this.hsAddDataVectorService.addNewLayer(this.data);
     if (response.complete) {
-      this.hsLayoutService.setMainPanel('layermanager', this.app);
+      this.hsLayoutService.setMainPanel('layermanager');
       this.setDataToDefault();
     }
   }

@@ -23,7 +23,6 @@ import {HsUtilsService} from '../../utils/utils.service';
   templateUrl: './catalogue.component.html',
 })
 export class HsAddDataCatalogueComponent implements OnInit {
-  @Input() app = 'default';
   types: any[];
   data: any;
   advancedSearch: boolean;
@@ -33,8 +32,6 @@ export class HsAddDataCatalogueComponent implements OnInit {
   dataTypes = ['all', 'service', 'dataset'];
   sortbyTypes = ['date', 'title', 'bbox'];
   optionsButtonLabel = 'more';
-  appRef: HsAddDataCatalogueParams;
-  configRef: HsConfigObject;
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsConfig: HsConfig, //Used in template
@@ -49,26 +46,22 @@ export class HsAddDataCatalogueComponent implements OnInit {
     this.advancedSearch = false;
   }
   ngOnInit(): void {
-    this.appRef = this.hsAddDataCatalogueService.get(this.app);
-    this.data = this.appRef.data;
-    this.configRef = this.hsConfig.get(this.app);
-    this.queryCatalogs = () =>
-      this.hsAddDataCatalogueService.queryCatalogs(this.data.app);
-    this.hsAddDataCatalogueService.init(this.app);
-    this.hsAddDataCatalogueMapService.init(this.app);
+    this.data = this.hsAddDataCatalogueService.data;
+    this.queryCatalogs = () => this.hsAddDataCatalogueService.queryCatalogs();
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
-    this.appRef.selectedLayer =
-      this.appRef.selectedLayer == layer ? <HsAddDataLayerDescriptor>{} : layer;
+    this.hsAddDataCatalogueService.selectedLayer =
+      this.hsAddDataCatalogueService.selectedLayer == layer
+        ? <HsAddDataLayerDescriptor>{}
+        : layer;
   }
 
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined,
-      this.data.app
+      undefined
     );
   }
   openOptionsMenu(): void {
@@ -81,7 +74,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
 
   queryByFilter(): void {
-    this.hsAddDataCatalogueService.reloadData(this.app);
+    this.hsAddDataCatalogueService.reloadData();
   }
 
   selectType(type: string): void {
@@ -98,8 +91,8 @@ export class HsAddDataCatalogueComponent implements OnInit {
     this.filterTypeMenu = !this.filterTypeMenu;
   }
 
-  highlightLayer(layer, state: boolean, app: string): void {
+  highlightLayer(layer, state: boolean): void {
     layer.highlighted = state;
-    this.hsAddDataCatalogueMapService.highlightLayer(layer, state, app);
+    this.hsAddDataCatalogueMapService.highlightLayer(layer, state);
   }
 }

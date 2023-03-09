@@ -42,7 +42,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve(false);
   }
 
@@ -50,23 +50,19 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     if (this.data.layers) {
       this.layersString = this.data.layers.map((l) => l.title).join(', ');
     }
-    this.configRef = this.hsConfig.get(this.data.app);
+    this.configRef = this.hsConfig;
     for (const service of this.data.services) {
-      this.hsAddDataUrlService.get(this.data.app).typeSelected = service.type;
-      await this.hsAddDataOwsService.setUrlAndConnect(
-        {type: service.type, uri: service.url, getOnly: true},
-        this.data.app
-      );
-      service.typeService = this.hsAddDataOwsService.get(
-        this.data.app
-      ).typeService;
-      const data = service.typeService.get(this.data.app)?.data;
+      this.hsAddDataUrlService.typeSelected = service.type;
+      await this.hsAddDataOwsService.setUrlAndConnect({
+        type: service.type,
+        uri: service.url,
+        getOnly: true,
+      });
+      service.typeService = this.hsAddDataOwsService.typeService;
+      const data = service.typeService?.data;
       if (data?.layers?.length > 0) {
         //Store data object outside service so it can be reasigned later
-        service.data = Object.assign(
-          {},
-          service.typeService.apps[this.data.app].data
-        );
+        service.data = Object.assign({}, service.typeService.data);
         service.loaded = true;
       } else {
         //TODO: Toast error?
@@ -117,22 +113,15 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
    * Creates service layers and adds them to the map
    */
   addLayers(): void {
-    this.hsMapService.removeCompositionLayers({
-      force: true,
-      app: this.data.app,
-    });
+    this.hsMapService.removeCompositionLayers(true);
     for (const service of this.data.services) {
       const checkedOnly = this.lookForChecked(service.data.layers);
-      service.typeService.apps[this.data.app].data = service.data;
-      let layers = service.typeService.getLayers(
-        this.data.app,
-        checkedOnly,
-        !checkedOnly
-      );
+      service.typeService.data = service.data;
+      let layers = service.typeService.getLayers(checkedOnly, !checkedOnly);
       layers = this.setLayerParams(layers, service, checkedOnly);
-      service.typeService.addLayers(layers, this.data.app);
+      service.typeService.addLayers(layers);
     }
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve(true);
   }
 
@@ -149,6 +138,6 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   beforeChange(e): void {
     const service = this.data.services.find((s) => s.id == e.panelId);
     //Assign correct service data object to typeService
-    service.typeService.apps[this.data.app].data = service.data;
+    service.typeService.data = service.data;
   }
 }

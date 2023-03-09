@@ -39,7 +39,7 @@ class HsCommonLaymanServiceMock {
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<{endpoints: HsEndpoint[]; app: string}> =
+  endpointsFilled: Subject<{endpoints: HsEndpoint[]; }> =
     new Subject();
   endpoints = [];
 }

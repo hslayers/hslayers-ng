@@ -1,8 +1,8 @@
 <div class="w-100 d-flex justify-content-between pb-2 bg-white" style="position: sticky;
                 bottom: 0">
   <button class="btn btn-primary" (click)="selectAll()">{{'ADDDATA.URL.selectAll' |
-    translateHs: {app} }}</button>
-  <button class="btn btn-primary" [disabled]="!hsAddDataUrlService.apps[app].addingAllowed"
-    [title]="'ADDLAYERS.addSelected' | translateHs: {app} " (click)="add()">{{'ADDLAYERS.WFS.addToMap' |
-    translateHs: {app} }}</button>
+    translateHs }}</button>
+  <button class="btn btn-primary" [disabled]="!hsAddDataUrlService.addingAllowed"
+    [title]="'ADDLAYERS.addSelected' | translateHs " (click)="add()">{{'ADDLAYERS.WFS.addToMap' |
+    translateHs }}</button>
 </div>

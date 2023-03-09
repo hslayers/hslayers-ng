@@ -27,8 +27,8 @@ export class HsStatusManagerService implements HsSaverService {
   /**
    * @deprecated Use the new {@link HsShareUrlService.endpointUrl} method instead.
    */
-  endpointUrl(app: string): string {
-    return this.HsShareUrlService.endpointUrl(app);
+  endpointUrl(): string {
+    return this.HsShareUrlService.endpointUrl();
   }
 
   /**
@@ -57,7 +57,7 @@ export class HsStatusManagerService implements HsSaverService {
     endpoint: HsEndpoint,
     compoData: CompoData,
     saveAsNew: boolean,
-    app: string
+    
   ): Promise<any> {
     if (saveAsNew || compoData.id == '') {
       compoData.id = this.hsUtilsService.generateUuid();
@@ -65,11 +65,11 @@ export class HsStatusManagerService implements HsSaverService {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await lastValueFrom(
-          this.http.post(this.endpointUrl(app), {
+          this.http.post(this.endpointUrl(), {
             data: compositionJson,
             permanent: true,
             id: compoData.id,
-            project: this.hsConfig.get(app).project_name,
+            project: this.hsConfig.project_name,
             thumbnail: compoData.thumbnail,
             request: 'save',
           })

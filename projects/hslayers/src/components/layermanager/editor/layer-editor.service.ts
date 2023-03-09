@@ -22,17 +22,11 @@ import {
   setCluster,
 } from '../../../common/layer-extensions';
 
-class HsLayerEditorServiceParams {
-  legendDescriptor: HsLegendDescriptor;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorService {
-  apps: {
-    [id: string]: HsLayerEditorServiceParams;
-  } = {default: new HsLayerEditorServiceParams()};
+  legendDescriptor: HsLegendDescriptor;
 
   layerTitleChange: Subject<{
     newTitle: string;
@@ -51,26 +45,19 @@ export class HsLayerEditorService {
     public HsLayerSelectorService: HsLayerSelectorService,
     public HsLayerManagerMetadataService: HsLayerManagerMetadataService
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe(
-      async ({layer, app}) => {
-        this.get(app).legendDescriptor =
-          await this.HsLegendService.getLayerLegendDescriptor(layer.layer, app);
-      }
-    );
+    this.HsLayerSelectorService.layerSelected.subscribe(async (layer) => {
+      this.legendDescriptor =
+        await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
+    });
   }
-  get(app: string) {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsLayerEditorServiceParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
+
   /**
    * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
    * BoundingBox property of GetCapabilities request (for WMS layer)
    * @param layer - OpenLayers layer to zoom to
    */
-  async zoomToLayer(layer: Layer<Source>, app: string): Promise<boolean> {
+  async zoomToLayer(layer: Layer<Source>): Promise<boolean> {
     let extent = null;
     if (layer.getExtent()) {
       extent = layer.getExtent();
@@ -78,12 +65,12 @@ export class HsLayerEditorService {
       extent = (<any>layer.getSource()).getExtent();
     }
     if (extent) {
-      this.fitIfExtentSet(extent, layer, app);
+      this.fitIfExtentSet(extent, layer);
       return true;
     }
     if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
       const url = this.HsLayerUtilsService.getURL(layer);
-      const wrapper = await this.HsWmsGetCapabilitiesService.request(url, app);
+      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       const parser = new WMSCapabilities();
       const caps = parser.read(wrapper.response);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
@@ -96,22 +83,14 @@ export class HsLayerEditorService {
         const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
         if (foundDef) {
           extent = foundDef.EX_GeographicBoundingBox || foundDef.BoundingBox;
-          this.fitIfExtentSet(
-            this.transformToCurrentProj(extent, app),
-            layer,
-            app
-          );
+          this.fitIfExtentSet(this.transformToCurrentProj(extent), layer);
           return true;
         }
       } else if (typeof caps.Capability.Layer == 'object') {
         extent =
           caps.Capability.Layer.EX_GeographicBoundingBox ||
           caps.Capability.Layer.BoundingBox;
-        this.fitIfExtentSet(
-          this.transformToCurrentProj(extent, app),
-          layer,
-          app
-        );
+        this.fitIfExtentSet(this.transformToCurrentProj(extent), layer);
         return true;
       } else {
         return false;
@@ -126,12 +105,7 @@ export class HsLayerEditorService {
    * @param distance - Distance in pixels
    * @returns Current cluster state
    */
-  cluster(
-    layer: Layer<Source>,
-    newValue: boolean,
-    distance: number,
-    app: string
-  ): boolean {
+  cluster(layer: Layer<Source>, newValue: boolean, distance: number): boolean {
     if (layer == undefined) {
       return;
     }
@@ -143,10 +117,9 @@ export class HsLayerEditorService {
         distance,
         !this.HsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
           layer
-        ),
-        app
+        )
       );
-      this.HsEventBusService.compositionEdits.next({app});
+      this.HsEventBusService.compositionEdits.next();
     } else {
       return getCluster(layer);
     }
@@ -157,30 +130,30 @@ export class HsLayerEditorService {
    * @param {Extent} extent - Extent in EPSG:4326
    * @param layer
    */
-  fitIfExtentSet(extent: number[], layer: Layer<Source>, app: string): void {
+  fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
     if (extent !== null) {
       layer.setExtent(extent);
-      this.HsMapService.fitExtent(extent, app);
+      this.HsMapService.fitExtent(extent);
     }
   }
 
   /**
    * @param extent
    */
-  transformToCurrentProj(extent: number[], app: string): number[] {
+  transformToCurrentProj(extent: number[]): number[] {
     return transformExtent(
       extent,
       'EPSG:4326',
-      this.HsMapService.getCurrentProj(app)
+      this.HsMapService.getCurrentProj()
     );
   }
 
-  legendVisible(app: string): boolean {
-    const legendDescriptor = this.get(app).legendDescriptor;
+  legendVisible(): boolean {
+    const legendDescriptor = this.legendDescriptor;
     return (
       this.HsLegendService.legendValid(legendDescriptor) &&
       (getInlineLegend(legendDescriptor.lyr) ||
-        !this.HsLayoutService.panelEnabled('legend', app))
+        !this.HsLayoutService.panelEnabled('legend'))
     );
   }
 

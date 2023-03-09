@@ -20,9 +20,7 @@ import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
   providedIn: 'root',
 })
 export class HsCompositionsMapService {
-  apps: {
-    [id: string]: {extentLayer: VectorLayer<VectorSource<Geometry>>};
-  } = {};
+  extentLayer: VectorLayer<VectorSource<Geometry>>;
   constructor(
     private hsEventBusService: HsEventBusService,
     private hsMapService: HsMapService,
@@ -31,31 +29,24 @@ export class HsCompositionsMapService {
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
-    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      const appRef = this.get(app);
-      if (appRef.extentLayer) {
+    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+      if (this.extentLayer) {
         if (
-          this.hsLayoutService.get(app).mainpanel === 'composition_browser' ||
-          this.hsLayoutService.get(app).mainpanel === 'composition'
+          this.hsLayoutService.mainpanel === 'composition_browser' ||
+          this.hsLayoutService.mainpanel === 'composition'
         ) {
-          appRef.extentLayer.setVisible(true);
+          this.extentLayer.setVisible(true);
         } else {
-          appRef.extentLayer.setVisible(false);
+          this.extentLayer.setVisible(false);
         }
       }
     });
-  }
 
-  /**
-   * Initialize compositions map service data and listeners
-   * @param app - App identifier
-   */
-  init(app: string) {
-    const appRef = this.get(app);
-    this.hsMapService.loaded(app).then((map) => {
-      map.on('pointermove', (e) => this.mapPointerMoved(e, app));
-      map.addLayer(appRef.extentLayer);
-      this.hsSaveMapService.internalLayers.push(appRef.extentLayer);
+    this.extentLayer = this.createNewExtentLayer();
+    this.hsMapService.loaded().then((map) => {
+      map.on('pointermove', (e) => this.mapPointerMoved(e));
+      map.addLayer(this.extentLayer);
+      this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
   }
 
@@ -87,24 +78,12 @@ export class HsCompositionsMapService {
   }
 
   /**
-   * Get the params saved by the composition map service for the current app
-   * @param app - App identifier
-   */
-  get(app: string) {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = {extentLayer: this.createNewExtentLayer()};
-    }
-    return this.apps[app ?? 'default'];
-  }
-
-  /**
    * Act on map pointer movement and highlight features under it
    * @param evt -
-   * @param app - App identifier
+   
    */
-  mapPointerMoved(evt, app: string) {
-    const appRef = this.get(app);
-    const featuresUnderMouse = appRef.extentLayer
+  mapPointerMoved(evt) {
+    const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
@@ -112,7 +91,7 @@ export class HsCompositionsMapService {
     )) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
-        appRef.extentLayer,
+        this.extentLayer,
         endpoint.compositions
       );
     }
@@ -122,16 +101,15 @@ export class HsCompositionsMapService {
    * Highlight composition from map feature referencing it
    * @param composition - Composition highlighted from map feature reference
    * @param state - Highlighte state
-   * @param app - App identifier
+   
    */
   highlightComposition(
     composition: HsMapCompositionDescriptor,
-    state: boolean,
-    app: string
+    state: boolean
   ) {
     if (composition.featureId !== undefined) {
-      const found = this.get(app)
-        .extentLayer.getSource()
+      const found = this.extentLayer
+        .getSource()
         .getFeatureById(composition.featureId);
       if (found) {
         setHighlighted(found, state);
@@ -141,10 +119,10 @@ export class HsCompositionsMapService {
 
   /**
    * Clear extent layer from all of the features
-   * @param app - App identifier
+   
    */
-  clearExtentLayer(app: string) {
-    this.get(app).extentLayer.getSource().clear();
+  clearExtentLayer() {
+    this.extentLayer.getSource().clear();
   }
 
   /**
@@ -152,8 +130,8 @@ export class HsCompositionsMapService {
    * is created. It should add the feature to vector layer source
    * @param extentFeature - OpenLayers Feature
    */
-  addExtentFeature(extentFeature: Feature<Geometry>, app: string): void {
-    this.get(app).extentLayer.getSource().addFeatures([extentFeature]);
+  addExtentFeature(extentFeature: Feature<Geometry>): void {
+    this.extentLayer.getSource().addFeatures([extentFeature]);
   }
 
   /**
@@ -161,13 +139,12 @@ export class HsCompositionsMapService {
    * @param feature - Feature under the pointer
    * @param selector - Feature selector
    * @param list - Record list referenced from the feature
-   * @param app - App identifier
+   
    */
-  getFeatureRecordAndUnhighlight(feature, selector, list: any[], app: string) {
+  getFeatureRecordAndUnhighlight(feature, selector, list: any[]) {
     const record = list?.find((record) => record.featureId == feature.getId());
     if (
-      this.hsMapService.getLayerForFeature(feature, app) ==
-        this.get(app).extentLayer &&
+      this.hsMapService.getLayerForFeature(feature) == this.extentLayer &&
       record
     ) {
       setHighlighted(feature, false);

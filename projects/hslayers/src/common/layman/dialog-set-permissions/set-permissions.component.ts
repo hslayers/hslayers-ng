@@ -29,7 +29,7 @@ export class HsSetPermissionsDialogComponent
   data: {
     recordType: string;
     selectedRecord: HsAddDataLayerDescriptor;
-    app: string;
+
   };
   endpoint: HsEndpoint;
 
@@ -78,7 +78,7 @@ export class HsSetPermissionsDialogComponent
    * Close the dialog
    */
   close(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this);
   }
 
   /**
@@ -98,12 +98,12 @@ export class HsSetPermissionsDialogComponent
           this.endpoint,
           null,
           layerDesc,
-          this.data.app
+          
         );
         if (response?.error) {
           return;
         }
-        this.hsAddDataCatalogueService.reloadData(this.data.app);
+        this.hsAddDataCatalogueService.reloadData();
         this.close();
         break;
       case 'composition':
@@ -111,13 +111,13 @@ export class HsSetPermissionsDialogComponent
           this.data.selectedRecord.name,
           this.endpoint,
           this.currentAccessRights,
-          this.data.app
+          
         );
         if (response?.error) {
           return;
         }
         this.hsCompositionsCatalogueService.loadFilteredCompositions(
-          this.data.app
+          
         );
         this.close();
         break;

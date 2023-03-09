@@ -2,20 +2,19 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{'COMMON.selectAndSavePermissions' | translateHs: {app:
-          data.app} }}: {{data.selectedRecord.name}}</h4>
+        <h4 class="modal-title">{{'COMMON.selectAndSavePermissions' | translateHs}}: {{data.selectedRecord.name}}</h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
+          [attr.aria-label]="'COMMON.close' | translateHs ">
         </button>
       </div>
       <div class="modal-body" style="overflow-y:auto">
-        <hs-layman-access-rights [app]="data.app" [(access_rights)]="currentAccessRights">
+        <hs-layman-access-rights [(access_rights)]="currentAccessRights">
         </hs-layman-access-rights>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" (click)="savePermissions()" data-dismiss="modal">{{'COMMON.save'
-            | translateHs: {app: data.app} }}</button>
+            | translateHs }}</button>
           <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.cancel' |
-            translateHs: {app: data.app} }}</button>
+            translateHs }}</button>
         </div>
       </div>
     </div>

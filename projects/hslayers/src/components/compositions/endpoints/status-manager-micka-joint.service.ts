@@ -43,18 +43,16 @@ export class HsCompositionsStatusManagerMickaJointService {
     ds: HsEndpoint,
     params,
     extentFeatureCreated,
-    bbox,
-    app: string
+    bbox
   ): Observable<any> {
     const Observable = this.hsCompositionsMickaService
-      .loadList(ds, params, extentFeatureCreated, bbox, app)
+      .loadList(ds, params, extentFeatureCreated, bbox)
       .pipe(
         map((response: any) => {
           this.hsCompositionsStatusManagerService.loadList(
             ds,
             params,
-            bbox,
-            app
+            bbox
           );
         }),
         catchError((e) => {
@@ -70,23 +68,20 @@ export class HsCompositionsStatusManagerMickaJointService {
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
                   'COMPOSITIONS.errorWhileRequestingCompositions',
-                  undefined,
-                  app
+                  undefined
                 ),
                 ds.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url: ds.url},
-                    app
+                    {url: ds.url}
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom:
                     'HsCompositionsStatusManagerMickaJointService',
-                },
-                app
+                }
               );
           }
           return of(e);
@@ -97,12 +92,9 @@ export class HsCompositionsStatusManagerMickaJointService {
   /**
    * Get information about the selected composition
    * @param composition - Composition selected
-   * @param app - App identifier
+   
    */
-  async getInfo(
-    composition: HsMapCompositionDescriptor,
-    app: string
-  ): Promise<any> {
+  async getInfo(composition: HsMapCompositionDescriptor): Promise<any> {
     const compLinks = composition.link || composition.links;
     if (compLinks === undefined) {
       return;
@@ -112,7 +104,7 @@ export class HsCompositionsStatusManagerMickaJointService {
     let url = '';
     Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
     try {
-      info = await this.hsCompositionsParserService.loadInfo(url, app);
+      info = await this.hsCompositionsParserService.loadInfo(url);
       //TODO: find out if this is even available
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       info.metadata = {
@@ -125,20 +117,17 @@ export class HsCompositionsStatusManagerMickaJointService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
-          undefined,
-          app
+          undefined
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.status ? e.status.toString() : e.message,
-          {url: url},
-          app
+          {url: url}
         ),
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsStatusManagerMickaJointService',
-        },
-        app
+        }
       );
     }
   }
@@ -147,17 +136,15 @@ export class HsCompositionsStatusManagerMickaJointService {
    * Delete selected composition from endpoint database
    * @param endpoint - Endpoint selected
    * @param composition - Composition to be deleted
-   * @param app - App identifier
+   
    */
   async delete(
     endpoint: HsEndpoint,
-    composition: HsMapCompositionDescriptor,
-    app: string
+    composition: HsMapCompositionDescriptor
   ): Promise<void> {
     await this.hsCompositionsStatusManagerService.delete(
       endpoint,
-      composition,
-      app
+      composition
     );
   }
   /**

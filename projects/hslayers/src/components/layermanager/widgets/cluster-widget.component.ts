@@ -23,7 +23,7 @@ export class HsClusterWidgetComponent
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
     private HsLayerEditorService: HsLayerEditorService,
-    private HsConfig: HsConfig
+    private hsConfig: HsConfig
   ) {
     super(hsLayerSelectorService);
   }
@@ -44,8 +44,7 @@ export class HsClusterWidgetComponent
     this.HsLayerEditorService.cluster(
       this.olLayer,
       newValue,
-      this.distance.value,
-      this.data.app
+      this.distance.value
     );
   }
 
@@ -59,8 +58,7 @@ export class HsClusterWidgetComponent
     return this.HsLayerEditorService.cluster(
       this.olLayer,
       undefined,
-      this.distance.value,
-      this.data.app
+      this.distance.value
     );
   }
 
@@ -97,9 +95,7 @@ export class HsClusterWidgetComponent
    * Parse initial cluster distance value
    */
   private setClusteringDistanceFromConfig(): number {
-    const distance =
-      this.HsConfig.get(this.data.app).clusteringDistance ??
-      this.distance.value;
+    const distance = this.hsConfig.clusteringDistance ?? this.distance.value;
     return distance > 100 ? 100 : distance;
   }
 }

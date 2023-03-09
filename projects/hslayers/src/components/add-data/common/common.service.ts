@@ -9,22 +9,16 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 
-class HsAddDataCommonParams {
+@Injectable({providedIn: 'root'})
+export class HsAddDataCommonService {
   layerToSelect: string;
   loadingInfo = false;
   showDetails = false;
   url: string;
-}
-
-@Injectable({providedIn: 'root'})
-export class HsAddDataCommonService {
-  apps: {
-    [id: string]: HsAddDataCommonParams;
-  } = {default: new HsAddDataCommonParams()};
 
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
-  serviceLayersCalled: Subject<{url: string; app: string}> = new Subject();
+  serviceLayersCalled: Subject<string> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -33,40 +27,32 @@ export class HsAddDataCommonService {
     public hsDimensionService: HsDimensionService,
     public hsEventBusService: HsEventBusService
   ) {
-    this.hsAddDataService.cancelUrlRequest.subscribe((app) => {
-      this.clearParams(app);
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.clearParams();
     });
   }
 
-  get(app: string): HsAddDataCommonParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsAddDataCommonParams();
-    }
-    return this.apps[app ?? 'default'];
+  clearParams(): void {
+    this.layerToSelect = '';
+    this.loadingInfo = false;
+    this.showDetails = false;
+    this.url = '';
+    this.hsAddDataUrlService.typeSelected = null;
   }
 
-  clearParams(app: string): void {
-    const appRef = this.get(app);
-    appRef.layerToSelect = '';
-    appRef.loadingInfo = false;
-    appRef.showDetails = false;
-    appRef.url = '';
-    this.hsAddDataUrlService.get(app).typeSelected = null;
-  }
-
-  setPanelToCatalogue(app: string): void {
-    this.hsAddDataService.apps[app].dsSelected = 'catalogue';
+  setPanelToCatalogue(): void {
+    this.hsAddDataService.dsSelected = 'catalogue';
   }
 
   /**
    * For the sake of possible future implementation changes
    * @param url - URL to be set
    */
-  updateUrl(url: string, app: string): void {
-    this.get(app).url = url;
+  updateUrl(url: string): void {
+    this.url = url;
   }
 
-  checkTheSelectedLayer(services: any, serviceType: string, app: string) {
+  checkTheSelectedLayer(services: any, serviceType: string) {
     if (!services) {
       return;
     }
@@ -77,34 +63,33 @@ export class HsAddDataCommonService {
       const layerName = nameOrTitle
         ? layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase()
         : layer.Identifier?.toLowerCase();
-      if (layerName === this.get(app).layerToSelect.toLowerCase()) {
+      if (layerName === this.layerToSelect.toLowerCase()) {
         layer.checked = true;
       }
     }
   }
 
-  displayParsingError(e: any, app: string): void {
+  displayParsingError(e: any): void {
     if (e?.status === 401) {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
         'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'HsAddDataCommonUrlService'},
-        app
+        {serviceCalledFrom: 'HsAddDataCommonUrlService'}
       );
     } else {
-      this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(e);
+      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
     }
   }
 
-  throwParsingError(e, app: string): void {
-    this.clearParams(app);
-    this.displayParsingError(e, app);
+  throwParsingError(e): void {
+    this.clearParams();
+    this.displayParsingError(e);
   }
 
   //NOTE* - Is this method even needed?
-  srsChanged(srs, app: string): any {
+  srsChanged(srs): any {
     setTimeout(() => {
-      return !this.currentProjectionSupported([srs], app);
+      return !this.currentProjectionSupported([srs]);
     }, 0);
   }
 
@@ -114,7 +99,7 @@ export class HsAddDataCommonService {
    * @param srss - List of supported projections
    * @returns True if map projection is in list, false otherwise
    */
-  currentProjectionSupported(srss: string[], app: string): boolean {
+  currentProjectionSupported(srss: string[]): boolean {
     if (!srss || srss.length === 0) {
       return false;
     }
@@ -125,7 +110,7 @@ export class HsAddDataCommonService {
       } else {
         if (
           this.hsMapService
-            .getMap(app)
+            .getMap()
             .getView()
             .getProjection()
             .getCode()

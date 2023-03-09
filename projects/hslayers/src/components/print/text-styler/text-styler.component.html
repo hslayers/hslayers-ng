@@ -1,5 +1,5 @@
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textColor' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textColor' | translateHs }}:</div>
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('fill')"
       [ngStyle]="getColorPickerStyle('fill')" [ngModelOptions]="{standalone: true}" [(ngModel)]="textStyle.textColor" />
@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="d-flex flex-row" *ngIf="objectName === 'imprint'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translateHs }}:</div>
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('background')"
       [ngStyle]="getColorPickerStyle('background')" [ngModelOptions]="{standalone: true}"
@@ -18,7 +18,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'STYLER.textSize' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'STYLER.textSize' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textSize"
       [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
@@ -28,7 +28,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'STYLER.font' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'STYLER.font' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.fontFamily"
       [ngModelOptions]="{standalone: true}">
@@ -38,7 +38,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'STYLER.fontStyle' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'STYLER.fontStyle' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.fontStyle"
       [ngModelOptions]="{standalone: true}">
@@ -49,7 +49,7 @@
   </div>
 </div>
 <div class="d-flex flex-row" *ngIf="objectName === 'title'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textDraw' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textDraw' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textDraw"
       [ngModelOptions]="{standalone: true}">
@@ -60,7 +60,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs : {app} }} X:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs }} X:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posX"
       [ngModelOptions]="{standalone: true}">
@@ -72,7 +72,7 @@
 </div>
 
 <div class="d-flex flex-row mb-2">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs : {app} }} Y:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs }} Y:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posY"
       [ngModelOptions]="{standalone: true}">

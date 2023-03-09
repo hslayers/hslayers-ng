@@ -23,8 +23,8 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     super(hsLayoutService);
   }
   ngOnInit(): void {
-    this.hsMapService.loaded(this.data.app).then(() => {
-      this.hsSensorsService.init(this.data.app);
+    this.hsMapService.loaded().then(() => {
+      this.hsSensorsService.init();
       this.init();
     });
   }
@@ -37,7 +37,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
     }
-    this.hsSensorsService.getUnits(this.data.app);
+    this.hsSensorsService.getUnits();
   }
 
   /**
@@ -54,7 +54,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     this.viewExpanded = !this.viewExpanded;
     if (!this.viewExpanded) {
       this.hsSensorsService
-        .get(this.data.app)
+        .get()
         .units.forEach((element: HsSensorUnit) => {
           element.expanded = false;
         });
@@ -65,7 +65,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
    * Check if panel is visible
    */
   isVisible() {
-    return this.hsLayoutService.panelVisible('sensors', this.data.app);
+    return this.hsLayoutService.panelVisible('sensors');
   }
 
   /**
@@ -73,7 +73,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
    */
   filterQuery(query) {
     return this.hsSensorsService.filterquery(
-      this.hsSensorsService.get(this.data.app).units,
+      this.hsSensorsService.get().units,
       query
     );
   }

@@ -20,52 +20,33 @@ export class PrintLegendParams {
   cancelRequest: Subject<void> = new Subject<void>();
   subscriptions: Subscription[] = [];
 }
+
 @Injectable({
   providedIn: 'root',
 })
-export class HsPrintLegendService {
-  apps: {
-    [id: string]: PrintLegendParams;
-  } = {default: new PrintLegendParams()};
+export class HsPrintLegendService extends PrintLegendParams {
   constructor(
     private hsMapService: HsMapService,
     private hsLegendService: HsLegendService,
     private hsLegendLayerStaticService: HsLegendLayerStaticService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsShareThumbnailService: HsShareThumbnailService
-  ) {}
-  /**
-   * Initialize the print legend service data and subscribers
-   * @param app - App identifier
-   */
-  init(app: string): void {
-    const appRef = this.get(app);
-    appRef.cancelRequest.subscribe(() => {
-      appRef.loadingExternalImages = false;
-      for (const subs of appRef.subscriptions) {
+  ) {
+    super();
+    this.cancelRequest.subscribe(() => {
+      this.loadingExternalImages = false;
+      for (const subs of this.subscriptions) {
         subs.unsubscribe();
-        appRef.subscriptions.splice(appRef.subscriptions.indexOf(subs), 1);
+        this.subscriptions.splice(this.subscriptions.indexOf(subs), 1);
       }
     });
   }
-
-  /**
-   * Get the params saved by the print legend service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): PrintLegendParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new PrintLegendParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-
   /**
    * Convert svg to image
    * @param svgSource - Svg source
-   * @param app - App identifier
+   
    */
-  svgToImage(svgSource: string, app: string): Promise<HTMLImageElement> {
+  svgToImage(svgSource: string): Promise<HTMLImageElement> {
     return new Promise(async (resolve, reject) => {
       const obs = new Observable<HTMLImageElement>((subscriber) => {
         const img = new Image();
@@ -85,7 +66,7 @@ export class HsPrintLegendService {
         }
         img.src = svgSource;
       });
-      this.get(app).subscriptions.push(
+      this.subscriptions.push(
         obs.subscribe((img) => {
           resolve(img);
         })
@@ -96,24 +77,20 @@ export class HsPrintLegendService {
   /**
    * Draw legend canvas
    * @param legendObj - Legend object
-   * @param app - App identifier
+   
    */
-  async drawLegendCanvas(
-    legendObj: LegendObj,
-    app: string
-  ): Promise<HTMLCanvasElement> {
-    const appRef = this.get(app);
+  async drawLegendCanvas(legendObj: LegendObj): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    appRef.legendWidth = legendObj.width || 200; //Needs to have some default width if none is set
-    const legendImages = await this.getLegendImages(app);
+    this.legendWidth = legendObj.width || 200; //Needs to have some default width if none is set
+    const legendImages = await this.getLegendImages();
     if (legendImages?.length > 0) {
       const canvasHeight = legendImages
         .map((img) => img.height)
         .reduce((height, img) => height + img);
       this.hsShareThumbnailService.setCanvasSize(
         canvas,
-        appRef.legendWidth,
+        this.legendWidth,
         canvasHeight
       );
       this.styleLegendCanvas(canvas, legendObj);
@@ -155,31 +132,27 @@ export class HsPrintLegendService {
 
   /**
    * Get legend images from layer legend descriptors
-   * @param app - App identifier
+   
    */
-  private async getLegendImages(app: string): Promise<HTMLImageElement[]> {
+  private async getLegendImages(): Promise<HTMLImageElement[]> {
     const svgSources: string[] = [];
     const images: HTMLImageElement[] = [];
     const layers = this.hsMapService
-      .getLayersArray(app)
+      .getLayersArray()
       .filter((l) => l.getVisible());
     for (const layer of layers) {
       let svgSource: string;
-      const desc = await this.hsLegendService.getLayerLegendDescriptor(
-        layer,
-        app
-      );
+      const desc = await this.hsLegendService.getLayerLegendDescriptor(layer);
       if (desc) {
         switch (desc.type) {
           case 'vector':
-            svgSource = await this.getVectorSvgSource(desc, app);
+            svgSource = await this.getVectorSvgSource(desc);
             break;
           case 'wms':
             for (const sublayer of desc.subLayerLegends) {
               const wmsSvg = await this.legendImageToSvg(
                 sublayer,
-                this.hsLayerUtilsService.translateTitle(desc.title, app),
-                app
+                this.hsLayerUtilsService.translateTitle(desc.title)
               );
               if (wmsSvg) {
                 svgSources.push(wmsSvg);
@@ -187,7 +160,7 @@ export class HsPrintLegendService {
             }
             break;
           case 'static':
-            svgSource = await this.getStaticSvgSource(desc, app);
+            svgSource = await this.getStaticSvgSource(desc);
             break;
           default:
             return;
@@ -197,11 +170,11 @@ export class HsPrintLegendService {
         }
       }
     }
-    this.get(app).loadingExternalImages = false;
+    this.loadingExternalImages = false;
     if (svgSources?.length > 0) {
       {
         for (const source of svgSources) {
-          const image = await this.svgToImage(source, app);
+          const image = await this.svgToImage(source);
           if (image) {
             images.push(image);
           }
@@ -214,12 +187,9 @@ export class HsPrintLegendService {
   /**
    * Get Vector layer legend svg source
    * @param desc - HsLegendDescriptor
-   * @param app - App identifier
+   
    */
-  private async getVectorSvgSource(
-    desc: HsLegendDescriptor,
-    app: string
-  ): Promise<string> {
+  private async getVectorSvgSource(desc: HsLegendDescriptor): Promise<string> {
     let svgSource = '';
     if (!desc.svg) {
       return;
@@ -233,13 +203,12 @@ export class HsPrintLegendService {
       }
       svgSource = this.legendToSvg(
         legendSource,
-        this.hsLayerUtilsService.translateTitle(desc.title, app),
-        app
+        this.hsLayerUtilsService.translateTitle(desc.title)
       );
     } else {
       for (const category of (desc.lyr.getSource() as SparqlJson)
         .legend_categories) {
-        svgSource = this.sparqlJsonToSvg(category, desc.title, app);
+        svgSource = this.sparqlJsonToSvg(category, desc.title);
       }
     }
     return svgSource;
@@ -248,27 +217,22 @@ export class HsPrintLegendService {
   /**
    * Get Static layer legend svg source
    * @param desc - HsLegendDescriptor
-   * @param app - App identifier
+   
    */
-  private async getStaticSvgSource(
-    desc: HsLegendDescriptor,
-    app: string
-  ): Promise<string> {
+  private async getStaticSvgSource(desc: HsLegendDescriptor): Promise<string> {
     let svgSource = '';
     const layerLegend = this.hsLegendLayerStaticService.fillContent(desc.lyr);
     switch (layerLegend.legendType) {
       case 'image':
         svgSource = await this.legendImageToSvg(
           layerLegend.lastLegendImage,
-          this.hsLayerUtilsService.translateTitle(desc.title, app),
-          app
+          this.hsLayerUtilsService.translateTitle(desc.title)
         );
         break;
       case 'svg':
         svgSource = this.legendToSvg(
           layerLegend.lastLegendImage,
-          this.hsLayerUtilsService.translateTitle(desc.title, app),
-          app
+          this.hsLayerUtilsService.translateTitle(desc.title)
         );
 
         break;
@@ -282,13 +246,13 @@ export class HsPrintLegendService {
    * Create svg from legend source and layer title
    * @param source - Legend source
    * @param layerTitle - Layer title
-   * @param app - App identifier
+   
    */
-  private legendToSvg(source: string, layerTitle: string, app: string): string {
+  private legendToSvg(source: string, layerTitle: string): string {
     const heightRegex = /height="([0-9]+)"/;
     const height = Number(source.match(heightRegex)[1]) ?? 70;
     const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${
-      this.get(app).legendWidth
+      this.legendWidth
     }' height='${height + 12}px'>
             <foreignObject width='100%' height='100%'>
               <div xmlns='http://www.w3.org/1999/xhtml'>
@@ -305,23 +269,15 @@ export class HsPrintLegendService {
    * Create svg from sparqlJson source and layer title
    * @param category - Category property for sparqlJson layer
    * @param layerTitle - Layer title
-   * @param app - App identifier
+   
    */
-  private sparqlJsonToSvg(
-    category: any,
-    layerTitle: string,
-    app: string
-  ): string {
-    const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${
-      this.get(app).legendWidth
-    }' height='70px'>
+  private sparqlJsonToSvg(category: any, layerTitle: string): string {
+    const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${this.legendWidth}' height='70px'>
             <foreignObject width='100%' height='100%'>
             <div xmlns='http://www.w3.org/1999/xhtml'>
               ${layerTitle}
               <p>
-                <span style="background-color: ${
-                  category.color
-                }" xml:space="preserve"></span>${category.name}
+                <span style="background-color: ${category.color}" xml:space="preserve"></span>${category.name}
               </p>
             </div>
             </foreignObject>
@@ -334,19 +290,17 @@ export class HsPrintLegendService {
    * Create svg from image url (external source) and layer title
    * @param imageUrl - Image url
    * @param layerTitle - Layer title
-   * @param app - App identifier
+   
    */
   private legendImageToSvg(
     imageUrl: string,
-    layerTitle: string,
-    app: string
+    layerTitle: string
   ): Promise<string> {
-    const appRef = this.get(app);
     return new Promise(async (resolve, reject) => {
       const obs = new Observable<string>((subscriber) => {
-        appRef.loadingExternalImages = true;
+        this.loadingExternalImages = true;
         const img = new Image();
-        const width = appRef.legendWidth;
+        const width = this.legendWidth;
         if (
           imageUrl?.indexOf('data') !== 0 &&
           img.getAttribute('crossOrigin') !== undefined
@@ -357,7 +311,7 @@ export class HsPrintLegendService {
           const canvas = document.createElement('canvas');
           this.hsShareThumbnailService.setCanvasSize(
             canvas,
-            appRef.legendWidth,
+            this.legendWidth,
             img.height
           );
           const ctx = canvas.getContext('2d');
@@ -388,7 +342,7 @@ export class HsPrintLegendService {
         };
         img.src = imageUrl;
       });
-      appRef.subscriptions.push(
+      this.subscriptions.push(
         obs.subscribe((svg) => {
           resolve(svg);
         })

@@ -3,18 +3,18 @@
         <div class="modal-content">
             <div class="modal-header bg-danger text-white" style="opacity: 0.9;">
                 <h4 class="modal-title text-uppercase">
-                    {{'ADDLAYERS.capabilitiesParsingProblem' | translateHs : {app: data.app} }}
+                    {{'ADDLAYERS.capabilitiesParsingProblem' | translateHs }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} "></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                <p>{{'ADDLAYERS.ERROR.thereWasErrorWhile' | translateHs : {app: data.app} }}</p>
+                <p>{{'ADDLAYERS.ERROR.thereWasErrorWhile' | translateHs }}</p>
                 <p>{{data.error}}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close'
-                    | translateHs : {app: data.app} }}</button>
+                    | translateHs }}</button>
             </div>
         </div>
     </div>

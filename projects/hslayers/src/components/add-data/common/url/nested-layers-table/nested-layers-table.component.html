@@ -16,7 +16,7 @@
             <td colspan="3">
                 <div class="d-flex align-items-baseline px-2 w-100">
                     <div class="d-flex align-items-baseline" style="flex-grow: 1;">
-                        <label class="control-label">{{'COMMON.style' | translateHs: {app} }}:</label>
+                        <label class="control-label">{{'COMMON.style' | translateHs }}:</label>
                         <select class="form-control form-select-sm form-select" [(ngModel)]="sub_layer.styleSelected"
                             [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let style of sub_layer.Style">{{style.Name}}</option>
@@ -29,7 +29,8 @@
             <td colspan="3">
                 <form class="form">
                     <div class="form-group" *ngFor="let dimension of sub_layer.Dimension">
-                        <ng-container *ngIf="isArray(dimension.values); else unsupported_dim_format"><!-- TODO: Remove function call from template -->
+                        <ng-container
+                            *ngIf="isArray(dimension.values); else unsupported_dim_format"><!-- TODO: Remove function call from template -->
                             <label class="control-label">{{dimension.name}}:</label>
                             <div>
                                 <select class="form-control form-select" [(ngModel)]="dimension.value"
@@ -40,7 +41,7 @@
                             </div>
                         </ng-container>
                         <ng-template #unsupported_dim_format><span class="text-muted">{{'ADDLAYERS.unknownDimesion'|
-                                translateHs: {app} }}: {{dimension.name}}</span></ng-template>
+                                translateHs }}: {{dimension.name}}</span></ng-template>
                     </div>
                 </form>
             </td>
@@ -48,7 +49,7 @@
 
         <tr *ngIf="!!sub_layer.Layer">
             <td colspan="3" style="padding-left: 1em">
-                <hs-nested-layers-table style="display: block;" [app]="app" (layerChecked)="checked($event)"
+                <hs-nested-layers-table style="display: block;" (layerChecked)="checked($event)"
                     [layers]="sub_layer.Layer"></hs-nested-layers-table>
             </td>
         </tr>

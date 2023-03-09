@@ -13,11 +13,9 @@ import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
   templateUrl: './partials/sidebar.html',
 })
 export class HsMiniSidebarComponent implements OnInit {
-  @Input() app = 'default';
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
   end = new Subject<void>();
-  layoutAppRef: HsLayoutParams;
   isVisible: Observable<boolean>;
 
   constructor(
@@ -28,8 +26,7 @@ export class HsMiniSidebarComponent implements OnInit {
     private HsEventBusService: HsEventBusService
   ) {}
   ngOnInit() {
-    this.layoutAppRef = this.HsLayoutService.get(this.app);
-    this.HsSidebarService.apps[this.app].buttons
+    this.HsSidebarService.buttons
       .pipe(takeUntil(this.end))
       .pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
@@ -40,8 +37,8 @@ export class HsMiniSidebarComponent implements OnInit {
     };
 
     this.isVisible = this.HsEventBusService.mainPanelChanges.pipe(
-      map((data) => {
-        return data?.which == 'sidebar';
+      map((which) => {
+        return which == 'sidebar';
       })
     );
   }
@@ -56,17 +53,17 @@ export class HsMiniSidebarComponent implements OnInit {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.get(this.app).showUnimportant =
-      !this.HsSidebarService.get(this.app).showUnimportant;
+    this.HsSidebarService.showUnimportant =
+      !this.HsSidebarService.showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.get(this.app).sidebarExpanded =
-      !this.HsLayoutService.get(this.app).sidebarExpanded;
+    this.HsLayoutService.sidebarExpanded =
+      !this.HsLayoutService.sidebarExpanded;
     setTimeout(() => {
-      this.HsCoreService.updateMapSize(this.app);
+      this.HsCoreService.updateMapSize();
     }, 110);
   }
 }

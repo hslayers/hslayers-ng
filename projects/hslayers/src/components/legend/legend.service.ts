@@ -49,11 +49,9 @@ export class HsLegendService {
     public hsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer
   ) {
-    this.hsLayerSelectorService.layerSelected.subscribe(
-      async ({layer, app}) => {
-        await this.getLayerLegendDescriptor(layer.layer, app);
-      }
-    );
+    this.hsLayerSelectorService.layerSelected.subscribe(async (layer) => {
+      await this.getLayerLegendDescriptor(layer.layer);
+    });
   }
 
   /**
@@ -158,8 +156,7 @@ export class HsLegendService {
   getLegendUrl(
     source: Source,
     layer_name: string,
-    layer: Layer<Source>,
-    app: string
+    layer: Layer<Source>
   ): string {
     if (!this.hsLayerUtilsService.isLayerWMS(layer)) {
       return '';
@@ -187,7 +184,7 @@ export class HsLegendService {
         getEnableProxy(layer) === undefined ||
         getEnableProxy(layer) == true
       ) {
-        source_url = this.hsUtilsService.proxify(source_url, app, false);
+        source_url = this.hsUtilsService.proxify(source_url, false);
       }
       return source_url;
     } else {
@@ -208,7 +205,7 @@ export class HsLegendService {
     );
   }
 
-  generateInterpolatedLayerLegend(layer: Layer<any>, app: string) {
+  generateInterpolatedLayerLegend(layer: Layer<any>) {
     const source = layer.getSource();
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('width', '75%');
@@ -277,8 +274,7 @@ export class HsLegendService {
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    */
   async getLayerLegendDescriptor(
-    layer: Layer<Source>,
-    app: string
+    layer: Layer<Source>
   ): Promise<HsLegendDescriptor | undefined> {
     if (getBase(layer)) {
       return;
@@ -291,8 +287,7 @@ export class HsLegendService {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),
           subLayerLegends[i],
-          layer,
-          app
+          layer
         );
       }
       return {
@@ -335,7 +330,7 @@ export class HsLegendService {
     } else if (
       this.hsUtilsService.instOf(layer.getSource(), InterpolatedSource)
     ) {
-      return this.generateInterpolatedLayerLegend(layer, app);
+      return this.generateInterpolatedLayerLegend(layer);
     } else {
       return undefined;
     }

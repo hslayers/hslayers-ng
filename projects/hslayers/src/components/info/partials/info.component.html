@@ -6,7 +6,7 @@
                 <span class="icon-refresh icon-spin"></span>
             </div>
             <div class="text-truncate">
-                <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs : {app: data.app} }}: </div>
+                <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs }}: </div>
                 <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
             </div>
         </div>
@@ -14,21 +14,19 @@
         <div class="hs-info-composition" style="max-width: max-content;"
             *ngIf="!compositionLoaded() && !composition_edited">
             <div class="hs-info-composition-container">
-                <div class="hs-info-composition-title"
-                    [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs : {app: data.app} ">
-                    {{'INFOCOMPONENT.newMap' | translateHs : {app: data.app} }}</div>
+                <div class="hs-info-composition-title" [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs ">
+                    {{'INFOCOMPONENT.newMap' | translateHs }}</div>
             </div>
         </div>
 
         <div class="hs-info-composition-edited" [hidden]="!composition_edited">
-            <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs : {app: data.app} }}</span>
+            <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs }}</span>
         </div>
 
         <div class="hs-info-composition" *ngIf="compositionLoaded()">
             <div class="hs-info-composition-container">
                 <div class="hs-info-composition-title-container">
-                    <div class="hs-info-composition-title">{{ 'COMMON.composition' | translateHs : {app:
-                        data.app} }}</div>
+                    <div class="hs-info-composition-title">{{ 'COMMON.composition' | translateHs}}</div>
                     <span class="text-truncate">: {{composition_title}}</span>
                 </div>
                 <div class="hs-info-composition-abstract text-truncate">{{composition_abstract}}</div>

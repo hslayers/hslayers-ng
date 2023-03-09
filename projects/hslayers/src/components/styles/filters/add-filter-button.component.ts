@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class HsAddFilterButtonComponent {
   @Output() clicks = new EventEmitter();
-  @Input() app = 'default';
+  
 
   emitClick(kind: string): void {
     this.clicks.emit({kind});

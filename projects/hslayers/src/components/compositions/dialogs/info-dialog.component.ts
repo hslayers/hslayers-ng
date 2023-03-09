@@ -17,6 +17,6 @@ export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
 
   close(): void {
     console.log(this.data);
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 }

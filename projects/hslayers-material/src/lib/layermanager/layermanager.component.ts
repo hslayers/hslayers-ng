@@ -38,7 +38,7 @@ class HsLayerFlatNode {
 @Injectable()
 export class HsLayerDatabase {
   dataChange = new BehaviorSubject<HsLayerNode[]>([]);
-  @Input() app = 'default';
+  
   get data(): HsLayerNode[] {
     return this.dataChange.value;
   }
@@ -48,13 +48,13 @@ export class HsLayerDatabase {
     public HsLayerManagerService: HsLayerManagerService
   ) {
     const data = this.buildLayerTree(
-      this.HsLayerManagerService.get(this.app).data
+      this.HsLayerManagerService.get().data
     );
     this.dataChange.next(data);
 
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       const data = this.buildLayerTree(
-        this.HsLayerManagerService.get(this.app).data
+        this.HsLayerManagerService.get().data
       );
       this.dataChange.next(data);
     });
@@ -184,7 +184,7 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
           this.HsLayerManagerService.changeLayerVisibility(
             true,
             node.layer,
-            this.app
+            
           )
         );
 
@@ -195,7 +195,7 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
           this.HsLayerManagerService.changeLayerVisibility(
             false,
             node.layer,
-            this.app
+            
           )
         );
     });

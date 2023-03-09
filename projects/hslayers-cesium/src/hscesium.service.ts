@@ -60,9 +60,9 @@ export class HsCesiumService {
 
   /**
    * Get the params saved by the cesium service for the current app
-   * @param app - App identifier
+   
    */
-  get(app: string): CesiumServiceParams {
+  get(): CesiumServiceParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new CesiumServiceParams();
     }
@@ -73,40 +73,40 @@ export class HsCesiumService {
    * @public
    * Initializes Cesium map
    */
-  init(app: string) {
-    const appRef = this.get(app);
-    this.checkForBingKey(app);
+  init() {
+    const appRef = this.get();
+    this.checkForBingKey();
     this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
-      this.checkForBingKey(app);
+      this.checkForBingKey();
     });
     try {
       Ion.defaultAccessToken =
-        this.HsCesiumConfig.get(app).cesiumAccessToken ||
+        this.HsCesiumConfig.get().cesiumAccessToken ||
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
-      if (!this.HsCesiumConfig.get(app).cesiumBase) {
+      if (!this.HsCesiumConfig.get().cesiumBase) {
         console.error(
-          'Please set HsCesiumConfig.get(app).cesiumBase to the directory where cesium assets will be copied to'
+          'Please set HsCesiumConfig.get().cesiumBase to the directory where cesium assets will be copied to'
         );
       }
-      (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.get(app).cesiumBase;
+      (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.get().cesiumBase;
       let terrain_provider =
-        this.HsCesiumConfig.get(app).terrain_provider ||
+        this.HsCesiumConfig.get().terrain_provider ||
         createWorldTerrain(
-          this.HsCesiumConfig.get(app).createWorldTerrainOptions
+          this.HsCesiumConfig.get().createWorldTerrainOptions
         );
-      if (this.HsCesiumConfig.get(app).newTerrainProviderOptions) {
+      if (this.HsCesiumConfig.get().newTerrainProviderOptions) {
         terrain_provider = new CesiumTerrainProvider(
-          this.HsCesiumConfig.get(app).newTerrainProviderOptions
+          this.HsCesiumConfig.get().newTerrainProviderOptions
         );
       }
 
       const defaultViewport =
-        this.HsCesiumCameraService.getDefaultViewport(app);
+        this.HsCesiumCameraService.getDefaultViewport();
       if (defaultViewport) {
         Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
         Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
       } else {
-        console.error('Please set HsConfig.get(app).default_view');
+        console.error('Please set HsConfig.get().default_view');
       }
 
       //TODO: research if this must be used or ignored
@@ -117,24 +117,24 @@ export class HsCesiumService {
       });
 
       const viewer = new Viewer(
-        this.HsLayoutService.get(app).contentWrapper.querySelector(
+        this.HsLayoutService.get().contentWrapper.querySelector(
           '.hs-cesium-container'
         ),
         {
-          timeline: this.HsCesiumConfig.get(app).cesiumTimeline
-            ? this.HsCesiumConfig.get(app).cesiumTimeline
+          timeline: this.HsCesiumConfig.get().cesiumTimeline
+            ? this.HsCesiumConfig.get().cesiumTimeline
             : false,
-          animation: this.HsCesiumConfig.get(app).cesiumAnimation
-            ? this.HsCesiumConfig.get(app).cesiumAnimation
+          animation: this.HsCesiumConfig.get().cesiumAnimation
+            ? this.HsCesiumConfig.get().cesiumAnimation
             : false,
-          creditContainer: this.HsCesiumConfig.get(app).creditContainer
-            ? this.HsCesiumConfig.get(app).creditContainer
+          creditContainer: this.HsCesiumConfig.get().creditContainer
+            ? this.HsCesiumConfig.get().creditContainer
             : undefined,
-          infoBox: this.HsCesiumConfig.get(app).cesiumInfoBox
-            ? this.HsCesiumConfig.get(app).cesiumInfoBox
+          infoBox: this.HsCesiumConfig.get().cesiumInfoBox
+            ? this.HsCesiumConfig.get().cesiumInfoBox
             : false,
           terrainProvider: terrain_provider,
-          imageryProvider: this.HsCesiumConfig.get(app).imageryProvider,
+          imageryProvider: this.HsCesiumConfig.get().imageryProvider,
           // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
           skyBox: new SkyBox({
             sources: {
@@ -149,31 +149,31 @@ export class HsCesiumService {
           // Show Columbus View map with Web Mercator projection
           sceneMode: SceneMode.SCENE3D,
           mapProjection: new WebMercatorProjection(),
-          shadows: this.getShadowMode(app),
+          shadows: this.getShadowMode(),
           scene3DOnly: true,
           sceneModePicker: false,
         }
       );
 
-      viewer.scene.debugShowFramesPerSecond = this.HsCesiumConfig.get(app)
+      viewer.scene.debugShowFramesPerSecond = this.HsCesiumConfig.get()
         .cesiumDebugShowFramesPerSecond
-        ? this.HsCesiumConfig.get(app).cesiumDebugShowFramesPerSecond
+        ? this.HsCesiumConfig.get().cesiumDebugShowFramesPerSecond
         : false;
-      viewer.scene.globe.enableLighting = this.getShadowMode(app);
-      viewer.scene.globe.shadows = this.getShadowMode(app);
+      viewer.scene.globe.enableLighting = this.getShadowMode();
+      viewer.scene.globe.shadows = this.getShadowMode();
       viewer.scene.globe.terrainExaggeration =
-        this.HsCesiumConfig.get(app).terrainExaggeration || 1.0;
+        this.HsCesiumConfig.get().terrainExaggeration || 1.0;
       viewer.terrainProvider = terrain_provider;
 
-      if (this.HsCesiumConfig.get(app).cesiumTime) {
+      if (this.HsCesiumConfig.get().cesiumTime) {
         viewer.clockViewModel.currentTime =
-          this.HsCesiumConfig.get(app).cesiumTime;
+          this.HsCesiumConfig.get().cesiumTime;
       }
 
       appRef.viewer = viewer;
-      this.HsCesiumCameraService.init(appRef.viewer, app);
-      this.HsCesiumLayersService.init(appRef.viewer, app);
-      this.HsCesiumTimeService.init(appRef.viewer, app);
+      this.HsCesiumCameraService.init(appRef.viewer);
+      this.HsCesiumLayersService.init(appRef.viewer);
+      this.HsCesiumTimeService.init(appRef.viewer);
 
       window.addEventListener('blur', () => {
         if (appRef.viewer.isDestroyed()) {
@@ -192,31 +192,30 @@ export class HsCesiumService {
       appRef.viewer.camera.moveEnd.addEventListener((e) => {
         if (!this.HsMapService.visible) {
           const center =
-            this.HsCesiumCameraService.getCameraCenterInLngLat(app);
+            this.HsCesiumCameraService.getCameraCenterInLngLat();
           if (center === null) {
             return;
           } //Not looking on the map but in the sky
-          const viewport = this.HsCesiumCameraService.getViewportPolygon(app);
+          const viewport = this.HsCesiumCameraService.getViewportPolygon();
           this.HsEventBusService.mapCenterSynchronizations.next({
             center,
             viewport,
-            app,
           });
         }
       });
 
-      this.HsLayermanagerService.get(app).data.terrainlayers = [];
-      if (this.HsCesiumConfig.get(app).terrain_providers) {
-        for (const provider of this.HsCesiumConfig.get(app).terrain_providers) {
+      this.HsLayermanagerService.get().data.terrainlayers = [];
+      if (this.HsCesiumConfig.get().terrain_providers) {
+        for (const provider of this.HsCesiumConfig.get().terrain_providers) {
           provider.type = 'terrain';
-          this.HsLayermanagerService.get(app).data.terrainlayers.push(provider);
+          this.HsLayermanagerService.get().data.terrainlayers.push(provider);
         }
       }
 
-      this.HsEventBusService.mapExtentChanges.subscribe(({app}) => {
-        const view = this.HsMapService.getMap(app).getView();
+      this.HsEventBusService.mapExtentChanges.subscribe(() => {
+        const view = this.HsMapService.getMap().getView();
         if (this.HsMapService.visible) {
-          this.HsCesiumCameraService.setExtentEqualToOlExtent(view, app);
+          this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
         }
       });
 
@@ -230,9 +229,9 @@ export class HsCesiumService {
         });
       });
 
-      this.HsCesiumPicker.init(appRef.viewer, app);
-      this.hsCesiumQueryPopupService.init(app);
-      this.HsCesiumPicker.get(app).cesiumPositionClicked.subscribe(
+      this.HsCesiumPicker.init(appRef.viewer);
+      this.hsCesiumQueryPopupService.init();
+      this.HsCesiumPicker.get().cesiumPositionClicked.subscribe(
         (position) => {
           appRef.cesiumPositionClicked.next(position);
         }
@@ -243,13 +242,12 @@ export class HsCesiumService {
         app
       ).panels) {
         if (this.HsUtilsService.instOf(p, HsQueryPopupComponent)) {
-          this.HsLayoutService.hsOverlayPanelContainerService.destroy(p, app);
+          this.HsLayoutService.hsOverlayPanelContainerService.destroy(p);
         }
       }
 
-      this.HsLayoutService.createOverlay(HsQueryPopupComponent, app, {
+      this.HsLayoutService.createOverlay(HsQueryPopupComponent, {
         service: this.hsCesiumQueryPopupService,
-        app,
       });
 
       this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
@@ -258,29 +256,28 @@ export class HsCesiumService {
     }
   }
 
-  private getShadowMode(app: string): any {
-    return this.HsCesiumConfig.get(app).cesiumShadows == undefined
+  private getShadowMode(): any {
+    return this.HsCesiumConfig.get().cesiumShadows == undefined
       ? ShadowMode.DISABLED
-      : this.HsCesiumConfig.get(app).cesiumShadows;
+      : this.HsCesiumConfig.get().cesiumShadows;
   }
-  checkForBingKey(app: string): void {
-    if (this.HsCesiumConfig.get(app).cesiumBingKey) {
-      this.get(app).BING_KEY = this.HsCesiumConfig.get(app).cesiumBingKey;
+  checkForBingKey(): void {
+    if (this.HsCesiumConfig.get().cesiumBingKey) {
+      this.get().BING_KEY = this.HsCesiumConfig.get().cesiumBingKey;
     }
   }
-  getCameraCenterInLngLat(app: string) {
-    return this.HsCesiumCameraService.getCameraCenterInLngLat(app);
+  getCameraCenterInLngLat() {
+    return this.HsCesiumCameraService.getCameraCenterInLngLat();
   }
 
-  linkOlLayerToCesiumLayer(ol_layer, cesium_layer, app: string) {
+  linkOlLayerToCesiumLayer(ol_layer, cesium_layer) {
     return this.HsCesiumLayersService.linkOlLayerToCesiumLayer(
       ol_layer,
-      cesium_layer,
-      app
+      cesium_layer
     );
   }
 
-  dimensionChanged(layer, dimension, app: string) {
+  dimensionChanged(layer, dimension) {
     layer = layer.cesium_layer;
     if (
       layer.prm_cache == undefined ||
@@ -292,21 +289,20 @@ export class HsCesiumService {
     this.HsCesiumLayersService.changeLayerParam(
       layer,
       dimension.name,
-      dimension.value,
-      app
+      dimension.value
     );
-    this.HsCesiumLayersService.removeLayersWithOldParams(app);
+    this.HsCesiumLayersService.removeLayersWithOldParams();
   }
 
-  resize(app: string, size?) {
+  resize( size?) {
     if (size == undefined) {
       return;
     }
-    this.HsLayoutService.get(app).contentWrapper.querySelector(
+    this.HsLayoutService.get().contentWrapper.querySelector(
       '.hs-cesium-container'
     ).style.height = size.height + 'px';
     const timelineElement = <HTMLElement>(
-      this.HsLayoutService.get(app).layoutElement.querySelector(
+      this.HsLayoutService.get().layoutElement.querySelector(
         '.cesium-viewer-timelineContainer'
       )
     );
@@ -314,12 +310,12 @@ export class HsCesiumService {
       timelineElement.style.right = '0';
     }
     if (
-      this.HsLayoutService.get(app).layoutElement.querySelector(
+      this.HsLayoutService.get().layoutElement.querySelector(
         '.cesium-viewer-bottom'
       )
     ) {
       const bottomElement = <HTMLElement>(
-        this.HsLayoutService.get(app).layoutElement.querySelector(
+        this.HsLayoutService.get().layoutElement.querySelector(
           '.cesium-viewer-bottom'
         )
       );
@@ -331,7 +327,7 @@ export class HsCesiumService {
     }
 
     this.HsEventBusService.cesiumResizes.next({
-      viewer: this.get(app).viewer,
+      viewer: this.get().viewer,
       service: this,
     });
   }

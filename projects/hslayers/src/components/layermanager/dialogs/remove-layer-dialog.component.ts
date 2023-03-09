@@ -24,22 +24,17 @@ export class HsLayerManagerRemoveLayerDialogComponent
   ) {}
 
   removeLayer(): void {
-    if (
-      this.HsDrawService.get(this.data.app).selectedLayer == this.data.olLayer
-    ) {
-      this.HsDrawService.get(this.data.app).selectedLayer = null;
+    if (this.HsDrawService.selectedLayer == this.data.olLayer) {
+      this.HsDrawService.selectedLayer = null;
     }
-    this.HsMapService.getMap(this.data.app).removeLayer(this.data.olLayer);
-    this.HsDrawService.fillDrawableLayers(this.data.app);
+    this.HsMapService.getMap().removeLayer(this.data.olLayer);
+    this.HsDrawService.fillDrawableLayers();
 
-    this.HsEventBusService.layerManagerUpdates.next({
-      layer: null,
-      app: this.data.app,
-    });
+    this.HsEventBusService.layerManagerUpdates.next(null);
     this.close();
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 }

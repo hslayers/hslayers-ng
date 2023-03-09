@@ -1,11 +1,11 @@
 <div class="form-group">
     <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.under' | translateHs : {app} }}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.under' | translateHs }}</span>
         <select class="form-control form-select" [(ngModel)]="addUnder" (ngModelChange)="updateChanges()"
             name="addUnder">
-            <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs : {app} }}</option>
-            <option [ngValue]="layer.layer" *ngFor="let layer of hsLayerManagerService.apps[app].data.layers">
-                {{layer.title | translateHs : {app, module: 'LAYERS'} }}</option>
+            <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs }}</option>
+            <option [ngValue]="layer.layer" *ngFor="let layer of hsLayerManagerService.data.layers">
+                {{layer.title | translateHs : {module: 'LAYERS'} }}</option>
         </select>
     </div>
 </div>

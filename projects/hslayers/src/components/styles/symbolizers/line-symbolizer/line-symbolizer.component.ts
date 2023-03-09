@@ -11,7 +11,7 @@ import {Kinds} from '../symbolizer-kind.enum';
 })
 export class HsLineSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: LineSymbolizer;
-  @Input() app = 'default';
+  
   @ViewChild('graphicLineMenu') lineMenuRef;
   @ViewChild('graphicStrokeMenu') strokeMenuRef;
   caps = ['butt', 'round', 'square'];

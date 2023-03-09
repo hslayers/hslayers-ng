@@ -13,7 +13,7 @@ import {HsStylerService} from '../../styler.service';
 })
 export class HsRuleListItemComponent implements OnInit {
   @Input() rule: any;
-  @Input() app = 'default';
+  
   ruleVisible = false;
   svg: SafeHtml;
 

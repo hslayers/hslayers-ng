@@ -1,7 +1,7 @@
 <form class="form-horizontal" name="frmConnectWms" role="form">
-    <hs-common-url type="wms" [app]="app" [(url)]="hsAddDataCommonService.get(app).url"
-        (connect)="hsAddDataOwsService.connect(app)">
+    <hs-common-url type="wms" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
     </hs-common-url>
-    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress><!-- TODO: Remove function call from template -->
-    <hs-url-details [injectedService]="hsUrlWmsService" [app]="app" type="wms"></hs-url-details>
+    <hs-url-progress
+        *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress><!-- TODO: Remove function call from template -->
+    <hs-url-details [injectedService]="hsUrlWmsService" type="wms"></hs-url-details>
 </form>

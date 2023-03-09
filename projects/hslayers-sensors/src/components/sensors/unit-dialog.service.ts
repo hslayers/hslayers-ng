@@ -51,9 +51,9 @@ export class HsSensorsUnitDialogService {
 
   /**
    * Get the params saved by the sensors unit dialog service for the current app
-   * @param app - App identifier
+   
    */
-  get(app: string): SensorsUnitDialogServiceParams {
+  get(): SensorsUnitDialogServiceParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new SensorsUnitDialogServiceParams();
     }
@@ -63,10 +63,10 @@ export class HsSensorsUnitDialogService {
   /**
    * Select sensor from the list
    * @param sensor - Sensor selected
-   * @param app - App identifier
+   
    */
-  selectSensor(sensor: any, app: string) {
-    const appRef = this.get(app);
+  selectSensor(sensor: any) {
+    const appRef = this.get();
     appRef.sensorsSelected.forEach((s) => (s.checked = false));
     appRef.sensorsSelected = [sensor];
     appRef.sensorIdsSelected = [sensor.sensor_id];
@@ -75,10 +75,10 @@ export class HsSensorsUnitDialogService {
   /**
    * Toggle selected sensor
    * @param sensor - Sensor selected
-   * @param app - App identifier
+   
    */
-  toggleSensor(sensor, app: string) {
-    const appRef = this.get(app);
+  toggleSensor(sensor) {
+    const appRef = this.get();
     if (sensor.checked) {
       appRef.sensorsSelected.push(sensor);
       appRef.sensorIdsSelected.push(sensor.sensor_id);
@@ -139,16 +139,15 @@ export class HsSensorsUnitDialogService {
    * from current time, like 6 months before now
    * Gets list of observations in a given time frame for all
    * the sensors on a sensor unit (meteostation).
-   * @param app - App identifier
+   
    * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit, interval, app: string) {
-    const appRef = this.get(app);
+  getObservationHistory(unit, interval) {
+    const appRef = this.get();
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.hsUtilsService.proxify(
-        `${appRef.endpoint.url}/${appRef.endpoint.liteApiPath}/rest/observation`,
-        app
+        `${appRef.endpoint.url}/${appRef.endpoint.liteApiPath}/rest/observation`
       );
       const time = this.getTimeForInterval(interval);
       const from_time = `${time.from_time.format(
@@ -181,7 +180,7 @@ export class HsSensorsUnitDialogService {
 
   /**
    * @param unit - Unit description
-   * @param app - App identifier
+   
    * Create vega chart definition and use it in vegaEmbed
    * chart library. Observations for a specific unit from Senslog come
    * in a hierarchy, where 1st level contains object with timestamp and
@@ -189,8 +188,8 @@ export class HsSensorsUnitDialogService {
    * varying count of sensors. This nested list is flatened to simple
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
-  createChart(unit, app: string) {
-    const appRef = this.get(app);
+  createChart(unit) {
+    const appRef = this.get();
     let sensorDesc = unit.sensors.filter(
       (s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1
     );
@@ -215,7 +214,7 @@ export class HsSensorsUnitDialogService {
         ),
       []
     );
-    appRef.aggregations = this.calculateAggregates(unit, observations, app);
+    appRef.aggregations = this.calculateAggregates(unit, observations);
     observations.sort((a, b) => {
       if (a.time_stamp > b.time_stamp) {
         return 1;
@@ -297,16 +296,16 @@ export class HsSensorsUnitDialogService {
   /**
    * @param unit - Unit description
    * @param observations - Observations selected
-   * @param app - App identifier
+   
    * Calculate aggregates for selected unit
    */
   private calculateAggregates(
     unit: any,
     observations: any,
-    app: string
+    
   ): Aggregate[] {
     const aggregates: Aggregate[] = unit.sensors
-      .filter((s) => this.get(app).sensorIdsSelected.indexOf(s.sensor_id) > -1)
+      .filter((s) => this.get().sensorIdsSelected.indexOf(s.sensor_id) > -1)
       .map((sensor): Aggregate => {
         const tmp: Aggregate = {
           min: 0,

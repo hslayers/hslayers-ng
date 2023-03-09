@@ -12,7 +12,7 @@ import {
 })
 export class HsUrlAddComponent {
   @Input() services?: Service[];
-  @Input() app = 'default';
+
   @Input() layers: {name: string; checked: boolean}[];
   @Input() injectedService: HsUrlTypeServiceModel;
   _selectAll = true;
@@ -44,25 +44,24 @@ export class HsUrlAddComponent {
 
   async add(): Promise<void> {
     if (this.layers) {
-      //getLayers is async for ArcGIS Mapserver type
-      const layers = await this.injectedService.getLayers(this.app, true);
-      this.injectedService.addLayers(layers, this.app);
+      const layers = await this.injectedService.getLayers(true);
+      this.injectedService.addLayers(layers);
     }
     if (this.injectedService.addServices && this.services) {
-      this.injectedService.addServices(this.services, this.app);
+      this.injectedService.addServices(this.services);
     }
     //NOTE: THIS CAN BE DONE IF WE CHOSE TO RESET DEFAULT SOMEWHERE ELSE OTHER THAN
     // injectedService.getLayers. add-data/url/<type>/<type>.component.ts constructor maybe?
     // zoomToLayers implemented for wms, wfs
     // if (this.injectedService.zoomToLayers) {
-    //   this.injectedService.zoomToLayers(this.app);
+    //   this.injectedService.zoomToLayers();
     // }
   }
 
   changed(): void {
-    this.hsAddDataUrlService.searchForChecked(
-      [...(this.layers ?? []), ...(this.services ?? [])],
-      this.app
-    );
+    this.hsAddDataUrlService.searchForChecked([
+      ...(this.layers ?? []),
+      ...(this.services ?? []),
+    ]);
   }
 }

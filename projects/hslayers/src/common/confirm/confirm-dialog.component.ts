@@ -14,12 +14,12 @@ export class HsConfirmDialogComponent implements HsDialogComponent {
   data: any;
 
   yes(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve('yes');
   }
 
   no(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve('no');
   }
 }

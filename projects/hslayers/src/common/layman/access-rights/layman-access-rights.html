@@ -9,12 +9,12 @@
                 [disabled]="right !== 'read' && access_rights['access_rights.read'] === 'private'"
                 (click)="accessRightsChanged('access_rights.' + right,grantedTo)"
                 [ngClass]="{'active':access_rights['access_rights.'+ right] === grantedTo}">
-                {{'SAVECOMPOSITION.public' | translateHs : {app} }}
+                {{'SAVECOMPOSITION.public' | translateHs }}
             </button>
             <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
                 (click)="accessRightsChanged('access_rights.' + right,'private')"
                 [ngClass]="{'active':access_rights['access_rights.' + right] === 'private'}">
-                {{'SAVECOMPOSITION.private' | translateHs : {app} }}
+                {{'SAVECOMPOSITION.private' | translateHs }}
             </button>
         </div>
     </div>
@@ -22,11 +22,11 @@
 <ul class="nav nav-tabs justify-content-end my-2 py-1">
     <li class="nav-item" (click)="changeGrantingOptions(grantingOptions.EVERYONE)">
         <a [ngClass]="{'active': currentOption === grantingOptions.EVERYONE}" class="nav-link "
-            aria-current="page">{{'SAVECOMPOSITION.everyone' | translateHs : {app} }}</a>
+            aria-current="page">{{'SAVECOMPOSITION.everyone' | translateHs }}</a>
     </li>
     <li class="nav-item" (click)="changeGrantingOptions(grantingOptions.PERUSER)">
         <a [ngClass]="{'active': currentOption === grantingOptions.PERUSER}" class="nav-link "
-            aria-current="page">{{'SAVECOMPOSITION.perUser' | translateHs : {app} }}</a>
+            aria-current="page">{{'SAVECOMPOSITION.perUser' | translateHs }}</a>
     </li>
 </ul>
 <ng-container *ngIf="currentOption === grantingOptions.EVERYONE; else perUserTpl">
@@ -39,9 +39,8 @@
 </ng-container>
 
 <ng-template #perUserTpl>
-    <div><input type="search" class="form-control hs-save-map-filter"
-            [placeholder]="'COMMON.filter' | translateHs : {app}" [(ngModel)]="userSearch"
-            [ngModelOptions]="{standalone: true}" (input)="refreshList()">
+    <div><input type="search" class="form-control hs-save-map-filter" [placeholder]="'COMMON.filter' | translateHs "
+            [(ngModel)]="userSearch" [ngModelOptions]="{standalone: true}" (input)="refreshList()">
     </div>
     <div class="hs-save-map-users-list p-1 my-1">
         <div class="d-flex flex-row justify-content-between align-items-start p-1"
@@ -50,11 +49,11 @@
             <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToRead"
                     [(ngModel)]="user.read"
                     (change)="accessRightsChanged('access_rights.read', user.username, $event)">{{'SAVECOMPOSITION.form.read'
-                | translateHs : {app} }}</label>
+                | translateHs }}</label>
             <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToWrite"
                     [(ngModel)]="user.write"
                     (change)="accessRightsChanged('access_rights.write', user.username, $event)">{{'SAVECOMPOSITION.form.write'
-                | translateHs : {app} }}</label>
+                | translateHs }}</label>
         </div>
     </div>
 </ng-template>

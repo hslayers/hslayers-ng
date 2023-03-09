@@ -21,12 +21,11 @@ export class HsMeasureComponent
 {
   type: string;
   name = 'measure';
-  appRef;
   private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    private hsMeasureService: HsMeasureService,
+    public hsMeasureService: HsMeasureService,
     private hsUtilsService: HsUtilsService,
     private hsLanguageService: HsLanguageService,
     private hsSidebarService: HsSidebarService
@@ -39,9 +38,6 @@ export class HsMeasureComponent
   }
 
   ngOnInit() {
-    const app = this.data.app;
-    this.hsMeasureService.init(app);
-    this.appRef = this.hsMeasureService.get(this.data.app);
     this.type = 'distance';
 
     if (this.hsUtilsService.runningInBrowser()) {
@@ -49,56 +45,49 @@ export class HsMeasureComponent
         if (e.key == 'Control') {
           //ControlLeft
           setTimeout(() => {
-            this.hsMeasureService.switchMultipleMode(app);
+            this.hsMeasureService.switchMultipleMode();
           }, 0);
         }
       });
     }
     this.hsEventBusService.measurementStarts
       .pipe(takeUntil(this.end))
-      .subscribe(({app}) => {
-        if (app == app) {
-          this.hsLayoutService.panelEnabled('toolbar', app, false);
-        }
+      .subscribe(() => {
+        this.hsLayoutService.panelEnabled('toolbar', false);
       });
 
     this.hsEventBusService.measurementEnds
       .pipe(takeUntil(this.end))
-      .subscribe(({app}) => {
-        if (app == app) {
-          this.hsLayoutService.panelEnabled('toolbar', app, true);
-        }
+      .subscribe(() => {
+        this.hsLayoutService.panelEnabled('toolbar', true);
       });
 
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.end))
-      .subscribe(({which, app}) => {
-        if (this.hsLayoutService.get(app).mainpanel == 'measure') {
-          this.hsMeasureService.activateMeasuring(this.type, app);
+      .subscribe((which) => {
+        if (this.hsLayoutService.mainpanel == 'measure') {
+          this.hsMeasureService.activateMeasuring(this.type);
         } else {
-          this.hsMeasureService.deactivateMeasuring(app);
+          this.hsMeasureService.deactivateMeasuring();
         }
       });
 
     //Temporary fix when measure panel is loaded as default (e.g. reloading page with parameters in link)
-    if (this.hsLayoutService.get(app).mainpanel == 'measure') {
-      this.hsMeasureService.activateMeasuring(this.type, app);
+    if (this.hsLayoutService.mainpanel == 'measure') {
+      this.hsMeasureService.activateMeasuring(this.type);
     }
     //Don't need two buttons (sidebar and toolbar) to toggle measure panel
-    if (!this.hsLayoutService.componentEnabled('measureToolbar', app)) {
-      this.hsSidebarService.addButton(
-        {
-          panel: 'measure',
-          module: 'hs.measure',
-          order: 2,
-          fits: true,
-          title: 'PANEL_HEADER.MEASURE',
-          description: 'SIDEBAR.descriptions.MEASURE',
-          icon: 'icon-design',
-          condition: true,
-        },
-        app
-      );
+    if (!this.hsLayoutService.componentEnabled('measureToolbar')) {
+      this.hsSidebarService.addButton({
+        panel: 'measure',
+        module: 'hs.measure',
+        order: 2,
+        fits: true,
+        title: 'PANEL_HEADER.MEASURE',
+        description: 'SIDEBAR.descriptions.MEASURE',
+        icon: 'icon-design',
+        condition: true,
+      });
     }
   }
 
@@ -106,16 +95,16 @@ export class HsMeasureComponent
    * Change geometry type of measurement without deleting of old ones
    */
   changeMeasureParams(): void {
-    if (this.hsLayoutService.get(this.data.app).mainpanel != 'measure') {
+    if (this.hsLayoutService.mainpanel != 'measure') {
       return;
     }
-    this.hsMeasureService.changeMeasureParams(this.type, this.data.app);
+    this.hsMeasureService.changeMeasureParams(this.type);
   }
 
   /**
    * Reset sketch and all measurements to start new drawing
    */
   clearAll(): void {
-    this.hsMeasureService.clearMeasurement(this.data.app);
+    this.hsMeasureService.clearMeasurement();
   }
 }

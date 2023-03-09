@@ -26,7 +26,7 @@ export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     this.olLayer.setOpacity(newValue);
-    this.hsEventBusService.compositionEdits.next(this.data.app);
+    this.hsEventBusService.compositionEdits.next();
   }
 
   get opacity() {

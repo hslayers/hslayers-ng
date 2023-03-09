@@ -1,7 +1,7 @@
 <div [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="Search" [title]="'PANEL_HEADER.SEARCH' | translateHs : data" [app]="data.app"></hs-panel-header>
+    <hs-panel-header name="Search" [title]="'PANEL_HEADER.SEARCH' | translateHs"></hs-panel-header>
     <div class="input-group search-panel hs-search-address pt-1 pb-1 d-flex">
-        <hs-search-input [app]="data.app"></hs-search-input>
-        <hs-search-results [app]="data.app"></hs-search-results>
+        <hs-search-input></hs-search-input>
+        <hs-search-results></hs-search-results>
     </div>
 </div>

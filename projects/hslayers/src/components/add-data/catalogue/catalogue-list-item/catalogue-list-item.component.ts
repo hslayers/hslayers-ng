@@ -23,17 +23,14 @@ import {HsUtilsService} from '../../../utils/utils.service';
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
 })
-export class HsCatalogueListItemComponent implements OnInit {
+export class HsCatalogueListItemComponent {
   @Input() layer: HsAddDataLayerDescriptor;
-  @Input() app = 'default';
-  appRef: HsAddDataCatalogueParams;
   explanationsVisible: boolean;
   metadata;
   selectedType: string; //do not rename to 'type', would clash in the template
   selectTypeToAddLayerVisible: boolean;
   whatToAddTypes: string[];
   loadingInfo = false;
-  configRef: HsConfigObject;
   constructor(
     public hsConfig: HsConfig, //used in template
     public hsDatasourcesMetadataService: HsCatalogueMetadataService,
@@ -46,11 +43,6 @@ export class HsCatalogueListItemComponent implements OnInit {
     public hsUtilsService: HsUtilsService,
     public hsCommonEndpointsService: HsCommonEndpointsService
   ) {}
-
-  ngOnInit() {
-    this.appRef = this.hsAddDataCatalogueService.get(this.app);
-    this.configRef = this.hsConfig.get(this.app);
-  }
 
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
@@ -65,7 +57,6 @@ export class HsCatalogueListItemComponent implements OnInit {
     const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
       endpoint,
       layer,
-      this.app,
       this.selectedType
     );
     this.loadingInfo = false;
@@ -106,8 +97,7 @@ export class HsCatalogueListItemComponent implements OnInit {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined,
-      this.app
+      undefined
     );
   }
 
@@ -125,23 +115,14 @@ export class HsCatalogueListItemComponent implements OnInit {
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
     if (endpoint.type.includes('layman')) {
-      await this.hsLaymanBrowserService.fillLayerMetadata(
-        endpoint,
-        layer,
-        this.app
-      );
+      await this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
-    this.hsDialogContainerService.create(
-      HsCatalogueMetadataComponent,
-      {
-        selectedLayer: layer,
-        selectedDS: endpoint,
-        app: this.app,
-      },
-      this.app
-    );
+    this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
+      selectedLayer: layer,
+      selectedDS: endpoint,
+    });
   }
 
   /**
@@ -152,15 +133,10 @@ export class HsCatalogueListItemComponent implements OnInit {
     if (!this.layer.endpoint?.authenticated) {
       return;
     }
-    this.hsDialogContainerService.create(
-      HsSetPermissionsDialogComponent,
-      {
-        recordType: 'layer',
-        selectedRecord: layer,
-        app: this.app,
-      },
-      this.app
-    );
+    this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
+      recordType: 'layer',
+      selectedRecord: layer,
+    });
   }
 
   /**
@@ -186,34 +162,26 @@ export class HsCatalogueListItemComponent implements OnInit {
       {
         message: this.hsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer',
-          undefined,
-          this.app
+          undefined
         ),
         note: this.hsLanguageService.getTranslation(
           'DRAW.deleteNote',
-          undefined,
-          this.app
+          undefined
         ),
         title: this.hsLanguageService.getTranslation(
           'COMMON.confirmDelete',
-          undefined,
-          this.app
+          undefined
         ),
-      },
-      this.app
+      }
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      const success = await this.hsLaymanService.removeLayer(
-        this.app,
-        layer.name
-      );
+      const success = await this.hsLaymanService.removeLayer(layer.name);
       if (success) {
-        this.appRef.catalogEntries = this.appRef.catalogEntries.filter(
-          (item) => {
+        this.hsAddDataCatalogueService.catalogEntries =
+          this.hsAddDataCatalogueService.catalogEntries.filter((item) => {
             return item.id != layer.id;
-          }
-        );
+          });
       }
     }
   }

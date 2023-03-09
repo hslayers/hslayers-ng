@@ -42,11 +42,7 @@ export class HsAddDataCommonFileServiceParams {
 }
 
 @Injectable({providedIn: 'root'})
-export class HsAddDataCommonFileService {
-  apps: {
-    [id: string]: HsAddDataCommonFileServiceParams;
-  } = {default: new HsAddDataCommonFileServiceParams()};
-
+export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams {
   constructor(
     private hsAddDataOwsService: HsAddDataOwsService,
     private hsAddDataUrlService: HsAddDataUrlService,
@@ -59,41 +55,31 @@ export class HsAddDataCommonFileService {
     private hsToastService: HsToastService,
     private hsUtilsService: HsUtilsService,
     private hsCommonLaymanService: HsCommonLaymanService
-  ) {}
-
-  /**
-   * Get the params saved by the add data common file service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): HsAddDataCommonFileServiceParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsAddDataCommonFileServiceParams();
-    }
-    return this.apps[app ?? 'default'];
+  ) {
+    super();
   }
 
   /**
    * Clear service param values to default values
-   * @param app - App identifier
+   
    */
-  clearParams(app: string): void {
-    const appRef = this.get(app);
-    appRef.asyncLoading = false;
-    appRef.endpoint = null;
-    appRef.loadingToLayman = false;
+  clearParams(): void {
+    this.asyncLoading = false;
+    this.endpoint = null;
+    this.loadingToLayman = false;
     this.hsLaymanService.totalProgress = 0;
   }
 
   /**
    * Check if provided url exists and is obtainable
    * @param url - Provided url
-   * @param app - App identifier
+   
    */
-  async isUrlObtainable(url: string, app: string): Promise<boolean> {
+  async isUrlObtainable(url: string): Promise<boolean> {
     if (!url || url === '') {
       return;
     }
-    url = this.hsUtilsService.proxify(url, app);
+    url = this.hsUtilsService.proxify(url);
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -101,22 +87,20 @@ export class HsAddDataCommonFileService {
       const contentType = response.headers.get('Content-Type');
       if (response.status === 200) {
         if (contentType.includes('text/html')) {
-          this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+          this.hsAddDataUrlService.addDataCapsParsingError.next(
             'ERROR.noValidData'
           );
           return;
         }
         return true;
       } else {
-        this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+        this.hsAddDataUrlService.addDataCapsParsingError.next(
           response.statusText
         );
         return;
       }
     } catch (e) {
-      this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
-        e.message
-      );
+      this.hsAddDataUrlService.addDataCapsParsingError.next(e.message);
       return;
     }
   }
@@ -124,18 +108,17 @@ export class HsAddDataCommonFileService {
   /**
    * From available endpoints picks one
    * - either Layman endpoint if available or any other if not
-   * @param app - App identifier
+   
    */
-  pickEndpoint(app: string): void {
-    const appRef = this.get(app);
+  pickEndpoint(): void {
     const endpoints = this.hsCommonEndpointsService.endpoints;
     if (endpoints && endpoints.length > 0) {
       const layman = this.hsCommonLaymanService.layman;
       if (layman) {
-        appRef.endpoint = layman;
-        appRef.endpoint.getCurrentUserIfNeeded(appRef.endpoint, app);
+        this.endpoint = layman;
+        this.endpoint.getCurrentUserIfNeeded(this.endpoint);
       } else {
-        appRef.endpoint = endpoints[0];
+        this.endpoint = endpoints[0];
       }
     }
   }
@@ -143,23 +126,21 @@ export class HsAddDataCommonFileService {
   /**
    * Get tooltip translated text
    * @param data - File data object provided
-   * @param app - App identifier
+   
    * @returns Translated string
    */
-  getToolTipText(data: FileDataObject, app: string): string {
+  getToolTipText(data: FileDataObject): string {
     if (!data.srs) {
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'ADDLAYERS',
         'SRSRequired',
-        undefined,
-        app
+        undefined
       );
     } else {
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'DRAW.drawToolbar',
         'addLayer',
-        undefined,
-        app
+        undefined
       );
     }
   }
@@ -167,10 +148,10 @@ export class HsAddDataCommonFileService {
   /**
    * Validate files before upload
    * @param files - Files provided for upload
-   * @param app - App identifier
+   
    * @returns True, if files are valid for upload, false otherwise
    */
-  filesValid(files: File[], app: string): boolean {
+  filesValid(files: File[]): boolean {
     let isValid = true;
     if (
       files.find(
@@ -183,26 +164,19 @@ export class HsAddDataCommonFileService {
         {
           serviceCalledFrom: 'HsAddDataCommonFileService',
           toastStyleClasses: 'bg-warning text-white',
-        },
-        app
+        }
       );
     }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
     if (zipFilesCount === 1 && files.length > 1) {
-      this.displayErrorMessage(
-        {
-          message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
-        },
-        app
-      );
+      this.displayErrorMessage({
+        message: 'ADDDATA.FILE.zipFileCannotBeUploaded',
+      });
       isValid = false;
     }
     if (zipFilesCount > 1) {
       isValid = false;
-      this.displayErrorMessage(
-        {message: 'ADDDATA.FILE.onlyOneZipFileCan'},
-        app
-      );
+      this.displayErrorMessage({message: 'ADDDATA.FILE.onlyOneZipFileCan'});
     }
     return isValid;
   }
@@ -248,38 +222,32 @@ export class HsAddDataCommonFileService {
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param sld - Array of sld files
    * @param access_rights - User access rights for the new layer,
-   * @param app - App identifier
+   
    * @param overwrite - (Optional) Overwrite existing layman layer
    * @returns
    */
   async loadNonWmsLayer(
     endpoint: HsEndpoint,
     formDataParams: FileFormData,
-    app: string,
+
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
-    const appRef = this.get(app);
     try {
-      const formData = await this.constructFormData(
-        endpoint,
-        formDataParams,
-        app
-      );
+      const formData = await this.constructFormData(endpoint, formDataParams);
       const asyncUpload: AsyncUpload =
         this.hsLaymanService.prepareAsyncUpload(formData);
-      appRef.asyncLoading = asyncUpload.async;
+      this.asyncLoading = asyncUpload.async;
 
       const res = await this.hsLaymanService.tryLoadLayer(
         endpoint,
         formData,
         asyncUpload,
         formDataParams.name,
-        app,
         overwrite
       );
       return res;
     } catch (err) {
-      this.get(app).readingData = false;
+      this.readingData = false;
       throw err;
     }
   }
@@ -287,19 +255,18 @@ export class HsAddDataCommonFileService {
   /**
    * Try to find layer in Layman's database using Layman friendly layer name
    * @param name - Layman friendly layer name to search by
-   * @param app - App identifier
+   
    */
-  async lookupLaymanLayer(name: string, app: string): Promise<boolean> {
+  async lookupLaymanLayer(name: string): Promise<boolean> {
     const friendlyName = getLaymanFriendlyLayerName(name);
-    const commonFileRef = this.get(app);
     let descriptor: HsLaymanLayerDescriptor;
     if (this.isAuthenticated()) {
-      this.pickEndpoint(app);
+      this.pickEndpoint();
       try {
         descriptor = await this.hsLaymanService.describeLayer(
-          commonFileRef.endpoint,
+          this.endpoint,
           name,
-          commonFileRef.endpoint.user,
+          this.endpoint.user,
           true
         );
       } catch (error) {
@@ -367,10 +334,9 @@ export class HsAddDataCommonFileService {
    */
   async constructFormData(
     endpoint: HsEndpoint,
-    formDataParams: FileFormData,
-    app: string
+    formDataParams: FileFormData
   ): Promise<FormData> {
-    this.get(app).readingData = true;
+    this.readingData = true;
     const {files, name, abstract, srs, access_rights, timeRegex} =
       formDataParams;
     const sld = formDataParams.serializedStyle;
@@ -419,7 +385,7 @@ export class HsAddDataCommonFileService {
 
     formData.append('access_rights.write', rights.write);
     formData.append('access_rights.read', rights.read);
-    this.get(app).readingData = false;
+    this.readingData = false;
     return formData;
   }
 
@@ -427,12 +393,12 @@ export class HsAddDataCommonFileService {
    * Handler for button click to send file to layman and wait for
    * answer with wms service url to add to map
    * @param data - Current data object for upload
-   * @param app - App identifier
+   
    * @param options - (Optional) overwrite: Overwrite existing layman layer, repetive: Called for more than one time
    */
   async addAsService(
     data: FileDataObject,
-    app: string,
+
     options?: {
       overwrite?: boolean;
       repetive?: boolean;
@@ -440,29 +406,27 @@ export class HsAddDataCommonFileService {
   ): Promise<void> {
     let exists: boolean;
     try {
-      const appRef = this.get(app);
-      appRef.loadingToLayman = true;
-      if (!appRef.endpoint) {
-        this.pickEndpoint(app);
+      this.loadingToLayman = true;
+      if (!this.endpoint) {
+        this.pickEndpoint();
       }
       if (!this.isSRSSupported(data)) {
         throw new Error(
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS.ERROR',
             'srsNotSupported',
-            undefined,
-            app
+            undefined
           )
         );
       }
       if (!options?.overwrite) {
-        exists = await this.lookupLaymanLayer(data.name, app);
+        exists = await this.lookupLaymanLayer(data.name);
       }
       if (exists) {
-        this.callOverwriteDialog(data, app, options?.repetive);
+        this.callOverwriteDialog(data, options?.repetive);
       } else {
         const response = await this.loadNonWmsLayer(
-          appRef.endpoint,
+          this.endpoint,
           {
             files: data.files,
             name: data.name,
@@ -473,33 +437,27 @@ export class HsAddDataCommonFileService {
             access_rights: data.access_rights,
             timeRegex: data.timeRegex,
           },
-          app,
           options?.overwrite
         );
         if (response?.code) {
-          await this.postLoadNonWmsError(
-            response,
-            data,
-            app,
-            options?.repetive
-          );
+          await this.postLoadNonWmsError(response, data, options?.repetive);
         } else {
-          await this.postLoadNonWmsSuccess(response, data, app);
+          await this.postLoadNonWmsSuccess(response, data);
         }
       }
     } catch (err) {
-      this.displayErrorMessage({message: err.message, details: null}, app);
+      this.displayErrorMessage({message: err.message, details: null});
     }
   }
 
   /**
    * Load overwrite layer dialog
    * @param data - Current data object for upload
-   * @param app - App identifier
+   
    */
   async loadOverwriteLayerDialog(
     data: FileDataObject | VectorDataObject,
-    app: string,
+
     repetive?: boolean
   ): Promise<OverwriteResponse> {
     const dialogRef = this.hsDialogContainerService.create(
@@ -507,9 +465,7 @@ export class HsAddDataCommonFileService {
       {
         dataObj: data,
         repetive,
-        app,
-      },
-      app
+      }
     );
     return await dialogRef.waitResult();
   }
@@ -517,25 +473,25 @@ export class HsAddDataCommonFileService {
   /**
    * Call for overwrite dialog
    * @param data - Current data object to load
-   * @param app - App identifier
+   
    * @param repetive - Called for more the one time
    */
   async callOverwriteDialog(
     data: FileDataObject,
-    app: string,
+
     repetive?: boolean
   ): Promise<OverwriteResponse> {
-    const result = await this.loadOverwriteLayerDialog(data, app, repetive);
+    const result = await this.loadOverwriteLayerDialog(data, repetive);
     switch (result) {
       case OverwriteResponse.add:
-        this.addAsService(data, app, {repetive: true});
+        this.addAsService(data, {repetive: true});
         break;
       case OverwriteResponse.overwrite:
-        this.addAsService(data, app, {overwrite: true});
+        this.addAsService(data, {overwrite: true});
         break;
       case OverwriteResponse.cancel:
       default:
-        this.get(app).loadingToLayman = false;
+        this.loadingToLayman = false;
         return;
     }
   }
@@ -544,27 +500,27 @@ export class HsAddDataCommonFileService {
    * Process error server response after trying to load non-wms layer
    * @param response - Http post/past response after loading layer to Layman
    * @param data - Current data object to load
-   * @param app - App identifier
+   
    */
   async postLoadNonWmsError(
     response: PostPatchLayerResponse,
     data: FileDataObject,
-    app: string,
+
     repetive?: boolean
   ): Promise<void> {
     if (response.code == 17) {
-      this.callOverwriteDialog(data, app, repetive);
+      this.callOverwriteDialog(data, repetive);
     } else {
-      this.handleLaymanError(response, app);
+      this.handleLaymanError(response);
     }
   }
 
   /**
    * Process success server response after trying to load non-wms layer
    * @param response - Http post/past response after loading layer to Layman
-   * @param app - App identifier
+   
    */
-  handleLaymanError(response: PostPatchLayerResponse, app: string): void {
+  handleLaymanError(response: PostPatchLayerResponse): void {
     const errorMessage =
       response?.error?.message ?? response?.message == 'Wrong parameter value'
         ? `${response?.message} : ${response?.detail.parameter}`
@@ -572,26 +528,21 @@ export class HsAddDataCommonFileService {
     const errorDetails = response?.detail?.missing_extensions
       ? Object.values(response.detail?.missing_extensions)
       : [];
-    this.displayErrorMessage(
-      {message: errorMessage, details: errorDetails},
-      app
-    );
+    this.displayErrorMessage({message: errorMessage, details: errorDetails});
   }
   /**
    * Process success server response after trying to load non-wms layer
    * @param response - HTTP POST/PATCH response after loading layer to Layman
    * @param data - Current data object to load
-   * @param app - App identifier
+   
    */
   async postLoadNonWmsSuccess(
     response: PostPatchLayerResponse,
-    data: FileDataObject,
-    app: string
+    data: FileDataObject
   ): Promise<void> {
-    const appRef = this.get(app);
     data.name = response.name; //Name translated to Layman-safe name
     const descriptor = await this.describeNewLayer(
-      appRef.endpoint,
+      this.endpoint,
       response.name
     );
     if (descriptor?.file.error) {
@@ -600,40 +551,34 @@ export class HsAddDataCommonFileService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.someErrorHappened',
-          undefined,
-          app
+          undefined
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'LAYMAN.ERROR',
           msg ?? descriptor.file.error.code.toString(),
-          undefined,
-          app
+          undefined
         ),
         {
           serviceCalledFrom: 'HsAddDataCommonFileService',
           disableLocalization: true,
-        },
-        app
+        }
       );
-      appRef.layerAddedAsService.next(false);
+      this.layerAddedAsService.next(false);
       return;
     }
     this.hsLaymanService.totalProgress = 0;
-    this.hsAddDataService.selectType('url', app);
-    appRef.layerAddedAsService.next(true);
+    this.hsAddDataService.selectType('url');
+    this.layerAddedAsService.next(true);
     const serviceType = data.loadAsType ?? 'wms';
-    await this.hsAddDataOwsService.connectToOWS(
-      {
-        type: serviceType,
-        uri: descriptor[serviceType].url,
-        layer:
-          serviceType === 'wms'
-            ? data.name
-            : `${descriptor.workspace}:${data.name}`,
-        owrCache: true,
-      },
-      app
-    );
+    await this.hsAddDataOwsService.connectToOWS({
+      type: serviceType,
+      uri: descriptor[serviceType].url,
+      layer:
+        serviceType === 'wms'
+          ? data.name
+          : `${descriptor.workspace}:${data.name}`,
+      owrCache: true,
+    });
   }
 
   /**
@@ -669,19 +614,18 @@ export class HsAddDataCommonFileService {
   /**
    * Display error message toast, when called and broadcast event about a failed attempt to load wms layer
    * @param _options - Error message options: message, header or details
-   * @param app - App identifier
+   
    */
-  displayErrorMessage(_options: errorMessageOptions = {}, app: string): void {
+  displayErrorMessage(_options: errorMessageOptions = {}): void {
     this.hsToastService.createToastPopupMessage(
-      _options?.header ?? this.get(app).fileUploadErrorHeader,
+      _options?.header ?? this.fileUploadErrorHeader,
       _options.message,
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
         details: _options?.details,
-      },
-      app
+      }
     );
-    this.get(app).layerAddedAsService.next(false);
+    this.layerAddedAsService.next(false);
   }
 
   /**
@@ -706,11 +650,11 @@ export class HsAddDataCommonFileService {
   /**
    * Set data object name based on uploaded files
    * @param data - Current data object to load
-   * @param app - App identifier
+   
    */
-  setDataName(data: FileDataObject, app: string): void {
+  setDataName(data: FileDataObject): void {
     data.name = data.files[0].name.slice(0, -4);
     data.title = data.name;
-    this.get(app).dataObjectChanged.next(data);
+    this.dataObjectChanged.next(data);
   }
 }

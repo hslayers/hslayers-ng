@@ -120,8 +120,8 @@ describe('layermanager editor', () => {
     fixture.detectChanges();
     component.currentLayer = {layer: layerForCluster};
     clusterWidgetComponent.layerDescriptor.next({layer: layerForCluster});
-    hsConfig.get(app).reverseLayerList = true;
-    hsConfig.get(app).layersInFeatureTable = [];
+    hsConfig.get().reverseLayerList = true;
+    hsConfig.get().layersInFeatureTable = [];
   });
 
   it('should create', () => {

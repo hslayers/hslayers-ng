@@ -94,8 +94,7 @@ export class HslayersAppComponent {
             interpolatedSource.createIDWSourceUrl(
               'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
               extentIn4326
-            ),
-            app.name
+            ).name
           );
           try {
             const response: any = await lastValueFrom(
@@ -631,8 +630,7 @@ export class HslayersAppComponent {
               },
             },
           },
-        },
-        app.name
+        }.name
       );
 
       const dimensions = opticalMap.get('dimensions');
@@ -647,16 +645,12 @@ export class HslayersAppComponent {
       }
       this.hsQueryPopupWidgetContainerService.create(
         PopupWidgetComponent,
-        app,
         undefined
       );
 
       //Simulating ajax
       setTimeout(() => {
-        this.hsEventBusService.layerDimensionDefinitionChanges.next({
-          layer: opticalMap,
-          app: app.name,
-        });
+        this.hsEventBusService.layerDimensionDefinitionChanges.next(opticalMap);
       }, 100);
     }
   }

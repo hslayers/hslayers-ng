@@ -18,11 +18,11 @@ import {getTitle} from '../../../common/layer-extensions';
 })
 export class HsClearLayerComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() data: {
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;
-    app: string;
   };
   name = 'clear-layer';
   layerDescriptor: any;
@@ -46,19 +46,13 @@ export class HsClearLayerComponent
       HsConfirmDialogComponent,
       {
         message: this.hsLanguageService
-          .getTranslation(
-            'QUERY.reallyDeleteAllFeaturesFrom',
-            undefined,
-            this.data.app
-          )
+          .getTranslation('QUERY.reallyDeleteAllFeaturesFrom', undefined)
           .replace('{0}', getTitle(layer)),
         title: this.hsLanguageService.getTranslation(
           'QUERY.confirmClear',
-          undefined,
-          this.data.app
+          undefined
         ),
-      },
-      this.data.app
+      }
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
@@ -67,7 +61,7 @@ export class HsClearLayerComponent
         layer.getSource().getSource().clear();
       }
       layer.getSource().clear();
-      this.data.service.apps[this.data.app].featuresUnderMouse = [];
+      this.data.service.featuresUnderMouse = [];
     }
   }
 

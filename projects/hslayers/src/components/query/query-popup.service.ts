@@ -34,55 +34,47 @@ export class HsQueryPopupService
       zone,
       hsQueryPopupWidgetContainerService
     );
+
+    this.hsMapService.loaded().then((map) => {
+      if (
+        this.hsConfig.popUpDisplay &&
+        this.hsConfig.popUpDisplay === 'hover'
+      ) {
+        this.map.on(
+          'pointermove',
+          this.hsUtilsService.debounce(
+            (e) => this.preparePopup(e),
+            200,
+            false,
+            this
+          )
+        );
+      } else if (
+        this.hsConfig.popUpDisplay &&
+        this.hsConfig.popUpDisplay === 'click'
+      ) {
+        this.map.on(
+          'singleclick',
+          this.hsUtilsService.debounce(
+            (e) => this.preparePopup(e),
+            200,
+            false,
+            this
+          )
+        );
+      }
+    });
   }
 
   /**
    * Register and set hover popup overlay
    * @param nativeElement - Popup HTML content
-   * @param app - App identifier
+   
    */
-  registerPopup(nativeElement: HTMLElement, app: string): void {
-    this.setAppIfNeeded(app);
-    this.apps[app].hoverPopup = new Overlay({
+  registerPopup(nativeElement: HTMLElement): void {
+    this.hoverPopup = new Overlay({
       element: nativeElement,
     });
-  }
-
-  /**
-   * Initialize the query popup service data and subscribers
-   * @param app - App identifier
-   */
-  async init(app: string): Promise<void> {
-    this.setAppIfNeeded(app);
-    await this.hsMapService.loaded(app);
-    this.apps[app].map = this.hsMapService.getMap(app);
-    if (
-      this.hsConfig.get(app).popUpDisplay &&
-      this.hsConfig.get(app).popUpDisplay === 'hover'
-    ) {
-      this.apps[app].map.on(
-        'pointermove',
-        this.hsUtilsService.debounce(
-          (e) => this.preparePopup(e, app),
-          200,
-          false,
-          this
-        )
-      );
-    } else if (
-      this.hsConfig.get(app).popUpDisplay &&
-      this.hsConfig.get(app).popUpDisplay === 'click'
-    ) {
-      this.apps[app].map.on(
-        'singleclick',
-        this.hsUtilsService.debounce(
-          (e) => this.preparePopup(e, app),
-          200,
-          false,
-          this
-        )
-      );
-    } /* else none */
   }
 
   /**
@@ -90,40 +82,35 @@ export class HsQueryPopupService
    * Get features dependent on mouse position.
    * For cesium the features will be filled differently.
    * @param e - Mouse event over the OL map
-   * @param app - App identifier
+   
    */
-  preparePopup(
-    e: {
-      map: Map;
-      pixel: number[];
-      dragging?: any;
-      originalEvent?: any;
-    },
-    app: string
-  ): void {
+  preparePopup(e: {
+    map: Map;
+    pixel: number[];
+    dragging?: any;
+    originalEvent?: any;
+  }): void {
     // The latter case happens when hovering over the pop-up itself
     if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
     }
     if (
-      !this.HsQueryBaseService.get(app).queryActive &&
-      this.hsConfig.get(app).popUpDisplay === 'click'
+      !this.HsQueryBaseService.queryActive &&
+      this.hsConfig.popUpDisplay === 'click'
     ) {
       return;
     }
     let tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
       e.map,
-      e.pixel,
-      app
+      e.pixel
     );
-    if (this.hsConfig.get(app).popUpDisplay === 'click') {
+    if (this.hsConfig.popUpDisplay === 'click') {
       /* Theres a separate process for selecting features 
     by select interaction not by pixel which is better for point features. 
     Merge those results */
       tmpFeatures = [
-        ...this.hsQueryVectorService
-          .get(app)
-          .selector.getFeatures()
+        ...this.hsQueryVectorService.selector
+          .getFeatures()
           .getArray()
           .filter((f) => !tmpFeatures.includes(f)),
         ...tmpFeatures,
@@ -132,31 +119,28 @@ export class HsQueryPopupService
 
     if (
       tmpFeatures.some(
-        (f) =>
-          !this.apps[app].featuresUnderMouse.includes(f as Feature<Geometry>)
+        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>)
       ) ||
-      this.apps[app].featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
+      this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
     ) {
-      this.fillFeatures(tmpFeatures as Feature<Geometry>[], app);
+      this.fillFeatures(tmpFeatures as Feature<Geometry>[]);
     }
-    this.showPopup(e, app);
+    this.showPopup(e);
   }
 
   /**
    * Set popups position according to pixel where mouse is
    * @param e - Event, which triggered this function
-   * @param app - App identifier
+   
    */
-  showPopup(e: any, app: string): void {
+  showPopup(e: any): void {
     const map = e.map;
 
     const pixel = e.pixel;
     pixel[0] += 2;
     pixel[1] += 4;
-    if (this.apps[app].hoverPopup) {
-      this.apps[app].hoverPopup.setPosition(
-        map.getCoordinateFromPixel(e.pixel)
-      );
+    if (this.hoverPopup) {
+      this.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
     }
   }
 }

@@ -4,6 +4,6 @@ import {Directive, Input, ViewContainerRef} from '@angular/core';
   selector: '[map]',
 })
 export class HsMapDirective {
-  @Input() app = 'default';
+  
   constructor(public viewContainerRef: ViewContainerRef) {}
 }

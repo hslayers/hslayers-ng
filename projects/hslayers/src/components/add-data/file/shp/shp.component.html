@@ -1,24 +1,25 @@
 <form class="form-horizontal m-3" role="form">
     <div class="form-group justify-content-center">
-        <hs-file-upload (uploaded)="handleFileUpload($event,app)" [app]="app" [acceptedFormats]="acceptedFormats"
-            [uploader]="'shpdbfshx-'+app">
+        <hs-file-upload (uploaded)="handleFileUpload($event)" [acceptedFormats]="acceptedFormats"
+            [uploader]="'shpdbfshx'">
+            <!-- FIXME: PLATFORM APP PARAM -->
         </hs-file-upload>
     </div>
     <div *ngIf="data.files?.length === 0"
         class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-        <p class="m-0"> {{'ADDLAYERS.SHP.neededFiles' | translateHs : {app} }}</p>
+        <p class="m-0"> {{'ADDLAYERS.SHP.neededFiles' | translateHs }}</p>
     </div>
-    <div *ngIf="hsAddDataCommonService.get(app).showDetails">
+    <div *ngIf="hsAddDataCommonService.showDetails">
         <div class="d-flex flex-row justify-content-around">
             <div class="d-flex flex-column justify-content-center">
                 <p class="p-2 bg-success rounded" style="color: white;"> {{data.files.length}}
-                    {{'ADDLAYERS.filesSelected' | translateHs: {app} }}</p>
+                    {{'ADDLAYERS.filesSelected' | translateHs }}</p>
             </div>
             <div class="d-flex flex-column mw-75">
                 <p *ngFor="let file of data.files">{{file.name}}</p>
             </div>
         </div>
-        <hs-new-layer-form [data]="data" [app]="app"></hs-new-layer-form>
-        <hs-add-layer-authorized [data]="data" [app]="app"></hs-add-layer-authorized>
+        <hs-new-layer-form [data]="data"></hs-new-layer-form>
+        <hs-add-layer-authorized [data]="data"></hs-add-layer-authorized>
     </div>
 </form>

@@ -1,12 +1,12 @@
 <form class="form-horizontal" role="form">
-  <hs-common-url [type]="fileType" [app]="app" [(url)]="data.url" (connect)="connect()">
+  <hs-common-url [type]="fileType" [(url)]="data.url" (connect)="connect()">
   </hs-common-url>
 
   <div *ngIf="data.showDetails">
-    <hs-new-layer-form [data]="data" [app]="app"></hs-new-layer-form>
+    <hs-new-layer-form [data]="data"></hs-new-layer-form>
 
     <button class="btn btn-primary w-100 mt-2" [disabled]="!data.title" (click)="add()"><i class="icon-plus"></i>
-      {{'COMMON.add' | translateHs: {app} }}
+      {{'COMMON.add' | translateHs }}
     </button>
   </div>
 

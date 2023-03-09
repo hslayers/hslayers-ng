@@ -57,7 +57,7 @@ export interface HsEndpoint {
     compositionLoad?: EndpointErrorHandling | EndpointErrorHandler;
     addDataCatalogueLoad?: EndpointErrorHandling | EndpointErrorHandler;
   };
-  getCurrentUserIfNeeded?(endpoint: HsEndpoint, app: string): Promise<void>;
+  getCurrentUserIfNeeded?(endpoint: HsEndpoint): Promise<void>;
 }
 
 function isErrorHandlerFunction(object: any): object is EndpointErrorHandler {

@@ -1,4 +1,3 @@
-
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import {HsConfig} from '../../config.service';
@@ -41,7 +40,7 @@ export class HsShareThumbnailService {
     ctx.imageSmoothingEnabled = false;
   }
 
-  rendered($element, app: string, newRender?): string {
+  rendered($element,  newRender?): string {
     if (!$element) {
       return;
     }
@@ -51,7 +50,7 @@ export class HsShareThumbnailService {
     const width = 256,
       height = 256;
     const firstCanvas =
-      this.HsMapService.apps[app].mapElement.querySelector('.ol-layer canvas');
+      this.HsMapService.mapElement.querySelector('.ol-layer canvas');
     this.setCanvasSize(targetCanvas, width, height);
     this.setCanvasSize(
       collectorCanvas,
@@ -62,11 +61,9 @@ export class HsShareThumbnailService {
     const ctxTarget = targetCanvas.getContext('2d');
     this.setupContext(ctxTarget);
     this.setupContext(ctxCollector);
-    const configRef = this.hsConfig.get(app);
+    const configRef = this.hsConfig;
     Array.prototype.forEach.call(
-      this.HsMapService.apps[app].mapElement.querySelectorAll(
-        '.ol-layer canvas'
-      ),
+      this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
       (canvas) => {
         if (canvas.width > 0) {
           //console.log('canvas loop', this.isCanvasTainted(canvas), canvas);

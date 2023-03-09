@@ -26,16 +26,12 @@ export class HsLayerEditorWidgetBaseComponent
     });
   }
   ngOnInit() {
-    this.layerDescriptor.next(
-      this.hsLayerSelectorService.get(this.data.app).currentLayer
-    );
+    this.layerDescriptor.next(this.hsLayerSelectorService.currentLayer);
 
     this.hsLayerSelectorService.layerSelected
       .pipe(takeUntil(this.ngBaseUnsubscribe))
-      .subscribe(({layer, app}) => {
-        if (app == this.data.app) {
-          this.layerDescriptor.next(layer);
-        }
+      .subscribe((layer) => {
+        this.layerDescriptor.next(layer);
       });
   }
   isVisible(): boolean {

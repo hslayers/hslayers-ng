@@ -1,9 +1,6 @@
 <div class="hs-toolbar" [hidden]="(isVisible$ | async) === false">
     <nav class="navbar navbar-expand p-0">
-        <hs-panel-container 
-            class="navbar-nav"
-            [service]="HsToolbarPanelContainerService"
-            [app]="data.app">
-        </hs-panel-container >
+        <hs-panel-container class="navbar-nav" [service]="HsToolbarPanelContainerService">
+        </hs-panel-container>
     </nav>
 </div>

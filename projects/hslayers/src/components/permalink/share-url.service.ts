@@ -17,7 +17,8 @@ import {MapComposition} from '../save-map/types/map-composition.type';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 import {transformExtent} from 'ol/proj';
 
-export class HsShareUrlAppData {
+@Injectable({providedIn: 'root'})
+export class HsShareUrlService {
   current_url = '';
   params = {};
   customParams = {};
@@ -32,19 +33,12 @@ export class HsShareUrlAppData {
   param_string: string;
   statusSaving = false;
   data: MapComposition;
-}
-
-@Injectable({providedIn: 'root'})
-export class HsShareUrlService {
-  apps: {
-    [id: string]: HsShareUrlAppData;
-  } = {default: new HsShareUrlAppData()};
 
   private end = new Subject<void>();
-  public browserUrlUpdated: Subject<{app: string; url: string}> = new Subject();
+  public browserUrlUpdated: Subject<string> = new Subject();
 
   constructor(
-    public HsMapService: HsMapService,
+    public hsMapService: HsMapService,
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
     public HsSaveMapService: HsSaveMapService,
@@ -56,77 +50,104 @@ export class HsShareUrlService {
     private zone: NgZone,
     private PlatformLocation: PlatformLocation,
     private HttpClient: HttpClient
-  ) {}
+  ) {
+    this.keepTrackOfGetParams();
+    this.hsMapService.loaded().then((map) => {
+      if (this.url_generation) {
+        //FIXME : always true
+        let timer = null;
+        this.HsEventBusService.mapExtentChanges
+          .pipe(takeUntil(this.end))
+          .subscribe(
+            this.HsUtilsService.debounce(
+              ({map, event, extent}) => {
+                this.zone.run(() => {
+                  this.updatePermalinkComposition();
+                });
+              },
+              200,
+              false,
+              this
+            )
+          );
+        map.getLayers().on('add', (e) => {
+          const layer = e.element;
+          const external = getShowInLayerManager(layer);
+          if (external !== null && external == false) {
+            return;
+          }
+          layer.on('change:visible', (e) => {
+            if (timer !== null) {
+              clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+              if (!this.end.closed) {
+                this.update();
+              }
+            }, 1000);
+          });
+        });
+        const lang = this.getParamValue(HS_PRMS.lang);
+        if (lang) {
+          this.HsLanguageService.setLanguage(lang);
+        }
+        const view = this.getParamValue(HS_PRMS.view);
+        // this.hsMapService.visible = !(view == '3d');
+      }
+    });
+  }
 
-  private keepTrackOfGetParams(app: string) {
-    const appRef = this.get(app);
+  private keepTrackOfGetParams() {
     const params = this.parse(location.search);
     /* We keep track of most hsl params separately so don't process 
     them here. Only third party params are interesting */
     for (const key of Object.keys(HS_PRMS_REGENERATED)) {
       delete params[HS_PRMS_REGENERATED[key]];
     }
-    Object.assign(appRef.customParams, params);
-  }
-
-  /**
-   * Get the params saved by the for the current app
-   * @param app - App identifier
-   */
-  get(app: string): HsShareUrlAppData {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsShareUrlAppData();
-    }
-    return this.apps[app ?? 'default'];
+    Object.assign(this.customParams, params);
   }
 
   /**
    * Get HSL server share service endpoint's url
-   * @param app - App identifier
+   
    */
-  endpointUrl(app: string): string {
+  endpointUrl(): string {
     let hostName = location.protocol + '//' + location.host;
 
-    if (this.hsConfig.get(app).hostname?.status_manager?.url) {
-      return this.hsConfig.get(app).hostname.status_manager.url;
+    if (this.hsConfig.hostname?.status_manager?.url) {
+      return this.hsConfig.hostname.status_manager.url;
     }
-    if (this.hsConfig.get(app).hostname?.user?.url) {
-      hostName = this.hsConfig.get(app).hostname.user.url;
-    } else if (this.hsConfig.get(app).hostname?.default?.url) {
-      hostName = this.hsConfig.get(app).hostname.default.url;
+    if (this.hsConfig.hostname?.user?.url) {
+      hostName = this.hsConfig.hostname.user.url;
+    } else if (this.hsConfig.hostname?.default?.url) {
+      hostName = this.hsConfig.hostname.default.url;
     }
 
-    if (this.hsConfig.get(app).status_manager_url?.includes('://')) {
+    if (this.hsConfig.status_manager_url?.includes('://')) {
       //Full url specified
-      return this.hsConfig.get(app).status_manager_url;
+      return this.hsConfig.status_manager_url;
     } else {
-      return (
-        hostName + (this.hsConfig.get(app).status_manager_url || '/share/')
-      );
+      return hostName + (this.hsConfig.status_manager_url || '/share/');
     }
   }
 
   /**
    * Updates permalink composition. Used without data prop to update extent of the composition
-   * @param app - App identifier
+   
    * @param data - Map compositon data
    * @returns
    */
-  async updatePermalinkComposition(
-    app: string,
-    data?: MapComposition
-  ): Promise<any> {
-    const appRef = this.get(app);
-    const status_url = this.endpointUrl(app);
+  async updatePermalinkComposition(data?: MapComposition): Promise<any> {
+    const status_url = this.endpointUrl();
     const bbox = this.HsSaveMapService.getBboxFromObject(
-      this.HsMapService.describeExtent(app)
+      this.hsMapService.describeExtent()
     );
-    appRef.data = data ?? {
-      ...appRef.data,
+    this.data = data ?? {
+      ...this.data,
       nativeExtent: transformExtent(
         bbox,
         'EPSG:4326',
-        this.HsMapService.getCurrentProj(app)
+        this.hsMapService.getCurrentProj()
       ),
       extent: bbox,
     };
@@ -134,90 +155,82 @@ export class HsShareUrlService {
       this.HttpClient.post(
         status_url,
         JSON.stringify({
-          data: appRef.data,
+          data: this.data,
           permalink: true,
-          id: appRef.id,
-          project: this.hsConfig.get(app).project_name,
+          id: this.id,
+          project: this.hsConfig.project_name,
           request: 'save',
         })
       )
     );
-    appRef.statusSaving = false;
-    appRef.permalinkRequestUrl = status_url + '?request=load&id=' + appRef.id;
-    this.update(app);
+    this.statusSaving = false;
+    this.permalinkRequestUrl = status_url + '?request=load&id=' + this.id;
+    this.update();
   }
 
   /**
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
-  update(app: string): void {
-    const appRef = this.get(app);
-    const view = this.HsMapService.getMap(app).getView();
-    appRef.id = this.HsUtilsService.generateUuid();
+  update(): void {
+    const view = this.hsMapService.getMap().getView();
+    this.id = this.HsUtilsService.generateUuid();
 
-    const externalLayers = this.HsMapService.getLayersArray(app).filter(
-      (lyr) => !(getShowInLayerManager(lyr) === false)
-    );
+    const externalLayers = this.hsMapService
+      .getLayersArray()
+      .filter((lyr) => !(getShowInLayerManager(lyr) === false));
     const visibleLayers = externalLayers
       .filter((lyr) => lyr.getVisible())
       .map((lyr) => getTitle(lyr));
 
     const addedLayers = externalLayers.filter(
-      (lyr) => !this.hsConfig.get(app).default_layers?.includes(lyr)
+      (lyr) => !this.hsConfig.default_layers?.includes(lyr)
     );
     //This might become useful, but url size is limited, so we are not using it
-    const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers, app);
+    const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
-    const pnlMain = this.HsLayoutService.get(app).mainpanel;
-    this.push(
-      HS_PRMS.panel,
-      pnlMain == 'permalink' ? 'layermanager' : pnlMain,
-      app
-    );
+    const pnlMain = this.HsLayoutService.mainpanel;
+    this.push(HS_PRMS.panel, pnlMain == 'permalink' ? 'layermanager' : pnlMain);
 
-    this.push(HS_PRMS.x, view.getCenter()[0], app);
-    this.push(HS_PRMS.y, view.getCenter()[1], app);
-    this.push(HS_PRMS.zoom, view.getZoom(), app);
-    if (this.HsLanguageService.apps[app].language) {
-      this.push(HS_PRMS.lang, this.HsLanguageService.apps[app].language, app);
+    this.push(HS_PRMS.x, view.getCenter()[0]);
+    this.push(HS_PRMS.y, view.getCenter()[1]);
+    this.push(HS_PRMS.zoom, view.getZoom());
+    if (this.HsLanguageService.language) {
+      this.push(HS_PRMS.lang, this.HsLanguageService.language);
     }
-    this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'), app);
+    this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'));
     if (this.HsCore.puremapApp) {
-      this.push(HS_PRMS.pureMap, 'true', app);
+      this.push(HS_PRMS.pureMap, 'true');
     }
-    for (const [key, value] of Object.entries(appRef.customParams)) {
+    for (const [key, value] of Object.entries(this.customParams)) {
       if (key !== 'hs-permalink') {
-        this.push(key, value, app);
+        this.push(key, value);
       }
     }
-    this.push('app', app, app); //Needs to be after customParams got from URL to overwrite app value
-    if (appRef.statusSaving) {
+    //FIXME??: this.push('app', app); //Needs to be after customParams got from URL to overwrite app value
+    if (this.statusSaving) {
       return;
     }
     this.HsUtilsService.debounce(
       () => {
         let locationPath = this.pathName();
-        const paramsSerialized = Object.keys(appRef.params)
+        const paramsSerialized = Object.keys(this.params)
           .map((key) => {
-            return {key, value: appRef.params[key]};
+            return {key, value: this.params[key]};
           })
           .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
           .join('&');
         const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
-        if (
-          locationPath.indexOf(baseHref) == 0 &&
-          this.hsConfig.get(app).ngRouter
-        ) {
+        if (locationPath.indexOf(baseHref) == 0 && this.hsConfig.ngRouter) {
           locationPath = locationPath.replace(baseHref, '');
         }
-        if (Object.entries(this.hsConfig.apps).length == 1) {
+        if (Object.entries(this.hsConfig).length == 1) {
           this.Location.replaceState(locationPath, paramsSerialized);
         }
-        this.browserUrlUpdated.next({app, url: this.getPermalinkUrl(app)});
+        this.browserUrlUpdated.next(this.getPermalinkUrl());
       },
       300,
       false,
-      appRef.updateDebouncer
+      this.updateDebouncer
     )();
   }
 
@@ -225,26 +238,20 @@ export class HsShareUrlService {
    * @returns Permalink url
    * Create permalink Url to map
    */
-  getPermalinkUrl(app: string): string {
-    const appRef = this.get(app);
-    if (this.HsCore.isMobile() && this.hsConfig.get(app).permalinkLocation) {
+  getPermalinkUrl(): string {
+    if (this.HsCore.isMobile() && this.hsConfig.permalinkLocation) {
       //Deprecated? - isMobile??
       return (
-        this.hsConfig.get(app).permalinkLocation.origin +
-        appRef.current_url.replace(
+        this.hsConfig.permalinkLocation.origin +
+        this.current_url.replace(
           this.pathName(),
-          this.hsConfig.get(app).permalinkLocation.pathname
+          this.hsConfig.permalinkLocation.pathname
         ) +
-        `&${HS_PRMS.permalink}=${encodeURIComponent(
-          appRef.permalinkRequestUrl
-        )}`
-      ).replace(
-        this.pathName(),
-        this.hsConfig.get(app).permalinkLocation.pathname
-      );
+        `&${HS_PRMS.permalink}=${encodeURIComponent(this.permalinkRequestUrl)}`
+      ).replace(this.pathName(), this.hsConfig.permalinkLocation.pathname);
     } else {
-      return `${appRef.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
-        appRef.permalinkRequestUrl
+      return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
+        this.permalinkRequestUrl
       )}`;
     }
   }
@@ -261,10 +268,10 @@ export class HsShareUrlService {
    * @returns Embedded url
    * Create Url for PureMap version of map
    */
-  getPureMapUrl(app): string {
+  getPureMapUrl(): string {
     const params: any = {puremap: 'true'};
     return (
-      this.getPermalinkUrl(app) +
+      this.getPermalinkUrl() +
       '&' +
       this.HsUtilsService.paramsToURLWoEncode(params)
     );
@@ -342,28 +349,26 @@ export class HsShareUrlService {
    * @param new_value Value for pushed parameter
    * Push new key-value pair into paramater object and update Url string with new params
    */
-  push(key, new_value, app: string): void {
-    const appRef = this.get(app);
+  push(key, new_value): void {
     if (new_value === undefined) {
-      delete appRef.params[key];
+      delete this.params[key];
     } else {
-      appRef.params[key] = new_value;
+      this.params[key] = new_value;
     }
-    const new_params_string = this.stringify(appRef.params);
-    appRef.param_string = new_params_string;
-    appRef.urlUntilParams = location.origin + location.pathname;
-    appRef.current_url = appRef.urlUntilParams + '?' + new_params_string;
+    const new_params_string = this.stringify(this.params);
+    this.param_string = new_params_string;
+    this.urlUntilParams = location.origin + location.pathname;
+    this.current_url = this.urlUntilParams + '?' + new_params_string;
   }
 
   /**
    * @param param - Param to get current value and remove
    * Returns param value and removes custom param when it is called
    */
-  getParamValAndRemove(param: string, app: string): string {
-    const appRef = this.get(app);
+  getParamValAndRemove(param: string): string {
     const value = this.getParamValue(param);
-    if (appRef.customParams[param]) {
-      delete appRef.customParams[param];
+    if (this.customParams[param]) {
+      delete this.customParams[param];
     }
     return value;
   }
@@ -399,67 +404,15 @@ export class HsShareUrlService {
    * @param params A dictionary of custom parameters which get added to the generated url
    * Update values for custom parameters which get added to the url and usually are application specific
    */
-  updateCustomParams(params, app): void {
-    const appRef = this.get(app);
+  updateCustomParams(params): void {
     for (const param in params) {
-      appRef.customParams[param] = params[param];
+      this.customParams[param] = params[param];
     }
-    if (appRef.paramTimer !== null) {
-      clearTimeout(appRef.paramTimer);
+    if (this.paramTimer !== null) {
+      clearTimeout(this.paramTimer);
     }
-    appRef.paramTimer = setTimeout(() => {
-      this.update(app);
+    this.paramTimer = setTimeout(() => {
+      this.update();
     }, 1000);
-  }
-
-  /**
-   * @param map Openlayers map
-   */
-  async init(app: string): Promise<void> {
-    const appRef = this.get(app);
-    this.keepTrackOfGetParams(app);
-    await this.HsMapService.loaded(app);
-    const map = this.HsMapService.getMap(app);
-    if (appRef.url_generation) {
-      //FIXME : always true
-      let timer = null;
-      this.HsEventBusService.mapExtentChanges
-        .pipe(takeUntil(this.end))
-        .subscribe(
-          this.HsUtilsService.debounce(
-            ({map, event, extent, app}) => {
-              this.zone.run(() => {
-                this.updatePermalinkComposition(app);
-              });
-            },
-            200,
-            false,
-            this
-          )
-        );
-      map.getLayers().on('add', (e) => {
-        const layer = e.element;
-        const external = getShowInLayerManager(layer);
-        if (external !== null && external == false) {
-          return;
-        }
-        layer.on('change:visible', (e) => {
-          if (timer !== null) {
-            clearTimeout(timer);
-          }
-          timer = setTimeout(() => {
-            if (!this.end.closed) {
-              this.update(app);
-            }
-          }, 1000);
-        });
-      });
-      const lang = this.getParamValue(HS_PRMS.lang);
-      if (lang) {
-        this.HsLanguageService.setLanguage(lang, app);
-      }
-      const view = this.getParamValue(HS_PRMS.view);
-      // this.HsMapService.visible = !(view == '3d');
-    }
   }
 }

@@ -33,8 +33,7 @@ export class WfsSource extends Vector<Geometry> {
       provided_url,
       layer_name,
       map_projection,
-    }: WfsOptions,
-    app: string
+    }: WfsOptions
   ) {
     super({
       loader: async function (extent, resolution, projection) {
@@ -69,7 +68,7 @@ export class WfsSource extends Vector<Geometry> {
           provided_url,
           hsUtilsService.paramsToURLWoEncode(params),
         ].join('?');
-        url = hsUtilsService.proxify(url, app);
+        url = hsUtilsService.proxify(url);
         const response = await lastValueFrom(
           http.get(url, {responseType: 'text'})
         );

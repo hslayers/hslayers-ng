@@ -7,47 +7,28 @@ type Queues = {
     q: any; // queueObject
   };
 };
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsQueuesService {
-  apps: {
-    [key: string]: {
-      queues: Queues;
-    };
-  } = {
-    default: {queues: {}},
-  };
-
-  /**
-   * Get the params saved by the queues service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): {queues: Queues} {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = {
-        queues: {},
-      };
-    }
-    return this.apps[app ?? 'default'];
-  }
+  queues: Queues = {};
 
   /**
    * Get the params saved by the queues service for the current app
    * @param useCase - Queue for
-   * @param app - App identifier
+   
    * @param customConcurrency - (Optional) custom concurrency
    * @param timeout - (Optional) Timeout of one queue item
    */
   ensureQueue(
     useCase: string,
-    app: string,
+
     customConcurrency?: number,
     timeout?: number
   ): queue {
-    const appRef = this.get(app);
-    if (appRef.queues[useCase]) {
-      return appRef.queues[useCase].q;
+    if (this.queues[useCase]) {
+      return this.queues[useCase].q;
     }
     const newQueue: {
       q: any;
@@ -59,9 +40,9 @@ export class HsQueuesService {
         timeout,
       }),
     };
-    appRef.queues[useCase] = newQueue;
+    this.queues[useCase] = newQueue;
     newQueue.q.on('end', () => {
-      delete appRef.queues[useCase];
+      delete this.queues[useCase];
     });
     return newQueue.q;
   }

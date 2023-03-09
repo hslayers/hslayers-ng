@@ -3,26 +3,26 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }}
+                    {{'COMMON.unsavedChanges' | translateHs }}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} "></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
                 <p class="fw-bold h6">{{data?.message}}</p>
-                <p class="h6 small">{{'STYLER.unsavedChanges' | translateHs : {app: data.app} }}</p>
+                <p class="h6 small">{{'STYLER.unsavedChanges' | translateHs }}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="yes()"
-                    [title]="'COMMON.save' | translateHs : data" data-dismiss="modal">{{'COMMON.save' | translateHs :
-                    {app: data.app} }}</button>
+                <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.save' | translateHs"
+                    data-dismiss="modal">{{'COMMON.save' |
+                    translateHs}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.return' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.return'
+                    [title]="'COMMON.return' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.return'
                     |
-                    translateHs : {app: data.app} }}</button>
+                    translateHs }}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'STYLER.exitWithoutSave' | translateHs : data" (click)="exitWithoutSave()"
-                    data-dismiss="modal">{{'STYLER.exitWithoutSave' | translateHs : {app: data.app} }}</button>
+                    [title]="'STYLER.exitWithoutSave' | translateHs" (click)="exitWithoutSave()"
+                    data-dismiss="modal">{{'STYLER.exitWithoutSave' | translateHs }}</button>
             </div>
         </div>
     </div>

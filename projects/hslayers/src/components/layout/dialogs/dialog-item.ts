@@ -1,7 +1,6 @@
 import {Type} from '@angular/core';
 
 export class HsDialogItem {
-  app: string;
   resolve: (value?: unknown) => void;
   reject: (reason?: any) => void;
   waitResult(): Promise<any> {
@@ -11,7 +10,5 @@ export class HsDialogItem {
     });
     return promise;
   }
-  constructor(public component: Type<any>, public data: any, app: string) {
-    this.app = app;
-  }
+  constructor(public component: Type<any>, public data: any) {}
 }

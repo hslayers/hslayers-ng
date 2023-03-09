@@ -7,9 +7,9 @@ import {HsButton} from './button.interface';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutParams, HsLayoutService} from '../layout/layout.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
-import {HsSidebarParams, HsSidebarService} from './sidebar.service';
+import {HsSidebarService} from './sidebar.service';
 
 @Component({
   selector: 'hs-sidebar',
@@ -17,13 +17,11 @@ import {HsSidebarParams, HsSidebarService} from './sidebar.service';
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;
-  @Input() app = 'default';
+
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
   private end = new Subject<void>();
-  private serviceAppRef: HsSidebarParams;
-  layoutAppRef: HsLayoutParams;
-
+  sidebarPosition: string;
   isVisible = of(true);
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -36,19 +34,17 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
-    this.HsSidebarService.destroy(this.app);
+    this.HsSidebarService.destroy();
   }
   ngOnInit(): void {
     const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);
-    this.serviceAppRef = this.HsSidebarService.get(this.app);
-    this.layoutAppRef = this.HsLayoutService.get(this.app);
-    this.serviceAppRef.buttons
+    this.HsSidebarService.buttons
       .pipe(startWith([]), delay(0))
       .pipe(takeUntil(this.end))
       .subscribe((buttons) => {
         this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
-        this.HsSidebarService.setPanelState(this.buttons, this.app);
-        this.HsSidebarService.setButtonVisibility(this.buttons, this.app);
+        this.HsSidebarService.setPanelState(this.buttons);
+        this.HsSidebarService.setButtonVisibility(this.buttons);
       });
     this.miniSidebarButton = {
       title: 'SIDEBAR.additionalPanels',
@@ -56,24 +52,20 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     if (panel) {
       setTimeout(() => {
         //Without timeout we get ExpressionChangedAfterItHasBeenCheckedError
-        if (!this.HsLayoutService.get(this.app).minisidebar) {
-          this.HsLayoutService.setMainPanel(panel, this.app);
+        if (!this.HsLayoutService.minisidebar) {
+          this.HsLayoutService.setMainPanel(panel);
         }
       });
     }
     this.HsEventBusService.layoutResizes
       .pipe(takeUntil(this.end))
       .subscribe(() => {
-        this.HsSidebarService.setButtonVisibility(this.buttons, this.app);
+        this.HsSidebarService.setButtonVisibility(this.buttons);
       });
-    this.HsConfig.configChanges
-      .pipe(takeUntil(this.end))
-      .subscribe(({app, config}) => {
-        if (app == this.app) {
-          this.HsSidebarService.setPanelState(this.buttons, this.app);
-        }
-      });
-    this.HsSidebarService.sidebarLoad.next(this.app);
+    this.HsConfig.configChanges.pipe(takeUntil(this.end)).subscribe(() => {
+      this.HsSidebarService.setPanelState(this.buttons);
+    });
+    this.HsSidebarService.sidebarLoad.next();
   }
 
   /**
@@ -81,17 +73,18 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.serviceAppRef.showUnimportant = !this.serviceAppRef.showUnimportant;
+    this.HsSidebarService.showUnimportant =
+      !this.HsSidebarService.showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    const layoutAppRef = this.HsLayoutService.get(this.app);
-    layoutAppRef.sidebarExpanded = !layoutAppRef.sidebarExpanded;
-    this.HsLayoutService.updPanelSpaceWidth(this.app);
+    this.HsLayoutService.sidebarExpanded =
+      !this.HsLayoutService.sidebarExpanded;
+    this.HsLayoutService.updPanelSpaceWidth();
     setTimeout(() => {
-      this.HsCoreService.updateMapSize(this.app);
+      this.HsCoreService.updateMapSize();
     }, 110);
   }
 }

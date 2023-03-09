@@ -1,8 +1,8 @@
 <div #hslayout class="hsl hs-page-wrapper w-100 h-100" style="min-height: inherit !important">
     <div class="hs-content-wrapper d-flex w-100 h-100" [ngClass]="{
         'hs-open': HsLayoutService.sidebarExpanded && sidebarVisible,
-        'hs-sb-right': HsConfig.get(app).sidebarPosition === 'right' && sidebarVisible,
-        'hs-sb-left': HsConfig.get(app).sidebarPosition === 'left' && sidebarVisible,
+        'hs-sb-right': HsConfig.get().sidebarPosition === 'right' && sidebarVisible,
+        'hs-sb-left': HsConfig.get().sidebarPosition === 'left' && sidebarVisible,
         'hs-sb-bottom': HsLayoutService.sidebarBottom()
     }">
         <div class="hs-map-space d-flex">
@@ -18,13 +18,13 @@
             <!--         <hs-info></hs-info> -->
             <!--     </div> -->
             <!-- </div> -->
-            <!-- <hs-toast aria-live="polite" aria-atomic="true" [ngClass]="HsConfig.get(app).sidebarPosition == 'left' ? 'align-items-end' : 'align-items-start'" ></hs-toast> -->
+            <!-- <hs-toast aria-live="polite" aria-atomic="true" [ngClass]="HsConfig.get().sidebarPosition == 'left' ? 'align-items-end' : 'align-items-start'" ></hs-toast> -->
         </div>
         <div class="hs-panelspace" *ngIf="sidebarVisible"
             [ngClass]="{'labels': HsLayoutService.sidebarLabels, 'buttons': HsLayoutService.sidebarButtons}"
             [ngStyle]="{width: panelSpaceWidth + 'px'}">
             <div class="hs-panelspace-wrapper me-1">
-                <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
+                <hs-sidebar class="border-0"></hs-sidebar>
                 <div class="hs-panelplace">
                     <hs-mat-layer-manager [hidden]="!panelVisible('layermanager', this)"></hs-mat-layer-manager>
                     <hs-legend [hidden]="!panelVisible('legend', this)"></hs-legend>
@@ -41,17 +41,16 @@
                     </hs-search>
                     <hs-trip-planner *ngIf="panelVisible('tripPlanner')" [hidden]="!panelVisible('tripPlanner', this)">
                     </hs-trip-planner>
-                    <hs-mini-sidebar [app]="app" *ngIf="HsLayoutService.minisidebar"
+                    <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar"
                         [hidden]="!panelVisible('sidebar', this)"></hs-mini-sidebar>
                     <hs-draw [hidden]="!panelVisible('draw', this)"></hs-draw>
                     <hs-add-data [hidden]="!panelVisible('addData', this)"></hs-add-data>
-                    <hs-panel-container class="hs-panelplace" [app]="app"
-                        [ngStyle]="{width: (panelSpaceWidth - 50) + 'px'}">
+                    <hs-panel-container class="hs-panelplace" [ngStyle]="{width: (panelSpaceWidth - 50) + 'px'}">
                     </hs-panel-container>
                 </div>
             </div>
         </div>
         <div class="hs-dialog-area"></div>
     </div>
-    <hs-dialog-container [app]="app"></hs-dialog-container>
+    <hs-dialog-container></hs-dialog-container>
 </div>

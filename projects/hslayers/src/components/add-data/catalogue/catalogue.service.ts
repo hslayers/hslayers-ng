@@ -71,11 +71,7 @@ export class HsAddDataCatalogueParams {
 @Injectable({
   providedIn: 'root',
 })
-export class HsAddDataCatalogueService {
-  apps: {
-    [id: string]: HsAddDataCatalogueParams;
-  } = {default: new HsAddDataCatalogueParams()};
-
+export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   constructor(
     public hsConfig: HsConfig,
     public hsAddDataVectorService: HsAddDataVectorService,
@@ -93,58 +89,46 @@ export class HsAddDataCatalogueService {
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsAddDataOwsService: HsAddDataOwsService
   ) {
-    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      if (this.dataSourceExistsAndEmpty(app) && this.panelVisible(app)) {
-        this.reloadData(app);
-        this.get(app).extentChangeSuppressed = true;
+    super();
+    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+      if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
+        this.reloadData();
+        this.extentChangeSuppressed = true;
       }
-      this.calcExtentLayerVisibility(app);
+      this.calcExtentLayerVisibility();
     });
 
-    this.hsCommonLaymanService.authChange.subscribe(({app}) => {
-      if (this.panelVisible(app)) {
-        this.reloadData(app);
+    this.hsCommonLaymanService.authChange.subscribe(() => {
+      if (this.panelVisible()) {
+        this.reloadData();
       }
     });
 
-    this.hsAddDataService.datasetSelected.subscribe(({type, app}) => {
-      if (type == 'catalogue' && this.panelVisible(app)) {
-        this.reloadData(app);
+    this.hsAddDataService.datasetSelected.subscribe((type) => {
+      if (type == 'catalogue' && this.panelVisible()) {
+        this.reloadData();
       }
     });
-  }
 
-  get(app: string): HsAddDataCatalogueParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsAddDataCatalogueParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
+    this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
+      this.hsCommonEndpointsService.endpoints
+    );
 
-  init(_app: string) {
-    this.get(_app).endpointsWithDatasources =
-      this.endpointsWithDatasourcesPipe.transform(
-        this.hsCommonEndpointsService.endpoints
-      );
-
-    if (this.dataSourceExistsAndEmpty(_app) && this.panelVisible(_app)) {
-      this.queryCatalogs(_app);
+    if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
+      this.queryCatalogs();
       // this.hsMickaFilterService.fillCodesets();
     }
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
-        ({map, event, extent, app}) => {
-          if (app == _app) {
-            const appRef = this.get(app);
-            if (!this.panelVisible(app) || appRef.extentChangeSuppressed) {
-              appRef.extentChangeSuppressed = false;
-              return;
-            }
-            if (appRef.data.filterByExtent) {
-              this.zone.run(() => {
-                this.reloadData(app);
-              });
-            }
+        ({map, event, extent}) => {
+          if (!this.panelVisible() || this.extentChangeSuppressed) {
+            this.extentChangeSuppressed = false;
+            return;
+          }
+          if (this.data.filterByExtent) {
+            this.zone.run(() => {
+              this.reloadData();
+            });
           }
         },
         500,
@@ -154,59 +138,56 @@ export class HsAddDataCatalogueService {
     );
   }
 
-  resetList(app: string): void {
-    const appRef = this.get(app);
-    appRef.listStart = 0;
-    appRef.listNext = appRef.recordsPerPage;
-    appRef.selectedLayer = <HsAddDataLayerDescriptor>{};
-    appRef.endpointsWithDatasources.forEach((ep: HsEndpoint) => {
+  resetList(): void {
+    this.listStart = 0;
+    this.listNext = this.recordsPerPage;
+    this.selectedLayer = <HsAddDataLayerDescriptor>{};
+    this.endpointsWithDatasources.forEach((ep: HsEndpoint) => {
       ep.datasourcePaging.start = 0;
       ep.datasourcePaging.next = ep.datasourcePaging.limit;
       ep.datasourcePaging.matched = 0;
     });
   }
 
-  reloadData(app: string): void {
-    this.get(app).endpointsWithDatasources =
-      this.endpointsWithDatasourcesPipe.transform(
-        this.hsCommonEndpointsService.endpoints
-      );
-    this.resetList(app);
+  reloadData(): void {
+    this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
+      this.hsCommonEndpointsService.endpoints
+    );
+    this.resetList();
 
-    this.queryCatalogs(app);
+    this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
-    this.calcExtentLayerVisibility(app);
+    this.calcExtentLayerVisibility();
   }
 
   /**
    * Queries all configured catalogs for datasources (layers)
    * @param suspendLimitCalculation
    */
-  queryCatalogs(app: string, suspendLimitCalculation?: boolean): void {
-    const appRef = this.get(app);
-    if (appRef.endpointsWithDatasources.length > 0) {
-      if (appRef.catalogQuery) {
-        appRef.catalogQuery.unsubscribe();
-        delete appRef.catalogQuery;
+  queryCatalogs(suspendLimitCalculation?: boolean): void {
+    if (this.endpointsWithDatasources.length > 0) {
+      if (this.catalogQuery) {
+        this.catalogQuery.unsubscribe();
+        delete this.catalogQuery;
       }
-      this.clearLoadedData(app);
+      this.clearLoadedData();
 
-      this.hsMapService.loaded(app).then(() => {
-        appRef.dataLoading = true;
-        this.hsAddDataCatalogueMapService.clearExtentLayer(app);
+      this.hsMapService.loaded().then(() => {
+        this.dataLoading = true;
+        this.hsAddDataCatalogueMapService.clearExtentLayer();
         const observables = [];
 
         //TODO Mark non functional endpoint
-        for (const endpoint of appRef.endpointsWithDatasources) {
-          if (!appRef.data.onlyMine || endpoint.type.includes('layman')) {
-            const promise = this.queryCatalog(endpoint, app);
+        for (const endpoint of this.endpointsWithDatasources) {
+          if (!this.data.onlyMine || endpoint.type.includes('layman')) {
+            const promise = this.queryCatalog(endpoint);
             observables.push(promise);
           }
         }
-        appRef.catalogQuery = forkJoin(observables).subscribe(() => {
+        this.catalogQuery = forkJoin(observables).subscribe(() => {
           suspendLimitCalculation
-            ? this.createLayerList(app)
-            : this.calculateEndpointLimits(app);
+            ? this.createLayerList()
+            : this.calculateEndpointLimits();
         });
       });
     }
@@ -215,73 +196,68 @@ export class HsAddDataCatalogueService {
    * Calculates each endpoint layer request limit, based on the matched layers ratio
    * from all endpoint matched layers
    */
-  calculateEndpointLimits(app: string): void {
-    const appRef = this.get(app);
-    appRef.matchedRecords = 0;
-    appRef.endpointsWithDatasources = appRef.endpointsWithDatasources.filter(
+  calculateEndpointLimits(): void {
+    this.matchedRecords = 0;
+    this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
       (ep) => ep.datasourcePaging.matched != 0
     );
-    if (appRef.endpointsWithDatasources.length == 0) {
-      appRef.dataLoading = false;
+    if (this.endpointsWithDatasources.length == 0) {
+      this.dataLoading = false;
       return;
     }
-    appRef.endpointsWithDatasources.forEach(
-      (ep) => (appRef.matchedRecords += ep.datasourcePaging.matched)
+    this.endpointsWithDatasources.forEach(
+      (ep) => (this.matchedRecords += ep.datasourcePaging.matched)
     );
     let sumLimits = 0;
-    appRef.endpointsWithDatasources.forEach((ep) => {
+    this.endpointsWithDatasources.forEach((ep) => {
       ep.datasourcePaging.limit = Math.floor(
-        (ep.datasourcePaging.matched / appRef.matchedRecords) *
-          appRef.recordsPerPage
+        (ep.datasourcePaging.matched / this.matchedRecords) *
+          this.recordsPerPage
       );
       if (ep.datasourcePaging.limit == 0) {
         ep.datasourcePaging.limit = 1;
       }
       sumLimits += ep.datasourcePaging.limit;
     });
-    appRef.recordsPerPage = sumLimits;
-    appRef.listNext = appRef.recordsPerPage;
-    this.queryCatalogs(app, true);
+    this.recordsPerPage = sumLimits;
+    this.listNext = this.recordsPerPage;
+    this.queryCatalogs(true);
   }
 
-  createLayerList(app: string): void {
-    const appRef = this.get(app);
-    for (const endpoint of appRef.endpointsWithDatasources) {
-      if (!appRef.data.onlyMine || endpoint.type.includes('layman')) {
+  createLayerList(): void {
+    for (const endpoint of this.endpointsWithDatasources) {
+      if (!this.data.onlyMine || endpoint.type.includes('layman')) {
         if (endpoint.layers) {
           endpoint.layers.forEach((layer) => {
             layer.endpoint = endpoint;
             // this.catalogEntries.push(layer);
           });
 
-          if (appRef.catalogEntries.length > 0) {
-            this.filterDuplicates(endpoint, app);
+          if (this.catalogEntries.length > 0) {
+            this.filterDuplicates(endpoint);
           } else {
-            appRef.catalogEntries = appRef.catalogEntries.concat(
-              endpoint.layers
-            );
+            this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
           }
         }
       }
     }
 
-    if (appRef.matchedRecords < appRef.recordsPerPage) {
-      appRef.listNext = appRef.matchedRecords;
+    if (this.matchedRecords < this.recordsPerPage) {
+      this.listNext = this.matchedRecords;
     }
 
-    appRef.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
-    appRef.dataLoading = false;
+    this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
+    this.dataLoading = false;
   }
 
-  filterDuplicates(endpoint: HsEndpoint, app: string): Array<any> {
-    const appRef = this.get(app);
+  filterDuplicates(endpoint: HsEndpoint): Array<any> {
     if (endpoint.layers === undefined || endpoint.layers?.length == 0) {
       return [];
     }
 
     const filteredLayers = endpoint.layers.filter(
       (layer) =>
-        appRef.catalogEntries.filter(
+        this.catalogEntries.filter(
           (u) =>
             u.id == layer.id ||
             u.id == 'm-' + layer.id ||
@@ -290,52 +266,49 @@ export class HsAddDataCatalogueService {
     );
 
     if (endpoint.type.includes('layman')) {
-      appRef.matchedRecords -= endpoint.layers.length - filteredLayers.length;
+      this.matchedRecords -= endpoint.layers.length - filteredLayers.length;
     }
-    appRef.catalogEntries = appRef.catalogEntries.concat(filteredLayers);
+    this.catalogEntries = this.catalogEntries.concat(filteredLayers);
   }
 
-  getNextRecords(app: string): void {
-    const appRef = this.get(app);
-    appRef.listStart += appRef.recordsPerPage;
-    appRef.listNext += appRef.recordsPerPage;
-    if (appRef.listNext > appRef.matchedRecords) {
-      appRef.listNext = appRef.matchedRecords;
+  getNextRecords(): void {
+    this.listStart += this.recordsPerPage;
+    this.listNext += this.recordsPerPage;
+    if (this.listNext > this.matchedRecords) {
+      this.listNext = this.matchedRecords;
     }
-    appRef.endpointsWithDatasources.forEach(
+    this.endpointsWithDatasources.forEach(
       (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit)
     );
-    this.queryCatalogs(app, true);
+    this.queryCatalogs(true);
   }
 
-  getPreviousRecords(app: string): void {
-    const appRef = this.get(app);
-    if (appRef.listStart - appRef.recordsPerPage <= 0) {
-      appRef.listStart = 0;
-      appRef.listNext = appRef.recordsPerPage;
-      appRef.endpointsWithDatasources.forEach(
+  getPreviousRecords(): void {
+    if (this.listStart - this.recordsPerPage <= 0) {
+      this.listStart = 0;
+      this.listNext = this.recordsPerPage;
+      this.endpointsWithDatasources.forEach(
         (ep: HsEndpoint) => (ep.datasourcePaging.start = 0)
       );
     } else {
-      appRef.listStart -= appRef.recordsPerPage;
-      appRef.listNext = appRef.listStart + appRef.recordsPerPage;
-      appRef.endpointsWithDatasources.forEach(
+      this.listStart -= this.recordsPerPage;
+      this.listNext = this.listStart + this.recordsPerPage;
+      this.endpointsWithDatasources.forEach(
         (ep: HsEndpoint) =>
           (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
       );
     }
-    this.queryCatalogs(app, true);
+    this.queryCatalogs(true);
   }
 
-  changeRecordsPerPage(perPage: number, app: string): void {
-    this.resetList(app);
-    this.queryCatalogs(app);
+  changeRecordsPerPage(perPage: number): void {
+    this.resetList();
+    this.queryCatalogs();
   }
 
-  clearLoadedData(app: string): void {
-    const appRef = this.get(app);
-    appRef.catalogEntries = [];
-    appRef.endpointsWithDatasources.forEach((ep) => (ep.layers = []));
+  clearLoadedData(): void {
+    this.catalogEntries = [];
+    this.endpointsWithDatasources.forEach((ep) => (ep.layers = []));
   }
 
   /**
@@ -345,29 +318,26 @@ export class HsAddDataCatalogueService {
    * Use all query params (search text, bbox, params.., sorting, start)
    * @param catalog - Configuration of selected datasource (from app config)
    */
-  queryCatalog(catalog: HsEndpoint, app: string): any {
-    const appRef = this.get(app);
-    this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog, app);
+  queryCatalog(catalog: HsEndpoint): any {
+    this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {
       case 'micka':
         query = this.hsMickaBrowserService.queryCatalog(
           catalog,
-          appRef.data,
+          this.data,
           (feature: Feature<Geometry>) =>
-            this.hsAddDataCatalogueMapService.addExtentFeature(feature, app),
-          appRef.data.textField,
-          app
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature),
+          this.data.textField
         );
         return query;
       case 'layman':
       case 'layman-wagtail':
         query = this.hsLaymanBrowserService.queryCatalog(
           catalog,
-          app,
-          appRef.data,
+          this.data,
           (feature: Feature<Geometry>) =>
-            this.hsAddDataCatalogueMapService.addExtentFeature(feature, app)
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature)
         );
         return query;
       default:
@@ -413,22 +383,16 @@ export class HsAddDataCatalogueService {
   async addLayerToMap(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
-    app: string,
     type?: string
   ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
 
     if (ds.type == 'micka') {
-      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(
-        ds,
-        layer,
-        app
-      );
+      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
     } else if (ds.type.includes('layman')) {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
-        layer,
-        app
+        layer
       );
     } else {
       whatToAdd = {type: 'none'};
@@ -448,42 +412,36 @@ export class HsAddDataCatalogueService {
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
         : whatToAdd.link;
       if (ds.type == 'micka' && whatToAdd.recordType != 'dataset') {
-        this.datasetSelect('url', app);
+        this.datasetSelect('url');
       }
-      await this.hsAddDataOwsService.connectToOWS(
-        {
-          type: whatToAdd.type.toLowerCase(),
-          uri: decodeURIComponent(whatToAdd.link),
-          layer:
-            ds.type.includes('layman') || whatToAdd.recordType === 'dataset'
-              ? ds.type.includes('layman')
-                ? layer.name
-                : whatToAdd.name
-              : undefined,
-        },
-        app
-      );
+      await this.hsAddDataOwsService.connectToOWS({
+        type: whatToAdd.type.toLowerCase(),
+        uri: decodeURIComponent(whatToAdd.link),
+        layer:
+          ds.type.includes('layman') || whatToAdd.recordType === 'dataset'
+            ? ds.type.includes('layman')
+              ? layer.name
+              : whatToAdd.name
+            : undefined,
+      });
     } else if (whatToAdd.type == 'WFS') {
       if (ds.type == 'micka') {
         if (!whatToAdd.workspace) {
-          this.datasetSelect('url', app);
+          this.datasetSelect('url');
         }
         whatToAdd.link = Array.isArray(whatToAdd.link)
           ? whatToAdd.link.filter((link) =>
               link.toLowerCase().includes('wfs')
             )[0]
           : whatToAdd.link;
-        await this.hsAddDataOwsService.connectToOWS(
-          {
-            type: whatToAdd.type.toLowerCase(),
-            uri: decodeURIComponent(whatToAdd.link),
-            layer: whatToAdd.workspace
-              ? `${whatToAdd.workspace}:${whatToAdd.name}`
-              : undefined,
-            style: whatToAdd.style,
-          },
-          app
-        );
+        await this.hsAddDataOwsService.connectToOWS({
+          type: whatToAdd.type.toLowerCase(),
+          uri: decodeURIComponent(whatToAdd.link),
+          layer: whatToAdd.workspace
+            ? `${whatToAdd.workspace}:${whatToAdd.name}`
+            : undefined,
+          style: whatToAdd.style,
+        });
       } else {
         //Layman layers of logged user/ with write access
         if (whatToAdd.editable) {
@@ -499,24 +457,20 @@ export class HsAddDataCatalogueService {
               workspace: whatToAdd.workspace,
               style: whatToAdd.style,
               saveToLayman: true,
-            },
-            app
+            }
           );
-          this.hsAddDataVectorService.fitExtent(layer, app);
-          this.datasetSelect('catalogue', app);
+          this.hsAddDataVectorService.fitExtent(layer);
+          this.datasetSelect('catalogue');
         } else {
           //Layman layers without write access
-          await this.hsAddDataOwsService.connectToOWS(
-            {
-              type: 'wfs',
-              uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
-              style: whatToAdd.style,
-              layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
-            },
-            app
-          );
+          await this.hsAddDataOwsService.connectToOWS({
+            type: 'wfs',
+            uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+            style: whatToAdd.style,
+            layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
+          });
         }
-        this.hsLayoutService.setMainPanel('layermanager', app);
+        this.hsLayoutService.setMainPanel('layermanager');
       }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddDataVectorService.addVectorLayer(
@@ -526,63 +480,54 @@ export class HsAddDataCatalogueService {
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles},
-        app
+        {extractStyles: whatToAdd.extractStyles}
       );
-      this.hsAddDataVectorService.fitExtent(layer, app);
+      this.hsAddDataVectorService.fitExtent(layer);
     } else if (whatToAdd.type == 'WMTS' && ds.type == 'micka') {
       //Micka only yet
       if (whatToAdd.recordType === 'service') {
-        this.datasetSelect('url', app);
+        this.datasetSelect('url');
       }
-      await this.hsAddDataOwsService.connectToOWS(
-        {
-          type: whatToAdd.type.toLowerCase(),
-          uri: decodeURIComponent(whatToAdd.link),
-          layer:
-            whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
-        },
-        app
-      );
+      await this.hsAddDataOwsService.connectToOWS({
+        type: whatToAdd.type.toLowerCase(),
+        uri: decodeURIComponent(whatToAdd.link),
+        layer: whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
+      });
     } else {
-      this.hsLayoutService.setMainPanel('layermanager', app);
+      this.hsLayoutService.setMainPanel('layermanager');
     }
     return whatToAdd.type;
   }
 
-  datasetSelect(id_selected: DatasetType, app: string): void {
-    this.get(app).data.id_selected = id_selected;
-    this.hsAddDataService.selectType(id_selected, app);
-    this.calcExtentLayerVisibility(app);
+  datasetSelect(id_selected: DatasetType): void {
+    this.data.id_selected = id_selected;
+    this.hsAddDataService.selectType(id_selected);
+    this.calcExtentLayerVisibility();
   }
 
   /**
    * Clear the "query" property
    */
-  clear(app: string): void {
-    const appRef = this.get(app);
-    appRef.data.query.textFilter = '';
-    appRef.data.query.title = '';
-    appRef.data.query.Subject = '';
-    appRef.data.query.keywords = '';
-    appRef.data.query.OrganisationName = '';
-    appRef.data.query.sortby = '';
+  clear(): void {
+    this.data.query.textFilter = '';
+    this.data.query.title = '';
+    this.data.query.Subject = '';
+    this.data.query.keywords = '';
+    this.data.query.OrganisationName = '';
+    this.data.query.sortby = '';
   }
 
-  calcExtentLayerVisibility(app: string): void {
-    this.hsAddDataCatalogueMapService
-      .get(app)
-      .extentLayer.setVisible(
-        this.panelVisible(app) &&
-          this.hsAddDataService.get(app).dsSelected == 'catalogue'
-      );
+  calcExtentLayerVisibility(): void {
+    this.hsAddDataCatalogueMapService.extentLayer.setVisible(
+      this.panelVisible() && this.hsAddDataService.dsSelected == 'catalogue'
+    );
   }
 
-  private dataSourceExistsAndEmpty(app: string): boolean {
-    return !!this.get(app).endpointsWithDatasources;
+  private dataSourceExistsAndEmpty(): boolean {
+    return !!this.endpointsWithDatasources;
   }
 
-  private panelVisible(app: string): boolean {
-    return this.hsLayoutService.panelVisible('addData', app);
+  private panelVisible(): boolean {
+    return this.hsLayoutService.panelVisible('addData');
   }
 }

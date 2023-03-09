@@ -23,7 +23,7 @@ export type Measurement = {
 })
 export class HsUtilsService {
   constructor(
-    public HsConfig: HsConfig,
+    public hsConfig: HsConfig,
     private http: HttpClient,
     private LogService: HsLogService,
     private hsCommonLaymanService: HsCommonLaymanService,
@@ -37,10 +37,10 @@ export class HsUtilsService {
    * @param toEncoding - Optional parameter if UTF-8 encoding shouldn't be used for non-image URLs.
    * @returns Encoded Url with path to hsproxy.cgi script
    */
-  proxify(url: string, app: string = 'default', toEncoding?: boolean): string {
+  proxify(url: string, toEncoding?: boolean): string {
     const laymanEp = this.hsCommonLaymanService.layman;
     if (
-      url.startsWith(this.HsConfig.get(app).proxyPrefix) ||
+      url.startsWith(this.hsConfig.proxyPrefix) ||
       (laymanEp && url.startsWith(laymanEp.url))
     ) {
       return url;
@@ -58,10 +58,10 @@ export class HsUtilsService {
       this.getPortFromUrl(url) != this.getPortFromUrl(window.location.origin)
     ) {
       if (
-        this.HsConfig.get(app).useProxy === undefined ||
-        this.HsConfig.get(app).useProxy === true
+        this.hsConfig.useProxy === undefined ||
+        this.hsConfig.useProxy === true
       ) {
-        outUrl = this.HsConfig.get(app).proxyPrefix || '/proxy/';
+        outUrl = this.hsConfig.proxyPrefix || '/proxy/';
         if (outUrl.indexOf('hsproxy.cgi') > -1) {
           if (
             toEncoding &&
@@ -95,13 +95,13 @@ export class HsUtilsService {
             })
         }
    */
-  async shortUrl(url: string, app: string): Promise<any> {
-    if (this.HsConfig.get(app).shortenUrl != undefined) {
-      return this.HsConfig.get(app).shortenUrl(url);
+  async shortUrl(url: string): Promise<any> {
+    if (this.hsConfig.shortenUrl != undefined) {
+      return this.hsConfig.shortenUrl(url);
     }
     return await lastValueFrom(
       this.http.get(
-        this.proxify('http://tinyurl.com/api-create.php?url=' + url, app),
+        this.proxify('http://tinyurl.com/api-create.php?url=' + url),
         {
           responseType: 'text',
         }

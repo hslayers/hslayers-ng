@@ -44,15 +44,6 @@ export function getWebpackTranslateLoader(
     }),
   ],
   exports: [HsLanguageComponent, TranslateCustomPipe],
-  providers: [
-    TranslateStore,
-    {
-      provide: CustomTranslationService,
-      useFactory: (dep1, dep2) => {
-        return () => new CustomTranslationService(dep1, dep2);
-      },
-      deps: [HsConfig, HttpClient],
-    },
-  ],
+  providers: [TranslateStore],
 })
 export class HsLanguageModule {}

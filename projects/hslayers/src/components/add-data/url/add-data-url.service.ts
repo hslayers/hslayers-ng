@@ -14,20 +14,14 @@ import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {urlDataObject} from './types/data-object.type';
 
-class HsAddDataUrlParams {
-  typeSelected: AddDataUrlType;
-  addingAllowed: boolean;
-  connectFromParams = true;
-  addDataCapsParsingError: Subject<any> = new Subject();
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataUrlService {
-  apps: {
-    [id: string]: HsAddDataUrlParams;
-  } = {default: new HsAddDataUrlParams()};
+  typeSelected: AddDataUrlType;
+  addingAllowed: boolean;
+  connectFromParams = true;
+  addDataCapsParsingError: Subject<any> = new Subject();
 
   constructor(
     public hsLog: HsLogService,
@@ -36,13 +30,6 @@ export class HsAddDataUrlService {
     private hsMapService: HsMapService,
     private hsToastService: HsToastService
   ) {}
-
-  get(app: string): HsAddDataUrlParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsAddDataUrlParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
 
   /**
    * Selects a service layer to be added (WMS | WMTS | ArcGIS Map Server)
@@ -116,16 +103,16 @@ export class HsAddDataUrlService {
     return serviceLayer;
   }
 
-  searchForChecked(records: Array<any>, app: string): void {
-    this.get(app).addingAllowed =
-      records?.some((l) => l.checked) ?? this.get(app).typeSelected == 'arcgis';
+  searchForChecked(records: Array<any>): void {
+    this.addingAllowed =
+      records?.some((l) => l.checked) ?? this.typeSelected == 'arcgis';
   }
 
   /**
    * Calculate cumulative bounding box which encloses all the provided layers (service layer definitions)
    * Common for WMS/WMTS (WFS has its own implementation)
    */
-  calcAllLayersExtent(layers: Layer<Source>[], app: string): any {
+  calcAllLayersExtent(layers: Layer<Source>[]): any {
     if (layers.length == 0) {
       return undefined;
     }
@@ -139,8 +126,7 @@ export class HsAddDataUrlService {
         {
           serviceCalledFrom: 'HsAddDataUrlService',
           toastStyleClasses: 'bg-warning text-white',
-        },
-        app
+        }
       );
       return undefined;
     }
@@ -179,9 +165,9 @@ export class HsAddDataUrlService {
   /**
    * Zoom map to one layers or combined layer list extent
    */
-  zoomToLayers(data: urlDataObject, app: string) {
+  zoomToLayers(data: urlDataObject) {
     if (data.extent) {
-      this.hsMapService.fitExtent(data.extent, app);
+      this.hsMapService.fitExtent(data.extent);
     }
   }
 }

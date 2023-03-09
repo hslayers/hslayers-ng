@@ -1,5 +1,5 @@
 <div class="list-group" [hidden]="!searchResultsVisible" style="display: block; margin-bottom: 0px">
-    <div *ngFor="let provider of hsSearchService.apps[app].providers | keyvalue ">
+    <div *ngFor="let provider of hsSearchService.providers | keyvalue ">
         <a class="list-group-item active" [hidden]="!(provider.value.results.length > 0)">Provider:
             {{provider.value.name}}</a>
         <a *ngFor="let result of provider.value.results | limitTo: 10" class="list-group-item hsl-search-result"

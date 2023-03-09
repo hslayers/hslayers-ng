@@ -11,7 +11,7 @@ import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 })
 export class HsFillSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: FillSymbolizer;
-  @Input() app = 'default';
+  
   @ViewChild('graphicFillMenu') menuRef;
   kinds = Kinds;
 

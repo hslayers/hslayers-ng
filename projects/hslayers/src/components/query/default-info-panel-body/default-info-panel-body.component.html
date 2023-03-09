@@ -1,18 +1,18 @@
-<div *ngIf="(queryBaseAppRef.features.length > 0) || (queryBaseAppRef.coordinates.length > 0)"
+<div *ngIf="(hsQueryBaseService.features.length > 0) || (hsQueryBaseService.coordinates.length > 0)"
     class="card hs-main-panel">
     <div class="card-body">
-        <div ngbDropdown [hidden]="!(queryBaseAppRef.featureInfoHtmls.length > 0)">
+        <div ngbDropdown [hidden]="!(hsQueryBaseService.featureInfoHtmls.length > 0)">
             <button ngbDropdownToggle class="btn btn-light w-100 rounded-0">
-                {{'QUERY.featureInfo' | translateHs : {app} }}
+                {{'QUERY.featureInfo' | translateHs }}
             </button>
             <div ngbDropdownMenu class="position-relative w-100"
-                *ngFor="let html of queryBaseAppRef.featureInfoHtmls" [innerHtml]="html"></div>
+                *ngFor="let html of hsQueryBaseService.featureInfoHtmls" [innerHtml]="html"></div>
         </div>
-        <hs-query-feature-list [app]="app"></hs-query-feature-list>
+        <hs-query-feature-list></hs-query-feature-list>
         <table class="table table-striped" style="table-layout:fixed"
-            [hidden]="!(queryBaseAppRef.attributes.length > 0)">
+            [hidden]="!(hsQueryBaseService.attributes.length > 0)">
             <tbody>
-                <tr *ngFor="let attribute of queryBaseAppRef.attributes">
+                <tr *ngFor="let attribute of hsQueryBaseService.attributes">
                     <td class="first-col">{{attribute.name}}</td>
                     <td class="second-col" [innerHtml]="attribute.value"></td>
                 </tr>

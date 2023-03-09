@@ -7,7 +7,7 @@ import {Layer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
 import {Source} from 'ol/source';
 import {Vector as VectorSource} from 'ol/source';
-import {getCenter, buffer} from 'ol/extent';
+import {buffer, getCenter} from 'ol/extent';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';
 import {
@@ -15,12 +15,12 @@ import {
   getDomFeatureLinks,
 } from '../../common/layer-extensions';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
-import {HsQueryPopupService} from '../query/query-popup.service';
 import {HsQueryBaseService} from '../query/query-base.service';
+import {HsQueryPopupService} from '../query/query-popup.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HsLayoutService} from '../layout/layout.service';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
@@ -46,16 +46,14 @@ export class HsExternalService {
     private hsQueryBaseService: HsQueryBaseService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsLayoutService: HsLayoutService
-  ) {}
-
-  async init(app: string) {
-    await this.hsMapService.loaded(app);
-    const map = this.hsMapService.getMap(app);
-    for (const layer of map.getLayers().getArray()) {
-      this.layerAdded(layer as Layer<Source>, app);
-    }
-    map.getLayers().on('add', (e) => this.layerAdded(e.element, app));
-    map.getLayers().on('remove', (e) => this.layerRemoved(e.element));
+  ) {
+    this.hsMapService.loaded().then((map) => {
+      for (const layer of map.getLayers().getArray()) {
+        this.layerAdded(layer as Layer<Source>);
+      }
+      map.getLayers().on('add', (e) => this.layerAdded(e.element));
+      map.getLayers().on('remove', (e) => this.layerRemoved(e.element));
+    });
   }
 
   layerRemoved(layer: BaseLayer): void {
@@ -70,14 +68,14 @@ export class HsExternalService {
     }
   }
 
-  layerAdded(layer: BaseLayer, app: string): void {
+  layerAdded(layer: BaseLayer): void {
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (getDomFeatureLinks(layer)) {
-        this.processLinks(layer as Layer, app);
+        this.processLinks(layer as Layer);
       }
       layer.on('propertychange', (e) => {
         this.hsUtilsService.debounce(
-          this.layerPropChanged(e, app),
+          this.layerPropChanged(e),
           100,
           false,
           this
@@ -85,13 +83,13 @@ export class HsExternalService {
       });
     }
   }
-  layerPropChanged(e: ObjectEvent, app: string): void {
+  layerPropChanged(e: ObjectEvent): void {
     if (e.key == DOM_FEATURE_LINKS) {
-      this.processLinks(e.target as Layer<Source>, app);
+      this.processLinks(e.target as Layer<Source>);
     }
   }
 
-  private processLinks(layer: Layer<any>, app: string) {
+  private processLinks(layer: Layer<any>) {
     const source: VectorSource<Geometry> =
       this.hsLayerUtilsService.isLayerClustered(layer)
         ? layer.getSource().getSource()
@@ -115,7 +113,7 @@ export class HsExternalService {
           //This was the only way how to unregister handlers afterwards
           const handler = (e) => {
             for (const action of link.actions) {
-              this.actOnFeature(action, feature, domElement, e, app);
+              this.actOnFeature(action, feature, domElement, e);
             }
           };
           if (!this.featureLinks[featureId]) {
@@ -163,40 +161,39 @@ export class HsExternalService {
       | ((feature: Feature<Geometry>, domElement: Element, event: any) => any),
     feature: any,
     domElement: Element,
-    e: Event,
-    app: string
+    e: Event
   ) {
-    if (!this.hsMapService.getLayerForFeature(feature, app)?.getVisible()) {
+    if (!this.hsMapService.getLayerForFeature(feature)?.getVisible()) {
       return;
     }
     const geom = feature.getGeometry();
     // do not zoom strictly to the extent, but a bit bigger area - needed especially for points
     const extent = buffer(geom.getExtent(), 100);
     const center = getCenter(extent);
-    const map = this.hsMapService.getMap(app);
+    const map = this.hsMapService.getMap();
     switch (action) {
       case 'zoomToExtent':
-        this.hsMapService.fitExtent(extent, app);
+        this.hsMapService.fitExtent(extent);
         break;
       case 'panToCenter':
         map.getView().setCenter(center);
         break;
       case 'showPopup':
-        this.hsQueryPopupService.fillFeatures([feature], app);
+        this.hsQueryPopupService.fillFeatures([feature]);
         const pixel = map.getPixelFromCoordinate(center);
-        this.hsQueryPopupService.showPopup({pixel, map}, app);
+        this.hsQueryPopupService.showPopup({pixel, map});
         break;
       case 'hidePopup':
-        this.hsQueryPopupService.closePopup(app);
+        this.hsQueryPopupService.closePopup();
         break;
       case 'select':
-        const select = this.hsQueryBaseService.get(app).selector;
+        const select = this.hsQueryBaseService.selector;
         select.getFeatures().clear();
-        this.hsQueryBaseService.apps[app].clear('features');
+        this.hsQueryBaseService.clear('features');
         select.getFeatures().push(feature);
-        this.hsQueryVectorService.createFeatureAttributeList(app);
-        this.hsLayoutService.setMainPanel('info', app);
-        this.hsLayoutService.get(app).sidebarExpanded = true;
+        this.hsQueryVectorService.createFeatureAttributeList();
+        this.hsLayoutService.setMainPanel('info');
+        this.hsLayoutService.sidebarExpanded = true;
         break;
       default:
         if (typeof action == 'function') {
@@ -212,8 +209,7 @@ export class HsExternalService {
     domElement: Element
   ): Feature<Geometry> {
     if (typeof link.feature == 'string' || typeof link.feature == 'number') {
-      return source
-        .getFeatureById(link.feature)
+      return source.getFeatureById(link.feature);
     } else if (this.hsUtilsService.instOf(link.feature, Feature)) {
       return link.feature as Feature<Geometry>;
     } else if (typeof link.feature == 'function') {

@@ -46,19 +46,16 @@ export class HsLegendComponent
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.addButton(
-      {
-        panel: 'legend',
-        module: 'hs.legend',
-        order: 1,
-        fits: true,
-        title: 'PANEL_HEADER.LEGEND',
-        description: 'SIDEBAR.descriptions.LEGEND',
-        icon: 'icon-dotlist',
-      },
-      this.data.app
-    );
-    this.hsMapService.loaded(this.data.app).then((map) => this.init(map));
+    this.hsSidebarService.addButton({
+      panel: 'legend',
+      module: 'hs.legend',
+      order: 1,
+      fits: true,
+      title: 'PANEL_HEADER.LEGEND',
+      description: 'SIDEBAR.descriptions.LEGEND',
+      icon: 'icon-dotlist',
+    });
+    this.hsMapService.loaded().then((map) => this.init(map));
   }
 
   /**
@@ -68,8 +65,7 @@ export class HsLegendComponent
    */
   async addLayerToLegends(layer: Layer<Source>): Promise<void> {
     const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
-      layer,
-      this.data.app
+      layer
     );
     if (descriptor) {
       const source: any = layer.getSource();
@@ -96,9 +92,9 @@ export class HsLegendComponent
     }
   }
 
-  rebuildLegends(app: string): void {
+  rebuildLegends(): void {
     this.layerDescriptors = [];
-    this.buildLegendsForLayers(this.hsMapService.getMap(app));
+    this.buildLegendsForLayers(this.hsMapService.getMap());
   }
 
   filterDescriptors(): any[] {
@@ -159,12 +155,7 @@ export class HsLegendComponent
    * @param e - Event object, should have element property
    */
   layerAdded(e): void {
-    const que = this.hsQueuesService.ensureQueue(
-      'addLayerToLegends',
-      this.data.app,
-      3,
-      10000
-    );
+    const que = this.hsQueuesService.ensureQueue('addLayerToLegends', 3, 10000);
     que.push(async (cb) => {
       await this.addLayerToLegends(e.element);
       cb(null);
@@ -188,7 +179,7 @@ export class HsLegendComponent
     const descriptor = this.findLayerDescriptorBySource(e.target);
     if (descriptor) {
       this.hsLegendService
-        .getLayerLegendDescriptor(descriptor.lyr, this.data.app)
+        .getLayerLegendDescriptor(descriptor.lyr)
         .then((newDescriptor) => {
           if (
             newDescriptor.subLayerLegends != descriptor.subLayerLegends ||

@@ -1,21 +1,20 @@
 <div class="p-1">
   <div ngbDropdown class="d-inline-block" #menu="ngbDropdown">
-    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs : {app} "
-      ngbDropdownToggle>
+    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs  " ngbDropdownToggle>
       <span class="icon-plus"></span>
     </button>
     <div ngbDropdownMenu>
       <button ngbDropdownItem (click)="emitClick('AND'); menu.close()">
-        {{'STYLER.andFilter' | translateHs : {app} }}
+        {{'STYLER.andFilter' | translateHs }}
       </button>
       <button ngbDropdownItem (click)="emitClick('OR'); menu.close()">
-        {{'STYLER.orFilter' | translateHs : {app} }}
+        {{'STYLER.orFilter' | translateHs }}
       </button>
       <button ngbDropdownItem (click)="emitClick('NOT'); menu.close()">
-        {{'STYLER.notFilter' | translateHs : {app} }}
+        {{'STYLER.notFilter' | translateHs }}
       </button>
       <button ngbDropdownItem (click)="emitClick('COMPARE'); menu.close()">
-        {{'STYLER.comparisonFilter' | translateHs : {app} }}
+        {{'STYLER.comparisonFilter' | translateHs }}
       </button>
     </div>
   </div>

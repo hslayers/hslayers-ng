@@ -13,21 +13,21 @@ import {HsLayerShiftingService} from '../../../common/layer-shifting/layer-shift
 })
 export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
   layerManagerUpdatesSubscription: Subscription;
-  @Input() app = 'default';
+
   layerShiftingAppRef;
   constructor(
     private hsEventBusService: HsEventBusService,
     private hsLayerShiftingService: HsLayerShiftingService
   ) {}
   ngOnInit(): void {
-    this.layerShiftingAppRef = this.hsLayerShiftingService.get(this.app);
-    this.hsLayerShiftingService.fillLayers(this.app);
+    this.layerShiftingAppRef = this.hsLayerShiftingService;
+    this.hsLayerShiftingService.fillLayers();
     this.layerManagerUpdatesSubscription =
-      this.hsEventBusService.layerManagerUpdates.subscribe(({layer, app}) => {
-        this.hsLayerShiftingService.fillLayers(this.app);
+      this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
+        this.hsLayerShiftingService.fillLayers();
         if (layer !== undefined) {
           const layerFound = this.hsLayerShiftingService
-            .get(app)
+            
             .layersCopy.find((wrapper) => wrapper.layer == layer);
           if (layerFound !== undefined) {
             layerFound.active = true;
@@ -49,10 +49,6 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
       event.currentIndex
     );
 
-    this.hsLayerShiftingService.moveTo(
-      draggedLayer,
-      replacedLayer.layer,
-      this.app
-    );
+    this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);
   }
 }

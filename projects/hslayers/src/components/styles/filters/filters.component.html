@@ -1,21 +1,22 @@
 <div>
   <div class="d-flex flex-row justify-content-end">
-    <hs-add-filter-button (clicks)="add($event.kind, false)" [app]="app"></hs-add-filter-button>
+    <hs-add-filter-button (clicks)="add($event.kind, false)"></hs-add-filter-button>
   </div>
   <div *ngIf="hsFiltersService.isLogOp(rule.filter)" class="card"><!-- TODO: Remove function call from template -->
     <div class="d-flex flex-row card-header p-0">
       <div class="p-2">
         {{hsFiltersService.humanReadableLogOp(rule.filter[0])}}<!-- TODO: Remove function call from template -->
       </div>
-      <hs-add-filter-button (clicks)="add($event.kind, true)" [app]="app"></hs-add-filter-button>
+      <hs-add-filter-button (clicks)="add($event.kind, true)"></hs-add-filter-button>
       <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter'" (click)="remove()">
         <span class="icon-trash"></span>
       </button>
     </div>
     <div class="d-flex flex-row" *ngFor="let item of rule.filter; let i = index">
-      <hs-filter (changes)="emitChange()" [app]="app" *ngIf="i>0" [filter]="item" [parent]="rule.filter"></hs-filter>
+      <hs-filter (changes)="emitChange()" *ngIf="i>0" [filter]="item" [parent]="rule.filter"></hs-filter>
     </div>
   </div>
-  <hs-comparison-filter *ngIf="rule.filter?.length > 0 && !(hsFiltersService.isLogOp(rule.filter))" [app]="app"
-    (changes)="emitChange()" [filter]="rule.filter"></hs-comparison-filter><!-- TODO: Remove function call from template -->
+  <hs-comparison-filter *ngIf="rule.filter?.length > 0 && !(hsFiltersService.isLogOp(rule.filter))"
+    (changes)="emitChange()"
+    [filter]="rule.filter"></hs-comparison-filter><!-- TODO: Remove function call from template -->
 </div>

@@ -1,32 +1,33 @@
 <div class="card hs-sidebar-list hs-main-panel list-group" *ngIf="isVisible | async">
-    <hs-panel-header class="sidebar-header w-100" *ngIf="layoutAppRef.minisidebar" name="additional"
-        [title]="'SIDEBAR.additionalPanels' | translateHs: {app} " [app]="app"></hs-panel-header>
+    <hs-panel-header class="sidebar-header w-100" *ngIf="HsLayoutService.minisidebar" name="additional"
+        [title]="'SIDEBAR.additionalPanels' | translateHs "></hs-panel-header>
 
-    <span class="hs-sidebar-item list-group-item border-top-0" *ngIf="layoutAppRef.sidebarToggleable"
+    <span class="hs-sidebar-item list-group-item border-top-0"
+        *ngIf="HsLayoutService.sidebarToggleable && {position: HsLayoutService.sidebarPosition | async} as sidebar"
         (click)="toggleSidebar()">
         <i class="menu-icon"
-            [ngClass]="layoutAppRef.sidebarExpanded ? (layoutAppRef.sidebarPosition === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (layoutAppRef.sidebarPosition === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
+            [ngClass]="HsLayoutService.sidebarExpanded ? (sidebar.position === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (sidebar.position === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </span><!-- TODO: Remove function call from template -->
 
     <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item h-100 d-flex align-items-center"
-        [attr.data-cy]="button.panel" [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button, app)"
-        [ngClass]="{'active': layoutAppRef.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
-        [title]="button.description | translateHs: {app}">
+        [attr.data-cy]="button.panel" [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button)"
+        [ngClass]="{'active': HsLayoutService.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
+        [title]="button.description | translateHs">
         <!-- TODO: Remove function call from template -->
         <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
             data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
-            [title]="button.description | translateHs: {app} ">{{button.content()}}</span>
+            [title]="button.description | translateHs ">{{button.content()}}</span>
         <span [ngClass]="{'language': button.panel === 'language'}" class="hs-sidebar-item-title">{{button.title |
-            translateHs: {app} }}</span>
+            translateHs }}</span>
     </span>
     <!-- TODO: Remove function call from template -->
-    <span class="hs-sidebar-item  list-group-item hs-sidebar-additional-items" *ngIf="layoutAppRef.minisidebar"
-        (click)="HsLayoutService.setMainPanel('sidebar', app, true)"
-        [ngClass]="{'active': layoutAppRef.mainpanel === 'sidebar'}">
+    <span class="hs-sidebar-item  list-group-item hs-sidebar-additional-items" *ngIf="HsLayoutService.minisidebar"
+        (click)="HsLayoutService.setMainPanel('sidebar', true)"
+        [ngClass]="{'active': HsLayoutService.mainpanel === 'sidebar'}">
         <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"
             style="margin-left: 0px !important;"></i>
-        <span class="hs-sidebar-item-title">{{miniSidebarButton.title | translateHs: {app} }}</span>
+        <span class="hs-sidebar-item-title">{{miniSidebarButton.title | translateHs }}</span>
     </span>
-    <hs-impressum class="mt-auto" [app]="app"></hs-impressum>
+    <hs-impressum class="mt-auto"></hs-impressum>
 </div>

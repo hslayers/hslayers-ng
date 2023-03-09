@@ -15,11 +15,11 @@ export class HsCopyLayerDialogComponent implements HsDialogComponent {
     title: string;
     message: string;
     layerTitle: string;
-    app: string;
+
   };
 
   yes(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve({
       confirmed: 'yes',
       layerTitle: this.data.layerTitle,
@@ -27,7 +27,7 @@ export class HsCopyLayerDialogComponent implements HsDialogComponent {
   }
 
   no(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve('no');
   }
 }

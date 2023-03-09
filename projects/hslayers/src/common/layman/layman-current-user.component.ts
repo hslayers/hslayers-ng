@@ -12,7 +12,6 @@ import {Observable, map} from 'rxjs';
   templateUrl: './layman-current-user.html',
 })
 export class HsLaymanCurrentUserComponent implements OnInit {
-  @Input() app = 'default';
   @Input() endpoint?;
   monitorTries = 0;
   DEFAULT_TIMER_INTERVAL = 2000;
@@ -34,9 +33,11 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   ngOnInit(): void {
     this.inAppLogin = this.HsCommonLaymanService.layman$.pipe(
       map((layman) => {
-        //Assign recieved layman endpoint to local variable
-        this.endpoint = layman;
-        return this.endpoint.type === 'layman';
+        if (layman) {
+          //Assign recieved layman endpoint to local variable
+          this.endpoint = layman;
+          return this.endpoint.type === 'layman';
+        }
       })
     );
   }
@@ -47,7 +48,7 @@ export class HsLaymanCurrentUserComponent implements OnInit {
 
   logout(): void {
     this.monitorUser();
-    this.HsCommonLaymanService.logout(this.endpoint, this.app);
+    this.HsCommonLaymanService.logout(this.endpoint);
   }
 
   sameDomain() {
@@ -74,7 +75,7 @@ export class HsLaymanCurrentUserComponent implements OnInit {
     this.monitorTries = 0;
     this.timerInterval = this.DEFAULT_TIMER_INTERVAL;
     const poll = () => {
-      this.HsCommonLaymanService.detectAuthChange(this.endpoint, this.app).then(
+      this.HsCommonLaymanService.detectAuthChange(this.endpoint).then(
         (somethingChanged) => {
           if (somethingChanged && this.getCurrentUserTimer) {
             clearTimeout(this.getCurrentUserTimer);
@@ -96,10 +97,8 @@ export class HsLaymanCurrentUserComponent implements OnInit {
     if (!this.sameDomain()) {
       return;
     }
-    this.HsDialogContainerService.create(
-      HsLaymanLoginComponent,
-      {url: this.authUrl()},
-      this.app
-    );
+    this.HsDialogContainerService.create(HsLaymanLoginComponent, {
+      url: this.authUrl(),
+    });
   }
 }

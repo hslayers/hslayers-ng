@@ -16,7 +16,7 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 
   /**
@@ -27,7 +27,7 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   async delete(composition): Promise<void> {
     await this.HsCompositionsService.deleteComposition(
       composition,
-      this.data.app
+      
     );
     this.close();
   }

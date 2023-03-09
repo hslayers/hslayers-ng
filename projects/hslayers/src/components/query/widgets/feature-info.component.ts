@@ -6,6 +6,7 @@ import {Geometry} from 'ol/geom';
 import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {HsQueryVectorService} from '../query-vector.service';
@@ -29,9 +30,8 @@ export class HsFeatureInfoComponent
   attributesForHover: any[] = [];
   name = 'feature-info';
   @Input() data: {
-    layerDescriptor: any;
+    layerDescriptor: HsLayerDescriptor;
     attributesForHover: any[];
-    app: string;
     service: HsQueryPopupServiceModel;
   };
 
@@ -66,18 +66,13 @@ export class HsFeatureInfoComponent
       return getFeatureLabel(feature);
     }
     if (getFeatures(feature)) {
-      return this.hsLanguageService.getTranslation(
-        'QUERY.clusterContaining',
-        {
-          count: getFeatures(feature).length,
-        },
-        this.data.app
-      );
+      return this.hsLanguageService.getTranslation('QUERY.clusterContaining', {
+        count: getFeatures(feature).length,
+      });
     }
     return this.hsLanguageService.getTranslation(
       'QUERY.untitledFeature',
-      undefined,
-      this.data.app
+      undefined
     );
   }
 
@@ -91,21 +86,18 @@ export class HsFeatureInfoComponent
       {
         message: this.hsLanguageService.getTranslation(
           'QUERY.reallyDelete',
-          undefined,
-          this.data.app
+          undefined
         ),
         title: this.hsLanguageService.getTranslation(
           'QUERY.confirmDelete',
-          undefined,
-          this.data.app
+          undefined
         ),
-      },
-      this.data.app
+      }
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.hsQueryVectorService.removeFeature(feature, this.data.app);
-      this.data.service.apps[this.data.app].featuresUnderMouse = [];
+      this.hsQueryVectorService.removeFeature(feature);
+      this.data.service.featuresUnderMouse = [];
     }
   }
 
@@ -133,7 +125,7 @@ export class HsFeatureInfoComponent
    * @returns True if the feature is removable, false otherwise
    */
   isFeatureRemovable(feature: Feature<Geometry>): boolean {
-    return this.hsQueryVectorService.isFeatureRemovable(feature, this.data.app);
+    return this.hsQueryVectorService.isFeatureRemovable(feature);
   }
 
   /**
@@ -146,8 +138,7 @@ export class HsFeatureInfoComponent
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined,
-      this.data.app
+      undefined
     );
   }
 }

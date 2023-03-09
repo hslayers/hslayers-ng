@@ -3,17 +3,17 @@
         <div class="row justify-content-center gap-1">
             <button *ngFor="let type of types" [ngClass]="{'active': type.id === typeSelected }"
                 (click)="selectType(type.id)" class="btn btn-outline-secondary rounded btn-sm col-sm-3 flex-grow-1">
-                {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS', type.text, undefined, app)}}
+                {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS', type.text, undefined)}}
                 <!-- TODO: Remove function call from template -->
             </button>
         </div>
     </div>
     <div class="w-100 pt-3">
-        <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'geojson'" [app]="app"></hs-file-vector>
-        <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'gpx'" [app]="app"></hs-file-vector>
-        <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'kml'" [app]="app"></hs-file-vector>
-        <hs-file-shp *ngIf="typeSelected === 'shp'" [app]="app"></hs-file-shp>
-        <hs-file-raster [fileType]="typeSelected" *ngIf="typeSelected === 'raster'" [app]="app"></hs-file-raster>
-        <hs-file-raster [fileType]="typeSelected" *ngIf="typeSelected === 'raster-ts'" [app]="app"></hs-file-raster>
+        <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'geojson'"></hs-file-vector>
+        <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'gpx'"></hs-file-vector>
+        <hs-file-vector [fileType]="typeSelected" *ngIf="typeSelected === 'kml'"></hs-file-vector>
+        <hs-file-shp *ngIf="typeSelected === 'shp'"></hs-file-shp>
+        <hs-file-raster [fileType]="typeSelected" *ngIf="typeSelected === 'raster'"></hs-file-raster>
+        <hs-file-raster [fileType]="typeSelected" *ngIf="typeSelected === 'raster-ts'"></hs-file-raster>
     </div>
 </div>

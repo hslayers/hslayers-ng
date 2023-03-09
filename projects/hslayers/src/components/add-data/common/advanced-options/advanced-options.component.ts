@@ -10,7 +10,7 @@ import {VectorDataObject} from '../../vector/vector-data.type';
 })
 export class HsAdvancedOptionsComponent implements OnInit {
   @Input() data: FileDataObject & VectorDataObject;
-  @Input() app = 'default';
+  
   isKml: boolean;
   constructor(private hsAddDataVectorService: HsAddDataVectorService) {}
   ngOnInit(): void {

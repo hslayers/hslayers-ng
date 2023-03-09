@@ -90,7 +90,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-    app: string,
+
     addUnder?: Layer<Source>
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     return new Promise(async (resolve, reject) => {
@@ -102,8 +102,7 @@ export class HsAddDataVectorService {
           title,
           abstract,
           srs,
-          options,
-          app
+          options
         );
         /* 
         TODO: Should have set definition property with protocol inside 
@@ -121,8 +120,8 @@ export class HsAddDataVectorService {
             });
           }
         }
-        if (this.hsMapService.getMap(app)) {
-          this.hsAddDataService.addLayer(lyr, app, addUnder);
+        if (this.hsMapService.getMap()) {
+          this.hsAddDataService.addLayer(lyr, addUnder);
         }
         resolve(lyr);
       } catch (ex) {
@@ -149,15 +148,14 @@ export class HsAddDataVectorService {
     title: string,
     abstract: string,
     srs: string,
-    options: HsVectorLayerOptions = {},
-    app: string
+    options: HsVectorLayerOptions = {}
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     if (
       type?.toLowerCase() != 'sparql' &&
       type?.toLowerCase() != 'wfs' &&
       url !== undefined
     ) {
-      url = this.hsUtilsService.proxify(url, app);
+      url = this.hsUtilsService.proxify(url);
     }
 
     if (this.hsUtilsService.undefineEmptyString(type) === undefined) {
@@ -165,9 +163,9 @@ export class HsAddDataVectorService {
     }
 
     let mapProjection;
-    if (this.hsMapService.getMap(app)) {
+    if (this.hsMapService.getMap()) {
       mapProjection = this.hsMapService
-        .getMap(app)
+        .getMap()
         .getView()
         .getProjection()
         .getCode();
@@ -201,8 +199,7 @@ export class HsAddDataVectorService {
       descriptor.layerParams,
       await this.hsStylerService.parseStyle(
         descriptor.layerParams.style ??
-          (descriptor.layerParams.sld || descriptor.layerParams.qml),
-        app
+          (descriptor.layerParams.sld || descriptor.layerParams.qml)
       )
     );
     return new VectorLayer(descriptor.layerParams);
@@ -211,38 +208,38 @@ export class HsAddDataVectorService {
   /**
    * Fit map view to layer's extent
    * @param lyr - Provided layer
-   * @param app - App identifier
+   
    */
-  fitExtent(lyr: VectorLayer<VectorSource<Geometry>>, app: string): void {
+  fitExtent(lyr: VectorLayer<VectorSource<Geometry>>): void {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
-      this.tryFit(src.getExtent(), src, app);
+      this.tryFit(src.getExtent(), src);
     } else {
-      src.on('change', this.changeListener(src, app));
+      src.on('change', this.changeListener(src));
     }
   }
 
   /**
    * Set catalogue as active HSLayers panel
-   * @param app - App identifier
+   
    */
-  setPanelToCatalogue(app: string): void {
-    this.hsAddDataService.apps[app].dsSelected = 'catalogue';
+  setPanelToCatalogue(): void {
+    this.hsAddDataService.dsSelected = 'catalogue';
   }
 
   /**
    * Listen to any source changes made
    * @param src - Layer source provided
-   * @param app - App identifier
+   
    */
-  changeListener(src, app: string): any {
+  changeListener(src): any {
     if (src.getState() == 'ready') {
       setTimeout(() => {
         if (src.getFeatures().length == 0) {
           return;
         }
         const extent = src.getExtent();
-        this.tryFit(extent, src, app);
+        this.tryFit(extent, src);
       }, 1000);
     }
   }
@@ -250,29 +247,28 @@ export class HsAddDataVectorService {
   /**
    * Add new layer to map and Layman (if possible)
    * @param data - Layer data object provided
-   * @param app - App identifier
+   
    * @returns Created layer and layer adding state (true, if complete, false otherwise)
    */
   async addNewLayer(
-    data: VectorDataObject,
-    app: string
+    data: VectorDataObject
   ): Promise<{layer: VectorLayer<VectorSource<Geometry>>; complete: boolean}> {
-    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+    const commonFileRef = this.hsAddDataCommonFileService;
     if (!commonFileRef.endpoint) {
-      this.hsAddDataCommonFileService.pickEndpoint(app);
+      this.hsAddDataCommonFileService.pickEndpoint();
     }
     const addLayerRes: {
       layer: VectorLayer<VectorSource<Geometry>>;
       complete: boolean;
     } = {layer: null, complete: true};
     if (data.saveToLayman && data.saveAvailable) {
-      const checkResult = await this.checkForLayerInLayman(data, app);
+      const checkResult = await this.checkForLayerInLayman(data);
       if (!checkResult || checkResult == OverwriteResponse.cancel) {
         addLayerRes.complete = false;
         return addLayerRes;
       }
       //Create layer on layman: OverwriteResponse.add
-      await this.upsertLayer(data, app);
+      await this.upsertLayer(data);
     }
     const serializedStyle =
       typeof data.serializedStyle === 'string'
@@ -304,15 +300,14 @@ export class HsAddDataVectorService {
         sld: styleFormat == 'sld' ? serializedStyle : undefined,
         qml: styleFormat == 'qml' ? serializedStyle : undefined,
       },
-      app,
       data.addUnder
     );
-    this.fitExtent(layer, app);
+    this.fitExtent(layer);
     addLayerRes.layer = layer;
     if (data.saveToLayman) {
       awaitLayerSync(layer).then(() => {
         layer.getSource().dispatchEvent('addfeature');
-        this.fitExtent(layer, app);
+        this.fitExtent(layer);
       });
     }
     return addLayerRes;
@@ -321,13 +316,10 @@ export class HsAddDataVectorService {
   /**
    * Prepare layer for upsertion to Layman
    * @param data - Vector data object
-   * @param app - App identifier
+   
    */
-  async upsertLayer(
-    data: VectorDataObject,
-    app: string
-  ): Promise<PostPatchLayerResponse> {
-    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+  async upsertLayer(data: VectorDataObject): Promise<PostPatchLayerResponse> {
+    const commonFileRef = this.hsAddDataCommonFileService;
 
     const crsSupported = this.hsLaymanService.supportedCRRList.includes(
       data.nativeSRS
@@ -351,8 +343,7 @@ export class HsAddDataVectorService {
         crsSupported,
         true
       ),
-      layerDesc,
-      app
+      layerDesc
     );
   }
 
@@ -360,20 +351,19 @@ export class HsAddDataVectorService {
    * Check if layer with the same name exists in Layman database and provide the user to choose
    * what action he wishes to take
    * @param data - Layer data object provided
-   * @param app - App identifier
+   
    * @returns Action the user took, inside prompted dialog
    */
   async checkForLayerInLayman(
     data: VectorDataObject,
-    app: string,
+
     repetive?: boolean
   ): Promise<OverwriteResponse> {
     let upsertReq: PostPatchLayerResponse;
-    const commonFileRef = this.hsAddDataCommonFileService.get(app);
+    const commonFileRef = this.hsAddDataCommonFileService;
     commonFileRef.loadingToLayman = true;
     const exists = await this.hsAddDataCommonFileService.lookupLaymanLayer(
-      data.name,
-      app
+      data.name
     );
     if (!exists) {
       return OverwriteResponse.add;
@@ -381,23 +371,19 @@ export class HsAddDataVectorService {
       const result =
         await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
           data,
-          app,
           repetive
         );
       switch (result) {
         case OverwriteResponse.overwrite:
-          upsertReq = await this.upsertLayer(data, app);
+          upsertReq = await this.upsertLayer(data);
           if (!upsertReq) {
             return OverwriteResponse.cancel;
           } else if (upsertReq?.code) {
             switch (upsertReq.code) {
               case 17:
-                return await this.checkForLayerInLayman(data, app);
+                return await this.checkForLayerInLayman(data);
               default:
-                this.hsAddDataCommonFileService.handleLaymanError(
-                  upsertReq,
-                  app
-                );
+                this.hsAddDataCommonFileService.handleLaymanError(upsertReq);
                 return OverwriteResponse.cancel;
             }
           } else {
@@ -409,7 +395,7 @@ export class HsAddDataVectorService {
             return OverwriteResponse.overwrite;
           }
         case OverwriteResponse.add:
-          return await this.checkForLayerInLayman(data, app, true);
+          return await this.checkForLayerInLayman(data, true);
         case OverwriteResponse.cancel:
           commonFileRef.loadingToLayman = false;
           return OverwriteResponse.cancel;
@@ -436,17 +422,17 @@ export class HsAddDataVectorService {
    * Try to fit layer extent as map view
    * @param extent - Extent provided
    * @param src - Layer source provided
-   * @param app - App identifier
+   
    */
-  tryFit(extent, src, app: string): void {
+  tryFit(extent, src): void {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
       !isNaN(extent[2]) &&
       !isNaN(extent[3]) &&
-      this.hsMapService.getMap(app)
+      this.hsMapService.getMap()
     ) {
-      this.hsMapService.fitExtent(extent, app);
+      this.hsMapService.fitExtent(extent);
       src.un('change', this.changeListener);
     }
   }
@@ -497,10 +483,10 @@ export class HsAddDataVectorService {
   /**
    * Read uploaded file and extract the data as JSON object
    * @param file - File uploaded by the user
-   * @param app - App identifier
+   
    * @returns JSON object with parsed data
    */
-  async readUploadedFile(file: File, app: string): Promise<any> {
+  async readUploadedFile(file: File): Promise<any> {
     let uploadedData;
     const fileType = this.tryGuessTypeFromNameOrUrl(file.name.toLowerCase());
     switch (fileType) {
@@ -508,7 +494,7 @@ export class HsAddDataVectorService {
         uploadedData = await this.createVectorObjectFromXml(file, fileType);
         break;
       case 'gpx':
-        uploadedData = await this.convertUploadedData(file, app);
+        uploadedData = await this.convertUploadedData(file);
         break;
       default:
         try {
@@ -516,7 +502,7 @@ export class HsAddDataVectorService {
           const fileToJSON = JSON.parse(<string>fileContents);
           if (fileToJSON !== undefined) {
             fileToJSON.name = file.name.split('.')[0];
-            uploadedData = this.createVectorObjectFromJson(fileToJSON, app);
+            uploadedData = this.createVectorObjectFromJson(fileToJSON);
             return uploadedData;
           }
         } catch (e) {
@@ -544,10 +530,10 @@ export class HsAddDataVectorService {
   /**
    * Read features from uploaded file as objects
    * @param json - Uploaded file parsed as json object
-   * @param app - App identifier
+   
    * @returns JSON object with file name and read features
    */
-  createVectorObjectFromJson(json: any, app: string): any {
+  createVectorObjectFromJson(json: any): any {
     let features: Feature[] = [];
     const format = new GeoJSON();
     const projection = format.readProjection(json);
@@ -558,7 +544,7 @@ export class HsAddDataVectorService {
     }
     if (json.features?.length > 0) {
       features = format.readFeatures(json);
-      this.transformFeaturesIfNeeded(features, projection, app);
+      this.transformFeaturesIfNeeded(features, projection);
     }
     const object = {
       name: json.name,
@@ -575,17 +561,10 @@ export class HsAddDataVectorService {
    * Transform features to other projection if needed
    * @param features - Extracted features from uploaded file
    * @param projection - Projection to which transform the features
-   * @param app - App identifier
+   
    */
-  transformFeaturesIfNeeded(
-    features: Feature[],
-    projection: Projection,
-    app: string
-  ): void {
-    const mapProjection = this.hsMapService
-      .getMap(app)
-      .getView()
-      .getProjection();
+  transformFeaturesIfNeeded(features: Feature[], projection: Projection): void {
+    const mapProjection = this.hsMapService.getMap().getView().getProjection();
     if (projection != mapProjection) {
       projection = epsg4326Aliases
         .map((proj) => proj.getCode())
@@ -602,9 +581,9 @@ export class HsAddDataVectorService {
   /**
    * Convert uploaded KML or GPX files into GeoJSON format / parse loaded GeoJSON
    * @param file - Uploaded KML, GPX or GeoJSON files
-   * @param app - App identifier
+   
    */
-  async convertUploadedData(file: File, app: string): Promise<any> {
+  async convertUploadedData(file: File): Promise<any> {
     let parser;
     const uploadedData: any = {};
     try {
@@ -625,8 +604,7 @@ export class HsAddDataVectorService {
       if (uploadedData?.features?.length > 0) {
         this.transformFeaturesIfNeeded(
           uploadedData.features,
-          parser.readProjection(uploadedContent),
-          app
+          parser.readProjection(uploadedContent)
         );
       }
       uploadedData.nativeFeatures = parser.readFeatures(uploadedContent);

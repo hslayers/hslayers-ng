@@ -43,7 +43,7 @@ export class HsAddDataVectorFileComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
-  @Input() app = 'default';
+
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   acceptedFormats: string;
   uploadType = 'new';
@@ -53,13 +53,11 @@ export class HsAddDataVectorFileComponent
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
-  commonFileServiceRef: HsAddDataCommonFileServiceParams;
-  configRef: HsConfigObject;
   private end = new Subject<void>();
 
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
-    private hsAddDataCommonFileService: HsAddDataCommonFileService,
+    public hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
@@ -81,9 +79,7 @@ export class HsAddDataVectorFileComponent
   }
 
   ngOnInit(): void {
-    this.commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
-    this.configRef = this.hsConfig.get(this.app);
-    this.commonFileServiceRef.dataObjectChanged
+    this.hsAddDataCommonFileService.dataObjectChanged
       .pipe(takeUntil(this.end))
       .subscribe((data) => {
         this.data.showDetails = true;
@@ -118,8 +114,7 @@ export class HsAddDataVectorFileComponent
         await this.addAsWms();
       } else {
         const response = await this.hsAddDataVectorService.addNewLayer(
-          this.data,
-          this.app
+          this.data
         );
         if (!response.complete) {
           return;
@@ -145,19 +140,16 @@ export class HsAddDataVectorFileComponent
         content: new GeoJSON().writeFeatures(this.data.features),
       },
     ];
-    this.data.srs = this.hsMapService.getCurrentProj(this.app).getCode();
-    return await this.hsAddDataCommonFileService.addAsService(
-      this.data,
-      this.app
-    );
+    this.data.srs = this.hsMapService.getCurrentProj().getCode();
+    return await this.hsAddDataCommonFileService.addAsService(this.data);
   }
 
   /**
    * After layer has successfully been added to the map, move to LM panel and clean up the code
    */
   moveToLayerManager(): void {
-    this.hsLayoutService.setMainPanel('layermanager', this.app);
-    this.hsAddDataVectorService.setPanelToCatalogue(this.app);
+    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsAddDataVectorService.setPanelToCatalogue();
     this.setToDefault();
   }
 
@@ -165,8 +157,7 @@ export class HsAddDataVectorFileComponent
     let features = this.data.features.length > 0 ? this.data.features : [];
     if (this.fileType != 'geojson') {
       const nonJson = await this.hsAddDataVectorService.convertUploadedData(
-        this.fileInput.nativeElement.files[0],
-        this.app
+        this.fileInput.nativeElement.files[0]
       );
       features = nonJson.features; //proper typing will get rid of this
     }
@@ -180,8 +171,7 @@ export class HsAddDataVectorFileComponent
   handleFileUpload(evt: HsUploadedFiles): void {
     Array.from(evt.fileList).forEach(async (f) => {
       const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
-        f,
-        this.app
+        f
       );
       if (uploadedData !== undefined && !uploadedData.error) {
         uploadedData.url !== undefined
@@ -250,17 +240,14 @@ export class HsAddDataVectorFileComponent
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation(
             'ADDLAYERS.ERROR.someErrorHappened',
-            undefined,
-            this.app
+            undefined
           ),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             `${uploadedData?.error ?? 'someErrorHappened'}`,
-            undefined,
-            this.app
+            undefined
           ),
-          {disableLocalization: true},
-          this.app
+          {disableLocalization: true}
         );
       }
     });
@@ -269,11 +256,11 @@ export class HsAddDataVectorFileComponent
   setUploadType(type: string): void {
     this.uploadType = type;
     if (type == 'existing') {
-      this.data.vectorLayers = this.hsLayerManagerService.apps[
-        this.app
-      ].data.layers.filter((layer) => {
-        return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
-      });
+      this.data.vectorLayers = this.hsLayerManagerService.data.layers.filter(
+        (layer) => {
+          return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
+        }
+      );
     }
   }
 
@@ -318,6 +305,6 @@ export class HsAddDataVectorFileComponent
       vectorLayers: null,
       allowedStyles: 'sldqml',
     };
-    this.hsAddDataCommonFileService.clearParams(this.app);
+    this.hsAddDataCommonFileService.clearParams();
   }
 }

@@ -3,51 +3,52 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'SAVECOMPOSITION.dialogResult.savingCompositionStatus' | translateHs : {app: data.app} }}
+                    {{'SAVECOMPOSITION.dialogResult.savingCompositionStatus' | translateHs }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
+                    [attr.aria-label]="'COMMON.close' | translateHs ">
                 </button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                <div class="alert alert-status" [hidden]="!appRef.statusData.status">
-                    {{'SAVECOMPOSITION.dialogResult.compositionSavedSuccessfully' | translateHs : {app: data.app} }}
+                <div class="alert alert-status" [hidden]="!hsSaveMapManagerService.statusData.status">
+                    {{'SAVECOMPOSITION.dialogResult.compositionSavedSuccessfully' | translateHs }}
                 </div>
-                <div class="alert alert-danger" [hidden]="!!appRef.statusData.status">
-                    {{'SAVECOMPOSITION.dialogResult.compositionFailedToSave' | translateHs : {app: data.app} }}</div>
+                <div class="alert alert-danger" [hidden]="!!hsSaveMapManagerService.statusData.status">
+                    {{'SAVECOMPOSITION.dialogResult.compositionFailedToSave' | translateHs }}</div>
                 <div class="alert alert-danger"
-                    [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'not-saved')">
-                    {{'SAVECOMPOSITION.dialogResult.requestWasProcessed' | translateHs : {app: data.app} }}</div>
+                    [hidden]="!(!hsSaveMapManagerService.statusData.status && hsSaveMapManagerService.statusData.resultCode === 'not-saved')">
+                    {{'SAVECOMPOSITION.dialogResult.requestWasProcessed' | translateHs }}</div>
                 <div class="alert alert-danger"
-                    [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'exists')">
+                    [hidden]="!(!hsSaveMapManagerService.statusData.status && hsSaveMapManagerService.statusData.resultCode === 'exists')">
                     Map already exists
 
                 </div>
                 <div class="alert alert-danger"
-                    [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'error')">
-                    {{'SAVECOMPOSITION.dialogResult.serverDidNotRespond' | translateHs : {app: data.app} }}</div>
+                    [hidden]="!(!hsSaveMapManagerService.statusData.status && hsSaveMapManagerService.statusData.resultCode === 'error')">
+                    {{'SAVECOMPOSITION.dialogResult.serverDidNotRespond' | translateHs }}</div>
                 <div class="alert alert-danger"
-                    [hidden]="!(!appRef.statusData.status && appRef.statusData.resultCode === 'error')">
-                    <dl *ngFor="let item of appRef.statusData.error | keyvalue">
+                    [hidden]="!(!hsSaveMapManagerService.statusData.status && hsSaveMapManagerService.statusData.resultCode === 'error')">
+                    <dl *ngFor="let item of hsSaveMapManagerService.statusData.error | keyvalue">
                         <dt>{{item.key}} </dt>
                         <dd>
-                            <hs-widgets-recursive-dd [value]="item.value" [app]="data.app"></hs-widgets-recursive-dd>
+                            <hs-widgets-recursive-dd [value]="item.value"></hs-widgets-recursive-dd>
                         </dd>
                     </dl>
                 </div>
             </div>
             <div class="modal-footer"
-                [ngClass]="{'justify-content-between' : appRef.statusData.resultCode === 'exists' }">
-                <div *ngIf="!appRef.statusData.status && appRef.statusData.resultCode === 'exists'">
+                [ngClass]="{'justify-content-between' : hsSaveMapManagerService.statusData.resultCode === 'exists' }">
+                <div
+                    *ngIf="!hsSaveMapManagerService.statusData.status && hsSaveMapManagerService.statusData.resultCode === 'exists'">
                     <button type="button" class="btn btn-primary"
-                        (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs : {app: data.app}
+                        (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs
                         }}</button>
                     <button type="button" class="btn btn-primary ms-2"
-                        (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translateHs : {app: data.app}
+                        (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translateHs
                         }}</button>
                 </div>
                 <button type="button" class="btn btn-primary" (click)="close()" data-dismiss="modal">{{'COMMON.close' |
-                    translateHs : {app: data.app} }}</button>
+                    translateHs }}</button>
             </div>
         </div>
     </div>

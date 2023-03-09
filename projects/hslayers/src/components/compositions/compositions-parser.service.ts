@@ -30,7 +30,10 @@ import {
 import {parseExtent, transformExtentValue} from '../../common/extent-utils';
 import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
 
-class HsCompositionsParserParams {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCompositionsParserService {
   /**
    * @public
    * Stores current composition URL if there is one or NULL
@@ -52,14 +55,6 @@ class HsCompositionsParserParams {
     suspendZoomingToExtent: false,
     suspendPanelChange: false,
   };
-}
-@Injectable({
-  providedIn: 'root',
-})
-export class HsCompositionsParserService {
-  apps: {
-    [id: string]: HsCompositionsParserParams;
-  } = {default: new HsCompositionsParserParams()};
   constructor(
     private hsMapService: HsMapService,
     private hsConfig: HsConfig,
@@ -77,21 +72,11 @@ export class HsCompositionsParserService {
   ) {}
 
   /**
-   * Get the params saved by the composition parser service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): HsCompositionsParserParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsCompositionsParserParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-  /**
    * @public
    * Load selected composition from server, parse it and add layers to map.
    * Optionally (based on app config) may open layer manager panel
    * @param url - Url of selected composition
-   * @param app - App identifier
+   
    * @param overwrite - Whether overwrite current composition in map -
    * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param callback - Optional function which should be called when composition is successfully loaded
@@ -99,7 +84,6 @@ export class HsCompositionsParserService {
    */
   async loadUrl(
     url: string | any, //CSW record object
-    app: string,
     overwrite?: boolean,
     callback?,
     pre_parse?
@@ -107,13 +91,12 @@ export class HsCompositionsParserService {
     if (typeof url !== 'string') {
       pre_parse = (res) => this.parseCSW(res);
       url.success = true;
-      url.app = app;
-      this.loaded(url, pre_parse, url, overwrite, callback, app);
+      this.loaded(url, pre_parse, url, overwrite, callback);
       return;
     }
-    this.get(app).current_composition_url = url;
+    this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
-    url = this.hsUtilsService.proxify(url, app);
+    url = this.hsUtilsService.proxify(url);
     const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
@@ -124,15 +107,15 @@ export class HsCompositionsParserService {
     );
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {
-        this.raiseCompositionLoadError(e, app);
+        this.raiseCompositionLoadError(e);
       }
     );
     if (data) {
       if (data.file) {
         // Layman composition wrapper
-        return this.loadUrl(data.file.url, app, overwrite, callback, pre_parse);
+        return this.loadUrl(data.file.url, overwrite, callback, pre_parse);
       }
-      this.loaded(data, pre_parse, url, overwrite, callback, app);
+      this.loaded(data, pre_parse, url, overwrite, callback);
     }
   }
 
@@ -144,24 +127,22 @@ export class HsCompositionsParserService {
    * @param overwrite - Whether overwrite current composition in map -
    * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param callback - Function which should be called when composition is successfully loaded
-   * @param app - App identifier
+   
    */
   async loaded(
     response,
     pre_parse,
     url,
     overwrite: boolean,
-    callback,
-    app: string
+    callback
   ): Promise<void> {
     this.hsEventBusService.compositionLoading.next(response);
-    const appRef = this.get(app);
     if (this.checkLoadSuccess(response)) {
-      appRef.composition_loaded = url;
+      this.composition_loaded = url;
       if (this.hsUtilsService.isFunction(pre_parse)) {
-        response = await pre_parse({response, app});
+        response = await pre_parse(response);
       }
-      response.workspace = appRef.current_composition_workspace;
+      response.workspace = this.current_composition_workspace;
       /*
       Response might contain {data:{abstract:...}} or {abstract:}
       directly. If there is data object,
@@ -171,19 +152,18 @@ export class HsCompositionsParserService {
       const loaded = await this.loadCompositionObject(
         response.data || response,
         overwrite && !pre_parse, //For CSW comps we need to wait for dialog to resolve before removing existing layers
-        app,
         response.title,
         response.extent
       );
       //Don't trigger compositionLoads when loading basemapComposition
       if (loaded && !response.basemapComposition) {
-        this.finalizeCompositionLoading(response, app);
+        this.finalizeCompositionLoading(response);
       }
       if (this.hsUtilsService.isFunction(callback)) {
         callback();
       }
     } else {
-      this.raiseCompositionLoadError(response, app);
+      this.raiseCompositionLoadError(response);
     }
   }
 
@@ -226,7 +206,7 @@ export class HsCompositionsParserService {
     return {layers, services};
   }
 
-  async parseCSW({response, app}) {
+  async parseCSW(response) {
     const composition = {};
 
     composition['name'] = getLaymanFriendlyLayerName(response.title);
@@ -266,7 +246,7 @@ export class HsCompositionsParserService {
    * Parse WMC to JSON object
    * @param response - Response from http get request requesting composition data
    */
-  parseWMC({response, app}): any {
+  parseWMC(response): any {
     let res: any = xml2Json.xml2js(response, {compact: true});
     res = res.ViewContext;
     const compositionJSON: any = {
@@ -345,47 +325,41 @@ export class HsCompositionsParserService {
   async loadCompositionObject(
     obj,
     overwrite: boolean,
-    app: string = 'default',
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
   ): Promise<boolean> {
     if (overwrite == undefined || overwrite == true) {
-      this.hsMapService.removeCompositionLayers({
-        force: overwrite == true,
-        app,
-      });
+      this.hsMapService.removeCompositionLayers(overwrite == true);
     }
     this.hsEventBusService.currentComposition.next(obj); //Doesn't seem to be used
-    this.get(app).current_composition_title = titleFromContainer || obj.title;
+    this.current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (
       possibleExtent !== undefined &&
-      !this.get(app).loadingOptions.suspendZoomingToExtent
+      !this.loadingOptions.suspendZoomingToExtent
     ) {
       const extent = parseExtent(possibleExtent);
       if (
         (extent[0][0] < -90 && extent[0][1] < -180) ||
         (extent[1][0] > 90 && extent[1][1] > 180)
       ) {
-        this.loadWarningBootstrap(extent, app);
+        this.loadWarningBootstrap(extent);
       } else {
         this.hsMapService.fitExtent(
-          transformExtentValue(extent, this.hsMapService.getCurrentProj(app)),
-          app
+          transformExtentValue(extent, this.hsMapService.getCurrentProj())
         );
       }
     }
 
     //CSW serviceType compositions
-    const layers = await this.jsonToLayers(obj, app);
+    const layers = await this.jsonToLayers(obj);
 
     const confirmed = obj.services
       ? await this.hsDialogContainerService
-          .create(
-            CswLayersDialogComponent,
-            {app: app, services: obj.services, layers: obj.layers},
-            app
-          )
+          .create(CswLayersDialogComponent, {
+            services: obj.services,
+            layers: obj.layers,
+          })
           .waitResult()
       : true;
 
@@ -394,16 +368,15 @@ export class HsCompositionsParserService {
         layers.forEach((lyr) => {
           this.hsMapService.addLayer(
             lyr as Layer<Source>,
-            app,
             DuplicateHandling.RemoveOriginal
           );
         });
-        this.hsLayerManagerService.updateLayerListPositions(app);
+        this.hsLayerManagerService.updateLayerListPositions();
       }
 
       if (obj.current_base_layer) {
         this.hsMapService
-          .getMap(app)
+          .getMap()
           .getLayers()
           .forEach((lyr: Layer<Source>) => {
             if (
@@ -413,13 +386,11 @@ export class HsCompositionsParserService {
               const layerDescriptor =
                 this.hsLayerManagerService.getLayerDescriptorForOlLayer(
                   lyr,
-                  true,
-                  app
+                  true
                 );
               this.hsLayerManagerService.changeBaseLayerVisibility(
                 true,
-                layerDescriptor,
-                app
+                layerDescriptor
               );
             }
           });
@@ -433,71 +404,66 @@ export class HsCompositionsParserService {
   /**
    * Finalize composition loading to the OL map
    * @param responseData - Response from http get request requesting composition data
-   * @param app - App identifier
+   
    */
-  finalizeCompositionLoading(responseData, app: string): void {
-    const configRef = this.hsConfig.get(app);
+  finalizeCompositionLoading(responseData): void {
+    const configRef = this.hsConfig;
     const open_lm_after_comp_loaded = configRef.open_lm_after_comp_loaded;
-    const appRef = this.get(app);
     if (
       (open_lm_after_comp_loaded === true ||
         open_lm_after_comp_loaded === undefined) &&
-      !appRef.loadingOptions.suspendPanelChange
+      !this.loadingOptions.suspendPanelChange
     ) {
-      appRef.loadingOptions.suspendPanelChange = false;
-      this.hsLayoutService.setMainPanel('layermanager', app);
+      this.loadingOptions.suspendPanelChange = false;
+      this.hsLayoutService.setMainPanel('layermanager');
     }
-    appRef.composition_edited = false;
-    this.hsEventBusService.compositionLoads.next({data: responseData, app});
+    this.composition_edited = false;
+    this.hsEventBusService.compositionLoads.next(responseData);
   }
 
   /**
    * Create an error message in case of on an unsuccessful composition load
    * @param response - Response from http get request requesting composition data
-   * @param app - App identifier
+   
    */
-  raiseCompositionLoadError(response, app: string): void {
+  raiseCompositionLoadError(response): void {
     const respError: any = {};
     respError.error = response.error;
     switch (response.error) {
       case 'no data':
         respError.title = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.compositionNotFound',
-          undefined,
-          app
+          undefined
         );
         respError.abstract = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.sorryButComposition',
-          undefined,
-          app
+          undefined
         );
         break;
       default:
         respError.title = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.compositionNotLoaded',
-          undefined,
-          app
+          undefined
         );
         respError.abstract = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.weAreSorryBut',
-          undefined,
-          app
+          undefined
         );
         break;
     }
-    this.hsEventBusService.compositionLoads.next({data: respError, app});
+    this.hsEventBusService.compositionLoads.next(respError);
   }
 
   /**
    * @public
    * Send Ajax request to selected server to gain information about composition
    * @param url - Url to composition info
-   * @param app - App identifier
+   
    * @returns Object containing composition info
    */
-  async loadInfo(url: string, app: string): Promise<any> {
+  async loadInfo(url: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
-    url = this.hsUtilsService.proxify(url, app);
+    url = this.hsUtilsService.proxify(url);
     let options;
     options = {responseType: 'json'};
     let response;
@@ -626,39 +592,34 @@ export class HsCompositionsParserService {
   /**
    * Load and display a warning dialog about out of bounds extent
    * @param extent - Extent value
-   * @param app - App identifier
+   
    */
-  loadWarningBootstrap(extent, app: string): void {
-    this.hsDialogContainerService.create(
-      HsCompositionsWarningDialogComponent,
-      {
-        extent: extent,
-        composition_title: this.get(app).current_composition_title,
-        message: this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMPOSITIONS.dialogWarning',
-          'outOfBounds',
-          undefined,
-          app
-        ),
-      },
-      app
-    );
+  loadWarningBootstrap(extent): void {
+    this.hsDialogContainerService.create(HsCompositionsWarningDialogComponent, {
+      extent: extent,
+      composition_title: this.current_composition_title,
+      message: this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'COMPOSITIONS.dialogWarning',
+        'outOfBounds',
+        undefined
+      ),
+    });
   }
   /**
    * @public
    * Parse composition object to extract individual layers and add them to map
    * @param j - Composition object with Layers
-   * @param app - App identifier
+   
    * @returns Array of created layers
    */
-  async jsonToLayers(j, app: string): Promise<Layer<Source>[]> {
+  async jsonToLayers(j): Promise<Layer<Source>[]> {
     const layers = [];
     if (j.data) {
       j = j.data;
     }
     const baselayersOnTop = j.layers[0]?.base;
     for (const lyr_def of j.layers) {
-      const layer = await this.jsonToLayer(lyr_def, app);
+      const layer = await this.jsonToLayer(lyr_def);
       if (layer == undefined) {
         if (lyr_def.protocol.format != 'hs.format.externalWFS') {
           this.$log.warn(
@@ -677,8 +638,7 @@ export class HsCompositionsParserService {
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsParserService',
-            },
-            app
+            }
           );
         }
       } else {
@@ -693,24 +653,20 @@ export class HsCompositionsParserService {
    * @public
    * Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    * @param lyr_def - Layer to be created (encapsulated in layer definition object)
-   * @param app - App identifier
+   
    * @returns Parser function to create layer (using config_parsers service)
    */
-  async jsonToLayer(lyr_def, app: string): Promise<any> {
+  async jsonToLayer(lyr_def): Promise<any> {
     let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
       case 'WMS':
-        resultLayer = this.hsCompositionsLayerParserService.createWmsLayer(
-          lyr_def,
-          app
-        );
+        resultLayer =
+          this.hsCompositionsLayerParserService.createWmsLayer(lyr_def);
         break;
       case 'HSLayers.Layer.WMTS':
-        resultLayer = this.hsCompositionsLayerParserService.createWMTSLayer(
-          lyr_def,
-          app
-        );
+        resultLayer =
+          this.hsCompositionsLayerParserService.createWMTSLayer(lyr_def);
         break;
       case 'ArcGISRest':
         resultLayer =
@@ -728,21 +684,18 @@ export class HsCompositionsParserService {
       case 'Vector':
       case 'hs.format.LaymanWfs':
         if (lyr_def.protocol?.format == 'hs.format.externalWFS') {
-          resultLayer = this.hsCompositionsLayerParserService.createWFSLayer(
-            lyr_def,
-            app
-          );
+          resultLayer =
+            this.hsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {
           resultLayer =
             await this.hsCompositionsLayerParserService.createVectorLayer(
-              lyr_def,
-              app
+              lyr_def
             );
         }
         break;
       default:
         const existing = this.hsMapService
-          .getLayersArray(app)
+          .getLayersArray()
           .find((l) => getTitle(l as Layer<Source>) == lyr_def.title);
         if (existing != undefined) {
           existing.setZIndex(undefined);

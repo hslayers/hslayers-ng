@@ -1,8 +1,8 @@
 <div class="card panel-default hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="sensors" [app]="data.app" [title]="'PANEL_HEADER.SENSORS' | translateHs: {app: data.app} ">
+    <hs-panel-header name="sensors" [title]="'PANEL_HEADER.SENSORS' | translateHs ">
     </hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs: {app: data.app} "
+        <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs "
                 [(ngModel)]="query.description"></p>
         <div class="container">
             <div class="row" style="width: 662;">
@@ -11,13 +11,13 @@
                         <!--<li class="nav-item">
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}" 
                                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('sensors')"
-                                    >{{'SENSORS.sensors' | translateHs: {app: data.app} }}
+                                    >{{'SENSORS.sensors' | translateHs }}
                             </a>
                         </li>
                         <li>
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'phenomena'}" 
                                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('phenomena')"
-                                >{{'SENSORS.phenomena' | translateHs: {app: data.app} }}
+                                >{{'SENSORS.phenomena' | translateHs }}
                             </a>
                         </li>-->
                     </ul><!-- Tab panes -->
@@ -30,9 +30,9 @@
             </div>
         </div>
         <ul class="list-group">
-            <li *ngFor="let unit of filterQuery(query)" class="list-group-item"><!-- TODO: Remove function call from template -->
-                <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode"
-                    [app]="data.app">
+            <li *ngFor="let unit of filterQuery(query)" class="list-group-item">
+                <!-- TODO: Remove function call from template -->
+                <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode">
                 </hs-sensor-unit-list-item>
             </li>
         </ul>

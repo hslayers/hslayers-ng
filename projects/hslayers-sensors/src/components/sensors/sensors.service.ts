@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
-import {Vector as VectorLayer} from 'ol/layer';
 import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {Geometry, MultiPolygon} from 'ol/geom';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {getWidth} from 'ol/extent';
@@ -40,9 +40,7 @@ const VISUALIZED_ATTR = 'Visualized attribute';
   providedIn: 'root',
 })
 export class HsSensorsService {
-  sensorMarkerStyle: {
-    [id: string]: Style[];
-  } = {};
+  sensorMarkerStyle: Style[];
   labelStyle: Style;
   olStyle = new Style({
     geometry: function (feature) {
@@ -78,7 +76,7 @@ export class HsSensorsService {
   apps: {
     [id: string]: SensorsServiceParams;
   } = {default: new SensorsServiceParams()};
-  visualizedAttribute = new Subject<{app: string; attribute: string}>();
+  visualizedAttribute = new Subject<{attribute: string}>();
 
   constructor(
     private hsUtilsService: HsUtilsService,
@@ -105,34 +103,29 @@ export class HsSensorsService {
 
   /**
    * Initialize sensors service data and subscribers
-   * @param app - App identifier
+   
    */
-  init(app: string): void {
-    const appRef = this.get(app);
+  init(): void {
     this.labelStyle = this.olStyle;
     this.hsConfig.configChanges.subscribe(() => {
-      if (this.hsConfig.get(app).senslog != appRef.endpoint) {
-        this.setEndpoint(app);
+      if (this.hsConfig.senslog != this.endpoint) {
+        this.setEndpoint();
       }
     });
-    this.setEndpoint(app);
+    this.setEndpoint();
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       this.hsUtilsService.debounce(
         () => {
           if (
-            this.hsMapService.getLayerForFeature(event.feature, app) ==
-            appRef.layer
+            this.hsMapService.getLayerForFeature(event.feature) == this.layer
           ) {
-            this.hsLayoutService.setMainPanel('sensors', app);
-            appRef.units.forEach(
-              (unit: HsSensorUnit) => (unit.expanded = false)
-            );
+            this.hsLayoutService.setMainPanel('sensors');
+            this.units.forEach((unit: HsSensorUnit) => (unit.expanded = false));
             this.selectUnit(
-              appRef.units.filter(
+              this.units.filter(
                 (unit: HsSensorUnit) => unit.unit_id == getUnitId(event.feature)
-              )[0],
-              app
+              )[0]
             );
           }
         },
@@ -145,27 +138,26 @@ export class HsSensorsService {
 
   /**
    * Set endpoint for sensors service to receive data from senslog
-   * @param app - App identifier
+   
    */
-  private setEndpoint(app: string) {
-    const appRef = this.get(app);
-    if (this.hsConfig.get(app).senslog) {
-      appRef.endpoint = this.hsConfig.get(app).senslog;
-      if (appRef.endpoint.liteApiPath == undefined) {
-        appRef.endpoint.liteApiPath = 'senslog-lite2';
+  private setEndpoint() {
+    if (this.hsConfig.senslog) {
+      this.endpoint = this.hsConfig.senslog;
+      if (this.endpoint.liteApiPath == undefined) {
+        this.endpoint.liteApiPath = 'senslog-lite2';
       }
-      if (appRef.endpoint.senslog1Path == undefined) {
-        appRef.endpoint.senslog1Path = 'senslog1';
+      if (this.endpoint.senslog1Path == undefined) {
+        this.endpoint.senslog1Path = 'senslog1';
       }
-      this.hsSensorsUnitDialogService.get(app).endpoint = appRef.endpoint;
+      this.hsSensorsUnitDialogService.get().endpoint = this.endpoint;
     }
   }
 
   /**
    * Get the params saved by the sensors service for the current app
-   * @param app - App identifier
+   
    */
-  get(app: string): SensorsServiceParams {
+  get(): SensorsServiceParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new SensorsServiceParams();
     }
@@ -175,47 +167,42 @@ export class HsSensorsService {
   /**
    * Select sensor from available sensors
    * @param sensor - Sensor selected
-   * @param app - App identifier
+   
    */
-  selectSensor(sensor, app: string): void {
-    this.hsSensorsUnitDialogService.selectSensor(sensor, app);
-    const appRef = this.get(app);
-    for (const feature of appRef.layer.getSource().getFeatures()) {
+  selectSensor(sensor): void {
+    this.hsSensorsUnitDialogService.selectSensor(sensor);
+    for (const feature of this.layer.getSource().getFeatures()) {
       feature.set(VISUALIZED_ATTR, sensor.sensor_name);
     }
-    this.visualizedAttribute.next({app, attribute: sensor.sensor_name});
+    this.visualizedAttribute.next({attribute: sensor.sensor_name});
     sensor.checked = true;
   }
 
   /**
    * Select unit from available Units
    * @param unit - Unit selected
-   * @param app - App identifier
+   
    */
-  selectUnit(unit: HsSensorUnit, app: string): void {
+  selectUnit(unit: HsSensorUnit): void {
     this.hsSensorsUnitDialogService
-      .get(app)
+      .get()
       .unit?.feature.set('selected', undefined);
-    this.hsSensorsUnitDialogService.get(app).unit = unit;
+    this.hsSensorsUnitDialogService.get().unit = unit;
     unit.expanded = !unit.expanded;
     //this.selectSensor(unit.sensors[0]);
     if (
       !this.hsDialogContainerService
-        .get(app)
+        .get()
         .dialogs.some((d) =>
           this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
         )
     ) {
-      this.hsDialogContainerService.create(
-        HsSensorsUnitDialogComponent,
-        {},
-        app
-      );
+      this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
-      this.hsSensorsUnitDialogService.get(app).unitDialogVisible = true;
+      this.hsSensorsUnitDialogService.get().unitDialogVisible = true;
     }
-    if (this.hsSensorsUnitDialogService.get(app).currentInterval == undefined) {
-      this.hsSensorsUnitDialogService.get(app).currentInterval = {
+    if (this.hsSensorsUnitDialogService.get().currentInterval == undefined) {
+      this.hsSensorsUnitDialogService.get().currentInterval = {
         amount: 1,
         unit: 'days',
       };
@@ -223,25 +210,23 @@ export class HsSensorsService {
     this.hsSensorsUnitDialogService
       .getObservationHistory(
         unit,
-        this.hsSensorsUnitDialogService.get(app).currentInterval,
-        app
+        this.hsSensorsUnitDialogService.get().currentInterval
       )
-      .then((_) => this.hsSensorsUnitDialogService.createChart(unit, app));
+      .then((_) => this.hsSensorsUnitDialogService.createChart(unit));
     unit.feature.set('selected', true);
     this.hsMapService
-      .getMap(app)
+      .getMap()
       .getView()
       .fit(unit.feature.getGeometry(), {maxZoom: 16});
   }
 
   /**
    * Create layer for displaying sensor data
-   * @param app - App identifier
+   
    */
-  createLayer(app: string) {
-    const appRef = this.get(app);
-    const configRef = this.hsConfig.get(app);
-    this.sensorMarkerStyle[app] = [
+  createLayer() {
+    const configRef = this.hsConfig;
+    this.sensorMarkerStyle = [
       new Style({
         fill: new Fill({
           color: 'rgba(255, 255, 255, 0.2)',
@@ -258,7 +243,7 @@ export class HsSensorsService {
       }),
       this.labelStyle,
     ];
-    appRef.layer = new VectorLayer<VectorSource<Geometry>>({
+    this.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
         title: 'Sensor units',
         popUp: {
@@ -280,36 +265,34 @@ export class HsSensorsService {
           this.labelStyle.getText().setText(getFeatureName(feature));
         }
         this.labelStyle.getText().setScale(feature.get('selected') ? 2 : 1);
-        return this.sensorMarkerStyle[app];
+        return this.sensorMarkerStyle;
       },
       source: new VectorSource({}),
     });
-    this.hsMapService.getMap(app).addLayer(appRef.layer);
+    this.hsMapService.getMap().addLayer(this.layer);
   }
 
   /**
    * Get list of units from Senslog backend
-   * @param app - App identifier
+   
    */
-  getUnits(app: string) {
-    const appRef = this.get(app);
-    if (appRef.layer === null) {
-      this.createLayer(app);
+  getUnits() {
+    if (this.layer === null) {
+      this.createLayer();
     }
     const url = this.hsUtilsService.proxify(
-      `${appRef.endpoint.url}/${appRef.endpoint.liteApiPath}/rest/unit`,
-      app
+      `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/unit`
     );
     this.http
       .get(url, {
         params: {
-          user_id: appRef.endpoint.user_id.toString(),
+          user_id: this.endpoint.user_id.toString(),
         },
       })
       .subscribe((response) => {
-        appRef.units = response;
-        appRef.layer.getSource().clear();
-        const features = appRef.units
+        this.units = response;
+        this.layer.getSource().clear();
+        const features = this.units
           .filter(
             (unit: HsSensorUnit) =>
               unit.unit_position && unit.unit_position.asWKT
@@ -325,9 +308,9 @@ export class HsSensorsService {
             unit.feature = feature;
             return feature;
           });
-        appRef.layer.getSource().addFeatures(features);
-        this.fillLastObservations(app);
-        appRef.units.forEach((unit: HsSensorUnit) => {
+        this.layer.getSource().addFeatures(features);
+        this.fillLastObservations();
+        this.units.forEach((unit: HsSensorUnit) => {
           unit.sensorTypes = unit.sensors.map((s) => {
             return {name: s.sensor_type};
           });
@@ -357,14 +340,13 @@ export class HsSensorsService {
               ))
           );
         });
-        appRef.units.forEach((unit: HsSensorUnit) => {
+        this.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
-            this.hsSensorsUnitDialogService.get(app).sensorById[
-              sensor.sensor_id
-            ] = sensor;
+            this.hsSensorsUnitDialogService.get().sensorById[sensor.sensor_id] =
+              sensor;
           });
         });
-        setInterval(() => this.fillLastObservations(app), 60000);
+        setInterval(() => this.fillLastObservations(), 60000);
       });
   }
 
@@ -384,23 +366,22 @@ export class HsSensorsService {
 
   /**
    * Fill observations
-   * @param app - App identifier
+   
    */
-  fillLastObservations(app: string): void {
-    const appRef = this.get(app);
-    const url = appRef.endpoint.senslog2Path
-      ? `${appRef.endpoint.url}/${appRef.endpoint.senslog2Path}/rest/observation/last`
-      : `${appRef.endpoint.url}/${appRef.endpoint.senslog1Path}/SensorService`;
-    const params = appRef.endpoint.senslog2Path
-      ? {group_name: appRef.endpoint.group}
+  fillLastObservations(): void {
+    const url = this.endpoint.senslog2Path
+      ? `${this.endpoint.url}/${this.endpoint.senslog2Path}/rest/observation/last`
+      : `${this.endpoint.url}/${this.endpoint.senslog1Path}/SensorService`;
+    const params = this.endpoint.senslog2Path
+      ? {group_name: this.endpoint.group}
       : {
           Operation: 'GetLastObservations',
-          group: appRef.endpoint.group,
-          user: appRef.endpoint.user,
+          group: this.endpoint.group,
+          user: this.endpoint.user,
         };
     this.http
 
-      .get(this.hsUtilsService.proxify(url, app), {
+      .get(this.hsUtilsService.proxify(url), {
         params,
       })
       .subscribe((response: any) => {
@@ -411,12 +392,12 @@ export class HsSensorsService {
             timestamp: dayjs(sv.timeStamp).format('DD.MM.YYYY HH:mm'),
           };
         });
-        appRef.units.forEach((unit: HsSensorUnit) => {
+        this.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
             const reading = sensorValues[unit.unit_id + sensor.sensor_id];
             if (reading) {
               sensor.lastObservationValue = reading.value;
-              const feature = this.apps[app].layer
+              const feature = this.layer
                 .getSource()
                 .getFeatures()
                 .find((f) => getUnitId(f) == unit.unit_id);

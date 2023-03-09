@@ -25,25 +25,18 @@ export class HsLanguageComponent
   }
 
   ngOnInit(): void {
-    const app = this.data.app;
-    this.hsSidebarService.addButton(
-      {
-        panel: 'language',
-        module: 'hs.language',
-        order: 13,
-        fits: true,
-        title: 'PANEL_HEADER.LANGUAGE',
-        description: 'SIDEBAR.descriptions.LANGUAGE',
-        content: () => {
-          return this.hsLanguageService
-            .getCurrentLanguageCode(app)
-            .toUpperCase();
-        },
+    this.hsSidebarService.addButton({
+      panel: 'language',
+      module: 'hs.language',
+      order: 13,
+      fits: true,
+      title: 'PANEL_HEADER.LANGUAGE',
+      description: 'SIDEBAR.descriptions.LANGUAGE',
+      content: () => {
+        return this.hsLanguageService.getCurrentLanguageCode().toUpperCase();
       },
-      app
-    );
-    this.available_languages =
-      this.hsLanguageService.listAvailableLanguages(app);
+    });
+    this.available_languages = this.hsLanguageService.listAvailableLanguages();
   }
   /**
    * Check if provided language is active language
@@ -51,9 +44,7 @@ export class HsLanguageComponent
    * @returns True, if current language is active
    */
   isCurrentLang(langCode: string): boolean {
-    return this.hsLanguageService.apps[this.data.app]?.language.endsWith(
-      langCode.toLowerCase()
-    );
+    return this.hsLanguageService.language?.endsWith(langCode.toLowerCase());
   }
 
   /**
@@ -61,6 +52,6 @@ export class HsLanguageComponent
    * @param langCode - Language code
    */
   setLanguage(langCode: string): void {
-    this.hsLanguageService.setLanguage(langCode, this.data.app);
+    this.hsLanguageService.setLanguage(langCode);
   }
 }

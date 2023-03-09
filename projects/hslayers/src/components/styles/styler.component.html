@@ -1,85 +1,84 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
   <div class="card-header d-flex align-items-center justify-content-between">
     <span class="panel-title">
-      {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs : {app: data.app} }}
-      {{appRef.layerTitle}}
+      {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs }}
+      {{hsStylerService.layerTitle}}
     </span>
-    <button type="button" class="btn-close" (click)="close()" [title]="'COMMON.close' | translateHs : data"
-      [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
+    <button type="button" class="btn-close" (click)="close()" [title]="'COMMON.close' | translateHs"
+      [attr.aria-label]="'COMMON.close' | translateHs ">
     </button>
   </div>
   <div class="card-body pe-2">
-    <input class="form-control" *ngIf="appRef.styleObject" type="text"
-      [placeholder]="'STYLER.styleName' | translateHs : data" [(ngModel)]="appRef.styleObject.name" />
+    <input class="form-control" *ngIf="hsStylerService.styleObject" type="text"
+      [placeholder]="'STYLER.styleName' | translateHs" [(ngModel)]="hsStylerService.styleObject.name" />
     <div class="d-flex flex-row justify-content-end">
-      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs : {app: data.app} }}:</div>
+      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs }}:</div>
       <div class="p-1">
         <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-right">
-          <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs : data"
-            id="dropdownAddRule" ngbDropdownToggle>
+          <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs" id="dropdownAddRule"
+            ngbDropdownToggle>
             <span class="icon-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
-            <button ngbDropdownItem (click)="hsStylerService.addRule('Simple',data.app)">
-              {{'STYLER.simpleRule' | translateHs : {app: data.app} }}
+            <button ngbDropdownItem (click)="hsStylerService.addRule('Simple')">
+              {{'STYLER.simpleRule' | translateHs }}
             </button>
-            <button ngbDropdownItem (click)="hsStylerService.addRule('Cluster',data.app)">
-              {{'STYLER.clusterRule' | translateHs : {app: data.app} }}
+            <button ngbDropdownItem (click)="hsStylerService.addRule('Cluster')">
+              {{'STYLER.clusterRule' | translateHs }}
             </button>
-            <button ngbDropdownItem (click)="appRef.colorMapDialogVisible = !appRef.colorMapDialogVisible">
-              {{'STYLER.colorMap' | translateHs : {app: data.app} }}
+            <button ngbDropdownItem
+              (click)="hsStylerService.colorMapDialogVisible = !hsStylerService.colorMapDialogVisible">
+              {{'STYLER.colorMap' | translateHs }}
             </button>
           </div>
         </div>
       </div>
     </div>
-    <add-colormap [layer]="appRef.layer" [data]="data" (canceled)="appRef.colorMapDialogVisible = false"
-      *ngIf="appRef.colorMapDialogVisible"></add-colormap>
-    <ng-container *ngIf="appRef.styleObject">
+    <add-colormap [layer]="hsStylerService.layer" [data]="data"
+      (canceled)="hsStylerService.colorMapDialogVisible = false"
+      *ngIf="hsStylerService.colorMapDialogVisible"></add-colormap>
+    <ng-container *ngIf="hsStylerService.styleObject">
       <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
-        [cdkDropListData]="appRef.styleObject.rules">
-        <ng-container *ngFor="let rule of appRef.styleObject.rules">
-          <hs-rule-list-item cdkDrag [rule]="rule" [app]="data.app"></hs-rule-list-item>
+        [cdkDropListData]="hsStylerService.styleObject.rules">
+        <ng-container *ngFor="let rule of hsStylerService.styleObject.rules">
+          <hs-rule-list-item cdkDrag [rule]="rule"></hs-rule-list-item>
         </ng-container>
       </ul>
     </ng-container>
   </div>
   <div class="card-footer bg-white px-1">
     <div class="form-group m-3" *ngIf="uploaderVisible">
-      <hs-file-upload (uploaded)="handleFileUpload($event)" [app]="data.app" uploader="hs-sld-upload"
-        acceptedFormats=".sld, .qml">
+      <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".sld, .qml">
       </hs-file-upload>
     </div>
     <div class="d-flex align-items-center justify-content-between">
-      <div class="btn-group" role="group" [attr.aria-label]="'STYLER.manageStyle' | translateHs : data">
-        <a class="btn btn-secondary" download="style.sld" [hsDownload]="appRef.sld" mimeType="text/plain"
-          [href]="downloadData" (downloadPrepared)="downloadData = $event"
-          [title]="'STYLER.downloadSld' | translateHs : data">
+      <div class="btn-group" role="group" [attr.aria-label]="'STYLER.manageStyle' | translateHs">
+        <a class="btn btn-secondary" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
+          [href]="downloadData" (downloadPrepared)="downloadData = $event" [title]="'STYLER.downloadSld' | translateHs">
           <i class="icon-download"></i></a>
 
         <button class="btn btn-secondary" (click)="uploadSld()" data-toggle="tooltip"
-          [title]="'STYLER.uploadSld' | translateHs : data">
+          [title]="'STYLER.uploadSld' | translateHs">
           <i class="icon-upload"></i>
         </button>
-        <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip"
-          [title]="'STYLER.clear' | translateHs : data">
+        <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip" [title]="'STYLER.clear' | translateHs">
           <i class="icon-trash"></i>
         </button>
       </div>
-      <div class="d-flex justify-content-between" *ngIf="appRef.isAuthenticated && appRef
+      <div class="d-flex justify-content-between" *ngIf="hsStylerService.isAuthenticated && hsStylerService
       .unsavedChange">
         <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert"
-          *ngIf="!appRef.syncing; else layerSyncing">
-          {{'COMMON.unsavedChanges' | translateHs : {app: data.app} }} <button class="btn btn-primary btn-sm m-1"
-            (click)="hsStylerService.setSldQml(data.app)" data-toggle="tooltip"
-            [title]="'STYLER.unsavedChanges' | translateHs : data">
+          *ngIf="!hsStylerService.syncing; else layerSyncing">
+          {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
+            (click)="hsStylerService.setSldQml())" data-toggle="tooltip"
+            [title]="'STYLER.unsavedChanges' | translateHs">
             <i class="icon-save-floppy"></i>
           </button>
         </div>
         <ng-template #layerSyncing>
           <div class="d-flex align-items-center p-2 bg-secondary text-white rounded btn">
             <span class="hs-loader hs-loader-dark"></span>
-            {{'COMMON.savingChanges' | translateHs : {app: data.app} }}
+            {{'COMMON.savingChanges' | translateHs}}
           </div>
         </ng-template>
       </div>

@@ -35,17 +35,17 @@ export class HsCesiumPickerService {
 
   /**
    * Get the params saved by the cesium picker service for the current app
-   * @param app - App identifier
+   
    */
-  get(app: string): CesiumPickerServiceParams {
+  get(): CesiumPickerServiceParams {
     if (this.apps[app ?? 'default'] == undefined) {
       this.apps[app ?? 'default'] = new CesiumPickerServiceParams();
     }
     return this.apps[app ?? 'default'];
   }
 
-  init(viewer: Viewer, app: string) {
-    const appRef = this.get(app);
+  init(viewer: Viewer) {
+    const appRef = this.get();
     appRef.viewer = viewer;
     const handler = new ScreenSpaceEventHandler(appRef.viewer.scene.canvas);
 
@@ -58,25 +58,25 @@ export class HsCesiumPickerService {
     }, ScreenSpaceEventType.LEFT_UP);
 
     handler.setInputAction(
-      (movement) => this.handleScreenInteraction(movement, 'left', app),
+      (movement) => this.handleScreenInteraction(movement, 'left'),
       ScreenSpaceEventType.LEFT_DOWN || ScreenSpaceEventType.RIGHT_DOWN
     );
     handler.setInputAction(
-      (movement) => this.handleScreenInteraction(movement, 'right', app),
+      (movement) => this.handleScreenInteraction(movement, 'right'),
       ScreenSpaceEventType.RIGHT_DOWN
     );
     handler.setInputAction(
-      (movement) => this.handleScreenInteraction(movement, 'left', app),
+      (movement) => this.handleScreenInteraction(movement, 'left'),
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
     handler.setInputAction((movement) => {
-      if (this.hsConfig.get(app).popUpDisplay === 'hover') {
+      if (this.hsConfig.popUpDisplay === 'hover') {
         this.hsUtilsService.debounce(
           this.handleScreenInteraction,
           200,
           false,
           this
-        )({position: movement.endPosition}, 'none', app);
+        )({position: movement.endPosition}, 'none');
       }
     }, ScreenSpaceEventType.MOUSE_MOVE);
   }
@@ -86,9 +86,9 @@ export class HsCesiumPickerService {
   handleScreenInteraction(
     movement,
     button: 'left' | 'right' | 'none',
-    app: string
+    
   ) {
-    const appRef = this.get(app);
+    const appRef = this.get();
     const pickRay = appRef.viewer.camera.getPickRay(movement.position);
     const pickedObject = appRef.viewer.scene.pick(movement.position);
 
@@ -109,7 +109,7 @@ export class HsCesiumPickerService {
         }
       }
     }
-    if (pickedObject?.id && this.hsConfig.get(app).popUpDisplay !== 'none') {
+    if (pickedObject?.id && this.hsConfig.popUpDisplay !== 'none') {
       if (button == 'right' && pickedObject?.id?.onRightClick) {
         pickedObject.id.onRightClick(pickedObject.id);
       }
@@ -119,16 +119,14 @@ export class HsCesiumPickerService {
       this.HsCesiumQueryPopupService.fillFeatures(
         [
           this.HsMapService.getFeatureById(
-            (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue(),
-            app
+            (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue()
           ),
-        ],
-        app
+        ]
       );
-      this.HsCesiumQueryPopupService.showPopup({pixel: movement.position}, app);
+      this.HsCesiumQueryPopupService.showPopup({pixel: movement.position});
       return;
     } else {
-      this.HsCesiumQueryPopupService.fillFeatures([], app);
+      this.HsCesiumQueryPopupService.fillFeatures([]);
     }
   }
 }

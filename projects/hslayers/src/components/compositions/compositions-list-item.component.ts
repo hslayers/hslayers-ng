@@ -17,7 +17,7 @@ import {HsToastService} from '../layout/toast/toast.service';
 export class HsCompositionsListItemComponent {
   @Input() composition: HsMapCompositionDescriptor;
   @Input() selectedCompId: string;
-  @Input() app = 'default';
+
   constructor(
     private hsCompositionsService: HsCompositionsService,
     private hsToastService: HsToastService,
@@ -31,17 +31,14 @@ export class HsCompositionsListItemComponent {
    * @param composition - Selected composition
    */
   openComposition(composition: HsMapCompositionDescriptor): void {
-    this.hsCompositionsService.loadCompositionParser(composition, this.app);
+    this.hsCompositionsService.loadCompositionParser(composition);
   }
   /**
    * @param record - Composition to show details
    * Load info about composition through service and display composition info dialog
    */
   async detailComposition(record: HsMapCompositionDescriptor): Promise<void> {
-    const info = await this.hsCompositionsService.getCompositionInfo(
-      record,
-      this.app
-    );
+    const info = await this.hsCompositionsService.getCompositionInfo(record);
     if (info !== undefined) {
       this.infoDialogBootstrap(info);
     }
@@ -54,9 +51,9 @@ export class HsCompositionsListItemComponent {
     let url: string;
     try {
       await this.hsCompositionsService
-        .shareComposition(record, this.app)
+        .shareComposition(record)
         .then(async () => {
-          url = await this.hsCompositionsService.getShareUrl(this.app);
+          url = await this.hsCompositionsService.getShareUrl();
           if (url !== undefined) {
             this.shareDialogBootstrap(record, url);
           } else {
@@ -67,17 +64,14 @@ export class HsCompositionsListItemComponent {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
-          undefined,
-          this.app
+          undefined
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.message,
-          {url: url},
-          this.app
+          {url: url}
         ),
-        {disableLocalization: true},
-        this.app
+        {disableLocalization: true}
       );
     }
   }
@@ -88,15 +82,10 @@ export class HsCompositionsListItemComponent {
   async showPermissions(
     composition: HsMapCompositionDescriptor
   ): Promise<void> {
-    this.hsDialogContainerService.create(
-      HsSetPermissionsDialogComponent,
-      {
-        recordType: 'composition',
-        selectedRecord: composition,
-        app: this.app,
-      },
-      this.app
-    );
+    this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
+      recordType: 'composition',
+      selectedRecord: composition,
+    });
   }
 
   /**
@@ -113,32 +102,24 @@ export class HsCompositionsListItemComponent {
    * @param composition - Composition selected for deletion
    */
   deleteDialogBootstrap(composition): void {
-    this.hsDialogContainerService.create(
-      HsCompositionsDeleteDialogComponent,
-      {
-        compositionToDelete: composition,
-      },
-      this.app
-    );
+    this.hsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
+      compositionToDelete: composition,
+    });
   }
   /**
    * @param record - Composition selected for sharing
    * @param url -
    */
   shareDialogBootstrap(record: HsMapCompositionDescriptor, url: string): void {
-    this.hsDialogContainerService.create(
-      HsCompositionsShareDialogComponent,
-      {
-        url,
-        title:
-          this.hsConfig.get(this.app).social_hashtag &&
-          !record.title.includes(this.hsConfig.get(this.app).social_hashtag)
-            ? record.title + ' ' + this.hsConfig.get(this.app).social_hashtag
-            : record.title,
-        abstract: record.abstract,
-      },
-      this.app
-    );
+    this.hsDialogContainerService.create(HsCompositionsShareDialogComponent, {
+      url,
+      title:
+        this.hsConfig.social_hashtag &&
+        !record.title.includes(this.hsConfig.social_hashtag)
+          ? record.title + ' ' + this.hsConfig.social_hashtag
+          : record.title,
+      abstract: record.abstract,
+    });
   }
 
   /**
@@ -146,13 +127,9 @@ export class HsCompositionsListItemComponent {
    * @param info - Composition info
    */
   infoDialogBootstrap(info): void {
-    this.hsDialogContainerService.create(
-      HsCompositionsInfoDialogComponent,
-      {
-        info,
-      },
-      this.app
-    );
+    this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
+      info,
+    });
   }
 
   /**

@@ -39,7 +39,7 @@ export class HsFileShpComponent
     this.data.loadAsType = DEFAULT_SHP_LOAD_TYPE;
   }
 
-  async handleFileUpload(evt: HsUploadedFiles, app: string): Promise<void> {
-    await this.hsFileService.read(evt, app);
+  async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
+    await this.hsFileService.read(evt);
   }
 }

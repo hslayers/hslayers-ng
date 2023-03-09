@@ -41,54 +41,47 @@ export class HsLayerSynchronizerService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsLogService: HsLogService
-  ) {}
-
-  /**
-   * Initialize the LayerSynchronizerService data and subscribers
-   * @param app - App identifier
-   */
-  async init(app: string): Promise<void> {
-    await this.hsMapService.loaded(app);
-    const map = this.hsMapService.getMap(app);
-    const layerAdded = (e) => this.addLayer(e.element, app);
-    map.getLayers().on('add', layerAdded);
-    map.getLayers().on('remove', (e) => {
-      this.removeLayer(e.element as VectorLayer<VectorSource>);
-    });
-    map.getLayers().forEach((lyr) => {
-      layerAdded({
-        element: lyr,
+  ) {
+    this.hsMapService.loaded().then((map) => {
+      const layerAdded = (e) => this.addLayer(e.element);
+      map.getLayers().on('add', layerAdded);
+      map.getLayers().on('remove', (e) => {
+        this.removeLayer(e.element as VectorLayer<VectorSource>);
       });
+      map.getLayers().forEach((lyr) => {
+        layerAdded({
+          element: lyr,
+        });
+      });
+      this.hsCommonLaymanService.authChange.subscribe(() => {
+        this.reloadLayersOnAuthChange();
+      });
+      this.crs = this.hsMapService.getCurrentProj().getCode();
+      this.hsLaymanService.crs = this.crs;
     });
-    this.hsCommonLaymanService.authChange.subscribe(() => {
-      this.reloadLayersOnAuthChange(app);
-    });
-    this.crs = this.hsMapService.getCurrentProj(app).getCode();
-    this.hsLaymanService.crs = this.crs;
   }
-
   /**
    * Reload all the synchronized layers after Layman's authorization change
-   * @param app - App identifier
+   
    */
-  private reloadLayersOnAuthChange(app: string): void {
+  private reloadLayersOnAuthChange(): void {
     for (const layer of this.syncedLayers) {
       const layerSource = layer.getSource();
       setLaymanLayerDescriptor(layer, undefined);
       layerSource.clear();
-      this.pull(layer, layerSource, app);
+      this.pull(layer, layerSource);
     }
   }
 
   /**
    * Start synchronizing layer to database
    * @param layer - Layer to add
-   * @param app - App identifier
+   
    */
-  addLayer(layer: VectorLayer<VectorSource<Geometry>>, app: string): void {
+  addLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
     if (this.isLayerSynchronizable(layer)) {
       this.syncedLayers.push(layer);
-      this.startMonitoringIfNeeded(layer, app);
+      this.startMonitoringIfNeeded(layer);
     }
   }
 
@@ -112,36 +105,33 @@ export class HsLayerSynchronizerService {
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initially also get features from server
    * @param layer - Layer to add
-   * @param app - App identifier
+   
    */
   async startMonitoringIfNeeded(
-    layer: VectorLayer<VectorSource<Geometry>>,
-    app: string
+    layer: VectorLayer<VectorSource<Geometry>>
   ): Promise<void> {
     const layerSource = layer.getSource();
-    await this.pull(layer, layerSource, app);
+    await this.pull(layer, layerSource);
     layer.on('propertychange', (e) => {
       if (e.key == 'sld' || e.key == 'title') {
         this.hsLaymanService.upsertLayer(
           this.findLaymanForWfsLayer(layer),
           layer,
-          false,
-          app
+          false
         );
       }
     });
-    layerSource.forEachFeature((f) => this.observeFeature(f, app));
+    layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
       this.sync(
         Array.isArray(e.feature) ? e.feature : [e.feature],
         [],
         [],
-        layer,
-        app
+        layer
       );
     });
     layerSource.on('removefeature', (e) => {
-      this.sync([], [], [e.feature], layer, app);
+      this.sync([], [], [e.feature], layer);
     });
   }
 
@@ -162,12 +152,11 @@ export class HsLayerSynchronizerService {
    * them to OL VectorSource
    * @param layer - Layer to get Layman friendly name for
    * @param source - OL VectorSource to store features in
-   * @param app - App identifier
+   
    */
   async pull(
     layer: VectorLayer<VectorSource<Geometry>>,
-    source: VectorSource<Geometry>,
-    app: string
+    source: VectorSource<Geometry>
   ): Promise<void> {
     try {
       setEventsSuspended(layer, (getEventsSuspended(layer) || 0) + 1);
@@ -176,8 +165,7 @@ export class HsLayerSynchronizerService {
         setHsLaymanSynchronizing(layer, true);
         const response: string = await this.hsLaymanService.makeGetLayerRequest(
           laymanEndpoint,
-          layer,
-          app
+          layer
         );
         let featureString;
         if (response) {
@@ -198,7 +186,7 @@ export class HsLayerSynchronizerService {
           try {
             const features = format.readFeatures(featureString);
             source.addFeatures(features);
-            features.forEach((f) => this.observeFeature(f, app));
+            features.forEach((f) => this.observeFeature(f));
           } catch (ex) {
             this.hsLogService.warn(featureString, ex);
           }
@@ -215,14 +203,14 @@ export class HsLayerSynchronizerService {
   /**
    * Observe feature changes and execute handler for them
    * @param f - Feature to observe
-   * @param app - App identifier
+   
    */
-  observeFeature(f: Feature<Geometry>, app: string): void {
+  observeFeature(f: Feature<Geometry>): void {
     f.getGeometry().on(
       'change',
       this.hsUtilsService.debounce(
         () => {
-          this.handleFeatureChange(f, app);
+          this.handleFeatureChange(f);
         },
         this.debounceInterval,
         false,
@@ -230,47 +218,29 @@ export class HsLayerSynchronizerService {
       )
     );
     f.on('propertychange', (e: ObjectEvent) =>
-      this.handleFeaturePropertyChange(e.target as Feature<Geometry>, app)
+      this.handleFeaturePropertyChange(e.target as Feature<Geometry>)
     );
   }
 
   /**
    * Handler for feature change event
    * @param feature - Feature whose change event was captured
-   * @param app - App identifier
+   
    */
-  handleFeatureChange(feature: Feature<Geometry>, app: string): void {
-    this.sync(
-      [],
-      [feature],
-      [],
-      this.hsMapService.getLayerForFeature(feature, app),
-      app
-    );
+  handleFeatureChange(feature: Feature<Geometry>): void {
+    this.sync([], [feature], [], this.hsMapService.getLayerForFeature(feature));
   }
 
   /**
    * Handler for feature property change event
    * @param feature - Feature whose property change event was captured
-   * @param app - App identifier
+   
    */
-  handleFeaturePropertyChange(feature: Feature<Geometry>, app: string): void {
+  handleFeaturePropertyChange(feature: Feature<Geometry>): void {
     //NOTE Due to WFS specification, attribute addition is not possible, so we must delete the feature before.
-    this.sync(
-      [],
-      [],
-      [feature],
-      this.hsMapService.getLayerForFeature(feature, app),
-      app
-    );
+    this.sync([], [], [feature], this.hsMapService.getLayerForFeature(feature));
     //NOTE only then we can add feature with new attributes again.
-    this.sync(
-      [feature],
-      [],
-      [],
-      this.hsMapService.getLayerForFeature(feature, app),
-      app
-    );
+    this.sync([feature], [], [], this.hsMapService.getLayerForFeature(feature));
   }
 
   /**
@@ -279,14 +249,13 @@ export class HsLayerSynchronizerService {
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
-   * @param app - App identifier
+   
    */
   sync(
     add: Feature<Geometry>[],
     upd: Feature<Geometry>[],
     del: Feature<Geometry>[],
-    layer: VectorLayer<VectorSource<Geometry>>,
-    app: string
+    layer: VectorLayer<VectorSource<Geometry>>
   ): void {
     if ((getEventsSuspended(layer) || 0) > 0) {
       return;
@@ -295,10 +264,10 @@ export class HsLayerSynchronizerService {
     if (ep) {
       setHsLaymanSynchronizing(layer, true);
       this.hsLaymanService
-        .sync({ep, add, upd, del, layer}, app)
+        .sync({ep, add, upd, del, layer})
         .then((response: string) => {
           if (response?.includes('Exception')) {
-            this.displaySyncErrorDialog(response, app);
+            this.displaySyncErrorDialog(response);
             return;
           }
           if (add[0]) {
@@ -313,7 +282,7 @@ export class HsLayerSynchronizerService {
             add[0].setGeometry(geometry);
             add[0].unset('geometry', true);
 
-            this.observeFeature(add[0], app);
+            this.observeFeature(add[0]);
           }
           setHsLaymanSynchronizing(layer, false);
         });
@@ -323,24 +292,22 @@ export class HsLayerSynchronizerService {
   /**
    * Display error dialog on synchronization failure
    * @param error - Error captured
-   * @param app - App identifier
+   
    */
-  displaySyncErrorDialog(error: string, app: string): void {
+  displaySyncErrorDialog(error: string): void {
     const exception: xml2Json.Element | xml2Json.ElementCompact =
       xml2Json.xml2js(error, {compact: true});
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing',
-        undefined,
-        app
+        undefined
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsLayerSynchronizerService',
-      },
-      app
+      }
     );
   }
 

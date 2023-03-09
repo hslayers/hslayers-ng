@@ -9,7 +9,7 @@ import {HsUrlArcGisService} from './arcgis.service';
   templateUrl: './arcgis.component.html',
 })
 export class HsUrlArcGisComponent {
-  @Input() app = 'default';
+  
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsUrlArcGisService: HsUrlArcGisService,

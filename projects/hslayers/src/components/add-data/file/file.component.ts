@@ -12,7 +12,6 @@ import {HsLanguageService} from '../../language/language.service';
   templateUrl: './file.component.html',
 })
 export class HsAddDataFileComponent {
-  @Input() app = 'default';
   typeSelected: AddDataFileType;
   types: {id: AddDataFileType; text: string}[];
 
@@ -20,10 +19,9 @@ export class HsAddDataFileComponent {
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService
   ) {
-    if (Array.isArray(this.hsConfig.get(this.app).uploadTypes)) {
-      this.types = this.hsConfig
-        .get(this.app)
-        .uploadTypes.filter((type) => filesSupported.includes(type))
+    if (Array.isArray(this.hsConfig.uploadTypes)) {
+      this.types = this.hsConfig.uploadTypes
+        .filter((type) => filesSupported.includes(type))
         .map((type) => AddDataFileValues.find((v) => v.id == type));
     } else {
       this.types = AddDataFileValues;

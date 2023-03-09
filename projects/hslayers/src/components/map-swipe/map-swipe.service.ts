@@ -27,7 +27,10 @@ export enum SwipeSide {
   Right = 'right',
   Full = 'full',
 }
-class HsMapSwipeParams {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsMapSwipeService {
   swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   leftLayers: LayerListItem[] = [];
@@ -37,14 +40,6 @@ class HsMapSwipeParams {
   swipeControlActive: boolean;
   orientation: 'vertical' | 'horizontal';
   orientationVertical = true;
-}
-@Injectable({
-  providedIn: 'root',
-})
-export class HsMapSwipeService {
-  apps: {
-    [id: string]: HsMapSwipeParams;
-  } = {default: new HsMapSwipeParams()};
   constructor(
     public hsMapService: HsMapService,
     public hsConfig: HsConfig,
@@ -55,206 +50,188 @@ export class HsMapSwipeService {
     public hsShareUrlService: HsShareUrlService,
     public hsLayoutService: HsLayoutService,
     private zone: NgZone
-  ) {}
+  ) {
+    this.swipeCtrl = null;
+    this.rightLayers = [];
+    this.leftLayers = [];
+    this.entireMapLayers = [];
+    this.movingSide = SwipeSide.Left;
+    this.orientationVertical = true;
+    this.wasMoved = null;
+    this.swipeControlActive = null;
+    this.orientation = null;
 
-  /**
-   * Initialize the map swipe service data and subscribers
-   * @param app - App identifier
-   */
-  init(app: string) {
-    this.apps[app] = {
-      swipeCtrl: null,
-      rightLayers: [],
-      leftLayers: [],
-      entireMapLayers: [],
-      movingSide: SwipeSide.Left,
-      orientationVertical: true,
-      wasMoved: null,
-      swipeControlActive: null,
-      orientation: null,
-    };
-    this.setInitCtrlActive(app);
-    this.setInitOri(app);
-    this.hsMapService.loaded(app).then(() => {
-      if (this.hsLayoutService.panelEnabled('mapSwipe', app)) {
-        this.initSwipeControl(app);
+    this.setInitCtrlActive();
+    this.setInitOri();
+    this.hsMapService.loaded().then(() => {
+      if (this.hsLayoutService.panelEnabled('mapSwipe')) {
+        this.initSwipeControl();
       }
     });
     this.hsEventBusService.layerManagerUpdates.pipe(first()).subscribe(() => {
-      if (this.hsLayoutService.panelEnabled('mapSwipe', app)) {
-        this.setInitialSwipeLayers(app);
+      if (this.hsLayoutService.panelEnabled('mapSwipe')) {
+        this.setInitialSwipeLayers();
       }
     });
-    this.hsEventBusService.layerManagerUpdates.subscribe(({layer, app}) => {
-      if (this.hsLayoutService.panelEnabled('mapSwipe', app)) {
-        this.fillSwipeLayers(layer, app);
+    //FIX ME : THIS SEEMS SKETCHY
+    this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
+      if (this.hsLayoutService.panelEnabled('mapSwipe')) {
+        this.fillSwipeLayers(layer);
       }
     });
   }
 
   /**
    * Set initial map-swipe control state
-   * @param app - App identifier
+   
    */
-  setInitCtrlActive(app: string): void {
-    const appRef = this.get(app);
+  setInitCtrlActive(): void {
     const param = this.hsShareUrlService.getParamValue('map-swipe');
     if (param) {
       switch (param) {
         case 'enabled':
-          appRef.swipeControlActive = true;
+          this.swipeControlActive = true;
           break;
         default:
-          appRef.swipeControlActive = false;
+          this.swipeControlActive = false;
           break;
       }
     } else {
-      appRef.swipeControlActive =
-        this.hsConfig?.get(app).componentsEnabled?.mapSwipe ?? false;
+      this.swipeControlActive =
+        this.hsConfig?.componentsEnabled?.mapSwipe ?? false;
     }
-    this.updateUrlParam(app);
+    this.updateUrlParam();
   }
 
   /**
    * Set initial orientation value
-   * @param app - App identifier
+   
    */
-  setInitOri(app: string): void {
-    const appRef = this.get(app);
-    const storageOri = localStorage.getItem(`${app}:hs_map_swipe_ori`) as
+  setInitOri(): void {
+    const storageOri = localStorage.getItem(`$:hs_map_swipe_ori`) as
       | 'vertical'
       | 'horizontal';
     if (storageOri) {
-      appRef.orientation = storageOri;
+      this.orientation = storageOri;
     } else {
-      appRef.orientation =
-        this.hsConfig?.get(app).mapSwipeOptions?.orientation ?? 'vertical';
+      this.orientation =
+        this.hsConfig?.mapSwipeOptions?.orientation ?? 'vertical';
     }
-    if (appRef.orientation !== 'vertical') {
-      appRef.orientationVertical = false;
+    if (this.orientation !== 'vertical') {
+      this.orientationVertical = false;
     }
-    this.updateStorageOri(app);
+    this.updateStorageOri();
   }
   /**
    * Initializes swipe control add adds it to the map
-   * @param app - App identifier
+   
    */
-  initSwipeControl(app: string): void {
-    const appRef = this.get(app);
-
+  initSwipeControl(): void {
     this.zone.runOutsideAngular(() => {
-      appRef.swipeCtrl = new SwipeControl({
-        orientation: appRef.orientation,
-        app: app,
+      this.swipeCtrl = new SwipeControl({
+        orientation: this.orientation,
       });
     });
 
-    if (appRef.swipeControlActive) {
-      appRef.swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
-      this.hsMapService.getMap(app).addControl(appRef.swipeCtrl);
+    if (this.swipeControlActive) {
+      this.swipeCtrl.setTargetMap(this.hsMapService.getMap());
+      this.hsMapService.getMap().addControl(this.swipeCtrl);
     }
   }
 
   /**
    * Update local storage orientation value
-   * @param app - App identifier
+   
    */
-  updateStorageOri(app: string): void {
-    localStorage.setItem(`${app}:hs_map_swipe_ori`, this.get(app).orientation);
+  updateStorageOri(): void {
+    localStorage.setItem(`$:hs_map_swipe_ori`, this.orientation);
   }
 
   /**
    * Update url params to include map swipe state
-   * @param app - App identifier
+   
    */
-  updateUrlParam(app: string): void {
-    this.hsShareUrlService.updateCustomParams(
-      {
-        'map-swipe': this.get(app).swipeControlActive ? 'enabled' : 'disabled',
-      },
-      app
-    );
+  updateUrlParam(): void {
+    this.hsShareUrlService.updateCustomParams({
+      'map-swipe': this.swipeControlActive ? 'enabled' : 'disabled',
+    });
   }
 
   /**
    * Check if any layers are added to the swipe control
-   * @param app - App identifier
+   
    */
-  layersAvailable(app: string): boolean {
-    const appRef = this.get(app);
-    if (appRef == undefined) {
+  layersAvailable(): boolean {
+    if (this == undefined) {
       return false;
     }
     return (
-      appRef.swipeCtrl?.leftLayers?.length > 0 ||
-      appRef.swipeCtrl?.rightLayers?.length > 0 ||
-      appRef.entireMapLayers?.length > 0
+      this.swipeCtrl?.leftLayers?.length > 0 ||
+      this.swipeCtrl?.rightLayers?.length > 0 ||
+      this.entireMapLayers?.length > 0
     );
   }
 
   /**
    * Set swipe control orientation
-   * @param app - App identifier
+   
    */
-  setOrientation(app: string): void {
-    const appRef = this.get(app);
-    appRef.orientationVertical = !appRef.orientationVertical;
-    appRef.orientation = appRef.orientationVertical ? 'vertical' : 'horizontal';
-    appRef.swipeCtrl.set('orientation', appRef.orientation);
-    this.updateStorageOri(app);
+  setOrientation(): void {
+    this.orientationVertical = !this.orientationVertical;
+    this.orientation = this.orientationVertical ? 'vertical' : 'horizontal';
+    this.swipeCtrl.set('orientation', this.orientation);
+    this.updateStorageOri();
   }
   /**
    * Fill swipe control layers
    * @param layer - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  fillSwipeLayers(layer: Layer<Source> | void, app: string): void {
-    const appRef = this.get(app);
-    this.hsLayerShiftingService.fillLayers(app);
+  fillSwipeLayers(layer: Layer<Source> | void): void {
+    this.hsLayerShiftingService.fillLayers();
     if (!layer) {
       return;
     }
-    const layerFound = this.hsLayerShiftingService
-      .get(app)
-      .layersCopy.find((wrapper) => wrapper.layer == layer);
+    const layerFound = this.hsLayerShiftingService.layersCopy.find(
+      (wrapper) => wrapper.layer == layer
+    );
     if (layerFound !== undefined) {
-      this.setLayerActive(layerFound, app);
-      appRef.wasMoved
-        ? this.moveSwipeLayer(layerFound, app)
-        : this.addSwipeLayer(layerFound, app);
-      this.checkForMissingLayers(app);
+      this.setLayerActive(layerFound);
+      this.wasMoved
+        ? this.moveSwipeLayer(layerFound)
+        : this.addSwipeLayer(layerFound);
+      this.checkForMissingLayers();
     } else {
-      this.removeCompletely(layer, app);
+      this.removeCompletely(layer);
     }
-    this.sortLayers(app);
-    appRef.wasMoved = false;
-    appRef.movingSide = SwipeSide.Left;
+    this.sortLayers();
+    this.wasMoved = false;
+    this.movingSide = SwipeSide.Left;
   }
 
   /**
    * Move a layer to swipe control
    * @param layerItem - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  addSwipeLayer(layerItem: LayerListItem, app: string): void {
-    const appRef = this.get(app);
-    if (!appRef.swipeCtrl) {
-      this.initSwipeControl(app);
+  addSwipeLayer(layerItem: LayerListItem): void {
+    if (!this.swipeCtrl) {
+      this.initSwipeControl();
     }
-    this.createQueryFilter(layerItem, app);
-    if (!this.findLayer(layerItem.layer, app)?.l) {
+    this.createQueryFilter(layerItem);
+    if (!this.findLayer(layerItem.layer)?.l) {
       layerItem.visible = layerItem.layer.getVisible();
       if (getSwipeSide(layerItem.layer) === 'right') {
-        appRef.swipeCtrl.addLayer(layerItem, true);
-        appRef.rightLayers.push(layerItem);
+        this.swipeCtrl.addLayer(layerItem, true);
+        this.rightLayers.push(layerItem);
       } else if (getSwipeSide(layerItem.layer) === 'left') {
-        appRef.swipeCtrl.addLayer(layerItem);
-        appRef.leftLayers.push(layerItem);
+        this.swipeCtrl.addLayer(layerItem);
+        this.leftLayers.push(layerItem);
       } else {
-        appRef.entireMapLayers.push(layerItem);
+        this.entireMapLayers.push(layerItem);
       }
       layerItem.layer.on('change:visible', (e) =>
-        this.layerVisibilityChanged(e, app)
+        this.layerVisibilityChanged(e)
       );
     }
   }
@@ -265,26 +242,24 @@ export class HsMapSwipeService {
    * where the layer is being rendered
    * If the layer swipe side is not specified, query will work by default
    * @param layerItem - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  createQueryFilter(layerItem: LayerListItem, app: string): void {
-    const appRef = this.get(app);
+  createQueryFilter(layerItem: LayerListItem): void {
     const existingFilter = getQueryFilter(layerItem.layer);
     const filter = (map: Map, layer: Layer, pixel: number[]) => {
       let swipeFilter: boolean;
       const swipeSide: 'left' | 'right' = getSwipeSide(layer);
-      if (!appRef.swipeControlActive || !swipeSide) {
+      if (!this.swipeControlActive || !swipeSide) {
         swipeFilter = true;
       } else {
         const clickPos =
-          appRef.orientation == 'vertical'
-            ? appRef.swipeCtrl.getPosValue(map.getSize()[0], pixel[0])
-            : appRef.swipeCtrl.getPosValue(map.getSize()[1], pixel[1]);
+          this.orientation == 'vertical'
+            ? this.swipeCtrl.getPosValue(map.getSize()[0], pixel[0])
+            : this.swipeCtrl.getPosValue(map.getSize()[1], pixel[1]);
 
         if (
-          (clickPos <= appRef.swipeCtrl.get('position') &&
-            swipeSide == 'left') ||
-          (clickPos > appRef.swipeCtrl.get('position') && swipeSide == 'right')
+          (clickPos <= this.swipeCtrl.get('position') && swipeSide == 'left') ||
+          (clickPos > this.swipeCtrl.get('position') && swipeSide == 'right')
         ) {
           swipeFilter = true;
         } else {
@@ -302,65 +277,61 @@ export class HsMapSwipeService {
   /**
    * Move a layer to swipe control
    * @param lyrListItem - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  moveSwipeLayer(lyrListItem: LayerListItem, app: string): void {
-    const appRef = this.get(app);
-    if (appRef.movingSide === SwipeSide.Right) {
-      this.moveRight(lyrListItem, app);
+  moveSwipeLayer(lyrListItem: LayerListItem): void {
+    if (this.movingSide === SwipeSide.Right) {
+      this.moveRight(lyrListItem);
       setSwipeSide(lyrListItem.layer, 'right');
     }
-    if (appRef.movingSide === SwipeSide.Left) {
-      this.moveLeft(lyrListItem, app);
+    if (this.movingSide === SwipeSide.Left) {
+      this.moveLeft(lyrListItem);
       setSwipeSide(lyrListItem.layer, 'left');
     }
-    if (appRef.movingSide === SwipeSide.Full) {
+    if (this.movingSide === SwipeSide.Full) {
       setSwipeSide(lyrListItem.layer, undefined);
-      appRef.swipeCtrl.removeCompletely(lyrListItem.layer);
+      this.swipeCtrl.removeCompletely(lyrListItem.layer);
     }
   }
   /**
    * Move a layer to swipe control right side
    * @param layer - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  moveRight(layer: LayerListItem, app: string): void {
-    const appRef = this.get(app);
-    appRef.swipeCtrl.removeLayer(layer);
-    appRef.swipeCtrl.addLayer(layer, true);
+  moveRight(layer: LayerListItem): void {
+    this.swipeCtrl.removeLayer(layer);
+    this.swipeCtrl.addLayer(layer, true);
   }
   /**
    * Move a layer to swipe control left side
    * @param layer - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  moveLeft(layer: LayerListItem, app: string): void {
-    const appRef = this.get(app);
-    appRef.swipeCtrl.removeLayer(layer, true);
-    appRef.swipeCtrl.addLayer(layer);
+  moveLeft(layer: LayerListItem): void {
+    this.swipeCtrl.removeLayer(layer, true);
+    this.swipeCtrl.addLayer(layer);
   }
 
   /**
    * Set map swipe control status enabled/disabled
-   * @param app - App identifier
+   
    */
-  setControl(app: string): void {
-    const appRef = this.get(app);
-    appRef.swipeControlActive = !appRef.swipeControlActive;
-    this.updateUrlParam(app);
-    if (!this.hsMapService.getMap(app)) {
+  setControl(): void {
+    this.swipeControlActive = !this.swipeControlActive;
+    this.updateUrlParam();
+    if (!this.hsMapService.getMap()) {
       return;
     }
-    if (appRef.swipeControlActive) {
-      appRef.swipeCtrl.setTargetMap(this.hsMapService.getMap(app));
-      this.hsMapService.getMap(app).addControl(appRef.swipeCtrl);
-      appRef.swipeCtrl.setEvents(true);
+    if (this.swipeControlActive) {
+      this.swipeCtrl.setTargetMap(this.hsMapService.getMap());
+      this.hsMapService.getMap().addControl(this.swipeCtrl);
+      this.swipeCtrl.setEvents(true);
     } else {
-      this.hsMapService.getMap(app).removeControl(appRef.swipeCtrl);
-      appRef.swipeCtrl.setEvents();
+      this.hsMapService.getMap().removeControl(this.swipeCtrl);
+      this.swipeCtrl.setEvents();
     }
     try {
-      this.hsMapService.getMap(app).renderSync();
+      this.hsMapService.getMap().renderSync();
     } catch (e) {
       console.error(e);
     }
@@ -368,97 +339,82 @@ export class HsMapSwipeService {
   /**
    * Remove layer completely
    * @param layer - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  removeCompletely(layerToRm: Layer<Source>, app: string): void {
-    const appRef = this.get(app);
-    const layerFound = this.findLayer(layerToRm, app);
+  removeCompletely(layerToRm: Layer<Source>): void {
+    const layerFound = this.findLayer(layerToRm);
     if (layerFound.l) {
       if (layerFound.arr === 'layers') {
-        appRef.leftLayers = appRef.leftLayers.filter(
-          (l) => l.layer != layerToRm
-        );
+        this.leftLayers = this.leftLayers.filter((l) => l.layer != layerToRm);
       }
       if (layerFound.arr === 'rightLayers') {
-        appRef.rightLayers = appRef.rightLayers.filter(
-          (l) => l.layer != layerToRm
-        );
+        this.rightLayers = this.rightLayers.filter((l) => l.layer != layerToRm);
       }
       if (layerFound.arr === 'entireMapLayers') {
-        appRef.entireMapLayers = appRef.entireMapLayers.filter(
+        this.entireMapLayers = this.entireMapLayers.filter(
           (l) => l.layer != layerToRm
         );
       }
     }
-    appRef.swipeCtrl.removeCompletely(layerToRm);
+    this.swipeCtrl.removeCompletely(layerToRm);
   }
   /**
    * Set layer as active (last dragged)
    * @param layer - layer issued from layerManagerUpdates event
-   * @param app - App identifier
+   
    */
-  setLayerActive(layer: LayerListItem, app: string): void {
-    const appRef = this.get(app);
-    const layerFound = this.findLayer(layer.layer, app);
-    appRef.leftLayers.forEach((l) => (l.active = false));
-    appRef.rightLayers.forEach((l) => (l.active = false));
-    appRef.entireMapLayers.forEach((l) => (l.active = false));
+  setLayerActive(layer: LayerListItem): void {
+    const layerFound = this.findLayer(layer.layer);
+    this.leftLayers.forEach((l) => (l.active = false));
+    this.rightLayers.forEach((l) => (l.active = false));
+    this.entireMapLayers.forEach((l) => (l.active = false));
     if (layerFound?.l) {
       layerFound.l.active = true;
     }
   }
   /**
    * Set and add initial swipe control layers
-   * @param app - App identifier
+   
    */
-  setInitialSwipeLayers(app: string): void {
-    const appRef = this.get(app);
-    const layerShiftingappRef = this.hsLayerShiftingService.get(app);
-    appRef.leftLayers = [];
-    appRef.rightLayers = [];
-    appRef.entireMapLayers = [];
-    this.hsLayerShiftingService.fillLayers(app);
-    if (!layerShiftingappRef.layersCopy) {
+  setInitialSwipeLayers(): void {
+    const layerShiftingthis = this.hsLayerShiftingService;
+    this.leftLayers = [];
+    this.rightLayers = [];
+    this.entireMapLayers = [];
+    this.hsLayerShiftingService.fillLayers();
+    if (!layerShiftingthis.layersCopy) {
       return;
     }
-    for (const layer of layerShiftingappRef.layersCopy) {
-      this.addSwipeLayer(layer, app);
+    for (const layer of layerShiftingthis.layersCopy) {
+      this.addSwipeLayer(layer);
     }
-    this.sortLayers(app);
+    this.sortLayers();
   }
   /**
    * Check if any layer is left out from swipe control and add it
-   * @param app - App identifier
+   
    */
-  checkForMissingLayers(app: string): void {
-    const missingLayers = this.hsLayerShiftingService
-      .get(app)
-      .layersCopy.filter((l) => {
-        return !this.findLayer(l.layer, app)?.l;
-      });
+  checkForMissingLayers(): void {
+    const missingLayers = this.hsLayerShiftingService.layersCopy.filter((l) => {
+      return !this.findLayer(l.layer)?.l;
+    });
     for (const layer of missingLayers) {
-      this.addSwipeLayer(layer, app);
+      this.addSwipeLayer(layer);
     }
-    this.sortLayers(app);
+    this.sortLayers();
   }
 
   /**
    * Sort layers to resemple layer order by ZIndex on the map
-   * @param app - App identifier
+   
    */
-  sortLayers(app: string): void {
-    const appRef = this.get(app);
-    appRef.leftLayers = this.hsLayerManagerService.sortLayersByZ(
-      appRef.leftLayers,
-      app
+  sortLayers(): void {
+    this.leftLayers = this.hsLayerManagerService.sortLayersByZ(this.leftLayers);
+    this.rightLayers = this.hsLayerManagerService.sortLayersByZ(
+      this.rightLayers
     );
-    appRef.rightLayers = this.hsLayerManagerService.sortLayersByZ(
-      appRef.rightLayers,
-      app
-    );
-    appRef.entireMapLayers = this.hsLayerManagerService.sortLayersByZ(
-      appRef.entireMapLayers,
-      app
+    this.entireMapLayers = this.hsLayerManagerService.sortLayersByZ(
+      this.entireMapLayers
     );
   }
 
@@ -474,10 +430,10 @@ export class HsMapSwipeService {
   /**
    * Act upon layer visibility changes
    * @param e - Event description
-   * @param app - App identifier
+   
    */
-  layerVisibilityChanged(e, app: string): void {
-    const found = this.findLayer(e.target, app);
+  layerVisibilityChanged(e): void {
+    const found = this.findLayer(e.target);
     if (found.l) {
       found.l.visible = e.target.getVisible();
     }
@@ -486,35 +442,20 @@ export class HsMapSwipeService {
   /**
    * Find layer based on layer source
    * @param targetLayer - Layer to be found
-   * @param app - App identifier
+   
    */
-  findLayer(
-    targetLayer: Layer<Source>,
-    app: string
-  ): {l: LayerListItem; arr: string} {
-    const appRef = this.get(app);
+  findLayer(targetLayer: Layer<Source>): {l: LayerListItem; arr: string} {
     const found = {l: null, arr: ''};
-    found.l = appRef.leftLayers.find((lyr) => lyr.layer == targetLayer);
+    found.l = this.leftLayers.find((lyr) => lyr.layer == targetLayer);
     found.arr = 'layers';
     if (!found.l) {
-      found.l = appRef.rightLayers.find((lyr) => lyr.layer == targetLayer);
+      found.l = this.rightLayers.find((lyr) => lyr.layer == targetLayer);
       found.arr = 'rightLayers';
     }
     if (!found.l) {
-      found.l = appRef.entireMapLayers.find((lyr) => lyr.layer == targetLayer);
+      found.l = this.entireMapLayers.find((lyr) => lyr.layer == targetLayer);
       found.arr = 'entireMapLayers';
     }
     return found;
-  }
-
-  /**
-   * Get the params saved by the map swipe service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): HsMapSwipeParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsMapSwipeParams();
-    }
-    return this.apps[app ?? 'default'];
   }
 }

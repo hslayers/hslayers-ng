@@ -1,16 +1,16 @@
 <div class="form-floating mb-2">
   <input type="text" class="form-control" id="imprint-author" [(ngModel)]="imprintObj.author"
-    [placeholder]="'COMMON.author' | translateHs : {app} " />
-  <label for="imprint-author" class="control-label">{{'COMMON.author' | translateHs : {app} }}</label>
+    [placeholder]="'COMMON.author' | translateHs  " />
+  <label for="imprint-author" class="control-label">{{'COMMON.author' | translateHs }}</label>
 </div>
 <div class="form-floating mb-2">
-  <textarea class="form-control" id='imprint-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs : {app} "
+  <textarea class="form-control" id='imprint-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs  "
     name="imprint-abstract" [(ngModel)]="imprintObj.abstract">
                               </textarea>
-  <label for="imprint-abstract" class="control-label">{{'COMMON.abstract' | translateHs : {app} }}</label>
+  <label for="imprint-abstract" class="control-label">{{'COMMON.abstract' | translateHs }}</label>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'COMMON.width' | translateHs : {app} }}</div>
+  <div class="p-1 w-50 mt-1">{{'COMMON.width' | translateHs }}</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="imprintObj.width"
       [ngModelOptions]="{standalone: true}">
@@ -21,7 +21,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'COMMON.height' | translateHs : {app} }}</div>
+  <div class="p-1 w-50 mt-1">{{'COMMON.height' | translateHs }}</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="imprintObj.height"
       [ngModelOptions]="{standalone: true}">
@@ -31,4 +31,4 @@
     </select>
   </div>
 </div>
-<hs-print-text-styler [textStyle]="imprintObj.textStyle" [app]="app" [objectName]="'imprint'"></hs-print-text-styler>
+<hs-print-text-styler [textStyle]="imprintObj.textStyle" [objectName]="'imprint'"></hs-print-text-styler>

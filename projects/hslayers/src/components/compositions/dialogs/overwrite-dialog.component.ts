@@ -19,7 +19,7 @@ export class HsCompositionsOverwriteDialogComponent
   ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 
   /**
@@ -28,8 +28,7 @@ export class HsCompositionsOverwriteDialogComponent
    */
   overwrite() {
     this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.get(this.data.app).compositionToLoad.url,
-      this.data.app,
+      this.HsCompositionsService.compositionToLoad.url,
       true
     );
     this.close();
@@ -40,7 +39,7 @@ export class HsCompositionsOverwriteDialogComponent
    * Save currently loaded composition first
    */
   save() {
-    this.HsSaveMapManagerService.openPanel(null, this.data.app);
+    this.HsSaveMapManagerService.openPanel(null);
     this.close();
   }
 
@@ -50,8 +49,7 @@ export class HsCompositionsOverwriteDialogComponent
    */
   add() {
     this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.get(this.data.app).compositionToLoad.url,
-      this.data.app,
+      this.HsCompositionsService.compositionToLoad.url,
       false
     );
     this.close();

@@ -2,14 +2,14 @@
     <div class="modal-dialog" style="max-width: 65em;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{{'COMPOSITIONS.cswDialog.loadComposition' | translateHs: {app: data.app} }}
+                <h4 class="modal-title">{{'COMPOSITIONS.cswDialog.loadComposition' | translateHs }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
+                    [attr.aria-label]="'COMMON.close' | translateHs ">
                 </button>
             </div>
             <p class="py-3 text-danger m-auto w-75 ps-3">
-                {{'COMPOSITIONS.cswDialog.infoText' | translateHs: {app: data.app} }}
+                {{'COMPOSITIONS.cswDialog.infoText' | translateHs }}
             </p>
             <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
                 <ngb-accordion [closeOthers]="true" #acc="ngbAccordion" (panelChange)="beforeChange($event)">
@@ -20,35 +20,35 @@
                                 <span>
                                     <i class="icon-trash text-secondary pe-3 " role="button"
                                         (click)="$event.stopPropagation();removeService(service)"
-                                        [title]="'COMMON.delete' | translateHs : {app: data.app}"></i>
+                                        [title]="'COMMON.delete' | translateHs"></i>
                                     <i class="text-black" role="button"
                                         [ngClass]=" acc.isExpanded(service.id)  ? 'icon-chevron-down' : 'icon-chevron-right' "
-                                        [title]="'COMMON.toggle' | translateHs : {app: data.app}"></i>
+                                        [title]="'COMMON.toggle' | translateHs"></i>
                                 </span>
                             </button>
                             <ng-template #loadingLayers>
                                 <button
                                     class="accordion-button justify-content-between">{{'COMPOSITIONS.cswDialog.servicesLoading'
-                                    | translateHs:{app: data.app} }}&emsp;<span class="hs-loader"></span></button>
+                                    | translateHs}}&emsp;<span class="hs-loader"></span></button>
                             </ng-template>
                         </ng-template>
                         <ng-template ngbPanelContent>
-                            <hs-layer-table *ngIf="service.loaded" [app]="data.app" [type]="service.type"
+                            <hs-layer-table *ngIf="service.loaded" [type]="service.type"
                                 [injectedService]="service.typeService"> </hs-layer-table>
                         </ng-template>
                     </ngb-panel>
                 </ngb-accordion>
             </div>
             <div class="w-75 mh-75 m-auto p-3" [hidden]="layersString.length === 0">
-                {{'COMPOSITIONS.cswDialog.otherLayers' | translateHs: {app: data.app} }}: {{layersString}}
+                {{'COMPOSITIONS.cswDialog.otherLayers' | translateHs }}: {{layersString}}
             </div>
 
             <div class="modal-footer">
                 <button (click)="addLayers()" [disabled]="!servicesLoaded" type="button" class="btn btn-primary"
                     data-dismiss="modal">{{'COMMON.addLayers' |
-                    translateHs: {'app': data.app} }}</button>
+                    translateHs }}</button>
                 <button (click)="close()" type="button" class="btn btn-primary" data-dismiss="modal">{{'COMMON.cancel'
-                    | translateHs: {'app': data.app} }}</button>
+                    | translateHs }}</button>
             </div>
         </div>
     </div>

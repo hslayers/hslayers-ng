@@ -590,7 +590,7 @@ where position == 'bottom' if sidebar is located at bottom.
 npm i ol-ext
 ```
 * Hslayers wont compile without popperjs/core
-* Use `translateHs: {'app': data.app}` or just `translateHs: {app: data.app} ` pipe provided by HsLanguageModule instead of `translate` which is provided by ngx-translate if you want to translate components which are integrated into hslayers application such as custom HSlayers-ng panels or widgets.
+* Use `translateHs` or just `translateHs ` pipe provided by HsLanguageModule instead of `translate` which is provided by ngx-translate if you want to translate components which are integrated into hslayers application such as custom HSlayers-ng panels or widgets.
 * Buttons are now added by HsSidebarService.addButton() function
 
 
@@ -931,7 +931,7 @@ HsAddDataOwsService.connectToOWS
 
 ### BREAKING CHANGES
 
-* Need to specify HsConfig.get(app).ngRouter = true if Angular router is used
+* Need to specify HsConfig.get().ngRouter = true if Angular router is used
 * Add polygon-splitter peer dependency `npm i polygon-splitter`
 * **draw:** Add new dependencies `npm i polygon-clipping`
 * Added jszip and @types/jszip as peerDependecies `npm i
@@ -948,7 +948,7 @@ this.HsCesiumConfig.update({
 
 replacing ->
 
-this.HsConfig.get(app).update({
+this.hsConfig.update({
       cesiumBase: 'assets/cesium/',
 * Need to include node_modules/hslayers-ng/css/hslayers-ng.css in the container
 application. For example in app.scss `@import 'hslayers-ng/css/hslayers-ng'` or in the angular.json's styles property. OL, bootstrap and  WebHostingHub-Glyphs are bundled in hslayers-ng.css
@@ -1060,7 +1060,7 @@ application. For example in app.scss `@import 'hslayers-ng/css/hslayers-ng'` or 
 * **add-data-url-wms:** Run capabilities/legend requests in queue ([a39ccde](https://github.com/hslayers/hslayers-ng/commit/a39ccdee7392ef026458d9fac1eb2d56ef12e130))
 * **add-data-wms:** Set some CRS even when missing ([e8af9db](https://github.com/hslayers/hslayers-ng/commit/e8af9db3b1bc49af4dafa07c372594325c29c5d3))
 * **attribute-row:** Stringify complex feature object attribute values for display ([d0ccc79](https://github.com/hslayers/hslayers-ng/commit/d0ccc7933afa77fef9badda3c8eabe77bab6e1d4))
-* **layout:** allow percentage values in HsConfig.get(app).panelWidths array ([3f4124c](https://github.com/hslayers/hslayers-ng/commit/3f4124c42eca8598586b26fa31f27996f5b3a8ec))
+* **layout:** allow percentage values in HsConfig.get().panelWidths array ([3f4124c](https://github.com/hslayers/hslayers-ng/commit/3f4124c42eca8598586b26fa31f27996f5b3a8ec))
 * **material:** extend LayerManagerComponent ([9e57084](https://github.com/hslayers/hslayers-ng/commit/9e570840a529219e2371add31aadb34c1ff33b28))
 * **time-editor:** Add "out of range" explanation ([452fc71](https://github.com/hslayers/hslayers-ng/commit/452fc714f587725194b7460d69c273d1667dba43)), closes [#1995](https://github.com/hslayers/hslayers-ng/issues/1995)
 * Support downloading of queried feature as GeoJSON ([ac08ac4](https://github.com/hslayers/hslayers-ng/commit/ac08ac40c584a558d97130247dd216fd81011ee0))
@@ -1100,7 +1100,7 @@ This version sets upper bound of OpenLayers peer dependency to ~6.5 which mitiga
 * **deps:** Stick ol to version 6.5 for a while ([06e23fa](https://github.com/hslayers/hslayers-ng/commit/06e23faaf81a7ac281859164eabc310fbf03e4e6))
 * **draw:** Get drawables only after map is loaded ([c1f3d00](https://github.com/hslayers/hslayers-ng/commit/c1f3d00d4357b8120690ff879f9a4e7f162fe3f7)), closes [#2030](https://github.com/hslayers/hslayers-ng/issues/2030)
 * **layout:** Hide basemapgallery and deafult view button on guiOverlay false ([f12b0cf](https://github.com/hslayers/hslayers-ng/commit/f12b0cfe90ece8b3e4301582461ef0e4b48d5149))
-* **layout:** Hide sidebar if HsConfig.get(app).pureMap is set to true ([9411940](https://github.com/hslayers/hslayers-ng/commit/9411940e9d24483a5145cbb00c0d7b7e2e7026f2))
+* **layout:** Hide sidebar if HsConfig.get().pureMap is set to true ([9411940](https://github.com/hslayers/hslayers-ng/commit/9411940e9d24483a5145cbb00c0d7b7e2e7026f2))
 * **layout:** Hide toolbar and geolocation button on guiOverlay false ([f744297](https://github.com/hslayers/hslayers-ng/commit/f744297b038855334d4a2819d19ba3b5b4e458f5))
 * **LM:** Change 'unknown source' error to warning ([a50eec3](https://github.com/hslayers/hslayers-ng/commit/a50eec37a7d021a27b2bc604eaa00aea3a3587ef))
 
@@ -1251,7 +1251,7 @@ This version sets upper bound of OpenLayers peer dependency to ~6.5 which mitiga
 * Subscribers of HsStylerService.newLayerStyleSet should rename it to
 HsStylerService.onSet
 * **styler:** We don't include styler icons in hslayers lib, but the developer should provide an
-array of icon definitions through HsConfig.get(app). This enables more customization (extra icons) and
+array of icon definitions through HsConfig.get(). This enables more customization (extra icons) and
 reduced hslayers bundle size. Icons should be copied as any other image asset in angular.json. See:
 ```
  Object.assign(this.HsConfig, {

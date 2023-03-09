@@ -13,6 +13,7 @@ import {
   HsLayerDescriptor,
   HsLayerLoadProgress,
 } from '../layermanager/layer-descriptor.interface';
+import {HsMapCompositionDescriptor} from '../compositions/models/composition-descriptor.model';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -33,26 +34,24 @@ export class HsEventBusService {
    * Fires when map completely reset
    * @event mapResets
    */
-  mapResets: Subject<{app}> = new Subject();
-  layerManagerUpdates: Subject<{layer: Layer<Source> | void; app: string}> =
-    new Subject();
-  compositionLoadStarts: Subject<any> = new Subject();
-  compositionDeletes: Subject<{composition; app: string}> = new Subject();
+  mapResets: Subject<void> = new Subject();
+  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
+  compositionLoadStarts: Subject<string> = new Subject();
+  compositionDeletes: Subject<HsMapCompositionDescriptor> = new Subject();
   /**
    * Fires when composition is loaded or not loaded with Error message
    * @event compositionLoads
    */
-  compositionLoads: Subject<{data: any; app: string}> = new Subject();
+  compositionLoads: Subject<any> = new Subject();
   layerRemovals: Subject<Layer<Source>> = new Subject();
-  compositionEdits: Subject<{app: string}> = new Subject();
-  layerAdditions: Subject<any> = new Subject();
+  compositionEdits: Subject<void> = new Subject();
+  layerAdditions: Subject<HsLayerDescriptor> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
-  layerLoads: Subject<{layer: Layer<Source>; app: string}> = new Subject();
+  layerLoads: Subject<Layer<Source>> = new Subject();
   layerLoadings: Subject<{
     layer: Layer<Source>;
     progress: HsLayerLoadProgress;
-    app: string;
   }> = new Subject();
   /**
    * Fires when user enables layer time synchronization in the UI
@@ -61,7 +60,6 @@ export class HsEventBusService {
   layerTimeSynchronizations: Subject<{
     sync: boolean;
     time?: string;
-    app: string;
   }> = new Subject();
   /**
    * DEPRECATED. Moved into the HsDimensionTimeService for mostly internal usage.
@@ -75,10 +73,7 @@ export class HsEventBusService {
    * Used to listen for changes either in "time" property in HsLayerDescrtiptor
    * or in "dimensions" property in OL Layer object
    */
-  layerDimensionDefinitionChanges: Subject<{
-    layer: Layer<Source>;
-    app: string;
-  }> = new Subject();
+  layerDimensionDefinitionChanges: Subject<Layer<Source>> = new Subject();
   /**
    * Used to listen for changes of dimension settings in layermanager-dimensions component
    */
@@ -89,7 +84,6 @@ export class HsEventBusService {
   vectorQueryFeatureSelection: Subject<{
     feature: Feature<Geometry>;
     selector: Select;
-    app: string;
   }> = new Subject();
   vectorQueryFeatureDeselection: Subject<{
     feature: Feature<Geometry>;
@@ -100,15 +94,15 @@ export class HsEventBusService {
    * replaces 'core.mainpanel_changed'
    * @event mainPanelChanges
    */
-  mainPanelChanges: Subject<{which?: string; app: string}> = new Subject();
+  mainPanelChanges: Subject<string | null> = new Subject();
   /**
    * replaces 'measure.drawStart'
    */
-  measurementStarts: Subject<{app: string}> = new Subject();
+  measurementStarts: Subject<void> = new Subject();
   /**
    * replaces 'measure.drawEnd'
    */
-  measurementEnds: Subject<{app: string}> = new Subject();
+  measurementEnds: Subject<void> = new Subject();
   cesiumLoads: Subject<any> = new Subject();
   cesiumResizes: Subject<any> = new Subject();
   zoomTo: Subject<any> = new Subject();
@@ -122,7 +116,6 @@ export class HsEventBusService {
     map: Map;
     event: string;
     extent: number[];
-    app: string;
   }> = new Subject();
   mapCenterSynchronizations: Subject<any> = new Subject();
   mapLibraryChanges: Subject<any> = new Subject();
@@ -130,13 +123,12 @@ export class HsEventBusService {
    * replaces 'cesium.time_layers_changed'
    */
   cesiumTimeLayerChanges: Subject<any> = new Subject();
-  layoutResizes: Subject<any> = new Subject();
-  layoutLoads: Subject<{element: any; innerElement: string; app: string}> =
-    new Subject();
+  layoutResizes: Subject<void> = new Subject();
+  layoutLoads: Subject<{element: any; innerElement: string}> = new Subject();
   /**
    * replaces 'map.loaded'
    */
-  olMapLoads: Subject<{map: Map; app: string}> = new Subject();
+  olMapLoads: Subject<Map> = new Subject();
   /**
    * Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
@@ -148,9 +140,9 @@ export class HsEventBusService {
   /**
    * replaces 'search.resultsReceived'
    */
-  searchResultsReceived: Subject<{app}> = new Subject();
+  searchResultsReceived: Subject<void> = new Subject();
   searchZoomTo: Subject<any> = new Subject();
-  clearSearchResults: Subject<{app}> = new Subject();
+  clearSearchResults: Subject<void> = new Subject();
   /**
    * replaces 'query.dataUpdated'
    */
@@ -158,7 +150,7 @@ export class HsEventBusService {
   /**
    * replaces 'mapClicked'
    */
-  mapClicked: Subject<{coordinates; app: string}> = new Subject();
+  mapClicked: Subject<any> = new Subject();
   /**
    * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl
@@ -166,6 +158,6 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null
   );
-  updateMapSize: Subject<string> = new Subject();
+  updateMapSize: Subject<void> = new Subject();
   constructor() {}
 }

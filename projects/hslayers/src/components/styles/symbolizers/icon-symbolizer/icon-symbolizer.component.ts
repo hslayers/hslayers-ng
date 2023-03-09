@@ -14,7 +14,7 @@ import {SymbolizerIcon} from '../../../../config.service';
 export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: IconSymbolizer;
   @Input() submenu = false;
-  @Input() app = 'default';
+  
   selectedIcon?: SymbolizerIcon;
 
   constructor(private hsDialogContainerService: HsDialogContainerService) {
@@ -34,10 +34,6 @@ export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   ];
 
   showIconSelector(): void {
-    this.hsDialogContainerService.create(
-      HsSelectIconDialogComponent,
-      this,
-      this.app
-    );
+    this.hsDialogContainerService.create(HsSelectIconDialogComponent, this);
   }
 }

@@ -1,5 +1,5 @@
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'PRINT.scaleType' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleType' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleType"
       [ngModelOptions]="{standalone: true}" style="flex-grow: 1;" (ngModelChange)="scaleObjChanged()">
@@ -10,13 +10,14 @@
   </div>
 </div>
 <div class="d-flex flex-row" *ngIf="scaleObj.scaleType === 'scalebar'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.scaleBarText' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleBarText' | translateHs }}:</div>
   <div class="p-1 w-100">
-    <input type="checkbox" class="form-check-input" [(ngModel)]="scaleObj.scaleBarText" (ngModelChange)="scaleObjChanged()" />
+    <input type="checkbox" class="form-check-input" [(ngModel)]="scaleObj.scaleBarText"
+      (ngModelChange)="scaleObjChanged()" />
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'PRINT.scaleUnits' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleUnits' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleUnits"
       (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
@@ -27,13 +28,13 @@
   </div>
 </div>
 <div class="d-flex flex-row" *ngIf="scaleObj.scaleType === 'scalebar'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.scaleSteps' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.scaleSteps' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleBarSteps"
       (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
       <option [ngValue]="scaleBarSteps" *ngFor="let scaleBarSteps of stylingOptions.scaleBarSteps">{{scaleBarSteps}}
         {{'COMMON.steps' |
-        translateHs : {app} }}
+        translateHs }}
       </option>
     </select>
   </div>

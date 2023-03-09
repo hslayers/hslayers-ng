@@ -4,6 +4,7 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
+import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {getPopUp} from '../../../common/layer-extensions';
 
@@ -20,8 +21,7 @@ export class HsDynamicTextComponent
   name = 'dynamic-text';
 
   @Input() data: {
-    layerDescriptor: any;
-    app: string;
+    layerDescriptor: HsLayerDescriptor;
   };
 
   constructor(private sanitizer: DomSanitizer) {

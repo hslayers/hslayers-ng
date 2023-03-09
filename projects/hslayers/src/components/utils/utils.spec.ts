@@ -138,7 +138,7 @@ describe('HsUtilsService', () => {
     hsConfig.get('default').proxyPrefix = 'http://localhost:8085/';
     url = hsUtilsService.proxify(simpleUrl, app, false);
     expect(url).toEqual('http://localhost:8085/http://gisserver.domain.com');
-    url = hsUtilsService.proxify(base64Url, app);
+    url = hsUtilsService.proxify(base64Url);
     expect(url).toEqual(
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T'
     );
@@ -150,7 +150,7 @@ describe('HsUtilsService', () => {
     };
     const url =
       'http://localhost:8080/?hs_x=1945211.1423359748&hs_y=6904584.935889341&hs_z=4&visible_layers=%26%2347%3BOpenStreetMap%3BSwiss%3B%3BBookmarks&hs_panel=layermanager';
-    const shortUrl = await hsUtilsService.shortUrl(url, app);
+    const shortUrl = await hsUtilsService.shortUrl(url);
     expect(shortUrl).toEqual('http://customShortUrl.com/shorturl');
   });
   it('try to get port number from url', () => {

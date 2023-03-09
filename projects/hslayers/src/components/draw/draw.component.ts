@@ -23,8 +23,6 @@ export class HsDrawComponent
 {
   name = 'draw';
   selectedOption = 'draw';
-  appRef;
-  configRef: HsConfigObject;
   private end = new Subject<void>();
   constructor(
     public HsDrawService: HsDrawService,
@@ -44,35 +42,30 @@ export class HsDrawComponent
   }
 
   ngOnInit(): void {
-    this.appRef = this.HsDrawService.get(this.data.app);
-    this.configRef = this.hsConfig.get(this.data.app);
-    this.appRef.layerMetadataDialog.pipe(takeUntil(this.end)).subscribe(() => {
-      this.HsDialogContainerService.create(
-        HsDrawLayerMetadataDialogComponent,
-        {service: this.HsDrawService, app: this.data.app},
-        this.data.app
-      );
-    });
+    this.HsDrawService.layerMetadataDialog
+      .pipe(takeUntil(this.end))
+      .subscribe(() => {
+        this.HsDialogContainerService.create(
+          HsDrawLayerMetadataDialogComponent,
+          {service: this.HsDrawService}
+        );
+      });
 
-    this.hsSidebarService.addButton(
-      {
-        panel: 'draw',
-        module: 'hs.draw',
-        order: 16,
-        fits: true,
-        title: 'PANEL_HEADER.DRAW',
-        description: 'SIDEBAR.descriptions.DRAW',
-        icon: 'icon-pencil',
-      },
-      this.data.app
-    );
-    this.HsDrawService.init(this.data.app);
+    this.hsSidebarService.addButton({
+      panel: 'draw',
+      module: 'hs.draw',
+      order: 16,
+      fits: true,
+      title: 'PANEL_HEADER.DRAW',
+      description: 'SIDEBAR.descriptions.DRAW',
+      icon: 'icon-pencil',
+    });
   }
 
   componentOptionSelected(option) {
     this.selectedOption = option;
     if (this.selectedOption == 'edit') {
-      this.HsDrawService.setType(this.appRef.type, this.data.app);
+      this.HsDrawService.setType(this.HsDrawService.type);
     }
   }
 }

@@ -1,6 +1,6 @@
 <form class="form" [ngClass]="{'text-secondary ms-2': submenu}">
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.symbol' | translateHs : {app} }}:</div>
+    <div class="p-1 w-25">{{'STYLER.symbol' | translateHs }}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" data-cy="mark-symbolizer-well-known-name"
         [(ngModel)]="symbolizer.wellKnownName" (change)="emitChange()" [ngModelOptions]="{standalone: true}">
@@ -12,29 +12,29 @@
   </div>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="fillOpacity"
-    (changes)="emitChange()" data-cy="mark-symbolizer-color" [label]="'STYLER.fillColor' | translateHs : {app} ">
+    (changes)="emitChange()" data-cy="mark-symbolizer-color" [label]="'STYLER.fillColor' | translateHs ">
   </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="fillOpacity" (changes)="emitChange()"
-    step="0.05" min="0" max="1" [label]="'STYLER.fillOpacity' | translateHs : {app} "></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="fillOpacity" (changes)="emitChange()" step="0.05" min="0"
+    max="1" [label]="'STYLER.fillOpacity' | translateHs "></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="radius" (changes)="emitChange()" step="1"
-    min="0" max="100" data-cy="mark-symbolizer-radius" [label]="'STYLER.radius' | translateHs : {app} ">
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="radius" (changes)="emitChange()" step="1" min="0" max="100"
+    data-cy="mark-symbolizer-radius" [label]="'STYLER.radius' | translateHs  ">
   </hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="strokeColor" opacityAttribute="strokeOpacity"
     (changes)="emitChange()" data-cy="mark-symbolizer-stroke-color"
-    [label]="'STYLER.strokeColor' | translateHs : {app} "></hs-symbolizer-color-picker>
+    [label]="'STYLER.strokeColor' | translateHs  "></hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="strokeOpacity" (changes)="emitChange()"
-    step="0.05" min="0" max="1" data-cy="mark-symbolizer-stroke-opacity"
-    [label]="'STYLER.strokeOpacity' | translateHs : {app} "></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="strokeOpacity" (changes)="emitChange()" step="0.05" min="0"
+    max="1" data-cy="mark-symbolizer-stroke-opacity"
+    [label]="'STYLER.strokeOpacity' | translateHs  "></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="strokeWidth" (changes)="emitChange()"
-    step="0.1" min="0" max="20" data-cy="mark-symbolizer-stroke-width"
-    [label]="'STYLER.strokeWidth' | translateHs : {app} "></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="strokeWidth" (changes)="emitChange()" step="0.1" min="0"
+    max="20" data-cy="mark-symbolizer-stroke-width"
+    [label]="'STYLER.strokeWidth' | translateHs  "></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="rotate" (changes)="emitChange()" step="1"
-    min="0" max="360" data-cy="mark-symbolizer-rotate" [label]="'STYLER.rotation' | translateHs : {app} ">
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="rotate" (changes)="emitChange()" step="1" min="0" max="360"
+    data-cy="mark-symbolizer-rotate" [label]="'STYLER.rotation' | translateHs  ">
   </hs-symbolizer-slider>
 </form>

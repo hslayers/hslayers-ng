@@ -20,14 +20,11 @@ export class HsGeolocationComponent
   }
   ngOnInit(): void {
     this.collapsed = true;
-    this.hsGeolocationService.init(this.data.app);
   }
   isVisible(): boolean {
     return (
-      this.HsLayoutService.componentEnabled(
-        'geolocationButton',
-        this.data.app
-      ) && this.HsLayoutService.componentEnabled('guiOverlay', this.data.app)
+      this.HsLayoutService.componentEnabled('geolocationButton') &&
+      this.HsLayoutService.componentEnabled('guiOverlay')
     );
   }
 
@@ -35,34 +32,34 @@ export class HsGeolocationComponent
    * Start localization
    */
   startLocalization(): void {
-    this.hsGeolocationService.startLocalization(this.data.app);
+    this.hsGeolocationService.startLocalization();
   }
 
   /**
    * Stop localization
    */
   stopLocalization(): void {
-    this.hsGeolocationService.stopLocalization(this.data.app);
+    this.hsGeolocationService.stopLocalization();
   }
 
   /**
    * Get localization
    */
   getLocalization(): boolean {
-    return this.hsGeolocationService.get(this.data.app).localization;
+    return this.hsGeolocationService.localization;
   }
 
   /**
    * Toggle tracking
    */
   toggleTracking(): void {
-    this.hsGeolocationService.toggleTracking(this.data.app);
+    this.hsGeolocationService.toggleTracking();
   }
 
   /**
    * Determine state of tracking
    */
   isFollowing(): boolean {
-    return this.hsGeolocationService.get(this.data.app).following;
+    return this.hsGeolocationService.following;
   }
 }

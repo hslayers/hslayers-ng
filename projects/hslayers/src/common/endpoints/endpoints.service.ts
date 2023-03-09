@@ -9,38 +9,33 @@ import {HsUtilsService} from '../../components/utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsCommonEndpointsService {
-  endpointsFilled: BehaviorSubject<{endpoints: HsEndpoint[]; app: string}> =
-    new BehaviorSubject(null);
+  endpointsFilled: BehaviorSubject<HsEndpoint[]> = new BehaviorSubject(null);
   endpoints: HsEndpoint[];
 
   constructor(
     public hsConfig: HsConfig,
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsUtilsService: HsUtilsService
-  ) {}
-
-  init(_app: string): void {
-    this.fillEndpoints(_app);
-    this.hsConfig.configChanges.subscribe(({app, config}) => {
-      if (app == _app) {
-        this.fillEndpoints(app);
-      }
+  ) {
+    this.fillEndpoints();
+    this.hsConfig.configChanges.subscribe(() => {
+      this.fillEndpoints();
     });
   }
 
-  private fillEndpoints(app: string) {
+  private fillEndpoints() {
     this.endpoints = [
-      ...(this.hsConfig.get(app).status_manager_url
+      ...(this.hsConfig.status_manager_url
         ? [
             {
               type: 'statusmanager',
               title: 'Status manager',
-              url: this.hsConfig.get(app).status_manager_url,
+              url: this.hsConfig.status_manager_url,
               onError: {compositionLoad: EndpointErrorHandling.ignore},
             },
           ]
         : []),
-      ...(this.hsConfig.get(app).datasources || []).map((ds) => {
+      ...(this.hsConfig.datasources || []).map((ds) => {
         const tmp = {
           url: ds.url,
           id: this.hsUtilsService.generateUuid(),
@@ -62,7 +57,7 @@ export class HsCommonEndpointsService {
           },
           user: undefined,
           getCurrentUserIfNeeded: async () =>
-            await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp, app),
+            await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp),
         };
         return tmp;
       }),
@@ -77,7 +72,7 @@ export class HsCommonEndpointsService {
       this.hsCommonLaymanService.layman$.next(
         this.endpoints.find((ep) => ep.type.includes('layman'))
       );
-      this.endpointsFilled.next({endpoints: this.endpoints, app});
+      this.endpointsFilled.next(this.endpoints);
     }
   }
   getItemsPerPageConfig(endpoint): number {

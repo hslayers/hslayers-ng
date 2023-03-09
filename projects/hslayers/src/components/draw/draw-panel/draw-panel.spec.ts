@@ -143,14 +143,14 @@ describe('HsDrawPanel', () => {
 
     component.setType('polygon');
 
-    expect(service.get(app).tmpDrawLayer).toBeDefined();
-    expect(service.get(app).type).toBe('polygon');
-    expect(service.get(app).selectedLayer).toBeDefined();
+    expect(service.get().tmpDrawLayer).toBeDefined();
+    expect(service.get().type).toBe('polygon');
+    expect(service.get().selectedLayer).toBeDefined();
     expect(service.activateDrawing).toHaveBeenCalled();
   });
 
   it('Select layer', () => {
     component.selectLayer(layer);
-    expect(service.get(app).source).toBeDefined();
+    expect(service.get().source).toBeDefined();
   });
 });

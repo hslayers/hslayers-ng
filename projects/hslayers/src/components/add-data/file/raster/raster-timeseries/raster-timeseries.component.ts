@@ -25,7 +25,6 @@ import {HsToastService} from '../../../../layout/toast/toast.service';
 })
 export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   @Input() data: FileDataObject;
-  @Input() app: string;
 
   @ViewChild('acc') accordionComponent: NgbAccordion;
   @ViewChild('hsTimeseriesTitle') fileTitleInput: ElementRef<HTMLInputElement>;
@@ -73,9 +72,8 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
 
     this.getFileTitle(this.tsData.content);
 
-    this.hsAddDataCommonFileService
-      .get(this.app)
-      .dataObjectChanged.pipe(takeUntil(this.end))
+    this.hsAddDataCommonFileService.dataObjectChanged
+      .pipe(takeUntil(this.end))
       .subscribe((data) => {
         if (data.files) {
           this.resetForm();

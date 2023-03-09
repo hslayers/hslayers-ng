@@ -17,8 +17,6 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   onlyMineFilterVisible = false;
   name = 'drawToolbar';
   getTitle = getTitle;
-  appRef;
-  sidebarPosition: string;
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
@@ -28,56 +26,50 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   ) {
     super(HsLayoutService);
   }
-  ngOnInit() {
-    this.appRef = this.HsDrawService.get(this.data.app);
-    this.HsLayoutService.sidebarPosition.subscribe(({app, position}) => {
-      if (this.data.app == app) {
-        this.sidebarPosition = position;
-      }
-    });
-  }
-
   selectionMenuToggled(): void {
-    this.setType(this.appRef.type);
+    this.setType(this.HsDrawService.type);
   }
 
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
-  toggleDrawToolbar(app: string): void {
-    this.appRef.highlightDrawButton = false;
+  toggleDrawToolbar(): void {
+    this.HsDrawService.highlightDrawButton = false;
     if (
-      this.HsLayoutService.get(app).layoutElement.clientWidth > 767 &&
-      this.HsLayoutService.get(app).layoutElement.clientWidth < 870 &&
+      this.HsLayoutService.layoutElement.clientWidth > 767 &&
+      this.HsLayoutService.layoutElement.clientWidth < 870 &&
       !this.drawToolbarExpanded
     ) {
-      this.HsLayoutService.get(app).sidebarExpanded = false;
+      this.HsLayoutService.sidebarExpanded = false;
     }
     this.drawToolbarExpanded = !this.drawToolbarExpanded;
     if (!this.drawToolbarExpanded) {
-      this.HsDrawService.stopDrawing(this.data.app);
+      this.HsDrawService.stopDrawing();
     }
-    this.HsDrawService.fillDrawableLayers(this.data.app);
+    this.HsDrawService.fillDrawableLayers();
   }
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer, this.data.app);
+    this.HsDrawService.selectLayer(layer);
   }
 
   controlLayerListAction() {
-    if (!this.appRef.hasSomeDrawables && this.appRef.tmpDrawLayer) {
-      this.HsDrawService.saveDrawingLayer(this.data.app);
+    if (
+      !this.HsDrawService.hasSomeDrawables &&
+      this.HsDrawService.tmpDrawLayer
+    ) {
+      this.HsDrawService.saveDrawingLayer();
     }
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what, this.data.app);
+    const type = this.HsDrawService.setType(what);
     if (type) {
-      this.HsDrawService.activateDrawing({}, this.data.app);
+      this.HsDrawService.activateDrawing({});
     }
   }
 
   finishDrawing(): void {
-    this.HsDrawService.stopDrawing(this.data.app);
+    this.HsDrawService.stopDrawing();
   }
 }

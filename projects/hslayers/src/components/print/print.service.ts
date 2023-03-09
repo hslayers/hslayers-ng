@@ -27,22 +27,22 @@ export class HsPrintService {
   /**
    * Print styled print layout
    * @param print - Print object
-   * @param app - App identifier
+   
    * @param complete - If true, generated image will be opened and printing interface will be created
    */
   async print(
     print: PrintModel,
-    app: string,
+    
     complete?: boolean
   ): Promise<void> {
     const obs = from(
       new Promise<string>(async (resolve, reject) => {
-        const img = await this.createMapImage(print, app);
+        const img = await this.createMapImage(print);
         resolve(img);
       })
     );
     obs
-      .pipe(takeUntil(this.hsPrintLegendService.get(app).cancelRequest))
+      .pipe(takeUntil(this.hsPrintLegendService.cancelRequest))
       .subscribe((img) => {
         const win = window.open();
         const html = `<html><head></head><style>body{background-color:white !important;}@page { size: landscape; }</style><body><img src='${img}'/></body></html>`;
@@ -62,10 +62,10 @@ export class HsPrintService {
   /**
    * Download map print layout as png image
    * @param print - Print object
-   * @param app - App identifier
+   
    */
-  async download(print: PrintModel, app: string): Promise<void> {
-    const img = await this.createMapImage(print, app);
+  async download(print: PrintModel): Promise<void> {
+    const img = await this.createMapImage(print);
     if (!document) {
       return;
     }
@@ -82,11 +82,11 @@ export class HsPrintService {
   /**
    * Create map image with additional styled text, optional scale, legend or imprint
    * @param print - Print object
-   * @param app - App identifier
+   
    */
-  async createMapImage(print: PrintModel, app: string): Promise<string> {
-    await this.hsMapService.loaded(app);
-    const canvases = this.hsMapService.getCanvases(app);
+  async createMapImage(print: PrintModel): Promise<string> {
+    await this.hsMapService.loaded();
+    const canvases = this.hsMapService.getCanvases();
     const composition = document.createElement('canvas');
     const ctx = composition.getContext('2d');
     const res = [canvases[0].clientWidth, canvases[0].clientHeight];
@@ -114,8 +114,7 @@ export class HsPrintService {
     }
     if (print.scaleObj?.include) {
       const sCanvas = await this.hsPrintScaleService.drawScaleCanvas(
-        print.scaleObj,
-        app
+        print.scaleObj
       );
       if (sCanvas) {
         ctx.drawImage(sCanvas, 3, composition.height - sCanvas.height);
@@ -124,8 +123,7 @@ export class HsPrintService {
 
     if (print.legendObj?.include) {
       const lCanvas = await this.hsPrintLegendService.drawLegendCanvas(
-        print.legendObj,
-        app
+        print.legendObj
       );
       if (lCanvas) {
         const legendPos = this.getChildPosition(
@@ -139,8 +137,7 @@ export class HsPrintService {
     }
     if (print.imprintObj?.author || print.imprintObj?.abstract) {
       const iCanvas = await this.hsPrintImprintService.drawImprintCanvas(
-        print.imprintObj,
-        app
+        print.imprintObj
       );
       if (iCanvas) {
         const imprintPos = this.getChildPosition(

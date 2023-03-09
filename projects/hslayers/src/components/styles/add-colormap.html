@@ -1,7 +1,7 @@
 <div class="form-group">
   <div class="form-inline">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs : {app: data.app} }}:</label>
+      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
       [ngModelOptions]="{standalone: true}" (change)="changeAttrib()">
@@ -13,7 +13,7 @@
 
   <div class="form-inline">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.colorMap" | translateHs : {app: data.app} }}:</label>
+      "LAYERMANAGER.layerEditor.colorMap" | translateHs }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="colorMap"
       [ngModelOptions]="{standalone: true}">
@@ -26,23 +26,23 @@
   <div class="row g-3">
     <div class="col-md-6">
       <label class="form-label">{{
-        "LAYERMANAGER.layerEditor.min" | translateHs : {app: data.app} }}:</label>
-      <input class="form-control inline" [(ngModel)]="min" name="hsIdwMin"/>
+        "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
+      <input class="form-control inline" [(ngModel)]="min" name="hsIdwMin" />
 
     </div>
     <div class="col-md-6">
       <label class="form-label">{{
-        "LAYERMANAGER.layerEditor.max" | translateHs : {app: data.app} }}:</label>
+        "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
       <input class="form-control" [(ngModel)]="max" name="hsIdwMax" />
     </div>
   </div>
 
   <div class="row g-3 p-2">
     <div class="col-md-6">
-        <button (click)="save()" class="btn btn-primary">{{"COMMON.apply" | translateHs : {app: data.app} }}</button>
+      <button (click)="save()" class="btn btn-primary">{{"COMMON.apply" | translateHs }}</button>
     </div>
     <div class="col-md-6">
-      <button (click)="cancel()" class="btn btn-outline-secondary">{{"COMMON.close" | translateHs : {app: data.app} }}</button>
-  </div>
+      <button (click)="cancel()" class="btn btn-outline-secondary">{{"COMMON.close" | translateHs }}</button>
+    </div>
   </div>
 </div>

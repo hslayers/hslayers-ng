@@ -21,7 +21,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
-  @Input() app = 'default';
+  
   panelSpaceWidth: number;
   panelVisible(which, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, scope);
@@ -39,19 +39,19 @@ export class HsMatLayoutComponent implements AfterViewInit {
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef // private HsUtilsService: HsUtilsService
   ) {
-    this.HsLayoutService.get(this.app).layoutElement = elementRef.nativeElement;
+    this.HsLayoutService.get().layoutElement = elementRef.nativeElement;
   }
 
   ngOnInit(): void {
-    this.HsLayoutService.get(this.app).contentWrapper =
+    this.HsLayoutService.get().contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
-    if (this.HsConfig.get(this.app).sidebarPosition === 'left') {
-      this.HsLayoutService.get(this.app).contentWrapper.classList.add(
+    if (this.HsConfig.sidebarPosition === 'left') {
+      this.HsLayoutService.get().contentWrapper.classList.add(
         'flex-reverse'
       );
-      this.HsLayoutService.get(this.app).sidebarRight = false;
-    } else if (this.HsConfig.get(this.app).sidebarPosition != 'invisible') {
-      this.HsConfig.get(this.app).sidebarPosition = 'right';
+      this.HsLayoutService.get().sidebarRight = false;
+    } else if (this.HsConfig.sidebarPosition != 'invisible') {
+      this.HsConfig.sidebarPosition = 'right';
     }
     //if (window.innerWidth < 600 && this.HsUtilsService.runningInBrowser()) {
     //  const viewport = document.querySelector('meta[name="viewport"]');
@@ -62,7 +62,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //}
     ////this.$emit('scope_loaded', 'Layout');
 
-    //switch (this.HsConfig.get(app).theme) {
+    //switch (this.hsConfig.theme) {
     //  case 'dark':
     //    this.HsThemeService.setDarkTheme();
     //    break;
@@ -71,15 +71,15 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //    this.HsThemeService.setLightTheme();
     //    break;
     //}
-    this.HsLayoutService.panelSpaceWidth.subscribe(({app, width}) => {
-      if (this.app == app) {
+    this.HsLayoutService.panelSpaceWidth.subscribe(({width}) => {
+      if ( == app) {
         this.panelSpaceWidth = width;
       }
     });
   }
 
   ngAfterViewInit() {
-    this.HsLayoutService.get(this.app).layoutElement =
+    this.HsLayoutService.get().layoutElement =
       this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement.parentElement;
 
@@ -112,12 +112,10 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //}
     this.HsEventBusService.layoutLoads.next({
       element: this.elementRef.nativeElement,
-      innerElement: '.hs-map-space',
-      app: this.app,
+      innerElement: '.hs-map-space'
     });
     this.HsLayoutService.mapSpaceRef.next({
-      viewContainerRef: this.mapHost.viewContainerRef,
-      app: this.app,
+      viewContainerRef: this.mapHost.viewContainerRef: ,
     });
     //this.cdr.detectChanges();
   }
