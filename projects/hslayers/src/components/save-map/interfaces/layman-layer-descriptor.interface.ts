@@ -23,6 +23,7 @@ export interface HsLaymanLayerDescriptor {
     error?: {
       code?: number;
       message?: string;
+      detail?: any;
     };
   };
   //Only for vector layers
