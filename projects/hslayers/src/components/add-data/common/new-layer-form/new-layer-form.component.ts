@@ -18,6 +18,10 @@ export class HsNewLayerFormComponent implements OnInit {
   @Input() data: FileDataObject;
   @Input() app = 'default';
   appRef: HsAddDataCommonFileServiceParams;
+  allowedStyles: {
+    list: string;
+    title: string;
+  };
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsFileService: HsFileService,
@@ -26,6 +30,13 @@ export class HsNewLayerFormComponent implements OnInit {
 
   ngOnInit() {
     this.appRef = this.hsAddDataCommonFileService.get(this.app);
+    this.allowedStyles = {
+      list:
+        this.data.allowedStyles.length > 3
+          ? '.sld, .qml'
+          : `.${this.data.allowedStyles}`,
+      title: `ADDLAYERS.add${this.data.allowedStyles}`,
+    };
   }
 
   async read(evt: HsUploadedFiles): Promise<void> {

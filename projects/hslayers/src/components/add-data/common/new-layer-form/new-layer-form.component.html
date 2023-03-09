@@ -32,11 +32,13 @@
     <div class="d-flex justify-content-between align-items-center">
       <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translateHs : {app} }}</p>
       <label class="dropzone-label">
-        <input name="file" type="file" accept=".sld, .qml" class="inputfile"
+        <input name="file" type="file" [accept]="allowedStyles.list" class="inputfile"
           (change)="read({fileList: $event.target.files, uploader: 'style', dropped: false})" id="style">
         <label for="style" class="p-2 rounded" style="font-size: 1em;"
           [ngClass]="data.serializedStyle ? 'bg-success' : 'bg-primary'">
-          <i class="icon-uploadalt p-2"></i>{{data.serializedStyle?.name ?? 'ADDLAYERS.Vector.addSld' | translateHs :
+          <i class="icon-uploadalt p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |
+          translateHs
+          :
           {app} }}</label>
       </label>
     </div>
@@ -49,5 +51,3 @@
   <ng-container *ngIf="advancedPanelVisible">
     <hs-advanced-options [data]="data" [app]="app"></hs-advanced-options>
   </ng-container>
-
-</div>

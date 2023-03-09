@@ -98,6 +98,7 @@ export class HsAddDataFileBaseComponent
       srs: undefined,
       title: '',
       type: this.baseFileType,
+      allowedStyles: 'sldqml',
     };
     this.hsAddDataCommonFileService.clearParams(this.app);
     this.hsAddDataCommonService.clearParams(this.app);

@@ -32,6 +32,7 @@ export class HsFileRasterComponent
         ? '.zip'
         : '.tif, .tifw, .tiff, .tiffw, .gtiff, .gtiffw, .tfw, .png, .pngw, .pgw, .png.aux.xml, .jpg, .jpgw, .jgw, .jpg.aux.xml, .jp2, .jp2w, .j2w, .zip, .wld';
     super.ngOnInit();
+    this.data.allowedStyles = 'sld';
   }
 
   async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
