@@ -588,6 +588,8 @@ export class HsAddDataCommonFileService {
       response.name
     );
     if (descriptor?.file.error) {
+      const error = descriptor.file.error;
+      const msg = error?.detail.message ?? error.message;
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.someErrorHappened',
@@ -596,7 +598,7 @@ export class HsAddDataCommonFileService {
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'LAYMAN.ERROR',
-          descriptor.file.error.code.toString(),
+          msg ?? descriptor.file.error.code.toString(),
           undefined,
           app
         ),
