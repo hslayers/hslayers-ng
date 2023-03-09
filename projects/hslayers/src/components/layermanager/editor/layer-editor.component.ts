@@ -45,7 +45,7 @@ import {
   templateUrl: './layer-editor.html',
 })
 export class HsLayerEditorComponent {
-  @Input() app = 'default';
+  
   _currentLayer: HsLayerDescriptor;
   @Input('current-layer') set currentLayer(value: HsLayerDescriptor) {
     this._currentLayer = value;
@@ -89,7 +89,7 @@ export class HsLayerEditorComponent {
       HsIdwWidgetComponent,
     ];
     for (const widgetClass of widgets) {
-      this.hsWidgetContainerService.create(widgetClass, {}, this.app);
+      this.hsWidgetContainerService.create(widgetClass, {}, );
     }
   }
 
@@ -105,19 +105,19 @@ export class HsLayerEditorComponent {
           this.HsLanguageService.getTranslation(
             'LAYERMANAGER.layerEditor.savegeojson',
             undefined,
-            this.app
+            
           ) + '?',
         title: this.HsLanguageService.getTranslation(
           'COMMON.confirm',
           undefined,
-          this.app
+          
         ),
       },
-      this.app
+      
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      return this.HsLayerManagerService.saveGeoJson(this.app);
+      return this.HsLayerManagerService.saveGeoJson();
     }
   }
 
@@ -131,8 +131,8 @@ export class HsLayerEditorComponent {
    * BoundingBox property of GetCapabilities request (for WMS layer)
    * @returns a promise
    */
-  zoomToLayer(app: string): Promise<any> {
-    return this.HsLayerEditorService.zoomToLayer(this.olLayer(), app);
+  zoomToLayer(): Promise<any> {
+    return this.HsLayerEditorService.zoomToLayer(this.olLayer());
   }
 
   /**
@@ -140,10 +140,10 @@ export class HsLayerEditorComponent {
    */
   styleLayer(): void {
     const layer = this.olLayer();
-    this.HsStylerService.get(this.app).layer = layer as VectorLayer<
+    this.HsStylerService.layer = layer as VectorLayer<
       VectorSource<Geometry>
     >;
-    this.HsLayoutService.setMainPanel('styler', this.app);
+    this.HsLayoutService.setMainPanel('styler', );
   }
 
   /**
@@ -186,7 +186,7 @@ export class HsLayerEditorComponent {
     this.HsDialogContainerService.create(
       HsLayerManagerRemoveLayerDialogComponent,
       {olLayer: this.olLayer()},
-      this.app
+      
     );
   }
 
@@ -227,10 +227,7 @@ export class HsLayerEditorComponent {
       layer,
     });
     setTitle(layer, this.tmpTitle);
-    this.HsEventBusService.layerManagerUpdates.next({
-      layer: null,
-      app: this.app,
-    });
+    this.HsEventBusService.layerManagerUpdates.next(null);
     this.toggleLayerRename();
   }
 
@@ -247,7 +244,7 @@ export class HsLayerEditorComponent {
   }
 
   getSubLayers() {
-    return this.HsLayerEditorSublayerService.getSubLayers(this.app);
+    return this.HsLayerEditorSublayerService.getSubLayers();
   }
 
   async copyLayer(): Promise<void> {
@@ -258,21 +255,20 @@ export class HsLayerEditorComponent {
           this.HsLanguageService.getTranslation(
             'LAYERMANAGER.layerEditor.copyLayer',
             undefined,
-            this.app
+            
           ) + '?',
         title: this.HsLanguageService.getTranslation(
           'COMMON.copyLayer',
           undefined,
-          this.app
+          
         ),
-        layerTitle: getTitle(this.currentLayer.layer),
-        app: this.app,
+        layerTitle: getTitle(this.currentLayer.layer)
       },
-      this.app
+      
     );
     const result = await dialog.waitResult();
     if (result.confirmed == 'yes') {
-      return this.HsLayerManagerService.copyLayer(result.layerTitle, this.app);
+      return this.HsLayerManagerService.copyLayer(result.layerTitle, );
     }
   }
 }

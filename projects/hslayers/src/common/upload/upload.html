@@ -1,14 +1,14 @@
 <div class="d-flex justify-content-center align-items-center w-100 dropzone-container">
     <div class="dropzone p-4" fileDrop (filesDropped)="emitHandleUpload($event, true)"
         (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
-        <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translateHs: {app} }}</p>
+        <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translateHs }}</p>
     </div>
-    <p class="px-5">{{'COMMON.or' | translateHs: {app} }}</p>
+    <p class="px-5">{{'COMMON.or' | translateHs }}</p>
     <label class="dropzone-label">
         <input #fileInput type="file" [accept]="acceptedFormats" [id]="uploader" class="inputfile"
             (change)="emitHandleUpload($event.target.files, false)" multiple>
         <label [for]="uploader" class="p-2 rounded d-flex align-items-center"> <i class="icon-uploadalt pe-2"></i>
-            {{'ADDLAYERS.Vector.chooseFiles' | translateHs: {app} }}</label>
+            {{'ADDLAYERS.Vector.chooseFiles' | translateHs }}</label>
     </label>
 
 </div>

@@ -1,18 +1,18 @@
 <div class="print" layout="column" style="max-height: 100%;">
     <md-toolbar class="md-hue-3" flex="none" hide-gt-sm="">
-        <h1 class="md-toolbar-tools">{{'COMMON.print' | translateHs : {app: data.app} }}</h1>
+        <h1 class="md-toolbar-tools">{{'COMMON.print' | translateHs }}</h1>
     </md-toolbar>
     <div class="md-padding" flex="">
         <div layout="column" class="md-inline-form">
             <md-input-container>
-                <label>{{'COMMON.title' | translateHs : {app: data.app} }}</label>
+                <label>{{'COMMON.title' | translateHs }}</label>
                 <input required="" md-maxlength="100" ng-model="title">
             </md-input-container>
         </div>
     </div>
     <md-divider></md-divider>
     <div layout-padding="" layout="row" layout-align="space-around center">
-        <md-button class="md-raised md-accent" (click)="print()">{{'COMMON.print' | translateHs : {app: data.app} }}
+        <md-button class="md-raised md-accent" (click)="print()">{{'COMMON.print' | translateHs }}
         </md-button>
     </div>
 </div>

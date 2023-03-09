@@ -12,18 +12,20 @@
                 <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer.Name]"
                     name="sublayerWithoutNestedSublayers"
                     (change)="subLayerSelected(subLayer,checkedSubLayers[subLayer.Name])"
-                    [attr.id]="'hs-sublayers-' + subLayer.Name + '-' + app" *ngIf="!subLayer.Layer">
+                    [attr.id]="'hs-sublayers-' + subLayer.Name "
+                    *ngIf="!subLayer.Layer"><!-- FIXME: PLATFORMA APP PARAM -->
                 <input class="form-check-input" type="checkbox" [(ngModel)]="withChildren[subLayer.Name]"
                     name="sublayerWithNestedSublayers"
                     (change)="subLayerSelected(subLayer, withChildren[subLayer.Name])"
-                    [attr.id]="'hs-sublayers-' + subLayer.Name + '-' + app" *ngIf="subLayer.Layer">
+                    [attr.id]="'hs-sublayers-' + subLayer.Name "
+                    *ngIf="subLayer.Layer"><!-- FIXME: PLATFORMA APP PARAM -->
 
                 <div class="p-0 d-inline-flex flex-grow" *ngIf="subLayer.Layer">
                     <label class="form-check-label m-0"
                         [ngClass]="{'hs-checkmark':withChildren[subLayer.Name],'hs-uncheckmark':!withChildren[subLayer.Name]}"
-                        [attr.for]="'hs-sublayers-' + subLayer.Name + '-' + app"></label>
+                        [attr.for]="'hs-sublayers-' + subLayer.Name "></label><!-- FIXME: PLATFORMA APP PARAM -->
                     <div (click)="toggleExpanded()" style="cursor:pointer"
-                        [ngClass]="{'grayed': HsLayerManagerService.apps[app].currentResolution >= subLayer.maxResolution}">
+                        [ngClass]="{'grayed': HsLayerManagerService.currentResolution >= subLayer.maxResolution}">
                         {{subLayer.Title || subLayer.Name}}
                         <button type="button" class="btn btn-sm p-0" style="font-size: 0.6rem;">
                             <i [ngClass]="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i>
@@ -32,9 +34,9 @@
                 </div>
                 <div *ngIf="!subLayer.Layer">
                     <label class="form-check-label m-0"
-                        [ngClass]="{'hs-checkmark':checkedSubLayers[subLayer.Name],'hs-uncheckmark':!checkedSubLayers[subLayer.Name], 'grayed': (HsLayerManagerService.apps[app].currentResolution > subLayer.maxResolution) }"
-                        [attr.for]="'hs-sublayers-' + subLayer.Name + '-' + app">{{subLayer.Title ||
-                        subLayer.Name}}</label>
+                        [ngClass]="{'hs-checkmark':checkedSubLayers[subLayer.Name],'hs-uncheckmark':!checkedSubLayers[subLayer.Name], 'grayed': (HsLayerManagerService.currentResolution > subLayer.maxResolution) }"
+                        [attr.for]="'hs-sublayers-' + subLayer.Name ">{{subLayer.Title ||
+                        subLayer.Name}}</label><!-- FIXME: PLATFORMA APP PARAM -->
                 </div>
             </div>
         </div>
@@ -46,7 +48,7 @@
                         [attr.id]="'hs-sublayers-'+subLayer" [ngModelOptions]="{standalone: true}">
                     <label class="form-check-label" [attr.for]="'hs-sublayers-'+subLayer">{{subLayer}}</label>
                 </div>
-                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer" [app]="app"
+                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer"
                     *ngIf="!subLayerIsString(subLayer)"><!-- TODO: Remove function call from template -->
                 </hs-layer-editor-sub-layer-checkbox>
             </div>

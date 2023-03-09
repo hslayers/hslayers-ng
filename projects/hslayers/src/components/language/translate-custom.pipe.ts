@@ -57,19 +57,11 @@ export class TranslateCustomPipe
       }
     }
 
-    if (interpolateParams.app == undefined) {
-      console.warn(
-        'You must specify app parameter for translateHs pipe i.e. `translateHs : {app: "default"}`. Translating: ' +
-          query
-      );
-    }
     let module: string;
-    if (interpolateParams.module != undefined) {
+    if (interpolateParams?.module != undefined) {
       module = interpolateParams.module;
     }
-    const translator = this.hsLanguageService.getTranslator(
-      interpolateParams.app
-    );
+    const translator = this.hsLanguageService.getTranslator();
     if (!this.onTranslationChange) {
       this.onTranslationChange = translator.onTranslationChange.subscribe(
         (event: TranslationChangeEvent) => {

@@ -1,26 +1,26 @@
 <form class="form">
 
-  <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="color" opacityAttribute="opacity"
-    (changes)="opacityFix(); emitChange()" [label]="'STYLER.fillColor' | translateHs : {app}">
+  <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
+    (changes)="opacityFix(); emitChange()" [label]="'STYLER.fillColor' | translateHs">
     <span class="badge bg-warning mt-2" *ngIf="symbolizer.graphicFill !== undefined"
-      [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translateHs : {app} ">!</span>
+      [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translateHs  ">!</span>
   </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="opacity" (changes)="opacityFix(); emitChange()"
-    step="0.05" min="0" max="1" [label]="'STYLER.opacity' | translateHs : {app}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="opacity" (changes)="opacityFix(); emitChange()" step="0.05"
+    min="0" max="1" [label]="'STYLER.opacity' | translateHs "></hs-symbolizer-slider>
 
-  <hs-symbolizer-color-picker [symbolizer]="symbolizer" [app]="app" attribute="outlineColor"
-    opacityAttribute="outlineOpacity" (changes)="emitChange()" [label]="'STYLER.outlineColor' | translateHs : {app}">
+  <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="outlineColor" opacityAttribute="outlineOpacity"
+    (changes)="emitChange()" [label]="'STYLER.outlineColor' | translateHs ">
   </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="outlineOpacity" (changes)="emitChange()"
-    step="0.05" min="0" max="1" [label]="'STYLER.outlineOpacity' | translateHs : {app}"></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="outlineOpacity" (changes)="emitChange()" step="0.05"
+    min="0" max="1" [label]="'STYLER.outlineOpacity' | translateHs "></hs-symbolizer-slider>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" [app]="app" attribute="outlineWidth" (changes)="emitChange()"
-    step="0.1" min="0" max="20" [label]="'STYLER.outlineWidth' | translateHs : {app} "></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="outlineWidth" (changes)="emitChange()" step="0.1" min="0"
+    max="20" [label]="'STYLER.outlineWidth' | translateHs  "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row justify-content-end">
-    <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translateHs : {app} }}:</div>
+    <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translateHs}}:</div>
     <div class="p-1">
       <div class="btn-group">
         <div ngbDropdown class="btn-group d-inline-block" role="group" #graphicFillMenu="ngbDropdown"
@@ -30,10 +30,10 @@
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark'); graphicFillMenu.close()">
-              {{'STYLER.mark' | translateHs : {app} }}
+              {{'STYLER.mark' | translateHs }}
             </button>
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon'); graphicFillMenu.close()">
-              {{'STYLER.icon' | translateHs : {app} }}
+              {{'STYLER.icon' | translateHs }}
             </button>
           </div>
         </div>
@@ -45,11 +45,11 @@
     </div>
   </div>
 
-  <hs-mark-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true" (changes)="emitChange()"
+  <hs-mark-symbolizer [symbolizer]="symbolizer.graphicFill" [submenu]="true" (changes)="emitChange()"
     *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark">
   </hs-mark-symbolizer>
 
-  <hs-icon-symbolizer [app]="app" [symbolizer]="symbolizer.graphicFill" [submenu]="true" (changes)="emitChange()"
+  <hs-icon-symbolizer [symbolizer]="symbolizer.graphicFill" [submenu]="true" (changes)="emitChange()"
     *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon">
   </hs-icon-symbolizer>
 </form>

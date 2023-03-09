@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HsToastService} from './toast.service';
 
 @Component({
@@ -19,12 +19,6 @@ import {HsToastService} from './toast.service';
     `,
   ],
 })
-export class HsToastComponent implements OnInit {
-  @Input() app = 'default';
-  appRef;
+export class HsToastComponent {
   constructor(public PmToastService: HsToastService) {}
-
-  ngOnInit(): void {
-    this.appRef = this.PmToastService.get(this.app);
-  }
 }

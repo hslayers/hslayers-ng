@@ -9,7 +9,10 @@ import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 
-export class HsSidebarParams {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsSidebarService {
   extraButtons: Array<HsButton> = [];
   buttonsSubject: BehaviorSubject<HsButton[]> = new BehaviorSubject([]);
   /**
@@ -28,48 +31,29 @@ export class HsSidebarParams {
   showUnimportant: boolean;
   numberOfUnimportant: number;
   importantButtons: HsButton[];
+  sidebarLoad: Subject<void> = new Subject();
 
-  constructor() {
-    this.buttons = this.buttonsSubject.asObservable();
-  }
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HsSidebarService {
-  apps: {
-    [id: string]: HsSidebarParams;
-  } = {default: new HsSidebarParams()};
-  sidebarLoad: Subject<string> = new Subject();
-
-  get(app: string = 'default'): HsSidebarParams {
-    if (this.apps[app] == undefined) {
-      this.apps[app] = new HsSidebarParams();
-    }
-    return this.apps[app];
-  }
-
-  destroy(app: string = 'default'): void {
-    delete this.apps[app];
+  destroy(): void {
+    console.warn('HsSidebarService destroy, fix me');
   }
 
   constructor(
     public HsLayoutService: HsLayoutService,
-    public HsConfig: HsConfig,
+    public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
     public HsCoreService: HsCoreService,
     public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService
   ) {
-    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
+    this.buttons = this.buttonsSubject.asObservable();
+    this.HsEventBusService.mainPanelChanges.subscribe((which) => {
       /* NOTE: WE used to update map size only 'if (!HsLayoutService.sidebarExpanded) {' 
       but that leads to blank margin between map and window border 
       (see https://github.com/hslayers/hslayers-ng/issues/1107). Using timer to take
       into account sidebar width changing animation. 
       */
       setTimeout(() => {
-        this.HsCoreService.updateMapSize(app);
+        this.HsCoreService.updateMapSize();
       }, 550);
     });
   }
@@ -88,36 +72,31 @@ export class HsSidebarService {
     return tmp;
   }
 
-  setButtonVisibility(buttons: HsButton[], app: string) {
-    const appRef = this.get(app);
-    if (this.HsLayoutService.get(app).layoutElement == undefined) {
-      setTimeout(() => this.setButtonVisibility(buttons, app), 100);
+  setButtonVisibility(buttons: HsButton[]) {
+    if (this.HsLayoutService.layoutElement == undefined) {
+      setTimeout(() => this.setButtonVisibility(buttons), 100);
       return;
     }
-    appRef.importantButtons = buttons.filter((button) => {
+    this.importantButtons = buttons.filter((button) => {
       return (
-        button.important != false &&
-        appRef.visibleButtons.includes(button.panel)
+        button.important != false && this.visibleButtons.includes(button.panel)
       );
     });
-    appRef.numberOfUnimportant =
-      buttons.length - appRef.importantButtons.length;
-    for (const button of appRef.importantButtons) {
-      button.fits = this.fitsSidebar(button, app);
+    this.numberOfUnimportant = buttons.length - this.importantButtons.length;
+    for (const button of this.importantButtons) {
+      button.fits = this.fitsSidebar(button);
     }
-    if (!appRef.unimportantExist) {
-      this.HsLayoutService.get(app).minisidebar = this.get(
-        app
-      ).importantButtons.some((b) => b.fits == false);
+    if (!this.unimportantExist) {
+      this.HsLayoutService.minisidebar = this.importantButtons.some(
+        (b) => b.fits == false
+      );
     }
   }
 
-  addButton(button: HsButton, app?: string) {
-    this.get(app ?? 'default')
-      .buttons.pipe(take(1))
-      .subscribe((cur) => {
-        this.get(app ?? 'default').buttonsSubject.next([...cur, button]);
-      });
+  addButton(button: HsButton) {
+    this.buttons.pipe(take(1)).subscribe((cur) => {
+      this.buttonsSubject.next([...cur, button]);
+    });
   }
 
   /**
@@ -130,10 +109,8 @@ export class HsSidebarService {
   setButtonImportancy(
     buttons: HsButton[],
     panelName: string,
-    state: boolean,
-    app: string = 'default'
+    state: boolean
   ): void {
-    const appRef = this.get(app);
     const backCompat = {datasource_selector: 'addData'};
     panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
     const button = buttons.find((b) => b.panel == panelName);
@@ -143,28 +120,27 @@ export class HsSidebarService {
       button.important = state;
     }
 
-    appRef.unimportantExist = buttons.some((b) => b.important == false);
-    this.HsLayoutService.get(app).minisidebar = appRef.unimportantExist;
+    this.unimportantExist = buttons.some((b) => b.important == false);
+    this.HsLayoutService.minisidebar = this.unimportantExist;
   }
-  buttonClicked(button: HsButton, app: string): void {
+  buttonClicked(button: HsButton): void {
     if (button.click) {
       button.click();
     } else {
-      this.HsLayoutService.setMainPanel(button.panel, app, true);
+      this.HsLayoutService.setMainPanel(button.panel, true);
     }
   }
-  setPanelState(buttons: Array<HsButton>, app: string): void {
-    const appRef = this.get(app);
+  setPanelState(buttons: Array<HsButton>): void {
     if (buttons.length == 0) {
       return;
     }
     for (const button of buttons) {
       if (
-        this.HsLayoutService.getPanelEnableState(button.panel, app) &&
-        this.checkConfigurableButtons(button, app)
+        this.HsLayoutService.getPanelEnableState(button.panel) &&
+        this.checkConfigurableButtons(button)
       ) {
-        if (!appRef.visibleButtons.includes(button.panel)) {
-          appRef.visibleButtons.push(button.panel);
+        if (!this.visibleButtons.includes(button.panel)) {
+          this.visibleButtons.push(button.panel);
           button.visible = true;
         }
       } else {
@@ -181,13 +157,13 @@ export class HsSidebarService {
    * 'config.panelsEnabled = false' would prevent their functionality.
    * @param {object} button buttons Buttons object
    */
-  checkConfigurableButtons(button: HsButton, app: string): boolean {
+  checkConfigurableButtons(button: HsButton): boolean {
     if (typeof button.condition == 'undefined') {
       return true;
-    } else if (!this.HsConfig.get(app).panelsEnabled) {
+    } else if (!this.hsConfig.panelsEnabled) {
       return false;
     } else {
-      return this.HsConfig.get(app).panelsEnabled[button.panel];
+      return this.hsConfig.panelsEnabled[button.panel];
     }
   }
 
@@ -197,14 +173,14 @@ export class HsSidebarService {
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
    * @description Toggles minisidebar button
    */
-  fitsSidebar(button: HsButton, app: string): boolean {
-    const mobileBreakpoint = this.HsConfig.get(app).mobileBreakpoint;
+  fitsSidebar(button: HsButton): boolean {
+    const mobileBreakpoint = this.hsConfig.mobileBreakpoint;
     const dimensionToCheck =
       window.innerWidth > mobileBreakpoint ? 'clientHeight' : 'clientWidth';
-    this.HsLayoutService.get(app).sidebarToggleable =
+    this.HsLayoutService.sidebarToggleable =
       window.innerWidth > mobileBreakpoint;
     let maxNumberOfButtons = Math.floor(
-      this.HsLayoutService.get(app).layoutElement[dimensionToCheck] / 65
+      this.HsLayoutService.layoutElement[dimensionToCheck] / 65
     );
     maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'
@@ -212,9 +188,7 @@ export class HsSidebarService {
         : maxNumberOfButtons;
 
     return (
-      this.get(app).importantButtons.findIndex(
-        (btn) => btn.panel === button.panel
-      ) +
+      this.importantButtons.findIndex((btn) => btn.panel === button.panel) +
         2 <=
       maxNumberOfButtons
     );

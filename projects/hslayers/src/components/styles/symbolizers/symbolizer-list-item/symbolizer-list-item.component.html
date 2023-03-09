@@ -5,18 +5,18 @@
     <button type="button" style="border: none; background-color: transparent; cursor: move">
       <i class="icon-move text-secondary"></i>
     </button>
-    <span>{{getSymbolizerName(symbolizer) | translateHs : {app} }}&nbsp;</span><!-- TODO: Remove function call from template -->
+    <span>{{getSymbolizerName(symbolizer) | translateHs }}&nbsp;</span><!-- TODO: Remove function call from template -->
   </div>
   <div>
     <span class="glyphicon me-2" [ngClass]="symbolizerVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
     <button class="btn btn-danger btn-sm" (click)="removeSymbolizer(symbolizer)" data-toggle="tooltip"
-      [title]="'STYLER.removeSymbolizer' | translateHs : {app} ">
+      [title]="'STYLER.removeSymbolizer' | translateHs  ">
       <i class="icon-trash"></i>
     </button>
   </div>
 </li>
 
 <ng-container *ngIf="symbolizerVisible">
-  <hs-symbolizer [symbolizer]="symbolizer" [app]="app" (changes)="emitChange()" (mousedown)="$event.stopPropagation()">
+  <hs-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" (mousedown)="$event.stopPropagation()">
   </hs-symbolizer>
 </ng-container>

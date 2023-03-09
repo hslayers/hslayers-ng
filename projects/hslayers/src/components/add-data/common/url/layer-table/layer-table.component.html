@@ -3,9 +3,9 @@
         <table class="table table-sm table-striped table-bordered hs-url-table">
             <thead class="bg-secondary text-light">
                 <th style="width:1.5em">&nbsp;</th>
-                <th>{{'COMMON.title' | translateHs: {app} }}</th>
-                <!-- <th style="width:30%">{{'COMMON.name' | translateHs: {app} }}</th> -->
-                <th>{{'COMMON.abstract' | translateHs: {app} }}</th>
+                <th>{{'COMMON.title' | translateHs }}</th>
+                <!-- <th style="width:30%">{{'COMMON.name' | translateHs }}</th> -->
+                <th>{{'COMMON.abstract' | translateHs }}</th>
             </thead>
             <tbody *ngFor="let layer of data.layers | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
                 <tr>
@@ -25,7 +25,7 @@
                     <td colspan="3">
                         <div class="d-flex align-items-baseline px-2 w-100">
                             <div class="d-flex align-items-baseline" style="flex-grow: 1;">
-                                <label class="control-label">{{'COMMON.style' | translateHs: {app} }}:</label>
+                                <label class="control-label">{{'COMMON.style' | translateHs }}:</label>
                                 <select class="form-control form-select-sm form-select"
                                     [(ngModel)]="layer.styleSelected" [ngModelOptions]="{standalone: true}">
                                     <option *ngFor="let style of layer.Style" [ngValue]="style">{{style.Name}}
@@ -37,7 +37,7 @@
                 </tr>
                 <tr [hidden]="!layer.Layer">
                     <td colspan="3" style="padding-left: 1em">
-                        <hs-nested-layers-table style="display: block;" [app]="app" [layers]="layer.Layer"
+                        <hs-nested-layers-table style="display: block;" [layers]="layer.Layer"
                             (layerChecked)="searchForChecked($event)">
                         </hs-nested-layers-table>
                     </td>
@@ -50,12 +50,12 @@
             <thead>
                 <th class="border-0" style="width:1em">&nbsp;</th>
                 <div class="d-flex justify-content-between">
-                    <th class="border-0">{{'COMMON.name' | translateHs: {app} }}</th>
+                    <th class="border-0">{{'COMMON.name' | translateHs}}</th>
                     <button *ngIf="type === 'arcgis' && data.serviceExpanded" type="button"
                         class="btn btn-sm px-2 border-0 d-flex" (click)="collapseServices()"
-                        [title]="'COMMON.back' | translateHs: {app}">
+                        [title]="'COMMON.back' | translateHs">
                         <i class="glyphicon icon-chevron-left text-black-50"></i>
-                        <span class="text-black-50 fw-bold">{{'COMMON.back' | translateHs: {app} }}</span>
+                        <span class="text-black-50 fw-bold">{{'COMMON.back' | translateHs}}</span>
                     </button>
                 </div>
             </thead>
@@ -66,7 +66,7 @@
                             style="cursor: pointer;" [(ngModel)]="service.checked" />
                     </td>
                     <td (click)="expandService(service)" data-toggle="tooltip"
-                        [title]="'ADDDATA.requestServiceLayers' | translateHs: {app} " style="cursor: pointer;">
+                        [title]="'ADDDATA.requestServiceLayers' | translateHs " style="cursor: pointer;">
                         {{service.name}}
                         <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
                     </td>
@@ -80,15 +80,15 @@
                         style="max-width: 45ch;">{{layer[data.table.nameProperty]}}
                         <div *ngIf="layer.checked && type === 'wmts'"
                             class="d-flex flex-row justify-content-end align-items-baseline mt-1">
-                            {{'ADDDATA.CATALOGUE.addAs' | translateHs: {app} }}
+                            {{'ADDDATA.CATALOGUE.addAs' | translateHs }}
                             <div class="btn-group ms-2">
                                 <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
                                     (click)="layer.base = true" [ngClass]="{'active':layer.base}">
-                                    {{'COMPOSITONKEYWORDS.Basemap' | translateHs: {app} }}
+                                    {{'COMPOSITONKEYWORDS.Basemap' | translateHs }}
                                 </button>
                                 <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
                                     (click)="layer.base = false" [ngClass]="{'active': !layer.base}">
-                                    {{'COMMON.layer' | translateHs: {app} }}
+                                    {{'COMMON.layer' | translateHs }}
                                 </button>
                             </div>
                         </div>
@@ -97,8 +97,8 @@
                             <div class="w-100">
                                 <p class="mb-0" style="white-space: normal" [hidden]="!layer.limitFeatureCount">
                                     {{'ADDLAYERS.WFS.selectedLayerContains' |
-                                    translateHs: {app} }}
-                                    {{layer.featureCount}} {{'ADDLAYERS.WFS.loadingToManyAtOnce' | translateHs: {app} }}
+                                    translateHs }}
+                                    {{layer.featureCount}} {{'ADDLAYERS.WFS.loadingToManyAtOnce' | translateHs }}
                                 </p>
                             </div>
                         </div>
@@ -113,11 +113,11 @@
             <div class="btn-group ms-2">
                 <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
                     (click)="limitShown = limitShown + 100">
-                    {{'ADDDATA.CATALOGUE.showNext100' | translateHs: {app} }}
+                    {{'ADDDATA.CATALOGUE.showNext100' | translateHs }}
                 </button>
                 <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
                     (click)="limitShown = data.layers.length">
-                    {{'ADDDATA.CATALOGUE.showAll' | translateHs: {app} }}
+                    {{'ADDDATA.CATALOGUE.showAll' | translateHs }}
                 </button>
             </div>
         </div>

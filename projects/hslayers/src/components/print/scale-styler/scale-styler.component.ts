@@ -11,7 +11,7 @@ import {ScaleObj} from '../types/scale-object.type';
 })
 export class HsPrintScaleStylerComponent {
   @Input() scaleObj: ScaleObj;
-  @Input() app = 'default';
+  
   stylingOptions = SCALE_STYLING_OPTIONS;
 
   constructor(
@@ -23,7 +23,7 @@ export class HsPrintScaleStylerComponent {
    * Triggered when scale object values have been changed
    */
   scaleObjChanged(): void {
-    this.hsPrintScaleService.scaleChanged(this.scaleObj, this.app);
+    this.hsPrintScaleService.scaleChanged(this.scaleObj, );
   }
 
   /**
@@ -36,7 +36,7 @@ export class HsPrintScaleStylerComponent {
       module,
       text,
       undefined,
-      this.app
+      
     );
   }
 }

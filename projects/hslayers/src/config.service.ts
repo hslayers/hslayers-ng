@@ -97,7 +97,7 @@ export class HsConfigObject {
   };
   mapSwipeOptions?: MapSwipeOptions = {};
   status_manager_url?: string;
-  shortenUrl?: any;
+  shortenUrl: (url) => any;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
   useProxy?: boolean;
@@ -144,7 +144,7 @@ export class HsConfigObject {
    */
   saveMapStateOnReload?: boolean;
   /**
-   * Triggered when config is updated using 'update' function of HsConfig.get(app).
+   * Triggered when config is updated using 'update' function of HsConfig.
    * The full resulting config is provided in the subscriber as a parameter
    */
   timeDisplayFormat?: string;
@@ -166,20 +166,20 @@ export class HsConfigObject {
   constructor() {
     this.pathExclusivity = false;
     this.panelsEnabled = {
-      legend: true,
-      info: true,
-      composition_browser: true,
-      toolbar: true,
-      measure: true,
+      legend: false,
+      info: false,
+      composition_browser: false,
+      toolbar: false,
+      measure: false,
       mobile_settings: false,
-      draw: true,
+      draw: false,
       layermanager: true,
-      print: true,
-      saveMap: true,
+      print: false,
+      saveMap: false,
       language: true,
-      permalink: true,
+      permalink: false,
       compositionLoadingProgress: false,
-      sensors: true,
+      sensors: false,
       filter: false,
       search: false,
       tripPlanner: false,
@@ -199,7 +199,7 @@ export class HsConfigObject {
       basemapGallery: false,
       mapSwipe: false,
     };
-    this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
+    // this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
     this.panelWidths = {
       default: 425,
       ows: 700,
@@ -215,12 +215,9 @@ export class HsConfigObject {
 @Injectable({
   providedIn: 'root',
 })
-export class HsConfig {
-  apps: {[id: string]: HsConfigObject} = {
-    default: new HsConfigObject(),
-  };
-  configChanges?: Subject<{app: string; config: HsConfigObject}> =
-    new Subject();
+export class HsConfig extends HsConfigObject {
+  id = Math.random();
+  configChanges?: Subject<void> = new Subject();
   private defaultSymbolizerIcons? = [
     {name: 'favourite', url: 'img/icons/favourite28.svg'},
     {name: 'gps', url: 'img/icons/gps43.svg'},
@@ -228,7 +225,9 @@ export class HsConfig {
     {name: 'wifi', url: 'img/icons/wifi8.svg'},
   ];
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   checkDeprecatedCesiumConfig?(newConfig: any) {
     for (const prop of [
@@ -257,46 +256,38 @@ export class HsConfig {
     }
   }
 
-  update?(newConfig: HsConfigObject, app?: string): void {
-    if (app == undefined) {
-      app = 'default';
-    }
+  update?(newConfig: HsConfigObject): void {
     this.checkDeprecatedCesiumConfig(newConfig);
-    let appConfig = this.apps[app];
-    if (appConfig == undefined) {
-      this.apps[app] = new HsConfigObject();
-      appConfig = this.apps[app];
-    }
     if (newConfig.sidebarPosition === 'bottom') {
       /**Set hight enough value to make sure class setting mobile-view is not toggled*/
       newConfig.mobileBreakpoint = 9999;
     }
-    appConfig.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
-      val.url = (appConfig.assetsPath ?? '') + val.url;
+    this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
+      val.url = (this.assetsPath ?? '') + val.url;
       return val;
     });
-    Object.assign(appConfig.componentsEnabled, newConfig.componentsEnabled);
+    Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
     //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
-    Object.assign(appConfig.panelWidths, newConfig.panelWidths);
+    Object.assign(this.panelWidths, newConfig.panelWidths);
     delete newConfig.panelWidths;
     //See componentsEnabled ^
-    Object.assign(appConfig.panelsEnabled, newConfig.panelsEnabled);
+    Object.assign(this.panelsEnabled, newConfig.panelsEnabled);
     delete newConfig.panelsEnabled;
-    appConfig.symbolizerIcons = [
+    this.symbolizerIcons = [
       ...this.updateSymbolizers(newConfig),
       ...(newConfig.symbolizerIcons ?? []),
     ];
     delete newConfig.symbolizerIcons;
-    Object.assign(appConfig, newConfig);
+    Object.assign(this, newConfig);
 
-    if (appConfig.assetsPath == undefined) {
-      appConfig.assetsPath = '';
+    if (this.assetsPath == undefined) {
+      this.assetsPath = '';
     }
-    appConfig.assetsPath += appConfig.assetsPath.endsWith('/') ? '' : '/';
-    appConfig._ajaxLoaderPath = appConfig.assetsPath + 'img/ajax-loader.gif';
+    this.assetsPath += this.assetsPath.endsWith('/') ? '' : '/';
+    this._ajaxLoaderPath = this.assetsPath + 'img/ajax-loader.gif';
 
-    this.configChanges.next({app, config: appConfig});
+    this.configChanges.next();
   }
 
   /**
@@ -311,13 +302,4 @@ export class HsConfig {
       return val;
     });
   }
-
-  get(app: string = 'default'): HsConfigObject {
-    if (this.apps[app] == undefined) {
-      return this.apps['default'];
-    }
-    return this.apps[app];
-  }
-
-  shortenUrl?(url: string): any;
 }

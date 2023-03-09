@@ -1,7 +1,7 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translateHs: {app: data.app} " [app]="data.app">
+    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translateHs ">
         <extra-buttons>
-            <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs: {app: data.app} ">
+            <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs ">
                 <i class="icon-question-sign"></i>
             </button>
         </extra-buttons>
@@ -12,30 +12,30 @@
         <li class="nav-item" (click)="componentOptionSelected('draw')">
             <a [ngClass]="{'active': selectedOption === 'draw'}" class="nav-link "
                 aria-current="page">{{'PANEL_HEADER.DRAW' |
-                translateHs: {app: data.app} }}</a>
+                translateHs }}</a>
         </li>
         <li class="nav-item" (click)="componentOptionSelected('edit')">
             <a [ngClass]="{'active': selectedOption === 'edit'}" class="nav-link " aria-current="page">{{'COMMON.edit' |
-                translateHs: {app: data.app} }}</a>
+                translateHs }}</a>
         </li>
     </ul>
-    <hs-draw-panel *ngIf="selectedOption === 'draw'" [app]="data.app"></hs-draw-panel>
-    <hs-draw-edit class="my-4 d-flex flex-column align-items-center" *ngIf="selectedOption === 'edit'" [app]="data.app">
+    <hs-draw-panel *ngIf="selectedOption === 'draw'"></hs-draw-panel>
+    <hs-draw-edit class="my-4 d-flex flex-column align-items-center" *ngIf="selectedOption === 'edit'">
     </hs-draw-edit>
-    <div *ngIf="appRef.pendingLayers.length > 0" class="m-auto w-100 p-3">
+    <div *ngIf="HsDrawService.pendingLayers.length > 0" class="m-auto w-100 p-3">
         <div class="alert alert-warning text-justify">
             <ol>
-                <li *ngFor="let layer of appRef.pendingLayers">
-                    {{'DRAW.loadingLayer' | translateHs: {app: data.app} }} <strong>{{layer}}</strong>
+                <li *ngFor="let layer of HsDrawService.pendingLayers">
+                    {{'DRAW.loadingLayer' | translateHs }} <strong>{{layer}}</strong>
                 </li>
             </ol>
-            {{'DRAW.longerLoading' | translateHs: {app: data.app} }}
+            {{'DRAW.longerLoading' | translateHs }}
             <div class="d-flex justify-content-center pt-3">
                 <span class="hs-loader hs-loader-dark"></span>
             </div>
         </div>
     </div>
     <div class="mh-75 pt-2">
-        <hs-query-feature-list [app]="data.app"></hs-query-feature-list>
+        <hs-query-feature-list></hs-query-feature-list>
     </div>
 </div>

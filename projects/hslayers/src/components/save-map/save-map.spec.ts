@@ -44,7 +44,7 @@ class HsCommonLaymanServiceMock {
 
 class HsEventBusServiceMock {
   constructor() {}
-  compositionLoads: Subject<{data: any; app: string}> = new Subject();
+  compositionLoads: Subject<{data: any; }> = new Subject();
   mapResets: Subject<any> = new Subject();
   mainPanelChanges: Subject<any> = new Subject();
   olMapLoads: Subject<{map; app}> = new Subject();
@@ -55,7 +55,7 @@ class HsEventBusServiceMock {
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<{endpoints: HsEndpoint[]; app: string}> =
+  endpointsFilled: Subject<{endpoints: HsEndpoint[]; }> =
     new Subject();
 }
 

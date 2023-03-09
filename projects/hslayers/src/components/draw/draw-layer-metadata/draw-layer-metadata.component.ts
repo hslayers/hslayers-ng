@@ -28,7 +28,6 @@ export class HsDrawLayerMetadataDialogComponent
   implements HsDialogComponent, OnInit {
   @Input() data: {
     service: HsDrawService;
-    app: string;
   };
 
   newLayerPath: string;
@@ -45,7 +44,6 @@ export class HsDrawLayerMetadataDialogComponent
   };
   onlyMineFilterVisible = false;
   tmpFeatures: any;
-  appRef;
   constructor(
     public HsMapService: HsMapService,
     public HsDialogContainerService: HsDialogContainerService
@@ -53,11 +51,10 @@ export class HsDrawLayerMetadataDialogComponent
 
   viewRef: ViewRef;
   ngOnInit(): void {
-    this.appRef = this.data.service.get(this.data.app);
-    this.layer = this.appRef.selectedLayer;
+    this.layer = this.data.service.selectedLayer;
     this.title = getTitle(this.layer);
     this.path = getPath(this.layer);
-    this.endpoint = this.appRef.laymanEndpoint;
+    this.endpoint = this.data.service.laymanEndpoint;
     this.type = 'draw';
   }
 
@@ -69,10 +66,9 @@ export class HsDrawLayerMetadataDialogComponent
     const dic = {};
 
     setName(this.layer, getLaymanFriendlyLayerName(getTitle(this.layer)));
-    const tmpLayer =
-      this.HsMapService.findLayerByTitle('tmpDrawLayer', this.data.app) || null;
+    const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer') || null;
     if (tmpLayer) {
-      this.HsMapService.getMap(this.data.app).removeLayer(tmpLayer);
+      this.HsMapService.getMap().removeLayer(tmpLayer);
     }
 
     this.attributes.forEach((a) => {
@@ -90,19 +86,18 @@ export class HsDrawLayerMetadataDialogComponent
     });
 
     setAccessRights(this.layer, this.access_rights);
-    const appService = this.data.service;
-    appService.changeDrawSource(this.data.app);
+    this.data.service.changeDrawSource();
 
-    appService.addDrawLayer(this.layer, this.data.app);
-    appService.fillDrawableLayers(this.data.app);
+    this.data.service.addDrawLayer(this.layer);
+    this.data.service.fillDrawableLayers();
     this.tmpFeatures = this.layer.getSource().getFeatures();
     //Dispatch add feature event in order to trigger sync
     awaitLayerSync(this.layer).then(() => {
       const event = this.tmpFeatures ? this.getEventType() : 'addfeature';
       this.layer.getSource().dispatchEvent(event);
     });
-    this.appRef.tmpDrawLayer = false;
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.data.service.tmpDrawLayer = false;
+    this.HsDialogContainerService.destroy(this);
   }
 
   getEventType() {
@@ -114,8 +109,8 @@ export class HsDrawLayerMetadataDialogComponent
   }
 
   cancel(): void {
-    this.appRef.selectedLayer = this.appRef.previouslySelected;
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.data.service.selectedLayer = this.data.service.previouslySelected;
+    this.HsDialogContainerService.destroy(this);
   }
 
   pathChanged(): void {
@@ -127,7 +122,7 @@ export class HsDrawLayerMetadataDialogComponent
   }
 
   selectLayer(layer): void {
-    this.data.service.selectLayer(layer, this.data.app);
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.data.service.selectLayer(layer);
+    this.HsDialogContainerService.destroy(this);
   }
 }

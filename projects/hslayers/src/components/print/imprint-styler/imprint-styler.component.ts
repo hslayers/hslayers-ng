@@ -8,7 +8,7 @@ import {ImprintObj} from '../types/imprint-object.type';
 })
 export class HsPrintImprintStylerComponent {
   @Input() imprintObj: ImprintObj;
-  @Input() app = 'default';
+  
   sizes = CANVAS_SIZES;
 
   constructor() {}

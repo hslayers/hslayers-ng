@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import dayjs from 'dayjs';
-import {HsEventBusService, getTitle, HsUtilsService} from 'hslayers-ng';
+import {HsEventBusService, HsUtilsService, getTitle} from 'hslayers-ng';
 import {Viewer, WebMapServiceImageryProvider} from 'cesium';
 import {default as utc} from 'dayjs/plugin/utc';
 
@@ -19,27 +19,29 @@ export class HsCesiumTimeService {
     private hsUtilsService: HsUtilsService
   ) {}
 
-  init(viewer: Viewer, app: string) {
-    this.apps[app].viewer = viewer;
-    this.monitorTimeLine(app);
+  init(viewer: Viewer) {
+    this.viewer = viewer;
+    this.monitorTimeLine();
   }
 
-  monitorTimeLine(app: string) {
-    this.apps[app].viewer.clock.onTick.addEventListener((clock) => {
+  monitorTimeLine() {
+    this.viewer.clock.onTick.addEventListener((clock) => {
       const value = clock.currentTime;
       let something_changed = false;
-      for (let i = 0; i < this.apps[app].viewer.imageryLayers.length; i++) {
+      for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
         let round_time = new Date(value.toString());
         round_time.setMilliseconds(0);
         round_time.setMinutes(0);
         round_time.setSeconds(0);
 
-        const layer = this.apps[app].viewer.imageryLayers.get(i);
-        if (this.hsUtilsService.instOf(layer.imageryProvider , WebMapServiceImageryProvider)) {
-          const prmCache = this.HsCesiumLayersService.findParamCache(
-            layer,
-            app
-          );
+        const layer = this.viewer.imageryLayers.get(i);
+        if (
+          this.hsUtilsService.instOf(
+            layer.imageryProvider,
+            WebMapServiceImageryProvider
+          )
+        ) {
+          const prmCache = this.HsCesiumLayersService.findParamCache(layer);
           if (prmCache && this.getTimeParameter(layer)) {
             if (prmCache.dimensions.time) {
               let min_dist = Number.MAX_VALUE;
@@ -70,36 +72,35 @@ export class HsCesiumTimeService {
               this.HsCesiumLayersService.changeLayerParam(
                 layer,
                 this.getTimeParameter(layer),
-                round_time.toISOString(),
-                app
+                round_time.toISOString()
               );
               something_changed = true;
             }
           }
         }
       }
-      this.HsCesiumLayersService.removeLayersWithOldParams(app);
+      this.HsCesiumLayersService.removeLayersWithOldParams();
       if (something_changed) {
         this.HsEventBusService.cesiumTimeLayerChanges.next(
-          this.getLayerListTimes(app)
+          this.getLayerListTimes()
         );
       }
     });
   }
 
-  getLayerListTimes(app: string) {
-    if (this.apps[app].viewer.isDestroyed()) {
+  getLayerListTimes() {
+    if (this.viewer.isDestroyed()) {
       return;
     }
     const tmp = [];
-    for (let i = 0; i < this.apps[app].viewer.imageryLayers.length; i++) {
-      const layer = this.apps[app].viewer.imageryLayers.get(i);
-      const prmCache = this.HsCesiumLayersService.findParamCache(layer, app);
+    for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
+      const layer = this.viewer.imageryLayers.get(i);
+      const prmCache = this.HsCesiumLayersService.findParamCache(layer);
       if (prmCache) {
         const t = new Date(prmCache.parameters[this.getTimeParameter(layer)]);
         dayjs.extend(utc);
         tmp.push({
-          name: getTitle(this.HsCesiumLayersService.findOlLayer(layer, app)),
+          name: getTitle(this.HsCesiumLayersService.findOlLayer(layer)),
           time: dayjs.utc(t).format('DD-MM-YYYY HH:mm'),
         });
       }

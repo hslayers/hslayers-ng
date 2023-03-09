@@ -3,16 +3,16 @@
     <div class="modal-content">
       <div class="modal-header d-flex flex-column">
         <div class="d-flex w-100 align-items-center">
-          <h4 class="modal-title">{{'STYLER.selectIcon' | translateHs : {app: data.app} }}</h4>
+          <h4 class="modal-title">{{'STYLER.selectIcon' | translateHs }}</h4>
           <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
-            [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
+            [attr.aria-label]="'COMMON.close' | translateHs ">
           </button>
         </div>
       </div>
       <div class="modal-body" style="max-height: 400px; overflow-y: auto">
         <div class="d-flex flex-wrap">
-          <div *ngFor="let icon of hsConfig.get(data.app).symbolizerIcons"
-            [ngClass]="{'bg-primary': data.selectedIcon === icon}" class="p-1" (click)="iconSelected(icon)">
+          <div *ngFor="let icon of hsConfig.symbolizerIcons" [ngClass]="{'bg-primary': data.selectedIcon === icon}"
+            class="p-1" (click)="iconSelected(icon)">
             <!-- TODO: Remove function call from template -->
             <img [src]="icon.url" />
           </div>
@@ -20,10 +20,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="confirm()">
-          {{'COMMON.ok' | translateHs : {app: data.app} }}
+          {{'COMMON.ok' | translateHs }}
         </button>
         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()">
-          {{'COMMON.cancel' | translateHs : {app: data.app} }}
+          {{'COMMON.cancel' | translateHs }}
         </button>
       </div>
     </div>

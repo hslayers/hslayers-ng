@@ -39,21 +39,16 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.addButton(
-      {
-        panel: 'print',
-        module: 'hs.print',
-        order: 10,
-        fits: true,
-        title: 'PANEL_HEADER.PRINT',
-        description: 'SIDEBAR.descriptions.PRINT',
-        icon: 'icon-print',
-      },
-      this.data.app
-    );
-    this.configRef = this.hsConfig.get(this.data.app);
-    this.hsPrintScaleService.init(this.data.app);
-    this.hsPrintLegendService.init(this.data.app);
+    this.hsSidebarService.addButton({
+      panel: 'print',
+      module: 'hs.print',
+      order: 10,
+      fits: true,
+      title: 'PANEL_HEADER.PRINT',
+      description: 'SIDEBAR.descriptions.PRINT',
+      icon: 'icon-print',
+    });
+    this.configRef = this.hsConfig;
     this.setToDefault();
   }
 
@@ -108,15 +103,15 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
     this.stylers.forEach((s) => {
       s.visible = false;
     });
-    this.hsPrintScaleService.setToDefaultScale(this.data.app);
-    this.hsPrintLegendService.get(this.data.app).loadingExternalImages = false;
+    this.hsPrintScaleService.setToDefaultScale();
+    this.hsPrintLegendService.loadingExternalImages = false;
   }
 
   /**
    * Cancel loading print layout image
    */
   cancelLoading(): void {
-    this.hsPrintLegendService.get(this.data.app).cancelRequest.next();
+    this.hsPrintLegendService.cancelRequest.next();
   }
 
   /**
@@ -124,18 +119,18 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
    * @param complete - Indicates whether the user wants to print or preview the image
    */
   async printLayout(complete: boolean): Promise<void> {
-    await this.hsPrintService.print(this.print, this.data.app, complete);
+    await this.hsPrintService.print(this.print, complete);
   }
 
   /**
    * Download print layout as png image
    */
   async download(): Promise<void> {
-    await this.hsPrintService.download(this.print, this.data.app);
+    await this.hsPrintService.download(this.print);
   }
 
   isLoading(): boolean {
-    return this.hsPrintLegendService.get(this.data.app).loadingExternalImages;
+    return this.hsPrintLegendService.loadingExternalImages;
   }
 
   /**

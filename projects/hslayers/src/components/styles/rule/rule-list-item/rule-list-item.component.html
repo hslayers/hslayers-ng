@@ -1,5 +1,4 @@
-<li
-  class="list-group-item hs-list-item-header hs-styler-rule list-group-item-primary d-flex align-items-center mb-1"
+<li class="list-group-item hs-list-item-header hs-styler-rule list-group-item-primary d-flex align-items-center mb-1"
   (click)="ruleVisible = !ruleVisible">
   <div>
     <button type="button" style="border: none; background-color: transparent; cursor: move">
@@ -9,19 +8,20 @@
   <div class="flex-grow-1 hs-vector-layer-legend">
     <div class="input-group input-group-sm">
       <span class="input-group-text" style="background-color: #FFFFFF;" [innerHtml]="svg">@</span>
-      <input type="text" class="form-control" (change)="hsStylerService.save(app);" [placeholder]="'STYLER.untitledRule' | translateHs : {app}" [(ngModel)]="rule.name">
+      <input type="text" class="form-control" (change)="hsStylerService.save();"
+        [placeholder]="'STYLER.untitledRule' | translateHs " [(ngModel)]="rule.name">
     </div>
   </div>
   <div>
     <span class="glyphicon m-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
-    <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule,app)" data-toggle="tooltip"
-      [title]="'STYLER.removeRule' | translateHs : {app} ">
+    <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
+      [title]="'STYLER.removeRule' | translateHs  ">
       <i class="icon-trash"></i>
     </button>
   </div>
 </li>
 
 <ng-container *ngIf="ruleVisible">
-  <hs-rule [rule]="rule" (changes)="hsStylerService.save(app); generateLegend()" [app]="app" (mousedown)="$event.stopPropagation()">
+  <hs-rule [rule]="rule" (changes)="hsStylerService.save(); generateLegend()" (mousedown)="$event.stopPropagation()">
   </hs-rule>
 </ng-container>

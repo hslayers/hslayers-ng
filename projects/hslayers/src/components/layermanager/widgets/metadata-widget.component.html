@@ -3,28 +3,28 @@
     <!-- Metadata -->
     <div class="pt-2">
       <a class="card-href" *ngFor="let metadataUrl of metadataService.metadataArray((layerDescriptor | async))"
-        [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translateHs : data">
+        [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translateHs">
         <span [hidden]="!metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs : {app: data.app} }}
+          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs }}
           {{ metadataUrl.type }}
         </span>
         <span [hidden]="metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs : {app: data.app} }}
+          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs }}
         </span>
       </a>
     </div>
     <!-- Copyright -->
     <div *ngIf="hasCopyright((layerDescriptor | async))">
       <a class="card-href" [hre="getAttribution((layerDescriptor | async).layer).onlineResource" target="_blank"
-        [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs : data">
-        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs : {app: data.app} }}</a>
+        [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs">
+        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs }}</a>
     </div>
   </div>
 
   <div class="form-group" [hidden]="!abstract">
-    <label>{{ "COMMON.abstract" | translateHs : {app: data.app} }}</label>
+    <label>{{ "COMMON.abstract" | translateHs }}</label>
     <p [innerHtml]="
-        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract, data.app)
+        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
       "></p><!-- TODO: Remove function call from template -->
   </div>
 </ng-container>

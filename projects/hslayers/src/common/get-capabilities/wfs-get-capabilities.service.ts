@@ -75,7 +75,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
-    app: string,
+    
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -97,7 +97,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
     }
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.hsUtilsService.proxify(url, app);
+    url = this.hsUtilsService.proxify(url);
     if (this.hsCapabilityCacheService.get(url) && !owrCache) {
       return this.hsCapabilityCacheService.get(url);
     }

@@ -36,11 +36,9 @@ type Operation = {
   ],
 })
 export class HsLayerFeaturesComponent implements OnInit {
-  @Input() layer: any; //Input layer from HsConfig.get(app).layersInFeatureTable property array
-  @Input() app = 'default';
+  @Input() layer: any; //Input layer from HsConfig.layersInFeatureTable property array
   showFeatureStats = false; //Toggle for showing feature statistics
   searchedFeatures = '';
-  appRef;
   constructor(
     public hsFeatureTableService: HsFeatureTableService,
     public hsUtilsService: HsUtilsService,
@@ -57,24 +55,17 @@ export class HsLayerFeaturesComponent implements OnInit {
       ? olLayer.getSource().getSource()
       : olLayer.getSource();
     if (source) {
-      this.hsFeatureTableService.fillFeatureList(olLayer, this.app);
+      this.hsFeatureTableService.fillFeatureList(olLayer);
       source.on('changefeature', (e) => {
-        this.hsFeatureTableService.updateFeatureDescription(
-          e.feature,
-          this.app
-        );
+        this.hsFeatureTableService.updateFeatureDescription(e.feature);
       });
       source.on('addfeature', (e) => {
-        this.hsFeatureTableService.addFeatureDescription(e.feature, this.app);
+        this.hsFeatureTableService.addFeatureDescription(e.feature);
       });
       source.on('removefeature', (e) => {
-        this.hsFeatureTableService.removeFeatureDescription(
-          e.feature,
-          this.app
-        );
+        this.hsFeatureTableService.removeFeatureDescription(e.feature);
       });
     }
-    this.appRef = this.hsFeatureTableService.get(this.app);
   }
   /**
    * @param operation - Action for html table
@@ -85,7 +76,7 @@ export class HsLayerFeaturesComponent implements OnInit {
     switch (operation.action) {
       case 'zoom to':
         const extent = operation.feature.getGeometry().getExtent();
-        this.hsMapService.fitExtent(extent, this.app);
+        this.hsMapService.fitExtent(extent);
         break;
       case 'custom action':
         operation.customAction(operation.feature);
@@ -96,7 +87,7 @@ export class HsLayerFeaturesComponent implements OnInit {
 
   /**
    * @param text - Text to translate to locale
-   * @param app - App identifier
+   
    * Translate provided text to selected locale language
    * @returns Returns translation
    */
@@ -105,8 +96,7 @@ export class HsLayerFeaturesComponent implements OnInit {
       this.hsLanguageService.getTranslationIgnoreNonExisting(
         'FEATURE_TABLE',
         text,
-        undefined,
-        this.app
+        undefined
       );
     return translation;
   }
@@ -116,6 +106,6 @@ export class HsLayerFeaturesComponent implements OnInit {
    * Sort features by value
    */
   sortFeaturesBy(name: string): void {
-    this.hsFeatureTableService.sortFeaturesBy(name, this.app);
+    this.hsFeatureTableService.sortFeaturesBy(name);
   }
 }

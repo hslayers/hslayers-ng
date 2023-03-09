@@ -75,15 +75,14 @@ export class HsSaveMapService {
    * @param compoData - Composition general metadata
    * @param userData - Metadata about user
    * @param statusData - Metadata about permissions
-   * @param app - App identifier
+   
    * @returns - JSON object with all required map composition's metadata
    */
   map2json(
     map: Map,
     compoData: CompoData,
     userData: UserData,
-    statusData: StatusData,
-    app: string
+    statusData: StatusData
   ): MapComposition {
     const groups: any = {};
     for (const g of statusData.groups || []) {
@@ -102,7 +101,7 @@ export class HsSaveMapService {
       nativeExtent: transformExtent(
         bbox,
         'EPSG:4326',
-        this.hsMapService.getCurrentProj(app)
+        this.hsMapService.getCurrentProj()
       ),
       extent: bbox,
       user: <UserData>{
@@ -124,7 +123,7 @@ export class HsSaveMapService {
     };
 
     // Map properties
-    const currentProj = this.hsMapService.getCurrentProj(app);
+    const currentProj = this.hsMapService.getCurrentProj();
     json.scale = currentProj.getMetersPerUnit();
     json.projection = currentProj.getCode().toLowerCase();
     const center = map.getView().getCenter();
@@ -152,18 +151,18 @@ export class HsSaveMapService {
 
     // Layers properties
     const olLayers = compoData.layers.map((l) => l.layer);
-    json.layers = this.layers2json(olLayers, app);
-    json.current_base_layer = this.getCurrentBaseLayer(app);
+    json.layers = this.layers2json(olLayers);
+    json.current_base_layer = this.getCurrentBaseLayer();
     return json;
   }
   /**
    * Get currently selected base layer from the OL map
-   * @param app - App identifier
+   
    * @returns Object with currently selected base layer's title as attribute
    */
-  getCurrentBaseLayer(app: string) {
+  getCurrentBaseLayer() {
     let current_base_layer = null;
-    for (const lyr of this.hsMapService.getLayersArray(app)) {
+    for (const lyr of this.hsMapService.getLayersArray()) {
       if (
         (getShowInLayerManager(lyr) == undefined ||
           getShowInLayerManager(lyr) == true) &&
@@ -200,13 +199,13 @@ export class HsSaveMapService {
    * Convert map layers into a JSON object
    * Uses layer2json().
    * @param layers - All map layers
-   * @param app - App identifier
+   
    * @returns JSON object representing the layers
    */
-  layers2json(layers: Layer[], app: string): LayerJSON[] {
+  layers2json(layers: Layer[]): LayerJSON[] {
     const json: LayerJSON[] = [];
     layers.forEach((layer) => {
-      const l = this.layer2json(layer, app);
+      const l = this.layer2json(layer);
       if (l) {
         json.unshift(l);
       }
@@ -221,11 +220,11 @@ export class HsSaveMapService {
    *
    * @param layer - Layer to be converted
    * @param pretty - Whether to use pretty notation
-   * @param app - App identifier
+   
    * @returns Text in JSON notation representing the layer
    */
-  layer2string(layer, pretty, app: string) {
-    const json = this.layer2json(layer, app);
+  layer2string(layer, pretty) {
+    const json = this.layer2json(layer);
     const text = JSON.stringify(json, pretty);
     return text;
   }
@@ -235,10 +234,10 @@ export class HsSaveMapService {
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
    *
    * @param style - Style to convert
-   * @param app - App identifier
+   
    * @returns Converted JSON object replacing OL style
    */
-  serializeStyle(style: Style | Style[], app: string): SerializedStyle {
+  serializeStyle(style: Style | Style[]): SerializedStyle {
     const s = Array.isArray(style) ? style[0] : style;
     const o: SerializedStyle = {};
     const ima: SerializedImage = {};
@@ -274,8 +273,7 @@ export class HsSaveMapService {
         !(style_img as Icon).getSrc().startsWith('data:image')
       ) {
         ima.src = this.hsUtilsService.proxify(
-          (style_img as Icon).getSrc(),
-          app
+          (style_img as Icon).getSrc()
         );
       }
 
@@ -307,10 +305,10 @@ export class HsSaveMapService {
    * that it is corresponding to the layers order.
    *
    * @param layer - Map layer that should be converted
-   * @param app - App identifier
+   
    * @returns JSON object representing the layer
    */
-  layer2json(layer: Layer<Source>, app: string): LayerJSON {
+  layer2json(layer: Layer<Source>): LayerJSON {
     const json: LayerJSON = {
       metadata: getMetadata(layer) || {},
     };
@@ -449,8 +447,7 @@ export class HsSaveMapService {
         } else {
           try {
             json.features = this.getFeaturesJson(
-              (src as VectorSource<Geometry>).getFeatures(),
-              app
+              (src as VectorSource<Geometry>).getFeatures()
             );
           } catch (ex) {
             //Do nothing
@@ -469,8 +466,7 @@ export class HsSaveMapService {
         )
       ) {
         json.style = this.serializeStyle(
-          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style,
-          app
+          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style
         );
       }
     }
@@ -481,15 +477,12 @@ export class HsSaveMapService {
    * Convert feature array to GeoJSON string
    *
    * @param features - Array of features
-   * @param app - App identifier
+   
    * @returns GeoJSON
    */
-  getFeaturesJson(
-    features: Feature<Geometry>[],
-    app: string
-  ): GeoJSONFeatureCollection {
+  getFeaturesJson(features: Feature<Geometry>[]): GeoJSONFeatureCollection {
     const f = new GeoJSON();
-    const featureProjection = this.hsMapService.getCurrentProj(app).getCode();
+    const featureProjection = this.hsMapService.getCurrentProj().getCode();
     return f.writeFeaturesObject(features, {
       dataProjection: 'EPSG:4326',
       featureProjection,
@@ -499,41 +492,39 @@ export class HsSaveMapService {
   /**
    * Create thumbnail of the map view and save it into selected element
    * @param $element - Selected element
-   * @param app - App identifier
    * @param newRender - Force new render
    */
-  generateThumbnail($element: Element, app: string, newRender?): void {
+  generateThumbnail($element: Element, newRender?): void {
     if ($element === null) {
       return;
     }
     $element.setAttribute('crossOrigin', 'Anonymous');
-    const map = this.hsMapService.getMap(app);
+    const map = this.hsMapService.getMap();
     map.once('postcompose', () =>
-      this.hsShareThumbnailService.rendered($element, app, newRender)
+      this.hsShareThumbnailService.rendered($element, newRender)
     );
     if (newRender) {
       map.renderSync();
     } else {
-      this.hsShareThumbnailService.rendered($element, app, newRender);
+      this.hsShareThumbnailService.rendered($element, newRender);
     }
   }
 
   /**
    * Save map layers to browsers' local storage
-   * @param app - App identifier
    */
-  save2storage(app: string): void {
+  save2storage(): void {
     const data = {
       expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
       layers: this.hsMapService
-        .getLayersArray(app)
+        .getLayersArray()
         .filter(
           (lyr) =>
             !this.internalLayers.includes(lyr) &&
             (getShowInLayerManager(lyr) == undefined ||
               getShowInLayerManager(lyr) == true)
         )
-        .map((lyr: Layer<Source>) => this.layer2json(lyr, app)),
+        .map((lyr: Layer<Source>) => this.layer2json(lyr)),
     };
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good

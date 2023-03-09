@@ -2,25 +2,25 @@
     <div class="hs-add-data-catalogue-header">
         <div class="mt-3 mx-3 ps-1 d-flex justify-content-between">
             <div class="input-group w-50">
-                <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translateHs : {app}  "
+                <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translateHs   "
                     name="search" [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
                 <button class="input-group-text text-secondary border-start-0" (click)="queryByFilter()">
                     <i class="icon-search icon-primary"></i>
                 </button>
             </div>
-            <hs-layman-current-user [app]="app" [endpoint]="ctx.layman"></hs-layman-current-user>
+            <hs-layman-current-user [endpoint]="ctx.layman"></hs-layman-current-user>
         </div>
         <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
             <div class="d-flex">
                 <div class="input-group-text border-0">
                     <input type="checkbox" class="checkbox-lg" [(ngModel)]="data.filterByExtent"
                         (change)="queryByFilter()" name="filterByExtent">
-                    <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs : {app} }}</span>
+                    <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs }}</span>
                 </div>
                 <div class="input-group-text border-0 ms-1" *ngIf="ctx.layman?.authenticated">
                     <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()"
                         name="onlyMine">
-                    <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs : {app} }}</span>
+                    <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs }}</span>
                 </div>
             </div>
             <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
@@ -33,7 +33,7 @@
                         <tbody>
                             <tr>
                                 <td class="tdbreak">
-                                    {{'ADDDATA.CATALOGUE.filterType' | translateHs : {app} }}
+                                    {{'ADDDATA.CATALOGUE.filterType' | translateHs }}
                                 </td>
                                 <td ngbDropdown display="dynamic" placement="bottom-right"
                                     #searchTypeDropdown="ngbDropdown">
@@ -57,7 +57,7 @@
                             </tr>
                             <tr>
                                 <td class="tdbreak">
-                                    {{'ADDDATA.CATALOGUE.resourceType' | translateHs : {app} }}
+                                    {{'ADDDATA.CATALOGUE.resourceType' | translateHs }}
                                 </td>
                                 <td ngbDropdown display="dynamic" placement="bottom-right" #resourceType="ngbDropdown">
                                     <button type="button" ngbDropdownToggle
@@ -79,7 +79,7 @@
                             </tr>
                             <tr>
                                 <td class="tdbreak">
-                                    {{'COMMON.sortBy' | translateHs : {app} }}
+                                    {{'COMMON.sortBy' | translateHs }}
                                 </td>
                                 <td ngbDropdown display="dynamic" placement="bottom-right" #sortByDrop="ngbDropdown">
                                     <button type="button" ngbDropdownToggle
@@ -112,24 +112,25 @@
                 </div>
             -->
             <ul class="list-group">
-                <li [hidden]="appRef.dataLoading" style="cursor: pointer;"
-                    *ngFor="let layer of appRef.catalogEntries; trackBy:( 'id' | trackByProperty )"
+                <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
+                    *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )"
                     class="clearfix list-group-item" [ngClass]="{'hs-endpoint-item-active': layer.highlighted}"
-                    (click)="layerSelected(layer)" (mouseover)="highlightLayer(layer, true,app)"
-                    (mouseleave)="highlightLayer(layer, false,app)">
-                    <hs-catalogue-list-item [layer]="layer" [app]="app"></hs-catalogue-list-item>
+                    (click)="layerSelected(layer)" (mouseover)="highlightLayer(layer, true)"
+                    (mouseleave)="highlightLayer(layer, false)">
+                    <hs-catalogue-list-item [layer]="layer"></hs-catalogue-list-item>
                 </li>
-                <li class='list-group-item text-primary text-center py-2' [hidden]="!appRef.dataLoading"><span
+                <li class='list-group-item text-primary text-center py-2'
+                    [hidden]="!hsAddDataCatalogueService.dataLoading"><span
                         class="pe-2 hs-loader hs-loader-dark"></span>&emsp;{{'ADDDATA.CATALOGUE.loading' | translateHs
-                    : {app} }}</li>
-                <li [hidden]='appRef.catalogEntries.length > 0 || appRef.dataLoading' class='list-group-item'
-                    style="border-top-width: 1px; border-radius: inherit">
-                    {{'DATASOURCE_SELECTOR.noResults' | translateHs : {app} }}</li>
+                    }}</li>
+                <li [hidden]='hsAddDataCatalogueService.catalogEntries.length > 0 || hsAddDataCatalogueService.dataLoading'
+                    class='list-group-item' style="border-top-width: 1px; border-radius: inherit">
+                    {{'DATASOURCE_SELECTOR.noResults' | translateHs }}</li>
             </ul>
         </div>
     </div>
-    <ng-container *ngIf="appRef.matchedRecords !== 0 && !appRef.dataLoading">
-        <hs-pager class="sticky-bottom bg-white border border-top-0" [app]="app"
+    <ng-container *ngIf="hsAddDataCatalogueService.matchedRecords !== 0 && !hsAddDataCatalogueService.dataLoading">
+        <hs-pager class="sticky-bottom bg-white border border-top-0"
             [pagerService]="hsAddDataCatalogueService"></hs-pager>
     </ng-container>
 </div>

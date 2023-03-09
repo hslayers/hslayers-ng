@@ -4,7 +4,7 @@ import {HsCoreService} from '../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsShareAppData, HsShareService} from './share.service';
+import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
@@ -15,8 +15,6 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;
   name = 'permalink';
-  appRef: HsShareAppData;
-
   constructor(
     public HsShareService: HsShareService,
     public HsShareUrlService: HsShareUrlService,
@@ -33,7 +31,7 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
    * @description Create Iframe tag for embedded map
    */
   updateEmbedCode(): string {
-    return this.HsShareService.getEmbedCode(this.data.app);
+    return this.HsShareService.getEmbedCode();
   }
 
   /**
@@ -41,39 +39,32 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
    * @description Select right share Url based on shareLink property (either Permalink Url or PureMap url)
    */
   getShareUrl(): string {
-    return this.HsShareService.getShareUrl(this.data.app);
+    return this.HsShareService.getShareUrl();
   }
 
   /**
    * @description Set share Url state invalid
    */
   invalidateShareUrl(): void {
-    this.HsShareService.invalidateShareUrl(this.data.app);
+    this.HsShareService.invalidateShareUrl();
   }
 
   /**
    * @description Create share post on selected social network
    */
   shareOnSocial(): void {
-    this.HsShareService.shareOnSocial(this.new_share, this.data.app);
+    this.HsShareService.shareOnSocial(this.new_share);
   }
 
   ngOnInit() {
-    this.hsSidebarService.addButton(
-      {
-        panel: 'permalink',
-        module: 'hs.permalink',
-        order: 11,
-        fits: true,
-        title: 'PANEL_HEADER.PERMALINK',
-        description: 'SIDEBAR.descriptions.PERMALINK',
-        icon: 'icon-share-alt',
-      },
-      this.data.app
-    );
-
-    this.HsShareUrlService.init(this.data.app);
-    this.HsShareService.init(this.data.app);
-    this.appRef = this.HsShareService.get(this.data.app);
+    this.hsSidebarService.addButton({
+      panel: 'permalink',
+      module: 'hs.permalink',
+      order: 11,
+      fits: true,
+      title: 'PANEL_HEADER.PERMALINK',
+      description: 'SIDEBAR.descriptions.PERMALINK',
+      icon: 'icon-share-alt',
+    });
   }
 }

@@ -17,7 +17,7 @@ export class HsLaymanLoginComponent
 {
   @Input() data: {
     url: string;
-    app: string;
+
   };
   viewRef: ViewRef;
   url: SafeResourceUrl;
@@ -39,6 +39,6 @@ export class HsLaymanLoginComponent
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.url);
   }
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 }

@@ -1,26 +1,26 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="legend" [title]="'PANEL_HEADER.LEGEND' | translateHs : data" [app]="data.app">
+    <hs-panel-header name="legend" [title]="'PANEL_HEADER.LEGEND' | translateHs">
     </hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs : data"
+        <p><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs"
                 [(ngModel)]="titleSearch" (input)="refreshList()"></p>
         <span *ngIf="noLayerExists()">
-            <p style="text-align: center">{{'LEGEND.noLegendExists' | translateHs : {app: data.app} }}</p>
+            <p style="text-align: center">{{'LEGEND.noLegendExists' | translateHs }}</p>
         </span>
         <ul class="list-group">
             <li *ngFor="let layer of filterDescriptors() | filter:legendFilter" class="list-group-item"
                 [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
                 <div>
-                    {{layer.title | translateHs : {app: data.app, module: 'LAYERS'} }}
-                    <hs-legend-layer-directive [app]="data.app" [layer]="layer"></hs-legend-layer-directive>
+                    {{layer.title | translateHs : {module: 'LAYERS'} }}
+                    <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
                 </div>
 
             </li>
         </ul>
         <div class="row justify-content-center">
             <div class="col col-md-2 d-flex justify-content-center">
-                <button type="button" class="btn btn-light btn-outline ng-scope"
-                    [title]="'COMMON.reload' | translateHs : data" (click)="rebuildLegends(data.app)">
+                <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translateHs"
+                    (click)="rebuildLegends()">
                     <i class="icon-refresh"></i>
                 </button>
             </div>

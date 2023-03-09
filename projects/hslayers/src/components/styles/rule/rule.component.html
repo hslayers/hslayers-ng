@@ -1,48 +1,48 @@
 <div>
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">
-      {{'STYLER.filtersAndScales' | translateHs : {app} }}:
+      {{'STYLER.filtersAndScales' | translateHs }}:
     </div>
     <div class="p-1">
       <div class="btn-group" role="group" aria-label="Filters and scales">
-        <button [title]="'STYLER.toggleFilters' | translateHs : {app} " class="btn btn-sm"
+        <button [title]="'STYLER.toggleFilters' | translateHs  " class="btn btn-sm"
           [ngClass]="{'btn-outline-primary': rule.filter && rule.filter.length > 0, 'btn-outline-secondary': rule.filter === undefined || rule.filter.length === 0}"
           (click)="filtersVisible = !filtersVisible">
           <span class="icon-filter"></span>
         </button>
-        <button [title]="'STYLER.toggleScaleDenominators' | translateHs : {app} " class="btn btn-sm"
-        [ngClass]="{'btn-outline-primary': rule.scaleDenominator && (rule.scaleDenominator.min !== undefined || rule.scaleDenominator.max !== undefined), 'btn-outline-secondary': rule.scaleDenominator === undefined || (rule.scaleDenominator.min === undefined && rule.scaleDenominator.max === undefined)}"
+        <button [title]="'STYLER.toggleScaleDenominators' | translateHs  " class="btn btn-sm"
+          [ngClass]="{'btn-outline-primary': rule.scaleDenominator && (rule.scaleDenominator.min !== undefined || rule.scaleDenominator.max !== undefined), 'btn-outline-secondary': rule.scaleDenominator === undefined || (rule.scaleDenominator.min === undefined && rule.scaleDenominator.max === undefined)}"
           (click)="scalesVisible = !scalesVisible">
           <span class="icon-design"></span>
         </button>
       </div>
     </div>
   </div>
-  <hs-filters (changes)="emitChange()" [app]="app" *ngIf="filtersVisible" [rule]="rule"></hs-filters>
+  <hs-filters (changes)="emitChange()" *ngIf="filtersVisible" [rule]="rule"></hs-filters>
   <hs-scale-denominator (changes)="emitChange()" *ngIf="scalesVisible" [rule]="rule"></hs-scale-denominator>
   <div class="d-flex flex-row justify-content-end">
-    <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translateHs : {app} }}:</div>
+    <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translateHs }}:</div>
     <div class="p-1">
       <div #addSymMenu="ngbDropdown" ngbDropdown class="d-inline-block" placement="bottom-right">
-        <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addSymbolizer' | translateHs : {app} "
+        <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addSymbolizer' | translateHs  "
           id="dropdownAddSymbolizer" ngbDropdownToggle>
           <span class="icon-plus"></span>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownAddSymbolizer">
           <button ngbDropdownItem (click)="addSymbolizer('Mark')">
-            {{'STYLER.mark' | translateHs : {app} }}
+            {{'STYLER.mark' | translateHs }}
           </button>
           <button ngbDropdownItem (click)="addSymbolizer('Icon')">
-            {{'STYLER.icon' | translateHs : {app} }}
+            {{'STYLER.icon' | translateHs }}
           </button>
           <button ngbDropdownItem (click)="addSymbolizer('Text')">
-            {{'STYLER.text' | translateHs : {app} }}
+            {{'STYLER.text' | translateHs }}
           </button>
           <button ngbDropdownItem (click)="addSymbolizer('Line')">
-            {{'STYLER.line' | translateHs : {app} }}
+            {{'STYLER.line' | translateHs }}
           </button>
           <button ngbDropdownItem (click)="addSymbolizer('Fill')">
-            {{'STYLER.fill' | translateHs : {app} }}
+            {{'STYLER.fill' | translateHs }}
           </button>
         </div>
       </div>
@@ -52,7 +52,8 @@
     <ul class="list-group hs-styler-content-list align-items-end" cdkDropList (cdkDropListDropped)="drop($event)"
       [cdkDropListData]="rule.symbolizers">
       <ng-container *ngFor="let symbolizer of rule.symbolizers">
-        <hs-symbolizer-list-item style="width: 98%" cdkDrag [rule]="rule" [app]="app" [symbolizer]="symbolizer" (changes)="emitChange()">
+        <hs-symbolizer-list-item style="width: 98%" cdkDrag [rule]="rule" [symbolizer]="symbolizer"
+          (changes)="emitChange()">
         </hs-symbolizer-list-item>
       </ng-container>
     </ul>

@@ -1,24 +1,19 @@
-import {ReplaySubject, Subject} from 'rxjs';
 import {Type} from '@angular/core';
 
 import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelItem} from './panel-item';
 import {KeyNumberDict} from '../../../config.service';
-
-export class HsPanelContainerParams {
-  panels: HsPanelComponent[] = [];
-  panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
-  panelDestroyObserver: Subject<any> = new Subject();
-}
+import {ReplaySubject, Subject} from 'rxjs';
 
 export interface HsPanelContainerServiceInterface {
-  apps: {[id: string]: HsPanelContainerParams};
+  panels: HsPanelComponent[];
+  panelObserver: ReplaySubject<HsPanelItem>;
+  panelDestroyObserver: Subject<any>;
   setPanelWidth?(
     panelWidths: KeyNumberDict,
     componentRefInstance: HsPanelComponent
   );
-  get(app: string);
-  create(component: Type<any>, app: string, data: any): void;
+  create(component: Type<any>, data: any): void;
 
-  destroy(component: HsPanelComponent, app: string): void;
+  destroy(component: HsPanelComponent): void;
 }

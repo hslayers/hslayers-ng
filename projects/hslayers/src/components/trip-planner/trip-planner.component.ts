@@ -38,28 +38,20 @@ export class HsTripPlannerComponent
     super(hsLayoutService);
   }
   async ngOnInit(): Promise<void> {
-    this.hsSidebarService.addButton(
-      {
-        panel: 'tripPlanner',
-        module: 'hs-trip-planner',
-        order: 17,
-        fits: true,
-        title: 'PANEL_HEADER.TRIP_PLANNER',
-        description: 'SIDEBAR.descriptions.TRIP_PLANNER',
-        icon: 'icon-sextant',
-      },
-      this.data.app
-    );
-    await this.HsTripPlannerService.init(this.data.app);
-    this.configRef = this.HsConfig.apps[this.data.app];
-    if (this.configRef.default_layers === undefined) {
-      this.configRef.default_layers = [];
+    this.hsSidebarService.addButton({
+      panel: 'tripPlanner',
+      module: 'hs-trip-planner',
+      order: 17,
+      fits: true,
+      title: 'PANEL_HEADER.TRIP_PLANNER',
+      description: 'SIDEBAR.descriptions.TRIP_PLANNER',
+      icon: 'icon-sextant',
+    });
+    if (this.HsConfig.default_layers === undefined) {
+      this.HsConfig.default_layers = [];
     } else {
-      this.configRef.default_layers.push(
-        this.HsTripPlannerService.apps[this.data.app].routeLayer
-      );
+      this.HsConfig.default_layers.push(this.HsTripPlannerService.routeLayer);
     }
-    this.HsTripPlannerService.fillVectorLayers(this.data.app);
   }
 
   /**
@@ -77,13 +69,11 @@ export class HsTripPlannerComponent
    */
   totalDistance(): string {
     let tmp = 0;
-    this.HsTripPlannerService.apps[this.data.app].waypoints.forEach(
-      (wp: Waypoint) => {
-        if (wp.routes.from) {
-          tmp += wp.routes.from.get('summary').distance / 1000.0;
-        }
+    this.HsTripPlannerService.waypoints.forEach((wp: Waypoint) => {
+      if (wp.routes.from) {
+        tmp += wp.routes.from.get('summary').distance / 1000.0;
       }
-    );
+    });
     return tmp.toFixed(2) + 'km';
   }
 
@@ -93,8 +83,7 @@ export class HsTripPlannerComponent
    */
   toggleEdit(waypoint: Waypoint): void {
     waypoint.editMode = !waypoint.editMode;
-    const src =
-      this.HsTripPlannerService.apps[this.data.app].waypointLayer.getSource();
+    const src = this.HsTripPlannerService.waypointLayer.getSource();
     setHighlighted(src.getFeatureById(waypoint.featureId), waypoint.editMode);
   }
 }

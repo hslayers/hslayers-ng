@@ -22,19 +22,12 @@ import {IGetCapabilities} from '../../../common/get-capabilities/get-capabilitie
 import {owsConnection} from './types/ows-connection.type';
 import {urlDataObject} from './types/data-object.type';
 
-class HsAddDataOwsParams {
-  typeService: HsUrlTypeServiceModel;
-  typeCapabilitiesService: IGetCapabilities;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataOwsService {
-  apps: {
-    [id: string]: HsAddDataOwsParams;
-  } = {default: new HsAddDataOwsParams()};
-
+  typeService: HsUrlTypeServiceModel;
+  typeCapabilitiesService: IGetCapabilities;
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsAddDataCommonService: HsAddDataCommonService,
@@ -50,91 +43,77 @@ export class HsAddDataOwsService {
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService
   ) {
-    this.hsAddDataCommonService.serviceLayersCalled.subscribe(({url, app}) => {
-      this.setUrlAndConnect({uri: url}, app);
+    this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
+      this.setUrlAndConnect({uri: url});
     });
   }
 
-  get(app: string): HsAddDataOwsParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsAddDataOwsParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
+  async connect(opt?: {
+    style?: string;
+    owrCache?: boolean;
+    getOnly?: boolean;
+  }): Promise<Layer<Source>[]> {
+    const typeBeingSelected = this.hsAddDataUrlService.typeSelected;
+    await this.setTypeServices();
 
-  async connect(
-    app: string,
-    opt?: {
-      style?: string;
-      owrCache?: boolean;
-      getOnly?: boolean;
-    }
-  ): Promise<Layer<Source>[]> {
-    const typeBeingSelected = this.hsAddDataUrlService.get(app).typeSelected;
-    await this.setTypeServices(app);
-    const appRef = this.get(app);
-    const url = this.hsAddDataCommonService.get(app).url;
+    const url = this.hsAddDataCommonService.url;
     if (!url || url === '') {
       return;
     }
-    this.hsAddDataUrlService.apps[app].addingAllowed = false;
-    if (this.hsAddDataUrlService.apps[app].typeSelected === 'arcgis') {
+    this.hsAddDataUrlService.addingAllowed = false;
+    if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
       if (this.hsUrlArcGisService.isGpService(url)) {
         this.hsAddDataCommonService.throwParsingError(
-          'GPServerServicesAreNotSupported',
-          app
+          'GPServerServicesAreNotSupported'
         );
         return;
       }
-      appRef.typeService.get(app).data.get_map_url = url;
-      this.hsAddDataUrlService.apps[app].addingAllowed = true;
+      this.typeService.data.get_map_url = url;
+      this.hsAddDataUrlService.addingAllowed = true;
     }
     this.hsHistoryListService.addSourceHistory(
-      this.hsAddDataUrlService.apps[app].typeSelected,
+      this.hsAddDataUrlService.typeSelected,
       url
     );
-    Object.assign(this.hsAddDataCommonService.get(app), {
+    Object.assign(this.hsAddDataCommonService, {
       loadingInfo: true,
       showDetails: true,
     });
-    const wrapper = await appRef.typeCapabilitiesService.request(
+    const wrapper = await this.typeCapabilitiesService.request(
       url,
-      app,
       opt?.owrCache
     );
     if (
       typeof wrapper.response === 'string' &&
       wrapper.response?.includes('Unsuccessful OAuth2')
     ) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response, app);
+      this.hsAddDataCommonService.throwParsingError(wrapper.response);
       return [];
     } else {
-      const response = await this.get(
-        app
-      ).typeService.listLayerFromCapabilities(wrapper, app, opt?.style);
+      const response = await this.typeService.listLayerFromCapabilities(
+        wrapper,
+        opt?.style
+      );
       if (!opt?.getOnly) {
         if (response?.length > 0) {
-          appRef.typeService.addLayers(response, app);
+          this.typeService.addLayers(response);
         }
         //Note:
         //!response condition would result in infinite connectToOWS calls
         //response?.length by design also checks for hsAddDataCommonService.layerToSelect
         if (response?.length == 0) {
           this.hsLog.log('Empty response when layer selected');
-          this.hsAddDataService.selectType('url', app);
-          await this.connectToOWS(
-            {
-              type: typeBeingSelected,
-              uri: url,
-              layer: undefined,
-            },
-            app
-          );
+          this.hsAddDataService.selectType('url');
+          await this.connectToOWS({
+            type: typeBeingSelected,
+            uri: url,
+            layer: undefined,
+          });
         }
 
-        if (this.hsUrlArcGisService.isImageService(app)) {
-          const layers = await this.hsUrlArcGisService.getLayers(app);
-          this.hsUrlArcGisService.addLayers(layers, app);
+        if (this.hsUrlArcGisService.isImageService()) {
+          const layers = await this.hsUrlArcGisService.getLayers();
+          this.hsUrlArcGisService.addLayers(layers);
         }
       }
 
@@ -145,55 +124,47 @@ export class HsAddDataOwsService {
   /**
    * Connect to service of specified Url
    * @param params - Connection params
-   * @param app - App identifier
+   
    */
-  async setUrlAndConnect(
-    params: owsConnection,
-    app: string
-  ): Promise<Layer<Source>[]> {
-    this.hsAddDataCommonService.get(app).layerToSelect = params.layer;
-    this.hsAddDataCommonService.updateUrl(params.uri, app);
-    return await this.connect(app, {
+  async setUrlAndConnect(params: owsConnection): Promise<Layer<Source>[]> {
+    this.hsAddDataCommonService.layerToSelect = params.layer;
+    this.hsAddDataCommonService.updateUrl(params.uri);
+    return await this.connect({
       style: params.style,
       owrCache: params.owrCache,
       getOnly: params.getOnly,
     });
   }
 
-  changed(data: urlDataObject, app: string): void {
-    this.hsAddDataUrlService.searchForChecked(data.layers, app);
+  changed(data: urlDataObject): void {
+    this.hsAddDataUrlService.searchForChecked(data.layers);
   }
 
   /**
    * replaces `ows.${type}_connecting`
    */
-  async connectToOWS(
-    params: owsConnection,
-    app: string
-  ): Promise<Layer<Source>[]> {
-    this.hsAddDataUrlService.get(app).typeSelected =
-      params.type as AddDataUrlType;
-    return await this.setUrlAndConnect(params, app);
+  async connectToOWS(params: owsConnection): Promise<Layer<Source>[]> {
+    this.hsAddDataUrlService.typeSelected = params.type as AddDataUrlType;
+    return await this.setUrlAndConnect(params);
   }
 
-  async setTypeServices(app: string): Promise<void> {
-    const appRef = this.get(app);
-    switch (this.hsAddDataUrlService.get(app).typeSelected) {
+  async setTypeServices(): Promise<void> {
+    switch (this.hsAddDataUrlService.typeSelected) {
       case 'wmts':
-        appRef.typeService = this.hsUrlWmtsService;
-        appRef.typeCapabilitiesService = this.hsWmtsGetCapabilitiesService;
+        this.typeService = this.hsUrlWmtsService;
+        this.typeCapabilitiesService = this.hsWmtsGetCapabilitiesService;
         return;
       case 'wms':
-        appRef.typeService = this.hsUrlWmsService;
-        appRef.typeCapabilitiesService = this.hsWmsGetCapabilitiesService;
+        this.typeService = this.hsUrlWmsService;
+        this.typeCapabilitiesService = this.hsWmsGetCapabilitiesService;
         return;
       case 'wfs':
-        appRef.typeService = this.hsUrlWfsService;
-        appRef.typeCapabilitiesService = this.hsWfsGetCapabilitiesService;
+        this.typeService = this.hsUrlWfsService;
+        this.typeCapabilitiesService = this.hsWfsGetCapabilitiesService;
         return;
       case 'arcgis':
-        appRef.typeService = this.hsUrlArcGisService;
-        appRef.typeCapabilitiesService = this.hsArcgisGetCapabilitiesService;
+        this.typeService = this.hsUrlArcGisService;
+        this.typeCapabilitiesService = this.hsArcgisGetCapabilitiesService;
         return;
       default:
         return;

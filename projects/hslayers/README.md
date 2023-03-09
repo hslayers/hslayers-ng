@@ -56,7 +56,7 @@ Use HsConfig service injected in your component to set applications layers, look
   import {HsConfig} from 'hslayers-ng';
   ...
  constructor(private HsConfig: HsConfig) {
-    this.HsConfig.get(app).update({
+    this.hsConfig.update({
       default_layers: [
         new VectorLayer({
           title: 'Bookmarks',

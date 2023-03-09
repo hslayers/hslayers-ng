@@ -12,6 +12,6 @@ export class HsCompositionsWarningDialogComponent implements HsDialogComponent {
   constructor(public HsDialogContainerService: HsDialogContainerService) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 }

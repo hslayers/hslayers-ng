@@ -1,34 +1,34 @@
 <div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;"
     [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="addData" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translateHs : data" [app]="data.app">
+    <hs-panel-header name="addData" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translateHs">
     </hs-panel-header>
     <div class="card-body" style="overflow-y: auto;">
         <ul class="nav flex-column flex-sm-row dss-tabs sticky-md-top bg-white" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'catalogue'}" role="tab"
-                    data-toggle="tab" (click)="datasetSelect('catalogue')">
-                    {{'ADDDATA.catalogue' | translateHs : {app: data.app} }}
+                <a class="nav-link" [ngClass]="{'bg-primary text-white': hsAddDataService.dsSelected === 'catalogue'}"
+                    role="tab" data-toggle="tab" (click)="datasetSelect('catalogue')">
+                    {{'ADDDATA.catalogue' | translateHs }}
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
                 <a class="nav-link"
-                    [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'url' || appRef.dsSelected === 'OWS'}"
+                    [ngClass]="{'bg-primary text-white': hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'}"
                     role="tab" data-toggle="tab" (click)="datasetSelect('url')">
                     URL
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'bg-primary text-white': appRef.dsSelected === 'file'}" role="tab"
-                    data-toggle="tab" (click)="datasetSelect('file')">
-                    {{'ADDDATA.file' | translateHs : {app: data.app} }}
+                <a class="nav-link" [ngClass]="{'bg-primary text-white': hsAddDataService.dsSelected === 'file'}"
+                    role="tab" data-toggle="tab" (click)="datasetSelect('file')">
+                    {{'ADDDATA.file' | translateHs }}
                 </a>
             </li>
         </ul>
-        <hs-add-data-url *ngIf="appRef.dsSelected === 'url' || appRef.dsSelected === 'OWS'" [app]="data.app">
+        <hs-add-data-url *ngIf="hsAddDataService.dsSelected === 'url' || hsAddDataService.dsSelected === 'OWS'">
         </hs-add-data-url>
-        <hs-add-data-file *ngIf="appRef.dsSelected === 'file'" [app]="data.app">
+        <hs-add-data-file *ngIf="hsAddDataService.dsSelected === 'file'">
         </hs-add-data-file>
-        <hs-add-data-catalogue *ngIf="appRef.dsSelected === 'catalogue'" [app]="data.app">
+        <hs-add-data-catalogue *ngIf="hsAddDataService.dsSelected === 'catalogue'">
         </hs-add-data-catalogue>
     </div>
 </div>

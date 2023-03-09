@@ -14,44 +14,33 @@ import {getPopUp, getTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
-export class HsQueryPopupBaseService {
-  apps: {
-    [key: string]: HsQueryPopupData;
-  } = {};
+export class HsQueryPopupBaseService extends HsQueryPopupData {
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public zone: NgZone,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
-  ) {}
-
-  /**
-   * Set up query popup base service data for the app if needed
-   * @param app - App identifier
-   */
-  public setAppIfNeeded(app: string): void {
-    if (this.apps[app] == undefined) {
-      this.apps[app] = new HsQueryPopupData();
-    }
+  ) {
+    super();
   }
 
   /**
    * Fill features for the popup
    * @param features - Features found on the map under the mouse
-   * @param app - App identifier
+   
    */
-  fillFeatures(features: Feature<Geometry>[], app: string): void {
+  fillFeatures(features: Feature<Geometry>[]): void {
     //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
     this.zone.run(() => {
-      this.apps[app].featuresUnderMouse = features;
-      if (this.apps[app].featuresUnderMouse.length) {
+      this.featuresUnderMouse = features;
+      if (this.featuresUnderMouse.length) {
         const layersFound = this.hsUtilsService.removeDuplicates(
-          this.apps[app].featuresUnderMouse.map((f) =>
-            this.hsMapService.getLayerForFeature(f, app)
+          this.featuresUnderMouse.map((f) =>
+            this.hsMapService.getLayerForFeature(f)
           ),
           'title'
         );
-        this.apps[app].featureLayersUnderMouse = layersFound
+        this.featureLayersUnderMouse = layersFound
           .filter((l) => getPopUp(l)) //Only list the layers which have popUp defined
           .map((l) => {
             const needSpecialWidgets =
@@ -59,8 +48,8 @@ export class HsQueryPopupBaseService {
             const layer = {
               title: getTitle(l),
               layer: l,
-              features: this.apps[app].featuresUnderMouse.filter(
-                (f) => this.hsMapService.getLayerForFeature(f, app) == l
+              features: this.featuresUnderMouse.filter(
+                (f) => this.hsMapService.getLayerForFeature(f) == l
               ),
               panelObserver: needSpecialWidgets
                 ? new ReplaySubject<HsPanelItem>()
@@ -68,7 +57,7 @@ export class HsQueryPopupBaseService {
             };
             return layer;
           });
-        for (const layer of this.apps[app].featureLayersUnderMouse) {
+        for (const layer of this.featureLayersUnderMouse) {
           if (layer.panelObserver) {
             const popupDef = getPopUp(layer.layer);
             let widgets = popupDef?.widgets;
@@ -77,34 +66,33 @@ export class HsQueryPopupBaseService {
             }
             this.hsQueryPopupWidgetContainerService.initWidgets(
               widgets,
-              app,
               layer.panelObserver
             );
           }
         }
       } else {
-        this.apps[app].featuresUnderMouse = [];
+        this.featuresUnderMouse = [];
       }
     });
   }
 
   /**
    * Close the popup
-   * @param app - App identifier
+   
    */
-  closePopup(app: string): void {
-    this.apps[app].featuresUnderMouse = [];
+  closePopup(): void {
+    this.featuresUnderMouse = [];
   }
 
   /**
    * Get feature attributes in an array, where each attribute is represented as {key, value, displayFunction}.
    * @param feature - Feature selected
-   * @param app - App identifier
+   
    * @returns Serialized attributes
    */
-  serializeFeatureAttributes(feature: Feature<Geometry>, app: string): any[] {
+  serializeFeatureAttributes(feature: Feature<Geometry>): any[] {
     const attributesForHover = [];
-    const layer = this.hsMapService.getLayerForFeature(feature, app);
+    const layer = this.hsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
       return;
     }

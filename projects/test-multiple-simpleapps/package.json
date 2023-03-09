@@ -1,0 +1,29 @@
+{
+  "name": "hslayers-ng-app",
+  "version": "11.1.0",
+  "description": "A bundle of HSLayers-NG library + Angular + OL",
+  "main": "src/main.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hslayers/hslayers-ng.git"
+  },
+  "keywords": [
+    "hslayers",
+    "hslayers-ng",
+    "map",
+    "mapping",
+    "openlayers",
+    "ol",
+    "angular"
+  ],
+  "author": "Plan4all",
+  "license": "MIT",
+  "bugs": "https://github.com/hslayers/hslayers-ng/issues",
+  "homepage": "https://ng.hslayers.org/"
+}

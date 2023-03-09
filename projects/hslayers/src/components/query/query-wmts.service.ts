@@ -22,26 +22,25 @@ export class HsQueryWmtsService {
    * Parse request URL
    * @param layer - Layer to Query
    * @param coordinate - Clicked coordinates
-   * @param app - App identifier
+   
    * @returns Request URL and format
    */
   async parseRequestURL(
     layer: Layer<WMTS>,
-    coordinate: number[],
-    app: string
+    coordinate: number[]
   ): Promise<{url: string; format: string}> {
     const source = layer.getSource();
 
     coordinate = transform(
       coordinate,
-      this.hsMapService.getCurrentProj(app),
+      this.hsMapService.getCurrentProj(),
       source.getProjection()
     );
 
     const tileGrid = source.getTileGrid() as WMTSTileGrid;
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
-      this.hsMapService.getMap(app).getView().getResolution()
+      this.hsMapService.getMap().getView().getResolution()
     );
 
     const tileExtent = tileGrid.getTileCoordExtent(tileCoord);

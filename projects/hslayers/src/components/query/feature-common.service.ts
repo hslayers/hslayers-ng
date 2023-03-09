@@ -23,20 +23,14 @@ export interface exportFormats {
 }
 [];
 
-class HsFeatureCommonServiceParams {
-  listSubject = new BehaviorSubject<Layer<Source>[]>([] as Layer<Source>[]);
-
-  availableLayer$: Observable<Layer<Source>[]> =
-    this.listSubject.asObservable();
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class HsFeatureCommonService {
-  apps: {
-    [id: string]: HsFeatureCommonServiceParams;
-  } = {default: new HsFeatureCommonServiceParams()};
+  listSubject = new BehaviorSubject<Layer<Source>[]>([] as Layer<Source>[]);
+
+  availableLayer$: Observable<Layer<Source>[]> =
+    this.listSubject.asObservable();
 
   constructor(
     private hsQueryVectorService: HsQueryVectorService,
@@ -44,71 +38,56 @@ export class HsFeatureCommonService {
     private hsLanguageService: HsLanguageService,
     private hsMapService: HsMapService,
     private hsLayerUtilsService: HsLayerUtilsService
-  ) {}
-
-  /**
-   * Initialize the feature common service data and subscribers
-   * @param app - App identifier
-   */
-  async init(app: string): Promise<void> {
-    if (this.apps[app]) {
-      return;
-    }
-    await this.hsMapService.loaded(app);
+  ) {
     this.hsMapService
-      .getMap(app)
+      .getMap()
       .getLayers()
       .on('change:length', () => {
-        this.updateLayerList(app);
+        this.updateLayerList();
       });
-    this.apps[app] = new HsFeatureCommonServiceParams();
   }
-
   /**
    * Translate string value to the selected UI language
    * @param module - Locales json key
    * @param text - Locales json key value
-   * @param app - App identifier
+   
    * @returns Translated text
    */
-  translateString(module: string, text: string, app: string): string {
+  translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined,
-      app
+      undefined
     );
   }
 
   /**
    * Update layer list from the current app map
-   * @param app - App identifier
+   
    */
-  updateLayerList(app: string): void {
+  updateLayerList(): void {
     const layers = this.hsMapService
-      .getLayersArray(app)
+      .getLayersArray()
       .filter((layer: Layer<Source>) => {
         return this.hsLayerUtilsService.isLayerDrawable(layer);
       });
-    this.apps[app].listSubject.next(layers);
+    this.listSubject.next(layers);
   }
 
   /**
    * Prepare features for export
    * @param exportFormats - Export formats selected
    * @param features - Features to export
-   * @param app - App identifier
+   
    */
   toggleExportMenu(
     exportFormats: exportFormats[],
-    features: Feature<Geometry>[] | Feature<Geometry>,
-    app: string
+    features: Feature<Geometry>[] | Feature<Geometry>
   ): void {
     for (const format of exportFormats) {
       format.serializedData = this.hsQueryVectorService.exportData(
         format.name,
-        features,
-        app
+        features
       );
     }
   }
@@ -118,19 +97,18 @@ export class HsFeatureCommonService {
    * @param type - Action type ('move' or 'copy')
    * @param features - Features to interact with
    * @param toLayer - Target layer
-   * @param app - App identifier
+   
    */
   moveOrCopyFeature(
     type: 'move' | 'copy',
     features: Feature<Geometry>[],
-    toLayer: Layer<VectorSource<Geometry>>,
-    app: string
+    toLayer: Layer<VectorSource<Geometry>>
   ): void {
     features.forEach((feature) => {
       feature.setStyle(null); //To prevent feature from getting individual style
       toLayer.getSource().addFeature(feature.clone());
       if (type == 'move') {
-        this.hsQueryVectorService.removeFeature(feature, app);
+        this.hsQueryVectorService.removeFeature(feature);
       }
     });
 
@@ -138,14 +116,12 @@ export class HsFeatureCommonService {
       this.hsLanguageService.getTranslation('QUERY.feature.featureEdited'),
       this.hsLanguageService.getTranslation(
         `QUERY.feature.feature${type}Succ`,
-        undefined,
-        app
+        undefined
       ) + getTitle(toLayer),
       {
         toastStyleClasses: 'bg-success text-light',
         serviceCalledFrom: 'HsFeatureCommonService',
-      },
-      app
+      }
     );
   }
 }

@@ -16,12 +16,12 @@ import {HsConfig} from 'hslayers-ng';
 })
 export class HslayersMaterialComponent implements OnInit {
   @Input() config: HsConfig;
-  @Input() app = 'default';
+  
   constructor(public HsConfig: HsConfig) {}
 
   ngOnInit(): void {
     if (this.config) {
-      this.HsConfig.update(this.config, this.app);
+      this.HsConfig.update(this.config, );
     }
   }
 }

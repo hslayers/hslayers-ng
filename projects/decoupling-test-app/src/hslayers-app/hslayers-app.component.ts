@@ -21,7 +21,7 @@ import {HsQueryPopupService} from 'hslayers-ng/components/query/query-popup.serv
   styleUrls: [],
 })
 export class HslayersAppComponent {
-  @Input() app = 'default';
+  
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
@@ -333,17 +333,13 @@ export class HslayersAppComponent {
     }
     //Simulating ajax
     setTimeout(() => {
-      this.HsEventBusService.layerDimensionDefinitionChanges.next({
-        layer: opticalMap,
-        app: this.app,
-      });
+      this.HsEventBusService.layerDimensionDefinitionChanges.next(opticalMap);
     }, 100);
     //hsLayoutService.createPanel(HsQueryComponent, {});
     //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    hsQueryPopupService.init(this.app);
-    hsLayoutService.createOverlay(HsQueryPopupComponent, this.app, {
+    hsLayoutService.createOverlay(HsQueryPopupComponent, , {
       service: hsQueryPopupService,
     });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});

@@ -1,20 +1,20 @@
 <div class="card-footer" *ngIf="resultsVisible()"> <!-- TODO: Remove function call from template -->
   <ul class="pagination d-flex justify-content-center m-1 align-items-center">
     <li class="page-item">
-      <a class="page-link" (click)="getPreviousRecords()" [ngClass]="{'disabled': appRef.listStart === 0 }"><span
+      <a class="page-link" (click)="getPreviousRecords()" [ngClass]="{'disabled': pagerService.listStart === 0 }"><span
           aria-hidden="true">&laquo;</span></a>
     </li>
-    <li class="page-item" *ngIf="appRef.listNext !== appRef.matchedRecords">
+    <li class="page-item" *ngIf="pagerService.listNext !== pagerService.matchedRecords">
       <span class="page-link">
-        {{'COMMON.results' | translateHs: {app} }}
-        {{appRef.listStart + 1}} -
-        {{appRef.listNext}}</span>
+        {{'COMMON.results' | translateHs }}
+        {{pagerService.listStart + 1}} -
+        {{pagerService.listNext}}</span>
     </li>
-    <li class="page-item" *ngIf="appRef.listNext === appRef.matchedRecords">
+    <li class="page-item" *ngIf="pagerService.listNext === pagerService.matchedRecords">
       <span class="page-link">
-        {{'COMMON.results' | translateHs: {app} }}
-        {{appRef.listStart + 1}} -
-        {{appRef.matchedRecords}}</span>
+        {{'COMMON.results' | translateHs }}
+        {{pagerService.listStart + 1}} -
+        {{pagerService.matchedRecords}}</span>
     </li>
     <li class="page-item">
       <!-- TODO: Remove function call from template -->
@@ -25,12 +25,12 @@
     right: 0;">
       <div class="btn-group">
         <button class="but-title-sm m-1" data-toggle="tooltip"
-          [title]="'ADDDATA.CATALOGUE.theNumberOfRecords' | translateHs: {app} ">
+          [title]="'ADDDATA.CATALOGUE.theNumberOfRecords' | translateHs ">
           <i class="icon-question-sign"></i>
         </button>
         <button ngbDropdownToggle type="button"
           class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split rounded-0"
-          [title]="'COMMON.selectRecordCountPerPage' | translateHs: {app} " aria-haspopup="true" aria-expanded="false">
+          [title]="'COMMON.selectRecordCountPerPage' | translateHs " aria-haspopup="true" aria-expanded="false">
         </button>
       </div>
       <div ngbDropdownMenu class="dropdown-menu">

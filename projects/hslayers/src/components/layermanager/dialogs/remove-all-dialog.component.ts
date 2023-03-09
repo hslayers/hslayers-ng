@@ -20,16 +20,16 @@ export class HsLayerManagerRemoveAllDialogComponent
   ) {}
 
   removeAllLayers(reloadComposition?: boolean): void {
-    this.HsLayerManagerService.removeAllLayers(this.data.app);
+    this.HsLayerManagerService.removeAllLayers();
     if (reloadComposition) {
       this.HsEventBusService.compositionLoadStarts.next(
-        this.HsLayerManagerService.apps[this.data.app].composition_id
+        this.HsLayerManagerService.composition_id
       );
     }
     this.close();
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
   }
 }

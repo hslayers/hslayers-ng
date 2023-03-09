@@ -305,6 +305,165 @@
         }
       }
     },
+    "test-multiple-simpleapps": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "sass"
+        }
+      },
+      "root": "",
+      "sourceRoot": "projects/",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "sourceMap": true,
+            "vendorChunk": true,
+            "optimization": false,
+            "outputPath": "dist/test-multiple-simpleapps",
+            "index": "projects/test-multiple-simpleapps/src/index.html",
+            "main": "projects/test-multiple-simpleapps/src/main.ts",
+            "polyfills": "projects/test-multiple-simpleapps/src/polyfills.ts",
+            "tsConfig": "projects/test-multiple-simpleapps/tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "xml-utils",
+              "lru-cache",
+              "pbf",
+              "queue",
+              "xml-js",
+              "geostyler-legend",
+              "ol-popup",
+              "geostyler-openlayers-parser",
+              "geostyler-sld-parser"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/hslayers/src/assets",
+                "output": "./assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/test-multiple-simpleapps/src/assets",
+                "output": "./assets"
+              },
+              {
+                "glob": "README.md",
+                "input": "projects/test-multiple-simpleapps/",
+                "output": "/"
+              },
+              {
+                "glob": "package.json",
+                "input": "projects/test-multiple-simpleapps/",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+            ],
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "projects/test-multiple-simpleapps/custom-webpack.config.js"
+            }
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/test-multiple-simpleapps/src/environments/environment.ts",
+                  "with": "projects/test-multiple-simpleapps/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "200kb",
+                  "maximumError": "300kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "test-multiple-simpleapps:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "test-multiple-simpleapps:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "test-multiple-simpleapps:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/test-multiple-simpleapps/test/test.ts",
+            "polyfills": "projects/test-multiple-simpleapps/src/polyfills.ts",
+            "tsConfig": "projects/test-multiple-simpleapps/tsconfig.spec.json",
+            "karmaConfig": "projects/test-multiple-simpleapps/karma.conf.js",
+            "assets": [
+              "projects/test-multiple-simpleapps/src/favicon.ico",
+              "projects/test-multiple-simpleapps/src/assets"
+            ],
+            "styles": [
+              "projects/test-multiple-simpleapps/src/styles.sass"
+            ],
+            "scripts": []
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "test-multiple-simpleapps:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "test-multiple-simpleapps:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "test-multiple-simpleapps:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "test-multiple-simpleapps:serve:production"
+            }
+          }
+        }
+      }
+    },
     "decoupling-test-app": {
       "projectType": "application",
       "schematics": {

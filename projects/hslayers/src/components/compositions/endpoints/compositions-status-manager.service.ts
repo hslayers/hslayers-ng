@@ -39,10 +39,10 @@ export class HsCompositionsStatusManagerService {
    * @param ds - Datasource selected
    * @param params - HTML query params
    * @param bbox - Bounding box
-   * @param app - App identifier
+   
    */
-  loadList(ds, params, bbox: number[], app: string) {
-    let url = this.HsShareUrlService.endpointUrl(app);
+  loadList(ds, params, bbox: number[]) {
+    let url = this.HsShareUrlService.endpointUrl();
     const query = params.query;
     const textFilter =
       query && query.title !== undefined && query.title != ''
@@ -50,13 +50,13 @@ export class HsCompositionsStatusManagerService {
         : '';
     url +=
       '?request=list&project=' +
-      encodeURIComponent(this.hsConfig.get(app).project_name) +
+      encodeURIComponent(this.hsConfig.project_name) +
       '&extent=' +
       bbox.join(',') +
       textFilter +
       '&start=0&limit=1000&sort=' +
       getStatusSortAttr(params.sortBy);
-    url = this.hsUtilsService.proxify(url, app);
+    url = this.hsUtilsService.proxify(url);
     if (ds.listLoading) {
       ds.listLoading.unsubscribe();
       delete ds.listLoading;
@@ -77,22 +77,19 @@ export class HsCompositionsStatusManagerService {
             this.hsToastService.createToastPopupMessage(
               this.hsLanguageService.getTranslation(
                 'COMPOSITIONS.errorWhileRequestingCompositions',
-                undefined,
-                app
+                undefined
               ),
               ds.title +
                 ': ' +
                 this.hsLanguageService.getTranslationIgnoreNonExisting(
                   'ERRORMESSAGES',
                   e.status ? e.status.toString() : e.message,
-                  {url: url},
-                  app
+                  {url: url}
                 ),
               {
                 disableLocalization: true,
                 serviceCalledFrom: 'HsCompositionsStatusManagerService',
-              },
-              app
+              }
             );
         }
         return of(e);
@@ -124,13 +121,13 @@ export class HsCompositionsStatusManagerService {
             }
             if (record.link == undefined) {
               record.link =
-                this.HsShareUrlService.endpointUrl(app) +
+                this.HsShareUrlService.endpointUrl() +
                 '?request=load&id=' +
                 record.id;
             }
             if (record.thumbnail == undefined) {
               record.thumbnail =
-                this.HsShareUrlService.endpointUrl(app) +
+                this.HsShareUrlService.endpointUrl() +
                 '?request=loadthumb&id=' +
                 record.id;
             }
@@ -156,18 +153,18 @@ export class HsCompositionsStatusManagerService {
    * Delete selected composition
    * @param endpoint - Endpoint selected
    * @param composition - Composition to be deleted
-   * @param app - App identifier
+   
    */
-  async delete(endpoint, composition, app: string): Promise<void> {
+  async delete(endpoint, composition): Promise<void> {
     let url =
-      this.HsShareUrlService.endpointUrl(app) +
+      this.HsShareUrlService.endpointUrl() +
       '?request=delete&id=' +
       composition.id +
       '&project=' +
-      encodeURIComponent(this.hsConfig.get(app).project_name);
-    url = this.hsUtilsService.proxify(url, app);
+      encodeURIComponent(this.hsConfig.project_name);
+    url = this.hsUtilsService.proxify(url);
     await lastValueFrom(this.$http.get(url));
-    this.hsEventBusService.compositionDeletes.next({composition, app});
+    this.hsEventBusService.compositionDeletes.next(composition);
   }
 }
 

@@ -18,13 +18,11 @@ export class WebpackTranslateLoader implements TranslateLoader {
 
   /**
    *
-   * @param lang - language code for each app in format `app|language` such as `app-1|en`
+   * @param lang - language code for each app in format `language` such as `en`
    * @returns
    */
   getTranslation(lang: string): any {
-    const hsConfig = this.HsConfig;
-    const app = lang.split('|')[0];
-    lang = lang.split('|')[1];
+    lang = lang;
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
       //these translations are loaded as promises in order, where next one overwrites previous loaders values
@@ -32,12 +30,12 @@ export class WebpackTranslateLoader implements TranslateLoader {
       from(
         new Promise(async (resolve) => {
           (async () => {
-            if (hsConfig.get(app).assetsPath == undefined) {
+            if (this.HsConfig.assetsPath == undefined) {
               console.warn('HsConfig.apps[?].assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
               let counter = 0;
               const MAX_CONFIG_POLLS = 10;
               while (
-                !hsConfig.get(app).assetsPath &&
+                !this.HsConfig.assetsPath &&
                 counter++ < MAX_CONFIG_POLLS
               ) {
                 await new Promise((resolve2) => setTimeout(resolve2, 100));
@@ -55,7 +53,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
             }
             const res = await lastValueFrom(
               this.HttpClient.get(
-                `${hsConfig.get(app).assetsPath}/locales/${lang}.json`
+                `${this.HsConfig.assetsPath}/locales/${lang}.json`
               )
             );
             this.loaded[lang] = true;
@@ -68,10 +66,10 @@ export class WebpackTranslateLoader implements TranslateLoader {
           //Wait a bit for the HsConfig to be set from container app
           setTimeout((_) => {
             if (
-              hsConfig.get(app).translationOverrides &&
-              hsConfig.get(app).translationOverrides[lang]
+              this.HsConfig.translationOverrides &&
+              this.HsConfig.translationOverrides[lang]
             ) {
-              resolve(hsConfig.get(app).translationOverrides[lang]);
+              resolve(this.HsConfig.translationOverrides[lang]);
             } else {
               resolve({});
             }

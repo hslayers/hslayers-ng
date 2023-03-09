@@ -17,7 +17,6 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
   data: {
     dataObj: FileDataObject | VectorDataObject;
     repetive: boolean;
-    app: string;
   };
 
   constructor(public hsDialogContainerService: HsDialogContainerService) {}
@@ -27,7 +26,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
    * Close the dialog
    */
   close(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve('cancel');
   }
 
@@ -36,7 +35,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
    * Overwrite the exsiting layer with current layer data
    */
   overwrite(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve('overwrite');
   }
 
@@ -45,9 +44,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
       HsRenameLayerDialogComponent,
       {
         currentName: this.data.dataObj.name,
-        app: this.data.app,
-      },
-      this.data.app
+      }
     );
     const result = await renameDialogRef.waitResult();
     if (!result) {
@@ -56,7 +53,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
       this.data.dataObj.name = result;
       this.data.dataObj.title = result;
 
-      this.hsDialogContainerService.destroy(this, this.data.app);
+      this.hsDialogContainerService.destroy(this);
       this.dialogItem.resolve('add');
     }
   }

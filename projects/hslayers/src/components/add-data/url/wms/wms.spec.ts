@@ -122,10 +122,10 @@ describe('add-data-url', () => {
         }
         hsWmsGetCapabilitiesService.request(url).then((capabilities) => {
           component.hsUrlWmsService
-            .capabilitiesReceived(capabilities, '', app)
+            .capabilitiesReceived(capabilities, '')
             .then(() => {
               expect(
-                component.hsUrlWmsService.get(app).data.srss
+                component.hsUrlWmsService.get().data.srss
               ).toBeDefined();
               done();
             })

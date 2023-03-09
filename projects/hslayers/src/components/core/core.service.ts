@@ -23,65 +23,57 @@ export class HsCoreService {
   missingLRFunctionsWarned: any;
 
   constructor(
+    private hsLanguageService: HsLanguageService,
     public HsMapService: HsMapService,
-    public HsConfig: HsConfig,
+    public hsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
     private log: HsLogService,
-    public HsEventBusService: HsEventBusService,
-    private hsLanguageService: HsLanguageService
+    public HsEventBusService: HsEventBusService
   ) {
-    this.HsEventBusService.layoutLoads.subscribe(
-      ({element, innerElement, app}) => {
-        if (!this.initCalled) {
-          this.init(app);
-        }
+    this.HsEventBusService.layoutLoads.subscribe(({element, innerElement}) => {
+      // Initialization function for HSLayers elements and their sizes.
+      // Stores element and container references and sets event listeners for map resizing.
+      if (
+        window.innerWidth < this.hsConfig.mobileBreakpoint ||
+        this.hsConfig.sidebarClosed
+      ) {
+        this.HsLayoutService.sidebarExpanded = false;
+        this.HsLayoutService.sidebarLabels = false;
+      } else {
+        this.HsLayoutService.sidebarExpanded = true;
       }
-    );
+      const languages = this.hsConfig.enabledLanguages
+        ? this.hsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
+        : ['cs', 'lv'];
+      const translateService = this.hsLanguageService.getTranslator();
+      translateService.addLangs(languages);
+      translateService.setDefaultLang(`en`);
+      if (this.hsConfig.language) {
+        translateService.use(`${this.hsConfig.language}`);
+        this.hsLanguageService.language = this.hsConfig.language;
+      } else {
+        translateService.use(translateService.getDefaultLang());
+      }
 
-    this.HsEventBusService.updateMapSize.subscribe((app) => {
-      this.updateMapSize(app);
+      if (this.initCalled) {
+        return;
+      }
+      this.HsMapService.loaded().then(() => {
+        this.initSizeListeners();
+        setTimeout(() => {
+          this.updateVH();
+          this.updateMapSize();
+        }, 750);
+        this.initCalled = true;
+      });
+    });
+
+    this.HsEventBusService.updateMapSize.subscribe(() => {
+      this.updateMapSize();
     });
   }
 
-  /**
-   * Initialization function for HSLayers elements and their sizes.
-   * Stores element and container references and sets event listeners for map resizing.
-   * @public
-   */
-  init(app: string): void {
-    const config = this.HsConfig.get(app);
-    if (window.innerWidth < config.mobileBreakpoint || config.sidebarClosed) {
-      this.HsLayoutService.get(app).sidebarExpanded = false;
-      this.HsLayoutService.get(app).sidebarLabels = false;
-    } else {
-      this.HsLayoutService.get(app).sidebarExpanded = true;
-    }
-    const languages = config.enabledLanguages
-      ? config.enabledLanguages.split(',').map((lang) => lang.trim())
-      : ['cs', 'lv'];
-    const translateService = this.hsLanguageService.getTranslator(app);
-    translateService.addLangs(languages.map((l) => `${app}|${l}`));
-    translateService.setDefaultLang(`${app}|en`);
-    if (config.language) {
-      translateService.use(`${app}|${config.language}`);
-      this.hsLanguageService.apps[app].language = config.language;
-    } else {
-      translateService.use(translateService.getDefaultLang());
-    }
-
-    if (this.initCalled) {
-      return;
-    }
-    this.HsMapService.loaded(app).then(() => {
-      this.initSizeListeners(app);
-      setTimeout(() => {
-        this.updateVH();
-        this.updateMapSize(app);
-      }, 750);
-      this.initCalled = true;
-    });
-  }
   /**
    * Define and change size of CSS custom variable --vh used as reference for hs.app-height
    * @private
@@ -103,12 +95,12 @@ export class HsCoreService {
    * Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    * @public
    */
-  initSizeListeners(app: string): void {
+  initSizeListeners(): void {
     window.addEventListener('resize', () => {
       this.HsUtilsService.debounce(
         function () {
           this.updateVH();
-          this.updateMapSize(app);
+          this.updateMapSize();
           this.HsEventBusService.layoutResizes.next();
         },
         300,
@@ -122,22 +114,22 @@ export class HsCoreService {
    * Update map size.
    * @public
    */
-  updateMapSize(app: string): void {
-    const map = this.HsMapService.apps[app].mapElement;
+  updateMapSize(): void {
+    const map = this.HsMapService.mapElement;
     if (map === null) {
       return;
     }
-    if (this.HsMapService.getMap(app)) {
-      this.HsMapService.getMap(app).updateSize();
+    if (this.HsMapService.map) {
+      this.HsMapService.map.updateSize();
       if (
-        window.innerWidth < this.HsConfig.get(app).mobileBreakpoint ||
-        this.HsLayoutService.get(app).mainpanel != ''
+        window.innerWidth < this.hsConfig.mobileBreakpoint ||
+        this.HsLayoutService.mainpanel != ''
       ) {
-        this.HsLayoutService.get(app).smallWidth = true; //deprecated
-        this.HsLayoutService.get(app).sidebarLabels = false;
+        this.HsLayoutService.smallWidth = true; //deprecated
+        this.HsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.get(app).smallWidth = false; //deprecated
-        this.HsLayoutService.get(app).sidebarLabels = true;
+        this.HsLayoutService.smallWidth = false; //deprecated
+        this.HsLayoutService.sidebarLabels = true;
       }
     } else {
       console.log('Map not yet initialized!');
@@ -171,9 +163,9 @@ export class HsCoreService {
    * Do complete reset of map (view, layers) according to app config
    * @public
    */
-  resetMap(app: string): void {
-    this.HsMapService.reset(app);
-    this.HsEventBusService.mapResets.next({app});
+  resetMap(): void {
+    this.HsMapService.reset();
+    this.HsEventBusService.mapResets.next();
   }
 
   /**
@@ -197,13 +189,13 @@ export class HsCoreService {
     return this._puremapApp;
   }
 
-  setPuremapApp(value, app: string) {
+  setPuremapApp(value) {
     this._puremapApp = value;
     if (value) {
-      this.HsConfig.get(app).componentsEnabled.guiOverlay = false;
-      this.HsMapService.removeAllInteractions(app);
-      this.HsMapService.removeAllControls(app);
-      this.HsLayoutService.updSidebarVisible(app, false);
+      this.hsConfig.componentsEnabled.guiOverlay = false;
+      this.HsMapService.removeAllInteractions();
+      this.HsMapService.removeAllControls();
+      this.HsLayoutService.updSidebarVisible(false);
     }
   }
 }

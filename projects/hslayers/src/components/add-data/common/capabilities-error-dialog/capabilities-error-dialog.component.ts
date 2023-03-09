@@ -21,6 +21,6 @@ export class HsGetCapabilitiesErrorComponent
   }
 
   close(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this);
   }
 }

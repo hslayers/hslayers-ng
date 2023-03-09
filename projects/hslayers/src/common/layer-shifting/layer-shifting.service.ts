@@ -20,14 +20,7 @@ export class LayerListItem {
   providedIn: 'root',
 })
 export class HsLayerShiftingService {
-  apps: {
-    [key: string]: {
-      layersCopy: LayerListItem[];
-    };
-  } = {
-    default: {layersCopy: []},
-  };
-
+  layersCopy: LayerListItem[] = [];
   constructor(
     public hsMapService: HsMapService,
     public hsLayerManagerService: HsLayerManagerService,
@@ -36,54 +29,38 @@ export class HsLayerShiftingService {
   ) {}
 
   /**
-   * Get the params saved by the layer shifting service for the current app
-   * @param app - App identifier
-   */
-  get(app: string): {
-    layersCopy: LayerListItem[];
-  } {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = {
-        layersCopy: [],
-      };
-    }
-    return this.apps[app ?? 'default'];
-  }
-
-  /**
    * Function by which to filter the displayed layers.
    * Usually just by showInLayermanager property.
-   * @param app - App identifier
+   
    */
-  private layerFilter(app: string) {
-    return this.hsLayerManagerService
-      .get(app)
-      .data.layers.filter((l) => l.showInLayerManager ?? true);
+  private layerFilter() {
+    return this.hsLayerManagerService.data.layers.filter(
+      (l) => l.showInLayerManager ?? true
+    );
   }
 
   /**
    * Get map layers
-   * @param app - App identifier
+   
    */
-  private getMapLayers(app: string): Layer<Source>[] {
+  private getMapLayers(): Layer<Source>[] {
     return this.hsMapService
-      .getLayersArray(app)
+      .getLayersArray()
       .filter((layer: Layer<Source>) => getBase(layer) !== true);
   }
 
   /**
    * Copies layers from Layermanager layer list for the physical layer list
-   * @param app - App identifier
+   
    */
-  fillLayers(app: string): void {
-    if (!this.layerFilter(app)) {
+  fillLayers(): void {
+    if (!this.layerFilter()) {
       return;
     }
-    this.get(app).layersCopy = this.hsLayerManagerService.sortLayersByZ(
-      this.layerFilter(app).map((l) => {
+    this.layersCopy = this.hsLayerManagerService.sortLayersByZ(
+      this.layerFilter().map((l) => {
         return {title: l.title, layer: l.layer};
-      }),
-      app
+      })
     );
   }
 
@@ -91,13 +68,12 @@ export class HsLayerShiftingService {
    * Move the provided layer in the middle between all other rendered layers on the map
    * @param layer - provided layer
    * @param target - Target layer number, item or source
-   * @param app - App identifier
+   
    */
 
   moveTo(
     layer: LayerListItem | Layer<Source>,
-    target: number | LayerListItem | Layer<Source>,
-    app: string
+    target: number | LayerListItem | Layer<Source>
   ): void {
     if (this.hsUtilsService.instOf(target, LayerListItem)) {
       //Wrapped layer provided
@@ -106,18 +82,17 @@ export class HsLayerShiftingService {
       //OL layer provided
       target = (target as Layer<Source>).getZIndex();
     }
-    this.moveAndShift(this.getOlLayer(layer), target as number, app);
+    this.moveAndShift(this.getOlLayer(layer), target as number);
   }
   /**
    * Move and shift layer order to make changes on the map
    * @param providedLayer - provided layer
    * @param preferredZIndex - ZIndex value to switch to
-   * @param app - App identifier
+   
    */
   private moveAndShift(
     providedLayer: Layer<Source>,
-    preferredZIndex: number,
-    app: string
+    preferredZIndex: number
   ): void {
     if (providedLayer === undefined) {
       return;
@@ -126,7 +101,7 @@ export class HsLayerShiftingService {
       const indexFrom = providedLayer.getZIndex();
       const indexTo = preferredZIndex;
       const incrementValue = indexTo > indexFrom ? -1 : 1;
-      for (const lyr of this.getMapLayers(app).filter(
+      for (const lyr of this.getMapLayers().filter(
         (lyr) => lyr != providedLayer
       )) {
         const currentZIndex = lyr.getZIndex();
@@ -138,10 +113,7 @@ export class HsLayerShiftingService {
         }
       }
       providedLayer.setZIndex(preferredZIndex);
-      this.hsEventBusService.layerManagerUpdates.next({
-        layer: providedLayer,
-        app,
-      });
+      this.hsEventBusService.layerManagerUpdates.next(providedLayer);
     }
   }
 
@@ -162,80 +134,76 @@ export class HsLayerShiftingService {
 
   /**
    * Gets all layer ZIndex values from the layer list
-   * @param app - App identifier
+   
    * @returns Returns array of ZIndex values
    */
-  private zIndexList(app: string): number[] {
-    return this.getMapLayers(app).map((lyr) => lyr.getZIndex() || 0);
+  private zIndexList(): number[] {
+    return this.getMapLayers().map((lyr) => lyr.getZIndex() || 0);
   }
   /**
    * Gets maximum value from ZIndex value array
-   * @param app - App identifier
+   
    * @returns Returns max ZIndex value
    */
-  getMaxZ(app: string): number {
-    return Math.max(...this.zIndexList(app));
+  getMaxZ(): number {
+    return Math.max(...this.zIndexList());
   }
   /**
    * Gets minimum value from ZIndex value array
-   * @param app - App identifier
+   
    * @returns Returns min ZIndex value
    */
-  getMinZ(app: string): number {
-    return Math.min(...this.zIndexList(app));
+  getMinZ(): number {
+    return Math.min(...this.zIndexList());
   }
 
   /**
    * Applies a new ZIndex value to the selected layer that is responsible for layer rendering on the map
    * @param indexTo - new ZIndex value for the selected layer
    * @param layer - Selected layer from physical layer list
-   * @param app - App identifier
+   
    */
-  private setLayerZIndex(
-    indexTo: number,
-    layer: Layer<Source>,
-    app: string
-  ): void {
-    const layerSwitchedWith = this.get(app).layersCopy[indexTo].layer;
+  private setLayerZIndex(indexTo: number, layer: Layer<Source>): void {
+    const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    this.hsEventBusService.layerManagerUpdates.next({layer, app});
+    this.hsEventBusService.layerManagerUpdates.next(layer);
   }
   /**
    * Move the provided layer under all other rendered layers on the map
    * @param layer - provided layer
-   * @param app - App identifier
+   
    */
-  moveToBottom(layer: LayerListItem | Layer<Source>, app: string): void {
-    this.moveAndShift(this.getOlLayer(layer), this.getMinZ(app), app);
+  moveToBottom(layer: LayerListItem | Layer<Source>): void {
+    this.moveAndShift(this.getOlLayer(layer), this.getMinZ());
   }
   /**
    * Move the provided layer over all other rendered layers on the map
    * @param layer - provided layer
-   * @param app - App identifier
+   
    */
-  moveToTop(layer: LayerListItem | Layer<Source>, app: string): void {
-    this.moveAndShift(this.getOlLayer(layer), this.getMaxZ(app), app);
+  moveToTop(layer: LayerListItem | Layer<Source>): void {
+    this.moveAndShift(this.getOlLayer(layer), this.getMaxZ());
   }
 
   /**
    * Changes selected layers ZIndex value - layer with the largest ZIndex will be rendered on top of all other layers
    * @param baseLayer - Selected layer from physical layer list
    * @param direction - Direction in which to move the selected layer - up/down
-   * @param app - App identifier
+   
    */
-  swapSibling(baseLayer: LayerListItem, direction: string, app: string): void {
-    const currentLayerIndex = this.get(app).layersCopy.indexOf(baseLayer);
+  swapSibling(baseLayer: LayerListItem, direction: string): void {
+    const currentLayerIndex = this.layersCopy.indexOf(baseLayer);
     switch (direction.toLocaleLowerCase()) {
       case 'up':
         if (currentLayerIndex != 0) {
-          this.setLayerZIndex(currentLayerIndex - 1, baseLayer.layer, app);
+          this.setLayerZIndex(currentLayerIndex - 1, baseLayer.layer);
         }
         break;
       case 'down':
-        if (currentLayerIndex < this.get(app).layersCopy.length - 1) {
-          this.setLayerZIndex(currentLayerIndex + 1, baseLayer.layer, app);
+        if (currentLayerIndex < this.layersCopy.length - 1) {
+          this.setLayerZIndex(currentLayerIndex + 1, baseLayer.layer);
         }
         break;
       default:

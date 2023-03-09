@@ -61,9 +61,9 @@ export class HsSaveMapManagerParams {
     state: '',
   };
   panelOpened: Subject<any> = new Subject();
-  saveMapResulted: Subject<{statusData; app: string}> = new Subject();
+  saveMapResulted: Subject<StatusData | string> = new Subject();
   endpointSelected: BehaviorSubject<HsEndpoint> = new BehaviorSubject(null);
-  preSaveCheckCompleted: Subject<{endpoint; app: string}> = new Subject();
+  preSaveCheckCompleted: Subject<HsEndpoint> = new Subject();
   changeTitle: boolean;
   currentUser: string;
   missingName = false;
@@ -75,13 +75,7 @@ export class HsSaveMapManagerParams {
 @Injectable({
   providedIn: 'root',
 })
-export class HsSaveMapManagerService {
-  apps: {
-    [id: string]: HsSaveMapManagerParams;
-  } = {
-    default: new HsSaveMapManagerParams(),
-  };
-
+export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   constructor(
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService,
@@ -95,45 +89,54 @@ export class HsSaveMapManagerService {
     private hsEventBusService: HsEventBusService,
     private hsLogService: HsLogService
   ) {
-    this.hsEventBusService.compositionLoads.subscribe(({data, app}) => {
+    super();
+    this.hsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
-        const appRef = this.get(app);
         const responseData = data.data ?? data;
-        appRef.compoData.id = responseData.id;
-        appRef.compoData.abstract = responseData.abstract;
-        appRef.compoData.name = responseData.name;
-        appRef.compoData.keywords = responseData.keywords;
-        appRef.compoData.currentComposition = responseData;
-        appRef.compoData.workspace = responseData.workspace;
-        appRef.compoData.currentCompositionTitle = appRef.compoData.name;
+        this.compoData.id = responseData.id;
+        this.compoData.abstract = responseData.abstract;
+        this.compoData.name = responseData.name;
+        this.compoData.keywords = responseData.keywords;
+        this.compoData.currentComposition = responseData;
+        this.compoData.workspace = responseData.workspace;
+        this.compoData.currentCompositionTitle = this.compoData.name;
         if (Object.keys(data).length !== 0) {
-          this.validateForm(app);
+          this.validateForm();
         }
       }
     });
 
-    this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
+    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
       if (
-        this.hsLayoutService.apps[app].mainpanel == 'saveMap' ||
-        this.hsLayoutService.apps[app].mainpanel == 'statusCreator'
+        this.hsLayoutService.mainpanel == 'saveMap' ||
+        this.hsLayoutService.mainpanel == 'statusCreator'
       ) {
-        this.init(app);
+        this.hsMapService.loaded().then(() => {
+          this.fillCompositionLayers();
+          this.hsSaveMapService.generateThumbnail(
+            this.hsLayoutService.contentWrapper.querySelector(
+              '.hs-stc-thumbnail'
+            )
+          );
+        });
+        this.hsEventBusService.mapResets.subscribe(() => {
+          this.resetCompoData();
+        });
       }
     });
 
-    this.hsEventBusService.olMapLoads.subscribe(({map, app}) => {
-      this.setCurrentBoundingBox(app);
+    this.hsEventBusService.olMapLoads.subscribe((map) => {
+      this.setCurrentBoundingBox();
       map.on(
         'postcompose',
         this.hsUtilsService.debounce(
           () => {
-            if (this.hsLayoutService.apps[app].mainpanel == 'saveMap') {
-              this.setCurrentBoundingBox(app);
+            if (this.hsLayoutService.mainpanel == 'saveMap') {
+              this.setCurrentBoundingBox();
               this.hsSaveMapService.generateThumbnail(
-                this.hsLayoutService.apps[app].contentWrapper.querySelector(
+                this.hsLayoutService.contentWrapper.querySelector(
                   '.hs-stc-thumbnail'
-                ),
-                app
+                )
               );
             }
           },
@@ -146,91 +149,54 @@ export class HsSaveMapManagerService {
   }
 
   /**
-   * Get the params saved by the saveMapManagerService for the current app
-   * @param app - App identifier
-   */
-  get(app: string): HsSaveMapManagerParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsSaveMapManagerParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-
-  /**
-   * Initialize the saveMapManagerService data and subscribers
-   * @param _app - App identifier
-   */
-  init(_app: string): void {
-    this.hsMapService.loaded(_app).then(() => {
-      this.fillCompositionLayers(_app);
-      this.hsSaveMapService.generateThumbnail(
-        this.hsLayoutService.apps[_app].contentWrapper.querySelector(
-          '.hs-stc-thumbnail'
-        ),
-        _app
-      );
-    });
-    this.hsEventBusService.mapResets.subscribe(({app}) => {
-      if (app == _app) {
-        this.resetCompoData(app);
-      }
-    });
-  }
-
-  /**
    * Select the endpoint
-   * @param app - Endpoint's description
-   * @param app - App identifier
    */
-  selectEndpoint(endpoint: HsEndpoint, app: string): void {
-    this.get(app).endpointSelected.next(endpoint);
+  selectEndpoint(endpoint: HsEndpoint): void {
+    this.endpointSelected.next(endpoint);
   }
 
   /**
    * Set composition's data bounding box to the current OL map view extent
-   * @param app - App identifier
+   
    */
-  setCurrentBoundingBox(app: string): void {
-    this.get(app).compoData.bbox = this.hsMapService.describeExtent(app);
+  setCurrentBoundingBox(): void {
+    this.compoData.bbox = this.hsMapService.describeExtent();
   }
 
   /**
    * Request confirmation if the composition is ready to be saved
    * NOTE not being used
-   * @param app - App identifier
+   
    */
-  async confirmSave(app: string): Promise<void> {
+  async confirmSave(): Promise<void> {
     try {
-      const appRef = this.get(app);
       const response: any = await lastValueFrom(
-        this.http.post(this.hsShareUrlService.endpointUrl(app), {
-          project: this.hsConfig.get(app).project_name,
-          title: appRef.compoData.name,
+        this.http.post(this.hsShareUrlService.endpointUrl(), {
+          project: this.hsConfig.project_name,
+          title: this.compoData.name,
           request: 'rightToSave',
         })
       );
       const j = response.data;
-      appRef.statusData.hasPermission = j.results.hasPermission;
-      appRef.statusData.titleFree = j.results.titleFree;
+      this.statusData.hasPermission = j.results.hasPermission;
+      this.statusData.titleFree = j.results.titleFree;
       if (j.results.guessedTitle) {
-        appRef.statusData.guessedTitle = j.results.guessedTitle;
+        this.statusData.guessedTitle = j.results.guessedTitle;
       }
-      if (!appRef.statusData.titleFree) {
-        appRef.statusData.changeTitle = false;
+      if (!this.statusData.titleFree) {
+        this.statusData.changeTitle = false;
       }
-      if (appRef.statusData.titleFree && appRef.statusData.hasPermission) {
+      if (this.statusData.titleFree && this.statusData.hasPermission) {
         this.save(
           true,
-          this.hsStatusManagerService.findStatusmanagerEndpoint(),
-          app
+          this.hsStatusManagerService.findStatusmanagerEndpoint()
         );
       }
-      appRef.preSaveCheckCompleted.next({
-        endpoint: this.hsStatusManagerService.findStatusmanagerEndpoint(),
-        app,
-      });
+      this.preSaveCheckCompleted.next(
+        this.hsStatusManagerService.findStatusmanagerEndpoint()
+      );
     } catch (ex) {
-      this.get(app).statusData.success = false;
+      this.statusData.success = false;
     }
   }
 
@@ -238,24 +204,24 @@ export class HsSaveMapManagerService {
    * Save composition to external service database
    * @param saveAsNew - Save as new composition
    * @param endpoint - Endpoint's description
-   * @param app - App identifier
+   
    * @returns Promise result of POST
    */
-  save(saveAsNew: boolean, endpoint: HsEndpoint, app: string): Promise<any> {
+  save(saveAsNew: boolean, endpoint: HsEndpoint): Promise<any> {
     return new Promise((resolve, reject) => {
       const tempCompoData: CompoData = {};
-      Object.assign(tempCompoData, this.get(app).compoData);
+      Object.assign(tempCompoData, this.compoData);
       // Check whether layers were already formatted
       if (tempCompoData.layers[0].layer) {
         tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
       }
-      const compositionJson = this.generateCompositionJson(app, tempCompoData);
+      const compositionJson = this.generateCompositionJson(tempCompoData);
       let saver: HsSaverService = this.hsStatusManagerService;
       if (endpoint.type.includes('layman')) {
         saver = this.hsLaymanService;
       }
       saver
-        .save(compositionJson, endpoint, tempCompoData, saveAsNew, app)
+        .save(compositionJson, endpoint, tempCompoData, saveAsNew)
         .then((response) => {
           const compInfo: any = {};
           const j = response;
@@ -282,7 +248,7 @@ export class HsSaveMapManagerService {
             }
           } else {
             this.hsEventBusService.compositionLoading.next(compInfo);
-            this.hsEventBusService.compositionLoads.next({data: compInfo, app});
+            this.hsEventBusService.compositionLoads.next(compInfo);
           }
           //const saveStatus = this.status ? 'ok' : 'not-saved';
           //this.statusData.success = this.status;
@@ -302,51 +268,49 @@ export class HsSaveMapManagerService {
 
   /**
    * Generate composition JSON for downloading
-   * @param app - App identifier
+   
    * @param compoData - Additional data for composition
    * @returns composition JSON
    */
-  generateCompositionJson(app: string, compoData?: CompoData): MapComposition {
+  generateCompositionJson(compoData?: CompoData): MapComposition {
     /*TODO: REFACTOR
       Workaround for composition JSON generated for download. 
       Should be handled differently and generated only once. Task for upcoming component rework
     */
-    const appRef = this.get(app);
-    const tempCompoData: CompoData = {...(compoData ?? appRef.compoData)};
+    const tempCompoData: CompoData = {...(compoData ?? this.compoData)};
     if (!compoData) {
       tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
     }
 
     return this.hsSaveMapService.map2json(
-      this.hsMapService.getMap(app),
+      this.hsMapService.getMap(),
       tempCompoData,
-      appRef.userData,
-      appRef.statusData,
-      app
+      this.userData,
+      this.statusData
     );
   }
 
   /**
    * Initialization of Save map wizard from outside of component
    * @param composition - Composition selected from the compositions list
-   * @param app - App identifier
+   
    */
-  openPanel(composition, app: string): void {
-    this.hsLayoutService.setMainPanel('saveMap', app, true);
-    this.fillCompositionLayers(app);
-    this.get(app).panelOpened.next({composition});
+  openPanel(composition): void {
+    this.hsLayoutService.setMainPanel('saveMap', true);
+    this.fillCompositionLayers();
+    this.panelOpened.next({composition});
   }
 
   /**
    * Fill composition's layers from the OL map layers list
-   * @param app - App identifier
+   
    */
-  private fillCompositionLayers(app: string): void {
-    const compoData = this.get(app).compoData;
+  private fillCompositionLayers(): void {
+    const compoData = this.compoData;
     compoData.layers = [];
-    compoData.bbox = this.hsMapService.describeExtent(app);
+    compoData.bbox = this.hsMapService.describeExtent();
     compoData.layers = this.hsMapService
-      .getMap(app)
+      .getMap()
       .getLayers()
       .getArray()
       .filter(
@@ -369,126 +333,116 @@ export class HsSaveMapManagerService {
   /**
    * Process user's info into controller model, so they can be used in Save composition forms
    * @param response - HTTP response containing user data
-   * @param app - App identifier
+   
    */
-  setUserDetails(response, app: string): void {
-    const appRef = this.get(app);
+  setUserDetails(response): void {
     const user = response.data;
     if (user && user.success == true) {
       // set the values
       if (user.userInfo) {
-        appRef.userData.email = user.userInfo.email;
-        appRef.userData.phone = user.userInfo.phone;
-        appRef.userData.name =
+        this.userData.email = user.userInfo.email;
+        this.userData.phone = user.userInfo.phone;
+        this.userData.name =
           user.userInfo.firstName + ' ' + user.userInfo.lastName;
       }
       if (user.userInfo && user.userInfo.org) {
-        appRef.userData.address = user.userInfo.org.street;
-        appRef.userData.country = user.userInfo.org.state;
-        appRef.userData.postalCode = user.userInfo.org.zip;
-        appRef.userData.city = user.userInfo.org.city;
-        appRef.userData.organization = user.userInfo.org.name;
+        this.userData.address = user.userInfo.org.street;
+        this.userData.country = user.userInfo.org.state;
+        this.userData.postalCode = user.userInfo.org.zip;
+        this.userData.city = user.userInfo.org.city;
+        this.userData.organization = user.userInfo.org.name;
       }
     }
   }
 
   /**
    * Callback for saving with new name
-   * @param app - App identifier
+   
    */
-  selectNewName(app: string): void {
-    const appRef = this.get(app);
-    appRef.compoData.name = appRef.statusData.guessedTitle;
-    appRef.changeTitle = true;
+  selectNewName(): void {
+    this.compoData.name = this.statusData.guessedTitle;
+    this.changeTitle = true;
   }
 
   /**
    * Check if the composition's input form is valid
-   * @param app - App identifier
+   
    * @returns True if the form is valid, false otherwise
    */
-  validateForm(app: string): boolean {
-    const appRef = this.get(app);
-    appRef.missingName = !appRef.compoData.name;
-    appRef.missingAbstract = !appRef.compoData.abstract;
-    return !!appRef.compoData.name && !!appRef.compoData.abstract;
+  validateForm(): boolean {
+    this.missingName = !this.compoData.name;
+    this.missingAbstract = !this.compoData.abstract;
+    return !!this.compoData.name && !!this.compoData.abstract;
   }
 
   /**
    * Reset localy stored composition's input data to default values
-   * @param app - App identifier
+   
    */
-  resetCompoData(app: string): void {
-    const appRef = this.get(app);
-    appRef.compoData.id = '';
-    appRef.compoData.abstract = '';
-    appRef.compoData.name = '';
-    appRef.compoData.currentCompositionTitle = '';
-    appRef.compoData.keywords = '';
-    appRef.compoData.currentComposition = '';
+  resetCompoData(): void {
+    this.compoData.id = '';
+    this.compoData.abstract = '';
+    this.compoData.name = '';
+    this.compoData.currentCompositionTitle = '';
+    this.compoData.keywords = '';
+    this.compoData.currentComposition = '';
   }
 
   /**
    * Initiate composition's saving procedure
    * @param saveAsNew - If true save a new composition, otherwise overwrite to current one
-   * @param app - App identifier
+   
    */
-  async initiateSave(saveAsNew: boolean, app: string): Promise<void> {
-    if (!this.validateForm(app)) {
+  async initiateSave(saveAsNew: boolean): Promise<void> {
+    if (!this.validateForm()) {
       this.hsLogService.log('validationfailed');
       return;
     }
     try {
       const augmentedResponse = await this.save(
         saveAsNew,
-        this.get(app).endpointSelected.getValue(),
-        app
+        this.endpointSelected.getValue()
       );
-      this.processSaveCallback(augmentedResponse, app);
+      this.processSaveCallback(augmentedResponse);
     } catch (ex) {
       this.hsLogService.error(ex);
-      this.processSaveCallback(ex, app);
+      this.processSaveCallback(ex);
     }
   }
 
   /**
    * Process response data after saving the composition
    * @param response - HTTP response after saving the composition
-   * @param app - App identifier
+   
    */
-  processSaveCallback(response, app: string): void {
-    const appRef = this.get(app);
-    appRef.statusData.status = response.status;
+  processSaveCallback(response): void {
+    this.statusData.status = response.status;
     if (!response.status) {
       if (response.code == 24) {
-        appRef.statusData.overWriteNeeded = true;
-        appRef.compoData.name = response.detail.mapname;
-        appRef.statusData.resultCode = 'exists';
+        this.statusData.overWriteNeeded = true;
+        this.compoData.name = response.detail.mapname;
+        this.statusData.resultCode = 'exists';
       } else if (response.code == 32) {
-        appRef.statusData.resultCode = 'not-saved';
+        this.statusData.resultCode = 'not-saved';
       } else {
-        appRef.statusData.resultCode = 'error';
+        this.statusData.resultCode = 'error';
       }
-      appRef.statusData.error = response;
+      this.statusData.error = response;
     } else {
-      this.hsLayoutService.setMainPanel('layermanager', app, true);
+      this.hsLayoutService.setMainPanel('layermanager', true);
     }
-    appRef.saveMapResulted.next({statusData: appRef.statusData, app});
+    this.saveMapResulted.next(this.statusData);
   }
 
   /**
    * Focus the browser to composition's title
-   * @param app - App identifier
+   
    */
-  focusTitle(app: string) {
-    const appRef = this.get(app);
-    if (appRef.statusData.guessedTitle) {
-      appRef.compoData.name = appRef.statusData.guessedTitle;
+  focusTitle() {
+    if (this.statusData.guessedTitle) {
+      this.compoData.name = this.statusData.guessedTitle;
     }
     //TODO Check if this works and input is focused
-    this.hsLayoutService
-      .get(app)
-      .contentWrapper.querySelector('.hs-stc-title')
-      .focus();
+    this.hsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
   }
 }

@@ -10,74 +10,58 @@ export type KeyBooleanDict = {
   [key: string]: boolean;
 };
 
-class HsLayerEditorSublayerParams {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsLayerEditorSublayerService {
   checkedSubLayers: KeyBooleanDict = {};
   withChildren: KeyBooleanDict = {};
   populatedLayers: Array<any> = [];
   withChildrenTmp: KeyBooleanDict = {};
   checkedSubLayersTmp: KeyBooleanDict = {};
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HsLayerEditorSublayerService {
-  apps: {
-    [id: string]: HsLayerEditorSublayerParams;
-  } = {default: new HsLayerEditorSublayerParams()};
 
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerSelectorService: HsLayerSelectorService,
     private HsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe(({layer, app}) => {
-      this.resetSublayers(layer, app);
+    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
+      this.resetSublayers(layer);
     });
   }
 
-  get(app: string): HsLayerEditorSublayerParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsLayerEditorSublayerParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
+  resetSublayers(layer: HsLayerDescriptor) {
+    if (this.HsLayerManagerService.currentLayer) {
+      this.checkedSubLayers = layer.checkedSubLayers;
+      this.checkedSubLayersTmp = layer.checkedSubLayersTmp;
 
-  resetSublayers(layer: HsLayerDescriptor, app: string) {
-    const appRef = this.get(app);
-    if (this.HsLayerManagerService.apps[app].currentLayer) {
-      appRef.checkedSubLayers = layer.checkedSubLayers;
-      appRef.checkedSubLayersTmp = layer.checkedSubLayersTmp;
-
-      appRef.withChildren = layer.withChildren;
-      appRef.withChildrenTmp = layer.withChildrenTmp;
+      this.withChildren = layer.withChildren;
+      this.withChildrenTmp = layer.withChildrenTmp;
     }
   }
-  hasSubLayers(app: string): boolean {
+  hasSubLayers(): boolean {
     const subLayers = getCachedCapabilities(
-      this.HsLayerManagerService.apps[app].currentLayer.layer
+      this.HsLayerManagerService.currentLayer.layer
     )?.Layer;
     return subLayers != undefined && subLayers.length > 0;
   }
 
-  getSubLayers(app: string) {
-    if (this.HsLayerManagerService.apps[app].currentLayer === null) {
+  getSubLayers() {
+    if (this.HsLayerManagerService.currentLayer === null) {
       return;
     }
-    this.populateSubLayers(app);
+    this.populateSubLayers();
 
     return (
-      getCachedCapabilities(
-        this.HsLayerManagerService.apps[app].currentLayer.layer
-      )?.Layer || []
+      getCachedCapabilities(this.HsLayerManagerService.currentLayer.layer)
+        ?.Layer || []
     );
   }
 
-  populateSubLayers(app: string) {
-    const appRef = this.get(app);
-    const wrapper = this.HsLayerManagerService.apps[app].currentLayer;
+  populateSubLayers() {
+    const wrapper = this.HsLayerManagerService.currentLayer;
     const layer = wrapper.layer;
-    if (appRef.populatedLayers.includes(wrapper.uid)) {
+    if (this.populatedLayers.includes(wrapper.uid)) {
       return;
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
@@ -89,7 +73,7 @@ export class HsLayerEditorSublayerService {
       //Function which converts list of layers to dictionary of their names and visibility
       const toDictionary = (d, layer) => ((d[layer.Name] = visible), d);
 
-      appRef.populatedLayers.push(wrapper.uid);
+      this.populatedLayers.push(wrapper.uid);
       const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
       let subSubLayers = subLayersWithChild.flatMap((sl) => sl.Layer);
       //Check one level deeper for the sublayers
@@ -107,50 +91,36 @@ export class HsLayerEditorSublayerService {
           : subLayers;
       wrapper.checkedSubLayers = leafs.reduce(toDictionary, {});
 
-      appRef.checkedSubLayers = wrapper.checkedSubLayers;
-      appRef.withChildren = wrapper.withChildren;
-      appRef.checkedSubLayersTmp = clone(appRef.checkedSubLayers);
-      wrapper.checkedSubLayersTmp = appRef.checkedSubLayersTmp;
-      appRef.withChildrenTmp = clone(appRef.withChildren);
-      wrapper.withChildrenTmp = appRef.withChildrenTmp;
+      this.checkedSubLayers = wrapper.checkedSubLayers;
+      this.withChildren = wrapper.withChildren;
+      this.checkedSubLayersTmp = clone(this.checkedSubLayers);
+      wrapper.checkedSubLayersTmp = this.checkedSubLayersTmp;
+      this.withChildrenTmp = clone(this.withChildren);
+      wrapper.withChildrenTmp = this.withChildrenTmp;
 
-      if (!this.HsLayerManagerService.apps[app].currentLayer.visible) {
-        for (const dict of [
-          appRef.checkedSubLayersTmp,
-          appRef.withChildrenTmp,
-        ]) {
+      if (!this.HsLayerManagerService.currentLayer.visible) {
+        for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {
           Object.keys(dict).forEach((v) => (dict[v] = true));
         }
       }
     }
   }
 
-  subLayerSelected(app: string): void {
-    const appRef = this.get(app);
-    const layer = this.HsLayerManagerService.apps[app].currentLayer;
+  subLayerSelected(): void {
+    const layer = this.HsLayerManagerService.currentLayer;
     const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
-    params.LAYERS = Object.keys(appRef.checkedSubLayers)
-      .filter(
-        (key) => appRef.checkedSubLayers[key] && !appRef.withChildren[key]
-      )
+    params.LAYERS = Object.keys(this.checkedSubLayers)
+      .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])
       .join(',');
     if (this.HsLayerUtilsService.isLayerArcgis(layer.layer)) {
       params.LAYERS = `show:${params.LAYERS}`;
     }
     if (params.LAYERS == '' || params.LAYERS == 'show:') {
-      this.HsLayerManagerService.changeLayerVisibility(
-        !layer.visible,
-        layer,
-        app
-      );
+      this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
       return;
     }
     if (layer.visible == false) {
-      this.HsLayerManagerService.changeLayerVisibility(
-        !layer.visible,
-        layer,
-        app
-      );
+      this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
     }
     this.HsLayerUtilsService.updateLayerParams(layer.layer, params);
   }

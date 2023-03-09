@@ -8,11 +8,8 @@ import {HsQueryBaseService} from '../query-base.service';
 })
 export class HsQueryDefaultInfoPanelBodyComponent implements OnInit {
   featureInfoExpanded: boolean;
-  @Input() app = 'default';
-  queryBaseAppRef;
-  constructor(private hsQueryBaseService: HsQueryBaseService) {}
+  constructor(public hsQueryBaseService: HsQueryBaseService) {}
   ngOnInit(): void {
     this.featureInfoExpanded = true;
-    this.queryBaseAppRef = this.hsQueryBaseService.get(this.app);
   }
 }

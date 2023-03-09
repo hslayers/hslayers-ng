@@ -39,12 +39,11 @@ export class HsLaymanBrowserService {
    * Loads datasets metadata from Layman
    * @param endpoint - Configuration of selected datasource (from app config)
    * extent feature is created. Has one parameter: feature
-   * @param app - Application identifier
    * @param data - Query parameters
    */
   queryCatalog(
     endpoint: HsEndpoint,
-    app: string,
+
     data?: {
       onlyMine: boolean;
       limit?: string | number;
@@ -53,7 +52,7 @@ export class HsLaymanBrowserService {
     },
     extentFeatureCreated?: (feature: Feature<Geometry>) => void
   ): Observable<any> {
-    endpoint.getCurrentUserIfNeeded(endpoint, app);
+    endpoint.getCurrentUserIfNeeded(endpoint);
     const loggedIn = endpoint.authenticated;
     const withPermissionOrMine = data?.onlyMine
       ? loggedIn
@@ -71,10 +70,10 @@ export class HsLaymanBrowserService {
 
       const b = transformExtent(
         this.hsMapService
-          .getMap(app)
+          .getMap()
           .getView()
-          .calculateExtent(this.hsMapService.getMap(app).getSize()),
-        this.hsMapService.getMap(app).getView().getProjection(),
+          .calculateExtent(this.hsMapService.getMap().getSize()),
+        this.hsMapService.getMap().getView().getProjection(),
         'EPSG:3857'
       );
       bbox = data.filterByExtent ? b.join(',') : '';
@@ -109,13 +108,12 @@ export class HsLaymanBrowserService {
             x.body.matched = x.headers.get('x-total-count')
               ? x.headers.get('x-total-count')
               : x.body.length;
-            this.datasetsReceived(x.body, app);
+            this.datasetsReceived(x.body);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-              x.body,
-              app
+              x.body
             );
           }
           return x.body;
@@ -136,22 +134,19 @@ export class HsLaymanBrowserService {
               this.hsToastService.createToastPopupMessage(
                 await this.hsLanguageService.awaitTranslation(
                   'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-                  undefined,
-                  app
+                  undefined
                 ),
                 endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url},
-                    app
+                    {url}
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsLaymanBrowserService',
-                },
-                app
+                }
               );
           }
           endpoint.datasourcePaging.loaded = true;
@@ -165,23 +160,21 @@ export class HsLaymanBrowserService {
    * (PRIVATE) Callback for catalogue http query
    * @param data - HTTP response containing all the layers
    */
-  private datasetsReceived(data, app: string): void {
+  private datasetsReceived(data): void {
     if (!data.dataset) {
       this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
+        this.hsLanguageService.getTranslation('COMMON.warning', undefined),
         data.dataset.title +
           ': ' +
           this.hsLanguageService.getTranslation(
             'COMMON.noDataReceived',
-            undefined,
-            app
+            undefined
           ),
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
           serviceCalledFrom: 'HsLaymanBrowserService',
-        },
-        app
+        }
       );
       return;
     }
@@ -209,7 +202,7 @@ export class HsLaymanBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             layer,
-            this.hsMapService.getCurrentProj(app)
+            this.hsMapService.getCurrentProj()
           );
           if (extentFeature) {
             tmp.featureId = extentFeature.getId();
@@ -229,8 +222,7 @@ export class HsLaymanBrowserService {
    */
   async fillLayerMetadata(
     endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
-    app = 'default'
+    layer: HsAddDataLayerDescriptor
   ): Promise<HsAddDataLayerDescriptor> {
     const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
@@ -246,13 +238,12 @@ export class HsLaymanBrowserService {
         if (data.code == 32) {
           endpoint.user = undefined;
           endpoint.authenticated = false;
-          this.hsCommonLaymanService.authChange.next({endpoint, app});
+          this.hsCommonLaymanService.authChange.next(endpoint);
         }
         this.hsToastService.createToastPopupMessage(
           data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
           data.detail ?? `${data.code}/${data.sub_code}`,
-          {},
-          app
+          {}
         );
         return;
       }
@@ -278,10 +269,9 @@ export class HsLaymanBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
-    app: string
+    layer: HsAddDataLayerDescriptor
   ): Promise<any> {
-    const lyr = await this.fillLayerMetadata(ds, layer, app);
+    const lyr = await this.fillLayerMetadata(ds, layer);
     if (!lyr) {
       return;
     }
@@ -315,19 +305,16 @@ export class HsLaymanBrowserService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-          undefined,
-          app
+          undefined
         ),
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.urlInvalid',
-          undefined,
-          app
+          undefined
         ),
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsLaymanBrowserService',
-        },
-        app
+        }
       );
       return false;
     }

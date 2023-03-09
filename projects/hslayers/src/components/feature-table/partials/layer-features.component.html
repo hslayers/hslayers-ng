@@ -1,16 +1,16 @@
-<h3 class="mt-1" style="text-align: center">{{layer.title | translateHs : {app, module: 'LAYERS'} }}</h3>
+<h3 class="mt-1" style="text-align: center">{{layer.title | translateHs : {module: 'LAYERS'} }}</h3>
 <div class="form-group mt-1 mb-1">
     <div class="input-group" style="margin-bottom: 4px">
-        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs : {app} "
+        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs  "
             [(ngModel)]="searchedFeatures" name="FeatureName">
     </div>
 </div>
-<table style="width:100%;" *ngFor="let feature of appRef.features | featureFilter: searchedFeatures">
+<table style="width:100%;" *ngFor="let feature of hsFeatureTableService.features | featureFilter: searchedFeatures">
     <thead>
         <tr style="text-align: center; background-color: rgba(0,0,0,0.05);">
             <th colspan="2">{{translate(feature.name)}}<!-- TODO: Remove function call from template -->
                 <a style="float: center;" (click)="sortFeaturesBy(feature.name)"
-                    [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs : {app} ">^</a>
+                    [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs  ">^</a>
             </th>
         </tr>
     </thead>
@@ -18,7 +18,7 @@
         <tr *ngFor="let attr of feature.attributes" rowspan="3">
             <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">
                 {{translate(attr.name)}}<a style="float: right;" (click)="sortFeaturesBy(attr.name)"
-                    [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs : {app} ">^</a><!-- TODO: Remove function call from template -->
+                    [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs  ">^</a><!-- TODO: Remove function call from template -->
             </th>
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
                 <span *ngIf="!attr.sanitizedValue && !attr.value?.operations">
@@ -40,7 +40,7 @@
     </tbody>
 </table>
 <p class="p-2">
-    <small><a (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translateHs : {app}
+    <small><a (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translateHs
             }}</a></small>
 </p>
 <hr />

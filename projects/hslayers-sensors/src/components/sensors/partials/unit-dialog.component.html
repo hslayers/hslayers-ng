@@ -1,15 +1,16 @@
-<div [ngStyle]="dialogStyle" class="hs-sensor-unit-dialog modal in" tabindex="-1" role="dialog" aria-hidden="true" style="position: fixed;
+<div [ngStyle]="dialogStyle" class="hs-sensor-unit-dialog modal in" tabindex="-1" role="dialog" aria-hidden="true"
+    style="position: fixed;
     bottom: 5px; top: auto;;
     ">
     <div class="modal-dialog modal-lg" style="margin-right: 30px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
                 <h4 class="modal-title">
-                    {{'SENSORS.sensorUnit' | translateHs: {app: data.app} }} {{getUnitDescription()}}
+                    {{'SENSORS.sensorUnit' | translateHs }} {{getUnitDescription()}}
                     <!-- TODO: Remove function call from template -->
                 </h4>
                 <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} "></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
             <div class="modal-body" style="max-height: 273px; overflow-y: auto">
                 <div class="container-fluid">
@@ -21,10 +22,10 @@
                 </div>
                 <table class="table table-sm table-striped table-hover">
                     <tr>
-                        <th>{{'SENSORS.sensors' | translateHs: {app: data.app} }}</th>
-                        <th>{{'SENSORS.min' | translateHs: {app: data.app} }}</th>
-                        <th>{{'SENSORS.max' | translateHs: {app: data.app} }}</th>
-                        <th>{{'SENSORS.avg' | translateHs: {app: data.app} }}</th>
+                        <th>{{'SENSORS.sensors' | translateHs }}</th>
+                        <th>{{'SENSORS.min' | translateHs }}</th>
+                        <th>{{'SENSORS.max' | translateHs }}</th>
+                        <th>{{'SENSORS.avg' | translateHs }}</th>
                     </tr>
                     <tr *ngFor="let aggr of getAggregations()">
                         <td>{{aggr.sensor_name}}</td>
@@ -42,14 +43,14 @@
                             <button type="button" class="btn btn-"
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
                                 (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"
-                                [attr.aria-label]="'SENSORS.oneHour' | translateHs: {app: data.app} ">{{getTranslation(interval.name)}}&emsp;<span
+                                [attr.aria-label]="'SENSORS.oneHour' | translateHs ">{{getTranslation(interval.name)}}&emsp;<span
                                     class="hs-loader" [hidden]="!interval.loading"></span></button>
                         </div>
                     </div>
                     <div class="m-1">
                         <div class="input-group">
                             <input type="text" style="width: 6em;" ngbDatepicker
-                                [placeholder]="'COMMON.from' | translateHs: {app: data.app} " #d="ngbDatepicker"
+                                [placeholder]="'COMMON.from' | translateHs " #d="ngbDatepicker"
                                 [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
                             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
                                     class="icon-calendarthree"></i></button>
@@ -58,7 +59,7 @@
                     <div class="m-1">
                         <div class="input-group">
                             <input type="text" style="width: 6em;" ngbDatepicker
-                                [placeholder]="'COMMON.until' | translateHs: {app: data.app} " #d2="ngbDatepicker"
+                                [placeholder]="'COMMON.until' | translateHs " #d2="ngbDatepicker"
                                 [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
                             <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
                                     class="icon-calendarthree"></i></button>

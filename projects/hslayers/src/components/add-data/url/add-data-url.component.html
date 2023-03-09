@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-center flex-column align-items-center m-3 px-md-4">
     <div class="container px-md-4">
         <div class="row justify-content-center gap-1">
-            <button *ngFor="let type of types" [ngClass]="{'active': type.id === appRef.typeSelected }"
-                (click)="selectType(type.id,app)"
+            <button *ngFor="let type of types" [ngClass]="{'active': type.id === hsAddDataUrlService.typeSelected }"
+                (click)="selectType(type.id)"
                 class="btn btn-outline-secondary rounded btn-sm col-sm-3 position-relative flex-grow-1">
                 {{type.text}}
                 <span *ngIf="type.id === 'geosparql'"
@@ -12,16 +12,17 @@
     </div>
 
     <div class="w-100 pt-3">
-        <hs-url-arcgis *ngIf="appRef.typeSelected === 'arcgis'" [app]="app"></hs-url-arcgis>
-        <hs-url-wfs *ngIf="appRef.typeSelected === 'wfs'" [app]="app"></hs-url-wfs>
-        <hs-url-wms *ngIf="appRef.typeSelected === 'wms'" [app]="app"></hs-url-wms>
-        <hs-url-wmts *ngIf="appRef.typeSelected === 'wmts'" [app]="app"></hs-url-wmts>
-        <hs-url-geosparql *ngIf="appRef.typeSelected === 'geosparql'" [app]="app"></hs-url-geosparql>
-        <hs-url-vector *ngIf="appRef.typeSelected === 'geojson'" [app]="app" [fileType]="appRef.typeSelected">
+        <hs-url-arcgis *ngIf="hsAddDataUrlService.typeSelected === 'arcgis'"></hs-url-arcgis>
+        <hs-url-wfs *ngIf="hsAddDataUrlService.typeSelected === 'wfs'"></hs-url-wfs>
+        <hs-url-wms *ngIf="hsAddDataUrlService.typeSelected === 'wms'"></hs-url-wms>
+        <hs-url-wmts *ngIf="hsAddDataUrlService.typeSelected === 'wmts'"></hs-url-wmts>
+        <hs-url-geosparql *ngIf="hsAddDataUrlService.typeSelected === 'geosparql'"></hs-url-geosparql>
+        <hs-url-vector *ngIf="hsAddDataUrlService.typeSelected === 'geojson'"
+            [fileType]="hsAddDataUrlService.typeSelected">
         </hs-url-vector>
-        <hs-url-vector *ngIf="appRef.typeSelected === 'kml'" [app]="app" [fileType]="appRef.typeSelected">
+        <hs-url-vector *ngIf="hsAddDataUrlService.typeSelected === 'kml'" [fileType]="hsAddDataUrlService.typeSelected">
         </hs-url-vector>
-        <hs-url-vector *ngIf="appRef.typeSelected === 'gpx'" [app]="app" [fileType]="appRef.typeSelected">
+        <hs-url-vector *ngIf="hsAddDataUrlService.typeSelected === 'gpx'" [fileType]="hsAddDataUrlService.typeSelected">
         </hs-url-vector>
     </div>
 </div>

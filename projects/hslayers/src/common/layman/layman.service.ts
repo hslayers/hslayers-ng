@@ -12,7 +12,7 @@ import {HsToastService} from '../../components/layout/toast/toast.service';
   providedIn: 'root',
 })
 export class HsCommonLaymanService {
-  authChange: Subject<{endpoint: HsEndpoint; app: string}> = new Subject();
+  authChange: Subject<HsEndpoint> = new Subject();
 
   layman$: BehaviorSubject<HsEndpoint | undefined> = new BehaviorSubject(
     undefined
@@ -36,10 +36,10 @@ export class HsCommonLaymanService {
    *  Monitor if authorization state has changed and
    * return true and broadcast authChange event if so .
    * @param endpoint - Endpoint definition - usually Layman
-   * @param app - App identifier
+   
    * @returns Promise<boolean> true if authorization state changed (user logged in or out)
    */
-  async detectAuthChange(endpoint, app: string): Promise<boolean> {
+  async detectAuthChange(endpoint): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
       const res: CurrentUserResponse = await lastValueFrom(
@@ -56,7 +56,7 @@ export class HsCommonLaymanService {
           endpoint.user = res.username;
           endpoint.authenticated = res.authenticated;
           somethingChanged = true;
-          this.authChange.next({endpoint, app});
+          this.authChange.next(endpoint);
         }
       } else {
         if (endpoint.user != undefined) {
@@ -71,13 +71,13 @@ export class HsCommonLaymanService {
     }
   }
 
-  async getCurrentUserIfNeeded(endpoint, app: string): Promise<void> {
+  async getCurrentUserIfNeeded(endpoint): Promise<void> {
     if (endpoint.user === undefined) {
-      await this.detectAuthChange(endpoint, app);
+      await this.detectAuthChange(endpoint);
     }
   }
 
-  async logout(endpoint, app: string): Promise<void> {
+  async logout(endpoint): Promise<void> {
     const url = `${endpoint.url}/logout`;
     try {
       await lastValueFrom(this.$http.get(url, {withCredentials: true}));
@@ -86,15 +86,14 @@ export class HsCommonLaymanService {
     } finally {
       endpoint.user = undefined;
       endpoint.authenticated = false;
-      this.authChange.next({endpoint, app});
+      this.authChange.next(endpoint);
     }
   }
 
   displayLaymanError(
     endpoint: HsEndpoint,
     errorMsg: string,
-    responseBody: {code?: number; message?: string; detail?: string},
-    app: string
+    responseBody: {code?: number; message?: string; detail?: string}
   ): void {
     let simplifiedResponse = '';
     if (responseBody.code === undefined) {
@@ -106,7 +105,7 @@ export class HsCommonLaymanService {
         break;
       case 32:
         simplifiedResponse = 'Authentication failed. Login to the catalogue.';
-        this.detectAuthChange(endpoint, app);
+        this.detectAuthChange(endpoint);
         break;
       default:
         simplifiedResponse = responseBody.message;
@@ -116,17 +115,15 @@ export class HsCommonLaymanService {
     }
     //If response is object, it is an error response
     this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(errorMsg, undefined, app),
+      this.hsLanguageService.getTranslation(errorMsg, undefined),
       endpoint.title +
         ': ' +
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
           simplifiedResponse,
-          undefined,
-          app
+          undefined
         ),
-      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'},
-      app
+      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}
     );
   }
 }

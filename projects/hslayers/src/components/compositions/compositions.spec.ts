@@ -211,7 +211,7 @@ describe('compositions', () => {
       HsCompositionsMickaServiceMock
     );
     hsConfig = TestBed.inject(HsConfig);
-    hsConfig.get(app).reverseLayerList = true;
+    hsConfig.get().reverseLayerList = true;
     //Mock server response
     hsCompositionsMickaService.loadList = () => {
       return new Promise((resolve, reject) => {
@@ -236,7 +236,7 @@ describe('compositions', () => {
   });
 
   it('compositions list should load', function () {
-    CompositionsCatalogueService.get(app).filterByExtent = false;
+    CompositionsCatalogueService.get().filterByExtent = false;
     const ds: any = {
       url: 'https://www.agrihub.cz/micka/csw',
       type: 'micka',
@@ -247,7 +247,7 @@ describe('compositions', () => {
         loaded: false,
       },
     };
-    CompositionsCatalogueService.loadCompositions(app);
+    CompositionsCatalogueService.loadCompositions();
     //NOTE: have to make this check to work
     // expect(ds.compositions).toBeDefined();
     expect(ds).toBeDefined();
@@ -266,27 +266,27 @@ describe('compositions', () => {
 
   it('should load composition from json', async function () {
     await loadComposition(component);
-    expect(mockedMapService.getMap(app).getLayers().getLength()).toBe(7);
-    expect(getTitle(mockedMapService.getMap(app).getLayers().item(6))).toBe(
+    expect(mockedMapService.getMap().getLayers().getLength()).toBe(7);
+    expect(getTitle(mockedMapService.getMap().getLayers().item(6))).toBe(
       'Measurement sketches'
     );
     expect(
-      mockedMapService.getMap(app).getLayers().item(2).getSource().getFeatures()
+      mockedMapService.getMap().getLayers().item(2).getSource().getFeatures()
         .length
     ).toBe(1);
     expect(
-      mockedMapService.getMap(app).getLayers().item(1).getSource().getFeatures()
+      mockedMapService.getMap().getLayers().item(1).getSource().getFeatures()
         .length
     ).toBe(0);
   });
 
   it('if should parse composition layer style', async function () {
     await loadComposition(component);
-    const layer = mockedMapService.getMap(app).getLayers().item(1);
+    const layer = mockedMapService.getMap().getLayers().item(1);
     expect(layer.getStyle()).toBeDefined();
     expect(
       mockedMapService
-        .getMap(app)
+        .getMap()
         .getLayers()
         .item(1)
         .getStyle()[2]

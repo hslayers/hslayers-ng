@@ -8,24 +8,9 @@ import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {urlDataObject} from '../types/data-object.type';
 
-class HsUrlGeoSparqlParams {
-  data: urlDataObject;
-
-  constructor() {
-    this.data = {
-      table: {
-        trackBy: 'id',
-        nameProperty: 'name',
-      },
-    };
-  }
-}
-
 @Injectable({providedIn: 'root'})
 export class HsUrlGeoSparqlService {
-  apps: {
-    [id: string]: any;
-  } = {default: new HsUrlGeoSparqlParams()};
+  data: urlDataObject;
 
   constructor(
     public httpClient: HttpClient,
@@ -33,16 +18,16 @@ export class HsUrlGeoSparqlService {
     public hsLanguageService: HsLanguageService,
     public hsLog: HsLogService,
     public hsAddDataUrlService: HsAddDataUrlService
-  ) {}
-
-  get(app: string): HsUrlGeoSparqlParams {
-    if (this.apps[app ?? 'default'] === undefined) {
-      this.apps[app ?? 'default'] = new HsUrlGeoSparqlParams();
-    }
-    return this.apps[app ?? 'default'];
+  ) {
+    this.data = {
+      table: {
+        trackBy: 'id',
+        nameProperty: 'name',
+      },
+    };
   }
 
-  async verifyEndpoint(url: string, app: string = 'default') {
+  async verifyEndpoint(url: string) {
     try {
       const r = await lastValueFrom(
         this.httpClient
@@ -63,12 +48,11 @@ export class HsUrlGeoSparqlService {
       }
     } catch (e) {
       this.hsLog.warn(e);
-      this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+      this.hsAddDataUrlService.addDataCapsParsingError.next(
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.GEOSPARQL',
           'invalidEndpoint',
-          null,
-          app
+          null
         )
       );
     }

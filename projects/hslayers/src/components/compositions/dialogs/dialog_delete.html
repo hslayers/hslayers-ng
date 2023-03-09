@@ -3,21 +3,21 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'COMMON.confirm' | translateHs: {app: data.app} }}
+                    {{'COMMON.confirm' | translateHs }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} ">
+                    [attr.aria-label]="'COMMON.close' | translateHs ">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
-                <span>{{'COMPOSITIONS.dialogDelete.doYouWantToDeleteMap' | translateHs: {app: data.app} }}</span>
+                <span>{{'COMPOSITIONS.dialogDelete.doYouWantToDeleteMap' | translateHs }}</span>
                 {{data.compositionToDelete.title}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" (click)="delete(data.compositionToDelete)">{{'COMMON.ok' |
-                    translateHs: {app: data.app} }}</button>
+                    translateHs }}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">{{'COMMON.close'
-                    | translateHs: {app: data.app} }}</button>
+                    | translateHs }}</button>
             </div>
         </div>
     </div>

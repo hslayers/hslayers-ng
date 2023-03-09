@@ -8,7 +8,7 @@ import {HsUrlWmsService} from '../../../url/wms/wms.service';
 })
 export class HsNestedLayersTableComponent {
   @Input() layers;
-  @Input() app = 'default';
+  
   @Output() layerChecked = new EventEmitter<string>(); //output
 
   constructor(public hsUrlWmsService: HsUrlWmsService) {}

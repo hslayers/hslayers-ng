@@ -15,6 +15,6 @@ export class HsPanelBaseComponent implements HsPanelComponent {
 
   constructor(public hsLayoutService: HsLayoutService) {}
   isVisible(): boolean {
-    return this.hsLayoutService.panelVisible(this.name, this.data.app);
+    return this.hsLayoutService.panelVisible(this.name);
   }
 }

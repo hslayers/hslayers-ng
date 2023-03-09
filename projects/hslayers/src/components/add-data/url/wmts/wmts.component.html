@@ -1,22 +1,20 @@
 <form class="form-horizontal" name="frmConnectWmts" role="form">
-    <hs-common-url type="wmts" [app]="app" [(url)]="hsAddDataCommonService.get(app).url"
-        (connect)="hsAddDataOwsService.connect(app)">
+    <hs-common-url type="wmts" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
     </hs-common-url>
 
-    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
-    <div *ngIf="hsAddDataCommonService.get(app).showDetails && !hsAddDataCommonService.get(app).loadingInfo"
-        class="card"><!-- TODO: Remove function call from template -->
+    <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress>
+    <div *ngIf="hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo" class="card">
+        <!-- TODO: Remove function call from template -->
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
-                <div>{{appRef.data.title}}</div>
+                <div>{{hsUrlWmtsService.data.title}}</div>
             </li>
-            <hs-layer-table [app]="app" [type]="'wmts'" [injectedService]="hsUrlWmtsService"> </hs-layer-table>
+            <hs-layer-table [type]="'wmts'" [injectedService]="hsUrlWmtsService"> </hs-layer-table>
         </ul>
         <li class="list-group-item hs-ows-layerlistheading clearfix bg-white" style="position: sticky;
         bottom: 0; z-index:10">
             <div class="d-flex justify-content-center">
-                <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService" [layers]="appRef.data.layers"
-                    [app]="app">
+                <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService" [layers]="hsUrlWmtsService.data.layers">
                 </hs-url-add>
             </div>
         </li>

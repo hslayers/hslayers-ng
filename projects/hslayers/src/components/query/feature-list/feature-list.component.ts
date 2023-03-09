@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {Feature, getUid} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -17,8 +17,7 @@ import {getTitle} from '../../../common/layer-extensions';
   selector: 'hs-query-feature-list',
   templateUrl: './feature-list.component.html',
 })
-export class HsQueryFeatureListComponent implements OnInit {
-  @Input() app = 'default';
+export class HsQueryFeatureListComponent {
   exportMenuVisible;
   selectedFeaturesVisible = true;
   exportFormats: exportFormats[] = [
@@ -33,8 +32,6 @@ export class HsQueryFeatureListComponent implements OnInit {
   editType = null;
   editMenuVisible = false;
   selectedLayer = null;
-  queryBaseAppRef;
-  featureCommonAppRef;
   getTitle = getTitle;
 
   /**
@@ -54,23 +51,17 @@ export class HsQueryFeatureListComponent implements OnInit {
     private hsQueryVectorService: HsQueryVectorService,
     private hsLanguageService: HsLanguageService,
     private hsDialogContainerService: HsDialogContainerService,
-    private hsFeatureCommonService: HsFeatureCommonService,
+    public hsFeatureCommonService: HsFeatureCommonService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    private hsQueryBaseService: HsQueryBaseService
+    public hsQueryBaseService: HsQueryBaseService
   ) {}
-
-  ngOnInit(): void {
-    this.queryBaseAppRef = this.hsQueryBaseService.get(this.app);
-    this.hsFeatureCommonService.init(this.app);
-    this.featureCommonAppRef = this.hsFeatureCommonService.apps[this.app];
-  }
 
   /**
    * Get OL feature array
    * @returns Feature array
    */
   olFeatureArray(): Feature<Geometry>[] {
-    return this.queryBaseAppRef.features
+    return this.hsQueryBaseService.features
       .map((feature) => feature.feature)
       .filter((f) => f);
   }
@@ -87,13 +78,12 @@ export class HsQueryFeatureListComponent implements OnInit {
 
   /**
    * Toggle export menu
-   * @param app - App identifier
+   
    */
-  toggleExportMenu(app: string): void {
+  toggleExportMenu(): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeatureArray(),
-      app
+      this.olFeatureArray()
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -120,44 +110,40 @@ export class HsQueryFeatureListComponent implements OnInit {
 
   /**
    * Move or copy feature
-   * @param app - App identifier
+   
    */
-  moveOrCopyFeature(app: string): void {
+  moveOrCopyFeature(): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       this.olFeatureArray(),
-      this.selectedLayer,
-      app
+      this.selectedLayer
     );
   }
 
   /**
    * Remove all selected features
-   * @param app - App identifier
+   
    */
-  async removeAllSelectedFeatures(app: string): Promise<void> {
+  async removeAllSelectedFeatures(): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
         message: this.hsLanguageService.getTranslation(
           'QUERY.reallyDeleteAllSelectedLayers',
-          undefined,
-          this.app
+          undefined
         ),
         title: this.hsLanguageService.getTranslation(
           'COMMON.confirmDelete',
-          undefined,
-          this.app
+          undefined
         ),
-      },
-      this.app
+      }
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      for (const feature of this.queryBaseAppRef.features) {
+      for (const feature of this.hsQueryBaseService.features) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
-          this.hsQueryVectorService.removeFeature(feature.feature, app);
+          this.hsQueryVectorService.removeFeature(feature.feature);
         }, 250);
       }
     }
@@ -170,6 +156,6 @@ export class HsQueryFeatureListComponent implements OnInit {
    * @returns Translated text
    */
   translateString(module: string, text: string): string {
-    return this.hsFeatureCommonService.translateString(module, text, this.app);
+    return this.hsFeatureCommonService.translateString(module, text);
   }
 }

@@ -119,8 +119,10 @@ class HsLayermanagerDataObject {
   }
 }
 
-class HsLayermanagerAppObject {
-  map: any;
+@Injectable({
+  providedIn: 'root',
+})
+export class HsLayerManagerService {
   data = new HsLayermanagerDataObject();
   timer: any;
   currentLayer: HsLayerDescriptor;
@@ -133,17 +135,6 @@ class HsLayermanagerAppObject {
   changeResolutionHandler;
   addLayerHandler;
   removeLayerHandler;
-  constructor() {}
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HsLayerManagerService {
-  apps: {
-    [id: string]: HsLayermanagerAppObject;
-  } = {default: new HsLayermanagerAppObject()};
-
   /**
    * Property for pointer to main map object
    */
@@ -169,37 +160,39 @@ export class HsLayerManagerService {
     public sanitizer: DomSanitizer,
     private zone: NgZone
   ) {
-    this.hsEventBusService.layoutLoads.subscribe(
-      ({element, innerElement, app}) => {
-        if (!this.apps[app]) {
-          this.apps[app] = new HsLayermanagerAppObject();
-        }
-      }
-    );
-
-    this.hsEventBusService.layerManagerUpdates.subscribe(({layer, app}) => {
-      this.refreshLists(app);
+    this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
+      this.refreshLists();
     });
     this.hsEventBusService.layerDimensionDefinitionChanges.subscribe(
-      ({layer: olLayer, app}) => {
+      (olLayer) => {
         if (this.hsDimensionTimeService.layerIsWmsT(olLayer)) {
-          const layerDescriptor = this.apps[app ?? 'default'].data.layers.find(
+          const layerDescriptor = this.data.layers.find(
             (ld) => ld.layer == olLayer
           );
           if (layerDescriptor) {
-            this.hsDimensionTimeService.setupTimeLayer(layerDescriptor, app);
+            this.hsDimensionTimeService.setupTimeLayer(layerDescriptor);
           }
         }
       }
     );
-  }
-  get(app: string): HsLayermanagerAppObject {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsLayermanagerAppObject();
-    }
-    return this.apps[app ?? 'default'];
-  }
 
+    this.hsMapService.loaded().then(async (map) => {
+      for (const lyr of map.getLayers().getArray()) {
+        this.applyZIndex(lyr as Layer<Source>);
+        await this.layerAdded(
+          {
+            element: lyr as Layer<Source>,
+          },
+          true
+        );
+      }
+      this.sortFoldersByZ();
+      this.sortLayersByZ(this.data.layers);
+      this.hsEventBusService.layerManagerUpdates.next(null);
+      this.toggleEditLayerByUrlParam();
+      this.boxLayersInit();
+    });
+  }
   /**
    * Function for adding layer added to map into layer manager structure.
    * In service automatically used after layer is added to map.
@@ -214,13 +207,12 @@ export class HsLayerManagerService {
    */
   async layerAdded(
     e: {element: Layer<Source>},
-    app: string,
     suspendEvents?: boolean
   ): Promise<void> {
     const layer = e.element;
     this.checkLayerHealth(layer);
     const showInLayerManager = getShowInLayerManager(layer) ?? true;
-    layer.on('change:visible', (e) => this.layerVisibilityChanged(e, app));
+    layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
     if (
       this.hsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer)
@@ -229,9 +221,8 @@ export class HsLayerManagerService {
       await this.hsLayerEditorVectorLayerService.cluster(
         true,
         layer,
-        this.hsConfig.get(app).clusteringDistance || 40,
-        false,
-        app
+        this.hsConfig.clusteringDistance || 40,
+        false
       );
     }
     /**
@@ -244,7 +235,7 @@ export class HsLayerManagerService {
       title: this.hsLayerUtilsService.getLayerTitle(layer),
       abstract: getAbstract(layer),
       layer,
-      grayed: !this.isLayerInResolutionInterval(layer, app),
+      grayed: !this.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       showInLayerManager,
       uid: this.hsUtilsService.generateUuid(),
@@ -254,7 +245,7 @@ export class HsLayerManagerService {
       type: this.getLayerSourceType(layer),
       source: this.getLayerSourceUrl(layer),
     };
-    this.loadingEvents(layerDescriptor, app);
+    this.loadingEvents(layerDescriptor);
     layerDescriptor.trackBy = `${layerDescriptor.uid} ${layerDescriptor.position}`;
 
     layer.on('propertychange', (event) => {
@@ -264,13 +255,18 @@ export class HsLayerManagerService {
       if (event.key == SHOW_IN_LAYER_MANAGER) {
         layerDescriptor.showInLayerManager =
           getShowInLayerManager(layer) ?? true;
+        if (layerDescriptor.showInLayerManager) {
+          this.populateFolders(layer);
+        }
       }
     });
 
     if (getBase(layer) !== true) {
-      this.populateFolders(layer, app);
+      if (showInLayerManager) {
+        this.populateFolders(layer);
+      }
       layerDescriptor.legends = getLegends(layer);
-      this.apps[app].data.layers.push(layerDescriptor);
+      this.data.layers.push(layerDescriptor);
       if (getSubLayers(layer)) {
         /*Need to keep track of original LAYERS value for saving to composition*/
         const params = this.hsLayerUtilsService.getLayerParams(layer);
@@ -281,20 +277,13 @@ export class HsLayerManagerService {
       if (getQueryCapabilities(layer) !== false) {
         const que = this.hsQueuesService.ensureQueue(
           'wmsGetCapabilities',
-          app,
           1,
           5000
         );
         que.push(async (cb) => {
           try {
-            await this.hsLayerManagerMetadata.fillMetadata(
-              layerDescriptor,
-              app
-            );
-            layerDescriptor.grayed = !this.isLayerInResolutionInterval(
-              layer,
-              app
-            );
+            await this.hsLayerManagerMetadata.fillMetadata(layerDescriptor);
+            layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);
             cb();
           } catch (err) {
             cb(err);
@@ -304,28 +293,26 @@ export class HsLayerManagerService {
     } else {
       layerDescriptor.active = layer.getVisible();
       if (layerDescriptor.active) {
-        this.changeBaseLayerVisibility(true, layerDescriptor, app);
+        this.changeBaseLayerVisibility(true, layerDescriptor);
       }
-      layerDescriptor.thumbnail = this.getImage(layer, app);
-      this.apps[app].data.baselayers.push(
-        <HsBaseLayerDescriptor>layerDescriptor
-      );
+      layerDescriptor.thumbnail = this.getImage(layer);
+      this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
     }
 
     if (!getName(layer)) {
       setName(layer, getTitle(layer));
     }
-    //*NOTE Commented out, because the  following references to this.apps[app].data.baselayer are causing issues.
+    //*NOTE Commented out, because the  following references to this.data.baselayer are causing issues.
 
     // if (layer.getVisible() && getBase(layer)) {
-    //   this.apps[app].data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
+    //   this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     // }
 
-    this.sortFoldersByZ(app);
+    this.sortFoldersByZ();
     if (!suspendEvents) {
       this.hsEventBusService.layerAdditions.next(layerDescriptor);
-      this.hsEventBusService.layerManagerUpdates.next({layer, app});
-      this.hsEventBusService.compositionEdits.next({app});
+      this.hsEventBusService.layerManagerUpdates.next(layer);
+      this.hsEventBusService.compositionEdits.next();
     }
   }
 
@@ -388,9 +375,9 @@ export class HsLayerManagerService {
    * Function for adding baselayer thumbnail visible in basemap gallery.
    * @param layer - Base layer added to map
    */
-  getImage(layer: Layer<Source>, app: string): string {
+  getImage(layer: Layer<Source>): string {
     const thumbnail = getThumbnail(layer);
-    const configRef = this.hsConfig.get(app);
+    const configRef = this.hsConfig;
     if (thumbnail) {
       if (thumbnail.length > 10) {
         return thumbnail;
@@ -416,16 +403,16 @@ export class HsLayerManagerService {
   /**
    * @param e
    */
-  layerVisibilityChanged(e, app: string): void {
+  layerVisibilityChanged(e): void {
     if (getBase(e.target) != true) {
-      for (const layer of this.apps[app].data.layers) {
+      for (const layer of this.data.layers) {
         if (layer.layer == e.target) {
           layer.visible = e.target.getVisible();
           break;
         }
       }
     } else {
-      for (const baseLayer of this.apps[app].data.baselayers) {
+      for (const baseLayer of this.data.baselayers) {
         if (baseLayer.layer == e.target) {
           baseLayer.active = e.target.getVisible();
         } else {
@@ -439,16 +426,13 @@ export class HsLayerManagerService {
    * Sort layers which are added to map and registered
    * in layermanager by Z and notify components that layer positions have changed.
    */
-  updateLayerListPositions(app: string): void {
+  updateLayerListPositions(): void {
     //TODO: We could also sort by title or other property. Not supported right now though, just zIndex
-    this.apps[app].data.layers = this.sortLayersByZ(
-      this.apps[app].data.layers,
-      app
-    );
+    this.data.layers = this.sortLayersByZ(this.data.layers);
   }
 
-  sortLayersByZ(arr: any[], app: string): any[] {
-    const minus = this.hsConfig.get(app).reverseLayerList ?? true;
+  sortLayersByZ(arr: any[]): any[] {
+    const minus = this.hsConfig.reverseLayerList ?? true;
     return arr.sort((a, b) => {
       a = a.layer.getZIndex();
       b = b.layer.getZIndex();
@@ -462,10 +446,9 @@ export class HsLayerManagerService {
    * But it does detect changes of class properties.
    * Hence the whole array is copied so an "immutable" change happens and Angular detects that.
    */
-  refreshLists(app: string): void {
-    const appRef = this.get(app);
-    appRef.data.baselayers = Array.from(appRef.data.baselayers);
-    appRef.data.terrainlayers = Array.from(appRef.data.terrainlayers);
+  refreshLists(): void {
+    this.data.baselayers = Array.from(this.data.baselayers);
+    this.data.terrainlayers = Array.from(this.data.terrainlayers);
   }
 
   /**
@@ -473,9 +456,9 @@ export class HsLayerManagerService {
    * @private
    * @param title
    */
-  getLayerByTitle(title: string, app: string): HsLayerDescriptor | undefined {
+  getLayerByTitle(title: string): HsLayerDescriptor | undefined {
     let tmp;
-    for (const layer of this.get(app).data.layers) {
+    for (const layer of this.data.layers) {
       if (layer.title == title) {
         tmp = layer;
       }
@@ -492,11 +475,10 @@ export class HsLayerManagerService {
    */
   getLayerDescriptorForOlLayer(
     layer: Layer<Source>,
-    base = false,
-    app: string
+    base = false
   ): HsLayerDescriptor {
     const layers = base ? 'baselayers' : 'layers';
-    const tmp = (this.apps[app].data[layers] as Array<any>).filter(
+    const tmp = (this.data[layers] as Array<any>).filter(
       (l) => l.layer == layer
     );
     if (tmp.length > 0) {
@@ -510,31 +492,26 @@ export class HsLayerManagerService {
    * @private
    * @param lyr - Layer to add into folder structure
    */
-  populateFolders(lyr: Layer<Source>, app: string): void {
+  populateFolders(lyr: Layer<Source>): void {
     let path = getPath(lyr);
     if (!path) {
       /* Check whether 'other' folder exists.
         Can not just add getTranslationIgnoreNonExisting string in case no path exists
         because on init the translation is ignored.
       */
-      if (
-        this.apps[app].data.folders.sub_folders?.filter(
-          (f) => f.name == 'other'
-        )[0]
-      ) {
+      if (this.data.folders.sub_folders?.filter((f) => f.name == 'other')[0]) {
         path = 'other';
       } else {
         path = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'LAYERMANAGER',
           'other',
-          undefined,
-          app
+          undefined
         );
       }
       setPath(lyr, path);
     }
     const parts = path.split('/');
-    let curfolder = this.apps[app].data.folders;
+    let curfolder = this.data.folders;
     const zIndex = lyr.getZIndex();
     for (let i = 0; i < parts.length; i++) {
       let found = null;
@@ -566,8 +543,8 @@ export class HsLayerManagerService {
     }
     curfolder.zIndex = curfolder.zIndex < zIndex ? zIndex : curfolder.zIndex;
     curfolder.layers.push(lyr);
-    // if (this.apps[app].data.folders.layers.indexOf(lyr) > -1) {
-    //   this.apps[app].data.folders.layers.splice(this.apps[app].data.folders.layers.indexOf(lyr), 1);
+    // if (this.data.folders.layers.indexOf(lyr) > -1) {
+    //   this.data.folders.layers.splice(this.data.folders.layers.indexOf(lyr), 1);
     // }
   }
 
@@ -576,14 +553,14 @@ export class HsLayerManagerService {
    * @private
    * @param lyr - Layer to remove from layer folder
    */
-  cleanFolders(lyr: Layer<Source>, app: string): void {
+  cleanFolders(lyr: Layer<Source>): void {
     if (getShowInLayerManager(lyr) == false) {
       return;
     }
     if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
       const path = getPath(lyr);
       const parts = path.split('/');
-      let curfolder = this.apps[app].data.folders;
+      let curfolder = this.data.folders;
       for (let i = 0; i < parts.length; i++) {
         for (const folder of curfolder.sub_folders) {
           if (folder.name == parts[i]) {
@@ -594,7 +571,7 @@ export class HsLayerManagerService {
       curfolder.layers.splice(curfolder.layers.indexOf(lyr), 1);
       for (let i = parts.length; i > 0; i--) {
         if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
-          let newfolder = this.apps[app].data.folders;
+          let newfolder = this.data.folders;
           if (i > 1) {
             for (let j = 0; j < i - 1; j++) {
               for (const folder of newfolder.sub_folders) {
@@ -614,9 +591,9 @@ export class HsLayerManagerService {
         }
       }
     } else {
-      const ixToRemove = this.apps[app].data.folders.layers.indexOf(lyr);
+      const ixToRemove = this.data.folders.layers.indexOf(lyr);
       if (ixToRemove > -1) {
-        this.apps[app].data.folders.layers.splice(ixToRemove, 1);
+        this.data.folders.layers.splice(ixToRemove, 1);
       }
     }
   }
@@ -627,33 +604,30 @@ export class HsLayerManagerService {
    * @private
    * @param e - Events emitted by ol.Collection instances are instances of this type.
    */
-  layerRemoved(e: CollectionEvent<Layer>, app: string): void {
-    this.cleanFolders(e.element, app);
-    for (let i = 0; i < this.apps[app].data.layers.length; i++) {
-      if (this.apps[app].data.layers[i].layer == e.element) {
-        this.apps[app].data.layers.splice(i, 1);
+  layerRemoved(e: CollectionEvent<Layer>): void {
+    this.cleanFolders(e.element);
+    for (let i = 0; i < this.data.layers.length; i++) {
+      if (this.data.layers[i].layer == e.element) {
+        this.data.layers.splice(i, 1);
       }
     }
-    for (let i = 0; i < this.apps[app].data.baselayers.length; i++) {
-      if (this.apps[app].data.baselayers[i].layer == e.element) {
-        this.apps[app].data.baselayers.splice(i, 1);
+    for (let i = 0; i < this.data.baselayers.length; i++) {
+      if (this.data.baselayers[i].layer == e.element) {
+        this.data.baselayers.splice(i, 1);
       }
     }
     this.removeFromArray(
       this.hsLayerEditorVectorLayerService.layersClusteredFromStart,
       e.element
     );
-    this.hsEventBusService.layerManagerUpdates.next({
-      layer: e.element,
-      app: app,
-    });
+    this.hsEventBusService.layerManagerUpdates.next(e.element);
     this.hsEventBusService.layerRemovals.next(e.element);
     if (getShowInLayerManager(e.element) !== false) {
-      this.hsEventBusService.compositionEdits.next({app});
+      this.hsEventBusService.compositionEdits.next();
     }
-    const layers = this.hsMapService.getMap(app).getLayers().getArray();
-    if (this.apps[app].zIndexValue > layers.length) {
-      this.apps[app].zIndexValue--;
+    const layers = this.hsMapService.getMap().getLayers().getArray();
+    if (this.zIndexValue > layers.length) {
+      this.zIndexValue--;
     }
   }
 
@@ -670,10 +644,10 @@ export class HsLayerManagerService {
    * (PRIVATE)
    * @private
    */
-  private boxLayersInit(app: string): void {
-    if (this.hsConfig.get(app).box_layers != undefined) {
-      this.apps[app].data.box_layers = this.hsConfig.get(app).box_layers;
-      for (const box of this.apps[app].data.box_layers) {
+  private boxLayersInit(): void {
+    if (this.hsConfig.box_layers != undefined) {
+      this.data.box_layers = this.hsConfig.box_layers;
+      for (const box of this.data.box_layers) {
         let visible = false;
         let baseVisible = false;
         for (const layer of box.get('layers').getArray()) {
@@ -694,18 +668,14 @@ export class HsLayerManagerService {
    * @param visibility - Visibility layer should have
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeLayerVisibility(
-    visibility: boolean,
-    layer: HsLayerDescriptor,
-    app: string
-  ): void {
+  changeLayerVisibility(visibility: boolean, layer: HsLayerDescriptor): void {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
-    layer.grayed = !this.isLayerInResolutionInterval(layer.layer, app);
+    layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
     //Set the other exclusive layers invisible - all or the ones with same path based on config
     if (visibility && getExclusive(layer.layer) == true) {
-      for (const other_layer of this.apps[app].data.layers) {
-        const pathExclusivity = this.hsConfig.get(app).pathExclusivity
+      for (const other_layer of this.data.layers) {
+        const pathExclusivity = this.hsConfig.pathExclusivity
           ? getPath(other_layer.layer) == getPath(layer.layer)
           : true;
         if (
@@ -728,15 +698,15 @@ export class HsLayerManagerService {
    * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeBaseLayerVisibility($event = null, layer = null, app: string): void {
+  changeBaseLayerVisibility($event = null, layer = null): void {
     if (layer === null || layer.layer != undefined) {
-      if (this.apps[app].data.baselayersVisible == true) {
+      if (this.data.baselayersVisible == true) {
         //*NOTE Currently breaking base layer visibility when loading from composition with custom base layer to
         //other compositions without any base layer
         //*TODO Rewrite this loop hell to more readable code
         if ($event) {
-          //&& this.apps[app].data.baselayer != layer.title
-          for (const baseLayer of this.apps[app].data.baselayers) {
+          //&& this.data.baselayer != layer.title
+          for (const baseLayer of this.data.baselayers) {
             const isToggledLayer = baseLayer == layer;
             if (baseLayer.layer) {
               //Dont trigger change:visible event when isToggledLayer = false
@@ -749,8 +719,8 @@ export class HsLayerManagerService {
             }
           }
         } else {
-          this.apps[app].data.baselayersVisible = false;
-          for (const baseLayer of this.apps[app].data.baselayers) {
+          this.data.baselayersVisible = false;
+          for (const baseLayer of this.data.baselayers) {
             baseLayer.layer.setVisible(false);
             baseLayer.galleryMiniMenu = false;
           }
@@ -758,7 +728,7 @@ export class HsLayerManagerService {
       } else {
         if ($event) {
           layer.active = true;
-          for (const baseLayer of this.apps[app].data.baselayers) {
+          for (const baseLayer of this.data.baselayers) {
             const isToggledLayer = baseLayer == layer;
             if (isToggledLayer) {
               baseLayer.layer.setVisible(true);
@@ -767,16 +737,16 @@ export class HsLayerManagerService {
             baseLayer.visible = isToggledLayer;
           }
         } else {
-          for (const baseLayer of this.apps[app].data.baselayers) {
+          for (const baseLayer of this.data.baselayers) {
             if (baseLayer.visible == true) {
               baseLayer.layer.setVisible(true);
             }
           }
         }
-        this.apps[app].data.baselayersVisible = true;
+        this.data.baselayersVisible = true;
       }
     } else {
-      for (const baseLayer of this.apps[app].data.baselayers) {
+      for (const baseLayer of this.data.baselayers) {
         if (baseLayer.type != undefined && baseLayer.type == 'terrain') {
           baseLayer.visible = baseLayer == layer;
           baseLayer.active = baseLayer.visible;
@@ -791,16 +761,15 @@ export class HsLayerManagerService {
    * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeTerrainLayerVisibility($event, layer, app: string): void {
-    for (let i = 0; i < this.apps[app].data.terrainlayers.length; i++) {
+  changeTerrainLayerVisibility($event, layer): void {
+    for (let i = 0; i < this.data.terrainlayers.length; i++) {
       if (
-        this.apps[app].data.terrainlayers[i].type != undefined &&
-        this.apps[app].data.terrainlayers[i].type == 'terrain'
+        this.data.terrainlayers[i].type != undefined &&
+        this.data.terrainlayers[i].type == 'terrain'
       ) {
-        this.apps[app].data.terrainlayers[i].visible =
-          this.apps[app].data.terrainlayers[i] == layer;
-        this.apps[app].data.terrainlayers[i].active =
-          this.apps[app].data.terrainlayers[i].visible;
+        this.data.terrainlayers[i].visible =
+          this.data.terrainlayers[i] == layer;
+        this.data.terrainlayers[i].active = this.data.terrainlayers[i].visible;
       }
     }
     this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
@@ -812,10 +781,10 @@ export class HsLayerManagerService {
    * (PRIVATE)
    * @private
    */
-  removeAllLayers(app: string): void {
+  removeAllLayers(): void {
     const to_be_removed = [];
     this.hsMapService
-      .getMap(app)
+      .getMap()
       .getLayers()
       .forEach((lyr: Layer<Source>) => {
         if (getRemovable(lyr) == true) {
@@ -830,17 +799,17 @@ export class HsLayerManagerService {
         }
       });
     while (to_be_removed.length > 0) {
-      this.hsMapService.getMap(app).removeLayer(to_be_removed.shift());
+      this.hsMapService.getMap().removeLayer(to_be_removed.shift());
     }
-    this.hsDrawService.get(app).addedLayersRemoved = true;
-    this.hsDrawService.fillDrawableLayers(app);
+    this.hsDrawService.addedLayersRemoved = true;
+    this.hsDrawService.fillDrawableLayers();
   }
 
   /**
    * Show all layers of particular layer group (when groups are defined)
    * @param theme - Group layer to activate
    */
-  activateTheme(theme: Group, app: string): void {
+  activateTheme(theme: Group): void {
     let switchOn = true;
     if (getActive(theme) == true) {
       switchOn = false;
@@ -850,7 +819,7 @@ export class HsLayerManagerService {
     theme.setVisible(switchOn);
     for (const layer of theme.get('layers')) {
       if (getBase(layer) == true && !baseSwitched) {
-        this.changeBaseLayerVisibility(null, null, app);
+        this.changeBaseLayerVisibility(null, null);
         baseSwitched = true;
       } else if (getBase(layer) == true) {
         return;
@@ -864,7 +833,7 @@ export class HsLayerManagerService {
    * Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
    * @param layer - Layer which is being added
    */
-  loadingEvents(layer: HsLayerDescriptor, app: string): void {
+  loadingEvents(layer: HsLayerDescriptor): void {
     const olLayer = layer.layer;
     const source: any = olLayer.getSource();
     if (!source) {
@@ -884,12 +853,11 @@ export class HsLayerManagerService {
       source.on('propertychange', (event) => {
         if (event.key == 'loaded') {
           if (event.oldValue == false) {
-            this.hsEventBusService.layerLoads.next({layer: olLayer, app});
+            this.hsEventBusService.layerLoads.next(olLayer);
           } else {
             this.hsEventBusService.layerLoadings.next({
               layer: olLayer,
               progress: loadProgress,
-              app,
             });
           }
         }
@@ -905,38 +873,36 @@ export class HsLayerManagerService {
           }: ${this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS.ERROR',
             'someErrorHappened',
-            null,
-            app
+            null
           )}`,
-          {},
-          app
+          {}
         );
       });
     } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
       source.on('imageloadstart', (event) => {
         loadProgress.loadTotal += 1;
-        this.changeLoadCounter(olLayer, loadProgress, 1, app);
+        this.changeLoadCounter(olLayer, loadProgress, 1);
       });
       source.on('imageloadend', (event) => {
         loadProgress.error = false;
-        this.changeLoadCounter(olLayer, loadProgress, -1, app);
+        this.changeLoadCounter(olLayer, loadProgress, -1);
       });
       source.on('imageloaderror', (event) => {
         loadProgress.loaded = true;
         loadProgress.error = true;
-        this.hsEventBusService.layerLoads.next({layer: olLayer, app});
+        this.hsEventBusService.layerLoads.next(olLayer);
       });
     } else if (this.hsUtilsService.instOf(olLayer, Tile)) {
       source.on('tileloadstart', (event) => {
         loadProgress.loadTotal += 1;
-        this.changeLoadCounter(olLayer, loadProgress, 1, app);
+        this.changeLoadCounter(olLayer, loadProgress, 1);
       });
       source.on('tileloadend', (event) => {
         loadProgress.error = false;
-        this.changeLoadCounter(olLayer, loadProgress, -1, app);
+        this.changeLoadCounter(olLayer, loadProgress, -1);
       });
       source.on('tileloaderror', (event) => {
-        this.changeLoadCounter(olLayer, loadProgress, -1, app);
+        this.changeLoadCounter(olLayer, loadProgress, -1);
         loadProgress.loadError += 1;
         if (loadProgress.loadError == loadProgress.loadTotal) {
           loadProgress.error = true;
@@ -948,8 +914,7 @@ export class HsLayerManagerService {
   private changeLoadCounter(
     layer: Layer<Source>,
     progress: HsLayerLoadProgress,
-    change: number,
-    app: string
+    change: number
   ): void {
     progress.loadCounter += change;
     //No more tiles to load?
@@ -964,7 +929,7 @@ export class HsLayerManagerService {
         if (progress.loadCounter == 0) {
           this.zone.run(() => {
             progress.loadTotal = 0;
-            this.hsEventBusService.layerLoads.next({layer, app});
+            this.hsEventBusService.layerLoads.next(layer);
             progress.percents = 100;
           });
         }
@@ -980,12 +945,12 @@ export class HsLayerManagerService {
       );
     }
     progress.percents = percents;
-    this.hsEventBusService.layerLoadings.next({layer, progress, app});
+    this.hsEventBusService.layerLoadings.next({layer, progress});
     //Throttle updating UI a bit for many layers * many tiles
-    const delta = new Date().getTime() - this.apps[app].lastProgressUpdate;
+    const delta = new Date().getTime() - this.lastProgressUpdate;
     if (percents == 100 || delta > 1000) {
       this.zone.run(() => {
-        this.apps[app].lastProgressUpdate = new Date().getTime();
+        this.lastProgressUpdate = new Date().getTime();
       });
     }
   }
@@ -1005,9 +970,9 @@ export class HsLayerManagerService {
    * Test if layer (WMS) resolution is within map resolution interval
    * @param lyr - Selected layer
    */
-  isLayerInResolutionInterval(lyr: Layer<Source>, app): boolean {
-    const cur_res = this.hsMapService.getMap(app).getView().getResolution();
-    this.apps[app].currentResolution = cur_res;
+  isLayerInResolutionInterval(lyr: Layer<Source>): boolean {
+    const cur_res = this.hsMapService.getMap().getView().getResolution();
+    this.currentResolution = cur_res;
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
     );
@@ -1023,26 +988,25 @@ export class HsLayerManagerService {
   toggleLayerEditor(
     layer: HsLayerDescriptor,
     toToggle: string,
-    control: string,
-    app: string
+    control: string
   ): void {
     if (!getCachedCapabilities(layer.layer)) {
-      this.hsLayerManagerMetadata.fillMetadata(layer, app);
+      this.hsLayerManagerMetadata.fillMetadata(layer);
     }
 
     if (toToggle == 'sublayers' && layer.hasSublayers != true) {
       return;
     }
-    if (this.apps[app].currentLayer != layer) {
-      this.toggleCurrentLayer(layer, app);
-      if (this.apps[app].menuExpanded) {
-        this.apps[app].menuExpanded = false;
+    if (this.currentLayer != layer) {
+      this.toggleCurrentLayer(layer);
+      if (this.menuExpanded) {
+        this.menuExpanded = false;
       }
       layer[toToggle] = true;
     } else {
       layer[toToggle] = !layer[toToggle];
       if (!layer[control]) {
-        this.toggleCurrentLayer(layer, app);
+        this.toggleCurrentLayer(layer);
       }
     }
   }
@@ -1051,34 +1015,31 @@ export class HsLayerManagerService {
    * Opens detailed panel for manipulating selected layer and viewing metadata
    * @param layer - Selected layer to edit or view - Wrapped layer object
    */
-  toggleCurrentLayer(layer: HsLayerDescriptor, app: string): void | false {
-    if (this.apps[app].currentLayer == layer) {
+  toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
+    if (this.currentLayer == layer) {
       layer.sublayers = false;
       layer.settings = false;
-      this.apps[app].currentLayer = null;
-      this.updateGetParam(undefined, app);
+      this.currentLayer = null;
+      this.updateGetParam(undefined);
     } else {
-      this.setCurrentLayer(layer, app);
+      this.setCurrentLayer(layer);
       return false;
     }
   }
 
-  setCurrentLayer(layer: HsLayerDescriptor, app: string): boolean {
+  setCurrentLayer(layer: HsLayerDescriptor): boolean {
     try {
-      this.apps[app].currentLayer = layer;
-      this.updateGetParam(layer.title, app);
+      this.currentLayer = layer;
+      this.updateGetParam(layer.title);
       if (!layer.checkedSubLayers) {
         layer.checkedSubLayers = {};
         layer.withChildren = {};
       }
-      this.hsLayerSelectorService.select(layer, app);
+      this.hsLayerSelectorService.select(layer);
       if (this.hsUtilsService.runningInBrowser()) {
         const layerNode = document.getElementById(layer.idString());
-        if (layerNode && this.apps[app].layerEditorElement) {
-          this.hsUtilsService.insertAfter(
-            this.apps[app].layerEditorElement,
-            layerNode
-          );
+        if (layerNode && this.layerEditorElement) {
+          this.hsUtilsService.insertAfter(this.layerEditorElement, layerNode);
         }
       }
       return false;
@@ -1087,20 +1048,20 @@ export class HsLayerManagerService {
     }
   }
 
-  private updateGetParam(title: string, app: string) {
+  private updateGetParam(title: string) {
     const t = {};
     t[HS_PRMS.layerSelected] = title;
-    this.hsShareUrlService.updateCustomParams(t, app);
+    this.hsShareUrlService.updateCustomParams(t);
   }
 
   /**
    * Makes layer greyscale
    * @param layer - Selected layer (currentLayer)
    */
-  setGreyscale(layer: HsLayerDescriptor, app): void {
-    const layerContainer = this.hsLayoutService.apps[
-      app
-    ].contentWrapper.querySelector('.ol-layers > div:first-child');
+  setGreyscale(layer: HsLayerDescriptor): void {
+    const layerContainer = this.hsLayoutService.contentWrapper.querySelector(
+      '.ol-layers > div:first-child'
+    );
     if (layerContainer.classList.contains('hs-greyscale')) {
       layerContainer.classList.remove('hs-greyscale');
       setGreyscale(layer.layer, false);
@@ -1117,98 +1078,53 @@ export class HsLayerManagerService {
     }, 0);
   }
 
-  sortFoldersByZ(app: string): void {
-    this.apps[app].data.folders.sub_folders.sort(
+  sortFoldersByZ(): void {
+    this.data.folders.sub_folders.sort(
       (a, b) =>
         (a.zIndex < b.zIndex ? -1 : a.zIndex > b.zIndex ? 1 : 0) *
-        (this.hsConfig.get(app).reverseLayerList ?? true ? -1 : 1)
+        (this.hsConfig.reverseLayerList ?? true ? -1 : 1)
     );
   }
 
   /**
-   * Initialization of needed controllers, run when map object is available
-   * (PRIVATE)
-   * @private
+   * UnBind event listeners created when layermanager component is created
+   * Event handlers are stored in service so they are accessible but shoul be managed
+   * by lifecycle of component
    */
-  async init(app: string): Promise<void> {
-    await this.hsMapService.loaded(app);
-    this.apps[app].map = this.hsMapService.getMap(app);
-    const appRef = this.apps[app];
-    for (const lyr of this.hsMapService.getMap(app).getLayers().getArray()) {
-      this.applyZIndex(lyr as Layer<Source>, app);
-      await this.layerAdded(
-        {
-          element: lyr as Layer<Source>,
-        },
-        app,
-        true
-      );
-    }
-    this.sortFoldersByZ(app);
-    this.sortLayersByZ(appRef.data.layers, app);
-    this.hsEventBusService.layerManagerUpdates.next({layer: null, app});
-    this.toggleEditLayerByUrlParam(app);
-    this.boxLayersInit(app);
-
-    appRef.changeResolutionHandler = appRef.map.getView().on(
-      'change:resolution',
-      this.hsUtilsService.debounce(
-        (e) => this.resolutionChangeDebounceCallback(app),
-        200,
-        false,
-        this
-      )
-    );
-
-    appRef.addLayerHandler = appRef.map.getLayers().on('add', (e) => {
-      this.applyZIndex(e.element, app, true);
-      if (getShowInLayerManager(e.element) == false) {
-        return;
-      }
-      this.layerAdded(e, app);
-    });
-    appRef.removeLayerHandler = appRef.map
-      .getLayers()
-      .on('remove', (e) => this.layerRemoved(e, app));
+  destroy(): void {
+    unByKey(this.changeResolutionHandler);
+    unByKey(this.addLayerHandler);
+    unByKey(this.removeLayerHandler);
   }
 
-  destroy(app: string): void {
-    const appRef = this.apps[app];
-    unByKey(appRef.changeResolutionHandler);
-    unByKey(appRef.addLayerHandler);
-    unByKey(appRef.removeLayerHandler);
-    delete this.apps[app];
-  }
-
-  private resolutionChangeDebounceCallback(app): void {
+  resolutionChangeDebounceCallback(): void {
     setTimeout(() => {
-      for (let i = 0; i < this.apps[app].data.layers.length; i++) {
+      for (let i = 0; i < this.data.layers.length; i++) {
         const tmp = !this.isLayerInResolutionInterval(
-          this.apps[app].data.layers[i].layer,
-          app
+          this.data.layers[i].layer
         );
-        if (this.apps[app].data.layers[i].grayed != tmp) {
-          this.apps[app].data.layers[i].grayed = tmp;
+        if (this.data.layers[i].grayed != tmp) {
+          this.data.layers[i].grayed = tmp;
         }
       }
-      this.apps[app].timer = null;
+      this.timer = null;
     }, 250);
   }
 
   /**
    * Opens editor for layer specified in 'hs-layer-selected' url parameter
    */
-  private toggleEditLayerByUrlParam(app: string) {
+  private toggleEditLayerByUrlParam() {
     const layerTitle = this.hsShareUrlService.getParamValue(
       HS_PRMS.layerSelected
     );
     if (layerTitle != undefined) {
       setTimeout(() => {
-        const layerFound = this.apps[app].data.layers.find(
+        const layerFound = this.data.layers.find(
           (layer) => layer.title == layerTitle
         );
         if (layerFound !== undefined) {
-          this.toggleLayerEditor(layerFound, 'settings', 'sublayers', app);
+          this.toggleLayerEditor(layerFound, 'settings', 'sublayers');
           this.hsEventBusService.layerSelectedFromUrl.next(layerFound.layer);
         }
       }, 500);
@@ -1219,16 +1135,16 @@ export class HsLayerManagerService {
    * Sets zIndex of layer being added to be the highest among layers in same path
    * @param layer - layer being added
    */
-  private setPathMaxZIndex(layer: Layer<Source>, app: string): void {
+  private setPathMaxZIndex(layer: Layer<Source>): void {
     let pathLayers;
     if (getBase(layer)) {
-      pathLayers = this.apps[app].data.baselayers;
+      pathLayers = this.data.baselayers;
     } else {
       let path = getPath(layer);
       //If not set it'll be assigned inside populateFolders function as 'other'
       path = path ? path : 'other';
 
-      pathLayers = this.apps[app].data.layers.filter(
+      pathLayers = this.data.layers.filter(
         (layer) => getPath(layer.layer) == path
       );
     }
@@ -1241,7 +1157,7 @@ export class HsLayerManagerService {
 
       layer.setZIndex(maxPathZIndex + 1);
       //Increase zIndex of the layer that are supposed to be rendered above inserted
-      for (const lyr of this.apps[app].data.layers.filter(
+      for (const lyr of this.data.layers.filter(
         (lyr) => lyr.layer.getZIndex() >= layer.getZIndex()
       )) {
         lyr.layer.setZIndex(lyr.layer.getZIndex() + 1);
@@ -1255,24 +1171,23 @@ export class HsLayerManagerService {
    * @param asCallback - Whether the function is called directly or as a callback of add layer event.
    * No need to run each layer through setPathMaxZIndex on init
    */
-  applyZIndex(layer: Layer<Source>, app: string, asCallback?: boolean): void {
+  applyZIndex(layer: Layer<Source>, asCallback?: boolean): void {
     if (asCallback && getShowInLayerManager(layer) !== false) {
-      this.setPathMaxZIndex(layer, app);
+      this.setPathMaxZIndex(layer);
     }
 
     if (layer.getZIndex() == undefined) {
-      layer.setZIndex(this.apps[app].zIndexValue++);
+      layer.setZIndex(this.zIndexValue++);
     } else {
-      this.apps[app].zIndexValue++;
+      this.zIndexValue++;
     }
   }
 
-  makeSafeAndTranslate(group: string, input: string, app: string): SafeHtml {
+  makeSafeAndTranslate(group: string, input: string): SafeHtml {
     const translation = this.hsLanguageService.getTranslationIgnoreNonExisting(
       group,
       input,
-      undefined,
-      app
+      undefined
     );
     if (translation) {
       return this.sanitizer.bypassSecurityTrustHtml(translation);
@@ -1281,10 +1196,10 @@ export class HsLayerManagerService {
     }
   }
 
-  expandFilter(layer: HsLayerDescriptor, value, app: string): void {
+  expandFilter(layer: HsLayerDescriptor, value): void {
     layer.expandFilter = value;
-    this.apps[app].currentLayer = layer;
-    this.hsLayerSelectorService.select(layer, app);
+    this.currentLayer = layer;
+    this.hsLayerSelectorService.select(layer);
   }
 
   expandInfo(layer: HsLayerDescriptor, value): void {
@@ -1295,9 +1210,9 @@ export class HsLayerManagerService {
     Generates downloadable geoJSON for vector layer.
     Features are also transformed into the EPSG:4326 projection
   */
-  saveGeoJson(app): void {
+  saveGeoJson(): void {
     const geojsonParser = new GeoJSON();
-    const olLayer = this.apps[app].currentLayer.layer;
+    const olLayer = this.currentLayer.layer;
     const geojson = geojsonParser.writeFeatures(
       (this.hsLayerUtilsService.isLayerClustered(olLayer)
         ? (olLayer.getSource() as Cluster).getSource()
@@ -1305,7 +1220,7 @@ export class HsLayerManagerService {
       ).getFeatures(),
       {
         dataProjection: 'EPSG:4326',
-        featureProjection: this.hsMapService.getCurrentProj(app),
+        featureProjection: this.hsMapService.getCurrentProj(),
       }
     );
     const file = new Blob([geojson], {type: 'application/json'});
@@ -1313,7 +1228,7 @@ export class HsLayerManagerService {
     const a = document.createElement('a'),
       url = URL.createObjectURL(file);
     a.href = url;
-    a.download = getTitle(this.apps[app].currentLayer.layer).replace(/\s/g, '');
+    a.download = getTitle(this.currentLayer.layer).replace(/\s/g, '');
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
@@ -1325,50 +1240,35 @@ export class HsLayerManagerService {
   /*
     Creates a copy of the currentLayer
   */
-  async copyLayer(newTitle: string, app: string): Promise<void> {
-    const copyTitle = this.createCopyTitle(newTitle, app);
-    if (
-      this.hsLayerUtilsService.isLayerVectorLayer(
-        this.apps[app].currentLayer.layer
-      )
-    ) {
-      this.copyVectorLayer(copyTitle, app);
+  async copyLayer(newTitle: string): Promise<void> {
+    const copyTitle = this.createCopyTitle(newTitle);
+    if (this.hsLayerUtilsService.isLayerVectorLayer(this.currentLayer.layer)) {
+      this.copyVectorLayer(copyTitle);
     } else {
-      const url = this.hsLayerUtilsService.getURL(
-        this.apps[app].currentLayer.layer
-      );
-      let name = getCachedCapabilities(this.apps[app].currentLayer.layer)?.Name;
+      const url = this.hsLayerUtilsService.getURL(this.currentLayer.layer);
+      let name = getCachedCapabilities(this.currentLayer.layer)?.Name;
       if (!name || typeof name === 'number') {
-        name = getName(this.apps[app].currentLayer.layer);
+        name = getName(this.currentLayer.layer);
       }
-      const layerCopy = await this.hsAddDataOwsService.connectToOWS(
-        {
-          type: this.getLayerSourceType(
-            this.apps[app].currentLayer.layer
-          ).toLowerCase(),
-          uri: url,
-          layer: name,
-          getOnly: true,
-        },
-        app
-      );
+      const layerCopy = await this.hsAddDataOwsService.connectToOWS({
+        type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
+        uri: url,
+        layer: name,
+        getOnly: true,
+      });
       if (layerCopy[0]) {
-        layerCopy[0].setProperties(
-          this.apps[app].currentLayer.layer.getProperties()
-        );
+        layerCopy[0].setProperties(this.currentLayer.layer.getProperties());
         setTitle(layerCopy[0], copyTitle);
         //Currently ticked sub-layers are stored in LAYERS
         const subLayers = this.hsLayerUtilsService.getLayerParams(
-          this.apps[app].currentLayer.layer
+          this.currentLayer.layer
         )?.LAYERS;
         if (subLayers) {
           setSubLayers(layerCopy[0], subLayers);
         }
         this.hsLayerUtilsService.updateLayerParams(
           layerCopy[0],
-          this.hsLayerUtilsService.getLayerParams(
-            this.apps[app].currentLayer.layer
-          )
+          this.hsLayerUtilsService.getLayerParams(this.currentLayer.layer)
         );
         // We don't want the default styles to be set which add-data panel does.
         // Otherwise they won't be cleared if the original layer has undefined STYLES
@@ -1376,9 +1276,9 @@ export class HsLayerManagerService {
         this.hsLayerUtilsService.updateLayerParams(layerCopy[0], {
           STYLES: null,
           //Object.assign will ignore it if origLayers is undefined.
-          LAYERS: getOrigLayers(this.apps[app].currentLayer.layer),
+          LAYERS: getOrigLayers(this.currentLayer.layer),
         });
-        this.hsMapService.getMap(app).addLayer(layerCopy[0]);
+        this.hsMapService.getMap().addLayer(layerCopy[0]);
       }
     }
   }
@@ -1386,48 +1286,44 @@ export class HsLayerManagerService {
   /*
     Creates a copy of the currentLayer if it is a vector layer
   */
-  copyVectorLayer(newTitle: string, app: string): void {
+  copyVectorLayer(newTitle: string): void {
     let features;
-    if (
-      this.hsLayerUtilsService.isLayerClustered(
-        this.apps[app].currentLayer.layer
-      )
-    ) {
-      features = (this.apps[app].currentLayer.layer.getSource() as Cluster)
+    if (this.hsLayerUtilsService.isLayerClustered(this.currentLayer.layer)) {
+      features = (this.currentLayer.layer.getSource() as Cluster)
         .getSource()
         ?.getFeatures();
     } else {
       features = (
-        this.apps[app].currentLayer.layer.getSource() as VectorSource<Geometry>
+        this.currentLayer.layer.getSource() as VectorSource<Geometry>
       )?.getFeatures();
     }
 
     const copiedLayer = new VectorLayer({
-      properties: this.apps[app].currentLayer.layer.getProperties(),
+      properties: this.currentLayer.layer.getProperties(),
       source: new VectorSource({
         features,
       }),
       style: (
-        this.apps[app].currentLayer.layer as VectorLayer<VectorSource<Geometry>>
+        this.currentLayer.layer as VectorLayer<VectorSource<Geometry>>
       ).getStyle(),
     });
     setTitle(copiedLayer, newTitle);
-    setName(copiedLayer, getName(this.apps[app].currentLayer.layer));
-    this.hsMapService.addLayer(copiedLayer, app);
+    setName(copiedLayer, getName(this.currentLayer.layer));
+    this.hsMapService.addLayer(copiedLayer);
   }
 
   /*
     Creates a new title for the copied layer
   */
-  createCopyTitle(newTitle: string, app: string): string {
-    const layerName = getName(this.apps[app].currentLayer.layer);
-    let copyTitle = getTitle(this.apps[app].currentLayer.layer);
+  createCopyTitle(newTitle: string): string {
+    const layerName = getName(this.currentLayer.layer);
+    let copyTitle = getTitle(this.currentLayer.layer);
     let numb = 0;
     if (newTitle && newTitle !== copyTitle) {
       copyTitle = newTitle;
     } else {
       const layerCopies = this.hsMapService
-        .getLayersArray(app)
+        .getLayersArray()
         .filter((l) => getName(l) == layerName);
       numb = layerCopies !== undefined ? layerCopies.length : 0;
       copyTitle = copyTitle.replace(/\([0-9]\)/g, '').trimEnd();

@@ -24,7 +24,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;
-  @Input() app = 'default';
+
   unregisterMapSyncCenterHandlerSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
@@ -40,21 +40,21 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       });
   }
   ngAfterViewInit(): void {
-    const appConfig = this.HsConfig.get(this.app);
-    const mapRef = this.HsMapService.get(this.app);
     const visibleLayersParam = this.HsShareUrlService.getParamValue(
       HS_PRMS.visibleLayers
     );
-    mapRef.permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
-    mapRef.externalCompositionId =
+    this.HsMapService.permalink = this.HsShareUrlService.getParamValue(
+      HS_PRMS.permalink
+    );
+    this.HsMapService.externalCompositionId =
       this.HsShareUrlService.getParamValue(HS_PRMS.composition) ||
-      appConfig.defaultComposition;
+      this.HsConfig.defaultComposition;
 
     if (visibleLayersParam) {
-      mapRef.visibleLayersInUrl = visibleLayersParam.split(';');
+      this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
     this.zone.runOutsideAngular(() =>
-      this.HsMapService.init(this.map.nativeElement, this.app)
+      this.HsMapService.init(this.map.nativeElement)
     );
     const pos = this.HsShareUrlService.getParamValues([
       HS_PRMS.x,
@@ -65,17 +65,16 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       this.HsMapService.moveToAndZoom(
         parseFloat(pos[HS_PRMS.x]),
         parseFloat(pos[HS_PRMS.y]),
-        parseInt(pos[HS_PRMS.zoom]),
-        this.app
+        parseInt(pos[HS_PRMS.zoom])
       );
     }
     if (
       this.HsShareUrlService.getParamValue(HS_PRMS.pureMap) ||
-      appConfig.pureMap == true
+      this.HsConfig.pureMap == true
     ) {
-      this.HsCoreService.setPuremapApp(true, this.app);
+      this.HsCoreService.setPuremapApp(true);
     }
-    this.HsMapService.getMap(this.app).updateSize();
+    this.HsMapService.getMap().updateSize();
   }
 
   ngOnDestroy(): void {
@@ -87,24 +86,17 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
    * synchronize center and resolution between Ol and Cesium maps
    */
   onCenterSync(data?) {
-    if (this.app == data.app) {
-      const center = data.center;
-      if (!center) {
-        return;
-      }
-      const toProj = this.HsMapService.getCurrentProj(data.app);
-      const transformed = transform(
-        [center[0], center[1]],
-        'EPSG:4326',
-        toProj
-      );
-      this.HsMapService.moveToAndZoom(
-        transformed[0],
-        transformed[1],
-        this.zoomForResolution(center[2]),
-        this.app
-      );
+    const center = data.center;
+    if (!center) {
+      return;
     }
+    const toProj = this.HsMapService.getCurrentProj();
+    const transformed = transform([center[0], center[1]], 'EPSG:4326', toProj);
+    this.HsMapService.moveToAndZoom(
+      transformed[0],
+      transformed[1],
+      this.zoomForResolution(center[2])
+    );
   }
 
   /**

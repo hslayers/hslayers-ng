@@ -52,7 +52,10 @@ import {
 import {getHighlighted} from '../../common/feature-extensions';
 import {parseStyle} from './backwards-compatibility';
 
-class HsStylerParams {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsStylerService {
   layer: VectorLayer<VectorSource<Geometry>> = null;
   layerBeingMonitored: boolean;
   onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
@@ -71,15 +74,6 @@ class HsStylerParams {
   changesStore = new Map<string, {sld: string; qml: string}>();
   syncing = false;
   sldVersion: SldVersion = '1.0.0';
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HsStylerService {
-  apps: {
-    [id: string]: HsStylerParams;
-  } = {default: new HsStylerParams()};
 
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
@@ -94,27 +88,15 @@ export class HsStylerService {
     private hsConfig: HsConfig,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerSynchronizerService: HsLayerSynchronizerService
-  ) {}
-
-  get(app: string): HsStylerParams {
-    if (this.apps[app ?? ''] == undefined) {
-      this.apps[app ?? 'default'] = new HsStylerParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-
-  async init(app: string): Promise<void> {
-    const appRef = this.get(app);
-    const configRef = this.hsConfig.get(app);
-    await this.hsMapService.loaded(app);
-    appRef.pin_white_blue = new Style({
+  ) {
+    this.pin_white_blue = new Style({
       image: new Icon({
-        src: configRef.assetsPath + 'img/pin_white_blue32.png',
+        src: this.hsConfig.assetsPath + 'img/pin_white_blue32.png',
         crossOrigin: 'anonymous',
         anchor: [0.5, 1],
       }),
     });
-    appRef.pin_white_blue_highlight = (
+    this.pin_white_blue_highlight = (
       feature: Feature<Geometry>,
       resolution
     ): Array<Style> => {
@@ -122,7 +104,7 @@ export class HsStylerService {
         new Style({
           image: new Icon({
             src:
-              configRef.assetsPath + getHighlighted(feature)
+              this.hsConfig.assetsPath + getHighlighted(feature)
                 ? 'img/pin_white_red32.png'
                 : 'img/pin_white_blue32.png',
             crossOrigin: 'anonymous',
@@ -131,26 +113,28 @@ export class HsStylerService {
         }),
       ];
     };
-    for (const layer of this.hsMapService
-      .getLayersArray(app)
-      .filter((layer) => this.hsLayerUtilsService.isLayerVectorLayer(layer))) {
-      this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>, app);
-    }
-    this.hsEventBusService.layerAdditions.subscribe(
-      (layerDescriptor: HsLayerDescriptor) => {
+
+    this.hsCommonLaymanService.authChange.subscribe((endpoint) => {
+      this.isAuthenticated = endpoint?.authenticated;
+    });
+
+    this.hsMapService.loaded().then((map) => {
+      for (const layer of this.hsMapService
+        .getLayersArray()
+        .filter((layer) =>
+          this.hsLayerUtilsService.isLayerVectorLayer(layer)
+        )) {
+        this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
+      }
+      this.hsEventBusService.layerAdditions.subscribe((layerDescriptor) => {
         if (
           this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
           this.initLayerStyle(
-            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>,
-            app
+            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>
           );
         }
-      }
-    );
-
-    this.hsCommonLaymanService.authChange.subscribe(({endpoint}) => {
-      appRef.isAuthenticated = endpoint?.authenticated;
+      });
     });
   }
 
@@ -188,14 +172,12 @@ export class HsStylerService {
    * @param layer - Any vector layer
    */
   async styleClusteredLayer(
-    layer: VectorLayer<VectorSource<Geometry>>,
-    app: string
+    layer: VectorLayer<VectorSource<Geometry>>
   ): Promise<void> {
-    const appRef = this.get(app);
-    await this.fill(layer, app);
+    await this.fill(layer);
     //Check if layer already has SLD style for clusters
     if (
-      !appRef.styleObject.rules.find((r) => {
+      !this.styleObject.rules.find((r) => {
         try {
           /* 
           For clusters SLD styles created by Hslayers have 'AND' rule where the 
@@ -215,18 +197,18 @@ export class HsStylerService {
         ['==', 'features', 'undefined'],
         ['==', 'features', '[object Object]'],
       ];
-      for (const rule of appRef.styleObject.rules) {
+      for (const rule of this.styleObject.rules) {
         // Set filter so the original style is applied to features which are not clusters
         rule.filter =
           rule.filter?.length > 0
             ? ['&&', [...singleFeatureFilter], rule.filter]
             : [...singleFeatureFilter];
       }
-      await this.addRule('Cluster', app);
+      await this.addRule('Cluster');
     }
     let style = layer.getStyle();
     if (
-      this.hsUtilsService.instOf(appRef.layer.getSource(), Cluster) &&
+      this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
       this.hsUtilsService.isFunction(style)
     ) {
       style = this.wrapStyleForClusters(style as StyleFunction);
@@ -242,8 +224,7 @@ export class HsStylerService {
    * @param layer - OL layer to fill the missing style info
    */
   async initLayerStyle(
-    layer: VectorLayer<VectorSource<Geometry>>,
-    app: string
+    layer: VectorLayer<VectorSource<Geometry>>
   ): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
@@ -256,12 +237,12 @@ export class HsStylerService {
       setSld(layer, defaultStyle);
     }
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
-      style = (await this.parseStyle(sld ?? qml, app)).style;
+      style = (await this.parseStyle(sld ?? qml)).style;
       if (style) {
         layer.setStyle(style);
       }
       if (getCluster(layer)) {
-        await this.styleClusteredLayer(layer, app);
+        await this.styleClusteredLayer(layer);
       }
     } else if (
       style &&
@@ -270,17 +251,14 @@ export class HsStylerService {
       !this.hsUtilsService.isFunction(style) &&
       !Array.isArray(style)
     ) {
-      const customJson = this.hsSaveMapService.serializeStyle(
-        style as Style,
-        app
-      );
-      const sld = (await this.parseStyle(customJson, app)).sld;
+      const customJson = this.hsSaveMapService.serializeStyle(style as Style);
+      const sld = (await this.parseStyle(customJson)).sld;
       if (sld) {
         setSld(layer, sld);
       }
     }
-    this.get(app).sld = sld;
-    this.get(app).qml = qml;
+    this.sld = sld;
+    this.qml = qml;
   }
 
   /**
@@ -290,8 +268,7 @@ export class HsStylerService {
    * @returns OL style object
    */
   async parseStyle(
-    style: any,
-    app: string
+    style: any
   ): Promise<{sld?: string; qml?: string; style: StyleLike}> {
     if (!style) {
       return {
@@ -303,7 +280,7 @@ export class HsStylerService {
     if (styleType == 'sld') {
       return {sld: style, style: await this.sldToOlStyle(style)};
     } else if (styleType == 'qml') {
-      return {qml: style, style: await this.qmlToOlStyle(style, app)};
+      return {qml: style, style: await this.qmlToOlStyle(style)};
     } else if (
       typeof style == 'object' &&
       !this.hsUtilsService.instOf(style, Style)
@@ -332,42 +309,38 @@ export class HsStylerService {
    *
    * @param layer - OL layer
    */
-  async fill(
-    layer: VectorLayer<VectorSource<Geometry>>,
-    app: string
-  ): Promise<void> {
-    const appRef = this.get(app);
+  async fill(layer: VectorLayer<VectorSource<Geometry>>): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};
     try {
       if (!layer) {
         return;
       }
-      appRef.layer = layer;
-      appRef.layerBeingMonitored =
+      this.layer = layer;
+      this.layerBeingMonitored =
         !!this.hsLayerSynchronizerService.syncedLayers.find((l) => l == layer);
-      appRef.unsavedChange = appRef.changesStore.has(getUid(layer));
-      appRef.layerTitle = getTitle(layer);
-      const {sld, qml} = appRef.unsavedChange
-        ? appRef.changesStore.get(getUid(layer))
+      this.unsavedChange = this.changesStore.has(getUid(layer));
+      this.layerTitle = getTitle(layer);
+      const {sld, qml} = this.unsavedChange
+        ? this.changesStore.get(getUid(layer))
         : {sld: getSld(layer), qml: getQml(layer)};
       if (sld != undefined) {
-        appRef.styleObject = await this.sldToJson(sld);
-        this.get(app).sldVersion = this.guessSldVersion(sld);
+        this.styleObject = await this.sldToJson(sld);
+        this.sldVersion = this.guessSldVersion(sld);
       } else if (qml != undefined) {
-        appRef.styleObject = await this.qmlToJson(qml, app);
+        this.styleObject = await this.qmlToJson(qml);
         //Note: https://github.com/hslayers/hslayers-ng/issues/3431
       } else {
-        appRef.styleObject = blankStyleObj;
+        this.styleObject = blankStyleObj;
       }
-      this.fixSymbolizerBugs(appRef.styleObject);
-      this.geostylerWorkaround(app);
-      if (appRef.unsavedChange) {
-        //Update appRef.sld string in case styler for layer with unsaved changes was opened.
+      this.fixSymbolizerBugs(this.styleObject);
+      this.geostylerWorkaround();
+      if (this.unsavedChange) {
+        //Update this.sld string in case styler for layer with unsaved changes was opened.
         //Could have been changed by styling other layer in the meantime
-        this.save(app);
+        this.save();
       }
     } catch (ex) {
-      appRef.styleObject = blankStyleObj;
+      this.styleObject = blankStyleObj;
       this.hsLogService.error(ex.message);
     }
   }
@@ -391,10 +364,9 @@ export class HsStylerService {
    * Tweak geostyler object attributes to mitigate
    * some discrepancies between opacity and fillOpacity usage
    */
-  geostylerWorkaround(app: string): void {
-    const appRef = this.get(app);
-    if (appRef.styleObject.rules) {
-      for (const rule of appRef.styleObject.rules) {
+  geostylerWorkaround(): void {
+    if (this.styleObject.rules) {
+      for (const rule of this.styleObject.rules) {
         if (rule.symbolizers) {
           for (const symbol of rule.symbolizers.filter(
             (symb) => symb.kind == 'Fill'
@@ -422,9 +394,9 @@ export class HsStylerService {
   /**
    * Convert QML to OL style object
    */
-  async qmlToOlStyle(qml: string, app: string): Promise<StyleLike> {
+  async qmlToOlStyle(qml: string): Promise<StyleLike> {
     try {
-      const styleObject = await this.qmlToJson(qml, app);
+      const styleObject = await this.qmlToJson(qml);
       this.fixSymbolizerBugs(styleObject);
       return await this.geoStylerStyleToOlStyle(styleObject);
     } catch (ex) {
@@ -474,8 +446,8 @@ export class HsStylerService {
    * @param qml -
    * @returns
    */
-  async qmlToJson(qml: string, app: string): Promise<GeoStylerStyle> {
-    const result = await this.get(app).qmlParser.readStyle(qml);
+  async qmlToJson(qml: string): Promise<GeoStylerStyle> {
+    const result = await this.qmlParser.readStyle(qml);
     if (result.output) {
       return result.output;
     } else {
@@ -483,11 +455,8 @@ export class HsStylerService {
     }
   }
 
-  private async jsonToSld(
-    styleObject: GeoStylerStyle,
-    app: string
-  ): Promise<string> {
-    const sldParser = new SLDParser({sldVersion: this.get(app).sldVersion});
+  private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
+    const sldParser = new SLDParser({sldVersion: this.sldVersion});
     const {output: sld} = await sldParser.writeStyle(styleObject);
     return sld;
   }
@@ -500,7 +469,7 @@ export class HsStylerService {
       | 'ByFilterAndScale'
       | 'Cluster'
       | 'ColorMap',
-    app: string,
+
     options?: {
       min?: number;
       max?: number;
@@ -508,7 +477,6 @@ export class HsStylerService {
       attribute?: string;
     }
   ): Promise<void> {
-    const appRef = this.get(app);
     switch (kind) {
       case 'ColorMap':
         const colors = colormap({
@@ -518,7 +486,7 @@ export class HsStylerService {
           alpha: 1,
         });
         const step = (options.max - options.min) / 10.0;
-        appRef.styleObject.rules = colors.map((color) => {
+        this.styleObject.rules = colors.map((color) => {
           const ix = colors.indexOf(color);
           const from = options.min + ix * step;
           const till = options.min + (ix + 1) * step;
@@ -551,7 +519,7 @@ export class HsStylerService {
         });
         break;
       case 'Cluster':
-        appRef.styleObject.rules.push({
+        this.styleObject.rules.push({
           name: 'Cluster rule',
           filter: [
             '&&',
@@ -581,18 +549,17 @@ export class HsStylerService {
         break;
       case 'Simple':
       default:
-        appRef.styleObject.rules.push({
+        this.styleObject.rules.push({
           name: 'Untitled rule',
           symbolizers: [],
         });
     }
-    await this.save(app);
+    await this.save();
   }
 
-  async removeRule(rule: Rule, app: string): Promise<void> {
-    const appRef = this.get(app);
-    appRef.styleObject.rules.splice(appRef.styleObject.rules.indexOf(rule), 1);
-    await this.save(app);
+  async removeRule(rule: Rule): Promise<void> {
+    this.styleObject.rules.splice(this.styleObject.rules.indexOf(rule), 1);
+    await this.save();
   }
 
   encodeTob64(str: string): string {
@@ -617,55 +584,54 @@ export class HsStylerService {
    * Checks whether SLD/QML should be indicated or saved right away.
    * Indicate only when user is logged in Layman and layer is being monitored otherwise save
    */
-  resolveSldChange(appRef: HsStylerParams, app: string) {
-    if (appRef.isAuthenticated && appRef.layerBeingMonitored) {
-      appRef.changesStore.set(getUid(appRef.layer), {
-        sld: appRef.sld,
-        qml: appRef.qml,
+  resolveSldChange() {
+    if (this.isAuthenticated && this.layerBeingMonitored) {
+      this.changesStore.set(getUid(this.layer), {
+        sld: this.sld,
+        qml: this.qml,
       });
-      appRef.unsavedChange = true;
+      this.unsavedChange = true;
     } else {
-      this.setSldQml(app);
+      this.setSldQml();
     }
   }
 
   /**Set SLD/QML parameter of layer*/
-  setSldQml(app: string) {
-    const appRef = this.get(app);
-    setSld(appRef.layer, appRef.sld);
-    setQml(appRef.layer, appRef.qml);
-    appRef.changesStore.delete(getUid(appRef.layer));
+  setSldQml() {
+    setSld(this.layer, this.sld);
+    setQml(this.layer, this.qml);
+    this.changesStore.delete(getUid(this.layer));
+    this.unsavedChange = false;
+    this.syncing = true;
 
-    appRef.syncing = true;
-    awaitLayerSync(appRef.layer).then(() => {
-      appRef.syncing = false;
-      appRef.unsavedChange = false;
+    awaitLayerSync(this.layer).then(() => {
+      this.syncing = false;
+      this.unsavedChange = false;
     });
   }
 
-  async save(app: string): Promise<void> {
+  async save(): Promise<void> {
     try {
-      const appRef = this.get(app);
       let style: Style | Style[] | StyleFunction =
-        await this.geoStylerStyleToOlStyle(appRef.styleObject);
-      if (appRef.styleObject.rules.length == 0) {
-        this.hsLogService.warn('Missing style rules for layer', appRef.layer);
+        await this.geoStylerStyleToOlStyle(this.styleObject);
+      if (this.styleObject.rules.length == 0) {
+        this.hsLogService.warn('Missing style rules for layer', this.layer);
         style = createDefaultStyle;
       }
       /* style is a function when text symbolizer is used. We need some hacking 
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
       if (
-        this.hsUtilsService.instOf(appRef.layer.getSource(), Cluster) &&
+        this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
         this.hsUtilsService.isFunction(style)
       ) {
         style = this.wrapStyleForClusters(style as StyleFunction);
       }
-      appRef.layer.setStyle(style);
-      const sld = await this.jsonToSld(appRef.styleObject, app);
-      appRef.sld = sld;
-      this.resolveSldChange(appRef, app);
-      appRef.onSet.next(appRef.layer);
+      this.layer.setStyle(style);
+      const sld = await this.jsonToSld(this.styleObject);
+      this.sld = sld;
+      this.resolveSldChange();
+      this.onSet.next(this.layer);
     } catch (ex) {
       this.hsLogService.error(ex);
     }
@@ -706,38 +672,35 @@ export class HsStylerService {
     };
   }
 
-  async reset(app: string): Promise<void> {
-    const appRef = this.get(app);
-    setSld(appRef.layer, undefined);
-    appRef.layer.setStyle(createDefaultStyle);
-    await this.initLayerStyle(appRef.layer, app);
-    await this.fill(appRef.layer, app);
-    await this.save(app);
+  async reset(): Promise<void> {
+    setSld(this.layer, undefined);
+    this.layer.setStyle(createDefaultStyle);
+    await this.initLayerStyle(this.layer);
+    await this.fill(this.layer);
+    await this.save();
   }
 
   /**
    * Load style in SLD/QML and set it to current layer
    * @param styleString
-   * @param app
    */
-  async loadStyle(styleString: string, app: string): Promise<void> {
+  async loadStyle(styleString: string): Promise<void> {
     try {
-      const appRef = this.get(app);
       const styleFmt = this.guessStyleFormat(styleString);
       if (styleFmt == 'sld') {
         const sldParser = new SLDParser({
           sldVersion: this.guessSldVersion(styleString),
         });
         await sldParser.readStyle(styleString);
-        setQml(appRef.layer, undefined);
-        setSld(appRef.layer, styleString);
+        setQml(this.layer, undefined);
+        setSld(this.layer, styleString);
       } else if (styleFmt == 'qml') {
-        await appRef.qmlParser.readStyle(styleString);
-        setSld(appRef.layer, undefined);
-        setQml(appRef.layer, styleString);
+        await this.qmlParser.readStyle(styleString);
+        setSld(this.layer, undefined);
+        setQml(this.layer, styleString);
       }
-      await this.fill(appRef.layer, app);
-      await this.save(app);
+      await this.fill(this.layer);
+      await this.save();
     } catch (err) {
       console.warn('SLD could not be parsed', err);
     }

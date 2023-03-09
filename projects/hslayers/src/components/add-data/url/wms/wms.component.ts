@@ -10,7 +10,7 @@ import {HsUrlWmsService} from './wms.service';
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsUrlWmsComponent {
-  @Input() app = 'default';
+  
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataOwsService: HsAddDataOwsService,

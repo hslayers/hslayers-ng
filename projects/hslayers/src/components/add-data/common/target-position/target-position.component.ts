@@ -11,7 +11,7 @@ import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
   templateUrl: './target-position.component.html',
 })
 export class HsPositionComponent {
-  @Input() app = 'default';
+  
   @Input() addUnder: Layer<Source> | null; // @type'; TODO: comes from another scope
   @Output() addUnderChange = new EventEmitter<Layer<Source> | null>();
 

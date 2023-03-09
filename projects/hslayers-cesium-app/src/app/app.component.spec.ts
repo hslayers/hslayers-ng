@@ -22,7 +22,7 @@ describe('AppComponent', () => {
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect().toBeTruthy();
   });
 
   it(`should have as title 'hslayers-workspace'`, () => {

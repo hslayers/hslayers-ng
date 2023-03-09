@@ -3,10 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {
-  HsCompositionsCatalogueParams,
-  HsCompositionsCatalogueService,
-} from './compositions-catalogue.service';
+import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
@@ -38,7 +35,6 @@ export class HsCompositionsComponent
   loadFilteredCompositions: any;
   notSavedCompositionLoadingSubscription: Subscription;
   name = 'composition_browser';
-  catalogueRef: HsCompositionsCatalogueParams;
   configRef: HsConfigObject;
   constructor(
     private hsCompositionsService: HsCompositionsService,
@@ -56,31 +52,20 @@ export class HsCompositionsComponent
     super(hsLayoutService);
   }
   ngOnInit(): void {
-    this.hsSidebarService.addButton(
-      {
-        panel: 'composition_browser',
-        module: 'hs.compositions',
-        order: 3,
-        fits: true,
-        title: 'PANEL_HEADER.MAPCOMPOSITIONS',
-        description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
-        icon: 'icon-map',
-      },
-      this.data.app
-    );
-    this.configRef = this.hsConfig.get(this.data.app);
-    this.hsCompositionsCatalogueService.init(this.data.app);
-    this.hsCompositionsService.init(this.data.app);
-    this.hsCompositionsMapService.init(this.data.app);
-    this.catalogueRef = this.hsCompositionsCatalogueService.get(this.data.app);
+    this.hsSidebarService.addButton({
+      panel: 'composition_browser',
+      module: 'hs.compositions',
+      order: 3,
+      fits: true,
+      title: 'PANEL_HEADER.MAPCOMPOSITIONS',
+      description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
+      icon: 'icon-map',
+    });
     this.loadFilteredCompositions = () =>
-      this.hsCompositionsCatalogueService.loadFilteredCompositions(
-        this.data.app
-      );
-    this.notSavedCompositionLoadingSubscription = this.hsCompositionsService
-      .get(this.data.app)
-      .notSavedCompositionLoading.subscribe((url) => {
-        this.hsCompositionsService.get(this.data.app).compositionToLoad = {
+      this.hsCompositionsCatalogueService.loadFilteredCompositions();
+    this.notSavedCompositionLoadingSubscription =
+      this.hsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
+        this.hsCompositionsService.compositionToLoad = {
           url,
           title: '',
         };
@@ -102,11 +87,7 @@ export class HsCompositionsComponent
     state: boolean
   ): void {
     composition.highlighted = state;
-    this.hsCompositionsMapService.highlightComposition(
-      composition,
-      state,
-      this.data.app
-    );
+    this.hsCompositionsMapService.highlightComposition(composition, state);
   }
 
   /**
@@ -115,28 +96,21 @@ export class HsCompositionsComponent
    */
 
   addCompositionUrl(url: string): void {
-    if (
-      this.hsCompositionsParserService.get(this.data.app).composition_edited ==
-      true
-    ) {
-      this.hsCompositionsService
-        .get(this.data.app)
-        .notSavedCompositionLoading.next(url);
+    if (this.hsCompositionsParserService.composition_edited == true) {
+      this.hsCompositionsService.notSavedCompositionLoading.next(url);
     } else {
-      this.hsCompositionsService
-        .loadComposition(url, this.data.app, true)
-        .then((_) => {
-          this.addCompositionUrlVisible = false;
-        });
+      this.hsCompositionsService.loadComposition(url, true).then((_) => {
+        this.addCompositionUrlVisible = false;
+      });
     }
   }
 
   /**
    * @param evt - File upload event
-   * @param app - App identifier
+   
    * Handle composition upload from file list
    */
-  handleFileSelect(evt, app: string): void {
+  handleFileSelect(evt): void {
     const files = evt.target.files; // FileList object
     for (const f of files) {
       if (!f.type.match('application/json')) {
@@ -147,8 +121,7 @@ export class HsCompositionsComponent
         const json = JSON.parse(<string>reader.result);
         await this.hsCompositionsParserService.loadCompositionObject(
           json,
-          true,
-          app
+          true
         );
       };
       reader.readAsText(f);
@@ -163,9 +136,7 @@ export class HsCompositionsComponent
       HsCompositionsOverwriteDialogComponent,
       {
         composition_name_to_be_loaded: title,
-        app: this.data.app,
-      },
-      this.data.app
+      }
     );
   }
 
@@ -190,7 +161,7 @@ export class HsCompositionsComponent
     this.themesVisible = false;
     this.keywordsVisible = false;
     this.selectedCompId = '';
-    this.hsCompositionsCatalogueService.clearFilters(this.data.app);
+    this.hsCompositionsCatalogueService.clearFilters();
   }
   /**
    * Change add composition url button visibility
@@ -202,7 +173,7 @@ export class HsCompositionsComponent
    * Open save map panel
    */
   openSaveMapPanel(): void {
-    this.hsLayoutService.setMainPanel('saveMap', this.data.app);
+    this.hsLayoutService.setMainPanel('saveMap');
   }
   /**
    * Act on composition clicked
@@ -230,7 +201,7 @@ export class HsCompositionsComponent
    * @param sortBy - Sorting value
    */
   sortByValueChanged(sortBy: any): void {
-    this.catalogueRef.data.sortBy = sortBy;
+    this.hsCompositionsCatalogueService.data.sortBy = sortBy;
     this.loadFilteredCompositions();
   }
 
@@ -244,14 +215,13 @@ export class HsCompositionsComponent
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined,
-      this.data.app
+      undefined
     );
   }
   /**
    * Get save map panel status
    */
   saveMapAvailable(): boolean {
-    return this.hsLayoutService.panelEnabled('saveMap', this.data.app);
+    return this.hsLayoutService.panelEnabled('saveMap');
   }
 }

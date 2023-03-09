@@ -20,7 +20,7 @@ enum GrantingOptions {
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: accessRightsModel;
-  @Input() app = 'default';
+  
   grantingOptions = GrantingOptions;
   currentOption: string = GrantingOptions.EVERYONE;
   allUsers: LaymanUser[] = [];
@@ -130,13 +130,13 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       return this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.readAccessRights',
         undefined,
-        this.app
+        
       );
     } else if (right == 'write') {
       return this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.writeAccessRights',
         undefined,
-        this.app
+        
       );
     }
   }

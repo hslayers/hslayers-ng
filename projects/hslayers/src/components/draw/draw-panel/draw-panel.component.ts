@@ -15,7 +15,7 @@ import {getTitle} from '../../../common/layer-extensions';
   templateUrl: './draw-panel.component.html',
   styleUrls: ['./draw-panel.component.scss'],
 })
-export class DrawPanelComponent implements OnInit, OnDestroy {
+export class DrawPanelComponent implements OnDestroy {
   onFeatureSelected: any;
   onFeatureDeselected: any;
   drawToolbarExpanded: any;
@@ -23,9 +23,7 @@ export class DrawPanelComponent implements OnInit, OnDestroy {
   linewidth = 1;
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
   onlyMineFilterVisible = false;
-  appRef;
   getTitle = getTitle;
-  @Input() app = 'default';
   sidebarPosition: string;
   private end = new Subject<void>();
 
@@ -40,47 +38,33 @@ export class DrawPanelComponent implements OnInit, OnDestroy {
     this.end.complete();
   }
 
-  ngOnInit() {
-    this.appRef = this.HsDrawService.get(this.app);
-    this.hsLayoutService.sidebarPosition
-      .pipe(takeUntil(this.end))
-      .subscribe(({app, position}) => {
-        if (this.app == app) {
-          this.sidebarPosition = position;
-        }
-      });
-  }
-
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   changeSnapSource(layer): void {
-    this.HsDrawService.changeSnapSource(layer, this.app);
+    this.HsDrawService.changeSnapSource(layer);
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what, this.app);
+    const type = this.HsDrawService.setType(what);
     if (type) {
-      this.activateDrawing(this.hsLayoutService.panelVisible('draw', this.app));
+      this.activateDrawing(this.hsLayoutService.panelVisible('draw'));
     }
   }
 
   activateDrawing(withStyle?): void {
-    this.HsDrawService.activateDrawing(
-      {
-        changeStyle: withStyle ? () => this.changeStyle() : undefined,
-      },
-      this.app
-    );
+    this.HsDrawService.activateDrawing({
+      changeStyle: withStyle ? () => this.changeStyle() : undefined,
+    });
   }
 
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer, this.app);
+    this.HsDrawService.selectLayer(layer);
   }
 
   updateStyle(): void {
-    this.appRef.updateStyle(() => this.changeStyle());
+    this.HsDrawService.updateStyle(() => this.changeStyle());
   }
 
   /**

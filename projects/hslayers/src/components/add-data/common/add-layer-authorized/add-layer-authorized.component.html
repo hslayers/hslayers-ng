@@ -1,17 +1,21 @@
 <div class="w-100 mt-2" style="display: inline-block;" data-toggle="tooltip" data-placement="top"
-  [title]="hsAddDataCommonFileService.getToolTipText(data, app)">
+  [title]="hsAddDataCommonFileService.getToolTipText(data)">
   <!-- TODO: Remove function call from template -->
   <button *ngIf="hsAddDataCommonFileService.isAuthenticated()" class="btn btn-primary w-100" [disabled]="!canAdd()"
     (click)="add()">
-    <i class="icon-plus" [hidden]="commonFileServiceRef.loadingToLayman"></i>
-    <span class="hs-loader" [hidden]="!commonFileServiceRef.loadingToLayman"></span>
-    <span [hidden]="commonFileServiceRef.loadingToLayman">{{'COMMON.add' | translateHs : {app} }}</span>
-    <span *ngIf="commonFileServiceRef.loadingToLayman && commonFileServiceRef.asyncLoading">&emsp;{{'COMMON.uploading' |
-      translateHs : {app} }}</span>
-    <span *ngIf="commonFileServiceRef.loadingToLayman && commonFileServiceRef.readingData">&emsp;{{'COMMON.reading' |
-      translateHs : {app} }}</span>
+    <i class="icon-plus" [hidden]="hsAddDataCommonFileService.loadingToLayman"></i>
+    <span class="hs-loader" [hidden]="!hsAddDataCommonFileService.loadingToLayman"></span>
+    <span [hidden]="hsAddDataCommonFileService.loadingToLayman">{{'COMMON.add' | translateHs }}</span>
+    <span
+      *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.asyncLoading">&emsp;{{'COMMON.uploading'
+      |
+      translateHs }}</span>
+    <span
+      *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.readingData">&emsp;{{'COMMON.reading'
+      |
+      translateHs }}</span>
     <ngb-progressbar
-      *ngIf="commonFileServiceRef.loadingToLayman && (commonFileServiceRef.asyncLoading || commonFileServiceRef.readingData)"
+      *ngIf="hsAddDataCommonFileService.loadingToLayman && (hsAddDataCommonFileService.asyncLoading || hsAddDataCommonFileService.readingData)"
       showValue="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
     </ngb-progressbar>
   </button>
@@ -19,6 +23,6 @@
 <div *ngIf="!hsAddDataCommonFileService.isAuthenticated()"
   class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
   <!-- TODO: Remove function call from template -->
-  <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs : {app} }}</p>
-  <hs-layman-current-user [app]="app"></hs-layman-current-user>
+  <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs }}</p>
+  <hs-layman-current-user></hs-layman-current-user>
 </div>

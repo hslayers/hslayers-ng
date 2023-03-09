@@ -10,7 +10,6 @@ import {HsUtilsService} from '../../../../utils/utils.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsUrlProgressComponent implements OnInit {
-  @Input() app = 'default';
   configRef: HsConfigObject;
   constructor(
     public hsAddDataService: HsAddDataService,
@@ -19,6 +18,6 @@ export class HsUrlProgressComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.configRef = this.hsConfig.get(this.app);
+    this.configRef = this.hsConfig;
   }
 }

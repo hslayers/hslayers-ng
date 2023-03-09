@@ -35,45 +35,35 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {
       if (!layer.active) {
-        this.hsLayerManagerService.changeBaseLayerVisibility(
-          true,
-          layer,
-          this.data.app
-        );
+        this.hsLayerManagerService.changeBaseLayerVisibility(true, layer);
         this.dropdown.close();
-        this.hsLayerManagerService.apps[this.data.app].menuExpanded = false;
-        const olLayer =
-          this.hsLayerManagerService.apps[this.data.app].currentLayer?.layer;
+        this.hsLayerManagerService.menuExpanded = false;
+        const olLayer = this.hsLayerManagerService.currentLayer?.layer;
         if (!olLayer || getBase(olLayer)) {
-          this.hsLayerManagerService.apps[this.data.app].currentLayer = null;
+          this.hsLayerManagerService.currentLayer = null;
         }
       }
     } else {
       this.dropdown.close();
-      this.hsLayerManagerService.apps[this.data.app].currentLayer = null;
+      this.hsLayerManagerService.currentLayer = null;
 
-      this.hsLayerManagerService.changeBaseLayerVisibility(
-        null,
-        null,
-        this.data.app
-      );
+      this.hsLayerManagerService.changeBaseLayerVisibility(null, null);
     }
   }
   expandMenu(layer: HsLayerDescriptor): void {
     this.hsLayerManagerService.toggleLayerEditor(
       layer,
       'settings',
-      'sublayers',
-      this.data.app
+      'sublayers'
     );
-    this.hsLayerManagerService.apps[this.data.app].menuExpanded =
-      !this.hsLayerManagerService.apps[this.data.app].menuExpanded;
+    this.hsLayerManagerService.menuExpanded =
+      !this.hsLayerManagerService.menuExpanded;
   }
 
   isVisible(): boolean {
     return (
-      this.hsLayoutService.componentEnabled('basemapGallery', this.data.app) &&
-      this.hsLayoutService.componentEnabled('guiOverlay', this.data.app)
+      this.hsLayoutService.componentEnabled('basemapGallery') &&
+      this.hsLayoutService.componentEnabled('guiOverlay')
     );
   }
 }

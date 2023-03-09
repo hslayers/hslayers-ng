@@ -31,20 +31,20 @@ export class HsSensorsUnitDialogComponent
   ) {}
 
   ngOnInit(): void {
-    this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible = true;
-    this.configRef = this.hsConfig.get(this.data.app);
-    this.hsSensorsUnitDialogService.get(this.data.app).dialogElement =
+    this.hsSensorsUnitDialogService.get().unitDialogVisible = true;
+    this.configRef = this.hsConfig;
+    this.hsSensorsUnitDialogService.get().dialogElement =
       this.elementRef;
     this.timeButtonClicked(
-      this.hsSensorsUnitDialogService.get(this.data.app).intervals[2]
+      this.hsSensorsUnitDialogService.get().intervals[2]
     );
     combineLatest([
       this.hsLayoutService.panelSpaceWidth.pipe(takeUntil(this.end)),
       this.hsLayoutService.sidebarPosition.pipe(takeUntil(this.end)),
     ]).subscribe(([panelSpace, sidebar]) => {
-      if (panelSpace.app == this.data.app && sidebar.app == this.data.app) {
+      if (panelSpace.app ==  && sidebar.app == ) {
         this.calculateDialogStyle(
-          this.data.app,
+          ,
           panelSpace.width,
           sidebar.position == 'bottom'
         );
@@ -58,16 +58,16 @@ export class HsSensorsUnitDialogComponent
    * interval was clicked before use 1 day timeframe by default.
    */
   sensorClicked(sensor): void {
-    this.hsSensorsUnitDialogService.selectSensor(sensor, this.data.app);
+    this.hsSensorsUnitDialogService.selectSensor(sensor);
     if (
-      this.hsSensorsUnitDialogService.get(this.data.app).currentInterval ==
+      this.hsSensorsUnitDialogService.get().currentInterval ==
       undefined
     ) {
       this.timeButtonClicked({amount: 1, unit: 'days'});
     } else {
       this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit,
-        this.data.app
+        this.hsSensorsUnitDialogService.get().unit,
+        
       );
     }
   }
@@ -76,21 +76,21 @@ export class HsSensorsUnitDialogComponent
    * Get unit aggregations
    */
   getAggregations(): Aggregate[] {
-    return this.hsSensorsUnitDialogService.get(this.data.app).aggregations;
+    return this.hsSensorsUnitDialogService.get().aggregations;
   }
 
   /**
    * Get unit intervals
    */
   getIntervals(): Interval[] {
-    return this.hsSensorsUnitDialogService.get(this.data.app).intervals;
+    return this.hsSensorsUnitDialogService.get().intervals;
   }
 
   /**
    * Get current interval
    */
   getCurrentInterval() {
-    return this.hsSensorsUnitDialogService.get(this.data.app).currentInterval;
+    return this.hsSensorsUnitDialogService.get().currentInterval;
   }
 
   /**
@@ -107,7 +107,7 @@ export class HsSensorsUnitDialogComponent
    * chart
    */
   timeButtonClicked(interval): void {
-    this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
+    this.hsSensorsUnitDialogService.get().currentInterval =
       interval;
     const fromTo = this.hsSensorsUnitDialogService.getTimeForInterval(interval);
     Object.assign(this.customInterval, {
@@ -116,14 +116,14 @@ export class HsSensorsUnitDialogComponent
     });
     this.hsSensorsUnitDialogService
       .getObservationHistory(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit,
+        this.hsSensorsUnitDialogService.get().unit,
         interval,
-        this.data.app
+        
       )
       .then((_) => {
         this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get(this.data.app).unit,
-          this.data.app
+          this.hsSensorsUnitDialogService.get().unit,
+          
         );
       });
   }
@@ -132,32 +132,28 @@ export class HsSensorsUnitDialogComponent
    * Act on custom interval data change
    */
   customIntervalChanged(): void {
-    this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
+    this.hsSensorsUnitDialogService.get().currentInterval =
       this.customInterval;
     this.hsSensorsUnitDialogService
       .getObservationHistory(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit,
+        this.hsSensorsUnitDialogService.get().unit,
         this.customInterval,
-        this.data.app
+        
       )
       .then((_) =>
         this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get(this.data.app).unit,
-          this.data.app
+          this.hsSensorsUnitDialogService.get().unit,
+          
         )
       );
   }
 
-  calculateDialogStyle(
-    app: string,
-    panelSpaceWidth: number,
-    sidebarAtBot: boolean
-  ) {
+  calculateDialogStyle(panelSpaceWidth: number, sidebarAtBot: boolean) {
     const padding = 20;
     const widthWithoutPanelSpace =
       'calc(100% - ' + (panelSpaceWidth + padding) + 'px)';
     this.dialogStyle = {
-      'visibility': this.hsSensorsUnitDialogService.get(app).unitDialogVisible
+      'visibility': this.hsSensorsUnitDialogService.get().unitDialogVisible
         ? 'visible'
         : 'hidden',
       'left': sidebarAtBot ? '3px' : panelSpaceWidth + padding + 'px',
@@ -173,8 +169,8 @@ export class HsSensorsUnitDialogComponent
    * Close unit dialog
    */
   close(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
-    this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible =
+    this.hsDialogContainerService.destroy(this);
+    this.hsSensorsUnitDialogService.get().unitDialogVisible =
       false;
   }
 
@@ -182,7 +178,7 @@ export class HsSensorsUnitDialogComponent
    * Get unit description
    */
   getUnitDescription(): string {
-    return this.hsSensorsUnitDialogService.get(this.data.app).unit.description;
+    return this.hsSensorsUnitDialogService.get().unit.description;
   }
 
   ngOnDestroy(): void {

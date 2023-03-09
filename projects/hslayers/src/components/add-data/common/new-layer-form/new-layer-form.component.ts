@@ -16,8 +16,7 @@ import {HsUploadedFiles} from './../../../../common/upload/upload.component';
 export class HsNewLayerFormComponent implements OnInit {
   advancedPanelVisible = false;
   @Input() data: FileDataObject;
-  @Input() app = 'default';
-  appRef: HsAddDataCommonFileServiceParams;
+
   allowedStyles: {
     list: string;
     title: string;
@@ -29,7 +28,6 @@ export class HsNewLayerFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.appRef = this.hsAddDataCommonFileService.get(this.app);
     this.allowedStyles = {
       list:
         this.data.allowedStyles.length > 3
@@ -40,6 +38,6 @@ export class HsNewLayerFormComponent implements OnInit {
   }
 
   async read(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileService.read(evt, this.app, this.data.type === 'geojson');
+    await this.hsFileService.read(evt, this.data.type === 'geojson');
   }
 }

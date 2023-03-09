@@ -13,24 +13,18 @@ import {getBase} from '../../common/layer-extensions';
 
 export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 
-class HsAddDataParams {
-  sidebarLoad: Subject<string> = new Subject();
-  dsSelected: DatasetType = undefined;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class HsAddDataService {
-  apps: {
-    [id: string]: HsAddDataParams;
-  } = {default: new HsAddDataParams()};
-
-  datasetSelected: Subject<{type: DatasetType; app: string}> = new Subject();
+  sidebarLoad: Subject<void> = new Subject();
+  //FIXME: THIS LOOKS SKETCHY
+  dsSelected: DatasetType = undefined;
+  datasetSelected: Subject<DatasetType> = new Subject();
   /**
    * Cancels any external url data request from datasources panel
    */
-  cancelUrlRequest: Subject<string> = new Subject();
+  cancelUrlRequest: Subject<void> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
@@ -39,20 +33,13 @@ export class HsAddDataService {
     public hsCommonLaymanService: HsCommonLaymanService
   ) {}
 
-  get(app: string): HsAddDataParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsAddDataParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-
   addLayer(
     layer: Layer<Source>,
-    app: string,
+
     underLayer?: Layer<Source>
   ): void {
     if (underLayer) {
-      const layers = this.hsMapService.getLayersArray(app);
+      const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();
       layer.setZIndex(underZ);
       for (const iLayer of layers.filter((l) => !getBase(l))) {
@@ -61,14 +48,14 @@ export class HsAddDataService {
         }
       }
       const ix = layers.indexOf(underLayer);
-      this.hsMapService.getMap(app).getLayers().insertAt(ix, layer);
+      this.hsMapService.getMap().getLayers().insertAt(ix, layer);
     } else {
-      this.hsMapService.getMap(app).addLayer(layer);
+      this.hsMapService.getMap().addLayer(layer);
     }
   }
 
-  selectType(type: DatasetType, app: string): void {
-    this.apps[app].dsSelected = type;
-    this.datasetSelected.next({type, app});
+  selectType(type: DatasetType): void {
+    this.dsSelected = type;
+    this.datasetSelected.next(type);
   }
 }

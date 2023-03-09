@@ -18,7 +18,7 @@ import {HsUtilsService} from '../../../../utils/utils.service';
 export class HsLayerTableComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
-  @Input() app = 'default';
+
   data;
   checkedSubLayers = {};
   getDimensionValues: any;
@@ -34,7 +34,7 @@ export class HsLayerTableComponent implements AfterContentInit {
   ) {}
 
   ngAfterContentInit(): void {
-    this.data = this.injectedService.get(this.app).data;
+    this.data = this.injectedService.data;
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
   }
 
@@ -51,10 +51,10 @@ export class HsLayerTableComponent implements AfterContentInit {
 
   changed(whichArray: 'layers' | 'services'): void {
     if (whichArray == 'layers') {
-      this.hsAddDataUrlService.searchForChecked(this.data.layers, this.app);
+      this.hsAddDataUrlService.searchForChecked(this.data.layers);
     }
     if (whichArray == 'services') {
-      this.hsAddDataUrlService.searchForChecked(this.data.services, this.app);
+      this.hsAddDataUrlService.searchForChecked(this.data.services);
     }
   }
 
@@ -63,26 +63,26 @@ export class HsLayerTableComponent implements AfterContentInit {
    */
   collapseServices() {
     if (this.injectedService.collapseServices) {
-      this.injectedService.collapseServices(this.app);
+      this.injectedService.collapseServices();
     }
   }
 
   async expandService(service: Service): Promise<void> {
     if (this.injectedService.expandService) {
-      this.injectedService.expandService(service, this.app);
+      this.injectedService.expandService(service);
       if (
         this.injectedService.isImageService &&
-        this.injectedService.isImageService(this.app)
+        this.injectedService.isImageService()
       ) {
-        const layers = await this.injectedService.getLayers(this.app);
-        this.injectedService.addLayers(layers, this.app);
+        const layers = await this.injectedService.getLayers();
+        this.injectedService.addLayers(layers);
       }
     }
   }
 
   searchForChecked(layer): void {
     this.checkedSubLayers[layer.Name] = layer.checked;
-    this.hsAddDataUrlService.apps[this.app].addingAllowed = Object.values(
+    this.hsAddDataUrlService.addingAllowed = Object.values(
       this.checkedSubLayers
     ).some((value) => value === true);
   }
@@ -90,8 +90,7 @@ export class HsLayerTableComponent implements AfterContentInit {
   getLimitTextTranslation(): string {
     return this.hsLanguageService.getTranslation(
       'ADDDATA.CATALOGUE.showingSubset',
-      {limitShown: this.limitShown, total: this.data.layers.length},
-      this.app
+      {limitShown: this.limitShown, total: this.data.layers.length}
     );
   }
 }

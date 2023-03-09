@@ -16,9 +16,9 @@ import {setHighlighted} from '../../common/feature-extensions';
   selector: 'hs-search-results',
   templateUrl: './partials/search-results.component.html',
 })
-export class HsSearchResultsComponent implements OnDestroy, OnInit {
+export class HsSearchResultsComponent implements OnDestroy {
   searchResultsVisible: boolean;
-  @Input() app = 'default';
+
   fcode_zoom_map: any;
   private end = new Subject<void>();
   constructor(
@@ -27,23 +27,17 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
   ) {
     this.hsEventBusService.searchResultsReceived
       .pipe(takeUntil(this.end))
-      .subscribe(({app}) => {
-        if (app == this.app) {
-          this.searchResultsReceived();
-        }
+      .subscribe(() => {
+        this.searchResultsReceived();
       });
 
     this.hsEventBusService.clearSearchResults
       .pipe(takeUntil(this.end))
-      .subscribe(({app}) => {
-        if (app == this.app) {
-          this.clear();
-        }
+      .subscribe(() => {
+        this.clear();
       });
   }
-  ngOnInit(): void {
-    this.hsSearchService.init(this.app);
-  }
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
@@ -53,7 +47,7 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
    */
   searchResultsReceived(): void {
     this.searchResultsVisible = true;
-    this.hsSearchService.showResultsLayer(this.app);
+    this.hsSearchService.showResultsLayer();
   }
   clear(): void {
     this.searchResultsVisible = false;
@@ -64,7 +58,7 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
    * Finds feature from search result layer based on featureId
    */
   findFeature(featureId: string): Feature<Geometry> {
-    return this.hsSearchService.apps[this.app].searchResultsLayer
+    return this.hsSearchService.searchResultsLayer
       .getSource()
       .getFeatureById(featureId);
   }
@@ -108,6 +102,6 @@ export class HsSearchResultsComponent implements OnDestroy, OnInit {
     ) {
       zoom_level = this.fcode_zoom_map[result.fcode];
     }
-    this.hsSearchService.selectResult(result, zoom_level, this.app);
+    this.hsSearchService.selectResult(result, zoom_level);
   }
 }

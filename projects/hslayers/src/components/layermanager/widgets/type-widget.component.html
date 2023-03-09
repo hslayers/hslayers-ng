@@ -4,18 +4,16 @@
     HsLanguageService.getTranslationIgnoreNonExisting(
     "LAYERMANAGER.layerEditor",
     (layerDescriptor | async).type,
-    undefined,
-    data.app
+    undefined
     )
     }}<!-- TODO: Remove function call from template -->
-    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs : {app: data.app} }}
+    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs }}
     <span class="text-truncate mw-100 d-block">
       {{
       HsLanguageService.getTranslationIgnoreNonExisting(
       "LAYERMANAGER.layerEditor",
       (layerDescriptor | async).source,
-      undefined,
-      data.app
+      undefined
       )
       }}<!-- TODO: Remove function call from template -->
     </span>

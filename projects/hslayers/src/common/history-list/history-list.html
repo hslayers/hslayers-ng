@@ -1,7 +1,7 @@
 <div ngbDropdown display="dynamic" placement="bottom-right" class="h-100">
     <button ngbDropdownToggle type="button"
         class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split rounded-0 h-100"
-        [title]="'HISTORY.toggleDropdown' | translateHs : {'app': app}" aria-haspopup="true" aria-expanded="false">
+        [title]="'HISTORY.toggleDropdown' | translateHs" aria-haspopup="true" aria-expanded="false">
     </button>
     <div ngbDropdownMenu class="dropdown-menu" style="width:325px; overflow: hidden">
         <a class="dropdown-item" *ngFor="let item of items | keyvalue"

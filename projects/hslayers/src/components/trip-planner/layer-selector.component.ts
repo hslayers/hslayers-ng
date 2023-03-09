@@ -13,7 +13,7 @@ import {HsTripPlannerService} from './trip-planner.service';
 })
 export class HsTripPlannerLayerSelectorComponent {
   @Input() label: string;
-  @Input() app = 'default';
+  
   @Input() usage: 'route' | 'waypoints';
   @Input() selectedwrapper: {
     layer: VectorLayer<VectorSource<Geometry>>;

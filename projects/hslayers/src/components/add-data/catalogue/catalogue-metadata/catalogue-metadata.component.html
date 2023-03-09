@@ -3,16 +3,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'DATASOURCE_SELECTOR.metadataFor' | translateHs: {app: data.app} }} {{ selectedLayer.title}}
+                    {{'DATASOURCE_SELECTOR.metadataFor' | translateHs }} {{ selectedLayer.title}}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs: {app: data.app} "></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
                 <ng-container *ngFor="let key of selectedLayerKeys">
                     <dl *ngIf="key!=='feature'">
                         <dt>{{key}}</dt>
-                        <hs-widgets-recursive-dd [value]="selectedLayer[key]" [app]="data.app">
+                        <hs-widgets-recursive-dd [value]="selectedLayer[key]">
                         </hs-widgets-recursive-dd>
                     </dl>
                 </ng-container>
@@ -25,19 +25,18 @@
                     <i class="icon-share-alt"></i> RDF
                 </a><!-- TODO: Remove function call from template -->
                 <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
-                    (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox, data.app)">{{'COMMON.zoomTo' |
-                    translateHs: {app: data.app} }}</button>
+                    (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' |
+                    translateHs }}</button>
                 <div *ngIf="selectedDS.type.includes('layman')">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
-                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs: {app:
-                            data.app} }}
+                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
                             {{type}}</span>
                     </button>
                 </div>
                 <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal"
-                    [title]="'COMMON.close' | translateHs: {app: data.app} ">
-                    {{'COMMON.close' | translateHs: {app: data.app} }}
+                    [title]="'COMMON.close' | translateHs ">
+                    {{'COMMON.close' | translateHs }}
                 </button>
             </div>
         </div>

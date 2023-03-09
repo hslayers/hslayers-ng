@@ -12,6 +12,7 @@ import {
   HsSaveMapManagerService,
 } from '../save-map-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {StatusData} from '../../save-map/types/status-data.type';
 
 @Component({
   selector: 'hs-save-map-form',
@@ -23,12 +24,10 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
-  @Input() app = 'default';
-  appRef: HsSaveMapManagerParams;
 
   private end = new Subject<void>();
   constructor(
-    private hsSaveMapManagerService: HsSaveMapManagerService,
+    public hsSaveMapManagerService: HsSaveMapManagerService,
     private hsCoreService: HsCoreService,
     private hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService, //Used in template
@@ -36,23 +35,21 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.appRef = this.hsSaveMapManagerService.get(this.app);
-    this.appRef.endpointSelected
+    this.hsSaveMapManagerService.endpointSelected
       .pipe(takeUntil(this.end))
       .subscribe((endpoint) => {
         this.endpoint = endpoint;
       });
 
-    this.appRef.saveMapResulted
+    this.hsSaveMapManagerService.saveMapResulted
       .pipe(takeUntil(this.end))
-      .subscribe(({statusData, app}) => {
-        if (statusData.overWriteNeeded) {
+      .subscribe((statusData) => {
+        if ((statusData as StatusData).overWriteNeeded) {
           this.overwrite = true;
         }
         if (statusData == 'rename') {
-          this.hsLayoutService
-            .get(app)
-            .layoutElement.querySelector('[name="hs-save-map-name"]')
+          this.hsLayoutService.layoutElement
+            .querySelector('[name="hs-save-map-name"]')
             .focus();
         }
       });
@@ -80,7 +77,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    */
   saveCompoJson(): void {
     const compositionJSON =
-      this.hsSaveMapManagerService.generateCompositionJson(this.app);
+      this.hsSaveMapManagerService.generateCompositionJson();
     const file = new Blob([JSON.stringify(compositionJSON)], {
       type: 'application/json',
     });
@@ -99,7 +96,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    */
   selectDeselectAllLayers(): void {
     this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
-    this.appRef.compoData.layers.forEach(
+    this.hsSaveMapManagerService.compoData.layers.forEach(
       (layer) => (layer.checked = this.btnSelectDeselectClicked)
     );
   }
@@ -118,14 +115,14 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    */
   nameChanged(): void {
     this.overwrite = false;
-    this.appRef.missingName = false;
+    this.hsSaveMapManagerService.missingName = false;
   }
 
   /**
    * Triggered when composition's abstract input field receives user's input
    */
   abstractChanged(): void {
-    this.appRef.missingAbstract = false;
+    this.hsSaveMapManagerService.missingAbstract = false;
   }
 
   /**
@@ -150,14 +147,14 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    * @param newSave - If true save a new composition, otherwise overwrite to current one
    */
   initiateSave(newSave: boolean): void {
-    this.hsSaveMapManagerService.initiateSave(newSave, this.app);
+    this.hsSaveMapManagerService.initiateSave(newSave);
   }
 
   /**
    * Set bounding box property from the current OL map view
    */
   setCurrentBoundingBox(): void {
-    this.hsSaveMapManagerService.setCurrentBoundingBox(this.app);
+    this.hsSaveMapManagerService.setCurrentBoundingBox();
   }
 
   /**
@@ -165,8 +162,9 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    */
   canOverwrite(): boolean {
     return (
-      this.appRef.compoData.workspace &&
-      this.appRef.currentUser !== this.appRef.compoData.workspace
+      this.hsSaveMapManagerService.compoData.workspace &&
+      this.hsSaveMapManagerService.currentUser !==
+        this.hsSaveMapManagerService.compoData.workspace
     );
   }
 }

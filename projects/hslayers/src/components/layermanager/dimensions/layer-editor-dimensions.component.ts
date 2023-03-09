@@ -37,7 +37,7 @@ export class HsLayerEditorDimensionsComponent
     super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges
       .pipe(takeUntil(this.end))
-      .subscribe(({layer}) => {
+      .subscribe((layer) => {
         if (layer == this.olLayer) {
           this.ngOnChanges();
         }

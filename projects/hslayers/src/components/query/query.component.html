@@ -1,29 +1,29 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="info" [title]="'PANEL_HEADER.INFO' | translateHs : data" [app]="data.app"></hs-panel-header>
+    <hs-panel-header name="info" [title]="'PANEL_HEADER.INFO' | translateHs"></hs-panel-header>
     <div class="card hs-main-panel" *ngIf="noFeatureSelected()">
         <div class="d-flex flex-column align-items-center p-4">
             <i class="icon-cursor bg-primary p-3 text-white rounded "
                 style="font-size: 1.5rem; color:hsl(208, 100%, 97%)"></i>
             <p class="h4">No features selected</p>
-            <p class="small">{{'QUERY.infoPanel.clickOnMap' | translateHs : {app: data.app} }}</p>
+            <p class="small">{{'QUERY.infoPanel.clickOnMap' | translateHs }}</p>
         </div>
     </div>
-    <hs-query-default-info-panel-body *ngIf="layoutAppRef.mainpanel === 'info'" [app]="data.app">
+    <hs-query-default-info-panel-body *ngIf="hsLayoutService.mainpanel === 'info'">
     </hs-query-default-info-panel-body>
     <hs-custom-info-panel-body></hs-custom-info-panel-body>
     <div class="container-fluid"
-        *ngIf="queryBaseAppRef?.coordinates !== undefined && queryBaseAppRef?.coordinates.length > 0">
+        *ngIf="hsQueryBaseService?.coordinates !== undefined && hsQueryBaseService?.coordinates.length > 0">
         <div class="row">
-            <div class="col-12 m-2"><strong>{{queryBaseAppRef?.coordinates[0].name}}</strong></div>
+            <div class="col-12 m-2"><strong>{{hsQueryBaseService?.coordinates[0].name}}</strong></div>
         </div>
         <div class="row">
             <div class="input-group m-1">
-                <select class="form-control form-select" [(ngModel)]="queryBaseAppRef.selectedProj"
-                    [ngModelOptions]="{standalone: true}" *ngIf="queryBaseAppRef?.coordinates.length>0">
-                    <option *ngFor="let projection of queryBaseAppRef.coordinates[0].projections"
+                <select class="form-control form-select" [(ngModel)]="hsQueryBaseService.selectedProj"
+                    [ngModelOptions]="{standalone: true}" *ngIf="hsQueryBaseService?.coordinates.length>0">
+                    <option *ngFor="let projection of hsQueryBaseService.coordinates[0].projections"
                         [ngValue]="projection">{{projection.name}}</option>
                 </select>
-                <input class="form-control" [value]="queryBaseAppRef.selectedProj.value" readonly="">
+                <input class="form-control" [value]="hsQueryBaseService.selectedProj.value" readonly="">
             </div>
         </div>
     </div>

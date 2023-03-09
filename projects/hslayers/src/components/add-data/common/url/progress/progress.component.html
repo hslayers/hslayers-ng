@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center btn-group w-75 m-auto">
-  <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs: {app} }}&emsp;
+  <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs }}&emsp;
     <span class="ms-2 hs-loader"></span>
   </button>
-  <button class="btn btn-secondary" (click)="hsAddDataService.cancelUrlRequest.next(app)">&#10006;
+  <button class="btn btn-secondary" (click)="hsAddDataService.cancelUrlRequest.next()">&#10006;
   </button>
 </div>

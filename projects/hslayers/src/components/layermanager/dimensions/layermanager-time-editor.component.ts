@@ -15,10 +15,9 @@ import {HsLayoutService} from '../../layout/layout.service';
 })
 export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   @Input() layer: HsLayerDescriptor;
-  @Input() app = 'default';
+
   availableTimes: Array<string>;
   availableTimesFetched = false;
-  configRef: HsConfigObject;
   /**
    * ISO format time
    */
@@ -40,10 +39,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   ) {
     this.hsDimensionTimeService.layerTimeChanges
       .pipe(takeUntil(this.end))
-      .subscribe(({layer: layerDescriptor, time, app}) => {
-        if (app != this.app) {
-          return;
-        }
+      .subscribe(({layer: layerDescriptor, time}) => {
         if (this.layer.uid !== layerDescriptor.uid) {
           return;
         }
@@ -55,10 +51,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
 
     this.hsEventBusService.layerTimeSynchronizations
       .pipe(takeUntil(this.end))
-      .subscribe(({sync, time, app}) => {
-        if (app != this.app) {
-          return;
-        }
+      .subscribe(({sync, time}) => {
         this.timesInSync = sync;
         if (sync) {
           this.hideTimeSelect();
@@ -71,7 +64,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configRef = this.hsConfig.get(this.app);
     this.selectVisible = false;
     this.timesInSync = false;
     if (this.layer.time) {
@@ -115,7 +107,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       this.hsEventBusService.layerTimeSynchronizations.next({
         sync: this.timesInSync,
         time: this.currentTime,
-        app: this.app,
       });
     }
     this.setLayerTime();
@@ -134,7 +125,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       this.hsEventBusService.layerTimeSynchronizations.next({
         sync: this.timesInSync,
         time: this.currentTime,
-        app: this.app,
       });
     }
     this.setLayerTime();
@@ -150,7 +140,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       this.hsEventBusService.layerTimeSynchronizations.next({
         sync: this.timesInSync,
         time: this.currentTime,
-        app: this.app,
       });
     }
     this.setLayerTime();
@@ -173,11 +162,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
    */
   setLayerTime(): void {
     setTimeout(() => {
-      this.hsDimensionTimeService.setLayerTime(
-        this.layer,
-        this.currentTime,
-        this.app
-      );
+      this.hsDimensionTimeService.setLayerTime(this.layer, this.currentTime);
     }, 100);
   }
 
@@ -195,7 +180,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     this.hsEventBusService.layerTimeSynchronizations.next({
       sync: this.timesInSync,
       time: this.currentTime,
-      app: this.app,
     });
   }
 
@@ -216,8 +200,8 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   }
 
   private setDateTimeFormatting() {
-    if (this.hsConfig.get(this.app).timeDisplayFormat) {
-      this.timeDisplayFormat = this.hsConfig.get(this.app).timeDisplayFormat;
+    if (this.hsConfig.timeDisplayFormat) {
+      this.timeDisplayFormat = this.hsConfig.timeDisplayFormat;
     } else if (
       this.availableTimes.every((time) => time.endsWith('00-00T00:00:00.000Z'))
     ) {

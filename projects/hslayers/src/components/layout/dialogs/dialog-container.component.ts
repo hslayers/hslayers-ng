@@ -20,7 +20,7 @@ import {HsDialogItem} from './dialog-item';
   templateUrl: './dialog-container.html',
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {
-  @Input() app = 'default';
+  
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
@@ -32,16 +32,16 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
-    this.HsDialogContainerService.cleanup(this.app);
+    this.HsDialogContainerService.cleanup();
   }
   ngOnInit(): void {
-    this.HsDialogContainerService.get(this.app)
+    this.HsDialogContainerService
       .dialogObserver.pipe(takeUntil(this.end))
       .subscribe((item: HsDialogItem) => {
         this.loadDialog(item);
       });
 
-    this.HsDialogContainerService.get(this.app)
+    this.HsDialogContainerService
       .dialogDestroyObserver.pipe(takeUntil(this.end))
       .subscribe((item: HsDialogComponent) => {
         this.destroyDialog(item);
@@ -67,7 +67,7 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
     (<HsDialogComponent>componentRef.instance).viewRef = componentRef.hostView;
     (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
     (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;
-    this.HsDialogContainerService.get(this.app).dialogs.push(
+    this.HsDialogContainerService.dialogs.push(
       componentRef.instance as HsDialogComponent
     );
   }

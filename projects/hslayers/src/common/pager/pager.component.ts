@@ -1,28 +1,21 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'hs-pager',
   templateUrl: './pager.component.html',
 })
-export class HsPagerComponent implements OnInit {
-  @Input() app = 'default';
+export class HsPagerComponent {
   @Input() pagerService: any;
-
-  appRef;
   recordsPerPageArray = [5, 10, 15, 20, 25, 50, 100];
   constructor() {}
-
-  ngOnInit() {
-    this.appRef = this.pagerService.get(this.app);
-  }
 
   /**
    * Checks if next page for pagination is available
    */
   nextPageAvailable(): boolean {
     if (
-      this.appRef.listNext == this.appRef.matchedRecords ||
-      this.appRef.matchedRecords == 0
+      this.pagerService.listNext == this.pagerService.matchedRecords ||
+      this.pagerService.matchedRecords == 0
     ) {
       return true;
     } else {
@@ -34,29 +27,29 @@ export class HsPagerComponent implements OnInit {
    */
   getPreviousRecords(): void {
     if (this.pagerService.getPreviousRecords) {
-      this.pagerService.getPreviousRecords(this.app);
+      this.pagerService.getPreviousRecords();
     } else {
-      if (this.appRef.listStart - this.appRef.recordsPerPage <= 0) {
-        this.appRef.listStart = 0;
-        this.appRef.listNext = this.appRef.recordsPerPage;
+      if (this.pagerService.listStart - this.pagerService.recordsPerPage <= 0) {
+        this.pagerService.listStart = 0;
+        this.pagerService.listNext = this.pagerService.recordsPerPage;
       } else {
-        this.appRef.listStart -= this.appRef.recordsPerPage;
-        this.appRef.listNext =
-          this.appRef.listStart + this.appRef.recordsPerPage;
+        this.pagerService.listStart -= this.pagerService.recordsPerPage;
+        this.pagerService.listNext =
+          this.pagerService.listStart + this.pagerService.recordsPerPage;
       }
     }
   }
 
   changeRecordsPerPage(perPage: number): void {
-    if (perPage > this.appRef.matchedRecords) {
-      this.appRef.recordsPerPage = this.appRef.matchedRecords;
+    if (perPage > this.pagerService.matchedRecords) {
+      this.pagerService.recordsPerPage = this.pagerService.matchedRecords;
     } else {
-      this.appRef.recordsPerPage = perPage;
+      this.pagerService.recordsPerPage = perPage;
     }
-    this.appRef.listStart = 0;
-    this.appRef.listNext = this.appRef.recordsPerPage;
+    this.pagerService.listStart = 0;
+    this.pagerService.listNext = this.pagerService.recordsPerPage;
     if (this.pagerService.changeRecordsPerPage) {
-      this.pagerService.changeRecordsPerPage(this.app);
+      this.pagerService.changeRecordsPerPage();
     }
   }
 
@@ -65,17 +58,19 @@ export class HsPagerComponent implements OnInit {
    */
   getNextRecords(): void {
     if (this.pagerService.getNextRecords) {
-      this.pagerService.getNextRecords(this.app);
+      this.pagerService.getNextRecords();
     } else {
-      this.appRef.listStart += this.appRef.recordsPerPage;
-      this.appRef.listNext += this.appRef.recordsPerPage;
-      if (this.appRef.listNext > this.appRef.matchedRecords) {
-        this.appRef.listNext = this.appRef.matchedRecords;
+      this.pagerService.listStart += this.pagerService.recordsPerPage;
+      this.pagerService.listNext += this.pagerService.recordsPerPage;
+      if (this.pagerService.listNext > this.pagerService.matchedRecords) {
+        this.pagerService.listNext = this.pagerService.matchedRecords;
       }
     }
   }
 
   resultsVisible(): boolean {
-    return this.appRef.listNext && this.appRef.matchedRecords ? true : false;
+    return this.pagerService.listNext && this.pagerService.matchedRecords
+      ? true
+      : false;
   }
 }

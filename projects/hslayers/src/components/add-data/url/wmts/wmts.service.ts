@@ -16,9 +16,18 @@ import {addAnchors} from '../../../../common/attribution-utils';
 import {transformExtent} from 'ol/proj';
 import {urlDataObject} from '../types/data-object.type';
 
-class HsUrlWmtsParams {
+@Injectable({providedIn: 'root'})
+export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   data: urlDataObject;
-  constructor() {
+
+  constructor(
+    public hsMapService: HsMapService,
+    public hsLayoutService: HsLayoutService,
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataCommonService: HsAddDataCommonService
+  ) {}
+
+  setDataToDefault(): void {
     this.data = {
       add_all: null,
       caps: null,
@@ -34,35 +43,12 @@ class HsUrlWmtsParams {
       },
     };
   }
-}
-
-@Injectable({providedIn: 'root'})
-export class HsUrlWmtsService implements HsUrlTypeServiceModel {
-  apps: {
-    [id: string]: any;
-  } = {default: new HsUrlWmtsParams()};
-
-  constructor(
-    public hsMapService: HsMapService,
-    public hsLayoutService: HsLayoutService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService
-  ) {}
-
-  get(app: string): HsUrlWmtsParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new HsUrlWmtsParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-
   /**
    * List and return layers from WMTS getCapabilities response
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper,
-    app: string
+    wrapper: CapabilitiesResponseWrapper
   ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
@@ -70,22 +56,21 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       return;
     }
     if (error) {
-      this.hsAddDataCommonService.throwParsingError(response.message, app);
+      this.hsAddDataCommonService.throwParsingError(response.message);
       return;
     }
     try {
       //TODO AWAIT and add-layer if layerToSelect
-      await this.capabilitiesReceived(response, app);
-      if (this.hsAddDataCommonService.get(app).layerToSelect) {
+      await this.capabilitiesReceived(response);
+      if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
-          this.get(app).data.layers,
-          'wmts',
-          app
+          this.data.layers,
+          'wmts'
         );
-        return this.getLayers(app, true);
+        return this.getLayers(true);
       }
     } catch (e) {
-      this.hsAddDataCommonService.throwParsingError(e, app);
+      this.hsAddDataCommonService.throwParsingError(e);
     }
   }
 
@@ -93,19 +78,18 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Parse information received in WMTS getCapabilities response
    * @param response - Url of requested service
    */
-  async capabilitiesReceived(response: string, app: string): Promise<any> {
+  async capabilitiesReceived(response: string): Promise<any> {
     try {
-      const appRef = this.get(app);
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
-      appRef.data.caps = caps;
-      appRef.data.title = caps.ServiceIdentification.Title || 'Wmts layer';
+      this.data.caps = caps;
+      this.data.title = caps.ServiceIdentification.Title || 'Wmts layer';
 
-      appRef.data.description = addAnchors(caps.ServiceIdentification.Abstract);
-      appRef.data.version = caps.Version || caps.version;
-      appRef.data.layers = caps.Contents.Layer;
-      this.hsAddDataCommonService.get(app).loadingInfo = false;
-      return appRef.data.title;
+      this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
+      this.data.version = caps.Version || caps.version;
+      this.data.layers = caps.Contents.Layer;
+      this.hsAddDataCommonService.loadingInfo = false;
+      return this.data.title;
     } catch (e) {
       throw new Error(e);
     }
@@ -115,13 +99,13 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param layer - Layer selected
    * @param collection - Layers created and retreived collection
    */
-  getLayersRecursively(layer, options, collection, app: string): void {
-    if (!this.get(app).data.add_all || layer.checked) {
-      collection.push(this.getLayer(layer, undefined, app));
+  getLayersRecursively(layer, options, collection): void {
+    if (!this.data.add_all || layer.checked) {
+      collection.push(this.getLayer(layer, undefined));
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.getLayersRecursively(sublayer, options, collection, app);
+        this.getLayersRecursively(sublayer, options, collection);
       }
     }
   }
@@ -129,9 +113,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and add them to the map
    */
-  addLayers(layers: Layer<Source>[], app: string): void {
+  addLayers(layers: Layer<Source>[]): void {
     for (const l of layers) {
-      this.hsMapService.addLayer(l, app);
+      this.hsMapService.addLayer(l);
     }
   }
 
@@ -139,23 +123,19 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
-  getLayers(app: string, checkedOnly: boolean): Layer<Source>[] {
-    const appRef = this.get(app);
-    appRef.data.add_all = checkedOnly;
+  getLayers(checkedOnly: boolean): Layer<Source>[] {
+    this.data.add_all = checkedOnly;
     const collection = [];
-    for (const layer of appRef.data.layers) {
-      this.getLayersRecursively(layer, undefined, collection, app);
+    for (const layer of this.data.layers) {
+      this.getLayersRecursively(layer, undefined, collection);
     }
-    appRef.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(
-      collection,
-      app
-    );
-    this.hsAddDataUrlService.zoomToLayers(appRef.data, app);
-    this.hsAddDataCommonService.clearParams(app);
-    this.apps[app] = new HsUrlWmtsParams(); //Replaces setDataToDefault
-    this.hsAddDataCommonService.setPanelToCatalogue(app);
+    this.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(collection);
+    this.hsAddDataUrlService.zoomToLayers(this.data);
+    this.hsAddDataCommonService.clearParams();
+    this.setDataToDefault();
+    this.hsAddDataCommonService.setPanelToCatalogue();
     if (collection.length > 0) {
-      this.hsLayoutService.setMainPanel('layermanager', app);
+      this.hsLayoutService.setMainPanel('layermanager');
     }
     return collection;
     //FIX ME: to implement
@@ -177,7 +157,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * otherwise returns 3857 as trial(some services support 3857 matrix set even though its not clear from capabilities )
    * @param sets - Set of available matrixSets
    */
-  getPreferredMatrixSet(sets, app: string): string {
+  getPreferredMatrixSet(sets): string {
     const supportedFormats = ['3857', '4326', '5514'];
     const preferred = sets.filter((set) =>
       supportedFormats.some((v) => set.TileMatrixSet.includes(v))
@@ -185,7 +165,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     if (preferred.length != 0) {
       const preferCurrent = preferred.find((set) =>
         set.TileMatrixSet.includes(
-          this.hsMapService.getMap(app).getView().getProjection().getCode()
+          this.hsMapService.getMap().getView().getProjection().getCode()
         )
       );
       return preferCurrent
@@ -221,14 +201,14 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   /***
    * Get WMTS layer bounding box
    */
-  getWMTSExtent(identifier: string, app: string): Extent {
-    const caps = this.get(app).data.caps;
+  getWMTSExtent(identifier: string): Extent {
+    const caps = this.data.caps;
     const layer = caps.Contents.Layer.find((l) => l.Identifier == identifier);
     return layer?.WGS84BoundingBox
       ? transformExtent(
           layer.WGS84BoundingBox,
           'EPSG:4326',
-          this.hsMapService.getCurrentProj(app)
+          this.hsMapService.getCurrentProj()
         )
       : undefined;
   }
@@ -238,10 +218,10 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Uses previously received capabilities response as a reference for the source
    * @param response - Set of available info formats for layer
    */
-  getLayer(layer, options, app: string): Layer<Source> {
+  getLayer(layer, options): Layer<Source> {
     try {
       const wmts = new Tile({
-        extent: this.getWMTSExtent(layer.Identifier, app),
+        extent: this.getWMTSExtent(layer.Identifier),
         properties: {
           title: layer.Title,
           name: layer.Title,
@@ -253,9 +233,9 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
         source: new WMTS({} as any),
       });
       // Get WMTS Capabilities and create WMTS source base on it
-      const options = optionsFromCapabilities(this.get(app).data.caps, {
+      const options = optionsFromCapabilities(this.data.caps, {
         layer: layer.Identifier,
-        matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink, app),
+        matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink),
         format: this.getPreferredFormat(layer.Format),
       });
       // WMTS source for raster tiles layer

@@ -50,9 +50,9 @@ export class HsSearchComponent
         description: 'SIDEBAR.descriptions.SEARCH',
         icon: 'icon-search',
       },
-      this.data.app
+      
     );
-    window.innerWidth < this.hsConfig.get(this.data.app).mobileBreakpoint
+    window.innerWidth < this.hsConfig.mobileBreakpoint
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);
   }

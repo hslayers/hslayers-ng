@@ -1,8 +1,9 @@
-<div [hidden]="!hsAddDataCommonService.get(app).showDetails || hsAddDataCommonService.get(app).loadingInfo"><!-- TODO: Remove function call from template -->
+<div [hidden]="!hsAddDataCommonService.showDetails || hsAddDataCommonService.loadingInfo">
+  <!-- TODO: Remove function call from template -->
   <ng-container>
     <div class="form-group">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs: {app} }}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs }}</span>
         <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
           <option *ngFor="let format of data.image_formats">{{format}}</option>
         </select>
@@ -11,7 +12,7 @@
 
     <div class="form-group">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translateHs: {app} }}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translateHs }}</span>
         <select class="form-control form-select" name="queryFormat" [(ngModel)]="data.query_format">
           <option *ngFor="let format of data.query_formats">{{format}}</option>
         </select>
@@ -20,7 +21,7 @@
 
     <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs: {app} }}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs }}</span>
         <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
           <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
         </select>
@@ -30,13 +31,13 @@
 
   <div class="form-group" [hidden]="data.base === true">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs: {app} }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs }}</span>
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
   <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
     <p class="col-sm-12 alert alert-danger" [hidden]="!data.use_resampling">
-      {{'ADDLAYERS.mapAndLayerProjection' | translateHs: {app} }}
+      {{'ADDLAYERS.mapAndLayerProjection' | translateHs }}
     </p>
   </ng-container>
   <div class="form-group">
@@ -44,53 +45,52 @@
       <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
         <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
             [(ngModel)]="data.use_tiles" />
-          {{'ADDLAYERS.useTiles' | translateHs: {app} }}
+          {{'ADDLAYERS.useTiles' | translateHs }}
         </label>
       </ng-container>
 
       <label class="capabilities_label control-label"> <input type="checkbox" class="me-2 checkbox-lg"
           [(ngModel)]="data.register_metadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' |
-        translateHs: {app} }}</label>
+        translateHs }}</label>
     </div>
   </div>
   <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
     <p class="col-sm-12 alert alert-warning" [hidden]="data.use_tiles">
-      {{'ADDLAYERS.considerUsingTiles' | translateHs: {app} }}
+      {{'ADDLAYERS.considerUsingTiles' | translateHs }}
     </p>
   </ng-container>
   <ng-container *ngIf="type === 'wms'">
     <div class="form-group">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translateHs: {app} }}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translateHs }}</span>
         <input class="form-control" name="tileSize" [(ngModel)]="data.tile_size" />
       </div>
     </div>
   </ng-container>
   <div class="d-flex flex-column my-3">
     <div class="d-flex flex-row justify-content-start align-items-baseline mb-1">
-      {{'ADDDATA.CATALOGUE.addAs' | translateHs: {app} }}
+      {{'ADDDATA.CATALOGUE.addAs' | translateHs }}
       <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = true"
           [ngClass]="{'active':data.base}">
-          {{'COMPOSITONKEYWORDS.Basemap' | translateHs: {app} }}
+          {{'COMPOSITONKEYWORDS.Basemap' | translateHs }}
         </button>
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = false"
           [ngClass]="{'active': !data.base}">
-          {{'COMMON.layer' | translateHs: {app} }}
+          {{'COMMON.layer' | translateHs }}
         </button>
       </div>
     </div>
     <div class="input-group">
-      <span class="input-group-text control-label">{{'COMMON.title' | translateHs: {app} }}</span>
+      <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
   </div>
   <ng-container *ngIf="type === 'wms'">
-    <hs-target-position [(addUnder)]="data.add_under" [app]="app"></hs-target-position>
+    <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
   </ng-container>
   <hr />
-  <hs-layer-table [app]="app" [type]="type" [injectedService]="injectedService"> </hs-layer-table>
-  <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers"
-    [app]="app">
+  <hs-layer-table [type]="type" [injectedService]="injectedService"> </hs-layer-table>
+  <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
   </hs-url-add>
 </div>

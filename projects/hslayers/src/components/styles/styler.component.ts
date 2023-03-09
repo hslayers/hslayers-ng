@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 import colorScales from 'colormap/colorScale';
@@ -29,13 +29,13 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy
+{
   layerTitle: string;
   private end = new Subject<void>();
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';
-  appRef;
   colormaps = Object.keys(colorScales);
   constructor(
     public hsStylerService: HsStylerService,
@@ -53,22 +53,17 @@ export class HsStylerComponent
       .subscribe((layer: Layer<Source>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
           this.hsStylerService.fill(
-            layer as VectorLayer<VectorSource<Geometry>>,
-            this.data.app
+            layer as VectorLayer<VectorSource<Geometry>>
           );
         }
       });
     this.hsEventBusService.mainPanelChanges
       .pipe(takeUntil(this.end))
-      .subscribe(({which, app}) => {
-        if (which == 'styler' && app == this.data.app) {
-          this.hsStylerService.fill(this.appRef.layer, this.data.app);
+      .subscribe((which) => {
+        if (which == 'styler') {
+          this.hsStylerService.fill(this.hsStylerService.layer);
         }
       });
-  }
-  ngOnInit(): void {
-    this.appRef = this.hsStylerService.get(this.data.app);
-    this.hsStylerService.init(this.data.app);
   }
 
   ngOnDestroy(): void {
@@ -77,20 +72,19 @@ export class HsStylerComponent
   }
 
   async close(): Promise<void> {
-    if (this.appRef.unsavedChange) {
+    if (this.hsStylerService.unsavedChange) {
       const dialog = this.hsDialogContainerService.create(
         HsStylerEditDialogComponent,
-        {},
-        this.data.app
+        {}
       );
       const confirmed = await dialog.waitResult();
       if (confirmed == 'no') {
         return;
       } else if (confirmed == 'yes') {
-        this.hsStylerService.setSldQml(this.data.app);
+        this.hsStylerService.setSldQml();
       }
     }
-    this.hsLayoutService.setMainPanel('layermanager', this.data.app);
+    this.hsLayoutService.setMainPanel('layermanager');
   }
 
   uploadSld(): void {
@@ -98,12 +92,12 @@ export class HsStylerComponent
   }
 
   async clear(): Promise<void> {
-    await this.hsStylerService.reset(this.data.app);
+    await this.hsStylerService.reset();
   }
 
   drop(event: CdkDragDrop<any[]>): void {
     moveItemInArray(
-      this.appRef.styleObject.rules,
+      this.hsStylerService.styleObject.rules,
       event.previousIndex,
       event.currentIndex
     );
@@ -120,7 +114,7 @@ export class HsStylerComponent
     });
     Promise.all(promises).then(async (fileContents) => {
       const styleString = fileContents[0] as string;
-      await this.hsStylerService.loadStyle(styleString, this.data.app);
+      await this.hsStylerService.loadStyle(styleString);
     });
   }
 }

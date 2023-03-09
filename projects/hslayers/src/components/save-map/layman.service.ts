@@ -84,49 +84,51 @@ export class HsLaymanService implements HsSaverService {
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService
   ) {
-    this.hsCommonEndpointsService.endpointsFilled.subscribe(async (data) => {
-      if (data) {
-        const laymanEP = data.endpoints.find((ep) =>
-          ep.type.includes('layman')
-        );
-        if (laymanEP) {
-          const laymanVersion: AboutLayman = await lastValueFrom(
-            this.http
-              .get<AboutLayman>(laymanEP.url + '/rest/about/version')
-              .pipe(
-                map((res: any) => {
-                  return {
-                    about: {
-                      applications: {
-                        layman: {
-                          version: res.about.applications.layman.version,
-                          releaseTimestamp:
-                            res.about.applications.layman['release-timestamp'],
+    this.hsCommonEndpointsService.endpointsFilled.subscribe(
+      async (endpoints) => {
+        if (endpoints) {
+          const laymanEP = endpoints.find((ep) => ep.type.includes('layman'));
+          if (laymanEP) {
+            const laymanVersion: AboutLayman = await lastValueFrom(
+              this.http
+                .get<AboutLayman>(laymanEP.url + '/rest/about/version')
+                .pipe(
+                  map((res: any) => {
+                    return {
+                      about: {
+                        applications: {
+                          layman: {
+                            version: res.about.applications.layman.version,
+                            releaseTimestamp:
+                              res.about.applications.layman[
+                                'release-timestamp'
+                              ],
+                          },
+                          laymanTestClient: {
+                            version:
+                              res.about.applications['layman-test-client']
+                                .version,
+                          },
                         },
-                        laymanTestClient: {
-                          version:
-                            res.about.applications['layman-test-client']
-                              .version,
+                        data: {
+                          layman: {
+                            lastSchemaMigration:
+                              res.about.applications['last-schema-migration'],
+                            lastDataMigration:
+                              res.about.applications['last-data-migration'],
+                          },
                         },
                       },
-                      data: {
-                        layman: {
-                          lastSchemaMigration:
-                            res.about.applications['last-schema-migration'],
-                          lastDataMigration:
-                            res.about.applications['last-data-migration'],
-                        },
-                      },
-                    },
-                  };
-                })
-              )
-          );
-          laymanEP.version = laymanVersion.about.applications.layman.version;
-          this.supportedCRRList = getSupportedSrsList(laymanEP);
+                    };
+                  })
+                )
+            );
+            laymanEP.version = laymanVersion.about.applications.layman.version;
+            this.supportedCRRList = getSupportedSrsList(laymanEP);
+          }
         }
       }
-    });
+    );
   }
 
   /**
@@ -134,14 +136,13 @@ export class HsLaymanService implements HsSaverService {
    * @param compName - Composition's name
    * @param endpoint - Endpoint's description
    * @param access_rights - Composition's new access rights
-   * @param app - App identifier
+   
    * @returns Promise result of composition's PATCH request
    */
   async updateCompositionAccessRights(
     compName: string,
     endpoint: HsEndpoint,
-    access_rights: accessRightsModel,
-    app: string
+    access_rights: accessRightsModel
   ): Promise<any> {
     const rights = this.parseAccessRightsForLayman(endpoint, access_rights);
     const formdata = new FormData();
@@ -153,8 +154,7 @@ export class HsLaymanService implements HsSaverService {
       endpoint.user,
       compName,
       formdata,
-      false,
-      app
+      false
     );
   }
   /**
@@ -163,15 +163,14 @@ export class HsLaymanService implements HsSaverService {
    * @param endpoint - Endpoint's description
    * @param compoData - Additional data for composition
    * @param saveAsNew - Save as new composition
-   * @param app - App identifier
+   
    * @returns Promise result of POST
    */
   async save(
     compositionJson: MapComposition,
     endpoint: HsEndpoint,
     compoData: CompoData,
-    saveAsNew: boolean,
-    app: string
+    saveAsNew: boolean
   ): Promise<any> {
     const rights = this.parseAccessRightsForLayman(
       endpoint,
@@ -201,7 +200,6 @@ export class HsLaymanService implements HsSaverService {
       compoData.name,
       formdata,
       saveAsNew,
-      app,
       compositionJson
     );
   }
@@ -237,7 +235,7 @@ export class HsLaymanService implements HsSaverService {
    * @param mapName - Map composition's name
    * @param formdata - FormData object used for sending data over HTTP request
    * @param saveAsNew - Save as new composition
-   * @param app - App identifier
+   
    * @param compositionJson - JSON with composition's definition
    * @returns Promise result of POST/PATCH request
    */
@@ -247,7 +245,7 @@ export class HsLaymanService implements HsSaverService {
     mapName: string,
     formdata: FormData,
     saveAsNew: boolean,
-    app: string,
+
     compositionJson?: MapComposition
   ): Promise<any> {
     const headers = new HttpHeaders();
@@ -276,16 +274,13 @@ export class HsLaymanService implements HsSaverService {
           this.hsToastService.createToastPopupMessage(
             this.hsLanguageService.getTranslation(
               'COMMON.setPermissionsError',
-              undefined,
-              app
+              undefined
             ),
             this.hsLanguageService.getTranslationIgnoreNonExisting(
               'COMMON',
-              'somethingWentWrong',
-              app
+              'somethingWentWrong'
             ),
-            {serviceCalledFrom: 'HsLaymanService'},
-            app
+            {serviceCalledFrom: 'HsLaymanService'}
           );
           return err;
         });
@@ -315,14 +310,13 @@ export class HsLaymanService implements HsSaverService {
    * @param geojson - Geojson's object with features to send to server
    * @param description - Object containing {name, title, crs, workspace, access_rights} of
    * layer to retrieve
-   * @param app - App identifier
+   
    * @returns Promise result of POST/PATCH
    */
   async makeUpsertLayerRequest(
     endpoint: HsEndpoint,
     geojson: GeoJSONFeatureCollection,
-    description: UpsertLayerObject,
-    app: string
+    description: UpsertLayerObject
   ): Promise<PostPatchLayerResponse> {
     const formData = new FormData();
     let asyncUpload: AsyncUpload;
@@ -383,7 +377,6 @@ export class HsLaymanService implements HsSaverService {
         formData,
         asyncUpload,
         layerDesc?.name ? description.name : '',
-        app,
         exists
       );
       return res;
@@ -398,7 +391,7 @@ export class HsLaymanService implements HsSaverService {
    * @param formData - A set of key/value pairs representing layer fields and values, for HTTP request
    * @param asyncUpload - Async upload data: Async upload state and files to upload
    * @param layerName - Existing layer's name
-   * @param app - App identifier
+   
    * @param overwrite - (Optional) Should overwrite existing layer
    * @returns Promise result of POST/PATCH
    */
@@ -407,7 +400,7 @@ export class HsLaymanService implements HsSaverService {
     formData: FormData,
     asyncUpload: AsyncUpload,
     layerName: string,
-    app: string,
+
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
     layerName = getLaymanFriendlyLayerName(layerName);
@@ -424,16 +417,13 @@ export class HsLaymanService implements HsSaverService {
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation(
             'COMMON.setPermissionsError',
-            undefined,
-            app
+            undefined
           ),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'COMMON',
-            'somethingWentWrong',
-            app
+            'somethingWentWrong'
           ),
-          {serviceCalledFrom: 'HsLaymanService'},
-          app
+          {serviceCalledFrom: 'HsLaymanService'}
         );
         return err;
       });
@@ -558,13 +548,12 @@ export class HsLaymanService implements HsSaverService {
    * @param layer - Layer to get Layman friendly name for
    * in order to get features
    * @param withFeatures - Layer state, whether or not it has features
-   * @param app - App identifier
+   
    */
   public async upsertLayer(
     endpoint: HsEndpoint,
     layer: VectorLayer<VectorSource<Geometry>>,
-    withFeatures: boolean,
-    app: string
+    withFeatures: boolean
   ): Promise<void> {
     if (layer.getSource().loading) {
       return;
@@ -592,11 +581,10 @@ export class HsLaymanService implements HsSaverService {
         crsSupported,
         withFeatures
       ),
-      data,
-      app
+      data
     );
     setTimeout(async () => {
-      await this.makeGetLayerRequest(endpoint, layer, app);
+      await this.makeGetLayerRequest(endpoint, layer);
       setHsLaymanSynchronizing(layer, false);
     }, 2000);
   }
@@ -641,13 +629,10 @@ export class HsLaymanService implements HsSaverService {
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
-   * @param app - App identifier
+   
    * @returns Promise result of POST
    */
-  async sync(
-    {ep, add, upd, del, layer}: WfsSyncParams,
-    app: string
-  ): Promise<string> {
+  async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized anytime */
@@ -665,14 +650,13 @@ export class HsLaymanService implements HsSaverService {
         }
       } catch (ex) {
         this.hsLogService.warn(`Layer ${name} didn't exist. Creating..`);
-        this.upsertLayer(ep, layer, true, app);
+        this.upsertLayer(ep, layer, true);
         return;
       }
       desc.wfs.url = desc.wfs.url;
       return this.makeWfsRequest(
         {ep: endpoint, add, upd, del, layer},
-        desc.wfs.url,
-        app
+        desc.wfs.url
       );
     } catch (ex) {
       throw ex;
@@ -688,16 +672,15 @@ export class HsLaymanService implements HsSaverService {
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
-   * @param app - App identifier
+   
    * @returns Promise result of POST
    */
   private async makeWfsRequest(
     {ep, add, upd, del, layer}: WfsSyncParams,
-    url: string,
-    app: string
+    url: string
   ): Promise<string> {
     try {
-      const srsName = this.hsMapService.getCurrentProj(app).getCode();
+      const srsName = this.hsMapService.getCurrentProj().getCode();
       const featureType = getLayerName(layer);
       const wfsFormat = new WFS();
       const options = {
@@ -758,8 +741,7 @@ export class HsLaymanService implements HsSaverService {
    */
   async makeGetLayerRequest(
     ep: HsEndpoint,
-    layer: VectorLayer<VectorSource<Geometry>>,
-    app: string
+    layer: VectorLayer<VectorSource<Geometry>>
   ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
@@ -795,7 +777,7 @@ export class HsLaymanService implements HsSaverService {
               request: 'GetFeature',
               typeNames: `${getWorkspace(layer)}:${desc.name}`,
               r: Math.random(),
-              srsName: this.hsMapService.getCurrentProj(app).getCode(),
+              srsName: this.hsMapService.getCurrentProj().getCode(),
             }),
           {responseType: 'text', withCredentials: true}
         )
@@ -875,13 +857,10 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Removes selected layer from Layman's database
-   * @param app - App identifier
+   
    * @param layer - (Optional) Layer to be removed
    */
-  async removeLayer(
-    app: string,
-    layer?: Layer<Source> | string
-  ): Promise<boolean> {
+  async removeLayer(layer?: Layer<Source> | string): Promise<boolean> {
     let success: boolean;
     return new Promise((resolve, reject): void => {
       if (this.deleteQuery) {
@@ -913,18 +892,15 @@ export class HsLaymanService implements HsSaverService {
                   this.hsToastService.removeByText(
                     this.hsLanguageService.getTranslation(
                       'LAYMAN.deletionInProgress',
-                      undefined,
-                      app
-                    ),
-                    app
+                      undefined
+                    )
                   );
                   const response = Array.isArray(res) ? res[0] : res;
                   if (response?.code) {
                     this.hsCommonLaymanService.displayLaymanError(
                       ds,
                       'LAYMAN.deleteLayersRequest',
-                      response,
-                      app
+                      response
                     );
                     success = false;
                   } else {
@@ -941,8 +917,7 @@ export class HsLaymanService implements HsSaverService {
                       {
                         toastStyleClasses: 'bg-success text-light',
                         details,
-                      },
-                      app
+                      }
                     );
                     success = true;
                   }
@@ -952,8 +927,7 @@ export class HsLaymanService implements HsSaverService {
                 this.hsToastService.createToastPopupMessage(
                   this.hsLanguageService.getTranslation(
                     'LAYMAN.deleteLayersRequest',
-                    undefined,
-                    app
+                    undefined
                   ),
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'SAVECOMPOSITION',
@@ -964,11 +938,9 @@ export class HsLaymanService implements HsSaverService {
                         layer instanceof Layer
                           ? (layer as Layer<Source>).get('title')
                           : layer,
-                    },
-                    app
+                    }
                   ),
-                  {serviceCalledFrom: 'HsLaymanService'},
-                  app
+                  {serviceCalledFrom: 'HsLaymanService'}
                 );
                 success = false;
                 return of(e);

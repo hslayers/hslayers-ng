@@ -25,23 +25,19 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
     super();
   }
 
-  cleanup(app?: string) {
-    if (app) {
-      delete this.apps[app];
-    } else {
-      this.apps = {};
-    }
+  cleanup() {
+    console.warn('TODO: HsQueryPopupWidgetContainerService cleanup');
   }
 
   /**
    * Initialize query popup widgets
    * @param widgetNames - Array of widget names
-   * @param app - App identifier
+   
    * @param panelObserver - (Optional)
    */
   initWidgets(
     widgetNames: string[],
-    app: string,
+
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
     if (widgetNames?.length > 0) {
@@ -50,17 +46,12 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
           (widget) => widget.name == widgetName
         );
 
-        if (
-          !widgetFound &&
-          this.hsConfig.get(app).customQueryPopupWidgets?.length > 0
-        ) {
-          widgetFound = this.hsConfig
-            .get(app)
-            .customQueryPopupWidgets.find(
-              (widget) => widget.name == widgetName
-            );
+        if (!widgetFound && this.hsConfig.customQueryPopupWidgets?.length > 0) {
+          widgetFound = this.hsConfig.customQueryPopupWidgets.find(
+            (widget) => widget.name == widgetName
+          );
         }
-        this.create(widgetFound.component, undefined, app, panelObserver);
+        this.create(widgetFound.component, undefined, panelObserver);
       }
     }
   }

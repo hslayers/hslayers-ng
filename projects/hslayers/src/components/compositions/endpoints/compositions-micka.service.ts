@@ -28,9 +28,9 @@ export class HsCompositionsMickaService {
    * @param endpoint - Micka endpoint selected
    * @param params - HTTP request query params
    * @param bbox - Bounding box
-   * @param app - App identifier
+   
    */
-  getCompositionsQueryUrl(endpoint, params, bbox, app: string): string {
+  getCompositionsQueryUrl(endpoint, params, bbox): string {
     const query = params.query;
     const bboxDelimiter =
       endpoint.url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
@@ -85,32 +85,30 @@ export class HsCompositionsMickaService {
       params.start +
       '&limit=' +
       params.limit;
-    tmp = this.hsUtilsService.proxify(tmp, app);
+    tmp = this.hsUtilsService.proxify(tmp);
     return tmp;
   }
   /**
    * Middleware function before returning compositions list to the rest of the app
    * @param endpoint - Micka endpoint selected
    * @param response - HTTP request response
-   * @param app - App identifier
+   
    */
-  compositionsReceived(endpoint: HsEndpoint, response: any, app: string): void {
+  compositionsReceived(endpoint: HsEndpoint, response: any): void {
     if (!response.records) {
       this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
+        this.hsLanguageService.getTranslation('COMMON.warning', undefined),
         endpoint.title +
           ': ' +
           this.hsLanguageService.getTranslation(
             'COMMON.noDataReceived',
-            undefined,
-            app
+            undefined
           ),
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
           serviceCalledFrom: 'HsCompositionsMickaService',
-        },
-        app
+        }
       );
       return;
     }
@@ -131,7 +129,7 @@ export class HsCompositionsMickaService {
       if (response.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj(app)
+          this.hsMapService.getCurrentProj()
         );
         if (extentFeature) {
           record.featureId = extentFeature.getId().toString();
@@ -147,17 +145,16 @@ export class HsCompositionsMickaService {
    * @param params - HTTP request query params
    * @param extentFeatureCreated - Function for creating extent vector feature that will reference all listed composition from the response
    * @param bbox - Bounding box
-   * @param app - App identifier
+   
    */
   loadList(
     endpoint: HsEndpoint,
     params: any,
     extentFeatureCreated,
-    bbox: any,
-    app: string
+    bbox: any
   ): Observable<any> {
     params = this.checkForParams(endpoint, params);
-    const url = this.getCompositionsQueryUrl(endpoint, params, bbox, app);
+    const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
     endpoint.compositionsPaging.loaded = false;
 
     endpoint.httpCall = this.$http
@@ -168,28 +165,25 @@ export class HsCompositionsMickaService {
         timeout(5000),
         map((response: any) => {
           response.extentFeatureCreated = extentFeatureCreated;
-          this.compositionsReceived(endpoint, response, app);
+          this.compositionsReceived(endpoint, response);
         }),
         catchError((e) => {
           this.hsToastService.createToastPopupMessage(
             this.hsLanguageService.getTranslation(
               'COMPOSITIONS.errorWhileRequestingCompositions',
-              undefined,
-              app
+              undefined
             ),
             endpoint.title +
               ': ' +
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status ? e.status.toString() : e.message,
-                {url: url},
-                app
+                {url: url}
               ),
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsMickaService',
-            },
-            app
+            }
           );
           return of(e);
         })
@@ -201,7 +195,7 @@ export class HsCompositionsMickaService {
   /**
    * Reset Micka composition paging values
    * @param endpoint - Micka endpoint selected
-   * @param app - App identifier
+   
    */
   resetCompositionCounter(endpoint) {
     endpoint.compositionsPaging.start = 0;

@@ -14,7 +14,6 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
   newLayerName: string;
   data: {
     currentName: string;
-    app: string;
   };
 
   constructor(public hsDialogContainerService: HsDialogContainerService) {}
@@ -27,7 +26,7 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
    * Close the dialog
    */
   close(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve(false);
   }
 
@@ -36,7 +35,7 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
    * Continue with the new layer name from user's input
    */
   continue(): void {
-    this.hsDialogContainerService.destroy(this, this.data.app);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve(this.newLayerName);
   }
 

@@ -1,7 +1,7 @@
 <div class="form-group" *ngIf="(layerDescriptor | async).type === 'IDW'">
   <div class="form-inline">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs : {app: data.app} }}:</label>
+      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
       [ngModelOptions]="{standalone: true}" (change)="setWeight()">
@@ -13,7 +13,7 @@
 
   <div class="form-inline pt-3">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.colorMap" | translateHs : {app: data.app} }}:</label>
+      "LAYERMANAGER.layerEditor.colorMap" | translateHs }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="colorMap"
       [ngModelOptions]="{standalone: true}" (change)="setColorMap()">
@@ -23,23 +23,23 @@
     </select>
   </div>
   <div class="form-check">
-    <label class="form-check-label" [for]="'hs-idw-widget-reversed' + data.app">
-      {{ "COMMON.reversed" | translateHs : {app: data.app} }}
+    <label class="form-check-label" [for]="'hs-idw-widget-reversed' + data.app"><!-- FIXME: PLATFORMA APP PARAM -->
+      {{ "COMMON.reversed" | translateHs }}
     </label>
     <input class="form-check-input" type="checkbox" (change)="setColorMap()" [(ngModel)]="reversed"
-      [id]="'hs-idw-widget-reversed' + data.app">
+      [id]="'hs-idw-widget-reversed' + data.app"><!-- FIXME: PLATFORMA APP PARAM -->
   </div>
 
   <div class="row g-3 pt-3">
     <div class="col-md-6">
       <label class="form-label" for="hsIdwMin">{{
-        "LAYERMANAGER.layerEditor.min" | translateHs : {app: data.app} }}:</label>
+        "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
       <input class="form-control inline" (change)="setBounds()" [(ngModel)]="min" name="hsIdwMin" id="hsIdwMin" />
 
     </div>
     <div class="col-md-6">
       <label class="form-label" for="hsIdwMax">{{
-        "LAYERMANAGER.layerEditor.max" | translateHs : {app: data.app} }}:</label>
+        "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
       <input class="form-control" (change)="setBounds()" [(ngModel)]="max" name="hsIdwMax" for="hsIdwMax" />
     </div>
   </div>

@@ -252,10 +252,10 @@ export class AppComponent implements OnInit {
           opticalMap,
         ],
       },
-      this.app
+      
     );
-    if (!this.HsCesiumConfig.get(this.app).cesiumBase) {
-      this.HsCesiumConfig.get(this.app).cesiumBase = '/assets/cesium/';
+    if (!this.HsCesiumConfig.get().cesiumBase) {
+      this.HsCesiumConfig.get().cesiumBase = '/assets/cesium/';
     }
   }
   title = 'hslayers-workspace';

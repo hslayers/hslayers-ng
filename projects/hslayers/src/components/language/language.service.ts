@@ -1,39 +1,29 @@
-import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
 import {
-  CustomTranslationService as HsCustomTranslationService,
+  CustomTranslationService,
   WebpackTranslateLoader,
 } from './custom-translate.service';
+import {HsConfig} from '../../config.service';
 
 const DEFAULT_LANG = 'en' as const;
-
-class HsLanguageObject {
-  /** App-Language pair such as `app-1|en` */
-  language: string;
-  translationService: HsCustomTranslationService;
-}
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLanguageService {
+  language: string;
   translateServiceFactory: any;
-  apps: {
-    [id: string]: HsLanguageObject;
-  } = {};
-
+  id: number;
   constructor(
-    @Inject(HsCustomTranslationService) translateServiceFactory: any,
-    private HttpClient: HttpClient,
+    private translationService: CustomTranslationService,
     private hsConfig: HsConfig
   ) {
-    this.translateServiceFactory = translateServiceFactory;
-    this.hsConfig.configChanges.subscribe(({app, config}) => {
-      if (config.translationOverrides != undefined) {
-        const translator = this.getTranslator(app);
+    this.id = Math.random();
+    this.hsConfig.configChanges.subscribe(() => {
+      if (this.hsConfig.translationOverrides != undefined) {
+        const translator = this.translationService;
         if (translator?.currentLang) {
           translator.reloadLang(translator.currentLang);
         }
@@ -46,31 +36,16 @@ export class HsLanguageService {
    * @param lang - Language code without app prefix
    * Set language
    */
-  setLanguage(lang: string, app: string = 'default'): void {
-    if (!lang.includes('|')) {
-      lang = `${app}|${lang}`;
+  setLanguage(lang: string): void {
+    if (lang.includes('|')) {
+      lang = lang.split('|')[1];
     }
-    this.getTranslator(app).use(lang);
-    this.apps[app].language = lang;
+    this.translationService.use(lang);
+    this.language = lang;
   }
 
-  getTranslator(app: string): HsCustomTranslationService {
-    if (this.apps[app] == undefined) {
-      let translationService;
-      if (typeof this.translateServiceFactory == 'object') {
-        translationService = this.translateServiceFactory;
-      } else if (typeof this.translateServiceFactory == 'function') {
-        translationService = this.translateServiceFactory(
-          this.hsConfig,
-          this.HttpClient
-        );
-      }
-      this.apps[app] = {
-        language: app + '|' + DEFAULT_LANG,
-        translationService,
-      };
-    }
-    return this.apps[app].translationService;
+  getTranslator(): CustomTranslationService {
+    return this.translationService;
   }
 
   /**
@@ -78,14 +53,11 @@ export class HsLanguageService {
    * @returns Returns language code
    * Get code of current language
    */
-  getCurrentLanguageCode(app: string = 'default'): string {
-    if (
-      typeof this.apps[app].language == 'undefined' ||
-      this.apps[app].language == ''
-    ) {
+  getCurrentLanguageCode(): string {
+    if (typeof this.language == 'undefined' || this.language == '') {
       return DEFAULT_LANG;
     }
-    return this.apps[app].language.split('|').pop().substr(0, 2).toLowerCase();
+    return this.language.toLowerCase();
   }
 
   /**
@@ -93,7 +65,7 @@ export class HsLanguageService {
    * @returns Returns available languages
    * Get array of available languages based
    */
-  listAvailableLanguages(app: string = 'default'): any {
+  listAvailableLanguages(): any {
     const languageCodeNameMap = {
       'en': 'English',
       'cs': 'Česky',
@@ -103,9 +75,7 @@ export class HsLanguageService {
       'sk': 'Slovensky',
     };
     const langs = [{key: 'en', name: 'English'}];
-    for (const lang of this.getTranslator(app)
-      .getLangs()
-      .map((l) => l.split('|')[1])) {
+    for (const lang of this.translationService.getLangs()) {
       if (
         languageCodeNameMap.hasOwnProperty(lang) &&
         langs.filter((l) => l.key == lang).length == 0
@@ -121,23 +91,17 @@ export class HsLanguageService {
    * @param params -
    * @returns Translation
    */
-  getTranslation(str: string, params?: any, app: string = 'default'): string {
-    return this.getTranslator(app).instant(str, params);
+  getTranslation(str: string, params?: any): string {
+    return this.translationService.instant(str, params);
   }
 
   /**
    * Async variant of getTranslation function for translations which might
    * be needed immediately after application init before locales are even loaded
    */
-  async awaitTranslation(
-    str: string,
-    params?: any,
-    app: string = 'default'
-  ): Promise<string> {
-    const translator = this.getTranslator(app);
-    const lang = translator.currentLang.includes('|')
-      ? translator.currentLang.split('|')[1]
-      : translator.currentLang;
+  async awaitTranslation(str: string, params?: any): Promise<string> {
+    const translator = this.translationService;
+    const lang = translator.currentLang;
     const MAX_CONFIG_POLLS = 10;
     let counter = 0;
     while (
@@ -161,14 +125,9 @@ export class HsLanguageService {
   getTranslationIgnoreNonExisting(
     module: string,
     text: string,
-    params?: any,
-    app: string = 'default'
+    params?: any
   ): string {
-    const tmp = this.getTranslation(
-      module + '.' + text,
-      params || undefined,
-      app
-    );
+    const tmp = this.getTranslation(module + '.' + text, params || undefined);
     if (tmp.includes(module + '.')) {
       return text;
     }

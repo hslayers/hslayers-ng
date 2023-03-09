@@ -1,0 +1,98 @@
+</html>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Hslayers demo</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+  <script>
+    function hslayersNgConfigtestAppA(ol) {
+      return {
+        assetsPath: 'assets/',
+        default_layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+            title: 'OpenStreetMap',
+            properties: {
+              base: true,
+              removable: false,
+            },
+            visible: true,
+          }),
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              attributions:
+                '&copy; <a href="http://www.baltsat.lv/">Baltic Satellite Service</a>, <a href="https://www.esa.int/">European Space Agency - ESA</a>',
+              url: 'https://wms.forestradar.com/tiles-v1/fie-xNFwHfJdIR1dCtA7kJ1K8g/{time}-RGB/{z}/{x}/{y}.png',
+              crossOrigin: 'Anonymous',
+            }),
+            properties: {
+              title: 'Optical satellite basemap',
+              from_composition: true,
+              swipeSide: 'right',
+              dimensions: {
+                time: {
+                  value: '2020-11-20',
+                  name: 'time',
+                  values: ['2020-11-20'],
+                },
+              },
+              base: false,
+              editor: { editable: false },
+              path: 'Vegetation indexes and satellite imagery',
+            },
+            maxZoom: 18,
+            visible: false,
+            opacity: 1,
+          })
+        ],
+        proxyPrefix: window.location.hostname.includes('localhost')
+          ? `${window.location.protocol}//127.0.0.1:8085/`
+          : '/proxy/',
+        default_view: new ol.View({
+          center: ol.proj.transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+          zoom: 4,
+        }),
+        sidebarPosition: 'left',
+        translationOverrides: {
+          "en": {
+            "PANEL_HEADER": {
+              "LM": "OVERRIDDEN Layermanager",
+            }
+          }
+        }
+      };
+    }
+    function hslayersNgConfigtestAppB(ol) {
+      return {
+        assetsPath: 'assets/',
+        default_layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+            title: 'OpenStreetMap',
+            properties: {
+              base: true,
+              removable: false,
+            },
+            visible: true,
+          }),
+        ],
+
+        default_view: new ol.View({
+          center: ol.proj.transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+          zoom: 4,
+        }),
+      };
+    }
+  </script>
+  <hslayers-app id="testAppA" style="height:50vh; display:block"></hslayers-app>
+  <hslayers-app id="testAppB" style="height:50vh; display:block"></hslayers-app>
+</body>
+
+</html>

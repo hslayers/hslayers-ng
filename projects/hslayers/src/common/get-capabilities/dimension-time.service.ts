@@ -20,7 +20,6 @@ export class HsDimensionTimeService {
   layerTimeChanges: Subject<{
     layer: HsLayerDescriptor;
     time: string;
-    app: string;
   }> = new Subject();
 
   constructor(
@@ -161,7 +160,7 @@ export class HsDimensionTimeService {
    */
   setupTimeLayer(
     currentLayer: HsLayerDescriptor,
-    app: string,
+
     serviceLayer?: WmsLayer
   ): void {
     const olLayer = currentLayer.layer;
@@ -194,7 +193,7 @@ export class HsDimensionTimeService {
       const src = olLayer.getSource() as TileWMS;
       layerParams = src.getParams();
       src.on('change', (_) => {
-        this.syncQueryParamToDimension(src, olLayer, currentLayer, app);
+        this.syncQueryParamToDimension(src, olLayer, currentLayer);
       });
     }
     const isImgWms = this.HsUtilsService.instOf(olLayer.getSource(), ImageWMS);
@@ -202,7 +201,7 @@ export class HsDimensionTimeService {
       const src = olLayer.getSource() as ImageWMS;
       layerParams = src.getParams();
       src.on('change', (_) => {
-        this.syncQueryParamToDimension(src, olLayer, currentLayer, app);
+        this.syncQueryParamToDimension(src, olLayer, currentLayer);
       });
     }
     if (layerParams['TIME'] && timePoints.includes(layerParams['TIME'])) {
@@ -221,7 +220,7 @@ export class HsDimensionTimeService {
       timePoints,
     };
     this.polyfillLayerDimensionsValues(currentLayer);
-    this.setLayerTime(currentLayer, defaultTime, app);
+    this.setLayerTime(currentLayer, defaultTime);
   }
 
   /**
@@ -234,15 +233,14 @@ export class HsDimensionTimeService {
   private syncQueryParamToDimension(
     src: TileWMS | ImageWMS,
     olLayer,
-    currentLayer: HsLayerDescriptor,
-    app: string
+    currentLayer: HsLayerDescriptor
   ) {
     const timeFromParams = src.getParams()['TIME'];
     if (
       timeFromParams &&
       timeFromParams != getDimensions(olLayer)?.time.value
     ) {
-      this.setLayerTime(currentLayer, timeFromParams, app);
+      this.setLayerTime(currentLayer, timeFromParams);
     }
   }
 
@@ -251,18 +249,13 @@ export class HsDimensionTimeService {
    * @param currentLayer - Selected layer
    * @param newTime - ISO8601 string of a date and time to set
    */
-  setLayerTime(
-    currentLayer: HsLayerDescriptor,
-    newTime: string,
-    app: string
-  ): void {
+  setLayerTime(currentLayer: HsLayerDescriptor, newTime: string): void {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
     this.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
-      app,
     });
   }
 

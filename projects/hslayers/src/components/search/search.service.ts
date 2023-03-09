@@ -18,27 +18,16 @@ import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 import {unByKey} from 'ol/Observable';
-class HsSearchData {
-  canceler: Subject<any> = new Subject();
-  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
-  pointerMoveEventKey;
-  providers = {};
 
-  constructor(resultsLayerStyle) {
-    this.searchResultsLayer = new VectorLayer({
-      source: new Vector({}),
-      style: resultsLayerStyle,
-    });
-    setTitle(this.searchResultsLayer, 'Search results');
-    setShowInLayerManager(this.searchResultsLayer, false);
-  }
-}
 @Injectable({
   providedIn: 'root',
 })
 export class HsSearchService {
   formatWKT = new WKT();
-  apps: {[key: string]: HsSearchData} = {};
+  canceler: Subject<any> = new Subject();
+  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
+  pointerMoveEventKey;
+  providers = {};
 
   constructor(
     private http: HttpClient,
@@ -48,58 +37,54 @@ export class HsSearchService {
     public hsStylerService: HsStylerService,
     public hsEventBusService: HsEventBusService,
     public hsLayerUtilsService: HsLayerUtilsService
-  ) {}
-
-  init(app: string) {
-    if (this.apps[app] == undefined) {
-      this.apps[app] = new HsSearchData(
-        this.hsStylerService.get(app).pin_white_blue_highlight
-      );
-    }
+  ) {
+    this.searchResultsLayer = new VectorLayer({
+      source: new Vector({}),
+      style: this.hsStylerService.pin_white_blue_highlight,
+    });
+    setTitle(this.searchResultsLayer, 'Search results');
+    setShowInLayerManager(this.searchResultsLayer, false);
   }
+
   /**
    * @public
    * @param query - Place name or part of it
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
-  request(query: string, app: string): void {
+  request(query: string): void {
     let url = null;
     let providers = [];
     if (
-      this.hsConfig.get(app).search_provider !== undefined &&
-      this.hsConfig.get(app).searchProvider === undefined
+      this.hsConfig.search_provider !== undefined &&
+      this.hsConfig.searchProvider === undefined
     ) {
-      this.hsConfig.get(app).searchProvider =
-        this.hsConfig.get(app).search_provider;
+      this.hsConfig.searchProvider = this.hsConfig.search_provider;
     }
 
-    if (this.hsConfig.get(app).searchProvider === undefined) {
+    if (this.hsConfig.searchProvider === undefined) {
       providers = ['geonames'];
     } else if (
-      typeof this.hsConfig.get(app).searchProvider === 'string' ||
-      typeof this.hsConfig.get(app).searchProvider === 'function'
+      typeof this.hsConfig.searchProvider === 'string' ||
+      typeof this.hsConfig.searchProvider === 'function'
     ) {
-      providers = [this.hsConfig.get(app).searchProvider];
-    } else if (typeof this.hsConfig.get(app).searchProvider === 'object') {
-      providers = this.hsConfig.get(app).searchProvider;
+      providers = [this.hsConfig.searchProvider];
+    } else if (typeof this.hsConfig.searchProvider === 'object') {
+      providers = this.hsConfig.searchProvider;
     }
-    this.cleanResults(app);
+    this.cleanResults();
     for (const provider of providers) {
       let providerId = provider;
       if (provider == 'geonames') {
-        if (this.hsConfig.get(app).geonamesUser !== undefined) {
-          url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${
-            this.hsConfig.get(app).geonamesUser
-          }`;
+        if (this.hsConfig.geonamesUser !== undefined) {
+          url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${this.hsConfig.geonamesUser}`;
         } else {
           //Username will have to be set in proxy
           url = this.hsUtilsService.proxify(
-            `http://api.geonames.org/searchJSON?&name_startsWith=${query}`,
-            app
+            `http://api.geonames.org/searchJSON?&name_startsWith=${query}`
           );
         }
         if (window.location.protocol == 'https:') {
-          url = this.hsUtilsService.proxify(url, app);
+          url = this.hsUtilsService.proxify(url);
         }
       } else if (provider == 'sdi4apps_openapi') {
         url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
@@ -113,13 +98,13 @@ export class HsSearchService {
         }
       }
       //url = utils.proxify(url);
-      const canceler = this.apps[app].canceler[providerId];
+      const canceler = this.canceler[providerId];
       if (canceler !== undefined) {
         canceler.unsubscribe();
       }
-      this.apps[app].canceler[providerId] = this.http.get(url).subscribe(
+      this.canceler[providerId] = this.http.get(url).subscribe(
         (data) => {
-          this.searchResultsReceived(data, providerId, app);
+          this.searchResultsReceived(data, providerId);
         },
         () => {
           //
@@ -133,64 +118,56 @@ export class HsSearchService {
    * @param providerName - Name of request provider
    * Maintain inner results object and parse response with correct provider parser
    */
-  searchResultsReceived(
-    response: any,
-    providerName: string,
-    app: string
-  ): void {
-    if (this.apps[app].providers[providerName] === undefined) {
-      this.apps[app].providers[providerName] = {
+  searchResultsReceived(response: any, providerName: string): void {
+    if (this.providers[providerName] === undefined) {
+      this.providers[providerName] = {
         results: [],
         name: providerName,
       };
     }
-    const provider = this.apps[app].providers[providerName];
+    const provider = this.providers[providerName];
     if (providerName.indexOf('geonames') > -1) {
-      this.parseGeonamesResults(response, provider, app);
+      this.parseGeonamesResults(response, provider);
     } else if (providerName == 'sdi4apps_openapi') {
-      this.parseOpenApiResults(response, provider, app);
+      this.parseOpenApiResults(response, provider);
     } else {
-      this.parseGeonamesResults(response, provider, app);
+      this.parseGeonamesResults(response, provider);
     }
-    this.apps[app].pointerMoveEventKey = this.hsMapService
-      .getMap(app)
-      .on('pointermove', (e) => this.mapPointerMoved(e, app));
-    this.hsEventBusService.searchResultsReceived.next({
-      app,
-    });
+    this.pointerMoveEventKey = this.hsMapService
+      .getMap()
+      .on('pointermove', (e) => this.mapPointerMoved(e));
+    this.hsEventBusService.searchResultsReceived.next();
   }
   /**
    * @public
    * Remove results layer from map
    */
-  hideResultsLayer(app: string): void {
-    this.hsMapService
-      .getMap(app)
-      .removeLayer(this.apps[app].searchResultsLayer);
+  hideResultsLayer(): void {
+    this.hsMapService.getMap().removeLayer(this.searchResultsLayer);
   }
   /**
    * @public
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
-  showResultsLayer(app: string): void {
-    this.hideResultsLayer(app);
-    this.hsMapService.getMap(app).addLayer(this.apps[app].searchResultsLayer);
+  showResultsLayer(): void {
+    this.hideResultsLayer();
+    this.hsMapService.getMap().addLayer(this.searchResultsLayer);
   }
   /**
    * @public
    * Clean all search results from results variable and results layer
    */
-  cleanResults(app: string): void {
-    if (this.apps[app].providers !== undefined) {
-      for (const key of Object.keys(this.apps[app].providers)) {
-        const provider = this.apps[app].providers[key];
+  cleanResults(): void {
+    if (this.providers !== undefined) {
+      for (const key of Object.keys(this.providers)) {
+        const provider = this.providers[key];
         if (provider.results !== undefined) {
           provider.results.length = 0;
         }
       }
-      this.apps[app].searchResultsLayer.getSource().clear();
-      this.hideResultsLayer(app);
-      unByKey(this.apps[app].pointerMoveEventKey);
+      this.searchResultsLayer.getSource().clear();
+      this.hideResultsLayer();
+      unByKey(this.pointerMoveEventKey);
     }
   }
 
@@ -198,21 +175,21 @@ export class HsSearchService {
    * @param evt -
    * Highlight in the search list result, that corresponds with the nearest found feature under the pointer over the map
    */
-  mapPointerMoved(evt, app: string): void {
+  mapPointerMoved(evt): void {
     console.log('searchlistener');
     const featuresUnderMouse = this.hsMapService
-      .getMap(app)
+      .getMap()
       .getFeaturesAtPixel(evt.pixel)
       .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature, app);
-        return layer && layer == this.apps[app].searchResultsLayer;
+        const layer = this.hsMapService.getLayerForFeature(feature);
+        return layer && layer == this.searchResultsLayer;
       });
-    for (const provider of Object.keys(this.apps[app].providers)
-      .map((key) => this.apps[app].providers[key])
+    for (const provider of Object.keys(this.providers)
+      .map((key) => this.providers[key])
       .filter((provider) => provider?.results)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse as Feature<Geometry>[],
-        this.apps[app].searchResultsLayer,
+        this.searchResultsLayer,
         provider.results
       );
     }
@@ -223,17 +200,17 @@ export class HsSearchService {
    * @param zoomLevel - Zoom level to zoom on
    * Move map and zoom on selected search result
    */
-  selectResult(result: any, zoomLevel: number, app: string): void {
-    const coordinate = this.getResultCoordinate(result, app);
-    this.hsMapService.getMap(app).getView().setCenter(coordinate);
+  selectResult(result: any, zoomLevel: number): void {
+    const coordinate = this.getResultCoordinate(result);
+    this.hsMapService.getMap().getView().setCenter(coordinate);
     if (zoomLevel === undefined) {
       zoomLevel = 10;
     }
-    this.hsMapService.getMap(app).getView().setZoom(zoomLevel);
+    this.hsMapService.getMap().getView().setZoom(zoomLevel);
     this.hsEventBusService.searchZoomTo.next({
       coordinate: transform(
         coordinate,
-        this.hsMapService.getCurrentProj(app),
+        this.hsMapService.getCurrentProj(),
         'EPSG:4326'
       ),
       zoom: zoomLevel,
@@ -245,8 +222,8 @@ export class HsSearchService {
    * @returns Ol.coordinate of selected result
    * Parse coordinate of selected result
    */
-  getResultCoordinate(result: any, app: string): any {
-    const currentProj = this.hsMapService.getCurrentProj(app);
+  getResultCoordinate(result: any): any {
+    const currentProj = this.hsMapService.getCurrentProj();
     if (
       result.provider_name.indexOf('geonames') > -1 ||
       result.provider_name == 'searchFunctionsearchProvider'
@@ -271,19 +248,19 @@ export class HsSearchService {
    * @param provider - Which provider sent the search results
    * Result parser of results from Geonames service
    */
-  parseGeonamesResults(response: any, provider: any, app: string): void {
+  parseGeonamesResults(response: any, provider: any): void {
     provider.results = response.geonames;
-    this.generateGeonamesFeatures(provider, app);
+    this.generateGeonamesFeatures(provider);
   }
   /**
    * @param provider -
    */
-  generateGeonamesFeatures(provider: any, app: string): void {
-    const src = this.apps[app].searchResultsLayer.getSource();
+  generateGeonamesFeatures(provider: any): void {
+    const src = this.searchResultsLayer.getSource();
     for (const result of provider.results) {
       result.provider_name = provider.name;
       const feature = new Feature({
-        geometry: new Point(this.getResultCoordinate(result, app)),
+        geometry: new Point(this.getResultCoordinate(result)),
         record: result,
         id: this.hsUtilsService.generateUuid(),
       });
@@ -298,19 +275,19 @@ export class HsSearchService {
    * @param provider - Which provider sent the search results
    * Result parser of results from OpenApi service
    */
-  parseOpenApiResults(response: any, provider: any, app: string): void {
+  parseOpenApiResults(response: any, provider: any): void {
     provider.results = response.data;
-    this.generateOpenApiFeatures(provider, app);
+    this.generateOpenApiFeatures(provider);
   }
   /**
    * @param provider -
    */
-  generateOpenApiFeatures(provider: any, app: string): void {
-    const src = this.apps[app].searchResultsLayer.getSource();
+  generateOpenApiFeatures(provider: any): void {
+    const src = this.searchResultsLayer.getSource();
     for (const result of provider.results) {
       result.provider_name = provider.name;
       const feature = new Feature({
-        geometry: new Point(this.getResultCoordinate(result, app)),
+        geometry: new Point(this.getResultCoordinate(result)),
         record: result,
       });
       src.addFeature(feature);

@@ -47,10 +47,9 @@ export class HsMickaBrowserService {
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
-    textField: string,
-    app: string
+    textField: string
   ): any {
-    const url = this.createRequestUrl(dataset, data, textField, app);
+    const url = this.createRequestUrl(dataset, data, textField);
     dataset.datasourcePaging.loaded = false;
 
     dataset.httpCall = this.http
@@ -62,7 +61,7 @@ export class HsMickaBrowserService {
         map((x: any) => {
           x.dataset = dataset;
           x.extentFeatureCreated = extentFeatureCreated;
-          this.datasetsReceived(x, app);
+          this.datasetsReceived(x);
           return x;
         }),
         catchError((e) => {
@@ -81,22 +80,19 @@ export class HsMickaBrowserService {
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
                   'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-                  undefined,
-                  app
+                  undefined
                 ),
                 dataset.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url},
-                    app
+                    {url}
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsMickaBrowserService',
-                },
-                app
+                }
               );
           }
           dataset.datasourcePaging.loaded = true;
@@ -107,14 +103,14 @@ export class HsMickaBrowserService {
     return dataset.httpCall;
   }
 
-  private createRequestUrl(dataset, data, textField, app: string) {
+  private createRequestUrl(dataset, data, textField) {
     const query = data.query;
     const b = transformExtent(
       this.hsMapService
-        .getMap(app)
+        .getMap()
         .getView()
-        .calculateExtent(this.hsMapService.getMap(app).getSize()),
-      this.hsMapService.getMap(app).getView().getProjection(),
+        .calculateExtent(this.hsMapService.getMap().getSize()),
+      this.hsMapService.getMap().getView().getProjection(),
       'EPSG:4326'
     );
     const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
@@ -157,14 +153,14 @@ export class HsMickaBrowserService {
         start: dataset.datasourcePaging.start,
         validservice: '>0',
       });
-    return this.hsUtilsService.proxify(url, app);
+    return this.hsUtilsService.proxify(url);
   }
 
   /**
    * @param data - HTTP response containing all the layers
    * Callback for catalogue http query
    */
-  private datasetsReceived(data, app: string): boolean {
+  private datasetsReceived(data): boolean {
     if (!data.dataset || !data.extentFeatureCreated) {
       return;
     }
@@ -184,7 +180,7 @@ export class HsMickaBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             lyr,
-            this.hsMapService.getCurrentProj(app)
+            this.hsMapService.getCurrentProj()
           );
           if (extentFeature) {
             lyr.featureId = extentFeature.getId();
@@ -302,8 +298,7 @@ export class HsMickaBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
-    app: string
+    layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     let whatToAdd: any = {type: 'none'};
     const type = layer.type || layer.trida;
@@ -383,16 +378,12 @@ export class HsMickaBrowserService {
       // }
     } else {
       console.warn(`Datasource type "${type}" not supported.`);
-      this.datasourceParsingError(
-        layer.title,
-        'unsupportedDatasourceType',
-        app
-      );
+      this.datasourceParsingError(layer.title, 'unsupportedDatasourceType');
       return false;
     }
 
     if (whatToAdd.type == 'none') {
-      this.datasourceParsingError(layer.title, 'urlInvalid', app);
+      this.datasourceParsingError(layer.title, 'urlInvalid');
       return false;
     }
 
@@ -406,25 +397,22 @@ export class HsMickaBrowserService {
     return whatToAdd;
   }
 
-  datasourceParsingError(title: string, error: string, app: string) {
+  datasourceParsingError(title: string, error: string) {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(
         'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-        undefined,
-        app
+        undefined
       ),
       title +
         ': ' +
         this.hsLanguageService.getTranslation(
           `ADDLAYERS.ERROR.${error}`,
-          undefined,
-          app
+          undefined
         ),
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsMickaBrowserService',
-      },
-      app
+      }
     );
   }
 }

@@ -1,35 +1,35 @@
 <div #hslayout class="hsl hs-page-wrapper" style="width: 100%; height: 100%; min-height: inherit !important">
     <div class="hs-content-wrapper d-flex w-100 h-100"
-        [ngClass]="{'hs-open': HsLayoutService.apps[app].sidebarExpanded && sidebarVisible, 'hs-sb-right': sidebarPosition === 'right' && sidebarVisible, 'hs-sb-left': sidebarPosition === 'left' && sidebarVisible, 'hs-sb-bottom': sidebarPosition === 'bottom'}">
+        [ngClass]="{'hs-open': HsLayoutService.sidebarExpanded && sidebarVisible, 'hs-sb-right': sidebarPosition === 'right' && sidebarVisible, 'hs-sb-left': sidebarPosition === 'left' && sidebarVisible, 'hs-sb-bottom': sidebarPosition === 'bottom'}">
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space d-flex">
-            <hs-map class="hs-flex-fill d-flex" [app]="app"></hs-map>
+            <hs-map class="hs-flex-fill d-flex"></hs-map>
             <ng-template map-host></ng-template>
-            <hs-panel-container [service]="HsOverlayPanelContainerService" [app]="app"></hs-panel-container>
+            <hs-panel-container [service]="HsOverlayPanelContainerService"></hs-panel-container>
         </div>
         <div class="d-none d-mw-md-block" style="position:relative;">
             <span class="hs-panelspace-expander btn btn-primary rounded-top px-4 py-0 icon-chevron-up"
-                [ngClass]="{'disabled': !(HsLayoutService.apps[app].sidebarExpanded && sidebarVisible)}"
-                (click)="resizePanelSpaceWrapper($event,app)">
+                [ngClass]="{'disabled': !(HsLayoutService.sidebarExpanded && sidebarVisible)}"
+                (click)="resizePanelSpaceWrapper($event)">
             </span>
         </div>
         <div class="hs-panelspace" [hidden]="!sidebarVisible"
-            [ngClass]="{'labels': HsLayoutService.apps[app].sidebarLabels, 'buttons': HsLayoutService.apps[app].sidebarButtons}">
+            [ngClass]="{'labels': HsLayoutService.sidebarLabels, 'buttons': HsLayoutService.sidebarButtons}">
             <div class="hs-panelspace-wrapper me-1">
-                <hs-sidebar class="border-0" [app]="app"></hs-sidebar>
+                <hs-sidebar class="border-0"></hs-sidebar>
                 <div class="hs-panelplace">
-                    <hs-mini-sidebar *ngIf="HsLayoutService.apps[app].minisidebar" [app]="app">
+                    <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar">
                         <!-- TODO: Remove function call from template -->
                     </hs-mini-sidebar>
-                    <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace" [app]="app">
+                    <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace">
                     </hs-panel-container>
                 </div>
             </div>
         </div>
         <hs-toast aria-live="polite" aria-atomic="true"
-            [ngClass]="sidebarPosition === 'left' ? 'hs-sb-right' : 'hs-sb-left'" [app]="app">
+            [ngClass]="sidebarPosition === 'left' ? 'hs-sb-right' : 'hs-sb-left'">
         </hs-toast>
         <div class="hs-dialog-area"></div>
     </div>
-    <hs-dialog-container [app]="app"></hs-dialog-container>
+    <hs-dialog-container></hs-dialog-container>
 </div>

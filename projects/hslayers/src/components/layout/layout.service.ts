@@ -1,4 +1,4 @@
-import {BehaviorSubject, delay, lastValueFrom} from 'rxjs';
+import {BehaviorSubject, Observable, delay, map} from 'rxjs';
 import {
   ComponentFactoryResolver,
   ElementRef,
@@ -13,24 +13,7 @@ import {HsOverlayPanelContainerService} from './overlay-panel-container.service'
 import {HsPanelComponent} from './panels/panel-component.interface';
 import {HsPanelContainerService} from './panels/panel-container.service';
 
-const defaultLayoutParams = {
-  defaultPanel: '',
-  panel_statuses: {},
-  panel_enabled: {},
-  mainpanel: '',
-  sidebarRight: true,
-  sidebarLabels: true,
-  sidebarToggleable: true,
-  sidebarButtons: true,
-  smallWidth: false,
-  sidebarExpanded: false,
-  initializedOnce: false,
-  minisidebar: false,
-  sidebarVisible: true,
-  sidebarPosition: 'left',
-};
-
-export type HsLayoutParams = {
+export class HsLayoutParams {
   /**
    * Storage of default main panel.
    * This panel is opened during initialization of app and also when other panel than default is closed.
@@ -89,7 +72,7 @@ export type HsLayoutParams = {
   smallWidth: boolean;
   /**
    * Show if any sidebar panel is opened (sidebar is completely expanded).
-   * When hs.sidebar module is used in app, it change automatically to true during initialization.
+   * When hs.sidebar module is used in it change automatically to true during initialization.
    * @public
    * @default false
    */
@@ -109,46 +92,49 @@ export type HsLayoutParams = {
   minisidebar: boolean;
   contentWrapper?: any;
   layoutElement?: any;
-  sidebarVisible: boolean;
-  sidebarPosition: string;
-};
+  sidebarVisible: Observable<boolean>;
+  sidebarPosition: Observable<string>;
+  sidebarVisible$: BehaviorSubject<boolean>;
+  sidebarPosition$: BehaviorSubject<string>;
+
+  constructor() {
+    this.defaultPanel = '';
+    this.panel_statuses = {};
+    this.panel_enabled = {};
+    this.mainpanel = '';
+    this.sidebarRight = true;
+    this.sidebarLabels = true;
+    this.sidebarToggleable = true;
+    this.sidebarButtons = true;
+    this.smallWidth = false;
+    this.sidebarExpanded = false;
+    this.initializedOnce = false;
+    this.minisidebar = false;
+  }
+}
 
 @Injectable({
   providedIn: 'root',
 })
-export class HsLayoutService {
-  apps: {
-    [key: string]: HsLayoutParams;
-  } = {};
+export class HsLayoutService extends HsLayoutParams {
+  mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(
+    undefined
+  );
 
-  mapSpaceRef: BehaviorSubject<{
-    viewContainerRef: ViewContainerRef;
-    app: string;
-  }> = new BehaviorSubject(undefined);
+  panelSpaceWidth = new BehaviorSubject<number>(425);
 
-  panelSpaceWidth = new BehaviorSubject<{app: string; width: number}>({
-    app: 'default',
-    width: 425,
-  });
-
-  sidebarPosition = new BehaviorSubject<{app: string; position: string}>({
-    app: 'default',
-    position: 'left',
-  });
-
-  sidebarVisible = new BehaviorSubject<{app: string; visible: boolean}>({
-    app: 'default',
-    visible: true,
-  });
+  sidebarPosition$ = new BehaviorSubject('left');
+  sidebarVisible$ = new BehaviorSubject(true);
 
   constructor(
-    public HsConfig: HsConfig,
+    public hsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
     public $log: HsLogService,
     private componentFactoryResolver: ComponentFactoryResolver,
     public hsPanelContainerService: HsPanelContainerService,
     public hsOverlayPanelContainerService: HsOverlayPanelContainerService
   ) {
+    super();
     Object.defineProperty(this, 'panelListElement', {
       get: function () {
         return this.contentWrapper.querySelector('.hs-panelplace');
@@ -166,83 +152,73 @@ export class HsLayoutService {
         return this.contentWrapper.querySelector('.hs-sidebar-list');
       },
     });
+
+    this.parseConfig();
+    this.hsConfig.configChanges.subscribe(() => {
+      this.parseConfig();
+    });
+
+    this.HsEventBusService.mainPanelChanges.subscribe((which) => {
+      this.updPanelSpaceWidth();
+    });
+
+    this.HsEventBusService.layoutLoads.subscribe(() => {
+      this.updPanelSpaceWidth();
+      this.updSidebarPosition();
+      this.updSidebarVisible(true);
+    });
+
+    this.sidebarVisible = this.sidebarVisible$.pipe(
+      delay(0),
+      map((visible) => visible)
+    );
+    this.sidebarPosition = this.sidebarPosition$.pipe(
+      delay(0),
+      map((position) => position)
+    );
   }
 
-  init(_app: string): void {
-    this.parseConfig(_app);
-    this.HsConfig.configChanges.subscribe(({app, config}) => {
-      if (app == _app) {
-        this.parseConfig(_app);
-      }
-    });
-    this.HsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      this.updPanelSpaceWidth(app);
-    });
-    this.updPanelSpaceWidth(_app);
-    this.updSidebarPosition(_app);
-    this.updSidebarVisible(_app, true);
-    this.sidebarVisible.pipe(delay(0)).subscribe(({app, visible}) => {
-      this.apps[app].sidebarVisible = visible;
-    });
-    this.sidebarPosition.pipe(delay(0)).subscribe(({app, position}) => {
-      this.apps[app].sidebarPosition = position;
-    });
-  }
-
-  updPanelSpaceWidth(app: string) {
+  updPanelSpaceWidth() {
     //Timeout to repaint first to get width from element clientWidth
     setTimeout(() => {
-      this.panelSpaceWidth.next({app, width: this.getPanelSpaceWidth(app)});
+      this.panelSpaceWidth.next(this.getPanelSpaceWidth());
     }, 0);
   }
 
-  async updSidebarPosition(app: string) {
-    const appRef = this.get(app);
-    const lastPosition = appRef.sidebarPosition;
-    const config = this.HsConfig.apps[app];
-    const hslElement = appRef.layoutElement;
-    if (window.innerWidth <= config.mobileBreakpoint) {
+  async updSidebarPosition() {
+    const lastPosition = this.sidebarPosition$.getValue();
+    const hslElement = this.layoutElement;
+    if (window.innerWidth <= this.hsConfig.mobileBreakpoint) {
       hslElement.classList.add('hs-mobile-view');
       if (lastPosition != 'bottom') {
-        this.sidebarPosition.next({
-          app,
-          position: 'bottom',
-        });
+        this.sidebarPosition$.next('bottom');
       }
     } else {
       hslElement.classList.remove('hs-mobile-view');
-      if (config.sidebarPosition != lastPosition) {
-        this.sidebarPosition.next({
-          app,
-          position: config.sidebarPosition,
-        });
+      if (this.hsConfig.sidebarPosition != lastPosition) {
+        this.sidebarPosition$.next(this.hsConfig.sidebarPosition);
       }
     }
   }
 
-  parseConfig(app: string) {
-    const appRef = this.get(app);
-    appRef.panel_enabled = {};
-    const configRef = this.HsConfig.get(app);
-    if (configRef) {
-      for (const key of Object.keys(configRef.panelsEnabled)) {
-        this.panelEnabled(key, app, this.getPanelEnableState(key, app));
+  parseConfig() {
+    this.panel_enabled = {};
+    if (this.hsConfig) {
+      for (const key of Object.keys(this.hsConfig.panelsEnabled)) {
+        this.panelEnabled(key, this.getPanelEnableState(key));
       }
-      appRef.sidebarToggleable = configRef.hasOwnProperty('sidebarToggleable')
-        ? configRef.sidebarToggleable
+      this.sidebarToggleable = this.hsConfig.hasOwnProperty('sidebarToggleable')
+        ? this.hsConfig.sidebarToggleable
         : true;
     }
 
-    this.sidebarPosition.next({
-      app,
-      position: configRef?.sidebarPosition ?? 'left',
-    });
+    this.sidebarPosition$.next(this.hsConfig?.sidebarPosition ?? 'left');
   }
 
-  getPanelEnableState(panel, app: string): boolean {
+  getPanelEnableState(panel): boolean {
     if (
-      this.HsConfig?.get(app).panelsEnabled == undefined ||
-      this.HsConfig?.get(app).panelsEnabled[panel] == undefined
+      this.hsConfig?.panelsEnabled == undefined ||
+      this.hsConfig?.panelsEnabled[panel] == undefined
     ) {
       /* 
       Function called from sidebar and panel is 
@@ -250,31 +226,25 @@ export class HsLayoutService {
       */
       return true;
     }
-    return this.HsConfig.get(app).panelsEnabled[panel];
+    return this.hsConfig.panelsEnabled[panel];
   }
 
   /**
    * Find if selected panel is currently opened (in sidebar or as unpinned window)
    * @param which - Which Name of panel to test
-   * @param app - App name
    * @param panelComponent - Instance of panel component. Used for toggling multiple panels at the same time
    * @returns Panel opened/closed status
    */
-  panelVisible(
-    which: string,
-    app: string = 'default',
-    panelComponent?: HsPanelComponent
-  ) {
-    const appRef = this.get(app);
+  panelVisible(which: string, panelComponent?: HsPanelComponent) {
     if (panelComponent) {
       if (panelComponent.name == undefined) {
         panelComponent.name = which;
       }
     }
-    if (appRef.panel_statuses[which] !== undefined) {
-      return appRef.panel_statuses[which] && this.panelEnabled(which, app);
+    if (this.panel_statuses[which] !== undefined) {
+      return this.panel_statuses[which] && this.panelEnabled(which);
     }
-    if (appRef.mainpanel == which) {
+    if (this.mainpanel == which) {
       return true;
     } else if (panelComponent) {
       return panelComponent.unpinned;
@@ -285,22 +255,18 @@ export class HsLayoutService {
 
   /**
    * Close opened panel programmatically.
-   * If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels.
+   * If sidebar toolbar is used in sidebar stay expanded with sidebar labels.
    * Cannot resolve unpinned panels.
    * @public
    */
-  hidePanels(app) {
-    const appRef = this.get(app);
-    appRef.mainpanel = '';
-    appRef.sidebarLabels = true;
-    this.HsEventBusService.mainPanelChanges.next({app});
+  hidePanels() {
+    this.mainpanel = '';
+    this.sidebarLabels = true;
+    this.HsEventBusService.mainPanelChanges.next(null);
   }
 
-  get(app: string = 'default'): HsLayoutParams {
-    if (this.apps[app] == undefined) {
-      this.apps[app] = Object.assign({}, defaultLayoutParams);
-    }
-    return this.apps[app];
+  get(_): HsLayoutParams {
+    return this;
   }
 
   /**
@@ -308,10 +274,9 @@ export class HsLayoutService {
    * @param {object} which Panel to close (panel scope)
    * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
    */
-  closePanel(which, app: string) {
-    const appRef = this.get(app);
+  closePanel(which) {
     if (which.unpinned) {
-      appRef.contentWrapper
+      this.contentWrapper
         .querySelector(which.original_container)
         .appendChild(which.drag_panel);
       which.drag_panel.css({
@@ -321,21 +286,21 @@ export class HsLayoutService {
       });
     }
     which.unpinned = false;
-    if (which.panelName == appRef.mainpanel) {
-      if (appRef.defaultPanel != '') {
-        if (which.panelName == appRef.defaultPanel) {
-          appRef.sidebarExpanded = false;
+    if (which.panelName == this.mainpanel) {
+      if (this.defaultPanel != '') {
+        if (which.panelName == this.defaultPanel) {
+          this.sidebarExpanded = false;
         } else {
-          this.setMainPanel(appRef.defaultPanel, app);
+          this.setMainPanel(this.defaultPanel);
         }
       } else {
-        appRef.mainpanel = '';
-        appRef.sidebarLabels = true;
+        this.mainpanel = '';
+        this.sidebarLabels = true;
       }
-      appRef.sidebarExpanded = false;
+      this.sidebarExpanded = false;
     }
 
-    this.HsEventBusService.mainPanelChanges.next({which, app});
+    this.HsEventBusService.mainPanelChanges.next(which);
   }
 
   /**
@@ -347,78 +312,71 @@ export class HsLayoutService {
    * @param status - Visibility status of panel to set
    * @returns Panel enabled/disabled status for getter function
    */
-  panelEnabled(which: string, app: string, status?: boolean): boolean {
-    const appRef = this.get(app);
+  panelEnabled(which: string, status?: boolean): boolean {
     if (status === undefined) {
-      if (appRef.panel_enabled[which] != undefined) {
-        return appRef.panel_enabled[which];
+      if (this.panel_enabled[which] != undefined) {
+        return this.panel_enabled[which];
       } else {
         return true;
       }
     } else {
-      appRef.panel_enabled[which] = status;
+      this.panel_enabled[which] = status;
     }
   }
 
   /**
-   * Wrapper for accessing HsConfig.get(app).componentsEnabled settings.
+   * Wrapper for accessing hsConfig.componentsEnabled settings.
    * @param which - Name of the GUI component to check
    * @returns true if set to true (default), false otherwise
    */
-  componentEnabled(which: string, app: string): boolean {
+  componentEnabled(which: string): boolean {
     return (
-      this.HsConfig.get(app).componentsEnabled == undefined ||
-      this.HsConfig.get(app).componentsEnabled[which] == undefined ||
-      this.HsConfig.get(app).componentsEnabled[which]
+      this.hsConfig.componentsEnabled == undefined ||
+      this.hsConfig.componentsEnabled[which] == undefined ||
+      this.hsConfig.componentsEnabled[which]
     );
   }
 
   /**
    * Sets new main panel (Panel displayed in expanded sidebar).
-   * Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
+   * Change GUI and queryable status of map (when queryable and with hs.query component in map does info query on map click).
    * @public
    * @param which - New panel to activate (panel name)
-   * @param app - Application's ID
    * @param by_gui - Whether function call came as result of GUI action
    */
-  //TODO: introduce a new breaking change = change fction pattern to (which, {app, byGui}) => Promise<void>
-  setMainPanel(
-    which: string,
-    app: string = 'default',
-    by_gui?: boolean
-  ): Promise<void> {
-    const appRef = this.get(app);
-    if (!this.panelEnabled(which, app)) {
+  //TODO: introduce a new breaking change = change fction pattern to (which, {byGui}) => Promise<void>
+  setMainPanel(which: string, by_gui?: boolean): Promise<void> {
+    if (!this.panelEnabled(which)) {
       return;
     }
-    if (which == appRef.mainpanel && by_gui) {
+    if (which == this.mainpanel && by_gui) {
       which = '';
-      if (appRef.sidebarExpanded == true) {
-        if (appRef.sidebarPosition == 'bottom') {
-          appRef.sidebarExpanded = false;
+      if (this.sidebarExpanded == true) {
+        if (this.sidebarPosition$.getValue() == 'bottom') {
+          this.sidebarExpanded = false;
         } else {
-          appRef.sidebarLabels = true;
+          this.sidebarLabels = true;
         }
       }
     } else {
-      appRef.sidebarExpanded = true;
-      appRef.sidebarLabels = false;
+      this.sidebarExpanded = true;
+      this.sidebarLabels = false;
     }
-    appRef.mainpanel = which;
-    const componentRefInstance = this.hsPanelContainerService
-      .get(app)
-      .panels.find((p) => p.name == which);
+    this.mainpanel = which;
+    const componentRefInstance = this.hsPanelContainerService.panels.find(
+      (p) => p.name == which
+    );
     this.hsPanelContainerService.setPanelWidth(
-      this.HsConfig.get(app).panelWidths,
+      this.hsConfig.panelWidths,
       componentRefInstance
     );
-    for (const p of this.hsPanelContainerService.apps[app].panels) {
+    for (const p of this.hsPanelContainerService.panels) {
       const visible = p.isVisible();
       if (p.isVisible$ && p.isVisible$.value != visible) {
         p.isVisible$.next(visible);
       }
     }
-    this.HsEventBusService.mainPanelChanges.next({which, app});
+    this.HsEventBusService.mainPanelChanges.next(which);
   }
 
   /**
@@ -426,70 +384,67 @@ export class HsLayoutService {
    * @public
    * @param which - New panel to be default (specify panel name)
    */
-  setDefaultPanel(which: string, app: string = 'default'): void {
-    this.get(app).defaultPanel = which;
-    this.setMainPanel(which, app);
+  setDefaultPanel(which: string): void {
+    this.defaultPanel = which;
+    this.setMainPanel(which);
   }
 
-  getPanelSpaceWidth(app: string): number {
-    const appRef = this.get(app);
-    const panelSpaceWidth = appRef.layoutElement.getElementsByClassName(
+  getPanelSpaceWidth(): number {
+    const panelSpaceWidth = this.layoutElement.getElementsByClassName(
       'hs-panelspace-wrapper'
     )[0].clientWidth;
     return panelSpaceWidth;
   }
 
-  async updSidebarVisible(app: string, visible?: boolean): Promise<void> {
+  async updSidebarVisible(visible?: boolean): Promise<void> {
     if (
-      this.HsConfig.get(app).sidebarPosition == 'invisible' ||
-      this.HsConfig.get(app).pureMap ||
-      this.HsConfig.get(app).componentsEnabled.guiOverlay === false ||
-      this.HsConfig.get(app).componentsEnabled.sidebar === false
+      this.hsConfig.sidebarPosition == 'invisible' ||
+      this.hsConfig.pureMap ||
+      this.hsConfig.componentsEnabled.guiOverlay === false ||
+      this.hsConfig.componentsEnabled.sidebar === false
     ) {
-      return this.sidebarVisible.next({app, visible: false});
+      return this.sidebarVisible$.next(false);
     }
     if (visible == undefined) {
-      this.sidebarVisible.next({app, visible: true});
+      this.sidebarVisible$.next(true);
     } else {
-      this.sidebarVisible.next({app, visible});
+      this.sidebarVisible$.next(visible);
     }
   }
 
-  panelSpaceHeight(app: string) {
-    const appRef = this.get(app);
-    if (appRef.contentWrapper.querySelector('.hs-panelspace-wrapper')) {
-      return appRef.contentWrapper.querySelector('.hs-panelspace-wrapper')
+  panelSpaceHeight() {
+    if (this.contentWrapper.querySelector('.hs-panelspace-wrapper')) {
+      return this.contentWrapper.querySelector('.hs-panelspace-wrapper')
         .clientHeight;
       // return tmp
     }
   }
 
-  mdToolbarHeight(app: string) {
-    const ELEM = this.get(app).contentWrapper.querySelector('.md-app-toolbar');
+  mdToolbarHeight() {
+    const ELEM = this.contentWrapper.querySelector('.md-app-toolbar');
     return ELEM ? ELEM.clientHeight : 0;
   }
 
-  addMapVisualizer(visualizerComponent: Type<unknown>, _app: string): void {
+  addMapVisualizer(visualizerComponent: Type<unknown>): void {
     const componentFactory =
       this.componentFactoryResolver.resolveComponentFactory(
         visualizerComponent
       );
 
-    this.mapSpaceRef.subscribe((params) => {
-      if (params?.viewContainerRef && params?.app == _app) {
+    this.mapSpaceRef.subscribe((viewContainerRef) => {
+      if (viewContainerRef) {
         const componentRef: any =
-          params.viewContainerRef.createComponent(componentFactory);
-        componentRef.instance.app = params?.app;
+          viewContainerRef.createComponent(componentFactory);
       }
     });
   }
 
-  createPanel(panelComponent: Type<any>, app = 'default', data?: any): void {
-    this.hsPanelContainerService.create(panelComponent, data || {}, app);
+  createPanel(panelComponent: Type<any>, data?: any): void {
+    this.hsPanelContainerService.create(panelComponent, data || {});
   }
 
-  createOverlay(panelComponent: Type<any>, app?: string, data?: any): void {
-    this.hsOverlayPanelContainerService.create(panelComponent, data || {}, app);
+  createOverlay(panelComponent: Type<any>, data?: any): void {
+    this.hsOverlayPanelContainerService.create(panelComponent, data || {});
   }
 
   scrollTo(el: ElementRef) {

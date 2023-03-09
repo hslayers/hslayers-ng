@@ -26,7 +26,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   layer_loading = [];
   composition_abstract: string;
   composition_title: string;
-  composition_id: number;
+  composition_id: string;
   info_image: string;
   composition_edited: boolean;
   private end = new Subject<void>();
@@ -38,7 +38,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
     super(hsLayoutService);
     this.hsEventBusService.compositionLoads
       .pipe(takeUntil(this.end))
-      .subscribe(({data}) => {
+      .subscribe((data) => {
         if (data.error !== undefined) {
           const temp_abstract = this.composition_abstract;
           const temp_title = this.composition_title;
@@ -53,66 +53,52 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
 
     this.hsEventBusService.layerLoadings
       .pipe(takeUntil(this.end))
-      .subscribe(({layer, progress, app}) => {
-        if (app == this.data.app) {
-          if (!this.layer_loading.includes(getTitle(layer))) {
-            this.layer_loading.push(getTitle(layer));
-            this.composition_loaded = false;
-          }
+      .subscribe(({layer, progress}) => {
+        if (!this.layer_loading.includes(getTitle(layer))) {
+          this.layer_loading.push(getTitle(layer));
+          this.composition_loaded = false;
         }
       });
 
     this.hsEventBusService.layerLoads
       .pipe(takeUntil(this.end))
-      .subscribe(({layer, app}) => {
-        if (app == this.data.app) {
-          for (let i = 0; i < this.layer_loading.length; i++) {
-            if (this.layer_loading[i] == getTitle(layer)) {
-              this.layer_loading.splice(i, 1);
-            }
+      .subscribe((layer) => {
+        for (let i = 0; i < this.layer_loading.length; i++) {
+          if (this.layer_loading[i] == getTitle(layer)) {
+            this.layer_loading.splice(i, 1);
           }
+        }
 
-          if (this.layer_loading.length == 0 && !this.composition_loaded) {
-            this.composition_loaded = true;
-          }
+        if (this.layer_loading.length == 0 && !this.composition_loaded) {
+          this.composition_loaded = true;
         }
       });
 
     this.hsEventBusService.compositionDeletes
       .pipe(takeUntil(this.end))
-      .subscribe(({composition, app}) => {
-        if (app == this.data.app) {
-          if (composition.id == this.composition_id) {
-            delete this.composition_title;
-            delete this.composition_abstract;
-          }
+      .subscribe((composition) => {
+        if (composition.id == this.composition_id) {
+          delete this.composition_title;
+          delete this.composition_abstract;
         }
       });
 
-    this.hsEventBusService.mapResets
-      .pipe(takeUntil(this.end))
-      .subscribe(({app}) => {
-        if (app == this.data.app) {
-          delete this.composition_title;
-          delete this.composition_abstract;
-          this.layer_loading.length = 0;
-          this.composition_loaded = true;
-          this.composition_edited = false;
-        }
-      });
+    this.hsEventBusService.mapResets.pipe(takeUntil(this.end)).subscribe(() => {
+      delete this.composition_title;
+      delete this.composition_abstract;
+      this.layer_loading.length = 0;
+      this.composition_loaded = true;
+      this.composition_edited = false;
+    });
 
     this.hsEventBusService.compositionEdits
       .pipe(takeUntil(this.end))
       .subscribe(() => {
         this.composition_edited = true;
       });
-    this.hsConfig.configChanges
-      .pipe(takeUntil(this.end))
-      .subscribe(({app, config}) => {
-        if (this.data.app == app) {
-          this.isVisible$.next(this.isVisible());
-        }
-      });
+    this.hsConfig.configChanges.pipe(takeUntil(this.end)).subscribe(() => {
+      this.isVisible$.next(this.isVisible());
+    });
   }
   ngOnDestroy(): void {
     this.end.next();
@@ -132,9 +118,6 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   }
 
   isVisible(): boolean {
-    return this.hsLayoutService.panelEnabled(
-      'compositionLoadingProgress',
-      this.data.app
-    );
+    return this.hsLayoutService.panelEnabled('compositionLoadingProgress');
   }
 }

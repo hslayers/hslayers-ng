@@ -27,12 +27,10 @@ export class HsToolbarComponent
   ) {
     super(HsLayoutService);
     this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
-      ({app}) => {
+      () => {
         setTimeout(() => {
-          if (this.data.app == app) {
-            delete this.composition_title;
-            delete this.composition_abstract;
-          }
+          delete this.composition_title;
+          delete this.composition_abstract;
         });
       }
     );
@@ -56,9 +54,9 @@ export class HsToolbarComponent
 
   isVisible(): boolean {
     return (
-      this.HsLayoutService.panelEnabled('toolbar', this.data.app) &&
-      this.HsLayoutService.componentEnabled('toolbar', this.data.app) &&
-      this.HsLayoutService.componentEnabled('guiOverlay', this.data.app)
+      this.HsLayoutService.panelEnabled('toolbar') &&
+      this.HsLayoutService.componentEnabled('toolbar') &&
+      this.HsLayoutService.componentEnabled('guiOverlay')
     );
   }
 }

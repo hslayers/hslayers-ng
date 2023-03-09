@@ -43,10 +43,10 @@ export class HsFeatureTableComponent
         description: 'SIDEBAR.descriptions.FEATURE_TABLE',
         icon: 'icon-indexmanager',
       },
-      this.data.app
+      
     );
-    this.hsMapService.loaded(this.data.app).then(() => {
-      for (const layer of this.hsConfig.get(this.data.app)
+    this.hsMapService.loaded().then(() => {
+      for (const layer of this.hsConfig
         .layersInFeatureTable || []) {
         this.addLayerToTable(layer);
       }

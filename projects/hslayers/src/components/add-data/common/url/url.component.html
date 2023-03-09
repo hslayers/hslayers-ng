@@ -1,7 +1,7 @@
 <div class="form-group">
     <div class="input-group">
         <input type="url" class="form-control" name="url" [(ngModel)]="url" (change)="change()"
-            [placeholder]="'ADDLAYERS.externalDataSource' | translateHs: {app} " required #uri="ngModel"
+            [placeholder]="'ADDLAYERS.externalDataSource' | translateHs " required #uri="ngModel"
             style="height: auto;" />
 
         <button type="button" class="btn btn-secondary" *ngIf="uri.valid" (click)="emitConnect()"><i
@@ -11,7 +11,7 @@
 
         <!-- <button type="button" class="btn btn-danger" *ngIf="uri && !uri.valid"><i
                     class="icon-alertalt"></i></button> -->
-        <hs-history-list type="button" (historyUrlSelected)="historySelected($event)" [app]="app" [(what)]="type">
+        <hs-history-list type="button" (historyUrlSelected)="historySelected($event)" [(what)]="type">
         </hs-history-list>
     </div>
 </div>

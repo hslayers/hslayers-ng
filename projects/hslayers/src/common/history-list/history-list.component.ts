@@ -14,7 +14,7 @@ import {HsHistoryListService} from './history-list.service';
 })
 export class HsHistoryListComponent implements OnChanges {
   @Input() what: string; //input
-  @Input() app = 'default';
+  
   @Output() historyUrlSelected = new EventEmitter<string>(); //output
   items: Array<string>;
   constructor(public HsHistoryListService: HsHistoryListService) {}

@@ -17,7 +17,7 @@ import {getTitle} from '../../../common/layer-extensions';
 })
 export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   @Input() feature;
-  @Input() app = 'default';
+
   attributeName = '';
   attributeValue = '';
   newAttribVisible = false;
@@ -46,20 +46,17 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.hsFeatureCommonService.init(this.app);
-    this.availableLayersSubscription = this.hsFeatureCommonService.apps[
-      this.app
-    ].availableLayer$.subscribe((layers) => {
-      if (!this.olFeature()) {
-        //Feature from WMS getFeatureInfo
-        return;
-      }
-      const featureLayer = this.hsMapService.getLayerForFeature(
-        this.olFeature(),
-        this.app
-      );
-      this.availableLayers = layers.filter((layer) => layer != featureLayer);
-    });
+    this.availableLayersSubscription =
+      this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
+        if (!this.olFeature()) {
+          //Feature from WMS getFeatureInfo
+          return;
+        }
+        const featureLayer = this.hsMapService.getLayerForFeature(
+          this.olFeature()
+        );
+        this.availableLayers = layers.filter((layer) => layer != featureLayer);
+      });
   }
 
   ngOnDestroy(): void {
@@ -80,7 +77,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
    */
   isFeatureRemovable(): boolean {
     return this.olFeature()
-      ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature(), this.app)
+      ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature())
       : false;
   }
 
@@ -110,7 +107,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
    * Remove this feature
    */
   removeFeature(): void {
-    this.hsQueryVectorService.removeFeature(this.olFeature(), this.app);
+    this.hsQueryVectorService.removeFeature(this.olFeature());
   }
 
   /**
@@ -118,7 +115,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
    */
   zoomToFeature(): void {
     const extent = this.olFeature().getGeometry().getExtent();
-    this.hsMapService.fitExtent(extent, this.app);
+    this.hsMapService.fitExtent(extent);
   }
 
   /**
@@ -133,13 +130,12 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
 
   /**
    * Toggle export menus
-   * @param app - App identifier
+   
    */
-  toggleExportMenu(app: string): void {
+  toggleExportMenu(): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeature(),
-      app
+      this.olFeature()
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -166,14 +162,13 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
 
   /**
    * Move or copy feature
-   * @param app - App identifier
+   
    */
-  moveOrCopyFeature(app: string): void {
+  moveOrCopyFeature(): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       [this.olFeature()],
-      this.selectedLayer,
-      app
+      this.selectedLayer
     );
   }
 
@@ -184,6 +179,6 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
    * @returns Translated text
    */
   translateString(module: string, text: string): string {
-    return this.hsFeatureCommonService.translateString(module, text, this.app);
+    return this.hsFeatureCommonService.translateString(module, text);
   }
 }

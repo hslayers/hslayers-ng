@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 m-2"><strong>{{feature.name}} <span *ngIf="feature.layer">{{'QUERY.feature.inLayer' |
-                    translateHs : {app} }}</span>
+                    translateHs }}</span>
                 {{feature.layer}}</strong></div>
     </div>
     <hs-query-attribute-row *ngFor="let attribute of feature.attributes" [template]="feature.hstemplate"
@@ -12,7 +12,7 @@
     <div class="row">
         <div class="input-group m-1" [hidden]="!newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translateHs : {app} "
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translateHs  "
                     [(ngModel)]="attributeName" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="input-group m-1" [hidden]="!(attributeName && newAttribVisible)">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translateHs : {app} "
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translateHs  "
                     [(ngModel)]="attributeValue" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
@@ -37,15 +37,15 @@
     <div [hidden]="!editType" class="row p-2 ">
         <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
             <label for="selectedLayer" class="px-2">{{translateString('QUERY.feature',editType+'Feature')}}
-                {{'COMMON.into' | translateHs : {app} }}:</label>
-            <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs : {app} "
+                {{'COMMON.into' | translateHs }}:</label>
+            <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs  "
                 [(ngModel)]="selectedLayer" name="selectedLayer">
                 <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
-                    translateHs : {app} }}</option>
+                    translateHs }}</option>
                 <option *ngFor="let layer of availableLayers" [ngValue]="layer">
-                    {{getTitle(layer) | translateHs : {app, module: 'LAYERS'} }}</option>
+                    {{getTitle(layer) | translateHs : {module: 'LAYERS'} }}</option>
             </select>
-            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature(app)" [disabled]="!selectedLayer"><i
+            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
                     class="icon-save-floppy"></i></button>
         </div>
     </div>
@@ -61,14 +61,14 @@
                         class="icon-settingsthree-gears"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
                     <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
-                        translateHs : {app} }}</a>
+                        translateHs }}</a>
                     <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' |
-                        translateHs : {app} }}</a>
+                        translateHs }}</a>
                 </div>
             </div>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                    (click)="toggleExportMenu(app)" [title]="'QUERY.downloadAs' | translateHs : {app} "><i
+                    (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs  "><i
                         class="icon-download"></i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
                     <a class="dropdown-item" [download]="format.name + '_file.' + format.ext"

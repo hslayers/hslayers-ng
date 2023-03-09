@@ -21,7 +21,6 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 })
 export class HsLayerListComponent implements OnInit, OnDestroy {
   @Input() folder: any;
-  @Input() app = 'default';
   /**
    * List of layers which belong to folder hierarchy level of directive instance
    */
@@ -39,7 +38,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   ) {
     this.layerManagerUpdatesSubscription =
       this.hsEventBusService.layerManagerUpdates.subscribe(() => {
-        this.hsLayerManagerService.updateLayerListPositions(this.app);
+        this.hsLayerManagerService.updateLayerListPositions();
         this.updateLayers();
       });
   }
@@ -65,17 +64,11 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filtered_layers = this.hsLayerListService.filterLayers(
-      this.folder,
-      this.app
-    );
+    this.filtered_layers = this.hsLayerListService.filterLayers(this.folder);
   }
 
   layerFilter = (item: HsLayerDescriptor): boolean => {
-    const r = new RegExp(
-      this.hsLayerManagerService.apps[this.app].data.filter,
-      'i'
-    );
+    const r = new RegExp(this.hsLayerManagerService.data.filter, 'i');
     return r.test(item.title) && item.showInLayerManager;
   };
 
@@ -90,9 +83,6 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
    * Update layers list
    */
   private updateLayers(): void {
-    this.filtered_layers = this.hsLayerListService.filterLayers(
-      this.folder,
-      this.app
-    );
+    this.filtered_layers = this.hsLayerListService.filterLayers(this.folder);
   }
 }

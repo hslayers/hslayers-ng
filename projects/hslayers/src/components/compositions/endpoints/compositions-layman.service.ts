@@ -39,16 +39,15 @@ export class HsCompositionsLaymanService {
    * @param params - HTTP request query params
    * @param extentFeatureCreated - Function for creating extent vector feature that will reference all listed composition from the response
    * @param _bbox - Bounding box
-   * @param app - App identifier
+   
    */
   loadList(
     endpoint: HsEndpoint,
     params,
     extentFeatureCreated,
-    _bbox,
-    app: string
+    _bbox
   ): Observable<any> {
-    endpoint.getCurrentUserIfNeeded(endpoint, app);
+    endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
     const loggedIn = endpoint.authenticated;
     const query = params.query.title ? params.query.title : '';
@@ -61,10 +60,10 @@ export class HsCompositionsLaymanService {
 
     const b = transformExtent(
       this.hsMapService
-        .getMap(app)
+        .getMap()
         .getView()
-        .calculateExtent(this.hsMapService.getMap(app).getSize()),
-      this.hsMapService.getCurrentProj(app),
+        .calculateExtent(this.hsMapService.getMap().getSize()),
+      this.hsMapService.getCurrentProj(),
       'EPSG:3857'
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
@@ -93,13 +92,12 @@ export class HsCompositionsLaymanService {
         map((response: any) => {
           if (Array.isArray(response.body)) {
             response.body.extentFeatureCreated = extentFeatureCreated;
-            this.compositionsReceived(endpoint, response, app);
+            this.compositionsReceived(endpoint, response);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'COMPOSITIONS.errorWhileRequestingCompositions',
-              response.body,
-              app
+              response.body
             );
           }
         }),
@@ -119,22 +117,19 @@ export class HsCompositionsLaymanService {
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
                   'COMPOSITIONS.errorWhileRequestingCompositions',
-                  undefined,
-                  app
+                  undefined
                 ),
                 endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url: endpoint.url},
-                    app
+                    {url: endpoint.url}
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsCompositionsLaymanService',
-                },
-                app
+                }
               );
               break;
           }
@@ -147,12 +142,12 @@ export class HsCompositionsLaymanService {
    * Middleware function before returning compositions list to the rest of the app
    * @param endpoint - Layman endpoint selected
    * @param response - HTTP request response
-   * @param app - App identifier
+   
    */
-  compositionsReceived(endpoint: HsEndpoint, response, app: string): void {
+  compositionsReceived(endpoint: HsEndpoint, response): void {
     if (response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
-      this.displayWarningToast(endpoint, 'COMMON.noDataReceived', app);
+      this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
       return;
     }
     endpoint.compositionsPaging.loaded = true;
@@ -178,7 +173,7 @@ export class HsCompositionsLaymanService {
       if (response.body.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj(app)
+          this.hsMapService.getCurrentProj()
         );
         if (extentFeature) {
           tmp.featureId = extentFeature.getId().toString();
@@ -196,50 +191,43 @@ export class HsCompositionsLaymanService {
    */
   async delete(
     endpoint: HsEndpoint,
-    composition: HsMapCompositionDescriptor,
-    app: string
+    composition: HsMapCompositionDescriptor
   ): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     await lastValueFrom(this.$http.delete(url, {withCredentials: true}));
-    this.hsEventBusService.compositionDeletes.next({composition, app});
+    this.hsEventBusService.compositionDeletes.next(composition);
   }
 
   /**
    * Get information about the selected composition
    * @param composition - Composition selected
-   * @param app - App identifier
+   
    */
-  async getInfo(
-    composition: HsMapCompositionDescriptor,
-    app: string
-  ): Promise<any> {
+  async getInfo(composition: HsMapCompositionDescriptor): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.compostionsNameAttributeIsNotDefined',
-        app
+        'COMPOSITIONS.compostionsNameAttributeIsNotDefined'
       );
       return;
     }
     if (endpoint.user == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.endpointUserIsNotDefined',
-        app
+        'COMPOSITIONS.endpointUserIsNotDefined'
       );
       return;
     }
     if (endpoint.url == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.endpointUrlIsNotDefined',
-        app
+        'COMPOSITIONS.endpointUrlIsNotDefined'
       );
       return;
     }
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
-    const info = await this.hsCompositionsParserService.loadInfo(url, app);
+    const info = await this.hsCompositionsParserService.loadInfo(url);
     if (
       info.thumbnail?.status !== undefined &&
       info.thumbnail?.status == 'NOT_AVAILABLE'
@@ -263,22 +251,17 @@ export class HsCompositionsLaymanService {
    * Display warning toast about some error while requesting compositions
    * @param endpoint - Layman endpoint selected
    * @param message - Message to be displayed when warning is issued
-   * @param app - App identifier
+   
    */
-  displayWarningToast(
-    endpoint: HsEndpoint,
-    message: string,
-    app: string
-  ): void {
+  displayWarningToast(endpoint: HsEndpoint, message: string): void {
     this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation('COMMON.warning', undefined, app),
+      this.hsLanguageService.getTranslation('COMMON.warning', undefined),
       endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
       {
         disableLocalization: true,
         toastStyleClasses: 'bg-warning text-light',
         serviceCalledFrom: 'HsCompositionsLaymanService',
-      },
-      app
+      }
     );
   }
 }

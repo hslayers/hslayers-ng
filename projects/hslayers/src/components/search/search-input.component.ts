@@ -16,7 +16,6 @@ import {HsShareUrlService} from '../permalink/share-url.service';
   templateUrl: './partials/search-input.component.html',
 })
 export class HsSearchInputComponent implements OnInit, OnDestroy {
-  @Input() app = 'default';
   query = '';
   searchInputVisible: boolean;
   clearVisible = false;
@@ -28,7 +27,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
     private hsShareUrlService: HsShareUrlService
   ) {
     this.searchResultsReceivedSubscription =
-      this.hsEventBusService.searchResultsReceived.subscribe((_) => {
+      this.hsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;
       });
   }
@@ -42,7 +41,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
       this.query = query;
       this.queryChanged();
     }
-    window.innerWidth < this.hsConfig.get(this.app).mobileBreakpoint
+    window.innerWidth < this.hsConfig.mobileBreakpoint
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);
   }
@@ -50,12 +49,12 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
    * Handler of search input, request search service and display results div
    */
   async queryChanged(): Promise<void> {
-    await this.hsSearchService.hsMapService.loaded(this.app);
+    await this.hsSearchService.hsMapService.loaded();
     if (this.query.length == 0) {
       this.clear();
       return;
     }
-    this.hsSearchService.request(this.query, this.app);
+    this.hsSearchService.request(this.query);
   }
   /**
    * Remove previous search and search results
@@ -63,8 +62,8 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
   clear(): void {
     this.query = '';
     this.clearVisible = false;
-    this.hsSearchService.cleanResults(this.app);
-    this.hsEventBusService.clearSearchResults.next({app: this.app});
+    this.hsSearchService.cleanResults();
+    this.hsEventBusService.clearSearchResults.next();
   }
   toggleSearchInput(): void {
     this.searchInputVisible = !this.searchInputVisible;

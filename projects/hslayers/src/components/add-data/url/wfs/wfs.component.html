@@ -1,31 +1,29 @@
 <form class="form-horizontal" name="frmConnectWfs" role="form">
-    <hs-common-url type="wfs" [app]="app" [(url)]="hsAddDataCommonService.get(app).url"
-        (connect)="hsAddDataOwsService.connect(app)">
+    <hs-common-url type="wfs" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
     </hs-common-url>
 
-    <hs-url-progress *ngIf="hsAddDataCommonService.get(app).loadingInfo" [app]="app"></hs-url-progress>
+    <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress>
 
-    <div *ngIf="hsAddDataCommonService.get(app).showDetails && !hsAddDataCommonService.get(app).loadingInfo"
-        class="card p-2">
+    <div *ngIf="hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo" class="card p-2">
         <!-- TODO: Remove function call from template -->
 
         <!-- FIXME: unused -->
         <div class="card-title text-center fw-bold">{{title}}</div>
         <div class="form-floating mb-2">
-            <input class="form-control" [(ngModel)]="appRef.data.folder_name" name="hs-addData-wfs-folder"
-                [placeholder]="'ADDLAYERS.folderName' | translateHs: {app} " />
-            <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translateHs: {app} }}</label>
+            <input class="form-control" [(ngModel)]="hsUrlWfsService.data.folder_name" name="hs-addData-wfs-folder"
+                [placeholder]="'ADDLAYERS.folderName' | translateHs " />
+            <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translateHs }}</label>
         </div>
         <ul class="list-group">
-            <hs-layer-table [app]="app" [type]="'wfs'" [injectedService]="hsUrlWfsService"> </hs-layer-table>
+            <hs-layer-table [type]="'wfs'" [injectedService]="hsUrlWfsService"> </hs-layer-table>
             <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
                 <div class="d-flex justify-content-center">
-                    <hs-url-add class="w-100" [injectedService]="hsUrlWfsService" [layers]="appRef.data.layers"
-                        [app]="app">
+                    <hs-url-add class="w-100" [injectedService]="hsUrlWfsService"
+                        [layers]="hsUrlWfsService.data.layers">
                     </hs-url-add>
-                    <button *ngIf="appRef.loadingFeatures"
-                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs: {app} }}&emsp;<span
-                            class="ms-2 hs-loader"></span></button>
+                    <button *ngIf="hsUrlWfsService.loadingFeatures"
+                        class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs
+                        }}&emsp;<span class="ms-2 hs-loader"></span></button>
                 </div>
             </li>
 

@@ -6,7 +6,7 @@ import {HsLanguageService} from '../../language/language.service';
 })
 export class HsLayerManagerFolderComponent {
   @Input() folder: any;
-  @Input() app = 'default';
+  
 
   constructor(
     public HsLanguageService: HsLanguageService /* Used in template */

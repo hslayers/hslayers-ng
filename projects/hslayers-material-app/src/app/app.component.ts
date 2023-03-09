@@ -30,7 +30,7 @@ import {HsConfig, HsLayoutService, SparqlJson} from 'hslayers-ng';
   styleUrls: ['./app.component.sass'],
 })
 export class AppComponent implements OnInit {
-  @Input() app = 'default';
+  
   constructor(
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService
@@ -76,6 +76,6 @@ export class AppComponent implements OnInit {
   title = 'hslayers-material-app';
 
   ngOnInit(): void {
-    this.HsLayoutService.setDefaultPanel('layermanager', this.app);
+    this.HsLayoutService.setDefaultPanel('layermanager', );
   }
 }

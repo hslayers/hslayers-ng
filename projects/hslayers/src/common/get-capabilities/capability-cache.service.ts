@@ -6,7 +6,7 @@ export interface CapabilityCacheList {
   [key: string]: CapabilitiesResponseWrapper;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({providedIn: 'platform'})
 export class HsCapabilityCacheService {
   cache: CapabilityCacheList = {};
   constructor() {}

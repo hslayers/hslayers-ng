@@ -42,23 +42,7 @@ export type customToastOptions = {
   providedIn: 'root',
 })
 export class HsToastService {
-  apps: {
-    [id: string]: {toasts: Toast[]};
-  } = {
-    default: {
-      toasts: [],
-    },
-  };
-
-  get(app: string) {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = {
-        toasts: [],
-      };
-    }
-    return this.apps[app ?? 'default'];
-  }
-
+  toasts: Toast[];
   constructor(
     public HsLanguageService: HsLanguageService,
     private HsLayoutService: HsLayoutService,
@@ -68,16 +52,15 @@ export class HsToastService {
    * @param toast - Toast pop up
    * Callback method to remove Toast DOM element from view
    */
-  remove(toast: Toast, app: string): void {
-    const appRef = this.get(app);
-    appRef.toasts = appRef.toasts.filter((t) => t !== toast);
+  remove(toast: Toast): void {
+    this.toasts = this.toasts.filter((t) => t !== toast);
   }
 
-  removeByText(text: string, app: string): void {
-    const found = this.get(app).toasts.filter((t) => t.textOrTpl === text);
+  removeByText(text: string): void {
+    const found = this.toasts.filter((t) => t.textOrTpl === text);
     if (found?.length > 0) {
       for (const f of found) {
-        this.remove(f, app);
+        this.remove(f);
       }
     }
   }
@@ -86,23 +69,18 @@ export class HsToastService {
    * @param options - Toast window options
    * Pushes new Toasts to array with content and options
    */
-  show(
-    textOrTpl: string | TemplateRef<any>,
-    app: string = 'default',
-    options: any = {}
-  ): void {
-    const appRef = this.get(app);
-    if (appRef.toasts.length >= 5) {
-      appRef.toasts = appRef.toasts.slice(-4);
+  show(textOrTpl: string | TemplateRef<any>, options: any = {}): void {
+    if (this.toasts.length >= 5) {
+      this.toasts = this.toasts.slice(-4);
     }
     if (
-      !appRef.toasts.some(
+      !this.toasts.some(
         (toast) =>
           toast.textOrTpl === textOrTpl &&
           toast?.serviceCalledFrom === options.serviceCalledFrom
       )
     ) {
-      appRef.toasts.push({textOrTpl, ...options});
+      this.toasts.push({textOrTpl, ...options});
     }
   }
   /**
@@ -110,27 +88,23 @@ export class HsToastService {
    * @param header - Header text to display
    * @param text - Toast body text to display
    * @param options - Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number, serviceCalledFrom: string)
-   * @param app - Application id
    */
 
   createToastPopupMessage(
     header: string,
     text: string,
-    options: customToastOptions = {},
-    app: string = 'default'
+    options: customToastOptions = {}
   ): void {
     this.show(
       options.disableLocalization
         ? text
-        : this.HsLanguageService.getTranslation(text, undefined, app),
-      app,
+        : this.HsLanguageService.getTranslation(text, undefined),
       {
         header: options.disableLocalization
           ? header
-          : this.HsLanguageService.getTranslation(header, undefined, app),
+          : this.HsLanguageService.getTranslation(header, undefined),
         delay:
-          options.customDelay ||
-          (this.hsConfig.get(app).errorToastDuration ?? 7000),
+          options.customDelay || (this.hsConfig.errorToastDuration ?? 7000),
         autohide: true,
         classname: options.toastStyleClasses || `bg-danger text-light`,
         serviceCalledFrom: options.serviceCalledFrom,
@@ -139,11 +113,11 @@ export class HsToastService {
     );
   }
 
-  shown(app: string) {
+  shown() {
     //** Following hack is needed until ngBootstrap supports bootstrap5 fully */
-    for (const toastElement of this.HsLayoutService.get(
-      app
-    ).contentWrapper.querySelectorAll('.toast-header .close')) {
+    for (const toastElement of this.HsLayoutService.contentWrapper.querySelectorAll(
+      '.toast-header .close'
+    )) {
       const classList = toastElement.classList;
       classList.add('btn-close');
       classList.remove('close');

@@ -29,7 +29,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   /** Miscellaneous data object to set to each of the panels inside this container.
    * This is used if undefined value is passed to the create functions data parameter. */
   @Input() data: any;
-  @Input() app = 'default';
   /**
    * Set this to true to not clear the ReplaySubject on container destruction because
    * panels are added to ReplaySubject from app component and we cant re-add them. */
@@ -40,26 +39,24 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   private end = new Subject<void>();
   constructor(private hsConfig: HsConfig) {}
   ngOnDestroy(): void {
-    const appRef = this.service.get(this.app);
-    if (appRef.panelObserver && this.reusePanelObserver !== true) {
-      appRef.panelObserver.complete();
-      appRef.panelObserver = new ReplaySubject<HsPanelItem>();
+    if (this.service.panelObserver && this.reusePanelObserver !== true) {
+      this.service.panelObserver.complete();
+      this.service.panelObserver = new ReplaySubject<HsPanelItem>();
     }
-    for (const p of appRef.panels) {
-      this.service.destroy(p, this.app);
+    for (const p of this.service.panels) {
+      this.service.destroy(p);
     }
     this.end.next();
     this.end.complete();
   }
   ngOnInit(): void {
-    const appRef = this.service.get(this.app);
-    appRef.panels = [];
-    (this.panelObserver ?? appRef.panelObserver)
+    this.service.panels = [];
+    (this.panelObserver ?? this.service.panelObserver)
       .pipe(takeUntil(this.end))
       .subscribe((item: HsPanelItem) => {
         this.loadPanel(item);
       });
-    appRef.panelDestroyObserver
+    this.service.panelDestroyObserver
       .pipe(takeUntil(this.end))
       .subscribe((item: HsPanelComponent) => {
         this.destroyPanel(item);
@@ -80,13 +77,13 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRef = viewContainerRef.createComponent(panelItem.component);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
-    if (this.hsConfig.get(this.app)) {
+    if (this.hsConfig) {
       /**
        * Assign panel width class to a component host first child
        * Used to define panelSpace panel width
        */
       this.service.setPanelWidth(
-        this.hsConfig.get(this.app).panelWidths,
+        this.hsConfig.panelWidths,
         componentRefInstance
       );
     }
@@ -99,7 +96,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       Object.assign(panelItem.data, this.data);
       componentRefInstance.data = panelItem.data;
     }
-    this.service.get(this.app).panels.push(componentRefInstance);
+    this.service.panels.push(componentRefInstance);
     if (componentRefInstance.isVisible$) {
       const visible = componentRefInstance.isVisible
         ? componentRefInstance.isVisible()

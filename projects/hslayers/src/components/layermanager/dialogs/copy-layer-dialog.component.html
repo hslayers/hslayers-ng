@@ -6,24 +6,24 @@
                     {{data.title}}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app}"></button>
+                    [attr.aria-label]="'COMMON.close' | translateHs"></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
                 <p class="fw-bold h6">{{data.message}}</p>
                 <div class="form-floating m-2">
                     <input class="form-control" name="title" [(ngModel)]="data.layerTitle"
-                        [placeholder]="'COMMON.title' | translateHs : data" />
-                    <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translateHs : {app:
-                        data.app} }}</label>
+                        [placeholder]="'COMMON.title' | translateHs" />
+                    <label for="title" class="capabilities_label control-label">{{'COMMON.title' | translateHs
+                        }}</label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="yes()"
-                    [title]="'COMMON.yes' | translateHs : data" data-dismiss="modal">{{'COMMON.yes' | translateHs :
-                    {app: data.app} }}</button>
+                <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translateHs"
+                    data-dismiss="modal">{{'COMMON.yes' |
+                    translateHs}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.no' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
-                    translateHs : {app: data.app} }}</button>
+                    [title]="'COMMON.no' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
+                    translateHs }}</button>
             </div>
         </div>
     </div>

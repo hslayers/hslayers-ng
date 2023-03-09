@@ -12,7 +12,7 @@ import {HsUrlGeoSparqlService} from './geosparql.service';
   templateUrl: './geosparql.component.html',
 })
 export class HsUrlGeoSparqlComponent {
-  @Input() app = 'default';
+  
   querySuccessful: boolean;
   showDetails: boolean;
   validEndpoint: boolean;
@@ -45,32 +45,32 @@ export class HsUrlGeoSparqlComponent {
   }
 
   connect = async (): Promise<void> => {
-    this.hsAddDataCommonService.get(this.app).loadingInfo = true;
+    this.hsAddDataCommonService.loadingInfo = true;
     this.setDataToDefault();
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
       this.data.url,
-      this.app
+      
     );
     if (!obtainable) {
-      this.hsAddDataCommonService.get(this.app).loadingInfo = false;
+      this.hsAddDataCommonService.loadingInfo = false;
       return;
     }
     this.hsHistoryListService.addSourceHistory('geosparql', this.data.url);
     this.validEndpoint = await this.hsUrlGeoSparqlService.verifyEndpoint(
       this.data.url,
-      this.app
+      
     );
     if (this.validEndpoint) {
       this.showDetails = true;
     }
-    this.hsAddDataCommonService.get(this.app).loadingInfo = false;
+    this.hsAddDataCommonService.loadingInfo = false;
   };
 
   async add(): Promise<void> {
     const response: {layer; complete: boolean} =
-      await this.hsAddDataVectorService.addNewLayer(this.data, this.app);
+      await this.hsAddDataVectorService.addNewLayer(this.data, );
     if (response.complete) {
-      this.hsLayoutService.setMainPanel('layermanager', this.app);
+      this.hsLayoutService.setMainPanel('layermanager', );
       this.setDataToDefault();
     }
   }

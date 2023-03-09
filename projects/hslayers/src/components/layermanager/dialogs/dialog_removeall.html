@@ -3,24 +3,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{'PANEL_HEADER.LM' | translateHs : {app: data.app} }}
+                    {{'PANEL_HEADER.LM' | translateHs }}
                 </h4>
                 <button (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs : {app: data.app} ">
+                    [attr.aria-label]="'COMMON.close' | translateHs ">
                 </button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                {{'LAYERMANAGER.dialogRemoveAll.dialogMessage' | translateHs : {app: data.app} }}</div>
+                {{'LAYERMANAGER.dialogRemoveAll.dialogMessage' | translateHs }}</div>
             <div class="modal-footer">
                 <button class="btn btn-primary" (click)="removeAllLayers(false);"
-                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translateHs : {app: data.app}
+                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translateHs
                     }}</button>
                 <button class="btn btn-primary" *ngIf="HsEventBusService.currentComposition.value"
                     (click)="removeAllLayers(true)"
-                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translateHs : {app:
-                    data.app} }}</button>
-                <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' | translateHs :
-                    {app: data.app} }}</button>
+                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translateHs}}</button>
+                <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' |
+                    translateHs}}</button>
             </div>
         </div>
     </div>

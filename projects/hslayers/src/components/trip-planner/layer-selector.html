@@ -8,18 +8,18 @@
         d-flex
         align-items-center
         mw-100
-      " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers(app) "
+      " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
       [attr.aria-expanded]="layersExpanded">
       <div class="text-truncate" *ngIf="selectedwrapper !== undefined">
-        {{selectedwrapper.title | translateHs : {app, module: 'LAYERS'} }}
+        {{selectedwrapper.title | translateHs : {module: 'LAYERS'} }}
       </div>
     </button>
     <div ngbDropdownMenu [ngClass]="{'show': layersExpanded}" style="transform: translateX(25%); width: 15em">
       <div class="d-flex align-items-center w-100 flex-column">
-        <a class="dropdown-item text-truncate" *ngFor="let layer of HsTripPlannerService.apps[app].vectorLayers"
-          data-toggle="tooltip" [title]="layer.title | translateHs : {app, module: 'LAYERS'}"
-          (click)="HsTripPlannerService.selectLayer(layer, usage, app); layersExpanded = false">{{layer.title |
-          translateHs : {app, module: 'LAYERS'} }}</a>
+        <a class="dropdown-item text-truncate" *ngFor="let layer of HsTripPlannerService.vectorLayers"
+          data-toggle="tooltip" [title]="layer.title | translateHs : {module: 'LAYERS'}"
+          (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false">{{layer.title |
+          translateHs : {module: 'LAYERS'} }}</a>
       </div>
     </div>
   </div>

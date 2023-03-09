@@ -17,18 +17,17 @@ export class HsPrintImprintService {
   /**
    * Draw imprint canvas
    * @param imprintObj - Imprint object
-   * @param app - App identifier
+   
    */
   drawImprintCanvas(
     imprintObj: ImprintObj,
-    app: string
+    
   ): Promise<HTMLCanvasElement> {
     return new Promise(async (resolve, reject) => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const img = await this.hsPrintLegendService.svgToImage(
-        this.imprintToSvg(imprintObj),
-        app
+        this.imprintToSvg(imprintObj)
       );
       if (img) {
         this.hsShareThumbnailService.setCanvasSize(

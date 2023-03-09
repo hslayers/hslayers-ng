@@ -22,7 +22,6 @@ export type SwipeControlOptions = {
   className?: string;
   position?: number;
   orientation?: string;
-  app?: string;
 };
 
 export class SwipeControl extends Control {
@@ -30,7 +29,6 @@ export class SwipeControl extends Control {
   leftLayers: LayerListItem[];
   rightLayers: LayerListItem[];
   isMoving: boolean;
-  app: string;
   listeners = new Map<string, any>();
   constructor(options?: SwipeControlOptions) {
     const button = document.createElement('button');
@@ -56,7 +54,9 @@ export class SwipeControl extends Control {
     if (options?.rightLayers) {
       this.addLayers(options.rightLayers, true);
     }
-    const storagePos = localStorage.getItem(`${options.app}:hs_map_swipe_pos`);
+    //FIXME: PLATFORM APP ID
+    //`${options.app}:hs_map_swipe_pos`,
+    const storagePos = localStorage.getItem(`hs_map_swipe_pos`);
     this.on('propertychange', () => {
       if (this.getMap()) {
         try {
@@ -77,10 +77,9 @@ export class SwipeControl extends Control {
       }
       this.element.classList.remove('horizontal', 'vertical');
       this.element.classList.add(this.get('orientation'));
-      localStorage.setItem(
-        `${options.app}:hs_map_swipe_pos`,
-        this.get('position')
-      );
+      //FIXME: PLATFORM APP ID
+      //`${options.app}:hs_map_swipe_pos`,
+      localStorage.setItem(`hs_map_swipe_pos`, this.get('position'));
     });
 
     this.set('position', storagePos ?? options?.position ?? 0.5);

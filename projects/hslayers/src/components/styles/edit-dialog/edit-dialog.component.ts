@@ -13,7 +13,7 @@ export class HsStylerEditDialogComponent extends HsConfirmDialogComponent {
   }
 
   exitWithoutSave() {
-    this.HsDialogContainerService.destroy(this, this.data.app);
+    this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve('exit');
   }
 }

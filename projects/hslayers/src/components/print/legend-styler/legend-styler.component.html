@@ -1,5 +1,5 @@
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translateHs : {app} }}:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translateHs }}:</div>
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="fillPickerVisible = !fillPickerVisible"
       [ngStyle]="getColorPickerStyle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="legendObj.bcColor" />
@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'COMMON.width' | translateHs : {app} }}</div>
+  <div class="p-1 w-50 mt-1">{{'COMMON.width' | translateHs }}</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.width"
       [ngModelOptions]="{standalone: true}">
@@ -19,7 +19,7 @@
   </div>
 </div>
 <div class="d-flex flex-row">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs : {app} }} X:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs }} X:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posX"
       [ngModelOptions]="{standalone: true}">
@@ -30,7 +30,7 @@
   </div>
 </div>
 <div class="d-flex flex-row mb-2">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs : {app} }} Y:</div>
+  <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs }} Y:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posY"
       [ngModelOptions]="{standalone: true}">

@@ -7,7 +7,6 @@ import {HsConfig} from '../../config.service';
   templateUrl: './partials/impressum.html',
 })
 export class HsImpressumComponent {
-  @Input() app = 'default';
   version = 'dev';
   logo = '';
   logoDisabled = false;
@@ -17,7 +16,6 @@ export class HsImpressumComponent {
   }
 
   ngOnInit() {
-    this.logoPath =
-      this.hsConfig.get(this.app).assetsPath + 'img/hslayers-ng-logo.png';
+    this.logoPath = this.hsConfig.assetsPath + 'img/hslayers-ng-logo.png';
   }
 }

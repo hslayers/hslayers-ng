@@ -27,7 +27,6 @@ import {HsUploadComponent} from '../../../common/upload/upload.component';
 export class HsAddDataFileBaseComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  @Input() app = 'default';
   data: FileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
@@ -53,28 +52,27 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnInit(): void {
-    const commonFileServiceRef = this.hsAddDataCommonFileService.get(this.app);
-    commonFileServiceRef.dataObjectChanged
+    this.hsAddDataCommonFileService.dataObjectChanged
       .pipe(takeUntil(this.end))
       .subscribe((data) => {
-        this.hsAddDataCommonService.get(this.app).showDetails = true;
+        this.hsAddDataCommonService.showDetails = true;
         Object.assign(this.data, data);
         this.clearInput();
       });
 
-    commonFileServiceRef.layerAddedAsService
+    this.hsAddDataCommonFileService.layerAddedAsService
       .pipe(takeUntil(this.end))
       .subscribe((success) => {
         if (success) {
-          this.hsLayoutService.setMainPanel('layermanager', this.app);
-          this.hsAddDataCommonService.setPanelToCatalogue(this.app);
+          this.hsLayoutService.setMainPanel('layermanager');
+          this.hsAddDataCommonService.setPanelToCatalogue();
         }
         this.setDataToDefault();
         this.clearInput();
       });
 
     this.setDataToDefault();
-    this.hsAddDataCommonFileService.pickEndpoint(this.app);
+    this.hsAddDataCommonFileService.pickEndpoint();
   }
 
   /**
@@ -100,8 +98,8 @@ export class HsAddDataFileBaseComponent
       type: this.baseFileType,
       allowedStyles: 'sldqml',
     };
-    this.hsAddDataCommonFileService.clearParams(this.app);
-    this.hsAddDataCommonService.clearParams(this.app);
+    this.hsAddDataCommonFileService.clearParams();
+    this.hsAddDataCommonService.clearParams();
   }
 
   ngOnDestroy(): void {

@@ -4,10 +4,10 @@
             <input #hsTimeseriesTitle readonly type="text" class="form-control" id="hs-timeseries-title"
                 [value]="fileTitle" [ngClass]="{'is-invalid': !selectedString}">
             <button type="button" (click)="selectDateString($event)" class="btn btn-sm btn-primary">{{'COMMON.select' |
-                translateHs : {app} }}</button>
+                translateHs }}</button>
         </form>
         <label for="hs-timeseries-title" class="text-danger small pt-1"
-            [hidden]="selectedString">{{'ADDDATA.FILE.highlightAndSelect' | translateHs: {app} }}</label>
+            [hidden]="selectedString">{{'ADDDATA.FILE.highlightAndSelect' | translateHs }}</label>
 
     </div>
 
@@ -15,7 +15,7 @@
         <ngb-panel id="hs-timeseries-acc">
             <ng-template ngbPanelHeader let-opened="opened">
                 <button ngbPanelToggle class="accordion-button text-black-50">{{'ADDDATA.FILE.selectedString' |
-                    translateHs: {app} }}: <span class="text-black ps-1">{{selectedString}}</span></button>
+                    translateHs }}: <span class="text-black ps-1">{{selectedString}}</span></button>
             </ng-template>
             <ng-template ngbPanelContent>
                 <form [formGroup]="form" class="d-flex flex-column ">
@@ -24,14 +24,14 @@
                         <input formControlName="regex" type="text" class="form-control form-control-sm"
                             id="hs-timeseries-regex" [ngClass]="{'is-valid': form.get('verified').value}">
                         <label for="hs-timeseries-regex">{{'ADDDATA.FILE.inferredRegex' |
-                            translateHs: {app} }}</label>
+                            translateHs }}</label>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="text-black-50 small pt-1">{{'ADDDATA.FILE.verifyInferredRegex' |
-                            translateHs: {app} }}</p>
+                            translateHs }}</p>
                         <button type="button" (click)="verifyInputs()"
                             class="btn btn-sm btn-primary m-2 w-25">{{'COMMON.confirm' |
-                            translateHs: {app} }}</button>
+                            translateHs }}</button>
                     </div>
                 </form>
             </ng-template>
