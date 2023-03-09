@@ -123,7 +123,6 @@
     "useTiles": "Použít dlaždice",
     "Vector": {
       "addingFiles": "Přidávání {{featuresCount}} prvku do:",
-      "addSld": "Přidat soubor SLD/QML",
       "chooseFiles": "Vyberte soubory...",
       "chooseLayer": "Vyberte prosím vrstvu ze seznamu ...",
       "dragAndDropFiles": "Přetáhněte soubory",
@@ -150,7 +149,10 @@
       "pickIdParamPt1": "Která proměnná obsahuje",
       "pickIdParamName": "unikátní identifikátor",
       "pickIdParamPt2": "dotazovaných prvků?"
-    }
+    },
+    "addsld": "Přidat soubor SLD",
+    "addqml": "Přidat soubor QML",
+    "addsldqml": "Přidat soubor SLD/QML"
   },
   "COMMON": {
     "abstract": "Abstrakt",

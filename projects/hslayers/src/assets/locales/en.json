@@ -133,7 +133,6 @@
     "useTiles": "Use tiles",
     "Vector": {
       "addingFiles": "Adding {{featuresCount}} features into:",
-      "addSld": "Add SLD/QML file",
       "chooseFiles": "Choose files...",
       "chooseLayer": "Please, choose a layer from list...",
       "dragAndDropFiles": "Drag and drop files",
@@ -150,7 +149,10 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    }
+    },
+    "addsld": "Add SLD file",
+    "addqml": "Add QML file",
+    "addsldqml": "Add SLD/QML file"
   },
   "COMMON": {
     "abstract": "Abstract",

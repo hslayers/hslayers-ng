@@ -122,7 +122,6 @@
     "useTiles": "Použíť dlaždice",
     "Vector": {
       "addingFiles": "Pridávanie {{featuresCount}} prvkov do:",
-      "addSld": "Pridať súbor SLD/QML",
       "chooseFiles": "Vyberte súbory...",
       "chooseLayer": "Vyberte vrstvu zo zoznamu ...",
       "dragAndDropFiles": "Pretiahnite súbory",
@@ -150,7 +149,10 @@
       "pickIdParamPt1": "Ktorá premenná obsahuje",
       "pickIdParamPt2": "z dopytovaných prvkov?"
     },
-    "Raster time series": "Časová rada snímkov"
+    "Raster time series": "Časová rada snímkov",
+    "addsld": "Pridať súbor SLD",
+    "addqml": "Pridať súbor QML",
+    "addsldqml": "Pridať súbor SLD/QML"
   },
   "COMMON": {
     "abstract": "Abstrakt",

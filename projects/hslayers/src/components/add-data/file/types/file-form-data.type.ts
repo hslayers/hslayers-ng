@@ -1,12 +1,16 @@
 import {FileDescriptor} from './file-descriptor.type';
 import {accessRightsModel} from '../../common/access-rights.model';
 
+/**
+ * @param allowedStyles Allowed file formats (SLD, QML or both)
+ */
 export type FileFormData = {
   abstract: string;
   access_rights: accessRightsModel;
   files: FileDescriptor[];
   name: string;
   serializedStyle: FileDescriptor;
+  allowedStyles?: string;
   srs: string;
   title: string;
   timeRegex?: string;
