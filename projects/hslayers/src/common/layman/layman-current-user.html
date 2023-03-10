@@ -1,4 +1,4 @@
-<div *ngIf="endpoint && inAppLogin | async" style="margin-left: 1em; float: right; ">
+<div *ngIf="(inAppLogin | async) && endpoint" style="margin-left: 1em; float: right; ">
     <a class="btn btn-primary" style="border-radius: 0.25rem; color: #fff;" (click)="login();"
         *ngIf="!isAuthenticated() && sameDomain()">
         <!-- TODO: Remove function call from template -->
