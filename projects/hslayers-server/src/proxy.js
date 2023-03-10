@@ -32,6 +32,9 @@ require('http')
       else {
         req.url = decodeURIComponent(req.url);
         req.url = req.url.replace('/proxy', '');
+        const [base, queryParams] = req.url.split('?');
+        const params = querystring.decode(queryParams);
+        req.url = base + '?' + querystring.encode(params);
         if (req.url.indexOf('api.geonames.org/searchJSON') > -1) {
           const params = querystring.decode(req.url.split('?')[1]);
           if (
