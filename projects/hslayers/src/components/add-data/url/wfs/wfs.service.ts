@@ -17,6 +17,7 @@ import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Subject, takeUntil} from 'rxjs';
 import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {urlDataObject} from '../types/data-object.type';
@@ -60,6 +61,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   apps: {
     [id: string]: any;
   } = {default: new HsUrlWfsParams()};
+
+  cancelUrlRequest: Subject<void> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -295,8 +298,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
       this.http
         .get(this.hsUtilsService.proxify(url, app), {responseType: 'text'})
-        .subscribe(
-          (response: any) => {
+        .pipe(takeUntil(this.cancelUrlRequest))
+        .subscribe({
+          next: (response: any) => {
             const oParser = new DOMParser();
             const oDOM = oParser.parseFromString(response, 'application/xml');
             const doc = oDOM.documentElement;
@@ -310,10 +314,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
               ? (layer.limitFeatureCount = true)
               : (layer.limitFeatureCount = false);
           },
-          (e) => {
+          error: (e) => {
+            this.cancelUrlRequest.next();
             this.hsAddDataCommonService.throwParsingError(e, app);
-          }
-        );
+          },
+        });
     }
   }
   /**
