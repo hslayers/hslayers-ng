@@ -10,7 +10,7 @@ export type FileFormData = {
   files: FileDescriptor[];
   name: string;
   serializedStyle: FileDescriptor;
-  allowedStyles?: string;
+  allowedStyles?: 'qml' | 'sld' | 'sldqml';
   srs: string;
   title: string;
   timeRegex?: string;
