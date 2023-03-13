@@ -106,10 +106,20 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
         this.httpClient
           .get(url, {
             responseType: 'text',
+            observe: 'response', // Set observe to 'response' to get headers as well
           })
           .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
       );
-      const wrap = {response: r};
+      const contentType = r.headers.get('Content-Type');
+      if (contentType.includes('text/html')) {
+        return {
+          error: true,
+          response: {
+            message: 'ERROR.noValidData',
+          },
+        };
+      }
+      const wrap = {response: r.body};
       this.hsCapabilityCacheService.set(url, wrap);
       return wrap;
     } catch (e) {

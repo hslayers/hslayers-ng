@@ -71,7 +71,8 @@
       "srsNotSupported": "Selected Coordinate reference systems (CRS/SRS) is not supported. Please provide file in EPSG:3857 or EPSG:4326 to proceed.",
       "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
       "urlInvalid": "Missing or invalid endpoint URL of requested layer!",
-      "unsupportedDatasourceType": "Unsupported datasource type"
+      "unsupportedDatasourceType": "Unsupported datasource type",
+      "noValidData": "No valid data found"
     },
     "externalDataSource": "External data source (URL)",
     "featureCount": "Feature count",

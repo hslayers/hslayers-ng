@@ -71,7 +71,8 @@
       "srsNotSupported": "Vybraný souřadnicový systém (CRS/SRS) není podporován. Pokračujte poskytnutím souboru v systému EPSG:3857 nebo EPSG:4326.",
       "thereWasErrorWhile": "Nastala chyba při syntaktické analýze odpovědi Capabilities z dané URL",
       "urlInvalid": "Chybějící nebo neplatná adresa URL požadované vrstvy!",
-      "unsupportedDatasourceType": "Nepodporovaný typ vrstvy"
+      "unsupportedDatasourceType": "Nepodporovaný typ vrstvy",
+      "noValidData": "Nebyla nalezena žádná platná data"
     },
     "externalDataSource": "Zdroj externích dat (URL)",
     "featureCount": "Počet prvků",
