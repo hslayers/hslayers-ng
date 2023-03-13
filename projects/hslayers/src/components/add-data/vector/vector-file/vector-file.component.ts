@@ -316,6 +316,7 @@ export class HsAddDataVectorFileComponent
       },
       sourceLayer: null,
       vectorLayers: null,
+      allowedStyles: 'sldqml',
     };
     this.hsAddDataCommonFileService.clearParams(this.app);
   }

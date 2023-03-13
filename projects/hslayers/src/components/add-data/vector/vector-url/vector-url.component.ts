@@ -88,6 +88,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
       title: '',
       type: this.fileType,
       url: undefined,
+      allowedStyles: 'sldqml',
     };
   }
 }

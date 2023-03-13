@@ -33,4 +33,5 @@ export type VectorDataObject = {
   type?: string;
   url?: string;
   vectorLayers?: HsLayerDescriptor[];
+  allowedStyles?: 'qml' | 'sld' | 'sldqml';
 };
