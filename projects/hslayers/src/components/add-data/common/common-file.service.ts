@@ -98,7 +98,14 @@ export class HsAddDataCommonFileService {
       const response = await fetch(url, {
         method: 'GET',
       });
+      const contentType = response.headers.get('Content-Type');
       if (response.status === 200) {
+        if (contentType.includes('text/html')) {
+          this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(
+            'ERROR.noValidData'
+          );
+          return;
+        }
         return true;
       } else {
         this.hsAddDataUrlService.apps[app].addDataCapsParsingError.next(

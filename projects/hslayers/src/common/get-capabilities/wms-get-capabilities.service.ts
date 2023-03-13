@@ -115,10 +115,20 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
             withCredentials: url.includes(
               this.hsCommonLaymanService.layman?.url
             ),
+            observe: 'response', // Set observe to 'response' to get headers as well
           })
           .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
       );
-      const wrap = {response: r};
+      const contentType = r.headers.get('Content-Type');
+      if (contentType.includes('text/html')) {
+        return {
+          error: true,
+          response: {
+            message: 'ERROR.noValidData',
+          },
+        };
+      }
+      const wrap = {response: r.body};
       this.hsCapabilityCacheService.set(url, wrap);
       return wrap;
     } catch (e) {
