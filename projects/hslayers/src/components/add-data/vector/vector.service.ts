@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import {Feature} from 'ol';
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
@@ -7,7 +8,6 @@ import {Projection, get as getProjection} from 'ol/proj';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
-import Feature from 'ol/Feature';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsLaymanService} from '../../save-map/layman.service';
