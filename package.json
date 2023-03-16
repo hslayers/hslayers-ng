@@ -107,7 +107,6 @@
     "@types/jasminewd2": "~2.0.10",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
-    "codelyzer": "^6.0.2",
     "cypress": "~12.8.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.36.0",
