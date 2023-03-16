@@ -2,16 +2,16 @@ import {Injectable} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+import {transform} from 'ol/proj';
+
 import {AddDataUrlType} from './types/url.type';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
-
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {transform} from 'ol/proj';
 import {urlDataObject} from './types/data-object.type';
 
 class HsAddDataUrlParams {

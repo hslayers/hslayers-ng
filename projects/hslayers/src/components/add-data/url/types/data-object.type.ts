@@ -23,7 +23,10 @@ export type urlDataObject = {
   register_metadata?: boolean;
   resample_warning?: boolean;
   services?: Array<any>;
-  serviceExpanded?: boolean; //Control for ArcGIS table UI
+  /**
+   * Control for ArcGIS table UI
+   */
+  serviceExpanded?: boolean;
   srs?: string;
   srss?: Array<any>;
   tile_size?: number;
