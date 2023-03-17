@@ -95,7 +95,7 @@ export function isAtLeastVersions(ep: HsEndpoint, version: string) {
  * Wait until layer synchronization is complete
  * @param layer - OL Layer
  */
-export async function awaitLayerSync(layer: Layer): Promise<any> {
+export async function awaitLayerSync(layer: Layer): Promise<boolean> {
   while (getHsLaymanSynchronizing(layer)) {
     await new Promise((r) => setTimeout(r, 200));
   }
