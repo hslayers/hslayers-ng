@@ -111,7 +111,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
           .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
       );
       const contentType = r.headers.get('Content-Type');
-      if (contentType.includes('text/html')) {
+      if (contentType?.includes('text/html')) {
         return {
           error: true,
           response: {

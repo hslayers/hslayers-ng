@@ -107,7 +107,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
       return wrap;
     } catch (e) {
       const contentType = e.headers.get('Content-Type');
-      if (contentType.includes('text/html')) {
+      if (contentType?.includes('text/html')) {
         return {
           error: true,
           response: {
