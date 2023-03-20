@@ -81,7 +81,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
-    
+
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -145,7 +145,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
    * @param capabilitiesXml - XML response of GetCapabilities of selected service
    * @returns List of layers from service
    */
-  service2layers(capabilitiesXml,  path: string): Layer<Source>[] {
+  service2layers(capabilitiesXml, path: string): Layer<Source>[] {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilitiesXml);
     let service = caps.Capability.Layer;
