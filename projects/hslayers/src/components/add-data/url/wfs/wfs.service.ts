@@ -248,7 +248,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     const layerExtents: number[][] = layers.map((lyr) => {
       return this.getLayerExtent(lyr, appRef.data.map_projection, app);
     });
-    return this.hsAddDataUrlService.calcCombinedExtent(layerExtents);
+    return this.hsAddDataUrlService.calcCombinedExtent(layerExtents, app);
   }
 
   /**

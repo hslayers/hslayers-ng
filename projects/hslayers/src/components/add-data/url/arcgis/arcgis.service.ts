@@ -303,7 +303,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         const data = appRef.data;
         return this.transformLayerExtent(extent, data);
       });
-      return this.hsAddDataUrlService.calcCombinedExtent(layersExtents);
+      return this.hsAddDataUrlService.calcCombinedExtent(layersExtents, app);
     } catch (error) {
       if (error.message.includes('getCode')) {
         this.hsToastService.createToastPopupMessage(
