@@ -75,7 +75,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
-    
+
     owrCache?: boolean
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
