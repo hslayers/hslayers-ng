@@ -340,7 +340,8 @@ export class HsLaymanService implements HsSaverService {
 
     formData.append('name', description.name);
     formData.append('title', description.title);
-    if (description.crs) {
+    //https://github.com/LayerManager/layman/commit/48f2cb2e68a906e050c2309f2d6087e3340da0ba
+    if (description.crs && geojson) {
       formData.append('crs', description.crs);
     }
     if (description.access_rights) {

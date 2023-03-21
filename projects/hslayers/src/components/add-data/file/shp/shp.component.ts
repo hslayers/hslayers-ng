@@ -5,6 +5,7 @@ import {DEFAULT_SHP_LOAD_TYPE} from '../../enums/load-types.const';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
+import {HsConfig} from '../../../../config.service';
 import {HsFileService} from '../file.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
@@ -18,14 +19,19 @@ export class HsFileShpComponent
   implements OnInit, AfterViewInit
 {
   fileType: AddDataFileType = 'shp';
-
   constructor(
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsConfig: HsConfig
   ) {
-    super(hsAddDataCommonService, hsAddDataCommonFileService, hsLayoutService);
+    super(
+      hsAddDataCommonService,
+      hsAddDataCommonFileService,
+      hsLayoutService,
+      hsConfig
+    );
   }
 
   ngAfterViewInit(): void {

@@ -4,6 +4,7 @@ import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
 import {Vector as VectorSource} from 'ol/source';
 
+import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
@@ -47,7 +48,8 @@ export class HsIdwWidgetComponent
   constructor(
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
+    public hsConfig: HsConfig
   ) {
     super(hsLayerSelectorService);
   }

@@ -14,7 +14,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLegendLayerComponent implements OnDestroy {
   @Input() layer: any;
-  
+
   svg: SafeHtml;
   private end = new Subject<void>();
   constructor(
@@ -22,9 +22,8 @@ export class HsLegendLayerComponent implements OnDestroy {
     public hsLegendService: HsLegendService,
     public hsStylerService: HsStylerService
   ) {
-    this.hsStylerService
-      
-      .onSet.pipe(takeUntil(this.end))
+    this.hsStylerService.onSet
+      .pipe(takeUntil(this.end))
       .subscribe(async (layer) => {
         if (this.layer.lyr == layer) {
           this.layer.svg = await this.hsLegendService.setSvg(layer);

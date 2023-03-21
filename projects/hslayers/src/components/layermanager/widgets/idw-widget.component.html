@@ -23,11 +23,11 @@
     </select>
   </div>
   <div class="form-check">
-    <label class="form-check-label" [for]="'hs-idw-widget-reversed' + data.app"><!-- FIXME: PLATFORMA APP PARAM -->
+    <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
       {{ "COMMON.reversed" | translateHs }}
     </label>
     <input class="form-check-input" type="checkbox" (change)="setColorMap()" [(ngModel)]="reversed"
-      [id]="'hs-idw-widget-reversed' + data.app"><!-- FIXME: PLATFORMA APP PARAM -->
+      [id]="'hs-idw-widget-reversed' + hsConfig.id">
   </div>
 
   <div class="row g-3 pt-3">

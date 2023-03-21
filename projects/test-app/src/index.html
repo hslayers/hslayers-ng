@@ -7,30 +7,15 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    hslayers-app {
+      display: block;
+      height: 100vh;
+    }
+  </style>
 </head>
 
 <body style="margin: 0;">
-  <script>
-    function hslayersNgConfig(ol) {
-      return {
-        assetsPath: 'assets/',
-        default_layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM(),
-            title: 'OpenStreetMap',
-            base: true,
-            visible: true,
-            removable: false,
-          }),
-        ],
-
-        default_view: new ol.View({
-          center: ol.proj.transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-          zoom: 4,
-        }),
-      };
-    }
-  </script>
   <hslayers-app></hslayers-app>
 </body>
 

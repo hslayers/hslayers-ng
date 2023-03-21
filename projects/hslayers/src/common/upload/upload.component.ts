@@ -21,7 +21,7 @@ export class HsUploadComponent {
   @Output() uploaded = new EventEmitter<HsUploadedFiles>();
   @Input() acceptedFormats: string;
   @Input() uploader?: string;
-  
+
   @ViewChild('fileInput') fileInput: ElementRef;
   dropzoneActive = false;
 

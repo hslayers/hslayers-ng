@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
+import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -15,13 +16,15 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;
   name = 'permalink';
+  app: string;
   constructor(
     public HsShareService: HsShareService,
     public HsShareUrlService: HsShareUrlService,
     public HsCore: HsCoreService,
     HsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService
+    public hsSidebarService: HsSidebarService,
+    private hsConfig: HsConfig
   ) {
     super(HsLayoutService);
   }
@@ -66,5 +69,6 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
       description: 'SIDEBAR.descriptions.PERMALINK',
       icon: 'icon-share-alt',
     });
+    this.app = this.hsConfig.id;
   }
 }

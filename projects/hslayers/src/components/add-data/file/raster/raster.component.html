@@ -1,7 +1,6 @@
 <form class="form-horizontal" role="form" name="frmRaster">
   <div class="form-group m-3">
-    <!-- FIXME: PLATFORM APP PARAM -->
-    <hs-file-upload (uploaded)="handleFileUpload($event)" [uploader]="'hs-file-raster'"
+    <hs-file-upload (uploaded)="handleFileUpload($event)" [uploader]="'hs-file-raster' + app"
       [acceptedFormats]="acceptedFormats">
     </hs-file-upload>
   </div>

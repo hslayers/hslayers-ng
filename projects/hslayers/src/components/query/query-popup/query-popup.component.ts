@@ -34,7 +34,6 @@ export class HsQueryPopupComponent
   data: {
     service: HsQueryPopupServiceModel;
   };
-  dataAppRef;
   isVisible$ = new BehaviorSubject(true);
 
   constructor(

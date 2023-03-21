@@ -18,8 +18,7 @@ import {accessRightsModel} from '../../../components/add-data/common/access-righ
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
@@ -29,7 +28,6 @@ export class HsSetPermissionsDialogComponent
   data: {
     recordType: string;
     selectedRecord: HsAddDataLayerDescriptor;
-
   };
   endpoint: HsEndpoint;
 
@@ -97,8 +95,7 @@ export class HsSetPermissionsDialogComponent
         response = await this.hsLaymanService.makeUpsertLayerRequest(
           this.endpoint,
           null,
-          layerDesc,
-          
+          layerDesc
         );
         if (response?.error) {
           return;
@@ -110,15 +107,12 @@ export class HsSetPermissionsDialogComponent
         response = await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
           this.endpoint,
-          this.currentAccessRights,
-          
+          this.currentAccessRights
         );
         if (response?.error) {
           return;
         }
-        this.hsCompositionsCatalogueService.loadFilteredCompositions(
-          
-        );
+        this.hsCompositionsCatalogueService.loadFilteredCompositions();
         this.close();
         break;
       default:

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 
+import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject} from 'rxjs';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -18,9 +18,10 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 })
 export class HsAddDataService {
   sidebarLoad: Subject<void> = new Subject();
-  //FIXME: THIS LOOKS SKETCHY
-  dsSelected: DatasetType = undefined;
-  datasetSelected: Subject<DatasetType> = new Subject();
+  datasetSelected: BehaviorSubject<DatasetType> = new BehaviorSubject(
+    undefined
+  );
+  datasetTypeSelected = this.datasetSelected.asObservable();
   /**
    * Cancels any external url data request from datasources panel
    */
@@ -55,7 +56,6 @@ export class HsAddDataService {
   }
 
   selectType(type: DatasetType): void {
-    this.dsSelected = type;
     this.datasetSelected.next(type);
   }
 }

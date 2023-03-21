@@ -13,11 +13,7 @@ export class HsFileService {
     public hsAddDataCommonFileService: HsAddDataCommonFileService
   ) {}
 
-  async read(
-    evt: HsUploadedFiles,
-    
-    readAsText: boolean = false
-  ): Promise<void> {
+  async read(evt: HsUploadedFiles, readAsText: boolean = false): Promise<void> {
     const filesRead = [];
     const files = Array.from(evt.fileList);
     const promises = [];
@@ -54,12 +50,10 @@ export class HsFileService {
         this.checkRasterFiles(data);
       }
     } catch (e) {
-      this.hsAddDataCommonFileService.displayErrorMessage(
-        {
-          message: e.message,
-          header: this.fileUploadErrorHeader,
-        }
-      );
+      this.hsAddDataCommonFileService.displayErrorMessage({
+        message: e.message,
+        header: this.fileUploadErrorHeader,
+      });
     }
   }
   checkShpFiles(data: FileDataObject): void {
@@ -71,12 +65,10 @@ export class HsFileService {
     } else if (data.files.length > 3) {
       this.tooManyFiles(3, data.files.length);
     } else {
-      this.hsAddDataCommonFileService.displayErrorMessage(
-        {
-          message: 'ADDLAYERS.SHP.missingOneOrMore',
-          header: this.fileUploadErrorHeader,
-        }
-      );
+      this.hsAddDataCommonFileService.displayErrorMessage({
+        message: 'ADDLAYERS.SHP.missingOneOrMore',
+        header: this.fileUploadErrorHeader,
+      });
     }
   }
 
@@ -91,25 +83,21 @@ export class HsFileService {
     } else if (data.files.length > 2) {
       this.tooManyFiles(2, data.files.length);
     } else {
-      this.hsAddDataCommonFileService.displayErrorMessage(
-        {
-          message: 'ADDLAYERS.missingImageorWorldFile',
-          header: this.fileUploadErrorHeader,
-        }
-      );
+      this.hsAddDataCommonFileService.displayErrorMessage({
+        message: 'ADDLAYERS.missingImageorWorldFile',
+        header: this.fileUploadErrorHeader,
+      });
     }
   }
 
   tooManyFiles(allowed: number, length: number): void {
-    this.hsAddDataCommonFileService.displayErrorMessage(
-      {
-        message: this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS.SHP',
-          'maximumNumberOf',
-          {allowed, length}
-        ),
-        header: this.fileUploadErrorHeader,
-      }
-    );
+    this.hsAddDataCommonFileService.displayErrorMessage({
+      message: this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'ADDLAYERS.SHP',
+        'maximumNumberOf',
+        {allowed, length}
+      ),
+      header: this.fileUploadErrorHeader,
+    });
   }
 }

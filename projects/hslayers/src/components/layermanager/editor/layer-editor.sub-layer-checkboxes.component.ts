@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {HsConfig} from '../../../config.service';
 import {
   HsLayerEditorSublayerService,
   KeyBooleanDict,
@@ -11,18 +12,20 @@ import {HsLayerManagerService} from '../layermanager.service';
 })
 export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   @Input() subLayer: any;
-
+  app: string;
   expanded = false;
   checkedSubLayers: KeyBooleanDict;
   withChildren: KeyBooleanDict;
   constructor(
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    public HsLayerManagerService: HsLayerManagerService
+    public HsLayerManagerService: HsLayerManagerService,
+    private hsConfig: HsConfig
   ) {}
 
   ngOnInit() {
     this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;
+    this.app = this.hsConfig.id;
   }
 
   getSubLayers() {

@@ -24,9 +24,16 @@ export class AppModule implements DoBootstrap {
         setTimeout(waitAppElement, 50);
         return;
       }
-      document.querySelectorAll('hslayers-app').forEach((el) => {
-        appRef.bootstrap(HslayersAppComponent, el);
-      });
+      const apps: HTMLElement[] = Array.from(
+        document.querySelectorAll('hslayers-app')
+      );
+      for (const el of apps) {
+        if (!el.dataset.init) {
+          appRef.bootstrap(HslayersAppComponent, el);
+          el.dataset.init = 'true';
+          return;
+        }
+      }
     };
 
     setTimeout(waitAppElement, 50);

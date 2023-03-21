@@ -61,9 +61,9 @@ export class HsMapSwipeService {
     this.swipeControlActive = null;
     this.orientation = null;
 
-    this.setInitCtrlActive();
-    this.setInitOri();
     this.hsMapService.loaded().then(() => {
+      this.setInitCtrlActive();
+      this.setInitOri();
       if (this.hsLayoutService.panelEnabled('mapSwipe')) {
         this.initSwipeControl();
       }
@@ -108,7 +108,10 @@ export class HsMapSwipeService {
    
    */
   setInitOri(): void {
-    const storageOri = localStorage.getItem(`$:hs_map_swipe_ori`) as
+    const swipe_ori_prop = this.hsConfig.id
+      ? `${this.hsConfig.id}:hs_map_swipe_ori`
+      : 'hs_map_swipe_ori';
+    const storageOri = localStorage.getItem(swipe_ori_prop) as
       | 'vertical'
       | 'horizontal';
     if (storageOri) {
@@ -130,6 +133,7 @@ export class HsMapSwipeService {
     this.zone.runOutsideAngular(() => {
       this.swipeCtrl = new SwipeControl({
         orientation: this.orientation,
+        app: this.hsConfig.id,
       });
     });
 
@@ -144,7 +148,10 @@ export class HsMapSwipeService {
    
    */
   updateStorageOri(): void {
-    localStorage.setItem(`$:hs_map_swipe_ori`, this.orientation);
+    const swipe_ori_prop = this.hsConfig.id
+      ? `${this.hsConfig.id}:hs_map_swipe_ori`
+      : 'hs_map_swipe_ori';
+    localStorage.setItem(swipe_ori_prop, this.orientation);
   }
 
   /**

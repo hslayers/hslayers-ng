@@ -41,7 +41,7 @@ export class HsAddDataCommonService {
   }
 
   setPanelToCatalogue(): void {
-    this.hsAddDataService.dsSelected = 'catalogue';
+    this.hsAddDataService.selectType('catalogue');
   }
 
   /**

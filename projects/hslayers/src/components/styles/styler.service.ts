@@ -438,7 +438,7 @@ export class HsStylerService {
     options.sldVersion = this.guessSldVersion(sld);
     const sldParser = new SLDParser(options);
     const {output: sldObject} = await sldParser.readStyle(sld);
-    return sldObject;
+    return sldObject ?? {name: 'untitled style', rules: []};
   }
 
   /**

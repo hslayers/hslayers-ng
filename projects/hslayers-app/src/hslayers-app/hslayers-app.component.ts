@@ -1,6 +1,4 @@
 import * as proj from 'ol/proj';
-import {GeoJSON} from 'ol/format';
-import {View} from 'ol';
 import {
   BingMaps,
   ImageArcGISRest,
@@ -14,12 +12,14 @@ import {
 } from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {GeoJSON} from 'ol/format';
 import {
   Group,
   Image as ImageLayer,
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
+import {View} from 'ol';
 
 import SparqlJson from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 import {HsConfig} from 'hslayers-ng/config.service';
@@ -70,15 +70,12 @@ export class HslayersAppComponent {
 
     if (this.elementRef.nativeElement.id) {
       this.id = this.elementRef.nativeElement.id;
-    } else {
-      this.id = 'default';
     }
-
     if (w['hslayersNgConfig' + this.id]) {
-      const cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol, this.id)');
-      this.HsConfig.update(cfg, this.id);
+      const cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol)');
+      this.HsConfig.update(cfg);
     } else if (w.hslayersNgConfig) {
-      this.HsConfig.update(w.hslayersNgConfig(w.ol, this.id), this.id);
+      this.HsConfig.update(w.hslayersNgConfig(w.ol));
     }
   }
   title = 'hslayers-workspace';

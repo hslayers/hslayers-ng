@@ -22,6 +22,7 @@ export type SwipeControlOptions = {
   className?: string;
   position?: number;
   orientation?: string;
+  app?: string;
 };
 
 export class SwipeControl extends Control {
@@ -54,9 +55,10 @@ export class SwipeControl extends Control {
     if (options?.rightLayers) {
       this.addLayers(options.rightLayers, true);
     }
-    //FIXME: PLATFORM APP ID
-    //`${options.app}:hs_map_swipe_pos`,
-    const storagePos = localStorage.getItem(`hs_map_swipe_pos`);
+    const swipe_pos_prop = options.app
+      ? `${options.app}:hs_map_swipe_pos`
+      : 'hs_map_swipe_pos';
+    const storagePos = localStorage.getItem(swipe_pos_prop);
     this.on('propertychange', () => {
       if (this.getMap()) {
         try {
@@ -77,9 +79,7 @@ export class SwipeControl extends Control {
       }
       this.element.classList.remove('horizontal', 'vertical');
       this.element.classList.add(this.get('orientation'));
-      //FIXME: PLATFORM APP ID
-      //`${options.app}:hs_map_swipe_pos`,
-      localStorage.setItem(`hs_map_swipe_pos`, this.get('position'));
+      localStorage.setItem(swipe_pos_prop, this.get('position'));
     });
 
     this.set('position', storagePos ?? options?.position ?? 0.5);

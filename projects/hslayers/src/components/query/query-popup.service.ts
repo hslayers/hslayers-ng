@@ -40,7 +40,7 @@ export class HsQueryPopupService
         this.hsConfig.popUpDisplay &&
         this.hsConfig.popUpDisplay === 'hover'
       ) {
-        this.map.on(
+        map.on(
           'pointermove',
           this.hsUtilsService.debounce(
             (e) => this.preparePopup(e),
@@ -53,7 +53,7 @@ export class HsQueryPopupService
         this.hsConfig.popUpDisplay &&
         this.hsConfig.popUpDisplay === 'click'
       ) {
-        this.map.on(
+        map.on(
           'singleclick',
           this.hsUtilsService.debounce(
             (e) => this.preparePopup(e),

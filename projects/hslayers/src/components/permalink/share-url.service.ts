@@ -23,7 +23,7 @@ export class HsShareUrlService {
   params = {};
   customParams = {};
   updateDebouncer = {};
-  url_generation = true;
+  url_generation = true; //FIXME - but needs to be configurable or smth
   //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
   paramTimer = null;
   shareId = null;
@@ -206,7 +206,9 @@ export class HsShareUrlService {
         this.push(key, value);
       }
     }
-    //FIXME??: this.push('app', app); //Needs to be after customParams got from URL to overwrite app value
+    if (this.hsConfig.id) {
+      this.push('app', this.hsConfig.id); //Needs to be after customParams got from URL to overwrite app value
+    }
     if (this.statusSaving) {
       return;
     }
