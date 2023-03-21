@@ -18,6 +18,7 @@ import {FileDataObject} from './types/file-data-object.type';
 import {FileDescriptor} from './types/file-descriptor.type';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataCommonService} from '../common/common.service';
+import {HsConfig} from '../../../config.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsUploadComponent} from '../../../common/upload/upload.component';
 
@@ -27,6 +28,7 @@ import {HsUploadComponent} from '../../../common/upload/upload.component';
 export class HsAddDataFileBaseComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  app: string;
   data: FileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
@@ -36,7 +38,8 @@ export class HsAddDataFileBaseComponent
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsConfig: HsConfig
   ) {}
 
   clearInput(): void {
@@ -52,6 +55,7 @@ export class HsAddDataFileBaseComponent
   }
 
   ngOnInit(): void {
+    this.app = this.hsConfig.id;
     this.hsAddDataCommonFileService.dataObjectChanged
       .pipe(takeUntil(this.end))
       .subscribe((data) => {

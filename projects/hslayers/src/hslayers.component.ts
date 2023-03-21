@@ -78,8 +78,8 @@ export class HslayersComponent implements OnInit {
     if (this.config) {
       this.hsConfig.update(this.config);
     }
-    if (this.id == undefined) {
-      this.id = 'default';
+    if (this.id) {
+      this.hsConfig.setAppId(this.id);
     }
     this.createPanel('tripPlanner', HsTripPlannerComponent, {});
     this.createPanel('addData', HsAddDataComponent, {});
@@ -110,11 +110,8 @@ export class HslayersComponent implements OnInit {
       {}
     );
     this.HsOverlayPanelContainerService.create(HsToolbarComponent, {});
-    // this.HsOverlayPanelContainerService.create(
-    //   HsQueryPopupComponent,
-    //   {
-    //     service: this.hsQueryPopupService,
-    //   }
-    // );
+    this.HsOverlayPanelContainerService.create(HsQueryPopupComponent, {
+      service: this.hsQueryPopupService,
+    });
   }
 }

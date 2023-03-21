@@ -42,7 +42,7 @@ export type customToastOptions = {
   providedIn: 'root',
 })
 export class HsToastService {
-  toasts: Toast[];
+  toasts: Toast[] = [];
   constructor(
     public HsLanguageService: HsLanguageService,
     private HsLayoutService: HsLayoutService,

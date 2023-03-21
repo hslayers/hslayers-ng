@@ -27,7 +27,7 @@ export class HsPanelContainerService
    */
   create(
     component: Type<any>,
-    data: any = 'default',
+    data: any,
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
     if (data === undefined) {

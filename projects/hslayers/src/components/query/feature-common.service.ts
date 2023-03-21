@@ -39,12 +39,11 @@ export class HsFeatureCommonService {
     private hsMapService: HsMapService,
     private hsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.hsMapService
-      .getMap()
-      .getLayers()
-      .on('change:length', () => {
+    this.hsMapService.loaded().then((map) => {
+      map.getLayers().on('change:length', () => {
         this.updateLayerList();
       });
+    });
   }
   /**
    * Translate string value to the selected UI language

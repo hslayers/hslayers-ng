@@ -104,7 +104,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       }
     });
 
-    this.hsAddDataService.datasetSelected.subscribe((type) => {
+    this.hsAddDataService.datasetTypeSelected.subscribe((type) => {
       if (type == 'catalogue' && this.panelVisible()) {
         this.reloadData();
       }
@@ -519,7 +519,8 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
 
   calcExtentLayerVisibility(): void {
     this.hsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible() && this.hsAddDataService.dsSelected == 'catalogue'
+      this.panelVisible() &&
+        this.hsAddDataService.datasetSelected.getValue() == 'catalogue'
     );
   }
 

@@ -55,7 +55,13 @@ export class HsLegendComponent
       description: 'SIDEBAR.descriptions.LEGEND',
       icon: 'icon-dotlist',
     });
-    this.hsMapService.loaded().then((map) => this.init(map));
+    this.hsMapService.loaded().then((map) => {
+      map.getLayers().on('add', (e) => this.layerAdded(e));
+      map.getLayers().on('remove', (e) => {
+        this.removeLayerFromLegends(e.element);
+      });
+      this.buildLegendsForLayers(map);
+    });
   }
 
   /**
@@ -129,17 +135,6 @@ export class HsLegendComponent
         break;
       }
     }
-  }
-
-  /**
-   * @param map -
-   */
-  init(map: Map): void {
-    map.getLayers().on('add', (e) => this.layerAdded(e));
-    map.getLayers().on('remove', (e) => {
-      this.removeLayerFromLegends(e.element);
-    });
-    this.buildLegendsForLayers(map);
   }
 
   buildLegendsForLayers(map: Map): void {

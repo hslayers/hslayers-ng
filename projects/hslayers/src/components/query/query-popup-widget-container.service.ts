@@ -37,7 +37,6 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
    */
   initWidgets(
     widgetNames: string[],
-
     panelObserver?: ReplaySubject<HsPanelItem>
   ): void {
     if (widgetNames?.length > 0) {

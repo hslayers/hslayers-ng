@@ -45,6 +45,7 @@ export class HsAddDataVectorFileComponent
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
+  app: string;
   acceptedFormats: string;
   uploadType = 'new';
   data: VectorDataObject & FileDataObject;
@@ -79,6 +80,7 @@ export class HsAddDataVectorFileComponent
   }
 
   ngOnInit(): void {
+    this.app = this.hsConfig.id;
     this.hsAddDataCommonFileService.dataObjectChanged
       .pipe(takeUntil(this.end))
       .subscribe((data) => {

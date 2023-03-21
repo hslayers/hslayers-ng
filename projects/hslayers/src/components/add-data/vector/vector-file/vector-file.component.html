@@ -1,7 +1,6 @@
 <form class="form-horizontal" role="form">
   <div class="form-group m-3">
-    <!-- FIXME: PLATFORM APP PARAM -->
-    <hs-file-upload (uploaded)="handleFileUpload($event)" [uploader]="'hs-file-vector'"
+    <hs-file-upload (uploaded)="handleFileUpload($event)" [uploader]="'hs-file-vector' + app"
       [acceptedFormats]="acceptedFormats">
     </hs-file-upload>
   </div>

@@ -21,7 +21,8 @@ import {servicesSupportedByUrl} from './url/services-supported.const';
 })
 export class HsAddDataComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   private end = new Subject<void>();
 
   constructor(
@@ -39,7 +40,7 @@ export class HsAddDataComponent
   }
   name = 'addData';
 
-  datasetSelect(type: DatasetType): void {
+  selectDatasetType(type: DatasetType): void {
     this.hsAddDataService.selectType(type);
   }
 
@@ -49,7 +50,7 @@ export class HsAddDataComponent
   }
 
   ngOnInit(): void {
-    this.hsAddDataService.dsSelected = 'catalogue';
+    this.selectDatasetType('catalogue');
 
     this.hsSidebarService.addButton({
       panel: 'addData',
@@ -97,7 +98,7 @@ export class HsAddDataComponent
     const url = this.hsShareUrlService.getParamValue(`hs-${type}-to-connect`);
     if (url) {
       this.hsLayoutService.setMainPanel('addData');
-      this.hsAddDataService.dsSelected = 'url';
+      this.selectDatasetType('url');
       this.hsAddDataUrlService.typeSelected = type;
     }
   }

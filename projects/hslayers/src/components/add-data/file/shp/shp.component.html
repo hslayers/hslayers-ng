@@ -1,8 +1,7 @@
 <form class="form-horizontal m-3" role="form">
     <div class="form-group justify-content-center">
         <hs-file-upload (uploaded)="handleFileUpload($event)" [acceptedFormats]="acceptedFormats"
-            [uploader]="'shpdbfshx'">
-            <!-- FIXME: PLATFORM APP PARAM -->
+            [uploader]="'shpdbfshx' + app">
         </hs-file-upload>
     </div>
     <div *ngIf="data.files?.length === 0"

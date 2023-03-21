@@ -47,3 +47,24 @@ A global hslayersNgConfig function, which returns a configuration object, NEEDS 
     } 
   </script>
   ```
+
+  ### Multiple apps setup
+
+  Bulit-in option for bootstraping multiple app instances can be utilized by simply creating (and styling) desired number of `hslayers-app` elements including with `id`s 
+  ```
+  <html>
+  ...
+    <hslayers-app id="app-a"></hslayers-app>
+    <hslayers-app id="app-b"></hslayers-app>
+  ...
+  </html>
+  ```
+and creating hslayersNgConfig function which name would include corresponding id string such as
+```
+<script>
+    function hslayersNgConfigapp-a(ol) {
+      ...
+    } 
+  </script>
+```
+In case no exact match between app id and config name was found app tries to call default function eg. hslayersNgConfig

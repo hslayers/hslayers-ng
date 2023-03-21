@@ -9,6 +9,11 @@ if (environment.production) {
 }
 
 setTimeout(() => {
-  const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
-  bootstrap().catch((err) => console.log(err));
+  const platform = platformBrowserDynamic();
+  const hslayerApps = document.querySelectorAll('hslayers-app');
+
+  hslayerApps.forEach(() => {
+    const bootstrap = () => platform.bootstrapModule(AppModule);
+    bootstrap().catch((err) => console.log('bootstrap', err));
+  });
 }, 0);

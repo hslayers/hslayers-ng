@@ -4,6 +4,7 @@ import {AddDataFileType} from '../types/file.type';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
+import {HsConfig} from '../../../../config.service';
 import {HsFileService} from '../file.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUploadedFiles} from '../../../../common/upload/upload.component';
@@ -21,9 +22,15 @@ export class HsFileRasterComponent
     public hsFileService: HsFileService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsConfig: HsConfig
   ) {
-    super(hsAddDataCommonService, hsAddDataCommonFileService, hsLayoutService);
+    super(
+      hsAddDataCommonService,
+      hsAddDataCommonFileService,
+      hsLayoutService,
+      hsConfig
+    );
   }
   ngOnInit(): void {
     this.baseFileType = this.fileType;
@@ -36,6 +43,6 @@ export class HsFileRasterComponent
   }
 
   async handleFileUpload(evt: HsUploadedFiles): Promise<void> {
-    await this.hsFileService.read(evt, );
+    await this.hsFileService.read(evt);
   }
 }

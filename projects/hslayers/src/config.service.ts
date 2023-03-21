@@ -97,7 +97,7 @@ export class HsConfigObject {
   };
   mapSwipeOptions?: MapSwipeOptions = {};
   status_manager_url?: string;
-  shortenUrl: (url) => any;
+  shortenUrl?: (url) => any;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
   useProxy?: boolean;
@@ -167,24 +167,32 @@ export class HsConfigObject {
     this.pathExclusivity = false;
     this.panelsEnabled = {
       legend: false,
-      info: false,
-      composition_browser: false,
+      info: true,
+      composition_browser: true,
       toolbar: false,
       measure: false,
+      /**
+       * @deprecated Panel not available
+       * TODO: Remove in 12
+       */
       mobile_settings: false,
       draw: false,
       layermanager: true,
       print: false,
       saveMap: false,
-      language: true,
+      language: false,
       permalink: false,
       compositionLoadingProgress: false,
       sensors: false,
+      /**
+       * @deprecated Panel not available
+       * TODO: Remove in 12
+       */
       filter: false,
       search: false,
       tripPlanner: false,
       addData: true,
-      mapSwipe: false,
+      mapSwipe: true,
     };
     this.componentsEnabled = {
       guiOverlay: true,
@@ -216,7 +224,7 @@ export class HsConfigObject {
   providedIn: 'root',
 })
 export class HsConfig extends HsConfigObject {
-  id = Math.random();
+  id: string;
   configChanges?: Subject<void> = new Subject();
   private defaultSymbolizerIcons? = [
     {name: 'favourite', url: 'img/icons/favourite28.svg'},
@@ -301,5 +309,12 @@ export class HsConfig extends HsConfigObject {
       val.url = assetsPath + val.url;
       return val;
     });
+  }
+
+  /**
+   * Sets app id
+   */
+  setAppId(id: string) {
+    this.id = id;
   }
 }

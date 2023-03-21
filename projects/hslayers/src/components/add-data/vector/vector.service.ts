@@ -224,7 +224,7 @@ export class HsAddDataVectorService {
    
    */
   setPanelToCatalogue(): void {
-    this.hsAddDataService.dsSelected = 'catalogue';
+    this.hsAddDataService.selectType('catalogue');
   }
 
   /**

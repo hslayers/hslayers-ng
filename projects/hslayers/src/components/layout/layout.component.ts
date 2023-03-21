@@ -24,7 +24,6 @@ import {HsUtilsService} from '../utils/utils.service';
   templateUrl: './partials/layout.html',
 })
 export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
-  @Input() app: string;
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
@@ -49,12 +48,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService,
     private hsShareUrlService: HsShareUrlService
-  ) {
-    console.log(
-      'constructor',
-      this.elementRef.nativeElement.querySelector('.hsl')
-    );
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.end.next();
@@ -62,11 +56,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(
-      'ngOnInit',
-      this.elementRef.nativeElement.querySelector('.hsl')
-    );
-
     this.HsLayoutService.layoutElement =
       this.elementRef.nativeElement.querySelector('.hsl');
 

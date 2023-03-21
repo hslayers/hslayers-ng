@@ -20,21 +20,21 @@
             </div>
             <hr>
 
-            <fieldset class="form-group"><!-- FIXME: PLATFORMA APP PARAM -->
-                <label class="mb-2" style="font-size: 1.5em;" [for]="'share-link-' + data.app">{{'PERMALINK.linkFor' |
+            <fieldset class="form-group">
+                <label class="mb-2" style="font-size: 1.5em;" [for]="'share-link-' + app">{{'PERMALINK.linkFor' |
                     translateHs }}&nbsp;<span [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
                         translateHs }}/</span>{{'PERMALINK.socialShare' | translateHs}}
                 </label>
                 <div class="form-check">
-                    <label class="form-check-label"><!-- FIXME: PLATFORMA APP PARAM -->
-                        <input type="radio" class="form-check-input" [name]="'share-link-' + data.app" value="puremap"
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" [name]="'share-link-' + app" value="puremap"
                             [(ngModel)]="HsShareService.shareLink" (click)="updateEmbedCode()">
                         {{'PERMALINK.pureMap' | translateHs }}
                     </label>
                 </div>
                 <div class="form-check">
-                    <label class="form-check-label"><!-- FIXME: PLATFORMA APP PARAM -->
-                        <input type="radio" class="form-check-input" [name]="'share-link-' + data.app" value="permalink"
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" [name]="'share-link-' + app" value="permalink"
                             [(ngModel)]="HsShareService.shareLink" (click)="updateEmbedCode()">
                         {{'PERMALINK.permalink' | translateHs }}
                     </label>
