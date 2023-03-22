@@ -39,7 +39,6 @@ describe('add-data-url', () => {
   let component: HsUrlWmsComponent;
   let fixture: ComponentFixture<HsUrlWmsComponent>;
   let originalTimeout: number;
-  const app = 'default';
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -102,7 +101,6 @@ describe('add-data-url', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsUrlWmsComponent);
-    fixture.componentInstance.app = app;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -124,9 +122,7 @@ describe('add-data-url', () => {
           component.hsUrlWmsService
             .capabilitiesReceived(capabilities, '')
             .then(() => {
-              expect(
-                component.hsUrlWmsService.get().data.srss
-              ).toBeDefined();
+              expect(component.hsUrlWmsService.data.srss).toBeDefined();
               done();
             })
             .catch((e) => {

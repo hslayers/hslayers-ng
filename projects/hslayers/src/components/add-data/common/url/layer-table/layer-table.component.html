@@ -15,7 +15,7 @@
                     </td>
                     <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate"
                         [title]="'Title: ' + layer.Title  + '\nName: ' + layer.Name"
-                        (click)="hsUrlWmsService.expandTableRow($event)">{{layer.Title}}</td>
+                        (click)="hsUrlWmsService.expandTableRow($event)"><span>{{layer.Title}}</span></td>
                     <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="layer.Name">{{layer.Name}}</td> -->
                     <td hsWmsLayerHighlight style="max-width: 10.875em; width:30%" class="text-truncate"
                         [title]="layer.Abstract" (click)="hsUrlWmsService.expandTableRow($event)">
@@ -77,7 +77,7 @@
                     <td><input class="checkbox-lg" type="checkbox" name="layer" style="cursor: pointer;"
                             (change)="changed('layers')" [(ngModel)]="layer.checked" /></td>
                     <td hsWmsLayerHighlight (click)="hsUrlWmsService.expandTableRow($event)" class="text-truncate"
-                        style="max-width: 45ch;">{{layer[data.table.nameProperty]}}
+                        style="max-width: 45ch;"><span>{{layer[data.table.nameProperty]}}</span>
                         <div *ngIf="layer.checked && type === 'wmts'"
                             class="d-flex flex-row justify-content-end align-items-baseline mt-1">
                             {{'ADDDATA.CATALOGUE.addAs' | translateHs }}

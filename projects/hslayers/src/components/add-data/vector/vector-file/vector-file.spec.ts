@@ -39,8 +39,7 @@ class HsCommonLaymanServiceMock {
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<{endpoints: HsEndpoint[]; }> =
-    new Subject();
+  endpointsFilled: Subject<HsEndpoint[]> = new Subject();
   endpoints = [];
 }
 
@@ -99,7 +98,6 @@ describe('add-layers-vector', () => {
   beforeEach(() => {
     service = TestBed.inject(HsAddDataVectorService);
     fixture = TestBed.createComponent(HsAddDataVectorFileComponent);
-    fixture.componentInstance.app = 'default';
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -119,7 +117,7 @@ describe('add-layers-vector', () => {
     component.data.srs = '';
     component.data.extract_styles = false;
 
-    const response = await service.addNewLayer(component.data, 'default');
+    const response = await service.addNewLayer(component.data);
     expect(response.layer).toBeDefined();
     expect(getTitle(response.layer)).toEqual('Cancer rates');
   });

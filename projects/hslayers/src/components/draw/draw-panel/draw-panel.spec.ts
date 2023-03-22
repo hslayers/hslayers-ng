@@ -84,7 +84,6 @@ describe('HsDrawPanel', () => {
   let fixture: ComponentFixture<DrawPanelComponent>;
   let component: DrawPanelComponent;
   let service: HsDrawService;
-  const app = 'default';
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -127,7 +126,6 @@ describe('HsDrawPanel', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(DrawPanelComponent);
-    fixture.componentInstance.app = app;
     service = TestBed.inject(HsDrawService);
     component = fixture.componentInstance;
 
@@ -143,14 +141,14 @@ describe('HsDrawPanel', () => {
 
     component.setType('polygon');
 
-    expect(service.get().tmpDrawLayer).toBeDefined();
-    expect(service.get().type).toBe('polygon');
-    expect(service.get().selectedLayer).toBeDefined();
+    expect(service.tmpDrawLayer).toBeDefined();
+    expect(service.type).toBe('polygon');
+    expect(service.selectedLayer).toBeDefined();
     expect(service.activateDrawing).toHaveBeenCalled();
   });
 
   it('Select layer', () => {
     component.selectLayer(layer);
-    expect(service.get().source).toBeDefined();
+    expect(service.source).toBeDefined();
   });
 });

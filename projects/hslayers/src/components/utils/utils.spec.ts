@@ -6,10 +6,10 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 
-import {Vector as VectorLayer} from 'ol/layer';
 import {Feature} from 'ol';
 import {LineString, Polygon} from 'ol/geom';
 import {Point} from 'ol/geom';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';
@@ -34,7 +34,6 @@ describe('HsUtilsService', () => {
   });
   let hsUtilsService: HsUtilsService;
   let hsConfig: HsConfig;
-  const app = 'default';
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -131,12 +130,12 @@ describe('HsUtilsService', () => {
     const simpleUrl = 'http://gisserver.domain.com';
     const base64Url =
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T';
-    let url = hsUtilsService.proxify(urlWMS, app, true);
+    let url = hsUtilsService.proxify(urlWMS, true);
     expect(url).toEqual(
       '/proxy/http://gisserver.domain.com/request=GetFeatureInfo'
     );
-    hsConfig.get('default').proxyPrefix = 'http://localhost:8085/';
-    url = hsUtilsService.proxify(simpleUrl, app, false);
+    hsConfig.proxyPrefix = 'http://localhost:8085/';
+    url = hsUtilsService.proxify(simpleUrl, false);
     expect(url).toEqual('http://localhost:8085/http://gisserver.domain.com');
     url = hsUtilsService.proxify(base64Url);
     expect(url).toEqual(
@@ -144,8 +143,8 @@ describe('HsUtilsService', () => {
     );
   });
   it('check if short url gets created correctly', async () => {
-    hsConfig.get('default').proxyPrefix = 'http://localhost:8085/';
-    hsConfig.get('default').shortenUrl = (url) => {
+    hsConfig.proxyPrefix = 'http://localhost:8085/';
+    hsConfig.shortenUrl = (url) => {
       return 'http://customShortUrl.com/shorturl';
     };
     const url =

@@ -166,24 +166,24 @@ export class HsConfigObject {
   constructor() {
     this.pathExclusivity = false;
     this.panelsEnabled = {
-      legend: false,
+      legend: true,
       info: true,
       composition_browser: true,
-      toolbar: false,
-      measure: false,
+      toolbar: true,
+      measure: true,
       /**
        * @deprecated Panel not available
        * TODO: Remove in 12
        */
       mobile_settings: false,
-      draw: false,
+      draw: true,
       layermanager: true,
-      print: false,
-      saveMap: false,
-      language: false,
-      permalink: false,
+      print: true,
+      saveMap: true,
+      language: true,
+      permalink: true,
       compositionLoadingProgress: false,
-      sensors: false,
+      sensors: true,
       /**
        * @deprecated Panel not available
        * TODO: Remove in 12
@@ -192,7 +192,7 @@ export class HsConfigObject {
       search: false,
       tripPlanner: false,
       addData: true,
-      mapSwipe: true,
+      mapSwipe: false,
     };
     this.componentsEnabled = {
       guiOverlay: true,

@@ -339,9 +339,7 @@ export class HslayersAppComponent {
       panelsEnabled: {
         compositionLoadingProgress: true,
         draw: true,
-        tripPlanner: true,
         mapSwipe: true,
-        feature_table: true,
       },
       sidebarPosition: 'right',
       base_layers: {

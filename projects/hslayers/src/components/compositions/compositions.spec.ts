@@ -9,7 +9,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
@@ -48,6 +48,11 @@ class HsCompositionsMickaServiceMock {
   loadList() {
     return;
   }
+}
+
+class hsCommonLaymanServiceMock {
+  authChange: Subject<void> = new Subject();
+  constructor() {}
 }
 
 class HsLaymanBrowserServiceMock {
@@ -110,7 +115,6 @@ const layerUtilsMock = mockLayerUtilsService();
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
-  const app = 'default';
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -125,6 +129,10 @@ describe('compositions', () => {
   beforeEach(() => {
     const mockedUtilsService: any = new HsUtilsServiceMock();
     const mockedEventBusService: any = new HsEventBusServiceMock();
+    const mockedConfig: any = new HsConfigMock();
+    const mockedCommonLaymanService: any = new hsCommonLaymanServiceMock();
+    const mockedMapService: any = new HsMapServiceMock();
+
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -147,8 +155,8 @@ describe('compositions', () => {
           useValue: new HsSaveMapServiceMock(),
         },
         {provide: HsUtilsService, useValue: mockedUtilsService},
-        {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsMapService, useValue: mockedMapService},
+        {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsCompositionsMickaService,
           useValue: new HsCompositionsMickaServiceMock(),
@@ -191,9 +199,9 @@ describe('compositions', () => {
               mockedMapService,
               null,
               null,
-              null,
-              null,
-              null
+              mockedConfig,
+              mockedCommonLaymanService,
+              mockedMapService
             ),
             mockedUtilsService
           ),
@@ -211,7 +219,7 @@ describe('compositions', () => {
       HsCompositionsMickaServiceMock
     );
     hsConfig = TestBed.inject(HsConfig);
-    hsConfig.get().reverseLayerList = true;
+    hsConfig.reverseLayerList = true;
     //Mock server response
     hsCompositionsMickaService.loadList = () => {
       return new Promise((resolve, reject) => {
@@ -226,7 +234,7 @@ describe('compositions', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HsCompositionsComponent);
     mockedMapService = TestBed.inject(HsMapService);
-    fixture.componentInstance.data = {app};
+    fixture.componentInstance.data = {};
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -236,7 +244,7 @@ describe('compositions', () => {
   });
 
   it('compositions list should load', function () {
-    CompositionsCatalogueService.get().filterByExtent = false;
+    CompositionsCatalogueService.filterByExtent = false;
     const ds: any = {
       url: 'https://www.agrihub.cz/micka/csw',
       type: 'micka',
@@ -259,23 +267,23 @@ describe('compositions', () => {
   async function loadComposition(component) {
     await component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,
-      true,
-      app
+      true
     );
   }
 
   it('should load composition from json', async function () {
     await loadComposition(component);
-    expect(mockedMapService.getMap().getLayers().getLength()).toBe(7);
-    expect(getTitle(mockedMapService.getMap().getLayers().item(6))).toBe(
+    console.log(mockedMapService.getMap().getLayers());
+    expect(mockedMapService.getMap().getLayers().getLength()).toBe(8);
+    expect(getTitle(mockedMapService.getMap().getLayers().item(7))).toBe(
       'Measurement sketches'
     );
     expect(
-      mockedMapService.getMap().getLayers().item(2).getSource().getFeatures()
+      mockedMapService.getMap().getLayers().item(3).getSource().getFeatures()
         .length
     ).toBe(1);
     expect(
-      mockedMapService.getMap().getLayers().item(1).getSource().getFeatures()
+      mockedMapService.getMap().getLayers().item(2).getSource().getFeatures()
         .length
     ).toBe(0);
   });
@@ -284,11 +292,12 @@ describe('compositions', () => {
     await loadComposition(component);
     const layer = mockedMapService.getMap().getLayers().item(1);
     expect(layer.getStyle()).toBeDefined();
+    console.log(mockedMapService.getMap().getLayers().item(2).get('title'));
     expect(
       mockedMapService
         .getMap()
         .getLayers()
-        .item(1)
+        .item(2)
         .getStyle()[2]
         .getStroke()
         .getColor()

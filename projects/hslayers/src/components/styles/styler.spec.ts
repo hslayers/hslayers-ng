@@ -59,7 +59,6 @@ describe('HsStyler', () => {
   let fixture: ComponentFixture<HsStylerComponent>;
   let component: HsStylerComponent;
   let service: HsStylerService;
-  const app = 'default';
   beforeEach(() => {
     layer = new VectorLayer({
       properties: {title: 'Point'},
@@ -103,12 +102,11 @@ describe('HsStyler', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);
-    fixture.componentInstance.data = {app};
     service = TestBed.inject(HsStylerService);
     component = fixture.componentInstance;
     fixture.detectChanges();
     service.fill(layer);
-    service.get().styleObject = {name: 'Test', rules: []};
+    service.styleObject = {name: 'Test', rules: []};
   });
 
   it('should create', () => {
@@ -117,22 +115,20 @@ describe('HsStyler', () => {
 
   it('should change style', async () => {
     service.addRule('Simple');
-    service.get().styleObject.rules[0].symbolizers = [
-      {color: '#000', kind: 'Fill'},
-    ];
+    service.styleObject.rules[0].symbolizers = [{color: '#000', kind: 'Fill'}];
     await service.save();
 
-    expect(service.get().layer.get('sld').replace(/\s/g, '')).toBe(
+    expect(service.layer.get('sld').replace(/\s/g, '')).toBe(
       `<?xmlversion="1.0"encoding="UTF-8"standalone="yes"?><StyledLayerDescriptorversion="1.0.0"xsi:schemaLocation="http://www.opengis.net/sldStyledLayerDescriptor.xsd"xmlns="http://www.opengis.net/sld"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><Name>Test</Name><UserStyle><Name>Test</Name><Title>Test</Title><FeatureTypeStyle><Rule><Name>Untitledrule</Name><PolygonSymbolizer><Fill><CssParametername="fill">#000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
         /\s/g,
         ''
       )
     );
-    expect((service.get().layer.getStyle() as Style).getFill()).toBeDefined();
+    expect((service.layer.getStyle() as Style).getFill()).toBeDefined();
   });
 
   it('should issue onSet event when style changes', async () => {
-    const nextSpy = spyOn(service.get().onSet, 'next');
+    const nextSpy = spyOn(service.onSet, 'next');
     await service.save();
     expect(nextSpy).toHaveBeenCalled();
   });

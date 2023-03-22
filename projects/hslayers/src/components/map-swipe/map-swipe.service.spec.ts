@@ -51,11 +51,11 @@ describe('HsMapSwipeService', () => {
         },
       ],
     });
-    service = TestBed.inject(HsMapSwipeService);
     hsConfig = TestBed.inject(HsConfig);
-    hsConfig.get('default').componentsEnabled = {
+    hsConfig.componentsEnabled = {
       mapSwipe: true,
     };
+    service = TestBed.inject(HsMapSwipeService);
   });
 
   it('should be created', () => {

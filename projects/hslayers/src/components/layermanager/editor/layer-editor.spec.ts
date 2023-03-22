@@ -50,7 +50,6 @@ describe('layermanager editor', () => {
   let clusterWidgetFixture: ComponentFixture<HsClusterWidgetComponent>;
   let layerForCluster;
   let hsConfig: HsConfig;
-  const app = 'default';
   beforeAll(() => {
     layerForCluster = new VectorLayer({
       properties: {
@@ -111,17 +110,16 @@ describe('layermanager editor', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerEditorComponent);
-    fixture.componentInstance.app = app;
     component = fixture.componentInstance;
     hsConfig = TestBed.inject(HsConfig);
     clusterWidgetFixture = TestBed.createComponent(HsClusterWidgetComponent);
-    clusterWidgetFixture.componentInstance.data = {app};
+    clusterWidgetFixture.componentInstance.data = {};
     clusterWidgetComponent = clusterWidgetFixture.componentInstance;
     fixture.detectChanges();
     component.currentLayer = {layer: layerForCluster};
     clusterWidgetComponent.layerDescriptor.next({layer: layerForCluster});
-    hsConfig.get().reverseLayerList = true;
-    hsConfig.get().layersInFeatureTable = [];
+    hsConfig.reverseLayerList = true;
+    hsConfig.layersInFeatureTable = [];
   });
 
   it('should create', () => {

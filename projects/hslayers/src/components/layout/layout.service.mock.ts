@@ -1,8 +1,8 @@
 import {BehaviorSubject} from 'rxjs';
 
 export class HsLayoutServiceMock {
-  panel_statuses: {};
-  panel_enabled: {};
+  panel_statuses = {};
+  panel_enabled = {};
   mainpanel: '';
   contentWrapper = document.createElement('div');
   sidebarPosition$ = new BehaviorSubject('left');
