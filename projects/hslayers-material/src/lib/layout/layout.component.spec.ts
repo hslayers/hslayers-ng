@@ -14,7 +14,6 @@ describe('LayoutComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LayoutComponent);
-    fixture.componentInstance.app = 'default';
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

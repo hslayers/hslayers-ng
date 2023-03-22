@@ -49,7 +49,6 @@ describe('HsMeasure', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMeasureComponent);
-    fixture.componentInstance.data = {app: 'default'};
     service = TestBed.inject(HsMeasureService);
     component = fixture.componentInstance;
     fixture.detectChanges();

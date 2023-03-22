@@ -217,12 +217,9 @@ describe('HsLayerUtilsService', () => {
   it('try to translate the layer title', () => {
     setTitle(vectorLayer, 'vectorLayer');
     mockedLanguageService.getTranslationIgnoreNonExisting
-      .withArgs('LAYERS', 'vectorLayer', undefined, 'default')
+      .withArgs('LAYERS', 'vectorLayer', undefined)
       .and.returnValue('vectorLayer');
-    const layerTitle = hsLayerUtils.translateTitle(
-      getTitle(vectorLayer),
-      'default'
-    );
+    const layerTitle = hsLayerUtils.translateTitle(getTitle(vectorLayer));
     expect(layerTitle).toEqual('vectorLayer');
   });
 });

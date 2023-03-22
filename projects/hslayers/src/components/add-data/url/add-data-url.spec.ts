@@ -95,7 +95,6 @@ describe('HsAddDataUrlComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsAddDataUrlComponent);
-    fixture.componentInstance.app = 'default';
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -107,37 +106,27 @@ describe('HsAddDataUrlComponent', () => {
   //
 
   it('Should list WMS capability layers', async () => {
-    component.hsAddDataCommonService.hsAddDataService.selectType(
-      'url',
-      'default'
-    );
+    component.hsAddDataCommonService.hsAddDataService.selectType('url');
 
-    await component.hsAddDataOwsService.connectToOWS(
-      {
-        type: 'wms',
-        uri: serviceEndpoints.wms[1],
-        layer: 'GR_ZM100',
-        style: undefined,
-      },
-      component.app
-    );
+    await component.hsAddDataOwsService.connectToOWS({
+      type: 'wms',
+      uri: serviceEndpoints.wms[1],
+      layer: 'GR_ZM100',
+      style: undefined,
+    });
     const wmsService = component.hsAddDataOwsService.hsUrlWmsService;
-    expect(wmsService.get(component.app).data.layers.length).toBe(1);
+    expect(wmsService.data.layers.length).toBe(1);
   });
 
   it('Should load dataset metadata record as service', async () => {
-    await component.hsAddDataOwsService.connectToOWS(
-      {
-        type: 'wms',
-        uri: serviceEndpoints.wms[1],
-        layer: 'Random non existent name',
-        style: undefined,
-      },
-      component.app
-    );
+    await component.hsAddDataOwsService.connectToOWS({
+      type: 'wms',
+      uri: serviceEndpoints.wms[1],
+      layer: 'Random non existent name',
+      style: undefined,
+    });
     expect(
-      component.hsAddDataCommonService.hsAddDataService.get(component.app)
-        .dsSelected
+      component.hsAddDataCommonService.hsAddDataService.datasetSelected.getValue()
     ).toBe('url');
   });
 });

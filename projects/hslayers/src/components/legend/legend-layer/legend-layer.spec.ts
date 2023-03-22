@@ -79,7 +79,6 @@ describe('HsLegendLayerComponent', () => {
 
   beforeEach(() => {
     parentFixture = TestBed.createComponent(HsLegendComponent);
-    parentFixture.componentInstance.data = {app: 'default'};
     parentComponent = parentFixture.componentInstance;
     parentFixture.detectChanges();
     fixture = TestBed.createComponent(HsLegendLayerComponent);

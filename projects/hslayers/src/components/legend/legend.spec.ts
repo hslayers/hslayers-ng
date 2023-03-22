@@ -77,7 +77,6 @@ describe('HsLegendComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLegendComponent);
-    fixture.componentInstance.data = {app: 'default'};
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -127,7 +126,6 @@ describe('HsLegendComponent', () => {
       visible: true,
     });
     await component.addLayerToLegends(layer);
-    console.log('test');
     const layerParams = layer.getSource().getParams();
     layerParams.LAYERS = `2017_damage_tomato`;
     layerUtilsMock.getLayerParams.and.returnValue(layerParams);

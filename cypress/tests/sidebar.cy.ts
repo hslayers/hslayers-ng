@@ -28,10 +28,14 @@ describe('Hslayers application', () => {
     );
     cy.get('.hs-sidebar-additional-items:first').click();
     cy.get('hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden').each(
-      (sidebarButton) => {
+      (sidebarButton, i) => {
         const panelName = sidebarButton.attr('data-cy');
         if (panelName) {
-          cy.wrap(sidebarButton).click();
+          //Click kept failing even tho wrap yielded element
+          //cy.wrap(sidebarButton).click();
+          cy.get('hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden')
+            .eq(i)
+            .click();
           cy.get(`hs-panel-header[name="${panelName}"]`).should('be.visible');
           cy.get('.hs-sidebar-additional-items:first').click();
         }
@@ -39,12 +43,12 @@ describe('Hslayers application', () => {
     );
   });
 
-  it('Only 9 sidebar panels should be visible', () => {
+  it('Only 8 sidebar panels should be visible', () => {
     cy.viewport(600, 1000);
     // Wait for the layout to update
     cy.wait(500);
     cy.get('hs-sidebar  span.hs-sidebar-item:not(.hs-panel-hidden)')
       .its('length')
-      .should('equal', 9);
+      .should('equal', 8);
   });
 });

@@ -82,7 +82,6 @@ describe('HsPrintComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsPrintComponent);
-    fixture.componentInstance.data = {app: 'default'};
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(HsPrintService);

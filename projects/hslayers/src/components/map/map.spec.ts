@@ -35,7 +35,6 @@ describe('HsMapService', () => {
   let fixture: ComponentFixture<HsMapComponent>;
   let component: HsMapComponent;
   let service: HsMapService;
-  const app = 'default';
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -63,7 +62,6 @@ describe('HsMapService', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMapComponent);
-    fixture.componentInstance.app = app;
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(HsMapService);
@@ -84,7 +82,7 @@ describe('HsMapService', () => {
       properties: {title: 'Bookmarks'},
       source: new VectorSource({}),
     });
-    service.apps[app].map.addLayer(layer1);
+    service.map.addLayer(layer1);
 
     const layer2 = new VectorLayer({
       properties: {title: 'Bookmarks'},
@@ -100,7 +98,7 @@ describe('HsMapService', () => {
       properties: {title: 'Feature layer'},
       source: new VectorSource({}),
     });
-    service.apps[app].map.addLayer(featureLayer);
+    service.map.addLayer(featureLayer);
     const feature = new Feature({geometry: new Point([0, 0]), name: 'test'});
     featureLayer.getSource().addFeatures([feature]);
     const foundLayer = service.getLayerForFeature(feature);

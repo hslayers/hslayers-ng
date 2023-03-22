@@ -60,7 +60,6 @@ describe('HsMapSwipeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsMapSwipeComponent);
-    fixture.componentInstance.data = {app: 'default'};
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

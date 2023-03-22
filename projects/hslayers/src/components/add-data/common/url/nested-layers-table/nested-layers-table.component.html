@@ -5,7 +5,7 @@
                     [ngModelOptions]="{standalone: true}" style="cursor: pointer;" /></td>
             <td hsWmsLayerHighlight class="text-truncate" style="max-width: 12em;"
                 [title]="'Title: ' + sub_layer.Title  + '\nName: ' + sub_layer.Name"
-                (click)="hsUrlWmsService.expandTableRow($event)">{{sub_layer.Title}}
+                (click)="hsUrlWmsService.expandTableRow($event)"><span>{{sub_layer.Title}}</span>
             </td>
             <!-- <td class="text-truncate" style="width: 30%; padding-left: 1em">{{sub_layer.Name}}</td> -->
             <td hsWmsLayerHighlight class="text-truncate" style="max-width: 10.875em;width: 30%;"

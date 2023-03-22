@@ -120,12 +120,11 @@ describe('layermanager-layer-list', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerListComponent);
-    fixture.componentInstance.app = 'default';
     hsConfig = TestBed.inject(HsConfig);
     component = fixture.componentInstance;
     component.folder = {layers: []};
     fixture.detectChanges();
-    hsConfig.get(component.app).reverseLayerList = true;
+    hsConfig.reverseLayerList = true;
   });
 
   it('should create', () => {
@@ -137,7 +136,6 @@ describe('layermanager-layer-list', () => {
       {
         element: subLayerContainerLayer,
       },
-      'default',
       true
     );
     expect(component).toBeTruthy();
