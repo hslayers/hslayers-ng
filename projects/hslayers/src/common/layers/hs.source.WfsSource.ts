@@ -44,24 +44,21 @@ export class WfsSource extends Vector<Geometry> {
         if (typeof output_format == 'undefined') {
           output_format = data_version == '1.0.0' ? 'GML2' : 'GML3';
         }
-
         const srs = crs.toUpperCase();
-
         extent = transformExtent(extent, projection.getCode(), srs);
-        if (/*srs.includes('4326') || */ srs.includes('4258')) {
+        if (
+          //https://gis.stackexchange.com/questions/30602/openlayers-wfs-flip-coordinates
+          //WFS version 1.x uses lat/lon order while version 2.x uses lon/lat order
+          data_version.startsWith('1') &&
+          (srs.includes('4326') || srs.includes('4258'))
+        ) {
           extent = [extent[1], extent[0], extent[3], extent[2]];
         }
-        //https://gis.stackexchange.com/questions/30602/openlayers-wfs-flip-coordinates
-        //Do this, so feature coordinates would be in the right order. Without urn they aren't
-        //Can test with https://hub4everybody.com/geoserver/jan_vrobel/wfs
-        const srsWithUrn = srs.includes('urn')
-          ? srs
-          : 'urn:x-ogc:def:crs:' + srs;
         const params = {
           service: 'wfs',
           version: data_version, // == '2.0.0' ? '1.1.0' : data_version,
           request: 'GetFeature',
-          srsName: srsWithUrn,
+          srsName: srs,
           output_format: output_format,
           // count: layer.limitFeatureCount ? 1000 : '',
           BBOX: extent.join(',') + ',' + srs,
@@ -72,7 +69,6 @@ export class WfsSource extends Vector<Geometry> {
           provided_url,
           hsUtilsService.paramsToURLWoEncode(params),
         ].join('?');
-
         url = hsUtilsService.proxify(url, app);
         const response = await lastValueFrom(
           http.get(url, {responseType: 'text'})
