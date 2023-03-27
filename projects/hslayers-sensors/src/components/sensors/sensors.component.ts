@@ -23,17 +23,6 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     super(hsLayoutService);
   }
   ngOnInit(): void {
-    this.hsMapService.loaded().then(() => {
-      this.hsSensorsService.init();
-      this.init();
-    });
-  }
-
-  /**
-   * Init function used to populate list of units and later
-   * create some map functionality
-   */
-  init(): void {
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
     }
@@ -53,11 +42,9 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   toggleExpansion(): void {
     this.viewExpanded = !this.viewExpanded;
     if (!this.viewExpanded) {
-      this.hsSensorsService
-        .get()
-        .units.forEach((element: HsSensorUnit) => {
-          element.expanded = false;
-        });
+      this.hsSensorsService.units.forEach((element: HsSensorUnit) => {
+        element.expanded = false;
+      });
     }
   }
 
@@ -73,7 +60,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
    */
   filterQuery(query) {
     return this.hsSensorsService.filterquery(
-      this.hsSensorsService.get().units,
+      this.hsSensorsService.units,
       query
     );
   }

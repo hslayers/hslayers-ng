@@ -30,16 +30,14 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {HsUtilsService} from 'hslayers-ng';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
-class SensorsServiceParams {
-  units: any = [];
-  layer = null;
-  endpoint: SensLogEndpoint;
-}
 const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
   providedIn: 'root',
 })
 export class HsSensorsService {
+  units: any = [];
+  layer = null;
+  endpoint: SensLogEndpoint;
   sensorMarkerStyle: Style[];
   labelStyle: Style;
   olStyle = new Style({
@@ -73,9 +71,6 @@ export class HsSensorsService {
     }),
   });
 
-  apps: {
-    [id: string]: SensorsServiceParams;
-  } = {default: new SensorsServiceParams()};
   visualizedAttribute = new Subject<{attribute: string}>();
 
   constructor(
@@ -99,40 +94,39 @@ export class HsSensorsService {
       description: '',
       icon: 'icon-weightscale',
     });
-  }
 
-  /**
-   * Initialize sensors service data and subscribers
-   
-   */
-  init(): void {
-    this.labelStyle = this.olStyle;
-    this.hsConfig.configChanges.subscribe(() => {
-      if (this.hsConfig.senslog != this.endpoint) {
-        this.setEndpoint();
-      }
-    });
-    this.setEndpoint();
+    this.hsMapService.loaded().then(() => {
+      this.labelStyle = this.olStyle;
+      this.hsConfig.configChanges.subscribe(() => {
+        if (this.hsConfig.senslog != this.endpoint) {
+          this.setEndpoint();
+        }
+      });
+      this.setEndpoint();
 
-    this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
-      this.hsUtilsService.debounce(
-        () => {
-          if (
-            this.hsMapService.getLayerForFeature(event.feature) == this.layer
-          ) {
-            this.hsLayoutService.setMainPanel('sensors');
-            this.units.forEach((unit: HsSensorUnit) => (unit.expanded = false));
-            this.selectUnit(
-              this.units.filter(
-                (unit: HsSensorUnit) => unit.unit_id == getUnitId(event.feature)
-              )[0]
-            );
-          }
-        },
-        150,
-        false,
-        this
-      )();
+      this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
+        this.hsUtilsService.debounce(
+          () => {
+            if (
+              this.hsMapService.getLayerForFeature(event.feature) == this.layer
+            ) {
+              this.hsLayoutService.setMainPanel('sensors');
+              this.units.forEach(
+                (unit: HsSensorUnit) => (unit.expanded = false)
+              );
+              this.selectUnit(
+                this.units.filter(
+                  (unit: HsSensorUnit) =>
+                    unit.unit_id == getUnitId(event.feature)
+                )[0]
+              );
+            }
+          },
+          150,
+          false,
+          this
+        )();
+      });
     });
   }
 
@@ -149,19 +143,8 @@ export class HsSensorsService {
       if (this.endpoint.senslog1Path == undefined) {
         this.endpoint.senslog1Path = 'senslog1';
       }
-      this.hsSensorsUnitDialogService.get().endpoint = this.endpoint;
+      this.hsSensorsUnitDialogService.endpoint = this.endpoint;
     }
-  }
-
-  /**
-   * Get the params saved by the sensors service for the current app
-   
-   */
-  get(): SensorsServiceParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new SensorsServiceParams();
-    }
-    return this.apps[app ?? 'default'];
   }
 
   /**
@@ -184,25 +167,21 @@ export class HsSensorsService {
    
    */
   selectUnit(unit: HsSensorUnit): void {
-    this.hsSensorsUnitDialogService
-      .get()
-      .unit?.feature.set('selected', undefined);
-    this.hsSensorsUnitDialogService.get().unit = unit;
+    this.hsSensorsUnitDialogService.unit?.feature.set('selected', undefined);
+    this.hsSensorsUnitDialogService.unit = unit;
     unit.expanded = !unit.expanded;
     //this.selectSensor(unit.sensors[0]);
     if (
-      !this.hsDialogContainerService
-        .get()
-        .dialogs.some((d) =>
-          this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
-        )
+      !this.hsDialogContainerService.dialogs.some((d) =>
+        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
+      )
     ) {
       this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
-      this.hsSensorsUnitDialogService.get().unitDialogVisible = true;
+      this.hsSensorsUnitDialogService.unitDialogVisible = true;
     }
-    if (this.hsSensorsUnitDialogService.get().currentInterval == undefined) {
-      this.hsSensorsUnitDialogService.get().currentInterval = {
+    if (this.hsSensorsUnitDialogService.currentInterval == undefined) {
+      this.hsSensorsUnitDialogService.currentInterval = {
         amount: 1,
         unit: 'days',
       };
@@ -210,7 +189,7 @@ export class HsSensorsService {
     this.hsSensorsUnitDialogService
       .getObservationHistory(
         unit,
-        this.hsSensorsUnitDialogService.get().currentInterval
+        this.hsSensorsUnitDialogService.currentInterval
       )
       .then((_) => this.hsSensorsUnitDialogService.createChart(unit));
     unit.feature.set('selected', true);
@@ -342,7 +321,7 @@ export class HsSensorsService {
         });
         this.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
-            this.hsSensorsUnitDialogService.get().sensorById[sensor.sensor_id] =
+            this.hsSensorsUnitDialogService.sensorById[sensor.sensor_id] =
               sensor;
           });
         });

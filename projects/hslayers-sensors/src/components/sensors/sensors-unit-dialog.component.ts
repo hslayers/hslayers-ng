@@ -31,24 +31,15 @@ export class HsSensorsUnitDialogComponent
   ) {}
 
   ngOnInit(): void {
-    this.hsSensorsUnitDialogService.get().unitDialogVisible = true;
+    this.hsSensorsUnitDialogService.unitDialogVisible = true;
     this.configRef = this.hsConfig;
-    this.hsSensorsUnitDialogService.get().dialogElement =
-      this.elementRef;
-    this.timeButtonClicked(
-      this.hsSensorsUnitDialogService.get().intervals[2]
-    );
+    this.hsSensorsUnitDialogService.dialogElement = this.elementRef;
+    this.timeButtonClicked(this.hsSensorsUnitDialogService.intervals[2]);
     combineLatest([
       this.hsLayoutService.panelSpaceWidth.pipe(takeUntil(this.end)),
       this.hsLayoutService.sidebarPosition.pipe(takeUntil(this.end)),
-    ]).subscribe(([panelSpace, sidebar]) => {
-      if (panelSpace.app ==  && sidebar.app == ) {
-        this.calculateDialogStyle(
-          ,
-          panelSpace.width,
-          sidebar.position == 'bottom'
-        );
-      }
+    ]).subscribe(([panelSpaceWidth, sidebarPosition]) => {
+      this.calculateDialogStyle(panelSpaceWidth, sidebarPosition == 'bottom');
     });
   }
 
@@ -59,15 +50,11 @@ export class HsSensorsUnitDialogComponent
    */
   sensorClicked(sensor): void {
     this.hsSensorsUnitDialogService.selectSensor(sensor);
-    if (
-      this.hsSensorsUnitDialogService.get().currentInterval ==
-      undefined
-    ) {
+    if (this.hsSensorsUnitDialogService.currentInterval == undefined) {
       this.timeButtonClicked({amount: 1, unit: 'days'});
     } else {
       this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.get().unit,
-        
+        this.hsSensorsUnitDialogService.unit
       );
     }
   }
@@ -76,21 +63,21 @@ export class HsSensorsUnitDialogComponent
    * Get unit aggregations
    */
   getAggregations(): Aggregate[] {
-    return this.hsSensorsUnitDialogService.get().aggregations;
+    return this.hsSensorsUnitDialogService.aggregations;
   }
 
   /**
    * Get unit intervals
    */
   getIntervals(): Interval[] {
-    return this.hsSensorsUnitDialogService.get().intervals;
+    return this.hsSensorsUnitDialogService.intervals;
   }
 
   /**
    * Get current interval
    */
   getCurrentInterval() {
-    return this.hsSensorsUnitDialogService.get().currentInterval;
+    return this.hsSensorsUnitDialogService.currentInterval;
   }
 
   /**
@@ -107,23 +94,17 @@ export class HsSensorsUnitDialogComponent
    * chart
    */
   timeButtonClicked(interval): void {
-    this.hsSensorsUnitDialogService.get().currentInterval =
-      interval;
+    this.hsSensorsUnitDialogService.currentInterval = interval;
     const fromTo = this.hsSensorsUnitDialogService.getTimeForInterval(interval);
     Object.assign(this.customInterval, {
       fromTime: fromTo.from_time.toDate(),
       toTime: fromTo.to_time.toDate(),
     });
     this.hsSensorsUnitDialogService
-      .getObservationHistory(
-        this.hsSensorsUnitDialogService.get().unit,
-        interval,
-        
-      )
+      .getObservationHistory(this.hsSensorsUnitDialogService.unit, interval)
       .then((_) => {
         this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get().unit,
-          
+          this.hsSensorsUnitDialogService.unit
         );
       });
   }
@@ -132,18 +113,15 @@ export class HsSensorsUnitDialogComponent
    * Act on custom interval data change
    */
   customIntervalChanged(): void {
-    this.hsSensorsUnitDialogService.get().currentInterval =
-      this.customInterval;
+    this.hsSensorsUnitDialogService.currentInterval = this.customInterval;
     this.hsSensorsUnitDialogService
       .getObservationHistory(
-        this.hsSensorsUnitDialogService.get().unit,
-        this.customInterval,
-        
+        this.hsSensorsUnitDialogService.unit,
+        this.customInterval
       )
       .then((_) =>
         this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get().unit,
-          
+          this.hsSensorsUnitDialogService.unit
         )
       );
   }
@@ -153,7 +131,7 @@ export class HsSensorsUnitDialogComponent
     const widthWithoutPanelSpace =
       'calc(100% - ' + (panelSpaceWidth + padding) + 'px)';
     this.dialogStyle = {
-      'visibility': this.hsSensorsUnitDialogService.get().unitDialogVisible
+      'visibility': this.hsSensorsUnitDialogService.unitDialogVisible
         ? 'visible'
         : 'hidden',
       'left': sidebarAtBot ? '3px' : panelSpaceWidth + padding + 'px',
@@ -170,15 +148,14 @@ export class HsSensorsUnitDialogComponent
    */
   close(): void {
     this.hsDialogContainerService.destroy(this);
-    this.hsSensorsUnitDialogService.get().unitDialogVisible =
-      false;
+    this.hsSensorsUnitDialogService.unitDialogVisible = false;
   }
 
   /**
    * Get unit description
    */
   getUnitDescription(): string {
-    return this.hsSensorsUnitDialogService.get().unit.description;
+    return this.hsSensorsUnitDialogService.unit.description;
   }
 
   ngOnDestroy(): void {

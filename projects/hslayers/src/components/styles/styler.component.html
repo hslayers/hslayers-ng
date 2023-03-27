@@ -70,8 +70,7 @@
         <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert"
           *ngIf="!hsStylerService.syncing; else layerSyncing">
           {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
-            (click)="hsStylerService.setSldQml())" data-toggle="tooltip"
-            [title]="'STYLER.unsavedChanges' | translateHs">
+            (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translateHs">
             <i class="icon-save-floppy"></i>
           </button>
         </div>

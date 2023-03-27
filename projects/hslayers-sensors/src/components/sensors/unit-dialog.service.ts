@@ -15,7 +15,10 @@ import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
 
-class SensorsUnitDialogServiceParams {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsSensorsUnitDialogService {
   unit: HsSensorUnit;
   unitDialogVisible: boolean;
   currentInterval: any;
@@ -33,15 +36,7 @@ class SensorsUnitDialogServiceParams {
     {name: '1M', amount: 1, unit: 'months'},
     {name: '6M', amount: 6, unit: 'months'},
   ];
-}
 
-@Injectable({
-  providedIn: 'root',
-})
-export class HsSensorsUnitDialogService {
-  apps: {
-    [id: string]: SensorsUnitDialogServiceParams;
-  } = {default: new SensorsUnitDialogServiceParams()};
   constructor(
     private http: HttpClient,
     private hsUtilsService: HsUtilsService,
@@ -50,26 +45,14 @@ export class HsSensorsUnitDialogService {
   ) {}
 
   /**
-   * Get the params saved by the sensors unit dialog service for the current app
-   
-   */
-  get(): SensorsUnitDialogServiceParams {
-    if (this.apps[app ?? 'default'] == undefined) {
-      this.apps[app ?? 'default'] = new SensorsUnitDialogServiceParams();
-    }
-    return this.apps[app ?? 'default'];
-  }
-
-  /**
    * Select sensor from the list
    * @param sensor - Sensor selected
    
    */
   selectSensor(sensor: any) {
-    const appRef = this.get();
-    appRef.sensorsSelected.forEach((s) => (s.checked = false));
-    appRef.sensorsSelected = [sensor];
-    appRef.sensorIdsSelected = [sensor.sensor_id];
+    this.sensorsSelected.forEach((s) => (s.checked = false));
+    this.sensorsSelected = [sensor];
+    this.sensorIdsSelected = [sensor.sensor_id];
   }
 
   /**
@@ -78,14 +61,13 @@ export class HsSensorsUnitDialogService {
    
    */
   toggleSensor(sensor) {
-    const appRef = this.get();
     if (sensor.checked) {
-      appRef.sensorsSelected.push(sensor);
-      appRef.sensorIdsSelected.push(sensor.sensor_id);
+      this.sensorsSelected.push(sensor);
+      this.sensorIdsSelected.push(sensor.sensor_id);
     } else {
-      appRef.sensorsSelected.splice(appRef.sensorsSelected.indexOf(sensor), 1);
-      appRef.sensorIdsSelected.splice(
-        appRef.sensorIdsSelected.indexOf(sensor.sensor_id),
+      this.sensorsSelected.splice(this.sensorsSelected.indexOf(sensor), 1);
+      this.sensorIdsSelected.splice(
+        this.sensorIdsSelected.indexOf(sensor.sensor_id),
         1
       );
     }
@@ -143,11 +125,10 @@ export class HsSensorsUnitDialogService {
    * @returns Promise which resolves when observation history data is received
    */
   getObservationHistory(unit, interval) {
-    const appRef = this.get();
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.hsUtilsService.proxify(
-        `${appRef.endpoint.url}/${appRef.endpoint.liteApiPath}/rest/observation`
+        `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`
       );
       const time = this.getTimeForInterval(interval);
       const from_time = `${time.from_time.format(
@@ -160,21 +141,21 @@ export class HsSensorsUnitDialogService {
       this.http
         .get(
           `${url}?user_id=${encodeURIComponent(
-            appRef.endpoint.user_id
+            this.endpoint.user_id
           )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(
             from_time
           )}&to_time=${encodeURIComponent(to_time)}`
         )
-        .subscribe(
-          (response) => {
+        .subscribe({
+          next: (response) => {
             interval.loading = false;
-            appRef.observations = response;
+            this.observations = response;
             resolve(null);
           },
-          (err) => {
+          error: (err) => {
             reject(err);
-          }
-        );
+          },
+        });
     });
   }
 
@@ -189,22 +170,21 @@ export class HsSensorsUnitDialogService {
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
   createChart(unit) {
-    const appRef = this.get();
     let sensorDesc = unit.sensors.filter(
-      (s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1
+      (s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1
     );
     if (sensorDesc.length > 0) {
       sensorDesc = sensorDesc[0];
     }
-    const observations = appRef.observations.reduce(
+    const observations = this.observations.reduce(
       (acc, val) =>
         acc.concat(
           val.sensors
-            .filter((s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1)
+            .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
             .map((s) => {
               const time = dayjs(val.time_stamp);
               s.sensor_name = this.translate(
-                appRef.sensorById[s.sensor_id].sensor_name_translated,
+                this.sensorById[s.sensor_id].sensor_name_translated,
                 'SENSORNAMES'
               );
               s.time = time.format('DD.MM.YYYY HH:mm');
@@ -214,7 +194,7 @@ export class HsSensorsUnitDialogService {
         ),
       []
     );
-    appRef.aggregations = this.calculateAggregates(unit, observations);
+    this.aggregations = this.calculateAggregates(unit, observations);
     observations.sort((a, b) => {
       if (a.time_stamp > b.time_stamp) {
         return 1;
@@ -233,7 +213,7 @@ export class HsSensorsUnitDialogService {
         },
       },
       'width':
-        appRef.dialogElement.nativeElement.querySelector('.hs-chartplace')
+        this.dialogElement.nativeElement.querySelector('.hs-chartplace')
           .parentElement.offsetWidth - 40,
       'autosize': {
         'type': 'fit',
@@ -285,7 +265,7 @@ export class HsSensorsUnitDialogService {
     };
     try {
       vegaEmbed(
-        appRef.dialogElement.nativeElement.querySelector('.hs-chartplace'),
+        this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
         chartData
       );
     } catch (ex) {
@@ -299,13 +279,9 @@ export class HsSensorsUnitDialogService {
    
    * Calculate aggregates for selected unit
    */
-  private calculateAggregates(
-    unit: any,
-    observations: any,
-    
-  ): Aggregate[] {
+  private calculateAggregates(unit: any, observations: any): Aggregate[] {
     const aggregates: Aggregate[] = unit.sensors
-      .filter((s) => this.get().sensorIdsSelected.indexOf(s.sensor_id) > -1)
+      .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
       .map((sensor): Aggregate => {
         const tmp: Aggregate = {
           min: 0,

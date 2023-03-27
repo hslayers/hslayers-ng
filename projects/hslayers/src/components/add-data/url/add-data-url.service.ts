@@ -118,7 +118,7 @@ export class HsAddDataUrlService {
     }
     try {
       const layerExtents = layers.map((lyr) => [...lyr?.getExtent()]); //Spread need to not create reference
-      return this.calcCombinedExtent(layerExtents, app);
+      return this.calcCombinedExtent(layerExtents);
     } catch (error) {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
@@ -135,8 +135,8 @@ export class HsAddDataUrlService {
   /**
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
-  calcCombinedExtent(extents: number[][], app: string): number[] {
-    const currentMapProj = this.hsMapService.getCurrentProj(app);
+  calcCombinedExtent(extents: number[][]): number[] {
+    const currentMapProj = this.hsMapService.getCurrentProj();
     const bounds = transform([180, 90], 'EPSG:4326', currentMapProj);
 
     return extents.reduce((acc, curr) => {
