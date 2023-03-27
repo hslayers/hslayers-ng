@@ -142,9 +142,15 @@ export class HsLayerSynchronizerService {
   findLaymanForWfsLayer(
     layer: VectorLayer<VectorSource<Geometry>>
   ): HsEndpoint {
-    const layerDefinition = getDefinition(layer);
+    const definitionUrl = getDefinition(layer).url;
     const laymanEp = this.hsCommonLaymanService?.layman;
-    return layerDefinition?.url?.includes(laymanEp?.url) ? laymanEp : undefined;
+    if (!laymanEp || !definitionUrl) {
+      return undefined;
+    }
+    const laymanUrl = laymanEp.type.includes('wagtail')
+      ? laymanEp.url.split('layman-proxy')[0]
+      : laymanEp.url;
+    return definitionUrl.includes(laymanUrl) ? laymanEp : undefined;
   }
 
   /**
