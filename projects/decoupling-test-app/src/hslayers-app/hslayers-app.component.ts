@@ -21,7 +21,6 @@ import {HsQueryPopupService} from 'hslayers-ng/components/query/query-popup.serv
   styleUrls: [],
 })
 export class HslayersAppComponent {
-  
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
@@ -152,6 +151,7 @@ export class HslayersAppComponent {
         tripPlanner: true,
         info: true,
         compositionLoadingProgress: true,
+        addData: false,
       },
       componentsEnabled: {
         geolocationButton: true,
@@ -339,7 +339,7 @@ export class HslayersAppComponent {
     //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    hsLayoutService.createOverlay(HsQueryPopupComponent, , {
+    hsLayoutService.createOverlay(HsQueryPopupComponent, {
       service: hsQueryPopupService,
     });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});

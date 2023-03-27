@@ -9,6 +9,11 @@ if (environment.production) {
 }
 
 setTimeout(() => {
-  const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
-  bootstrap().catch((err) => console.log(err));
+  const platform = platformBrowserDynamic();
+  const hslayerCesiumApps = document.querySelectorAll('hslayers-cesium-app');
+
+  hslayerCesiumApps.forEach(() => {
+    const bootstrap = () => platform.bootstrapModule(AppModule);
+    bootstrap().catch((err) => console.log('bootstrap', err));
+  });
 }, 0);

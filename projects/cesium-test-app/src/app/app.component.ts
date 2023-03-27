@@ -23,7 +23,6 @@ import {transform} from 'ol/proj';
   styleUrls: [],
 })
 export class AppComponent implements OnInit {
-  app = 'default';
   constructor(
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
@@ -126,100 +125,99 @@ export class AppComponent implements OnInit {
       visible: false,
       opacity: 1,
     });
-    this.HsConfig.update(
-      {
-        datasources: [
-          {
-            title: 'Layman',
-            url: 'http://localhost:8087',
-            type: 'layman',
+    this.HsConfig.update({
+      datasources: [
+        {
+          title: 'Layman',
+          url: 'http://localhost:8087',
+          type: 'layman',
+        },
+      ],
+      proxyPrefix: window.location.hostname.includes('localhost')
+        ? `${window.location.protocol}//${window.location.hostname}:8085/`
+        : '/proxy/',
+      assetsPath: 'assets',
+      symbolizerIcons: [
+        {name: 'bag', url: '/assets/icons/bag1.svg'},
+        {name: 'banking', url: '/assets/icons/banking4.svg'},
+        {name: 'bar', url: '/assets/icons/bar.svg'},
+        {name: 'beach', url: '/assets/icons/beach17.svg'},
+        {name: 'bicycles', url: '/assets/icons/bicycles.svg'},
+        {name: 'building', url: '/assets/icons/building103.svg'},
+        {name: 'bus', url: '/assets/icons/bus4.svg'},
+        {name: 'cabinet', url: '/assets/icons/cabinet9.svg'},
+        {name: 'camping', url: '/assets/icons/camping13.svg'},
+        {name: 'caravan', url: '/assets/icons/caravan.svg'},
+        {name: 'church', url: '/assets/icons/church1.svg'},
+        {name: 'church', url: '/assets/icons/church15.svg'},
+        {name: 'coffee-shop', url: '/assets/icons/coffee-shop1.svg'},
+        {name: 'disabled', url: '/assets/icons/disabled.svg'},
+        {name: 'favourite', url: '/assets/icons/favourite28.svg'},
+        {name: 'football', url: '/assets/icons/football1.svg'},
+        {name: 'footprint', url: '/assets/icons/footprint.svg'},
+        {name: 'gift-shop', url: '/assets/icons/gift-shop.svg'},
+        {name: 'gps', url: '/assets/icons/gps5.svg'},
+        {name: 'gps', url: '/assets/icons/gps40.svg'},
+        {name: 'gps', url: '/assets/icons/gps41.svg'},
+        {name: 'gps', url: '/assets/icons/gps42.svg'},
+        {name: 'gps', url: '/assets/icons/gps43.svg'},
+        {name: 'hospital', url: '/assets/icons/hospital.svg'},
+        {name: 'hot-air-balloon', url: '/assets/icons/hot-air-balloon2.svg'},
+        {name: 'information', url: '/assets/icons/information78.svg'},
+        {name: 'library', url: '/assets/icons/library21.svg'},
+        {name: 'location', url: '/assets/icons/location6.svg'},
+        {name: 'luggage', url: '/assets/icons/luggage13.svg'},
+        {name: 'monument', url: '/assets/icons/monument1.svg'},
+        {name: 'mountain', url: '/assets/icons/mountain42.svg'},
+        {name: 'museum', url: '/assets/icons/museum35.svg'},
+        {name: 'park', url: '/assets/icons/park11.svg'},
+        {name: 'parking', url: '/assets/icons/parking28.svg'},
+        {name: 'pharmacy', url: '/assets/icons/pharmacy17.svg'},
+        {name: 'port', url: '/assets/icons/port2.svg'},
+        {name: 'restaurant', url: '/assets/icons/restaurant52.svg'},
+        {name: 'road-sign', url: '/assets/icons/road-sign1.svg'},
+        {name: 'sailing-boat', url: '/assets/icons/sailing-boat2.svg'},
+        {name: 'ski', url: '/assets/icons/ski1.svg'},
+        {name: 'swimming', url: '/assets/icons/swimming26.svg'},
+        {name: 'telephone', url: '/assets/icons/telephone119.svg'},
+        {name: 'toilets', url: '/assets/icons/toilets2.svg'},
+        {name: 'train-station', url: '/assets/icons/train-station.svg'},
+        {name: 'university', url: '/assets/icons/university2.svg'},
+        {name: 'warning', url: '/assets/icons/warning.svg'},
+        {name: 'wifi', url: '/assets/icons/wifi8.svg'},
+      ],
+      popUpDisplay: 'hover',
+      default_view: new View({
+        center: transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+        zoom: 4,
+      }),
+      default_layers: [
+        new Tile({
+          source: new OSM(),
+          visible: true,
+          properties: {
+            title: 'OpenStreetMap',
+            base: true,
+            removable: false,
           },
-        ],
-        proxyPrefix: window.location.hostname.includes('localhost')
-          ? `${window.location.protocol}//${window.location.hostname}:8085/`
-          : '/proxy/',
-        assetsPath: 'assets',
-        symbolizerIcons: [
-          {name: 'bag', url: '/assets/icons/bag1.svg'},
-          {name: 'banking', url: '/assets/icons/banking4.svg'},
-          {name: 'bar', url: '/assets/icons/bar.svg'},
-          {name: 'beach', url: '/assets/icons/beach17.svg'},
-          {name: 'bicycles', url: '/assets/icons/bicycles.svg'},
-          {name: 'building', url: '/assets/icons/building103.svg'},
-          {name: 'bus', url: '/assets/icons/bus4.svg'},
-          {name: 'cabinet', url: '/assets/icons/cabinet9.svg'},
-          {name: 'camping', url: '/assets/icons/camping13.svg'},
-          {name: 'caravan', url: '/assets/icons/caravan.svg'},
-          {name: 'church', url: '/assets/icons/church1.svg'},
-          {name: 'church', url: '/assets/icons/church15.svg'},
-          {name: 'coffee-shop', url: '/assets/icons/coffee-shop1.svg'},
-          {name: 'disabled', url: '/assets/icons/disabled.svg'},
-          {name: 'favourite', url: '/assets/icons/favourite28.svg'},
-          {name: 'football', url: '/assets/icons/football1.svg'},
-          {name: 'footprint', url: '/assets/icons/footprint.svg'},
-          {name: 'gift-shop', url: '/assets/icons/gift-shop.svg'},
-          {name: 'gps', url: '/assets/icons/gps5.svg'},
-          {name: 'gps', url: '/assets/icons/gps40.svg'},
-          {name: 'gps', url: '/assets/icons/gps41.svg'},
-          {name: 'gps', url: '/assets/icons/gps42.svg'},
-          {name: 'gps', url: '/assets/icons/gps43.svg'},
-          {name: 'hospital', url: '/assets/icons/hospital.svg'},
-          {name: 'hot-air-balloon', url: '/assets/icons/hot-air-balloon2.svg'},
-          {name: 'information', url: '/assets/icons/information78.svg'},
-          {name: 'library', url: '/assets/icons/library21.svg'},
-          {name: 'location', url: '/assets/icons/location6.svg'},
-          {name: 'luggage', url: '/assets/icons/luggage13.svg'},
-          {name: 'monument', url: '/assets/icons/monument1.svg'},
-          {name: 'mountain', url: '/assets/icons/mountain42.svg'},
-          {name: 'museum', url: '/assets/icons/museum35.svg'},
-          {name: 'park', url: '/assets/icons/park11.svg'},
-          {name: 'parking', url: '/assets/icons/parking28.svg'},
-          {name: 'pharmacy', url: '/assets/icons/pharmacy17.svg'},
-          {name: 'port', url: '/assets/icons/port2.svg'},
-          {name: 'restaurant', url: '/assets/icons/restaurant52.svg'},
-          {name: 'road-sign', url: '/assets/icons/road-sign1.svg'},
-          {name: 'sailing-boat', url: '/assets/icons/sailing-boat2.svg'},
-          {name: 'ski', url: '/assets/icons/ski1.svg'},
-          {name: 'swimming', url: '/assets/icons/swimming26.svg'},
-          {name: 'telephone', url: '/assets/icons/telephone119.svg'},
-          {name: 'toilets', url: '/assets/icons/toilets2.svg'},
-          {name: 'train-station', url: '/assets/icons/train-station.svg'},
-          {name: 'university', url: '/assets/icons/university2.svg'},
-          {name: 'warning', url: '/assets/icons/warning.svg'},
-          {name: 'wifi', url: '/assets/icons/wifi8.svg'},
-        ],
-        popUpDisplay: 'hover',
-        default_view: new View({
-          center: transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-          zoom: 4,
         }),
-        default_layers: [
-          new Tile({
-            source: new OSM(),
-            visible: true,
-            properties: {
-              title: 'OpenStreetMap',
-              base: true,
-              removable: false,
+        new VectorLayer({
+          properties: {
+            title: 'Polygons',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
             },
-          }),
-          new VectorLayer({
-            properties: {
-              title: 'Polygons',
-              synchronize: false,
-              cluster: false,
-              inlineLegend: true,
-              popUp: {
-                attributes: ['name'],
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
               },
-              editor: {
-                editable: true,
-                defaultAttributes: {
-                  name: 'New polygon',
-                  description: 'none',
-                },
-              },
-              sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
+            },
+            sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
             <StyledLayerDescriptor version="1.0.0" 
                 xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
                 xmlns="http://www.opengis.net/sld" 
@@ -243,24 +241,22 @@ export class AppComponent implements OnInit {
               </NamedLayer>
             </StyledLayerDescriptor>
             `,
-              path: 'User generated',
-            },
-            source: new VectorSource({
-              features: new GeoJSON().readFeatures(geojsonObject),
-            }),
+            path: 'User generated',
+          },
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
           }),
-          opticalMap,
-        ],
-      },
-      
-    );
-    if (!this.HsCesiumConfig.get().cesiumBase) {
-      this.HsCesiumConfig.get().cesiumBase = '/assets/cesium/';
+        }),
+        opticalMap,
+      ],
+    });
+    if (!this.HsCesiumConfig.cesiumBase) {
+      this.HsCesiumConfig.cesiumBase = '/assets/cesium/';
     }
   }
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
-    this.HsLayoutService.addMapVisualizer(HslayersCesiumComponent, 'default');
+    this.HsLayoutService.addMapVisualizer(HslayersCesiumComponent);
   }
 }

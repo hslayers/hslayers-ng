@@ -5,23 +5,23 @@ import {HsEventBusService, HsUtilsService, getTitle} from 'hslayers-ng';
 import {Viewer, WebMapServiceImageryProvider} from 'cesium';
 import {default as utc} from 'dayjs/plugin/utc';
 
+import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsCesiumTimeService {
-  apps: {
-    [key: string]: {viewer: Viewer};
-  } = {default: {viewer: null}};
+  viewer: Viewer;
   constructor(
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsEventBusService: HsEventBusService,
-    private hsUtilsService: HsUtilsService
-  ) {}
-
-  init(viewer: Viewer) {
-    this.viewer = viewer;
-    this.monitorTimeLine();
+    private hsUtilsService: HsUtilsService,
+    private hsCesiumConfig: HsCesiumConfig
+  ) {
+    this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
+      this.monitorTimeLine();
+    });
   }
 
   monitorTimeLine() {

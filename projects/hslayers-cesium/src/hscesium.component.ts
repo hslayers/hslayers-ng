@@ -71,7 +71,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
       view: this.HsMapService.visible ? '2d' : '3d',
     });
     if (this.HsMapService.visible) {
-      this.HsCesiumService.get().viewer.destroy();
+      this.HsCesiumService.viewer.destroy();
       this.HsCoreService.updateMapSize();
     } else {
       this.HsCesiumService.init();

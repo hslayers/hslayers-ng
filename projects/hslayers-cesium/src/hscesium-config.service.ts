@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import {ImageryProvider, JulianDate} from 'cesium';
-import {Subject} from 'rxjs';
+import {ImageryProvider, JulianDate, Viewer} from 'cesium';
+import {ReplaySubject, Subject} from 'rxjs';
 export class HsCesiumConfigObject {
   cesiumDebugShowFramesPerSecond?: boolean;
   cesiumShadows?: number;
@@ -22,32 +22,19 @@ export class HsCesiumConfigObject {
   constructor() {}
 }
 @Injectable()
-export class HsCesiumConfig {
-  apps: {[id: string]: HsCesiumConfigObject} = {
-    default: {},
-  };
+export class HsCesiumConfig extends HsCesiumConfigObject {
   /**
    * Triggered when cesiumConfig is updated using 'update' function of HsCesiumService.
    */
   cesiumConfigChanges?: Subject<HsCesiumConfigObject> = new Subject();
+  viewerLoaded: ReplaySubject<Viewer> = new ReplaySubject();
 
-  constructor() {}
-
-  get(): HsCesiumConfigObject {
-    if (this == undefined) {
-      this = new HsCesiumConfigObject();
-    }
-    return this;
+  constructor() {
+    super();
   }
 
   update?(newConfig: HsCesiumConfigObject): void {
-    let appConfig = this;
-    if (appConfig == undefined) {
-      this = new HsCesiumConfigObject();
-      appConfig = this;
-    }
-    Object.assign(appConfig, newConfig);
-
+    Object.assign(this, newConfig);
     this.cesiumConfigChanges.next(this);
   }
 }

@@ -15,7 +15,6 @@ export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;
   @Input() expanded: boolean;
   @Input('view-mode') viewMode: string;
-  
 
   constructor(
     private hsSensorsService: HsSensorsService,
@@ -28,7 +27,7 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   unitClicked(): void {
-    this.hsSensorsService.selectUnit(this.unit, );
+    this.hsSensorsService.selectUnit(this.unit);
   }
 
   /**
@@ -37,8 +36,8 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   sensorClicked(sensor): void {
-    this.hsSensorsUnitDialogService.get().unit = this.unit;
-    this.hsSensorsService.selectSensor(sensor, );
+    this.hsSensorsUnitDialogService.unit = this.unit;
+    this.hsSensorsService.selectSensor(sensor);
     this.generateDialog();
   }
 
@@ -57,9 +56,9 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   sensorToggleSelected(sensor): void {
-    this.hsSensorsUnitDialogService.get().unit = this.unit;
+    this.hsSensorsUnitDialogService.unit = this.unit;
     sensor.checked = !sensor.checked;
-    this.hsSensorsUnitDialogService.toggleSensor(sensor, );
+    this.hsSensorsUnitDialogService.toggleSensor(sensor);
     this.generateDialog();
   }
 
@@ -67,16 +66,11 @@ export class HsSensorsUnitListItemComponent {
    * Display sensors unit dialog
    */
   generateDialog(): void {
-    if (!this.hsSensorsUnitDialogService.get().unitDialogVisible) {
-      this.hsDialogContainerService.create(
-        HsSensorsUnitDialogComponent,
-        {},
-        
-      );
+    if (!this.hsSensorsUnitDialogService.unitDialogVisible) {
+      this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
       this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.get().unit,
-        
+        this.hsSensorsUnitDialogService.unit
       );
     }
   }

@@ -9,7 +9,6 @@ import {HslayersModule} from 'hslayers-ng';
   declarations: [AppComponent],
   imports: [BrowserModule, HslayersModule, HsCesiumModule],
   providers: [],
-  bootstrap: [AppComponent],
 })
 export class AppModule implements DoBootstrap {
   constructor() {}
@@ -26,9 +25,16 @@ export class AppModule implements DoBootstrap {
         setTimeout(waitAppElement, 50);
         return;
       }
-      document.querySelectorAll('hslayers-cesium-app').forEach((el) => {
-        appRef.bootstrap(AppComponent, el);
-      });
+      const apps: HTMLElement[] = Array.from(
+        document.querySelectorAll('hslayers-cesium-app')
+      );
+      for (const el of apps) {
+        if (!el.dataset.init) {
+          appRef.bootstrap(AppComponent, el);
+          el.dataset.init = 'true';
+          return;
+        }
+      }
     };
 
     setTimeout(waitAppElement, 50);
