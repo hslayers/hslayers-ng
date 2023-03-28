@@ -45,6 +45,7 @@ import {
   getName,
   getOrigLayers,
   getPath,
+  getQml,
   getShowInLayerManager,
   getSld,
   getSubLayers,
@@ -232,9 +233,8 @@ export class HsSaveMapService {
   /**
    * Convert layer's style object into JSON object, partial function of layer2style
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
-   *
+   * @deprecated Parse style to old custom JSON, should not be used and will be deprecated. Use SLD or QML instead
    * @param style - Style to convert
-   
    * @returns Converted JSON object replacing OL style
    */
   serializeStyle(style: Style | Style[]): SerializedStyle {
@@ -272,9 +272,7 @@ export class HsSaveMapService {
         typeof (style_img as Icon).getSrc() === 'string' &&
         !(style_img as Icon).getSrc().startsWith('data:image')
       ) {
-        ima.src = this.hsUtilsService.proxify(
-          (style_img as Icon).getSrc()
-        );
+        ima.src = this.hsUtilsService.proxify((style_img as Icon).getSrc());
       }
 
       if (this.hsUtilsService.instOf(style_img, Circle)) {
@@ -459,14 +457,11 @@ export class HsSaveMapService {
       json.projection = 'epsg:4326';
       if (getSld(layer) != undefined) {
         json.style = getSld(layer);
-      } else if (
-        this.hsUtilsService.instOf(
-          (layer as VectorLayer<VectorSource<Geometry>>).getStyle(),
-          Style
-        )
-      ) {
-        json.style = this.serializeStyle(
-          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style
+      } else if (getQml(layer) != undefined) {
+        json.style = getQml(layer);
+      } else {
+        this.hsLogService.warn(
+          `Vector layer ${layer.get('title')} is missing style definition`
         );
       }
     }
