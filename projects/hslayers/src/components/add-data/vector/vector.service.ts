@@ -198,8 +198,8 @@ export class HsAddDataVectorService {
     Object.assign(
       descriptor.layerParams,
       await this.hsStylerService.parseStyle(
-        descriptor.layerParams.style ??
-          (descriptor.layerParams.sld || descriptor.layerParams.qml)
+        (descriptor.layerParams.sld || descriptor.layerParams.qml) ??
+          descriptor.layerParams.style
       )
     );
     return new VectorLayer(descriptor.layerParams);
