@@ -29,7 +29,7 @@ import {
   getSld,
   getTitle,
 } from '../../common/layer-extensions';
-import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
+import {getLaymanFriendlyLayerName} from '../../common/layman/layman-utils';
 
 //Following type-defs are missing in the OL export
 declare type StyleFunction = (

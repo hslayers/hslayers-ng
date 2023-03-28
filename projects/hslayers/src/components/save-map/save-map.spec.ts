@@ -30,7 +30,7 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {Map} from 'ol';
 import {Subject} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
-import {getLayerName, getLaymanFriendlyLayerName} from './layman-utils';
+import {getLayerName, getLaymanFriendlyLayerName} from '../../common/layman/layman-utils';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class emptyMock {

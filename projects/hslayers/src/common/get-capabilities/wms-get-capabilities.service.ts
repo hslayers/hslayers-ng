@@ -16,6 +16,7 @@ import {HsUtilsService} from '../../components/utils/utils.service';
 import {IGetCapabilities} from './get-capabilities.interface';
 import {Metadata} from '../layer-extensions';
 import {getPreferredFormat} from '../format-utils';
+import {isLaymanUrl} from '../layman/layman-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService implements IGetCapabilities {
@@ -112,8 +113,9 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
         this.httpClient
           .get(url, {
             responseType: 'text',
-            withCredentials: url.includes(
-              this.hsCommonLaymanService.layman?.url
+            withCredentials: isLaymanUrl(
+              url,
+              this.hsCommonLaymanService.layman
             ),
             observe: 'response', // Set observe to 'response' to get headers as well
           })

@@ -24,7 +24,7 @@ import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from '../../../common/layman/types/post-patch-layer-response.type';
 import {VectorDataObject} from '../vector/vector-data.type';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
-import {getLaymanFriendlyLayerName} from '../../save-map/layman-utils';
+import {getLaymanFriendlyLayerName} from '../../../common/layman/layman-utils';
 
 export const FILE_UPLOAD_SIZE_LIMIT = 10485760 as const; //10 * 1024 * 1024 = 10MB
 
