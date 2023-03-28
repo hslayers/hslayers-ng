@@ -602,7 +602,6 @@ export class HsStylerService {
     setSld(this.layer, this.sld);
     setQml(this.layer, this.qml);
     this.changesStore.delete(getUid(this.layer));
-    this.unsavedChange = false;
     this.syncing = true;
 
     awaitLayerSync(this.layer).then(() => {
