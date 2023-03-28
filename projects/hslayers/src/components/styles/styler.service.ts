@@ -39,7 +39,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {awaitLayerSync} from '../save-map/layman-utils';
+import {awaitLayerSync} from '../../common/layman/layman-utils';
 import {defaultStyle} from './styles';
 import {
   getCluster,

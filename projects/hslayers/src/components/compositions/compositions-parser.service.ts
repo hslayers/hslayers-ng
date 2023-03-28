@@ -21,7 +21,10 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService, generateUuid} from '../utils/utils.service';
-import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
+import {
+  getLaymanFriendlyLayerName,
+  isLaymanUrl,
+} from '../../common/layman/layman-utils';
 import {
   getTitle,
   setMetadata,
@@ -102,8 +105,9 @@ export class HsCompositionsParserService {
       pre_parse = (res) => this.parseWMC(res);
       options['responseType'] = 'text';
     }
-    options['withCredentials'] = url.includes(
-      this.hsCommonLaymanService.layman?.url
+    options['withCredentials'] = isLaymanUrl(
+      url,
+      this.hsCommonLaymanService.layman
     );
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {

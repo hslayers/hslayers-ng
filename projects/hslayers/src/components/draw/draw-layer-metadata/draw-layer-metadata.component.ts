@@ -8,7 +8,7 @@ import {accessRightsModel} from '../../add-data/common/access-rights.model';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
-} from '../../save-map/layman-utils';
+} from '../../../common/layman/layman-utils';
 import {
   getEditor,
   getPath,

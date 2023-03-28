@@ -48,7 +48,7 @@ import {
   wfsFailed,
   wfsNotAvailable,
   wfsPendingOrStarting,
-} from './layman-utils';
+} from '../../common/layman/layman-utils';
 import {PostPatchLayerResponse} from '../../common/layman/types/post-patch-layer-response.type';
 import {UpsertLayerObject} from './types/upsert-layer-object.type';
 import {WfsSyncParams} from './types/wfs-sync-params.type';

@@ -26,7 +26,7 @@ import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descrip
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
-} from '../../save-map/layman-utils';
+} from '../../../common/layman/layman-utils';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({

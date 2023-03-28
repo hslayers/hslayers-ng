@@ -24,6 +24,7 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
+import {isLaymanUrl} from '../../common/layman/layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -147,10 +148,7 @@ export class HsLayerSynchronizerService {
     if (!laymanEp || !definitionUrl) {
       return undefined;
     }
-    const laymanUrl = laymanEp.type.includes('wagtail')
-      ? laymanEp.url.split('layman-proxy')[0]
-      : laymanEp.url;
-    return definitionUrl.includes(laymanUrl) ? laymanEp : undefined;
+    return isLaymanUrl(definitionUrl, laymanEp) ? laymanEp : undefined;
   }
 
   /**

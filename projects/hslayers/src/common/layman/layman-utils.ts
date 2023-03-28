@@ -1,13 +1,9 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
-import {
-  getHsLaymanSynchronizing,
-  getName,
-  getTitle,
-} from '../../common/layer-extensions';
+import {HsEndpoint} from '../endpoints/endpoint.interface';
+import {HsLaymanLayerDescriptor} from '../../components/save-map/interfaces/layman-layer-descriptor.interface';
+import {getHsLaymanSynchronizing, getName, getTitle} from '../layer-extensions';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [
@@ -100,4 +96,19 @@ export async function awaitLayerSync(layer: Layer): Promise<boolean> {
     await new Promise((r) => setTimeout(r, 200));
   }
   return true;
+}
+
+/**
+ * Check wether provided url belongs to Layman endpoint
+ * @param url URL to be checked
+ * @param laymanEpUrl Layman endpoint
+ */
+export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
+  if (!layman) {
+    return false;
+  }
+  const laymanUrl = layman.type.includes('wagtail')
+    ? layman.url.split('layman-proxy')[0]
+    : layman.url;
+  return url.includes(laymanUrl);
 }
