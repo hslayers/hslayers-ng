@@ -24,7 +24,6 @@ export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
     message: string;
     note?: string;
     items?: any[];
-
   };
 
   ngOnInit(): void {
@@ -62,8 +61,7 @@ export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
     if (!title) {
       title = this.hsLanguageService.getTranslation(
         'COMMON.unknown',
-        undefined,
-        
+        undefined
       );
     }
     return title;

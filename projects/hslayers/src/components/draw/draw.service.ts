@@ -647,7 +647,7 @@ export class HsDrawService extends HsDrawServiceParams {
       (definition?.format?.toLowerCase().includes('wfs') && definition?.url) ||
       !isLayer
     ) {
-      await this.hsLaymanService.removeLayer(layerToRemove);
+      await this.hsLaymanService.removeLayer(layerToRemove.name);
     }
   }
 

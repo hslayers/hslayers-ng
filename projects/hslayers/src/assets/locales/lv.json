@@ -289,7 +289,8 @@
     "unsavedChanges": "Nesaglabātas izmaiņas",
     "return": "Atgriezties",
     "query": "Vaicājums",
-    "composition": "Kompozīcija"
+    "composition": "Kompozīcija",
+    "remove": "Noņemt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

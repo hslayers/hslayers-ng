@@ -303,7 +303,8 @@
     "select": "Vybrať",
     "verify": "Overiť",
     "back": "Späť",
-    "savingChanges": "Ukladanie zmien"
+    "savingChanges": "Ukladanie zmien",
+    "remove": "Odstrániť"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
