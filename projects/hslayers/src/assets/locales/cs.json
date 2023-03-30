@@ -303,7 +303,8 @@
     "select": "Vybrat",
     "verify": "Ověřit",
     "back": "Zpět",
-    "savingChanges": "Ukládání změn"
+    "savingChanges": "Ukládání změn",
+    "remove": "Odstranit"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
