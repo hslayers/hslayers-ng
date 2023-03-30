@@ -49,6 +49,10 @@ const getAuthenticationHeaders = (user) => {
 
 exports.handleProxyRes = (proxyRes, req, res) => {
   this.allowOrigin(proxyRes, req, res);
+  console.log(proxyRes.statusCode,res.statusCode)
+  res.statusMessage = proxyRes.statusMessage;
+  res.status(proxyRes.statusCode);
+  console.log('Changed status code',res.statusCode)
 
   var body = [];
   proxyRes.on('data', function (chunk) {
@@ -72,10 +76,6 @@ exports.handleProxyRes = (proxyRes, req, res) => {
         res.end(body);
       }
       else {
-        if ([500, 501, 502, 503].find(code => proxyRes.statusCode == code)) {
-          res.statusMessage = proxyRes.statusMessage;
-          res.status(proxyRes.statusCode);
-        }
         res.end(Buffer.concat(body));
       }
     }

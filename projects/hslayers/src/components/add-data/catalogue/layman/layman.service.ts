@@ -227,12 +227,22 @@ export class HsLaymanBrowserService {
     const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
       const data = await lastValueFrom(
-        this.http.get<HsLaymanLayerDescriptor>(url, {
-          //timeout: endpoint.canceler.promise,
-          //endpoint,
-          responseType: 'json',
-          withCredentials: true,
-        })
+        this.http
+          .get<HsLaymanLayerDescriptor>(url, {
+            //timeout: endpoint.canceler.promise,
+            //endpoint,
+            responseType: 'json',
+            withCredentials: true,
+          })
+          .pipe(
+            catchError((e) => {
+              //Layer not found
+              if (e?.error.code == 15) {
+                return of(e?.error);
+              }
+              throw e;
+            })
+          )
       );
       if (data.code || data.message) {
         if (data.code == 32) {

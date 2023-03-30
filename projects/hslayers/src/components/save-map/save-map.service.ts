@@ -454,7 +454,7 @@ export class HsSaveMapService {
       }
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();
-      json.projection = 'epsg:4326';
+      json.projection = this.hsMapService.getCurrentProj().getCode();
       if (getSld(layer) != undefined) {
         json.style = getSld(layer);
       } else if (getQml(layer) != undefined) {
