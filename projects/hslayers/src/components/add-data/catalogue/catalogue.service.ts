@@ -91,10 +91,16 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   ) {
     super();
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
-      if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
-        this.reloadData();
+      if (this.panelVisible()) {
         this.extentChangeSuppressed = true;
+        if (
+          this.dataSourceExistsAndEmpty() &&
+          this.hsAddDataService.datasetSelected.getValue() == 'catalogue'
+        ) {
+          this.reloadData();
+        }
       }
+
       this.calcExtentLayerVisibility();
     });
 
