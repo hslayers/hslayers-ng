@@ -26,7 +26,6 @@ export class HsAddDataCatalogueComponent implements OnInit {
   types: any[];
   data: any;
   advancedSearch: boolean;
-  queryCatalogs;
   filterTypeMenu;
   textFieldTypes = ['AnyText', 'Abstract', 'Title'];
   dataTypes = ['all', 'service', 'dataset'];
@@ -47,7 +46,6 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
   ngOnInit(): void {
     this.data = this.hsAddDataCatalogueService.data;
-    this.queryCatalogs = () => this.hsAddDataCatalogueService.queryCatalogs();
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
