@@ -62,7 +62,11 @@ export class HsShareUrlService {
             this.HsUtilsService.debounce(
               ({map, event, extent}) => {
                 this.zone.run(() => {
-                  this.updatePermalinkComposition();
+                  if (this.HsLayoutService.mainpanel == 'permalink') {
+                    this.updatePermalinkComposition();
+                  } else {
+                    this.updateViewParamsInUrl(true);
+                  }
                 });
               },
               200,
@@ -172,7 +176,6 @@ export class HsShareUrlService {
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(): void {
-    const view = this.hsMapService.getMap().getView();
     this.id = this.HsUtilsService.generateUuid();
 
     const externalLayers = this.hsMapService
@@ -185,15 +188,13 @@ export class HsShareUrlService {
     const addedLayers = externalLayers.filter(
       (lyr) => !this.hsConfig.default_layers?.includes(lyr)
     );
+    this.updateViewParamsInUrl();
     //This might become useful, but url size is limited, so we are not using it
     const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
     const pnlMain = this.HsLayoutService.mainpanel;
     this.push(HS_PRMS.panel, pnlMain == 'permalink' ? 'layermanager' : pnlMain);
 
-    this.push(HS_PRMS.x, view.getCenter()[0]);
-    this.push(HS_PRMS.y, view.getCenter()[1]);
-    this.push(HS_PRMS.zoom, view.getZoom());
     if (this.HsLanguageService.language) {
       this.push(HS_PRMS.lang, this.HsLanguageService.language);
     }
@@ -212,6 +213,10 @@ export class HsShareUrlService {
     if (this.statusSaving) {
       return;
     }
+    this.updateURL();
+  }
+
+  private updateURL() {
     this.HsUtilsService.debounce(
       () => {
         let locationPath = this.pathName();
@@ -225,15 +230,25 @@ export class HsShareUrlService {
         if (locationPath.indexOf(baseHref) == 0 && this.hsConfig.ngRouter) {
           locationPath = locationPath.replace(baseHref, '');
         }
-        if (Object.entries(this.hsConfig).length == 1) {
-          this.Location.replaceState(locationPath, paramsSerialized);
-        }
+        this.Location.replaceState(locationPath, paramsSerialized);
         this.browserUrlUpdated.next(this.getPermalinkUrl());
       },
       300,
       false,
       this.updateDebouncer
     )();
+  }
+
+  /**
+   * Updates URL params related to map view
+   * @param standalone True if called outside of 'update'
+   */
+  private updateViewParamsInUrl(standalone = false): void {
+    const view = this.hsMapService.getMap().getView();
+    this.push(HS_PRMS.x, view.getCenter()[0]);
+    this.push(HS_PRMS.y, view.getCenter()[1]);
+    this.push(HS_PRMS.zoom, view.getZoom());
+    standalone && this.updateURL();
   }
 
   /**
