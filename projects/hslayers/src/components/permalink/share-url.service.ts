@@ -216,22 +216,27 @@ export class HsShareUrlService {
     this.updateURL();
   }
 
+  /**
+   * Update URL params when single HSL app is bootstraped
+   */
   private updateURL() {
     this.HsUtilsService.debounce(
       () => {
-        let locationPath = this.pathName();
-        const paramsSerialized = Object.keys(this.params)
-          .map((key) => {
-            return {key, value: this.params[key]};
-          })
-          .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
-          .join('&');
-        const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
-        if (locationPath.indexOf(baseHref) == 0 && this.hsConfig.ngRouter) {
-          locationPath = locationPath.replace(baseHref, '');
+        if (document.querySelectorAll('hslayers-app').length == 1) {
+          let locationPath = this.pathName();
+          const paramsSerialized = Object.keys(this.params)
+            .map((key) => {
+              return {key, value: this.params[key]};
+            })
+            .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
+            .join('&');
+          const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
+          if (locationPath.indexOf(baseHref) == 0 && this.hsConfig.ngRouter) {
+            locationPath = locationPath.replace(baseHref, '');
+          }
+          this.Location.replaceState(locationPath, paramsSerialized);
+          this.browserUrlUpdated.next(this.getPermalinkUrl());
         }
-        this.Location.replaceState(locationPath, paramsSerialized);
-        this.browserUrlUpdated.next(this.getPermalinkUrl());
       },
       300,
       false,

@@ -49,10 +49,8 @@ const getAuthenticationHeaders = (user) => {
 
 exports.handleProxyRes = (proxyRes, req, res) => {
   this.allowOrigin(proxyRes, req, res);
-  console.log(proxyRes.statusCode,res.statusCode)
   res.statusMessage = proxyRes.statusMessage;
   res.status(proxyRes.statusCode);
-  console.log('Changed status code',res.statusCode)
 
   var body = [];
   proxyRes.on('data', function (chunk) {
