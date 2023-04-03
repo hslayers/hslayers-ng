@@ -23,7 +23,8 @@
                     <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs }}</span>
                 </div>
             </div>
-            <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
+            <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block"
+                data-cy="hs-addData-catalogue-filter">
                 <button class="btn btn-light hs-white-background hs-custom-toggle" (click)="openOptionsMenu()"
                     ngbDropdownToggle>{{translateString('COMMON',optionsButtonLabel)}}</button>
                 <!-- TODO: Remove function call from template -->

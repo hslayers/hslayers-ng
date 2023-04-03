@@ -26,9 +26,9 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
       this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
         this.hsLayerShiftingService.fillLayers();
         if (layer !== undefined) {
-          const layerFound = this.hsLayerShiftingService
-            
-            .layersCopy.find((wrapper) => wrapper.layer == layer);
+          const layerFound = this.hsLayerShiftingService.layersCopy.find(
+            (wrapper) => wrapper.layer == layer
+          );
           if (layerFound !== undefined) {
             layerFound.active = true;
           }
