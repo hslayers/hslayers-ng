@@ -16,3 +16,4 @@
 // When a command from ./commands is ready to use, import with `import './commands'` syntax
 import './commands';
 import '@frsource/cypress-plugin-visual-regression-diff';
+import 'cypress-real-events';

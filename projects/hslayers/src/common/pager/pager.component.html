@@ -18,8 +18,8 @@
     </li>
     <li class="page-item">
       <!-- TODO: Remove function call from template -->
-      <a class="page-link" (click)="getNextRecords()" [ngClass]="{'disabled': nextPageAvailable() }"><span
-          aria-hidden="true">&raquo;</span></a>
+      <a class="page-link" data-cy="hs-pager-next-page" (click)="getNextRecords()"
+        [ngClass]="{'disabled': nextPageAvailable() }"><span aria-hidden="true">&raquo;</span></a>
     </li>
     <li ngbDropdown display="dynamic" placement="top-right" class="pe-3" style="position: absolute;
     right: 0;">
@@ -28,7 +28,7 @@
           [title]="'ADDDATA.CATALOGUE.theNumberOfRecords' | translateHs ">
           <i class="icon-question-sign"></i>
         </button>
-        <button ngbDropdownToggle type="button"
+        <button ngbDropdownToggle type="button" data-cy="hs-pager-menu-toggle"
           class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split rounded-0"
           [title]="'COMMON.selectRecordCountPerPage' | translateHs " aria-haspopup="true" aria-expanded="false">
         </button>
