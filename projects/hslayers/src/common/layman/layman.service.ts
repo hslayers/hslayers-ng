@@ -39,7 +39,7 @@ export class HsCommonLaymanService {
    * @param app - App identifier
    * @returns Promise<boolean> true if authorization state changed (user logged in or out)
    */
-  async detectAuthChange(endpoint, app: string): Promise<boolean> {
+  async detectAuthChange(endpoint: HsEndpoint, app: string): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
       const res: CurrentUserResponse = await lastValueFrom(
@@ -71,8 +71,11 @@ export class HsCommonLaymanService {
     }
   }
 
-  async getCurrentUserIfNeeded(endpoint, app: string): Promise<void> {
-    if (endpoint.user === undefined) {
+  async getCurrentUserIfNeeded(
+    endpoint: HsEndpoint,
+    app: string
+  ): Promise<void> {
+    if (endpoint.type.includes('layman') && endpoint.user === undefined) {
       await this.detectAuthChange(endpoint, app);
     }
   }
