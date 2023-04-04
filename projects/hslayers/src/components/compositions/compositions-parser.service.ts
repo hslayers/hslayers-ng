@@ -316,16 +316,17 @@ export class HsCompositionsParserService {
 
   /**
    * Check if the response indicates a successful data request
-   * @param response - Response from http get request requesting composition data
+   * @param response - Response from HTTP GET request requesting composition data
    */
   checkLoadSuccess(response): boolean {
     return (
       response.success == true /*micka*/ ||
       (response.success == undefined /*layman*/ &&
         response.name !== undefined) ||
-      response.includes('LayerList') /*.wmc micka*/
+      (response.includes && response.includes('LayerList')) /*.wmc micka*/
     );
   }
+
   async loadCompositionObject(
     obj,
     overwrite: boolean,
