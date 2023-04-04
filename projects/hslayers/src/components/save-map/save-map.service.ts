@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SerializedStyle} from './types/serialized-style.type';
 
-import Map from 'ol/Map';
 import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
   Cluster,
@@ -19,6 +17,7 @@ import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Layer} from 'ol/layer';
+import {Map} from 'ol';
 import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
@@ -32,6 +31,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {LayerJSON} from './types/layer-json.type';
 import {MapComposition} from './types/map-composition.type';
 import {SerializedImage} from './types/serialized-image.type';
+import {SerializedStyle} from './types/serialized-style.type';
 import {StatusData} from './types/status-data.type';
 import {UserData} from './types/user-data.type';
 import {
@@ -45,6 +45,7 @@ import {
   getName,
   getOrigLayers,
   getPath,
+  getQml,
   getShowInLayerManager,
   getSld,
   getSubLayers,
@@ -234,6 +235,7 @@ export class HsSaveMapService {
    * Convert layer's style object into JSON object, partial function of layer2style
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
    *
+   * @deprecated Parse style to old custom JSON, should not be used and will be removed. Use SLD or QML instead
    * @param style - Style to convert
    * @param app - App identifier
    * @returns Converted JSON object replacing OL style
@@ -462,15 +464,11 @@ export class HsSaveMapService {
       json.projection = 'epsg:4326';
       if (getSld(layer) != undefined) {
         json.style = getSld(layer);
-      } else if (
-        this.hsUtilsService.instOf(
-          (layer as VectorLayer<VectorSource<Geometry>>).getStyle(),
-          Style
-        )
-      ) {
-        json.style = this.serializeStyle(
-          (layer as VectorLayer<VectorSource<Geometry>>).getStyle() as Style,
-          app
+      } else if (getQml(layer) != undefined) {
+        json.style = getQml(layer);
+      } else {
+        this.hsLogService.warn(
+          `Vector layer ${layer.get('title')} is missing style definition`
         );
       }
     }

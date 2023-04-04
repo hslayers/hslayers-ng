@@ -270,6 +270,7 @@ export class HsStylerService {
       !this.hsUtilsService.isFunction(style) &&
       !Array.isArray(style)
     ) {
+      //Backwards compatibility with custom style JSON
       const customJson = this.hsSaveMapService.serializeStyle(
         style as Style,
         app
