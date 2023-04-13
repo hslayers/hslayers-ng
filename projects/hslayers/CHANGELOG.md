@@ -4,7 +4,7 @@
 ### Bug Fixes
 
 * Add allowedStyles add-data param to missing data types ([d4425e0](https://github.com/hslayers/hslayers-ng/commit/d4425e08bbebab01dbb0972ff46409c2101f5554))
-* Decode proxyfied url in case client send it that way ([5873561](https://github.com/hslayers/hslayers-ng/commit/58735614607398bd72a30934e0015552e8effd74))
+* **server:** Decode proxyfied url in case client send it that way ([5873561](https://github.com/hslayers/hslayers-ng/commit/58735614607398bd72a30934e0015552e8effd74))
 * Handle calcAllLayersExtent error ([337e6b5](https://github.com/hslayers/hslayers-ng/commit/337e6b5c12b4dd6dea349bdea212c5720ae989f8))
 * HsEndpoint import causing circular dep ([afafdc8](https://github.com/hslayers/hslayers-ng/commit/afafdc822f59cfe0ba3a1c452dec17ed2b4a30ca))
 * In app login control ([3e5717a](https://github.com/hslayers/hslayers-ng/commit/3e5717accc5de759f665c3b4800f1132439ac6d8))
