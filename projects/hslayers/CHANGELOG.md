@@ -1,3 +1,34 @@
+# [11.2.0](https://github.com/hslayers/hslayers-ng/compare/11.1.0...11.2.0) (2023-04-13)
+
+
+### Bug Fixes
+
+* Add allowedStyles add-data param to missing data types ([d4425e0](https://github.com/hslayers/hslayers-ng/commit/d4425e08bbebab01dbb0972ff46409c2101f5554))
+* Decode proxyfied url in case client send it that way ([5873561](https://github.com/hslayers/hslayers-ng/commit/58735614607398bd72a30934e0015552e8effd74))
+* Handle calcAllLayersExtent error ([337e6b5](https://github.com/hslayers/hslayers-ng/commit/337e6b5c12b4dd6dea349bdea212c5720ae989f8))
+* HsEndpoint import causing circular dep ([afafdc8](https://github.com/hslayers/hslayers-ng/commit/afafdc822f59cfe0ba3a1c452dec17ed2b4a30ca))
+* In app login control ([3e5717a](https://github.com/hslayers/hslayers-ng/commit/3e5717accc5de759f665c3b4800f1132439ac6d8))
+* Load external wfs layers without add layers panel ([ca9ca31](https://github.com/hslayers/hslayers-ng/commit/ca9ca3162e8c26703a3c87bf7d93b90f5cde5786))
+* Pass app param to calcAllLayersExtent ([64b1319](https://github.com/hslayers/hslayers-ng/commit/64b131976f623c8399abfd2a113e9107dfde5ca0))
+* Raster time-series regex patter for string with no separator ([b345804](https://github.com/hslayers/hslayers-ng/commit/b345804c85bce5ad6323cc1787289cb39a749507))
+* Raster time-series regex priority, time-regex param values ([f93aec4](https://github.com/hslayers/hslayers-ng/commit/f93aec47b4c487c92942322595ca1cd5ecd99c63))
+* Register 32633 and 32634 projs ([eb2564a](https://github.com/hslayers/hslayers-ng/commit/eb2564aaf23ca1fb0282dc3847bdcab91f456f13))
+* **server:** Properly encode query params ([74b51c9](https://github.com/hslayers/hslayers-ng/commit/74b51c9acca07da68aa2efe684bc5432434e959d))
+* Use full SUPPORTED_SRS_LIST as default ([6ba4658](https://github.com/hslayers/hslayers-ng/commit/6ba4658bf14f9c33106dee4a87300a3fe69ed648))
+* **WFS:** Swap BBOX only for WFS 1.x ([3ed7009](https://github.com/hslayers/hslayers-ng/commit/3ed70092e2493fd9fafa51e0b587469840170818))
+* When content-type headers are missing in getCapabilities response treat it as success ([bf1a9f6](https://github.com/hslayers/hslayers-ng/commit/bf1a9f682ece691141639c8a7e2ba83420c505f8))
+* WMS extent parsing ([958e72d](https://github.com/hslayers/hslayers-ng/commit/958e72deabcf44b9dd933c028dfa04e05db7acc5))
+
+
+### Features
+
+* Add more intuitive option how to 'go back' after ArcGIS REST service is expanded. ([2114dac](https://github.com/hslayers/hslayers-ng/commit/2114daccb8108d07c872ede76154ac9f1ceda9de))
+* Allow upload of raster series ([2b180bf](https://github.com/hslayers/hslayers-ng/commit/2b180bfa413f09d5aa97464690efbc35879106ad))
+* Calculate combined extent for ArcGIS Map Server layers ([8c934c8](https://github.com/hslayers/hslayers-ng/commit/8c934c8e33e6589620e64d28e290497adb45a580))
+* Zoom to combined extent for WMTS layers ([fcf4cb2](https://github.com/hslayers/hslayers-ng/commit/fcf4cb22c666ae6a32bb35998f23b892b763d36f))
+
+
+
 # [11.1.0](https://github.com/hslayers/hslayers-ng/compare/11.0.0...11.1.0) (2023-02-17)
 
 
