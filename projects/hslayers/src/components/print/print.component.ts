@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsConfig, HsConfigObject} from '../../config.service';
+import {HsConfig} from '../../config.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsPrintLegendService} from './print-legend.service';
@@ -24,7 +24,6 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
     {name: 'scale', visible: false},
   ];
   print: PrintModel;
-  configRef: HsConfigObject;
 
   constructor(
     HsLayoutService: HsLayoutService,
@@ -48,7 +47,6 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
       description: 'SIDEBAR.descriptions.PRINT',
       icon: 'icon-print',
     });
-    this.configRef = this.hsConfig;
     this.setToDefault();
   }
 

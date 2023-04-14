@@ -411,8 +411,7 @@ export class HsCompositionsParserService {
    
    */
   finalizeCompositionLoading(responseData): void {
-    const configRef = this.hsConfig;
-    const open_lm_after_comp_loaded = configRef.open_lm_after_comp_loaded;
+    const open_lm_after_comp_loaded = this.hsConfig.open_lm_after_comp_loaded;
     if (
       (open_lm_after_comp_loaded === true ||
         open_lm_after_comp_loaded === undefined) &&

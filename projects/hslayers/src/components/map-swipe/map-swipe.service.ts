@@ -169,9 +169,6 @@ export class HsMapSwipeService {
    
    */
   layersAvailable(): boolean {
-    if (this == undefined) {
-      return false;
-    }
     return (
       this.swipeCtrl?.leftLayers?.length > 0 ||
       this.swipeCtrl?.rightLayers?.length > 0 ||
@@ -384,15 +381,14 @@ export class HsMapSwipeService {
    
    */
   setInitialSwipeLayers(): void {
-    const layerShiftingthis = this.hsLayerShiftingService;
     this.leftLayers = [];
     this.rightLayers = [];
     this.entireMapLayers = [];
     this.hsLayerShiftingService.fillLayers();
-    if (!layerShiftingthis.layersCopy) {
+    if (!this.hsLayerShiftingService.layersCopy) {
       return;
     }
-    for (const layer of layerShiftingthis.layersCopy) {
+    for (const layer of this.hsLayerShiftingService.layersCopy) {
       this.addSwipeLayer(layer);
     }
     this.sortLayers();

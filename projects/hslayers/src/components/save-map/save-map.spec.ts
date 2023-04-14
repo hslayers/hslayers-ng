@@ -6,6 +6,9 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {Map} from 'ol';
+import {Subject} from 'rxjs';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -27,10 +30,10 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {Map} from 'ol';
-import {Subject} from 'rxjs';
-import {Vector as VectorLayer} from 'ol/layer';
-import {getLayerName, getLaymanFriendlyLayerName} from '../../common/layman/layman-utils';
+import {
+  getLayerName,
+  getLaymanFriendlyLayerName,
+} from '../../common/layman/layman-utils';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class emptyMock {

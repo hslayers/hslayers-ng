@@ -50,7 +50,7 @@ A global hslayersNgConfig function, which returns a configuration object, NEEDS 
 
   ### Multiple apps setup
 
-  Bulit-in option for bootstraping multiple app instances can be utilized by simply creating (and styling) desired number of `hslayers-app` elements including with `id`s 
+  Built-in option for bootstrapping multiple app instances can be utilized by simply creating (and styling) desired number of `hslayers-app` elements including with `id`s 
   ```
   <html>
   ...
@@ -67,4 +67,4 @@ and creating hslayersNgConfig function which name would include corresponding id
     } 
   </script>
 ```
-In case no exact match between app id and config name was found app tries to call default function eg. hslayersNgConfig
+In case no exact match between app id and config name is found, the app tries to call default function i.e. `hslayersNgConfig`

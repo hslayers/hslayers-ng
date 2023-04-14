@@ -377,15 +377,14 @@ export class HsLayerManagerService {
    */
   getImage(layer: Layer<Source>): string {
     const thumbnail = getThumbnail(layer);
-    const configRef = this.hsConfig;
     if (thumbnail) {
       if (thumbnail.length > 10) {
         return thumbnail;
       } else {
-        return configRef.assetsPath + 'img/' + thumbnail;
+        return this.hsConfig.assetsPath + 'img/' + thumbnail;
       }
     } else {
-      return configRef.assetsPath + 'img/default.png';
+      return this.hsConfig.assetsPath + 'img/default.png';
     }
   }
 
@@ -1088,7 +1087,7 @@ export class HsLayerManagerService {
 
   /**
    * UnBind event listeners created when layermanager component is created
-   * Event handlers are stored in service so they are accessible but shoul be managed
+   * Event handlers are stored in service so they are accessible but should be managed
    * by lifecycle of component
    */
   destroy(): void {

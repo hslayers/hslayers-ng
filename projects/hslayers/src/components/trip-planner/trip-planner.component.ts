@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import {HsConfig, HsConfigObject} from './../../config.service';
+import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -22,7 +22,6 @@ export class HsTripPlannerComponent
 {
   timer: any;
   name = 'tripPlanner';
-  configRef: HsConfigObject;
 
   constructor(
     public HsMapService: HsMapService,

@@ -4,7 +4,7 @@ import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
 
-import {HsConfig, HsConfigObject} from '../../../../config.service';
+import {HsConfig} from '../../../../config.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
@@ -30,7 +30,6 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   @Input() data: any;
   servicesLoaded = false;
   layersString: string;
-  configRef: HsConfigObject;
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -50,7 +49,6 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     if (this.data.layers) {
       this.layersString = this.data.layers.map((l) => l.title).join(', ');
     }
-    this.configRef = this.hsConfig;
     for (const service of this.data.services) {
       this.hsAddDataUrlService.typeSelected = service.type;
       await this.hsAddDataOwsService.setUrlAndConnect({

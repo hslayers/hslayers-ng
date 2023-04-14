@@ -8,7 +8,7 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
-import {HsConfig, HsConfigObject} from '../../config.service';
+import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
@@ -35,7 +35,6 @@ export class HsCompositionsComponent
   loadFilteredCompositions: any;
   notSavedCompositionLoadingSubscription: Subscription;
   name = 'composition_browser';
-  configRef: HsConfigObject;
   constructor(
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,

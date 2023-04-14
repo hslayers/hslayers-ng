@@ -15,12 +15,10 @@ const DEFAULT_LANG = 'en' as const;
 export class HsLanguageService {
   language: string;
   translateServiceFactory: any;
-  id: number;
   constructor(
     private translationService: CustomTranslationService,
     private hsConfig: HsConfig
   ) {
-    this.id = Math.random();
     this.hsConfig.configChanges.subscribe(() => {
       if (this.hsConfig.translationOverrides != undefined) {
         const translator = this.translationService;

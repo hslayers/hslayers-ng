@@ -21,7 +21,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
-  
+
   panelSpaceWidth: number;
   panelVisible(which, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, scope);
@@ -39,17 +39,15 @@ export class HsMatLayoutComponent implements AfterViewInit {
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef // private HsUtilsService: HsUtilsService
   ) {
-    this.HsLayoutService.get().layoutElement = elementRef.nativeElement;
+    this.HsLayoutService.layoutElement = elementRef.nativeElement;
   }
 
   ngOnInit(): void {
-    this.HsLayoutService.get().contentWrapper =
+    this.HsLayoutService.contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
     if (this.HsConfig.sidebarPosition === 'left') {
-      this.HsLayoutService.get().contentWrapper.classList.add(
-        'flex-reverse'
-      );
-      this.HsLayoutService.get().sidebarRight = false;
+      this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
+      this.HsLayoutService.sidebarRight = false;
     } else if (this.HsConfig.sidebarPosition != 'invisible') {
       this.HsConfig.sidebarPosition = 'right';
     }
@@ -71,16 +69,13 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //    this.HsThemeService.setLightTheme();
     //    break;
     //}
-    this.HsLayoutService.panelSpaceWidth.subscribe(({width}) => {
-      if ( == app) {
-        this.panelSpaceWidth = width;
-      }
+    this.HsLayoutService.panelSpaceWidth.subscribe((width) => {
+      this.panelSpaceWidth = width;
     });
   }
 
   ngAfterViewInit() {
-    this.HsLayoutService.get().layoutElement =
-      this.hslayout.nativeElement;
+    this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement.parentElement;
 
     //if (window.innerWidth < 767) {
@@ -112,11 +107,9 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //}
     this.HsEventBusService.layoutLoads.next({
       element: this.elementRef.nativeElement,
-      innerElement: '.hs-map-space'
+      innerElement: '.hs-map-space',
     });
-    this.HsLayoutService.mapSpaceRef.next({
-      viewContainerRef: this.mapHost.viewContainerRef: ,
-    });
+    this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
     //this.cdr.detectChanges();
   }
 }

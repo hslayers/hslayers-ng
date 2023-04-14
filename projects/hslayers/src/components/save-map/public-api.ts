@@ -1,7 +1,6 @@
 export * from './dialog-spawner.service';
 export * from './layer-synchronizer.service';
 export * from './interfaces/layman-layer-descriptor.interface';
-export * from '../../common/layman/layman-utils';
 export * from './layman.service';
 export * from './form/form.component';
 export * from './dialog-save/dialog-save.component';

@@ -22,7 +22,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
    * @returns
    */
   getTranslation(lang: string): any {
-    lang = lang;
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
       //these translations are loaded as promises in order, where next one overwrites previous loaders values
@@ -31,7 +30,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
         new Promise(async (resolve) => {
           (async () => {
             if (this.HsConfig.assetsPath == undefined) {
-              console.warn('HsConfig.apps[?].assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
+              console.warn('HsConfig.assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
               let counter = 0;
               const MAX_CONFIG_POLLS = 10;
               while (

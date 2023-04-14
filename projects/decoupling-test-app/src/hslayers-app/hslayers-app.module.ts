@@ -12,7 +12,7 @@ import {HsLayoutModule} from '../../../hslayers/src/components/layout/layout.mod
 //import {HsDrawModule} from 'hslayers-ng/components/draw/public-api';
 import {FormsModule} from '@angular/forms';
 import {HsAddDataModule} from '../../../hslayers/src/components/add-data/add-data.module';
-import {HsCompositionsModule} from 'hslayers-ng';
+import {HsCompositionsModule} from '../../../hslayers/src/components/compositions/compositions.module';
 import {HsDrawModule} from '../../../hslayers/src/components/draw/draw.module';
 import {HsLanguageModule} from '../../../hslayers/src/components/language/language.module';
 import {HsLayerManagerModule} from '../../../hslayers/src/components/layermanager/layermanager.module';

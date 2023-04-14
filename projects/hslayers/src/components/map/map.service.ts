@@ -63,8 +63,6 @@ type VectorAndSource = {
   layer: VectorLayer<VectorSource<Geometry>>;
 };
 
-const DEFAULT = 'default';
-
 const proj4 = projx.default ?? projx;
 
 @Injectable({
