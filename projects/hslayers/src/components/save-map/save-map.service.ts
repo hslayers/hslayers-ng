@@ -233,7 +233,7 @@ export class HsSaveMapService {
   /**
    * Convert layer's style object into JSON object, partial function of layer2style
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
-   * @deprecated Parse style to old custom JSON, should not be used and will be deprecated. Use SLD or QML instead
+   * @deprecated Parse style to old custom JSON, should not be used and will be removed. Use SLD or QML instead
    * @param style - Style to convert
    * @returns Converted JSON object replacing OL style
    */

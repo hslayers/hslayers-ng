@@ -40,7 +40,7 @@ export class HsShareThumbnailService {
     ctx.imageSmoothingEnabled = false;
   }
 
-  rendered($element,  newRender?): string {
+  rendered($element, newRender?): string {
     if (!$element) {
       return;
     }
@@ -61,7 +61,6 @@ export class HsShareThumbnailService {
     const ctxTarget = targetCanvas.getContext('2d');
     this.setupContext(ctxTarget);
     this.setupContext(ctxCollector);
-    const configRef = this.hsConfig;
     Array.prototype.forEach.call(
       this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
       (canvas) => {
@@ -120,7 +119,7 @@ export class HsShareThumbnailService {
       this.HsLogService.warn(e);
       $element.setAttribute(
         'src',
-        configRef.assetsPath + 'img/notAvailable.png'
+        this.hsConfig.assetsPath + 'img/notAvailable.png'
       );
     }
     $element.style.width = width + 'px';

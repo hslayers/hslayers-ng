@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
-import {HsConfig, HsConfigObject, HsDialogComponent} from 'hslayers-ng';
+import {HsConfig, HsDialogComponent} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 
@@ -14,13 +14,13 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
   templateUrl: './partials/unit-dialog.component.html',
 })
 export class HsSensorsUnitDialogComponent
-  implements HsDialogComponent, OnInit, OnDestroy {
+  implements HsDialogComponent, OnInit, OnDestroy
+{
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
   dialogStyle;
   private end = new Subject<void>();
   viewRef: ViewRef;
   data: any;
-  configRef: HsConfigObject;
 
   constructor(
     private hsLayoutService: HsLayoutService,
@@ -32,7 +32,6 @@ export class HsSensorsUnitDialogComponent
 
   ngOnInit(): void {
     this.hsSensorsUnitDialogService.unitDialogVisible = true;
-    this.configRef = this.hsConfig;
     this.hsSensorsUnitDialogService.dialogElement = this.elementRef;
     this.timeButtonClicked(this.hsSensorsUnitDialogService.intervals[2]);
     combineLatest([

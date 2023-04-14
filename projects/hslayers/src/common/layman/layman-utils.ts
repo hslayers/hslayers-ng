@@ -100,8 +100,8 @@ export async function awaitLayerSync(layer: Layer): Promise<boolean> {
 
 /**
  * Check wether provided url belongs to Layman endpoint
- * @param url URL to be checked
- * @param laymanEpUrl Layman endpoint
+ * @param url - URL to be checked
+ * @param layman - Layman endpoint
  */
 export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
   if (!layman) {

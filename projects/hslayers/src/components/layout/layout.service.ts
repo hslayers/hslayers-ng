@@ -72,7 +72,7 @@ export class HsLayoutParams {
   smallWidth: boolean;
   /**
    * Show if any sidebar panel is opened (sidebar is completely expanded).
-   * When hs.sidebar module is used in it change automatically to true during initialization.
+   * When hs.sidebar module is used in the app, it changes automatically to true during initialization.
    * @public
    * @default false
    */
@@ -255,7 +255,7 @@ export class HsLayoutService extends HsLayoutParams {
 
   /**
    * Close opened panel programmatically.
-   * If sidebar toolbar is used in sidebar stay expanded with sidebar labels.
+   * If sidebar toolbar is used in the app, sidebar stays expanded with sidebar labels.
    * Cannot resolve unpinned panels.
    * @public
    */
@@ -263,10 +263,6 @@ export class HsLayoutService extends HsLayoutParams {
     this.mainpanel = '';
     this.sidebarLabels = true;
     this.HsEventBusService.mainPanelChanges.next(null);
-  }
-
-  get(_): HsLayoutParams {
-    return this;
   }
 
   /**
@@ -339,7 +335,7 @@ export class HsLayoutService extends HsLayoutParams {
 
   /**
    * Sets new main panel (Panel displayed in expanded sidebar).
-   * Change GUI and queryable status of map (when queryable and with hs.query component in map does info query on map click).
+   * Change GUI and queryable status of map (when queryable and with hs.query component in the app, the map does info query on map click).
    * @public
    * @param which - New panel to activate (panel name)
    * @param by_gui - Whether function call came as result of GUI action

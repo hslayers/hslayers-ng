@@ -204,7 +204,6 @@ export class HsSensorsService {
    
    */
   createLayer() {
-    const configRef = this.hsConfig;
     this.sensorMarkerStyle = [
       new Style({
         fill: new Fill({
@@ -215,7 +214,7 @@ export class HsSensorsService {
           width: 2,
         }),
         image: new Icon({
-          src: configRef.assetsPath + 'img/icons/wifi8.svg',
+          src: this.hsConfig.assetsPath + 'img/icons/wifi8.svg',
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),

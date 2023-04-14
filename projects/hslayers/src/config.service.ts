@@ -207,7 +207,7 @@ export class HsConfigObject {
       basemapGallery: false,
       mapSwipe: false,
     };
-    // this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
+    this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
     this.panelWidths = {
       default: 425,
       ows: 700,

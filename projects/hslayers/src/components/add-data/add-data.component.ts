@@ -4,7 +4,7 @@ import {AddDataUrlType} from './url/types/url.type';
 import {DatasetType, HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsDialogContainerService} from '../layout/public-api';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsLanguageService} from '../language/language.service';
