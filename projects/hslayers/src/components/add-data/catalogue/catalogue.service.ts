@@ -94,10 +94,16 @@ export class HsAddDataCatalogueService {
     public hsAddDataOwsService: HsAddDataOwsService
   ) {
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
-      if (this.dataSourceExistsAndEmpty(app) && this.panelVisible(app)) {
-        this.reloadData(app);
+      if (this.panelVisible(app)) {
         this.get(app).extentChangeSuppressed = true;
+        if (
+          this.dataSourceExistsAndEmpty(app) &&
+          this.hsAddDataService.get(app).dsSelected == 'catalogue'
+        ) {
+          this.reloadData(app);
+        }
       }
+
       this.calcExtentLayerVisibility(app);
     });
 
