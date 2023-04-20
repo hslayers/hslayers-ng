@@ -843,9 +843,7 @@ export class HsLaymanService implements HsSaverService {
           )
       );
       switch (true) {
-        case response?.code == 15 ||
-          response?.code == 15 ||
-          wfsFailed(response):
+        case response?.code == 15 || wfsFailed(response):
           return null;
         case response.name && ignoreStatus:
           return {...response, workspace};
@@ -899,93 +897,74 @@ export class HsLaymanService implements HsSaverService {
         delete this.deleteQuery;
       }
       const observables: Observable<any>[] = [];
-      (this.hsCommonEndpointsService.endpoints || [])
-        .filter((ds) => ds.type.includes('layman'))
-        .forEach((ds) => {
-          let url;
-          if (layer) {
-            const layerName =
-              typeof layer == 'string' ? layer : getLayerName(layer);
-            url = `${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`;
-          } else {
-            url = `${ds.url}/rest/workspaces/${ds.user}/layers`;
-          }
+      const ds = this.hsCommonLaymanService.layman;
+      let url;
+      if (layer) {
+        const layerName =
+          typeof layer == 'string' ? layer : getLayerName(layer);
+        url = `${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`;
+      } else {
+        url = `${ds.url}/rest/workspaces/${ds.user}/layers`;
+      }
 
-          const response = this.http
-            .delete(url, {
-              withCredentials: true,
-            })
-            .pipe(
-              map(
-                (
-                  res: DeleteSingleLayerResponse | DeleteAllLayersResponse[]
-                ) => {
-                  this.hsToastService.removeByText(
-                    this.hsLanguageService.getTranslation(
-                      'LAYMAN.deletionInProgress',
-                      undefined,
-                      app
-                    ),
-                    app
-                  );
-                  const response = Array.isArray(res) ? res[0] : res;
-                  if (response?.code) {
-                    this.hsCommonLaymanService.displayLaymanError(
-                      ds,
-                      'LAYMAN.deleteLayersRequest',
-                      response,
-                      app
-                    );
-                    success = false;
-                  } else {
-                    let message = 'LAYMAN.layerSuccessfullyRemoved';
-                    if (!layer) {
-                      message = 'LAYMAN.allLayersSuccessfullyRemoved';
-                    }
-                    const details = Array.isArray(res)
-                      ? res.map((item) => item.name)
-                      : [res.name];
-                    this.hsToastService.createToastPopupMessage(
-                      'LAYMAN.deleteLayersRequest',
-                      message,
-                      {
-                        toastStyleClasses: 'bg-success text-light',
-                        details,
-                      },
-                      app
-                    );
-                    success = true;
-                  }
+      const response = this.http
+        .delete(url, {
+          withCredentials: true,
+        })
+        .pipe(
+          map((res: DeleteSingleLayerResponse | DeleteAllLayersResponse[]) => {
+            const response = Array.isArray(res) ? res[0] : res;
+            if (response?.code) {
+              this.hsCommonLaymanService.displayLaymanError(
+                ds,
+                'LAYMAN.deleteLayersRequest',
+                response,
+                app
+              );
+              success = false;
+            } else {
+              let message = 'LAYMAN.layerSuccessfullyRemoved';
+              if (!layer) {
+                message = 'LAYMAN.allLayersSuccessfullyRemoved';
+              }
+              const details = Array.isArray(res)
+                ? res.map((item) => item.name)
+                : [res.name];
+              this.hsToastService.createToastPopupMessage(
+                'LAYMAN.deleteLayersRequest',
+                message,
+                {
+                  toastStyleClasses: 'bg-success text-light',
+                  details,
+                }
+              );
+              success = true;
+            }
+          }),
+          catchError((e) => {
+            this.hsToastService.createToastPopupMessage(
+              this.hsLanguageService.getTranslation(
+                'LAYMAN.deleteLayersRequest',
+                undefined
+              ),
+              this.hsLanguageService.getTranslationIgnoreNonExisting(
+                'SAVECOMPOSITION',
+                'removeLayerError',
+                {
+                  error: e.error.message ?? e.message,
+                  layer:
+                    layer instanceof Layer
+                      ? (layer as Layer<Source>).get('title')
+                      : layer,
                 }
               ),
-              catchError((e) => {
-                this.hsToastService.createToastPopupMessage(
-                  this.hsLanguageService.getTranslation(
-                    'LAYMAN.deleteLayersRequest',
-                    undefined,
-                    app
-                  ),
-                  this.hsLanguageService.getTranslationIgnoreNonExisting(
-                    'SAVECOMPOSITION',
-                    'removeLayerError',
-                    {
-                      error: e.error.message ?? e.message,
-                      layer:
-                        layer instanceof Layer
-                          ? (layer as Layer<Source>).get('title')
-                          : layer,
-                    },
-                    app
-                  ),
-                  {serviceCalledFrom: 'HsLaymanService'},
-                  app
-                );
-                success = false;
-                return of(e);
-              })
+              {serviceCalledFrom: 'HsLaymanService'}
             );
-          observables.push(response);
-        });
+            success = false;
+            return of(e);
+          })
+        );
+      observables.push(response);
       this.deleteQuery = forkJoin(observables).subscribe(() => {
         resolve(success);
       });

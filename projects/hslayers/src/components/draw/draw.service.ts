@@ -690,6 +690,14 @@ export class HsDrawService {
         }
       }
       appRef.selectedLayer = null;
+      this.hsToastService.removeByText(
+        this.hsLanguageService.getTranslation(
+          'LAYMAN.deletionInProgress',
+          undefined,
+          app
+        ),
+        app
+      );
       this.fillDrawableLayers(app);
     }
   }
@@ -711,7 +719,7 @@ export class HsDrawService {
       (definition?.format?.toLowerCase().includes('wfs') && definition?.url) ||
       !isLayer
     ) {
-      await this.hsLaymanService.removeLayer(app, layerToRemove);
+      await this.hsLaymanService.removeLayer(app, layerToRemove.name);
     }
   }
 
