@@ -823,14 +823,24 @@ export class HsLaymanService implements HsSaverService {
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
       const response: HsLaymanLayerDescriptor = await lastValueFrom(
-        this.http.get(
-          `${
-            endpoint.url
-          }/rest/workspaces/${workspace}/layers/${layerName}?${Math.random()}`,
-          {
-            withCredentials: true,
-          }
-        )
+        this.http
+          .get(
+            `${
+              endpoint.url
+            }/rest/workspaces/${workspace}/layers/${layerName}?${Math.random()}`,
+            {
+              withCredentials: true,
+            }
+          )
+          .pipe(
+            catchError((e) => {
+              //Layer not found
+              if (e?.error.code == 15) {
+                return of(e?.error);
+              }
+              throw e;
+            })
+          )
       );
       switch (true) {
         case response?.code == 15 ||
