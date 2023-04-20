@@ -11,7 +11,7 @@
             <div class="modal-body" style="overflow-y:auto">
                 <p class="fw-bold h6">{{data.message}}</p>
                 <p class="h6 small">{{data.note}}</p>
-                <div *ngIf="data.items?.length > 0">
+                <div style="max-height: 65vh;" *ngIf="data.items?.length > 0">
                     <div class="d-flex w-100 justify-content-center">
                         <button type="button" class="mt-1 btn btn-primary"
                             (click)="selectDeselectAll()">{{'SAVECOMPOSITION.form.toggleAll' |
@@ -27,10 +27,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="yes()"
-                    [title]="'COMMON.yes' | translateHs : data" data-dismiss="modal">{{'COMMON.yes' | translateHs :
+                    [title]="'COMMON.remove' | translateHs : data" data-dismiss="modal">{{'COMMON.remove' | translateHs
+                    :
                     {app: data.app} }}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.no' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
+                    [title]="'COMMON.back' | translateHs : data" (click)="no()" data-dismiss="modal">{{'COMMON.back' |
                     translateHs : {app: data.app} }}</button>
             </div>
         </div>
