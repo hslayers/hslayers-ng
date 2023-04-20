@@ -24,6 +24,7 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
+import {isLaymanUrl} from './layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -152,9 +153,12 @@ export class HsLayerSynchronizerService {
   findLaymanForWfsLayer(
     layer: VectorLayer<VectorSource<Geometry>>
   ): HsEndpoint {
-    const layerDefinition = getDefinition(layer);
+    const definitionUrl = getDefinition(layer).url;
     const laymanEp = this.hsCommonLaymanService?.layman;
-    return layerDefinition?.url?.includes(laymanEp?.url) ? laymanEp : undefined;
+    if (!laymanEp || !definitionUrl) {
+      return undefined;
+    }
+    return isLaymanUrl(definitionUrl, laymanEp) ? laymanEp : undefined;
   }
 
   /**

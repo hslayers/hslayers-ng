@@ -101,3 +101,18 @@ export async function awaitLayerSync(layer: Layer): Promise<boolean> {
   }
   return true;
 }
+
+/**
+ * Check wether provided url belongs to Layman endpoint
+ * @param url URL to be checked
+ * @param laymanEpUrl Layman endpoint
+ */
+export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
+  if (!layman) {
+    return false;
+  }
+  const laymanUrl = layman.type.includes('wagtail')
+    ? layman.url.split('layman-proxy')[0]
+    : layman.url;
+  return url.includes(laymanUrl);
+}
