@@ -148,11 +148,22 @@ export class HsShareUrlService {
   }
 
   /**
+   * Updates URL params related to map view
+   * @param standalone True if called outside of 'update'
+   */
+  private updateViewParamsInUrl(standalone = false, app: string): void {
+    const view = this.HsMapService.getMap(app).getView();
+    this.push(HS_PRMS.x, view.getCenter()[0], app);
+    this.push(HS_PRMS.y, view.getCenter()[1], app);
+    this.push(HS_PRMS.zoom, view.getZoom(), app);
+    standalone && this.updateURL(app);
+  }
+
+  /**
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(app: string): void {
     const appRef = this.get(app);
-    const view = this.HsMapService.getMap(app).getView();
     appRef.id = this.HsUtilsService.generateUuid();
 
     const externalLayers = this.HsMapService.getLayersArray(app).filter(
@@ -175,9 +186,6 @@ export class HsShareUrlService {
       app
     );
 
-    this.push(HS_PRMS.x, view.getCenter()[0], app);
-    this.push(HS_PRMS.y, view.getCenter()[1], app);
-    this.push(HS_PRMS.zoom, view.getZoom(), app);
     if (this.HsLanguageService.apps[app].language) {
       this.push(HS_PRMS.lang, this.HsLanguageService.apps[app].language, app);
     }
@@ -194,6 +202,11 @@ export class HsShareUrlService {
     if (appRef.statusSaving) {
       return;
     }
+    this.updateURL(app);
+  }
+
+  private updateURL(app: string) {
+    const appRef = this.get(app);
     this.HsUtilsService.debounce(
       () => {
         let locationPath = this.pathName();
@@ -429,7 +442,11 @@ export class HsShareUrlService {
           this.HsUtilsService.debounce(
             ({map, event, extent, app}) => {
               this.zone.run(() => {
-                this.updatePermalinkComposition(app);
+                if (this.HsLayoutService.get(app).mainpanel == 'permalink') {
+                  this.updatePermalinkComposition(app);
+                } else {
+                  this.updateViewParamsInUrl(true, app);
+                }
               });
             },
             200,
