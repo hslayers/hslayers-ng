@@ -222,14 +222,6 @@ export class HsCompositionsLaymanService {
       );
       return;
     }
-    if (endpoint.user == undefined) {
-      this.displayWarningToast(
-        endpoint,
-        'COMPOSITIONS.endpointUserIsNotDefined',
-        app
-      );
-      return;
-    }
     if (endpoint.url == undefined) {
       this.displayWarningToast(
         endpoint,
