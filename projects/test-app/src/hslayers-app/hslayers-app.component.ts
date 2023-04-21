@@ -19,6 +19,8 @@ import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query/q
 import {HsSidebarService} from 'hslayers-ng/components/sidebar/sidebar.service';
 import {HsUtilsService} from 'hslayers-ng/components/utils/utils.service';
 import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolated';
+import {SPOI} from 'hslayers-ng/common/layers/hs.source.SPOI';
+import {SparqlJson} from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
@@ -376,7 +378,7 @@ export class HslayersAppComponent {
         basemapGallery: true,
         mapSwipe: true,
       },
-      enabledLanguages: 'sk, lv, en',
+      enabledLanguages: 'sk, cs, en',
       language: 'en',
       assetsPath: 'assets',
       saveMapStateOnReload: false,
@@ -445,7 +447,56 @@ export class HslayersAppComponent {
             removable: false,
           },
         }),
-
+        new VectorLayer({
+          properties: {
+            title: 'POIs from SPOI in Italy',
+            cluster: true,
+            editor: {editable: false},
+            editable: false,
+          },
+          source: new SparqlJson({
+            geomAttribute: '?geom',
+            endpointUrl: 'https://www.foodie-cloud.org/sparql',
+            query: `SELECT ?s ?p ?o ?geom
+                FROM <http://www.sdi4apps.eu/poi.rdf>
+                WHERE {
+                  ?s <http://www.opengis.net/ont/geosparql#asWKT> ?geom.
+                  ?s geo:sfWithin <http://www.geonames.org/3175395>.
+                  FILTER(isBlank(?geom) = false).
+                  <extent> ?s ?p ?o.
+                } ORDER BY ?s`,
+            optimization: 'virtuoso',
+            projection: 'EPSG:3857',
+          }),
+          minZoom: 12,
+          visible: false,
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'Cafés from SPOI (world-wide)',
+            cluster: true,
+            editor: {editable: false},
+            editable: false,
+          },
+          source: new SPOI({
+            category: 'cafe',
+            projection: 'EPSG:3857',
+          }),
+          style: new Style({
+            image: new Circle({
+              fill: new Fill({
+                color: 'rgba(255, 204, 102, 0.7)',
+              }),
+              stroke: new Stroke({
+                color: 'rgb(230, 46, 0)',
+                width: 1,
+              }),
+              radius: 5,
+            }),
+          }),
+          minZoom: 11,
+          visible: false,
+        }),
         new VectorLayer({
           visible: true,
           properties: {
