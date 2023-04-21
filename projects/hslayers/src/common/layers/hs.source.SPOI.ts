@@ -1,6 +1,10 @@
-import {SparqlJson} from './hs.source.SparqlJson';
+import {SparqlJson, SparqlOptions} from './hs.source.SparqlJson';
 
 export type SPOIOptions = {
+  /**
+   * One of SPOI categories. Can be ONLY ONE.
+   * @example 'cafe'
+   */
   category: string;
   projection: string;
 };
@@ -10,10 +14,10 @@ export type SPOIOptions = {
  */
 export class SPOI extends SparqlJson {
   constructor({category, projection}: SPOIOptions) {
-    const options = {
+    const options: SparqlOptions = {
       endpointUrl: 'https://www.foodie-cloud.org/sparql',
       endpointOptions: {},
-      geom_attribute: '?geom',
+      geomAttribute: '?geom',
       optimization: 'virtuoso' as const,
       projection: projection,
       query: `
