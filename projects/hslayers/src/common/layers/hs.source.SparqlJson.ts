@@ -30,7 +30,10 @@ export type SparqlOptions = {
    * It may include the leading question mark or dollar sign.
    */
   geomAttribute?: string;
-  hsproxy?: boolean;
+  /**
+   * URL of hslayers-proxy if used. Left empty if proxy is not necessary.
+   */
+  proxyPrefix?: string;
   /**
    * When set to 'virtuoso', the query will use Virtuoso's optimised "bif" functions instead of standardised GeoSPARQL functions.
    * When set to 'wikibase', the query will use Blazegraph & Wikibase SERVICE instead of standardised GeoSPARQL functions.
@@ -87,7 +90,7 @@ export class SparqlJson extends Vector<Geometry> {
     extend_with_attribs,
     idAttribute,
     geomAttribute,
-    hsproxy = false,
+    proxyPrefix,
     optimization,
     projection,
     query,
@@ -126,7 +129,7 @@ export class SparqlJson extends Vector<Geometry> {
           geomAttribute,
           extent,
           optimization,
-          hsproxy,
+          proxyPrefix,
         });
         if (console && typeof this.get('geoname') !== 'undefined') {
           console.log('Get ', this.get('geoname'));
@@ -248,14 +251,14 @@ export class SparqlJson extends Vector<Geometry> {
     geomAttribute,
     extent,
     optimization,
-    hsproxy,
+    proxyPrefix,
   }: {
     endpointUrl: string;
     query: string;
     geomAttribute: string;
     extent: any[];
     optimization?: string;
-    hsproxy?: boolean;
+    proxyPrefix?: string;
   }): string {
     let url = '';
     // An attempt to add missing geometry variable
@@ -321,9 +324,8 @@ export class SparqlJson extends Vector<Geometry> {
       ) +
       tmp[1];
     url = url.replace(/<extent>/g, s_extent);
-    if (hsproxy) {
-      url =
-        '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(url);
+    if (proxyPrefix) {
+      url = proxyPrefix + encodeURIComponent(url);
     }
     return url;
   }
