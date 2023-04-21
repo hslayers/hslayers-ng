@@ -1,5 +1,5 @@
 import * as xml2Json from 'xml-js';
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry, Point} from 'ol/geom';
 import {Vector} from 'ol/source';
@@ -20,11 +20,14 @@ export type SparqlOptions = {
   endpointOptions?;
   extend_with_attribs?;
   /**
-   * Query variable (attribute) holding a unique ID of each feature. Including the leading question mark.
+   * Query variable (attribute) holding a unique ID of each feature.
+   * It may include the leading question mark or dollar sign.
+   * @default 's'
    */
   idAttribute?: string;
   /**
-   * Query variable (attribute) holding the geometry of each feature. Including the leading question mark.
+   * Query variable (attribute) holding the geometry of each feature.
+   * It may include the leading question mark or dollar sign.
    */
   geomAttribute?: string;
   hsproxy?: boolean;
@@ -40,7 +43,7 @@ export type SparqlOptions = {
   projection: string;
   /**
    * Actual SPARQL query.
-   * Must contain magical keyword {@code <extent>} somewhere in the WHERE clause, which will be automagically replaced by a current extent filter.
+   * Must contain magical keyword <extent> somewhere in the WHERE clause, which will be automagically replaced by a current extent filter.
    */
   query?: string;
   strategy?;
@@ -52,7 +55,8 @@ export type SparqlOptions = {
   url?: string;
   /**
    * @deprecated
-   * Was not obvious what it was good for and no use case was found. If you have some, please file an issue at https://github.com/hslayers/hslayers-ng/issues
+   * Was not obvious what it was good for and no use case was found.
+   * If you have some, please file an issue at https://github.com/hslayers/hslayers-ng/issues
    */
   updates_url?: string;
 };
@@ -102,6 +106,16 @@ export class SparqlJson extends Vector<Geometry> {
         if (!url && (!endpointUrl || !query)) {
           throw new Error('URL or query not specified for SPARQL source');
         }
+        idAttribute ??= 's';
+        idAttribute = idAttribute?.trim();
+        if (idAttribute.startsWith('?') || idAttribute.startsWith('$')) {
+          idAttribute = idAttribute?.slice(1);
+        }
+        geomAttribute ??= 'geom'; //TODO: how to fallback to 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))' ?
+        geomAttribute = geomAttribute.trim();
+        if (geomAttribute.startsWith('?') || geomAttribute.startsWith('$')) {
+          geomAttribute = geomAttribute.slice(1);
+        }
         this.set('loaded', false);
         if (typeof clear_on_move !== 'undefined' && clear_on_move) {
           this.clear();
@@ -109,7 +123,6 @@ export class SparqlJson extends Vector<Geometry> {
         url = this.composeUrl({
           endpointUrl,
           query,
-          idAttribute,
           geomAttribute,
           extent,
           optimization,
@@ -160,11 +173,11 @@ export class SparqlJson extends Vector<Geometry> {
         this.loadCounter -= 1;
         const objects = {};
         for (const item of data.results.bindings) {
-          const id = item[idAttribute?.slice(1)]?.value ?? item.s.value;
+          const id = item[idAttribute]?.value;
           if (objects[id] === undefined) {
             objects[id] = {
               'poi_id': id,
-              'geom': item[geomAttribute.slice(1)]?.value,
+              'geom': item[geomAttribute]?.value,
             };
           }
           objects[id][item.p.value] = item.o.value;
@@ -232,39 +245,39 @@ export class SparqlJson extends Vector<Geometry> {
   composeUrl({
     endpointUrl,
     query,
-    idAttribute,
     geomAttribute,
     extent,
     optimization,
     hsproxy,
+  }: {
+    endpointUrl: string;
+    query: string;
+    geomAttribute: string;
+    extent: any[];
+    optimization?: string;
+    hsproxy?: boolean;
   }): string {
     let url = '';
-    let augmentedQuery = query;
-    if (idAttribute) {
-      const firstBraceIndex = query.indexOf('{');
-      let fromIndex = query.toUpperCase().indexOf('FROM');
-      if (fromIndex < 0) {
-        fromIndex = query.toUpperCase().indexOf('WHERE');
-      }
-      const queryParts = [
-        query.slice(0, fromIndex),
-        query.slice(fromIndex, firstBraceIndex + 1),
-        query.slice(firstBraceIndex + 1, query.length),
-      ];
-      augmentedQuery = `${queryParts[0]} ${
-        query.includes('*') ? '' : '?p ?o'
-      } ${queryParts[1]} ${idAttribute} ?p ?o . ${queryParts[2]}`;
+    // An attempt to add missing geometry variable
+    let fromIndex = query.toUpperCase().indexOf('FROM');
+    if (fromIndex < 0) {
+      fromIndex = query.toUpperCase().indexOf('WHERE');
+    }
+    const queryHead = query.slice(0, fromIndex);
+    const queryBody = query.slice(fromIndex, query.length);
+    if (!queryHead.includes('*') && !queryHead.includes(geomAttribute)) {
+      query = `${queryHead} ?${geomAttribute} ${queryBody}`;
     }
     let queryParts: string[];
     // An attempt to fix missing filter by extent
     if (!query.includes('<extent>')) {
-      const lastBraceIndex = augmentedQuery.lastIndexOf('}');
+      const lastBraceIndex = query.lastIndexOf('}');
       queryParts = [
-        augmentedQuery.slice(0, lastBraceIndex - 1),
-        augmentedQuery.slice(lastBraceIndex - 1),
+        query.slice(0, lastBraceIndex - 1),
+        query.slice(lastBraceIndex - 1),
       ];
     } else {
-      queryParts = augmentedQuery.split('<extent>');
+      queryParts = query.split('<extent>');
     }
     url =
       endpointUrl +
@@ -273,9 +286,6 @@ export class SparqlJson extends Vector<Geometry> {
       '<extent>' +
       encodeURIComponent(queryParts[1]) +
       '&format=application%2Fsparql-results%2Bjson';
-    if (typeof geomAttribute === 'undefined') {
-      geomAttribute = 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
-    }
     let first_pair = [extent[0], extent[1]];
     let second_pair = [extent[2], extent[3]];
     first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
@@ -297,7 +307,7 @@ export class SparqlJson extends Vector<Geometry> {
       s_extent = encodeURIComponent(
         `FILTER(${geof}(
               "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
-            ${geomAttribute}
+            ?${geomAttribute}
             )).`
       );
     }
