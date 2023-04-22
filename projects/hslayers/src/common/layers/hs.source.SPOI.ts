@@ -13,7 +13,7 @@ export class SPOI extends SparqlJson {
     const options = {
       endpointUrl: 'https://www.foodie-cloud.org/sparql',
       endpointOptions: {},
-      geom_attribute: '?geom',
+      geomAttribute: '?geom',
       optimization: 'virtuoso' as const,
       projection: projection,
       query: `
