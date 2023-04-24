@@ -1,25 +1,37 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
+import {Layer} from 'ol/layer';
 
 import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../components/layout/dialogs/dialog-item';
 import {HsLanguageService} from '../../components/language/language.service';
-import {Layer} from 'ol/layer';
+import {HsRemoveLayerDialogService} from './remove-layer-dialog.service';
 import {getTitle} from '../layer-extensions';
 
+export type HsRmLayerDialogResponse = {
+  value: 'yes' | 'no';
+  type?: string;
+};
+
 @Component({
-  selector: 'hs-rm-multiple-dialog',
-  templateUrl: './remove-multiple-dialog.html',
+  selector: 'hs-rm-layer-dialog',
+  templateUrl: './remove-layer-dialog.html',
 })
-export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
+export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
   _selectAll = false;
+
+  deleteFromOptions = ['map', 'catalogue'] as const;
+  deleteFrom: (typeof this.deleteFromOptions)[number];
+
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
+    public service: HsRemoveLayerDialogService,
     private hsLanguageService: HsLanguageService
   ) {}
   viewRef: ViewRef;
   data: {
+    multiple: boolean;
     title: string;
     message: string;
     note?: string;
@@ -27,18 +39,20 @@ export class HsRmMultipleDialogComponent implements HsDialogComponent, OnInit {
   };
 
   ngOnInit(): void {
-    for (const item of this.data.items) {
-      item.displayTitle = this.getTitle(item);
+    if (this.data.items) {
+      for (const item of this.data.items) {
+        item.displayTitle = this.getTitle(item);
+      }
     }
   }
   yes(): void {
     this.HsDialogContainerService.destroy(this);
-    this.dialogItem.resolve('yes');
+    this.dialogItem.resolve({value: 'yes', type: this.deleteFrom});
   }
 
   no(): void {
     this.HsDialogContainerService.destroy(this);
-    this.dialogItem.resolve('no');
+    this.dialogItem.resolve({value: 'no'});
   }
 
   checkToRemove(item): void {

@@ -1,11 +1,11 @@
 import {CommonModule} from '@angular/common';
 import {HsLanguageModule} from '../../components/language/language.module';
-import {HsRmMultipleDialogComponent} from './remove-multiple-dialog.component';
+import {HsRmLayerDialogComponent} from './remove-layer-dialog.component';
 import {NgModule} from '@angular/core';
 
 @NgModule({
-  declarations: [HsRmMultipleDialogComponent],
+  declarations: [HsRmLayerDialogComponent],
   imports: [CommonModule, HsLanguageModule],
-  exports: [HsRmMultipleDialogComponent],
+  exports: [HsRmLayerDialogComponent],
 })
-export class HsRmMultipleModule {}
+export class HsRmLayerDialogModule {}

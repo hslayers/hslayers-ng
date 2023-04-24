@@ -468,8 +468,8 @@
     "boxSelection": "Box selection",
     "boxSelectionActivated": "Box selection activated",
     "definedStyle": "Defined style",
-    "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current composition only (preserving it in database) do so in 'Layermanager' panel.",
-    "deleteNotePlural": "* All selected layers will be deleted completely. In case you want to delete all selected layers from the current composition only (preserving it in database) do so in 'LayerManager' panel.",
+    "deleteNote": "*Layer will be deleted completely and you won't be able to restore it",
+    "deleteNotePlural": "* All selected layers will be deleted completely and you won't be able to restore it.",
     "deselectAllFeatures": "Deselect all features",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
@@ -647,7 +647,12 @@
   "LAYERS": {
     "existingLayer": "Existing layer",
     "featuresLoadError": "Loading features failed",
-    "newLayer": "New layer"
+    "newLayer": "New layer",
+    "removeLayer": {
+      "map": "Map",
+      "catalogue": "Map & Catalogue",
+      "deleteFrom": "Delete from"
+    }
   },
   "LAYMAN": {
     "allLayersSuccessfullyRemoved": "All layers successfully removed",

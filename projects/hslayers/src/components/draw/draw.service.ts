@@ -29,12 +29,10 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {HsRmMultipleDialogComponent} from '../../common/remove-multiple/remove-multiple-dialog.component';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {defaultStyle} from '../styles/styles';
 import {
-  getDefinition,
   getEditor,
   getName,
   getSld,
@@ -59,7 +57,7 @@ type activateParams = {
   drawState?: boolean;
 };
 
-const TMP_LAYER_TITLE = 'tmpDrawLayer';
+export const TMP_LAYER_TITLE = 'tmpDrawLayer';
 
 @Injectable({
   providedIn: 'root',
@@ -559,108 +557,6 @@ export class HsDrawService extends HsDrawServiceParams {
         !this.selectedLayer
       );
     }
-  }
-
-  /**
-   * Removes selected drawing layer from both Layermanager and Layman
-   */
-  async removeLayer(): Promise<void> {
-    const dialog = this.hsDialogContainerService.create(
-      HsConfirmDialogComponent,
-      {
-        message: this.translate('DRAW.reallyDeleteThisLayer'),
-        note: this.getDeleteNote(),
-        title: this.translate('COMMON.confirmDelete'),
-      }
-    );
-    const confirmed = await dialog.waitResult();
-    if (confirmed == 'yes') {
-      await this.completeLayerRemoval(this.selectedLayer);
-      this.selectedLayer = null;
-      this.fillDrawableLayers();
-    }
-  }
-
-  /**
-   * Removes multiple selected layers from both Layermanager and Layman
-   */
-  async removeMultipleLayers(): Promise<void> {
-    const dialog = this.hsDialogContainerService.create(
-      HsRmMultipleDialogComponent,
-      {
-        message: this.translate('DRAW.pleaseCheckTheLayers'),
-        note: this.getDeleteNote(true),
-        title: this.translate('COMMON.selectAndConfirmToDeleteMultiple'),
-        items: [
-          ...(this.drawableLayers ?? []),
-          ...(this.drawableLaymanLayers ?? []),
-        ],
-      }
-    );
-    const confirmed = await dialog.waitResult();
-    if (confirmed == 'yes') {
-      this.hsToastService.createToastPopupMessage(
-        this.translate('LAYMAN.deleteLayersRequest'),
-        this.translate('LAYMAN.deletionInProgress'),
-        {
-          toastStyleClasses: 'bg-info text-white',
-          serviceCalledFrom: 'HsDrawService',
-          disableLocalization: true,
-          customDelay: 600000,
-        }
-      );
-      const drawableLaymanRm = this.drawableLaymanLayers.filter(
-        (l) => l.toRemove
-      );
-      const drawableRm = this.drawableLayers.filter((l) => l.toRemove);
-
-      if (
-        drawableLaymanRm?.length == this.drawableLaymanLayers?.length &&
-        this.drawableLaymanLayers?.length != 0
-      ) {
-        await this.hsLaymanService.removeLayer();
-        for (const l of drawableRm) {
-          await this.completeLayerRemoval(l);
-        }
-      } else {
-        const toRemove = [...drawableRm, ...drawableLaymanRm];
-        for (const l of toRemove) {
-          await this.completeLayerRemoval(l);
-        }
-      }
-      this.hsToastService.removeByText(
-        this.hsLanguageService.getTranslation(
-          'LAYMAN.deletionInProgress',
-          undefined
-        )
-      );
-      this.selectedLayer = null;
-      this.fillDrawableLayers();
-    }
-  }
-
-  private async completeLayerRemoval(layerToRemove: any): Promise<void> {
-    let definition;
-    const isLayer = layerToRemove instanceof Layer;
-    if (isLayer) {
-      this.hsMapService.getMap().removeLayer(layerToRemove);
-      definition = getDefinition(layerToRemove);
-      if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
-        this.tmpDrawLayer = false;
-      }
-    }
-    if (
-      (definition?.format?.toLowerCase().includes('wfs') && definition?.url) ||
-      !isLayer
-    ) {
-      await this.hsLaymanService.removeLayer(layerToRemove.name);
-    }
-  }
-
-  getDeleteNote(plural?: boolean): string {
-    return this.isAuthenticated
-      ? this.translate(plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote')
-      : '';
   }
 
   /**

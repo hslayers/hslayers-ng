@@ -1,0 +1,52 @@
+<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{data.title}}
+                </h4>
+                <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
+                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                <div class="d-flex flex-column mb-3"> <!-- pb-3 border-bottom -->
+                    <p class="fw-bold h6">{{'LAYERS.removeLayer.deleteFrom' | translateHs }}: </p>
+                    <div class="d-flex gap-3 justify-content-center px-5">
+                        <button *ngFor="let option of deleteFromOptions" type="button"
+                            [ngClass]="{'active' : deleteFrom === option }" (click)="deleteFrom = option"
+                            class="btn btn-sm btn-outline-primary w-50">{{service.translate('LAYERS.removeLayer.' +
+                            option)}}</button>
+                    </div>
+                </div>
+                <p *ngIf="deleteFrom === 'catalogue'" class="h6 small">{{data.note}}</p>
+                <div *ngIf="deleteFrom && data.multiple">
+                    <p class="fw-bold h6">{{data.message}}</p>
+
+                    <div style="max-height: 65vh;" *ngIf="data.items?.length > 0">
+                        <div class="d-flex w-100 justify-content-center">
+                            <button type="button" class="mt-1 btn btn-primary"
+                                (click)="selectDeselectAll()">{{'SAVECOMPOSITION.form.toggleAll' |
+                                translateHs }}</button>
+                        </div>
+                        <div class="d-flex align-items-center" style="word-break:break-all"
+                            *ngFor="let item of data.items">
+                            <button type="button" class="btn btn-sm m-0 p-0"
+                                (click)="checkToRemove(item);$event.stopPropagation()"
+                                [ngClass]="item.toRemove ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            <p class="m-0 ps-1">{{item.displayTitle}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="!deleteFrom" class="btn btn-primary" (click)="yes()"
+                    [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
+                    translateHs}}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel"
+                    [title]="'COMMON.back' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.back' |
+                    translateHs
+                    }}</button>
+            </div>
+        </div>
+    </div>
+</div>

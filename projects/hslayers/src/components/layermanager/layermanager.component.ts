@@ -26,6 +26,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsRemoveLayerDialogService} from '../../common/remove-multiple/remove-layer-dialog.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -120,7 +121,8 @@ export class HsLayerManagerComponent
     public hsLanguageService: HsLanguageService,
     public hsConfig: HsConfig,
     public hsLayerListService: HsLayerListService,
-    public hsSidebarService: HsSidebarService
+    public hsSidebarService: HsSidebarService,
+    private HsRemoveLayerDialogService: HsRemoveLayerDialogService
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerRemovals
@@ -268,6 +270,19 @@ export class HsLayerManagerComponent
   }
 
   /**
+   * Creates remove-layer dialog which allows for singke/multiple layer removal
+   */
+  removeMultipleLayers() {
+    this.HsRemoveLayerDialogService.removeMultipleLayers(
+      this.hsLayerManagerService.data.layers
+        .filter((layer) => layer.showInLayerManager)
+        .map((l) => {
+          return l.layer;
+        })
+    );
+  }
+
+  /**
    * Removes all layers which don't have 'removable' attribute
    * set to false if user confirms the removal. Might reload composition again.
    */
@@ -277,7 +292,6 @@ export class HsLayerManagerComponent
       {}
     );
   }
-
   /**
    * Determines if layer has copyright information available *
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
