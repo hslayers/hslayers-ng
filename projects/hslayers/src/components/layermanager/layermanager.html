@@ -10,6 +10,10 @@
                 <button ngbDropdownToggle class="but-title-sm  hs-extra-buttons me-1" type="button"><i
                         class="icon-menu"></i></button>
                 <div ngbDropdownMenu>
+                    <a class="dropdown-item" (click)="removeMultipleLayers()">
+                        <i class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'DRAW.removeMultipleLayers'
+                        | translateHs }}
+                    </a>
                     <a class="dropdown-item" (click)="removeAllLayers()">
                         <i
                             class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'

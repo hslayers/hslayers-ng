@@ -13,7 +13,7 @@ import {HsLanguageModule} from '../language/language.module';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryModule} from '../query/query.module';
-import {HsRmMultipleModule} from '../../common/remove-multiple/remove-multiple.module';
+import {HsRmLayerDialogModule} from '../../common/remove-multiple/remove-layer-dialog.module';
 import {HsStylerModule} from '../styles/styles.module';
 
 @NgModule({
@@ -34,7 +34,7 @@ import {HsStylerModule} from '../styles/styles.module';
     HsLanguageModule,
     HsQueryModule,
     HsLaymanModule,
-    HsRmMultipleModule,
+    HsRmLayerDialogModule,
   ],
   exports: [
     HsDrawComponent,

@@ -10,6 +10,9 @@ import {Vector as VectorSource} from 'ol/source';
 
 export class HsDrawServiceParams {
   drawableLayers: Array<any> = [];
+  /**
+   * Drawable layers available on Layman not currently added to map
+   */
   drawableLaymanLayers: Array<any> = [];
   hasSomeDrawables = false;
   moreThenOneDrawable = false;

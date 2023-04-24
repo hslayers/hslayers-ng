@@ -5,6 +5,7 @@ import {HsDrawService} from '../draw.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsRemoveLayerDialogService} from '../../../common/remove-multiple/remove-layer-dialog.service';
 import {HsToolbarPanelBaseComponent} from '../../toolbar/toolbar-panel-base.component';
 import {getTitle} from '../../../common/layer-extensions';
 
@@ -22,7 +23,8 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
     public HsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsRemoveLayerDialogService: HsRemoveLayerDialogService
   ) {
     super(HsLayoutService);
   }

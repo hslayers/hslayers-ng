@@ -468,8 +468,8 @@
     "boxSelection": "Výběr polygonem",
     "boxSelectionActivated": "Výběr polygonem aktivní",
     "definedStyle": "Definovaný styl",
-    "deleteNote": "*Vrstva bude kompletně vymazána. V případe, že ji chcete vymazat jenom z aktuální kompozice (ne i z databáze) můžete tak udelat v panelu 'Správce vrstev'",
-    "deleteNotePlural": "* Všechny vybrané vrstvy budou navždy smazány. V případě, že chcete tyto vrstvy pouze odebrat z aktuální kompozice (a ponechat je v databázi), odeberte je v panelu 'Správce vrstev'.",
+    "deleteNote": "*Vrstva bude kompletně vymazána a nebudete ji moci obnovit",
+    "deleteNotePlural": "* Všechny vybrané vrstvy budou navždy smazány a nebudete je moci obnovit.",
     "deselectAllFeatures": "Odznačit všechny prvky",
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
@@ -647,7 +647,12 @@
   "LAYERS": {
     "existingLayer": "Existující vrstva",
     "featuresLoadError": "Načítání prvků selhalo",
-    "newLayer": "Nová vrstva"
+    "newLayer": "Nová vrstva",
+    "removeLayer": {
+      "map": "Mapy",
+      "catalogue": "Mapy a Katalogu",
+      "deleteFrom": "Smazat z"
+    }
   },
   "LAYMAN": {
     "allLayersSuccessfullyRemoved": "Všechny vrstvy úspěšně odstraněny",
