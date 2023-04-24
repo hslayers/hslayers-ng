@@ -628,6 +628,12 @@ export class HsDrawService extends HsDrawServiceParams {
           await this.completeLayerRemoval(l);
         }
       }
+      this.hsToastService.removeByText(
+        this.hsLanguageService.getTranslation(
+          'LAYMAN.deletionInProgress',
+          undefined
+        )
+      );
       this.selectedLayer = null;
       this.fillDrawableLayers();
     }

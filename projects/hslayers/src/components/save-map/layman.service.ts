@@ -867,7 +867,7 @@ export class HsLaymanService implements HsSaverService {
   /**
    * Removes selected layer from Layman's database
    
-   * @param layer - (Optional) Layer to be removed
+   * @param layer - (Optional) Layer to be removed. DELETE all layers when not provided
    */
   async removeLayer(layer?: Layer<Source> | string): Promise<boolean> {
     let success: boolean;
@@ -894,12 +894,6 @@ export class HsLaymanService implements HsSaverService {
         })
         .pipe(
           map((res: DeleteSingleLayerResponse | DeleteAllLayersResponse[]) => {
-            this.hsToastService.removeByText(
-              this.hsLanguageService.getTranslation(
-                'LAYMAN.deletionInProgress',
-                undefined
-              )
-            );
             const response = Array.isArray(res) ? res[0] : res;
             if (response?.code) {
               this.hsCommonLaymanService.displayLaymanError(
