@@ -1,3 +1,16 @@
+## [11.2.1](https://github.com/hslayers/hslayers-ng/compare/11.2.0...11.2.1) (2023-04-25)
+
+
+### Bug Fixes
+
+* Multiple layers removal ([21beaee](https://github.com/hslayers/hslayers-ng/commit/21beaee7aaaf4ae2dfaa379a0be1896f6b8a8e7e))
+* Prefer QML and SLD styles ([da7a888](https://github.com/hslayers/hslayers-ng/commit/da7a888200ae111aedf3c20dcc2b6f507a192373)), closes [#3943](https://github.com/hslayers/hslayers-ng/issues/3943)
+* Prevent scrolling to add-data style input ([85b8b23](https://github.com/hslayers/hslayers-ng/commit/85b8b2315504411c4ea6df2686f0d266b73c1990))
+* Safely check composition load success ([f843bca](https://github.com/hslayers/hslayers-ng/commit/f843bcad3e0e614c59c98194c447d013247590d2)), closes [#3934](https://github.com/hslayers/hslayers-ng/issues/3934) [#3956](https://github.com/hslayers/hslayers-ng/issues/3956)
+* **sparql:** Fix loading GeoSPARQL layers ([17e4873](https://github.com/hslayers/hslayers-ng/commit/17e487351562a996708be74d0b364f6940fdad50))
+
+
+
 # [11.2.0](https://github.com/hslayers/hslayers-ng/compare/11.1.0...11.2.0) (2023-04-13)
 
 
