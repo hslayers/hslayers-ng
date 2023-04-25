@@ -301,7 +301,7 @@ export class HsDrawService extends HsDrawServiceParams {
         return;
       }
       if (metadata.style?.url) {
-        style = await this.hsLaymanBrowserService.getStyleFromUrl(
+        style = await this.hsCommonLaymanService.getStyleFromUrl(
           metadata.style?.url
         );
       }

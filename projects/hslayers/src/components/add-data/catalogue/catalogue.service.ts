@@ -418,7 +418,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     type?: string
   ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
-
     if (ds.type == 'micka') {
       whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
     } else if (ds.type.includes('layman')) {

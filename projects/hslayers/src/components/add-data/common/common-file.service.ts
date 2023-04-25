@@ -24,7 +24,10 @@ import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from '../../../common/layman/types/post-patch-layer-response.type';
 import {VectorDataObject} from '../vector/vector-data.type';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
-import {getLaymanFriendlyLayerName} from '../../../common/layman/layman-utils';
+import {
+  getLaymanFriendlyLayerName,
+  layerParamPendingOrStarting,
+} from '../../../common/layman/layman-utils';
 
 export const FILE_UPLOAD_SIZE_LIMIT = 10485760 as const; //10 * 1024 * 1024 = 10MB
 
@@ -229,7 +232,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   async loadNonWmsLayer(
     endpoint: HsEndpoint,
     formDataParams: FileFormData,
-
     overwrite?: boolean
   ): Promise<PostPatchLayerResponse> {
     try {
@@ -398,7 +400,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    */
   async addAsService(
     data: FileDataObject,
-
     options?: {
       overwrite?: boolean;
       repetive?: boolean;
@@ -584,11 +585,14 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * @param endpoint - Selected endpoint (should be Layman)
    * @param layerName - Name of the layer to describe
+   * @param pendingParam - (Optional) Param of descriptor that needs to pass PENDING and STARTING status
+   * before returning. By default set to 'wms'
    * @returns Description of Layman layer
    */
   async describeNewLayer(
     endpoint: HsEndpoint,
-    layerName: string
+    layerName: string,
+    pendingParam: string = 'wms'
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       const descriptor = await this.hsLaymanService.describeLayer(
@@ -596,10 +600,10 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         layerName,
         endpoint.user
       );
-      if (['STARTED', 'PENDING'].includes(descriptor?.wms.status)) {
+      if (layerParamPendingOrStarting(descriptor, pendingParam)) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(this.describeNewLayer(endpoint, layerName));
+            resolve(this.describeNewLayer(endpoint, layerName, pendingParam));
           }, 2000);
         });
       } else {

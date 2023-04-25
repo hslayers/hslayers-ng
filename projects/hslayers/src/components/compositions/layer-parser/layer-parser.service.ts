@@ -31,6 +31,7 @@ import {WMTSCapabilities} from 'ol/format';
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataCommonService} from '../../add-data/common/common.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
 import {HsMapService} from '../../map/map.service';
@@ -58,7 +59,7 @@ export class HsCompositionsLayerParserService {
     private HsUrlWfsService: HsUrlWfsService,
     private hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     private hsAddDataCommonService: HsAddDataCommonService,
-    private HsLaymanBrowserService: HsLaymanBrowserService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private HsUtilsService: HsUtilsService,
     private HttpClient: HttpClient
   ) {}
@@ -429,7 +430,7 @@ export class HsCompositionsLayerParserService {
           (lyr_def.style as string).startsWith('http')
         ) {
           try {
-            lyr_def.style = await this.HsLaymanBrowserService.getStyleFromUrl(
+            lyr_def.style = await this.hsCommonLaymanService.getStyleFromUrl(
               lyr_def.style
             );
           } catch (ex) {

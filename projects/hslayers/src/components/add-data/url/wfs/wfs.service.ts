@@ -79,7 +79,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-
     style?: string
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {

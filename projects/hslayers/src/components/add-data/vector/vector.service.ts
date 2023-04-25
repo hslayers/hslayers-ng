@@ -10,6 +10,7 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
+import {HsCommonLaymanService} from '../../../common/layman/public-api';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
@@ -64,6 +65,7 @@ export class HsAddDataVectorService {
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsAddDataService: HsAddDataService,
     private hsLaymanService: HsLaymanService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private hsLog: HsLogService,
     private hsMapService: HsMapService,
     private hsStylerService: HsStylerService,
@@ -90,7 +92,6 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-
     addUnder?: Layer<Source>
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     return new Promise(async (resolve, reject) => {
@@ -198,8 +199,7 @@ export class HsAddDataVectorService {
     Object.assign(
       descriptor.layerParams,
       await this.hsStylerService.parseStyle(
-        (descriptor.layerParams.sld || descriptor.layerParams.qml) ??
-          descriptor.layerParams.style
+        (options.sld || options.qml) ?? options.style
       )
     );
     return new VectorLayer(descriptor.layerParams);
@@ -245,6 +245,35 @@ export class HsAddDataVectorService {
   }
 
   /**
+   * Construct options parameter for new vector layer being added
+   */
+  private buildNewLayerOptions(data: VectorDataObject): HsVectorLayerOptions {
+    const serializedStyle =
+      typeof data.serializedStyle === 'string'
+        ? data.serializedStyle
+        : data.serializedStyle?.content;
+    const styleFormat = this.hsStylerService.guessStyleFormat(serializedStyle);
+    return {
+      extractStyles: data.extract_styles,
+      features: data.saveToLayman ? null : data.features, //Features are being posted to Layman in original CRS and will be fetched later
+      geomAttribute: `?${data.geomProperty}`,
+      idAttribute: `?${data.idProperty}`,
+      path: this.hsUtilsService.undefineEmptyString(data.folder_name),
+      access_rights: data.access_rights,
+      workspace: this.hsAddDataCommonFileService.endpoint?.user,
+      query: data.query,
+      queryCapabilities:
+        data.type != 'kml' &&
+        data.type != 'gpx' &&
+        data.type != 'sparql' &&
+        !data.url?.endsWith('json'),
+      saveToLayman: data.saveToLayman,
+      sld: styleFormat == 'sld' ? serializedStyle : undefined,
+      qml: styleFormat == 'qml' ? serializedStyle : undefined,
+    };
+  }
+
+  /**
    * Add new layer to map and Layman (if possible)
    * @param data - Layer data object provided
    
@@ -253,8 +282,7 @@ export class HsAddDataVectorService {
   async addNewLayer(
     data: VectorDataObject
   ): Promise<{layer: VectorLayer<VectorSource<Geometry>>; complete: boolean}> {
-    const commonFileRef = this.hsAddDataCommonFileService;
-    if (!commonFileRef.endpoint) {
+    if (!this.hsAddDataCommonFileService.endpoint) {
       this.hsAddDataCommonFileService.pickEndpoint();
     }
     const addLayerRes: {
@@ -268,13 +296,11 @@ export class HsAddDataVectorService {
         return addLayerRes;
       }
       //Create layer on layman: OverwriteResponse.add
-      await this.upsertLayer(data);
+      const upsertResponse = await this.upsertLayer(data);
+      if (data.serializedStyle) {
+        await this.setLaymanLayerStyle(upsertResponse, data);
+      }
     }
-    const serializedStyle =
-      typeof data.serializedStyle === 'string'
-        ? data.serializedStyle
-        : data.serializedStyle?.content;
-    const styleFormat = this.hsStylerService.guessStyleFormat(serializedStyle);
     const layer = await this.addVectorLayer(
       data.features?.length > 0 ? '' : data.type,
       data.url || data.base64url,
@@ -282,24 +308,7 @@ export class HsAddDataVectorService {
       data.title,
       data.abstract,
       data.srs,
-      {
-        extractStyles: data.extract_styles,
-        features: data.saveToLayman ? null : data.features, //Features are being posted to Layman in original CRS and will be fetched later
-        geomAttribute: `?${data.geomProperty}`,
-        idAttribute: `?${data.idProperty}`,
-        path: this.hsUtilsService.undefineEmptyString(data.folder_name),
-        access_rights: data.access_rights,
-        workspace: commonFileRef.endpoint?.user,
-        query: data.query,
-        queryCapabilities:
-          data.type != 'kml' &&
-          data.type != 'gpx' &&
-          data.type != 'sparql' &&
-          !data.url?.endsWith('json'),
-        saveToLayman: data.saveToLayman,
-        sld: styleFormat == 'sld' ? serializedStyle : undefined,
-        qml: styleFormat == 'qml' ? serializedStyle : undefined,
-      },
+      this.buildNewLayerOptions(data),
       data.addUnder
     );
     this.fitExtent(layer);
@@ -311,6 +320,24 @@ export class HsAddDataVectorService {
       });
     }
     return addLayerRes;
+  }
+
+  /**
+   * Get layer style from Layman endpoint before creating layer to ensure all params and values
+   * used are in sync with whats on Layman eg. to prevent inconsitencies caused by attribute names laundering
+   */
+  async setLaymanLayerStyle(
+    upsertResponse: PostPatchLayerResponse,
+    data: VectorDataObject
+  ): Promise<void> {
+    const descriptor = await this.hsAddDataCommonFileService.describeNewLayer(
+      this.hsAddDataCommonFileService.endpoint,
+      upsertResponse.name,
+      'style'
+    );
+    data.serializedStyle = await this.hsCommonLaymanService.getStyleFromUrl(
+      descriptor.style.url
+    );
   }
 
   /**
