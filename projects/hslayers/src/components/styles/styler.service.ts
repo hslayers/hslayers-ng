@@ -29,7 +29,6 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
-import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -215,6 +214,24 @@ export class HsStylerService {
   }
 
   /**
+   * Upload style created by createDefaultStyle method to layman thus syncing style of
+   * vector layer added without SLD by rewriting its defualt value
+   */
+  private trySyncingStyleToLayman(layer: VectorLayer<VectorSource<Geometry>>) {
+    if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {
+      awaitLayerSync(layer).then(() => {
+        setSld(
+          layer,
+          getSld(layer).replace(
+            '<NamedLayer>',
+            '<NamedLayer>' + '<!-- This will be removed by parser -->'
+          )
+        );
+      });
+    }
+  }
+
+  /**
    * Parse style from 'sld' attribute defined in SLD format and convert to OL
    * style which is set on the layer. Also do the opposite if no SLD is defined,
    * because SLD is used in the styler panel.
@@ -253,6 +270,7 @@ export class HsStylerService {
         //await is necessary because of consecutive code (this.fill())
         await this.styleClusteredLayer(layer);
       }
+      this.trySyncingStyleToLayman(layer);
     } else if (
       style &&
       !sld &&
@@ -283,7 +301,7 @@ export class HsStylerService {
     if (!style) {
       return {
         sld: defaultStyle,
-        style: await this.sldToOlStyle(defaultStyle),
+        style: createDefaultStyle,
       };
     }
     const styleType = this.guessStyleFormat(style);
