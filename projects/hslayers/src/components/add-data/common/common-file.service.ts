@@ -441,9 +441,9 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           options?.overwrite
         );
         if (response?.code) {
-          await this.postLoadNonWmsError(response, data, options?.repetive);
+          await this.loadNonWmsError(response, data, options?.repetive);
         } else {
-          await this.postLoadNonWmsSuccess(response, data);
+          await this.loadNonWmsSuccess(response, data);
         }
       }
     } catch (err) {
@@ -503,7 +503,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @param data - Current data object to load
    
    */
-  async postLoadNonWmsError(
+  async loadNonWmsError(
     response: PostPatchLayerResponse,
     data: FileDataObject,
 
@@ -537,7 +537,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @param data - Current data object to load
    
    */
-  async postLoadNonWmsSuccess(
+  async loadNonWmsSuccess(
     response: PostPatchLayerResponse,
     data: FileDataObject
   ): Promise<void> {
@@ -579,6 +579,9 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           ? data.name
           : `${descriptor.workspace}:${data.name}`,
       owrCache: true,
+      style: data.serializedStyle
+        ? await this.hsCommonLaymanService.getStyleFromUrl(descriptor.style.url)
+        : undefined,
     });
   }
 

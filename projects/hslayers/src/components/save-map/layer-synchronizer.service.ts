@@ -106,7 +106,6 @@ export class HsLayerSynchronizerService {
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initially also get features from server
    * @param layer - Layer to add
-   
    */
   async startMonitoringIfNeeded(
     layer: VectorLayer<VectorSource<Geometry>>
