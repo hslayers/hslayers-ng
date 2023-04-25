@@ -399,6 +399,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param srs - of the layer
    */
   getLayer(layer, options: addLayerOptions): Layer<Source> {
+    const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -407,15 +408,14 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         removable: true,
         sld: options.sld,
         qml: options.qml,
-        wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+        wfsUrl: url,
         // extent: this.getLayerExtent(layer, options.crs),
       },
       source: new WfsSource(this.hsUtilsService, this.http, {
         data_version: this.data.version,
         output_format: this.data.output_format,
         crs: options.crs,
-        provided_url:
-          this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+        provided_url: url,
         layer_name: options.layerName,
         map_projection: this.hsMapService.getMap().getView().getProjection(),
       }),
