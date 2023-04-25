@@ -49,15 +49,15 @@ export class VectorLayerDescriptor {
       title,
       opacity: options.opacity || 1,
       fromComposition: options.fromComposition || false,
-      style: options.style,
       removable: true,
       path: options.path,
-      sld: options.sld,
-      qml: options.qml,
       visible: options.visible,
       workspace: options.workspace,
       access_rights: options.access_rights,
       queryCapabilities: options.queryCapabilities,
+      sld: options.sld,
+      qml: options.qml,
+      style: options.style,
     };
 
     switch (type ? type.toLowerCase() : '') {

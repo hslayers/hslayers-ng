@@ -287,7 +287,7 @@ export class HsLaymanBrowserService {
     }
     let style: string = undefined;
     if (lyr.style?.url) {
-      style = await this.getStyleFromUrl(lyr.style?.url);
+      style = await this.hsCommonLaymanService.getStyleFromUrl(lyr.style?.url);
     }
     if (lyr.style?.type == 'sld') {
       if (!style?.includes('StyledLayerDescriptor')) {
@@ -327,20 +327,6 @@ export class HsLaymanBrowserService {
         }
       );
       return false;
-    }
-  }
-
-  async getStyleFromUrl(styleUrl: string): Promise<string> {
-    try {
-      return await lastValueFrom(
-        this.http.get(styleUrl, {
-          headers: new HttpHeaders().set('Content-Type', 'text'),
-          responseType: 'text',
-          withCredentials: true,
-        })
-      );
-    } catch (ex) {
-      console.error(ex);
     }
   }
 }

@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
@@ -125,5 +125,19 @@ export class HsCommonLaymanService {
         ),
       {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}
     );
+  }
+
+  async getStyleFromUrl(styleUrl: string): Promise<string> {
+    try {
+      return await lastValueFrom(
+        this.$http.get(styleUrl, {
+          headers: new HttpHeaders().set('Content-Type', 'text'),
+          responseType: 'text',
+          withCredentials: true,
+        })
+      );
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 }

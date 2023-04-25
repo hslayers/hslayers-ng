@@ -52,8 +52,11 @@ export function wfsNotAvailable(descr: HsLaymanLayerDescriptor) {
   return descr.wfs?.status == 'NOT_AVAILABLE';
 }
 
-export function wfsPendingOrStarting(descr: HsLaymanLayerDescriptor) {
-  return descr.wfs?.status == 'PENDING' || descr.wfs?.status == 'STARTED';
+export function layerParamPendingOrStarting(
+  descr: HsLaymanLayerDescriptor,
+  param: string
+) {
+  return descr[param]?.status == 'PENDING' || descr[param]?.status == 'STARTED';
 }
 
 export function wfsFailed(descr: HsLaymanLayerDescriptor) {

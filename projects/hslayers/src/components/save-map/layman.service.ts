@@ -45,9 +45,9 @@ import {
   getLayerName,
   getLaymanFriendlyLayerName,
   getSupportedSrsList,
+  layerParamPendingOrStarting,
   wfsFailed,
   wfsNotAvailable,
-  wfsPendingOrStarting,
 } from '../../common/layman/layman-utils';
 import {PostPatchLayerResponse} from '../../common/layman/types/post-patch-layer-response.type';
 import {UpsertLayerObject} from './types/upsert-layer-object.type';
@@ -831,7 +831,8 @@ export class HsLaymanService implements HsSaverService {
         case response.name && ignoreStatus:
           return {...response, workspace};
         case response.wfs &&
-          (wfsPendingOrStarting(response) || response.wfs?.url == undefined):
+          (layerParamPendingOrStarting(response, 'wfs') ||
+            response.wfs?.url == undefined):
           if (!this.pendingLayers.includes(layerName)) {
             this.pendingLayers.push(layerName);
             this.laymanLayerPending.next(this.pendingLayers);
