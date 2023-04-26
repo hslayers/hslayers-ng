@@ -1,17 +1,16 @@
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {
-  Image as ImageSource,
   ImageArcGISRest,
+  Image as ImageSource,
   ImageStatic,
   ImageWMS,
   Source,
-  Tile as TileSource,
   TileArcGISRest,
+  Tile as TileSource,
   TileWMS,
   Vector as VectorSource,
   XYZ,
@@ -28,20 +27,16 @@ import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMTSCapabilities} from 'ol/format';
 
-import {HsAddDataCommonService} from '../../add-data/common/common.service';
+import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
+import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
-import {HsUrlWfsService} from '../../add-data/url/wfs/wfs.service';
-import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
-import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
-import {SparqlJson} from '../../../common/layers/hs.source.SparqlJson';
-import {WfsSource} from '../../../common/layers/hs.source.WfsSource';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
@@ -55,12 +50,8 @@ export class HsCompositionsLayerParserService {
     private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     private HsLanguageService: HsLanguageService,
     private HsToastService: HsToastService,
-    private HsUrlWfsService: HsUrlWfsService,
-    private hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    private hsAddDataCommonService: HsAddDataCommonService,
     private hsCommonLaymanService: HsCommonLaymanService,
-    private HsUtilsService: HsUtilsService,
-    private HttpClient: HttpClient
+    private hsAddDataOwsService: HsAddDataOwsService,
   ) {}
 
   /**
@@ -68,30 +59,19 @@ export class HsCompositionsLayerParserService {
    *
    * @public
    * @param lyr_def - Layer definition object
+   * Create WFS layer from capabilities
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
-    const newLayer = new VectorLayer({
-      properties: {
-        name: lyr_def.name,
-        title: lyr_def.title.replace(/\//g, '&#47;'),
-        path: lyr_def.path,
-        removable: true,
-        sld: lyr_def.sld ?? lyr_def.style,
-        qml: lyr_def.qml,
-        wfsUrl: lyr_def.protocol.url.split('?')[0],
-      },
-      source: new WfsSource(this.HsUtilsService, this.HttpClient, {
-        data_version: lyr_def.protocol.version,
-        output_format: lyr_def.protocol.output_format,
-        crs: lyr_def.projection,
-        provided_url: lyr_def.protocol.url.split('?')[0],
-        layer_name: lyr_def.name,
-        map_projection: this.hsMapService.getMap().getView().getProjection(),
-      }),
-      renderOrder: null,
-      //Used to determine whether its URL WFS service when saving to compositions
+    const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
+    const newLayer = await this.hsAddDataOwsService.connectToOWS({
+      type: 'wfs',
+      uri: lyr_def.protocol.url.split('?')[0],
+      layer: lyr_def.name,
+      owrCache: true,
+      getOnly: true,
+      style: style,
     });
-    return newLayer;
+    return newLayer[0];
   }
 
   /**
@@ -114,7 +94,7 @@ export class HsCompositionsLayerParserService {
 
     // Get WMTS Capabilities and create WMTS source base on it
     const wrapper = await this.HsWmtsGetCapabilitiesService.request(
-      lyr_def.url
+      lyr_def.url,
     );
     try {
       //parse the XML response and create options object...
@@ -133,16 +113,16 @@ export class HsCompositionsLayerParserService {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
           'ADDLAYERS.capabilitiesParsingProblem',
-          undefined
+          undefined,
         ),
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
-          error
+          error,
         ),
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsLayerParserService',
-        }
+        },
       );
       this.hsMapService.getMap().getLayers().remove(wmts);
     }
@@ -348,7 +328,7 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    */
   async createSparqlLayer(
-    lyr_def
+    lyr_def,
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     const url = decodeURIComponent(lyr_def.protocol.url);
     const definition: any = {};
@@ -400,7 +380,7 @@ export class HsCompositionsLayerParserService {
    * @returns Either valid vector layer or function for creation of other supported vector file types)
    */
   async createVectorLayer(
-    lyr_def
+    lyr_def,
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     try {
       let format = '';
@@ -428,7 +408,7 @@ export class HsCompositionsLayerParserService {
         ) {
           try {
             lyr_def.style = await this.hsCommonLaymanService.getStyleFromUrl(
-              lyr_def.style
+              lyr_def.style,
             );
           } catch (ex) {
             console.warn('Could not get style from ' + lyr_def.style);
@@ -436,7 +416,7 @@ export class HsCompositionsLayerParserService {
         }
         Object.assign(
           options,
-          await this.HsStylerService.parseStyle(lyr_def.style)
+          await this.HsStylerService.parseStyle(lyr_def.style),
         );
         extractStyles = false;
       }
@@ -451,7 +431,7 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            Object.assign(options, {extractStyles})
+            Object.assign(options, {extractStyles}),
           );
           break;
         case 'ol.format.GeoJSON':
@@ -462,7 +442,7 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            options
+            options,
           );
           break;
         case 'hs.format.WFS':
@@ -475,7 +455,7 @@ export class HsCompositionsLayerParserService {
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
-            options
+            options,
           );
           break;
         case 'hs.format.Sparql':
@@ -504,7 +484,7 @@ export class HsCompositionsLayerParserService {
               sld: options.sld,
               qml: options.qml,
               features,
-            }
+            },
           );
       }
       setDefinition(layer, lyr_def.protocol);
