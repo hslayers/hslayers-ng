@@ -503,7 +503,9 @@ export class HsCompositionsLayerParserService {
               visible: lyr_def.visibility,
               path: lyr_def.path,
               fromComposition: lyr_def.fromComposition,
-              style: lyr_def.style,
+              style: options.style ?? lyr_def.style,
+              sld: options.sld,
+              qml: options.qml,
               features,
             }
           );

@@ -14,6 +14,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from 'hslayers-ng';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
@@ -52,11 +53,6 @@ class HsCompositionsMickaServiceMock {
 
 class hsCommonLaymanServiceMock {
   authChange: Subject<void> = new Subject();
-  constructor() {}
-}
-
-class HsLaymanBrowserServiceMock {
-  constructor() {}
   async getStyleFromUrl(styleUrl: string): Promise<string> {
     return `<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
     <sld:NamedLayer>
@@ -106,6 +102,7 @@ class HsLaymanBrowserServiceMock {
   </sld:StyledLayerDescriptor>
   `;
   }
+  constructor() {}
 }
 
 let mockedMapService;
@@ -128,10 +125,12 @@ describe('compositions', () => {
 
   beforeEach(() => {
     const mockedUtilsService: any = new HsUtilsServiceMock();
-    const mockedEventBusService: any = new HsEventBusServiceMock();
     const mockedConfig: any = new HsConfigMock();
-    const mockedCommonLaymanService: any = new hsCommonLaymanServiceMock();
     const mockedMapService: any = new HsMapServiceMock();
+    const mockedCommonLaymanService = new hsCommonLaymanServiceMock();
+    const mockedStlyerService = jasmine.createSpyObj('HsStylerService', [
+      'parseStyle',
+    ]);
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -169,10 +168,6 @@ describe('compositions', () => {
         HsStylerService,
         HsCompositionsLayerParserService,
         {
-          provide: HsLaymanBrowserService,
-          useValue: new HsLaymanBrowserServiceMock(),
-        },
-        {
           provide: HsCompositionsStatusManagerService,
           useValue: {
             loadList: () =>
@@ -188,21 +183,9 @@ describe('compositions', () => {
             null,
             null,
             null,
+            null,
             mockedMapService,
-            new HsStylerService(
-              null,
-              mockedUtilsService,
-              layerUtilsMock,
-              mockedEventBusService,
-              null,
-              null,
-              mockedMapService,
-              null,
-              null,
-              mockedConfig,
-              mockedCommonLaymanService,
-              mockedMapService
-            ),
+            mockedStlyerService,
             mockedUtilsService
           ),
         },
@@ -213,8 +196,13 @@ describe('compositions', () => {
             endpointsFilled: new BehaviorSubject(null),
           },
         },
+        {
+          provide: HsCommonLaymanService,
+          useValue: mockedCommonLaymanService,
+        },
       ],
     });
+
     const hsCompositionsMickaService = TestBed.inject(
       HsCompositionsMickaServiceMock
     );
@@ -246,7 +234,7 @@ describe('compositions', () => {
   it('compositions list should load', function () {
     CompositionsCatalogueService.filterByExtent = false;
     const ds: any = {
-      url: 'https://www.agrihub.cz/micka/csw',
+      url: 'https://watlas.lesprojekt.cz/micka/csw',
       type: 'micka',
       title: 'Micka AgriHub',
       compositionsPaging: {
@@ -257,7 +245,7 @@ describe('compositions', () => {
     };
     CompositionsCatalogueService.loadCompositions();
     //NOTE: have to make this check to work
-    // expect(ds.compositions).toBeDefined();
+    // expect(ds.compositions).toBeDefined() ;
     expect(ds).toBeDefined();
   });
 
@@ -273,7 +261,6 @@ describe('compositions', () => {
 
   it('should load composition from json', async function () {
     await loadComposition(component);
-    console.log(mockedMapService.getMap().getLayers());
     expect(mockedMapService.getMap().getLayers().getLength()).toBe(8);
     expect(getTitle(mockedMapService.getMap().getLayers().item(7))).toBe(
       'Measurement sketches'
@@ -292,7 +279,6 @@ describe('compositions', () => {
     await loadComposition(component);
     const layer = mockedMapService.getMap().getLayers().item(1);
     expect(layer.getStyle()).toBeDefined();
-    console.log(mockedMapService.getMap().getLayers().item(2).get('title'));
     expect(
       mockedMapService
         .getMap()
