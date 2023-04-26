@@ -15,7 +15,7 @@
     </div>
     <!-- Copyright -->
     <div *ngIf="hasCopyright((layerDescriptor | async))">
-      <a class="card-href" [hre="getAttribution((layerDescriptor | async).layer).onlineResource" target="_blank"
+      <a class="card-href" [href]="getAttribution((layerDescriptor | async).layer).onlineResource" target="_blank"
         [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs">
         {{ "LAYERMANAGER.layerEditor.copyright" | translateHs }}</a>
     </div>

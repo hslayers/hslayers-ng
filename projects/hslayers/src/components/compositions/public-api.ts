@@ -8,6 +8,7 @@ export * from './endpoints/compositions-layman.service';
 export * from './endpoints/compositions-micka.service';
 export * from './layer-parser/layer-parser.module';
 export * from './layer-parser/layer-parser.service';
+export * from './layer-parser/composition-layer-params.type';
 export * from './compositions-catalogue.service';
 export * from './compositions-list-item.component';
 export * from './compositions-map.service';

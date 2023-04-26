@@ -25,8 +25,8 @@ import {HsToastService} from '../../../../components/layout/toast/toast.service'
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {addLayerOptions} from '../types/layer-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
+import {layerOptions} from '../../../../components/compositions/layer-parser/composition-layer-params.type';
 import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})
@@ -165,7 +165,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     const checkedLayers = this.data.layers?.filter((l) => l.checked);
     const collection = [
       await this.getLayer(checkedLayers, {
-        layerTitle: this.data.title.replace(/\//g, '&#47;'),
+        title: this.data.title.replace(/\//g, '&#47;'),
         path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         imageFormat: this.data.image_format,
         queryFormat: this.data.query_format,
@@ -198,7 +198,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async getLayer(
     layers: ArcGISRestResponseLayer[],
-    options: addLayerOptions,
+    options: layerOptions,
   ): Promise<Layer<Source>> {
     const attributions = [];
     const dimensions = {};
@@ -238,8 +238,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
     const layerParams = {
       properties: {
-        title: options.layerTitle,
-        name: options.layerTitle,
+        title: options.title,
+        name: options.title,
         removable: true,
         path: options.path,
         base: this.data.base,
@@ -265,7 +265,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async calcAllLayersExtent(
     layers: ArcGISRestResponseLayer[],
-    options: addLayerOptions,
+    options: layerOptions,
   ) {
     try {
       const layersCaps = await Promise.all(
@@ -293,7 +293,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           'ADDLAYERS.OlDoesNotRecognizeProjection',
           {
             serviceCalledFrom: 'HsUrlArcGisService',
-            details: [`${options.layerTitle}`, `EPSG: ${this.data.srs}`],
+            details: [`${options.title}`, `EPSG: ${this.data.srs}`],
           },
         );
       } else {

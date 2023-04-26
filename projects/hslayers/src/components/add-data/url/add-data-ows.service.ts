@@ -19,7 +19,7 @@ import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-
 import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
 import {IGetCapabilities} from '../../../common/get-capabilities/get-capabilities.interface';
-import {owsConnection} from './types/ows-connection.type';
+import {layerConnection, owsConnection} from './types/ows-connection.type';
 import {urlDataObject} from './types/data-object.type';
 
 @Injectable({
@@ -48,11 +48,7 @@ export class HsAddDataOwsService {
     });
   }
 
-  async connect(opt?: {
-    style?: string;
-    owrCache?: boolean;
-    getOnly?: boolean;
-  }): Promise<Layer<Source>[]> {
+  async connect(options?: layerConnection): Promise<Layer<Source>[]> {
     const typeBeingSelected = this.hsAddDataUrlService.typeSelected;
     await this.setTypeServices();
 
@@ -81,7 +77,7 @@ export class HsAddDataOwsService {
     });
     const wrapper = await this.typeCapabilitiesService.request(
       url,
-      opt?.owrCache
+      options?.owrCache
     );
     if (
       typeof wrapper.response === 'string' &&
@@ -92,9 +88,9 @@ export class HsAddDataOwsService {
     } else {
       const response = await this.typeService.listLayerFromCapabilities(
         wrapper,
-        opt?.style
+        options?.layerOptions
       );
-      if (!opt?.getOnly) {
+      if (!options?.getOnly) {
         if (response?.length > 0) {
           this.typeService.addLayers(response);
         }
@@ -130,9 +126,9 @@ export class HsAddDataOwsService {
     this.hsAddDataCommonService.layerToSelect = params.layer;
     this.hsAddDataCommonService.updateUrl(params.uri);
     return await this.connect({
-      style: params.style,
       owrCache: params.owrCache,
       getOnly: params.getOnly,
+      layerOptions: params.layerOptions,
     });
   }
 

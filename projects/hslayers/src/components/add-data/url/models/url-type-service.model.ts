@@ -2,8 +2,8 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
 import {urlDataObject} from '../types/data-object.type';
 
 export type Service = {
@@ -17,17 +17,17 @@ export interface HsUrlTypeServiceModel {
   setDataToDefault(): void;
   listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    sld?: string
+    layerOptions?: layerOptions
   ): Promise<Layer<Source>[]>;
   getLayers(
     checkedOnly?: boolean,
     shallow?: boolean,
-    style?: string
+    layerOptions?: layerOptions
   ): Layer<Source>[] | Promise<Layer<Source>[]>;
   addLayers(layers: Layer<Source>[]): void;
   getLayer(
     layer: any,
-    options: addLayerOptions
+    options: layerOptions
   ): Layer<Source> | Promise<Layer<Source>>;
   getLayersRecursively?(
     layer: any,

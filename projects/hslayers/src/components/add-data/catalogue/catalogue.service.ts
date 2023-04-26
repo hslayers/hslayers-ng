@@ -462,7 +462,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           layer: whatToAdd.workspace
             ? `${whatToAdd.workspace}:${whatToAdd.name}`
             : undefined,
-          style: whatToAdd.style,
+          layerOptions: {
+            style: whatToAdd.style,
+          },
         });
       } else {
         //Layman layers of logged user/ with write access
@@ -488,8 +490,10 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           await this.hsAddDataOwsService.connectToOWS({
             type: 'wfs',
             uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
-            style: whatToAdd.style,
             layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
+            layerOptions: {
+              style: whatToAdd.style,
+            },
           });
         }
         this.hsLayoutService.setMainPanel('layermanager');

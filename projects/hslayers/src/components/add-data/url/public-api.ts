@@ -15,7 +15,6 @@ export * from './add-data-url.module';
 export * from './add-data-url.service';
 export * from './models/url-type-service.model';
 export * from './types/data-object.type';
-export * from './types/layer-options.type';
 export * from './types/ows-connection.type';
 export * from './types/recursive-options.type';
 export * from './types/url.type';

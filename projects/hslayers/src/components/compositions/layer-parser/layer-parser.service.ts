@@ -1,8 +1,16 @@
 import {Injectable} from '@angular/core';
 
-import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
+import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
+import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
+import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsMapService} from '../../map/map.service';
+import {HsStylerService} from '../../styles/styler.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {
   ImageArcGISRest,
   Image as ImageSource,
@@ -25,18 +33,6 @@ import {
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 // eslint-disable-next-line import/named
 import {Options as TileOptions} from 'ol/layer/BaseTile';
-import {WMTSCapabilities} from 'ol/format';
-
-import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
-import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styles/styler.service';
-import {HsToastService} from '../../layout/toast/toast.service';
-import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
-import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
@@ -47,7 +43,6 @@ export class HsCompositionsLayerParserService {
     private hsMapService: HsMapService,
     private HsAddDataVectorService: HsAddDataVectorService,
     private HsStylerService: HsStylerService,
-    private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     private HsLanguageService: HsLanguageService,
     private HsToastService: HsToastService,
     private hsCommonLaymanService: HsCommonLaymanService,
@@ -67,9 +62,14 @@ export class HsCompositionsLayerParserService {
       type: 'wfs',
       uri: lyr_def.protocol.url.split('?')[0],
       layer: lyr_def.name,
-      owrCache: true,
+      owrCache: false,
       getOnly: true,
-      style: style,
+      layerOptions: {
+        style: style,
+        path: lyr_def.path || 'Test path',
+        removable: false,
+        fromComposition: true,
+      },
     });
     return newLayer[0];
   }
@@ -80,35 +80,22 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    * @returns Ol Tile layer
    */
-  async createWMTSLayer(lyr_def): Promise<Tile<TileSource>> {
-    const wmts = new Tile({
-      source: new WMTS({} as any),
-      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
-      properties: {
-        title: lyr_def.title,
-        info_format: lyr_def.info_format,
-        base: lyr_def.base,
-        greyscale: lyr_def.greyscale,
-      },
-    });
-
-    // Get WMTS Capabilities and create WMTS source base on it
-    const wrapper = await this.HsWmtsGetCapabilitiesService.request(
-      lyr_def.url,
-    );
+  async createWMTSLayer(lyr_def): Promise<Layer<Source>> {
     try {
-      //parse the XML response and create options object...
-      const parser = new WMTSCapabilities();
-      const result = parser.read(wrapper.response);
-      // ...create WMTS Capabilities based on the parsed options
-      const options = optionsFromCapabilities(result, {
-        layer: lyr_def.layer,
-        matrixSet: lyr_def.matrixSet,
-        format: lyr_def.format,
+      const newLayer = await this.hsAddDataOwsService.connectToOWS({
+        type: 'wmts',
+        uri: lyr_def.protocol.url.split('?')[0],
+        layer: lyr_def.name,
+        owrCache: false,
+        getOnly: true,
+        layerOptions: {
+          title: lyr_def.title,
+          info_format: lyr_def.info_format,
+          base: lyr_def.base,
+          greyscale: lyr_def.greyscale,
+        },
       });
-      // WMTS source for raster tiles layer
-      wmts.setSource(new WMTS(options));
-      this.hsMapService.proxifyLayerLoader(wmts, true);
+      return newLayer[0];
     } catch (error) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
@@ -124,11 +111,7 @@ export class HsCompositionsLayerParserService {
           serviceCalledFrom: 'HsCompositionsLayerParserService',
         },
       );
-      this.hsMapService.getMap().getLayers().remove(wmts);
     }
-
-    wmts.setVisible(lyr_def.visibility);
-    return wmts;
   }
 
   /**

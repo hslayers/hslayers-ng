@@ -27,9 +27,9 @@ import {
   WmsLayer,
 } from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
+import {layerOptions} from '../../../compositions/public-api';
 import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})
@@ -404,7 +404,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  getLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: layerOptions): Layer<Source> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [

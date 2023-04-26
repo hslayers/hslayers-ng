@@ -579,9 +579,13 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           ? data.name
           : `${descriptor.workspace}:${data.name}`,
       owrCache: true,
-      style: data.serializedStyle
-        ? await this.hsCommonLaymanService.getStyleFromUrl(descriptor.style.url)
-        : undefined,
+      layerOptions: {
+        style: data.serializedStyle
+          ? await this.hsCommonLaymanService.getStyleFromUrl(
+              descriptor.style.url
+            )
+          : undefined,
+      },
     });
   }
 
