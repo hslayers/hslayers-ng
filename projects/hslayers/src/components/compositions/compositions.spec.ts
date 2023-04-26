@@ -123,7 +123,7 @@ describe('compositions', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -154,7 +154,7 @@ describe('compositions', () => {
         {
           provide: HsCompositionsMickaService,
           useValue: new HsCompositionsMickaServiceMock(
-            new HsCompositionsMickaService(null, null, null, null, null, null)
+            new HsCompositionsMickaService(null, null, null, null, null, null),
           ),
         },
         HsCompositionsMapService,
@@ -182,7 +182,7 @@ describe('compositions', () => {
             null,
             mockedMapService,
             mockedStylerService,
-            mockedUtilsService
+            mockedUtilsService,
           ),
         },
         {
@@ -201,7 +201,7 @@ describe('compositions', () => {
     hsConfig = TestBed.inject(HsConfig);
     hsConfig.reverseLayerList = true;
     CompositionsCatalogueService = TestBed.inject(
-      HsCompositionsCatalogueService
+      HsCompositionsCatalogueService,
     );
   });
 
@@ -219,7 +219,7 @@ describe('compositions', () => {
 
   it('compositions list should load', fakeAsync(() => {
     spyOn(CompositionsCatalogueService, 'clearLoadedData').and.returnValue(
-      true
+      true,
     );
     CompositionsCatalogueService.filterByExtent = false;
     const ds: any = {
@@ -236,7 +236,7 @@ describe('compositions', () => {
     CompositionsCatalogueService.loadCompositions();
     tick(5000); // Simulate a 5-second delay
     expect(
-      CompositionsCatalogueService.endpoints[0].compositions
+      CompositionsCatalogueService.endpoints[0].compositions,
     ).toBeDefined();
   }));
 
@@ -246,7 +246,7 @@ describe('compositions', () => {
   async function loadComposition(component) {
     await component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,
-      true
+      true,
     );
   }
 
@@ -254,15 +254,15 @@ describe('compositions', () => {
     await loadComposition(component);
     expect(mockedMapService.getMap().getLayers().getLength()).toBe(8);
     expect(getTitle(mockedMapService.getMap().getLayers().item(7))).toBe(
-      'Measurement sketches'
+      'Measurement sketches',
     );
     expect(
       mockedMapService.getMap().getLayers().item(3).getSource().getFeatures()
-        .length
+        .length,
     ).toBe(1);
     expect(
       mockedMapService.getMap().getLayers().item(2).getSource().getFeatures()
-        .length
+        .length,
     ).toBe(0);
   });
 
@@ -277,7 +277,7 @@ describe('compositions', () => {
         .item(2)
         .getStyle()[2]
         .getStroke()
-        .getColor()
+        .getColor(),
     ).toBe('rgba(0, 153, 255, 1)');
   });
 });
