@@ -95,8 +95,8 @@ export const compositionJson = {
       'maxResolution': null,
       'minResolution': 0,
       'projection': 'epsg:4326',
-      style:
-        'http://localhost:8087/rest/workspaces/raitisbe/layers/raitis_sld_test/style',
+      'style':
+        'http://localhost:8087/rest/workspaces/filip/layers/jtsk_geojson/style',
     },
   ],
   'current_base_layer': {'title': 'Open street map'},
