@@ -22,8 +22,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private end = new Subject<void>();
 
   keywordsVisible = false;
@@ -46,7 +45,7 @@ export class HsCompositionsComponent
     private hsLaymanService: HsLaymanService,
     private hsSidebarService: HsSidebarService,
     private hsLanguageService: HsLanguageService,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
   ) {
     super(hsLayoutService);
   }
@@ -85,7 +84,7 @@ export class HsCompositionsComponent
    */
   highlightComposition(
     composition: HsMapCompositionDescriptor,
-    state: boolean
+    state: boolean,
   ): void {
     composition.highlighted = state;
     this.hsCompositionsMapService.highlightComposition(composition, state);
@@ -127,7 +126,7 @@ export class HsCompositionsComponent
         const json = JSON.parse(<string>reader.result);
         await this.hsCompositionsParserService.loadCompositionObject(
           json,
-          true
+          true,
         );
       };
       reader.readAsText(f);
@@ -140,7 +139,7 @@ export class HsCompositionsComponent
   loadUnsavedDialogBootstrap(record: any): void {
     this.hsDialogContainerService.create(
       HsCompositionsOverwriteDialogComponent,
-      record
+      record,
     );
   }
 
@@ -219,7 +218,7 @@ export class HsCompositionsComponent
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined
+      undefined,
     );
   }
   /**
