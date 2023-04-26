@@ -32,7 +32,7 @@ import {
   HsUploadedFiles,
 } from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {VectorDataObject} from '../vector-data.type';
+import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {accessRightsModel} from '../../common/access-rights.model';
 
 @Component({
@@ -48,7 +48,7 @@ export class HsAddDataVectorFileComponent
   app: string;
   acceptedFormats: string;
   uploadType = 'new';
-  data: VectorDataObject & FileDataObject;
+  data: VectorFileDataType;
   fileInput: ElementRef;
   access_rights: accessRightsModel = {
     'access_rights.write': 'private',

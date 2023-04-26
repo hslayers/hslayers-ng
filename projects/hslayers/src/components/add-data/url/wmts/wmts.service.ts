@@ -13,6 +13,8 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {addAnchors} from '../../../../common/attribution-utils';
+import {addLayersRecursivelyOptions} from '../../../add-data/url/types/recursive-options.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
 import {transformExtent} from 'ol/proj';
 import {urlDataObject} from '../types/data-object.type';
 
@@ -50,7 +52,8 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
+    options?: layerOptions
   ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
@@ -69,7 +72,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
           this.data.layers,
           'wmts'
         );
-        return this.getLayers(true);
+        return this.getLayers(true, false, options);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -101,9 +104,13 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * @param layer - Layer selected
    * @param collection - Layers created and retreived collection
    */
-  getLayersRecursively(layer, options, collection): void {
+  getLayersRecursively(
+    layer,
+    options: addLayersRecursivelyOptions,
+    collection
+  ): void {
     if (!this.data.add_all || layer.checked) {
-      collection.push(this.getLayer(layer, undefined));
+      collection.push(this.getLayer(layer, options.layerOptions));
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
@@ -124,12 +131,17 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
+   * @param layerOptions - Optional layer parameters. Used to parse composition layers
    */
-  getLayers(checkedOnly: boolean): Layer<Source>[] {
+  getLayers(
+    checkedOnly: boolean,
+    shallow?: boolean,
+    layerOptions?: layerOptions
+  ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.getLayersRecursively(layer, undefined, collection);
+      this.getLayersRecursively(layer, {layerOptions}, collection);
     }
     this.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(collection);
     this.hsAddDataUrlService.zoomToLayers(this.data);
@@ -220,10 +232,11 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Uses previously received capabilities response as a reference for the source
    * @param response - Set of available info formats for layer
    */
-  getLayer(layer, options): Layer<Source> {
+  getLayer(layer, options: layerOptions): Layer<Source> {
     try {
       const wmts = new Tile({
         extent: this.getWMTSExtent(layer.Identifier),
+        className: options?.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
         properties: {
           title: layer.Title,
           name: layer.Title,
@@ -231,17 +244,20 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
           queryCapabilities: false,
           removable: true,
           base: layer.base,
+          ...options,
         },
         source: new WMTS({} as any),
       });
       // Get WMTS Capabilities and create WMTS source base on it
-      const options = optionsFromCapabilities(this.data.caps, {
+      const capOptions = optionsFromCapabilities(this.data.caps, {
         layer: layer.Identifier,
-        matrixSet: this.getPreferredMatrixSet(layer.TileMatrixSetLink),
-        format: this.getPreferredFormat(layer.Format),
+        matrixSet:
+          options?.matrixSet ??
+          this.getPreferredMatrixSet(layer.TileMatrixSetLink),
+        format: options?.format ?? this.getPreferredFormat(layer.Format),
       });
       // WMTS source for raster tiles layer
-      const wmtsSource = new WMTS(options);
+      const wmtsSource = new WMTS(capOptions);
       // set the data source for raster and vector tile layers
       wmts.setSource(wmtsSource);
       layer.base = false;

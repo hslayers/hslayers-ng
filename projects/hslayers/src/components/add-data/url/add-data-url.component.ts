@@ -73,7 +73,7 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
           type,
           uri: url,
           layer,
-          style: undefined,
+          layerOptions: {style: undefined},
         });
       }
     } else {

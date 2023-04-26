@@ -18,8 +18,8 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/w
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
-import {addLayerOptions} from '../types/layer-options.type';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
 import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({
@@ -79,7 +79,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    style?: string
+    layerOptions?: layerOptions
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -95,7 +95,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           this.data.layers,
           'wfs'
         );
-        const collection = this.getLayers(true, false, style);
+        const collection = this.getLayers(true, false, layerOptions);
         this.hsAddDataUrlService.zoomToLayers(this.data);
         return collection;
       }
@@ -344,13 +344,13 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   getLayers(
     checkedOnly?: boolean,
-    shallow: boolean = false,
-    style?: string
+    shallow?: boolean,
+    layerOptions?: layerOptions
   ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
     for (const layer of this.data.layers) {
-      this.getLayersRecursively(layer, {style}, collection);
+      this.getLayersRecursively(layer, {layerOptions}, collection);
     }
     this.data.extent = this.calcAllLayersExtent(collection);
     this.hsAddDataUrlService.zoomToLayers(this.data);
@@ -364,7 +364,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer recursively
    * @param layer - Layer selected
    * @param options - Add layers recursively options
-   * (checkedOnly?: boolean; style?: string;)
+   * (checkedOnly?: boolean; style?: string; layerOptions: @type layerOptions)
    * @param collection - Layers created and retrieved collection
    */
   getLayersRecursively(
@@ -372,21 +372,21 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     options: addLayersRecursivelyOptions,
     collection: Layer<Source>[]
   ): void {
+    const style = options.layerOptions?.style;
     if (!this.data.add_all || layer.checked) {
       const newLayer = this.getLayer(layer, {
         layerName: layer.Name,
-        folder: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+        path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
         crs: this.data.srs,
-        sld: options.style?.includes('StyledLayerDescriptor')
-          ? options.style
-          : undefined,
-        qml: options.style?.includes('qgis') ? options.style : undefined,
+        sld: style?.includes('StyledLayerDescriptor') ? style : undefined,
+        qml: style?.includes('qgis') ? style : undefined,
+        ...options?.layerOptions,
       });
       collection.push(newLayer);
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.getLayersRecursively(sublayer, {style: options.style}, collection);
+        this.getLayersRecursively(sublayer, options, collection);
       }
     }
   }
@@ -398,17 +398,15 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param folder - name
    * @param srs - of the layer
    */
-  getLayer(layer, options: addLayerOptions): Layer<Source> {
+  getLayer(layer, options: layerOptions): Layer<Source> {
     const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
         title: layer.Title.replace(/\//g, '&#47;'),
-        path: options.folder,
         removable: true,
-        sld: options.sld,
-        qml: options.qml,
         wfsUrl: url,
+        ...options,
         // extent: this.getLayerExtent(layer, options.crs),
       },
       source: new WfsSource(this.hsUtilsService, this.http, {
