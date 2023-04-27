@@ -19,7 +19,7 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({

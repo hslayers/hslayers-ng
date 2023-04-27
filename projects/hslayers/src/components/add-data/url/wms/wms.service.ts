@@ -29,7 +29,7 @@ import {
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
-import {layerOptions} from '../../../compositions/public-api';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})

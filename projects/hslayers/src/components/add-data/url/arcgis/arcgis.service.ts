@@ -26,7 +26,7 @@ import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getPreferredFormat} from '../../../../common/format-utils';
-import {layerOptions} from '../../../../components/compositions/layer-parser/composition-layer-params.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})

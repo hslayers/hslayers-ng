@@ -1,4 +1,4 @@
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 
 /**
  * @param shallow - Wether to go through full depth of layer tree or to stop on first queryable
