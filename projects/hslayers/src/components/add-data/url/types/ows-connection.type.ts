@@ -1,5 +1,5 @@
 import {IntersectWithTooltip} from '../../../../common/type-intersection.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 
 export type layerConnection = {
   owrCache?: boolean;

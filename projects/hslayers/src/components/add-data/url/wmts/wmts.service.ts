@@ -14,7 +14,7 @@ import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {addLayersRecursivelyOptions} from '../../../add-data/url/types/recursive-options.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {transformExtent} from 'ol/proj';
 import {urlDataObject} from '../types/data-object.type';
 

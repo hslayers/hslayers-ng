@@ -3,7 +3,7 @@ import {Source} from 'ol/source';
 
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-params.type';
+import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {urlDataObject} from '../types/data-object.type';
 
 export type Service = {
