@@ -112,7 +112,7 @@ describe('HsAddDataUrlComponent', () => {
       type: 'wms',
       uri: serviceEndpoints.wms[1],
       layer: 'GR_ZM100',
-      style: undefined,
+      layerOptions: {style: undefined},
     });
     const wmsService = component.hsAddDataOwsService.hsUrlWmsService;
     expect(wmsService.data.layers.length).toBe(1);
@@ -123,7 +123,7 @@ describe('HsAddDataUrlComponent', () => {
       type: 'wms',
       uri: serviceEndpoints.wms[1],
       layer: 'Random non existent name',
-      style: undefined,
+      layerOptions: {style: undefined},
     });
     expect(
       component.hsAddDataCommonService.hsAddDataService.datasetSelected.getValue()
