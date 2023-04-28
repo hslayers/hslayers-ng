@@ -1,13 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Subject, takeUntil} from 'rxjs';
 
 import {HsDrawService} from '../draw.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
-
 import {HsRemoveLayerDialogService} from '../../../common/remove-multiple/remove-layer-dialog.service';
 import {getTitle} from '../../../common/layer-extensions';
 

@@ -15,7 +15,7 @@ export type HsRmLayerDialogResponse = {
 
 @Component({
   selector: 'hs-rm-layer-dialog',
-  templateUrl: './remove-layer-dialog.html',
+  templateUrl: './remove-layer-dialog.component.html',
 })
 export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;

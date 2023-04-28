@@ -1,3 +1,8 @@
+import {Injectable} from '@angular/core';
+
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {
   HsDrawService,
@@ -11,9 +16,6 @@ import {
   HsRmLayerDialogResponse,
 } from './remove-layer-dialog.component';
 import {HsToastService} from '../../components/layout/toast/toast.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {getDefinition, getTitle} from '../layer-extensions';
 
 @Injectable({
