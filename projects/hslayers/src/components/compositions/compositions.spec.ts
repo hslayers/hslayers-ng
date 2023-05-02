@@ -5,11 +5,16 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Subject, of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
@@ -43,9 +48,10 @@ import {getTitle} from '../../common/layer-extensions';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 class HsCompositionsMickaServiceMock {
-  constructor() {}
-  loadList() {
-    return;
+  constructor(private originalService: HsCompositionsMickaService) {}
+  loadList(ds, params) {
+    this.originalService.compositionsReceived(ds, compositionsJson);
+    return of(ds);
   }
 }
 
@@ -145,7 +151,12 @@ describe('compositions', () => {
       providers: [
         HsCompositionsService,
         HsCompositionsCatalogueService,
-        HsCompositionsMickaServiceMock,
+        {
+          provide: HsCompositionsMickaService,
+          useValue: new HsCompositionsMickaServiceMock(
+            new HsCompositionsMickaService(null, null, null, null, null, null)
+          ),
+        },
         HsCompositionsMapService,
         {
           provide: HsSaveMapService,
@@ -154,10 +165,6 @@ describe('compositions', () => {
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: mockedConfig},
-        {
-          provide: HsCompositionsMickaService,
-          useValue: new HsCompositionsMickaServiceMock(),
-        },
         {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(),
@@ -191,18 +198,8 @@ describe('compositions', () => {
         },
       ],
     });
-
-    const hsCompositionsMickaService = TestBed.inject(
-      HsCompositionsMickaServiceMock
-    );
     hsConfig = TestBed.inject(HsConfig);
     hsConfig.reverseLayerList = true;
-    //Mock server response
-    hsCompositionsMickaService.loadList = () => {
-      return new Promise((resolve, reject) => {
-        resolve(compositionsJson);
-      });
-    };
     CompositionsCatalogueService = TestBed.inject(
       HsCompositionsCatalogueService
     );
@@ -220,7 +217,10 @@ describe('compositions', () => {
     expect(component).toBeTruthy();
   });
 
-  it('compositions list should load', function () {
+  it('compositions list should load', fakeAsync(() => {
+    spyOn(CompositionsCatalogueService, 'clearLoadedData').and.returnValue(
+      true
+    );
     CompositionsCatalogueService.filterByExtent = false;
     const ds: any = {
       url: 'https://watlas.lesprojekt.cz/micka/csw',
@@ -232,11 +232,13 @@ describe('compositions', () => {
         loaded: false,
       },
     };
+    CompositionsCatalogueService.endpoints = [ds];
     CompositionsCatalogueService.loadCompositions();
-    //NOTE: have to make this check to work
-    // expect(ds.compositions).toBeDefined();
-    expect(ds).toBeDefined();
-  });
+    tick(5000); // Simulate a 5-second delay
+    expect(
+      CompositionsCatalogueService.endpoints[0].compositions
+    ).toBeDefined();
+  }));
 
   /**
    * @param component -
