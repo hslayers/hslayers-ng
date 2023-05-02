@@ -7,7 +7,6 @@ import {HsAddDataCatalogueMapService} from '../../components/add-data/catalogue/
 })
 export class HsUiExtensionsRecursiveDdComponent {
   @Input() value: any;
-  
   entries;
 
   constructor(

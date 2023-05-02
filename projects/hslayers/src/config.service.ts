@@ -85,7 +85,7 @@ export class HsConfigObject {
   advancedForm?: boolean;
   project_name?: string;
   hostname?: {
-    status_manager?: {
+    share_service?: {
       url: string;
     };
     user?: {
@@ -96,7 +96,7 @@ export class HsConfigObject {
     };
   };
   mapSwipeOptions?: MapSwipeOptions = {};
-  status_manager_url?: string;
+  share_service_url?: string;
   shortenUrl?: (url) => any;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;

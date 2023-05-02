@@ -118,8 +118,8 @@ export class HsShareUrlService {
   endpointUrl(): string {
     let hostName = location.protocol + '//' + location.host;
 
-    if (this.hsConfig.hostname?.status_manager?.url) {
-      return this.hsConfig.hostname.status_manager.url;
+    if (this.hsConfig.hostname?.share_service?.url) {
+      return this.hsConfig.hostname.share_service.url;
     }
     if (this.hsConfig.hostname?.user?.url) {
       hostName = this.hsConfig.hostname.user.url;
@@ -127,11 +127,11 @@ export class HsShareUrlService {
       hostName = this.hsConfig.hostname.default.url;
     }
 
-    if (this.hsConfig.status_manager_url?.includes('://')) {
+    if (this.hsConfig.share_service_url?.includes('://')) {
       //Full url specified
-      return this.hsConfig.status_manager_url;
+      return this.hsConfig.share_service_url;
     } else {
-      return hostName + (this.hsConfig.status_manager_url || '/share/');
+      return hostName + (this.hsConfig.share_service_url || '/share/');
     }
   }
 

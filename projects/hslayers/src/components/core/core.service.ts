@@ -142,6 +142,7 @@ export class HsCoreService {
   }
 
   /**
+   * FIXME: statusmanager
    * Do authorization check of User, currently authorization is possible only in connection with Liferay app
    * @public
    * @returns Check result - true for authorized user

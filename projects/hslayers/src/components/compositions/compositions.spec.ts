@@ -21,7 +21,6 @@ import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.serv
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsService} from './compositions.service';
-import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
@@ -166,15 +165,6 @@ describe('compositions', () => {
         {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         HsStylerService,
         HsCompositionsLayerParserService,
-        {
-          provide: HsCompositionsStatusManagerService,
-          useValue: {
-            loadList: () =>
-              new Promise((resolve, reject) => {
-                resolve({});
-              }),
-          },
-        },
         {
           provide: HsAddDataVectorService,
           useValue: new HsAddDataVectorService(

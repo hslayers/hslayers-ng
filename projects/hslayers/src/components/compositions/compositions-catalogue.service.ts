@@ -60,7 +60,7 @@ export class HsCompositionsCatalogueService {
    */
   dataLoading: boolean;
   loadCompositionsQuery: any;
-  filteredEndpoints: HsEndpoint[];
+  endpoints: HsEndpoint[];
   extentChangeSuppressed = false;
   constructor(
     public hsMapService: HsMapService,
@@ -74,7 +74,7 @@ export class HsCompositionsCatalogueService {
     private _zone: NgZone
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe((endpoints) => {
-      this.filteredEndpoints = this.getFilteredEndpointsForCompositions();
+      this.endpoints = endpoints;
     });
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
       if (
@@ -132,7 +132,6 @@ export class HsCompositionsCatalogueService {
       this.loadFilteredCompositions();
     });
 
-    this.filteredEndpoints = this.getFilteredEndpointsForCompositions();
     this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((data) => {
       this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
         info: {
@@ -159,7 +158,7 @@ export class HsCompositionsCatalogueService {
     this.dataLoading = true;
     this.hsMapService.loaded().then(() => {
       const observables: Observable<any>[] = [];
-      for (const endpoint of this.filteredEndpoints) {
+      for (const endpoint of this.endpoints) {
         observables.push(this.loadCompositionFromEndpoint(endpoint));
       }
       this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
@@ -175,21 +174,19 @@ export class HsCompositionsCatalogueService {
    */
   calculateEndpointLimits(): void {
     this.matchedRecords = 0;
-    this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
+    const filteredEndpoints = this.endpoints.filter(
       (ep) => ep.compositionsPaging.matched != 0
     );
-    if (this.filteredEndpoints.length == 0) {
+    if (filteredEndpoints.length == 0) {
       this.dataLoading = false;
       return;
     }
-
-    this.matchedRecords = this.filteredEndpoints.reduce(
+    this.matchedRecords = this.endpoints.reduce(
       (sum, ep) => sum + ep.compositionsPaging.matched,
       this.matchedRecords
     );
-
     let sumLimits = 0;
-    this.filteredEndpoints.forEach((ep) => {
+    this.endpoints.forEach((ep) => {
       /**Calculated limit or 1 if its smaller */
       ep.compositionsPaging.limit = Math.max(
         Math.round(
@@ -205,7 +202,7 @@ export class HsCompositionsCatalogueService {
      * For the first few pages we need to adjust limit of the other datasource
      */
     if (sumLimits > this.recordsPerPage) {
-      const epWithFew = this.filteredEndpoints.reduce(
+      const epWithFew = this.endpoints.reduce(
         (maxItem, currentItem) => {
           if (
             maxItem === null ||
@@ -219,7 +216,7 @@ export class HsCompositionsCatalogueService {
         null
       );
       /** Adjust the limit for epWithMany */
-      this.filteredEndpoints.find(
+      this.endpoints.find(
         (ep) => ep != epWithFew
       ).compositionsPaging.limit -= 1;
       sumLimits -= 1;
@@ -252,22 +249,20 @@ export class HsCompositionsCatalogueService {
    */
   loadFilteredCompositions(): void {
     this.clearListCounters();
-    this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
-      (ep: HsEndpoint) => {
-        if (this.filterByOnlyMine) {
-          return !this.filterByOnlyMine || ep.type.includes('layman');
-        } else {
-          return true;
-        }
+    this.endpoints = this.endpoints.filter((ep: HsEndpoint) => {
+      if (this.filterByOnlyMine) {
+        return !this.filterByOnlyMine || ep.type.includes('layman');
+      } else {
+        return true;
       }
-    );
+    });
     this.loadCompositions();
   }
   /**
    * Creates list of compositions from all endpoints currently available
    */
   createCompositionList(): void {
-    for (const endpoint of this.filteredEndpoints) {
+    for (const endpoint of this.endpoints) {
       this.arrayContainsData(this.compositionEntries)
         ? this.filterDuplicates(endpoint)
         : (this.compositionEntries = this.compositionEntries.concat(
@@ -314,7 +309,7 @@ export class HsCompositionsCatalogueService {
    */
   clearLoadedData(): void {
     this.compositionEntries = [];
-    this.filteredEndpoints.forEach((ep) => (ep.compositions = []));
+    this.endpoints.forEach((ep) => (ep.compositions = []));
   }
   /**
    
@@ -332,13 +327,13 @@ export class HsCompositionsCatalogueService {
     if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
-      this.filteredEndpoints.forEach(
+      this.endpoints.forEach(
         (ep: HsEndpoint) => (ep.compositionsPaging.start = 0)
       );
     } else {
       this.listStart -= this.recordsPerPage;
       this.listNext = this.listStart + this.recordsPerPage;
-      this.filteredEndpoints.forEach(
+      this.endpoints.forEach(
         (ep: HsEndpoint) =>
           (ep.compositionsPaging.start -= ep.compositionsPaging.limit)
       );
@@ -355,7 +350,7 @@ export class HsCompositionsCatalogueService {
     if (this.listNext > this.matchedRecords) {
       this.listNext = this.matchedRecords;
     }
-    this.filteredEndpoints.forEach(
+    this.endpoints.forEach(
       (ep) => (ep.compositionsPaging.start += ep.compositionsPaging.limit)
     );
     this.loadCompositions(true);
@@ -367,17 +362,6 @@ export class HsCompositionsCatalogueService {
   }
 
   /**
-   * Filters statusmanager endpoint out from rest of the endpoints
-   */
-  getFilteredEndpointsForCompositions(): HsEndpoint[] {
-    if (this.hsCommonEndpointsService.endpoints == undefined) {
-      return [];
-    }
-    return this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.type != 'statusmanager'
-    );
-  }
-  /**
    * Clears all filters set for composition list filtering
    */
   clearFilters(): void {
@@ -388,7 +372,7 @@ export class HsCompositionsCatalogueService {
     this.data.themes.forEach((th) => (th.selected = false));
     const laymanEndpoint = this.hsCommonLaymanService.layman;
     if (laymanEndpoint) {
-      this.filteredEndpoints.push(laymanEndpoint);
+      this.endpoints.push(laymanEndpoint);
     }
     this.loadFilteredCompositions();
   }
