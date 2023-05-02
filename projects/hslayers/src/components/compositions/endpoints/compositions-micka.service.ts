@@ -98,6 +98,7 @@ export class HsCompositionsMickaService {
    
    */
   compositionsReceived(endpoint: HsEndpoint, response: any): void {
+    console.warn(endpoint);
     if (!response.records) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation('COMMON.warning', undefined),
