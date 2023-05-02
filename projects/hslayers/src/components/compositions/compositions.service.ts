@@ -12,7 +12,6 @@ import {HsCompositionsLaymanService} from './endpoints/compositions-layman.servi
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsParserService} from './compositions-parser.service';
-import {HsCompositionsStatusManagerMickaJointService} from './endpoints/status-manager-micka-joint.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
@@ -43,7 +42,6 @@ export class HsCompositionsService {
     private hsUtilsService: HsUtilsService,
     private HsShareUrlService: HsShareUrlService,
     private hsCompositionsMickaService: HsCompositionsMickaService,
-    private hsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
     private hsCompositionsLaymanService: HsCompositionsLaymanService,
     private hsLanguageService: HsLanguageService,
     private $log: HsLogService,
@@ -143,7 +141,7 @@ export class HsCompositionsService {
   managerByType(endpoint: HsEndpoint): any {
     switch (endpoint.type) {
       case 'micka':
-        return this.hsCompositionsStatusManagerMickaJointService;
+        return this.hsCompositionsMickaService;
       case 'layman':
       case 'layman-wagtail':
         return this.hsCompositionsLaymanService;
@@ -439,10 +437,7 @@ export class HsCompositionsService {
       this.HsShareUrlService.getParamValue(HS_PRMS.composition) ||
       this.hsConfig.defaultComposition;
     if (id) {
-      if (
-        !id.includes('http') &&
-        !id.includes(this.hsConfig.status_manager_url)
-      ) {
+      if (!id.includes('http')) {
         id = this.HsShareUrlService.endpointUrl() + '?request=load&id=' + id;
       }
       try {

@@ -25,16 +25,6 @@ export class HsCommonEndpointsService {
 
   private fillEndpoints() {
     this.endpoints = [
-      ...(this.hsConfig.status_manager_url
-        ? [
-            {
-              type: 'statusmanager',
-              title: 'Status manager',
-              url: this.hsConfig.status_manager_url,
-              onError: {compositionLoad: EndpointErrorHandling.ignore},
-            },
-          ]
-        : []),
       ...(this.hsConfig.datasources || []).map((ds) => {
         const tmp = {
           url: ds.url,

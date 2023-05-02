@@ -5,7 +5,9 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {lastValueFrom} from 'rxjs';
 
+import {CompoData} from '../save-map/types/compo-data.type';
 import {HsConfig} from '../../config.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -16,6 +18,7 @@ import {HsShareThumbnailService} from './share-thumbnail.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {MapComposition} from '../save-map/types/map-composition.type';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -293,5 +296,41 @@ export class HsShareService {
     } catch (err) {
       return err.code === 18;
     }
+  }
+
+  /**
+   * Save composition to Status manager's service
+   * @param compositionJson - Json with composition's definition
+   * @param endpoint - Endpoint's description
+   * @param compoData - Additional data for composition
+   * @param saveAsNew - Save as new composition
+   * @returns Promise result of POST
+   */
+  save(
+    compositionJson: MapComposition,
+    endpoint: HsEndpoint,
+    compoData: CompoData,
+    saveAsNew: boolean
+  ): Promise<any> {
+    if (saveAsNew || compoData.id == '') {
+      compoData.id = this.HsUtilsService.generateUuid();
+    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await lastValueFrom(
+          this.HttpClient.post(this.HsShareUrlService.endpointUrl(), {
+            data: compositionJson,
+            permanent: true,
+            id: compoData.id,
+            project: this.hsConfig.project_name,
+            thumbnail: compoData.thumbnail,
+            request: 'save',
+          })
+        );
+        resolve(response);
+      } catch (err) {
+        reject();
+      }
+    });
   }
 }

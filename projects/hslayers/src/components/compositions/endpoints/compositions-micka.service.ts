@@ -4,8 +4,10 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
 
+import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from './../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
+import {HsMapCompositionDescriptor} from '../models/composition-descriptor.model';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -20,7 +22,8 @@ export class HsCompositionsMickaService {
     private hsMapService: HsMapService,
     private hsUtilsService: HsUtilsService,
     private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
+    private hsCompositionsParserService: HsCompositionsParserService
   ) {}
 
   /**
@@ -164,6 +167,8 @@ export class HsCompositionsMickaService {
       .pipe(
         timeout(5000),
         map((response: any) => {
+          //FIXME:statusmanager
+          //  when a composition isfound in statusmanagers list, then it becomes editable.
           response.extentFeatureCreated = extentFeatureCreated;
           this.compositionsReceived(endpoint, response);
         }),
@@ -222,5 +227,67 @@ export class HsCompositionsMickaService {
       params.limit = endpoint.compositionsPaging.limit;
     }
     return params;
+  }
+
+  /**
+   * Get information about the selected composition
+   * @param composition - Composition selected
+   
+   */
+  async getInfo(composition: HsMapCompositionDescriptor): Promise<any> {
+    const compLinks = composition.link || composition.links;
+    if (compLinks === undefined) {
+      return;
+    }
+    const compUrls = this.getCompositionUrls(compLinks);
+    let info: any = {};
+    let url = '';
+    Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
+    try {
+      info = await this.hsCompositionsParserService.loadInfo(url);
+      //TODO: find out if this is even available
+      // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
+      info.metadata = {
+        record_url:
+          composition.endpoint.url.replace('csw', 'record/basic/') +
+          composition.id,
+      };
+      return info;
+    } catch (e) {
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
+          'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
+          undefined
+        ),
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'ERRORMESSAGES',
+          e.status ? e.status.toString() : e.message,
+          {url: url}
+        ),
+        {
+          disableLocalization: true,
+          serviceCalledFrom: 'HsCompositionsMickaService',
+        }
+      );
+    }
+  }
+  /**
+   * Get composition urls
+   * @param compData - Composition data
+   */
+  getCompositionUrls(compData: any): string | Array<string> {
+    if (typeof compData == 'string') {
+      return compData;
+    }
+    if (typeof compData == 'object' && compData.url !== undefined) {
+      return compData.url;
+    }
+    return compData.map((link) =>
+      typeof link == 'object' && link.url !== undefined ? link.url : link
+    );
+  }
+
+  delete(e: HsEndpoint, c: HsMapCompositionDescriptor) {
+    console.warn('Delete method for Micka compositions not implemented', e, c);
   }
 }

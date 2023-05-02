@@ -5,7 +5,6 @@ import {Geometry} from 'ol/geom';
 import {Observable, forkJoin} from 'rxjs';
 
 import {DatasetType, HsAddDataService} from '../add-data.service';
-import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
@@ -61,7 +60,7 @@ export class HsAddDataCatalogueParams {
   listStart = 0;
   listNext = this.recordsPerPage;
   catalogQuery;
-  endpointsWithDatasources: HsEndpoint[];
+  endpoints: HsEndpoint[];
   matchedRecords: number;
   extentChangeSuppressed = false;
 
@@ -84,7 +83,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     public hsMapService: HsMapService,
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public hsAddDataService: HsAddDataService,
-    public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
     private zone: NgZone,
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsAddDataOwsService: HsAddDataOwsService
@@ -116,9 +114,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       }
     });
 
-    this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
-      this.hsCommonEndpointsService.endpoints
-    );
+    this.endpoints = this.hsCommonEndpointsService.endpoints;
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
@@ -148,7 +144,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     this.listStart = 0;
     this.listNext = this.recordsPerPage;
     this.selectedLayer = <HsAddDataLayerDescriptor>{};
-    this.endpointsWithDatasources.forEach((ep: HsEndpoint) => {
+    this.endpoints.forEach((ep: HsEndpoint) => {
       ep.datasourcePaging.start = 0;
       ep.datasourcePaging.next = ep.datasourcePaging.limit;
       ep.datasourcePaging.matched = 0;
@@ -156,11 +152,8 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   }
 
   reloadData(): void {
-    this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
-      this.hsCommonEndpointsService.endpoints
-    );
+    this.endpoints = this.hsCommonEndpointsService.endpoints;
     this.resetList();
-
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
@@ -171,7 +164,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
    * @param suspendLimitCalculation
    */
   queryCatalogs(suspendLimitCalculation?: boolean): void {
-    if (this.endpointsWithDatasources.length > 0) {
+    if (this.endpoints.length > 0) {
       if (this.catalogQuery) {
         this.catalogQuery.unsubscribe();
         delete this.catalogQuery;
@@ -183,7 +176,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         this.hsAddDataCatalogueMapService.clearExtentLayer();
         const observables: Observable<any>[] = [];
         //TODO Mark non functional endpoint
-        for (const endpoint of this.endpointsWithDatasources) {
+        for (const endpoint of this.endpoints) {
           if (!this.data.onlyMine || endpoint.type.includes('layman')) {
             const promise = this.queryCatalog(endpoint);
             observables.push(promise);
@@ -203,21 +196,19 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
    */
   calculateEndpointLimits(): void {
     this.matchedRecords = 0;
-    this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
+    this.endpoints = this.endpoints.filter(
       (ep) => ep.datasourcePaging.matched != 0
     );
-    if (this.endpointsWithDatasources.length === 0) {
+    if (this.endpoints.length === 0) {
       this.dataLoading = false;
       return;
     }
-
-    this.matchedRecords = this.endpointsWithDatasources.reduce(
+    this.matchedRecords = this.endpoints.reduce(
       (sum, ep) => sum + ep.datasourcePaging.matched,
       this.matchedRecords
     );
-
     let sumLimits = 0;
-    this.endpointsWithDatasources.forEach((ep) => {
+    this.endpoints.forEach((ep) => {
       /**Calculated limit or 1 if its smaller */
       ep.datasourcePaging.limit = Math.max(
         Math.round(
@@ -232,7 +223,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
      * For the first few pages we need to adjust limit of the other datasource
      */
     if (sumLimits > this.recordsPerPage) {
-      const epWithFew = this.endpointsWithDatasources.reduce(
+      const epWithFew = this.endpoints.reduce(
         (maxItem, currentItem) => {
           if (
             maxItem === null ||
@@ -246,7 +237,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       );
 
       /** Adjust the limit fo epWithMany */
-      this.endpointsWithDatasources.find(
+      this.endpoints.find(
         (ep) => ep != epWithFew
       ).datasourcePaging.limit -= 1;
       sumLimits -= 1;
@@ -257,7 +248,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   }
 
   createLayerList(): void {
-    for (const endpoint of this.endpointsWithDatasources) {
+    for (const endpoint of this.endpoints) {
       if (!this.data.onlyMine || endpoint.type.includes('layman')) {
         if (endpoint.layers) {
           endpoint.layers.forEach((layer) => {
@@ -309,7 +300,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     if (this.listNext > this.matchedRecords) {
       this.listNext = this.matchedRecords;
     }
-    this.endpointsWithDatasources.forEach(
+    this.endpoints.forEach(
       (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit)
     );
     this.queryCatalogs(true);
@@ -319,13 +310,13 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     if (this.listStart - this.recordsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
-      this.endpointsWithDatasources.forEach(
+      this.endpoints.forEach(
         (ep: HsEndpoint) => (ep.datasourcePaging.start = 0)
       );
     } else {
       this.listStart -= this.recordsPerPage;
       this.listNext = this.listStart + this.recordsPerPage;
-      this.endpointsWithDatasources.forEach(
+      this.endpoints.forEach(
         (ep: HsEndpoint) =>
           (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
       );
@@ -340,7 +331,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
 
   clearLoadedData(): void {
     this.catalogEntries = [];
-    this.endpointsWithDatasources.forEach((ep) => (ep.layers = []));
+    this.endpoints.forEach((ep) => (ep.layers = []));
   }
 
   /**
@@ -556,7 +547,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   }
 
   private dataSourceExistsAndEmpty(): boolean {
-    return !!this.endpointsWithDatasources;
+    return !!this.endpoints;
   }
 
   private panelVisible(): boolean {

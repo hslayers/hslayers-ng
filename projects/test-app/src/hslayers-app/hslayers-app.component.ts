@@ -357,14 +357,14 @@ export class HslayersAppComponent {
       open_lm_after_comp_loaded: false,
       queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
       datasources: [
-        {
-          title: 'Layman',
-          url: 'http://localhost:8087',
-          type: 'layman',
-        },
+        // {
+        //   title: 'Layman',
+        //   url: 'http://localhost:8087',
+        //   type: 'layman',
+        // },
         {
           title: 'Micka',
-          url: 'https://hub4everybody.com/micka/csw',
+          url: 'https://watlas.lesprojekt.cz/micka/csw',
           language: 'eng',
           type: 'micka',
         },
@@ -436,7 +436,7 @@ export class HslayersAppComponent {
         {name: 'warning', url: '/assets/icons/warning.svg'},
         {name: 'wifi', url: '/assets/icons/wifi8.svg'},
       ],
-      status_manager_url: 'http://localhost:8086',
+      share_service_url: 'http://localhost:8086',
       popUpDisplay: 'hover',
       errorToastDuration: 1000,
       default_layers: [

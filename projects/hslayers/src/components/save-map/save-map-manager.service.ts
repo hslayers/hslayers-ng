@@ -16,8 +16,7 @@ import {HsLogService} from './../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
-import {HsShareUrlService} from '../permalink/share-url.service';
-import {HsStatusManagerService} from './status-manager.service';
+import {HsShareService} from '../permalink/share.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {MapComposition} from './types/map-composition.type';
 import {StatusData} from './types/status-data.type';
@@ -81,8 +80,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     private hsSaveMapService: HsSaveMapService,
     private hsConfig: HsConfig,
     private http: HttpClient,
-    private hsShareUrlService: HsShareUrlService,
-    private hsStatusManagerService: HsStatusManagerService,
+    private hsShareService: HsShareService,
     private hsLaymanService: HsLaymanService,
     private hsLayoutService: HsLayoutService,
     private hsUtilsService: HsUtilsService,
@@ -164,43 +162,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   }
 
   /**
-   * Request confirmation if the composition is ready to be saved
-   * NOTE not being used
-   
-   */
-  async confirmSave(): Promise<void> {
-    try {
-      const response: any = await lastValueFrom(
-        this.http.post(this.hsShareUrlService.endpointUrl(), {
-          project: this.hsConfig.project_name,
-          title: this.compoData.name,
-          request: 'rightToSave',
-        })
-      );
-      const j = response.data;
-      this.statusData.hasPermission = j.results.hasPermission;
-      this.statusData.titleFree = j.results.titleFree;
-      if (j.results.guessedTitle) {
-        this.statusData.guessedTitle = j.results.guessedTitle;
-      }
-      if (!this.statusData.titleFree) {
-        this.statusData.changeTitle = false;
-      }
-      if (this.statusData.titleFree && this.statusData.hasPermission) {
-        this.save(
-          true,
-          this.hsStatusManagerService.findStatusmanagerEndpoint()
-        );
-      }
-      this.preSaveCheckCompleted.next(
-        this.hsStatusManagerService.findStatusmanagerEndpoint()
-      );
-    } catch (ex) {
-      this.statusData.success = false;
-    }
-  }
-
-  /**
    * Save composition to external service database
    * @param saveAsNew - Save as new composition
    * @param endpoint - Endpoint's description
@@ -216,7 +177,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
       }
       const compositionJson = this.generateCompositionJson(tempCompoData);
-      let saver: HsSaverService = this.hsStatusManagerService;
+      let saver: HsSaverService = this.hsShareService;
       if (endpoint.type.includes('layman')) {
         saver = this.hsLaymanService;
       }
@@ -226,9 +187,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
           const compInfo: any = {};
           const j = response;
           let status = false;
-          if (endpoint.type == 'statusmanager') {
-            status = j.saved;
-          }
           if (endpoint.type.includes('layman')) {
             if (saveAsNew) {
               status = j.length == 1 && j[0].uuid !== undefined;
@@ -240,11 +198,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
             if (endpoint.type.includes('layman') && j.status == 'CONFLICT') {
               compInfo.id = j[0].uuid;
               compInfo.name = j[0].name;
-            }
-            if (endpoint.type == 'statusmanager') {
-              compInfo.id = j.id;
-              compInfo.title = j.title;
-              compInfo.abstract = j.abstract || '';
             }
           } else {
             this.hsEventBusService.compositionLoading.next(compInfo);
@@ -391,7 +344,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   /**
    * Initiate composition's saving procedure
    * @param saveAsNew - If true save a new composition, otherwise overwrite to current one
-   
    */
   async initiateSave(saveAsNew: boolean): Promise<void> {
     if (!this.validateForm()) {
