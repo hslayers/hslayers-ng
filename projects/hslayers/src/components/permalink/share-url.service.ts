@@ -261,8 +261,7 @@ export class HsShareUrlService {
    * Create permalink Url to map
    */
   getPermalinkUrl(): string {
-    if (this.HsCore.isMobile() && this.hsConfig.permalinkLocation) {
-      //Deprecated? - isMobile??
+    if (this.hsConfig.permalinkLocation) {
       return (
         this.hsConfig.permalinkLocation.origin +
         this.current_url.replace(
@@ -291,7 +290,8 @@ export class HsShareUrlService {
    * Create Url for PureMap version of map
    */
   getPureMapUrl(): string {
-    const params: any = {puremap: 'true'};
+    const params = {};
+    params[HS_PRMS.pureMap] = true;
     return (
       this.getPermalinkUrl() +
       '&' +

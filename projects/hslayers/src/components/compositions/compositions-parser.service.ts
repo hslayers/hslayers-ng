@@ -636,7 +636,10 @@ export class HsCompositionsParserService {
     for (const lyr_def of j.layers) {
       const layer = await this.jsonToLayer(lyr_def);
       if (layer == undefined) {
-        if (lyr_def.protocol.format != 'hs.format.externalWFS') {
+        if (
+          !lyr_def.protocol ||
+          lyr_def.protocol.format != 'hs.format.externalWFS'
+        ) {
           this.$log.warn(
             'Was not able to parse layer from composition',
             lyr_def
