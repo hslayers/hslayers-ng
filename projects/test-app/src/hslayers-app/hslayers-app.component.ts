@@ -357,11 +357,11 @@ export class HslayersAppComponent {
       open_lm_after_comp_loaded: false,
       queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
       datasources: [
-        // {
-        //   title: 'Layman',
-        //   url: 'http://localhost:8087',
-        //   type: 'layman',
-        // },
+        {
+          title: 'Layman',
+          url: 'http://localhost:8087',
+          type: 'layman',
+        },
         {
           title: 'Micka',
           url: 'https://watlas.lesprojekt.cz/micka/csw',

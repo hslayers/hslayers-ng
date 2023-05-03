@@ -169,10 +169,9 @@ export class HsCompositionsService {
   async shareComposition(record: HsMapCompositionDescriptor): Promise<any> {
     const recordLink = encodeURIComponent(this.getRecordLink(record));
     const permalinkOverride = this.hsConfig.permalinkLocation;
-    const compositionUrl =
-      this.hsCore.isMobile() && permalinkOverride
-        ? permalinkOverride.origin + permalinkOverride.pathname
-        : `${location.origin}${location.pathname}?composition=${recordLink}`;
+    const compositionUrl = permalinkOverride
+      ? permalinkOverride.origin + permalinkOverride.pathname
+      : `${location.origin}${location.pathname}?composition=${recordLink}`;
     this.shareId = this.hsUtilsService.generateUuid();
     const headers = new HttpHeaders().set(
       'Content-Type',

@@ -170,19 +170,6 @@ export class HsCoreService {
   }
 
   /**
-   * Tests if screen of used device is mobile type (current breakdown is screen width 800px)
-   * @public
-   * @returns "mobile" or ""
-   */
-  isMobile(): string {
-    if (window['cordova']) {
-      return 'mobile';
-    } else {
-      return '';
-    }
-  }
-
-  /**
    * Whether app is running in puremapApp mode
    * @public
    */
