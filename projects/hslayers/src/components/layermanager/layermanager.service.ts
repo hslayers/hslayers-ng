@@ -46,6 +46,8 @@ import {
   getCachedCapabilities,
   getCluster,
   getExclusive,
+  getFromComposition,
+  getGreyscale,
   getLegends,
   getName,
   getOrigLayers,
@@ -297,6 +299,12 @@ export class HsLayerManagerService {
       }
       layerDescriptor.thumbnail = this.getImage(layer);
       this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
+      //Composition layers are already set up using ol.layer.className
+      if (getGreyscale(layer) && !getFromComposition(layer)) {
+        setTimeout(() => {
+          this.setGreyscale(layerDescriptor);
+        }, 100);
+      }
     }
 
     if (!getName(layer)) {
