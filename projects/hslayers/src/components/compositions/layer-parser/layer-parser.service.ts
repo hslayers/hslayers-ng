@@ -1,18 +1,19 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import ImageSource from 'ol/source/Image';
-import TileSource from 'ol/source/Tile';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {
   ImageArcGISRest,
+  Image as ImageSource,
   ImageStatic,
   ImageWMS,
   Source,
   TileArcGISRest,
+  Tile as TileSource,
   TileWMS,
+  Vector as VectorSource,
   XYZ,
 } from 'ol/source';
 import {
@@ -21,9 +22,10 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
+// eslint-disable-next-line import/named
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
+// eslint-disable-next-line import/named
 import {Options as TileOptions} from 'ol/layer/BaseTile';
-import {Vector as VectorSource} from 'ol/source';
 import {WMTSCapabilities} from 'ol/format';
 
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
@@ -62,10 +64,10 @@ export class HsCompositionsLayerParserService {
   ) {}
 
   /**
+   * Initiate creation of WFS layer through HsUrlWfsService
+   *
    * @public
    * @param lyr_def - Layer definition object
-   
-   * Initiate creation of WFS layer through HsUrlWfsService
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
     const newLayer = new VectorLayer({

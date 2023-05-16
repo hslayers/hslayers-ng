@@ -2,16 +2,16 @@ import {Injectable, NgZone} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 import {Circle, Geometry} from 'ol/geom';
-import {Cluster, Source} from 'ol/source';
+import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
-import {Layer} from 'ol/layer';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+// eslint-disable-next-line import/named
+import {EventsKey} from 'ol/events';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
+import {unByKey} from 'ol/Observable';
 
-import {EventsKey} from 'ol/events';
 import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -48,7 +48,6 @@ import {
   setTitle,
   setWorkspace,
 } from '../../common/layer-extensions';
-import {unByKey} from 'ol/Observable';
 
 type activateParams = {
   onDrawStart?;
@@ -358,7 +357,7 @@ export class HsDrawService extends HsDrawServiceParams {
 
   /**
    * @param changeStyle - controller callback function
-   * Update draw style without neccessity to reactivate drawing interaction
+   * Update draw style without necessity to reactivate drawing interaction
    */
   updateStyle(changeStyle): void {
     if (this.draw) {
@@ -667,7 +666,7 @@ export class HsDrawService extends HsDrawServiceParams {
   }
 
   /**
-   * Determines whether rightclick should finish the drawing or not
+   * Determines whether right-click should finish the drawing or not
    * @param typeNum - Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
    * @param vertexCount - Number of vertexes the sketch has
    * @returns return boolean value if right mouse button was clicked
