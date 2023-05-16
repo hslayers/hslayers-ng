@@ -9,7 +9,7 @@ import {
   SldStyleParser as SLDParser,
   SldVersion,
 } from 'geostyler-sld-parser';
-import {getUid, Feature} from 'ol';
+import {Feature, getUid} from 'ol';
 import {
   FillSymbolizer,
   Filter,
@@ -21,7 +21,8 @@ import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {QGISStyleParser} from 'geostyler-qgis-parser';
-import {createDefaultStyle, StyleFunction, StyleLike} from 'ol/style/Style';
+// eslint-disable-next-line import/named
+import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -223,7 +224,6 @@ export class HsStylerService {
   async initLayerStyle(
     layer: VectorLayer<VectorSource<Geometry>>
   ): Promise<void> {
-    console.log("initLayerStyle");
     if (!this.isVectorLayer(layer)) {
       return;
     }
@@ -241,9 +241,13 @@ export class HsStylerService {
       }
       if (getCluster(layer)) {
         if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
-          this.hsLogService.warn(`Layer ${getTitle(layer)} is meant to be clustered but not an instance of Cluster source! Waiting for a change:source event...`)
+          this.hsLogService.warn(
+            `Layer ${getTitle(
+              layer
+            )} is meant to be clustered but not an instance of Cluster source! Waiting for a change:source event...`
+          );
           await new Promise((resolve) => {
-            layer.once('change:source', (evt) => resolve(evt.target))
+            layer.once('change:source', (evt) => resolve(evt.target));
           });
         }
         //await is necessary because of consecutive code (this.fill())

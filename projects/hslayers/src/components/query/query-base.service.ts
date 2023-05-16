@@ -1,14 +1,15 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
+import {Subject} from 'rxjs';
 
-import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Circle as CircleStyle} from 'ol/style';
+import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+// eslint-disable-next-line import/named
 import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
 import {Feature, Map} from 'ol';
+// eslint-disable-next-line import/named
 import {FeatureLike} from 'ol/Feature';
 import {Geometry, Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
-import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {transform} from 'ol/proj';
@@ -119,7 +120,6 @@ export class HsQueryBaseService {
    * Get features under the mouse pointer on the map
    * @param map - Current map object
    * @param pixel - Target pixel
-   
    * @returns Array with features
    */
   getFeaturesUnderMouse(map: Map, pixel: number[]): FeatureLike[] {
@@ -144,7 +144,6 @@ export class HsQueryBaseService {
   /**
    * Push a new feature info html content to other htmls array
    * @param html - Feature info html content
-   
    */
   pushFeatureInfoHtml(html: string): void {
     this.featureInfoHtmls.push(this.domSanitizer.bypassSecurityTrustHtml(html));
@@ -155,7 +154,6 @@ export class HsQueryBaseService {
    * Fill popup iframe and resize it to fit the content
    * @param response - Response of GetFeatureInfoRequest
    * @param append - If true, the response will be appended to iframe's inner HTML, otherwise its content will be replaced
-   
    */
   fillIframeAndResize(response: string, append: boolean): void {
     const iframe = this.getInvisiblePopup();
@@ -186,7 +184,6 @@ export class HsQueryBaseService {
   /**
    * Get coordinates in multiple projections
    * @param coordinate - Coordinates from map single click interaction
-   
    * @returns Object with coordinates in multiple projections
    */
   getCoordinate(coordinate: Coordinate): {
@@ -228,7 +225,6 @@ export class HsQueryBaseService {
 
   /**
    * Activate queries for the current OL map
-   
    */
   activateQueries(): void {
     if (this.queryActive) {
@@ -242,7 +238,6 @@ export class HsQueryBaseService {
 
   /**
    * Deactivate queries for the current OL map
-   
    */
   deactivateQueries(): void {
     if (!this.queryActive) {
@@ -255,7 +250,6 @@ export class HsQueryBaseService {
 
   /**
    * Check if current app panel is queryable
-   
    * @returns - True or false
    */
   currentPanelQueryable(): boolean {
@@ -267,12 +261,11 @@ export class HsQueryBaseService {
 
   /**
    * Get style for point clicked on the map
-   
    * @returns - OL style
    */
   pointClickedStyle(): Style {
     const defaultStyle = new Style({
-      image: new Circle({
+      image: new CircleStyle({
         fill: new Fill({
           color: 'rgba(255, 156, 156, 0.4)',
         }),

@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 
-import {Cluster, Source} from 'ol/source';
+import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -42,8 +41,9 @@ export class HsFeatureTableService {
   ) {}
 
   /**
-   * @param layer - Layer from HsConfig.layersInFeatureTable
    * Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
+   *
+   * @param layer - Layer from HsConfig.layersInFeatureTable
    * @returns Returns layer
    */
   addLayer(layer: Layer<Source>): any {
@@ -57,9 +57,11 @@ export class HsFeatureTableService {
     }
     return;
   }
+
   /**
-   * @param layer - Layer from HsConfig.layersInFeatureTable
    * Wrap layer object
+   *
+   * @param layer - Layer from HsConfig.layersInFeatureTable
    * @returns Returns wrapped layer object
    */
   wrapLayer(layer: Layer<Source>): any {
@@ -69,10 +71,11 @@ export class HsFeatureTableService {
       type: 'vector',
     };
   }
+
   /**
-   * @param layer - Layer from HsConfig.layersInFeatureTable
-   
    * Search all layers feature attributes and map them into new objects for html table
+   *
+   * @param layer - Layer from HsConfig.layersInFeatureTable
    */
   fillFeatureList(layer: Layer<Source>): void {
     const source: VectorSource<Geometry> =
@@ -86,9 +89,9 @@ export class HsFeatureTableService {
   }
 
   /**
-   * @param feature - Feature selected
-   
    * Update feature description
+   *
+   * @param feature - Feature selected
    */
   updateFeatureDescription(feature: Feature<Geometry>): void {
     const newDescriptor = this.describeFeature(feature);
@@ -99,9 +102,9 @@ export class HsFeatureTableService {
   }
 
   /**
-   * @param feature - Feature selected
-   
    * Add feature description
+   *
+   * @param feature - Feature selected
    */
   addFeatureDescription(feature: Feature<Geometry>): void {
     const newDescriptor = this.describeFeature(feature);
@@ -111,9 +114,9 @@ export class HsFeatureTableService {
   }
 
   /**
-   * @param feature - Feature selected
-   
    * Remove feature description
+   *
+   * @param feature - Feature selected
    */
   removeFeatureDescription(feature: Feature<Geometry>): void {
     const currentIx = this.features.findIndex((f) => f.feature == feature);
@@ -123,9 +126,9 @@ export class HsFeatureTableService {
   }
 
   /**
-   * @param feature - Feature selected
-   
    * Describe feature
+   *
+   * @param feature - Feature selected
    */
   describeFeature(feature: Feature<Geometry>): FeatureDescriptor {
     const attribWrapper = this.hsQueryVectorService
@@ -143,8 +146,9 @@ export class HsFeatureTableService {
   }
 
   /**
+   * Find feature name attribute and separate it from other attributes for html table purposes
+   *
    * @param attributes - layers feature attributes
-   * Find feature name attribute and seperate it from other attributes for html table purposes
    * @returns feature name
    */
   setFeatureName(attributes: any): string {
@@ -160,18 +164,21 @@ export class HsFeatureTableService {
       return 'Feature';
     }
   }
+
   /**
-   * @param attributes - layers feature attributes
    * Remove feature name attribute from feature attributes array
+   *
+   * @param attributes - layers feature attributes
    * @returns feature attributes
    */
   attributesWithoutFeatureName(attributes: any): any {
     return attributes.filter((attr) => attr.name !== 'name');
   }
+
   /**
-   * @param valueName - Requested value to sort the feature table list
-   
    * Sort features by requested value
+   *
+   * @param valueName - Requested value to sort the feature table list
    */
   sortFeaturesBy(valueName): void {
     if (this.features !== undefined && this.features.length > 1) {
@@ -183,12 +190,13 @@ export class HsFeatureTableService {
       );
     }
   }
+
   /**
+   * Sorting algorithm
+   *
    * @param a - First input feature
    * @param b - second input feature
    * @param valueName - Sorting value
-   
-   * Sorting algorithm
    * @returns Returns each features relative position in the table
    */
   sortFeatures(a, b, valueName): number {
@@ -223,10 +231,12 @@ export class HsFeatureTableService {
     this.lastSortValue = valueName;
     return position;
   }
+
   /**
+   * Get requested features attribute value, which will be used in the sorting algorithm
+   *
    * @param attributes - features attributes
    * @param valueName - Sorting value
-   * Get requested features attribute value, which will be used in the sorting algorithm
    * @returns Returns attributes value
    */
   getValue(attributes: any, valueName: string): string | number {

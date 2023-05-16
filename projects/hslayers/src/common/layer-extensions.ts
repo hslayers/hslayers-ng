@@ -1,10 +1,9 @@
-import Feature from 'ol/Feature';
-import LayerGroup from 'ol/layer/Group';
+import BaseLayer from 'ol/layer/Base';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import BaseLayer from 'ol/layer/Base';
 import {DOMFeatureLink} from './dom-feature-link.type';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
@@ -502,7 +501,7 @@ export function getOnFeatureSelected(layer: Layer<Source>): FeatureSelector {
 }
 
 /**
- * Used internaly by hslayers. Store the original LAYERS param
+ * Used internally by hslayers. Store the original LAYERS param
  * when overriding LAYERS by subLayers property. This is needed for metadata
  * parsing after page has refreshed and LAYERS are read from cookie or map compositions.
  * @param layer - OL layer
@@ -613,7 +612,7 @@ export function setThumbnail(layer: Layer<Source>, thumbnail: string): void {
   layer.set(THUMBNAIL, thumbnail);
 }
 
-export function getThumbnail(layer: Layer<Source> | LayerGroup): string {
+export function getThumbnail(layer: Layer<Source> | Group): string {
   return layer.get(THUMBNAIL);
 }
 

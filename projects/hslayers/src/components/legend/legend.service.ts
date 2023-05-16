@@ -1,17 +1,21 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
-import RenderFeature from 'ol/render/Feature';
+import {Feature} from 'ol';
 import {Style as GeoStylerStyle} from 'geostyler-style';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {SldStyleParser as SLDParser} from 'geostyler-sld-parser';
-import {Source, ImageStatic as Static, XYZ} from 'ol/source';
+import {
+  Source,
+  ImageStatic as Static,
+  Vector as VectorSource,
+  XYZ,
+} from 'ol/source';
 import {Style} from 'ol/style';
-import {Vector as VectorSource} from 'ol/source';
+import {StyleFunction, StyleLike} from 'ol/style/Style';
 
 import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -30,13 +34,6 @@ import {
   getTitle,
 } from '../../common/layer-extensions';
 import {getLaymanFriendlyLayerName} from '../../common/layman/layman-utils';
-
-//Following type-defs are missing in the OL export
-declare type StyleFunction = (
-  feature: Feature<any> | RenderFeature,
-  number?: number
-) => void | Style | Style[];
-declare type StyleLike = Style | Array<Style> | StyleFunction;
 
 @Injectable({
   providedIn: 'root',

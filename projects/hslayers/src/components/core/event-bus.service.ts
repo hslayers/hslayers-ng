@@ -1,10 +1,9 @@
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
+import {Feature, Map} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Map} from 'ol';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
@@ -43,8 +42,8 @@ export class HsEventBusService {
    * @event compositionLoads
    */
   compositionLoads: Subject<any> = new Subject();
-  layerRemovals: Subject<Layer<Source>> = new Subject();
   compositionEdits: Subject<void> = new Subject();
+  layerRemovals: Subject<Layer<Source>> = new Subject();
   layerAdditions: Subject<HsLayerDescriptor> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
@@ -70,7 +69,7 @@ export class HsEventBusService {
     time: string;
   }> = new Subject();
   /**
-   * Used to listen for changes either in "time" property in HsLayerDescrtiptor
+   * Used to listen for changes either in "time" property in HsLayerDescriptor
    * or in "dimensions" property in OL Layer object
    */
   layerDimensionDefinitionChanges: Subject<Layer<Source>> = new Subject();

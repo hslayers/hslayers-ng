@@ -1,8 +1,8 @@
-import {Circle, Geometry, LineString, Point, Polygon} from 'ol/geom';
-import {Cluster, Source} from 'ol/source';
 import {Injectable} from '@angular/core';
+
+import {Circle, Geometry, LineString, Point, Polygon} from 'ol/geom';
+import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from './../../../config.service';
 import {HsMapService} from '../../map/map.service';
@@ -15,18 +15,20 @@ import {HsUtilsService} from '../../utils/utils.service';
 export class HsLayerEditorVectorLayerService {
   layersClusteredFromStart = [];
   constructor(
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsStylerService: HsStylerService,
-    public HsConfig: HsConfig
+    public hsConfig: HsConfig,
+    public hsMapService: HsMapService,
+    public hsStylerService: HsStylerService,
+    public hsUtilsService: HsUtilsService
   ) {}
 
   /**
-   * Convert layer to clustered state where it's source gets nested in another
+   * Convert layer to clustered state where its source gets nested in another
    * VectorSource and first level sources features contain 'features' attribute
    * with the original features in it as an array
    * @param newValue - Cluster or not to cluster
+   * @param layer - OL Layer to cluster or de-cluster
    * @param distance - Minimum distance in pixels between clusters
+   * @param generateStyle - Whether a default cluster style shall be generated for the layer
    */
   async cluster(
     newValue: boolean,
@@ -35,10 +37,10 @@ export class HsLayerEditorVectorLayerService {
     generateStyle: boolean
   ): Promise<void> {
     if (newValue == true) {
-      if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
+      if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         if (generateStyle) {
-          await this.HsStylerService.styleClusteredLayer(
+          await this.hsStylerService.styleClusteredLayer(
             layer as VectorLayer<Cluster>
           );
         }
@@ -46,7 +48,7 @@ export class HsLayerEditorVectorLayerService {
           layer as VectorLayer<VectorSource<Geometry>>
         );
       }
-    } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
+    } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
       layer.setSource((layer.getSource() as Cluster).getSource());
     }
   }
@@ -76,12 +78,13 @@ export class HsLayerEditorVectorLayerService {
       },
     });
   }
+
   updateFeatureTableLayers(layer: VectorLayer<VectorSource<Geometry>>): void {
-    const currentLayerIndex = this.HsConfig.layersInFeatureTable?.findIndex(
+    const currentLayerIndex = this.hsConfig.layersInFeatureTable?.findIndex(
       (l) => l == layer
     );
     if (layer && currentLayerIndex > -1) {
-      this.HsConfig.layersInFeatureTable[currentLayerIndex] = layer;
+      this.hsConfig.layersInFeatureTable[currentLayerIndex] = layer;
     }
   }
 }

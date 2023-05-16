@@ -1,11 +1,10 @@
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, Observable} from 'rxjs';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {Vector as VectorSource} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
