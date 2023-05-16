@@ -1,14 +1,15 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 import colormap from 'colormap';
-import {Cluster} from 'ol/source';
+import {Cluster, Vector as VectorSource} from 'ol/source';
 import {
   ConstructorParams,
   SldStyleParser as SLDParser,
   SldVersion,
 } from 'geostyler-sld-parser';
-import {Feature} from 'ol';
+import {getUid, Feature} from 'ol';
 import {
   FillSymbolizer,
   Filter,
@@ -20,12 +21,8 @@ import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {QGISStyleParser} from 'geostyler-qgis-parser';
-import {StyleFunction, StyleLike} from 'ol/style/Style';
-import {Subject} from 'rxjs';
+import {createDefaultStyle, StyleFunction, StyleLike} from 'ol/style/Style';
 import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {createDefaultStyle} from 'ol/style/Style';
-import {getUid} from 'ol';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -208,7 +205,7 @@ export class HsStylerService {
     }
     let style = layer.getStyle();
     if (
-      this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
+      this.hsUtilsService.instOf(layer.getSource(), Cluster) &&
       this.hsUtilsService.isFunction(style)
     ) {
       style = this.wrapStyleForClusters(style as StyleFunction);
@@ -226,6 +223,7 @@ export class HsStylerService {
   async initLayerStyle(
     layer: VectorLayer<VectorSource<Geometry>>
   ): Promise<void> {
+    console.log("initLayerStyle");
     if (!this.isVectorLayer(layer)) {
       return;
     }
@@ -242,6 +240,13 @@ export class HsStylerService {
         layer.setStyle(style);
       }
       if (getCluster(layer)) {
+        if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+          this.hsLogService.warn(`Layer ${getTitle(layer)} is meant to be clustered but not an instance of Cluster source! Waiting for a change:source event...`)
+          await new Promise((resolve) => {
+            layer.once('change:source', (evt) => resolve(evt.target))
+          });
+        }
+        //await is necessary because of consecutive code (this.fill())
         await this.styleClusteredLayer(layer);
       }
     } else if (
@@ -639,7 +644,7 @@ export class HsStylerService {
 
   /**
    * HACK is needed to style cluster layers. It wraps existing OL style function
-   * in a function which searches for for Text styles and in them for serialized
+   * in a function which searches for Text styles and in them for serialized
    * feature arrays and instead sets the length of this array as the label.
    * If the geostyler text symbolizer had {{features}} as the text label template
    * (which returns the "features" attribute of the parent/cluster feature) and returned
