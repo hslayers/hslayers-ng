@@ -1,6 +1,21 @@
 {
   "name": "hslayers-server",
   "version": "1.5.2",
+  "description": "HSLayers server",
+  "author": "Plan4all",
+  "keywords": [
+    "hslayers",
+    "hslayers-ng",
+    "layman",
+    "proxy"
+  ],
+  "homepage": "https://ng.hslayers.org/",
+  "bugs": "https://github.com/hslayers/hslayers-ng/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hslayers/hslayers-ng.git"
+  },
+  "license": "MIT",
   "main": "server.js",
   "engines": {
     "node": "^14.17.0 || ^16.0.0 || >=18.0.0"
@@ -12,7 +27,6 @@
   "bin": {
     "hslayers-server": "./server.js"
   },
-  "author": "Plan4all",
   "dependencies": {
     "better-sqlite3": "^7.6.2",
     "connect-sqlite3": "^0.9.11",

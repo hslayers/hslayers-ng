@@ -25,11 +25,11 @@ npx hslayers-server [options]
 #### Options
 
 --proxy (-p) - run the proxy service (default: true)
-  
+
 --share (-s) - run the map share service (default: true)
-  
+
 --layman (-l) - run the Layman client service (default: false)
-  
+
 
 Run `npx hslayers-server --help` to get more info.
 
@@ -49,7 +49,7 @@ Following environment variables can be set:
 * `HS_GEONAMES_API_KEY=*****` - (optional) GeoNames API key (username) that will be used to authorize the GeoNames request
 * `OPENROUTESERVICE_API_KEY=*****` - (optional) OpenRoutingService API key to be appended to requests GET parameters
 
-Usually the hslayers-server is put behind another webserver such as Nginx or Apache using mod_proxy to have both the map application and proxy running on the same domain and port. Be careful to not merge double slashes in that case: set `merge_slashes off;` in nginx config.
+Usually the hslayers-server is put behind another webserver such as Nginx or Apache using mod_proxy to have both the map application and proxy running on the same domain and port. Be careful not to merge double slashes in that case: set `merge_slashes off;` in nginx config.
 
 #### GeoNames
 
@@ -74,7 +74,7 @@ and payload:
 Used for storing and serving maps for the purposes of sharing them via permalinks or to social media. Uses SQLite database for which you need to specify the path to (DB_PATH variable).
 The same database is used by the [Layman authentication service](#layman). Following env variables can be set:
 
-* `SHARING_PORT=8086` - (optional, default port 8086) specify port on which the service will 
+* `SHARING_PORT=8086` - (optional, default port 8086) specify port on which the service will be available
 * `DB_PATH=src/data/hslayers-server.db` - path to the SQLite database for storing shared maps
 
 
@@ -89,9 +89,10 @@ Supported operations:
 ### Layman Auth Client
 Server part component of the OAuth2 authentication workflow for the [Layman](https://github.com/jirik/layman) server. 
 It has been implemented based on the [recommendations](https://github.com/jirik/layman/blob/master/doc/oauth2/client-recommendations.md) for Layman client.
-Liferay portal is being currently used as an identity provider. Following env variables can be set:
+Wagtail CMS is tested and being actively used as an identity provider. Liferay portal has been tested in the past.
+Following env variables can be set:
 
-* `LAYMAN_PORT=8087` - (optional, default port 8087) specify port on which the service will 
+* `LAYMAN_PORT=8087` - (optional, default port 8087) specify port on which the service will be available
 * `DB_PATH=src/data/hslayers-server.db` - path to the SQLite database for storing user sessions
 * `SESSION_SECRET=XXXXX` - OAuth2 session secret key (session between your application and Layman Auth Client)
 * `SESSION_MAX_AGE=604800` - session cookie expiration, eg. 60 * 60 * 24 * 7 = 604800 s = 7 days
