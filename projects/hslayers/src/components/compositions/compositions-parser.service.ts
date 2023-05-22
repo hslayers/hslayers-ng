@@ -285,7 +285,7 @@ export class HsCompositionsParserService {
     for (const layer of res.LayerList.Layer) {
       const layerToAdd = {
         className: 'HSLayers.Layer.WMS',
-        dimensions: {},
+        dimensions: undefined,
         legends: [''],
         maxResolution: null,
         metadata: {},

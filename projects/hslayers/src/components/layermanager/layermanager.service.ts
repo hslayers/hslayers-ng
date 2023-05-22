@@ -280,7 +280,9 @@ export class HsLayerManagerService {
         const que = this.hsQueuesService.ensureQueue(
           'wmsGetCapabilities',
           1,
-          5000
+          //In case of slow request give 10s for other tasks to complete before
+          //making another request that might be blocking otherwise
+          10000
         );
         que.push(async (cb) => {
           try {

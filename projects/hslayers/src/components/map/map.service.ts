@@ -39,10 +39,12 @@ import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/ev
 import {register} from 'ol/proj/proj4';
 
 import {BoundingBoxObject} from './../save-map/types/bounding-box-object.type';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
   getDimensions,
@@ -101,6 +103,8 @@ export class HsMapService {
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsLanguageService: HsLanguageService,
+    private hsQueuesService: HsQueuesService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private rendererFactory: RendererFactory2
   ) {}
 
@@ -691,9 +695,8 @@ export class HsMapService {
     if (
       this.hsUtilsService.instOf(source, XYZ) &&
       !this.hsUtilsService.instOf(source, OSM) &&
-      (source as XYZ)
-        .getUrls()
-        .filter((url) => url.indexOf('openstreetmap') > -1).length == 0
+      (source as XYZ).getUrls().filter((url) => !url.includes('openstreetmap'))
+        .length == 0
     ) {
       this.proxifyLayerLoader(lyr, true);
     }
@@ -969,37 +972,39 @@ export class HsMapService {
       return;
     }
     if (tiled) {
-      //TODO: refactor: tileUrlFunction() seems redundant
-      const tile_url_function =
-        (src as TileImage).getTileUrlFunction() ||
-        (src as any).tileUrlFunction();
-      (src as TileImage).setTileUrlFunction((b, c, d) => {
-        let url = tile_url_function.call(src, b, c, d);
-        if (getDimensions(lyr)) {
+      if (getDimensions(lyr)) {
+        const tile_url_function =
+          (src as TileImage).getTileUrlFunction() ||
+          (src as any).tileUrlFunction();
+        (src as TileImage).setTileUrlFunction((b, c, d) => {
+          let url = tile_url_function.call(src, b, c, d);
           const dimensions = getDimensions(lyr);
           Object.keys(dimensions).forEach((dimension) => {
             url = url.replace(`{${dimension}}`, dimensions[dimension].value);
           });
-        }
-        if (url.indexOf(this.hsConfig.proxyPrefix) == 0) {
           return url;
-        } else {
-          return this.hsUtilsService.proxify(url);
-        }
-      });
-      (src as TileImage).setTileLoadFunction((tile: ImageTile, src) => {
-        const laymanEp = this.hsConfig.datasources?.find((ep) =>
-          ep.type.includes('layman')
-        );
-        if (laymanEp && src.startsWith(laymanEp.url)) {
-          this.laymanWmsLoadingFunction(tile, src);
-        } else {
-          (tile.getImage() as HTMLImageElement).src = src;
-        }
+        });
+      }
+      (src as TileImage).setTileLoadFunction(async (tile: ImageTile, url) => {
+        const que = this.hsQueuesService.ensureQueue('tileLoad', 6, 2500);
+        que.push(async (cb) => {
+          await this.simpleImageryProxy(tile, url);
+          cb(null);
+        });
       });
     } else {
-      (src as ImageWMS | ImageArcGISRest).setImageLoadFunction((i, s) =>
-        this.simpleImageryProxy(i, s)
+      (src as ImageWMS | ImageArcGISRest).setImageLoadFunction(
+        async (image, url) => {
+          /**
+           * No timeout for this que as non tiled images may in some cases take realy long to load and thus
+           * block all the rest of the functionality that depends on http requests for the whole duration
+           */
+          const que = this.hsQueuesService.ensureQueue('imageLoad', 4);
+          que.push(async (cb) => {
+            await this.simpleImageryProxy(image, url);
+            cb(null);
+          });
+        }
       );
     }
   }
@@ -1009,22 +1014,33 @@ export class HsMapService {
    * @public
    * @param image - Image or ImageTile as required by setImageLoadFunction() in ImageWMS, ImageArcGISRest and WMTS sources
    * @param src - Original (unproxified) source URL
-   
    */
-  simpleImageryProxy(image: ImageWrapper | ImageTile, src: string): void {
-    if (src.indexOf(this.hsConfig.proxyPrefix) == 0) {
-      (image.getImage() as HTMLImageElement).src = src;
-      return;
-    }
-    const laymanEp = this.hsConfig.datasources?.find((ep) =>
-      ep.type.includes('layman')
-    );
-    if (laymanEp && src.startsWith(laymanEp.url)) {
-      this.laymanWmsLoadingFunction(image, src);
-      return;
-    }
-    (image.getImage() as HTMLImageElement).src =
-      this.hsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+  async simpleImageryProxy(image: ImageWrapper | ImageTile, src: string) {
+    return new Promise((resolve, reject) => {
+      if (src.indexOf(this.hsConfig.proxyPrefix) == 0) {
+        (image.getImage() as HTMLImageElement).src = src;
+        return;
+      }
+      const laymanEp = this.hsCommonLaymanService.layman;
+      if (laymanEp && src.startsWith(laymanEp.url)) {
+        this.laymanWmsLoadingFunction(image, src);
+        return;
+      }
+      image.getImage().onload = function () {
+        resolve(image);
+      };
+
+      image.getImage().onerror = function () {
+        resolve(image);
+      };
+
+      image.getImage().onabort = function () {
+        resolve(image);
+      };
+
+      (image.getImage() as HTMLImageElement).src =
+        this.hsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+    });
   }
 
   /**
