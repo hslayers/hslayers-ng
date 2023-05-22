@@ -17,13 +17,11 @@ export class HsQueuesService {
   /**
    * Get the params saved by the queues service for the current app
    * @param useCase - Queue for
-   
    * @param customConcurrency - (Optional) custom concurrency
    * @param timeout - (Optional) Timeout of one queue item
    */
   ensureQueue(
     useCase: string,
-
     customConcurrency?: number,
     timeout?: number
   ): queue {

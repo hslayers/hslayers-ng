@@ -411,8 +411,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         `<a href="${layer.Attribution.OnlineResource}">${layer.Attribution.Title}</a>`,
       ];
     }
-    const dimensions = {};
+
+    let dimensions;
     if (layer.Dimension) {
+      dimensions = {};
       for (const val of layer.Dimension) {
         dimensions[val.name] = val;
       }
