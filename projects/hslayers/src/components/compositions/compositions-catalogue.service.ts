@@ -158,7 +158,7 @@ export class HsCompositionsCatalogueService {
     this.clearLoadedData();
     this.dataLoading = true;
     this.hsMapService.loaded().then(() => {
-      const observables = [];
+      const observables: Observable<any>[] = [];
       for (const endpoint of this.filteredEndpoints) {
         observables.push(this.loadCompositionFromEndpoint(endpoint));
       }
