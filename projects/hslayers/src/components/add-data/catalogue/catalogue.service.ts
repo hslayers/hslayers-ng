@@ -2,7 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {forkJoin} from 'rxjs';
+import {Observable, forkJoin} from 'rxjs';
 
 import {DatasetType, HsAddDataService} from '../add-data.service';
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
@@ -181,8 +181,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.hsMapService.loaded().then(() => {
         this.dataLoading = true;
         this.hsAddDataCatalogueMapService.clearExtentLayer();
-        const observables = [];
-
+        const observables: Observable<any>[] = [];
         //TODO Mark non functional endpoint
         for (const endpoint of this.endpointsWithDatasources) {
           if (!this.data.onlyMine || endpoint.type.includes('layman')) {
