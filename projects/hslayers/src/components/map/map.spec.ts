@@ -11,6 +11,7 @@ import Point from 'ol/geom/Point';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
 import {HsCoreService} from '../core/core.service';
@@ -59,6 +60,12 @@ describe('HsMapService', () => {
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsLanguageService, useValue: mockLanguageService()},
+        {
+          provide: HsCommonLaymanService,
+          useValue: {
+            layman: null,
+          },
+        },
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMapComponent);
