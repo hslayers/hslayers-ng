@@ -329,7 +329,7 @@
       "overwriteExistingMap": "Overwrite existing map composition?",
       "saveChangesFirst": "Save changes first",
       "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
-      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
+      "whatDoYouWant": "What do you want to do before opening selected map composition?",
       "youAreOpeningMap": "You are opening map"
     },
     "dialogShare": {

@@ -25,6 +25,9 @@ export class HsCompositionsOverwriteDialogComponent
     this.HsDialogContainerService.destroy(this);
   }
 
+  ngOnInit() {
+    console.log(this.data);
+  }
   /**
    * @public
    * Load new composition without saving old composition

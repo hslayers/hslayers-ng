@@ -65,12 +65,12 @@ export class HsCompositionsComponent
       this.hsCompositionsCatalogueService.loadFilteredCompositions();
     this.hsCompositionsService.notSavedOrEditedCompositionLoading
       .pipe(takeUntil(this.end))
-      .subscribe((url) => {
+      .subscribe(({url, record}) => {
         this.hsCompositionsService.compositionToLoad = {
           url,
-          title: '',
+          title: record.title,
         };
-        this.loadUnsavedDialogBootstrap('');
+        this.loadUnsavedDialogBootstrap(record);
       });
   }
 
@@ -96,13 +96,15 @@ export class HsCompositionsComponent
    * @param url -
    * Load selected composition in map, if current composition was edited display Overwrite dialog
    */
-
   addCompositionUrl(url: string): void {
     if (
       this.hsCompositionsParserService.composition_edited == true ||
       this.hsCompositionsParserService.composition_loaded
     ) {
-      this.hsCompositionsService.notSavedOrEditedCompositionLoading.next(url);
+      this.hsCompositionsService.notSavedOrEditedCompositionLoading.next({
+        url,
+        record: {title: 'Composition from URL'},
+      });
     } else {
       this.hsCompositionsService.loadComposition(url, true).then((_) => {
         this.addCompositionUrlVisible = false;
@@ -136,12 +138,10 @@ export class HsCompositionsComponent
    * Open overwrite dialog
    * @param title - Dialog title
    */
-  loadUnsavedDialogBootstrap(title: string): void {
+  loadUnsavedDialogBootstrap(record: any): void {
     this.hsDialogContainerService.create(
       HsCompositionsOverwriteDialogComponent,
-      {
-        composition_name_to_be_loaded: title,
-      }
+      record
     );
   }
 
