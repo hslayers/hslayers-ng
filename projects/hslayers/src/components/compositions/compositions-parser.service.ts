@@ -27,6 +27,7 @@ import {
 } from '../../common/layman/layman-utils';
 import {
   getTitle,
+  setFromBaseComposition,
   setMetadata,
   setSwipeSide,
 } from '../../common/layer-extensions';
@@ -142,9 +143,15 @@ export class HsCompositionsParserService {
   ): Promise<void> {
     this.hsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
-      this.composition_loaded = url;
       if (this.hsUtilsService.isFunction(pre_parse)) {
         response = await pre_parse(response);
+      }
+      /**
+       * Dont set composition_loaded for basemap composition as its just special way
+       * of setting intial state of the map similarly to default_layers
+       */
+      if (!response.basemapComposition) {
+        this.composition_loaded = url;
       }
       response.workspace = this.current_composition_workspace;
       /*
@@ -371,6 +378,10 @@ export class HsCompositionsParserService {
     if (confirmed) {
       if (layers?.length > 0) {
         layers.forEach((lyr) => {
+          // To suspend layerAdded events
+          if (obj.basemapComposition) {
+            setFromBaseComposition(lyr, true);
+          }
           this.hsMapService.addLayer(
             lyr as Layer<Source>,
             DuplicateHandling.RemoveOriginal

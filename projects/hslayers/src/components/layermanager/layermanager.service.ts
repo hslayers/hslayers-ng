@@ -205,7 +205,7 @@ export class HsLayerManagerService {
    * Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
    * @param e - Event object emitted by OL add layer event
-   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted. Otherwise will.
+   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted.
    */
   async layerAdded(
     e: {element: Layer<Source>},

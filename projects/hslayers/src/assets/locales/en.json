@@ -326,7 +326,7 @@
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Merge compositions",
-      "overwriteExistingMap": "Overwrite existing map?",
+      "overwriteExistingMap": "Overwrite existing map composition?",
       "saveChangesFirst": "Save changes first",
       "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
       "whatDoYouWant": "What do you want to do before opening the selected map composition?",

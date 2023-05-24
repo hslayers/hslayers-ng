@@ -31,6 +31,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {
   getActive,
   getAttribution,
+  getFromBaseComposition,
   getShowInLayerManager,
   getThumbnail,
   getTitle,
@@ -42,7 +43,8 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild('layerEditor', {static: false, read: ElementRef})
   layerEditorRef: ElementRef;
   map: any;
@@ -184,7 +186,10 @@ export class HsLayerManagerComponent
           if (getShowInLayerManager(e.element) == false) {
             return;
           }
-          this.hsLayerManagerService.layerAdded(e as any);
+          this.hsLayerManagerService.layerAdded(
+            e as any,
+            getFromBaseComposition(e.element)
+          );
         });
       this.hsLayerManagerService.removeLayerHandler = map
         .getLayers()

@@ -24,6 +24,7 @@ const EVENTS_SUSPENDED = 'eventsSuspended';
 const EXCLUSIVE = 'exclusive';
 const FEATURE_INFO_LANG = 'featureInfoLang';
 const FROM_COMPOSITION = 'fromComposition';
+const FROM_BASE_COMPOSITION = 'fromBaseComposition';
 const GET_FEATURE_INFO_TARGET = 'getFeatureInfoTarget';
 const GREYSCALE = 'greyscale';
 const HS_LAYMAN_SYNCHRONIZING = 'hsLaymanSynchronizing';
@@ -338,6 +339,17 @@ export function setFromComposition(
 
 export function getFromComposition(layer: Layer<Source>): boolean {
   return layer.get(FROM_COMPOSITION);
+}
+
+export function setFromBaseComposition(
+  layer: Layer<Source>,
+  fromComposition: boolean
+): void {
+  layer.set(FROM_BASE_COMPOSITION, fromComposition);
+}
+
+export function getFromBaseComposition(layer: BaseLayer): boolean {
+  return layer.get(FROM_BASE_COMPOSITION);
 }
 
 export function setFeatureInfoTarget(

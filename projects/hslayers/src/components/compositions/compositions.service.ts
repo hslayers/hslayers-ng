@@ -30,7 +30,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsCompositionsService {
   data: any = {};
   compositionToLoad: {url: string; title: string};
-  notSavedCompositionLoading: Subject<string> = new Subject();
+  notSavedOrEditedCompositionLoading: Subject<string> = new Subject();
   compositionNotFoundAtUrl: Subject<any> = new Subject();
   shareId: string;
   constructor(
@@ -316,8 +316,11 @@ export class HsCompositionsService {
       //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
       this.hsCompositionsParserService.current_composition_workspace =
         record.editable ? record.workspace : null;
-      if (this.hsCompositionsParserService.composition_edited == true) {
-        this.notSavedCompositionLoading.next(url);
+      if (
+        this.hsCompositionsParserService.composition_edited == true ||
+        this.hsCompositionsParserService.composition_loaded
+      ) {
+        this.notSavedOrEditedCompositionLoading.next(url);
       } else {
         this.loadComposition(url, true);
       }
@@ -391,11 +394,7 @@ export class HsCompositionsService {
    
    * @param overwrite - Overwrite existing map composition with the new one
    */
-  loadComposition(
-    url: string,
-
-    overwrite?: boolean
-  ): Promise<void> {
+  loadComposition(url: string, overwrite?: boolean): Promise<void> {
     return this.hsCompositionsParserService.loadUrl(url, overwrite);
   }
 
