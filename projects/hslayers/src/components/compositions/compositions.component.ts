@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject, Subscription, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
@@ -25,6 +25,8 @@ export class HsCompositionsComponent
   extends HsPanelBaseComponent
   implements OnDestroy, OnInit
 {
+  private end = new Subject<void>();
+
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -33,7 +35,6 @@ export class HsCompositionsComponent
   optionsMenuOpen = false;
   selectedCompId: string;
   loadFilteredCompositions: any;
-  notSavedCompositionLoadingSubscription: Subscription;
   name = 'composition_browser';
   constructor(
     private hsCompositionsService: HsCompositionsService,
@@ -62,8 +63,9 @@ export class HsCompositionsComponent
     });
     this.loadFilteredCompositions = () =>
       this.hsCompositionsCatalogueService.loadFilteredCompositions();
-    this.notSavedCompositionLoadingSubscription =
-      this.hsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
+    this.hsCompositionsService.notSavedOrEditedCompositionLoading
+      .pipe(takeUntil(this.end))
+      .subscribe((url) => {
         this.hsCompositionsService.compositionToLoad = {
           url,
           title: '',
@@ -73,7 +75,8 @@ export class HsCompositionsComponent
   }
 
   ngOnDestroy(): void {
-    this.notSavedCompositionLoadingSubscription.unsubscribe();
+    this.end.next();
+    this.end.complete();
   }
 
   /**
@@ -95,8 +98,11 @@ export class HsCompositionsComponent
    */
 
   addCompositionUrl(url: string): void {
-    if (this.hsCompositionsParserService.composition_edited == true) {
-      this.hsCompositionsService.notSavedCompositionLoading.next(url);
+    if (
+      this.hsCompositionsParserService.composition_edited == true ||
+      this.hsCompositionsParserService.composition_loaded
+    ) {
+      this.hsCompositionsService.notSavedOrEditedCompositionLoading.next(url);
     } else {
       this.hsCompositionsService.loadComposition(url, true).then((_) => {
         this.addCompositionUrlVisible = false;

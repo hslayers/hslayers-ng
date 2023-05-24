@@ -8,19 +8,20 @@
                     [attr.aria-label]="'COMMON.close' | translateHs ">
                 </button>
             </div>
-            <div class="modal-body" style="max-height: 600px; overflow-y: auto">
+            <div class="modal-body d-flex flex-column gap-1" style="max-height: 600px; overflow-y: auto">
                 {{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translateHs }}
-                <b>{{data.composition_name_to_be_loaded}}</b>
-                <br>{{'COMPOSITIONS.dialogoverwriteConfirm.thereAreCurrentlyUnsavedChanges' | translateHs}}
-                <br>{{'COMPOSITIONS.dialogoverwriteConfirm.whatDoYouWant' | translateHs }}
+                <p>{{data.composition_name_to_pe_loaded}}</p>
+                <p *ngIf="hsCompositionParserService.composition_edited" >{{'COMPOSITIONS.dialogoverwriteConfirm.thereAreCurrentlyUnsavedChanges'| translateHs}}</p>
+                <p>{{'COMPOSITIONS.dialogoverwriteConfirm.whatDoYouWant' | translateHs }}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="overwrite()"
-                    data-dismiss="modal">{{'COMMON.continue' | translateHs }}</button>
+                    data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}</button>
                 <button type="button" class="btn btn-primary compositions-btn-add" (click)="add();"
                     data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.mergeCompositions' |
                     translateHs}}</button>
-                <button type="button" class="btn btn-primary compositions-btn-save" (click)="save()"
+                <button *ngIf="hsCompositionParserService.composition_edited" type="button"
+                    class="btn btn-primary compositions-btn-save" (click)="save()"
                     data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.saveChangesFirst' |
                     translateHs}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
