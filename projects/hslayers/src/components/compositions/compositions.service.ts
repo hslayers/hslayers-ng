@@ -30,7 +30,8 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsCompositionsService {
   data: any = {};
   compositionToLoad: {url: string; title: string};
-  notSavedOrEditedCompositionLoading: Subject<string> = new Subject();
+  notSavedOrEditedCompositionLoading: Subject<{url: string; record?: any}> =
+    new Subject();
   compositionNotFoundAtUrl: Subject<any> = new Subject();
   shareId: string;
   constructor(
@@ -320,7 +321,10 @@ export class HsCompositionsService {
         this.hsCompositionsParserService.composition_edited == true ||
         this.hsCompositionsParserService.composition_loaded
       ) {
-        this.notSavedOrEditedCompositionLoading.next(url);
+        this.notSavedOrEditedCompositionLoading.next({
+          url: url as string,
+          record,
+        });
       } else {
         this.loadComposition(url, true);
       }
