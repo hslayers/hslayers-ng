@@ -1,7 +1,7 @@
+import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 

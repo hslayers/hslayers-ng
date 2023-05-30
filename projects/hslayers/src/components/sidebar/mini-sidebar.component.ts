@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
+
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
-import {HsLayoutParams, HsLayoutService} from '../layout/layout.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
 
-import {HsEventBusService} from '../core/event-bus.service';
-
-import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 @Component({
   selector: 'hs-mini-sidebar',
   templateUrl: './partials/sidebar.html',

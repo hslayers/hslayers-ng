@@ -4,11 +4,12 @@ import {PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
+// eslint-disable-next-line import/named
 import {ProjectionLike, transform} from 'ol/proj';
 import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';
 
-import {HsCommonLaymanService} from '../..//common/layman/layman.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
 
@@ -31,10 +32,10 @@ export class HsUtilsService {
   ) {}
 
   /**
-   * Proxify url if enabled.
+   * Proxify URL if enabled.
    * @public
    * @param url - URL to proxify
-   * @returns Encoded Url with path to hslayers-server proxy
+   * @returns Encoded URL with path to hslayers-server proxy
    */
   proxify(url: string): string {
     const laymanEp = this.hsCommonLaymanService.layman;

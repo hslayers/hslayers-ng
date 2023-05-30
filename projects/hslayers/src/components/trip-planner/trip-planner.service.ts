@@ -1,18 +1,14 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {catchError, lastValueFrom, of, timeout} from 'rxjs';
 
-import Collection from 'ol/Collection';
-import Feature from 'ol/Feature';
-import Geometry from 'ol/geom/Geometry';
-import Layer from 'ol/layer/Layer';
-import Source from 'ol/source/Source';
+import {Collection, Feature} from 'ol';
 import {Draw, Modify} from 'ol/interaction';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {Point} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {catchError, lastValueFrom, of, timeout} from 'rxjs';
+import {Geometry, Point} from 'ol/geom';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
