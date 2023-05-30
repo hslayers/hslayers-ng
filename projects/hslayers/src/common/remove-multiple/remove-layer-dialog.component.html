@@ -39,8 +39,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" [disabled]="!deleteFrom" class="btn btn-primary" (click)="yes()"
-                    [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
+                <button type="button" [disabled]="!deleteFrom" class="btn"
+                    [ngClass]="{'btn-primary': deleteFrom === 'map', 'btn-danger': deleteFrom === 'catalogue'}"
+                    (click)="yes()" [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
                     translateHs}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
                     [title]="'COMMON.back' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.back' |
