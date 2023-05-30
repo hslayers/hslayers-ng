@@ -206,24 +206,50 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
       (ep) => ep.datasourcePaging.matched != 0
     );
-    if (this.endpointsWithDatasources.length == 0) {
+    if (this.endpointsWithDatasources.length === 0) {
       this.dataLoading = false;
       return;
     }
-    this.endpointsWithDatasources.forEach(
-      (ep) => (this.matchedRecords += ep.datasourcePaging.matched)
+
+    this.matchedRecords = this.endpointsWithDatasources.reduce(
+      (sum, ep) => sum + ep.datasourcePaging.matched,
+      this.matchedRecords
     );
+
     let sumLimits = 0;
     this.endpointsWithDatasources.forEach((ep) => {
-      ep.datasourcePaging.limit = Math.floor(
-        (ep.datasourcePaging.matched / this.matchedRecords) *
-          this.recordsPerPage
+      /**Calculated limit or 1 if its smaller */
+      ep.datasourcePaging.limit = Math.max(
+        Math.round(
+          (ep.datasourcePaging.matched / this.matchedRecords) *
+            this.recordsPerPage
+        ),
+        1
       );
-      if (ep.datasourcePaging.limit == 0) {
-        ep.datasourcePaging.limit = 1;
-      }
       sumLimits += ep.datasourcePaging.limit;
     });
+    /**Proportion of page limit for one of the datasources was 0 after rounding
+     * For the first few pages we need to adjust limit of the other datasource
+     */
+    if (sumLimits > this.recordsPerPage) {
+      const epWithFew = this.endpointsWithDatasources.reduce(
+        (maxItem, currentItem) => {
+          if (
+            maxItem === null ||
+            currentItem.datasourcePaging.limit < maxItem.datasourcePaging.limit
+          ) {
+            return currentItem;
+          }
+          return maxItem;
+        },
+        null
+      );
+
+      /** Adjust the limit fo epWithMany */
+      this.endpointsWithDatasources.find(
+        (ep) => ep != epWithFew
+      ).datasourcePaging.limit -= 1;
+    }
     this.recordsPerPage = sumLimits;
     this.listNext = this.recordsPerPage;
     this.queryCatalogs(true);

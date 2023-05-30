@@ -182,20 +182,49 @@ export class HsCompositionsCatalogueService {
       this.dataLoading = false;
       return;
     }
-    this.filteredEndpoints.forEach(
-      (ep) => (this.matchedRecords += ep.compositionsPaging.matched)
+
+    this.matchedRecords = this.filteredEndpoints.reduce(
+      (sum, ep) => sum + ep.compositionsPaging.matched,
+      this.matchedRecords
     );
+
     let sumLimits = 0;
     this.filteredEndpoints.forEach((ep) => {
-      ep.compositionsPaging.limit = Math.floor(
-        (ep.compositionsPaging.matched / this.matchedRecords) *
-          this.recordsPerPage
+      /**Calculated limit or 1 if its smaller */
+      ep.compositionsPaging.limit = Math.max(
+        Math.round(
+          (ep.compositionsPaging.matched / this.matchedRecords) *
+            this.recordsPerPage
+        ),
+        1
       );
-      if (ep.compositionsPaging.limit == 0) {
-        ep.compositionsPaging.limit = 1;
-      }
       sumLimits += ep.compositionsPaging.limit;
     });
+
+    /**Proportion of page limit for one of the datasources was 0 after rounding
+     * For the first few pages we need to adjust limit of the other datasource
+     */
+    if (sumLimits > this.recordsPerPage) {
+      const epWithFew = this.filteredEndpoints.reduce(
+        (maxItem, currentItem) => {
+          if (
+            maxItem === null ||
+            currentItem.compositionsPaging.limit <
+              maxItem.compositionsPaging.limit
+          ) {
+            return currentItem;
+          }
+          return maxItem;
+        },
+        null
+      );
+      /** Adjust the limit for epWithMany */
+      this.filteredEndpoints.find(
+        (ep) => ep != epWithFew
+      ).compositionsPaging.limit -= 1;
+      sumLimits -= 1;
+    }
+
     this.recordsPerPage = sumLimits;
     this.listNext = this.recordsPerPage;
     this.loadCompositions(true);
