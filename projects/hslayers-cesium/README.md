@@ -27,18 +27,13 @@ In your component attach the HslayersCesiumComponent to HSlayers-NG:
 ```
  constructor(
     public hsCesiumConfig: HsCesiumConfig,
-    private hsLayoutService: HsLayoutService,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private hsLayoutService: HsLayoutService
   ) {
     ...  
 ngOnInit(): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      HslayersCesiumComponent
-    );
-
     this.hsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
       if (mapSpace?.viewContainerRef) {
-        mapSpace.viewContainerRef.createComponent(componentFactory);
+        mapSpace.viewContainerRef.createComponent(HslayersCesiumComponent);
       }
     });
   }
