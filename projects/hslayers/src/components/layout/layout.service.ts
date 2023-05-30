@@ -1,11 +1,6 @@
 import {BehaviorSubject, Observable, delay, map} from 'rxjs';
-import {
-  ComponentFactoryResolver,
-  ElementRef,
-  Injectable,
-  Type,
-  ViewContainerRef,
-} from '@angular/core';
+import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -130,7 +125,6 @@ export class HsLayoutService extends HsLayoutParams {
     public hsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
     public $log: HsLogService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     public hsPanelContainerService: HsPanelContainerService,
     public hsOverlayPanelContainerService: HsOverlayPanelContainerService
   ) {
@@ -422,15 +416,10 @@ export class HsLayoutService extends HsLayoutParams {
   }
 
   addMapVisualizer(visualizerComponent: Type<unknown>): void {
-    const componentFactory =
-      this.componentFactoryResolver.resolveComponentFactory(
-        visualizerComponent
-      );
-
     this.mapSpaceRef.subscribe((viewContainerRef) => {
       if (viewContainerRef) {
         const componentRef: any =
-          viewContainerRef.createComponent(componentFactory);
+          viewContainerRef.createComponent(visualizerComponent);
       }
     });
   }

@@ -1,11 +1,4 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -20,29 +13,25 @@ import {HsDialogItem} from './dialog-item';
   templateUrl: './dialog-container.html',
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {
-  
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
   private end = new Subject<void>();
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+  constructor(public HsDialogContainerService: HsDialogContainerService) {}
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
     this.HsDialogContainerService.cleanup();
   }
   ngOnInit(): void {
-    this.HsDialogContainerService
-      .dialogObserver.pipe(takeUntil(this.end))
+    this.HsDialogContainerService.dialogObserver
+      .pipe(takeUntil(this.end))
       .subscribe((item: HsDialogItem) => {
         this.loadDialog(item);
       });
 
-    this.HsDialogContainerService
-      .dialogDestroyObserver.pipe(takeUntil(this.end))
+    this.HsDialogContainerService.dialogDestroyObserver
+      .pipe(takeUntil(this.end))
       .subscribe((item: HsDialogComponent) => {
         this.destroyDialog(item);
       });
@@ -57,13 +46,9 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   }
 
   loadDialog(dialogItem: HsDialogItem): void {
-    const componentFactory =
-      this.componentFactoryResolver.resolveComponentFactory(
-        dialogItem.component
-      );
     const viewContainerRef = this.dialogHost.viewContainerRef;
     //    viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent(componentFactory);
+    const componentRef = viewContainerRef.createComponent(dialogItem.component);
     (<HsDialogComponent>componentRef.instance).viewRef = componentRef.hostView;
     (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
     (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;

@@ -1,23 +1,29 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  ElementRef,
-  Input,
-  OnInit,
-} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 
 import * as proj from 'ol/proj';
-import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
+import {
+  BingMaps,
+  ImageArcGISRest,
+  ImageWMS,
+  OSM,
+  TileArcGISRest,
+  TileWMS,
+  Vector,
+  WMTS,
+  XYZ,
+} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {Group, Image as ImageLayer, Tile} from 'ol/layer';
-import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
-import {HsConfig} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
-import {ImageArcGISRest, ImageWMS} from 'ol/source';
-import {Vector} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
+import {
+  Group,
+  Image as ImageLayer,
+  Tile,
+  Vector as VectorLayer,
+} from 'ol/layer';
 import {View} from 'ol';
+
+import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
+import {HsConfig, HsLayoutService} from 'hslayers-ng';
 
 @Component({
   selector: 'hslayers-cesium-app',
@@ -30,7 +36,6 @@ export class AppComponent implements OnInit {
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
     private HsLayoutService: HsLayoutService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private elementRef: ElementRef
   ) {
     const w: any = window;
@@ -89,14 +94,9 @@ export class AppComponent implements OnInit {
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
-    const componentFactory =
-      this.componentFactoryResolver.resolveComponentFactory(
-        HslayersCesiumComponent
-      );
-
     this.HsLayoutService.mapSpaceRef.subscribe((viewContainerRef) => {
       if (viewContainerRef) {
-        viewContainerRef.createComponent(componentFactory);
+        viewContainerRef.createComponent(HslayersCesiumComponent);
       }
     });
   }
