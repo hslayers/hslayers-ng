@@ -2,11 +2,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import Resumable from 'resumablejs';
-import {Feature} from 'ol';
-import {GeoJSON, WFS} from 'ol/format';
-import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
-import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
 import {
   Observable,
   Subject,
@@ -17,6 +12,12 @@ import {
   map,
   of,
 } from 'rxjs';
+
+import {Feature} from 'ol';
+import {GeoJSON, WFS} from 'ol/format';
+import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
+import {Geometry} from 'ol/geom';
+import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';

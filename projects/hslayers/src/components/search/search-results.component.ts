@@ -1,9 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-
-import Feature from 'ol/Feature';
-import {Geometry} from 'ol/geom';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';

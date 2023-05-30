@@ -1,8 +1,8 @@
 import {Injectable, NgZone} from '@angular/core';
+import {ReplaySubject} from 'rxjs';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {ReplaySubject} from 'rxjs';
 
 import {HsMapService} from '../map/map.service';
 import {HsPanelItem} from '../layout/panels/panel-item';

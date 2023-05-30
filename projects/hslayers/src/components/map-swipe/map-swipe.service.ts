@@ -1,9 +1,9 @@
 import {Injectable, NgZone} from '@angular/core';
+import {first} from 'rxjs';
 
 import {Layer} from 'ol/layer';
 import {Map} from 'ol';
 import {Source} from 'ol/source';
-import {first} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';

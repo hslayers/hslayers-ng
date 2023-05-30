@@ -1,8 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable, NgZone} from '@angular/core';
 import {Location, PlatformLocation} from '@angular/common';
-
 import {Subject, lastValueFrom, takeUntil} from 'rxjs';
+
+import {transformExtent} from 'ol/proj';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from '../../config.service';
@@ -15,7 +16,6 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {MapComposition} from '../save-map/types/map-composition.type';
 import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
-import {transformExtent} from 'ol/proj';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {

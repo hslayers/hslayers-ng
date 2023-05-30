@@ -2,13 +2,13 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry, Point} from 'ol/geom';
-import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
+import {unByKey} from 'ol/Observable';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -17,7 +17,6 @@ import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
-import {unByKey} from 'ol/Observable';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +38,7 @@ export class HsSearchService {
     public hsLayerUtilsService: HsLayerUtilsService
   ) {
     this.searchResultsLayer = new VectorLayer({
-      source: new Vector({}),
+      source: new VectorSource({}),
       style: this.hsStylerService.pin_white_blue_highlight,
     });
     setTitle(this.searchResultsLayer, 'Search results');

@@ -1,7 +1,9 @@
-import BaseLayer from 'ol/layer/Base';
-import Map from 'ol/Map';
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
+
+import BaseLayer from 'ol/layer/Base';
 import {Layer} from 'ol/layer';
+import {Map} from 'ol';
 import {Source} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
@@ -15,7 +17,6 @@ import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
-import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'hs-legend',
