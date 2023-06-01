@@ -10,7 +10,7 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsCommonLaymanService} from '../../../common/layman/public-api';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';

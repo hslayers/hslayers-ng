@@ -14,7 +14,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from 'hslayers-ng';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
@@ -27,7 +27,6 @@ import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLaymanBrowserService} from '../add-data/catalogue/layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
@@ -245,7 +244,7 @@ describe('compositions', () => {
     };
     CompositionsCatalogueService.loadCompositions();
     //NOTE: have to make this check to work
-    // expect(ds.compositions).toBeDefined() ;
+    // expect(ds.compositions).toBeDefined();
     expect(ds).toBeDefined();
   });
 
