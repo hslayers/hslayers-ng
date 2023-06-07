@@ -30,7 +30,8 @@
             </div>
         </div>
         <ul class="list-group">
-            <li *ngFor="let unit of filterQuery(query)" class="list-group-item"><!-- TODO: Remove function call from template -->
+            <li *ngFor="let unit of filterQuery(query)" class="list-group-item">
+                <!-- TODO: Remove function call from template -->
                 <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode"
                     [app]="data.app">
                 </hs-sensor-unit-list-item>

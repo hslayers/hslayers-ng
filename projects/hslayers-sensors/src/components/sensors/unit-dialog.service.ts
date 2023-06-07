@@ -92,10 +92,9 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
-   * Get human readable time for interval value
-   * @param interval - Interval selected
+   * Get time from picked interval [D,W,M,6M]
    */
-  getTimeForInterval(interval): {from_time; to_time} {
+  getTimeFromUnitAndAmount(interval) {
     const tmp = {
       from_time: dayjs().subtract(interval.amount, interval.unit),
       to_time: dayjs(),
@@ -103,6 +102,43 @@ export class HsSensorsUnitDialogService {
     this.convertPartToDayjs('from', interval, tmp);
     this.convertPartToDayjs('to', interval, tmp);
     return tmp;
+  }
+
+  dayJsFromPartials(dateObj) {
+    return dayjs()
+      .set('year', dateObj.year)
+      .set('month', dateObj.month - 1) // Month in Day.js is zero-based (0-11)
+      .set('date', dateObj.day);
+  }
+
+  /**
+   * Get time picked from calendar
+   */
+  getTimeFromCalendarDate(interval) {
+    const fromTime =
+      interval.fromTime instanceof Date
+        ? dayjs(interval.fromTime)
+        : this.dayJsFromPartials(interval.fromTime);
+    const to_time =
+      interval.toTime instanceof Date
+        ? dayjs(interval.toTime)
+        : this.dayJsFromPartials(interval.toTime);
+    return {
+      from_time: fromTime,
+      to_time: to_time,
+    };
+  }
+
+  /**
+   * Get human readable time for interval value
+   * @param interval - Interval selected
+   */
+  getTimeForInterval(interval): {from_time; to_time} {
+    if (!interval.amount && !interval.unit) {
+      return this.getTimeFromCalendarDate(interval);
+    } else {
+      return this.getTimeFromUnitAndAmount(interval);
+    }
   }
 
   /**
