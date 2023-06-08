@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
@@ -7,13 +8,17 @@ import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
+import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapCompositionDescriptor} from '../../compositions/models/composition-descriptor.model';
 import {HsMapService} from '../../map/map.service';
 import {HsSaveMapService} from '../../save-map/save-map.service';
+import {HsUtilsService} from '../../utils/utils.service';
 import {
   getHighlighted,
   setHighlighted,
@@ -24,16 +29,30 @@ import {
 })
 export class HsAddDataCatalogueMapService {
   extentLayer: VectorLayer<VectorSource<Geometry>>;
+  pointerMoveListener: EventsKey;
 
   constructor(
     public hsMapService: HsMapService,
     public hsLogService: HsLogService,
     private hsSaveMapService: HsSaveMapService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsEventBusService: HsEventBusService,
+    private hsLayoutService: HsLayoutService,
+    private hsUtilsService: HsUtilsService
   ) {
+    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+      if (which === 'addData') {
+        this.addPointerMoveListener();
+      } else if (this.pointerMoveListener) {
+        unByKey(this.pointerMoveListener);
+      }
+    });
+
     this.hsMapService.loaded().then((map) => {
-      map.on('pointermove', (evt) => this.mapPointerMoved(evt));
+      if (this.hsLayoutService.mainpanel === 'addData') {
+        this.addPointerMoveListener();
+      }
       map.addLayer(this.extentLayer);
       this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
@@ -59,6 +78,21 @@ export class HsAddDataCatalogueMapService {
         ];
       },
     });
+  }
+
+  /**
+   * Add debounced pointer move listener
+   */
+  private addPointerMoveListener() {
+    this.pointerMoveListener = this.hsMapService.getMap().on(
+      'pointermove',
+      this.hsUtilsService.debounce(
+        (e) => this.mapPointerMoved(e),
+        50,
+        false,
+        this
+      )
+    );
   }
 
   /**
