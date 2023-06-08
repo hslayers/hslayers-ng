@@ -1,10 +1,13 @@
 import {Injectable} from '@angular/core';
 
+import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -13,7 +16,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
-import {Vector as VectorSource} from 'ol/source';
+import {HsUtilsService} from '../utils/utils.service';
 import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
 
 @Injectable({
@@ -23,13 +26,16 @@ export class HsCompositionsMapService {
   apps: {
     [id: string]: {extentLayer: VectorLayer<VectorSource<Geometry>>};
   } = {};
+
+  pointerMoveListener: EventsKey;
   constructor(
     private hsEventBusService: HsEventBusService,
     private hsMapService: HsMapService,
     private hsLayoutService: HsLayoutService,
     private hsSaveMapService: HsSaveMapService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    private hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsUtilsService: HsUtilsService
   ) {
     this.hsEventBusService.mainPanelChanges.subscribe(({which, app}) => {
       const appRef = this.get(app);
@@ -43,6 +49,11 @@ export class HsCompositionsMapService {
           appRef.extentLayer.setVisible(false);
         }
       }
+      if (which === 'composition_browser') {
+        this.addPointerMoveListener(app);
+      } else if (this.pointerMoveListener) {
+        unByKey(this.pointerMoveListener);
+      }
     });
   }
 
@@ -53,10 +64,27 @@ export class HsCompositionsMapService {
   init(app: string) {
     const appRef = this.get(app);
     this.hsMapService.loaded(app).then((map) => {
-      map.on('pointermove', (e) => this.mapPointerMoved(e, app));
+      if (this.hsLayoutService.get(app).mainpanel === 'composition_browser') {
+        this.addPointerMoveListener(app);
+      }
       map.addLayer(appRef.extentLayer);
       this.hsSaveMapService.internalLayers.push(appRef.extentLayer);
     });
+  }
+
+  /**
+   * Add debounced pointer move listener
+   */
+  private addPointerMoveListener(app: string) {
+    this.pointerMoveListener = this.hsMapService.getMap(app).on(
+      'pointermove',
+      this.hsUtilsService.debounce(
+        (e) => this.mapPointerMoved(e, app),
+        50,
+        false,
+        this
+      )
+    );
   }
 
   /**
