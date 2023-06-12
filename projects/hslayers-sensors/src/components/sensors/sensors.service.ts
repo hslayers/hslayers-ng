@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import Feature from 'ol/Feature';
-import {Vector as VectorLayer} from 'ol/layer';
 import dayjs from 'dayjs';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {Geometry, MultiPolygon} from 'ol/geom';
+import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {getWidth} from 'ol/extent';
@@ -116,6 +116,7 @@ export class HsSensorsService {
       }
     });
     this.setEndpoint(app);
+    this.hsSensorsUnitDialogService.init(app);
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       this.hsUtilsService.debounce(
