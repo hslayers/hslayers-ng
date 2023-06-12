@@ -3,12 +3,11 @@ import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import {HsLanguageService} from 'hslayers-ng';
-import {HsLogService} from 'hslayers-ng';
-import {HsUtilsService} from 'hslayers-ng';
+import {HsLanguageService, HsLogService, HsUtilsService} from 'hslayers-ng';
 import {default as vegaEmbed} from 'vega-embed';
 
 import {Aggregate} from './types/aggregate.type';
+import {BehaviorSubject} from 'rxjs';
 import {HsSensorUnit} from './sensor-unit.class';
 import {Interval} from './types/interval.type';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
@@ -33,6 +32,9 @@ class SensorsUnitDialogServiceParams {
     {name: '1M', amount: 1, unit: 'months'},
     {name: '6M', amount: 6, unit: 'months'},
   ];
+
+  timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
+  useTimeZone = new BehaviorSubject<boolean>(false);
 }
 
 @Injectable({
@@ -48,6 +50,13 @@ export class HsSensorsUnitDialogService {
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService
   ) {}
+
+  init(app: string): void {
+    const appRef = this.get(app);
+    appRef.useTimeZone.subscribe((value) => {
+      appRef.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
+    });
+  }
 
   /**
    * Get the params saved by the sensors unit dialog service for the current app
@@ -189,10 +198,10 @@ export class HsSensorsUnitDialogService {
       const time = this.getTimeForInterval(interval);
       const from_time = `${time.from_time.format(
         'YYYY-MM-DD'
-      )} ${time.from_time.format('HH:mm:ssZ')}`;
+      )} ${time.from_time.format(appRef.timeFormat)}`;
       const to_time = `${time.to_time.format(
         'YYYY-MM-DD'
-      )} ${time.to_time.format('HH:mm:ssZ')}`;
+      )} ${time.to_time.format(appRef.timeFormat)}`;
       interval.loading = true;
       this.http
         .get(
