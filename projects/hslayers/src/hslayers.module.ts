@@ -1,3 +1,4 @@
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
 import {HsAddDataModule} from './components/add-data/add-data.module';
@@ -22,6 +23,8 @@ import {HsStylerModule} from './components/styles/styles.module';
 import {HsToolbarModule} from './components/toolbar/toolbar.module';
 import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
 import {HslayersComponent} from './hslayers.component';
+import {HslayersLaymanInterceptor} from './hslayers.layman.interceptor';
+
 @NgModule({
   declarations: [HslayersComponent],
   imports: [
@@ -48,5 +51,12 @@ import {HslayersComponent} from './hslayers.component';
     HsMapSwipeModule,
   ],
   exports: [HslayersComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HslayersLaymanInterceptor,
+      multi: true,
+    },
+  ],
 })
 export class HslayersModule {}
