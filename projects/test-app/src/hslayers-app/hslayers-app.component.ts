@@ -344,10 +344,11 @@ export class HslayersAppComponent {
         mapSwipe: true,
       },
       sidebarPosition: 'right',
-      base_layers: {
-        url: 'https://hub.lesprojekt.cz/rest/workspaces/leitnerfilip/maps/corine_layerorder/file',
-        default: 'CORINE Land Cover 2006',
-      },
+      //TODO: Migrate to watlas
+      // base_layers: {
+      //   url: 'https://hub.lesprojekt.cz/rest/workspaces/leitnerfilip/maps/corine_layerorder/file',
+      //   default: 'CORINE Land Cover 2006',
+      // },
       /*defaultComposition:
             'https://atlas2.kraj-lbc.cz/rest/workspaces/fzadrazil/maps/vodstvo',*/
       panelWidths: {
