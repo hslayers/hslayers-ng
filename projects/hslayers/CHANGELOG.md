@@ -1,3 +1,17 @@
+## [11.2.2](https://github.com/hslayers/hslayers-ng/compare/11.2.1...11.2.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* Returned layman urls not pointing on layman-proxy if used ([ad7d6f7](https://github.com/hslayers/hslayers-ng/commit/ad7d6f79391530565225ed47fb978c8f9ea32c2c))
+
+
+### Performance Improvements
+
+* Pointer move listeners for compositions and adddata catalogues ([27d5a00](https://github.com/hslayers/hslayers-ng/commit/27d5a007035ed55eb24375018058ccf42b37c8ce))
+
+
+
 ## [11.2.1](https://github.com/hslayers/hslayers-ng/compare/11.2.0...11.2.1) (2023-04-25)
 
 
