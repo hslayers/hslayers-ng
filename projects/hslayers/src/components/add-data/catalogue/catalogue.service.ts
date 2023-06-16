@@ -249,6 +249,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.endpointsWithDatasources.find(
         (ep) => ep != epWithFew
       ).datasourcePaging.limit -= 1;
+      sumLimits -= 1;
     }
     this.recordsPerPage = sumLimits;
     this.listNext = this.recordsPerPage;
