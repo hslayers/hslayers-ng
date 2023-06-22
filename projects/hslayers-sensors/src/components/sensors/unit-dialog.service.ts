@@ -276,12 +276,8 @@ export class HsSensorsUnitDialogService {
   private getObservations(app: string) {
     const appRef = this.get(app);
     return appRef.observations.reduce((acc, val) => {
-      // const unitName = val.;
       return acc.concat(
         val.sensors
-          /**
-           * SENSOR ID SU ROVNAKE V RAMCI ROZNYCH UNITS - PRE TOTENTO CHEKC BUDE TREBA ASI UPRAVIT IDCKO
-           */
           .filter((s) => appRef.sensorIdsSelected.includes(s.sensor_id))
           .map((s) => {
             const time = dayjs(val.time_stamp);
@@ -323,7 +319,7 @@ export class HsSensorsUnitDialogService {
   }
 
   createChartLayer(sensorDesc, multi = false) {
-    let title = 'No sensor selected';
+    let title = this.translate('noSensorsSelected');
     if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
       if (
         sensorDesc.length == 0 ||
@@ -334,7 +330,7 @@ export class HsSensorsUnitDialogService {
           'PHENOMENON'
         )} ${sensorDesc[0].uom}`;
       } else {
-        title = `Multiple units [${[
+        title = `${this.translate('multipleUnits')} [${[
           ...new Set(sensorDesc.map((obj) => obj.uom)),
         ].join(',')}]`;
       }

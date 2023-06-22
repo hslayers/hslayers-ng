@@ -866,7 +866,10 @@
     "oneHour": "1 hour",
     "phenomena": "Phenomena",
     "sensors": "Sensors",
-    "sensorUnit": "Sensor unit"
+    "sensorUnit": "Sensor unit",
+    "comparison": "Compare Across Sensor Units",
+    "noSensorsSelected": "No sensor selected",
+    "multipleUnits": "Multiple units"
   },
   "SIDEBAR": {
     "additionalPanels": "Additional panels",
