@@ -866,7 +866,10 @@
     "oneHour": "1 hodina",
     "phenomena": "Jevy",
     "sensors": "Senzory",
-    "sensorUnit": "Senzorová jednotka"
+    "sensorUnit": "Senzorová jednotka",
+    "comparison": "Porovnat senzory mezi jednotkamiPorovnať senzory medzi jednotkami",
+    "noSensorsSelected": "Není vybrán žádný senzor",
+    "multipleUnits": "Více jednotek"
   },
   "SIDEBAR": {
     "additionalPanels": "Další panely",

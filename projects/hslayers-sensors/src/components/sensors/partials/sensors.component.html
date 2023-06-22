@@ -9,7 +9,7 @@
                 <div class="col-9">
                     <button type="button" class="btn btn-sm" (click)="toggleComparisonAllowed()"
                         [ngClass]="unitDialogServiceRef.comparisonAllowed  ? 'hs-checkmark' : 'hs-uncheckmark'">
-                        <span class="ps-2">Multi-unit comparison</span>
+                        <span class="ps-2">{{'SENSORS.comparison' | translateHs: {app: data.app} }}</span>
                     </button>
 
                     <ul class="nav flex-column flex-sm-row" role="tablist">
