@@ -22,17 +22,24 @@
                 </div>
                 <table class="table table-sm table-striped table-hover">
                     <tr>
-                        <th>{{'SENSORS.sensors' | translateHs: {app: data.app} }}</th>
+                        <!-- <th>{{'SENSORS.sensors' | translateHs: {app: data.app} }}</th> -->
+                        <th></th>
                         <th>{{'SENSORS.min' | translateHs: {app: data.app} }}</th>
                         <th>{{'SENSORS.max' | translateHs: {app: data.app} }}</th>
                         <th>{{'SENSORS.avg' | translateHs: {app: data.app} }}</th>
                     </tr>
-                    <tr *ngFor="let aggr of getAggregations()">
-                        <td>{{aggr.sensor_name}}</td>
-                        <td>{{aggr.min}}</td>
-                        <td>{{aggr.max}}</td>
-                        <td>{{aggr.avg}}</td>
-                    </tr>
+                    <ng-container *ngFor="let unit of getUnitAggregations() | keyvalue">
+                        <tr>
+                            <th>{{unit.key}}</th>
+                        </tr>
+                        <tr *ngFor="let aggr of unit.value">
+                            <td>{{aggr.sensor_name}}</td>
+                            <td>{{aggr.min}}</td>
+                            <td>{{aggr.max}}</td>
+                            <td>{{aggr.avg}}</td>
+                        </tr>
+                    </ng-container>
+
                 </table>
             </div>
             <div class="modal-footer" style="padding: 0.2rem 0.3rem;">

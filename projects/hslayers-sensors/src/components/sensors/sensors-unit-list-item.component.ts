@@ -37,7 +37,8 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   sensorClicked(sensor): void {
-    this.hsSensorsUnitDialogService.get(this.app).unit = this.unit;
+    this.hsSensorsUnitDialogService.resetAggregations(this.app);
+    this.hsSensorsUnitDialogService.get(this.app).unit = [this.unit];
     this.hsSensorsService.selectSensor(sensor, this.app);
     this.generateDialog();
   }
@@ -57,16 +58,29 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   sensorToggleSelected(sensor): void {
-    this.hsSensorsUnitDialogService.get(this.app).unit = this.unit;
     sensor.checked = !sensor.checked;
+    const unitDialogServiceRef = this.hsSensorsUnitDialogService.get(this.app);
+    if (unitDialogServiceRef.comparisonAllowed) {
+      //If the opened sensor belongs to unit thats not included add it
+      //NOTE: Might not even be possible asi checkbxes are available only after unit is selected
+      if (
+        !unitDialogServiceRef.unit.find((u) => u.unit_id === sensor.unit_id)
+      ) {
+        unitDialogServiceRef.unit.push(this.unit);
+      }
+    } else {
+      unitDialogServiceRef.unit = [this.unit];
+    }
+
     this.hsSensorsUnitDialogService.toggleSensor(sensor, this.app);
-    this.generateDialog();
+    this.generateDialog(!unitDialogServiceRef.comparisonAllowed);
   }
 
   /**
    * Display sensors unit dialog
+   * @single Controls wether only one unit is supposed to be selected
    */
-  generateDialog(): void {
+  generateDialog(single = true): void {
     if (!this.hsSensorsUnitDialogService.get(this.app).unitDialogVisible) {
       this.hsDialogContainerService.create(
         HsSensorsUnitDialogComponent,
@@ -75,7 +89,9 @@ export class HsSensorsUnitListItemComponent {
       );
     } else {
       this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.get(this.app).unit,
+        single
+          ? this.hsSensorsUnitDialogService.get(this.app).unit[0]
+          : this.hsSensorsUnitDialogService.get(this.app).unit,
         this.app
       );
     }

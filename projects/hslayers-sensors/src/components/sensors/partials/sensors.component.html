@@ -7,6 +7,11 @@
         <div class="container">
             <div class="row" style="width: 662;">
                 <div class="col-9">
+                    <button type="button" class="btn btn-sm" (click)="toggleComparisonAllowed()"
+                        [ngClass]="unitDialogServiceRef.comparisonAllowed  ? 'hs-checkmark' : 'hs-uncheckmark'">
+                        <span class="ps-2">Multi-unit comparison</span>
+                    </button>
+
                     <ul class="nav flex-column flex-sm-row" role="tablist">
                         <!--<li class="nav-item">
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}" 
@@ -23,9 +28,10 @@
                     </ul><!-- Tab panes -->
                 </div>
                 <div class="col-3 text-end">
-                    <button type="button" class="btn btn-sm" (click)="toggleExpansion()"><i
+                    <!-- <button *ngIf="unitDialogServiceRef.comparisonAllowed" type="button" class="btn btn-sm"
+                        (click)="toggleExpansion()"><i
                             [ngClass]="{'icon-calcminus': viewExpanded, 'icon-calcplus':!viewExpanded}"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
