@@ -5,7 +5,7 @@ import {HsDialogContainerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 
 import {Aggregate} from './types/aggregate.type';
-import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {Interval} from './types/interval.type';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
 
@@ -35,47 +35,32 @@ export class HsSensorsUnitDialogComponent
     this.configRef = this.hsConfig.get(this.data.app);
     this.hsSensorsUnitDialogService.get(this.data.app).dialogElement =
       this.elementRef;
-    this.timeButtonClicked(
-      this.hsSensorsUnitDialogService.get(this.data.app).intervals[2]
-    );
-    combineLatest([
-      this.hsLayoutService.panelSpaceWidth.pipe(takeUntil(this.end)),
-      this.hsLayoutService.sidebarPosition.pipe(takeUntil(this.end)),
-    ]).subscribe(([panelSpace, sidebar]) => {
-      if (panelSpace.app == this.data.app && sidebar.app == this.data.app) {
-        this.calculateDialogStyle(
-          this.data.app,
-          panelSpace.width,
-          sidebar.position == 'bottom'
-        );
-      }
-    });
-  }
 
-  /**
-   * @param sensor - Clicked sensor
-   * Regenerate chart for sensor is clicked. If no
-   * interval was clicked before use 1 day timeframe by default.
-   */
-  sensorClicked(sensor): void {
-    this.hsSensorsUnitDialogService.selectSensor(sensor, this.data.app);
-    if (
-      this.hsSensorsUnitDialogService.get(this.data.app).currentInterval ==
-      undefined
-    ) {
-      this.timeButtonClicked({amount: 1, unit: 'days'});
-    } else {
-      this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit,
-        this.data.app
-      );
-    }
+    this.timeButtonClicked(
+      this.hsSensorsUnitDialogService.get(this.data.app).intervals[2],
+      false
+    );
+
+    combineLatest([
+      this.hsLayoutService.panelSpaceWidth,
+      this.hsLayoutService.sidebarPosition,
+    ])
+      .pipe(takeUntil(this.end))
+      .subscribe(([panelSpace, sidebar]) => {
+        if (panelSpace.app == this.data.app && sidebar.app == this.data.app) {
+          this.calculateDialogStyle(
+            this.data.app,
+            panelSpace.width,
+            sidebar.position == 'bottom'
+          );
+        }
+      });
   }
 
   /**
    * Get unit aggregations
    */
-  getAggregations(): Aggregate[] {
+  getUnitAggregations(): Aggregates {
     return this.hsSensorsUnitDialogService.get(this.data.app).aggregations;
   }
 
@@ -103,10 +88,11 @@ export class HsSensorsUnitDialogComponent
 
   /**
    * @param interval - Clicked interval button
+   * @param generate - Controling wether to fetch observations and generate charts as well. Not necessary on init
    * Get data for different time interval and regenerate
    * chart
    */
-  timeButtonClicked(interval): void {
+  timeButtonClicked(interval, generate = true): void {
     this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
       interval;
     const fromTo = this.hsSensorsUnitDialogService.getTimeForInterval(interval);
@@ -114,18 +100,20 @@ export class HsSensorsUnitDialogComponent
       fromTime: fromTo.from_time.toDate(),
       toTime: fromTo.to_time.toDate(),
     });
-    this.hsSensorsUnitDialogService
-      .getObservationHistory(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit,
-        interval,
-        this.data.app
-      )
-      .then((_) => {
-        this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get(this.data.app).unit,
+    if (generate) {
+      this.hsSensorsUnitDialogService
+        .getObservationHistory(
+          this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
+          interval,
           this.data.app
-        );
-      });
+        )
+        .then((_) => {
+          this.hsSensorsUnitDialogService.createChart(
+            this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
+            this.data.app
+          );
+        });
+    }
   }
 
   /**
@@ -136,13 +124,13 @@ export class HsSensorsUnitDialogComponent
       this.customInterval;
     this.hsSensorsUnitDialogService
       .getObservationHistory(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit,
+        this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
         this.customInterval,
         this.data.app
       )
       .then((_) =>
         this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get(this.data.app).unit,
+          this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
           this.data.app
         )
       );
@@ -182,7 +170,8 @@ export class HsSensorsUnitDialogComponent
    * Get unit description
    */
   getUnitDescription(): string {
-    return this.hsSensorsUnitDialogService.get(this.data.app).unit.description;
+    return this.hsSensorsUnitDialogService.get(this.data.app).unit[0]
+      .description; //TODO: ALWAYS JSUT ONE?
   }
 
   ngOnDestroy(): void {

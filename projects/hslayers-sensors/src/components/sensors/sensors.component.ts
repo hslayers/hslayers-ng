@@ -4,6 +4,7 @@ import {HsMapService} from 'hslayers-ng';
 import {HsPanelBaseComponent} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
+import {HsSensorsUnitDialogService} from './unit-dialog.service';
 @Component({
   selector: 'hs-sensors',
   templateUrl: './partials/sensors.component.html',
@@ -15,10 +16,13 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   viewRef: ViewRef;
   name = 'sensors';
 
+  comparisonAllowed: boolean;
+  unitDialogServiceRef;
   constructor(
     private hsMapService: HsMapService,
     private hsSensorsService: HsSensorsService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
     super(hsLayoutService);
   }
@@ -27,6 +31,27 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
       this.hsSensorsService.init(this.data.app);
       this.init();
     });
+
+    this.unitDialogServiceRef = this.hsSensorsUnitDialogService.get(
+      this.data.app
+    );
+  }
+
+  toggleComparisonAllowed(): void {
+    this.unitDialogServiceRef.comparisonAllowed =
+      !this.unitDialogServiceRef.comparisonAllowed;
+    /**
+     * If multi comparison was disabled refresh state and chart(keeping first one)
+     */
+    if (!this.unitDialogServiceRef.comparisonAllowed) {
+      this.unitDialogServiceRef.unit
+        .filter((u) => u.unit_id != this.unitDialogServiceRef.unit[0].unit_id)
+        .forEach((u) => this.hsSensorsService.deselectUnit(u, this.data.app));
+      this.hsSensorsUnitDialogService.createChart(
+        this.unitDialogServiceRef.unit,
+        this.data.app
+      );
+    }
   }
 
   /**

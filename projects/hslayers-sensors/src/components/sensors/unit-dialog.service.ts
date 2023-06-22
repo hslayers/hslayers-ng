@@ -14,8 +14,12 @@ import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
 
+export class Aggregates {
+  [key: string]: Aggregate[];
+}
+
 class SensorsUnitDialogServiceParams {
-  unit: HsSensorUnit;
+  unit: HsSensorUnit[] = [];
   unitDialogVisible: boolean;
   currentInterval: any;
   sensorsSelected = [];
@@ -24,7 +28,7 @@ class SensorsUnitDialogServiceParams {
   observations: any;
   sensorById = {};
   dialogElement: ElementRef;
-  aggregations: Aggregate[];
+  aggregations: Aggregates = {};
   intervals: Interval[] = [
     {name: '1H', amount: 1, unit: 'hours'},
     {name: '1D', amount: 1, unit: 'days'},
@@ -35,6 +39,12 @@ class SensorsUnitDialogServiceParams {
 
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
   useTimeZone = new BehaviorSubject<boolean>(false);
+
+  /**
+   * Controls wether its possible to compare sensors inbetween
+   * different sensor units
+   */
+  comparisonAllowed = false;
 }
 
 @Injectable({
@@ -178,6 +188,29 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
+   * Modify observation sensors sensor_id to match the one used throughout the app
+   * eg. unit_id_sensor_id which makes every sensor unit specific
+   */
+  private modifyObservationHistory(response: Array<any>) {
+    return response.map((observation) => {
+      observation.sensors.forEach((s) => {
+        s.sensor_id = `${observation.unit_id}_${s.sensor_id}`;
+      });
+      return observation;
+    });
+  }
+
+  /**
+   * Filter out osbervations belonging to deselected sensor unit
+   */
+  filterObservations(unit, app: string): void {
+    const appRef = this.get(app);
+    appRef.observations = appRef.observations.filter(
+      (o) => o.unit_id !== unit.unit_id
+    );
+  }
+
+  /**
    * @param unit - Object containing
    * {description, is_mobile, sensors, unit_id, unit_type}
    * @param interval - Object {amount, unit}. Used to substract time
@@ -211,67 +244,139 @@ export class HsSensorsUnitDialogService {
             from_time
           )}&to_time=${encodeURIComponent(to_time)}`
         )
-        .subscribe(
-          (response) => {
+        .subscribe({
+          next: (response: Array<any>) => {
             interval.loading = false;
-            appRef.observations = response;
+            if (appRef.comparisonAllowed && appRef.unit.length > 1) {
+              appRef.observations = [
+                ...appRef.observations,
+                ...this.modifyObservationHistory(response),
+              ];
+            } else {
+              appRef.observations = this.modifyObservationHistory(response);
+            }
             resolve(null);
           },
-          (err) => {
-            reject(err);
-          }
-        );
+          error: (err) => reject(err),
+        });
     });
   }
 
-  /**
-   * @param unit - Unit description
-   * @param app - App identifier
-   * Create vega chart definition and use it in vegaEmbed
-   * chart library. Observations for a specific unit from Senslog come
-   * in a hierarchy, where 1st level contains object with timestamp and
-   * for each timestamp there exist multiple sensor observations for
-   * varying count of sensors. This nested list is flatened to simple
-   * array of objects with {sensor_id, timestamp, value, sensor_name}
-   */
-  createChart(unit, app: string) {
+  private getSensorDescriptor(unit, app: string) {
     const appRef = this.get(app);
     let sensorDesc = unit.sensors.filter(
       (s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1
     );
-    if (sensorDesc.length > 0) {
+    if (sensorDesc.length > 0 && !appRef.comparisonAllowed) {
       sensorDesc = sensorDesc[0];
     }
-    const observations = appRef.observations.reduce(
-      (acc, val) =>
-        acc.concat(
-          val.sensors
-            .filter((s) => appRef.sensorIdsSelected.indexOf(s.sensor_id) > -1)
-            .map((s) => {
-              const time = dayjs(val.time_stamp);
-              s.sensor_name = this.translate(
-                appRef.sensorById[s.sensor_id].sensor_name_translated,
-                'SENSORNAMES'
-              );
-              s.time = time.format('DD.MM.YYYY HH:mm');
-              s.time_stamp = time.toDate();
-              return s;
-            })
-        ),
-      []
-    );
-    appRef.aggregations = this.calculateAggregates(unit, observations, app);
-    observations.sort((a, b) => {
-      if (a.time_stamp > b.time_stamp) {
-        return 1;
+    return sensorDesc;
+  }
+
+  private getObservations(app: string) {
+    const appRef = this.get(app);
+    return appRef.observations.reduce((acc, val) => {
+      // const unitName = val.;
+      return acc.concat(
+        val.sensors
+          /**
+           * SENSOR ID SU ROVNAKE V RAMCI ROZNYCH UNITS - PRE TOTENTO CHEKC BUDE TREBA ASI UPRAVIT IDCKO
+           */
+          .filter((s) => appRef.sensorIdsSelected.includes(s.sensor_id))
+          .map((s) => {
+            const time = dayjs(val.time_stamp);
+            s.sensor_name = `${this.translate(
+              appRef.sensorById[s.sensor_id].sensor_name_translated,
+              'SENSORNAMES'
+            )}_${val.unit_id}`;
+            s.time = time.format('DD.MM.YYYY HH:mm');
+            s.unit_id = val.unit_id;
+            s.time_stamp = time.toDate();
+            return s;
+          })
+      );
+    }, []);
+  }
+
+  private getLayerSpecificEncoding() {
+    return {
+      'color': {
+        'field': 'sensor_name',
+        'legend': {
+          'title': this.hsLanguageService.getTranslation('SENSORS.sensors'),
+          'labelExpr': "split(datum.value, '_')[0]",
+        },
+        'type': 'nominal',
+        'sort': 'sensor_id',
+      },
+      'x': {
+        'axis': {
+          'title': 'Timestamp',
+          'labelOverlap': true,
+          'titleAnchor': 'middle',
+        },
+        'field': 'time_stamp',
+        'sort': false,
+        'type': 'temporal',
+      },
+    };
+  }
+
+  createChartLayer(sensorDesc, multi = false) {
+    let title = 'No sensor selected';
+    if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
+      if (
+        sensorDesc.length == 0 ||
+        [...new Set(sensorDesc.map((obj) => obj.sensor_type))].length == 1
+      ) {
+        title = `${this.translate(
+          sensorDesc[0].phenomenon_name,
+          'PHENOMENON'
+        )} ${sensorDesc[0].uom}`;
+      } else {
+        title = `Multiple units [${[
+          ...new Set(sensorDesc.map((obj) => obj.uom)),
+        ].join(',')}]`;
       }
-      if (b.time_stamp > a.time_stamp) {
-        return -1;
-      }
-      return 0;
-    });
+    }
+    if (sensorDesc.sensor_id) {
+      title = `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${
+        sensorDesc.uom
+      }`;
+    }
+    const layer = {
+      'encoding': {
+        'y': {
+          'axis': {
+            'title': title,
+            'titleAnchor': 'end',
+          },
+          'field': 'value',
+          'type': 'quantitative',
+          'scale': {'zero': false, 'nice': 5},
+        },
+      },
+      'mark': {'type': 'line', 'tooltip': {'content': 'data'}},
+    };
+    if (multi) {
+      layer['transform'] = [
+        {
+          'filter': `datum.sensor_name === '${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`,
+        },
+      ];
+    } else {
+      layer.encoding = {
+        ...layer.encoding,
+        ...this.getLayerSpecificEncoding(),
+      };
+    }
+    return layer;
+  }
+
+  getCommonChartDefinitionPart(observations, app: string) {
+    const appRef = this.get(app);
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
-    const chartData: any = {
+    return {
       '$schema': 'https://vega.github.io/schema/vega-lite/v4.15.0.json',
       'config': {
         'mark': {
@@ -291,36 +396,6 @@ export class HsSensorsUnitDialogService {
       'datasets': {
         'data-062c25e80e0ff23df3803082d5c6f7e7': observations,
       },
-      'encoding': {
-        'color': {
-          'field': 'sensor_name',
-          'legend': {
-            'title': this.hsLanguageService.getTranslation('SENSORS.sensors'),
-          },
-          'type': 'nominal',
-          'sort': 'sensor_id',
-        },
-        'x': {
-          'axis': {
-            'title': 'Timestamp',
-            'labelOverlap': true,
-          },
-          'field': 'time_stamp',
-          'sort': false,
-          'type': 'temporal',
-        },
-        'y': {
-          'axis': {
-            'title': `${this.translate(
-              sensorDesc.phenomenon_name,
-              'PHENOMENON'
-            )} ${sensorDesc.uom}`,
-          },
-          'field': 'value',
-          'type': 'quantitative',
-        },
-      },
-      'mark': {'type': 'line', 'tooltip': {'content': 'data'}},
       'selection': {
         'selector016': {
           'bind': 'scales',
@@ -328,7 +403,71 @@ export class HsSensorsUnitDialogService {
           'type': 'interval',
         },
       },
-    };
+      'encoding': this.getLayerSpecificEncoding(),
+    } as any;
+  }
+
+  /**
+   * @param unit - Unit description
+   * @param app - App identifier
+   * Create vega chart definition and use it in vegaEmbed
+   * chart library. Observations for a specific unit from Senslog come
+   * in a hierarchy, where 1st level contains object with timestamp and
+   * for each timestamp there exist multiple sensor observations for
+   * varying count of sensors. This nested list is flatened to simple
+   * array of objects with {sensor_id, timestamp, value, sensor_name}
+   */
+  createChart(unit, app: string) {
+    unit = Array.isArray(unit) ? (unit.length > 1 ? unit : unit[0]) : unit;
+    const appRef = this.get(app);
+
+    let observations;
+    let chartData;
+    //Layered multi unit sensor view
+    if (Array.isArray(unit)) {
+      //Array holdiding every chart layer object
+      const layer = [];
+      observations = this.getObservations(app);
+
+      unit.forEach((u) => {
+        const sensorDesc = this.getSensorDescriptor(u, app);
+        if (Array.isArray(sensorDesc)) {
+          sensorDesc.forEach((sd) =>
+            layer.push(this.createChartLayer(sd, true))
+          );
+        } else {
+          layer.push(this.createChartLayer(sensorDesc, true));
+        }
+        appRef.aggregations[u.description] = this.calculateAggregates(
+          u,
+          observations,
+          app
+        );
+      });
+
+      chartData = {
+        ...this.getCommonChartDefinitionPart(observations, app),
+        layer,
+      };
+    }
+    //Simple single unit
+    else {
+      const sensorDesc = this.getSensorDescriptor(unit, app);
+      observations = this.getObservations(app);
+
+      appRef.aggregations[unit.description] = this.calculateAggregates(
+        unit,
+        observations,
+        app
+      );
+      observations.sort((a, b) => a.time_stamp - b.time_stamp);
+      //Combine common and layer dependent chart definition
+      chartData = {
+        ...this.getCommonChartDefinitionPart(observations, app),
+        ...this.createChartLayer(sensorDesc),
+      };
+    }
+
     try {
       vegaEmbed(
         appRef.dialogElement.nativeElement.querySelector('.hs-chartplace'),
@@ -337,6 +476,13 @@ export class HsSensorsUnitDialogService {
     } catch (ex) {
       this.hsLogService.warn('Could not create vega chart:', ex);
     }
+  }
+
+  /**
+   * Reset aggregations to default
+   */
+  resetAggregations(app: string) {
+    this.get(app).aggregations = {};
   }
 
   /**
@@ -383,6 +529,9 @@ export class HsSensorsUnitDialogService {
     return aggregates;
   }
 
+  /**
+   * SENSORS module translations helper
+   */
   translate(text: string, group?: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       'SENSORS' + (group != undefined ? '.' + group : ''),
