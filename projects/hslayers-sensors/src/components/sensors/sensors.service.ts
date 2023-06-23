@@ -222,10 +222,14 @@ export class HsSensorsService {
       //If already in 'selection' drop it, remove from aggregations and reset its sensors state
       if (unitDialogServiceRef.unit.find((u) => u.unit_id == unit.unit_id)) {
         this.deselectUnit(unit, app);
-        this.hsSensorsUnitDialogService.createChart(
-          unitDialogServiceRef.unit,
-          app
-        );
+        if (unitDialogServiceRef.unit.length > 0) {
+          this.hsSensorsUnitDialogService.createChart(
+            unitDialogServiceRef.unit,
+            app
+          );
+        } else {
+          this.closeSensorDialog(app);
+        }
         return;
       } else {
         unitDialogServiceRef.unit.push(unit);
@@ -295,6 +299,19 @@ export class HsSensorsService {
       .getMap(app)
       .getView()
       .fit(unit.feature.getGeometry(), {maxZoom: 16});
+  }
+
+  /**
+   * Close sensor unit dialog
+   */
+  closeSensorDialog(app: string): void {
+    const dialog = this.hsDialogContainerService
+      .get(app)
+      .dialogs.find((d) =>
+        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
+      );
+    this.hsDialogContainerService.destroy(dialog, app);
+    this.hsSensorsUnitDialogService.get(app).unitDialogVisible = false;
   }
 
   /**
