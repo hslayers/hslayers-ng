@@ -334,11 +334,12 @@ export class HsSensorsUnitDialogService {
           ...new Set(sensorDesc.map((obj) => obj.uom)),
         ].join(',')}]`;
       }
-    }
-    if (sensorDesc.sensor_id) {
-      title = `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${
-        sensorDesc.uom
-      }`;
+    } else if (sensorDesc.sensor_id) {
+      title = multi
+        ? sensorDesc.uom
+        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${
+            sensorDesc.uom
+          }`;
     }
     const layer = {
       'encoding': {
@@ -346,6 +347,7 @@ export class HsSensorsUnitDialogService {
           'axis': {
             'title': title,
             'titleAnchor': 'end',
+            'titleLimit': 145,
           },
           'field': 'value',
           'type': 'quantitative',

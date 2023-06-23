@@ -4,7 +4,6 @@ import {HsConfig, HsConfigObject, HsDialogComponent} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 
-import {Aggregate} from './types/aggregate.type';
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {Interval} from './types/interval.type';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
@@ -14,7 +13,8 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
   templateUrl: './partials/unit-dialog.component.html',
 })
 export class HsSensorsUnitDialogComponent
-  implements HsDialogComponent, OnInit, OnDestroy {
+  implements HsDialogComponent, OnInit, OnDestroy
+{
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
   dialogStyle;
   private end = new Subject<void>();
@@ -170,8 +170,10 @@ export class HsSensorsUnitDialogComponent
    * Get unit description
    */
   getUnitDescription(): string {
-    return this.hsSensorsUnitDialogService.get(this.data.app).unit[0]
-      .description; //TODO: ALWAYS JSUT ONE?
+    return this.hsSensorsUnitDialogService
+      .get(this.data.app)
+      .unit.map((u) => u.description)
+      .join(', ');
   }
 
   ngOnDestroy(): void {
