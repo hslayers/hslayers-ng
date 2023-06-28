@@ -318,7 +318,7 @@ export class HsCompositionsService {
       this.hsCompositionsParserService.current_composition_workspace =
         record.editable ? record.workspace : null;
       if (
-        this.hsCompositionsParserService.composition_edited == true ||
+        this.hsCompositionsParserService.composition_edited ||
         this.hsCompositionsParserService.composition_loaded
       ) {
         this.notSavedOrEditedCompositionLoading.next({
