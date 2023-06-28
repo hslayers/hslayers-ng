@@ -208,7 +208,6 @@ export class HsAddDataVectorService {
   /**
    * Fit map view to layer's extent
    * @param lyr - Provided layer
-   
    */
   fitExtent(lyr: VectorLayer<VectorSource<Geometry>>): void {
     const src = lyr.getSource();
@@ -221,7 +220,6 @@ export class HsAddDataVectorService {
 
   /**
    * Set catalogue as active HSLayers panel
-   
    */
   setPanelToCatalogue(): void {
     this.hsAddDataService.selectType('catalogue');
@@ -230,7 +228,6 @@ export class HsAddDataVectorService {
   /**
    * Listen to any source changes made
    * @param src - Layer source provided
-   
    */
   changeListener(src): any {
     if (src.getState() == 'ready') {
@@ -276,7 +273,6 @@ export class HsAddDataVectorService {
   /**
    * Add new layer to map and Layman (if possible)
    * @param data - Layer data object provided
-   
    * @returns Created layer and layer adding state (true, if complete, false otherwise)
    */
   async addNewLayer(
@@ -323,8 +319,8 @@ export class HsAddDataVectorService {
   }
 
   /**
-   * Get layer style from Layman endpoint before creating layer to ensure all params and values
-   * used are in sync with whats on Layman eg. to prevent inconsitencies caused by attribute names laundering
+   * Get layer style from Layman endpoint before creating layer to ensure all params and values used
+   * are in sync with what's on Layman e.g. to prevent inconsistencies caused by attribute names laundering
    */
   async setLaymanLayerStyle(
     upsertResponse: PostPatchLayerResponse,
@@ -343,7 +339,6 @@ export class HsAddDataVectorService {
   /**
    * Prepare layer for upsertion to Layman
    * @param data - Vector data object
-   
    */
   async upsertLayer(data: VectorDataObject): Promise<PostPatchLayerResponse> {
     const commonFileRef = this.hsAddDataCommonFileService;
@@ -378,7 +373,6 @@ export class HsAddDataVectorService {
    * Check if layer with the same name exists in Layman database and provide the user to choose
    * what action he wishes to take
    * @param data - Layer data object provided
-   
    * @returns Action the user took, inside prompted dialog
    */
   async checkForLayerInLayman(
@@ -449,9 +443,8 @@ export class HsAddDataVectorService {
    * Try to fit layer extent as map view
    * @param extent - Extent provided
    * @param src - Layer source provided
-   
    */
-  tryFit(extent, src): void {
+  tryFit(extent, src: Source): void {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
@@ -510,7 +503,6 @@ export class HsAddDataVectorService {
   /**
    * Read uploaded file and extract the data as JSON object
    * @param file - File uploaded by the user
-   
    * @returns JSON object with parsed data
    */
   async readUploadedFile(file: File): Promise<any> {
@@ -557,7 +549,6 @@ export class HsAddDataVectorService {
   /**
    * Read features from uploaded file as objects
    * @param json - Uploaded file parsed as json object
-   
    * @returns JSON object with file name and read features
    */
   createVectorObjectFromJson(json: any): any {
@@ -588,7 +579,6 @@ export class HsAddDataVectorService {
    * Transform features to other projection if needed
    * @param features - Extracted features from uploaded file
    * @param projection - Projection to which transform the features
-   
    */
   transformFeaturesIfNeeded(features: Feature[], projection: Projection): void {
     const mapProjection = this.hsMapService.getMap().getView().getProjection();
@@ -608,7 +598,6 @@ export class HsAddDataVectorService {
   /**
    * Convert uploaded KML or GPX files into GeoJSON format / parse loaded GeoJSON
    * @param file - Uploaded KML, GPX or GeoJSON files
-   
    */
   async convertUploadedData(file: File): Promise<any> {
     let parser;
