@@ -147,7 +147,7 @@ export class HsCompositionsParserService {
         response = await pre_parse(response);
       }
       /**
-       * Dont set composition_loaded for basemap composition as its just special way
+       * Don't set composition_loaded for basemap composition as it's just special way
        * of setting intial state of the map similarly to default_layers
        */
       if (!response.basemapComposition) {

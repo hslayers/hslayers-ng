@@ -326,7 +326,7 @@
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Spojit kompozice",
-      "overwriteExistingMap": "Přepsat existující mapovú kompozici?",
+      "overwriteExistingMap": "Přepsat existující mapovou kompozici?",
       "saveChangesFirst": "Nejprve uložit změny",
       "thereAreCurrentlyUnsavedChanges": "V mapovém okně jsou neuložené změny.",
       "whatDoYouWant": "Co chcete provést před otevřením vybrané mapové kompozice?",

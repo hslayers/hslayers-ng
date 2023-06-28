@@ -98,7 +98,7 @@ export class HsCompositionsComponent
    */
   addCompositionUrl(url: string): void {
     if (
-      this.hsCompositionsParserService.composition_edited == true ||
+      this.hsCompositionsParserService.composition_edited ||
       this.hsCompositionsParserService.composition_loaded
     ) {
       this.hsCompositionsService.notSavedOrEditedCompositionLoading.next({
