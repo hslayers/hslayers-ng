@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-
 import {Subject, Subscription, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';

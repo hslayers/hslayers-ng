@@ -215,7 +215,7 @@ export class HsStylerService {
 
   /**
    * Upload style created by createDefaultStyle method to layman thus syncing style of
-   * vector layer added without SLD by rewriting its defualt value
+   * vector layer added without SLD by rewriting its default value
    */
   private trySyncingStyleToLayman(layer: VectorLayer<VectorSource<Geometry>>) {
     if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {

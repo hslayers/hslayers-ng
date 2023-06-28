@@ -127,7 +127,7 @@ describe('compositions', () => {
     const mockedConfig: any = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
     const mockedCommonLaymanService = new hsCommonLaymanServiceMock();
-    const mockedStlyerService = jasmine.createSpyObj('HsStylerService', [
+    const mockedStylerService = jasmine.createSpyObj('HsStylerService', [
       'parseStyle',
     ]);
 
@@ -184,7 +184,7 @@ describe('compositions', () => {
             null,
             null,
             mockedMapService,
-            mockedStlyerService,
+            mockedStylerService,
             mockedUtilsService
           ),
         },
