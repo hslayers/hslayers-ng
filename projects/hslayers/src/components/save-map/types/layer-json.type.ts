@@ -41,7 +41,7 @@ export type LayerJSON = {
   info_format?: string;
   protocol?: {url: string; format: string};
   workspace?: string;
-  features?: GeoJSONFeatureCollection;
+  features?: GeoJSONFeatureCollection | string;
   style?: SerializedStyle | string;
   greyscale?: boolean;
 };

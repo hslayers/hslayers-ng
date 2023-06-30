@@ -117,9 +117,8 @@ describe('HsStyler', () => {
     service.addRule('Simple');
     service.styleObject.rules[0].symbolizers = [{color: '#000', kind: 'Fill'}];
     await service.save();
-
     expect(service.layer.get('sld').replace(/\s/g, '')).toBe(
-      `<?xmlversion="1.0"encoding="UTF-8"standalone="yes"?><StyledLayerDescriptorversion="1.0.0"xsi:schemaLocation="http://www.opengis.net/sldStyledLayerDescriptor.xsd"xmlns="http://www.opengis.net/sld"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><Name>Test</Name><UserStyle><Name>Test</Name><Title>Test</Title><FeatureTypeStyle><Rule><Name>Untitledrule</Name><PolygonSymbolizer><Fill><CssParametername="fill">#000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:se="http://www.opengis.net/se"><NamedLayer><Name>Test</Name><UserStyle><Name>Test</Name><Title>Test</Title><FeatureTypeStyle><Rule><Name>Untitled rule</Name><PolygonSymbolizer><Fill><CssParameter name="fill">#000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
         /\s/g,
         ''
       )
@@ -132,11 +131,12 @@ describe('HsStyler', () => {
     await service.save();
     expect(nextSpy).toHaveBeenCalled();
   });
+
   it('SLD should be generated from OL style', async () => {
     const style = await service.parseStyle({fill: {color: '#000000'}});
     const sld = style.sld.replace(/\s/g, '');
     expect(sld).toBe(
-      `<?xmlversion="1.0"encoding="UTF-8"standalone="yes"?><StyledLayerDescriptorversion="1.0.0"xsi:schemaLocation="http://www.opengis.net/sldStyledLayerDescriptor.xsd"xmlns="http://www.opengis.net/sld"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><Name>rule</Name><UserStyle><Name>rule</Name><Title>rule</Title><FeatureTypeStyle><Rule><Name>rule</Name><PolygonSymbolizer><Fill><CssParametername="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
+      `<?xmlversion="1.0"encoding="UTF-8"standalone="yes"?><StyledLayerDescriptorversion="1.0.0"xsi:schemaLocation="http://www.opengis.net/sldStyledLayerDescriptor.xsd"xmlns="http://www.opengis.net/sld"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:se="http://www.opengis.net/se"><NamedLayer><Name>rule</Name><UserStyle><Name>rule</Name><Title>rule</Title><FeatureTypeStyle><Rule><Name>rule</Name><PolygonSymbolizer><Fill><CssParametername="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
         /\s/g,
         ''
       )
