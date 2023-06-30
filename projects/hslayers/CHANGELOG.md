@@ -1,3 +1,43 @@
+## [12.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/11.2.0...12.0.0-next.0) (2023-06-30)
+
+### BREAKING CHANGES
+
+* API change for every service and component
+
+* Remove app param/input from all the files ([064ff4a](https://github.com/hslayers/hslayers-ng/commit/064ff4a810416c0111bbcbaf7f3895c85e2cce4e))
+
+### Features
+
+* Remove multiple layer dialog for LM panel ([a48824d](https://github.com/hslayers/hslayers-ng/commit/a48824d449c092560245bfded6a6e9bd786b3537))
+* **test-app:** Add GeoSPARQL layers into test app ([1c228b6](https://github.com/hslayers/hslayers-ng/commit/1c228b62417a3d0e7d3080ffc76589f64dc6bd4a))
+
+### Bug Fixes
+
+* Adjust sumLimits of datasources ([7af137b](https://github.com/hslayers/hslayers-ng/commit/7af137b198f570c9427ee32cea73366b32ad45f9))
+* Close deletionInProgress toast when removing layers from memory ([c25f5b2](https://github.com/hslayers/hslayers-ng/commit/c25f5b24709c3586b77b116b724b48047af563c2)), closes [#3990](https://github.com/hslayers/hslayers-ng/issues/3990)
+* Datasource/composition paging ([71da2d6](https://github.com/hslayers/hslayers-ng/commit/71da2d6a0ff19d8ce1b91f8dc1506be979987977))
+* findLaymanForWfsLayer for layman-wagtail ep type ([8823eba](https://github.com/hslayers/hslayers-ng/commit/8823eba948b7215d39507be3dfe80bedea3dc71a))
+* Greyscale baselayers on init ([d804b8c](https://github.com/hslayers/hslayers-ng/commit/d804b8ccd10be65eea3d74e3173dd97389d4ff4b)), closes [#4034](https://github.com/hslayers/hslayers-ng/issues/4034)
+* Merging of unedited compositions ([2f40ecf](https://github.com/hslayers/hslayers-ng/commit/2f40ecf7238722ab6f65ccb262f7edceb03a4e25))
+* Multiple layers removal ([15515fd](https://github.com/hslayers/hslayers-ng/commit/15515fd5795f8675e434b52f676580c39e75ac84))
+* Prevent scrolling to add-data style input ([5c45ef2](https://github.com/hslayers/hslayers-ng/commit/5c45ef29ffbb9722b2ba9c5f42e72c5762a58fc9))
+* Returned layman urls not pointing on layman-proxy if used ([5b2c344](https://github.com/hslayers/hslayers-ng/commit/5b2c34467dd1bec47723fcb99334cdb5fe3c0aef))
+* Safely check composition load success ([94d977b](https://github.com/hslayers/hslayers-ng/commit/94d977b6dcaf233aca8b9a35dac235f95d196273)), closes [#3934](https://github.com/hslayers/hslayers-ng/issues/3934)
+* **sparql:** Do not hardcode proxy URL ([4efc35e](https://github.com/hslayers/hslayers-ng/commit/4efc35edf2c2e43466352b502a8ba342b04c620a))
+* **sparql:** Fix SPOI options ([e098cd4](https://github.com/hslayers/hslayers-ng/commit/e098cd4dd8f4aff3c66693a53511628251a34584))
+* **sparql:** Handle geo and ID attributes properly ([24b76f7](https://github.com/hslayers/hslayers-ng/commit/24b76f7fbed5b3baa1a0639285a8e64798d72fde))
+* Style sync indicator ([4d26f2c](https://github.com/hslayers/hslayers-ng/commit/4d26f2c288f4a8726859c6bd0b8a0113f933fbea))
+* **styler:** Wait for cluster to be created ([85b242e](https://github.com/hslayers/hslayers-ng/commit/85b242eb39a8dca817c4453bf8f7f56362255b8e))
+* Sync version with latest release ([cb7c89a](https://github.com/hslayers/hslayers-ng/commit/cb7c89aa7bbb152716dbd20b104ca4bb720a3df5))
+* Syncing default style of  vector layers added  without style file ([8a6010e](https://github.com/hslayers/hslayers-ng/commit/8a6010e01554c7f308f1ec4a41074ef0a339705d))
+* Vector styles not loading for composition layers ([4d88531](https://github.com/hslayers/hslayers-ng/commit/4d88531ab72b59183df64ba68811c44ff8c3335a))
+* Overrides visibility when repopulating layers
+
+### Performance Improvements
+
+* Pointer move listeners for compositions and add-data catalogues ([e9c6001](https://github.com/hslayers/hslayers-ng/commit/e9c6001ea20bc25ebc94ef19145c6ae2ea3ad12a))
+
+
 # [11.2.0](https://github.com/hslayers/hslayers-ng/compare/11.1.0...11.2.0) (2023-04-13)
 
 
