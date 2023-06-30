@@ -10,6 +10,7 @@
 /*Import parts of the bootstrap outside hsl class to allow :root*/
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
 
 $list-group-item-padding-y: 0.75rem;
 $list-group-item-padding-x: 1.25rem;

@@ -294,7 +294,6 @@ export class HsLaymanService implements HsSaverService {
           if (compositionJson) {
             featuresTypeFallback(response, compositionJson);
           }
-
           amendmentsApplied = true;
         }
       }
@@ -603,7 +602,7 @@ export class HsLaymanService implements HsSaverService {
     withFeatures: boolean
   ) {
     const f = new GeoJSON();
-    let geojson: Feature<Geometry>[];
+    let geojson: GeoJSONFeatureCollection;
     if (!withFeatures) {
       return;
     }

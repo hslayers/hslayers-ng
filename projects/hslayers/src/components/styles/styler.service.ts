@@ -197,7 +197,7 @@ export class HsStylerService {
       for (const rule of this.styleObject.rules) {
         // Set filter so the original style is applied to features which are not clusters
         rule.filter =
-          rule.filter?.length > 0
+          Array.isArray(rule.filter) && rule.filter.length > 0
             ? ['&&', [...singleFeatureFilter], rule.filter]
             : [...singleFeatureFilter];
       }
@@ -497,7 +497,6 @@ export class HsStylerService {
       | 'ByFilterAndScale'
       | 'Cluster'
       | 'ColorMap',
-
     options?: {
       min?: number;
       max?: number;

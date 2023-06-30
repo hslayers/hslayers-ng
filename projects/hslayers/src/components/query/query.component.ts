@@ -135,14 +135,20 @@ export class HsQueryComponent
         const bodyElementsFound = this.checkForBodyElements(
           invisiblePopup.contentDocument.body.children
         );
-        if (bodyElementsFound) {
-          //TODO: don't count style, title, meta towards length
-          if (this.hsQueryBaseService.popupClassname.length > 0) {
-            this.popup.getElement().className =
-              this.hsQueryBaseService.popupClassname;
-          } else {
-            this.popup.getElement().className = 'ol-popup';
-          }
+        if (!bodyElementsFound) {
+          return;
+        }
+        //TODO: don't count style, title, meta towards length
+        if (this.hsQueryBaseService.popupClassname.length > 0) {
+          this.popup.getElement().className =
+            this.hsQueryBaseService.popupClassname;
+        } else {
+          this.popup.getElement().className = 'ol-popup';
+        }
+        if (!coordinate) {
+          //FIXME: why setting empty coordinates for pop-up?
+          console.log('empty coordinates for', this.popup);
+        } else {
           this.popup.show(
             coordinate,
             invisiblePopup.contentDocument.body.innerHTML
