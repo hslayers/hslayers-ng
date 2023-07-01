@@ -3,7 +3,7 @@ import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 @Component({
   selector: 'hs-compositions-warning-dialog',
-  templateUrl: './dialog_warning.html',
+  templateUrl: './warning-dialog.component.html',
 })
 export class HsCompositionsWarningDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

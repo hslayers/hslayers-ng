@@ -10,7 +10,7 @@ import {HsToolbarPanelContainerService} from './toolbar-panel-container.service'
 
 @Component({
   selector: 'hs-toolbar',
-  templateUrl: './partials/toolbar.html',
+  templateUrl: './toolbar.component.html',
 })
 export class HsToolbarComponent
   extends HsPanelBaseComponent

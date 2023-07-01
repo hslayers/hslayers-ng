@@ -10,7 +10,7 @@ import {HsDialogItem} from './dialog-item';
 
 @Component({
   selector: 'hs-dialog-container',
-  templateUrl: './dialog-container.html',
+  templateUrl: './dialog-container.component.html',
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsDialogHostDirective, {static: true})

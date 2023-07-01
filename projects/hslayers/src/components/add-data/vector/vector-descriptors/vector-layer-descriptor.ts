@@ -36,7 +36,7 @@ export class VectorLayerDescriptor {
   ) {
     /**
      * Artificial object which is used when layer is saved to composition.
-     * It describes format (ol.format.KML, )
+     * It describes format (ol.format.KML)
      */
     const definition: {format?: string; url?: string} = {};
 

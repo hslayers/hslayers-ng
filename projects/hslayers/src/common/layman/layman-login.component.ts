@@ -10,7 +10,7 @@ import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-c
 
 @Component({
   selector: 'hs-layman-login',
-  templateUrl: './layman-login.html',
+  templateUrl: './layman-login.component.html',
 })
 export class HsLaymanLoginComponent
   implements HsDialogComponent, OnDestroy, OnInit

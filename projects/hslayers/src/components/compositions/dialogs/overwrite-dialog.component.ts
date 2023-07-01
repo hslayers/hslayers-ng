@@ -7,7 +7,7 @@ import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
 
 @Component({
   selector: 'hs-compositions-overwrite-dialog',
-  templateUrl: './dialog_overwriteconfirm.html',
+  templateUrl: './overwrite-dialog.component.html',
 })
 export class HsCompositionsOverwriteDialogComponent
   implements HsDialogComponent {

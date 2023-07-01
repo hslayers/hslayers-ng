@@ -3,7 +3,7 @@ export * from './dialogs/dialog-container.component';
 export * from './dialogs/dialog-container.service';
 export * from './dialogs/dialog-host.directive';
 export * from './dialogs/dialog-item';
-export * from './panels/layout-panel-header.component';
+export * from './panels/panel-header.component';
 export * from './panels/panel-component.interface';
 export * from './panels/panel-base.component';
 export * from './panels/panel-container.component';

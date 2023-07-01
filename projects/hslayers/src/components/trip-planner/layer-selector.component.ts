@@ -9,7 +9,7 @@ import {HsTripPlannerService} from './trip-planner.service';
 
 @Component({
   selector: 'hs-trip-planner-layer-selector',
-  templateUrl: './layer-selector.html',
+  templateUrl: './layer-selector.component.html',
 })
 export class HsTripPlannerLayerSelectorComponent {
   @Input() label: string;

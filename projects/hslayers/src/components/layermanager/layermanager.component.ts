@@ -40,7 +40,7 @@ import {
 
 @Component({
   selector: 'hs-layer-manager',
-  templateUrl: './layermanager.html',
+  templateUrl: './layermanager.component.html',
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent

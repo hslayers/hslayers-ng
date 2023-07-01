@@ -11,7 +11,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-search',
-  templateUrl: './partials/search.component.html',
+  templateUrl: './search.component.html',
 })
 export class HsSearchComponent
   extends HsPanelBaseComponent

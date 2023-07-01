@@ -15,7 +15,7 @@ import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
 import {HsLanguageModule} from '../language/language.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
-import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor.sub-layer-checkboxes.component';
+import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorWidgetBaseComponent} from './widgets/layer-editor-widget-base.component';
 import {HsLayerListComponent} from './logical-list/layermanager-layerlist.component';
 import {HsLayerManagerComponent} from './layermanager.component';

@@ -1,6 +1,6 @@
 import {HsPanelBaseComponent} from './panel-base.component';
 import {HsPanelContainerComponent} from './panel-container.component';
-import {HsPanelHeaderComponent} from './layout-panel-header.component';
+import {HsPanelHeaderComponent} from './panel-header.component';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {NgModule} from '@angular/core';
 @NgModule({

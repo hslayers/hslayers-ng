@@ -8,7 +8,7 @@ import {HsMapService} from '../../map/map.service';
 
 @Component({
   selector: 'hs-layermanager-remove-layer-dialog',
-  templateUrl: './dialog_remove_layer.html',
+  templateUrl: './remove-layer-dialog.component.html',
 })
 export class HsLayerManagerRemoveLayerDialogComponent
   implements HsDialogComponent

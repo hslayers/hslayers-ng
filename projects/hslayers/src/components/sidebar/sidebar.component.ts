@@ -13,7 +13,7 @@ import {HsSidebarService} from './sidebar.service';
 
 @Component({
   selector: 'hs-sidebar',
-  templateUrl: './partials/sidebar.html',
+  templateUrl: './sidebar.component.html',
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;

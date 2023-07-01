@@ -14,7 +14,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-feature-table',
-  templateUrl: './partials/feature-table.component.html',
+  templateUrl: './feature-table.component.html',
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent

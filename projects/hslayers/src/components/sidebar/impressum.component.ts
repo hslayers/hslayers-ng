@@ -4,7 +4,7 @@ import {HsConfig} from '../../config.service';
 
 @Component({
   selector: 'hs-impressum',
-  templateUrl: './partials/impressum.html',
+  templateUrl: './impressum.component.html',
 })
 export class HsImpressumComponent {
   version = 'dev';

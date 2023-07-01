@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
-import {HsLayerEditorSublayerService} from '../editor/layer-editor.sub-layer.service';
+import {HsLayerEditorSublayerService} from '../editor/layer-editor-sub-layer.service';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {getPath} from '../../../common/layer-extensions';

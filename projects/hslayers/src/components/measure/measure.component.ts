@@ -13,7 +13,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-measure',
-  templateUrl: './partials/measure.html',
+  templateUrl: './measure.component.html',
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent

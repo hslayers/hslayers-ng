@@ -11,7 +11,7 @@ import {getTitle} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-draw-toolbar',
-  templateUrl: './draw-toolbar.html',
+  templateUrl: './draw-toolbar.component.html',
 })
 export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   drawToolbarExpanded = false;

@@ -17,7 +17,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-layer-editor-dimensions',
-  templateUrl: './layer-editor-dimensions.html',
+  templateUrl: './layer-editor-dimensions.component.html',
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent

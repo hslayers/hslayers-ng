@@ -5,7 +5,7 @@ import {HsToolbarPanelBaseComponent} from '../toolbar/toolbar-panel-base.compone
 
 @Component({
   selector: 'hs-measure-toolbar',
-  templateUrl: './partials/measure-toolbar.html',
+  templateUrl: './measure-toolbar.component.html',
 })
 export class HsMeasureToolbarComponent extends HsToolbarPanelBaseComponent {
   constructor(public hsLayoutService: HsLayoutService) {

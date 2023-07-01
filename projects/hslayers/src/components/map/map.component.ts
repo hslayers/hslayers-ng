@@ -20,7 +20,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 
 @Component({
   selector: 'hs-map',
-  templateUrl: './partials/map.html',
+  templateUrl: './map.component.html',
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;

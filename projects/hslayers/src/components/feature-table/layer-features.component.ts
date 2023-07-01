@@ -18,7 +18,7 @@ type Operation = {
 
 @Component({
   selector: 'hs-layer-features',
-  templateUrl: './partials/layer-features.component.html',
+  templateUrl: './layer-features.component.html',
   styles: [
     `
       td,
