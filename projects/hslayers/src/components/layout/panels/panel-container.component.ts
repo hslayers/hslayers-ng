@@ -19,7 +19,7 @@ import {HsPanelItem} from './panel-item';
 
 @Component({
   selector: 'hs-panel-container',
-  templateUrl: './panel-container.html',
+  templateUrl: './panel-container.component.html',
 })
 export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsPanelHostDirective, {static: true})

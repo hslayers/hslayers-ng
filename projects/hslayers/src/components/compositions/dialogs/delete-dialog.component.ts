@@ -4,7 +4,7 @@ import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 @Component({
   selector: 'hs-compositions-delete-dialog',
-  templateUrl: './dialog_delete.html',
+  templateUrl: './delete-dialog.component.html',
 })
 export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

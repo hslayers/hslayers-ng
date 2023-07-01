@@ -3,12 +3,12 @@ import {HsConfig} from '../../../config.service';
 import {
   HsLayerEditorSublayerService,
   KeyBooleanDict,
-} from './layer-editor.sub-layer.service';
+} from './layer-editor-sub-layer.service';
 import {HsLayerManagerService} from '../layermanager.service';
 
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
-  templateUrl: './sub-layer-checkboxes.html',
+  templateUrl: './layer-editor-sub-layer-checkboxes.component.html',
 })
 export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   @Input() subLayer: any;

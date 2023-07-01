@@ -76,6 +76,6 @@ export class AppComponent implements OnInit {
   title = 'hslayers-material-app';
 
   ngOnInit(): void {
-    this.HsLayoutService.setDefaultPanel('layermanager', );
+    this.HsLayoutService.setDefaultPanel('layermanager');
   }
 }

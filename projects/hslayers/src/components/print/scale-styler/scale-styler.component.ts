@@ -23,7 +23,7 @@ export class HsPrintScaleStylerComponent {
    * Triggered when scale object values have been changed
    */
   scaleObjChanged(): void {
-    this.hsPrintScaleService.scaleChanged(this.scaleObj, );
+    this.hsPrintScaleService.scaleChanged(this.scaleObj);
   }
 
   /**

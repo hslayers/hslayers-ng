@@ -12,7 +12,7 @@ import {listNumericAttributes} from '../layermanager/widgets/idw-widget.componen
 
 @Component({
   selector: 'add-colormap',
-  templateUrl: './add-colormap.html',
+  templateUrl: './add-colormap.component.html',
 })
 export class HsAddColormapComponent implements OnInit {
   name = 'add-colormap';

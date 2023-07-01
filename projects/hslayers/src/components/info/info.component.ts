@@ -13,7 +13,7 @@ import {getTitle} from '../../common/layer-extensions';
  */
 @Component({
   selector: 'hs-info',
-  templateUrl: './partials/info.component.html',
+  templateUrl: './info.component.html',
 })
 export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   /**

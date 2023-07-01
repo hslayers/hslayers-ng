@@ -10,7 +10,7 @@ import {HsSidebarService} from './sidebar.service';
 
 @Component({
   selector: 'hs-mini-sidebar',
-  templateUrl: './partials/sidebar.html',
+  templateUrl: './sidebar.component.html',
 })
 export class HsMiniSidebarComponent implements OnInit {
   buttons: HsButton[] = [];

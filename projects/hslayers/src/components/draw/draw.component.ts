@@ -15,7 +15,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-draw',
-  templateUrl: './partials/draw.html',
+  templateUrl: './draw.component.html',
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent

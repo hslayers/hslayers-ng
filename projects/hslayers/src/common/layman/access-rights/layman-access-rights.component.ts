@@ -16,7 +16,7 @@ enum GrantingOptions {
 }
 @Component({
   selector: 'hs-layman-access-rights',
-  templateUrl: './layman-access-rights.html',
+  templateUrl: './layman-access-rights.component.html',
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: accessRightsModel;

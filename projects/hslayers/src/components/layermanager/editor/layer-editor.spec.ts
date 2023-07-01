@@ -20,7 +20,7 @@ import {HsDrawService} from '../../draw/draw.service';
 import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorSublayerService} from '../editor/layer-editor.sub-layer.service';
+import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';

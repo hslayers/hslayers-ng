@@ -14,7 +14,7 @@ import {setHighlighted} from '../../common/feature-extensions';
 
 @Component({
   selector: 'hs-trip-planner',
-  templateUrl: './trip_planner.html',
+  templateUrl: './trip-planner.component.html',
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent

@@ -5,7 +5,7 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 
 @Component({
   selector: 'hs-compositions-info-dialog',
-  templateUrl: './dialog_info.html',
+  templateUrl: './info-dialog.component.html',
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

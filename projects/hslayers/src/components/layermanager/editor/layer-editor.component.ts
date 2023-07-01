@@ -19,7 +19,7 @@ import {HsLanguageService} from './../../language/language.service';
 import {HsLayerDescriptor} from './../layer-descriptor.interface';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {HsLayerManagerService} from '../layermanager.service';
@@ -43,7 +43,7 @@ import {
 
 @Component({
   selector: 'hs-layer-editor',
-  templateUrl: './layer-editor.html',
+  templateUrl: './layer-editor.component.html',
 })
 export class HsLayerEditorComponent {
   _currentLayer: HsLayerDescriptor;

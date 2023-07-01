@@ -1,15 +1,16 @@
 import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
+import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsPanelBaseComponent} from '../../layout/panels/panel-base.component';
-import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 import {getBase, getGreyscale} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-gallery',
-  templateUrl: './basemap-gallery.html',
+  templateUrl: './layermanager-gallery.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {

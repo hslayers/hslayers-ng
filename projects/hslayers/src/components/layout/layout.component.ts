@@ -21,7 +21,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-layout',
-  templateUrl: './partials/layout.html',
+  templateUrl: './layout.component.html',
 })
 export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('hslayout') hslayout: ElementRef;

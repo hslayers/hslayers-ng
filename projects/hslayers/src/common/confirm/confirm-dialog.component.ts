@@ -5,7 +5,7 @@ import {HsDialogItem} from '../../components/layout/dialogs/dialog-item';
 
 @Component({
   selector: 'hs-confirm-dialog',
-  templateUrl: './confirm-dialog.html',
+  templateUrl: './confirm-dialog.component.html',
 })
 export class HsConfirmDialogComponent implements HsDialogComponent {
   dialogItem: HsDialogItem;

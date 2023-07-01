@@ -17,7 +17,7 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
-  templateUrl: './layerlist.html',
+  templateUrl: './layermanager-layerlist.component.html',
 })
 export class HsLayerListComponent implements OnInit, OnDestroy {
   @Input() folder: any;

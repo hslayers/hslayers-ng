@@ -11,7 +11,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-share',
-  templateUrl: './partials/share.component.html',
+  templateUrl: './share.component.html',
 })
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;

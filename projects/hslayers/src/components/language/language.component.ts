@@ -7,7 +7,7 @@ import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 @Component({
   selector: 'hs-language',
-  templateUrl: './partials/language.html',
+  templateUrl: './language.component.html',
 })
 export class HsLanguageComponent
   extends HsPanelBaseComponent

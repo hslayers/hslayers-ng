@@ -5,7 +5,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 @Component({
   selector: 'hs-geolocation',
-  templateUrl: './partials/geolocation.component.html',
+  templateUrl: './geolocation.component.html',
 })
 export class HsGeolocationComponent
   extends HsPanelBaseComponent

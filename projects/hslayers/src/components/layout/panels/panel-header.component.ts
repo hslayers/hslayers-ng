@@ -16,6 +16,6 @@ export class HsPanelHeaderComponent {
   constructor(public HsLayoutService: HsLayoutService) {}
 
   closePanel(): void {
-    this.HsLayoutService.closePanel(this.name, );
+    this.HsLayoutService.closePanel(this.name);
   }
 }
