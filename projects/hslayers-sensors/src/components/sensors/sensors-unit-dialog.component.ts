@@ -1,6 +1,11 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
-import {HsConfig, HsConfigObject, HsDialogComponent} from 'hslayers-ng';
+import {
+  HsConfig,
+  HsConfigObject,
+  HsDialogComponent,
+  HsShareThumbnailService,
+} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 
@@ -93,26 +98,31 @@ export class HsSensorsUnitDialogComponent
    * chart
    */
   timeButtonClicked(interval, generate = true): void {
-    this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
-      interval;
+    const dialogUnitServiceRef = this.hsSensorsUnitDialogService.get(
+      this.data.app
+    );
+    dialogUnitServiceRef.currentInterval = interval;
     const fromTo = this.hsSensorsUnitDialogService.getTimeForInterval(interval);
     Object.assign(this.customInterval, {
       fromTime: fromTo.from_time.toDate(),
       toTime: fromTo.to_time.toDate(),
     });
     if (generate) {
-      this.hsSensorsUnitDialogService
-        .getObservationHistory(
-          this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
+      //Clear observations 
+      dialogUnitServiceRef.observations = [];
+      const promises = dialogUnitServiceRef.unit.map((u) => {
+        return this.hsSensorsUnitDialogService.getObservationHistory(
+          u,
           interval,
           this.data.app
-        )
-        .then((_) => {
-          this.hsSensorsUnitDialogService.createChart(
-            this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
-            this.data.app
-          );
-        });
+        );
+      });
+      Promise.all(promises).then((_) => {
+        this.hsSensorsUnitDialogService.createChart(
+          dialogUnitServiceRef.unit,
+          this.data.app
+        );
+      });
     }
   }
 
