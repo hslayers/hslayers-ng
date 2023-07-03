@@ -498,7 +498,7 @@ export class HsSensorsService {
           unit.sensors.forEach((sensor) => {
             /**
              * NOTE:
-             *  In order to distinguish between sensors in differnet units sensor_id
+             *  In order to distinguish between sensors in different units sensor_id
              *  is constructed as `${sv.unit_id}_${sv.sensor_id} see getUnits
              */
             const reading = sensorValues[sensor.sensor_id];
