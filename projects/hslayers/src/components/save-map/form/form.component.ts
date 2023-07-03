@@ -128,7 +128,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   /**
    * Check if user is allowed to save the composition, based on the currently selected endpoint type
    * @returns True if endpoint type is 'layman'.
-   * True if the user is authorized
    */
   isAllowed(): boolean {
     if (this.endpoint === null) {

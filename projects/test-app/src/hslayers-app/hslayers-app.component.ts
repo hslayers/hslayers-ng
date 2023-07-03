@@ -436,7 +436,7 @@ export class HslayersAppComponent {
         {name: 'warning', url: '/assets/icons/warning.svg'},
         {name: 'wifi', url: '/assets/icons/wifi8.svg'},
       ],
-      share_service_url: 'http://localhost:8086',
+      shareServiceUrl: 'http://localhost:8086',
       popUpDisplay: 'hover',
       errorToastDuration: 1000,
       default_layers: [

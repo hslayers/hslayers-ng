@@ -95,10 +95,8 @@ export class HsCompositionsMickaService {
    * Middleware function before returning compositions list to the rest of the app
    * @param endpoint - Micka endpoint selected
    * @param response - HTTP request response
-   
    */
   compositionsReceived(endpoint: HsEndpoint, response: any): void {
-    console.warn(endpoint);
     if (!response.records) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation('COMMON.warning', undefined),
@@ -168,8 +166,6 @@ export class HsCompositionsMickaService {
       .pipe(
         timeout(5000),
         map((response: any) => {
-          //FIXME:statusmanager
-          //  when a composition isfound in statusmanagers list, then it becomes editable.
           response.extentFeatureCreated = extentFeatureCreated;
           this.compositionsReceived(endpoint, response);
         }),
@@ -242,8 +238,7 @@ export class HsCompositionsMickaService {
     }
     const compUrls = this.getCompositionUrls(compLinks);
     let info: any = {};
-    let url = '';
-    Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
+    const url = Array.isArray(compUrls) ? compUrls[0] : compUrls;
     try {
       info = await this.hsCompositionsParserService.loadInfo(url);
       //TODO: find out if this is even available

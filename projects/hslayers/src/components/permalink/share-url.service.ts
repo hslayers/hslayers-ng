@@ -127,11 +127,11 @@ export class HsShareUrlService {
       hostName = this.hsConfig.hostname.default.url;
     }
 
-    if (this.hsConfig.share_service_url?.includes('://')) {
+    if (this.hsConfig.shareServiceUrl?.includes('://')) {
       //Full url specified
-      return this.hsConfig.share_service_url;
+      return this.hsConfig.shareServiceUrl;
     } else {
-      return hostName + (this.hsConfig.share_service_url || '/share/');
+      return hostName + (this.hsConfig.shareServiceUrl || '/share/');
     }
   }
 

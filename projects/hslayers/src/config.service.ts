@@ -96,7 +96,7 @@ export class HsConfigObject {
     };
   };
   mapSwipeOptions?: MapSwipeOptions = {};
-  share_service_url?: string;
+  shareServiceUrl?: string;
   shortenUrl?: (url) => any;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
