@@ -74,7 +74,7 @@ export class HsCompositionsCatalogueService {
     private _zone: NgZone
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe((endpoints) => {
-      this.endpoints = endpoints;
+      this.endpoints = endpoints ?? [];
     });
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
       if (
