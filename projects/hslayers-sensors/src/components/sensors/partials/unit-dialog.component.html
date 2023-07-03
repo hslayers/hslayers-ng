@@ -12,7 +12,7 @@
                 <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
                     [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
-            <div class="modal-body" style="max-height: 273px; overflow-y: auto">
+            <div class="modal-body" style="max-height: 300px; overflow-y: auto">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
@@ -22,22 +22,27 @@
                 </div>
                 <table class="table table-sm table-striped table-hover">
                     <tr>
-                        <th>{{'SENSORS.sensors' | translateHs }}</th>
+                        <th></th>
                         <th>{{'SENSORS.min' | translateHs }}</th>
                         <th>{{'SENSORS.max' | translateHs }}</th>
                         <th>{{'SENSORS.avg' | translateHs }}</th>
                     </tr>
-                    <tr *ngFor="let aggr of getAggregations()">
-                        <td>{{aggr.sensor_name}}</td>
-                        <td>{{aggr.min}}</td>
-                        <td>{{aggr.max}}</td>
-                        <td>{{aggr.avg}}</td>
-                    </tr>
+                    <ng-container *ngFor="let unit of getUnitAggregations() | keyvalue">
+                        <tr>
+                            <th>{{unit.key}}</th>
+                        </tr>
+                        <tr *ngFor="let aggr of unit.value">
+                            <td>{{aggr.sensor_name}}</td>
+                            <td>{{aggr.min}}</td>
+                            <td>{{aggr.max}}</td>
+                            <td>{{aggr.avg}}</td>
+                        </tr>
+                    </ng-container>
                 </table>
             </div>
             <div class="modal-footer" style="padding: 0.2rem 0.3rem;">
-                <div class="d-flex w-100">
-                    <div class="m-1">
+                <div class="d-flex w-100 justify-content-between ">
+                    <div class="m-1 d-flex align-items-center">
                         <div class="btn-group" role="group">
                             <!-- TODO: Remove function call from template -->
                             <button type="button" class="btn btn-"
@@ -47,24 +52,28 @@
                                     class="hs-loader" [hidden]="!interval.loading"></span></button>
                         </div>
                     </div>
-                    <div class="m-1">
-                        <div class="input-group">
-                            <input type="text" style="width: 6em;" ngbDatepicker
-                                [placeholder]="'COMMON.from' | translateHs " #d="ngbDatepicker"
-                                [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
-                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
-                                    class="icon-calendarthree"></i></button>
+                    <div class="divider" style="border-left: 1px solid lightgray;"></div>
+                    <div class="hs-sensors-unit-custom-interval-container d-flex flex-wrap justify-content-end">
+                        <div class="m-1">
+                            <div class="input-group flex-nowrap">
+                                <input type="text" style="width: 6em;" ngbDatepicker
+                                    [placeholder]="'COMMON.from' | translateHs" #d="ngbDatepicker"
+                                    [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
+                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
+                                        class="icon-calendarthree"></i></button>
+                            </div>
+                        </div>
+                        <div class="m-1">
+                            <div class="input-group flex-nowrap">
+                                <input type="text" style="width: 6em;" ngbDatepicker
+                                    [placeholder]="'COMMON.until' | translateHs" #d2="ngbDatepicker"
+                                    [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
+                                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
+                                        class="icon-calendarthree"></i></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="m-1">
-                        <div class="input-group">
-                            <input type="text" style="width: 6em;" ngbDatepicker
-                                [placeholder]="'COMMON.until' | translateHs " #d2="ngbDatepicker"
-                                [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
-                            <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
-                                    class="icon-calendarthree"></i></button>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

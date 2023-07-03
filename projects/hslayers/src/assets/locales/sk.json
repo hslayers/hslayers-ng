@@ -840,7 +840,10 @@
     "oneHour": "1 hodina",
     "phenomena": "Javy",
     "sensors": "Senzory",
-    "sensorUnit": "Senzorová jednotka"
+    "sensorUnit": "Senzorová jednotka",
+    "comparison": "Porovnať senzory medzi jednotkami",
+    "noSensorsSelected": "Nie je vybratý žiadny senzor",
+    "multipleUnits": "Viacero jednotiek"
   },
   "SIDEBAR": {
     "additionalPanels": "Ďalšie panely",

@@ -1,16 +1,15 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import Feature from 'ol/Feature';
 import dayjs from 'dayjs';
-import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {Geometry, MultiPolygon} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {WKT} from 'ol/format';
-import {getWidth} from 'ol/extent';
-
+import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
+import { Geometry, MultiPolygon } from 'ol/geom';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { WKT } from 'ol/format';
+import { getWidth } from 'ol/extent';
 import {
   HsConfig,
   HsLanguageService,
@@ -20,15 +19,15 @@ import {
   setFeatureName,
   setUnitId,
 } from 'hslayers-ng';
-import {HsDialogContainerService} from 'hslayers-ng';
-import {HsEventBusService} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
-import {HsMapService} from 'hslayers-ng';
-import {HsSensorUnit} from './sensor-unit.class';
-import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
-import {HsSensorsUnitDialogService} from './unit-dialog.service';
-import {HsUtilsService} from 'hslayers-ng';
-import {SensLogEndpoint} from './types/senslog-endpoint.type';
+import { HsDialogContainerService } from 'hslayers-ng';
+import { HsEventBusService } from 'hslayers-ng';
+import { HsLayoutService } from 'hslayers-ng';
+import { HsMapService } from 'hslayers-ng';
+import { HsSensorUnit } from './sensor-unit.class';
+import { HsSensorsUnitDialogComponent } from './sensors-unit-dialog.component';
+import { HsSensorsUnitDialogService } from './unit-dialog.service';
+import { HsUtilsService } from 'hslayers-ng';
+import { SensLogEndpoint } from './types/senslog-endpoint.type';
 
 const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
@@ -71,7 +70,7 @@ export class HsSensorsService {
     }),
   });
 
-  visualizedAttribute = new Subject<{attribute: string}>();
+  visualizedAttribute = new Subject<{ attribute: string }>();
 
   constructor(
     private hsUtilsService: HsUtilsService,
@@ -131,6 +130,25 @@ export class HsSensorsService {
   }
 
   /**
+ * Deselect sensor unit and refresh sensors state
+ */
+  deselectUnit(unit) {
+    this.hsSensorsUnitDialogService.unit = this.hsSensorsUnitDialogService.unit.filter(
+      (u) => u.unit_id !== unit.unit_id
+    );
+    unit.feature.set('selected', undefined);
+    unit.sensors
+      .filter((s) => s.checked)
+      .forEach((s) => {
+        s.checked = false;
+        this.hsSensorsUnitDialogService.toggleSensor(s);
+      });
+    delete this.hsSensorsUnitDialogService.aggregations[unit.description];
+    this.hsSensorsUnitDialogService.filterObservations(unit);
+    unit.expanded = false;
+  }
+
+  /**
    * Set endpoint for sensors service to receive data from senslog
    
    */
@@ -157,7 +175,7 @@ export class HsSensorsService {
     for (const feature of this.layer.getSource().getFeatures()) {
       feature.set(VISUALIZED_ATTR, sensor.sensor_name);
     }
-    this.visualizedAttribute.next({attribute: sensor.sensor_name});
+    this.visualizedAttribute.next({ attribute: sensor.sensor_name });
     sensor.checked = true;
   }
 
@@ -167,36 +185,98 @@ export class HsSensorsService {
    
    */
   selectUnit(unit: HsSensorUnit): void {
-    this.hsSensorsUnitDialogService.unit?.feature.set('selected', undefined);
-    this.hsSensorsUnitDialogService.unit = unit;
+    /**
+     * Multiple units allowed
+     */
+    if (this.hsSensorsUnitDialogService.comparisonAllowed) {
+      //If already in 'selection' drop it, remove from aggregations and reset its sensors state
+      if (this.hsSensorsUnitDialogService.unit.find((u) => u.unit_id == unit.unit_id)) {
+        this.deselectUnit(unit);
+        if (this.hsSensorsUnitDialogService.unit.length > 0) {
+          this.hsSensorsUnitDialogService.createChart(
+            this.hsSensorsUnitDialogService.unit
+          );
+        } else {
+          this.closeSensorDialog();
+        }
+        return;
+      } else {
+        this.hsSensorsUnitDialogService.unit.push(unit);
+      }
+    } else {
+      /**
+       * Single unit only
+       */
+      if (
+        this.hsSensorsUnitDialogService.unit[0]?.unit_id === unit.unit_id &&
+        this.hsSensorsUnitDialogService.unitDialogVisible
+      ) {
+        unit.expanded = !unit.expanded;
+        return;
+      }
+      this.hsSensorsUnitDialogService.resetAggregations();
+      //Reset features and sensors belonging to previously selected unit
+      this.hsSensorsUnitDialogService.unit.forEach((u) => {
+        u.feature.set('selected', undefined);
+        u.expanded = false;
+        u.sensors.forEach((s) => (s.checked = false));
+      });
+      this.hsSensorsUnitDialogService.sensorsSelected = [];
+      this.hsSensorsUnitDialogService.sensorIdsSelected = [];
+
+      this.hsSensorsUnitDialogService.unit = [unit];
+    }
     unit.expanded = !unit.expanded;
     //this.selectSensor(unit.sensors[0]);
+    //Create/show unit dialog
     if (
-      !this.hsDialogContainerService.dialogs.some((d) =>
-        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
-      )
+      !this.hsDialogContainerService
+        .dialogs.some((d) =>
+          this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
+        )
     ) {
-      this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
+      this.hsDialogContainerService.create(
+        HsSensorsUnitDialogComponent,
+        {}
+      );
     } else {
       this.hsSensorsUnitDialogService.unitDialogVisible = true;
     }
+    //Set interval for selected sensor unit
     if (this.hsSensorsUnitDialogService.currentInterval == undefined) {
       this.hsSensorsUnitDialogService.currentInterval = {
         amount: 1,
         unit: 'days',
       };
     }
+    //Get observations for selected unit
     this.hsSensorsUnitDialogService
-      .getObservationHistory(
-        unit,
-        this.hsSensorsUnitDialogService.currentInterval
-      )
-      .then((_) => this.hsSensorsUnitDialogService.createChart(unit));
+      .getObservationHistory(unit, this.hsSensorsUnitDialogService.currentInterval)
+      .then((_) =>
+        this.hsSensorsUnitDialogService.createChart(
+          this.hsSensorsUnitDialogService.comparisonAllowed
+            ? this.hsSensorsUnitDialogService.unit
+            : unit
+        )
+      );
+
     unit.feature.set('selected', true);
     this.hsMapService
       .getMap()
       .getView()
-      .fit(unit.feature.getGeometry(), {maxZoom: 16});
+      .fit(unit.feature.getGeometry(), { maxZoom: 16 });
+  }
+
+  /**
+ * Close sensor unit dialog
+ */
+  closeSensorDialog(): void {
+    const dialog = this.hsDialogContainerService
+      .dialogs.find((d) =>
+        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
+      );
+    this.hsDialogContainerService.destroy(dialog);
+    this.hsSensorsUnitDialogService.unitDialogVisible = false;
   }
 
   /**
@@ -287,10 +367,9 @@ export class HsSensorsService {
             return feature;
           });
         this.layer.getSource().addFeatures(features);
-        this.fillLastObservations();
         this.units.forEach((unit: HsSensorUnit) => {
           unit.sensorTypes = unit.sensors.map((s) => {
-            return {name: s.sensor_type};
+            return { name: s.sensor_type };
           });
           unit.sensors.sort((a, b) => {
             return b.sensor_id - a.sensor_id;
@@ -313,17 +392,21 @@ export class HsSensorsService {
           );
           unit.sensorTypes.map(
             (st) =>
-              (st.sensors = unit.sensors.filter(
-                (s) => s.sensor_type == st.name
-              ))
+            (st.sensors = unit.sensors.filter(
+              (s) => s.sensor_type == st.name
+            ))
           );
         });
         this.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
+            sensor.sensor_id = `${unit.unit_id}_${sensor.sensor_id}`;
             this.hsSensorsUnitDialogService.sensorById[sensor.sensor_id] =
               sensor;
+            sensor.unit_id = unit.unit_id;
+            sensor.unit_description = unit.description;
           });
         });
+        this.fillLastObservations();
         setInterval(() => this.fillLastObservations(), 60000);
       });
   }
@@ -338,7 +421,7 @@ export class HsSensorsService {
       (s) =>
         query.description == '' ||
         s.description.toLowerCase().indexOf(query.description.toLowerCase()) >
-          -1
+        -1
     );
   }
 
@@ -351,12 +434,12 @@ export class HsSensorsService {
       ? `${this.endpoint.url}/${this.endpoint.senslog2Path}/rest/observation/last`
       : `${this.endpoint.url}/${this.endpoint.senslog1Path}/SensorService`;
     const params = this.endpoint.senslog2Path
-      ? {group_name: this.endpoint.group}
+      ? { group_name: this.endpoint.group }
       : {
-          Operation: 'GetLastObservations',
-          group: this.endpoint.group,
-          user: this.endpoint.user,
-        };
+        Operation: 'GetLastObservations',
+        group: this.endpoint.group,
+        user: this.endpoint.user,
+      };
     this.http
 
       .get(this.hsUtilsService.proxify(url), {
@@ -365,14 +448,19 @@ export class HsSensorsService {
       .subscribe((response: any) => {
         const sensorValues = {};
         response.forEach((sv) => {
-          sensorValues[sv.unitId + sv.sensorId] = {
+          sensorValues[`${sv.unitId}_${sv.sensorId}`] = {
             value: sv.observedValue,
             timestamp: dayjs(sv.timeStamp).format('DD.MM.YYYY HH:mm'),
           };
         });
         this.units.forEach((unit: HsSensorUnit) => {
           unit.sensors.forEach((sensor) => {
-            const reading = sensorValues[unit.unit_id + sensor.sensor_id];
+            /**
+             * NOTE:
+             *  In order to distinguish between sensors in different units sensor_id
+             *  is constructed as `${sv.unit_id}_${sv.sensor_id} see getUnits
+             */
+            const reading = sensorValues[sensor.sensor_id];
             if (reading) {
               sensor.lastObservationValue = reading.value;
               const feature = this.layer

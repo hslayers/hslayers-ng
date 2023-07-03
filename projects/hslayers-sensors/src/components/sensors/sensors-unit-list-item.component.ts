@@ -1,11 +1,11 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import {HsDialogContainerService} from 'hslayers-ng';
+import { HsDialogContainerService } from 'hslayers-ng';
 
-import {HsSensorUnit} from './sensor-unit.class';
-import {HsSensorsService} from './sensors.service';
-import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
-import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import { HsSensorUnit } from './sensor-unit.class';
+import { HsSensorsService } from './sensors.service';
+import { HsSensorsUnitDialogComponent } from './sensors-unit-dialog.component';
+import { HsSensorsUnitDialogService } from './unit-dialog.service';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
@@ -20,7 +20,7 @@ export class HsSensorsUnitListItemComponent {
     private hsSensorsService: HsSensorsService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService
-  ) {}
+  ) { }
 
   /**
    * When unit is clicked, create a dialog window for
@@ -36,8 +36,8 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   sensorClicked(sensor): void {
-    this.hsSensorsUnitDialogService.unit = this.unit;
-    this.hsSensorsService.selectSensor(sensor);
+    this.hsSensorsUnitDialogService.resetAggregations();
+    this.hsSensorsUnitDialogService.unit = [this.unit];
     this.generateDialog();
   }
 
@@ -56,21 +56,38 @@ export class HsSensorsUnitListItemComponent {
    * displaying charts or reopen already existing one.
    */
   sensorToggleSelected(sensor): void {
-    this.hsSensorsUnitDialogService.unit = this.unit;
     sensor.checked = !sensor.checked;
+    if (this.hsSensorsUnitDialogService.comparisonAllowed) {
+      //If the opened sensor belongs to unit that's not included add it
+      //NOTE: Might not even be possible as checkboxes are available only after unit is selected
+      if (
+        !this.hsSensorsUnitDialogService.unit.find((u) => u.unit_id === sensor.unit_id)
+      ) {
+        this.hsSensorsUnitDialogService.unit.push(this.unit);
+      }
+    } else {
+      this.hsSensorsUnitDialogService.unit = [this.unit];
+    }
+
     this.hsSensorsUnitDialogService.toggleSensor(sensor);
-    this.generateDialog();
+    this.generateDialog(!this.hsSensorsUnitDialogService.comparisonAllowed);
   }
 
   /**
    * Display sensors unit dialog
+   * @single Controls whether only one unit is supposed to be selected
    */
-  generateDialog(): void {
+  generateDialog(single = true): void {
     if (!this.hsSensorsUnitDialogService.unitDialogVisible) {
-      this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
+      this.hsDialogContainerService.create(
+        HsSensorsUnitDialogComponent,
+        {}
+      );
     } else {
       this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.unit
+        single
+          ? this.hsSensorsUnitDialogService.unit[0]
+          : this.hsSensorsUnitDialogService.unit
       );
     }
   }
