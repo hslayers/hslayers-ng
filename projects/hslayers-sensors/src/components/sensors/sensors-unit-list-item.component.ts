@@ -61,8 +61,8 @@ export class HsSensorsUnitListItemComponent {
     sensor.checked = !sensor.checked;
     const unitDialogServiceRef = this.hsSensorsUnitDialogService.get(this.app);
     if (unitDialogServiceRef.comparisonAllowed) {
-      //If the opened sensor belongs to unit thats not included add it
-      //NOTE: Might not even be possible asi checkbxes are available only after unit is selected
+      //If the opened sensor belongs to unit that's not included add it
+      //NOTE: Might not even be possible as checkboxes are available only after unit is selected
       if (
         !unitDialogServiceRef.unit.find((u) => u.unit_id === sensor.unit_id)
       ) {
@@ -78,7 +78,7 @@ export class HsSensorsUnitListItemComponent {
 
   /**
    * Display sensors unit dialog
-   * @single Controls wether only one unit is supposed to be selected
+   * @single Controls whether only one unit is supposed to be selected
    */
   generateDialog(single = true): void {
     if (!this.hsSensorsUnitDialogService.get(this.app).unitDialogVisible) {

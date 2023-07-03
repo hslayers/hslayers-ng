@@ -41,7 +41,7 @@ class SensorsUnitDialogServiceParams {
   useTimeZone = new BehaviorSubject<boolean>(false);
 
   /**
-   * Controls wether its possible to compare sensors inbetween
+   * Controls whether it's possible to compare sensors in between
    * different sensor units
    */
   comparisonAllowed = false;

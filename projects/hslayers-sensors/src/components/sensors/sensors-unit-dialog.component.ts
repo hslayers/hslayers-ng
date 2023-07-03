@@ -88,7 +88,7 @@ export class HsSensorsUnitDialogComponent
 
   /**
    * @param interval - Clicked interval button
-   * @param generate - Controling wether to fetch observations and generate charts as well. Not necessary on init
+   * @param generate - Controlling whether to fetch observations and generate charts as well. Not necessary on init
    * Get data for different time interval and regenerate
    * chart
    */

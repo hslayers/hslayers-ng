@@ -867,7 +867,7 @@
     "phenomena": "Jevy",
     "sensors": "Senzory",
     "sensorUnit": "Senzorová jednotka",
-    "comparison": "Porovnat senzory mezi jednotkamiPorovnať senzory medzi jednotkami",
+    "comparison": "Porovnat senzory mezi jednotkami",
     "noSensorsSelected": "Není vybrán žádný senzor",
     "multipleUnits": "Více jednotek"
   },
