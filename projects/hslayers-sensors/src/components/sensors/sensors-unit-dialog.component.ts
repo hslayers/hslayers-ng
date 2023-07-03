@@ -92,6 +92,31 @@ export class HsSensorsUnitDialogComponent
   }
 
   /**
+   * Fetch observations and rerender sensor chart when time interval changes
+   * Observations are cleared ahead of fetch to make sure only requested timeframe is displayed
+   */
+  private intervalChangeHandler(interval): void {
+    const dialogUnitServiceRef = this.hsSensorsUnitDialogService.get(
+      this.data.app
+    );
+    //Clear observations
+    dialogUnitServiceRef.observations = [];
+    const promises = dialogUnitServiceRef.unit.map((u) => {
+      return this.hsSensorsUnitDialogService.getObservationHistory(
+        u,
+        interval,
+        this.data.app
+      );
+    });
+    Promise.all(promises).then((_) => {
+      this.hsSensorsUnitDialogService.createChart(
+        dialogUnitServiceRef.unit,
+        this.data.app
+      );
+    });
+  }
+
+  /**
    * @param interval - Clicked interval button
    * @param generate - Controlling whether to fetch observations and generate charts as well. Not necessary on init
    * Get data for different time interval and regenerate
@@ -108,21 +133,7 @@ export class HsSensorsUnitDialogComponent
       toTime: fromTo.to_time.toDate(),
     });
     if (generate) {
-      //Clear observations 
-      dialogUnitServiceRef.observations = [];
-      const promises = dialogUnitServiceRef.unit.map((u) => {
-        return this.hsSensorsUnitDialogService.getObservationHistory(
-          u,
-          interval,
-          this.data.app
-        );
-      });
-      Promise.all(promises).then((_) => {
-        this.hsSensorsUnitDialogService.createChart(
-          dialogUnitServiceRef.unit,
-          this.data.app
-        );
-      });
+      this.intervalChangeHandler(interval);
     }
   }
 
@@ -132,18 +143,7 @@ export class HsSensorsUnitDialogComponent
   customIntervalChanged(): void {
     this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
       this.customInterval;
-    this.hsSensorsUnitDialogService
-      .getObservationHistory(
-        this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
-        this.customInterval,
-        this.data.app
-      )
-      .then((_) =>
-        this.hsSensorsUnitDialogService.createChart(
-          this.hsSensorsUnitDialogService.get(this.data.app).unit[0], //ALWAYS JUST ONE?
-          this.data.app
-        )
-      );
+    this.intervalChangeHandler(this.customInterval);
   }
 
   calculateDialogStyle(
