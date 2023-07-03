@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
-import {HsLayoutService} from 'hslayers-ng';
-import {HsMapService} from 'hslayers-ng';
-import {HsPanelBaseComponent} from 'hslayers-ng';
-import {HsSensorUnit} from './sensor-unit.class';
-import {HsSensorsService} from './sensors.service';
+import { Component, OnInit, ViewRef } from '@angular/core';
+import { HsLayoutService } from 'hslayers-ng';
+import { HsMapService } from 'hslayers-ng';
+import { HsPanelBaseComponent } from 'hslayers-ng';
+import { HsSensorUnit } from './sensor-unit.class';
+import { HsSensorsService } from './sensors.service';
+import { HsSensorsUnitDialogService } from './unit-dialog.service';
 @Component({
   selector: 'hs-sensors',
   templateUrl: './partials/sensors.component.html',
@@ -11,14 +12,15 @@ import {HsSensorsService} from './sensors.service';
 export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   viewMode = 'sensors';
   viewExpanded = false;
-  query: any = {description: ''};
+  query: any = { description: '' };
   viewRef: ViewRef;
   name = 'sensors';
 
   constructor(
     private hsMapService: HsMapService,
     private hsSensorsService: HsSensorsService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
     super(hsLayoutService);
   }
@@ -27,6 +29,22 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
       this.setViewMode(this.data.viewMode);
     }
     this.hsSensorsService.getUnits();
+  }
+
+  toggleComparisonAllowed(): void {
+    this.hsSensorsUnitDialogService.comparisonAllowed =
+      !this.hsSensorsUnitDialogService.comparisonAllowed;
+    /**
+     * If multi comparison was disabled refresh state and chart(keeping first one)
+     */
+    if (!this.hsSensorsUnitDialogService.comparisonAllowed) {
+      this.hsSensorsUnitDialogService.unit
+        .filter((u) => u.unit_id != this.hsSensorsUnitDialogService.unit[0].unit_id)
+        .forEach((u) => this.hsSensorsService.deselectUnit(u));
+      this.hsSensorsUnitDialogService.createChart(
+        this.hsSensorsUnitDialogService.unit
+      );
+    }
   }
 
   /**

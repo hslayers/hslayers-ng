@@ -852,7 +852,10 @@
     "oneHour": "1 stunda",
     "phenomena": "Parādība",
     "sensors": "Sensori",
-    "sensorUnit": "Sensoru vienība"
+    "sensorUnit": "Sensoru vienība",
+    "comparison": "Salīdzināt sensorus starp mērītāju grupām",
+    "noSensorsSelected": "Nav atlasīts neviens sensors",
+    "multipleUnits": "Vairākas vienības"
   },
   "SIDEBAR": {
     "additionalPanels": "Papildu paneļi",
