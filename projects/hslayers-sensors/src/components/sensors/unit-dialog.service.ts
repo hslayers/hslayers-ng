@@ -220,7 +220,7 @@ export class HsSensorsUnitDialogService {
    * @param app - App identifier
    * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit, interval, app: string) {
+  getObservationHistory(unit, interval, app: string): Promise<boolean> {
     const appRef = this.get(app);
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
@@ -255,7 +255,7 @@ export class HsSensorsUnitDialogService {
             } else {
               appRef.observations = this.modifyObservationHistory(response);
             }
-            resolve(null);
+            resolve(true);
           },
           error: (err) => reject(err),
         });
