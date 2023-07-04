@@ -1,10 +1,10 @@
-import queue from 'queue';
+import Queue from 'queue';
 
 import {Injectable} from '@angular/core';
 
 type Queues = {
   [useCase: string]: {
-    q: any; // queueObject
+    q: Queue;
   };
 };
 
@@ -24,14 +24,14 @@ export class HsQueuesService {
     useCase: string,
     customConcurrency?: number,
     timeout?: number
-  ): queue {
+  ): Queue {
     if (this.queues[useCase]) {
       return this.queues[useCase].q;
     }
     const newQueue: {
-      q: any;
+      q: Queue;
     } = {
-      q: queue({
+      q: new Queue({
         results: [],
         concurrency: customConcurrency || 5,
         autostart: true,
@@ -39,7 +39,7 @@ export class HsQueuesService {
       }),
     };
     this.queues[useCase] = newQueue;
-    newQueue.q.on('end', () => {
+    newQueue.q.addEventListener('end', () => {
       delete this.queues[useCase];
     });
     return newQueue.q;
