@@ -158,6 +158,7 @@ export class HsExternalService {
       | 'panToCenter'
       | 'showPopup'
       | 'hidePopup'
+      | 'select'
       | ((feature: Feature<Geometry>, domElement: Element, event: any) => any),
     feature: any,
     domElement: Element,
