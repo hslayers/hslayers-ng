@@ -65,8 +65,20 @@ $list-group-item-padding-x: 1.25rem;
     overflow: visible;
   }
 
-  hs-add-data-catalogue .dropdown-menu {
-    max-width: revert;
+  hs-add-data-catalogue {
+    .hs-catalogue-list-item-title {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    hs-catalogue-list-item>div.disabled .hs-catalogue-list-item-title {
+      color: $secondary;
+      opacity: 50%;
+    }
+
+    .dropdown-menu {
+      max-width: revert;
+    }
   }
 
   .list-group-item+.list-group-item {

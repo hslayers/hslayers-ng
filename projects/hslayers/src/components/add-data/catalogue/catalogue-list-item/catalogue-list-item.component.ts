@@ -23,7 +23,7 @@ import {HsUtilsService} from '../../../utils/utils.service';
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
 })
-export class HsCatalogueListItemComponent {
+export class HsCatalogueListItemComponent implements OnInit {
   @Input() layer: HsAddDataLayerDescriptor;
   explanationsVisible: boolean;
   metadata;
@@ -31,6 +31,9 @@ export class HsCatalogueListItemComponent {
   selectTypeToAddLayerVisible: boolean;
   whatToAddTypes: string[];
   loadingInfo = false;
+
+  //** Layers wfs_wms_status is AVAIALABLE */
+  layerAvailable: boolean;
   constructor(
     public hsConfig: HsConfig, //used in template
     public hsDatasourcesMetadataService: HsCatalogueMetadataService,
@@ -41,9 +44,12 @@ export class HsCatalogueListItemComponent {
     public hsLanguageService: HsLanguageService,
     public hsLaymanService: HsLaymanService,
     public hsUtilsService: HsUtilsService,
-    public hsCommonEndpointsService: HsCommonEndpointsService
+    public hsCommonEndpointsService: HsCommonEndpointsService,
   ) {}
 
+  ngOnInit() {
+    this.layerAvailable = this.layer.wfs_wms_status === 'AVAILABLE';
+  }
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    * @param endpoint - Datasource of selected layer
@@ -51,13 +57,13 @@ export class HsCatalogueListItemComponent {
    */
   async addLayerToMap(
     endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
   ): Promise<void> {
     this.loadingInfo = true;
     const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
       endpoint,
       layer,
-      this.selectedType
+      this.selectedType,
     );
     this.loadingInfo = false;
     if (Array.isArray(availableTypes)) {
@@ -97,7 +103,7 @@ export class HsCatalogueListItemComponent {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined
+      undefined,
     );
   }
 
@@ -112,7 +118,7 @@ export class HsCatalogueListItemComponent {
    */
   async showMetadata(
     endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
   ): Promise<void> {
     if (endpoint.type.includes('layman')) {
       await this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
@@ -162,17 +168,17 @@ export class HsCatalogueListItemComponent {
       {
         message: this.hsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer',
-          undefined
+          undefined,
         ),
         note: this.hsLanguageService.getTranslation(
           'DRAW.deleteNote',
-          undefined
+          undefined,
         ),
         title: this.hsLanguageService.getTranslation(
           'COMMON.confirmDelete',
-          undefined
+          undefined,
         ),
-      }
+      },
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
