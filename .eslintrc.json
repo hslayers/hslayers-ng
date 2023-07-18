@@ -13,8 +13,7 @@
         "openlayers",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/recommended--extra"
+        "plugin:@angular-eslint/recommended"
       ],
       "plugins": [
         "@typescript-eslint",
@@ -66,6 +65,8 @@
             ]
           }
         ],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
         "valid-jsdoc": "off",
         "tsdoc/syntax": "warn"
       },
