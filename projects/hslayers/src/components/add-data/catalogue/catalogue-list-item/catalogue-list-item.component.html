@@ -1,6 +1,12 @@
-<div class="d-flex flex-column">
-    <div class="">
-        <a data-toggle="tooltip" [title]="layer.abstract || ''">{{layer.title || layer.abstract}}</a>
+<div class="d-flex flex-column" [class.disabled]="!layerAvailable">
+    <div style=" display: flex; justify-content: space-between;">
+        <a class="hs-catalogue-list-item-title" data-toggle="tooltip" [title]="layer.abstract || ''">{{layer.title ||
+            layer.abstract}}</a>
+        <!-- STATUS BADGE -->
+        <span class="badge rounded-pill w-auto" *ngIf="!layerAvailable" [ngClass]="{
+            'bg-danger':layer.wfs_wms_status === 'NOT_AVAILABLE',
+            'bg-warning':layer.wfs_wms_status === 'PREPARING'
+        }"> {{layer.wfs_wms_status | translateHs:{ 'module' :'COMMON'} }}</span>
     </div>
     <div class="hs-catalogue-item-body d-flex flex-column w-100 justify-content-around mt-2"
         *ngIf="hsAddDataCatalogueService.selectedLayer?.id === layer.id">
@@ -14,11 +20,12 @@
                             </button>
                             <span class="ms-2">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translateHs }}</span>
                         </div> -->
-            <a class="btn btn-sm border-0" [hidden]="selectTypeToAddLayerVisible"
+            <a class="btn btn-sm border-0" [class.disabled]="!layerAvailable" [hidden]="selectTypeToAddLayerVisible"
+                [ngClass]="{'text-muted': layerAvailable}"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
                 <img [hidden]="!loadingInfo" [src]="hsConfig._ajaxLoaderPath" />
-                <span class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
+                <span *ngIf="layerAvailable" class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
                     translateHs }}</span>
             </a>
             <a class="btn btn-sm border-0" [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs "

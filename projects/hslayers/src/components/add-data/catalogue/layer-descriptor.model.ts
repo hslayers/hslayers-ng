@@ -1,4 +1,4 @@
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import { HsEndpoint } from '../../../common/endpoints/endpoint.interface';
 
 export interface HsAddDataLayerDescriptor {
   abstract?: string;
@@ -36,4 +36,5 @@ export interface HsAddDataLayerDescriptor {
     read: string[];
     write: string[];
   };
+  wfs_wms_status?: 'AVAILABLE' | 'PREPARING' | 'NOT_AVAILABLE'
 }

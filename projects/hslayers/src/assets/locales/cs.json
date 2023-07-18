@@ -304,7 +304,9 @@
     "verify": "Ověřit",
     "back": "Zpět",
     "savingChanges": "Ukládání změn",
-    "remove": "Odstranit"
+    "remove": "Odstranit",
+    "NOT_AVAILABLE": "Nedostupné",
+    "PREPARING": "Připravuje se"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

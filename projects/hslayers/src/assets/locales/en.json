@@ -304,7 +304,9 @@
     "verify": "Verify",
     "back": "Back",
     "savingChanges": "Saving changes",
-    "remove": "Remove"
+    "remove": "Remove",
+    "NOT_AVAILABLE": "Not available",
+    "PREPARING": "Preparing"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

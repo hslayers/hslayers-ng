@@ -32,7 +32,7 @@ export class HsLaymanBrowserService {
     public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService
+    public hsMapService: HsMapService,
   ) {}
 
   /**
@@ -50,7 +50,7 @@ export class HsLaymanBrowserService {
       query: any;
       filterByExtent?: boolean;
     },
-    extentFeatureCreated?: (feature: Feature<Geometry>) => void
+    extentFeatureCreated?: (feature: Feature<Geometry>) => void,
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     const loggedIn = endpoint.authenticated;
@@ -74,7 +74,7 @@ export class HsLaymanBrowserService {
           .getView()
           .calculateExtent(this.hsMapService.getMap().getSize()),
         this.hsMapService.getMap().getView().getProjection(),
-        'EPSG:3857'
+        'EPSG:3857',
       );
       bbox = data.filterByExtent ? b.join(',') : '';
 
@@ -113,7 +113,7 @@ export class HsLaymanBrowserService {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-              x.body
+              x.body,
             );
           }
           return x.body;
@@ -122,7 +122,7 @@ export class HsLaymanBrowserService {
           if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
             (<EndpointErrorHandler>endpoint.onError?.compositionLoad).handle(
               endpoint,
-              e
+              e,
             );
             return of(e);
           }
@@ -134,24 +134,24 @@ export class HsLaymanBrowserService {
               this.hsToastService.createToastPopupMessage(
                 await this.hsLanguageService.awaitTranslation(
                   'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-                  undefined
+                  undefined,
                 ),
                 endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url}
+                    {url},
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsLaymanBrowserService',
-                }
+                },
               );
           }
           endpoint.datasourcePaging.loaded = true;
           return of(e);
-        })
+        }),
       );
     return endpoint.httpCall;
   }
@@ -168,13 +168,13 @@ export class HsLaymanBrowserService {
           ': ' +
           this.hsLanguageService.getTranslation(
             'COMMON.noDataReceived',
-            undefined
+            undefined,
           ),
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
           serviceCalledFrom: 'HsLaymanBrowserService',
-        }
+        },
       );
       return;
     }
@@ -198,11 +198,12 @@ export class HsLaymanBrowserService {
           editable: layer.access_rights.write.some((user) => {
             return [dataset.user, 'EVERYONE'].includes(user);
           }),
+          wfs_wms_status: layer.wfs_wms_status,
         };
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             layer,
-            this.hsMapService.getCurrentProj()
+            this.hsMapService.getCurrentProj(),
           );
           if (extentFeature) {
             tmp.featureId = extentFeature.getId();
@@ -222,7 +223,7 @@ export class HsLaymanBrowserService {
    */
   async fillLayerMetadata(
     endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
   ): Promise<HsAddDataLayerDescriptor> {
     const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
@@ -241,8 +242,8 @@ export class HsLaymanBrowserService {
                 return of(e?.error);
               }
               throw e;
-            })
-          )
+            }),
+          ),
       );
       if (data.code || data.message) {
         if (data.code == 32) {
@@ -253,7 +254,7 @@ export class HsLaymanBrowserService {
         this.hsToastService.createToastPopupMessage(
           data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
           data.detail ?? `${data.code}/${data.sub_code}`,
-          {}
+          {},
         );
         return;
       }
@@ -279,7 +280,7 @@ export class HsLaymanBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
     if (!lyr) {
@@ -315,16 +316,16 @@ export class HsLaymanBrowserService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-          undefined
+          undefined,
         ),
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.urlInvalid',
-          undefined
+          undefined,
         ),
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsLaymanBrowserService',
-        }
+        },
       );
       return false;
     }

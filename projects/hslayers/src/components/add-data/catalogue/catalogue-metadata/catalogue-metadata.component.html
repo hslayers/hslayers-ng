@@ -27,7 +27,7 @@
                 <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
                     (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' |
                     translateHs }}</button>
-                <div *ngIf="selectedDS.type.includes('layman')">
+                <div *ngIf="selectedDS.type.includes('layman') && selectedLayer.wfs_wms_status === 'AVAILABLE'">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
                         <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}

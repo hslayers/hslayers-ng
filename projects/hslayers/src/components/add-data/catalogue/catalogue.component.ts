@@ -40,7 +40,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
     public hsLaymanService: HsLaymanService, //Used in template
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
   ) {
     this.advancedSearch = false;
   }
@@ -59,7 +59,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined
+      undefined,
     );
   }
   openOptionsMenu(): void {
