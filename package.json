@@ -99,7 +99,7 @@
     "@angular/cli": "^16.1.4",
     "@angular/compiler-cli": "^16.1.5",
     "@commitlint/cli": "^17.6.7",
-    "@commitlint/config-conventional": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.7",
     "@compodoc/compodoc": "^1.1.19",
     "@cypress/schematic": "^2.5.0",
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
