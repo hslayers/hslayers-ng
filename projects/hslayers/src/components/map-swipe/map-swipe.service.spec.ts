@@ -4,6 +4,7 @@ import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
+import {HsLayerEditorService} from '../layermanager/editor/layer-editor.service';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
@@ -12,6 +13,7 @@ import {HsMapSwipeService} from './map-swipe.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
+import {of} from 'rxjs';
 
 class HsToastServiceMock {
   constructor() {}
@@ -49,6 +51,12 @@ describe('HsMapSwipeService', () => {
           provide: HsLayerManagerService,
           useValue: HsLayerManagerServiceMock,
         },
+        {
+          provide: HsLayerEditorService,
+          useValue: {
+            layerTitleChange: of({layer: undefined}),
+          },
+        },
       ],
     });
     hsConfig = TestBed.inject(HsConfig);
@@ -56,6 +64,9 @@ describe('HsMapSwipeService', () => {
       mapSwipe: true,
     };
     service = TestBed.inject(HsMapSwipeService);
+    service.removeCompletely = () => {
+      return true;
+    };
   });
 
   it('should be created', () => {

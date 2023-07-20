@@ -39,7 +39,7 @@ export class HslayersAppComponent {
     private httpClient: HttpClient,
     public hsSidebarService: HsSidebarService,
     public hsPanelContainerService: HsPanelContainerService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
   ) {
     /* Create new button in the sidebar */
     this.hsSidebarService.addButton({
@@ -68,15 +68,15 @@ export class HslayersAppComponent {
         const url = this.hsUtilsService.proxify(
           interpolatedSource.createIDWSourceUrl(
             'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
-            extentIn4326
-          )
+            extentIn4326,
+          ),
         );
         try {
           const response: any = await lastValueFrom(
             this.httpClient.get(url).pipe(
               takeUntil(interpolatedSource.cancelUrlRequest),
-              catchError(async (e) => {})
-            )
+              catchError(async (e) => {}),
+            ),
           );
           return interpolatedSource.parseFeatures(response, projection);
         } catch (error) {}
@@ -439,217 +439,217 @@ export class HslayersAppComponent {
       status_manager_url: 'http://localhost:8086',
       popUpDisplay: 'hover',
       errorToastDuration: 1000,
-      // default_layers: [
-      //   new Tile({
-      //     source: new OSM(),
-      //     visible: true,
-      //     properties: {
-      //       title: 'OpenStreet Map',
-      //       base: true,
-      //       removable: false,
-      //     },
-      //   }),
-      //   new VectorLayer({
-      //     properties: {
-      //       title: 'POIs from SPOI in Italy',
-      //       cluster: true,
-      //       editor: {editable: false},
-      //       editable: false,
-      //     },
-      //     source: new SparqlJson({
-      //       geomAttribute: '?geom',
-      //       endpointUrl: 'https://www.foodie-cloud.org/sparql',
-      //       query: `SELECT ?s ?p ?o ?geom
-      //           FROM <http://www.sdi4apps.eu/poi.rdf>
-      //           WHERE {
-      //             ?s <http://www.opengis.net/ont/geosparql#asWKT> ?geom.
-      //             ?s geo:sfWithin <http://www.geonames.org/3175395>.
-      //             FILTER(isBlank(?geom) = false).
-      //             <extent> ?s ?p ?o.
-      //           } ORDER BY ?s`,
-      //       optimization: 'virtuoso',
-      //       projection: 'EPSG:3857',
-      //     }),
-      //     minZoom: 12,
-      //     visible: false,
-      //   }),
-      //   new VectorLayer({
-      //     properties: {
-      //       title: 'Cafés from SPOI (world-wide)',
-      //       cluster: true,
-      //       editor: {editable: false},
-      //       editable: false,
-      //     },
-      //     source: new SPOI({
-      //       category: 'cafe',
-      //       projection: 'EPSG:3857',
-      //     }),
-      //     style: new Style({
-      //       image: new Circle({
-      //         fill: new Fill({
-      //           color: 'rgba(255, 204, 102, 0.7)',
-      //         }),
-      //         stroke: new Stroke({
-      //           color: 'rgb(230, 46, 0)',
-      //           width: 1,
-      //         }),
-      //         radius: 5,
-      //       }),
-      //     }),
-      //     minZoom: 11,
-      //     visible: false,
-      //   }),
-      //   new VectorLayer({
-      //     visible: true,
-      //     properties: {
-      //       title: 'Clusters without SLD',
-      //       synchronize: false,
-      //       cluster: true,
-      //       inlineLegend: true,
-      //       popUp: {
-      //         attributes: ['name', 'population'],
-      //       },
-      //       editor: {editable: false},
-      //       path: 'User generated',
-      //     },
-      //     style: new Style({
-      //       image: new Circle({
-      //         fill: new Fill({
-      //           color: 'rgba(0, 157, 87, 0.5)',
-      //         }),
-      //         stroke: new Stroke({
-      //           color: 'rgb(0, 157, 87)',
-      //           width: 2,
-      //         }),
-      //         radius: 5,
-      //       }),
-      //     }),
-      //     source: new VectorSource({features}),
-      //   }),
-      //   new VectorLayer({
-      //     visible: true,
-      //     properties: {
-      //       title: 'Polygons',
-      //       synchronize: false,
-      //       cluster: false,
-      //       inlineLegend: true,
-      //       popUp: {
-      //         attributes: ['name'],
-      //         widgets: ['layer-name', 'clear-layer'],
-      //       },
-      //       domFeatureLinks: [
-      //         {
-      //           domSelector: '#poly1',
-      //           feature: 'poly1',
-      //           event: 'mouseover',
-      //           actions: ['zoomToExtent', 'select'],
-      //         },
-      //         {
-      //           domSelector: '#poly2',
-      //           feature: 'poly2',
-      //           event: 'mouseover',
-      //           actions: ['zoomToExtent', 'showPopup'],
-      //         },
-      //       ],
-      //       editor: {
-      //         editable: true,
-      //         defaultAttributes: {
-      //           name: 'New polygon',
-      //           description: 'none',
-      //         },
-      //       },
-      //       sld: polygonSld,
-      //       path: 'User generated',
-      //     },
-      //     source: new VectorSource({
-      //       features: new GeoJSON().readFeatures(geojsonObject),
-      //     }),
-      //   }),
-      //   new VectorLayer({
-      //     visible: true,
-      //     properties: {
-      //       title: 'Polygons with display f-n',
-      //       synchronize: false,
-      //       cluster: false,
-      //       inlineLegend: true,
-      //       popUp: {
-      //         attributes: ['name'],
-      //         widgets: ['layer-name', 'clear-layer'], //Will be ignored due to display function
-      //         displayFunction: function (feature) {
-      //           return `<a>${feature.get(
-      //             'name'
-      //           )} with population of ${feature.get('population')}</a>`;
-      //         },
-      //       },
-      //       editor: {
-      //         editable: true,
-      //         defaultAttributes: {
-      //           name: 'New polygon',
-      //           description: 'none',
-      //         },
-      //       },
-      //       sld: polygonSld,
-      //       path: 'User generated',
-      //     },
-      //     source: new VectorSource({
-      //       features: new GeoJSON().readFeatures(geojsonObject),
-      //     }),
-      //   }),
-      //   polygons,
-      //   points,
-      //   new Tile({
-      //     visible: false,
-      //     properties: {
-      //       title: 'Latvian municipalities (parent layer)',
-      //       queryFilter: (map, layer, pixel) => {
-      //         return true;
-      //       },
-      //     },
-      //     source: new TileWMS({
-      //       url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
-      //       params: {
-      //         LAYERS: 'publicwfs:LV_admin_vienibas',
-      //         INFO_FORMAT: undefined,
-      //         FORMAT: 'image/png; mode=8bit',
-      //       },
-      //       crossOrigin: 'anonymous',
-      //     }),
-      //   }),
-      //   new Tile({
-      //     visible: false,
-      //     properties: {
-      //       title: 'Latvian municipalities (1 sub-layer)',
-      //       sublayers: 'publicwfs:arisparish',
-      //     },
-      //     source: new TileWMS({
-      //       url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
-      //       params: {
-      //         LAYERS: 'publicwfs:LV_admin_vienibas',
-      //         INFO_FORMAT: undefined,
-      //         FORMAT: 'image/png; mode=8bit',
-      //       },
-      //       crossOrigin: 'anonymous',
-      //     }),
-      //   }),
-      //   new Tile({
-      //     visible: false,
-      //     properties: {
-      //       title: 'EVI',
-      //     },
-      //     source: new TileWMS({
-      //       url: 'https://eo.lesprojekt.cz/geoserver/nemecek/wms',
-      //       params: {
-      //         LAYERS: 'EVI',
-      //         INFO_FORMAT: undefined,
-      //         FORMAT: 'image/png; mode=8bit',
-      //       },
-      //       crossOrigin: 'anonymous',
-      //     }),
-      //   }),
-      //   opticalMap,
-      //   idwLayer,
-      //   idwVectorLayer,
-      // ],
+      default_layers: [
+        new Tile({
+          source: new OSM(),
+          visible: true,
+          properties: {
+            title: 'OpenStreet Map',
+            base: true,
+            removable: false,
+          },
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'POIs from SPOI in Italy',
+            cluster: true,
+            editor: {editable: false},
+            editable: false,
+          },
+          source: new SparqlJson({
+            geomAttribute: '?geom',
+            endpointUrl: 'https://www.foodie-cloud.org/sparql',
+            query: `SELECT ?s ?p ?o ?geom
+                FROM <http://www.sdi4apps.eu/poi.rdf>
+                WHERE {
+                  ?s <http://www.opengis.net/ont/geosparql#asWKT> ?geom.
+                  ?s geo:sfWithin <http://www.geonames.org/3175395>.
+                  FILTER(isBlank(?geom) = false).
+                  <extent> ?s ?p ?o.
+                } ORDER BY ?s`,
+            optimization: 'virtuoso',
+            projection: 'EPSG:3857',
+          }),
+          minZoom: 12,
+          visible: false,
+        }),
+        new VectorLayer({
+          properties: {
+            title: 'Cafés from SPOI (world-wide)',
+            cluster: true,
+            editor: {editable: false},
+            editable: false,
+          },
+          source: new SPOI({
+            category: 'cafe',
+            projection: 'EPSG:3857',
+          }),
+          style: new Style({
+            image: new Circle({
+              fill: new Fill({
+                color: 'rgba(255, 204, 102, 0.7)',
+              }),
+              stroke: new Stroke({
+                color: 'rgb(230, 46, 0)',
+                width: 1,
+              }),
+              radius: 5,
+            }),
+          }),
+          minZoom: 11,
+          visible: false,
+        }),
+        new VectorLayer({
+          visible: true,
+          properties: {
+            title: 'Clusters without SLD',
+            synchronize: false,
+            cluster: true,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name', 'population'],
+            },
+            editor: {editable: false},
+            path: 'User generated',
+          },
+          style: new Style({
+            image: new Circle({
+              fill: new Fill({
+                color: 'rgba(0, 157, 87, 0.5)',
+              }),
+              stroke: new Stroke({
+                color: 'rgb(0, 157, 87)',
+                width: 2,
+              }),
+              radius: 5,
+            }),
+          }),
+          source: new VectorSource({features}),
+        }),
+        new VectorLayer({
+          visible: true,
+          properties: {
+            title: 'Polygons',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'],
+            },
+            domFeatureLinks: [
+              {
+                domSelector: '#poly1',
+                feature: 'poly1',
+                event: 'mouseover',
+                actions: ['zoomToExtent', 'select'],
+              },
+              {
+                domSelector: '#poly2',
+                feature: 'poly2',
+                event: 'mouseover',
+                actions: ['zoomToExtent', 'showPopup'],
+              },
+            ],
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
+              },
+            },
+            sld: polygonSld,
+            path: 'User generated',
+          },
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
+          }),
+        }),
+        new VectorLayer({
+          visible: true,
+          properties: {
+            title: 'Polygons with display f-n',
+            synchronize: false,
+            cluster: false,
+            inlineLegend: true,
+            popUp: {
+              attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'], //Will be ignored due to display function
+              displayFunction: function (feature) {
+                return `<a>${feature.get(
+                  'name',
+                )} with population of ${feature.get('population')}</a>`;
+              },
+            },
+            editor: {
+              editable: true,
+              defaultAttributes: {
+                name: 'New polygon',
+                description: 'none',
+              },
+            },
+            sld: polygonSld,
+            path: 'User generated',
+          },
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
+          }),
+        }),
+        polygons,
+        points,
+        new Tile({
+          visible: false,
+          properties: {
+            title: 'Latvian municipalities (parent layer)',
+            queryFilter: (map, layer, pixel) => {
+              return true;
+            },
+          },
+          source: new TileWMS({
+            url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
+            params: {
+              LAYERS: 'publicwfs:LV_admin_vienibas',
+              INFO_FORMAT: undefined,
+              FORMAT: 'image/png; mode=8bit',
+            },
+            crossOrigin: 'anonymous',
+          }),
+        }),
+        new Tile({
+          visible: false,
+          properties: {
+            title: 'Latvian municipalities (1 sub-layer)',
+            sublayers: 'publicwfs:arisparish',
+          },
+          source: new TileWMS({
+            url: 'https://lvmgeoserver.lvm.lv/geoserver/ows',
+            params: {
+              LAYERS: 'publicwfs:LV_admin_vienibas',
+              INFO_FORMAT: undefined,
+              FORMAT: 'image/png; mode=8bit',
+            },
+            crossOrigin: 'anonymous',
+          }),
+        }),
+        new Tile({
+          visible: false,
+          properties: {
+            title: 'EVI',
+          },
+          source: new TileWMS({
+            url: 'https://eo.lesprojekt.cz/geoserver/nemecek/wms',
+            params: {
+              LAYERS: 'EVI',
+              INFO_FORMAT: undefined,
+              FORMAT: 'image/png; mode=8bit',
+            },
+            crossOrigin: 'anonymous',
+          }),
+        }),
+        opticalMap,
+        idwLayer,
+        idwVectorLayer,
+      ],
       timeDisplayFormat: 'dd.MM.yyyy.',
       translationOverrides: {
         lv: {
@@ -673,7 +673,7 @@ export class HslayersAppComponent {
     }
     this.hsQueryPopupWidgetContainerService.create(
       PopupWidgetComponent,
-      undefined
+      undefined,
     );
 
     //Simulating ajax

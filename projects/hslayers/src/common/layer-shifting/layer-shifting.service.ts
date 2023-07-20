@@ -25,7 +25,7 @@ export class HsLayerShiftingService {
     public hsMapService: HsMapService,
     public hsLayerManagerService: HsLayerManagerService,
     public hsUtilsService: HsUtilsService,
-    public hsEventBusService: HsEventBusService
+    public hsEventBusService: HsEventBusService,
   ) {}
 
   /**
@@ -35,7 +35,7 @@ export class HsLayerShiftingService {
    */
   private layerFilter() {
     return this.hsLayerManagerService.data.layers.filter(
-      (l) => l.showInLayerManager ?? true
+      (l) => l.showInLayerManager ?? true,
     );
   }
 
@@ -51,7 +51,6 @@ export class HsLayerShiftingService {
 
   /**
    * Copies layers from Layermanager layer list for the physical layer list
-   
    */
   fillLayers(): void {
     if (!this.layerFilter()) {
@@ -60,7 +59,7 @@ export class HsLayerShiftingService {
     this.layersCopy = this.hsLayerManagerService.sortLayersByZ(
       this.layerFilter().map((l) => {
         return {title: l.title, layer: l.layer};
-      })
+      }),
     );
   }
 
@@ -73,7 +72,7 @@ export class HsLayerShiftingService {
 
   moveTo(
     layer: LayerListItem | Layer<Source>,
-    target: number | LayerListItem | Layer<Source>
+    target: number | LayerListItem | Layer<Source>,
   ): void {
     if (this.hsUtilsService.instOf(target, LayerListItem)) {
       //Wrapped layer provided
@@ -92,7 +91,7 @@ export class HsLayerShiftingService {
    */
   private moveAndShift(
     providedLayer: Layer<Source>,
-    preferredZIndex: number
+    preferredZIndex: number,
   ): void {
     if (providedLayer === undefined) {
       return;
@@ -102,7 +101,7 @@ export class HsLayerShiftingService {
       const indexTo = preferredZIndex;
       const incrementValue = indexTo > indexFrom ? -1 : 1;
       for (const lyr of this.getMapLayers().filter(
-        (lyr) => lyr != providedLayer
+        (lyr) => lyr != providedLayer,
       )) {
         const currentZIndex = lyr.getZIndex();
         if (
@@ -123,7 +122,7 @@ export class HsLayerShiftingService {
    * @returns Returns ol layer
    */
   private getOlLayer(
-    providedLayer: LayerListItem | Layer<Source>
+    providedLayer: LayerListItem | Layer<Source>,
   ): Layer<Source> {
     if (this.hsUtilsService.instOf(providedLayer, Layer)) {
       return providedLayer as Layer<Source>;
