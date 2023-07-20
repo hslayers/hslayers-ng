@@ -40,7 +40,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsToastService: HsToastService
+    public hsToastService: HsToastService,
   ) {
     this.setDataToDefault();
   }
@@ -68,7 +68,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -82,7 +82,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.data.layers,
-          'arcgis'
+          'arcgis',
         );
         return this.getLayers();
       }
@@ -117,11 +117,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         ? [caps.spatialReference.latestWkid.toString()]
         : [];
       this.data.services = caps.services?.filter(
-        (s: Service) => !this.isGpService(s.type)
+        (s: Service) => !this.isGpService(s.type),
       );
       this.data.layers = caps.layers;
       this.hsAddDataUrlService.searchForChecked(
-        this.data.layers ?? this.data.services
+        this.data.layers ?? this.data.services,
       );
       this.data.srs = (() => {
         for (const srs of this.data.srss) {
@@ -133,7 +133,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       })();
       this.data.extent = caps.fullExtent;
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs
+        this.data.srs,
       );
       this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'PNG32',
@@ -198,7 +198,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async getLayer(
     layers: ArcGISRestResponseLayer[],
-    options: addLayerOptions
+    options: addLayerOptions,
   ): Promise<Layer<Source>> {
     const attributions = [];
     const dimensions = {};
@@ -212,7 +212,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         {
           FORMAT: options.imageFormat,
         },
-        {}
+        {},
       ),
       crossOrigin: 'anonymous',
     };
@@ -258,20 +258,27 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async calcAllLayersExtent(
     layers: ArcGISRestResponseLayer[],
-    options: addLayerOptions
+    options: addLayerOptions,
   ) {
     try {
       const layersCaps = await Promise.all(
         layers.map(async (l) => {
           return await this.hsArcgisGetCapabilitiesService.request(
-            `${this.data.get_map_url}/${l.id}`
+            `${this.data.get_map_url}/${l.id}`,
           );
-        })
+        }),
       );
-      const layersExtents = layersCaps.map((l) => {
-        const extent = l.response.extent;
-        return this.transformLayerExtent(extent, this.data);
-      });
+      const layersExtents = layersCaps
+        .map((l) => {
+          if (
+            Object.values(l.response.extent)
+              .filter((v) => !(v instanceof Object))
+              .every((v: any) => parseFloat(v))
+          ) {
+            return this.transformLayerExtent(l.response.extent, this.data);
+          }
+        })
+        .filter((v) => v);
       return this.hsAddDataUrlService.calcCombinedExtent(layersExtents);
     } catch (error) {
       if (error.message.includes('getCode')) {
@@ -281,7 +288,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           {
             serviceCalledFrom: 'HsUrlArcGisService',
             details: [`${options.layerTitle}`, `EPSG: ${this.data.srs}`],
-          }
+          },
         );
       } else {
         this.hsToastService.createToastPopupMessage(
@@ -290,7 +297,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           {
             serviceCalledFrom: 'HsUrlArcGisService',
             toastStyleClasses: 'bg-warning text-white',
-          }
+          },
         );
         return this.transformLayerExtent(this.data.extent, this.data);
       }
@@ -322,7 +329,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       (urlRest.endsWith('/') ? urlRest : urlRest.concat('/')) +
       ['services', service.name, service.type].join('/');
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
-      this.data.get_map_url
+      this.data.get_map_url,
     );
     this.data.serviceExpanded = true;
     await this.listLayerFromCapabilities(wrapper);
@@ -334,7 +341,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   async collapseServices() {
     this.data.get_map_url = this.hsAddDataCommonService.url.toLowerCase();
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
-      this.data.get_map_url
+      this.data.get_map_url,
     );
     this.data.serviceExpanded = false;
     await this.listLayerFromCapabilities(wrapper);
@@ -370,12 +377,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   private transformLayerExtent(
     extent: ArcGISResResponseLayerExtent,
-    data: urlDataObject
+    data: urlDataObject,
   ): number[] {
     return transformExtent(
       [extent.xmin, extent.ymin, extent.xmax, extent.ymax],
       'EPSG:' + data.srs,
-      data.map_projection
+      data.map_projection,
     );
   }
 }
