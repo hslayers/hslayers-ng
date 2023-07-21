@@ -227,7 +227,14 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       ? new TileArcGISRest(sourceParams)
       : new ImageArcGISRest(sourceParams);
 
-    this.data.extent = await this.calcAllLayersExtent(layers, options);
+    /**
+     * Use provided extent when displaying all service layers
+     * calculate extent otherwise
+     */
+    this.data.extent =
+      this.data.layers.length === layers.length
+        ? this.transformLayerExtent(this.data.extent, this.data)
+        : await this.calcAllLayersExtent(layers, options);
 
     const layerParams = {
       properties: {
