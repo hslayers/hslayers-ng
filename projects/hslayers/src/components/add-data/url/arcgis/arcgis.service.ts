@@ -271,9 +271,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       const layersExtents = layersCaps
         .map((l) => {
           if (
-            Object.values(l.response.extent)
-              .filter((v) => !(v instanceof Object))
-              .every((v: any) => parseFloat(v))
+            Object.values(l.response.extent).filter((v: any) => !isNaN(v))
+              .length > 0
           ) {
             return this.transformLayerExtent(l.response.extent, this.data);
           }
