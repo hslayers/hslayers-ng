@@ -228,11 +228,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       : new ImageArcGISRest(sourceParams);
 
     /**
-     * Use provided extent when displaying all service layers
+     * Use provided extent when displaying more than 3 layers
      * calculate extent otherwise
      */
     this.data.extent =
-      this.data.layers.length === layers.length
+      layers.length > 3
         ? this.transformLayerExtent(this.data.extent, this.data)
         : await this.calcAllLayersExtent(layers, options);
 
