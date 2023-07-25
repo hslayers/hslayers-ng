@@ -658,6 +658,9 @@ export class HslayersAppComponent {
               'Latvijas novadi (1 apakšslānis)',
           },
         },
+        cs: {
+          'My Cool Panel': 'Můj úžasný panel',
+        },
       },
     });
 

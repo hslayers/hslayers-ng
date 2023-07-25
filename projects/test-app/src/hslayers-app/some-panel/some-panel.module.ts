@@ -2,8 +2,8 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
 
+import {HsLanguageModule} from 'hslayers-ng/components/language/language.module';
 import {HsPanelHelpersModule} from 'hslayers-ng/components/layout/panels/panel-helpers.module';
 
 import {SomeComponent} from './some-panel.component';
@@ -13,9 +13,9 @@ import {SomeComponent} from './some-panel.component';
   imports: [
     CommonModule,
     FormsModule,
+    HsLanguageModule,
     HsPanelHelpersModule,
     NgbModule,
-    TranslateModule,
   ],
   exports: [],
   declarations: [SomeComponent],
