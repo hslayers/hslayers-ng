@@ -1,18 +1,18 @@
-import { ElementRef, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs';
+import {ElementRef, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import { HsLanguageService } from 'hslayers-ng';
-import { HsLogService } from 'hslayers-ng';
-import { HsUtilsService } from 'hslayers-ng';
-import { default as vegaEmbed } from 'vega-embed';
+import {HsLanguageService} from 'hslayers-ng';
+import {HsLogService} from 'hslayers-ng';
+import {HsUtilsService} from 'hslayers-ng';
+import {default as vegaEmbed} from 'vega-embed';
 
-import { Aggregate } from './types/aggregate.type';
-import { HsSensorUnit } from './sensor-unit.class';
-import { Interval } from './types/interval.type';
-import { SensLogEndpoint } from './types/senslog-endpoint.type';
-import { BehaviorSubject } from 'rxjs';
+import {Aggregate} from './types/aggregate.type';
+import {HsSensorUnit} from './sensor-unit.class';
+import {Interval} from './types/interval.type';
+import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
 
@@ -35,11 +35,11 @@ export class HsSensorsUnitDialogService {
   dialogElement: ElementRef;
   aggregations: Aggregates = {};
   intervals: Interval[] = [
-    { name: '1H', amount: 1, unit: 'hours' },
-    { name: '1D', amount: 1, unit: 'days' },
-    { name: '1W', amount: 1, unit: 'weeks' },
-    { name: '1M', amount: 1, unit: 'months' },
-    { name: '6M', amount: 6, unit: 'months' },
+    {name: '1H', amount: 1, unit: 'hours'},
+    {name: '1D', amount: 1, unit: 'days'},
+    {name: '1W', amount: 1, unit: 'weeks'},
+    {name: '1M', amount: 1, unit: 'months'},
+    {name: '6M', amount: 6, unit: 'months'},
   ];
 
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
@@ -65,7 +65,6 @@ export class HsSensorsUnitDialogService {
   /**
    * Select sensor from the list
    * @param sensor - Sensor selected
-   
    */
   selectSensor(sensor: any) {
     this.sensorsSelected.forEach((s) => (s.checked = false));
@@ -76,7 +75,6 @@ export class HsSensorsUnitDialogService {
   /**
    * Toggle selected sensor
    * @param sensor - Sensor selected
-   
    */
   toggleSensor(sensor) {
     if (sensor.checked) {
@@ -132,7 +130,7 @@ export class HsSensorsUnitDialogService {
    * Get human readable time for interval value
    * @param interval - Interval selected
    */
-  getTimeForInterval(interval): { from_time; to_time } {
+  getTimeForInterval(interval): {from_time; to_time} {
     if (!interval.amount && !interval.unit) {
       return this.getTimeFromCalendarDate(interval);
     } else {
@@ -168,9 +166,9 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
- * Modify observation sensors sensor_id to match the one used throughout the app
- * eg. unit_id_sensor_id which makes every sensor unit specific
- */
+   * Modify observation sensors sensor_id to match the one used throughout the app
+   * eg. unit_id_sensor_id which makes every sensor unit specific
+   */
   private modifyObservationHistory(response: Array<any>) {
     return response.map((observation) => {
       observation.sensors.forEach((s) => {
@@ -196,7 +194,6 @@ export class HsSensorsUnitDialogService {
    * from current time, like 6 months before now
    * Gets list of observations in a given time frame for all
    * the sensors on a sensor unit (meteostation).
-   
    * @returns Promise which resolves when observation history data is received
    */
   getObservationHistory(unit, interval): Promise<boolean> {
@@ -325,10 +322,10 @@ export class HsSensorsUnitDialogService {
           },
           'field': 'value',
           'type': 'quantitative',
-          'scale': { 'zero': false, 'nice': 5 },
+          'scale': {'zero': false, 'nice': 5},
         },
       },
-      'mark': { 'type': 'line', 'tooltip': { 'content': 'data' } },
+      'mark': {'type': 'line', 'tooltip': {'content': 'data'}},
     };
     if (multi) {
       layer['transform'] = [
@@ -447,8 +444,8 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
- * Reset aggregations to default
- */
+   * Reset aggregations to default
+   */
   resetAggregations() {
     this.aggregations = {};
   }
@@ -456,7 +453,6 @@ export class HsSensorsUnitDialogService {
   /**
    * @param unit - Unit description
    * @param observations - Observations selected
-   
    * Calculate aggregates for selected unit
    */
   private calculateAggregates(unit: any, observations: any): Aggregate[] {
@@ -473,7 +469,7 @@ export class HsSensorsUnitDialogService {
         const filteredObs = observations
           .filter((obs) => obs.sensor_id == sensor.sensor_id)
           .map((obs) => {
-            return { value: obs.value, time: obs.time_stamp };
+            return {value: obs.value, time: obs.time_stamp};
           });
         tmp.max = Math.max(
           ...filteredObs.map((o) => {
@@ -494,8 +490,8 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
- * SENSORS module translations helper
- */
+   * SENSORS module translations helper
+   */
   translate(text: string, group?: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       'SENSORS' + (group != undefined ? '.' + group : ''),
