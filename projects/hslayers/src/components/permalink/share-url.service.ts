@@ -113,13 +113,12 @@ export class HsShareUrlService {
 
   /**
    * Get HSL server share service endpoint's url
-   
    */
   endpointUrl(): string {
     let hostName = location.protocol + '//' + location.host;
 
-    if (this.hsConfig.hostname?.share_service?.url) {
-      return this.hsConfig.hostname.share_service.url;
+    if (this.hsConfig.hostname?.shareService?.url) {
+      return this.hsConfig.hostname.shareService.url;
     }
     if (this.hsConfig.hostname?.user?.url) {
       hostName = this.hsConfig.hostname.user.url;
@@ -137,8 +136,7 @@ export class HsShareUrlService {
 
   /**
    * Updates permalink composition. Used without data prop to update extent of the composition
-   
-   * @param data - Map compositon data
+   * @param data - Map composition data
    * @returns
    */
   async updatePermalinkComposition(data?: MapComposition): Promise<any> {
