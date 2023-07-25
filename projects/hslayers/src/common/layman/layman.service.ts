@@ -36,10 +36,9 @@ export class HsCommonLaymanService {
    *  Monitor if authorization state has changed and
    * return true and broadcast authChange event if so .
    * @param endpoint - Endpoint definition - usually Layman
-   
    * @returns Promise<boolean> true if authorization state changed (user logged in or out)
    */
-  async detectAuthChange(endpoint): Promise<boolean> {
+  async detectAuthChange(endpoint: HsEndpoint): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
       const res: CurrentUserResponse = await lastValueFrom(
@@ -71,8 +70,8 @@ export class HsCommonLaymanService {
     }
   }
 
-  async getCurrentUserIfNeeded(endpoint): Promise<void> {
-    if (endpoint.user === undefined) {
+  async getCurrentUserIfNeeded(endpoint: HsEndpoint): Promise<void> {
+    if (endpoint.type.includes('layman') && endpoint.user === undefined) {
       await this.detectAuthChange(endpoint);
     }
   }
