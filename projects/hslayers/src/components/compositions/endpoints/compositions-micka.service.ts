@@ -27,11 +27,10 @@ export class HsCompositionsMickaService {
   ) {}
 
   /**
-   * Get Micka compositions query url
+   * Get Micka compositions query URL
    * @param endpoint - Micka endpoint selected
    * @param params - HTTP request query params
    * @param bbox - Bounding box
-   
    */
   getCompositionsQueryUrl(endpoint, params, bbox): string {
     const query = params.query;
@@ -91,6 +90,7 @@ export class HsCompositionsMickaService {
     tmp = this.hsUtilsService.proxify(tmp);
     return tmp;
   }
+
   /**
    * Middleware function before returning compositions list to the rest of the app
    * @param endpoint - Micka endpoint selected
@@ -147,7 +147,6 @@ export class HsCompositionsMickaService {
    * @param params - HTTP request query params
    * @param extentFeatureCreated - Function for creating extent vector feature that will reference all listed composition from the response
    * @param bbox - Bounding box
-   
    */
   loadList(
     endpoint: HsEndpoint,
@@ -197,7 +196,6 @@ export class HsCompositionsMickaService {
   /**
    * Reset Micka composition paging values
    * @param endpoint - Micka endpoint selected
-   
    */
   resetCompositionCounter(endpoint) {
     endpoint.compositionsPaging.start = 0;
@@ -229,7 +227,6 @@ export class HsCompositionsMickaService {
   /**
    * Get information about the selected composition
    * @param composition - Composition selected
-   
    */
   async getInfo(composition: HsMapCompositionDescriptor): Promise<any> {
     const compLinks = composition.link || composition.links;
@@ -267,8 +264,9 @@ export class HsCompositionsMickaService {
       );
     }
   }
+
   /**
-   * Get composition urls
+   * Get composition URLs
    * @param compData - Composition data
    */
   getCompositionUrls(compData: any): string | Array<string> {
@@ -283,6 +281,11 @@ export class HsCompositionsMickaService {
     );
   }
 
+  /**
+   * Method is not implemented as it is not desired to delete Micka records from HSLayers application.
+   * The deletion shall be done automatically by Layman or, in rare scenarios, manually via Micka UI.
+   * See https://github.com/hslayers/hslayers-ng/pull/4014
+   */
   delete(e: HsEndpoint, c: HsMapCompositionDescriptor) {
     console.warn('Delete method for Micka compositions not implemented', e, c);
   }
