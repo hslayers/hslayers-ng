@@ -85,7 +85,7 @@ export class HsConfigObject {
   advancedForm?: boolean;
   project_name?: string;
   hostname?: {
-    share_service?: {
+    shareService?: {
       url: string;
     };
     user?: {
