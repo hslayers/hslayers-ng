@@ -4,9 +4,9 @@
             layer.abstract}}</a>
         <!-- STATUS BADGE -->
         <span class="badge rounded-pill w-auto" *ngIf="!layerAvailable" [ngClass]="{
-            'bg-danger':layer.wfs_wms_status === 'NOT_AVAILABLE',
-            'bg-warning':layer.wfs_wms_status === 'PREPARING'
-        }"> {{layer.wfs_wms_status | translateHs:{ 'module' :'COMMON'} }}</span>
+            'bg-danger':layer.wfsWmsStatus === 'NOT_AVAILABLE',
+            'bg-warning':layer.wfsWmsStatus === 'PREPARING'
+        }"> {{layer.wfsWmsStatus | translateHs:{ 'module' :'COMMON'} }}</span>
     </div>
     <div class="hs-catalogue-item-body d-flex flex-column w-100 justify-content-around mt-2"
         *ngIf="hsAddDataCatalogueService.selectedLayer?.id === layer.id">
