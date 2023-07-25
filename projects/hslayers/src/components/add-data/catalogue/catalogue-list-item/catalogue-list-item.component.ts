@@ -32,7 +32,7 @@ export class HsCatalogueListItemComponent implements OnInit {
   whatToAddTypes: string[];
   loadingInfo = false;
 
-  //** Layers wfs_wms_status is AVAIALABLE */
+  //** Layers wfsWmsStatus is AVAILABLE  */
   layerAvailable: boolean;
   constructor(
     public hsConfig: HsConfig, //used in template
@@ -48,7 +48,7 @@ export class HsCatalogueListItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.layerAvailable = this.layer.wfs_wms_status === 'AVAILABLE';
+    this.layerAvailable = this.layer.wfsWmsStatus === 'AVAILABLE';
   }
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
