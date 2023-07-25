@@ -29,7 +29,7 @@ export class HsCoreService {
     public HsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
     private log: HsLogService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
   ) {
     this.HsEventBusService.layoutLoads.subscribe(({element, innerElement}) => {
       // Initialization function for HSLayers elements and their sizes.
@@ -105,7 +105,7 @@ export class HsCoreService {
         },
         300,
         false,
-        this
+        this,
       )();
     });
   }
@@ -139,25 +139,6 @@ export class HsCoreService {
       height: map.offsetHeight,
     };
     this.HsEventBusService.sizeChanges.next(neededSize);
-  }
-
-  /**
-   * FIXME: statusmanager
-   * Do authorization check of User, currently authorization is possible only in connection with Liferay app
-   * @public
-   * @returns Check result - true for authorized user
-   */
-  isAuthorized(): boolean {
-    if (window['getLRUser'] === undefined && !this.missingLRFunctionsWarned) {
-      this.log.warn(
-        'window.getLRUser function needs to be defined, which usually comes from Liferay.'
-      );
-      this.missingLRFunctionsWarned = true;
-    }
-    if (window['getLRUser'] && window['getLRUser']() != 'guest') {
-      return true;
-    }
-    return false;
   }
 
   /**
