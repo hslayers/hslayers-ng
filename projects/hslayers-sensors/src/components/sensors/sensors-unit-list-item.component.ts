@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
-import { HsDialogContainerService } from 'hslayers-ng';
+import {HsDialogContainerService} from 'hslayers-ng';
 
-import { HsSensorUnit } from './sensor-unit.class';
-import { HsSensorsService } from './sensors.service';
-import { HsSensorsUnitDialogComponent } from './sensors-unit-dialog.component';
-import { HsSensorsUnitDialogService } from './unit-dialog.service';
+import {HsSensorUnit} from './sensor-unit.class';
+import {HsSensorsService} from './sensors.service';
+import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
+import {HsSensorsUnitDialogService} from './unit-dialog.service';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
@@ -20,7 +20,7 @@ export class HsSensorsUnitListItemComponent {
     private hsSensorsService: HsSensorsService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService
-  ) { }
+  ) {}
 
   /**
    * When unit is clicked, create a dialog window for
@@ -75,7 +75,7 @@ export class HsSensorsUnitListItemComponent {
 
   /**
    * Display sensors unit dialog
-   * @single Controls whether only one unit is supposed to be selected
+   * @param single Controls whether only one unit is supposed to be selected
    */
   generateDialog(single = true): void {
     if (!this.hsSensorsUnitDialogService.unitDialogVisible) {

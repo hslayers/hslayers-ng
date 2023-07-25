@@ -1,33 +1,34 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
-import Feature from 'ol/Feature';
 import dayjs from 'dayjs';
-import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
-import { Geometry, MultiPolygon } from 'ol/geom';
-import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
-import { WKT } from 'ol/format';
-import { getWidth } from 'ol/extent';
+import {Feature} from 'ol';
+import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {Geometry, MultiPolygon} from 'ol/geom';
 import {
   HsConfig,
+  HsDialogContainerService,
+  HsEventBusService,
   HsLanguageService,
+  HsLayoutService,
+  HsMapService,
   HsSidebarService,
+  HsUtilsService,
   getFeatureName,
   getUnitId,
   setFeatureName,
   setUnitId,
 } from 'hslayers-ng';
-import { HsDialogContainerService } from 'hslayers-ng';
-import { HsEventBusService } from 'hslayers-ng';
-import { HsLayoutService } from 'hslayers-ng';
-import { HsMapService } from 'hslayers-ng';
-import { HsSensorUnit } from './sensor-unit.class';
-import { HsSensorsUnitDialogComponent } from './sensors-unit-dialog.component';
-import { HsSensorsUnitDialogService } from './unit-dialog.service';
-import { HsUtilsService } from 'hslayers-ng';
-import { SensLogEndpoint } from './types/senslog-endpoint.type';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+import {WKT} from 'ol/format';
+import {getWidth} from 'ol/extent';
+
+import {HsSensorUnit} from './sensor-unit.class';
+import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
+import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
@@ -70,7 +71,7 @@ export class HsSensorsService {
     }),
   });
 
-  visualizedAttribute = new Subject<{ attribute: string }>();
+  visualizedAttribute = new Subject<{attribute: string}>();
 
   constructor(
     private hsUtilsService: HsUtilsService,
@@ -130,8 +131,8 @@ export class HsSensorsService {
   }
 
   /**
- * Deselect sensor unit and refresh sensors state
- */
+   * Deselect sensor unit and refresh sensors state
+   */
   deselectUnit(unit) {
     this.hsSensorsUnitDialogService.unit = this.hsSensorsUnitDialogService.unit.filter(
       (u) => u.unit_id !== unit.unit_id
@@ -150,7 +151,6 @@ export class HsSensorsService {
 
   /**
    * Set endpoint for sensors service to receive data from senslog
-   
    */
   private setEndpoint() {
     if (this.hsConfig.senslog) {
@@ -168,21 +168,19 @@ export class HsSensorsService {
   /**
    * Select sensor from available sensors
    * @param sensor - Sensor selected
-   
    */
   selectSensor(sensor): void {
     this.hsSensorsUnitDialogService.selectSensor(sensor);
     for (const feature of this.layer.getSource().getFeatures()) {
       feature.set(VISUALIZED_ATTR, sensor.sensor_name);
     }
-    this.visualizedAttribute.next({ attribute: sensor.sensor_name });
+    this.visualizedAttribute.next({attribute: sensor.sensor_name});
     sensor.checked = true;
   }
 
   /**
    * Select unit from available Units
    * @param unit - Unit selected
-   
    */
   selectUnit(unit: HsSensorUnit): void {
     /**
@@ -264,12 +262,12 @@ export class HsSensorsService {
     this.hsMapService
       .getMap()
       .getView()
-      .fit(unit.feature.getGeometry(), { maxZoom: 16 });
+      .fit(unit.feature.getGeometry(), {maxZoom: 16});
   }
 
   /**
- * Close sensor unit dialog
- */
+   * Close sensor unit dialog
+   */
   closeSensorDialog(): void {
     const dialog = this.hsDialogContainerService
       .dialogs.find((d) =>
@@ -281,7 +279,6 @@ export class HsSensorsService {
 
   /**
    * Create layer for displaying sensor data
-   
    */
   createLayer() {
     this.sensorMarkerStyle = [
@@ -332,7 +329,6 @@ export class HsSensorsService {
 
   /**
    * Get list of units from Senslog backend
-   
    */
   getUnits() {
     if (this.layer === null) {
@@ -369,7 +365,7 @@ export class HsSensorsService {
         this.layer.getSource().addFeatures(features);
         this.units.forEach((unit: HsSensorUnit) => {
           unit.sensorTypes = unit.sensors.map((s) => {
-            return { name: s.sensor_type };
+            return {name: s.sensor_type};
           });
           unit.sensors.sort((a, b) => {
             return b.sensor_id - a.sensor_id;
@@ -392,9 +388,9 @@ export class HsSensorsService {
           );
           unit.sensorTypes.map(
             (st) =>
-            (st.sensors = unit.sensors.filter(
-              (s) => s.sensor_type == st.name
-            ))
+              (st.sensors = unit.sensors.filter(
+                (s) => s.sensor_type == st.name
+              ))
           );
         });
         this.units.forEach((unit: HsSensorUnit) => {
@@ -421,25 +417,24 @@ export class HsSensorsService {
       (s) =>
         query.description == '' ||
         s.description.toLowerCase().indexOf(query.description.toLowerCase()) >
-        -1
+          -1
     );
   }
 
   /**
    * Fill observations
-   
    */
   fillLastObservations(): void {
     const url = this.endpoint.senslog2Path
       ? `${this.endpoint.url}/${this.endpoint.senslog2Path}/rest/observation/last`
       : `${this.endpoint.url}/${this.endpoint.senslog1Path}/SensorService`;
     const params = this.endpoint.senslog2Path
-      ? { group_name: this.endpoint.group }
+      ? {group_name: this.endpoint.group}
       : {
-        Operation: 'GetLastObservations',
-        group: this.endpoint.group,
-        user: this.endpoint.user,
-      };
+          Operation: 'GetLastObservations',
+          group: this.endpoint.group,
+          user: this.endpoint.user,
+        };
     this.http
 
       .get(this.hsUtilsService.proxify(url), {
@@ -476,7 +471,6 @@ export class HsSensorsService {
               } else {
                 console.log(`No feature exists for unit ${unit.unit_id}`);
               }
-
               sensor.lastObservationTimestamp = reading.timestamp;
             }
           });
