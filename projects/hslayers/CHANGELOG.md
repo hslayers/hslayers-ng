@@ -1,3 +1,14 @@
+## [11.2.3](https://github.com/hslayers/hslayers-ng/compare/11.2.2...11.2.3) (2023-07-25)
+
+
+### Bug Fixes
+
+* Only request current-user for Layman endpoint ([55fd13e](https://github.com/hslayers/hslayers-ng/commit/55fd13e0cfad45f74c5d6c2bb52b0dcc6b2748f0))
+* **sensors:** Custom interval change ([81f010e](https://github.com/hslayers/hslayers-ng/commit/81f010e290be4fb95e757a9ef5eb58c6a07913f7))
+* **sensors:** Observation fetching and displaying when triggered by timebutton ([3c0906e](https://github.com/hslayers/hslayers-ng/commit/3c0906eaeeb64812ae8bf449445f6d59b8236758))
+
+
+
 ## [11.2.2](https://github.com/hslayers/hslayers-ng/compare/11.2.1...11.2.2) (2023-06-14)
 
 
