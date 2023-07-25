@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {Input} from '@angular/core';
+import {Observable, map} from 'rxjs';
 
 import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
+import {HsEndpoint} from '../endpoints/endpoint.interface';
 import {HsLaymanLoginComponent} from './layman-login.component';
-import {Observable, map} from 'rxjs';
 
 @Component({
   selector: 'hs-layman-current-user',
   templateUrl: './layman-current-user.html',
 })
 export class HsLaymanCurrentUserComponent implements OnInit {
-  @Input() endpoint?;
+  @Input() endpoint?: HsEndpoint;
   monitorTries = 0;
   DEFAULT_TIMER_INTERVAL = 2000;
   MAX_MONITOR_TRIES = 100;
@@ -34,9 +35,9 @@ export class HsLaymanCurrentUserComponent implements OnInit {
     this.inAppLogin = this.HsCommonLaymanService.layman$.pipe(
       map((layman) => {
         if (layman) {
-          //Assign recieved layman endpoint to local variable
+          //Assign received layman endpoint to local variable
           this.endpoint = layman;
-          return this.endpoint.type === 'layman';
+          return this.endpoint?.type === 'layman';
         }
       })
     );
