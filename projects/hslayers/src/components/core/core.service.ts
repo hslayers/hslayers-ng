@@ -62,7 +62,6 @@ export class HsCoreService {
       this.HsMapService.loaded().then(() => {
         this.initSizeListeners();
         setTimeout(() => {
-          this.updateVH();
           this.updateMapSize();
         }, 750);
         this.initCalled = true;
@@ -75,23 +74,6 @@ export class HsCoreService {
   }
 
   /**
-   * Define and change size of CSS custom variable --vh used as reference for hs.app-height
-   * @private
-   */
-  private updateVH() {
-    if (this.HsUtilsService.runningInBrowser()) {
-      const vh = window.innerHeight * 0.01;
-      document.body.style.setProperty('--vh', `${vh}px`);
-
-      if (window.matchMedia('(orientation: portrait)').matches) {
-        document.getElementsByTagName('html')[0].style.height = '100vh';
-        setTimeout(() => {
-          document.getElementsByTagName('html')[0].style.height = '100%';
-        }, 500);
-      }
-    }
-  }
-  /**
    * Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    * @public
    */
@@ -99,7 +81,6 @@ export class HsCoreService {
     window.addEventListener('resize', () => {
       this.HsUtilsService.debounce(
         function () {
-          this.updateVH();
           this.updateMapSize();
           this.HsEventBusService.layoutResizes.next();
         },
