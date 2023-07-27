@@ -47,7 +47,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private HsUtilsService: HsUtilsService,
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService,
-    private hsShareUrlService: HsShareUrlService
+    private hsShareUrlService: HsShareUrlService,
   ) {}
 
   ngOnDestroy(): void {
@@ -66,7 +66,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       const viewport = document.querySelector('meta[name="viewport"]');
       viewport.setAttribute(
         'content',
-        'width=device-width, initial-scale=0.6, maximum-scale=2, user-scalable=no'
+        'width=device-width, initial-scale=0.6, maximum-scale=2, user-scalable=no',
       );
     }
 
@@ -110,8 +110,8 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         },
         50,
         false,
-        this
-      )
+        this,
+      ),
     );
   }
 
@@ -126,7 +126,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     if (getComputedStyle(hsapp).display == 'inline') {
       hsapp.style.display = 'block';
       console.warn(
-        'Main element (<hslayers>) needs display property to be defined...fallback value added'
+        'Main element (<hslayers>) needs display property to be defined...fallback value added',
       );
     }
     //Minimal value expected for clientHeight of hsapp element at the initiation in case of WINDOWED mode
@@ -141,9 +141,9 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       hsapp.style.height = '100%';
       //If its still the same, height is not set on parents nor on hslayers element - we want fullscreen app
       if (hsapp.clientHeight == heightBefore) {
-        hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
+        hsapp.style.height = '100svh';
         console.warn(
-          `Main element (<hslayers>) needs height property to be defined...fallback value added`
+          `Main element (<hslayers>) needs height property to be defined...fallback value added`,
         );
       } else if (hsapp.clientHeight < heightBefore) {
         /**
@@ -151,7 +151,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
          */
         hsapp.style.height = heightBefore;
         console.warn(
-          `Height of the element <hslayers> is lower than recommended value of ${minHeight}px.`
+          `Height of the element <hslayers> is lower than recommended value of ${minHeight}px.`,
         );
       }
     }
@@ -166,7 +166,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
     const contentWrapper = this.HsLayoutService.contentWrapper;
     const panelSpaceWrapper = contentWrapper.querySelector(
-      '.hs-panelspace-wrapper'
+      '.hs-panelspace-wrapper',
     );
     if (panelSpaceWrapper) {
       panelSpaceWrapper.classList.toggle('expanded');

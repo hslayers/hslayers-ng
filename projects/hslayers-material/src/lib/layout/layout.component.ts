@@ -37,7 +37,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
     public HsEventBusService: HsEventBusService,
     // public HsThemeService: HsThemeService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef // private HsUtilsService: HsUtilsService
+    private cdr: ChangeDetectorRef, // private HsUtilsService: HsUtilsService
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
   }
@@ -99,7 +99,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
     //  hsapp.style.height = '100%';
     //  //If its still the same, height is not even set on parents of hslayers element - we want fullscreen app
     //  if (hsapp.clientHeight < minHeight) {
-    //    hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
+    //    hsapp.style.height = '100svh';
     //  }
     //  console.warn(
     //    'Main element (#hs-app) needs height property to be defined...fallback value added'
