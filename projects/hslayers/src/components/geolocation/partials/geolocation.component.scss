@@ -51,4 +51,10 @@
 
 .ol-rotate button:not(.active) {
     background-color: hsla(200, 1%, 53%, 0.7);
+    color: white;
+    opacity: 0.5;
+}
+
+.ol-compass {
+    font-weight: bold;
 }
