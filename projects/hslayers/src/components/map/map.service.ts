@@ -105,7 +105,7 @@ export class HsMapService {
     public hsLanguageService: HsLanguageService,
     private hsQueuesService: HsQueuesService,
     private hsCommonLaymanService: HsCommonLaymanService,
-    private rendererFactory: RendererFactory2
+    private rendererFactory: RendererFactory2,
   ) {}
 
   /**
@@ -116,7 +116,7 @@ export class HsMapService {
    * @returns VectorLayer
    */
   getLayerForFeature(
-    feature: Feature<Geometry>
+    feature: Feature<Geometry>,
   ): VectorLayer<VectorSource<Geometry>> | VectorLayer<Cluster> {
     if (typeof feature.getId() == 'undefined') {
       feature.setId(this.hsUtilsService.generateUuid());
@@ -157,12 +157,12 @@ export class HsMapService {
    */
   refineLayerSearch(
     array: VectorAndSource[],
-    feature: Feature<Geometry>
+    feature: Feature<Geometry>,
   ): VectorLayer<VectorSource<Geometry>> {
     array = array.filter((entry) => entry.layer.getVisible());
     if (array.length > 1) {
       return array.find(
-        (entry) => this.findFeatureByInst(entry, feature) !== undefined
+        (entry) => this.findFeatureByInst(entry, feature) !== undefined,
       )?.layer;
     } else if (array.length == 1) {
       return array[0].layer;
@@ -177,7 +177,7 @@ export class HsMapService {
    */
   findFeatureByInst(
     obj: VectorAndSource,
-    feature: Feature<Geometry>
+    feature: Feature<Geometry>,
   ): Feature<Geometry> {
     return obj.source.getFeatures().find((layer_feature) => {
       return layer_feature === feature;
@@ -256,7 +256,7 @@ export class HsMapService {
       (e) => {
         this.setDefaultView(e);
       },
-      false
+      false,
     );
 
     const icon = rendered.createElement('i');
@@ -272,8 +272,8 @@ export class HsMapService {
       'title',
       await this.hsLanguageService.awaitTranslation(
         'MAP.zoomToInitialWindow',
-        undefined
-      )
+        undefined,
+      ),
     );
 
     rendered.appendChild(button, icon);
@@ -331,12 +331,12 @@ export class HsMapService {
       map.setTarget(mapElement);
     } else {
       this.defaultDesktopControls = controlDefaults({
+        rotate: false,
         attributionOptions: {
           collapsible: true,
           collapsed: true,
         },
       });
-      this.defaultDesktopControls.removeAt(1);
       this.defaultDesktopControls.push(new ScaleLine());
       this.placeholderOsm = new Tile({
         source: new OSM(),
@@ -421,7 +421,7 @@ export class HsMapService {
 
     if (this.hsConfig.mapInteractionsEnabled != false) {
       for (const value of Object.values(interactions).filter(
-        (value) => !map.getInteractions().getArray().includes(value)
+        (value) => !map.getInteractions().getArray().includes(value),
       )) {
         map.addInteraction(value);
       }
@@ -443,7 +443,7 @@ export class HsMapService {
         if (
           !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
           !this.hsLayoutService.contentWrapper.querySelector(
-            '.hs-zoom-info-dialog'
+            '.hs-zoom-info-dialog',
           )
         ) {
           //TODO: change the name of platform modifier key dynamically based on OS
@@ -453,22 +453,22 @@ export class HsMapService {
           renderer.setAttribute(
             html,
             'class',
-            'alert alert-info mt-1 hs-zoom-info-dialog'
+            'alert alert-info mt-1 hs-zoom-info-dialog',
           );
           renderer.setAttribute(
             html,
             'style',
-            `position: absolute; right:15px; top:0.6em;z-index:101`
+            `position: absolute; right:15px; top:0.6em;z-index:101`,
           );
           const text = renderer.createText(
             `${this.hsLanguageService.getTranslation('MAP.zoomKeyModifier', {
               platformModifierKey: platformModifierKey,
-            })}`
+            })}`,
           );
           renderer.appendChild(html, text);
           renderer.appendChild(
             this.hsLayoutService.contentWrapper.querySelector('.hs-map-space'),
-            html
+            html,
           );
           setTimeout(() => {
             this.hsLayoutService.contentWrapper
@@ -483,54 +483,54 @@ export class HsMapService {
 
     proj4.defs(
       'EPSG:5514',
-      '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=542.5,89.2,456.9,5.517,2.275,5.516,6.96 +units=m +no_defs'
+      '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=542.5,89.2,456.9,5.517,2.275,5.516,6.96 +units=m +no_defs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#5514',
-      proj4.defs('EPSG:5514')
+      proj4.defs('EPSG:5514'),
     );
 
     proj4.defs(
       'EPSG:4258',
-      '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'
+      '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#4258',
-      proj4.defs('EPSG:4258')
+      proj4.defs('EPSG:4258'),
     );
 
     proj4.defs(
       'EPSG:32633',
-      '+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs'
+      '+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#32633',
-      proj4.defs('EPSG:32633')
+      proj4.defs('EPSG:32633'),
     );
     proj4.defs(
       'EPSG:32634',
-      '+proj=utm +zone=34 +datum=WGS84 +units=m +no_defs +type=crs'
+      '+proj=utm +zone=34 +datum=WGS84 +units=m +no_defs +type=crs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#32634',
-      proj4.defs('EPSG:32634')
+      proj4.defs('EPSG:32634'),
     );
 
     proj4.defs(
       'EPSG:3995',
-      '+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
+      '+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#3995',
-      proj4.defs('EPSG:3995')
+      proj4.defs('EPSG:3995'),
     );
     proj4.defs(
       'EPSG:3031',
-      '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
+      '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#3031',
-      proj4.defs('EPSG:3031')
+      proj4.defs('EPSG:3031'),
     );
     register(proj4);
     if (this.hsConfig.componentsEnabled?.mapControls == false) {
@@ -590,7 +590,7 @@ export class HsMapService {
   layersEqual(existingLayer, newLayer): boolean {
     if (newLayer === 'undefined') {
       console.warn(
-        'Checking duplicity for undefined layer. Why are we doing this?'
+        'Checking duplicity for undefined layer. Why are we doing this?',
       );
       return true;
     }
@@ -675,19 +675,19 @@ export class HsMapService {
     const source = lyr.getSource();
     if (
       [ImageWMS, ImageArcGISRest].some((typ) =>
-        this.hsUtilsService.instOf(source, typ)
+        this.hsUtilsService.instOf(source, typ),
       )
     ) {
       this.proxifyLayerLoader(lyr, false);
     }
     if (this.hsUtilsService.instOf(source, WMTS)) {
       (source as WMTS).setTileLoadFunction((i, s) =>
-        this.simpleImageryProxy(i as ImageTile, s)
+        this.simpleImageryProxy(i as ImageTile, s),
       );
     }
     if (
       [TileWMS, TileArcGISRest].some((typ) =>
-        this.hsUtilsService.instOf(source, typ)
+        this.hsUtilsService.instOf(source, typ),
       )
     ) {
       this.proxifyLayerLoader(lyr, true);
@@ -704,7 +704,7 @@ export class HsMapService {
     if (this.hsUtilsService.instOf(source, Static)) {
       //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
       (source as any).url_ = this.hsUtilsService.proxify(
-        (source as Static).getUrl()
+        (source as Static).getUrl(),
       );
     }
   }
@@ -714,7 +714,7 @@ export class HsMapService {
    */
   resolveDuplicateLayer(
     lyr: Layer<Source>,
-    duplicateHandling?: DuplicateHandling
+    duplicateHandling?: DuplicateHandling,
   ): void {
     if (this.layerAlreadyExists(lyr)) {
       if (this.hsUtilsService.instOf(lyr.getSource(), OSM)) {
@@ -748,7 +748,7 @@ export class HsMapService {
   addLayer(
     lyr: Layer<Source>,
     duplicateHandling?: DuplicateHandling,
-    visibleOverride?: string[]
+    visibleOverride?: string[],
   ): void {
     this.resolveDuplicateLayer(lyr, duplicateHandling);
     if (visibleOverride) {
@@ -778,8 +778,8 @@ export class HsMapService {
       this.hsConfig.box_layers.forEach((box) => {
         boxLayers = boxLayers.concat(
           (box.getLayers().getArray() as Layer<Source>[]).filter(
-            (layer) => layer
-          )
+            (layer) => layer,
+          ),
         );
       });
       this.addLayersFromAppConfig(boxLayers, visibilityOverrides);
@@ -787,7 +787,7 @@ export class HsMapService {
 
     if (this.hsConfig.default_layers) {
       const defaultLayers: Layer[] = this.hsConfig.default_layers.filter(
-        (lyr) => lyr
+        (lyr) => lyr,
       );
       if (defaultLayers.length > 0) {
         this.map.removeLayer(this.placeholderOsm);
@@ -949,12 +949,12 @@ export class HsMapService {
     switch (type) {
       case 'scalebar':
         return this.mapElement.querySelectorAll(
-          '.ol-scale-bar.ol-unselectable'
+          '.ol-scale-bar.ol-unselectable',
         )?.[0];
       case 'scaleline':
       default:
         return this.mapElement.querySelectorAll(
-          '.ol-scale-line.ol-unselectable'
+          '.ol-scale-line.ol-unselectable',
         )?.[0];
     }
   }
@@ -1004,7 +1004,7 @@ export class HsMapService {
             await this.simpleImageryProxy(image, url);
             cb(null);
           });
-        }
+        },
       );
     }
   }
@@ -1100,7 +1100,7 @@ export class HsMapService {
     const bbox = transformExtent(
       this.getMapExtent(),
       this.getCurrentProj(),
-      'EPSG:4326'
+      'EPSG:4326',
     );
     return bbox;
   }
@@ -1114,7 +1114,7 @@ export class HsMapService {
     const mapSize = this.map.getSize();
     if (!mapSize.every((p) => p > 0)) {
       console.warn(
-        'Tried to fit extent but one of map dimensions were 0. Will wait a bit and try again!'
+        'Tried to fit extent but one of map dimensions were 0. Will wait a bit and try again!',
       );
       await new Promise((resolve) => setTimeout(resolve, 250));
     }
@@ -1152,7 +1152,7 @@ export class HsMapService {
    */
   removeCompositionLayers(force?): void {
     let to_be_removed = this.getLayersArray().filter(
-      (lyr) => getRemovable(lyr) === undefined || getRemovable(lyr) == true
+      (lyr) => getRemovable(lyr) === undefined || getRemovable(lyr) == true,
     );
     if (!force) {
       to_be_removed = to_be_removed.filter((lyr) => {
