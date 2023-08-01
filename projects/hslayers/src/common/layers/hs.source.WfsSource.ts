@@ -33,7 +33,7 @@ export class WfsSource extends Vector<Geometry> {
       provided_url,
       layer_name,
       map_projection,
-    }: WfsOptions
+    }: WfsOptions,
   ) {
     super({
       loader: async function (extent, resolution, projection) {
@@ -53,11 +53,17 @@ export class WfsSource extends Vector<Geometry> {
         ) {
           extent = [extent[1], extent[0], extent[3], extent[2]];
         }
+        /**
+         * Use fallback 3857 instead of 4326 as
+         * transformaton from EPSG:4326 (to at least which was tested 3857) is seemingly not working properly.
+         * lat/lon expected while getting lon/lat
+         */
+        const responseFeatureCRS = srs.includes('4326') ? 'EPSG:3857' : srs;
         const params = {
           service: 'wfs',
           version: data_version, // == '2.0.0' ? '1.1.0' : data_version,
           request: 'GetFeature',
-          srsName: srs,
+          srsName: responseFeatureCRS,
           output_format: output_format,
           // count: layer.limitFeatureCount ? 1000 : '',
           BBOX: extent.join(',') + ',' + srs,
@@ -70,14 +76,14 @@ export class WfsSource extends Vector<Geometry> {
         ].join('?');
         url = hsUtilsService.proxify(url);
         const response = await lastValueFrom(
-          http.get(url, {responseType: 'text'})
+          http.get(url, {responseType: 'text'}),
         );
         if (response) {
           const features = readFeatures(
             response,
             map_projection,
             data_version,
-            srs
+            responseFeatureCRS,
           );
           (this as VectorSource<Geometry>).addFeatures(features);
         }

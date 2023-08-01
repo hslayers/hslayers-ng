@@ -38,7 +38,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
-    private hsAddDataUrlService: HsAddDataUrlService
+    private hsAddDataUrlService: HsAddDataUrlService,
   ) {
     this.setDataToDefault();
   }
@@ -79,7 +79,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    layerOptions?: layerOptions
+    layerOptions?: layerOptions,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -93,7 +93,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.data.layers,
-          'wfs'
+          'wfs',
         );
         const collection = this.getLayers(true, false, layerOptions);
         this.hsAddDataUrlService.zoomToLayers(this.data);
@@ -133,7 +133,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
         ? caps.FeatureTypeList.FeatureType.find(
-            (layer) => layer.Name == this.hsAddDataCommonService.layerToSelect
+            (layer) => layer.Name == this.hsAddDataCommonService.layerToSelect,
           )
         : caps.FeatureTypeList.FeatureType;
       this.data.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
@@ -149,7 +149,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           this.data.srss = [layer['Default' + srsType]];
         } else {
           this.data.srss = [];
-          this.data.srss.push('EPSG:4326');
+          this.data.srss.push('urn:ogc:def:crs:EPSG::4326');
         }
 
         const otherSRS = layer['Other' + srsType];
@@ -176,19 +176,18 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       }
       this.data.output_format = this.getPreferredFormat(this.data.version);
 
+      const fallbackProj = this.data.map_projection || 'EPSG:3857';
       this.data.srss = this.parseEPSG(this.data.srss);
       if (this.data.srss.length == 0) {
-        this.data.srss = ['EPSG:3857'];
+        this.data.srss = [fallbackProj];
+        console.warn(
+          `While loading WFS from ${this.data.title} fallback projection was used.`,
+        );
       }
 
-      this.data.srs = (() => {
-        for (const srs of this.data.srss) {
-          if (srs.includes('3857')) {
-            return srs;
-          }
-        }
-        return this.data.srss[0];
-      })();
+      this.data.srs =
+        this.data.srss.find((srs) => srs.includes(fallbackProj)) ||
+        this.data.srss[0];
 
       if (!this.hsAddDataCommonService.layerToSelect) {
         setTimeout(() => {
@@ -333,7 +332,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       }
     });
     return [...Array.from(new Set(srss))].filter((srs: string) =>
-      this.definedProjections.includes(srs)
+      this.definedProjections.includes(srs),
     );
   }
 
@@ -345,7 +344,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   getLayers(
     checkedOnly?: boolean,
     shallow?: boolean,
-    layerOptions?: layerOptions
+    layerOptions?: layerOptions,
   ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
@@ -370,7 +369,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   getLayersRecursively(
     layer,
     options: addLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
   ): void {
     const style = options.layerOptions?.style;
     if (!this.data.add_all || layer.checked) {
@@ -430,7 +429,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     for (const l of layers) {
       this.hsMapService.resolveDuplicateLayer(
         l,
-        DuplicateHandling.RemoveOriginal
+        DuplicateHandling.RemoveOriginal,
       );
       this.hsMapService.getMap().addLayer(l);
     }
