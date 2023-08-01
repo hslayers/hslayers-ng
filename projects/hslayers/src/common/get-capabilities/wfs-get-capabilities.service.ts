@@ -20,7 +20,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsAddDataService: HsAddDataService,
-    public hsCapabilityCacheService: HsCapabilityCacheService
+    public hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
   /**
@@ -75,8 +75,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
-
-    owrCache?: boolean
+    owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     this.service_url = service_url;
@@ -93,7 +92,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
       params.service = 'WFS';
     }
     if (params.version == undefined && params.VERSION == undefined) {
-      params.version = '1.1.0';
+      params.version = '2.0.0';
     }
     let url = [path, this.params2String(params)].join('?');
 
@@ -102,14 +101,27 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
-      const r = await lastValueFrom(
+      let r = await lastValueFrom(
         this.httpClient
           .get(url, {
             responseType: 'text',
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
       );
+      /**
+       * Retry with different version number
+       */
+      if (r.body.includes('ServiceException')) {
+        r = await lastValueFrom(
+          this.httpClient
+            .get(url.replace('version=2.0.0', 'version=1.1.0'), {
+              responseType: 'text',
+              observe: 'response', // Set observe to 'response' to get headers as well
+            })
+            .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+        );
+      }
       const contentType = r.headers.get('Content-Type');
       if (contentType?.includes('text/html')) {
         return {
