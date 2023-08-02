@@ -14,8 +14,8 @@
         [ngClass]="{'active': HsLayoutService.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
         [title]="button.description | translateHs">
         <!-- TODO: Remove function call from template -->
-        <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
-            data-placement="auto"></i>
+        <i *ngIf="button.icon" class="menu-icon material-symbols-outlined" data-toggle="tooltip" data-container="body"
+            data-placement="auto">{{button.icon}}</i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
             [title]="button.description | translateHs ">{{button.content()}}</span>
         <span [ngClass]="{'language': button.panel === 'language'}" class="hs-sidebar-item-title">{{button.title |

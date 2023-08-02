@@ -19,8 +19,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   name = 'draw';
   selectedOption = 'draw';
   private end = new Subject<void>();
@@ -32,7 +31,7 @@ export class HsDrawComponent
     public hsUtilsService: HsUtilsService,
     public hsSidebarService: HsSidebarService,
     public HsDialogContainerService: HsDialogContainerService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     super(hsLayoutService);
   }
@@ -47,7 +46,7 @@ export class HsDrawComponent
       .subscribe(() => {
         this.HsDialogContainerService.create(
           HsDrawLayerMetadataDialogComponent,
-          {service: this.HsDrawService}
+          {service: this.HsDrawService},
         );
       });
 
@@ -58,7 +57,7 @@ export class HsDrawComponent
       fits: true,
       title: 'PANEL_HEADER.DRAW',
       description: 'SIDEBAR.descriptions.DRAW',
-      icon: 'icon-pencil',
+      icon: 'draw',
     });
   }
 

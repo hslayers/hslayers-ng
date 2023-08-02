@@ -25,8 +25,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private end = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
@@ -40,7 +39,7 @@ export class HsMapSwipeComponent
     private hsLanguageService: HsLanguageService,
     public hsMapSwipeService: HsMapSwipeService,
     private hsLayerUtilsService: HsLayerUtilsService, //In template
-    private hsLayerShiftingService: HsLayerShiftingService
+    private hsLayerShiftingService: HsLayerShiftingService,
   ) {
     super(hsLayoutService);
   }
@@ -55,7 +54,7 @@ export class HsMapSwipeComponent
       fits: true,
       title: 'PANEL_HEADER.MAP_SWIPE',
       description: 'SIDEBAR.descriptions.MAP_SWIPE',
-      icon: 'icon-resizehorizontalalt',
+      icon: 'view_column_2',
     });
   }
 
@@ -108,7 +107,7 @@ export class HsMapSwipeComponent
       moveItemInArray(
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     } else {
       draggedLayer = event.previousContainer.data[event.previousIndex];
@@ -117,7 +116,7 @@ export class HsMapSwipeComponent
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     }
     if (draggedLayer && replacedLayer?.layer) {

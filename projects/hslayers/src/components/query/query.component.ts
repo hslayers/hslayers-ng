@@ -23,8 +23,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
@@ -42,7 +41,7 @@ export class HsQueryComponent
     private hsQueryWmsService: HsQueryWmsService,
     private hsDrawService: HsDrawService,
     private hsSidebarService: HsSidebarService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {
     super(hsLayoutService);
   }
@@ -54,7 +53,7 @@ export class HsQueryComponent
       fits: true,
       title: 'PANEL_HEADER.INFO',
       description: 'SIDEBAR.descriptions.INFO',
-      icon: 'icon-info-sign',
+      icon: 'info',
     });
     this.popupOpens.pipe(takeUntil(this.end)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
@@ -67,7 +66,7 @@ export class HsQueryComponent
       .subscribe((feature) => {
         this.hsQueryBaseService.features.splice(
           this.hsQueryBaseService.features.indexOf(feature),
-          1
+          1,
         );
       });
     this.hsMapService.loaded().then((map) => {
@@ -133,7 +132,7 @@ export class HsQueryComponent
           return;
         }
         const bodyElementsFound = this.checkForBodyElements(
-          invisiblePopup.contentDocument.body.children
+          invisiblePopup.contentDocument.body.children,
         );
         if (!bodyElementsFound) {
           return;
@@ -151,7 +150,7 @@ export class HsQueryComponent
         } else {
           this.popup.show(
             coordinate,
-            invisiblePopup.contentDocument.body.innerHTML
+            invisiblePopup.contentDocument.body.innerHTML,
           );
           this.popupOpens.next('hs.query');
         }

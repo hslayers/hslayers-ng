@@ -59,7 +59,7 @@ export class HsAddDataComponent
       fits: true,
       title: 'PANEL_HEADER.ADDLAYERS',
       description: 'SIDEBAR.descriptions.ADDLAYERS',
-      icon: 'icon-database',
+      icon: 'database',
     });
     servicesSupportedByUrl.forEach((type) =>
       this.connectServiceFromUrlParam(type as AddDataUrlType)

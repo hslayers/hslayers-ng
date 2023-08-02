@@ -32,7 +32,7 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
     public hsUtilsService: HsUtilsService,
     private hsPrintService: HsPrintService,
     private hsPrintScaleService: HsPrintScaleService,
-    private hsPrintLegendService: HsPrintLegendService
+    private hsPrintLegendService: HsPrintLegendService,
   ) {
     super(HsLayoutService);
   }
@@ -45,7 +45,7 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
       fits: true,
       title: 'PANEL_HEADER.PRINT',
       description: 'SIDEBAR.descriptions.PRINT',
-      icon: 'icon-print',
+      icon: 'print',
     });
     this.setToDefault();
   }
