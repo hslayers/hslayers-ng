@@ -801,8 +801,8 @@
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
-      "compositionFailedToSave": "Uložení kompozice se nezdařilo",
-      "compositionSavedSuccessfully": "Kompozice byla úspěšně uložena",
+      "error": "Uložení kompozice se nezdařilo",
+      "success": "Kompozice byla úspěšně uložena",
       "requestWasProcessed": "Žádost byla zpracována, ale mapa nebyla uložena kvůli chybějící autorizaci",
       "savingCompositionStatus": "Ukládání kompozice",
       "serverDidNotRespond": "Server nereagoval nebo došlo k jiné chybě"
