@@ -245,7 +245,6 @@ export class HsLaymanService implements HsSaverService {
     mapName: string,
     formdata: FormData,
     saveAsNew: boolean,
-
     compositionJson?: MapComposition,
   ): Promise<any> {
     const headers = new HttpHeaders();

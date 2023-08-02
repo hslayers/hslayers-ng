@@ -803,8 +803,8 @@
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
-      "compositionFailedToSave": "Composition failed to save",
-      "compositionSavedSuccessfully": "Composition saved successfully",
+      "error": "Composition failed to save",
+      "success": "Composition saved successfully",
       "requestWasProcessed": "Request was processed, but map was not saved due to authorization missing",
       "savingCompositionStatus": "Saving composition status",
       "serverDidNotRespond": "Server didn't respond or other error occurred"

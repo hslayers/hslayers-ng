@@ -782,8 +782,8 @@
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
-      "compositionFailedToSave": "Kompozīciju neizdevās saglabāt",
-      "compositionSavedSuccessfully": "Kompozīcija veiksmīgi saglabāta",
+      "error": "Kompozīciju neizdevās saglabāt",
+      "success": "Kompozīcija veiksmīgi saglabāta",
       "requestWasProcessed": "Pieprasījums tika apstrādāts, taču karte netika saglabāta, jo trūka autorizācijas",
       "savingCompositionStatus": "Saglabā kompozīcijas statusu",
       "serverDidNotRespond": "Serveris neatbildēja vai radās cita kļūda"
