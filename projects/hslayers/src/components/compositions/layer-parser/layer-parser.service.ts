@@ -67,7 +67,6 @@ export class HsCompositionsLayerParserService {
       layerOptions: {
         style: style,
         path: lyr_def.path || 'Test path',
-        removable: false,
         fromComposition: true,
       },
     });
