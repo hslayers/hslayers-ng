@@ -85,7 +85,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     private hsLayoutService: HsLayoutService,
     private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
-    private hsLogService: HsLogService
+    private hsLogService: HsLogService,
   ) {
     super();
     this.hsEventBusService.compositionLoads.subscribe((data) => {
@@ -113,8 +113,8 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
           this.fillCompositionLayers();
           this.hsSaveMapService.generateThumbnail(
             this.hsLayoutService.contentWrapper.querySelector(
-              '.hs-stc-thumbnail'
-            )
+              '.hs-stc-thumbnail',
+            ),
           );
         });
         this.hsEventBusService.mapResets.subscribe(() => {
@@ -133,15 +133,15 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
               this.setCurrentBoundingBox();
               this.hsSaveMapService.generateThumbnail(
                 this.hsLayoutService.contentWrapper.querySelector(
-                  '.hs-stc-thumbnail'
-                )
+                  '.hs-stc-thumbnail',
+                ),
               );
             }
           },
           1000,
           false,
-          this
-        )
+          this,
+        ),
       );
     });
   }
@@ -239,7 +239,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       this.hsMapService.getMap(),
       tempCompoData,
       this.userData,
-      this.statusData
+      this.statusData,
     );
   }
 
@@ -269,7 +269,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       .filter(
         (lyr: Layer<Source>) =>
           getShowInLayerManager(lyr) == undefined ||
-          getShowInLayerManager(lyr) == true
+          getShowInLayerManager(lyr) == true,
       )
       .map((lyr: Layer<Source>) => {
         return {
@@ -353,7 +353,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     try {
       const augmentedResponse = await this.save(
         saveAsNew,
-        this.endpointSelected.getValue()
+        this.endpointSelected.getValue(),
       );
       this.processSaveCallback(augmentedResponse);
     } catch (ex) {
@@ -365,22 +365,23 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   /**
    * Process response data after saving the composition
    * @param response - HTTP response after saving the composition
-   
    */
   processSaveCallback(response): void {
     this.statusData.status = response.status;
     if (!response.status) {
-      if (response.code == 24) {
+      const error = response.error;
+      if (error.code == 24) {
         this.statusData.overWriteNeeded = true;
-        this.compoData.name = response.detail.mapname;
+        this.compoData.name = error.detail.mapname;
         this.statusData.resultCode = 'exists';
-      } else if (response.code == 32) {
+      } else if (error.code == 32) {
         this.statusData.resultCode = 'not-saved';
       } else {
         this.statusData.resultCode = 'error';
       }
-      this.statusData.error = response;
+      this.statusData.error = error;
     } else {
+      this.statusData.resultCode = 'success';
       this.hsLayoutService.setMainPanel('layermanager', true);
     }
     this.saveMapResulted.next(this.statusData);
@@ -388,7 +389,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
   /**
    * Focus the browser to composition's title
-   
    */
   focusTitle() {
     if (this.statusData.guessedTitle) {
