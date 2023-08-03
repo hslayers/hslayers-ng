@@ -157,7 +157,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (this.data.srss.length == 0) {
       this.data.srss = ['EPSG:4326'];
       this.hsAddDataCommonService.throwParsingError(
-        "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
+       "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
       );
     }
   }

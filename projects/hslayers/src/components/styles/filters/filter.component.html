@@ -4,9 +4,9 @@
       <div class="p-2">{{hsFiltersService.humanReadableLogOp(filter[0])}}</div>
       <!-- TODO: Remove function call from template -->
       <hs-add-filter-button (clicks)="hsFiltersService.add($event.kind, true, filter)"></hs-add-filter-button>
-      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs  "
+      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs "
         (click)="remove()">
-        <span class="icon-trash"></span>
+        <span class="material-icons">delete</span>
       </button>
     </div>
     <div class="d-flex flex-row" *ngFor="let item of filter; let i = index">

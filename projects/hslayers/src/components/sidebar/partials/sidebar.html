@@ -26,8 +26,8 @@
     <span class="hs-sidebar-item  list-group-item hs-sidebar-additional-items" *ngIf="HsLayoutService.minisidebar"
         (click)="HsLayoutService.setMainPanel('sidebar', true)"
         [ngClass]="{'active': HsLayoutService.mainpanel === 'sidebar'}">
-        <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"
-            style="margin-left: 0px !important;"></i>
+        <i class="menu-icon material-icons" data-toggle="tooltip" data-container="body" data-placement="auto"
+            title="Menu" style="margin-left: 0px !important;">drag_handle</i>
         <span class="hs-sidebar-item-title">{{miniSidebarButton.title | translateHs }}</span>
     </span>
     <hs-impressum class="mt-auto"></hs-impressum>

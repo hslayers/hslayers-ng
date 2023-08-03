@@ -5,12 +5,12 @@
             style="height: auto;" />
 
         <button type="button" class="btn btn-secondary" *ngIf="uri.valid" (click)="emitConnect()"><i
-                class="icon-link"></i></button>
+                class="material-icons">link</i></button>
 
         <!-- TODO: Following should be validating URL and warning user if URL is invalid -->
 
         <!-- <button type="button" class="btn btn-danger" *ngIf="uri && !uri.valid"><i
-                    class="icon-alertalt"></i></button> -->
+                    class="material-icons">alert</i></button> -->
         <hs-history-list type="button" (historyUrlSelected)="historySelected($event)" [(what)]="type">
         </hs-history-list>
     </div>

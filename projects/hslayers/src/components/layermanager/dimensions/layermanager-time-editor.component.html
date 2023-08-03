@@ -16,7 +16,7 @@
   </ng-template>
   <ng-template #outOfRange>
     <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
-      [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs  "
+      [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs "
       [closeDelay]="hsConfig.layerTooltipDelay || 0">
       {{'LAYERMANAGER.time.outOfRange' | translateHs }}
     </span>
@@ -28,14 +28,14 @@
     </option>
   </select>
   <button type="button" class="btn btn-sm text-info border-0" (click)="followingTime()" [disabled]="!hasFollowingTime">
-    <i class="glyphicon material-icons ">chevron_right</i>
+    <i class="glyphicon material-icons">chevron_right</i>
   </button>
 </div>
 <div class="p-0">
   <button type="button" class="hs-timeSync-toggle btn px-0 py-md-1 py-2 me-1"
     [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
-    [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs  ">
-    <i class="glyphicon icon-timeline"></i>
+    [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs ">
+    <i class="glyphicon material-icons">timeline</i>
     <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs }}</span>
   </button>
 </div>

@@ -6,44 +6,36 @@
         *ngIf="hsAddDataCatalogueService.selectedLayer?.id === layer.id">
         <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
-            <!-- <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
-                            <button type="button" class="btn btn-sm btn-primary align-middle" (click)="addLayerToMap(layer.endpoint, layer)"
-                                data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translateHs "
-                                [ngClass]="{' btn-light text-primary' : layer.highlighted }">
-                                <i class="icon-plus"></i>
-                            </button>
-                            <span class="ms-2">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translateHs }}</span>
-                        </div> -->
             <a class="btn btn-sm border-0" [hidden]="selectTypeToAddLayerVisible"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
-                <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
+                <i [hidden]="loadingInfo" class="material-icons material-icons icon-primary">add</i>
                 <img [hidden]="!loadingInfo" [src]="hsConfig._ajaxLoaderPath" />
                 <span class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
                     translateHs }}</span>
             </a>
             <a class="btn btn-sm border-0" [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs "
                 (click)="$event.stopPropagation();abortAdd()" [hidden]="!selectTypeToAddLayerVisible">
-                <i class="icon-remove text-danger"></i><span
+                <i class="material-icons text-danger">clear</i><span
                     class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' |
                     translateHs }}</span>
             </a>
             <a class="btn btn-sm border-0" (click)="showMetadata(layer.endpoint, layer)">
-                <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
+                <i class="material-icons material-icons icon-primary">info</i><span class="ms-1">{{'COMMON.metadata' |
                     translateHs }}</span>
             </a>
             <ng-container *ngIf="layer.endpoint?.authenticated">
                 <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)"
                     data-toggle="tooltip" data-placement="bottom"
                     [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-                    <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
-                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
+                    <i class="material-icons material-icons icon-primary" [ngClass]="{'text-muted': !layer.editable}"
+                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}">lock</i><span class="ms-1"
                         *ngIf="layer.editable">{{'COMMON.setPermissions' | translateHs }}</span>
                 </a>
                 <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer(layer)"
                     data-toggle="tooltip" data-placement="bottom"
                     [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-                    <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
-                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
+                    <i class="material-icons text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
+                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}">delete</i><span class="ms-1"
                         *ngIf="layer.editable">{{'COMMON.removeLayer' | translateHs }}</span>
                 </a>
             </ng-container>
@@ -54,19 +46,15 @@
             <!-- TODO: Remove function call from template -->
             <a class="btn btn-sm border-0 btn-secondary"
                 [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)' data-toggle="tooltip"
-                [title]="'COMMON.download' | translateHs "><i class="icon-download"></i></a>
+                [title]="'COMMON.download' | translateHs "><i class="material-icons">download_for_offline</i></a>
         </div>
-        <!-- <div class="p-0" [hidden]='getEndpoint(layer.endpoint).type != "micka" || layerRDF(layer.endpoint, layer) == "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='layerRDF(layer.endpoint, layer)'
-                data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
-        </div> -->
     </div>
 </div>
 <div>
     <!-- <div class="p-0" [hidden]="!selectTypeToAddLayerVisible || selectedType">
         <button type="button" class="btn btn-sm btn-danger" (click)="$event.stopPropagation();abortAdd()" data-toggle="tooltip"
             [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs ">
-            <i class="icon-remove"></i>
+            <i class="material-icons icon-remove"></i>
         </button>
     </div> -->
     <div [hidden]="!loadingInfo" class="list-group-item text-primary text-center py-2">
@@ -90,7 +78,7 @@
             <div>
                 <a class="btn btn-sm border-0" (click)="$event.stopPropagation();toggleExplanations()"
                     [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translateHs ">
-                    <i class="icon-question-sign text-primary"></i>
+                    <i class="material-icons text-primary">help</i>
                 </a>
             </div>
         </div>

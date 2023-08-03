@@ -12,7 +12,7 @@
     <div class="row">
         <div class="input-group m-1" [hidden]="!newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translateHs  "
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translateHs "
                     [(ngModel)]="attributeName" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="input-group m-1" [hidden]="!(attributeName && newAttribVisible)">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translateHs  "
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translateHs "
                     [(ngModel)]="attributeValue" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="col-6 mb-2 text-start">
             <div class="btn-group">
                 <button class="btn btn-primary btn-sm" (click)="saveNewAttribute(attributeName,attributeValue)"><i
-                        class="icon-save-floppy"></i></button>
+                        class="material-icons">save</i></button>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
             <label for="selectedLayer" class="px-2">{{translateString('QUERY.feature',editType+'Feature')}}
                 {{'COMMON.into' | translateHs }}:</label>
-            <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs  "
+            <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs "
                 [(ngModel)]="selectedLayer" name="selectedLayer">
                 <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
                     translateHs }}</option>
@@ -46,7 +46,7 @@
                     {{getTitle(layer) | translateHs : {module: 'LAYERS'} }}</option>
             </select>
             <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
-                    class="icon-save-floppy"></i></button>
+                    class="material-icons">save</i></button>
         </div>
     </div>
 </div>
@@ -54,11 +54,12 @@
     <div class="mx-1 mb-2 text-end">
         <div class="btn-group">
             <button class="btn btn-secondary btn-sm" (click)="newAttribVisible = !newAttribVisible"><i
-                    class="icon-calcplus"></i></button>
-            <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
+                    class="material-icons">add_box</i></button>
+            <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i
+                    class="material-icons">search</i></button>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
-                        class="icon-settingsthree-gears"></i></button>
+                        class="material-icons icon-smaller">settings</i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
                     <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
                         translateHs }}</a>
@@ -68,8 +69,8 @@
             </div>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                    (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs  "><i
-                        class="icon-download"></i></button>
+                    (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs "><i
+                        class="material-icons">download</i></button>
                 <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
                     <a class="dropdown-item" [download]="format.name + '_file.' + format.ext"
                         [hsDownload]="format.serializedData" [mimeType]="format.mimeType" [href]="format.downloadData"
@@ -78,7 +79,7 @@
                 </div>
             </div>
             <button class="btn btn-danger btn-sm" (click)="removeFeature()" *ngIf="isFeatureRemovable()"><i
-                    class="icon-trash"></i></button>
+                    class="material-icons">delete</i></button>
         </div>
     </div>
 </div>

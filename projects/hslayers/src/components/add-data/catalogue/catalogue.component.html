@@ -2,10 +2,10 @@
     <div class="hs-add-data-catalogue-header">
         <div class="mt-3 mx-3 ps-1 d-flex justify-content-between">
             <div class="input-group w-50">
-                <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translateHs   "
+                <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translateHs  "
                     name="search" [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
                 <button class="input-group-text text-secondary border-start-0" (click)="queryByFilter()">
-                    <i class="icon-search icon-primary"></i>
+                    <i class="material-icons material-icons icon-primary">search</i>
                 </button>
             </div>
             <hs-layman-current-user [endpoint]="ctx.layman"></hs-layman-current-user>

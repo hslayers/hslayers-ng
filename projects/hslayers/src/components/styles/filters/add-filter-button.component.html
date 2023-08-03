@@ -1,7 +1,7 @@
 <div class="p-1">
   <div ngbDropdown class="d-inline-block" #menu="ngbDropdown">
-    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs  " ngbDropdownToggle>
-      <span class="icon-plus"></span>
+    <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs " ngbDropdownToggle>
+      <span class="material-icons">add</span>
     </button>
     <div ngbDropdownMenu>
       <button ngbDropdownItem (click)="emitClick('AND'); menu.close()">

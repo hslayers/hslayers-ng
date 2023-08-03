@@ -5,23 +5,25 @@
                 <button type="button" class="border-0 but-title-sm hs-extra-buttons"
                     (click)="physicalLayerListEnabled = !physicalLayerListEnabled"
                     [title]="'LAYERMANAGER.enablePhysicalLayerList' | translateHs">
-                    <i class="glyphicon icon-layerorder"></i>
+                    <i class="glyphicon material-icons">move_up</i>
                 </button>
                 <button ngbDropdownToggle class="but-title-sm  hs-extra-buttons me-1" type="button"><i
-                        class="icon-menu"></i></button>
+                        class="material-icons">menu</i></button>
                 <div ngbDropdownMenu>
                     <a class="dropdown-item" (click)="removeMultipleLayers()">
-                        <i class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'DRAW.removeMultipleLayers'
+                        <i
+                            class="glyphicon material-icons hs-extra-button">delete</i>&nbsp;{{'DRAW.removeMultipleLayers'
                         | translateHs }}
                     </a>
                     <a class="dropdown-item" (click)="removeAllLayers()">
                         <i
-                            class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
+                            class="glyphicon material-icons hs-extra-button">delete</i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
                         |
                         translateHs }}
                     </a>
                     <a class="dropdown-item" (click)="hsCore.resetMap()">
-                        <i class="glyphicon icon-fatredo hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
+                        <i class="glyphicon material-icons hs-extra-button">redo</i>&nbsp;{{'LAYERMANAGER.resetMap'
+                        |
                         translateHs }}
                     </a>
                     <a class="dropdown-item"
@@ -82,10 +84,10 @@
                         {{layer.title | translateHs : {module: 'LAYERS'} }}
                     </div>
                     <div class="ps-1 info_btn" style="cursor: pointer;">
-                        <span class="icon-settingsthree-gears text-secondary"
+                        <span class="material-icons icon-smaller  text-secondary"
                             (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"
                             [title]="'COMMON.info' | translateHs" data-toggle="tooltip" data-container="body"
-                            data-placement="auto"></span>
+                            data-placement="auto">settings</span>
                     </div>
                 </div>
                 <ngb-progressbar type="secondary" *ngIf="layer.loadProgress?.loadTotal > 0"
@@ -110,7 +112,7 @@
                     <!-- <div class="p-0" ng-show="layer.active || hovering"
                         ng-style="hovering && !layer.active && {'opacity':'0.5'}">
                         <button class="btn btn-sm btn-link hs-lm-baseitem-visibility"><i
-                                class="icon-globe"></i></button>
+                                class="material-icons">public</i></button>
                     </div> -->
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"

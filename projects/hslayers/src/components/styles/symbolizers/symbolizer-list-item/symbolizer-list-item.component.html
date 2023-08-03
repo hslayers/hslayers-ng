@@ -3,15 +3,15 @@
   (click)="symbolizerVisible = !symbolizerVisible;" [attr.data-test]="getSymbolizerName(symbolizer)">
   <div>
     <button type="button" style="border: none; background-color: transparent; cursor: move">
-      <i class="icon-move text-secondary"></i>
+      <i class="material-icons text-secondary">control_camera</i>
     </button>
     <span>{{getSymbolizerName(symbolizer) | translateHs }}&nbsp;</span><!-- TODO: Remove function call from template -->
   </div>
   <div>
     <span class="glyphicon me-2 material-icons">{{symbolizerVisible ? 'chevron_right' : 'expand_more'}}</span>
     <button class="btn btn-danger btn-sm" (click)="removeSymbolizer(symbolizer)" data-toggle="tooltip"
-      [title]="'STYLER.removeSymbolizer' | translateHs  ">
-      <i class="icon-trash"></i>
+      [title]="'STYLER.removeSymbolizer' | translateHs ">
+      <i class="material-icons">delete</i>
     </button>
   </div>
 </li>

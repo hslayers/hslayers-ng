@@ -21,18 +21,18 @@
             <button *ngIf="selectedType !== 'split'" class="w-50 btn btn-sm btn-light btn-outline-primary"
                 (click)="setType('Polygon')" [ngClass]="{active: HsDrawService.type==='Polygon' }"
                 [title]="'COMMON.polygon' | translateHs ">
-                <i class="icon-polygonlasso"></i>
+                <i class="material-icons">hexagon</i>
             </button>
             <button *ngIf="selectedType === 'split'" class="w-50 btn btn-sm btn-light btn-outline-primary"
                 [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString')"
                 data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
-                <i class="icon-line"></i>
+                <i class="material-icons">show_chart</i>
             </button>
             <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translateHs }}
             </span>
             <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
                 (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
-                <i class="icon-cursor"></i>
+                <i class="material-icons">touch_app</i>
             </button>
         </div>
 

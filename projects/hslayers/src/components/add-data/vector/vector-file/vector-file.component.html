@@ -36,7 +36,7 @@
     <button class="btn btn-primary w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !data.sourceLayer"
       (click)="add()">
       <span [hidden]="hsAddDataCommonFileService.loadingToLayman">
-        <i class="icon-plus"></i>&emsp;
+        <i class="material-icons">add</i>&emsp;
         {{'COMMON.add' | translateHs }}
       </span>
       <span [hidden]="!hsAddDataCommonFileService.loadingToLayman">

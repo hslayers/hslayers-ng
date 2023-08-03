@@ -48,11 +48,11 @@ export class HsCompositionsMickaService {
     const textFilter =
       query && query.title !== undefined && query.title != ''
         ? encodeURIComponent(
-            " AND (title like '*" +
+           " AND (title like '*" +
               query.title +
-              "*' OR abstract like '*" +
+             "*' OR abstract like '*" +
               query.title +
-              "*')"
+             "*')"
           )
         : '';
     const selected = [];

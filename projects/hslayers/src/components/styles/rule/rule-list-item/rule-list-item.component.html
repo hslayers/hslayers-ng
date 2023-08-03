@@ -2,7 +2,7 @@
   (click)="ruleVisible = !ruleVisible">
   <div>
     <button type="button" style="border: none; background-color: transparent; cursor: move">
-      <i class="icon-move text-secondary"></i>
+      <i class="material-icons text-secondary">control_camera</i>
     </button>
   </div>
   <div class="flex-grow-1 hs-vector-layer-legend">
@@ -15,8 +15,8 @@
   <div>
     <span class="glyphicon m-2 material-icons" [ngClass]="ruleVisible ? 'chevron_right' : 'expand_more'"></span>
     <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
-      [title]="'STYLER.removeRule' | translateHs  ">
-      <i class="icon-trash"></i>
+      [title]="'STYLER.removeRule' | translateHs ">
+      <i class="material-icons">delete</i>
     </button>
   </div>
 </li>

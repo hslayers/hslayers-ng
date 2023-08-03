@@ -5,15 +5,15 @@
     </div>
     <div class="p-1">
       <div class="btn-group" role="group" aria-label="Filters and scales">
-        <button [title]="'STYLER.toggleFilters' | translateHs  " class="btn btn-sm"
+        <button [title]="'STYLER.toggleFilters' | translateHs " class="btn btn-sm"
           [ngClass]="{'btn-outline-primary': rule.filter && rule.filter.length > 0, 'btn-outline-secondary': rule.filter === undefined || rule.filter.length === 0}"
           (click)="filtersVisible = !filtersVisible">
-          <span class="icon-filter"></span>
+          <span class="material-icons">filter_alt</span>
         </button>
-        <button [title]="'STYLER.toggleScaleDenominators' | translateHs  " class="btn btn-sm"
+        <button [title]="'STYLER.toggleScaleDenominators' | translateHs " class="btn btn-sm"
           [ngClass]="{'btn-outline-primary': rule.scaleDenominator && (rule.scaleDenominator.min !== undefined || rule.scaleDenominator.max !== undefined), 'btn-outline-secondary': rule.scaleDenominator === undefined || (rule.scaleDenominator.min === undefined && rule.scaleDenominator.max === undefined)}"
           (click)="scalesVisible = !scalesVisible">
-          <span class="icon-design"></span>
+          <span class="material-icons">square_foot</span>
         </button>
       </div>
     </div>
@@ -24,9 +24,9 @@
     <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translateHs }}:</div>
     <div class="p-1">
       <div #addSymMenu="ngbDropdown" ngbDropdown class="d-inline-block" placement="bottom-right">
-        <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addSymbolizer' | translateHs  "
+        <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addSymbolizer' | translateHs "
           id="dropdownAddSymbolizer" ngbDropdownToggle>
-          <span class="icon-plus"></span>
+          <span class="material-icons">add</span>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownAddSymbolizer">
           <button ngbDropdownItem (click)="addSymbolizer('Mark')">

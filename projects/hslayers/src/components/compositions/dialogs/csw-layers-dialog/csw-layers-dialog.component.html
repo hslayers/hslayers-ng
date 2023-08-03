@@ -18,9 +18,9 @@
                             <button ngbPanelToggle *ngIf="service.loaded; else loadingLayers"
                                 class="accordion-button justify-content-between">{{service.title}}
                                 <span>
-                                    <i class="icon-trash text-secondary pe-3 " role="button"
+                                    <i class="material-icons text-secondary pe-3 " role="button"
                                         (click)="$event.stopPropagation();removeService(service)"
-                                        [title]="'COMMON.delete' | translateHs"></i>
+                                        [title]="'COMMON.delete' | translateHs">delete</i>
                                     <i class="text-black material-icons" role="button"
                                         [title]="'COMMON.toggle' | translateHs">{{ acc.isExpanded(service.id) ?
                                         'expand_more' : 'chevron_right'}}</i>

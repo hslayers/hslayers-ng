@@ -1,9 +1,9 @@
 <div class="input-group">
     <button (click)="toggleSearchInput()" class="btn btn-light btn-outline-secondary rounded-0 hs-toolbar-button"><i
-            class="glyphicon icon-search" [title]="'COMMON.search' | translateHs  "></i></button>
+            class="glyphicon material-icons" [title]="'COMMON.search' | translateHs ">search</i></button>
     <input [(ngModel)]="query" [hidden]="!searchInputVisible" name="query"
         class="form-control hs-search-address-input rounded-0 hs-toolbar-button"
-        [placeholder]="'COMMON.search' | translateHs  " (ngModelChange)="queryChanged()">
+        [placeholder]="'COMMON.search' | translateHs " (ngModelChange)="queryChanged()">
     <button class="clearSearch" (click)="clear()" *ngIf="clearVisible"><i
-            class="icon-remove-circle align-middle"></i></button>
+            class="material-icons align-middle">remove-circle</i></button>
 </div>

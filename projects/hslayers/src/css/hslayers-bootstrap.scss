@@ -78,6 +78,8 @@ $list-group-item-padding-x: 1.25rem;
     src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
   }
 
+  // https://fonts.gstatic.com/s/materialiconsoutlined/v109/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUce.woff2
+
   .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -205,6 +207,10 @@ $list-group-item-padding-x: 1.25rem;
 
   .icon-primary {
     color: $primary;
+  }
+
+  .icon-smaller {
+    font-size: 1.2rem;
   }
 
   @-webkit-keyframes spin {

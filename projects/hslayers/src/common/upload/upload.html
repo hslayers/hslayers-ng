@@ -7,7 +7,8 @@
     <label class="dropzone-label">
         <input #fileInput type="file" style="position:fixed" [accept]="acceptedFormats" [id]="uploader"
             class="inputfile" (change)="emitHandleUpload($event.target.files, false)" multiple>
-        <label [for]="uploader" class="p-2 rounded d-flex align-items-center"> <i class="icon-uploadalt pe-2"></i>
+        <label [for]="uploader" class="p-2 rounded d-flex align-items-center"> <i
+                class="material-icons pe-2">file_upload</i>
             {{'ADDLAYERS.Vector.chooseFiles' | translateHs }}</label>
     </label>
 
