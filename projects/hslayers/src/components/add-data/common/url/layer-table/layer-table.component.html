@@ -54,7 +54,7 @@
                     <button *ngIf="type === 'arcgis' && data.serviceExpanded" type="button"
                         class="btn btn-sm px-2 border-0 d-flex" (click)="collapseServices()"
                         [title]="'COMMON.back' | translateHs">
-                        <i class="glyphicon icon-chevron-left text-black-50"></i>
+                        <i class="glyphicon material-icons text-black-50">chevron_left</i>
                         <span class="text-black-50 fw-bold">{{'COMMON.back' | translateHs}}</span>
                     </button>
                 </div>
@@ -68,7 +68,7 @@
                     <td (click)="expandService(service)" data-toggle="tooltip"
                         [title]="'ADDDATA.requestServiceLayers' | translateHs " style="cursor: pointer;">
                         {{service.name}}
-                        <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
+                        <span style="font-size: x-small;"><i class="material-icons">chevron_right</i></span>
                     </td>
                 </tr>
             </tbody>

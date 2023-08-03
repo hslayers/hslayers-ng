@@ -24,9 +24,9 @@
                     style="flex-grow: 100; align-self: center;"
                     (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="me-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer)"></span>
-                    <span class="me-1"
-                        [ngClass]="{'icon-chevron-right':hsLayerManagerService.currentLayer === layer, 'icon-chevron-down': hsLayerManagerService.currentLayer !== layer}"
-                        [hidden]="!layerLoaded(layer)"></span>
+                    <span class="me-1 material-icons" [hidden]="!layerLoaded(layer)">
+                        {{hsLayerManagerService.currentLayer === layer ? 'chevron_right' : 'expand_more'}}
+                    </span>
                 </div>
 
                 <div class="p-0 " [hidden]="layerValid(layer)">

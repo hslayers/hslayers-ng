@@ -21,9 +21,9 @@
                                     <i class="icon-trash text-secondary pe-3 " role="button"
                                         (click)="$event.stopPropagation();removeService(service)"
                                         [title]="'COMMON.delete' | translateHs"></i>
-                                    <i class="text-black" role="button"
-                                        [ngClass]=" acc.isExpanded(service.id)  ? 'icon-chevron-down' : 'icon-chevron-right' "
-                                        [title]="'COMMON.toggle' | translateHs"></i>
+                                    <i class="text-black material-icons" role="button"
+                                        [title]="'COMMON.toggle' | translateHs">{{ acc.isExpanded(service.id) ?
+                                        'expand_more' : 'chevron_right'}}</i>
                                 </span>
                             </button>
                             <ng-template #loadingLayers>

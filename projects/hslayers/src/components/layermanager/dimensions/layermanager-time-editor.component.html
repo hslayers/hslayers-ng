@@ -1,6 +1,6 @@
 <div class="p-0 flex-grow-1">
   <button type="button" class="btn btn-sm text-info border-0" (click)="previousTime()" [disabled]="!hasPreviousTime">
-    <i class="glyphicon icon-chevron-left"></i>
+    <i class="glyphicon material-icons">chevron_left</i>
   </button>
   <button class="hs-lm-time-editor-currentTime btn btn-sm text-info px-0"
     (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
@@ -28,7 +28,7 @@
     </option>
   </select>
   <button type="button" class="btn btn-sm text-info border-0" (click)="followingTime()" [disabled]="!hasFollowingTime">
-    <i class="glyphicon icon-chevron-right"></i>
+    <i class="glyphicon material-icons ">chevron_right</i>
   </button>
 </div>
 <div class="p-0">

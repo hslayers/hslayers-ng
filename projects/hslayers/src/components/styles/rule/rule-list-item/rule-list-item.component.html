@@ -13,7 +13,7 @@
     </div>
   </div>
   <div>
-    <span class="glyphicon m-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+    <span class="glyphicon m-2 material-icons" [ngClass]="ruleVisible ? 'chevron_right' : 'expand_more'"></span>
     <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
       [title]="'STYLER.removeRule' | translateHs  ">
       <i class="icon-trash"></i>

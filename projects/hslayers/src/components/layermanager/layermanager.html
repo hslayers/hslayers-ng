@@ -142,8 +142,7 @@
                     *ngIf="hsLayerManagerService.data.folders.sub_folders.length > 1"
                     (click)="value.visible = !value.visible">
                     <span>{{value.name | translateHs : {module: 'LAYERMANAGER'} }}&nbsp;</span>
-                    <span class="glyphicon"
-                        [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+                    <span class="glyphicon material-icons">{{value.visible ? 'chevron_right' : 'expand_more'}}</span>
                 </li>
                 <div [hidden]="!value.visible">
                     <li [hidden]="!(value.sub_folders.length > 0)">

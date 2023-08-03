@@ -5,8 +5,9 @@
     <span class="hs-sidebar-item list-group-item border-top-0"
         *ngIf="HsLayoutService.sidebarToggleable && {position: HsLayoutService.sidebarPosition | async} as sidebar"
         (click)="toggleSidebar()">
-        <i class="menu-icon"
-            [ngClass]="HsLayoutService.sidebarExpanded ? (sidebar.position === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (sidebar.position === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
+        <i class="menu-icon material-icons">{{HsLayoutService.sidebarExpanded ?
+            (sidebar.position === 'left' ? 'chevron_left' : 'chevron_right') :
+            (sidebar.position === 'left' ? 'chevron_right' : 'chevron_left')}}</i>
     </span><!-- TODO: Remove function call from template -->
 
     <span *ngFor="let button of buttons" class="hs-sidebar-item list-group-item h-100 d-flex align-items-center"
@@ -14,7 +15,7 @@
         [ngClass]="{'active': HsLayoutService.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
         [title]="button.description | translateHs">
         <!-- TODO: Remove function call from template -->
-        <i *ngIf="button.icon" class="menu-icon material-symbols-outlined" data-toggle="tooltip" data-container="body"
+        <i *ngIf="button.icon" class="menu-icon material-icons" data-toggle="tooltip" data-container="body"
             data-placement="auto">{{button.icon}}</i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
             [title]="button.description | translateHs ">{{button.content()}}</span>

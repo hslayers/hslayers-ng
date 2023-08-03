@@ -9,7 +9,6 @@
 //     font-size: 85%
 //   }
 // }
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,1,0');
 @import "ol/ol";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
 @import "bootstrap/scss/functions";
@@ -70,6 +69,33 @@ $list-group-item-padding-x: 1.25rem;
 
   // Utilities
   @import "bootstrap/scss/utilities/api";
+
+  /* fallback */
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+  }
+
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+
+  }
+
 
   @for $i from 0 through 20 {
     &:not(.hs-mobile-view) .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {

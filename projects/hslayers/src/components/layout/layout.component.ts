@@ -162,7 +162,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
    */
   resizePanelSpaceWrapper(e: MouseEvent): void {
     const target: HTMLSpanElement = e.target as HTMLSpanElement;
-    target.classList.toggle('icon-chevron-down');
 
     const contentWrapper = this.HsLayoutService.contentWrapper;
     const panelSpaceWrapper = contentWrapper.querySelector(
@@ -171,6 +170,9 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     if (panelSpaceWrapper) {
       panelSpaceWrapper.classList.toggle('expanded');
     }
+    target.innerHTML = panelSpaceWrapper.classList.contains('expanded')
+      ? 'expand_more'
+      : 'expand_less';
     setTimeout(() => {
       this.HsEventBusService.updateMapSize.next();
     }, 500);

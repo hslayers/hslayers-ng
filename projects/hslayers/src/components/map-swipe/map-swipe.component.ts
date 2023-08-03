@@ -54,7 +54,7 @@ export class HsMapSwipeComponent
       fits: true,
       title: 'PANEL_HEADER.MAP_SWIPE',
       description: 'SIDEBAR.descriptions.MAP_SWIPE',
-      icon: 'view_column_2',
+      icon: 'splitscreen',
     });
   }
 

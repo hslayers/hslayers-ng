@@ -21,8 +21,7 @@ import {servicesSupportedByUrl} from './url/services-supported.const';
 })
 export class HsAddDataComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   private end = new Subject<void>();
 
   constructor(
@@ -34,7 +33,7 @@ export class HsAddDataComponent
     public hsAddDataUrlService: HsAddDataUrlService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsSidebarService: HsSidebarService,
-    private hsDialogContainerService: HsDialogContainerService
+    private hsDialogContainerService: HsDialogContainerService,
   ) {
     super(hsLayoutService);
   }
@@ -59,10 +58,10 @@ export class HsAddDataComponent
       fits: true,
       title: 'PANEL_HEADER.ADDLAYERS',
       description: 'SIDEBAR.descriptions.ADDLAYERS',
-      icon: 'database',
+      icon: 'add_photo_alternate',
     });
     servicesSupportedByUrl.forEach((type) =>
-      this.connectServiceFromUrlParam(type as AddDataUrlType)
+      this.connectServiceFromUrlParam(type as AddDataUrlType),
     );
 
     this.hsAddDataUrlService.addDataCapsParsingError
@@ -73,19 +72,19 @@ export class HsAddDataComponent
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'COMMON',
             'Authentication failed. Login to the catalogue.',
-            undefined
+            undefined,
           );
         } else if (error.includes('property')) {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             'serviceTypeNotMatching',
-            undefined
+            undefined,
           );
         } else {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             error,
-            undefined
+            undefined,
           );
         }
         this.hsDialogContainerService.create(HsGetCapabilitiesErrorComponent, {
