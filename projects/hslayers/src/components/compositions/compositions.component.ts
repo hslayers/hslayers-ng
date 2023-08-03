@@ -58,7 +58,7 @@ export class HsCompositionsComponent
       fits: true,
       title: 'PANEL_HEADER.MAPCOMPOSITIONS',
       description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
-      icon: 'icon-map',
+      icon: 'map',
     });
     this.loadFilteredCompositions = () =>
       this.hsCompositionsCatalogueService.loadFilteredCompositions();

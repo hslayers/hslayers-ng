@@ -8,7 +8,7 @@
         d-flex
         align-items-center
         mw-100
-      " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
+     " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
       [attr.aria-expanded]="layersExpanded">
       <div class="text-truncate" *ngIf="selectedwrapper !== undefined">
         {{selectedwrapper.title | translateHs : {module: 'LAYERS'} }}

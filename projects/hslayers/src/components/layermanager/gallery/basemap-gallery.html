@@ -3,7 +3,7 @@
         [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
         <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" style="font-size: 1rem"
             aria-haspopup="true">
-            <i class="glyphicon icon-th-large x-large p-0" style="line-height: inherit;"></i>
+            <i class="glyphicon material-icons x-large p-0" style="line-height: inherit;">collections</i>
         </button>
         <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
             <div *ngFor="let layer of hsLayerManagerService.data.baselayers" [attr.data-cy]="layer.title"
@@ -11,7 +11,7 @@
                 <div style="position:absolute;top:5px; right:5px;z-index:5"
                     [ngClass]="layer.galleryMiniMenu ? 'text-white' : 'text-primary'" *ngIf="layer.active"
                     (click)="$event.preventDefault();toggleMiniMenu(layer)">
-                    <span class="glyphicon icon-menu icon-small"></span>
+                    <span class="glyphicon material-icons icon-small">menu</span>
                 </div>
                 <div class="hs-miniMenu" [hidden]="!(layer.galleryMiniMenu === true && layer.active)"
                     [ngStyle]="{'position':'absolute'}" [ngClass]="{'expanded': hsLayerManagerService.menuExpanded}">

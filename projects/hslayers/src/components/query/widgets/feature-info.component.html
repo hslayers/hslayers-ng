@@ -5,7 +5,7 @@
     <!-- TODO: Remove function call from template -->
     <a class="p-1" *ngIf="isFeatureRemovable(feature) && type" (click)="removeFeature(feature)" data-toggle="tooltip"
       [title]="'QUERY.featurePopup.' + type | translateHs">
-      <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+      <i class="material-icons" style="color: rgb(228, 99, 99)">remove-circle</i>
     </a>
   </div>
 </ng-template>

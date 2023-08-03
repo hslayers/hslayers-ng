@@ -9,7 +9,7 @@
       </div>
       <hs-add-filter-button (clicks)="add($event.kind, true)"></hs-add-filter-button>
       <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter'" (click)="remove()">
-        <span class="icon-trash"></span>
+        <span class="material-icons">delete</span>
       </button>
     </div>
     <div class="d-flex flex-row" *ngFor="let item of rule.filter; let i = index">

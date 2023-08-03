@@ -1,13 +1,13 @@
 <div>
 
   <div class="form-floating mb-3">
-    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translateHs  " class="form-control" name="name"
+    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translateHs " class="form-control" name="name"
       [(ngModel)]="data.name" (ngModelChange)="data.title = data.name" />
     <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translateHs }}</label>
 
   </div>
   <div class="form-floating mb-3">
-    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs  "
+    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs "
       name="abstract" [(ngModel)]="data.abstract">
     </textarea>
     <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs }}</label>
@@ -36,7 +36,8 @@
           (change)="read({fileList: $event.target.files, uploader: 'style', dropped: false})" id="style">
         <label for="style" class="p-2 rounded" style="font-size: 1em;"
           [ngClass]="data.serializedStyle ? 'bg-success' : 'bg-primary'">
-          <i class="icon-uploadalt p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |translateHs}}</label>
+          <i class="material-icons p-2">file_upload</i>{{data.serializedStyle?.name ?? allowedStyles.title
+          |translateHs}}</label>
       </label>
     </div>
   </ng-container>

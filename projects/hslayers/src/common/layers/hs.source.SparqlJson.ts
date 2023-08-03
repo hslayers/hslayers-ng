@@ -309,7 +309,7 @@ export class SparqlJson extends Vector<Geometry> {
       /* Do NOT break lines in the POLYGON() section! */
       s_extent = encodeURIComponent(
         `FILTER(${geof}(
-              "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
+             "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
             ?${geomAttribute}
             )).`
       );

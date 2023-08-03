@@ -44,7 +44,7 @@ export class HsTripPlannerComponent
       fits: true,
       title: 'PANEL_HEADER.TRIP_PLANNER',
       description: 'SIDEBAR.descriptions.TRIP_PLANNER',
-      icon: 'icon-sextant',
+      icon: 'sextant',
     });
     if (this.HsConfig.default_layers === undefined) {
       this.HsConfig.default_layers = [];

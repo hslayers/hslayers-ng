@@ -24,7 +24,7 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
     HsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
     public hsSidebarService: HsSidebarService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     super(HsLayoutService);
   }
@@ -67,7 +67,7 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
       fits: true,
       title: 'PANEL_HEADER.PERMALINK',
       description: 'SIDEBAR.descriptions.PERMALINK',
-      icon: 'icon-share-alt',
+      icon: 'share',
     });
     this.app = this.hsConfig.id;
   }

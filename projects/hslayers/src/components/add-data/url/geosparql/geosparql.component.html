@@ -10,7 +10,7 @@
     <hr class="mb-3">
     <div class="form-floating mb-3">
       <textarea class="form-control" id='hs-ows-abstract'
-        [placeholder]="'ADDLAYERS.GEOSPARQL.fillInQuery' | translateHs  " name="query" [(ngModel)]="data.query"
+        [placeholder]="'ADDLAYERS.GEOSPARQL.fillInQuery' | translateHs " name="query" [(ngModel)]="data.query"
         (input)="findParamsInQuery()">
         </textarea>
       <label for="query" class="capabilities_label control-label">{{'COMMON.query' | translateHs }}</label>
@@ -50,14 +50,14 @@
     <hs-new-layer-form [data]="data"></hs-new-layer-form>
 
     <button class="btn btn-primary w-100 mt-2" [disabled]="!(data.geomProperty && data.idProperty && data.title)"
-      (click)="add()"><i class="icon-plus"></i>
+      (click)="add()"><i class="material-icons">add</i>
       {{'COMMON.add' | translateHs }}
     </button>
   </div>
 
   <!--
     <button class="btn btn-primary w-100 mt-2" [disabled]="!data.geomProperty" (click)="hsUrlGeoSparqlService.runQuery()"><i
-        class="icon-link"></i>
+        class="material-icons">link</i>
       {{'ADDLAYERS.GEOSPARQL.sendQuery' | translateHs }}
     </button>
   -->

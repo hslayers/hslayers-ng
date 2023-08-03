@@ -48,7 +48,7 @@ export class HsSearchComponent
         fits: true,
         title: 'PANEL_HEADER.SEARCH',
         description: 'SIDEBAR.descriptions.SEARCH',
-        icon: 'icon-search',
+        icon: 'search',
       },
       
     );

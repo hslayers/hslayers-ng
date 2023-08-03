@@ -1,7 +1,7 @@
 <div [ngStyle]="dialogStyle" class="hs-sensor-unit-dialog modal in" tabindex="-1" role="dialog" aria-hidden="true"
     style="position: fixed;
     bottom: 5px; top: auto;;
-    ">
+   ">
     <div class="modal-dialog modal-lg" style="margin-right: 30px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
@@ -60,7 +60,7 @@
                                     [placeholder]="'COMMON.from' | translateHs" #d="ngbDatepicker"
                                     [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
                                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
-                                        class="icon-calendarthree"></i></button>
+                                        class="material-icons">calendar_month</i></button>
                             </div>
                         </div>
                         <div class="m-1">
@@ -69,7 +69,7 @@
                                     [placeholder]="'COMMON.until' | translateHs" #d2="ngbDatepicker"
                                     [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
                                 <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
-                                        class="icon-calendarthree"></i></button>
+                                        class="material-icons">calendar_month</i></button>
                             </div>
                         </div>
                     </div>

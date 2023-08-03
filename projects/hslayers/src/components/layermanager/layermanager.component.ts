@@ -216,7 +216,7 @@ export class HsLayerManagerComponent
       fits: true,
       title: 'PANEL_HEADER.LM',
       description: 'SIDEBAR.descriptions.LM',
-      icon: 'icon-layers',
+      icon: 'layers',
     });
     this.layerTooltipDelay = this.hsConfig.layerTooltipDelay;
     this.layerlistVisible = true;

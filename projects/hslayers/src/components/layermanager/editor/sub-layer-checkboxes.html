@@ -26,7 +26,7 @@
                         [ngClass]="{'grayed': HsLayerManagerService.currentResolution >= subLayer.maxResolution}">
                         {{subLayer.Title || subLayer.Name}}
                         <button type="button" class="btn btn-sm p-0" style="font-size: 0.6rem;">
-                            <i [ngClass]="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i>
+                            <i class="material-icons">{{expanded ? 'expand_more': 'chevron_right'}}</i>
                         </button>
                     </div>
                 </div>

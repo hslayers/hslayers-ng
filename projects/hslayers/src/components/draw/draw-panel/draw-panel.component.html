@@ -45,7 +45,7 @@
                             <div class="d-flex justify-content-between">
                                 {{'DRAW.serverLayers' | translateHs }}
                                 <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
-                                    <i class="icon-settingsthree-gears"></i>
+                                    <i class="material-icons icon-smaller ">settings</i>
                                 </span>
                             </div>
                             <div class="p-0 input-group-text border-0 justify-content-center bg-white"
@@ -66,7 +66,7 @@
             <button type="button" *ngIf="HsDrawService.tmpDrawLayer"
                 class="btn btn-light btn-outline-primary border-0 btn-sm" (click)="HsDrawService.saveDrawingLayer()"
                 [title]="'DRAW.saveDrawingToLayer' | translateHs ">
-                <i class="glyphicon icon-save-floppy"></i>
+                <i class="glyphicon material-icons">save</i>
             </button>
             <ng-container *ngIf="HsDrawService.hasSomeDrawables">
                 <ng-container *ngIf="HsDrawService.moreThenOneDrawable === true; else deleteButton">
@@ -74,7 +74,7 @@
                         #removeLayersDropdown="ngbDropdown">
                         <button type="button" ngbDropdownToggle class="btn btn-light  btn-outline-danger btn-sm"
                             [disabled]="!HsDrawService.hasSomeDrawables" style="border: none !important;">
-                            <i class="glyphicon icon-trash"></i>
+                            <i class="glyphicon material-icons">delete</i>
                         </button>
                         <div ngbDropdownMenu class="flex-column px-1 py-2">
                             <div class="d-flex align-items-center w-100 flex-column">
@@ -93,7 +93,7 @@
                     <button type="button" class="btn btn-light  btn-outline-danger btn-sm"
                         (click)="HsRemoveLayerDialogService.removeLayer()" [title]="'COMMON.removeLayer' | translateHs "
                         style="border: none !important;">
-                        <i class="glyphicon icon-trash"></i>
+                        <i class="glyphicon material-icons">delete</i>
                     </button>
                 </ng-template>
             </ng-container>
@@ -107,28 +107,28 @@
     [ngClass]="sidebar.position === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Point' }"
         (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translateHs ">
-        <i class="icon-pin"></i>
+        <i class="material-icons">push_pin</i>
     </button>
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Polygon' }"
         (click)="setType('Polygon')" data-toggle="tooltip" [title]="'COMMON.polygon' | translateHs ">
-        <i class="icon-polygonlasso"></i>
+        <i class="material-icons">hexagon</i>
     </button>
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='LineString' }"
         (click)="setType('LineString')" data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
-        <i class="icon-line"></i>
+        <i class="material-icons">show_chart</i>
     </button>
     <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Circle' }"
         (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translateHs ">
-        <i class="icon-circleloaderfull"></i>
+        <i class="material-icons">circle</i>
     </button>
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
         #selectionTypeDropdown="ngbDropdown">
         <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"
             [title]="'STYLER.selection' | translateHs " class="btn btn-light btn-outline-primary">
-            <i class="icon-cursor"></i>
+            <i class="material-icons">touch_app</i>
         </button>
         <div ngbDropdownMenu style="white-space: nowrap;">
-            <div class="flex-column px-1 py-2">
+            <div class="flex-column px-1 py-2 d-flex">
                 <div class="d-flex flex-row justify-content-around align-items-baseline">
                     <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
                         translateHs }}</label>

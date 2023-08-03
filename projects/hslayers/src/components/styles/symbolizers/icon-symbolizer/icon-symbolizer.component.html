@@ -14,7 +14,7 @@
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translateHs }}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs ">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select form-select-sm" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -41,7 +41,7 @@
 
   <div class="d-flex flex-row" *ngIf="symbolizer.offset !== undefined">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchorX' | translateHs }}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs ">!</span>
     <div class="p-1 w-75">
       <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.offset[0]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
@@ -51,7 +51,7 @@
 
   <div class="d-flex flex-row" *ngIf="symbolizer.offset !== undefined">
     <div class="p-1 w-25 mt-2">{{'STYLER.anchorY' | translateHs }}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs ">!</span>
     <div class="p-1 w-75">
       <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.offset[1]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />

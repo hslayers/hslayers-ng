@@ -85,7 +85,7 @@ export class HsMeasureComponent
         fits: true,
         title: 'PANEL_HEADER.MEASURE',
         description: 'SIDEBAR.descriptions.MEASURE',
-        icon: 'icon-design',
+        icon: 'design',
         condition: true,
       });
     }

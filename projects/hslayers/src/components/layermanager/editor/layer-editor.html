@@ -16,12 +16,12 @@
                 <button class="btn btn-sm btn-outline-primary  w-50"
                     (click)="HsLayerManagerService.setGreyscale(currentLayer)"
                     [ngClass]="{'active' : !getGreyscale(currentLayer.layer)}" data-toggle="tooltip"
-                    [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs  ">{{'COMMON.color' |
+                    [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs ">{{'COMMON.color' |
                     translateHs }}</button>
                 <button class="btn btn-sm btn-outline-primary  w-50"
                     (click)="HsLayerManagerService.setGreyscale(currentLayer)"
                     [ngClass]="{'active' : getGreyscale(currentLayer.layer)}" data-toggle="tooltip"
-                    [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs  ">{{'LAYERMANAGER.baseMapGallery.greyscale'
+                    [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs ">{{'LAYERMANAGER.baseMapGallery.greyscale'
                     | translateHs }}</button>
             </div>
         </div>
@@ -32,29 +32,29 @@
             <div class="input-group">
                 <input type="text" class="form-control" [(ngModel)]="title" name="title">
                 <button [hidden]="!titleUnsaved()" (click)="saveTitle()" class="btn btn-outline-secondary"
-                    type="button"><i class="icon-save-floppy"></i></button>
+                    type="button"><i class="material-icons">save</i></button>
                 <!-- TODO: Remove function call from template -->
             </div>
         </div>
-        <div class="btn-group" role="group" [attr.aria-label]="'LAYERMANAGER.editorButtons' | translateHs  ">
+        <div class="btn-group" role="group" [attr.aria-label]="'LAYERMANAGER.editorButtons' | translateHs ">
             <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()"
-                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs  ">
-                <!-- TODO: Remove function call from template --><i class="icon-search"></i>
+                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs ">
+                <!-- TODO: Remove function call from template --><i class="material-icons">search</i>
             </button>
             <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()"
-                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs  "><i
-                    class="icon-brush"></i></button><!-- TODO: Remove function call from template -->
+                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs "><i
+                    class="material-icons">brush</i></button><!-- TODO: Remove function call from template -->
             <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
-                [title]="'COMMON.renameLayer' | translateHs  "><i class="icon-textfield"></i></button>
+                [title]="'COMMON.renameLayer' | translateHs "><i class="material-icons">text_fields</i></button>
             <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip"
                 *ngIf="HsLayerEditorService.isLayerVectorLayer(currentLayer.layer)"
-                [title]="'LAYERMANAGER.layerEditor.savegeojson' | translateHs  ">
-                <!-- TODO: Remove function call from template --><i class="icon-save-floppy"></i>
+                [title]="'LAYERMANAGER.layerEditor.savegeojson' | translateHs ">
+                <!-- TODO: Remove function call from template --><i class="material-icons">save</i>
             </button>
             <button class="btn btn-primary" (click)="copyLayer()" data-toggle="tooltip"
-                [title]="'COMMON.copyLayer' | translateHs  "><i class="icon-copy"></i></button>
+                [title]="'COMMON.copyLayer' | translateHs "><i class="material-icons">content_copy</i></button>
             <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip"
-                [title]="'COMMON.removeLayer' | translateHs  "><i class="icon-trash"></i></button>
+                [title]="'COMMON.removeLayer' | translateHs "><i class="material-icons">delete</i></button>
             <!-- TODO: Remove function call from template -->
         </div>
     </div>

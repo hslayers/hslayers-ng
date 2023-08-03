@@ -3,7 +3,7 @@
         <extra-buttons>
             <button class="but-title-sm hs-extra-buttons mt-1" (click)="setToDefault()"
                 [title]="'COMMON.resetToDefault' | translateHs ">
-                <i class="glyphicon icon-fatredo"></i>
+                <i class="glyphicon material-icons">redo</i>
             </button>
         </extra-buttons>
     </hs-panel-header>
@@ -84,7 +84,7 @@
                 <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
                     translateHs }}</button>
                 <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
-                    [title]="'COMMON.downloadAsPng' | translateHs"><i class="icon-download"></i></button>
+                    [title]="'COMMON.downloadAsPng' | translateHs"><i class="material-icons">download</i></button>
             </div>
             <div class="d-flex justify-content-center btn-group w-75 m-auto" *ngIf="isLoading()">
                 <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs

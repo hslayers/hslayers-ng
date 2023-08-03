@@ -20,8 +20,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   endpoint: HsEndpoint = null;
   endpoints: HsEndpoint[];
   isAuthenticated = false;
@@ -38,7 +37,7 @@ export class HsSaveMapComponent
     private hsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
     private hsLanguageService: HsLanguageService,
     private hsSidebarService: HsSidebarService,
-    private hsSaveMapService: HsSaveMapService
+    private hsSaveMapService: HsSaveMapService,
   ) {
     super(hsLayoutService);
   }
@@ -51,7 +50,7 @@ export class HsSaveMapComponent
       fits: true,
       title: 'PANEL_HEADER.SAVECOMPOSITION',
       description: 'SIDEBAR.descriptions.SAVECOMPOSITION',
-      icon: 'icon-save-floppy',
+      icon: 'save',
     });
 
     this.hsCommonEndpointsService.endpointsFilled
@@ -91,7 +90,7 @@ export class HsSaveMapComponent
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
           const found = this.hsCommonEndpointsService.endpoints.filter((ep) =>
-            ep.type.includes(openedType)
+            ep.type.includes(openedType),
           );
           if (found.length > 0) {
             this.hsSaveMapManagerService.selectEndpoint(found[0]);

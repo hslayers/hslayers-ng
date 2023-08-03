@@ -3,7 +3,7 @@
   <!-- TODO: Remove function call from template -->
   <button *ngIf="hsAddDataCommonFileService.isAuthenticated()" class="btn btn-primary w-100" [disabled]="!canAdd()"
     (click)="add()">
-    <i class="icon-plus" [hidden]="hsAddDataCommonFileService.loadingToLayman"></i>
+    <i class="material-icons" [hidden]="hsAddDataCommonFileService.loadingToLayman">add</i>
     <span class="hs-loader" [hidden]="!hsAddDataCommonFileService.loadingToLayman"></span>
     <span [hidden]="hsAddDataCommonFileService.loadingToLayman">{{'COMMON.add' | translateHs }}</span>
     <span

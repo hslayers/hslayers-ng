@@ -5,21 +5,21 @@
             <extra-buttons class="d-flex align-items-center">
                 <button class="but-title-sm hs-extra-buttons" (click)="reload()"
                     [title]="'COMMON.reload' | translateHs">
-                    <i class="glyphicon icon-fatredo"></i>
+                    <i class="glyphicon material-icons">refresh</i>
                 </button>
                 <button class="but-title-sm hs-extra-buttons" [title]="'PANEL_HEADER.SAVECOMPOSITION'|translateHs"
                     (click)="openSaveMapPanel()"
                     [hidden]="!saveMapAvailable()"><!-- TODO: Remove function call from template -->
-                    <span class="icon-save-floppy"></span>
+                    <span class="material-icons">save</span>
                 </button>
                 <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="padding: 1px 6px;"
                     [title]="'COMPOSITIONS.import' | translateHs">
-                    <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)"
+                    <span class="material-icons">upload</span><input type="file" (change)="handleFileSelect($event)"
                         accept=".json" style="display: none;">
                 </label>
                 <button class="but-title-sm hs-extra-buttons" [title]="'COMPOSITIONS.addByAddress'|translateHs"
                     (click)="changeUrlButtonVisible()">
-                    <span class="icon-plus"></span>
+                    <span class="material-icons">add</span>
                 </button>
             </extra-buttons>
         </hs-panel-header>
@@ -28,7 +28,7 @@
                 <input type="text" class="form-control" [placeholder]="'COMPOSITIONS.Address'|translateHs"
                     [(ngModel)]="urlToAdd" [ngModelOptions]="{standalone: true}">
                 <button type="button" class="btn btn-secondary" (click)="addCompositionUrl(urlToAdd)"><i
-                        class="icon-link"></i></button>
+                        class="material-icons">link</i></button>
             </div>
         </div>
         <div class="mx-3 ps-1 d-flex justify-content-between">
@@ -37,7 +37,7 @@
                     name="search" [(ngModel)]="hsCompositionsCatalogueService.data.query.title"
                     (ngModelChange)="loadFilteredCompositions()">
                 <button class="input-group-text text-secondary border-start-0" (click)="loadFilteredCompositions()">
-                    <i class="icon-search icon-primary"></i>
+                    <i class="material-icons material-icons icon-primary">search</i>
                 </button>
             </div>
             <hs-layman-current-user [endpoint]="ctx.layman"><!-- TODO: Remove function call from template -->

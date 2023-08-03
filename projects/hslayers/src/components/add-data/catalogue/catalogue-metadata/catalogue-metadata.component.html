@@ -22,7 +22,7 @@
                     [href]='hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer)' data-toggle="tooltip"
                     title="GeoDCAT-AP" target="_blank"
                     [hidden]='selectedDS.type!=="micka" || hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer) === "#"'>
-                    <i class="icon-share-alt"></i> RDF
+                    <i class="material-icons">share</i> RDF
                 </a><!-- TODO: Remove function call from template -->
                 <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
                     (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' |
@@ -30,7 +30,8 @@
                 <div *ngIf="selectedDS.type.includes('layman')">
                     <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.type"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
-                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
+                        <span class="material-icons">add</span><span>{{'DATASOURCE_SELECTOR.addToMapAs' |
+                            translateHs }}
                             {{type}}</span>
                     </button>
                 </div>

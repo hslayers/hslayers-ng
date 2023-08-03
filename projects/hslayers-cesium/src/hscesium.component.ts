@@ -47,7 +47,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
     this.HsSidebarService.addButton({
       title: '3D/2D',
       description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
-      icon: 'icon-globealt',
+      icon: 'globealt',
       click: () => this.toggleCesiumMap(),
     });
 

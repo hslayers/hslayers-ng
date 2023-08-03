@@ -3,14 +3,14 @@
         <input type="text" class="form-control"
             [ngStyle]="{'border-color': hsSaveMapManagerService.missingName ? '#ff0000' : '#ced4da'}"
             name="hs-save-map-name" [(ngModel)]="hsSaveMapManagerService.compoData.name" (ngModelChange)="nameChanged()"
-            [placeholder]="'COMMON.name' | translateHs  ">
+            [placeholder]="'COMMON.name' | translateHs ">
         <label for="hs-save-map-name">{{'COMMON.name' | translateHs }} *</label>
         <span class="d-flex justify-content-end text-danger"
             *ngIf="hsSaveMapManagerService.missingName">{{'COMMON.required' |
             translateHs }}</span>
     </div>
     <div class="form-floating mb-2">
-        <textarea class="form-control" name="hs-save-map-abstract" [placeholder]="'COMMON.abstract' | translateHs  "
+        <textarea class="form-control" name="hs-save-map-abstract" [placeholder]="'COMMON.abstract' | translateHs "
             [ngStyle]="{'border-color': hsSaveMapManagerService.missingAbstract ? '#ff0000' : '#ced4da'}"
             [(ngModel)]="hsSaveMapManagerService.compoData.abstract" (ngModelChange)="abstractChanged()"></textarea>
         <label for="hs-save-map-abstract">{{'COMMON.abstract' | translateHs }} *</label>
@@ -20,7 +20,7 @@
     </div>
     <div class="form-floating mb-2">
         <input type="text" class="form-control" name="hs-save-map-keywords"
-            [placeholder]="'COMMON.keywords' | translateHs  " [(ngModel)]="hsSaveMapManagerService.compoData.keywords">
+            [placeholder]="'COMMON.keywords' | translateHs " [(ngModel)]="hsSaveMapManagerService.compoData.keywords">
         <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs }}</label>
     </div>
     <label class="form-group">{{'COMMON.thumbnail' | translateHs }}
@@ -65,25 +65,25 @@
                 <div class="form-floating px-0">
                     <input type="text" class="form-control" id="floatingEast" [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="hsSaveMapManagerService.compoData.bbox.east"
-                        [title]="'COMMON.east' | translateHs  ">
+                        [title]="'COMMON.east' | translateHs ">
                     <label for="floatingEast">{{'COMMON.east' | translateHs }}</label>
                 </div>
                 <div class="form-floating px-0">
                     <input type="text" class="form-control" id="floatingSouth" [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="hsSaveMapManagerService.compoData.bbox.south"
-                        [title]="'COMMON.south' | translateHs  ">
+                        [title]="'COMMON.south' | translateHs ">
                     <label for="floatingSouth">{{'COMMON.south' | translateHs }}</label>
                 </div>
                 <div class="form-floating px-0">
                     <input type="text" class="form-control" id="floatingWest" [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="hsSaveMapManagerService.compoData.bbox.west"
-                        [title]="'COMMON.west' | translateHs  ">
+                        [title]="'COMMON.west' | translateHs ">
                     <label for="floatingWest">{{'COMMON.west' | translateHs }}</label>
                 </div>
                 <div class="form-floating px-0">
                     <input type="text" class="form-control" id="floatingNorth" [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="hsSaveMapManagerService.compoData.bbox.north"
-                        [title]="'COMMON.north' | translateHs  ">
+                        [title]="'COMMON.north' | translateHs ">
                     <label for="floatingNorth">{{'COMMON.north' | translateHs }}</label>
                 </div>
             </div>
@@ -118,64 +118,64 @@
     <div class="form">
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.name"
-                name="hs-savemap-userdata-name" [placeholder]="'SAVECOMPOSITION.form.person' | translateHs  ">
+                name="hs-savemap-userdata-name" [placeholder]="'SAVECOMPOSITION.form.person' | translateHs ">
             <label for="hs-savemap-userdata-name">{{'SAVECOMPOSITION.form.person' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.organization"
                 name="hs-savemap-userdata-organization"
-                [placeholder]="'SAVECOMPOSITION.form.organization' | translateHs  ">
+                [placeholder]="'SAVECOMPOSITION.form.organization' | translateHs ">
             <label for="hs-savemap-userdata-porganizationosition"> {{'SAVECOMPOSITION.form.organization' |
                 translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.position"
-                name="hs-savemap-userdata-position" [placeholder]="'SAVECOMPOSITION.form.position' | translateHs  ">
+                name="hs-savemap-userdata-position" [placeholder]="'SAVECOMPOSITION.form.position' | translateHs ">
             <label for="hs-savemap-userdata-position">{{'SAVECOMPOSITION.form.position' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.address"
-                name="hs-savemap-userdata-address" [placeholder]="'SAVECOMPOSITION.form.address' | translateHs  ">
+                name="hs-savemap-userdata-address" [placeholder]="'SAVECOMPOSITION.form.address' | translateHs ">
             <label for="hs-savemap-userdata-address">{{'SAVECOMPOSITION.form.address' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.city"
-                name="hs-savemap-userdata-city" [placeholder]="'SAVECOMPOSITION.form.city' | translateHs  ">
+                name="hs-savemap-userdata-city" [placeholder]="'SAVECOMPOSITION.form.city' | translateHs ">
             <label for="hs-savemap-userdata-city">{{'SAVECOMPOSITION.form.city' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.state"
-                name="hs-savemap-userdata-state" [placeholder]="'SAVECOMPOSITION.form.state' | translateHs  ">
+                name="hs-savemap-userdata-state" [placeholder]="'SAVECOMPOSITION.form.state' | translateHs ">
             <label for="hs-savemap-userdata-state">{{'SAVECOMPOSITION.form.state' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.postalCode"
-                name="hs-savemap-userdata-postalcode" [placeholder]="'SAVECOMPOSITION.form.postalCode' | translateHs  ">
+                name="hs-savemap-userdata-postalcode" [placeholder]="'SAVECOMPOSITION.form.postalCode' | translateHs ">
             <label for="hs-savemap-userdata-postalcode">{{'SAVECOMPOSITION.form.postalCode' | translateHs
                 }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.country"
-                name="hs-savemap-userdata-country" [placeholder]="'SAVECOMPOSITION.form.country' | translateHs  ">
+                name="hs-savemap-userdata-country" [placeholder]="'SAVECOMPOSITION.form.country' | translateHs ">
             <label for="hs-savemap-userdata-country">{{'SAVECOMPOSITION.form.country' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.phone"
-                name="hs-savemap-userdata-phone" [placeholder]="'SAVECOMPOSITION.form.phone' | translateHs  ">
+                name="hs-savemap-userdata-phone" [placeholder]="'SAVECOMPOSITION.form.phone' | translateHs ">
             <label for="hs-savemap-userdata-phone">{{'SAVECOMPOSITION.form.phone' | translateHs }}</label>
         </div>
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control" [(ngModel)]="hsSaveMapManagerService.userData.email"
-                name="hs-savemap-userdata-email" [placeholder]="'SAVECOMPOSITION.form.email' | translateHs  ">
+                name="hs-savemap-userdata-email" [placeholder]="'SAVECOMPOSITION.form.email' | translateHs ">
             <label for="hs-savemap-userdata-email"> {{'SAVECOMPOSITION.form.email' | translateHs }}</label>
         </div>
     </div>

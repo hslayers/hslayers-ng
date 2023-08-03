@@ -41,7 +41,7 @@ export class HsFeatureTableComponent
         fits: true,
         title: 'PANEL_HEADER.FEATURE_TABLE',
         description: 'SIDEBAR.descriptions.FEATURE_TABLE',
-        icon: 'icon-indexmanager',
+        icon: 'indexmanager',
       },
       
     );

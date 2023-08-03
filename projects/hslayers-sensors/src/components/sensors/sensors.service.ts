@@ -92,7 +92,7 @@ export class HsSensorsService {
       fits: true,
       title: 'PANEL_HEADER.SENSORS',
       description: '',
-      icon: 'icon-weightscale',
+      icon: 'weightscale',
     });
 
     this.hsMapService.loaded().then(() => {

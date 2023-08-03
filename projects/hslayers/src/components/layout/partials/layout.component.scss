@@ -25,6 +25,13 @@
     &.labels {
         width: 425px;
     }
+
+    &:not(.labels) {
+        .hs-sidebar-item {
+            display: flex;
+            justify-content: center;
+        }
+    }
 }
 
 .hs-sb-right .hs-panelspace {
@@ -58,8 +65,6 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     bottom: 100%;
     border-radius: 0;
     font-size: 0.8rem;
-    //to overwrite bootstrap btn
-    font-family: 'WebHostingHub-Glyphs';
 }
 
 

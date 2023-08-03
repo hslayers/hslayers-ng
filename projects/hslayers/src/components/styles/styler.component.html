@@ -17,7 +17,7 @@
         <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-right">
           <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs" id="dropdownAddRule"
             ngbDropdownToggle>
-            <span class="icon-plus"></span>
+            <span class="material-icons">add</span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
             <button ngbDropdownItem (click)="hsStylerService.addRule('Simple')">
@@ -55,14 +55,14 @@
       <div class="btn-group" role="group" [attr.aria-label]="'STYLER.manageStyle' | translateHs">
         <a class="btn btn-secondary" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
           [href]="downloadData" (downloadPrepared)="downloadData = $event" [title]="'STYLER.downloadSld' | translateHs">
-          <i class="icon-download"></i></a>
+          <i class="material-icons">download</i></a>
 
         <button class="btn btn-secondary" (click)="uploadSld()" data-toggle="tooltip"
           [title]="'STYLER.uploadSld' | translateHs">
-          <i class="icon-upload"></i>
+          <i class="material-icons">upload</i>
         </button>
         <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip" [title]="'STYLER.clear' | translateHs">
-          <i class="icon-trash"></i>
+          <i class="material-icons">delete</i>
         </button>
       </div>
       <div class="d-flex justify-content-between" *ngIf="hsStylerService.isAuthenticated && hsStylerService
@@ -71,7 +71,7 @@
           *ngIf="!hsStylerService.syncing; else layerSyncing">
           {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
             (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translateHs">
-            <i class="icon-save-floppy"></i>
+            <i class="material-icons">save</i>
           </button>
         </div>
         <ng-template #layerSyncing>
