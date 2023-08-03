@@ -25,6 +25,13 @@
     &.labels {
         width: 425px;
     }
+
+    &:not(.labels) {
+        .hs-sidebar-item {
+            display: flex;
+            justify-content: center;
+        }
+    }
 }
 
 .hs-sb-right .hs-panelspace {
