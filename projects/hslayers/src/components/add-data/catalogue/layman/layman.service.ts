@@ -1,27 +1,27 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
-import { Observable, catchError, lastValueFrom, map, of, timeout } from "rxjs";
-import { transformExtent } from "ol/proj";
+import {Observable, catchError, lastValueFrom, map, of, timeout} from 'rxjs';
+import {transformExtent} from 'ol/proj';
 
 import {
   EndpointErrorHandler,
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from "../../../../common/endpoints/endpoint.interface";
-import { Feature } from "ol";
-import { Geometry } from "ol/geom";
-import { HsAddDataLayerDescriptor } from "../layer-descriptor.model";
-import { HsCommonLaymanService } from "../../../../common/layman/layman.service";
-import { HsLanguageService } from "../../../language/language.service";
-import { HsLaymanLayerDescriptor } from "../../../save-map/interfaces/layman-layer-descriptor.interface";
-import { HsLogService } from "../../../../common/log/log.service";
-import { HsMapService } from "../../../map/map.service";
-import { HsToastService } from "../../../layout/toast/toast.service";
-import { HsUtilsService } from "../../../utils/utils.service";
-import { addExtentFeature } from "../../../../common/extent-utils";
-@Injectable({ providedIn: "root" })
+} from '../../../../common/endpoints/endpoint.interface';
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
+import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
+import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
+import {HsLanguageService} from '../../../language/language.service';
+import {HsLaymanLayerDescriptor} from '../../../save-map/interfaces/layman-layer-descriptor.interface';
+import {HsLogService} from '../../../../common/log/log.service';
+import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../layout/toast/toast.service';
+import {HsUtilsService} from '../../../utils/utils.service';
+import {addExtentFeature} from '../../../../common/extent-utils';
+@Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
   httpCall;
 
@@ -57,8 +57,8 @@ export class HsLaymanBrowserService {
     const withPermissionOrMine = data?.onlyMine
       ? loggedIn
         ? `workspaces/${endpoint.user}/`
-        : ""
-      : "";
+        : ''
+      : '';
     const url = `${endpoint.url}/rest/${withPermissionOrMine}layers`;
     endpoint.datasourcePaging.loaded = false;
 
@@ -66,7 +66,7 @@ export class HsLaymanBrowserService {
 
     if (data) {
       query = data.query;
-      sortBy = query.sortby == "date" ? "last_change" : query.sortby;
+      sortBy = query.sortby == 'date' ? 'last_change' : query.sortby;
 
       const b = transformExtent(
         this.hsMapService
@@ -74,29 +74,29 @@ export class HsLaymanBrowserService {
           .getView()
           .calculateExtent(this.hsMapService.getMap().getSize()),
         this.hsMapService.getMap().getView().getProjection(),
-        "EPSG:3857",
+        'EPSG:3857',
       );
-      bbox = data.filterByExtent ? b.join(",") : "";
+      bbox = data.filterByExtent ? b.join(',') : '';
 
       params = {
         //Draw layer limit independent on datasourcePaging
         limit: `${data.limit ?? endpoint.datasourcePaging.limit}`,
         offset: `${endpoint.datasourcePaging.start}`,
-        full_text_filter: `${query?.textFilter ?? ""}`,
-        order_by: `${sortBy ?? "last_change"}`,
+        full_text_filter: `${query?.textFilter ?? ''}`,
+        order_by: `${sortBy ?? 'last_change'}`,
       };
       //Use bbox_filter only if its defined to prevent
       //Wrong parameter value error
       if (bbox) {
-        params["bbox_filter"] = bbox;
+        params['bbox_filter'] = bbox;
       }
     }
 
     endpoint.httpCall = this.http
       .get(url, {
-        observe: "response",
+        observe: 'response',
         withCredentials: loggedIn,
-        responseType: "json",
+        responseType: 'json',
         params,
       })
       .pipe(
@@ -105,14 +105,14 @@ export class HsLaymanBrowserService {
           if (Array.isArray(x.body)) {
             x.body.dataset = endpoint;
             x.body.extentFeatureCreated = extentFeatureCreated;
-            x.body.matched = x.headers.get("x-total-count")
-              ? x.headers.get("x-total-count")
+            x.body.matched = x.headers.get('x-total-count')
+              ? x.headers.get('x-total-count')
               : x.body.length;
             this.datasetsReceived(x.body);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
-              "ADDLAYERS.ERROR.errorWhileRequestingLayers",
+              'ADDLAYERS.ERROR.errorWhileRequestingLayers',
               x.body,
             );
           }
@@ -133,19 +133,19 @@ export class HsLaymanBrowserService {
             default:
               this.hsToastService.createToastPopupMessage(
                 await this.hsLanguageService.awaitTranslation(
-                  "ADDLAYERS.ERROR.errorWhileRequestingLayers",
+                  'ADDLAYERS.ERROR.errorWhileRequestingLayers',
                   undefined,
                 ),
                 endpoint.title +
-                  ": " +
+                  ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
-                    "ERRORMESSAGES",
+                    'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    { url },
+                    {url},
                   ),
                 {
                   disableLocalization: true,
-                  serviceCalledFrom: "HsLaymanBrowserService",
+                  serviceCalledFrom: 'HsLaymanBrowserService',
                 },
               );
           }
@@ -163,17 +163,17 @@ export class HsLaymanBrowserService {
   private datasetsReceived(data): void {
     if (!data.dataset) {
       this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation("COMMON.warning", undefined),
+        this.hsLanguageService.getTranslation('COMMON.warning', undefined),
         data.dataset.title +
-          ": " +
+          ': ' +
           this.hsLanguageService.getTranslation(
-            "COMMON.noDataReceived",
+            'COMMON.noDataReceived',
             undefined,
           ),
         {
           disableLocalization: true,
-          toastStyleClasses: "bg-warning text-light",
-          serviceCalledFrom: "HsLaymanBrowserService",
+          toastStyleClasses: 'bg-warning text-light',
+          serviceCalledFrom: 'HsLaymanBrowserService',
         },
       );
       return;
@@ -196,7 +196,7 @@ export class HsLaymanBrowserService {
           workspace: layer.workspace,
           access_rights: layer.access_rights,
           editable: layer.access_rights.write.some((user) => {
-            return [dataset.user, "EVERYONE"].includes(user);
+            return [dataset.user, 'EVERYONE'].includes(user);
           }),
           wfsWmsStatus: layer.wfsWmsStatus,
         };
@@ -232,7 +232,7 @@ export class HsLaymanBrowserService {
           .get<HsLaymanLayerDescriptor>(url, {
             //timeout: endpoint.canceler.promise,
             //endpoint,
-            responseType: "json",
+            responseType: 'json',
             withCredentials: true,
           })
           .pipe(
@@ -252,7 +252,7 @@ export class HsLaymanBrowserService {
           this.hsCommonLaymanService.authChange.next(endpoint);
         }
         this.hsToastService.createToastPopupMessage(
-          data.message ?? "ADDLAYERS.ERROR.errorWhileRequestingLayers",
+          data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
           data.detail ?? `${data.code}/${data.sub_code}`,
           {},
         );
@@ -260,8 +260,8 @@ export class HsLaymanBrowserService {
       }
 
       layer.type =
-        data?.file?.file_type === "raster" ? ["WMS"] : ["WMS", "WFS"];
-      layer = { ...layer, ...data };
+        data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
+      layer = {...layer, ...data};
       if (layer.thumbnail) {
         layer.thumbnail = endpoint.url + layer.thumbnail.url;
       }
@@ -290,13 +290,13 @@ export class HsLaymanBrowserService {
     if (lyr.style?.url) {
       style = await this.hsCommonLaymanService.getStyleFromUrl(lyr.style?.url);
     }
-    if (lyr.style?.type == "sld") {
-      if (!style?.includes("StyledLayerDescriptor")) {
+    if (lyr.style?.type == 'sld') {
+      if (!style?.includes('StyledLayerDescriptor')) {
         style = undefined;
       }
     }
-    if (lyr.style?.type == "qml") {
-      if (!style?.includes("<qgis")) {
+    if (lyr.style?.type == 'qml') {
+      if (!style?.includes('<qgis')) {
         style = undefined;
       }
     }
@@ -315,16 +315,16 @@ export class HsLaymanBrowserService {
     } else {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
-          "ADDLAYERS.ERROR.errorWhileRequestingLayers",
+          'ADDLAYERS.ERROR.errorWhileRequestingLayers',
           undefined,
         ),
         this.hsLanguageService.getTranslation(
-          "ADDLAYERS.ERROR.urlInvalid",
+          'ADDLAYERS.ERROR.urlInvalid',
           undefined,
         ),
         {
           disableLocalization: true,
-          serviceCalledFrom: "HsLaymanBrowserService",
+          serviceCalledFrom: 'HsLaymanBrowserService',
         },
       );
       return false;
