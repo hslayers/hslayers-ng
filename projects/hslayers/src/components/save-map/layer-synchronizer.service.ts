@@ -275,6 +275,7 @@ export class HsLayerSynchronizerService {
         .then((response: string) => {
           if (response?.includes('Exception')) {
             this.displaySyncErrorDialog(response);
+            setHsLaymanSynchronizing(layer, false);
             return;
           }
           if (add[0]) {
@@ -299,7 +300,6 @@ export class HsLayerSynchronizerService {
   /**
    * Display error dialog on synchronization failure
    * @param error - Error captured
-   
    */
   displaySyncErrorDialog(error: string): void {
     const exception: xml2Json.Element | xml2Json.ElementCompact =
