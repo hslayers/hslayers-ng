@@ -1,15 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {ImageArcGISRest, Source, TileArcGISRest} from 'ol/source';
-import {Image as ImageLayer} from 'ol/layer';
-import {Options as ImageOptions} from 'ol/layer/BaseImage';
-import {Image as ImageSource} from 'ol/source';
-import {Layer} from 'ol/layer';
-import {Tile} from 'ol/layer';
-import {Options as TileOptions} from 'ol/layer/BaseTile';
-import {Tile as TileSource} from 'ol/source';
-import {transformExtent} from 'ol/proj';
-
+import TileGrid from 'ol/tilegrid/TileGrid';
 import {
   ArcGISResResponseLayerExtent,
   ArcGISRestResponseLayer,
@@ -24,14 +15,23 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {Layer, Tile} from 'ol/layer';
 import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {Source, TileArcGISRest, XYZ} from 'ol/source';
+import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {Tile as TileSource} from 'ol/source';
 import {UrlDataObject} from '../types/data-object.type';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getPreferredFormat} from '../../../../common/format-utils';
+import {transformExtent} from 'ol/proj';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   data: UrlDataObject;
+
+  hasCachedTiles = false;
+  tileGrid: TileGrid;
+  tileGrid2: TileGrid;
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsLayoutService: HsLayoutService,
@@ -104,7 +104,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
       this.data.title =
-        caps.documentInfo?.Title || caps.mapName || caps.name || 'Arcgis layer';
+        caps.mapName || caps.name || caps.documentInfo?.Title || 'Arcgis layer';
       this.data.description = addAnchors(caps.description);
       this.data.version = caps.currentVersion;
       this.data.image_formats = caps.supportedImageFormatTypes
@@ -119,19 +119,41 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.services = caps.services?.filter(
         (s: Service) => !this.isGpService(s.type),
       );
-      this.data.layers = caps.layers;
+      /**
+       * Prioritize cached tiles  eg. ignore layer structure
+       */
+      this.hasCachedTiles = !!caps.tileInfo;
+      this.data.layers = this.hasCachedTiles
+        ? [
+            {
+              name: caps.mapName || caps.name,
+              id: 0,
+              defaultVisibility: true,
+            },
+          ]
+        : caps.layers;
       this.hsAddDataUrlService.searchForChecked(
         this.data.layers ?? this.data.services,
       );
-      this.data.srs = (() => {
-        for (const srs of this.data.srss) {
-          if (srs.includes('3857')) {
-            return srs;
-          }
-        }
-        return this.data.srss[0];
-      })();
+      this.data.srs =
+        this.data.srss.find((srs) => srs.includes('3857')) || this.data.srss[0];
+
       this.data.extent = caps.fullExtent;
+      if (this.hasCachedTiles) {
+        /**
+         * Tile grid definition in layers source srs
+         * */
+        this.tileGrid = new TileGrid({
+          origin: Object.values(caps.tileInfo.origin),
+          resolutions: caps.tileInfo.lods.map((lod) => lod.resolution),
+          extent: [
+            caps.fullExtent.xmin,
+            caps.fullExtent.ymin,
+            caps.fullExtent.xmax,
+            caps.fullExtent.ymax,
+          ],
+        });
+      }
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
         this.data.srs,
       );
@@ -204,10 +226,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     const dimensions = {};
     //Not being used right now
     // const legends = [];
-    const sourceParams = {
-      url: this.data.get_map_url,
+    const sourceParams: any = {
+      url: this.hasCachedTiles ? this.createXYZUrl() : this.data.get_map_url,
       attributions,
-      //projection: me.data.srs,
+      projection: `EPSG:${this.data.srs}`,
       params: Object.assign(
         {
           FORMAT: options.imageFormat,
@@ -216,7 +238,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       ),
       crossOrigin: 'anonymous',
     };
-    if (!this.isImageService()) {
+    if (this.hasCachedTiles) {
+      sourceParams.tileGrid = this.tileGrid;
+    } else if (!this.hasCachedTiles && !this.isImageService()) {
       const LAYERS =
         layers.length > 0
           ? `show:${layers.map((l) => l.id).join(',')}`
@@ -224,8 +248,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       Object.assign(sourceParams.params, {LAYERS});
     }
     const source = this.data.use_tiles
-      ? new TileArcGISRest(sourceParams)
-      : new ImageArcGISRest(sourceParams);
+      ? new XYZ(sourceParams)
+      : new TileArcGISRest(sourceParams);
+    //TODO: new ImageArcGISRest(sourceParams);
+    //Useful when underlying map service has labels ??
 
     /**
      * Use provided extent when displaying more than 3 layers
@@ -253,11 +279,20 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         subLayers: layers?.map((l) => l.id).join(','),
       });
     }
-    const new_layer = this.data.use_tiles
-      ? new Tile(layerParams as TileOptions<TileSource>)
-      : new ImageLayer(layerParams as ImageOptions<ImageSource>);
+
+    //FIXME: arcGIS image?
+    const new_layer = new Tile(layerParams as TileOptions<TileSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     return new_layer;
+  }
+
+  /**
+   * Create XYZ layer URL
+   */
+  private createXYZUrl(): string {
+    return this.hsUtilsService.proxify(
+      `${this.data.get_map_url}/tile/{z}/{y}/{x}`,
+    );
   }
 
   /**
@@ -326,13 +361,17 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async expandService(service: Service): Promise<void> {
     let urlRest = this.hsAddDataCommonService.url.toLowerCase();
-    //There are cases when loaded services are loaded from folders, problem is that folder name is also included inside the service.name
-    //to avoid any uncertainties, lets remove everything starting from 'services' inside the url and rebuild it
+    /**
+      There are cases when loaded services are loaded from folders,
+      problem is that folder name is also included inside the service.name
+      to avoid any uncertainties,lets remove everything starting from 'services'
+      inside the url and rebuild it
+    */
     if (urlRest.includes('services')) {
       urlRest = urlRest.slice(0, urlRest.indexOf('services'));
     }
     this.data.get_map_url =
-      (urlRest.endsWith('/') ? urlRest : urlRest.concat('/')) +
+      urlRest.replace(/\/?$/, '/') + //add slash if not already there
       ['services', service.name, service.type].join('/');
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
       this.data.get_map_url,
