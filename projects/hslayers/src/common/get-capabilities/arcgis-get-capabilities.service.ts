@@ -24,7 +24,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
     public hsUtilsService: HsUtilsService,
     public hsLogService: HsLogService,
     public hsAddDataService: HsAddDataService,
-    public hsCapabilityCacheService: HsCapabilityCacheService
+    public hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
   /**
@@ -79,8 +79,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
    */
   async request(
     service_url: string,
-
-    owrCache?: boolean
+    owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
@@ -100,7 +99,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
             responseType: 'json',
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
       );
       const wrap = {response: r.body};
       this.hsCapabilityCacheService.set(url, wrap);
