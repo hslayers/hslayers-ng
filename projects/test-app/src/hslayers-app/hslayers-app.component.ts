@@ -438,7 +438,7 @@ export class HslayersAppComponent {
       ],
       shareServiceUrl: 'http://localhost:8086',
       popUpDisplay: 'hover',
-      errorToastDuration: 1000,
+      errorToastDuration: 5000,
       default_layers: [
         new Tile({
           source: new OSM(),

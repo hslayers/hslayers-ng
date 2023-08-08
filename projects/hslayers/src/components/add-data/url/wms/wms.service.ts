@@ -47,7 +47,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonService: HsAddDataCommonService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.hsEventBusService.olMapLoads.subscribe((map) => {
       this.data.map_projection = this.hsMapService.map
@@ -66,7 +66,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.data = {
       add_under: null,
       map_projection: '',
-      register_metadata: true,
       tile_size: 512,
       use_resampling: false,
       use_tiles: true,
@@ -83,7 +82,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param wrapper - Capabilities response wrapper
    */
   async listLayerFromCapabilities(
-    wrapper: CapabilitiesResponseWrapper
+    wrapper: CapabilitiesResponseWrapper,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -95,12 +94,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     try {
       await this.capabilitiesReceived(
         wrapper.response,
-        this.hsAddDataCommonService.layerToSelect
+        this.hsAddDataCommonService.layerToSelect,
       );
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.data.layers,
-          'wms'
+          'wms',
         );
         return this.getLayers(true);
       }
@@ -157,7 +156,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (this.data.srss.length == 0) {
       this.data.srss = ['EPSG:4326'];
       this.hsAddDataCommonService.throwParsingError(
-        "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
+        "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct.",
       );
     }
   }
@@ -195,7 +194,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.hsAddDataCommonService.currentProjectionSupported(this.data.srss)
       ) {
         this.data.srs = this.data.srss.includes(
-          this.hsMapService.getMap().getView().getProjection().getCode()
+          this.hsMapService.getMap().getView().getProjection().getCode(),
         )
           ? this.hsMapService.getMap().getView().getProjection().getCode()
           : this.hsMapService
@@ -210,7 +209,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.data.srs = this.data.srss[0];
       }
       this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
-        this.data.srs
+        this.data.srs,
       );
       this.data.layers = this.filterCapabilitiesLayers(caps.Capability.Layer);
       //Make sure every service has a title to be displayed in table
@@ -223,13 +222,13 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.layers,
-        'Name'
+        'Name',
       );
       this.hsAddDataUrlService.searchForChecked(this.data.layers);
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
       this.data.get_map_url = this.removePortIfProxified(
-        caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
+        caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
       );
       this.data.image_format = getPreferredFormat(this.data.image_formats, [
         'image/png; mode=8bit',
@@ -263,7 +262,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       boundingbox = transformExtent(
         serviceLayer.EX_GeographicBoundingBox,
         'EPSG:4326',
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(),
       );
     } else if (Array.isArray(boundingbox)) {
       const preferred = boundingbox.find((bboxInCrs) => {
@@ -278,7 +277,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = transformExtent(
           boundingbox[0].extent,
           boundingbox[0].crs || crs,
-          this.hsMapService.getCurrentProj()
+          this.hsMapService.getCurrentProj(),
         );
       }
     } else {
@@ -291,7 +290,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       transformExtent(
         [-180, -90, 180, 90],
         'EPSG:4326',
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(),
       )
     );
   }
@@ -300,7 +299,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Filters out layers without 'Name' parameter
    */
   filterCapabilitiesLayers(
-    layers: WmsLayer | Array<WmsLayer>
+    layers: WmsLayer | Array<WmsLayer>,
   ): Array<WmsLayer> {
     if (Array.isArray(layers)) {
       return layers;
@@ -337,7 +336,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       return url;
     }
     const proxyPort = parseInt(
-      this.hsUtilsService.getPortFromUrl(this.hsConfig.proxyPrefix)
+      this.hsUtilsService.getPortFromUrl(this.hsConfig.proxyPrefix),
     );
     if (proxyPort > 0) {
       return url.replace(':' + proxyPort.toString(), '');
@@ -369,7 +368,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           tileSize: this.data.tile_size,
           crs: this.data.srs,
           subLayers: '',
-        }
+        },
       );
       collection.push(newLayer);
     } else {
@@ -377,7 +376,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.getLayersRecursively(
           layer,
           {checkedOnly: checkedOnly, shallow: shallow},
-          collection
+          collection,
         );
       }
     }
@@ -429,7 +428,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         LAYERS: this.data.base
           ? this.hsAddDataCommonService.createBasemapName(
               this.data.layers,
-              'Name'
+              'Name',
             )
           : layer.Name,
         INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
@@ -450,10 +449,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       name: options.layerName,
       source,
       minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MinScaleDenominator
+        layer.MinScaleDenominator,
       ),
       maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MaxScaleDenominator
+        layer.MaxScaleDenominator,
       ),
       removable: true,
       abstract: layer.Abstract,
@@ -480,7 +479,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     for (const l of layers) {
       this.hsMapService.resolveDuplicateLayer(
         l,
-        DuplicateHandling.RemoveOriginal
+        DuplicateHandling.RemoveOriginal,
       );
       this.hsAddDataService.addLayer(l, this.data.add_under);
     }
@@ -520,7 +519,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   getLayersRecursively(
     layer: any, //TODO: better typing. It is a wrapper similar to WmsLayer, but has additional properties, also specific to WFS and ArcGIS layers
     options: AddLayersRecursivelyOptions = {checkedOnly: true},
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
   ): void {
     if (!options.checkedOnly || layer.checked) {
       collection.push(
@@ -531,7 +530,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
-        })
+        }),
       );
     }
     // When not shallow go full depth otherwise layer.Name has got to be missing (first queriable layer)
@@ -541,7 +540,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.getLayersRecursively(
           sublayer,
           {checkedOnly: options.checkedOnly},
-          collection
+          collection,
         );
       }
     }

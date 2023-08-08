@@ -10,6 +10,7 @@ import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsToastService} from '../../../../components/layout/toast/toast.service';
@@ -31,7 +32,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
   hasCachedTiles = false;
   tileGrid: TileGrid;
-  tileGrid2: TileGrid;
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsLayoutService: HsLayoutService,
@@ -41,6 +41,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsToastService: HsToastService,
+    private hsLanguageService: HsLanguageService,
   ) {
     this.setDataToDefault();
   }
@@ -52,7 +53,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     this.data = {
       serviceExpanded: false,
       map_projection: '',
-      register_metadata: true,
       tile_size: 512,
       use_resampling: false,
       use_tiles: true,
@@ -97,6 +97,21 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   async createLayer(response): Promise<void> {
     try {
       const caps = response;
+      if (caps.error) {
+        this.hsToastService.createToastPopupMessage(
+          'ADDLAYERS.capabilitiesParsingProblem',
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'ERRORMESSAGES',
+            caps.error.code || '4O4',
+            {url: this.data.get_map_url},
+          ),
+          {
+            serviceCalledFrom: 'HsUrlArcGisService',
+          },
+        );
+        this.hsAddDataCommonService.loadingInfo = false;
+        return;
+      }
       this.data.map_projection = this.hsMapService
         .getMap()
         .getView()
@@ -104,7 +119,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
       this.data.title =
-        caps.mapName || caps.name || caps.documentInfo?.Title || 'Arcgis layer';
+        caps.name || caps.mapName || caps.documentInfo?.Title || 'Arcgis layer';
       this.data.description = addAnchors(caps.description);
       this.data.version = caps.currentVersion;
       this.data.image_formats = caps.supportedImageFormatTypes
@@ -116,9 +131,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.srss = caps.spatialReference?.latestWkid
         ? [caps.spatialReference.latestWkid.toString()]
         : [];
-      this.data.services = caps.services?.filter(
-        (s: Service) => !this.isGpService(s.type),
+      this.data.services = caps.services?.filter((s: Service) =>
+        this.isValidService(s.type),
       );
+
       /**
        * Prioritize cached tiles  eg. ignore layer structure
        */
@@ -139,7 +155,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         this.data.srss.find((srs) => srs.includes('3857')) || this.data.srss[0];
 
       this.data.extent = caps.fullExtent;
-      if (this.hasCachedTiles) {
+      if (this.hasCachedTiles || (caps.tileInfo && this.isImageService())) {
         /**
          * Tile grid definition in layers source srs
          * */
@@ -227,7 +243,16 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     //Not being used right now
     // const legends = [];
     const sourceParams: any = {
-      url: this.hasCachedTiles ? this.createXYZUrl() : this.data.get_map_url,
+      /**
+       * Cached tiles or image-service with cached tiles.
+       * Difference is in source type that will be used to create layer.
+       * image-service is currently being displayed using TileArcGISRest not XYZ
+       */
+      url: this.hasCachedTiles
+        ? this.isImageService()
+          ? this.data.get_map_url
+          : this.createXYZUrl()
+        : this.data.get_map_url,
       attributions,
       projection: `EPSG:${this.data.srs}`,
       params: Object.assign(
@@ -247,8 +272,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           : undefined;
       Object.assign(sourceParams.params, {LAYERS});
     }
-    const source = this.data.use_tiles
-      ? new XYZ(sourceParams)
+    const source = this.hasCachedTiles
+      ? this.isImageService()
+        ? new TileArcGISRest(sourceParams)
+        : new XYZ(sourceParams)
       : new TileArcGISRest(sourceParams);
     //TODO: new ImageArcGISRest(sourceParams);
     //Useful when underlying map service has labels ??
@@ -412,10 +439,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     return this.data.get_map_url?.toLowerCase().includes('imageserver');
   }
   /**
-   * Check if getCapabilities response is Gp service layer
+   * Check validity of service
    */
-  isGpService(str: string): boolean {
-    return str.toLowerCase().includes('gpserver');
+  isValidService(str: string): boolean {
+    return !['gpserver', 'sceneserver'].includes(str.toLowerCase());
   }
   /**
    * Transforms provided extent to a map projection

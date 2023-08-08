@@ -17,22 +17,22 @@ export interface HsUrlTypeServiceModel {
   setDataToDefault(): void;
   listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    layerOptions?: LayerOptions
+    layerOptions?: LayerOptions,
   ): Promise<Layer<Source>[]>;
   getLayers(
     checkedOnly?: boolean,
     shallow?: boolean,
-    layerOptions?: LayerOptions
+    layerOptions?: LayerOptions,
   ): Layer<Source>[] | Promise<Layer<Source>[]>;
   addLayers(layers: Layer<Source>[]): void;
   getLayer(
     layer: any,
-    options: LayerOptions
+    options: LayerOptions,
   ): Layer<Source> | Promise<Layer<Source>>;
   getLayersRecursively?(
     layer: any,
     options: AddLayersRecursivelyOptions,
-    collection: Layer<Source>[]
+    collection: Layer<Source>[],
   ): void;
   expandService?(service: Service): void;
   addServices?(services: Service[]);
