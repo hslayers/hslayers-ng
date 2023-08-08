@@ -1,6 +1,6 @@
 <div [hidden]="!hsAddDataCommonService.showDetails || hsAddDataCommonService.loadingInfo">
   <ng-container>
-    <div class="form-group">
+    <div class="form-group" [hidden]="type === 'arcgis' && !data.get_map_url?.includes('image')">
       <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs }}</span>
         <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
@@ -63,7 +63,7 @@
     </div>
   </ng-container>
   <div class="d-flex flex-column my-3">
-    <div class="d-flex flex-row justify-content-start align-items-baseline mb-1">
+    <div class="d-flex flex-row justify-content-start align-items-baseline m-1 mb-2">
       {{'ADDDATA.CATALOGUE.addAs' | translateHs }}
       <div class="btn-group ms-2">
         <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = true"
@@ -76,7 +76,8 @@
         </button>
       </div>
     </div>
-    <div class="input-group">
+    <div class="input-group"
+      style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
       <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>

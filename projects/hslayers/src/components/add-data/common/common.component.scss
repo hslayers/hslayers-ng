@@ -8,3 +8,9 @@
     width: 100%;
     border: 1px solid #ced4da
 }
+
+hs-url-details .input-group-text {
+    min-width: 13ch;
+    display: flex;
+    justify-content: center;
+}

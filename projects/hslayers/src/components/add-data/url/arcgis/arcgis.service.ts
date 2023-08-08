@@ -277,9 +277,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         ? new TileArcGISRest(sourceParams)
         : new XYZ(sourceParams)
       : new TileArcGISRest(sourceParams);
-    //TODO: new ImageArcGISRest(sourceParams);
-    //Useful when underlying map service has labels ??
-
     /**
      * Use provided extent when displaying more than 3 layers
      * calculate extent otherwise
@@ -307,7 +304,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       });
     }
 
-    //FIXME: arcGIS image?
     const new_layer = new Tile(layerParams as TileOptions<TileSource>);
     //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
     return new_layer;
