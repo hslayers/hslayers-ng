@@ -41,7 +41,7 @@ export class HsAddDataOwsService {
     public hsUrlWmsService: HsUrlWmsService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
-    public hsUrlWmtsService: HsUrlWmtsService
+    public hsUrlWmtsService: HsUrlWmtsService,
   ) {
     this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
       this.setUrlAndConnect({uri: url});
@@ -58,9 +58,9 @@ export class HsAddDataOwsService {
     }
     this.hsAddDataUrlService.addingAllowed = false;
     if (this.hsAddDataUrlService.typeSelected === 'arcgis') {
-      if (this.hsUrlArcGisService.isGpService(url)) {
+      if (!this.hsUrlArcGisService.isValidService(url)) {
         this.hsAddDataCommonService.throwParsingError(
-          'GPServerServicesAreNotSupported'
+          'GPServerServicesAreNotSupported',
         );
         return;
       }
@@ -69,7 +69,7 @@ export class HsAddDataOwsService {
     }
     this.hsHistoryListService.addSourceHistory(
       this.hsAddDataUrlService.typeSelected,
-      url
+      url,
     );
     Object.assign(this.hsAddDataCommonService, {
       loadingInfo: true,
@@ -77,7 +77,7 @@ export class HsAddDataOwsService {
     });
     const wrapper = await this.typeCapabilitiesService.request(
       url,
-      options?.owrCache
+      options?.owrCache,
     );
     if (
       typeof wrapper.response === 'string' &&
@@ -88,7 +88,7 @@ export class HsAddDataOwsService {
     } else {
       const response = await this.typeService.listLayerFromCapabilities(
         wrapper,
-        options?.layerOptions
+        options?.layerOptions,
       );
       if (!options?.getOnly) {
         if (response?.length > 0) {

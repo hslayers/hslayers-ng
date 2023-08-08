@@ -20,7 +20,6 @@ export type UrlDataObject = {
   output_formats?: Array<string>;
   query_format?: string;
   query_formats?: Array<string>;
-  register_metadata?: boolean;
   resample_warning?: boolean;
   services?: Array<any>;
   /**
