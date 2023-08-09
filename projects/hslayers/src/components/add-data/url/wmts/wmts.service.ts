@@ -26,7 +26,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsLayoutService: HsLayoutService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService
+    public hsAddDataCommonService: HsAddDataCommonService,
   ) {
     this.setDataToDefault();
   }
@@ -53,7 +53,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    options?: LayerOptions
+    options?: LayerOptions,
   ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
@@ -70,7 +70,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(
           this.data.layers,
-          'wmts'
+          'wmts',
         );
         return this.getLayers(true, false, options);
       }
@@ -107,7 +107,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   getLayersRecursively(
     layer,
     options: AddLayersRecursivelyOptions,
-    collection
+    collection,
   ): void {
     if (!this.data.add_all || layer.checked) {
       collection.push(this.getLayer(layer, options.layerOptions));
@@ -136,7 +136,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   getLayers(
     checkedOnly: boolean,
     shallow?: boolean,
-    layerOptions?: LayerOptions
+    layerOptions?: LayerOptions,
   ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
@@ -174,13 +174,13 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   getPreferredMatrixSet(sets): string {
     const supportedFormats = ['3857', '4326', '5514'];
     const preferred = sets.filter((set) =>
-      supportedFormats.some((v) => set.TileMatrixSet.includes(v))
+      supportedFormats.some((v) => set.TileMatrixSet.includes(v)),
     );
     if (preferred.length != 0) {
       const preferCurrent = preferred.find((set) =>
         set.TileMatrixSet.includes(
-          this.hsMapService.getMap().getView().getProjection().getCode()
-        )
+          this.hsMapService.getMap().getView().getProjection().getCode(),
+        ),
       );
       return preferCurrent
         ? preferCurrent.TileMatrixSet
@@ -201,11 +201,11 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       const infos = formats.filter(
         (format) =>
           format.resourceType == 'FeatureInfo' &&
-          supportedFormats.some((v) => format.format.includes(v))
+          supportedFormats.some((v) => format.format.includes(v)),
       );
       if (infos.length != 0) {
         const preferHTML = infos.find((format) =>
-          format.format.includes('html')
+          format.format.includes('html'),
         );
         return preferHTML ? preferHTML.format : infos[0].format;
       }
@@ -222,7 +222,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       ? transformExtent(
           layer.WGS84BoundingBox,
           'EPSG:4326',
-          this.hsMapService.getCurrentProj()
+          this.hsMapService.getCurrentProj(),
         )
       : undefined;
   }

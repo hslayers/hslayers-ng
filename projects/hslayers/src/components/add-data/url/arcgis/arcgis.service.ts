@@ -303,19 +303,14 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         subLayers: layers?.map((l) => l.id).join(','),
       });
     }
-
-    const new_layer = new Tile(layerParams as TileOptions<TileSource>);
-    //OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
-    return new_layer;
+    return new Tile(layerParams as TileOptions<TileSource>);
   }
 
   /**
    * Create XYZ layer URL
    */
   private createXYZUrl(): string {
-    return this.hsUtilsService.proxify(
-      `${this.data.get_map_url}/tile/{z}/{y}/{x}`,
-    );
+    return `${this.data.get_map_url}/tile/{z}/{y}/{x}`;
   }
 
   /**
