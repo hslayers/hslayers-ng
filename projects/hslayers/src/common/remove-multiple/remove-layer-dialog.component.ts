@@ -27,7 +27,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public service: HsRemoveLayerDialogService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {}
   viewRef: ViewRef;
   data: {
@@ -75,7 +75,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     if (!title) {
       title = this.hsLanguageService.getTranslation(
         'COMMON.unknown',
-        undefined
+        undefined,
       );
     }
     return title;

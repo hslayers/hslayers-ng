@@ -198,7 +198,7 @@ export class HsLaymanBrowserService {
           editable: layer.access_rights.write.some((user) => {
             return [dataset.user, 'EVERYONE'].includes(user);
           }),
-          wfsWmsStatus: layer.wfsWmsStatus,
+          wfsWmsStatus: layer.wfs_wms_status,
         };
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
