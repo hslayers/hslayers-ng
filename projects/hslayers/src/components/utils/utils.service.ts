@@ -27,17 +27,16 @@ export class HsUtilsService {
     private http: HttpClient,
     private LogService: HsLogService,
     private hsCommonLaymanService: HsCommonLaymanService,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
   ) {}
 
   /**
-   * Add path to proxy cgi script (hsproxy.cgi) into URL and encode rest of URL if valid HTTP URL is send and proxy use is allowed.
+   * Proxify url if enabled.
    * @public
    * @param url - URL to proxify
-   * @param toEncoding - Optional parameter if UTF-8 encoding shouldn't be used for non-image URLs.
-   * @returns Encoded Url with path to hsproxy.cgi script
+   * @returns Encoded Url with path to hslayers-server proxy
    */
-  proxify(url: string, toEncoding?: boolean): string {
+  proxify(url: string): string {
     const laymanEp = this.hsCommonLaymanService.layman;
     if (
       url.startsWith(this.hsConfig.proxyPrefix) ||
@@ -48,7 +47,6 @@ export class HsUtilsService {
     if (url.startsWith('data:application')) {
       return url;
     }
-    toEncoding = toEncoding === undefined ? true : toEncoding;
     let outUrl = url;
     //Not using location because don't know if port 80 was specified explicitly or not
     const windowUrlPosition = url.indexOf(window.location.origin);
@@ -62,17 +60,7 @@ export class HsUtilsService {
         this.hsConfig.useProxy === true
       ) {
         outUrl = this.hsConfig.proxyPrefix || '/proxy/';
-        if (outUrl.indexOf('hsproxy.cgi') > -1) {
-          if (
-            toEncoding &&
-            (url.indexOf('GetMap') == -1 || url.indexOf('GetFeatureInfo') > -1)
-          ) {
-            outUrl += 'toEncoding=utf-8&';
-          }
-          outUrl = outUrl + 'url=' + encodeURIComponent(url);
-        } else {
-          outUrl += url;
-        }
+        outUrl += url;
       }
     }
     return outUrl;
@@ -104,24 +92,9 @@ export class HsUtilsService {
         this.proxify('http://tinyurl.com/api-create.php?url=' + url),
         {
           responseType: 'text',
-        }
-      )
+        },
+      ),
     );
-    // return new Promise((resolve, reject) => {
-    //   this.http
-    //     .get(
-    //       this.proxify('http://tinyurl.com/api-create.php?url=' + url, true),
-    //       {
-    //         longUrl: url,
-    //       }
-    //     )
-    //     .then((response) => {
-    //       resolve(response.data);
-    //     })
-    //     .catch((err) => {
-    //       reject();
-    //     });
-    // });
   }
 
   /**
@@ -133,10 +106,10 @@ export class HsUtilsService {
       const link = document.createElement('a');
       link.setAttribute('href', url);
       if (link.port == '') {
-        if (url.indexOf('https://') === 0) {
+        if (url.startsWith('https://')) {
           return '443';
         }
-        if (url.indexOf('http://') === 0) {
+        if (url.startsWith('http://')) {
           return '80';
         }
       }
@@ -202,7 +175,7 @@ export class HsUtilsService {
     for (const key in array) {
       if (array.hasOwnProperty(key) && array[key] !== undefined) {
         pairs.push(
-          encodeURIComponent(key) + '=' + encodeURIComponent(array[key])
+          encodeURIComponent(key) + '=' + encodeURIComponent(array[key]),
         );
       }
     }
@@ -399,7 +372,7 @@ export class HsUtilsService {
         flatArray[idx] =
           flatArray[idx].get !== undefined
             ? flatArray[idx].get(
-                prop
+                prop,
               ) /* get() is only defined for OL objects */
             : flatArray[idx][prop]; /* POJO access */
       }
