@@ -694,7 +694,8 @@ export class HsMapService {
     }
     if (
       this.hsUtilsService.instOf(source, XYZ) &&
-      !this.hsUtilsService.instOf(source, OSM)
+      !this.hsUtilsService.instOf(source, OSM) &&
+      (source as XYZ).getUrls().every((url) => !url.includes('openstreetmap'))
     ) {
       this.proxifyLayerLoader(lyr, true);
     }
