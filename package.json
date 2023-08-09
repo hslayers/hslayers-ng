@@ -49,7 +49,7 @@
     "@angular/material": "^16.1.7",
     "@angular/platform-browser": "^16.1.8",
     "@angular/platform-browser-dynamic": "^16.1.8",
-    "@ng-bootstrap/ng-bootstrap": "^15.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^15.1.1",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@popperjs/core": "^2.11.7",
