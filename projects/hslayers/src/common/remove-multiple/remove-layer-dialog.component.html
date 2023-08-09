@@ -13,6 +13,7 @@
                     <p class="fw-bold h6">{{'LAYERS.removeLayer.deleteFrom' | translateHs }}: </p>
                     <div class="d-flex gap-3 justify-content-center px-5">
                         <button *ngFor="let option of deleteFromOptions" type="button"
+                            [hidden]="option === 'catalogue' && !this.isAuthenticated"
                             [ngClass]="{'active' : deleteFrom === option }" (click)="deleteFrom = option"
                             class="btn btn-sm btn-outline-primary w-50">{{service.translate('LAYERS.removeLayer.' +
                             option)}}</button>
