@@ -44,7 +44,7 @@ export class HsLegendService {
     public hsStylerService: HsStylerService,
     private hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerSelectorService: HsLayerSelectorService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {
     this.hsLayerSelectorService.layerSelected.subscribe(async (layer) => {
       await this.getLayerLegendDescriptor(layer.layer);
@@ -75,7 +75,7 @@ export class HsLegendService {
    * @returns Image as SVG string
    */
   async getVectorLayerLegendSvg(
-    currentLayer: VectorLayer<VectorSource<Geometry>>
+    currentLayer: VectorLayer<VectorSource<Geometry>>,
   ): Promise<string> {
     try {
       if (currentLayer === undefined) {
@@ -96,7 +96,7 @@ export class HsLegendService {
           layerStyle = <Style | Style[]>layerStyle(new Feature(), 1);
         }
         const symbolizers = new OlStyleParser().getSymbolizersFromOlStyle(
-          Array.isArray(layerStyle) ? layerStyle : [layerStyle]
+          Array.isArray(layerStyle) ? layerStyle : [layerStyle],
         );
         sldObject = {
           name: '',
@@ -153,7 +153,7 @@ export class HsLegendService {
   getLegendUrl(
     source: Source,
     layer_name: string,
-    layer: Layer<Source>
+    layer: Layer<Source>,
   ): string {
     if (!this.hsLayerUtilsService.isLayerWMS(layer)) {
       return '';
@@ -181,7 +181,7 @@ export class HsLegendService {
         getEnableProxy(layer) === undefined ||
         getEnableProxy(layer) == true
       ) {
-        source_url = this.hsUtilsService.proxify(source_url, false);
+        source_url = this.hsUtilsService.proxify(source_url);
       }
       return source_url;
     } else {
@@ -197,8 +197,8 @@ export class HsLegendService {
   async setSvg(layer: Layer<Source>): Promise<SafeHtml> {
     return this.sanitizer.bypassSecurityTrustHtml(
       await this.getVectorLayerLegendSvg(
-        layer as VectorLayer<VectorSource<Geometry>>
-      )
+        layer as VectorLayer<VectorSource<Geometry>>,
+      ),
     );
   }
 
@@ -212,10 +212,10 @@ export class HsLegendService {
     const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
     const linearGradient = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      'linearGradient'
+      'linearGradient',
     );
     const id = `${+new Date()}-idwGradient-${getLaymanFriendlyLayerName(
-      layer.get('name')
+      layer.get('name'),
     )}`;
 
     linearGradient.setAttribute('id', id);
@@ -231,7 +231,7 @@ export class HsLegendService {
       const color = source.getColor(i);
       const stop = document.createElementNS(
         'http://www.w3.org/2000/svg',
-        'stop'
+        'stop',
       );
       stop.setAttribute('offset', `${100 - i}%`);
       const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
@@ -271,7 +271,7 @@ export class HsLegendService {
    * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    */
   async getLayerLegendDescriptor(
-    layer: Layer<Source>
+    layer: Layer<Source>,
   ): Promise<HsLegendDescriptor | undefined> {
     if (getBase(layer)) {
       return;
@@ -284,7 +284,7 @@ export class HsLegendService {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),
           subLayerLegends[i],
-          layer
+          layer,
         );
       }
       return {

@@ -38,7 +38,7 @@ export class HsQueryWmsService {
     private hsUtilsService: HsUtilsService,
     private httpClient: HttpClient,
     private hsLogService: HsLogService,
-    private hsQueryWmtsService: HsQueryWmtsService
+    private hsQueryWmtsService: HsQueryWmtsService,
   ) {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
@@ -56,7 +56,7 @@ export class HsQueryWmsService {
           instOf(layer, Tile)
             ? (layer as Layer<TileWMS>)
             : (layer as Layer<ImageWMS>),
-          evt.coordinate
+          evt.coordinate,
         );
       });
     });
@@ -74,7 +74,7 @@ export class HsQueryWmsService {
       layer?: string;
       name?: any;
       attributes?: any[];
-    }
+    },
   ): void {
     if (updated) {
       this.hsQueryBaseService.set(group, 'features');
@@ -93,9 +93,9 @@ export class HsQueryWmsService {
     url: string,
     infoFormat: string,
     coordinate: number[],
-    layer: Layer<Source>
+    layer: Layer<Source>,
   ): Promise<void> {
-    const req_url = this.hsUtilsService.proxify(url, true);
+    const req_url = this.hsUtilsService.proxify(url);
     const reqHash = this.hsQueryBaseService.currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});
@@ -104,7 +104,7 @@ export class HsQueryWmsService {
         this.httpClient.get(req_url, {
           headers: new HttpHeaders().set('Content-Type', 'text'),
           responseType: 'text',
-        })
+        }),
       );
 
       if (reqHash != this.hsQueryBaseService.currentQuery) {
@@ -145,7 +145,7 @@ export class HsQueryWmsService {
     response: string,
     infoFormat: string,
     coordinate: number[],
-    layer: Layer<Source>
+    layer: Layer<Source>,
   ): void {
     if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
       const parser = new WMSGetFeatureInfo();
@@ -271,7 +271,7 @@ export class HsQueryWmsService {
    */
   queryWmsLayer(
     layer: Layer<TileWMS | ImageWMS | WMTS>,
-    coordinate: number[]
+    coordinate: number[],
   ): void {
     if (this.isLayerWmsQueryable(layer)) {
       if (instOf(layer.getSource(), WMTS)) {
@@ -305,7 +305,7 @@ export class HsQueryWmsService {
            * FIXME: Might return multiple results for the same layer not always 1 of each
            */
           feature_count: source.getParams().LAYERS.split(',').length || 1,
-        }
+        },
       );
       if (
         getFeatureInfoLang(layer) &&
@@ -314,12 +314,12 @@ export class HsQueryWmsService {
         if (instOf(source, TileWMS)) {
           url = url.replace(
             (source as TileWMS).getUrls()[0],
-            getFeatureInfoLang(layer)[this.hsLanguageService.language]
+            getFeatureInfoLang(layer)[this.hsLanguageService.language],
           );
         } else {
           url = url.replace(
             (source as ImageWMS).getUrl(),
-            getFeatureInfoLang(layer)[this.hsLanguageService.language]
+            getFeatureInfoLang(layer)[this.hsLanguageService.language],
           );
         }
       }
