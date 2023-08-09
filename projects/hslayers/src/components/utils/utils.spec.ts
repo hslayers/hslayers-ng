@@ -130,12 +130,12 @@ describe('HsUtilsService', () => {
     const simpleUrl = 'http://gisserver.domain.com';
     const base64Url =
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T';
-    let url = hsUtilsService.proxify(urlWMS, true);
+    let url = hsUtilsService.proxify(urlWMS);
     expect(url).toEqual(
       '/proxy/http://gisserver.domain.com/request=GetFeatureInfo'
     );
     hsConfig.proxyPrefix = 'http://localhost:8085/';
-    url = hsUtilsService.proxify(simpleUrl, false);
+    url = hsUtilsService.proxify(simpleUrl);
     expect(url).toEqual('http://localhost:8085/http://gisserver.domain.com');
     url = hsUtilsService.proxify(base64Url);
     expect(url).toEqual(
