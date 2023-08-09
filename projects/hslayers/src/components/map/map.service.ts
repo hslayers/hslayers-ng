@@ -694,9 +694,7 @@ export class HsMapService {
     }
     if (
       this.hsUtilsService.instOf(source, XYZ) &&
-      !this.hsUtilsService.instOf(source, OSM) &&
-      (source as XYZ).getUrls().filter((url) => !url.includes('openstreetmap'))
-        .length == 0
+      !this.hsUtilsService.instOf(source, OSM)
     ) {
       this.proxifyLayerLoader(lyr, true);
     }
@@ -1017,7 +1015,7 @@ export class HsMapService {
    */
   async simpleImageryProxy(image: ImageWrapper | ImageTile, src: string) {
     return new Promise((resolve, reject) => {
-      if (src.indexOf(this.hsConfig.proxyPrefix) == 0) {
+      if (src.startsWith(this.hsConfig.proxyPrefix)) {
         (image.getImage() as HTMLImageElement).src = src;
         return;
       }
