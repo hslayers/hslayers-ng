@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input, OnInit} from '@angular/core';
 
-import {
-  HsAddDataCatalogueParams,
-  HsAddDataCatalogueService,
-} from '../catalogue.service';
+import {HsAddDataCatalogueService} from '../catalogue.service';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsCommonEndpointsService} from './../../../../common/endpoints/endpoints.service';
-import {HsConfig, HsConfigObject} from '../../../../config.service';
+import {HsConfig} from '../../../../config.service';
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
@@ -48,7 +45,9 @@ export class HsCatalogueListItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.layerAvailable = this.layer.wfsWmsStatus === 'AVAILABLE';
+    this.layerAvailable =
+      this.layer.endpoint.type === 'micka' ||
+      this.layer.wfsWmsStatus === 'AVAILABLE';
   }
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
