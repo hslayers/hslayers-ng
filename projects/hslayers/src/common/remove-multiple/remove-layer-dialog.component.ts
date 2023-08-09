@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {Layer} from 'ol/layer';
 
+import {HsCommonLaymanService} from '../layman/layman.service';
 import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../components/layout/dialogs/dialog-item';
@@ -20,6 +21,7 @@ export type HsRmLayerDialogResponse = {
 export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
   _selectAll = false;
+  isAuthenticated: boolean;
 
   deleteFromOptions = ['map', 'catalogue'] as const;
   deleteFrom: (typeof this.deleteFromOptions)[number];
@@ -28,6 +30,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     public HsDialogContainerService: HsDialogContainerService,
     public service: HsRemoveLayerDialogService,
     private hsLanguageService: HsLanguageService,
+    private commonLaymanService: HsCommonLaymanService,
   ) {}
   viewRef: ViewRef;
   data: {
@@ -39,6 +42,10 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   };
 
   ngOnInit(): void {
+    this.isAuthenticated = this.commonLaymanService.isAuthenticated();
+    if (!this.isAuthenticated) {
+      this.deleteFrom = this.deleteFromOptions[0];
+    }
     if (this.data.items) {
       for (const item of this.data.items) {
         item.displayTitle = this.getTitle(item);
