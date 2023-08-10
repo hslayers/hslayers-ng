@@ -6,6 +6,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 
+import {CustomTranslationService} from '../language/custom-translate.service';
 import {HsLanguageService} from '../language/language.service';
 
 @Injectable({
@@ -49,12 +50,13 @@ export class HsCoreService {
       const translateService = this.hsLanguageService.getTranslator();
       translateService.addLangs(languages);
       translateService.setDefaultLang(`en`);
-      if (this.hsConfig.language) {
-        translateService.use(`${this.hsConfig.language}`);
-        this.hsLanguageService.language = this.hsConfig.language;
-      } else {
-        translateService.use(translateService.getDefaultLang());
-      }
+
+      const langToUse = this.getLangToUse(
+        this.getDocumentLang(),
+        translateService,
+      );
+      translateService.use(`${langToUse}`);
+      this.hsLanguageService.language = langToUse;
 
       if (this.initCalled) {
         return;
@@ -71,6 +73,33 @@ export class HsCoreService {
     this.HsEventBusService.updateMapSize.subscribe(() => {
       this.updateMapSize();
     });
+  }
+
+  /**
+   * Parse language code from HTML lang attr
+   * Takes only first part of lang definition in case 'en-us' format is used
+   */
+  private getDocumentLang(): string {
+    let documentLang = document.documentElement?.lang;
+    return (documentLang = documentLang.includes('-')
+      ? documentLang.split('-')[0]
+      : documentLang);
+  }
+
+  /**
+   * If possible sync language with HTML document lang attribute
+   * otherwise use lang used in config or default (en)
+   */
+  private getLangToUse(
+    documentLang: string,
+    translateService: CustomTranslationService,
+  ): string {
+    const htmlLangInPath = document.location.pathname.includes(
+      `/${documentLang}/`,
+    );
+    return htmlLangInPath && translateService.getLangs().includes(documentLang)
+      ? documentLang
+      : this.hsConfig.language || translateService.getDefaultLang();
   }
 
   /**
