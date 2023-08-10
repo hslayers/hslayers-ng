@@ -49,7 +49,7 @@ export class HsShareUrlService {
     private Location: Location,
     private zone: NgZone,
     private PlatformLocation: PlatformLocation,
-    private HttpClient: HttpClient
+    private HttpClient: HttpClient,
   ) {
     this.keepTrackOfGetParams();
     this.hsMapService.loaded().then((map) => {
@@ -71,8 +71,8 @@ export class HsShareUrlService {
               },
               200,
               false,
-              this
-            )
+              this,
+            ),
           );
         map.getLayers().on('add', (e) => {
           const layer = e.element;
@@ -142,14 +142,14 @@ export class HsShareUrlService {
   async updatePermalinkComposition(data?: MapComposition): Promise<any> {
     const status_url = this.endpointUrl();
     const bbox = this.HsSaveMapService.getBboxFromObject(
-      this.hsMapService.describeExtent()
+      this.hsMapService.describeExtent(),
     );
     this.data = data ?? {
       ...this.data,
       nativeExtent: transformExtent(
         bbox,
         'EPSG:4326',
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(),
       ),
       extent: bbox,
     };
@@ -162,8 +162,8 @@ export class HsShareUrlService {
           id: this.id,
           project: this.hsConfig.project_name,
           request: 'save',
-        })
-      )
+        }),
+      ),
     );
     this.statusSaving = false;
     this.permalinkRequestUrl = status_url + '?request=load&id=' + this.id;
@@ -184,7 +184,7 @@ export class HsShareUrlService {
       .map((lyr) => getTitle(lyr));
 
     const addedLayers = externalLayers.filter(
-      (lyr) => !this.hsConfig.default_layers?.includes(lyr)
+      (lyr) => !this.hsConfig.default_layers?.includes(lyr),
     );
     this.updateViewParamsInUrl();
     //This might become useful, but url size is limited, so we are not using it
@@ -238,7 +238,7 @@ export class HsShareUrlService {
       },
       300,
       false,
-      this.updateDebouncer
+      this.updateDebouncer,
     )();
   }
 
@@ -264,13 +264,13 @@ export class HsShareUrlService {
         this.hsConfig.permalinkLocation.origin +
         this.current_url.replace(
           this.pathName(),
-          this.hsConfig.permalinkLocation.pathname
+          this.hsConfig.permalinkLocation.pathname,
         ) +
         `&${HS_PRMS.permalink}=${encodeURIComponent(this.permalinkRequestUrl)}`
       ).replace(this.pathName(), this.hsConfig.permalinkLocation.pathname);
     } else {
       return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
-        this.permalinkRequestUrl
+        this.permalinkRequestUrl,
       )}`;
     }
   }
