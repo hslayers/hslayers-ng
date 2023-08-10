@@ -23,6 +23,7 @@ export type WfsOptions = {
  * Provides a source of features from WFS endpoint
  */
 export class WfsSource extends Vector<Geometry> {
+  providedUrl: string;
   constructor(
     hsUtilsService: HsUtilsService,
     http: HttpClient,
@@ -84,6 +85,7 @@ export class WfsSource extends Vector<Geometry> {
       },
       strategy: bbox,
     });
+    this.providedUrl = provided_url;
   }
 }
 
