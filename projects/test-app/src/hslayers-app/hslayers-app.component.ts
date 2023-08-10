@@ -661,6 +661,9 @@ export class HslayersAppComponent {
         cs: {
           'My Cool Panel': 'Můj úžasný panel',
         },
+        sk: {
+          'My Cool Panel': 'Môj úžasný panel',
+        },
       },
     });
 

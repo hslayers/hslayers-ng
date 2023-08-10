@@ -13,11 +13,7 @@ import {HsLanguageService} from '../language/language.service';
   providedIn: 'root',
 })
 export class HsCoreService {
-  /**
-   * @public
-   */
   embeddedEnabled = true;
-  language = 'en';
   config: any;
   _puremapApp = false;
   initCalled: boolean;
@@ -97,7 +93,9 @@ export class HsCoreService {
     const htmlLangInPath = document.location.pathname.includes(
       `/${documentLang}/`,
     );
-    return htmlLangInPath && translateService.getLangs().includes(documentLang)
+    this.hsLanguageService.langFromCMS =
+      htmlLangInPath && translateService.getLangs().includes(documentLang);
+    return this.hsLanguageService.langFromCMS
       ? documentLang
       : this.hsConfig.language || translateService.getDefaultLang();
   }

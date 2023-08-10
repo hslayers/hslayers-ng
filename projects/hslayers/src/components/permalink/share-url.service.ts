@@ -92,7 +92,7 @@ export class HsShareUrlService {
           });
         });
         const lang = this.getParamValue(HS_PRMS.lang);
-        if (lang) {
+        if (lang && !this.HsLanguageService.langFromCMS) {
           this.HsLanguageService.setLanguage(lang);
         }
         const view = this.getParamValue(HS_PRMS.view);
@@ -220,6 +220,7 @@ export class HsShareUrlService {
   private updateURL() {
     this.HsUtilsService.debounce(
       () => {
+        //No updates for multi-apps
         if (document.querySelectorAll('hslayers-app').length == 1) {
           let locationPath = this.pathName();
           const paramsSerialized = Object.keys(this.params)

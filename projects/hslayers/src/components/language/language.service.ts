@@ -15,9 +15,12 @@ const DEFAULT_LANG = 'en' as const;
 export class HsLanguageService {
   language: string;
   translateServiceFactory: any;
+  //Controls whether hs-lang URL param should override other setting or not
+  //Not in case we are syncing langs with Wagtail
+  langFromCMS: boolean;
   constructor(
     private translationService: CustomTranslationService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     this.hsConfig.configChanges.subscribe(() => {
       if (this.hsConfig.translationOverrides != undefined) {
@@ -35,10 +38,7 @@ export class HsLanguageService {
    * Set language
    */
   setLanguage(lang: string): void {
-    if (lang.includes('|')) {
-      lang = lang.split('|')[1];
-    }
-    this.translationService.use(lang);
+    this.getTranslator().use(lang);
     this.language = lang;
   }
 
@@ -123,7 +123,7 @@ export class HsLanguageService {
   getTranslationIgnoreNonExisting(
     module: string,
     text: string,
-    params?: any
+    params?: any,
   ): string {
     const tmp = this.getTranslation(module + '.' + text, params || undefined);
     if (tmp.includes(module + '.')) {
