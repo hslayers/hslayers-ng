@@ -1,4 +1,5 @@
 import * as proj from 'ol/proj';
+import {register as projRegister} from 'ol/proj/proj4';
 import {
   BingMaps,
   ImageArcGISRest,
@@ -66,6 +67,7 @@ export class HslayersAppComponent {
       },
       View,
       proj,
+      projRegister
     };
 
     if (this.elementRef.nativeElement.id) {
