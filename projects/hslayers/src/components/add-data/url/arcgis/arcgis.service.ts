@@ -24,14 +24,14 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {UrlDataObject} from '../types/data-object.type';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getPreferredFormat} from '../../../../common/format-utils';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
-import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
-  data: urlDataObject;
+  data: UrlDataObject;
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsLayoutService: HsLayoutService,
@@ -198,7 +198,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async getLayer(
     layers: ArcGISRestResponseLayer[],
-    options: layerOptions,
+    options: LayerOptions,
   ): Promise<Layer<Source>> {
     const attributions = [];
     const dimensions = {};
@@ -265,7 +265,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async calcAllLayersExtent(
     layers: ArcGISRestResponseLayer[],
-    options: layerOptions,
+    options: LayerOptions,
   ) {
     try {
       const layersCaps = await Promise.all(
@@ -383,7 +383,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   private transformLayerExtent(
     extent: ArcGISResResponseLayerExtent,
-    data: urlDataObject,
+    data: UrlDataObject,
   ): number[] {
     return transformExtent(
       [extent.xmin, extent.ymin, extent.xmax, extent.ymax],

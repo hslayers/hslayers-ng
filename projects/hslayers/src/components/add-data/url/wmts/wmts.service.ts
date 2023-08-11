@@ -1,26 +1,26 @@
 import {Injectable} from '@angular/core';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
+import {Extent} from 'ol/extent';
 import {Layer, Tile} from 'ol/layer';
 import {Source} from 'ol/source';
 import {WMTSCapabilities} from 'ol/format';
+import {transformExtent} from 'ol/proj';
 
+import {AddLayersRecursivelyOptions} from '../../../add-data/url/types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {Extent} from 'ol/extent';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
+import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {UrlDataObject} from '../types/data-object.type';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {addLayersRecursivelyOptions} from '../../../add-data/url/types/recursive-options.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
-import {transformExtent} from 'ol/proj';
-import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmtsService implements HsUrlTypeServiceModel {
-  data: urlDataObject;
+  data: UrlDataObject;
 
   constructor(
     public hsMapService: HsMapService,
@@ -53,7 +53,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    options?: layerOptions
+    options?: LayerOptions
   ): Promise<Layer<Source>[]> {
     const response = wrapper.response;
     const error = wrapper.error;
@@ -106,7 +106,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    */
   getLayersRecursively(
     layer,
-    options: addLayersRecursivelyOptions,
+    options: AddLayersRecursivelyOptions,
     collection
   ): void {
     if (!this.data.add_all || layer.checked) {
@@ -136,7 +136,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   getLayers(
     checkedOnly: boolean,
     shallow?: boolean,
-    layerOptions?: layerOptions
+    layerOptions?: LayerOptions
   ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
@@ -232,7 +232,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
    * Uses previously received capabilities response as a reference for the source
    * @param response - Set of available info formats for layer
    */
-  getLayer(layer, options: layerOptions): Layer<Source> {
+  getLayer(layer, options: LayerOptions): Layer<Source> {
     try {
       const wmts = new Tile({
         extent: this.getWMTSExtent(layer.Identifier),

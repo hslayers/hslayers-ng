@@ -6,11 +6,11 @@ import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
-import {urlDataObject} from '../types/data-object.type';
+import {UrlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlGeoSparqlService {
-  data: urlDataObject;
+  data: UrlDataObject;
 
   constructor(
     public httpClient: HttpClient,

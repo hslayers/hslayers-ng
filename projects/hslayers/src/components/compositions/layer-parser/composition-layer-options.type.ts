@@ -1,4 +1,4 @@
-export type layerOptions = {
+export type LayerOptions = {
   //Common
   extent?: string[];
   layerName?: string; //TODO?: name

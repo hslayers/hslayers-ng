@@ -9,6 +9,7 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
+import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
@@ -22,19 +23,18 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
+import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {UrlDataObject} from '../types/data-object.type';
 import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
 } from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
-import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {getPreferredFormat} from '../../../../common/format-utils';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
-import {urlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmsService implements HsUrlTypeServiceModel {
-  data: urlDataObject;
+  data: UrlDataObject;
 
   constructor(
     public hsMapService: HsMapService,
@@ -404,7 +404,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * @param crs - of the layer
    * @param subLayers - Static sub-layers of the layer
    */
-  getLayer(layer, options: layerOptions): Layer<Source> {
+  getLayer(layer, options: LayerOptions): Layer<Source> {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -519,7 +519,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    */
   getLayersRecursively(
     layer: any, //TODO: better typing. It is a wrapper similar to WmsLayer, but has additional properties, also specific to WFS and ArcGIS layers
-    options: addLayersRecursivelyOptions = {checkedOnly: true},
+    options: AddLayersRecursivelyOptions = {checkedOnly: true},
     collection: Layer<Source>[]
   ): void {
     if (!options.checkedOnly || layer.checked) {
