@@ -1,7 +1,7 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-export type urlDataObject = {
+export type UrlDataObject = {
   add_all?: boolean;
   add_under?: Layer<Source>;
   base?: boolean;

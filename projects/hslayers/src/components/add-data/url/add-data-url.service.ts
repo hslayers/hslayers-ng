@@ -12,7 +12,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
-import {urlDataObject} from './types/data-object.type';
+import {UrlDataObject} from './types/data-object.type';
 
 @Injectable({
   providedIn: 'root',
@@ -165,7 +165,7 @@ export class HsAddDataUrlService {
   /**
    * Zoom map to one layers or combined layer list extent
    */
-  zoomToLayers(data: urlDataObject) {
+  zoomToLayers(data: UrlDataObject) {
     if (data.extent) {
       this.hsMapService.fitExtent(data.extent);
     }

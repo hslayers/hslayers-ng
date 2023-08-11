@@ -1,18 +1,18 @@
 import {IntersectWithTooltip} from '../../../../common/type-intersection.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 
-export type layerConnection = {
+export type LayerConnection = {
   owrCache?: boolean;
   getOnly?: boolean;
-  layerOptions?: layerOptions;
+  layerOptions?: LayerOptions;
 };
 
-export type owsType = {
+export type OwsType = {
   layer?: string;
   type?: string;
   uri?: string;
 };
 
-export type owsConnection = IntersectWithTooltip<
-  Partial<owsType> & layerConnection
+export type OwsConnection = IntersectWithTooltip<
+  Partial<OwsType> & LayerConnection
 >;

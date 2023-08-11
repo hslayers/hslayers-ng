@@ -6,6 +6,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {get, transformExtent} from 'ol/proj';
 
 import WfsSource from '../../../../common/layers/hs.source.WfsSource';
+import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataCommonService} from '../../common/common.service';
@@ -16,17 +17,16 @@ import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 import {Layer} from 'ol/layer';
+import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
-import {addLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {layerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
-import {urlDataObject} from '../types/data-object.type';
+import {UrlDataObject} from '../types/data-object.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsUrlWfsService implements HsUrlTypeServiceModel {
-  data: urlDataObject;
+  data: UrlDataObject;
   definedProjections: string[];
   loadingFeatures: boolean;
   cancelUrlRequest: Subject<void> = new Subject();
@@ -79,7 +79,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    layerOptions?: layerOptions,
+    layerOptions?: LayerOptions,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -344,7 +344,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   getLayers(
     checkedOnly?: boolean,
     shallow?: boolean,
-    layerOptions?: layerOptions,
+    layerOptions?: LayerOptions,
   ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
     const collection = [];
@@ -363,12 +363,12 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Loop through the list of layers and call getLayer recursively
    * @param layer - Layer selected
    * @param options - Add layers recursively options
-   * (checkedOnly?: boolean; style?: string; layerOptions: @type layerOptions)
+   * (checkedOnly?: boolean; style?: string; layerOptions: @type LayerOptions)
    * @param collection - Layers created and retrieved collection
    */
   getLayersRecursively(
     layer,
-    options: addLayersRecursivelyOptions,
+    options: AddLayersRecursivelyOptions,
     collection: Layer<Source>[],
   ): void {
     const style = options.layerOptions?.style;
@@ -397,7 +397,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param folder - name
    * @param srs - of the layer
    */
-  getLayer(layer, options: layerOptions): Layer<Source> {
+  getLayer(layer, options: LayerOptions): Layer<Source> {
     const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
     const new_layer = new VectorLayer({
       properties: {
