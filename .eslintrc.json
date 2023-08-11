@@ -71,6 +71,11 @@
         "tsdoc/syntax": "warn"
       },
       "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+          }
+        },
         "jsdoc": {
           "tagNamePreference": {
             "returns": "returns"
