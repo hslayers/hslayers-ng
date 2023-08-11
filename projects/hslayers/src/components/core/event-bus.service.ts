@@ -34,7 +34,6 @@ export class HsEventBusService {
    * @event mapResets
    */
   mapResets: Subject<void> = new Subject();
-  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
   compositionLoadStarts: Subject<string> = new Subject();
   compositionDeletes: Subject<HsMapCompositionDescriptor> = new Subject();
   /**
@@ -47,6 +46,10 @@ export class HsEventBusService {
   layerAdditions: Subject<HsLayerDescriptor> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
+  /**
+   * Fires when layer is added or removed in LayerManager or its z-index changes or its title changes via rename.
+   */
+  layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
   layerLoads: Subject<Layer<Source>> = new Subject();
   layerLoadings: Subject<{
     layer: Layer<Source>;
