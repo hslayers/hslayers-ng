@@ -1,16 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
-import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
-import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styles/styler.service';
-import {HsToastService} from '../../layout/toast/toast.service';
-import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {
   ImageArcGISRest,
   Image as ImageSource,
@@ -33,6 +24,16 @@ import {
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
 // eslint-disable-next-line import/named
 import {Options as TileOptions} from 'ol/layer/BaseTile';
+
+import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
+import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsMapService} from '../../map/map.service';
+import {HsStylerService} from '../../styles/styler.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
+import {SparqlJson} from '../../../common/layers/hs.source.SparqlJson';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
@@ -51,10 +52,10 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Initiate creation of WFS layer through HsUrlWfsService
+   * Create WFS layer from capabilities
    *
    * @public
    * @param lyr_def - Layer definition object
-   * Create WFS layer from capabilities
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
     const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
