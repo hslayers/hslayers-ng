@@ -1,8 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
-import {Vector as VectorLayer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {get, transformExtent} from 'ol/proj';
 
 import WfsSource from '../../../../common/layers/hs.source.WfsSource';
@@ -13,13 +15,11 @@ import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
+import {HsLogService} from '../../../../common/log/log.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
-import {Layer} from 'ol/layer';
 import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
-import {Source} from 'ol/source';
-import {Subject, takeUntil} from 'rxjs';
 import {UrlDataObject} from '../types/data-object.type';
 
 @Injectable({
@@ -34,6 +34,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     private http: HttpClient,
     public hsUtilsService: HsUtilsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    private hsLog: HsLogService,
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
@@ -180,8 +181,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.data.srss = this.parseEPSG(this.data.srss);
       if (this.data.srss.length == 0) {
         this.data.srss = [fallbackProj];
-        console.warn(
-          `While loading WFS from ${this.data.title} fallback projection was used.`,
+        this.hsLog.warn(
+          `While loading WFS from ${this.data.title} fallback projection ${fallbackProj} was used.`,
         );
       }
 

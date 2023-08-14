@@ -55,7 +55,7 @@ export class WfsSource extends Vector<Geometry> {
         }
         /**
          * Use fallback 3857 instead of 4326 as
-         * transformaton from EPSG:4326 (to at least which was tested 3857) is seemingly not working properly.
+         * transformation from EPSG:4326 (to at least which was tested 3857) is seemingly not working properly.
          * lat/lon expected while getting lon/lat
          */
         const responseFeatureCRS = srs.includes('4326') ? 'EPSG:3857' : srs;
