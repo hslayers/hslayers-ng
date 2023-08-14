@@ -99,7 +99,7 @@ export function getAccessRights(layer: Layer<Source>): accessRightsModel {
 
 export function setAccessRights(
   layer: Layer<Source>,
-  access_rights: accessRightsModel
+  access_rights: accessRightsModel,
 ): void {
   layer.set(ACCESS_RIGHTS, access_rights);
 }
@@ -138,7 +138,7 @@ export function getActive(group: Group): boolean {
 
 export function setAttribution(
   layer: Layer<Source>,
-  attribution: Attribution
+  attribution: Attribution,
 ): void {
   layer.set(ATTRIBUTION, attribution);
 }
@@ -161,7 +161,7 @@ export function getCachedCapabilities(layer: Layer<Source>): any {
 
 export function setCacheCapabilities(
   layer: Layer<Source>,
-  capabilities: any
+  capabilities: any,
 ): void {
   layer.set(CAPABILITIES, capabilities);
 }
@@ -184,7 +184,7 @@ export function getCluster(layer: Layer<Source>): boolean {
 
 export function setDefinition(
   layer: Layer<Source>,
-  definition: Definition
+  definition: Definition,
 ): void {
   layer.set(DEFINITION, definition);
 }
@@ -230,7 +230,7 @@ export interface DimensionsList {
  */
 export function setDimensions(
   layer: Layer<Source>,
-  dimensions: DimensionsList
+  dimensions: DimensionsList,
 ): void {
   layer.set(DIMENSIONS, dimensions);
 }
@@ -250,7 +250,7 @@ export function getDimensions(layer: Layer<Source>): DimensionsList {
 export function setDimension(
   layer: Layer<Source>,
   dimension: Dimension,
-  type: string
+  type: string,
 ): void {
   if (layer.get(DIMENSIONS)) {
     const dims = layer.get(DIMENSIONS);
@@ -272,7 +272,7 @@ export function getDimension(layer: Layer<Source>, type: string): Dimension {
 
 export function setDomFeatureLinks(
   layer: Layer<Source>,
-  domFeatureLinks: DOMFeatureLink[]
+  domFeatureLinks: DOMFeatureLink[],
 ): void {
   layer.set(DOM_FEATURE_LINKS, domFeatureLinks);
 }
@@ -291,7 +291,7 @@ export function getEditor(layer: Layer<Source>): Editor {
 
 export function setEnableProxy(
   layer: Layer<Source>,
-  enableProxy: boolean
+  enableProxy: boolean,
 ): void {
   layer.set(ENABLEPROXY, enableProxy);
 }
@@ -302,7 +302,7 @@ export function getEnableProxy(layer: Layer<Source>): boolean {
 
 export function setEventsSuspended(
   layer: Layer<Source>,
-  eventsSuspended: number
+  eventsSuspended: number,
 ): void {
   layer.set(EVENTS_SUSPENDED, eventsSuspended);
 }
@@ -321,7 +321,7 @@ export function getExclusive(layer: Layer<Source>): boolean {
 
 export function setFeatureInfoLang(
   layer: Layer<Source>,
-  featureInfoLang: any
+  featureInfoLang: any,
 ): void {
   layer.set(FEATURE_INFO_LANG, featureInfoLang);
 }
@@ -332,7 +332,7 @@ export function getFeatureInfoLang(layer: Layer<Source>): any {
 
 export function setFromComposition(
   layer: Layer<Source>,
-  fromComposition: boolean
+  fromComposition: boolean,
 ): void {
   layer.set(FROM_COMPOSITION, fromComposition);
 }
@@ -343,7 +343,7 @@ export function getFromComposition(layer: Layer<Source>): boolean {
 
 export function setFromBaseComposition(
   layer: Layer<Source>,
-  fromComposition: boolean
+  fromComposition: boolean,
 ): void {
   layer.set(FROM_BASE_COMPOSITION, fromComposition);
 }
@@ -354,7 +354,7 @@ export function getFromBaseComposition(layer: BaseLayer): boolean {
 
 export function setFeatureInfoTarget(
   layer: Layer<Source>,
-  featureInfoTarget: string
+  featureInfoTarget: string,
 ): void {
   layer.set(GET_FEATURE_INFO_TARGET, featureInfoTarget);
 }
@@ -389,7 +389,7 @@ export function setQml(layer: Layer<Source>, qml: string): void {
 
 export function setHsLaymanSynchronizing(
   layer: Layer<Source>,
-  hsLaymanSynchronizing: boolean
+  hsLaymanSynchronizing: boolean,
 ): void {
   layer.set(HS_LAYMAN_SYNCHRONIZING, hsLaymanSynchronizing);
 }
@@ -408,7 +408,7 @@ export function getInfoFormat(layer: Layer<Source>): string {
 
 export function setInlineLegend(
   layer: Layer<Source>,
-  inlineLegend: boolean
+  inlineLegend: boolean,
 ): void {
   layer.set(INLINE_LEGEND, inlineLegend);
 }
@@ -419,20 +419,20 @@ export function getInlineLegend(layer: Layer<Source>): boolean {
 
 export function setLaymanLayerDescriptor(
   layer: Layer<Source>,
-  hsLaymanLayerDescriptor: HsLaymanLayerDescriptor
+  hsLaymanLayerDescriptor: HsLaymanLayerDescriptor,
 ): void {
   layer.set(LAYMAN_LAYER_DESCRIPTOR, hsLaymanLayerDescriptor);
 }
 
 export function getLaymanLayerDescriptor(
-  layer: Layer<Source>
+  layer: Layer<Source>,
 ): HsLaymanLayerDescriptor {
   return layer.get(LAYMAN_LAYER_DESCRIPTOR);
 }
 
 export function setLegends(
   layer: Layer<Source>,
-  path: string | string[]
+  path: string | string[],
 ): void {
   layer.set(LEGENDS, path);
 }
@@ -443,7 +443,7 @@ export function getLegends(layer: Layer<Source>): string | string[] {
     layer.get('legendImage') !== undefined
   ) {
     console.warn(
-      '"legendImage" layer property is deprecated in favor of "legends"'
+      '"legendImage" layer property is deprecated in favor of "legends"',
     );
     return layer.get('legendImage');
   }
@@ -452,7 +452,7 @@ export function getLegends(layer: Layer<Source>): string | string[] {
 
 export function setMaxResolutionDenominator(
   layer: Layer<Source>,
-  maxResolutionDenominator: number
+  maxResolutionDenominator: number,
 ): void {
   layer.set(MAX_RESOLUTION_DENOMINATOR, maxResolutionDenominator);
 }
@@ -488,7 +488,7 @@ export function getMetadata(layer: Layer<Source>): Metadata {
 
 export function setMinimumTerrainLevel(
   layer: Layer<Source>,
-  minimumTerrainLevel: number
+  minimumTerrainLevel: number,
 ): void {
   layer.set(MINIMUM_TERRAIN_LEVEL, minimumTerrainLevel);
 }
@@ -503,7 +503,7 @@ interface FeatureSelector {
 
 export function setOnFeatureSelected(
   layer: Layer<Source>,
-  onFeatureSelected: FeatureSelector
+  onFeatureSelected: FeatureSelector,
 ): void {
   layer.set(ON_FEATURE_SELECTED, onFeatureSelected);
 }
@@ -561,7 +561,7 @@ export function getQueryable(layer: Layer<Source>): boolean {
 
 export function setQueryCapabilities(
   layer: Layer<Source>,
-  queryCapabilities: boolean
+  queryCapabilities: boolean,
 ): void {
   layer.set(QUERY_CAPABILITIES, queryCapabilities);
 }
@@ -588,7 +588,7 @@ export function getRemovable(layer: Layer<Source>): boolean {
 
 export function setShowInLayerManager(
   layer: Layer<Source>,
-  showInLayerManager: boolean
+  showInLayerManager: boolean,
 ): void {
   layer.set(SHOW_IN_LAYER_MANAGER, showInLayerManager);
 }
@@ -630,7 +630,7 @@ export function getThumbnail(layer: Layer<Source> | Group): string {
 
 export function setVirtualAttributes(
   layer: Layer<Source>,
-  virtualAttributes: any
+  virtualAttributes: any,
 ): void {
   layer.set(VIRTUAL_ATTRIBUTES, virtualAttributes);
 }
@@ -661,7 +661,7 @@ export function getSwipeSide(layer: Layer<Source>): 'left' | 'right' {
 
 export function setSwipeSide(
   layer: Layer<Source>,
-  side: 'left' | 'right'
+  side: 'left' | 'right',
 ): void {
   layer.set(SWIPE_SIDE, side);
 }
