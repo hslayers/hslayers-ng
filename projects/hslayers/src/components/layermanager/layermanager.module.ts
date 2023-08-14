@@ -10,6 +10,7 @@ import {
 
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
+import {HsExtentWidgetComponent} from './widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
 import {HsLanguageModule} from '../language/language.module';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
@@ -57,6 +58,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsIdwWidgetComponent,
     HsLegendWidgetComponent,
     HsOpacityWidgetComponent,
+    HsExtentWidgetComponent,
   ],
   imports: [
     HsLanguageModule,

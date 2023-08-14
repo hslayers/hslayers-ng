@@ -597,7 +597,9 @@
       "colorMap": "Farebná škála",
       "interpolatedAttribute": "Interpolovaný atribút",
       "max": "Max",
-      "min": "Min"
+      "min": "Min",
+      "ignoreExtent": "Ignorovať rozsah vrstvy",
+      "ignoreExtentInfo": "Zobraziť prvky alebo ich časti skryté mimo pôvodného rozsahu."
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",

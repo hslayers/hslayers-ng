@@ -10,8 +10,7 @@ import {HsPanelComponent} from '../../layout/panels/panel-component.interface';
   template: '<div></div>',
 })
 export class HsLayerEditorWidgetBaseComponent
-  implements HsPanelComponent, OnInit, OnDestroy
-{
+  implements HsPanelComponent, OnInit, OnDestroy {
   name: string; //This could be used to enable/disable widgets by name on HsConfig level
   viewRef: ViewRef;
   data: any;

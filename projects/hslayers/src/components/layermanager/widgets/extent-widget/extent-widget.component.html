@@ -1,0 +1,12 @@
+<div class="d-flex flex-row" *ngIf="isEnabled | async">
+    <div class="form-check flex-fill">
+        <input id="hs-layer-extent-toggle" name="layer-extent-toggle" class="form-check-input" type="checkbox"
+            (change)="toggleIgnoreExtent()" [checked]="ignoreExtent" />
+        <label for="hs-layer-extent-toggle" class="form-check-label">{{
+            "LAYERMANAGER.layerEditor.ignoreExtent" | translateHs
+            }}</label>
+        <i style="vertical-align: top;" class="icon-info-sign hs-lm-queryable"
+            [title]="'LAYERMANAGER.layerEditor.ignoreExtentInfo' | translateHs  "
+            (click)="$event.stopPropagation()"></i>
+    </div>
+</div>
