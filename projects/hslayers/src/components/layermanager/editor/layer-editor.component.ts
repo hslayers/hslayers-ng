@@ -13,6 +13,7 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsDrawService} from '../../draw/draw.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLanguageService} from './../../language/language.service';
 import {HsLayerDescriptor} from './../layer-descriptor.interface';
@@ -45,7 +46,6 @@ import {
   templateUrl: './layer-editor.html',
 })
 export class HsLayerEditorComponent {
-  
   _currentLayer: HsLayerDescriptor;
   @Input('current-layer') set currentLayer(value: HsLayerDescriptor) {
     this._currentLayer = value;
@@ -74,13 +74,14 @@ export class HsLayerEditorComponent {
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
-    public hsWidgetContainerService: HsLayerEditorWidgetContainerService
+    public hsWidgetContainerService: HsLayerEditorWidgetContainerService,
   ) {}
 
   createWidgets() {
     const widgets = [
       HsTypeWidgetComponent,
       HsMetadataWidgetComponent,
+      HsExtentWidgetComponent,
       HsClusterWidgetComponent,
       HsScaleWidgetComponent,
       HsLegendWidgetComponent,
@@ -89,7 +90,7 @@ export class HsLayerEditorComponent {
       HsIdwWidgetComponent,
     ];
     for (const widgetClass of widgets) {
-      this.hsWidgetContainerService.create(widgetClass, {}, );
+      this.hsWidgetContainerService.create(widgetClass, {});
     }
   }
 
@@ -105,15 +106,12 @@ export class HsLayerEditorComponent {
           this.HsLanguageService.getTranslation(
             'LAYERMANAGER.layerEditor.savegeojson',
             undefined,
-            
           ) + '?',
         title: this.HsLanguageService.getTranslation(
           'COMMON.confirm',
           undefined,
-          
         ),
       },
-      
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
@@ -140,10 +138,8 @@ export class HsLayerEditorComponent {
    */
   styleLayer(): void {
     const layer = this.olLayer();
-    this.HsStylerService.layer = layer as VectorLayer<
-      VectorSource<Geometry>
-    >;
-    this.HsLayoutService.setMainPanel('styler', );
+    this.HsStylerService.layer = layer as VectorLayer<VectorSource<Geometry>>;
+    this.HsLayoutService.setMainPanel('styler');
   }
 
   /**
@@ -186,7 +182,6 @@ export class HsLayerEditorComponent {
     this.HsDialogContainerService.create(
       HsLayerManagerRemoveLayerDialogComponent,
       {olLayer: this.olLayer()},
-      
     );
   }
 
@@ -255,20 +250,17 @@ export class HsLayerEditorComponent {
           this.HsLanguageService.getTranslation(
             'LAYERMANAGER.layerEditor.copyLayer',
             undefined,
-            
           ) + '?',
         title: this.HsLanguageService.getTranslation(
           'COMMON.copyLayer',
           undefined,
-          
         ),
-        layerTitle: getTitle(this.currentLayer.layer)
+        layerTitle: getTitle(this.currentLayer.layer),
       },
-      
     );
     const result = await dialog.waitResult();
     if (result.confirmed == 'yes') {
-      return this.HsLayerManagerService.copyLayer(result.layerTitle, );
+      return this.HsLayerManagerService.copyLayer(result.layerTitle);
     }
   }
 }

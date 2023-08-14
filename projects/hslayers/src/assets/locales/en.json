@@ -597,7 +597,9 @@
       "interpolatedAttribute": "Interpolated attribute",
       "colorMap": "Color map",
       "min": "Min",
-      "max": "Max"
+      "max": "Max",
+      "ignoreExtent": "Ignore layer extent",
+      "ignoreExtentInfo": "Show features or its parts hidden outside of the initial extent."
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",

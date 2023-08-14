@@ -5,6 +5,7 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from './dom-feature-link.type';
+import {Extent} from 'ol/extent';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
 
@@ -56,6 +57,7 @@ const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const WFS_URL = 'wfsUrl';
 const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
+const WMS_EXTENT_STASH = 'wmsExtentStash';
 
 export type Attribution = {
   onlineResource?: string;
@@ -317,6 +319,14 @@ export function setExclusive(layer: Layer<Source>, exclusive: boolean): void {
 
 export function getExclusive(layer: Layer<Source>): boolean {
   return layer.get(EXCLUSIVE);
+}
+
+export function setWmsExtentStash(layer: Layer<Source>, extent: Extent): void {
+  layer.set(WMS_EXTENT_STASH, extent);
+}
+
+export function getWmsExtentStash(layer: Layer<Source>): Extent {
+  return layer.get(WMS_EXTENT_STASH);
 }
 
 export function setFeatureInfoLang(
