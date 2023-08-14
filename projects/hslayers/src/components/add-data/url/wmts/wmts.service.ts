@@ -88,7 +88,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
       this.data.caps = caps;
-      this.data.title = caps.ServiceIdentification.Title || 'Wmts layer';
+      this.data.title = caps.ServiceIdentification.Title || 'WMTS layer';
 
       this.data.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.Version || caps.version;
@@ -102,7 +102,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer recursively
    * @param layer - Layer selected
-   * @param collection - Layers created and retreived collection
+   * @param collection - Layers created and retrieved collection
    */
   getLayersRecursively(
     layer,
