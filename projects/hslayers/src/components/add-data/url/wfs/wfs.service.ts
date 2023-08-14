@@ -129,7 +129,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         caps = caps['WFS_Capabilities'];
       }
       this.parseWFSJson(caps);
-      this.data.title = caps.ServiceIdentification.Title || 'Wfs layer';
+      this.data.title = caps.ServiceIdentification.Title || 'WFS layer';
       // this.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
