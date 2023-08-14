@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
+import {Observable, map} from 'rxjs';
 import {
   getWmsExtentStash,
   setWmsExtentStash,
 } from '../../../../common/layer-extensions';
-import {map} from 'rxjs';
 
 @Component({
   selector: 'hs-extent-widget',
@@ -16,7 +16,7 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'extent-widget';
 
   ignoreExtent: boolean;
-  isEnabled;
+  isEnabled: Observable<boolean>;
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
     private hsLayerUtilsService: HsLayerUtilsService,
@@ -32,7 +32,7 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
           /**
            * Init with true only if no Extent + Stash (extent has been ignored by user before)
            */
-          this.ignoreExtent = !extent && !!extentStash ? true : false;
+          this.ignoreExtent = !extent && !!extentStash;
           if (!extentStash) {
             setWmsExtentStash(l.layer, extent);
           }

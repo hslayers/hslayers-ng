@@ -85,7 +85,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     public hsAddDataService: HsAddDataService,
     private zone: NgZone,
     public hsCommonLaymanService: HsCommonLaymanService,
-    public hsAddDataOwsService: HsAddDataOwsService
+    public hsAddDataOwsService: HsAddDataOwsService,
   ) {
     super();
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
@@ -135,8 +135,8 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         },
         500,
         false,
-        this
-      )
+        this,
+      ),
     );
   }
 
@@ -197,7 +197,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   calculateEndpointLimits(): void {
     this.matchedRecords = 0;
     this.endpoints = this.endpoints.filter(
-      (ep) => ep.datasourcePaging.matched != 0
+      (ep) => ep.datasourcePaging.matched != 0,
     );
     if (this.endpoints.length === 0) {
       this.dataLoading = false;
@@ -205,7 +205,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     }
     this.matchedRecords = this.endpoints.reduce(
       (sum, ep) => sum + ep.datasourcePaging.matched,
-      this.matchedRecords
+      this.matchedRecords,
     );
     let sumLimits = 0;
     this.endpoints.forEach((ep) => {
@@ -213,9 +213,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       ep.datasourcePaging.limit = Math.max(
         Math.round(
           (ep.datasourcePaging.matched / this.matchedRecords) *
-            this.recordsPerPage
+            this.recordsPerPage,
         ),
-        1
+        1,
       );
       sumLimits += ep.datasourcePaging.limit;
     });
@@ -223,23 +223,18 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
      * For the first few pages we need to adjust limit of the other datasource
      */
     if (sumLimits > this.recordsPerPage) {
-      const epWithFew = this.endpoints.reduce(
-        (maxItem, currentItem) => {
-          if (
-            maxItem === null ||
-            currentItem.datasourcePaging.limit < maxItem.datasourcePaging.limit
-          ) {
-            return currentItem;
-          }
-          return maxItem;
-        },
-        null
-      );
+      const epWithFew = this.endpoints.reduce((maxItem, currentItem) => {
+        if (
+          maxItem === null ||
+          currentItem.datasourcePaging.limit < maxItem.datasourcePaging.limit
+        ) {
+          return currentItem;
+        }
+        return maxItem;
+      }, null);
 
       /** Adjust the limit fo epWithMany */
-      this.endpoints.find(
-        (ep) => ep != epWithFew
-      ).datasourcePaging.limit -= 1;
+      this.endpoints.find((ep) => ep != epWithFew).datasourcePaging.limit -= 1;
       sumLimits -= 1;
     }
     this.recordsPerPage = sumLimits;
@@ -284,8 +279,8 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           (u) =>
             u.id == layer.id ||
             u.id == 'm-' + layer.id ||
-            'm-' + u.id == layer.id
-        ).length == 0
+            'm-' + u.id == layer.id,
+        ).length == 0,
     );
 
     if (endpoint.type.includes('layman')) {
@@ -301,7 +296,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.listNext = this.matchedRecords;
     }
     this.endpoints.forEach(
-      (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit)
+      (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit),
     );
     this.queryCatalogs(true);
   }
@@ -311,14 +306,14 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
       this.endpoints.forEach(
-        (ep: HsEndpoint) => (ep.datasourcePaging.start = 0)
+        (ep: HsEndpoint) => (ep.datasourcePaging.start = 0),
       );
     } else {
       this.listStart -= this.recordsPerPage;
       this.listNext = this.listStart + this.recordsPerPage;
       this.endpoints.forEach(
         (ep: HsEndpoint) =>
-          (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
+          (ep.datasourcePaging.start -= ep.datasourcePaging.limit),
       );
     }
     this.queryCatalogs(true);
@@ -351,7 +346,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           this.data,
           (feature: Feature<Geometry>) =>
             this.hsAddDataCatalogueMapService.addExtentFeature(feature),
-          this.data.textField
+          this.data.textField,
         );
         return query;
       case 'layman':
@@ -360,7 +355,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           catalog,
           this.data,
           (feature: Feature<Geometry>) =>
-            this.hsAddDataCatalogueMapService.addExtentFeature(feature)
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature),
         );
         return query;
       default:
@@ -406,7 +401,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   async addLayerToMap(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
-    type?: string
+    type?: string,
   ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
     if (ds.type == 'micka') {
@@ -414,7 +409,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     } else if (ds.type.includes('layman')) {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
-        layer
+        layer,
       );
     } else {
       whatToAdd = {type: 'none'};
@@ -453,7 +448,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         }
         whatToAdd.link = Array.isArray(whatToAdd.link)
           ? whatToAdd.link.filter((link) =>
-              link.toLowerCase().includes('wfs')
+              link.toLowerCase().includes('wfs'),
             )[0]
           : whatToAdd.link;
         await this.hsAddDataOwsService.connectToOWS({
@@ -481,7 +476,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
               workspace: whatToAdd.workspace,
               style: whatToAdd.style,
               saveToLayman: true,
-            }
+            },
           );
           this.hsAddDataVectorService.fitExtent(layer);
           this.datasetSelect('catalogue');
@@ -506,7 +501,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles}
+        {extractStyles: whatToAdd.extractStyles},
       );
       this.hsAddDataVectorService.fitExtent(layer);
     } else if (whatToAdd.type == 'WMTS' && ds.type == 'micka') {
@@ -546,7 +541,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   calcExtentLayerVisibility(): void {
     this.hsAddDataCatalogueMapService.extentLayer.setVisible(
       this.panelVisible() &&
-        this.hsAddDataService.datasetSelected.getValue() == 'catalogue'
+        this.hsAddDataService.datasetSelected.getValue() == 'catalogue',
     );
   }
 

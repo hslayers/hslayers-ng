@@ -69,7 +69,7 @@ export class HsAddDataVectorService {
     private hsLog: HsLogService,
     private hsMapService: HsMapService,
     private hsStylerService: HsStylerService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
   ) {}
 
   /**
@@ -92,7 +92,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-    addUnder?: Layer<Source>
+    addUnder?: Layer<Source>,
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -103,11 +103,11 @@ export class HsAddDataVectorService {
           title,
           abstract,
           srs,
-          options
+          options,
         );
         /* 
-        TODO: Should have set definition property with protocol inside 
-        so layer synchronizer would know if to sync
+        Set definition property with protocol inside 
+        so layer synchronizer knows whether to sync
         */
         if (options.saveToLayman) {
           if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
@@ -149,7 +149,7 @@ export class HsAddDataVectorService {
     title: string,
     abstract: string,
     srs: string,
-    options: HsVectorLayerOptions = {}
+    options: HsVectorLayerOptions = {},
   ): Promise<VectorLayer<VectorSource<Geometry>>> {
     if (
       type?.toLowerCase() != 'sparql' &&
@@ -179,7 +179,7 @@ export class HsAddDataVectorService {
       abstract,
       url,
       options,
-      mapProjection
+      mapProjection,
     );
 
     const sourceDescriptor = new VectorSourceDescriptor(
@@ -187,7 +187,7 @@ export class HsAddDataVectorService {
       url,
       srs,
       options,
-      mapProjection
+      mapProjection,
     );
 
     const src =
@@ -199,8 +199,8 @@ export class HsAddDataVectorService {
     Object.assign(
       descriptor.layerParams,
       await this.hsStylerService.parseStyle(
-        (options.sld || options.qml) ?? options.style
-      )
+        (options.sld || options.qml) ?? options.style,
+      ),
     );
     return new VectorLayer(descriptor.layerParams);
   }
@@ -276,7 +276,7 @@ export class HsAddDataVectorService {
    * @returns Created layer and layer adding state (true, if complete, false otherwise)
    */
   async addNewLayer(
-    data: VectorDataObject
+    data: VectorDataObject,
   ): Promise<{layer: VectorLayer<VectorSource<Geometry>>; complete: boolean}> {
     if (!this.hsAddDataCommonFileService.endpoint) {
       this.hsAddDataCommonFileService.pickEndpoint();
@@ -305,7 +305,7 @@ export class HsAddDataVectorService {
       data.abstract,
       data.srs,
       this.buildNewLayerOptions(data),
-      data.addUnder
+      data.addUnder,
     );
     this.fitExtent(layer);
     addLayerRes.layer = layer;
@@ -324,15 +324,15 @@ export class HsAddDataVectorService {
    */
   async setLaymanLayerStyle(
     upsertResponse: PostPatchLayerResponse,
-    data: VectorDataObject
+    data: VectorDataObject,
   ): Promise<void> {
     const descriptor = await this.hsAddDataCommonFileService.describeNewLayer(
       this.hsAddDataCommonFileService.endpoint,
       upsertResponse.name,
-      'style'
+      'style',
     );
     data.serializedStyle = await this.hsCommonLaymanService.getStyleFromUrl(
-      descriptor.style.url
+      descriptor.style.url,
     );
   }
 
@@ -344,7 +344,7 @@ export class HsAddDataVectorService {
     const commonFileRef = this.hsAddDataCommonFileService;
 
     const crsSupported = this.hsLaymanService.supportedCRRList.includes(
-      data.nativeSRS
+      data.nativeSRS,
     );
     const style =
       typeof data.serializedStyle == 'string'
@@ -363,9 +363,9 @@ export class HsAddDataVectorService {
       this.hsLaymanService.getFeatureGeoJSON(
         data.nativeFeatures,
         crsSupported,
-        true
+        true,
       ),
-      layerDesc
+      layerDesc,
     );
   }
 
@@ -378,13 +378,13 @@ export class HsAddDataVectorService {
   async checkForLayerInLayman(
     data: VectorDataObject,
 
-    repetive?: boolean
+    repetive?: boolean,
   ): Promise<OverwriteResponse> {
     let upsertReq: PostPatchLayerResponse;
     const commonFileRef = this.hsAddDataCommonFileService;
     commonFileRef.loadingToLayman = true;
     const exists = await this.hsAddDataCommonFileService.lookupLaymanLayer(
-      data.name
+      data.name,
     );
     if (!exists) {
       return OverwriteResponse.add;
@@ -392,7 +392,7 @@ export class HsAddDataVectorService {
       const result =
         await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
           data,
-          repetive
+          repetive,
         );
       switch (result) {
         case OverwriteResponse.overwrite:
@@ -411,7 +411,7 @@ export class HsAddDataVectorService {
             await this.hsLaymanService.describeLayer(
               commonFileRef.endpoint,
               upsertReq.name,
-              commonFileRef.endpoint.user
+              commonFileRef.endpoint.user,
             );
             return OverwriteResponse.overwrite;
           }
@@ -590,7 +590,7 @@ export class HsAddDataVectorService {
         : projection;
       features.forEach((f) =>
         //TODO: Make it parallel using workers or some library
-        f.getGeometry().transform(projection, mapProjection)
+        f.getGeometry().transform(projection, mapProjection),
       );
     }
   }
@@ -620,7 +620,7 @@ export class HsAddDataVectorService {
       if (uploadedData?.features?.length > 0) {
         this.transformFeaturesIfNeeded(
           uploadedData.features,
-          parser.readProjection(uploadedContent)
+          parser.readProjection(uploadedContent),
         );
       }
       uploadedData.nativeFeatures = parser.readFeatures(uploadedContent);
