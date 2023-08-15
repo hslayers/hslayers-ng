@@ -362,12 +362,12 @@ export class HslayersAppComponent {
           url: 'http://localhost:8087',
           type: 'layman',
         },
-        // {
-        //   title: 'Micka',
-        //   url: 'https://watlas.lesprojekt.cz/micka/csw',
-        //   language: 'eng',
-        //   type: 'micka',
-        // },
+        {
+          title: 'Micka',
+          url: 'https://watlas.lesprojekt.cz/micka/csw',
+          language: 'eng',
+          type: 'micka',
+        },
       ],
       proxyPrefix: window.location.hostname.includes('localhost')
         ? `${window.location.protocol}//127.0.0.1:8085/`
