@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
+import {Observable, map} from 'rxjs';
+
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {Observable, map} from 'rxjs';
 import {
   getWmsOriginalExtent,
   setWmsOriginalExtent,
