@@ -57,7 +57,7 @@ const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const WFS_URL = 'wfsUrl';
 const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
-const WMS_EXTENT_STASH = 'wmsExtentStash';
+const WMS_ORIGINAL_EXTENT = 'wmsOriginalExtent';
 
 export type Attribution = {
   onlineResource?: string;
@@ -321,12 +321,15 @@ export function getExclusive(layer: Layer<Source>): boolean {
   return layer.get(EXCLUSIVE);
 }
 
-export function setWmsExtentStash(layer: Layer<Source>, extent: Extent): void {
-  layer.set(WMS_EXTENT_STASH, extent);
+export function setWmsOriginalExtent(
+  layer: Layer<Source>,
+  extent: Extent,
+): void {
+  layer.set(WMS_ORIGINAL_EXTENT, extent);
 }
 
-export function getWmsExtentStash(layer: Layer<Source>): Extent {
-  return layer.get(WMS_EXTENT_STASH);
+export function getWmsOriginalExtent(layer: Layer<Source>): Extent {
+  return layer.get(WMS_ORIGINAL_EXTENT);
 }
 
 export function setFeatureInfoLang(
