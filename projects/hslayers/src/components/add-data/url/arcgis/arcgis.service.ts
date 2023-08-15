@@ -1,6 +1,12 @@
 import {Injectable} from '@angular/core';
 
 import TileGrid from 'ol/tilegrid/TileGrid';
+import {Layer, Tile} from 'ol/layer';
+import {Source, TileArcGISRest, XYZ} from 'ol/source';
+import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {Tile as TileSource} from 'ol/source';
+import {transformExtent} from 'ol/proj';
+
 import {
   ArcGISResResponseLayerExtent,
   ArcGISRestResponseLayer,
@@ -16,15 +22,10 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsToastService} from '../../../../components/layout/toast/toast.service';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {Layer, Tile} from 'ol/layer';
 import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
-import {Source, TileArcGISRest, XYZ} from 'ol/source';
-import {Options as TileOptions} from 'ol/layer/BaseTile';
-import {Tile as TileSource} from 'ol/source';
 import {UrlDataObject} from '../types/data-object.type';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getPreferredFormat} from '../../../../common/format-utils';
-import {transformExtent} from 'ol/proj';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
