@@ -1,11 +1,11 @@
 import BaseLayer from 'ol/layer/Base';
+import {Extent} from 'ol/extent';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from './dom-feature-link.type';
-import {Extent} from 'ol/extent';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
 

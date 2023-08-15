@@ -1,3 +1,4 @@
+import {Extent} from 'ol/extent';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -18,7 +19,6 @@ import {
   setLegends,
   setMetadata,
 } from '../../common/layer-extensions';
-import {Extent} from 'ol/extent';
 import {HsAddDataUrlService} from '../add-data/url/add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
@@ -29,12 +29,12 @@ import {HsMapService} from '../map/map.service';
 import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {
+  WmsLayer,
   WMSGetCapabilitiesResponse,
   WmsDimension,
-  WmsLayer,
 } from '../../common/get-capabilities/wms-get-capabilities-response.interface';
+import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 
 @Injectable({
   providedIn: 'root',
