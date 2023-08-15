@@ -4,8 +4,8 @@ import {HsLayerSelectorService} from '../../editor/layer-selector.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {Observable, map} from 'rxjs';
 import {
-  getWmsExtentStash,
-  setWmsExtentStash,
+  getWmsOriginalExtent,
+  setWmsOriginalExtent,
 } from '../../../../common/layer-extensions';
 
 @Component({
@@ -24,22 +24,22 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     super(hsLayerSelectorService);
     this.isEnabled = this.layerDescriptor.pipe(
       map((l) => {
-        const extentStash = getWmsExtentStash(l.layer);
+        const originalExtent = getWmsOriginalExtent(l.layer);
         const isAllowed =
-          extentStash ?? this.hsLayerUtilsService.isLayerWMS(l.layer);
+          originalExtent ?? this.hsLayerUtilsService.isLayerWMS(l.layer);
         if (isAllowed) {
           const extent = l.layer.getExtent();
           /**
-           * Init with true only if no Extent + Stash (extent has been ignored by user before)
+           * Init with true only if no Extent + originalExtent (extent has been ignored by user before)
            */
-          this.ignoreExtent = !extent && !!extentStash;
-          if (!extentStash) {
-            setWmsExtentStash(l.layer, extent);
+          this.ignoreExtent = !extent && !!originalExtent;
+          if (!originalExtent) {
+            setWmsOriginalExtent(l.layer, extent);
           }
           /**
-           * Show widget if extent or stash is available
+           * Show widget if extent or originalExtent is available
            */
-          return !!extentStash || !!extent;
+          return !!originalExtent || !!extent;
         }
         return false;
       }),
@@ -49,7 +49,7 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   toggleIgnoreExtent(): void {
     this.ignoreExtent = !this.ignoreExtent;
     this.olLayer.setExtent(
-      this.ignoreExtent ? undefined : getWmsExtentStash(this.olLayer),
+      this.ignoreExtent ? undefined : getWmsOriginalExtent(this.olLayer),
     );
   }
 }
