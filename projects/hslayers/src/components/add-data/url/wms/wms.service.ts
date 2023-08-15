@@ -7,7 +7,7 @@ import {Options as ImageOptions} from 'ol/layer/BaseImage';
 import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMSCapabilities} from 'ol/format';
-import {transformExtent} from 'ol/proj';
+import {get, transformExtent} from 'ol/proj';
 
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
@@ -273,10 +273,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         boundingbox = preferred?.extent;
       } else {
         //NOTE: For some reason (maybe WMS 1.1.1/1.1.0) sometimes CRS:84 might hold correct order of coordinates
-        boundingbox = boundingbox.filter((b) => b.crs != 'CRS:84');
+        boundingbox = boundingbox.find((b) => b.crs != 'CRS:84' && get(b.crs));
         boundingbox = transformExtent(
-          boundingbox[0].extent,
-          boundingbox[0].crs || crs,
+          boundingbox.extent,
+          boundingbox.crs || crs,
           this.hsMapService.getCurrentProj(),
         );
       }

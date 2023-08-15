@@ -43,7 +43,7 @@ export class HsLayerEditorService {
     public HsLayoutService: HsLayoutService,
     public HsLegendService: HsLegendService,
     public HsLayerSelectorService: HsLayerSelectorService,
-    public HsLayerManagerMetadataService: HsLayerManagerMetadataService
+    public HsLayerManagerMetadataService: HsLayerManagerMetadataService,
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe(async (layer) => {
       this.legendDescriptor =
@@ -74,11 +74,9 @@ export class HsLayerEditorService {
       const parser = new WMSCapabilities();
       const caps = parser.read(wrapper.response);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
+        const layers = this.HsLayerUtilsService.getLayerParams(layer)?.LAYERS;
         const foundDefs = caps.Capability.Layer.Layer.map((lyr) =>
-          this.HsLayerManagerMetadataService.identifyLayerObject(
-            this.HsLayerUtilsService.getLayerParams(layer)?.LAYERS,
-            lyr
-          )
+          this.HsLayerManagerMetadataService.identifyLayerObject(layers, lyr),
         ).filter((item) => item);
         const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
         if (foundDef) {
@@ -116,8 +114,8 @@ export class HsLayerEditorService {
         layer,
         distance,
         !this.HsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
-          layer
-        )
+          layer,
+        ),
       );
       this.HsEventBusService.compositionEdits.next();
     } else {
@@ -144,7 +142,7 @@ export class HsLayerEditorService {
     return transformExtent(
       extent,
       'EPSG:4326',
-      this.HsMapService.getCurrentProj()
+      this.HsMapService.getCurrentProj(),
     );
   }
 

@@ -160,7 +160,7 @@ export class HsLayerManagerService {
     public hsToastService: HsToastService,
     public hsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
-    private zone: NgZone
+    private zone: NgZone,
   ) {
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
       this.refreshLists();
@@ -169,13 +169,13 @@ export class HsLayerManagerService {
       (olLayer) => {
         if (this.hsDimensionTimeService.layerIsWmsT(olLayer)) {
           const layerDescriptor = this.data.layers.find(
-            (ld) => ld.layer == olLayer
+            (ld) => ld.layer == olLayer,
           );
           if (layerDescriptor) {
             this.hsDimensionTimeService.setupTimeLayer(layerDescriptor);
           }
         }
-      }
+      },
     );
 
     this.hsMapService.loaded().then(async (map) => {
@@ -185,7 +185,7 @@ export class HsLayerManagerService {
           {
             element: lyr as Layer<Source>,
           },
-          true
+          true,
         );
       }
       this.sortFoldersByZ();
@@ -209,7 +209,7 @@ export class HsLayerManagerService {
    */
   async layerAdded(
     e: {element: Layer<Source>},
-    suspendEvents?: boolean
+    suspendEvents?: boolean,
   ): Promise<void> {
     const layer = e.element;
     this.checkLayerHealth(layer);
@@ -224,7 +224,7 @@ export class HsLayerManagerService {
         true,
         layer,
         this.hsConfig.clusteringDistance || 40,
-        false
+        false,
       );
     }
     /**
@@ -282,7 +282,7 @@ export class HsLayerManagerService {
           1,
           //In case of slow request give 10s for other tasks to complete before
           //making another request that might be blocking otherwise
-          10000
+          10000,
         );
         que.push(async (cb) => {
           try {
@@ -364,7 +364,7 @@ export class HsLayerManagerService {
       return 'IDW';
     }
     this.hsLog.warn(
-      `Cannot decide a type of source of layer ${getTitle(layer)}`
+      `Cannot decide a type of source of layer ${getTitle(layer)}`,
     );
     return 'unknown type';
   }
@@ -484,11 +484,11 @@ export class HsLayerManagerService {
    */
   getLayerDescriptorForOlLayer(
     layer: Layer<Source>,
-    base = false
+    base = false,
   ): HsLayerDescriptor {
     const layers = base ? 'baselayers' : 'layers';
     const tmp = (this.data[layers] as Array<any>).filter(
-      (l) => l.layer == layer
+      (l) => l.layer == layer,
     );
     if (tmp.length > 0) {
       return tmp[0];
@@ -514,7 +514,7 @@ export class HsLayerManagerService {
         path = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'LAYERMANAGER',
           'other',
-          undefined
+          undefined,
         );
       }
       setPath(lyr, path);
@@ -627,7 +627,7 @@ export class HsLayerManagerService {
     }
     this.removeFromArray(
       this.hsLayerEditorVectorLayerService.layersClusteredFromStart,
-      e.element
+      e.element,
     );
     this.hsEventBusService.layerManagerUpdates.next(e.element);
     this.hsEventBusService.layerRemovals.next(e.element);
@@ -882,9 +882,9 @@ export class HsLayerManagerService {
           }: ${this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS.ERROR',
             'someErrorHappened',
-            null
+            null,
           )}`,
-          {}
+          {},
         );
       });
     } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
@@ -923,7 +923,7 @@ export class HsLayerManagerService {
   private changeLoadCounter(
     layer: Layer<Source>,
     progress: HsLayerLoadProgress,
-    change: number
+    change: number,
   ): void {
     progress.loadCounter += change;
     //No more tiles to load?
@@ -950,7 +950,8 @@ export class HsLayerManagerService {
     let percents = 100.0;
     if (progress.loadTotal > 0) {
       percents = Math.round(
-        ((progress.loadTotal - progress.loadCounter) / progress.loadTotal) * 100
+        ((progress.loadTotal - progress.loadCounter) / progress.loadTotal) *
+          100,
       );
     }
     progress.percents = percents;
@@ -997,7 +998,7 @@ export class HsLayerManagerService {
   toggleLayerEditor(
     layer: HsLayerDescriptor,
     toToggle: string,
-    control: string
+    control: string,
   ): void {
     if (!getCachedCapabilities(layer.layer)) {
       this.hsLayerManagerMetadata.fillMetadata(layer);
@@ -1069,7 +1070,7 @@ export class HsLayerManagerService {
    */
   setGreyscale(layer: HsLayerDescriptor): void {
     const layerContainer = this.hsLayoutService.contentWrapper.querySelector(
-      '.ol-layers > div:first-child'
+      '.ol-layers > div:first-child',
     );
     if (layerContainer.classList.contains('hs-greyscale')) {
       layerContainer.classList.remove('hs-greyscale');
@@ -1091,7 +1092,7 @@ export class HsLayerManagerService {
     this.data.folders.sub_folders.sort(
       (a, b) =>
         (a.zIndex < b.zIndex ? -1 : a.zIndex > b.zIndex ? 1 : 0) *
-        (this.hsConfig.reverseLayerList ?? true ? -1 : 1)
+        (this.hsConfig.reverseLayerList ?? true ? -1 : 1),
     );
   }
 
@@ -1110,7 +1111,7 @@ export class HsLayerManagerService {
     setTimeout(() => {
       for (let i = 0; i < this.data.layers.length; i++) {
         const tmp = !this.isLayerInResolutionInterval(
-          this.data.layers[i].layer
+          this.data.layers[i].layer,
         );
         if (this.data.layers[i].grayed != tmp) {
           this.data.layers[i].grayed = tmp;
@@ -1125,12 +1126,12 @@ export class HsLayerManagerService {
    */
   private toggleEditLayerByUrlParam() {
     const layerTitle = this.hsShareUrlService.getParamValue(
-      HS_PRMS.layerSelected
+      HS_PRMS.layerSelected,
     );
     if (layerTitle != undefined) {
       setTimeout(() => {
         const layerFound = this.data.layers.find(
-          (layer) => layer.title == layerTitle
+          (layer) => layer.title == layerTitle,
         );
         if (layerFound !== undefined) {
           this.toggleLayerEditor(layerFound, 'settings', 'sublayers');
@@ -1154,20 +1155,20 @@ export class HsLayerManagerService {
       path = path ? path : 'other';
 
       pathLayers = this.data.layers.filter(
-        (layer) => getPath(layer.layer) == path
+        (layer) => getPath(layer.layer) == path,
       );
     }
 
     if (pathLayers.length > 0) {
       //Get max available index value
       const maxPathZIndex = Math.max(
-        ...pathLayers.map((lyr) => lyr.layer.getZIndex() || 0)
+        ...pathLayers.map((lyr) => lyr.layer.getZIndex() || 0),
       );
 
       layer.setZIndex(maxPathZIndex + 1);
       //Increase zIndex of the layer that are supposed to be rendered above inserted
       for (const lyr of this.data.layers.filter(
-        (lyr) => lyr.layer.getZIndex() >= layer.getZIndex()
+        (lyr) => lyr.layer.getZIndex() >= layer.getZIndex(),
       )) {
         lyr.layer.setZIndex(lyr.layer.getZIndex() + 1);
       }
@@ -1196,7 +1197,7 @@ export class HsLayerManagerService {
     const translation = this.hsLanguageService.getTranslationIgnoreNonExisting(
       group,
       input,
-      undefined
+      undefined,
     );
     if (translation) {
       return this.sanitizer.bypassSecurityTrustHtml(translation);
@@ -1230,7 +1231,7 @@ export class HsLayerManagerService {
       {
         dataProjection: 'EPSG:4326',
         featureProjection: this.hsMapService.getCurrentProj(),
-      }
+      },
     );
     const file = new Blob([geojson], {type: 'application/json'});
 
@@ -1270,14 +1271,14 @@ export class HsLayerManagerService {
         setTitle(layerCopy[0], copyTitle);
         //Currently ticked sub-layers are stored in LAYERS
         const subLayers = this.hsLayerUtilsService.getLayerParams(
-          this.currentLayer.layer
+          this.currentLayer.layer,
         )?.LAYERS;
         if (subLayers) {
           setSubLayers(layerCopy[0], subLayers);
         }
         this.hsLayerUtilsService.updateLayerParams(
           layerCopy[0],
-          this.hsLayerUtilsService.getLayerParams(this.currentLayer.layer)
+          this.hsLayerUtilsService.getLayerParams(this.currentLayer.layer),
         );
         // We don't want the default styles to be set which add-data panel does.
         // Otherwise they won't be cleared if the original layer has undefined STYLES

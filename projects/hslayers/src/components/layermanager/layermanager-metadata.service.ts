@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
+import {get as getProjection, transformExtent} from 'ol/proj';
 
 import {
   Attribution,
@@ -22,6 +23,7 @@ import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-ti
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
+import {HsMapService} from '../map/map.service';
 import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
@@ -30,6 +32,7 @@ import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
 } from '../../common/get-capabilities/wms-get-capabilities-response.interface';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -42,7 +45,8 @@ export class HsLayerManagerMetadataService {
     public HsDimensionTimeService: HsDimensionTimeService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLog: HsLogService,
-    public hsUrlWmsService: HsUrlWmsService
+    public hsUrlWmsService: HsUrlWmsService,
+    private hsMapService: HsMapService,
   ) {}
 
   /**
@@ -55,7 +59,7 @@ export class HsLayerManagerMetadataService {
   identifyLayerObject(
     layerName: string,
     currentLayer: WmsLayer,
-    serviceLayer: boolean = false
+    serviceLayer: boolean = false,
   ): WmsLayer {
     // FIXME: Temporary bypass for layer names like 'UTM:evi'
     /*if (layerName.includes(':')) { //This is wrong because then we are not able to find layer by name
@@ -130,14 +134,14 @@ export class HsLayerManagerMetadataService {
   searchForScaleDenominator(properties: any) {
     let maxResolution = properties.MaxScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
-          properties.MaxScaleDenominator
+          properties.MaxScaleDenominator,
         )
       : null;
 
     //TODO: Currently we are not using minResolution, but should. That would require rewriting this function to return structure of {minRes, maxRes}
     const minResolution = properties.MinScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
-          properties.MinScaleDenominator
+          properties.MinScaleDenominator,
         )
       : 0;
 
@@ -154,7 +158,7 @@ export class HsLayerManagerMetadataService {
           if (sublayer.MaxScaleDenominator) {
             sublayer.maxResolution =
               this.HsLayerUtilsService.calculateResolutionFromScale(
-                sublayer.MaxScaleDenominator
+                sublayer.MaxScaleDenominator,
               );
             if (
               maxResolution < sublayer.maxResolution &&
@@ -162,7 +166,7 @@ export class HsLayerManagerMetadataService {
             ) {
               maxResolution =
                 this.HsLayerUtilsService.calculateResolutionFromScale(
-                  sublayer.MaxScaleDenominator
+                  sublayer.MaxScaleDenominator,
                 );
             }
           } else if (!sublayer.maxResolution) {
@@ -200,7 +204,7 @@ export class HsLayerManagerMetadataService {
   parseWmsCaps(
     layerDescriptor: HsLayerDescriptor,
     layerName: string,
-    caps: WMSGetCapabilitiesResponse
+    caps: WMSGetCapabilitiesResponse,
   ): void {
     const olLayer = layerDescriptor.layer;
     const legends: string[] = [];
@@ -223,7 +227,7 @@ export class HsLayerManagerMetadataService {
       if (getCachedCapabilities(olLayer) === undefined) {
         layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
           maxResolution: Math.max(
-            ...layerObjs.map((layer) => this.searchForScaleDenominator(layer))
+            ...layerObjs.map((layer) => this.searchForScaleDenominator(layer)),
           ),
           Layer: layerObjs,
         });
@@ -233,7 +237,7 @@ export class HsLayerManagerMetadataService {
       layerObj = this.identifyLayerObject(
         layerName,
         layerCaps,
-        olLayer.get('serviceLayer')
+        olLayer.get('serviceLayer'),
       );
       if (layerObj == undefined) {
         return;
@@ -251,7 +255,7 @@ export class HsLayerManagerMetadataService {
         /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. */
         const subLayerArray = getSubLayers(olLayer).split(',');
         layerObj.Layer = layerObj.Layer.filter((l) =>
-          subLayerArray.includes(l.Name)
+          subLayerArray.includes(l.Name),
         );
       }
       if (
@@ -265,6 +269,7 @@ export class HsLayerManagerMetadataService {
         });
       }
       this.collectLegend(layerObj, legends);
+      this.setCapsExtent(layerObj, olLayer);
     }
     if (getCachedCapabilities(olLayer) === undefined) {
       setCacheCapabilities(olLayer, layerObj);
@@ -276,9 +281,32 @@ export class HsLayerManagerMetadataService {
     }
   }
 
+  /**
+   * Set layer extent using capabilities layer object
+   */
+  private setCapsExtent(layerObj: any, layer: Layer<Source>) {
+    let extent = layerObj.EX_GeographicBoundingBox || layerObj.BoundingBox;
+    //If from BoundingBox picl one usable
+    extent = extent[0].crs
+      ? extent.find(
+          (e) => e.crs != 'CRS:84' && getProjection(layerObj.BoundingBox[0]),
+        )
+      : extent;
+    extent = transformExtent(
+      //BoundingBox extent is obj with crs, extent, res props
+      extent.extent ?? extent,
+      //EX_GeographicBoundingBox always in 4326
+      extent.crs ?? 'EPSG:4326',
+      this.hsMapService.getCurrentProj(),
+    );
+    if (extent !== null) {
+      layer.setExtent(extent);
+    }
+  }
+
   private collectLegend(layerObject: any, legends: string[]) {
     const styleWithLegend = layerObject?.Style?.find(
-      (style) => style.LegendURL !== undefined
+      (style) => style.LegendURL !== undefined,
     );
     if (styleWithLegend) {
       legends.push(styleWithLegend.LegendURL[0].OnlineResource);
@@ -353,7 +381,7 @@ export class HsLayerManagerMetadataService {
           return;
         }
         const maxResolution = this.searchForScaleDenominator(
-          layer.getProperties()
+          layer.getProperties(),
         );
         if (maxResolution) {
           layer.setMaxResolution(maxResolution);
@@ -388,7 +416,7 @@ export class HsLayerManagerMetadataService {
           const parser = new DOMParser();
           const caps = parser.parseFromString(
             wrapper.response.data,
-            'application/xml'
+            'application/xml',
           );
           const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
           if (!getAttribution(layer)?.locked) {
@@ -477,7 +505,7 @@ export class HsLayerManagerMetadataService {
         type?: string;
         geometryType?: string;
       }[];
-    }
+    },
   ): {Title: string; Name: number; Layer?: {Title: string; Name: number}[]} {
     if (layerId == undefined || isNaN(layerId)) {
       //parseInt(undefined) returns NaN
