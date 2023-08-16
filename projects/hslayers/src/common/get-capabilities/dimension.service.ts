@@ -11,7 +11,7 @@ import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {
   WmsDimension,
-  WmsLayer,
+  HsWmsLayer,
 } from './wms-get-capabilities-response.interface';
 import {getDimensions} from '../layer-extensions';
 
@@ -73,7 +73,7 @@ export class HsDimensionService {
    *
    * @param layer - Layer to fill the dimension values
    */
-  fillDimensionValues(layer: WmsLayer): void {
+  fillDimensionValues(layer: HsWmsLayer): void {
     if (!Array.isArray(layer.Layer)) {
       return;
     }

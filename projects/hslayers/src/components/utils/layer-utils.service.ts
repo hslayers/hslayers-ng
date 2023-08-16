@@ -25,7 +25,7 @@ import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './utils.service';
 import {METERS_PER_UNIT} from 'ol/proj';
-import {WmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
+import {HsWmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {
   getCluster,
   getEditor,
@@ -74,7 +74,7 @@ export class HsLayerUtilsService {
    * @returns True for layer with sub layers, for layer type
    * WMS layer
    */
-  hasNestedLayers(layer: WmsLayer): boolean {
+  hasNestedLayers(layer: HsWmsLayer): boolean {
     if (layer === undefined) {
       return false;
     }

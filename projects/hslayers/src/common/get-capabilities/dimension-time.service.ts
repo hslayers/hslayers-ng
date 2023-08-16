@@ -7,7 +7,7 @@ import {Layer} from 'ol/layer';
 import {HsLayerDescriptor} from '../../components/layermanager/layer-descriptor.interface';
 import {HsLogService} from '../log/log.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
-import {WmsLayer} from './wms-get-capabilities-response.interface';
+import {HsWmsLayer} from './wms-get-capabilities-response.interface';
 import {getDimensions, setDimension, setDimensions} from '../layer-extensions';
 
 @Injectable({
@@ -161,7 +161,7 @@ export class HsDimensionTimeService {
   setupTimeLayer(
     currentLayer: HsLayerDescriptor,
 
-    serviceLayer?: WmsLayer
+    serviceLayer?: HsWmsLayer
   ): void {
     const olLayer = currentLayer.layer;
     //parse config set at a Layer level

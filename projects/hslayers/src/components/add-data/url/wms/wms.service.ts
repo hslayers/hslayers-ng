@@ -27,7 +27,7 @@ import {LayerOptions} from '../../../compositions/layer-parser/composition-layer
 import {UrlDataObject} from '../types/data-object.type';
 import {
   WMSGetCapabilitiesResponse,
-  WmsLayer,
+  HsWmsLayer,
 } from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getPreferredFormat} from '../../../../common/format-utils';
@@ -299,8 +299,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Filters out layers without 'Name' parameter
    */
   filterCapabilitiesLayers(
-    layers: WmsLayer | Array<WmsLayer>,
-  ): Array<WmsLayer> {
+    layers: HsWmsLayer | Array<HsWmsLayer>,
+  ): Array<HsWmsLayer> {
     if (Array.isArray(layers)) {
       return layers;
     }
