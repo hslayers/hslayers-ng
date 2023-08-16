@@ -1,19 +1,19 @@
 import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
-import {LayoutComponent} from './layout.component';
+import {HsMatLayoutComponent} from './layout.component';
 
 describe('LayoutComponent', () => {
-  let component: LayoutComponent;
-  let fixture: ComponentFixture<LayoutComponent>;
+  let component: HsMatLayoutComponent;
+  let fixture: ComponentFixture<HsMatLayoutComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LayoutComponent],
+      declarations: [HsMatLayoutComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayoutComponent);
+    fixture = TestBed.createComponent(HsMatLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,5 @@
 import {BehaviorSubject} from 'rxjs';
-import {Component, Injectable, Input} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -18,12 +18,14 @@ import {
   HsLayerUtilsService,
   HsLayoutService,
   HsMapService,
+  HsRemoveLayerDialogService,
   HsSidebarService,
   HsUtilsService,
 } from 'hslayers-ng';
 
 class HsLayerNode {
   name: string;
+  // eslint-disable-next-line no-use-before-define
   children?: HsLayerNode[];
   layer?: HsLayerDescriptor;
 }
@@ -38,24 +40,20 @@ class HsLayerFlatNode {
 @Injectable()
 export class HsLayerDatabase {
   dataChange = new BehaviorSubject<HsLayerNode[]>([]);
-  
+
   get data(): HsLayerNode[] {
     return this.dataChange.value;
   }
 
   constructor(
     public HsEventBusService: HsEventBusService,
-    public HsLayerManagerService: HsLayerManagerService
+    public HsLayerManagerService: HsLayerManagerService,
   ) {
-    const data = this.buildLayerTree(
-      this.HsLayerManagerService.get().data
-    );
+    const data = this.buildLayerTree(this.HsLayerManagerService.data);
     this.dataChange.next(data);
 
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      const data = this.buildLayerTree(
-        this.HsLayerManagerService.get().data
-      );
+      const data = this.buildLayerTree(this.HsLayerManagerService.data);
       this.dataChange.next(data);
     });
   }
@@ -135,7 +133,8 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
     HsLanguageService: HsLanguageService,
     HsConfig: HsConfig,
     HsLayerListService: HsLayerListService,
-    HsSidebarService: HsSidebarService
+    HsSidebarService: HsSidebarService,
+    hsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {
     super(
       HsCore,
@@ -150,21 +149,22 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
       HsLanguageService,
       HsConfig,
       HsLayerListService,
-      HsSidebarService
+      HsSidebarService,
+      hsRemoveLayerDialogService,
     );
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
       this.isExpandable,
-      this.getChildren
+      this.getChildren,
     );
     this.treeControl = new FlatTreeControl<HsLayerFlatNode>(
       this.getLevel,
-      this.isExpandable
+      this.isExpandable,
     );
     this.dataSource = new MatTreeFlatDataSource(
       this.treeControl,
-      this.treeFlattener
+      this.treeFlattener,
     );
 
     _database.dataChange.subscribe((data) => {
@@ -172,7 +172,7 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
       this.checklistSelection.select(
         ...this.treeFlattener
           .flattenNodes(this.dataSource.data)
-          .filter((node) => node.layer?.visible)
+          .filter((node) => node.layer?.visible),
       );
     });
 
@@ -181,22 +181,14 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
         .filter((node) => node.layer)
         .filter((node) => !node.layer.visible)
         .forEach((node) =>
-          this.HsLayerManagerService.changeLayerVisibility(
-            true,
-            node.layer,
-            
-          )
+          this.HsLayerManagerService.changeLayerVisibility(true, node.layer),
         );
 
       changes.removed
         .filter((node) => node.layer)
         .filter((node) => node.layer.visible)
         .forEach((node) =>
-          this.HsLayerManagerService.changeLayerVisibility(
-            false,
-            node.layer,
-            
-          )
+          this.HsLayerManagerService.changeLayerVisibility(false, node.layer),
         );
     });
 
@@ -248,7 +240,7 @@ export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
   descendantsPartiallySelected(node: HsLayerFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
     const result = descendants.some((child) =>
-      this.checklistSelection.isSelected(child)
+      this.checklistSelection.isSelected(child),
     );
     return result && !this.descendantsAllSelected(node);
   }

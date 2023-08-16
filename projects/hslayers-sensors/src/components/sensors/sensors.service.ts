@@ -83,7 +83,7 @@ export class HsSensorsService {
     private hsEventBusService: HsEventBusService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsSidebarService: HsSidebarService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {
     this.hsSidebarService.addButton({
       panel: 'sensors',
@@ -112,19 +112,19 @@ export class HsSensorsService {
             ) {
               this.hsLayoutService.setMainPanel('sensors');
               this.units.forEach(
-                (unit: HsSensorUnit) => (unit.expanded = false)
+                (unit: HsSensorUnit) => (unit.expanded = false),
               );
               this.selectUnit(
                 this.units.filter(
                   (unit: HsSensorUnit) =>
-                    unit.unit_id == getUnitId(event.feature)
-                )[0]
+                    unit.unit_id == getUnitId(event.feature),
+                )[0],
               );
             }
           },
           150,
           false,
-          this
+          this,
         )();
       });
     });
@@ -134,9 +134,10 @@ export class HsSensorsService {
    * Deselect sensor unit and refresh sensors state
    */
   deselectUnit(unit) {
-    this.hsSensorsUnitDialogService.unit = this.hsSensorsUnitDialogService.unit.filter(
-      (u) => u.unit_id !== unit.unit_id
-    );
+    this.hsSensorsUnitDialogService.unit =
+      this.hsSensorsUnitDialogService.unit.filter(
+        (u) => u.unit_id !== unit.unit_id,
+      );
     unit.feature.set('selected', undefined);
     unit.sensors
       .filter((s) => s.checked)
@@ -188,11 +189,15 @@ export class HsSensorsService {
      */
     if (this.hsSensorsUnitDialogService.comparisonAllowed) {
       //If already in 'selection' drop it, remove from aggregations and reset its sensors state
-      if (this.hsSensorsUnitDialogService.unit.find((u) => u.unit_id == unit.unit_id)) {
+      if (
+        this.hsSensorsUnitDialogService.unit.find(
+          (u) => u.unit_id == unit.unit_id,
+        )
+      ) {
         this.deselectUnit(unit);
         if (this.hsSensorsUnitDialogService.unit.length > 0) {
           this.hsSensorsUnitDialogService.createChart(
-            this.hsSensorsUnitDialogService.unit
+            this.hsSensorsUnitDialogService.unit,
           );
         } else {
           this.closeSensorDialog();
@@ -228,15 +233,11 @@ export class HsSensorsService {
     //this.selectSensor(unit.sensors[0]);
     //Create/show unit dialog
     if (
-      !this.hsDialogContainerService
-        .dialogs.some((d) =>
-          this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
-        )
+      !this.hsDialogContainerService.dialogs.some((d) =>
+        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent),
+      )
     ) {
-      this.hsDialogContainerService.create(
-        HsSensorsUnitDialogComponent,
-        {}
-      );
+      this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
       this.hsSensorsUnitDialogService.unitDialogVisible = true;
     }
@@ -249,13 +250,16 @@ export class HsSensorsService {
     }
     //Get observations for selected unit
     this.hsSensorsUnitDialogService
-      .getObservationHistory(unit, this.hsSensorsUnitDialogService.currentInterval)
+      .getObservationHistory(
+        unit,
+        this.hsSensorsUnitDialogService.currentInterval,
+      )
       .then((_) =>
         this.hsSensorsUnitDialogService.createChart(
           this.hsSensorsUnitDialogService.comparisonAllowed
             ? this.hsSensorsUnitDialogService.unit
-            : unit
-        )
+            : unit,
+        ),
       );
 
     unit.feature.set('selected', true);
@@ -269,10 +273,9 @@ export class HsSensorsService {
    * Close sensor unit dialog
    */
   closeSensorDialog(): void {
-    const dialog = this.hsDialogContainerService
-      .dialogs.find((d) =>
-        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent)
-      );
+    const dialog = this.hsDialogContainerService.dialogs.find((d) =>
+      this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent),
+    );
     this.hsDialogContainerService.destroy(dialog);
     this.hsSensorsUnitDialogService.unitDialogVisible = false;
   }
@@ -335,7 +338,7 @@ export class HsSensorsService {
       this.createLayer();
     }
     const url = this.hsUtilsService.proxify(
-      `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/unit`
+      `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/unit`,
     );
     this.http
       .get(url, {
@@ -349,7 +352,7 @@ export class HsSensorsService {
         const features = this.units
           .filter(
             (unit: HsSensorUnit) =>
-              unit.unit_position && unit.unit_position.asWKT
+              unit.unit_position && unit.unit_position.asWKT,
           )
           .map((unit: HsSensorUnit) => {
             const format = new WKT();
@@ -374,23 +377,23 @@ export class HsSensorsService {
             sensor.sensor_name_translated =
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'SENSORS.SENSORNAMES',
-                sensor.sensor_name
+                sensor.sensor_name,
               );
             sensor.phenomenon_name_translated =
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'SENSORS.PHENOMENON',
-                sensor.phenomenon_name
+                sensor.phenomenon_name,
               );
           }
           unit.sensorTypes = this.hsUtilsService.removeDuplicates(
             unit.sensorTypes,
-            'name'
+            'name',
           );
           unit.sensorTypes.map(
             (st) =>
               (st.sensors = unit.sensors.filter(
-                (s) => s.sensor_type == st.name
-              ))
+                (s) => s.sensor_type == st.name,
+              )),
           );
         });
         this.units.forEach((unit: HsSensorUnit) => {
@@ -417,7 +420,7 @@ export class HsSensorsService {
       (s) =>
         query.description == '' ||
         s.description.toLowerCase().indexOf(query.description.toLowerCase()) >
-          -1
+          -1,
     );
   }
 
@@ -466,7 +469,7 @@ export class HsSensorsService {
                 feature.set(sensor.sensor_name_translated, reading.value);
                 feature.set(
                   sensor.sensor_name_translated + ' at ',
-                  reading.timestamp
+                  reading.timestamp,
                 );
               } else {
                 console.log(`No feature exists for unit ${unit.unit_id}`);
