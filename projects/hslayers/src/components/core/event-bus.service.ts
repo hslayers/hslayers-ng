@@ -64,14 +64,6 @@ export class HsEventBusService {
     time?: string;
   }> = new Subject();
   /**
-   * DEPRECATED. Moved into the HsDimensionTimeService for mostly internal usage.
-   * @deprecated Replaced by layerDimensionDefinitionChanges
-   */
-  layerTimeChanges: Subject<{
-    layer: HsLayerDescriptor;
-    time: string;
-  }> = new Subject();
-  /**
    * Used to listen for changes either in "time" property in HsLayerDescriptor
    * or in "dimensions" property in OL Layer object
    */
