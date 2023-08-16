@@ -153,13 +153,6 @@ export class HsConfigObject {
    */
   pathExclusivity?: boolean;
   ngRouter?: boolean;
-  /**
-   * Path of image to ajax loader animation,
-   * which is calculated automatically from assetPath
-   * TODO: REMOVE in 12.0
-   * @deprecated - replace the image with <span class="hs-loader"></span> or <span class="hs-loader hs-loader-dark"></span>
-   */
-  _ajaxLoaderPath?: string;
 
   constructor() {
     this.pathExclusivity = false;
@@ -291,7 +284,6 @@ export class HsConfig extends HsConfigObject {
       this.assetsPath = '';
     }
     this.assetsPath += this.assetsPath.endsWith('/') ? '' : '/';
-    this._ajaxLoaderPath = this.assetsPath + 'img/ajax-loader.gif';
 
     this.configChanges.next();
   }
