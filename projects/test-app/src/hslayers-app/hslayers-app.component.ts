@@ -637,9 +637,9 @@ export class HslayersAppComponent {
             title: 'EVI',
           },
           source: new TileWMS({
-            url: 'https://eo.lesprojekt.cz/geoserver/nemecek/wms',
+            url: 'http://localhost:8087/geoserver/jmacura_wms/ows',
             params: {
-              LAYERS: 'EVI',
+              LAYERS: 'zones_evi_ugly_test_hsl,zones',
               INFO_FORMAT: undefined,
               FORMAT: 'image/png; mode=8bit',
             },

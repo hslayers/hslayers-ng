@@ -18,6 +18,8 @@ import {
   setLegends,
   setMetadata,
 } from '../../common/layer-extensions';
+import {Extent} from 'ol/extent';
+import {HsAddDataUrlService} from '../add-data/url/add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -47,6 +49,7 @@ export class HsLayerManagerMetadataService {
     public hsLog: HsLogService,
     public hsUrlWmsService: HsUrlWmsService,
     private hsMapService: HsMapService,
+    private hsAddDataUrlService: HsAddDataUrlService,
   ) {}
 
   /**
@@ -224,6 +227,13 @@ export class HsLayerManagerMetadataService {
           delete layerSubObject.Layer;
         }
       }
+      this.setCapsExtent(
+        this.hsAddDataUrlService.calcCombinedExtent(
+          layerObjs.map((lo) => this.getCapsExtent(lo)),
+        ),
+        olLayer,
+      );
+
       if (getCachedCapabilities(olLayer) === undefined) {
         layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
           maxResolution: Math.max(
@@ -269,7 +279,7 @@ export class HsLayerManagerMetadataService {
         });
       }
       this.collectLegend(layerObj, legends);
-      this.setCapsExtent(layerObj, olLayer);
+      this.setCapsExtent(this.getCapsExtent(layerObj), olLayer);
     }
     if (getCachedCapabilities(olLayer) === undefined) {
       setCacheCapabilities(olLayer, layerObj);
@@ -284,7 +294,16 @@ export class HsLayerManagerMetadataService {
   /**
    * Set layer extent using capabilities layer object
    */
-  private setCapsExtent(layerObj: any, layer: Layer<Source>) {
+  private setCapsExtent(extent: Extent, layer: Layer<Source>): void {
+    if (extent !== null) {
+      layer.setExtent(extent);
+    }
+  }
+
+  /**
+   * Helper used in to get usable extent from layers capabilities object
+   */
+  private getCapsExtent(layerObj: any): Extent {
     let extent = layerObj.EX_GeographicBoundingBox || layerObj.BoundingBox;
     //If from BoundingBox picl one usable
     extent = extent[0].crs
@@ -292,16 +311,13 @@ export class HsLayerManagerMetadataService {
           (e) => e.crs != 'CRS:84' && getProjection(layerObj.BoundingBox[0]),
         )
       : extent;
-    extent = transformExtent(
+    return transformExtent(
       //BoundingBox extent is obj with crs, extent, res props
       extent.extent ?? extent,
       //EX_GeographicBoundingBox always in 4326
       extent.crs ?? 'EPSG:4326',
       this.hsMapService.getCurrentProj(),
     );
-    if (extent !== null) {
-      layer.setExtent(extent);
-    }
   }
 
   private collectLegend(layerObject: any, legends: string[]) {
