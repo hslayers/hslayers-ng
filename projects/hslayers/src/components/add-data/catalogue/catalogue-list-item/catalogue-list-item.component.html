@@ -24,7 +24,7 @@
                 [ngClass]="{'text-muted': layerAvailable}"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
-                <img [hidden]="!loadingInfo" [src]="hsConfig._ajaxLoaderPath" />
+                <span [hidden]="!loadingInfo" class="hs-loader"></span>
                 <span *ngIf="layerAvailable" class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
                     translateHs }}</span>
             </a>
