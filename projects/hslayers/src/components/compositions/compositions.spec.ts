@@ -153,7 +153,15 @@ describe('compositions', () => {
         {
           provide: HsCompositionsMickaService,
           useValue: new HsCompositionsMickaServiceMock(
-            new HsCompositionsMickaService(null, null, null, null, null, null),
+            new HsCompositionsMickaService(
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ),
           ),
         },
         HsCompositionsMapService,
