@@ -12,7 +12,7 @@ import {
   Viewer,
   WebMapServiceImageryProvider,
   WebMercatorTilingScheme,
-  createWorldTerrain,
+  createWorldTerrainAsync,
 } from 'cesium';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
@@ -138,20 +138,20 @@ export class HsCesiumLayersService {
 
   async setupEvents() {
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
-      (data) => {
+      async (data) => {
         if (data && data.type && data.type == 'terrain') {
           if (
             data.url ==
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
           ) {
-            const terrain_provider = createWorldTerrain(
+            const terrain_provider = await createWorldTerrainAsync(
               this.hsCesiumConfig.createWorldTerrainOptions,
             );
             this.viewer.terrainProvider = terrain_provider;
           } else {
-            this.viewer.terrainProvider = new CesiumTerrainProvider({
-              url: data.url,
-            });
+            this.viewer.terrainProvider = await CesiumTerrainProvider.fromUrl(
+              data.url,
+            );
           }
         }
       },

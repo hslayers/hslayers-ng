@@ -6,13 +6,14 @@ import {
   Camera,
   Cartesian3,
   CesiumTerrainProvider,
+  ImageryLayer,
   Ion,
   SceneMode,
   ShadowMode,
   SkyBox,
   Viewer,
   WebMercatorProjection,
-  createWorldTerrain,
+  createWorldTerrainAsync,
 } from 'cesium';
 import {Subject} from 'rxjs';
 
@@ -60,7 +61,7 @@ export class HsCesiumService {
    * Initializes Cesium map
    * @public
    */
-  init() {
+  async init() {
     this.checkForBingKey();
     this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
       this.checkForBingKey();
@@ -77,7 +78,9 @@ export class HsCesiumService {
       (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.cesiumBase;
       let terrain_provider =
         this.HsCesiumConfig.terrain_provider ||
-        createWorldTerrain(this.HsCesiumConfig.createWorldTerrainOptions);
+        (await createWorldTerrainAsync(
+          this.HsCesiumConfig.createWorldTerrainOptions,
+        ));
       if (this.HsCesiumConfig.newTerrainProviderOptions) {
         terrain_provider = new CesiumTerrainProvider(
           this.HsCesiumConfig.newTerrainProviderOptions,
@@ -93,8 +96,7 @@ export class HsCesiumService {
       }
 
       //TODO: research if this must be used or ignored
-      const bing = new BingMapsImageryProvider({
-        url: '//dev.virtualearth.net',
+      const bing = BingMapsImageryProvider.fromUrl('//dev.virtualearth.net', {
         key: this.BING_KEY,
         mapStyle: BingMapsStyle.AERIAL,
       });
@@ -117,7 +119,9 @@ export class HsCesiumService {
             ? this.HsCesiumConfig.cesiumInfoBox
             : false,
           terrainProvider: terrain_provider,
-          imageryProvider: this.HsCesiumConfig.imageryProvider,
+          baseLayer: this.HsCesiumConfig.imageryProvider
+            ? new ImageryLayer(this.HsCesiumConfig.imageryProvider, {})
+            : false,
           // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
           skyBox: new SkyBox({
             sources: {
