@@ -1,5 +1,5 @@
-import Map from 'ol/Map';
 import {Layer} from 'ol/layer';
+import {Map} from 'ol';
 import {Source} from 'ol/source';
 
 export class HsMapServiceMock {

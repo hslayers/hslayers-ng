@@ -16,7 +16,6 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from '../query-popup-widget-container.service';
-import {HsQueryVectorService} from '../query-vector.service';
 import {getFeatures} from '../../../common/feature-extensions';
 import {getPopUp} from '../../../common/layer-extensions';
 
@@ -25,7 +24,8 @@ import {getPopUp} from '../../../common/layer-extensions';
   templateUrl: './query-popup.component.html',
 })
 export class HsQueryPopupComponent
-  implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit {
+  implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit
+{
   getFeatures = getFeatures;
   olMapLoadsSubscription: Subscription;
   attributesForHover = [];
@@ -42,7 +42,6 @@ export class HsQueryPopupComponent
     private ElementRef: ElementRef,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
     private hsConfig: HsConfig,
-    private HsQueryVectorService: HsQueryVectorService
   ) {}
 
   ngAfterViewInit(): void {
@@ -53,10 +52,10 @@ export class HsQueryPopupComponent
     this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
       (map) => {
         map.addOverlay(this.data.service.hoverPopup);
-      }
+      },
     );
     this.hsQueryPopupWidgetContainerService.initWidgets(
-      this.hsConfig.queryPopupWidgets
+      this.hsConfig.queryPopupWidgets,
     );
   }
 
@@ -83,14 +82,14 @@ export class HsQueryPopupComponent
           return DISPLAY_NONE;
         }
         return getPopUp(layer) != undefined;
-      }
+      },
     );
     const featureCount = featuresWithPopup.length;
     if (featureCount > 0) {
       let tmpForHover: any[] = [];
       this.data.service.featuresUnderMouse.forEach((feature) => {
         tmpForHover = tmpForHover.concat(
-          this.data.service.serializeFeatureAttributes(feature)
+          this.data.service.serializeFeatureAttributes(feature),
         );
         if (getFeatures(feature)) {
           getFeatures(feature).forEach((subfeature) => {

@@ -65,7 +65,7 @@ export class HsQueryBaseService {
     private hsEventBusService: HsEventBusService,
     private hsSaveMapService: HsSaveMapService,
     private domSanitizer: DomSanitizer,
-    private zone: NgZone
+    private zone: NgZone,
   ) {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
@@ -96,7 +96,7 @@ export class HsQueryBaseService {
           this.hsEventBusService.mapClicked.next(
             Object.assign(evt, {
               coordinates: this.getCoordinate(evt.coordinate),
-            })
+            }),
           );
           if (!this.queryActive) {
             return;
@@ -196,12 +196,12 @@ export class HsQueryBaseService {
     const epsg4326Coordinate = transform(
       coordinate,
       this.hsMapService.getCurrentProj(),
-      'EPSG:4326'
+      'EPSG:4326',
     );
     const coords = {
       name: this.hsLanguageService.getTranslation(
         'QUERY.coordinates',
-        undefined
+        undefined,
       ),
       mapProjCoordinate: coordinate,
       epsg4326Coordinate,

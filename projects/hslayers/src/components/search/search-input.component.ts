@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -24,13 +24,14 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
     private hsConfig: HsConfig,
     private hsSearchService: HsSearchService,
     private hsEventBusService: HsEventBusService,
-    private hsShareUrlService: HsShareUrlService
+    private hsShareUrlService: HsShareUrlService,
   ) {
     this.searchResultsReceivedSubscription =
       this.hsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;
       });
   }
+
   ngOnDestroy(): void {
     this.searchResultsReceivedSubscription.unsubscribe();
   }
@@ -45,6 +46,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);
   }
+
   /**
    * Handler of search input, request search service and display results div
    */
@@ -56,6 +58,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
     }
     this.hsSearchService.request(this.query);
   }
+
   /**
    * Remove previous search and search results
    */
@@ -65,6 +68,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
     this.hsSearchService.cleanResults();
     this.hsEventBusService.clearSearchResults.next();
   }
+
   toggleSearchInput(): void {
     this.searchInputVisible = !this.searchInputVisible;
     if (this.query != '') {

@@ -9,8 +9,7 @@ import {
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
@@ -124,7 +123,7 @@ export class HsLayerManagerComponent
     public hsConfig: HsConfig,
     public hsLayerListService: HsLayerListService,
     public hsSidebarService: HsSidebarService,
-    private HsRemoveLayerDialogService: HsRemoveLayerDialogService
+    private HsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerRemovals
@@ -135,11 +134,11 @@ export class HsLayerManagerComponent
           this.hsUtilsService.runningInBrowser()
         ) {
           const layerNode = document.getElementsByClassName(
-            'hs-lm-mapcontentlist'
+            'hs-lm-mapcontentlist',
           )[0];
           this.hsUtilsService.insertAfter(
             this.layerEditorRef.nativeElement,
-            layerNode
+            layerNode,
           );
           this.hsLayerManagerService.currentLayer = null;
         }
@@ -174,8 +173,8 @@ export class HsLayerManagerComponent
           (e) => this.hsLayerManagerService.resolutionChangeDebounceCallback(),
           200,
           false,
-          this
-        )
+          this,
+        ),
       );
 
       this.hsLayerManagerService.addLayerHandler = map
@@ -183,14 +182,14 @@ export class HsLayerManagerComponent
         .on('add', (e) => {
           this.hsLayerManagerService.applyZIndex(
             e.element as Layer<Source>,
-            true
+            true,
           );
           if (getShowInLayerManager(e.element) == false) {
             return;
           }
           this.hsLayerManagerService.layerAdded(
             e as any,
-            getFromBaseComposition(e.element)
+            getFromBaseComposition(e.element),
           );
         });
       this.hsLayerManagerService.removeLayerHandler = map
@@ -202,6 +201,7 @@ export class HsLayerManagerComponent
       this.hsLayerManagerService.composition_id = null;
     });
   }
+
   ngOnDestroy(): void {
     this.hsLayerManagerService.destroy();
     this.end.next();
@@ -260,7 +260,7 @@ export class HsLayerManagerComponent
     this.hsLayerManagerService.data.layers.forEach((l) => {
       this.hsLayerManagerService.changeLayerVisibility(
         this.allLayersVisible,
-        l
+        l,
       );
       this.hsLayerListService.toggleSublayersVisibility(l);
     });
@@ -275,7 +275,7 @@ export class HsLayerManagerComponent
   }
 
   /**
-   * Creates remove-layer dialog which allows for singke/multiple layer removal
+   * Creates remove-layer dialog which allows for single/multiple layer removal
    */
   removeMultipleLayers() {
     this.HsRemoveLayerDialogService.removeMultipleLayers(
@@ -283,7 +283,7 @@ export class HsLayerManagerComponent
         .filter((layer) => layer.showInLayerManager)
         .map((l) => {
           return l.layer;
-        })
+        }),
     );
   }
 
@@ -294,7 +294,7 @@ export class HsLayerManagerComponent
   removeAllLayers(): void {
     this.hsDialogContainerService.create(
       HsLayerManagerRemoveAllDialogComponent,
-      {}
+      {},
     );
   }
   /**
@@ -314,7 +314,7 @@ export class HsLayerManagerComponent
    */
   hasBoxImages(): boolean {
     return this.hsLayerManagerService.data.box_layers?.some(
-      (layer) => getThumbnail(layer) !== undefined
+      (layer) => getThumbnail(layer) !== undefined,
     );
   }
 

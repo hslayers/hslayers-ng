@@ -6,7 +6,6 @@ import {
   LineSymbolizer,
   MarkSymbolizer,
   Symbolizer,
-  SymbolizerKind,
 } from 'geostyler-style';
 
 export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
@@ -171,9 +170,9 @@ function createIconSymbol(json: any): IconSymbolizer {
     image:
       json.image.src.replace('data:image/svg+xml;base64,', 'base64:') +
       `?fill=${encodeURIComponent(
-        json.fill
+        json.fill,
       )}&fill-opacity=1&outline=${encodeURIComponent(
-        json.stroke.color
+        json.stroke.color,
       )}&outline-opacity=1&outline-width=${json.stroke.width}`,
   };
 }

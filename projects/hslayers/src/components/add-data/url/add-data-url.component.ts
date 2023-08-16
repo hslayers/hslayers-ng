@@ -31,7 +31,7 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsDialogContainerService: HsDialogContainerService
+    public hsDialogContainerService: HsDialogContainerService,
   ) {}
 
   ngOnInit() {

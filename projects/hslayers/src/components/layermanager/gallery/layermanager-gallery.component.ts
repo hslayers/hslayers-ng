@@ -20,7 +20,7 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsLayerManagerService: HsLayerManagerService,
-    public hsLayerUtilsService: HsLayerUtilsService //Used in template
+    public hsLayerUtilsService: HsLayerUtilsService,
   ) {
     super(hsLayoutService);
   }
@@ -55,7 +55,7 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
     this.hsLayerManagerService.toggleLayerEditor(
       layer,
       'settings',
-      'sublayers'
+      'sublayers',
     );
     this.hsLayerManagerService.menuExpanded =
       !this.hsLayerManagerService.menuExpanded;

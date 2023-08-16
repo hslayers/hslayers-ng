@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Feature, Map} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
@@ -158,7 +158,7 @@ export class HsEventBusService {
    * @event layerSelectedFromUrl
    */
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
-    null
+    null,
   );
   updateMapSize: Subject<void> = new Subject();
   constructor() {}

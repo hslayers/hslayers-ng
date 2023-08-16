@@ -56,8 +56,6 @@ export class HsLayerManagerMetadataService {
   /**
    * Recursive callback which identifies object representing added layer in WMS getCapabilities structure.
    * It is used as reference for sublayer structure, metadata
-   * @param layerName
-   * @param currentLayer
    * @returns Wms layer definition
    */
   identifyLayerObject(
@@ -69,7 +67,7 @@ export class HsLayerManagerMetadataService {
     /*if (layerName.includes(':')) { //This is wrong because then we are not able to find layer by name
       layerName = layerName.slice(layerName.indexOf(':'));
     }*/
-    // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementationally simpler
+    // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementation-wise simpler
     if (layerName == currentLayer.Name || serviceLayer) {
       return serviceLayer ? this.getParsedLayers(currentLayer) : currentLayer;
     } else if (Array.isArray(currentLayer.Layer)) {
@@ -119,8 +117,8 @@ export class HsLayerManagerMetadataService {
   }
 
   /**
-   * Determines if layer has metadata information available *
-   * @param layer Current layer
+   * Determines if layer has metadata information available
+   * @param layer - Current layer
    */
   hasMetadata(layer: HsLayerDescriptor): boolean {
     if (!layer) {
@@ -131,9 +129,7 @@ export class HsLayerManagerMetadataService {
   }
 
   /**
-   * @param properties
-   * @returns {any}
-   * @description Looks for maxScaleDenominator in property object
+   * Looks for maxScaleDenominator in property object
    */
   searchForScaleDenominator(properties: any): number {
     let maxResolution = properties.MaxScaleDenominator
@@ -189,11 +185,7 @@ export class HsLayerManagerMetadataService {
   }
   /**
    * Sets or updates values in layer object
-   * @param layer
-   * @param key
-   * @param values
    */
-  //TODO: TYPES
   setOrUpdate(layer: Layer<Source>, key, values): void {
     const previousValue = layer.get(key);
     if (previousValue) {
@@ -504,19 +496,19 @@ export class HsLayerManagerMetadataService {
       }
       if (getCachedCapabilities(olLayer) === undefined) {
         layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
-          /* TODO maxResolution: Math.max(
+          /* TODO: maxResolution: Math.max(
             ...layerObjs.map((layer) => this.searchForScaleDenominator(layer))
           ), */
           Layer: layerObjs,
         });
       }
-      //TODO this.fillMetadataUrlsIfNotExist(olLayer, resp);
+      //TODO: this.fillMetadataUrlsIfNotExist(olLayer, resp);
     } else {
       layerObj = this.identifyArcgisLayerObj(parseInt(layerName), resp);
       if (layerObj == undefined) {
         return;
       }
-      /* TODO 
+      /* TODO:
       if (
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
@@ -524,7 +516,7 @@ export class HsLayerManagerMetadataService {
         this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
       } */
       if (layerObj.Layer && getSubLayers(olLayer)) {
-        //TODO layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+        //TODO: layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
         /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. 
         We delete to not crash interface if the service has thousands of layers. There is an assumption that if we specify sublayers 
         in layer definition, user will not be allowed to display other sublayers 

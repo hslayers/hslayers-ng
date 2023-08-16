@@ -9,7 +9,7 @@ export interface IGetCapabilities {
   request(
     service_url: string,
 
-    owrCache?: boolean
+    owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper>;
   service2layers?(caps: any, path?: string): Layer<Source>[];
 }

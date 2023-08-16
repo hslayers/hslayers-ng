@@ -3,7 +3,7 @@ import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsConfig, HsConfigObject} from '../../../config.service';
+import {HsConfig} from '../../../config.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
@@ -35,7 +35,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     public hsEventBusService: HsEventBusService,
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
   ) {
     this.hsDimensionTimeService.layerTimeChanges
       .pipe(takeUntil(this.end))

@@ -3,10 +3,10 @@
   </hs-panel-header>
   <div class="card-body">
     <hs-trip-planner-layer-selector usage="route" [label]="'TRIP_PLANNER.routerLayer' | translateHs"
-      [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.route">
+      [selectedWrapper]="HsTripPlannerService.selectedLayerWrapper.route">
     </hs-trip-planner-layer-selector>
     <hs-trip-planner-layer-selector usage="waypoints" [label]="'TRIP_PLANNER.waypointLayer' | translateHs"
-      [selectedwrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints">
+      [selectedWrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints">
     </hs-trip-planner-layer-selector>
 
     <div *ngFor="let waypoint of HsTripPlannerService.waypoints" class="d-flex flex-row">

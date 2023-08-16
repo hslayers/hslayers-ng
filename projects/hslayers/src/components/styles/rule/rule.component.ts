@@ -47,7 +47,7 @@ export class HsRuleComponent extends HsStylerPartBaseComponent {
     moveItemInArray(
       this.rule.symbolizers,
       event.previousIndex,
-      event.currentIndex
+      event.currentIndex,
     );
 
     this.emitChange();

@@ -312,7 +312,7 @@
     "addByAddress": "Pridať kompozíciu z adresy",
     "Address": "Adresa",
     "clearFilters": "Vyčistiť filtre",
-    "compostionsNameAttributeIsNotDefined": "Atribút názov kompozície nie je definovaný!",
+    "compositionsNameAttributeIsNotDefined": "Atribút názov kompozície nie je definovaný!",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Chcete zmazať túto mapu?"
     },

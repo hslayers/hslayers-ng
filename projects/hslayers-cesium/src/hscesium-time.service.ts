@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 
 import dayjs from 'dayjs';
-import {HsEventBusService, HsUtilsService, getTitle} from 'hslayers-ng';
 import {Viewer, WebMapServiceImageryProvider} from 'cesium';
 import {default as utc} from 'dayjs/plugin/utc';
+
+import {HsEventBusService, HsUtilsService, getTitle} from 'hslayers-ng';
 
 import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
@@ -17,7 +18,7 @@ export class HsCesiumTimeService {
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsEventBusService: HsEventBusService,
     private hsUtilsService: HsUtilsService,
-    private hsCesiumConfig: HsCesiumConfig
+    private hsCesiumConfig: HsCesiumConfig,
   ) {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
       this.monitorTimeLine();
@@ -38,7 +39,7 @@ export class HsCesiumTimeService {
         if (
           this.hsUtilsService.instOf(
             layer.imageryProvider,
-            WebMapServiceImageryProvider
+            WebMapServiceImageryProvider,
           )
         ) {
           const prmCache = this.HsCesiumLayersService.findParamCache(layer);
@@ -64,15 +65,15 @@ export class HsCesiumTimeService {
             const diff = Math.abs(
               round_time.getTime() -
                 new Date(
-                  prmCache.parameters[this.getTimeParameter(layer)]
-                ).getTime()
+                  prmCache.parameters[this.getTimeParameter(layer)],
+                ).getTime(),
             );
             if (diff > 1000 * 60) {
               //console.log('Was', prmCache.parameters[this.getTimeParameter(layer)], 'New', round_time)
               this.HsCesiumLayersService.changeLayerParam(
                 layer,
                 this.getTimeParameter(layer),
-                round_time.toISOString()
+                round_time.toISOString(),
               );
               something_changed = true;
             }
@@ -82,7 +83,7 @@ export class HsCesiumTimeService {
       this.HsCesiumLayersService.removeLayersWithOldParams();
       if (something_changed) {
         this.HsEventBusService.cesiumTimeLayerChanges.next(
-          this.getLayerListTimes()
+          this.getLayerListTimes(),
         );
       }
     });

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-items-center w-100 dropzone-container">
-    <div class="dropzone p-4" fileDrop (filesDropped)="emitHandleUpload($event, true)"
+    <div class="dropzone p-4" hsFileDrop (filesDropped)="emitHandleUpload($event, true)"
         (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
         <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translateHs }}</p>
     </div>

@@ -6,11 +6,11 @@ const HIGHLIGHTED = 'highlighted';
 const LABEL = 'label';
 const NAME = 'name';
 const FEATURES = 'features';
-const UNITID = 'unitId';
+const UNIT_ID = 'unitId';
 
 export function setFeatureTitle(
   feature: Feature<Geometry>,
-  title: string
+  title: string,
 ): void {
   feature.set(TITLE, title);
 }
@@ -21,7 +21,7 @@ export function getFeatureTitle(feature: Feature<Geometry>): string {
 
 export function setHighlighted(
   feature: Feature<Geometry>,
-  highlighted: boolean
+  highlighted: boolean,
 ): void {
   feature.set(HIGHLIGHTED, highlighted);
 }
@@ -32,7 +32,7 @@ export function getHighlighted(feature: Feature<Geometry>): boolean {
 
 export function setFeatureLabel(
   feature: Feature<Geometry>,
-  label: string
+  label: string,
 ): void {
   feature.set(LABEL, label);
 }
@@ -51,26 +51,26 @@ export function getFeatureName(feature: Feature<Geometry>): string {
 
 export function setFeatures(
   feature: Feature<Geometry>,
-  features: Array<Feature<Geometry>>
+  features: Array<Feature<Geometry>>,
 ): void {
   feature.set(FEATURES, features);
 }
 
 export function getFeatures(
-  feature: Feature<Geometry>
+  feature: Feature<Geometry>,
 ): Array<Feature<Geometry>> {
   return feature.get(FEATURES);
 }
 
 export function setUnitId(
   feature: Feature<Geometry>,
-  unitId: string | number
+  unitId: string | number,
 ): void {
-  feature.set(UNITID, unitId);
+  feature.set(UNIT_ID, unitId);
 }
 
 export function getUnitId(feature: Feature<Geometry>): string | number {
-  return feature.get(UNITID);
+  return feature.get(UNIT_ID);
 }
 
 export const HsFeatureExt = {

@@ -89,7 +89,7 @@ export class HsUtilsServiceMock {
         flatArray[idx] =
           flatArray[idx].get !== undefined
             ? flatArray[idx].get(
-                prop
+                prop,
               ) /* get() is only defined for OL objects */
             : flatArray[idx][prop]; /* POJO access */
       }

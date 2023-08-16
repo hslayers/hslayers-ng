@@ -1,5 +1,5 @@
 /**
- * List of GET parameters set and red by Hslayers
+ * List of GET parameters set and read by Hslayers
  */
 export const HS_PRMS = {
   x: 'hs-x',

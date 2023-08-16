@@ -18,7 +18,7 @@ export class HsLayerEditorVectorLayerService {
     public hsConfig: HsConfig,
     public hsMapService: HsMapService,
     public hsStylerService: HsStylerService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
   ) {}
 
   /**
@@ -34,18 +34,18 @@ export class HsLayerEditorVectorLayerService {
     newValue: boolean,
     layer: Layer<Source>,
     distance: number,
-    generateStyle: boolean
+    generateStyle: boolean,
   ): Promise<void> {
     if (newValue == true) {
       if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         if (generateStyle) {
           await this.hsStylerService.styleClusteredLayer(
-            layer as VectorLayer<Cluster>
+            layer as VectorLayer<Cluster>,
           );
         }
         this.updateFeatureTableLayers(
-          layer as VectorLayer<VectorSource<Geometry>>
+          layer as VectorLayer<VectorSource<Geometry>>,
         );
       }
     } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
@@ -70,7 +70,7 @@ export class HsLayerEditorVectorLayerService {
             return (feature.getGeometry() as Polygon).getInteriorPoint();
           case 'LineString':
             return new Point(
-              (feature.getGeometry() as LineString).getFirstCoordinate()
+              (feature.getGeometry() as LineString).getFirstCoordinate(),
             );
           default:
             return null;
@@ -81,7 +81,7 @@ export class HsLayerEditorVectorLayerService {
 
   updateFeatureTableLayers(layer: VectorLayer<VectorSource<Geometry>>): void {
     const currentLayerIndex = this.hsConfig.layersInFeatureTable?.findIndex(
-      (l) => l == layer
+      (l) => l == layer,
     );
     if (layer && currentLayerIndex > -1) {
       this.hsConfig.layersInFeatureTable[currentLayerIndex] = layer;

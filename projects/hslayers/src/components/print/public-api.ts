@@ -3,7 +3,7 @@ export * from './print.module';
 export * from './print.service';
 export * from './constants/text-styling-options';
 export * from './constants/position-options';
-export * from './types/XY-positions.type';
+export * from './types/xy-positions.type';
 export * from './types/print-object.type';
 export * from './types/imprint-object.type';
 export * from './types/title-object.type';

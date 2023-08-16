@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
@@ -19,11 +19,11 @@ export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 export class HsAddDataService {
   sidebarLoad: Subject<void> = new Subject();
   datasetSelected: BehaviorSubject<DatasetType> = new BehaviorSubject(
-    undefined
+    undefined,
   );
   datasetTypeSelected = this.datasetSelected.asObservable();
   /**
-   * Cancels any external url data request from datasources panel
+   * Cancels any external URL data request from datasources panel
    */
   cancelUrlRequest: Subject<void> = new Subject();
   constructor(
@@ -31,14 +31,10 @@ export class HsAddDataService {
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
     public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
   ) {}
 
-  addLayer(
-    layer: Layer<Source>,
-
-    underLayer?: Layer<Source>
-  ): void {
+  addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
     if (underLayer) {
       const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();

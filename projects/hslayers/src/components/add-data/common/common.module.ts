@@ -2,7 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
-import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap'
+import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-authorized.component';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
@@ -22,7 +22,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
     HsLanguageModule,
     HsLaymanModule,
     HsUiExtensionsModule,
-    NgbProgressbarModule
+    NgbProgressbarModule,
   ],
   exports: [
     HsGetCapabilitiesErrorComponent,

@@ -5,13 +5,11 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
-import {HsLayerEditorWidgetBaseComponent} from '../../components/layermanager/widgets/layer-editor-widget-base.component';
-import {HsLayerSelectorService} from '../../components/layermanager/editor/layer-selector.service';
 import {HsStylerService} from './styler.service';
 import {listNumericAttributes} from '../layermanager/widgets/idw-widget.component';
 
 @Component({
-  selector: 'add-colormap',
+  selector: 'hs-add-colormap',
   templateUrl: './add-colormap.component.html',
 })
 export class HsAddColormapComponent implements OnInit {
@@ -24,11 +22,10 @@ export class HsAddColormapComponent implements OnInit {
   min: number | string = '';
   max: number | string = '';
   @Output() canceled = new EventEmitter<void>();
-  @Input() data: {};
 
   constructor(
     public HsLanguageService: HsLanguageService,
-    private hsStylerService: HsStylerService
+    private hsStylerService: HsStylerService,
   ) {}
 
   ngOnInit(): void {

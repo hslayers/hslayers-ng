@@ -23,7 +23,7 @@ export class HsShareUrlService {
   params = {};
   customParams = {};
   updateDebouncer = {};
-  url_generation = true; //FIXME - but needs to be configurable or smth
+  url_generation = true; //FIXME: - but needs to be configurable or smth
   //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
   paramTimer = null;
   shareId = null;
@@ -171,7 +171,7 @@ export class HsShareUrlService {
   }
 
   /**
-   * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
+   * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are omitted from permalink url).
    */
   update(): void {
     this.id = this.HsUtilsService.generateUuid();
@@ -215,7 +215,7 @@ export class HsShareUrlService {
   }
 
   /**
-   * Update URL params when single HSL app is bootstraped
+   * Update URL params when single HSL app is bootstrapped
    */
   private updateURL() {
     this.HsUtilsService.debounce(
@@ -245,7 +245,7 @@ export class HsShareUrlService {
 
   /**
    * Updates URL params related to map view
-   * @param standalone True if called outside of 'update'
+   * @param standalone - True if called outside of 'update'
    */
   private updateViewParamsInUrl(standalone = false): void {
     const view = this.hsMapService.getMap().getView();
@@ -256,8 +256,8 @@ export class HsShareUrlService {
   }
 
   /**
-   * @returns Permalink url
-   * Create permalink Url to map
+   * Create permalink URL to map
+   * @returns Permalink URL
    */
   getPermalinkUrl(): string {
     if (this.hsConfig.permalinkLocation) {
@@ -285,8 +285,8 @@ export class HsShareUrlService {
   }
 
   /**
-   * @returns Embedded url
-   * Create Url for PureMap version of map
+   * Create URL for PureMap version of map
+   * @returns Embedded URL
    */
   getPureMapUrl(): string {
     const params = {};
@@ -299,9 +299,9 @@ export class HsShareUrlService {
   }
 
   /**
-   * @param str Parameter string to parse
+   * Parse parameter string from URL into key-value(s) pairs
+   * @param str - Parameter string to parse
    * @returns Parsed parameter object
-   * Parse parameter string from Url into key-value(s) pairs
    */
   parse(str: string) {
     if (typeof str != 'string') {
@@ -340,9 +340,9 @@ export class HsShareUrlService {
   }
 
   /**
-   * @param obj Parameter object to stringify
-   * @returns Encoded parameter string or "" if no parameter object is given
    * Create encoded parameter string from parameter object
+   * @param obj - Parameter object to stringify
+   * @returns Encoded parameter string or "" if no parameter object is given
    */
   stringify(obj): string {
     if (!obj) {
@@ -366,9 +366,9 @@ export class HsShareUrlService {
   }
 
   /**
-   * @param key Key name for pushed parameter
-   * @param new_value Value for pushed parameter
-   * Push new key-value pair into paramater object and update Url string with new params
+   * Push new key-value pair into parameter object and update Url string with new params
+   * @param key - Key name for pushed parameter
+   * @param new_value - Value for pushed parameter
    */
   push(key, new_value): void {
     if (new_value === undefined) {
@@ -383,8 +383,8 @@ export class HsShareUrlService {
   }
 
   /**
-   * @param param - Param to get current value and remove
    * Returns param value and removes custom param when it is called
+   * @param param - Param to get current value and remove
    */
   getParamValAndRemove(param: string): string {
     const value = this.getParamValue(param);
@@ -395,9 +395,9 @@ export class HsShareUrlService {
   }
 
   /**
-   * @param param Param to get current value
+   * Find current param value from URL
+   * @param param - Param to get current value
    * @returns Current value for requested param or null if param doesn't exist
-   * Find current param value from Url
    */
   getParamValue(param: string): string {
     const tmp = this.parse(location.search);
@@ -422,8 +422,8 @@ export class HsShareUrlService {
   }
 
   /**
-   * @param params A dictionary of custom parameters which get added to the generated url
    * Update values for custom parameters which get added to the url and usually are application specific
+   * @param params - A dictionary of custom parameters which get added to the generated URL
    */
   updateCustomParams(params): void {
     for (const param in params) {

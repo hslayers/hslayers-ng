@@ -10,7 +10,7 @@ export class HsFileService {
   fileUploadErrorHeader = 'ADDLAYERS.couldNotUploadSelectedFile';
   constructor(
     public hsLanguageService: HsLanguageService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService
+    public hsAddDataCommonFileService: HsAddDataCommonFileService,
   ) {}
 
   async read(evt: HsUploadedFiles, readAsText: boolean = false): Promise<void> {
@@ -95,7 +95,7 @@ export class HsFileService {
       message: this.hsLanguageService.getTranslationIgnoreNonExisting(
         'ADDLAYERS.SHP',
         'maximumNumberOf',
-        {allowed, length}
+        {allowed, length},
       ),
       header: this.fileUploadErrorHeader,
     });

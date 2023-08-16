@@ -11,7 +11,7 @@ import {HsSaveMapResultDialogComponent} from './dialog-result/dialog-result.comp
 export class HsSaveMapDialogSpawnerService {
   constructor(
     private hsDialogContainerService: HsDialogContainerService,
-    private hsSaveMapManagerService: HsSaveMapManagerService
+    private hsSaveMapManagerService: HsSaveMapManagerService,
   ) {
     this.hsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
       if (typeof statusData != 'string') {

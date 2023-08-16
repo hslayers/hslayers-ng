@@ -15,8 +15,10 @@ const DEFAULT_LANG = 'en' as const;
 export class HsLanguageService {
   language: string;
   translateServiceFactory: any;
-  //Controls whether hs-lang URL param should override other setting or not
-  //Not in case we are syncing langs with Wagtail
+  /**
+   * Controls whether hs-lang URL param should override other setting or not
+   * Not in case we are syncing langs with Wagtail
+   */
   langFromCMS: boolean;
   constructor(
     private translationService: CustomTranslationService,
@@ -33,9 +35,9 @@ export class HsLanguageService {
   }
 
   /**
+   * Set language
    * @public
    * @param lang - Language code without app prefix
-   * Set language
    */
   setLanguage(lang: string): void {
     this.getTranslator().use(lang);
@@ -47,9 +49,9 @@ export class HsLanguageService {
   }
 
   /**
+   * Get code of current language
    * @public
    * @returns Returns language code
-   * Get code of current language
    */
   getCurrentLanguageCode(): string {
     if (typeof this.language == 'undefined' || this.language == '') {
@@ -59,9 +61,9 @@ export class HsLanguageService {
   }
 
   /**
+   * Get array of available languages based
    * @public
    * @returns Returns available languages
-   * Get array of available languages based
    */
   listAvailableLanguages(): any {
     const languageCodeNameMap = {
@@ -85,7 +87,7 @@ export class HsLanguageService {
   }
 
   /**
-   * @param  str - Identifier of the string to be translated
+   * @param str - Identifier of the string to be translated
    * @param params -
    * @returns Translation
    */
@@ -116,7 +118,7 @@ export class HsLanguageService {
    * @param module - Module to look for inside the locales json
    * @param text - Text that represents the translation
    * @param params - Dynamic params included in the translation, for example,
-   * "translation": "This is my {{nr}} translation" - params: {nr: 'first'}
+   * "translation": "This is my \{\{nr\}\} translation" - params: \{nr: 'first'\}
    * @returns Translation
    */
 

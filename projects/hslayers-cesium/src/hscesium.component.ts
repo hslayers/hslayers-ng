@@ -26,7 +26,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
     public HsMapService: HsMapService,
     public HsSidebarService: HsSidebarService,
     public HsEventBusService: HsEventBusService,
-    public HsLayoutService: HsLayoutService //Used in template
+    public HsLayoutService: HsLayoutService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -52,11 +52,11 @@ export class HslayersCesiumComponent implements AfterViewInit {
     });
 
     this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
-      this.HsCesiumService.dimensionChanged(data.layer, data.dimension)
+      this.HsCesiumService.dimensionChanged(data.layer, data.dimension),
     );
 
     this.HsEventBusService.sizeChanges.subscribe((size) =>
-      this.HsCesiumService.resize(size)
+      this.HsCesiumService.resize(size),
     );
     this.HsCesiumService.resize();
   }
@@ -77,7 +77,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
       this.HsCesiumService.init();
     }
     this.HsEventBusService.mapLibraryChanges.next(
-      this.visible ? 'cesium' : 'ol'
+      this.visible ? 'cesium' : 'ol',
     );
   }
 }

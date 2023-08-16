@@ -20,7 +20,7 @@ enum GrantingOptions {
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: accessRightsModel;
-  
+
   grantingOptions = GrantingOptions;
   currentOption: string = GrantingOptions.EVERYONE;
   allUsers: LaymanUser[] = [];
@@ -30,7 +30,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private $http: HttpClient,
-    private hsLog: HsLogService
+    private hsLog: HsLogService,
   ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman;
@@ -96,7 +96,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     }
     event.target.checked
       ? (this.access_rights[type] = this.access_rights[type].concat(
-          ',' + value
+          ',' + value,
         ))
       : this.removeUserRights(type, value);
   }
@@ -130,13 +130,11 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       return this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.readAccessRights',
         undefined,
-        
       );
     } else if (right == 'write') {
       return this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.writeAccessRights',
         undefined,
-        
       );
     }
   }
@@ -182,8 +180,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
                   laymanUser.hslDisplayName = this.getUserName(laymanUser);
                   return laymanUser;
                 });
-            })
-          )
+            }),
+          ),
         );
       } catch (e) {
         this.hsLog.error(e);

@@ -24,11 +24,11 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
     public hsHistoryListService: HsHistoryListService,
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
   ) {}
   connect = async (): Promise<void> => {
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
-      this.data.url
+      this.data.url,
     );
     if (obtainable) {
       this.hsHistoryListService.addSourceHistory(this.fileType, this.data.url);

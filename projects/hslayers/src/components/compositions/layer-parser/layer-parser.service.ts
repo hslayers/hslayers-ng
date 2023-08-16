@@ -29,6 +29,7 @@ import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
@@ -45,6 +46,7 @@ export class HsCompositionsLayerParserService {
     private HsAddDataVectorService: HsAddDataVectorService,
     private HsStylerService: HsStylerService,
     private HsLanguageService: HsLanguageService,
+    private hsLog: HsLogService,
     private HsToastService: HsToastService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsAddDataOwsService: HsAddDataOwsService,
@@ -235,7 +237,7 @@ export class HsCompositionsLayerParserService {
       crossOrigin: 'anonymous',
       projection: lyr_def.projection?.toUpperCase(),
       wrapX: lyr_def.wrapX,
-      //TODO Add the rest of parameters and describe in the composition schema
+      //TODO: Add the rest of parameters and describe in the composition schema
     });
     const new_layer = new Tile({
       maxResolution: lyr_def.maxResolution || Infinity,
@@ -258,7 +260,7 @@ export class HsCompositionsLayerParserService {
     });
 
     new_layer.setVisible(lyr_def.visibility);
-    //TODO Proxify
+    //TODO: Proxify
     //OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
     return new_layer;
   }
@@ -267,7 +269,7 @@ export class HsCompositionsLayerParserService {
    * Parse definition object to create ImageStatic Ol.layer
    * @public
    * @param lyr_def - Layer definition object
-   * @returns Ol Image or Tile layer
+   * @returns OL Image or Tile layer
    */
   createStaticImageLayer(lyr_def) {
     const legends = this.getLegends(lyr_def);
@@ -279,7 +281,7 @@ export class HsCompositionsLayerParserService {
       imageExtent: lyr_def.extent,
       crossOrigin: 'anonymous',
       projection: lyr_def.projection?.toUpperCase(),
-      //TODO Add the rest of parameters and describe in the composition schema
+      //TODO: Add the rest of parameters and describe in the composition schema
     });
     const new_layer = new ImageLayer({
       maxResolution: lyr_def.maxResolution || Infinity,
@@ -394,7 +396,7 @@ export class HsCompositionsLayerParserService {
               lyr_def.style,
             );
           } catch (ex) {
-            console.warn('Could not get style from ' + lyr_def.style);
+            this.hsLog.warn('Could not get style from ' + lyr_def.style);
           }
         }
         Object.assign(

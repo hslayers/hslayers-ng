@@ -3,4 +3,4 @@ export const queryPopupWidgets = [
   'feature-info',
   'clear-layer',
 ] as const;
-export type QueryPopupWidgetsType = typeof queryPopupWidgets[number];
+export type QueryPopupWidgetsType = (typeof queryPopupWidgets)[number];

@@ -13,7 +13,7 @@ export class TrackByPropertyPipe implements PipeTransform {
     if (!cache[propertyName]) {
       cache[propertyName] = function trackByProperty<T>(
         index: number,
-        item: T
+        item: T,
       ): any {
         return item[propertyName];
       };

@@ -32,7 +32,7 @@ export class HsTripPlannerComponent
     public HsUtilsService: HsUtilsService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService
+    public hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
   }
@@ -55,8 +55,8 @@ export class HsTripPlannerComponent
 
   /**
    * Format waypoint route distance in a human friendly way
-   * @param {float} wp Wayoint
-   * @returns {string} Distance
+   * @param wp - Waypoint
+   * @returns Distance
    */
   formatDistance(wp: Waypoint): string {
     return this.HsTripPlannerService.formatDistance(wp);
@@ -64,7 +64,7 @@ export class HsTripPlannerComponent
 
   /**
    * Get the total distance for all waypoint routes
-   * @returns {string} Distance
+   * @returns Distance
    */
   totalDistance(): string {
     let tmp = 0;
@@ -78,7 +78,6 @@ export class HsTripPlannerComponent
 
   /**
    * Remove selected waypoint from source
-   * @param {object} waypoint
    */
   toggleEdit(waypoint: Waypoint): void {
     waypoint.editMode = !waypoint.editMode;

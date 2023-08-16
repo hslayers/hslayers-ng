@@ -44,6 +44,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
@@ -88,18 +89,21 @@ export class HsMapService {
   timer = null;
   puremap: any;
   /**
+   * Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    * @public
    * @default 400
-   * Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
    */
   duration = 400;
   visible: boolean;
-  /** Copy of the default_view for map resetting purposes */
+  /**
+   * Copy of the default_view for map resetting purposes
+   */
   originalView: {center: number[]; zoom: number; rotation: number};
 
   constructor(
     public hsConfig: HsConfig,
     public hsLayoutService: HsLayoutService,
+    private hsLog: HsLogService,
     public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsLanguageService: HsLanguageService,
@@ -185,8 +189,8 @@ export class HsMapService {
   }
 
   /**
-   * @public
    * Get vector layers from the map, mentioned in the layersToLookFor array
+   * @public
    * @param layersToLookFor - Layers requested
    */
   getVectorLayers(layersToLookFor: VectorAndSource[]): void {
@@ -218,15 +222,15 @@ export class HsMapService {
   }
 
   /**
-   * @public
    * Get geometry feature by its ID
+   * @public
    * @param fid - Feature ID
    * @returns Feature
    */
   getFeatureById(fid: string): Feature<Geometry> {
     if (this.featureLayerMapping[fid]) {
       if (this.featureLayerMapping[fid].length > 1) {
-        console.warn(`Multiple layers exist for feature id ${fid}`);
+        this.hsLog.warn(`Multiple layers exist for feature id ${fid}`);
       } else {
         return this.featureLayerMapping[fid][0].source.getFeatureById(fid);
       }
@@ -244,8 +248,8 @@ export class HsMapService {
   }
 
   /**
-   * @public
    * Create default view button inside the map html element
+   * @public
    * @param defaultDesktopControls - Default controls
    */
   async createDefaultViewButton(): Promise<void> {
@@ -285,8 +289,8 @@ export class HsMapService {
   }
 
   /**
-   * @public
    * Set map to default view
+   * @public
    * @param e - Mouse click event
    */
   setDefaultView = function (e): void {
@@ -301,6 +305,7 @@ export class HsMapService {
     const zoom = viewToSet?.getZoom();
     this.map.getView().setZoom(zoom);
   };
+
   /**
    * @param e - Map or view change
    */
@@ -540,8 +545,8 @@ export class HsMapService {
   }
 
   /**
-   * @public
    * Wait until the OL map is fully loaded
+   * @public
    * @returns OL map object
    */
   loaded(): Promise<Map> {
@@ -589,7 +594,7 @@ export class HsMapService {
    */
   layersEqual(existingLayer, newLayer): boolean {
     if (newLayer === 'undefined') {
-      console.warn(
+      this.hsLog.warn(
         'Checking duplicity for undefined layer. Why are we doing this?',
       );
       return true;
@@ -645,7 +650,6 @@ export class HsMapService {
   /**
    * Remove any duplicate layer inside map layers array
    * @param lyr - A layer to check
-   
    */
   removeDuplicate(lyr: Layer): void {
     this.getLayersArray()
@@ -800,7 +804,6 @@ export class HsMapService {
    * While adding check if hs-composition URL param or defaultComposition is set, if so, filter config's layers by removable property
    * If permalink URL param is set, do not add any of config's layers.
    * @public
-   * Get current map projection
    * @returns Projection
    */
   addLayersFromAppConfig(layers: Layer[], visibilityOverrides: string[]): void {
@@ -817,8 +820,6 @@ export class HsMapService {
   /**
    * Get map projection currently used in the map view
    * @public
-   
-   * Get current map projection
    * @returns Projection
    */
   getCurrentProj(): Projection {
@@ -827,9 +828,9 @@ export class HsMapService {
 
   /**
    * For a vector layer with a vector source, determines if it includes points, lines and/or polygons and stores the information in hasPoint, hasLine, hasPoly properties of the source.
+   * Get vector type from the layer selected
    * @public
    * @param layer - Vector layer selected
-   * Get vector type from the layer selected
    */
   getVectorType(layer): void {
     let src;
@@ -1069,7 +1070,6 @@ export class HsMapService {
    * @param x - X coordinate of new center
    * @param y - Y coordinate of new center
    * @param zoom - New zoom level
-   
    */
   moveToAndZoom(x: number, y: number, zoom: number): void {
     const view = this.map.getView();
@@ -1112,7 +1112,7 @@ export class HsMapService {
   async fitExtent(extent: number[]): Promise<void> {
     const mapSize = this.map.getSize();
     if (!mapSize.every((p) => p > 0)) {
-      console.warn(
+      this.hsLog.warn(
         'Tried to fit extent but one of map dimensions were 0. Will wait a bit and try again!',
       );
       await new Promise((resolve) => setTimeout(resolve, 250));
@@ -1147,9 +1147,8 @@ export class HsMapService {
 
   /**
    * Remove all removable layers no matter fromComposition param
-   * @param force?: boolean;
    */
-  removeCompositionLayers(force?): void {
+  removeCompositionLayers(force?: boolean): void {
     let to_be_removed = this.getLayersArray().filter(
       (lyr) => getRemovable(lyr) === undefined || getRemovable(lyr) == true,
     );
@@ -1178,7 +1177,6 @@ export class HsMapService {
   /**
    * Remove all map interactions
    * @public
-   
    */
   removeAllInteractions(): void {
     this.map.getInteractions().forEach((interaction) => {
@@ -1190,8 +1188,7 @@ export class HsMapService {
   /**
    * Get current extent of map, transform it into EPSG:4326 and round coordinates to 2 decimals.
    * This is used mainly in compositions and sharing of map and the coordinates are not very precise.
-   
-   * @returns Extent coordinates. Example: {east: "0.00", south: "0.00", west: "1.00", north: "1.00"}
+   * @returns Extent coordinates. Example: \{east: "0.00", south: "0.00", west: "1.00", north: "1.00"\}
    */
   describeExtent(): BoundingBoxObject {
     const b = this.map.getView().calculateExtent(this.map.getSize());

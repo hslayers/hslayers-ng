@@ -15,32 +15,31 @@ import {getInfoFormat} from '../../common/layer-extensions';
 export class HsQueryWmtsService {
   constructor(
     private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
   ) {}
 
   /**
    * Parse request URL
    * @param layer - Layer to Query
    * @param coordinate - Clicked coordinates
-   
    * @returns Request URL and format
    */
   async parseRequestURL(
     layer: Layer<WMTS>,
-    coordinate: number[]
+    coordinate: number[],
   ): Promise<{url: string; format: string}> {
     const source = layer.getSource();
 
     coordinate = transform(
       coordinate,
       this.hsMapService.getCurrentProj(),
-      source.getProjection()
+      source.getProjection(),
     );
 
     const tileGrid = source.getTileGrid() as WMTSTileGrid;
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(
       coordinate,
-      this.hsMapService.getMap().getView().getResolution()
+      this.hsMapService.getMap().getView().getResolution(),
     );
 
     const tileExtent = tileGrid.getTileCoordExtent(tileCoord);
@@ -50,10 +49,10 @@ export class HsQueryWmtsService {
 
     // I.J params (clicked pixel position relative to tile)
     const x = Math.floor(
-      (coordinate[0] - tileExtent[0]) / (tileResolution / 1)
+      (coordinate[0] - tileExtent[0]) / (tileResolution / 1),
     ); //pixelRatio
     const y = Math.floor(
-      (tileExtent[3] - coordinate[1]) / (tileResolution / 1)
+      (tileExtent[3] - coordinate[1]) / (tileResolution / 1),
     ); //pixelRatio
 
     const urls = source.getUrls()[0];
@@ -73,7 +72,7 @@ export class HsQueryWmtsService {
     };
 
     const url = [urls, this.hsUtilsService.paramsToURLWoEncode(params)].join(
-      ''
+      '',
     );
     return {
       url: url,

@@ -1,6 +1,6 @@
+import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 
-import {DomSanitizer} from '@angular/platform-browser';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 

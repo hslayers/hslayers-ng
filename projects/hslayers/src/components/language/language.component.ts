@@ -19,7 +19,7 @@ export class HsLanguageComponent
     private hsLanguageService: HsLanguageService,
     private hsConfig: HsConfig,
     hsLayoutService: HsLayoutService,
-    private hsSidebarService: HsSidebarService
+    private hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
   }
@@ -38,6 +38,7 @@ export class HsLanguageComponent
     });
     this.available_languages = this.hsLanguageService.listAvailableLanguages();
   }
+
   /**
    * Check if provided language is active language
    * @param langCode - Language code

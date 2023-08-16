@@ -34,9 +34,9 @@
         </div>
       </div>
     </div>
-    <add-colormap [layer]="hsStylerService.layer" [data]="data"
+    <hs-add-colormap [layer]="hsStylerService.layer"
       (canceled)="hsStylerService.colorMapDialogVisible = false"
-      *ngIf="hsStylerService.colorMapDialogVisible"></add-colormap>
+      *ngIf="hsStylerService.colorMapDialogVisible"></hs-add-colormap>
     <ng-container *ngIf="hsStylerService.styleObject">
       <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="hsStylerService.styleObject.rules">

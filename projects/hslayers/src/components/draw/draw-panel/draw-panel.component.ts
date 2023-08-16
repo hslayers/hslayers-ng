@@ -1,5 +1,5 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
+import {Component, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
@@ -32,7 +32,7 @@ export class DrawPanelComponent implements OnDestroy {
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService,
-    public HsRemoveLayerDialogService: HsRemoveLayerDialogService
+    public HsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {}
   ngOnDestroy(): void {
     this.end.next();
@@ -69,11 +69,11 @@ export class DrawPanelComponent implements OnDestroy {
   }
 
   /**
-   * @param {Event} e optional parameter passed when changeStyle is called
-   * for 'ondrawend' event features
-   * @description Dynamically create draw feature style according to parameters selected in
+   * Dynamically create draw feature style according to parameters selected in
    * hs.styler.colorDirective
-   * @returns {Array} Array of style definitions
+   * @param {Event} e - optional parameter passed when changeStyle is called
+   * for 'ondrawend' event features
+   * @returns Style definition
    */
   changeStyle(e = null): Style {
     const newStyle = new Style({

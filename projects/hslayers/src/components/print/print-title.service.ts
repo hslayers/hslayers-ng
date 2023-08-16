@@ -15,7 +15,7 @@ export class HsPrintTitleService {
    */
   drawTitleCanvas(
     text: string,
-    textStyle: TextStyle
+    textStyle: TextStyle,
   ): Promise<HTMLCanvasElement> {
     return new Promise(async (resolve, reject) => {
       const canvas = document.createElement('canvas');
@@ -23,7 +23,7 @@ export class HsPrintTitleService {
       this.applyTextStyles(ctx, textStyle);
       const textHeight = Number(textStyle.textSize.replace(/[^0-9]+/, ''));
       this.drawTitle(ctx, text, textStyle, textHeight);
-      //Neccessary in order to measure text width and height, so that the canvas can be adjusted accordingly
+      //Necessary in order to measure text width and height, so that the canvas can be adjusted accordingly
       setTimeout(() => {
         canvas.width = ctx.measureText(text).width + 10;
         canvas.height = textHeight + 20;
@@ -46,7 +46,7 @@ export class HsPrintTitleService {
     ctx: CanvasRenderingContext2D,
     text: string,
     textStyle: TextStyle,
-    yPos: number
+    yPos: number,
   ): void {
     if (textStyle.textDraw === 'stroke') {
       ctx.strokeText(text, 0, yPos);
@@ -62,7 +62,7 @@ export class HsPrintTitleService {
    */
   private applyTextStyles(
     ctx: CanvasRenderingContext2D,
-    textStyle: TextStyle
+    textStyle: TextStyle,
   ): void {
     if (!textStyle.textSize) {
       textStyle.textSize = '30px';
@@ -74,7 +74,7 @@ export class HsPrintTitleService {
       ' ',
       textStyle.textSize,
       ' ',
-      textStyle.fontFamily
+      textStyle.fontFamily,
     );
     if (textStyle.textColor) {
       ctx.strokeStyle = textStyle.textColor;

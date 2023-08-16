@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {CookieService} from 'ngx-cookie-service';
 import {Injectable} from '@angular/core';
 

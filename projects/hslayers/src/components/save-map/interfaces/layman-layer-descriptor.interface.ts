@@ -88,7 +88,7 @@ export interface HsLaymanLayerDescriptor {
    */
   sub_code?: number;
   /**
-   * Not part of origial response. Added by describeLayer
+   * Not part of original response. Added by describeLayer
    */
   workspace?: string;
 }

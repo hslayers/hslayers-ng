@@ -20,7 +20,7 @@ export function listNumericAttributes(features: Feature[]): string[] {
             attr != 'hs_normalized_IDW_value' &&
             !isNaN(Number(features[0].get(attr)))
           );
-        } //Check if number
+        }, //Check if number
       )
     : [];
 }
@@ -35,7 +35,8 @@ export function listNumericAttributes(features: Feature[]): string[] {
  */
 export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';
@@ -49,7 +50,7 @@ export class HsIdwWidgetComponent
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
     private hsUtilsService: HsUtilsService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
   ) {
     super(hsLayerSelectorService);
   }

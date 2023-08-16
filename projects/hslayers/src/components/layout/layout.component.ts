@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -13,6 +12,7 @@ import {Subject, delay, takeUntil} from 'rxjs';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
@@ -40,10 +40,11 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   constructor(
+    private elementRef: ElementRef,
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
+    private hsLog: HsLogService,
     public HsEventBusService: HsEventBusService,
-    private elementRef: ElementRef,
     private HsUtilsService: HsUtilsService,
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayPanelContainerService: HsOverlayPanelContainerService,
@@ -125,7 +126,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
     if (getComputedStyle(hsapp).display == 'inline') {
       hsapp.style.display = 'block';
-      console.warn(
+      this.hsLog.warn(
         'Main element (<hslayers>) needs display property to be defined...fallback value added',
       );
     }
@@ -142,15 +143,15 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       //If its still the same, height is not set on parents nor on hslayers element - we want fullscreen app
       if (hsapp.clientHeight == heightBefore) {
         hsapp.style.height = '100svh';
-        console.warn(
+        this.hsLog.warn(
           `Main element (<hslayers>) needs height property to be defined...fallback value added`,
         );
       } else if (hsapp.clientHeight < heightBefore) {
-        /**
+        /*
          * If the value was set, but is lower than recommended - use the value but write a warning.
          */
         hsapp.style.height = heightBefore;
-        console.warn(
+        this.hsLog.warn(
           `Height of the element <hslayers> is lower than recommended value of ${minHeight}px.`,
         );
       }

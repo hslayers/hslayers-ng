@@ -42,7 +42,7 @@ describe('HsLegendComponent', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 

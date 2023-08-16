@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 

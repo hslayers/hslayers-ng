@@ -42,7 +42,7 @@ describe('HsLegendLayerComponent', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
   let parentComponent: HsLegendComponent;

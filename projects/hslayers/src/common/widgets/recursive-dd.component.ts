@@ -9,9 +9,7 @@ export class HsUiExtensionsRecursiveDdComponent {
   @Input() value: any;
   entries;
 
-  constructor(
-    public hsDSMapService: HsAddDataCatalogueMapService // used in template
-  ) {}
+  constructor(public hsDSMapService: HsAddDataCatalogueMapService) {}
   isIterable(): boolean {
     if (this.value && typeof this.value === 'object') {
       this.entries = Object.entries(this.value);

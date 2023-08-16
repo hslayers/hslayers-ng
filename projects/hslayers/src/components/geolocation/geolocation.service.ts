@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
-import Geolocation from 'ol/Geolocation';
-import Rotate from 'ol/control/Rotate';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Circle as CircleGeom, Point} from 'ol/geom';
+import {Feature, Geolocation} from 'ol';
+import {Rotate} from 'ol/control';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
@@ -23,7 +22,7 @@ import {
 })
 export class HsGeolocationService {
   /**
-   * Represents geolocalization state (on/off)
+   * Represents geolocation state (on/off)
    */
   centering: boolean;
   accuracyFeature: Feature<CircleGeom>;
@@ -38,7 +37,7 @@ export class HsGeolocationService {
   trackOrientation = false;
   orientationListener: EventListenerObject;
   /**
-   * Represents geolocalization tracking option (on/off).
+   * Represents geolocation tracking option (on/off).
    * Used to determine state of tracking in directive's html
    */
   following = false;
@@ -90,7 +89,7 @@ export class HsGeolocationService {
   }
 
   /**
-   * Reset all geolocalization parameters concerning position tracking
+   * Reset all geolocation parameters concerning position tracking
    */
   stopTracking(): void {
     this.following = false;
@@ -148,7 +147,7 @@ export class HsGeolocationService {
   }
 
   /**
-   * Reset all geolocalization parameters
+   * Reset all geolocation parameters
    */
   stopLocalization(): void {
     this.localization = false;
@@ -189,6 +188,7 @@ export class HsGeolocationService {
       JSON.stringify(this.positionFeature.getGeometry().getCoordinates())
     );
   }
+
   /**
    * Callback function handling geolocation change:position event
    */

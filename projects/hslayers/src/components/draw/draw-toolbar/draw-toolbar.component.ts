@@ -21,10 +21,10 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
-    public HsLayerUtilsService: HsLayerUtilsService, //Used in template
+    public HsLayerUtilsService: HsLayerUtilsService,
     public HsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
-    public HsRemoveLayerDialogService: HsRemoveLayerDialogService
+    public HsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {
     super(HsLayoutService);
   }
@@ -51,6 +51,7 @@ export class HsDrawToolbarComponent extends HsToolbarPanelBaseComponent {
     }
     this.HsDrawService.fillDrawableLayers();
   }
+
   selectLayer(layer): void {
     this.HsDrawService.selectLayer(layer);
   }

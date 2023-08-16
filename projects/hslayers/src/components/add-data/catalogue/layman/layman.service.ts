@@ -1,6 +1,8 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 import {Observable, catchError, lastValueFrom, map, of, timeout} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
@@ -10,8 +12,6 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from '../../../../common/endpoints/endpoint.interface';
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';

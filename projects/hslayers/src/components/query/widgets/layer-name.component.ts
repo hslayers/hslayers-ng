@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
 
+import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 
@@ -23,6 +23,7 @@ export class HsLayerNameComponent
   constructor(private hsLayerUtilsService: HsLayerUtilsService) {
     super();
   }
+
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
   }

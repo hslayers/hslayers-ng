@@ -17,7 +17,6 @@ export class HsLaymanLoginComponent
 {
   @Input() data: {
     url: string;
-
   };
   viewRef: ViewRef;
   url: SafeResourceUrl;
@@ -25,7 +24,7 @@ export class HsLaymanLoginComponent
   constructor(
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {
     this.authChangeSubscription =
       this.HsCommonLaymanService.authChange.subscribe(() => {

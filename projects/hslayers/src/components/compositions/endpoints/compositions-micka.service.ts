@@ -1,12 +1,12 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Observable, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
+import {Observable, catchError, map, of, timeout} from 'rxjs';
 
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from './../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapCompositionDescriptor} from '../models/composition-descriptor.model';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
@@ -23,7 +23,8 @@ export class HsCompositionsMickaService {
     private hsUtilsService: HsUtilsService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
-    private hsCompositionsParserService: HsCompositionsParserService
+    private hsLog: HsLogService,
+    private hsCompositionsParserService: HsCompositionsParserService,
   ) {}
 
   /**
@@ -52,7 +53,7 @@ export class HsCompositionsMickaService {
               query.title +
               "*' OR abstract like '*" +
               query.title +
-              "*')"
+              "*')",
           )
         : '';
     const selected = [];
@@ -104,13 +105,13 @@ export class HsCompositionsMickaService {
           ': ' +
           this.hsLanguageService.getTranslation(
             'COMMON.noDataReceived',
-            undefined
+            undefined,
           ),
         {
           disableLocalization: true,
           toastStyleClasses: 'bg-warning text-light',
           serviceCalledFrom: 'HsCompositionsMickaService',
-        }
+        },
       );
       return;
     }
@@ -131,7 +132,7 @@ export class HsCompositionsMickaService {
       if (response.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj()
+          this.hsMapService.getCurrentProj(),
         );
         if (extentFeature) {
           record.featureId = extentFeature.getId().toString();
@@ -152,7 +153,7 @@ export class HsCompositionsMickaService {
     endpoint: HsEndpoint,
     params: any,
     extentFeatureCreated,
-    bbox: any
+    bbox: any,
   ): Observable<any> {
     params = this.checkForParams(endpoint, params);
     const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
@@ -172,22 +173,22 @@ export class HsCompositionsMickaService {
           this.hsToastService.createToastPopupMessage(
             this.hsLanguageService.getTranslation(
               'COMPOSITIONS.errorWhileRequestingCompositions',
-              undefined
+              undefined,
             ),
             endpoint.title +
               ': ' +
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status ? e.status.toString() : e.message,
-                {url: url}
+                {url: url},
               ),
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsMickaService',
-            }
+            },
           );
           return of(e);
-        })
+        }),
       );
 
     return endpoint.httpCall;
@@ -250,17 +251,17 @@ export class HsCompositionsMickaService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
-          undefined
+          undefined,
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.status ? e.status.toString() : e.message,
-          {url: url}
+          {url: url},
         ),
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsMickaService',
-        }
+        },
       );
     }
   }
@@ -277,7 +278,7 @@ export class HsCompositionsMickaService {
       return compData.url;
     }
     return compData.map((link) =>
-      typeof link == 'object' && link.url !== undefined ? link.url : link
+      typeof link == 'object' && link.url !== undefined ? link.url : link,
     );
   }
 
@@ -287,6 +288,10 @@ export class HsCompositionsMickaService {
    * See https://github.com/hslayers/hslayers-ng/pull/4014
    */
   delete(e: HsEndpoint, c: HsMapCompositionDescriptor) {
-    console.warn('Delete method for Micka compositions not implemented', e, c);
+    this.hsLog.warn(
+      'Delete method for Micka compositions not implemented',
+      e,
+      c,
+    );
   }
 }

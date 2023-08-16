@@ -23,7 +23,7 @@ export class HsQueuesService {
   ensureQueue(
     useCase: string,
     customConcurrency?: number,
-    timeout?: number
+    timeout?: number,
   ): Queue {
     if (this.queues[useCase]) {
       return this.queues[useCase].q;

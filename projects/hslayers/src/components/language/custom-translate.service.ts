@@ -1,5 +1,8 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, forkJoin, from, lastValueFrom, map} from 'rxjs';
+
 import * as merge from 'deepmerge';
-import en from '../../assets/locales/en.json';
 import {
   FakeMissingTranslationHandler,
   TranslateDefaultParser,
@@ -7,14 +10,18 @@ import {
   TranslateLoader,
   TranslateService,
 } from '@ngx-translate/core';
+
+import en from '../../assets/locales/en.json';
 import {HsConfig} from '../../config.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, forkJoin, from, lastValueFrom, map} from 'rxjs';
+import {HsLogService} from '../../common/log/log.service';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   loaded = {};
-  constructor(public HsConfig: HsConfig, private HttpClient: HttpClient) {}
+  constructor(
+    public HsConfig: HsConfig,
+    private hsLog: HsLogService,
+    private HttpClient: HttpClient,
+  ) {}
 
   /**
    *
@@ -30,7 +37,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
         new Promise(async (resolve) => {
           (async () => {
             if (this.HsConfig.assetsPath == undefined) {
-              console.warn('HsConfig.assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
+              this.hsLog.warn('HsConfig.assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
               let counter = 0;
               const MAX_CONFIG_POLLS = 10;
               while (
@@ -42,28 +49,28 @@ export class WebpackTranslateLoader implements TranslateLoader {
               if (counter >= MAX_CONFIG_POLLS) {
                 resolve(en); //This is needed to display English if assetsPath will never be set.
                 if (lang != 'en') {
-                  console.error(
-                    'Please set HsConfig.apps[default].assetsPath so translations can be loaded'
+                  this.hsLog.error(
+                    'Please set HsConfig.apps[default].assetsPath so translations can be loaded',
                   );
                 }
                 return;
               }
-              console.log('assetsPath OK');
+              this.hsLog.log('assetsPath OK');
             }
             const res = await lastValueFrom(
               this.HttpClient.get(
-                `${this.HsConfig.assetsPath}/locales/${lang}.json`
-              )
+                `${this.HsConfig.assetsPath}/locales/${lang}.json`,
+              ),
             );
             this.loaded[lang] = true;
             resolve(res);
           })();
-        })
+        }),
       ),
       from(
         new Promise((resolve) => {
           //Wait a bit for the HsConfig to be set from container app
-          setTimeout((_) => {
+          setTimeout(() => {
             if (
               this.HsConfig.translationOverrides &&
               this.HsConfig.translationOverrides[lang]
@@ -73,13 +80,13 @@ export class WebpackTranslateLoader implements TranslateLoader {
               resolve({});
             }
           }, 200);
-        })
+        }),
       ),
     ];
     const tmp = forkJoin(requests).pipe(
       map((response) => {
         return merge.all(response);
-      })
+      }),
     );
     return tmp;
   }
@@ -89,17 +96,17 @@ export class WebpackTranslateLoader implements TranslateLoader {
   providedIn: 'root',
 })
 export class CustomTranslationService extends TranslateService {
-  constructor(HsConfig: HsConfig, HttpClient: HttpClient) {
+  constructor(hsConfig: HsConfig, hsLog: HsLogService, httpClient: HttpClient) {
     super(
       null,
-      new WebpackTranslateLoader(HsConfig, HttpClient),
+      new WebpackTranslateLoader(hsConfig, hsLog, httpClient),
       new TranslateFakeCompiler(),
       new TranslateDefaultParser(),
       new FakeMissingTranslationHandler(),
       false,
       true,
       false,
-      null
+      null,
     );
   }
 }

@@ -71,7 +71,7 @@ export class HsCompositionsCatalogueService {
     public hsEventBusService: HsEventBusService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsCommonLaymanService: HsCommonLaymanService,
-    private _zone: NgZone
+    private _zone: NgZone,
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe((endpoints) => {
       this.endpoints = endpoints ?? [];
@@ -105,14 +105,14 @@ export class HsCompositionsCatalogueService {
         },
         400,
         false,
-        extentChangeDebouncer
-      )
+        extentChangeDebouncer,
+      ),
     );
 
     this.hsEventBusService.compositionDeletes.subscribe((composition) => {
       //TODO: rewrite
       const deleteDialog = this.hsLayoutService.contentWrapper.querySelector(
-        '.hs-composition-delete-dialog'
+        '.hs-composition-delete-dialog',
       );
       if (deleteDialog) {
         deleteDialog.parentNode.remove(deleteDialog);
@@ -137,7 +137,7 @@ export class HsCompositionsCatalogueService {
         info: {
           title: this.hsCompositionsService.translateString(
             'COMPOSITIONS',
-            'compositionNotFound'
+            'compositionNotFound',
           ),
           abstract: data.error.message,
         },
@@ -175,7 +175,7 @@ export class HsCompositionsCatalogueService {
   calculateEndpointLimits(): void {
     this.matchedRecords = 0;
     const filteredEndpoints = this.endpoints.filter(
-      (ep) => ep.compositionsPaging.matched != 0
+      (ep) => ep.compositionsPaging.matched != 0,
     );
     if (filteredEndpoints.length == 0) {
       this.dataLoading = false;
@@ -183,7 +183,7 @@ export class HsCompositionsCatalogueService {
     }
     this.matchedRecords = this.endpoints.reduce(
       (sum, ep) => sum + ep.compositionsPaging.matched,
-      this.matchedRecords
+      this.matchedRecords,
     );
     let sumLimits = 0;
     this.endpoints.forEach((ep) => {
@@ -191,9 +191,9 @@ export class HsCompositionsCatalogueService {
       ep.compositionsPaging.limit = Math.max(
         Math.round(
           (ep.compositionsPaging.matched / this.matchedRecords) *
-            this.recordsPerPage
+            this.recordsPerPage,
         ),
-        1
+        1,
       );
       sumLimits += ep.compositionsPaging.limit;
     });
@@ -202,22 +202,19 @@ export class HsCompositionsCatalogueService {
      * For the first few pages we need to adjust limit of the other datasource
      */
     if (sumLimits > this.recordsPerPage) {
-      const epWithFew = this.endpoints.reduce(
-        (maxItem, currentItem) => {
-          if (
-            maxItem === null ||
-            currentItem.compositionsPaging.limit <
-              maxItem.compositionsPaging.limit
-          ) {
-            return currentItem;
-          }
-          return maxItem;
-        },
-        null
-      );
+      const epWithFew = this.endpoints.reduce((maxItem, currentItem) => {
+        if (
+          maxItem === null ||
+          currentItem.compositionsPaging.limit <
+            maxItem.compositionsPaging.limit
+        ) {
+          return currentItem;
+        }
+        return maxItem;
+      }, null);
       /** Adjust the limit for epWithMany */
       this.endpoints.find(
-        (ep) => ep != epWithFew
+        (ep) => ep != epWithFew,
       ).compositionsPaging.limit -= 1;
       sumLimits -= 1;
     }
@@ -266,7 +263,7 @@ export class HsCompositionsCatalogueService {
       this.arrayContainsData(this.compositionEntries)
         ? this.filterDuplicates(endpoint)
         : (this.compositionEntries = this.compositionEntries.concat(
-            endpoint.compositions
+            endpoint.compositions,
           ));
     }
     this.dataLoading = false;
@@ -288,8 +285,8 @@ export class HsCompositionsCatalogueService {
           (loaded) =>
             loaded.id == record.id ||
             'm-' + loaded.id == record.id ||
-            loaded.id == 'm-' + record.id
-        ).length == 0
+            loaded.id == 'm-' + record.id,
+        ).length == 0,
     );
     this.matchedRecords -=
       endpoint.compositions.length - filteredCompositions.length;
@@ -328,14 +325,14 @@ export class HsCompositionsCatalogueService {
       this.listStart = 0;
       this.listNext = this.recordsPerPage;
       this.endpoints.forEach(
-        (ep: HsEndpoint) => (ep.compositionsPaging.start = 0)
+        (ep: HsEndpoint) => (ep.compositionsPaging.start = 0),
       );
     } else {
       this.listStart -= this.recordsPerPage;
       this.listNext = this.listStart + this.recordsPerPage;
       this.endpoints.forEach(
         (ep: HsEndpoint) =>
-          (ep.compositionsPaging.start -= ep.compositionsPaging.limit)
+          (ep.compositionsPaging.start -= ep.compositionsPaging.limit),
       );
     }
     this.loadCompositions(true);
@@ -351,7 +348,7 @@ export class HsCompositionsCatalogueService {
       this.listNext = this.matchedRecords;
     }
     this.endpoints.forEach(
-      (ep) => (ep.compositionsPaging.start += ep.compositionsPaging.limit)
+      (ep) => (ep.compositionsPaging.start += ep.compositionsPaging.limit),
     );
     this.loadCompositions(true);
   }

@@ -48,7 +48,7 @@ export class HsCompositionsService {
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsEventBusService: HsEventBusService,
-    private hsToastService: HsToastService
+    private hsToastService: HsToastService,
   ) {
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
@@ -89,7 +89,7 @@ export class HsCompositionsService {
           this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
             e.feature,
             e.selector,
-            endpoint.compositions
+            endpoint.compositions,
           );
         if (record) {
           this.loadComposition(this.getRecordLink(record));
@@ -102,7 +102,6 @@ export class HsCompositionsService {
    * Load composition list
    * @param ds - Datasource endpoint
    * @param params - Provided params for querying list items
-   
    */
   loadCompositions(ds: HsEndpoint, params): Observable<any> {
     this.hsCompositionsMapService.clearExtentLayer();
@@ -112,7 +111,7 @@ export class HsCompositionsService {
       params,
       (feature: Feature<Geometry>) =>
         this.hsCompositionsMapService.addExtentFeature(feature),
-      bbox
+      bbox,
     );
     return Observable;
   }
@@ -157,14 +156,13 @@ export class HsCompositionsService {
   async deleteComposition(composition): Promise<void> {
     await this.managerByType(composition.endpoint)?.delete(
       composition.endpoint,
-      composition
+      composition,
     );
   }
 
   /**
    * Share composition to other platforms
    * @param record - Datasource record selected
-   
    */
   async shareComposition(record: HsMapCompositionDescriptor): Promise<any> {
     const recordLink = encodeURIComponent(this.getRecordLink(record));
@@ -175,7 +173,7 @@ export class HsCompositionsService {
     this.shareId = this.hsUtilsService.generateUuid();
     const headers = new HttpHeaders().set(
       'Content-Type',
-      'text/plain; charset=utf-8'
+      'text/plain; charset=utf-8',
     );
     return await lastValueFrom(
       this.http.post(
@@ -188,35 +186,35 @@ export class HsCompositionsService {
           description: record.abstract,
           image: record.thumbnail || 'https://ng.hslayers.org/img/logo.png',
         }),
-        {headers, responseType: 'text'}
-      )
+        {headers, responseType: 'text'},
+      ),
     );
   }
+
   /**
    * Get composition share url
-   
    */
   async getShareUrl(): Promise<string> {
     try {
       return await this.hsUtilsService.shortUrl(
         this.HsShareUrlService.endpointUrl() +
           '?request=socialshare&id=' +
-          this.shareId
+          this.shareId,
       );
     } catch (ex) {
       this.$log.log('Error creating short URL');
     }
   }
+
   /**
    * Get composition information
    * @param composition - Composition selected
-   
    */
   async getCompositionInfo(
-    composition: HsMapCompositionDescriptor
+    composition: HsMapCompositionDescriptor,
   ): Promise<any> {
     const info = await this.managerByType(composition.endpoint).getInfo(
-      composition
+      composition,
     );
     this.data.info = info;
     return info;
@@ -233,7 +231,7 @@ export class HsCompositionsService {
         url = record.link;
       } else if (record.links !== undefined) {
         url = record.links.filter(
-          (l) => l.url.includes('/file') || l.url.endsWith('.wmc')
+          (l) => l.url.includes('/file') || l.url.endsWith('.wmc'),
         )[0].url;
       }
       if (record.endpoint?.type.includes('layman')) {
@@ -259,7 +257,7 @@ export class HsCompositionsService {
       const compositions = await lastValueFrom(
         this.http.get(url, {
           responseType: 'json',
-        })
+        }),
       );
       return compositions['records'].length > 1
         ? compositions['records'].find((r) => r.id == record.id)
@@ -268,25 +266,25 @@ export class HsCompositionsService {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileRequestingCompositions',
-          undefined
+          undefined,
         ),
         record.endpoint.title +
           ': ' +
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ERRORMESSAGES',
             e.status ? e.status.toString() : e.message,
-            {url: url}
+            {url: url},
           ),
         {
           disableLocalization: true,
           serviceCalledFrom: 'HsCompositionsMickaService',
-        }
+        },
       );
     }
   }
 
   async getRecordUrl(
-    record: HsMapCompositionDescriptor
+    record: HsMapCompositionDescriptor,
   ): Promise<string | any> {
     const recordEndpoint = record.endpoint;
     if (recordEndpoint.type == 'micka') {
@@ -304,10 +302,10 @@ export class HsCompositionsService {
   /**
    * Load composition from datasource record url
    * @param record - Datasource record selected
-   
+
    */
   async loadCompositionParser(
-    record: HsMapCompositionDescriptor
+    record: HsMapCompositionDescriptor,
   ): Promise<void> {
     const url = await this.getRecordUrl(record);
     if (url) {
@@ -350,20 +348,18 @@ export class HsCompositionsService {
 
   /**
    * Load base layers received as composition
-   
    */
   loadBaseLayersComposition(): void {
     this.hsCompositionsParserService.loadUrl(
       this.hsConfig.base_layers.url,
       false,
       undefined,
-      this.parseBaseLayersComposition.bind(this)
+      this.parseBaseLayersComposition.bind(this),
     );
   }
 
   /**
    * Load layers received through permalink to map
-   
    */
   async parsePermalinkLayers(permalink: string): Promise<void> {
     await this.hsMapService.loaded();
@@ -392,7 +388,6 @@ export class HsCompositionsService {
   /**
    * Load composition from composition list
    * @param url - URL
-   
    * @param overwrite - Overwrite existing map composition with the new one
    */
   loadComposition(url: string, overwrite?: boolean): Promise<void> {
@@ -401,7 +396,6 @@ export class HsCompositionsService {
 
   /**
    * Parse and load composition from cookies
-   
    */
   async tryParseCompositionFromCookie(): Promise<void> {
     if (
@@ -418,7 +412,7 @@ export class HsCompositionsService {
         return;
       }
       const layers = await this.hsCompositionsParserService.jsonToLayers(
-        parsed
+        parsed,
       );
       for (let i = 0; i < layers.length; i++) {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
@@ -429,7 +423,6 @@ export class HsCompositionsService {
 
   /**
    * Parse and load composition from browser URL
-   
    */
   async tryParseCompositionFromUrlParam(): Promise<void> {
     let id =
@@ -484,7 +477,7 @@ export class HsCompositionsService {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined
+      undefined,
     );
   }
 }

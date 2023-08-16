@@ -1,17 +1,22 @@
+import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 
-import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
 import {HsPanelComponent} from '../../layout/panels/panel-component.interface';
+
 @Component({
   template: '<div></div>',
 })
 export class HsLayerEditorWidgetBaseComponent
-  implements HsPanelComponent, OnInit, OnDestroy {
-  name: string; //This could be used to enable/disable widgets by name on HsConfig level
+  implements HsPanelComponent, OnInit, OnDestroy
+{
+  /**
+   * This could be used to enable/disable widgets by name on HsConfig level
+   */
+  name: string;
   viewRef: ViewRef;
   data: any;
   layerDescriptor = new BehaviorSubject<HsLayerDescriptor>(null);
@@ -24,6 +29,7 @@ export class HsLayerEditorWidgetBaseComponent
       this.olLayer = descriptor?.layer;
     });
   }
+
   ngOnInit() {
     this.layerDescriptor.next(this.hsLayerSelectorService.currentLayer);
 
@@ -33,6 +39,7 @@ export class HsLayerEditorWidgetBaseComponent
         this.layerDescriptor.next(layer);
       });
   }
+
   isVisible(): boolean {
     return true;
   }

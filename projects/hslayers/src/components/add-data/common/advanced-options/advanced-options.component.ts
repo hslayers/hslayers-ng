@@ -21,7 +21,7 @@ export class HsAdvancedOptionsComponent implements OnInit {
   ngOnInit(): void {
     this.isKml = this.hsAddDataVectorService.isKml(
       this.data.type,
-      this.data.url ?? null
+      this.data.url ?? null,
     );
   }
 }

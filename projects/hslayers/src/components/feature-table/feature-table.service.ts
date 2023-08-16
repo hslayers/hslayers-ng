@@ -5,7 +5,6 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
-import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
@@ -30,14 +29,22 @@ type FeatureDescriptor = {
   providedIn: 'root',
 })
 export class HsFeatureTableService {
-  sortReverse = false; //trigger for reverse sorting
-  lastSortValue = ''; //last sorting value selected
-  features: FeatureDescriptor[] = []; //all feature attributes for html table
+  /**
+   * Trigger for reverse sorting
+   */
+  sortReverse = false;
+  /**
+   * Last sorting value selected
+   */
+  lastSortValue = '';
+  /**
+   * all feature attributes for HTML table
+   */
+  features: FeatureDescriptor[] = [];
   constructor(
     private hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsQueryVectorService: HsQueryVectorService,
-    private hsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -186,7 +193,7 @@ export class HsFeatureTableService {
         ? (this.sortReverse = !this.sortReverse)
         : (this.sortReverse = false);
       this.features = this.features.sort((a, b) =>
-        this.sortFeatures(a, b, valueName)
+        this.sortFeatures(a, b, valueName),
       );
     }
   }

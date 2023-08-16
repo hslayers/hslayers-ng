@@ -103,7 +103,7 @@ export class SparqlJson extends Vector<Geometry> {
       loader: async (extent, resolution, projection) => {
         if (updates_url) {
           throw new Error(
-            'updates_url was removed from the options as we have found no use case for it. If you have some, please file an issue at https://github.com/hslayers/hslayers-ng/issues'
+            'updates_url was removed from the options as we have found no use case for it. If you have some, please file an issue at https://github.com/hslayers/hslayers-ng/issues',
           );
         }
         if (!url && (!endpointUrl || !query)) {
@@ -150,14 +150,14 @@ export class SparqlJson extends Vector<Geometry> {
           if (console) {
             console.warn(
               'SPARQL results response not formatted as valid JSON. Trying to parse XML...',
-              err
+              err,
             );
           }
         }
         if (!data) {
           try {
             data = this.xmlJson2sparqlJson(
-              xml2Json.xml2js(await response.text())
+              xml2Json.xml2js(await response.text()),
             );
           } catch (err) {
             this.dispatchEvent('featuresloaderror');
@@ -200,7 +200,7 @@ export class SparqlJson extends Vector<Geometry> {
             categoryMap: this.category_map,
             categoryId: this.category_id,
             proj: projection,
-          })
+          }),
         );
         this.styleAble = true;
         this.hasPoint = true;
@@ -311,7 +311,7 @@ export class SparqlJson extends Vector<Geometry> {
         `FILTER(${geof}(
               "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
             ?${geomAttribute}
-            )).`
+            )).`,
       );
     }
     const tmp = url.split('query=');
@@ -320,7 +320,7 @@ export class SparqlJson extends Vector<Geometry> {
       'query=' +
       encodeURIComponent(
         'PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n' +
-          'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
+          'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n',
       ) +
       tmp[1];
     url = url.replace(/<extent>/g, s_extent);
@@ -360,10 +360,10 @@ export class SparqlJson extends Vector<Geometry> {
         entity['http://www.w3.org/2003/01/geo/wgs84_pos#long'] != ''
       ) {
         const x = parseFloat(
-          entity['http://www.w3.org/2003/01/geo/wgs84_pos#long']
+          entity['http://www.w3.org/2003/01/geo/wgs84_pos#long'],
         );
         const y = parseFloat(
-          entity['http://www.w3.org/2003/01/geo/wgs84_pos#lat']
+          entity['http://www.w3.org/2003/01/geo/wgs84_pos#lat'],
         );
         if (!isNaN(x) && !isNaN(y)) {
           const coord = transform([x, y], 'EPSG:4326', proj);
@@ -410,7 +410,7 @@ export class SparqlJson extends Vector<Geometry> {
       categoryMap[category].color = this.rainbow(
         categoryId,
         categoryMap[category].id,
-        0.7
+        0.7,
       );
     }
     src.legend_categories = categoryMap;
@@ -419,7 +419,7 @@ export class SparqlJson extends Vector<Geometry> {
         features[i].color = this.rainbow(
           categoryId,
           features[i].category_id,
-          0.7
+          0.7,
         );
       }
     }

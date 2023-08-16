@@ -1,4 +1,4 @@
-import {xPos, yPos} from './XY-positions.type';
+import {xPos, yPos} from './xy-positions.type';
 
 export type TextStyle = {
   textColor?: string;

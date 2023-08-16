@@ -533,7 +533,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         }),
       );
     }
-    // When not shallow go full depth otherwise layer.Name has got to be missing (first queriable layer)
+    // When not shallow go full depth otherwise layer.Name has got to be missing (first queryable layer)
     const nextDepthAllowed = options.shallow ? !layer.Name : true;
     if (layer.Layer && nextDepthAllowed) {
       for (const sublayer of layer.Layer) {

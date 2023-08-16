@@ -22,6 +22,7 @@ export class HsPagerComponent {
       return false;
     }
   }
+
   /**
    * Load previous list of items to display on pager
    */

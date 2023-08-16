@@ -11,7 +11,10 @@ export class HsDimensionDescriptor {
   public modelTimeValue: {hour: any; minute: any};
 
   //Original dimension object can be shared between multiple layers.
-  constructor(public name: string, public originalDimension: any) {
+  constructor(
+    public name: string,
+    public originalDimension: any,
+  ) {
     this.type = this.originalDimension.type;
     this.value = this.originalDimension.value ?? this.originalDimension.default;
     this.modelValue =
@@ -53,14 +56,14 @@ export class HsDimensionDescriptor {
         this.modelValue.month - 1,
         this.modelValue.day,
         this.modelTimeValue?.hour,
-        this.modelTimeValue?.minute
+        this.modelTimeValue?.minute,
       );
     } else {
       this.originalDimension.value = this.modelValue;
     }
     if (['datetime', 'date'].includes(this.type) && this.format) {
       this.originalDimension.value = dayjs(this.originalDimension.value).format(
-        this.format
+        this.format,
       );
     }
     this.value = this.originalDimension.value;

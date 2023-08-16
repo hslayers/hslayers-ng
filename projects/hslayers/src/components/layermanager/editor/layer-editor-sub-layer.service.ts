@@ -23,7 +23,7 @@ export class HsLayerEditorSublayerService {
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerSelectorService: HsLayerSelectorService,
-    private HsLayerUtilsService: HsLayerUtilsService
+    private HsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.resetSublayers(layer);
@@ -41,7 +41,7 @@ export class HsLayerEditorSublayerService {
   }
   hasSubLayers(): boolean {
     const subLayers = getCachedCapabilities(
-      this.HsLayerManagerService.currentLayer.layer
+      this.HsLayerManagerService.currentLayer.layer,
     )?.Layer;
     return subLayers != undefined && subLayers.length > 0;
   }

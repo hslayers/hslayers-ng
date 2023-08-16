@@ -4,7 +4,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {TestBed, fakeAsync, tick} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
 import {Feature} from 'ol';
 import {LineString, Polygon} from 'ol/geom';
@@ -29,7 +29,7 @@ describe('HsUtilsService', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
   let hsUtilsService: HsUtilsService;
@@ -78,7 +78,7 @@ describe('HsUtilsService', () => {
     ];
     const unique = hsUtilsService.removeDuplicates(
       layers,
-      'values.properties.title'
+      'values.properties.title',
     );
     expect(unique.length).toBe(2);
     expect(unique).toEqual([
@@ -132,14 +132,14 @@ describe('HsUtilsService', () => {
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T';
     let url = hsUtilsService.proxify(urlWMS);
     expect(url).toEqual(
-      '/proxy/http://gisserver.domain.com/request=GetFeatureInfo'
+      '/proxy/http://gisserver.domain.com/request=GetFeatureInfo',
     );
     hsConfig.proxyPrefix = 'http://localhost:8085/';
     url = hsUtilsService.proxify(simpleUrl);
     expect(url).toEqual('http://localhost:8085/http://gisserver.domain.com');
     url = hsUtilsService.proxify(base64Url);
     expect(url).toEqual(
-      'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T'
+      'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T',
     );
   });
   it('check if short url gets created correctly', async () => {
@@ -248,7 +248,7 @@ describe('HsUtilsService', () => {
     const result = hsUtilsService.replaceAll(
       targetStr,
       regExSearch,
-      replacementText
+      replacementText,
     );
     expect(result).toEqual('This is a text, this is a text');
   });

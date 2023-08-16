@@ -8,9 +8,7 @@ import {HsEventBusService} from './../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {getTitle} from '../../common/layer-extensions';
-/**
- * HsInfoComponent
- */
+
 @Component({
   selector: 'hs-info',
   templateUrl: './info.component.html',
@@ -33,7 +31,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.compositionLoads
@@ -100,6 +98,7 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       this.isVisible$.next(this.isVisible());
     });
   }
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
@@ -108,10 +107,10 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   trackByFn(index: number): number {
     return index; // or item.id
   }
-  /**
 
+  /**
+   * Test if composition is loaded, to change info template.
    * @returns Returns true if composition title available
-   * est if composition is loaded, to change info template.
    */
   compositionLoaded(): boolean {
     return this.composition_title !== undefined;

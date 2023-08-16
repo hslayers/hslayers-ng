@@ -28,7 +28,6 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -81,10 +80,9 @@ export class HsStylerService {
     public sanitizer: DomSanitizer,
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService,
-    private srvLanguage: HsLanguageService,
     private hsConfig: HsConfig,
     private hsCommonLaymanService: HsCommonLaymanService,
-    private hsLayerSynchronizerService: HsLayerSynchronizerService
+    private hsLayerSynchronizerService: HsLayerSynchronizerService,
   ) {
     this.pin_white_blue = new Style({
       image: new Icon({
@@ -95,7 +93,7 @@ export class HsStylerService {
     });
     this.pin_white_blue_highlight = (
       feature: Feature<Geometry>,
-      resolution
+      resolution,
     ): Array<Style> => {
       return [
         new Style({
@@ -119,7 +117,7 @@ export class HsStylerService {
       for (const layer of this.hsMapService
         .getLayersArray()
         .filter((layer) =>
-          this.hsLayerUtilsService.isLayerVectorLayer(layer)
+          this.hsLayerUtilsService.isLayerVectorLayer(layer),
         )) {
         this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
       }
@@ -128,7 +126,7 @@ export class HsStylerService {
           this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
           this.initLayerStyle(
-            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>
+            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>,
           );
         }
       });
@@ -151,7 +149,7 @@ export class HsStylerService {
    */
   getLayerSource(
     layer: VectorLayer<VectorSource<Geometry>>,
-    isClustered: boolean
+    isClustered: boolean,
   ): VectorSource<Geometry> {
     if (!layer) {
       return;
@@ -164,12 +162,13 @@ export class HsStylerService {
     }
     return src;
   }
+
   /**
    * Style clustered layer features using cluster style or individual feature style.
    * @param layer - Any vector layer
    */
   async styleClusteredLayer(
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
   ): Promise<void> {
     await this.fill(layer);
     //Check if layer already has SLD style for clusters
@@ -224,8 +223,8 @@ export class HsStylerService {
           layer,
           getSld(layer).replace(
             '<NamedLayer>',
-            '<NamedLayer>' + '<!-- This will be removed by parser -->'
-          )
+            '<NamedLayer>' + '<!-- This will be removed by parser -->',
+          ),
         );
       });
     }
@@ -239,7 +238,7 @@ export class HsStylerService {
    * @param layer - OL layer to fill the missing style info
    */
   async initLayerStyle(
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
   ): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
@@ -260,8 +259,8 @@ export class HsStylerService {
         if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
           this.hsLogService.warn(
             `Layer ${getTitle(
-              layer
-            )} is meant to be clustered but not an instance of Cluster source! Waiting for a change:source event...`
+              layer,
+            )} is meant to be clustered but not an instance of Cluster source! Waiting for a change:source event...`,
           );
           await new Promise((resolve) => {
             layer.once('change:source', (evt) => resolve(evt.target));
@@ -296,7 +295,7 @@ export class HsStylerService {
    * @returns OL style object
    */
   async parseStyle(
-    style: any
+    style: any,
   ): Promise<{sld?: string; qml?: string; style: StyleLike}> {
     if (!style) {
       return {
@@ -397,7 +396,7 @@ export class HsStylerService {
       for (const rule of this.styleObject.rules) {
         if (rule.symbolizers) {
           for (const symbol of rule.symbolizers.filter(
-            (symb) => symb.kind == 'Fill'
+            (symb) => symb.kind == 'Fill',
           ) as FillSymbolizer[]) {
             symbol.opacity = symbol.fillOpacity;
           }
@@ -433,7 +432,7 @@ export class HsStylerService {
   }
 
   public async geoStylerStyleToOlStyle(
-    sldObject: GeoStylerStyle
+    sldObject: GeoStylerStyle,
   ): Promise<StyleLike> {
     const olConverter = new OpenLayersParser();
     const {output: style} = await olConverter.writeStyle(sldObject);
@@ -502,7 +501,7 @@ export class HsStylerService {
       max?: number;
       colorMapName?: string;
       attribute?: string;
-    }
+    },
   ): Promise<void> {
     switch (kind) {
       case 'ColorMap':
@@ -593,7 +592,7 @@ export class HsStylerService {
     return btoa(
       encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
         return String.fromCharCode(parseInt(p1, 16));
-      })
+      }),
     );
   }
 
@@ -603,7 +602,7 @@ export class HsStylerService {
         .call(atob(str), (c) => {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         })
-        .join('')
+        .join(''),
     );
   }
 
@@ -667,7 +666,7 @@ export class HsStylerService {
    * HACK is needed to style cluster layers. It wraps existing OL style function
    * in a function which searches for Text styles and in them for serialized
    * feature arrays and instead sets the length of this array as the label.
-   * If the geostyler text symbolizer had {{features}} as the text label template
+   * If the geostyler text symbolizer had \{\{features\}\} as the text label template
    * (which returns the "features" attribute of the parent/cluster feature) and returned
    * '[object Object], [object Object]' the result would become "2".
    * See https://github.com/geostyler/geostyler-openlayers-parser/issues/227
@@ -708,7 +707,6 @@ export class HsStylerService {
 
   /**
    * Load style in SLD/QML and set it to current layer
-   * @param styleString
    */
   async loadStyle(styleString: string): Promise<void> {
     try {
@@ -728,7 +726,7 @@ export class HsStylerService {
       await this.fill(this.layer);
       await this.save();
     } catch (err) {
-      console.warn('SLD could not be parsed', err);
+      this.hsLogService.warn('SLD could not be parsed', err);
     }
   }
 }

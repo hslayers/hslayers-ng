@@ -24,7 +24,7 @@ export class HsToolbarComponent
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
-    public HsToolbarPanelContainerService: HsToolbarPanelContainerService
+    public HsToolbarPanelContainerService: HsToolbarPanelContainerService,
   ) {
     super(HsLayoutService);
     this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
@@ -33,7 +33,7 @@ export class HsToolbarComponent
           delete this.composition_title;
           delete this.composition_abstract;
         });
-      }
+      },
     );
   }
   ngOnDestroy(): void {
@@ -44,7 +44,7 @@ export class HsToolbarComponent
    * Change/read collapsed setting
    *
    * @returns Collapsed state
-   * @param is Value to set collapsed state to
+   * @param is - Value to set collapsed state to
    */
   isCollapsed(is: boolean): boolean {
     if (arguments.length > 0) {

@@ -1,8 +1,8 @@
-<ngb-toast *ngFor="let toast of PmToastService.toasts" [header]="toast.header" [class]="toast.classname"
+<ngb-toast *ngFor="let toast of hsToastService.toasts" [header]="toast.header" [class]="toast.classname"
   style="overflow: hidden;"
   [ngStyle]="{'max-height': toast.details.length > 0 ? 'toast.details.length + 8' + 'rem' : '8rem'}"
-  [autohide]="toast.autohide" [delay]="toast.delay || 5000" (shown)="PmToastService.shown()"
-  (hidden)="PmToastService.remove(toast)">{{toast.textOrTpl}}
+  [autohide]="toast.autohide" [delay]="toast.delay || 5000" (shown)="hsToastService.shown()"
+  (hidden)="hsToastService.remove(toast)">{{toast.textOrTpl}}
   <ng-container *ngIf="toast.details?.length > 0">
     <ul *ngFor="let detail of toast.details" class="mt-2">
       <li>{{detail}}</li>

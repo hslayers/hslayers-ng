@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 
 import {AddDataFileType} from '../types/file.type';
 import {DEFAULT_SHP_LOAD_TYPE} from '../../enums/load-types.const';
@@ -24,13 +24,13 @@ export class HsFileShpComponent
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
   ) {
     super(
       hsAddDataCommonService,
       hsAddDataCommonFileService,
       hsLayoutService,
-      hsConfig
+      hsConfig,
     );
   }
 

@@ -1,6 +1,6 @@
 import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 @Directive({
-  selector: '[fileDrop]',
+  selector: '[hsFileDrop]',
 })
 export class HsFileDropDirective {
   @Output() filesDropped = new EventEmitter<FileList>();

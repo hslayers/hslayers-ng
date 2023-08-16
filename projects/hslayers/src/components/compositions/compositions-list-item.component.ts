@@ -23,7 +23,7 @@ export class HsCompositionsListItemComponent {
     private hsToastService: HsToastService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsConfig: HsConfig,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {}
 
   /**
@@ -43,6 +43,7 @@ export class HsCompositionsListItemComponent {
       this.infoDialogBootstrap(info);
     }
   }
+
   /**
    * @param record - Composition to share
    * Prepare share object on server and display share dialog to share composition
@@ -64,23 +65,24 @@ export class HsCompositionsListItemComponent {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
-          undefined
+          undefined,
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           e.message,
-          {url: url}
+          {url: url},
         ),
-        {disableLocalization: true}
+        {disableLocalization: true},
       );
     }
   }
+
   /**
    * Show permissions dialog window for selected composition.
    * @param composition - Selected composition
    */
   async showPermissions(
-    composition: HsMapCompositionDescriptor
+    composition: HsMapCompositionDescriptor,
   ): Promise<void> {
     this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
       recordType: 'composition',
@@ -98,6 +100,7 @@ export class HsCompositionsListItemComponent {
     }
     this.deleteDialogBootstrap(composition);
   }
+
   /**
    * @param composition - Composition selected for deletion
    */
@@ -106,6 +109,7 @@ export class HsCompositionsListItemComponent {
       compositionToDelete: composition,
     });
   }
+
   /**
    * @param record - Composition selected for sharing
    * @param url -

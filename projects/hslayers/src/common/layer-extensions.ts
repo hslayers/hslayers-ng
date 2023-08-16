@@ -20,7 +20,7 @@ const CLUSTER = 'cluster';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
-const ENABLEPROXY = 'enableProxy';
+const ENABLE_PROXY = 'enableProxy';
 const EVENTS_SUSPENDED = 'eventsSuspended';
 const EXCLUSIVE = 'exclusive';
 const FEATURE_INFO_LANG = 'featureInfoLang';
@@ -295,11 +295,11 @@ export function setEnableProxy(
   layer: Layer<Source>,
   enableProxy: boolean,
 ): void {
-  layer.set(ENABLEPROXY, enableProxy);
+  layer.set(ENABLE_PROXY, enableProxy);
 }
 
 export function getEnableProxy(layer: Layer<Source>): boolean {
-  return layer.get(ENABLEPROXY);
+  return layer.get(ENABLE_PROXY);
 }
 
 export function setEventsSuspended(

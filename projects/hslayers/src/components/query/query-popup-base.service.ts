@@ -19,7 +19,7 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public zone: NgZone,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
   ) {
     super();
   }
@@ -27,18 +27,17 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
   /**
    * Fill features for the popup
    * @param features - Features found on the map under the mouse
-   
    */
   fillFeatures(features: Feature<Geometry>[]): void {
-    //Zone is needed for performance reasons. Otherwise the popups dont get hidden soon enough
+    //Zone is needed for performance reasons. Otherwise the popups don't get hidden soon enough
     this.zone.run(() => {
       this.featuresUnderMouse = features;
       if (this.featuresUnderMouse.length) {
         const layersFound = this.hsUtilsService.removeDuplicates(
           this.featuresUnderMouse.map((f) =>
-            this.hsMapService.getLayerForFeature(f)
+            this.hsMapService.getLayerForFeature(f),
           ),
-          'title'
+          'title',
         );
         this.featureLayersUnderMouse = layersFound
           .filter((l) => getPopUp(l)) //Only list the layers which have popUp defined
@@ -49,7 +48,7 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
               title: getTitle(l),
               layer: l,
               features: this.featuresUnderMouse.filter(
-                (f) => this.hsMapService.getLayerForFeature(f) == l
+                (f) => this.hsMapService.getLayerForFeature(f) == l,
               ),
               panelObserver: needSpecialWidgets
                 ? new ReplaySubject<HsPanelItem>()
@@ -66,7 +65,7 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
             }
             this.hsQueryPopupWidgetContainerService.initWidgets(
               widgets,
-              layer.panelObserver
+              layer.panelObserver,
             );
           }
         }
@@ -78,16 +77,14 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
 
   /**
    * Close the popup
-   
    */
   closePopup(): void {
     this.featuresUnderMouse = [];
   }
 
   /**
-   * Get feature attributes in an array, where each attribute is represented as {key, value, displayFunction}.
+   * Get feature attributes in an array, where each attribute is represented as \{key, value, displayFunction\}.
    * @param feature - Feature selected
-   
    * @returns Serialized attributes
    */
   serializeFeatureAttributes(feature: Feature<Geometry>): any[] {
@@ -106,7 +103,7 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
     }
     if (attrsConfig.length == 1 && attrsConfig[0] == '*') {
       attrsConfig = Object.keys(feature.getProperties()).filter(
-        (attr) => attr != 'geometry'
+        (attr) => attr != 'geometry',
       );
       attrsConfig.sort((a, b) => (a < b ? -1 : 1));
     }

@@ -1,8 +1,7 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {SafeHtml} from '@angular/platform-browser';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsLegendService} from '../legend.service';
 import {HsStylerService} from '../../styles/styler.service';
@@ -20,7 +19,7 @@ export class HsLegendLayerComponent implements OnDestroy {
   constructor(
     public hsUtilsService: HsUtilsService,
     public hsLegendService: HsLegendService,
-    public hsStylerService: HsStylerService
+    public hsStylerService: HsStylerService,
   ) {
     this.hsStylerService.onSet
       .pipe(takeUntil(this.end))

@@ -32,7 +32,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
 
   /**
    * @public
-   * Overwrite the exsiting layer with current layer data
+   * Overwrite the existing layer with current layer data
    */
   overwrite(): void {
     this.hsDialogContainerService.destroy(this);
@@ -44,7 +44,7 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
       HsRenameLayerDialogComponent,
       {
         currentName: this.data.dataObj.name,
-      }
+      },
     );
     const result = await renameDialogRef.waitResult();
     if (!result) {

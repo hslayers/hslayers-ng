@@ -7,7 +7,7 @@ import {Point} from 'ol/geom';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsConfig} from '../../../hslayers/src/config.service';
+import {HsConfig} from 'hslayers-ng/config.service';
 import {HsEventBusService} from 'hslayers-ng/components/core/event-bus.service';
 import {HsLayoutService} from 'hslayers-ng/components/layout/public-api';
 import {HsQueryPopupComponent} from 'hslayers-ng/components/query/query-popup/query-popup.component';
@@ -25,7 +25,7 @@ export class HslayersAppComponent {
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
     hsLayoutService: HsLayoutService,
-    hsQueryPopupService: HsQueryPopupService //hsToolbarPanelContainerService: HsToolbarPanelContainerService
+    hsQueryPopupService: HsQueryPopupService, //hsToolbarPanelContainerService: HsToolbarPanelContainerService
   ) {
     const count = 200;
     const features = new Array(count);

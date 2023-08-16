@@ -6,7 +6,6 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class HsStylerPartBaseComponent {
   @Output() changes = new EventEmitter<void>();
   @Input() warning: string;
-  
 
   emitChange(): void {
     this.changes.emit();

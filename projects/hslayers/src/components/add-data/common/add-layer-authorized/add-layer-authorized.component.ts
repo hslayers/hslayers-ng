@@ -2,8 +2,6 @@ import {Component, Input} from '@angular/core';
 
 import {FileDataObject} from '../../file/types/file-data-object.type';
 import {HsAddDataCommonFileService} from '../common-file.service';
-import {HsAddDataVectorService} from '../../vector/vector.service';
-import {HsConfig} from '../../../../config.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 
 @Component({
@@ -15,9 +13,7 @@ export class HsAddLayerAuthorizedComponent {
 
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsAddDataVectorService: HsAddDataVectorService,
     public hsLaymanService: HsLaymanService,
-    private hsConfig: HsConfig
   ) {}
 
   async add(): Promise<void> {

@@ -77,7 +77,7 @@ describe('HsDrawPanel', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -112,7 +112,7 @@ describe('HsDrawPanel', () => {
           provide: HsLaymanBrowserService,
           useValue: new HsCommonEndpointsServiceMock(),
         },
-        {provice: HsAddDataOwsService, useValue: new emptyMock()},
+        {provide: HsAddDataOwsService, useValue: new emptyMock()},
         {provide: HsAddDataVectorService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {

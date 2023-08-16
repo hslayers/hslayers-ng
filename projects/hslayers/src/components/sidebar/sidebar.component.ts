@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, Subscription, delay, of, startWith, takeUntil} from 'rxjs';
 
@@ -29,13 +29,15 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     public HsSidebarService: HsSidebarService,
     public HsShareUrlService: HsShareUrlService,
     public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
   ) {}
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
     this.HsSidebarService.destroy();
   }
+
   ngOnInit(): void {
     const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);
     this.HsSidebarService.buttons
@@ -76,6 +78,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     this.HsSidebarService.showUnimportant =
       !this.HsSidebarService.showUnimportant;
   }
+
   /**
    * Toggle sidebar mode between expanded and narrow
    */

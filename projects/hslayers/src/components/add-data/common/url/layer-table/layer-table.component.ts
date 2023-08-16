@@ -30,7 +30,7 @@ export class HsLayerTableComponent implements AfterContentInit {
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
     public hsUrlWmsService: HsUrlWmsService,
-    public hsAddDataCommonService: HsAddDataCommonService
+    public hsAddDataCommonService: HsAddDataCommonService,
   ) {}
 
   ngAfterContentInit(): void {
@@ -83,14 +83,14 @@ export class HsLayerTableComponent implements AfterContentInit {
   searchForChecked(layer): void {
     this.checkedSubLayers[layer.Name] = layer.checked;
     this.hsAddDataUrlService.addingAllowed = Object.values(
-      this.checkedSubLayers
+      this.checkedSubLayers,
     ).some((value) => value === true);
   }
 
   getLimitTextTranslation(): string {
     return this.hsLanguageService.getTranslation(
       'ADDDATA.CATALOGUE.showingSubset',
-      {limitShown: this.limitShown, total: this.data.layers.length}
+      {limitShown: this.limitShown, total: this.data.layers.length},
     );
   }
 }

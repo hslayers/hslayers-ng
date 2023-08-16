@@ -53,7 +53,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private hsToastService: HsToastService,
-    private hsAddDataCommonFileService: HsAddDataCommonFileService
+    private hsAddDataCommonFileService: HsAddDataCommonFileService,
   ) {
     this.form = this.fb.group({
       /* Regex string encoding of date pattern used in file name  */
@@ -102,8 +102,8 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
    * Checks the validity of the selected string
    * String is valid if:
    * - matches one of the following regex datetime formats
-   *    -[0-9]{8}T[0-9]{9}Z eg 20220510T050948Z
-   *    -[0-9]{8}T[0-9]{9} eg. 20220510T050948
+   *    -[0-9]\{8\}T[0-9]\{9\}Z eg 20220510T050948Z
+   *    -[0-9]\{8\}T[0-9]\{9\} eg. 20220510T050948
    * - consist of digits only or digits and separators  ., _, /, or -
    */
   private checkStringValidity(): string | undefined {
@@ -137,7 +137,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
         {
           toastStyleClasses: 'bg-danger text-light',
           customDelay: 7000,
-        }
+        },
       );
     }
   }
@@ -161,7 +161,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
       let timeregex = this.supportedRegex[0].timeregex;
       //has Z postfix
       if (match[3]) {
-        //If miliseconds are included in timestamp ignore them
+        //If milliseconds are included in timestamp ignore them
         timeregex = hasMs ? `(${timeregex})${match[2]}(Z)` : `${timeregex}Z`;
       }
       //timeregex alone would work but in UI its a bit more clear that
@@ -186,7 +186,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
     const inputElement = this.fileTitleInput.nativeElement;
     return inputElement.value.substring(
       inputElement.selectionStart,
-      inputElement.selectionEnd
+      inputElement.selectionEnd,
     );
   }
 

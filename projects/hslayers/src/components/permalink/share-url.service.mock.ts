@@ -1,10 +1,10 @@
-import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
+import {HS_PRMS, HS_PRMS_BACKWARDS} from './get-params';
 
 export class HsShareUrlServiceMock {
   constructor() {}
 
   /**
-   * @param str Parameter string to parse
+   * @param str - Parameter string to parse
    * @returns Parsed parameter object
    * Parse parameter string from Url into key-value(s) pairs
    */

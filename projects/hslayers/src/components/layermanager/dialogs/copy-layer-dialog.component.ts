@@ -15,7 +15,6 @@ export class HsCopyLayerDialogComponent implements HsDialogComponent {
     title: string;
     message: string;
     layerTitle: string;
-
   };
 
   yes(): void {

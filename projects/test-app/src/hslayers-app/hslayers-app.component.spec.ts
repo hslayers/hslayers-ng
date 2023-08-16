@@ -1,7 +1,9 @@
+import {TestBed, waitForAsync} from '@angular/core/testing';
+
 import {HsConfig} from '../../../hslayers/src/config.service';
 import {HsConfigMock} from '../../../hslayers/src/config.service.mock';
 import {HslayersAppComponent} from './hslayers-app.component';
-import {TestBed, waitForAsync} from '@angular/core/testing';
+
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -27,7 +29,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'hslayers-workspace app is running!'
+      'hslayers-workspace app is running!',
     );
   });
 });

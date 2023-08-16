@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/component-selector */
 import {Component} from '@angular/core';
 
 import {HsPanelComponent, HsQueryPopupWidgetBaseComponent} from 'hslayers-ng';
@@ -8,7 +9,8 @@ import {HsPanelComponent, HsQueryPopupWidgetBaseComponent} from 'hslayers-ng';
 })
 export class PopupWidgetComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements HsPanelComponent {
+  implements HsPanelComponent
+{
   constructor() {
     super();
   }

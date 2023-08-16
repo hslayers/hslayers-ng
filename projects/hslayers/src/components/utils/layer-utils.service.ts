@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 
-import Feature from 'ol/Feature';
+import BaseLayer from 'ol/layer/Base';
 import IDW from 'ol-ext/source/IDW';
 import {
   Cluster,
@@ -12,19 +12,19 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
+import {Feature} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
 import {GPX, GeoJSON, KML, TopoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+import {METERS_PER_UNIT} from 'ol/proj';
 import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
-import BaseLayer from 'ol/layer/Base';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './utils.service';
-import {METERS_PER_UNIT} from 'ol/proj';
 import {HsWmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {
   getCluster,
@@ -42,7 +42,7 @@ export class HsLayerUtilsService {
     public HsUtilsService: HsUtilsService,
     public HsLanguageService: HsLanguageService,
     public hsMapService: HsMapService,
-    private zone: NgZone
+    private zone: NgZone,
   ) {}
 
   /**
@@ -82,7 +82,7 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * Determines if layer is a Vector layer and therefore styleable
+   * Determines if layer is a Vector layer and therefore stylable
    * @param layer - Selected layer
    * @returns True for ol.layer.Vector
    */
@@ -93,7 +93,7 @@ export class HsLayerUtilsService {
     if (
       this.HsUtilsService.instOf(
         layer,
-        VectorLayer
+        VectorLayer,
       ) /*&& layer.getSource().styleAble*/
     ) {
       return true;
@@ -124,7 +124,6 @@ export class HsLayerUtilsService {
     }
   }
 
-  // todo
   getURL(layer: Layer<Source>): string {
     const src = layer.getSource();
     if (this.HsUtilsService.instOf(src, ImageWMS)) {
@@ -176,7 +175,6 @@ export class HsLayerUtilsService {
     return false;
   }
 
-  // todo
   isLayerWMTS(layer: Layer<Source>): boolean {
     const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
     const src = layer.getSource();
@@ -236,11 +234,11 @@ export class HsLayerUtilsService {
       this.HsUtilsService.instOf(layer, VectorLayer) &&
       (this.HsUtilsService.instOf(
         (layer as VectorLayer<VectorSource>).getSource(),
-        Cluster
+        Cluster,
       ) ||
         this.HsUtilsService.instOf(
           (layer as VectorLayer<VectorSource>).getSource(),
-          VectorSource
+          VectorSource,
         ))
     ) {
       return true;
@@ -312,7 +310,7 @@ export class HsLayerUtilsService {
   }
 
   getSourceParams(
-    source: ImageWMS | TileWMS | TileArcGISRest
+    source: ImageWMS | TileWMS | TileArcGISRest,
   ): Record<string, any> {
     return source.getParams();
   }
@@ -396,7 +394,7 @@ export class HsLayerUtilsService {
   highlightFeatures(
     featuresUnder: Feature<Geometry>[],
     layer: VectorLayer<VectorSource<Geometry>>,
-    list: {featureId?: string; highlighted?: boolean}[]
+    list: {featureId?: string; highlighted?: boolean}[],
   ): void {
     const highlightedFeatures = list
       .filter((record) => record.highlighted)
@@ -456,7 +454,7 @@ export class HsLayerUtilsService {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(
       'LAYERS',
       title,
-      undefined
+      undefined,
     );
   }
 

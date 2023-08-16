@@ -19,7 +19,6 @@ export enum ColorPickers {
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;
   @Input() objectName: string;
-  
   fillPickerVisible = false;
   bcPickerVisible = false;
   textColor = 'white';
@@ -28,7 +27,7 @@ export class HsPrintTextStylerComponent {
   positionOptions = POSITION_OPTIONS;
   constructor(
     private hsColorPickerService: HsColorPickerService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {}
 
   /**
@@ -66,13 +65,13 @@ export class HsPrintTextStylerComponent {
       case ColorPickers.Fill:
         return this.hsColorPickerService.colorPickerStyle(
           this.textStyle.textColor,
-          this.textColor
+          this.textColor,
         );
 
       case ColorPickers.Background:
         return this.hsColorPickerService.colorPickerStyle(
           this.textStyle.bcColor,
-          this.backgroundColor
+          this.backgroundColor,
         );
       default:
         return;
@@ -108,7 +107,6 @@ export class HsPrintTextStylerComponent {
       module,
       text,
       undefined,
-      
     );
   }
 }

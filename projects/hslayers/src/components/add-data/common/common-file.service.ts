@@ -57,14 +57,13 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     private hsLog: HsLogService,
     private hsToastService: HsToastService,
     private hsUtilsService: HsUtilsService,
-    private hsCommonLaymanService: HsCommonLaymanService
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {
     super();
   }
 
   /**
    * Clear service param values to default values
-   
    */
   clearParams(): void {
     this.asyncLoading = false;
@@ -74,9 +73,8 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   }
 
   /**
-   * Check if provided url exists and is obtainable
-   * @param url - Provided url
-   
+   * Check if provided URL exists and is obtainable
+   * @param url - Provided URL
    */
   async isUrlObtainable(url: string): Promise<boolean> {
     if (!url || url === '') {
@@ -91,14 +89,14 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       if (response.status === 200) {
         if (contentType.includes('text/html')) {
           this.hsAddDataUrlService.addDataCapsParsingError.next(
-            'ERROR.noValidData'
+            'ERROR.noValidData',
           );
           return;
         }
         return true;
       } else {
         this.hsAddDataUrlService.addDataCapsParsingError.next(
-          response.statusText
+          response.statusText,
         );
         return;
       }
@@ -111,7 +109,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * From available endpoints picks one
    * - either Layman endpoint if available or any other if not
-   
    */
   pickEndpoint(): void {
     const endpoints = this.hsCommonEndpointsService.endpoints;
@@ -129,7 +126,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Get tooltip translated text
    * @param data - File data object provided
-   
    * @returns Translated string
    */
   getToolTipText(data: FileDataObject): string {
@@ -137,13 +133,13 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'ADDLAYERS',
         'SRSRequired',
-        undefined
+        undefined,
       );
     } else {
       return this.hsLanguageService.getTranslationIgnoreNonExisting(
         'DRAW.drawToolbar',
         'addLayer',
-        undefined
+        undefined,
       );
     }
   }
@@ -151,14 +147,13 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Validate files before upload
    * @param files - Files provided for upload
-   
    * @returns True, if files are valid for upload, false otherwise
    */
   filesValid(files: File[]): boolean {
     let isValid = true;
     if (
       files.find(
-        (f) => f.name.endsWith('shp') && f.size > FILE_UPLOAD_SIZE_LIMIT
+        (f) => f.name.endsWith('shp') && f.size > FILE_UPLOAD_SIZE_LIMIT,
       )
     ) {
       this.hsToastService.createToastPopupMessage(
@@ -167,7 +162,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         {
           serviceCalledFrom: 'HsAddDataCommonFileService',
           toastStyleClasses: 'bg-warning text-white',
-        }
+        },
       );
     }
     const zipFilesCount = files.filter((file) => this.isZip(file.type)).length;
@@ -225,14 +220,13 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param sld - Array of sld files
    * @param access_rights - User access rights for the new layer,
-   
    * @param overwrite - (Optional) Overwrite existing layman layer
    * @returns
    */
   async loadNonWmsLayer(
     endpoint: HsEndpoint,
     formDataParams: FileFormData,
-    overwrite?: boolean
+    overwrite?: boolean,
   ): Promise<PostPatchLayerResponse> {
     try {
       const formData = await this.constructFormData(endpoint, formDataParams);
@@ -245,7 +239,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         formData,
         asyncUpload,
         formDataParams.name,
-        overwrite
+        overwrite,
       );
       return res;
     } catch (err) {
@@ -257,7 +251,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Try to find layer in Layman's database using Layman friendly layer name
    * @param name - Layman friendly layer name to search by
-   
    */
   async lookupLaymanLayer(name: string): Promise<boolean> {
     const friendlyName = getLaymanFriendlyLayerName(name);
@@ -269,10 +262,10 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           this.endpoint,
           name,
           this.endpoint.user,
-          true
+          true,
         );
       } catch (error) {
-        console.error(error);
+        this.hsLog.error(error);
         throw error;
       }
     }
@@ -292,7 +285,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   convertRange(
     value: number,
     oldRange: {min: number; max: number},
-    newRange = {min: 0, max: 1}
+    newRange = {min: 0, max: 1},
   ): number {
     return (
       ((value - oldRange.min) * (newRange.max - newRange.min)) /
@@ -336,7 +329,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    */
   async constructFormData(
     endpoint: HsEndpoint,
-    formDataParams: FileFormData
+    formDataParams: FileFormData,
   ): Promise<FormData> {
     this.readingData = true;
     const {files, name, abstract, srs, access_rights, timeRegex} =
@@ -357,10 +350,10 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           setTimeout(() => {
             this.hsLaymanService.totalProgress = this.calculateFileProgress(
               metadata.percent,
-              files.length
+              files.length,
             );
           }, 0);
-        }
+        },
       );
     }
     formData.append('file', zipFile, files[0].name.split('.')[0] + '.zip');
@@ -368,7 +361,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       formData.append(
         'sld',
         new Blob([sld.content], {type: sld.type}),
-        sld.name
+        sld.name,
       );
     }
     if (timeRegex) {
@@ -382,7 +375,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
 
     const rights = this.hsLaymanService.parseAccessRightsForLayman(
       endpoint,
-      access_rights
+      access_rights,
     );
 
     formData.append('access_rights.write', rights.write);
@@ -395,7 +388,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * Handler for button click to send file to layman and wait for
    * answer with wms service url to add to map
    * @param data - Current data object for upload
-   
    * @param options - (Optional) overwrite: Overwrite existing layman layer, repetive: Called for more than one time
    */
   async addAsService(
@@ -403,7 +395,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     options?: {
       overwrite?: boolean;
       repetive?: boolean;
-    }
+    },
   ): Promise<void> {
     let exists: boolean;
     try {
@@ -416,8 +408,8 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS.ERROR',
             'srsNotSupported',
-            undefined
-          )
+            undefined,
+          ),
         );
       }
       if (!options?.overwrite) {
@@ -438,7 +430,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
             access_rights: data.access_rights,
             timeRegex: data.timeRegex,
           },
-          options?.overwrite
+          options?.overwrite,
         );
         if (response?.code) {
           await this.loadNonWmsError(response, data, options?.repetive);
@@ -454,19 +446,17 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Load overwrite layer dialog
    * @param data - Current data object for upload
-   
    */
   async loadOverwriteLayerDialog(
     data: FileDataObject | VectorDataObject,
-
-    repetive?: boolean
+    repetive?: boolean,
   ): Promise<OverwriteResponse> {
     const dialogRef = this.hsDialogContainerService.create(
       HsLayerOverwriteDialogComponent,
       {
         dataObj: data,
         repetive,
-      }
+      },
     );
     return await dialogRef.waitResult();
   }
@@ -474,13 +464,11 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Call for overwrite dialog
    * @param data - Current data object to load
-   
    * @param repetive - Called for more the one time
    */
   async callOverwriteDialog(
     data: FileDataObject,
-
-    repetive?: boolean
+    repetive?: boolean,
   ): Promise<OverwriteResponse> {
     const result = await this.loadOverwriteLayerDialog(data, repetive);
     switch (result) {
@@ -501,13 +489,11 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * Process error server response after trying to load non-wms layer
    * @param response - Http post/past response after loading layer to Layman
    * @param data - Current data object to load
-   
    */
   async loadNonWmsError(
     response: PostPatchLayerResponse,
     data: FileDataObject,
-
-    repetive?: boolean
+    repetive?: boolean,
   ): Promise<void> {
     if (response.code == 17) {
       this.callOverwriteDialog(data, repetive);
@@ -519,7 +505,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Process success server response after trying to load non-wms layer
    * @param response - Http post/past response after loading layer to Layman
-   
    */
   handleLaymanError(response: PostPatchLayerResponse): void {
     const errorMessage =
@@ -535,16 +520,15 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * Process success server response after trying to load non-wms layer
    * @param response - HTTP POST/PATCH response after loading layer to Layman
    * @param data - Current data object to load
-   
    */
   async loadNonWmsSuccess(
     response: PostPatchLayerResponse,
-    data: FileDataObject
+    data: FileDataObject,
   ): Promise<void> {
     data.name = response.name; //Name translated to Layman-safe name
     const descriptor = await this.describeNewLayer(
       this.endpoint,
-      response.name
+      response.name,
     );
     if (descriptor?.file.error) {
       const error = descriptor.file.error;
@@ -552,17 +536,17 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.someErrorHappened',
-          undefined
+          undefined,
         ),
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'LAYMAN.ERROR',
           msg ?? descriptor.file.error.code.toString(),
-          undefined
+          undefined,
         ),
         {
           serviceCalledFrom: 'HsAddDataCommonFileService',
           disableLocalization: true,
-        }
+        },
       );
       this.layerAddedAsService.next(false);
       return;
@@ -582,7 +566,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       layerOptions: {
         style: data.serializedStyle
           ? await this.hsCommonLaymanService.getStyleFromUrl(
-              descriptor.style.url
+              descriptor.style.url,
             )
           : undefined,
       },
@@ -599,13 +583,13 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   async describeNewLayer(
     endpoint: HsEndpoint,
     layerName: string,
-    pendingParam: string = 'wms'
+    pendingParam: string = 'wms',
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       const descriptor = await this.hsLaymanService.describeLayer(
         endpoint,
         layerName,
-        endpoint.user
+        endpoint.user,
       );
       if (layerParamPendingOrStarting(descriptor, pendingParam)) {
         return new Promise((resolve) => {
@@ -625,7 +609,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Display error message toast, when called and broadcast event about a failed attempt to load wms layer
    * @param _options - Error message options: message, header or details
-   
    */
   displayErrorMessage(_options: errorMessageOptions = {}): void {
     this.hsToastService.createToastPopupMessage(
@@ -634,7 +617,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       {
         serviceCalledFrom: 'HsAddDataCommonFileService',
         details: _options?.details,
-      }
+      },
     );
     this.layerAddedAsService.next(false);
   }
@@ -646,7 +629,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    */
   isSRSSupported(data: FileDataObject): boolean {
     return this.hsLaymanService.supportedCRRList.some((epsg) =>
-      data.srs.endsWith(epsg)
+      data.srs.endsWith(epsg),
     );
   }
 
@@ -661,7 +644,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   /**
    * Set data object name based on uploaded files
    * @param data - Current data object to load
-   
    */
   setDataName(data: FileDataObject): void {
     data.name = data.files[0].name.slice(0, -4);

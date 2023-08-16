@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
@@ -12,7 +12,6 @@ import {HsUrlGeoSparqlService} from './geosparql.service';
   templateUrl: './geosparql.component.html',
 })
 export class HsUrlGeoSparqlComponent {
-  
   querySuccessful: boolean;
   showDetails: boolean;
   validEndpoint: boolean;
@@ -34,7 +33,7 @@ export class HsUrlGeoSparqlComponent {
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
     public hsLayoutService: HsLayoutService,
-    public hsUrlGeoSparqlService: HsUrlGeoSparqlService
+    public hsUrlGeoSparqlService: HsUrlGeoSparqlService,
   ) {
     this.data = {
       type: 'sparql',
@@ -49,7 +48,6 @@ export class HsUrlGeoSparqlComponent {
     this.setDataToDefault();
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
       this.data.url,
-      
     );
     if (!obtainable) {
       this.hsAddDataCommonService.loadingInfo = false;
@@ -58,7 +56,6 @@ export class HsUrlGeoSparqlComponent {
     this.hsHistoryListService.addSourceHistory('geosparql', this.data.url);
     this.validEndpoint = await this.hsUrlGeoSparqlService.verifyEndpoint(
       this.data.url,
-      
     );
     if (this.validEndpoint) {
       this.showDetails = true;
@@ -77,7 +74,7 @@ export class HsUrlGeoSparqlComponent {
 
   findParamsInQuery() {
     this.data.properties = this.hsUrlGeoSparqlService.findParamsInQuery(
-      this.data.query
+      this.data.query,
     );
   }
 

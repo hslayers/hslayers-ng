@@ -4,19 +4,14 @@ import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsPanelHelpersModule} from '../layout/public-api';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsToolbarComponent} from './toolbar.component';
 import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [HsToolbarComponent, HsToolbarPanelBaseComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgbDropdownModule,
-    HsPanelHelpersModule,
-  ],
+  imports: [CommonModule, FormsModule, NgbDropdownModule, HsPanelHelpersModule],
   exports: [HsToolbarComponent, HsToolbarPanelBaseComponent],
 })
 export class HsToolbarModule {}

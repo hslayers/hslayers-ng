@@ -11,9 +11,11 @@ export class HsQueryAttributeRowComponent implements OnInit {
   @Input() readonly: boolean;
   @Input() template;
   tmpObjectValue: any;
+
   ngOnInit(): void {
     this.checkAttributeValue();
   }
+
   /**
    * Act on feature attribute changes
    */

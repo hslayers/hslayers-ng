@@ -70,7 +70,7 @@ describe('HsSaveMap', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -146,12 +146,12 @@ describe('HsSaveMap', () => {
 
   it('read layer title/name attributes and escape for layman', () => {
     let laymanName = getLayerName(
-      new VectorLayer({properties: {title: 'Areas of interest'}})
+      new VectorLayer({properties: {title: 'Areas of interest'}}),
     );
     expect(laymanName).toBe('areas_of_interest');
 
     laymanName = getLayerName(
-      new VectorLayer({properties: {name: 'Aoi', title: 'Areas of interest'}})
+      new VectorLayer({properties: {name: 'Aoi', title: 'Areas of interest'}}),
     );
     expect(laymanName).toBe('aoi');
   });

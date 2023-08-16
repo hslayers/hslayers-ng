@@ -3,13 +3,14 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {TestBed} from '@angular/core/testing';
+
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsEventBusServiceMock} from '../../components/core/event-bus.service.mock';
 import {HsLayerUtilsService} from '../../components/utils/layer-utils.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {HsUtilsServiceMock} from '../../components/utils/utils.service.mock';
-import {TestBed} from '@angular/core/testing';
 import {mockLayerUtilsService} from '../../components/utils/layer-utils.service.mock';
 
 describe('HsGetCapabilitiesModule', () => {
@@ -20,7 +21,7 @@ describe('HsGetCapabilitiesModule', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -42,7 +43,7 @@ describe('HsGetCapabilitiesModule', () => {
 
   it('parseTimePoints', () => {
     const values = service.parseTimePoints(
-      '2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H'
+      '2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H',
     );
     expect(values).toBeDefined();
     expect(values).toEqual([

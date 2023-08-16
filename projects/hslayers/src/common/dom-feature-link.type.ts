@@ -15,6 +15,6 @@ export type DOMFeatureLink = {
     (
       | 'hidePopup'
       | ((feature: Feature<Geometry>, domElement: Element, event: any) => any)
-    )
+    ),
   ];
 };

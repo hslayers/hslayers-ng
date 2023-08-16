@@ -1,10 +1,14 @@
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 
+/**
+ * Object describing endpoint, layer and arrays
+ * for each of the methods: update, del, insert containing the features to be processed
+ */
 export type WfsSyncParams = {
   /** Endpoint description */
   ep: HsEndpoint;

@@ -4,6 +4,7 @@ import {ColorEvent} from 'ngx-color';
 import {FillSymbolizer, MarkSymbolizer, TextSymbolizer} from 'geostyler-style';
 
 import {HsColorPickerService} from './color-picker.service';
+import {HsLogService} from '../../../../common/log/log.service';
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 
 @Component({
@@ -14,12 +15,15 @@ export class HsColorPickerComponent
   extends HsStylerPartBaseComponent
   implements OnInit
 {
-  constructor(public hsColorPickerService: HsColorPickerService) {
+  constructor(
+    public hsColorPickerService: HsColorPickerService,
+    private hsLog: HsLogService,
+  ) {
     super();
   }
   ngOnInit(): void {
     const rgb = this.hsColorPickerService.hex2Rgb(
-      this.symbolizer[this.attribute]
+      this.symbolizer[this.attribute],
     );
     this.fontColor = this.hsColorPickerService.generateFontColor([
       rgb.r,
@@ -50,7 +54,7 @@ export class HsColorPickerComponent
   inputChanged() {
     try {
       const rgb = this.hsColorPickerService.hex2Rgb(
-        this.symbolizer[this.attribute]
+        this.symbolizer[this.attribute],
       );
       this.fontColor = this.hsColorPickerService.generateFontColor([
         rgb.r,
@@ -59,14 +63,14 @@ export class HsColorPickerComponent
       ]);
       this.emitChange();
     } catch (ex) {
-      console.error(ex);
+      this.hsLog.error(ex);
     }
   }
 
   colorPickerStyle(): string {
     return this.hsColorPickerService.colorPickerStyle(
       this.symbolizer[this.attribute],
-      this.fontColor
+      this.fontColor,
     );
   }
 }

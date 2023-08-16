@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import Feature from 'ol/Feature';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';

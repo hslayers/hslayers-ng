@@ -7,12 +7,10 @@ import {
 } from '@angular/cdk/drag-drop';
 import {Subject} from 'rxjs';
 
-import {HsLanguageService} from '../language/language.service';
 import {
   HsLayerShiftingService,
   LayerListItem,
 } from '../../common/layer-shifting/layer-shifting.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -37,10 +35,8 @@ export class HsMapSwipeComponent
   constructor(
     public hsLayoutService: HsLayoutService,
     private hsSidebarService: HsSidebarService,
-    private hsLanguageService: HsLanguageService,
     public hsMapSwipeService: HsMapSwipeService,
-    private hsLayerUtilsService: HsLayerUtilsService, //In template
-    private hsLayerShiftingService: HsLayerShiftingService
+    private hsLayerShiftingService: HsLayerShiftingService,
   ) {
     super(hsLayoutService);
   }
@@ -92,6 +88,7 @@ export class HsMapSwipeComponent
     this.end.next();
     this.end.complete();
   }
+
   /**
    * Modify arrays after drag and drop
    * @param event - CdkDragDrop drop event
@@ -108,7 +105,7 @@ export class HsMapSwipeComponent
       moveItemInArray(
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     } else {
       draggedLayer = event.previousContainer.data[event.previousIndex];
@@ -117,7 +114,7 @@ export class HsMapSwipeComponent
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     }
     if (draggedLayer && replacedLayer?.layer) {

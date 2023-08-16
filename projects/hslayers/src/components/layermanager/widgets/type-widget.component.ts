@@ -11,7 +11,7 @@ import {HsLayerSelectorService} from '../editor/layer-selector.service';
 export class HsTypeWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   constructor(
     public HsLanguageService: HsLanguageService,
-    hsLayerSelectorService: HsLayerSelectorService
+    hsLayerSelectorService: HsLayerSelectorService,
   ) {
     super(hsLayerSelectorService);
   }

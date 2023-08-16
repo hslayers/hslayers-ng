@@ -1,5 +1,5 @@
 /**
- * Loop through list of formats returned by getcapabilities and select first available from the list of available formats
+ * Loop through list of formats returned by GetCapabilities and select first available from the list of available formats
  *
  * @param formats - List of formats available for service
  * @param preferredFormats - List of preferred formats for output
@@ -7,7 +7,7 @@
  */
 export function getPreferredFormat(
   formats: string[],
-  preferredFormats: string[]
+  preferredFormats: string[],
 ): string {
   for (let i = 0; i < preferredFormats.length; i++) {
     if (formats.indexOf(preferredFormats[i]) > -1) {

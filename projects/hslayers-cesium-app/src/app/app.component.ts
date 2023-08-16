@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
     private HsLayoutService: HsLayoutService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {
     const w: any = window;
     w.ol = {

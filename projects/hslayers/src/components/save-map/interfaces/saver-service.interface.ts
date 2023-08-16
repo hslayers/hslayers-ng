@@ -7,6 +7,6 @@ export interface HsSaverService {
     compositionJson: MapComposition,
     endpoint: HsEndpoint,
     compoData: CompoData,
-    saveAsNew: boolean
+    saveAsNew: boolean,
   ): Promise<any>;
 }

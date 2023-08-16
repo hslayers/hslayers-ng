@@ -8,7 +8,8 @@ import {HsDialogContainerService} from './../../../layout/dialogs/dialog-contain
   templateUrl: './capabilities-error-dialog.component.html',
 })
 export class HsGetCapabilitiesErrorComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: any;
 
   capabilitiesErrorModalVisible;

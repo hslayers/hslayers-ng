@@ -137,7 +137,6 @@ export class HsLaymanService implements HsSaverService {
    * @param compName - Composition's name
    * @param endpoint - Endpoint's description
    * @param access_rights - Composition's new access rights
-   
    * @returns Promise result of composition's PATCH request
    */
   async updateCompositionAccessRights(
@@ -164,7 +163,6 @@ export class HsLaymanService implements HsSaverService {
    * @param endpoint - Endpoint's description
    * @param compoData - Additional data for composition
    * @param saveAsNew - Save as new composition
-   
    * @returns Promise result of POST
    */
   async save(
@@ -236,7 +234,6 @@ export class HsLaymanService implements HsSaverService {
    * @param mapName - Map composition's name
    * @param formdata - FormData object used for sending data over HTTP request
    * @param saveAsNew - Save as new composition
-   
    * @param compositionJson - JSON with composition's definition
    * @returns Promise result of POST/PATCH request
    */
@@ -307,9 +304,8 @@ export class HsLaymanService implements HsSaverService {
    * Send layer's definition and features to Layman
    * @param endpoint - Endpoint's description
    * @param geojson - Geojson's object with features to send to server
-   * @param description - Object containing {name, title, crs, workspace, access_rights} of
+   * @param description - Object containing \{name, title, crs, workspace, access_rights\} of
    * layer to retrieve
-   
    * @returns Promise result of POST/PATCH
    */
   async makeUpsertLayerRequest(
@@ -391,7 +387,6 @@ export class HsLaymanService implements HsSaverService {
    * @param formData - A set of key/value pairs representing layer fields and values, for HTTP request
    * @param asyncUpload - Async upload data: Async upload state and files to upload
    * @param layerName - Existing layer's name
-   
    * @param overwrite - (Optional) Should overwrite existing layer
    * @returns Promise result of POST/PATCH
    */
@@ -548,7 +543,6 @@ export class HsLaymanService implements HsSaverService {
    * @param layer - Layer to get Layman friendly name for
    * in order to get features
    * @param withFeatures - Layer state, whether or not it has features
-   
    */
   public async upsertLayer(
     endpoint: HsEndpoint,
@@ -629,7 +623,6 @@ export class HsLaymanService implements HsSaverService {
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
-   
    * @returns Promise result of POST
    */
   async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
@@ -672,7 +665,6 @@ export class HsLaymanService implements HsSaverService {
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
-   
    * @returns Promise result of POST
    */
   private async makeWfsRequest(
@@ -866,7 +858,6 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Removes selected layer from Layman's database
-   
    * @param layer - (Optional) Layer to be removed. DELETE all layers when not provided
    */
   async removeLayer(layer?: Layer<Source> | string): Promise<boolean> {

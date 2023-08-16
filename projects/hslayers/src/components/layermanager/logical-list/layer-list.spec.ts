@@ -7,8 +7,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
-import {ImageWMS, Vector as VectorSource} from 'ol/source';
+import {Image as ImageLayer} from 'ol/layer';
+import {ImageWMS} from 'ol/source';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
@@ -63,7 +63,7 @@ describe('layermanager-layer-list', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -136,7 +136,7 @@ describe('layermanager-layer-list', () => {
       {
         element: subLayerContainerLayer,
       },
-      true
+      true,
     );
     expect(component).toBeTruthy();
   });

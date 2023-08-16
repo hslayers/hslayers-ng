@@ -53,7 +53,6 @@ import {
   getOrigLayers,
   getPath,
   getQueryCapabilities,
-  getQueryable,
   getRemovable,
   getShowInLayerManager,
   getSubLayers,
@@ -64,7 +63,6 @@ import {
   setName,
   setOrigLayers,
   setPath,
-  setQueryable,
   setSubLayers,
   setTitle,
 } from '../../common/layer-extensions';
@@ -398,9 +396,6 @@ export class HsLayerManagerService {
     }
   }
 
-  /**
-   * @param layer
-   */
   checkLayerHealth(layer: Layer<Source>): void {
     if (this.isWms(layer)) {
       if (this.hsLayerUtilsService.getLayerParams(layer).LAYERS == undefined) {
@@ -409,9 +404,6 @@ export class HsLayerManagerService {
     }
   }
 
-  /**
-   * @param e
-   */
   layerVisibilityChanged(e): void {
     if (getBase(e.target) != true) {
       for (const layer of this.data.layers) {
@@ -463,7 +455,6 @@ export class HsLayerManagerService {
   /**
    * (PRIVATE) Get layer by its title
    * @private
-   * @param title
    */
   getLayerByTitle(title: string): HsLayerDescriptor | undefined {
     let tmp;
@@ -1054,7 +1045,7 @@ export class HsLayerManagerService {
       }
       return false;
     } catch (ex) {
-      console.error(ex);
+      this.hsLog.error(ex);
     }
   }
 
@@ -1216,7 +1207,7 @@ export class HsLayerManagerService {
     layer.expandInfo = value;
   }
 
-  /*
+  /**
     Generates downloadable geoJSON for vector layer.
     Features are also transformed into the EPSG:4326 projection
   */
@@ -1247,7 +1238,7 @@ export class HsLayerManagerService {
     }, 0);
   }
 
-  /*
+  /**
     Creates a copy of the currentLayer
   */
   async copyLayer(newTitle: string): Promise<void> {
@@ -1293,7 +1284,7 @@ export class HsLayerManagerService {
     }
   }
 
-  /*
+  /**
     Creates a copy of the currentLayer if it is a vector layer
   */
   copyVectorLayer(newTitle: string): void {
@@ -1322,7 +1313,7 @@ export class HsLayerManagerService {
     this.hsMapService.addLayer(copiedLayer);
   }
 
-  /*
+  /**
     Creates a new title for the copied layer
   */
   createCopyTitle(newTitle: string): string {

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsFeatureTableService} from './feature-table.service';
@@ -36,16 +36,23 @@ type Operation = {
   ],
 })
 export class HsLayerFeaturesComponent implements OnInit {
-  @Input() layer: any; //Input layer from HsConfig.layersInFeatureTable property array
-  showFeatureStats = false; //Toggle for showing feature statistics
+  /**
+   * Input layer from HsConfig.layersInFeatureTable property array
+   */
+  @Input() layer: any;
+  /**
+   * Toggle for showing feature statistics
+   */
+  showFeatureStats = false;
   searchedFeatures = '';
   constructor(
     public hsFeatureTableService: HsFeatureTableService,
     public hsUtilsService: HsUtilsService,
     public hsMapService: HsMapService,
     public hsLanguageService: HsLanguageService,
-    public hsLayerUtilsService: HsLayerUtilsService //Used in template
+    public hsLayerUtilsService: HsLayerUtilsService,
   ) {}
+
   /**
    * Activate listeners for any layer source changes to update the html table
    */
@@ -67,10 +74,11 @@ export class HsLayerFeaturesComponent implements OnInit {
       });
     }
   }
+
   /**
-   * @param operation - Action for html table
+   * Zoom to feature from HTML table after triggering zoom action
+   * @param operation - Action for HTML table
    * @public
-   * zoom to feature from html table after triggering zoom action
    */
   executeOperation(operation: Operation): void {
     switch (operation.action) {
@@ -86,9 +94,8 @@ export class HsLayerFeaturesComponent implements OnInit {
   }
 
   /**
-   * @param text - Text to translate to locale
-   
    * Translate provided text to selected locale language
+   * @param text - Text to translate to locale
    * @returns Returns translation
    */
   translate(text: string): string {
@@ -96,14 +103,14 @@ export class HsLayerFeaturesComponent implements OnInit {
       this.hsLanguageService.getTranslationIgnoreNonExisting(
         'FEATURE_TABLE',
         text,
-        undefined
+        undefined,
       );
     return translation;
   }
 
   /**
-   * @param name - Sort value
    * Sort features by value
+   * @param name - Sort value
    */
   sortFeaturesBy(name: string): void {
     this.hsFeatureTableService.sortFeaturesBy(name);

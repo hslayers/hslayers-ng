@@ -55,7 +55,7 @@ import {
   getWorkspace,
 } from '../../common/layer-extensions';
 
-const LCLSTORAGE_EXPIRE = 5000;
+const LOCAL_STORAGE_EXPIRE = 5000;
 
 @Injectable({
   providedIn: 'root',
@@ -67,23 +67,22 @@ export class HsSaveMapService {
     private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLayerUtilsService: HsLayerUtilsService,
-    private hsShareThumbnailService: HsShareThumbnailService
+    private hsShareThumbnailService: HsShareThumbnailService,
   ) {}
 
   /**
-   * Create Json object, which stores information about composition, user, map state and map layers (including layer data)
+   * Create JSON object, which stores information about composition, user, map state and map layers (including layer data)
    * @param map - Selected OL map object
    * @param compoData - Composition general metadata
    * @param userData - Metadata about user
    * @param statusData - Metadata about permissions
-   
    * @returns - JSON object with all required map composition's metadata
    */
   map2json(
     map: Map,
     compoData: CompoData,
     userData: UserData,
-    statusData: StatusData
+    statusData: StatusData,
   ): MapComposition {
     const groups: any = {};
     for (const g of statusData.groups || []) {
@@ -102,7 +101,7 @@ export class HsSaveMapService {
       nativeExtent: transformExtent(
         bbox,
         'EPSG:4326',
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(),
       ),
       extent: bbox,
       user: <UserData>{
@@ -133,7 +132,7 @@ export class HsSaveMapService {
     }
     json.units = currentProj.getUnits();
 
-    //*NOTE Does not exist on OL map anymore
+    //*NOTE: Does not exist on OL map anymore
     // if (map.maxExtent) {
     //   json.maxExtent = {};
     //   json.maxExtent.left = map.maxExtent.left;
@@ -156,9 +155,9 @@ export class HsSaveMapService {
     json.current_base_layer = this.getCurrentBaseLayer();
     return json;
   }
+
   /**
    * Get currently selected base layer from the OL map
-   
    * @returns Object with currently selected base layer's title as attribute
    */
   getCurrentBaseLayer() {
@@ -179,7 +178,7 @@ export class HsSaveMapService {
   }
 
   /**
-   * Get bounding box from object {east: value, south: value, west: value, north: value}
+   * Get bounding box from object \{east: value, south: value, west: value, north: value\}
    * @param bbox - Bounding box
    * @returns Returns bounding box as number array
    */
@@ -200,7 +199,6 @@ export class HsSaveMapService {
    * Convert map layers into a JSON object
    * Uses layer2json().
    * @param layers - All map layers
-   
    * @returns JSON object representing the layers
    */
   layers2json(layers: Layer[]): LayerJSON[] {
@@ -221,7 +219,6 @@ export class HsSaveMapService {
    *
    * @param layer - Layer to be converted
    * @param pretty - Whether to use pretty notation
-   
    * @returns Text in JSON notation representing the layer
    */
   layer2string(layer, pretty) {
@@ -303,7 +300,6 @@ export class HsSaveMapService {
    * that it is corresponding to the layers order.
    *
    * @param layer - Map layer that should be converted
-   
    * @returns JSON object representing the layer
    */
   layer2json(layer: Layer<Source>): LayerJSON {
@@ -445,7 +441,7 @@ export class HsSaveMapService {
         } else {
           try {
             json.features = this.getFeaturesJson(
-              (src as VectorSource<Geometry>).getFeatures()
+              (src as VectorSource<Geometry>).getFeatures(),
             );
           } catch (ex) {
             //Do nothing
@@ -461,7 +457,7 @@ export class HsSaveMapService {
         json.style = getQml(layer);
       } else {
         this.hsLogService.warn(
-          `Vector layer ${layer.get('title')} is missing style definition`
+          `Vector layer ${layer.get('title')} is missing style definition`,
         );
       }
     }
@@ -472,7 +468,6 @@ export class HsSaveMapService {
    * Convert feature array to GeoJSON string
    *
    * @param features - Array of features
-   
    * @returns GeoJSON
    */
   getFeaturesJson(features: Feature<Geometry>[]): GeoJSONFeatureCollection {
@@ -496,7 +491,7 @@ export class HsSaveMapService {
     $element.setAttribute('crossOrigin', 'Anonymous');
     const map = this.hsMapService.getMap();
     map.once('postcompose', () =>
-      this.hsShareThumbnailService.rendered($element, newRender)
+      this.hsShareThumbnailService.rendered($element, newRender),
     );
     if (newRender) {
       map.renderSync();
@@ -510,14 +505,14 @@ export class HsSaveMapService {
    */
   save2storage(): void {
     const data = {
-      expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
+      expires: new Date().getTime() + LOCAL_STORAGE_EXPIRE,
       layers: this.hsMapService
         .getLayersArray()
         .filter(
           (lyr) =>
             !this.internalLayers.includes(lyr) &&
             (getShowInLayerManager(lyr) == undefined ||
-              getShowInLayerManager(lyr) == true)
+              getShowInLayerManager(lyr) == true),
         )
         .map((lyr: Layer<Source>) => this.layer2json(lyr)),
     };

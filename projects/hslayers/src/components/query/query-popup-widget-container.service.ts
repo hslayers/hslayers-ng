@@ -32,22 +32,21 @@ export class HsQueryPopupWidgetContainerService extends HsPanelContainerService 
   /**
    * Initialize query popup widgets
    * @param widgetNames - Array of widget names
-   
    * @param panelObserver - (Optional)
    */
   initWidgets(
     widgetNames: string[],
-    panelObserver?: ReplaySubject<HsPanelItem>
+    panelObserver?: ReplaySubject<HsPanelItem>,
   ): void {
     if (widgetNames?.length > 0) {
       for (const widgetName of widgetNames) {
         let widgetFound = this.queryPopupWidgets.find(
-          (widget) => widget.name == widgetName
+          (widget) => widget.name == widgetName,
         );
 
         if (!widgetFound && this.hsConfig.customQueryPopupWidgets?.length > 0) {
           widgetFound = this.hsConfig.customQueryPopupWidgets.find(
-            (widget) => widget.name == widgetName
+            (widget) => widget.name == widgetName,
           );
         }
         this.create(widgetFound.component, undefined, panelObserver);

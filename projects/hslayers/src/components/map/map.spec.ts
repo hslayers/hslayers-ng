@@ -43,7 +43,7 @@ describe('HsMapService', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
   beforeEach(() => {

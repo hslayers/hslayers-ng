@@ -1,4 +1,5 @@
 import {Component, ViewRef} from '@angular/core';
+
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsShareService} from '../../permalink/share.service';
@@ -8,11 +9,11 @@ import {HsShareService} from '../../permalink/share.service';
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
-  data: {url; title; abstract; };
+  data: {url; title; abstract};
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
-    public HsShareService: HsShareService
+    public HsShareService: HsShareService,
   ) {}
 
   close(): void {
@@ -24,7 +25,6 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
       this.data.title,
       this.data.abstract,
       this.data.url,
-      
     );
   }
 }

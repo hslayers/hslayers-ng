@@ -1,11 +1,11 @@
 function checkIfLayerAdded(layerName) {
   cy.get(`hs-panel-header[name="layermanager"]`).should('be.visible');
   cy.get(
-    'hs-layermanager-layer-list li:first .d-flex button.hs-lm-item-visibility'
+    'hs-layermanager-layer-list li:first .d-flex button.hs-lm-item-visibility',
   ).should('have.class', 'hs-checkmark');
   cy.get('hs-layermanager-layer-list li:first .hs-lm-item-title').should(
     'have.text',
-    ` ${layerName} ` //Extra padding around title
+    ` ${layerName} `, //Extra padding around title
   );
 }
 
@@ -25,7 +25,7 @@ function addLayerAndCheckIfAdded() {
 function openPanelAndTypeTab(index) {
   //Open add-data panel
   cy.get(
-    'hs-sidebar .hs-sidebar-item:not(.hs-panel-hidden)[data-cy="addData"]'
+    'hs-sidebar .hs-sidebar-item:not(.hs-panel-hidden)[data-cy="addData"]',
   ).click();
   cy.get(`hs-panel-header[name="addData"]`).should('be.visible');
   //Open corresponding type tab
@@ -42,7 +42,7 @@ describe('Hslayers application', () => {
     cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
         cy.wrap(button).click();
-      }
+      },
     );
   });
 
@@ -50,7 +50,7 @@ describe('Hslayers application', () => {
     openPanelAndTypeTab(0);
     //it('Wms capabilities should be retrieved', () => {
     cy.get(`hs-url-wms hs-common-url input`).type(
-      'https://watlas.lesprojekt.cz/geoserver/filip_wms/ows'
+      'https://watlas.lesprojekt.cz/geoserver/filip_wms/ows',
     );
     cy.get(`hs-url-wms hs-common-url input + button`).click();
     addLayerAndCheckIfAdded();
@@ -63,7 +63,7 @@ describe('Hslayers application', () => {
     openPanelAndTypeTab(1);
     //it('Wtms capabilities should be retrieved', () => {
     cy.get(`hs-url-wmts hs-common-url input`).type(
-      'https://gis.lesprojekt.cz/geoserver/gwc/service/wmts?'
+      'https://gis.lesprojekt.cz/geoserver/gwc/service/wmts?',
     );
     cy.get(`hs-url-wmts hs-common-url input + button`).click();
     addLayerAndCheckIfAdded();
@@ -77,7 +77,7 @@ describe('Hslayers application', () => {
 
     //it('WFS capabilities should be retrieved', () => {
     cy.get(`hs-url-wfs hs-common-url input`).type(
-      'https://watlas.lesprojekt.cz/geoserver/filip/wfs'
+      'https://watlas.lesprojekt.cz/geoserver/filip/wfs',
     );
     cy.get(`hs-url-wfs hs-common-url input + button`).click();
     addLayerAndCheckIfAdded();
@@ -91,7 +91,7 @@ describe('Hslayers application', () => {
 
     //it('WFS capabilities should be retrieved', () => {
     cy.get(`hs-url-vector hs-common-url input`).type(
-      'https://gist.githubusercontent.com/wavded/1200773/raw/e122cf709898c09758aecfef349964a8d73a83f3/sample.json'
+      'https://gist.githubusercontent.com/wavded/1200773/raw/e122cf709898c09758aecfef349964a8d73a83f3/sample.json',
     );
     cy.get(`hs-url-vector hs-common-url input + button`).click();
 
@@ -99,7 +99,7 @@ describe('Hslayers application', () => {
     cy.get(`input.form-control[name="name"]`).type(layerName);
     cy.get('.form-horizontal > :nth-child(2) > .btn-primary').should(
       'not.have.attr',
-      'disabled'
+      'disabled',
     );
     cy.get('.form-horizontal > :nth-child(2) > .btn-primary').click();
     checkIfLayerAdded(layerName);

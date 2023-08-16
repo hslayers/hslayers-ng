@@ -18,36 +18,32 @@ import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Group} from 'ol/layer';
-import {
-  HsConfig,
-  HsEventBusService,
-  HsMapService,
-  HsUtilsService,
-  getDimensions,
-  getMinimumTerrainLevel,
-  getTitle,
-} from 'hslayers-ng';
-import {HsLayerUtilsService} from 'hslayers-ng';
 import {Image as ImageLayer} from 'ol/layer';
 import {Image as ImageSource} from 'ol/source';
 import {ImageWMS, Source} from 'ol/source';
 import {Layer, Tile as TileLayer} from 'ol/layer';
 import {OSM, TileWMS} from 'ol/source';
-import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {Tile as TileSource, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {default as proj4} from 'proj4';
 
-import {HsCesiumConfig} from './hscesium-config.service';
-import {ParamCacheMapItem} from './param-cache-map-item.class';
-import {generateUuid} from 'hslayers-ng';
+import {
+  HsConfig,
+  HsEventBusService,
+  HsLayerUtilsService,
+  HsLogService,
+  HsMapService,
+  HsUtilsService,
+  generateUuid,
+  getDimensions,
+  getMinimumTerrainLevel,
+  getTitle,
+} from 'hslayers-ng';
 
-/**
- * @param proxy -
- * @param maxResolution -
- * @param HsUtilsService -
- * @param projection -
- */
+import {HsCesiumConfig} from './hscesium-config.service';
+import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
+import {ParamCacheMapItem} from './param-cache-map-item.class';
+
 function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
   this.proxy = proxy;
   this.maxResolution = maxResolution;
@@ -65,11 +61,12 @@ export class HsCesiumLayersService {
   paramCaches: Array<ParamCacheMapItem> = [];
   constructor(
     public hsMapService: HsMapService,
+    private hsLog: HsLogService,
     public hsConfig: HsConfig,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     public hsCesiumConfig: HsCesiumConfig,
-    private HsLayerUtilsService: HsLayerUtilsService
+    private HsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
       this.viewer = viewer;
@@ -97,7 +94,7 @@ export class HsCesiumLayersService {
           const params = this.HsUtilsService.getParamsFromUrl(resource);
           const bbox = params.bbox.split(',');
           const dist = Math.sqrt(
-            Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2)
+            Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2),
           );
           if (this.projection == 'EPSG:3857') {
             if (dist > 1000000) {
@@ -148,7 +145,7 @@ export class HsCesiumLayersService {
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
           ) {
             const terrain_provider = createWorldTerrain(
-              this.hsCesiumConfig.createWorldTerrainOptions
+              this.hsCesiumConfig.createWorldTerrainOptions,
             );
             this.viewer.terrainProvider = terrain_provider;
           } else {
@@ -157,7 +154,7 @@ export class HsCesiumLayersService {
             });
           }
         }
-      }
+      },
     );
 
     this.repopulateLayers();
@@ -227,7 +224,7 @@ export class HsCesiumLayersService {
     //console.log('removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     while (to_remove.length > 0) {
       const id = to_remove.pop();
-      //console.log('Didnt find OL feature ', id);
+      //console.log('Didn't find OL feature ', id);
       cesiumLayer.entities.removeById(id);
     }
     //console.log('revoved. serializing',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
@@ -255,7 +252,7 @@ export class HsCesiumLayersService {
 
   findCesiumLayer(ol: Layer<Source> | Source): ImageryLayer | DataSource {
     const found = this.ol2CsMappings.filter(
-      (m: OlCesiumObjectMapItem) => m.olObject == ol
+      (m: OlCesiumObjectMapItem) => m.olObject == ol,
     );
     if (found.length > 0) {
       return found[0].csObject;
@@ -265,7 +262,7 @@ export class HsCesiumLayersService {
   findOlLayer(cs: ImageryLayer | DataSource): Layer<Source> {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
-        m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Layer)
+        m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Layer),
     );
     if (found.length > 0) {
       return found[0].olObject;
@@ -275,7 +272,7 @@ export class HsCesiumLayersService {
   findOlSource(cs: ImageryLayer | DataSource): Source {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
-        m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Source)
+        m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Source),
     );
     if (found.length > 0) {
       return found[0].olObject;
@@ -284,7 +281,7 @@ export class HsCesiumLayersService {
 
   linkOlLayerToCesiumLayer(
     ol_layer: Layer<Source>,
-    cesium_layer: ImageryLayer
+    cesium_layer: ImageryLayer,
   ): void {
     this.ol2CsMappings.push({
       olObject: ol_layer,
@@ -304,7 +301,7 @@ export class HsCesiumLayersService {
 
   linkOlSourceToCesiumDatasource(
     ol_source: VectorSource<Geometry>,
-    cesium_layer: ImageryLayer | DataSource
+    cesium_layer: ImageryLayer | DataSource,
   ): void {
     this.ol2CsMappings.push({
       olObject: ol_source,
@@ -338,7 +335,7 @@ export class HsCesiumLayersService {
       this.serializeVectorLayerToGeoJson(ol_source),
       {
         clampToGround: true,
-      }
+      },
     );
     promise.then((source) => {
       const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
@@ -351,7 +348,7 @@ export class HsCesiumLayersService {
           }
         } catch (ex) {
           if (console) {
-            console.error(ex.toString());
+            this.hsLog.error(ex.toString());
           }
         }
       });
@@ -375,14 +372,14 @@ export class HsCesiumLayersService {
       lyr.setVisible(
         this.hsMapService.layerTitleInArray(
           lyr as Layer<Source>,
-          this.hsMapService.visibleLayersInUrl
-        ) || lyr.getVisible()
+          this.hsMapService.visibleLayersInUrl,
+        ) || lyr.getVisible(),
       );
       if (this.HsUtilsService.instOf(lyr, ImageLayer)) {
         if (
           this.HsUtilsService.instOf(
             (lyr as ImageLayer<ImageSource>).getSource(),
-            ImageWMS
+            ImageWMS,
           )
         ) {
           this.hsMapService.proxifyLayerLoader(lyr as Layer<Source>, false);
@@ -393,20 +390,20 @@ export class HsCesiumLayersService {
         if (
           this.HsUtilsService.instOf(
             (lyr as TileLayer<TileSource>).getSource(),
-            TileWMS
+            TileWMS,
           )
         ) {
           this.hsMapService.proxifyLayerLoader(lyr as Layer<Source>, true);
         }
       }
       const cesium_layer = await this.convertOlToCesiumProvider(
-        lyr as Layer<Source>
+        lyr as Layer<Source>,
       );
       if (cesium_layer) {
         if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
           this.linkOlLayerToCesiumLayer(
             lyr as Layer<Source>,
-            cesium_layer as ImageryLayer
+            cesium_layer as ImageryLayer,
           );
           this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
         } else if (
@@ -418,7 +415,7 @@ export class HsCesiumLayersService {
           if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
               (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
-              cesium_layer
+              cesium_layer,
             );
           }
         }
@@ -427,7 +424,7 @@ export class HsCesiumLayersService {
   }
 
   async convertOlToCesiumProvider(
-    ol_lyr: Layer<Source>
+    ol_lyr: Layer<Source>,
   ): Promise<ImageryLayer | DataSource> {
     if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
@@ -440,30 +437,28 @@ export class HsCesiumLayersService {
       return this.createSingleImageProvider(ol_lyr as ImageLayer<ImageSource>);
     } else if (this.HsUtilsService.instOf(ol_lyr, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
-        ol_lyr as VectorLayer<VectorSource<Geometry>>
+        ol_lyr as VectorLayer<VectorSource<Geometry>>,
       );
       return dataSource;
     } else {
-      if (console) {
-        console.error(
-          'Unsupported layer type for layer: ',
-          ol_lyr,
-          'in Cesium converter'
-        );
-      }
+      this.hsLog.error(
+        'Unsupported layer type for layer: ',
+        ol_lyr,
+        'in Cesium converter',
+      );
     }
   }
 
   async createVectorDataSource(
-    ol_lyr: VectorLayer<VectorSource<Geometry>>
+    ol_lyr: VectorLayer<VectorSource<Geometry>>,
   ): Promise<DataSource> {
     if (
       ol_lyr.getSource().getFormat() &&
       this.HsUtilsService.instOf(ol_lyr.getSource().getFormat(), KML)
     ) {
       if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
-        console.warn(
-          'FeatureUrlFunction is currently not supported in synchronizing features from Ol layer to Cesium'
+        this.hsLog.warn(
+          'FeatureUrlFunction is currently not supported in synchronizing features from Ol layer to Cesium',
         );
         return;
       }
@@ -491,7 +486,7 @@ export class HsCesiumLayersService {
   createTileProvider(ol_lyr): ImageryLayer {
     const src = ol_lyr.getSource();
     const params = JSON.parse(
-      JSON.stringify(this.HsLayerUtilsService.getLayerParams(ol_lyr))
+      JSON.stringify(this.HsLayerUtilsService.getLayerParams(ol_lyr)),
     );
     params.VERSION = params.VERSION || '1.1.1';
     if (params.VERSION.indexOf('1.1.') == 0) {
@@ -530,7 +525,7 @@ export class HsCesiumLayersService {
       {
         alpha: ol_lyr.getOpacity() || 0.7,
         show: ol_lyr.getVisible(),
-      }
+      },
     );
     this.paramCaches.push({imageryLayer: tmp, cache: prmCache});
     return tmp;
@@ -589,14 +584,14 @@ export class HsCesiumLayersService {
       {
         alpha: ol_lyr.getOpacity() || 0.7,
         show: ol_lyr.getVisible(),
-      }
+      },
     );
     this.paramCaches.push({imageryLayer: tmp, cache: prmCache});
     return tmp;
   }
 
   removeUnwantedParams(
-    prmCache: any
+    prmCache: any,
   ): WebMapServiceImageryProvider.ConstructorOptions {
     if (prmCache.parameters.dimensions) {
       delete prmCache.parameters.dimensions;
@@ -622,7 +617,7 @@ export class HsCesiumLayersService {
 
   findParamCache(layer: ImageryLayer): any {
     const found = this.paramCaches.filter(
-      (m: ParamCacheMapItem) => m.imageryLayer == layer
+      (m: ParamCacheMapItem) => m.imageryLayer == layer,
     );
     if (found.length > 0) {
       return found[0].cache;
@@ -634,7 +629,7 @@ export class HsCesiumLayersService {
       const cesiumLayer = this.layersToBeDeleted.pop();
       this.viewer.imageryLayers.remove(cesiumLayer);
       const mappingsToRemove = this.ol2CsMappings.filter(
-        (m) => m.csObject == cesiumLayer
+        (m) => m.csObject == cesiumLayer,
       );
       for (const mapping of mappingsToRemove) {
         this.ol2CsMappings.splice(this.ol2CsMappings.indexOf(mapping));

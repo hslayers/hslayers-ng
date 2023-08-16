@@ -25,7 +25,7 @@ export class HsDimensionService {
     public hsEventBusService: HsEventBusService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
   ) {
     this.hsDimensionTimeService.layerTimeChanges.subscribe(
       ({layer: layerDescriptor, time: newTime}) => {
@@ -33,12 +33,12 @@ export class HsDimensionService {
         if (dimensions && (dimensions['time'] || dimensions['TIME'])) {
           const dimensionDesc = new HsDimensionDescriptor(
             'time',
-            dimensions['time'] ?? dimensions['TIME']
+            dimensions['time'] ?? dimensions['TIME'],
           );
           dimensionDesc.modelValue = newTime;
           this.dimensionChanged(dimensionDesc);
         }
-      }
+      },
     );
   }
 
@@ -104,7 +104,8 @@ export class HsDimensionService {
         iteratedDimensions &&
         Object.keys(iteratedDimensions).filter(
           (dimensionIterator) =>
-            iteratedDimensions[dimensionIterator] == dimension.originalDimension
+            iteratedDimensions[dimensionIterator] ==
+            dimension.originalDimension,
         ).length > 0 //Dimension also linked to this layer?
       ) {
         const src = layer.getSource();

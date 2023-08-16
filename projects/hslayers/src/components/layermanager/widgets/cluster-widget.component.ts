@@ -23,12 +23,13 @@ export class HsClusterWidgetComponent
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
     private HsLayerEditorService: HsLayerEditorService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     super(hsLayerSelectorService);
   }
+
   ngOnInit() {
-    /*Call super ngOnInit manually as its getting overridden by local one*/
+    /* Call super ngOnInit manually as it's getting overridden by local one */
     super.ngOnInit();
     this.distance.value = this.setClusteringDistanceFromConfig();
   }
@@ -44,7 +45,7 @@ export class HsClusterWidgetComponent
     this.HsLayerEditorService.cluster(
       this.olLayer,
       newValue,
-      this.distance.value
+      this.distance.value,
     );
   }
 
@@ -58,7 +59,7 @@ export class HsClusterWidgetComponent
     return this.HsLayerEditorService.cluster(
       this.olLayer,
       undefined,
-      this.distance.value
+      this.distance.value,
     );
   }
 
@@ -91,6 +92,7 @@ export class HsClusterWidgetComponent
       return true;
     }
   }
+
   /**
    * Parse initial cluster distance value
    */

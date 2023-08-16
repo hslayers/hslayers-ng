@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {HsConfig} from '../../config.service';
 
@@ -6,7 +6,7 @@ import {HsConfig} from '../../config.service';
   selector: 'hs-impressum',
   templateUrl: './impressum.component.html',
 })
-export class HsImpressumComponent {
+export class HsImpressumComponent implements OnInit {
   version = 'dev';
   logo = '';
   logoDisabled = false;

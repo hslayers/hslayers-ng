@@ -2,6 +2,7 @@ import {
   Directive,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -9,7 +10,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 @Directive({
   selector: '[hsDownload]',
 })
-export class HsDownloadDirective {
+export class HsDownloadDirective implements OnChanges {
   @Input() hsDownload = '';
   @Input() mimeType = '';
   @Output() downloadPrepared = new EventEmitter<string>();

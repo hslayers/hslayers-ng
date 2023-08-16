@@ -17,11 +17,10 @@ export class HsPrintLegendStylerComponent {
   positionOptions = POSITION_OPTIONS;
   legendWidths = CANVAS_SIZES;
   @Input() legendObj: LegendObj;
-  
 
   constructor(
     public hsLanguageService: HsLanguageService,
-    private hsColorPickerService: HsColorPickerService
+    private hsColorPickerService: HsColorPickerService,
   ) {}
 
   /**
@@ -45,7 +44,7 @@ export class HsPrintLegendStylerComponent {
   getColorPickerStyle(): any {
     return this.hsColorPickerService.colorPickerStyle(
       this.legendObj.bcColor,
-      this.bcColor
+      this.bcColor,
     );
   }
 
@@ -59,7 +58,6 @@ export class HsPrintLegendStylerComponent {
       module,
       text,
       undefined,
-      
     );
   }
 }

@@ -21,8 +21,8 @@ export class HsLayoutParams {
    */
   panel_statuses: any;
   /**
+   * DEPRECATED?
    * @public
-   * @description DEPRECATED?
    */
   panel_enabled: any;
   /**
@@ -80,7 +80,7 @@ export class HsLayoutParams {
   initializedOnce: boolean;
   /**
    * Whether the app has been initialized already once.
-   * Need this to not add panels wtice when NgRouter is used
+   * Need this to not add panels twice when NgRouter is used
    * @public
    * @default false
    */
@@ -113,7 +113,7 @@ export class HsLayoutParams {
 })
 export class HsLayoutService extends HsLayoutParams {
   mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(
-    undefined
+    undefined,
   );
 
   panelSpaceWidth = new BehaviorSubject<number>(425);
@@ -126,7 +126,7 @@ export class HsLayoutService extends HsLayoutParams {
     public HsEventBusService: HsEventBusService,
     public $log: HsLogService,
     public hsPanelContainerService: HsPanelContainerService,
-    public hsOverlayPanelContainerService: HsOverlayPanelContainerService
+    public hsOverlayPanelContainerService: HsOverlayPanelContainerService,
   ) {
     super();
     Object.defineProperty(this, 'panelListElement', {
@@ -164,11 +164,11 @@ export class HsLayoutService extends HsLayoutParams {
 
     this.sidebarVisible = this.sidebarVisible$.pipe(
       delay(0),
-      map((visible) => visible)
+      map((visible) => visible),
     );
     this.sidebarPosition = this.sidebarPosition$.pipe(
       delay(0),
-      map((position) => position)
+      map((position) => position),
     );
   }
 
@@ -260,9 +260,9 @@ export class HsLayoutService extends HsLayoutParams {
   }
 
   /**
+   * Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
    * @public
-   * @param {object} which Panel to close (panel scope)
-   * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
+   * @param which - Panel to close (panel scope)
    */
   closePanel(which) {
     if (which.unpinned) {
@@ -354,11 +354,11 @@ export class HsLayoutService extends HsLayoutParams {
     }
     this.mainpanel = which;
     const componentRefInstance = this.hsPanelContainerService.panels.find(
-      (p) => p.name == which
+      (p) => p.name == which,
     );
     this.hsPanelContainerService.setPanelWidth(
       this.hsConfig.panelWidths,
-      componentRefInstance
+      componentRefInstance,
     );
     for (const p of this.hsPanelContainerService.panels) {
       const visible = p.isVisible();
@@ -381,7 +381,7 @@ export class HsLayoutService extends HsLayoutParams {
 
   getPanelSpaceWidth(): number {
     const panelSpaceWidth = this.layoutElement.getElementsByClassName(
-      'hs-panelspace-wrapper'
+      'hs-panelspace-wrapper',
     )[0].clientWidth;
     return panelSpaceWidth;
   }
