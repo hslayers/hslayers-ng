@@ -115,14 +115,15 @@ export type WmsDimension = {
   values: string | string[];
 };
 
-/***
+/**
  * HsLayers extension of default WMS Layer object
  */
-export type HsLayersWmsLayer = {
+// eslint-disable-next-line no-use-before-define
+export type HsWmsLayer = WmsLayer & {
   maxResolution: number;
 };
 
-export type WmsLayer = HsLayersWmsLayer & {
+export type WmsLayer = {
   Name?: NameType;
   Title: TitleType;
   Abstract?: AbstractType;
@@ -140,7 +141,7 @@ export type WmsLayer = HsLayersWmsLayer & {
   Style?: StyleType | StyleType[];
   MinScaleDenominator?: number;
   MaxScaleDenominator?: number;
-  Layer?: WmsLayer | WmsLayer[];
+  Layer?: HsWmsLayer | HsWmsLayer[];
   queryable?: boolean;
   cascaded?: number; // UInt not yet supported by TS
   opaque?: boolean;
@@ -177,7 +178,7 @@ export interface WMSGetCapabilitiesResponse {
       Format: FormatType | FormatType[];
     };
     [_ExtendedCapabilities: string]: unknown;
-    Layer?: WmsLayer; // | WmsLayer[]; ?
+    Layer?: HsWmsLayer; // | WmsLayer[]; ?
   };
   /**
    * capitalized version invalid by definition, but probably used in some services

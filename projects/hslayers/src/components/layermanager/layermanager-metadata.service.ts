@@ -30,7 +30,7 @@ import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
 import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {
-  WmsLayer,
+  HsWmsLayer,
   WMSGetCapabilitiesResponse,
   WmsDimension,
 } from '../../common/get-capabilities/wms-get-capabilities-response.interface';
@@ -62,9 +62,9 @@ export class HsLayerManagerMetadataService {
    */
   identifyLayerObject(
     layerName: string,
-    currentLayer: WmsLayer,
+    currentLayer: HsWmsLayer,
     serviceLayer: boolean = false,
-  ): WmsLayer {
+  ): HsWmsLayer {
     // FIXME: Temporary bypass for layer names like 'UTM:evi'
     /*if (layerName.includes(':')) { //This is wrong because then we are not able to find layer by name
       layerName = layerName.slice(layerName.indexOf(':'));
@@ -273,7 +273,7 @@ export class HsLayerManagerMetadataService {
       layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
       /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. */
       const subLayerArray = getSubLayers(olLayer).split(',');
-      layerObj.Layer = (layerObj.Layer as WmsLayer[]).filter((l) =>
+      layerObj.Layer = (layerObj.Layer as HsWmsLayer[]).filter((l) =>
         subLayerArray.includes(l.Name),
       );
     }
