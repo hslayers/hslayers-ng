@@ -42,6 +42,17 @@
 
 
 
+## [11.2.3](https://github.com/hslayers/hslayers-ng/compare/11.2.2...11.2.3) (2023-07-25)
+
+
+### Bug Fixes
+
+* Only request current-user for Layman endpoint ([55fd13e](https://github.com/hslayers/hslayers-ng/commit/55fd13e0cfad45f74c5d6c2bb52b0dcc6b2748f0))
+* **sensors:** Custom interval change ([81f010e](https://github.com/hslayers/hslayers-ng/commit/81f010e290be4fb95e757a9ef5eb58c6a07913f7))
+* **sensors:** Observation fetching and displaying when triggered by timebutton ([3c0906e](https://github.com/hslayers/hslayers-ng/commit/3c0906eaeeb64812ae8bf449445f6d59b8236758))
+
+
+
 ## [12.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/11.2.0...12.0.0-next.0) (2023-06-30)
 
 ### BREAKING CHANGES
@@ -80,6 +91,34 @@
 ### Performance Improvements
 
 * Pointer move listeners for compositions and add-data catalogues ([e9c6001](https://github.com/hslayers/hslayers-ng/commit/e9c6001ea20bc25ebc94ef19145c6ae2ea3ad12a))
+
+
+
+## [11.2.2](https://github.com/hslayers/hslayers-ng/compare/11.2.1...11.2.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* Returned layman urls not pointing on layman-proxy if used ([ad7d6f7](https://github.com/hslayers/hslayers-ng/commit/ad7d6f79391530565225ed47fb978c8f9ea32c2c))
+
+
+### Performance Improvements
+
+* Pointer move listeners for compositions and adddata catalogues ([27d5a00](https://github.com/hslayers/hslayers-ng/commit/27d5a007035ed55eb24375018058ccf42b37c8ce))
+
+
+
+## [11.2.1](https://github.com/hslayers/hslayers-ng/compare/11.2.0...11.2.1) (2023-04-25)
+
+
+### Bug Fixes
+
+* Multiple layers removal ([21beaee](https://github.com/hslayers/hslayers-ng/commit/21beaee7aaaf4ae2dfaa379a0be1896f6b8a8e7e))
+* Prefer QML and SLD styles ([da7a888](https://github.com/hslayers/hslayers-ng/commit/da7a888200ae111aedf3c20dcc2b6f507a192373)), closes [#3943](https://github.com/hslayers/hslayers-ng/issues/3943)
+* Prevent scrolling to add-data style input ([85b8b23](https://github.com/hslayers/hslayers-ng/commit/85b8b2315504411c4ea6df2686f0d266b73c1990))
+* Safely check composition load success ([f843bca](https://github.com/hslayers/hslayers-ng/commit/f843bcad3e0e614c59c98194c447d013247590d2)), closes [#3934](https://github.com/hslayers/hslayers-ng/issues/3934) [#3956](https://github.com/hslayers/hslayers-ng/issues/3956)
+* **sparql:** Fix loading GeoSPARQL layers ([17e4873](https://github.com/hslayers/hslayers-ng/commit/17e487351562a996708be74d0b364f6940fdad50))
+
 
 
 # [11.2.0](https://github.com/hslayers/hslayers-ng/compare/11.1.0...11.2.0) (2023-04-13)
