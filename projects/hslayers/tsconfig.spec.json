@@ -6,7 +6,8 @@
       "jasmine",
       "node"
     ],
-    "resolveJsonModule":true
+    "typeRoots": ["../../node_modules/@types"],
+    "resolveJsonModule": true
   },
   "files": [
     "test/test.ts"
