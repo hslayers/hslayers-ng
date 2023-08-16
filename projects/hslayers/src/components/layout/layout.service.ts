@@ -316,14 +316,13 @@ export class HsLayoutService extends HsLayoutParams {
    * Change GUI and queryable status of map (when queryable and with hs.query component in the app, the map does info query on map click).
    * @public
    * @param which - New panel to activate (panel name)
-   * @param by_gui - Whether function call came as result of GUI action
+   * @param byGui - Whether function call came as result of GUI action
    */
-  //TODO: introduce a new breaking change = change fction pattern to (which, {byGui}) => Promise<void>
-  setMainPanel(which: string, by_gui?: boolean): Promise<void> {
+  setMainPanel(which: string, byGui?: boolean): Promise<void> {
     if (!this.panelEnabled(which)) {
       return;
     }
-    if (which == this.mainpanel && by_gui) {
+    if (which == this.mainpanel && byGui) {
       which = '';
       if (this.sidebarExpanded == true) {
         if (this.sidebarPosition$.getValue() == 'bottom') {

@@ -9,7 +9,7 @@ import {HsHistoryListService} from '../../../../common/history-list/history-list
 export class HsCommonUrlComponent {
   items;
   what;
-  @Input() type: any; // @type'; TODO: comes from another scope
+  @Input() type: any;
 
   @Input() url: any;
 

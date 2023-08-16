@@ -87,19 +87,19 @@ class HsLayermanagerDataObject {
      * name \{String\}: Optional - only from indent 1, base folder is not named
      * @public
      */
-    (this.folders = {
+    this.folders = {
       //TODO: need to describe how hsl_path works here
       hsl_path: '',
       coded_path: '0-',
       layers: [],
       sub_folders: [],
       indent: 0,
-    }),
-      /**
-       * List of all layers (baselayers are excluded) loaded in LayerManager.
-       * @public
-       */
-      (this.layers = []);
+    };
+    /**
+     * List of all layers (baselayers are excluded) loaded in LayerManager.
+     * @public
+     */
+    this.layers = [];
     /**
      * List of all baselayers loaded in layer manager.
      * @public

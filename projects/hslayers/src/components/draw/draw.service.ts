@@ -209,7 +209,7 @@ export class HsDrawService extends HsDrawServiceParams {
     setRemovable(drawLayer, true);
     setSld(drawLayer, defaultStyle);
     setEditor(drawLayer, {editable: true});
-    setPath(drawLayer, this.hsConfig.defaultDrawLayerPath || 'User generated'); //TODO: Translate this
+    setPath(drawLayer, this.hsConfig.defaultDrawLayerPath || 'User generated');
     setDefinition(drawLayer, {
       format: this.isAuthenticated ? 'hs.format.WFS' : null,
       url: this.isAuthenticated ? layman.url + '/wfs' : null,

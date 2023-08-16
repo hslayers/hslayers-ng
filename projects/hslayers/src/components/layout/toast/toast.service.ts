@@ -65,6 +65,7 @@ export class HsToastService {
       }
     }
   }
+
   /**
    * @param textOrTpl - Text or a template message to display
    * @param options - Toast window options
@@ -91,7 +92,6 @@ export class HsToastService {
    * @param text - Toast body text to display
    * @param options - Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number, serviceCalledFrom: string)
    */
-
   createToastPopupMessage(
     header: string,
     text: string,
@@ -113,16 +113,5 @@ export class HsToastService {
         details: options.details || [],
       },
     );
-  }
-
-  shown() {
-    /*FIXME: Following hack is needed until ngBootstrap supports bootstrap5 fully */
-    for (const toastElement of this.HsLayoutService.contentWrapper.querySelectorAll(
-      '.toast-header .close',
-    )) {
-      const classList = toastElement.classList;
-      classList.add('btn-close');
-      classList.remove('close');
-    }
   }
 }
